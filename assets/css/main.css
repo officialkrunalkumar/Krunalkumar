@@ -87,19 +87,18 @@ img {
 
 .license-section {
   text-align: center;
-  padding: 10rem 2rem;
+  padding: 4rem 2rem;
 }
 
 .license-section-header {
-  margin: 0 auto 6rem auto;
+  margin: 0 auto 5rem auto;
 }
 
 .license-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-gap: 4rem;
+  grid-gap: 3rem;
   width: 100%;
-  margin-bottom: 6rem;
 }
 
 .licenses {
