@@ -1,3 +1,0 @@
-<?php
-include("data.html")
-?>
