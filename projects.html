@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore Krunalkumar Shah’s projects in automation, AI workflows, cybersecurity, research, and practical integration solutions."
+    />
+    <meta
+      name="keywords"
+      content="Krunalkumar Shah projects, automation projects, AI workflows, cybersecurity projects, research projects, integration solutions"
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="canonical" href="https://krunalkumar.vercel.app/projects.html" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.vercel.app/sitemap.xml" />
+    <meta property="og:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
+    <meta
+      property="og:description"
+      content="Browse Krunalkumar Shah’s portfolio of automation, research, AI, and integration projects."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.vercel.app/projects.html" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
+    <meta
+      name="twitter:description"
+      content="Browse Krunalkumar Shah’s portfolio of automation, research, AI, and integration projects."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <title>Krunalkumar Shah Projects | Automation & Research Work</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": ["Person", "CreativeWork"],
+        "name": "Krunalkumar Shah",
+        "url": "https://krunalkumar.vercel.app/projects.html",
+        "jobTitle": "Automation Engineer, Researcher, Cybersecurity Professional",
+        "description": "Portfolio showcasing automation, AI workflows, cybersecurity, and practical integration projects."
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://krunalkumar.vercel.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Projects",
+            "item": "https://krunalkumar.vercel.app/projects.html"
+          }
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
+    <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
+  </head>
+  <body id="top">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header">
+      <nav class="nav" id="navbar">
+        <a class="brand" href="index.html">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link active" href="projects.html">Projects</a>
+          <a class="nav-link" href="research.html">Research</a>
+          <a class="nav-link" href="client-reviews.html">Client Reviews</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-hero">
+        <p class="eyebrow">Selected work</p>
+        <h1>Projects that reflect automation, integration, and thoughtful problem solving.</h1>
+        <p class="hero-text">
+          Explore Krunalkumar Shah’s automation, AI workflow, research-backed, and integration projects built to solve practical problems.
+        </p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Featured projects</p>
+          <h2>Practical solutions built for real workflows</h2>
+        </div>
+        <div id="featured-project-card" class="featured-project-shell"></div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Project repository gallery</p>
+          <h2>Explore more of my work</h2>
+        </div>
+        <div class="project-carousel">
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="prev-projects" aria-label="Show previous projects">←</button>
+            <span id="project-page-label" class="page-label">Page 1 of 8</span>
+            <button class="carousel-btn" id="next-projects" aria-label="Show next projects">→</button>
+          </div>
+          <div id="project-list" class="project-list"></div>
+          <div class="carousel-controls bottom-controls">
+            <button class="carousel-btn" id="prev-projects-bottom" aria-label="Show previous projects">←</button>
+            <span id="project-page-label-bottom" class="page-label">Page 1 of 8</span>
+            <button class="carousel-btn" id="next-projects-bottom" aria-label="Show next projects">→</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <h2>Let’s connect</h2>
+      <div class="contact-actions">
+        <a href="mailto:einstein1410@gmail.com"><span class="contact-icon">✉</span> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello"><span class="contact-icon">💬</span> WhatsApp</a>
+      </div>
+      <p><a href="#top">Back to top</a></p>
+      <small>© 2026 Krunalkumar Shah</small>
+    </footer>
+
+    <script src="assets/js/particle-bg.js"></script>
+    <script>
+      const projects = [
+        {
+          title: 'Personal Portfolio & Digital Presence',
+          description: 'A polished online presence that introduces the professional story, credentials, and contact channels in one place.',
+          link: 'https://github.com/officialkrunalkumar/Krunalkumar',
+          category: 'Portfolio'
+        },
+        {
+          title: 'Community Support Platform for Karuna Nidhi',
+          description: 'A public-facing foundation project designed to share initiatives, resources, and structured information around community work.',
+          link: 'https://github.com/officialkrunalkumar/Karuna-Nidhi-Foundation',
+          category: 'Foundation'
+        },
+        {
+          title: 'AI-Powered FNOL Claims Assistant',
+          description: 'An autonomous insurance claims workflow that extracts claim data, detects missing fields, and routes the process intelligently.',
+          link: 'https://github.com/officialkrunalkumar/FNOL-Claim-Processing-Agent',
+          category: 'AI / Insurance'
+        },
+        {
+          title: 'Teaching the Basics of C Programming',
+          description: 'A compact teaching demo that helps learners understand how to write, compile, and run C programs from the command line.',
+          link: 'https://github.com/officialkrunalkumar/Teaching-Demo',
+          category: 'Education'
+        },
+        {
+          title: 'Sheet-Driven Task Automation Hub',
+          description: 'A Google Apps Script project that turns spreadsheet updates into actions and tasks automatically inside ClickUp.',
+          link: 'https://github.com/officialkrunalkumar/Google-Sheet-ClickUp-Integration-Automation',
+          category: 'Automation'
+        },
+        {
+          title: 'Social Publishing Automation Studio',
+          description: 'A Flask-based publishing setup paired with n8n workflows to automate Instagram content distribution.',
+          link: 'https://github.com/officialkrunalkumar/Automated-Instagram-Poster',
+          category: 'Social Automation'
+        },
+        {
+          title: 'Lead Reply Automation for SmartLead',
+          description: 'An n8n-based flow that automatically replies to incoming campaign replies and reduces manual follow-up work.',
+          link: 'https://github.com/officialkrunalkumar/SmartLead-AutoResponder',
+          category: 'Marketing Automation'
+        },
+        {
+          title: 'Instantly Email Response Workflow',
+          description: 'A response automation system for email replies from Instantly campaigns using n8n logic and visual workflow design.',
+          link: 'https://github.com/officialkrunalkumar/Instantly-AutoResponder',
+          category: 'Email Automation'
+        },
+        {
+          title: 'Gmail Auto-Reply Orchestrator',
+          description: 'An automated email assistant that generates suggestions and replies based on incoming Gmail messages.',
+          link: 'https://github.com/officialkrunalkumar/GMail-Auto-Responder',
+          category: 'Email Automation'
+        },
+        {
+          title: 'AI Tool Recommendation Assistant',
+          description: 'A lightweight front end supported by an AI-driven backend that recommends tools based on user requirements.',
+          link: 'https://github.com/officialkrunalkumar/AI-Outbound-Tool-Recommender',
+          category: 'AI / Outreach'
+        },
+        {
+          title: 'Documentation Hub for Zeni',
+          description: 'A repository containing policy documents and internal knowledge materials for the Zeni ecosystem.',
+          link: 'https://github.com/officialkrunalkumar/Dcoumentation-Zeni',
+          category: 'Documentation'
+        },
+        {
+          title: 'Visual Diagram Library for Zeni',
+          description: 'A collection of Lucidchart-based visuals used to explain processes and workflows clearly.',
+          link: 'https://github.com/officialkrunalkumar/Lucid-Charts-Zeni',
+          category: 'Visual Workflow'
+        },
+        {
+          title: 'Meeting-Triggered CRM Record Builder',
+          description: 'A HubSpot workflow and custom action stack that creates a custom object record after a qualifying meeting is booked.',
+          link: 'https://github.com/officialkrunalkumar/054-Create-a-Custom-Object-Record-upon-Meeting-Booked-using-APIs',
+          category: 'HubSpot Automation'
+        },
+        {
+          title: 'Customer Info Card Development',
+          description: 'A TypeScript project used to build a customized contact-card experience within HubSpot contact records.',
+          link: 'https://github.com/officialkrunalkumar/053-Customer-Info-Card-Development',
+          category: 'HubSpot UI'
+        },
+        {
+          title: 'Contact-Company Association Cleanup',
+          description: 'An automation flow that removes outdated associations between contacts and companies within HubSpot.',
+          link: 'https://github.com/officialkrunalkumar/052-Association-Removal-Between-Contact-and-Company',
+          category: 'HubSpot Cleanup'
+        },
+        {
+          title: 'Daily Meeting Type Sync Engine',
+          description: 'An automated schedule that syncs meeting-type changes from HubSpot into a custom object record each day.',
+          link: 'https://github.com/officialkrunalkumar/051-Daily-Demo-Meeting-Type-Sync-N8N',
+          category: 'Workflow Sync'
+        },
+        {
+          title: 'HubSpot Metadata Builder from Sheets',
+          description: 'A Google Apps Script solution that builds HubSpot metadata through property and workflow APIs using sheet-driven input.',
+          link: 'https://github.com/officialkrunalkumar/028-HubSpot-Metadata-using-Google-AppScript',
+          category: 'HubSpot Metadata'
+        },
+        {
+          title: 'Meeting-to-Custom-Object Automation',
+          description: 'A workflow that creates a custom object record when a meeting is scheduled and the defined criteria are met.',
+          link: 'https://github.com/officialkrunalkumar/049-Custom-Object-Record-Creation-Upon-Meeting-Scheduling',
+          category: 'HubSpot Automation'
+        },
+        {
+          title: 'Demo Meeting Outcome Tracker',
+          description: 'A HubSpot-driven automation that updates and tracks the outcome of demo meetings in a custom object record.',
+          link: 'https://github.com/officialkrunalkumar/050-Autoupdate-Meeting-Outcome-for-the-Demo-Meeting-Custom-Object-Record',
+          category: 'HubSpot Workflow'
+        },
+        {
+          title: 'Outcome Reset Workflow for HubSpot',
+          description: 'A workflow built to reset meeting outcomes to a neutral state based on chosen criteria inside HubSpot.',
+          link: 'https://github.com/officialkrunalkumar/048-Reset-Meeting-Outcome-Based-On-Given-Criteria-via-HubSpot-Workflow',
+          category: 'HubSpot Automation'
+        },
+        {
+          title: 'Outcome Reset for Activity-Based Logic',
+          description: 'An n8n workflow that resets meeting outcomes based on a specific activity type and associated outcome.',
+          link: 'https://github.com/officialkrunalkumar/047-Reset-Meeting-Outcome-based-on-specific-type-and-outcome',
+          category: 'Workflow Logic'
+        },
+        {
+          title: 'Self-Onboarding Slack Alert Flow',
+          description: 'A Make integration blueprint that connects Slack and HubSpot for self-onboarding notifications and alerts.',
+          link: 'https://github.com/officialkrunalkumar/046-Self-Onboarding-Notification-Make-Integration',
+          category: 'Integration'
+        },
+        {
+          title: 'Mixpanel to HubSpot Sync for n8n',
+          description: 'A single-workflow integration that syncs data between Mixpanel and HubSpot using n8n.',
+          link: 'https://github.com/officialkrunalkumar/017-Mixpanel-Hubspot-n8n-sync',
+          category: 'Data Sync'
+        },
+        {
+          title: 'Reimbursement Sync Pipeline',
+          description: 'A Make workflow that syncs reimbursement-related data between Mixpanel and HubSpot.',
+          link: 'https://github.com/officialkrunalkumar/045-Mixpanel-to-HubSpot-Reimbursement-Sync-Make-Integration',
+          category: 'Integration'
+        },
+        {
+          title: 'Account Activated Sync Pipeline',
+          description: 'A Make workflow that tracks account activation events between Mixpanel and HubSpot.',
+          link: 'https://github.com/officialkrunalkumar/044-Mixpanel-to-HubSpot-Sync-Bill-Pay-Activated-Make-Integration',
+          category: 'Integration'
+        },
+        {
+          title: 'Zeni Activation Sync Flow',
+          description: 'A Make-based integration that syncs activation events between Mixpanel and HubSpot for Zeni accounts.',
+          link: 'https://github.com/officialkrunalkumar/043-Mixpanel-to-HubSpot-Zeni-Account-Activated-Make-Integration',
+          category: 'Integration'
+        },
+        {
+          title: 'Chargebee Subscription to HubSpot Sync',
+          description: 'A Make workflow that bridges Chargebee subscription updates into HubSpot plan records.',
+          link: 'https://github.com/officialkrunalkumar/042-Chargebee-Subscription-to-HubSpot-Plan-Make-Integration',
+          category: 'Integration'
+        },
+        {
+          title: 'Call, Email, and Task Retrieval System',
+          description: 'A Google Apps Script collection that pulls engagement data such as calls, emails, and tasks from HubSpot.',
+          link: 'https://github.com/officialkrunalkumar/041-Get-Calls-Emails-and-Tasks-from-HubSpot',
+          category: 'Data Retrieval'
+        },
+        {
+          title: 'Meetings and Deals Retrieval for HubSpot',
+          description: 'A lightweight automation that collects meeting and deal information to populate a sheet-based reporting view.',
+          link: 'https://github.com/officialkrunalkumar/007-Meetings-and-Deals-Retrieval-from-HubSpot',
+          category: 'HubSpot Reporting'
+        },
+        {
+          title: 'Responsive Dashboard UI Prototype',
+          description: 'A responsive dashboard front-end concept focused on layout, usability, and polished interface structure.',
+          link: 'https://github.com/officialkrunalkumar/responsive-dashboard',
+          category: 'UI Design'
+        },
+        {
+          title: 'Marketing Campaign Sync to HubSpot',
+          description: 'A campaign-focused workflow that sends Mixpanel marketing data into HubSpot for better reporting and follow-up.',
+          link: 'https://github.com/officialkrunalkumar/029-MixPanel-To-HubSpot-Marketing-Campaign',
+          category: 'Marketing Sync'
+        },
+        {
+          title: 'Company Merge Automation by Domain',
+          description: 'A HubSpot-based deduplication workflow that merges companies using domain-name matching logic.',
+          link: 'https://github.com/officialkrunalkumar/023-Merge-Companies-based-on-Domain',
+          category: 'Data Deduplication'
+        },
+        {
+          title: 'Automatic Company Deduplication Engine',
+          description: 'A domain-based system that searches for matching companies and merges duplicate records automatically.',
+          link: 'https://github.com/officialkrunalkumar/026-Automatic-Company-Deduplication-based-on-Domain',
+          category: 'Data Deduplication'
+        },
+        {
+          title: 'Meeting Task Creation Workflow',
+          description: 'A workflow that finds relevant meetings and creates tasks based on specific criteria for follow-up actions.',
+          link: 'https://github.com/officialkrunalkumar/034-Find-Meetings-and-Create-a-Task',
+          category: 'Task Automation'
+        }
+      ];
+
+      const itemsPerPage = 4;
+      const totalPages = Math.ceil(projects.length / itemsPerPage);
+      let currentPage = 0;
+      const projectList = document.getElementById('project-list');
+      const pageLabel = document.getElementById('project-page-label');
+      const pageLabelBottom = document.getElementById('project-page-label-bottom');
+      const prevButton = document.getElementById('prev-projects');
+      const nextButton = document.getElementById('next-projects');
+      const prevButtonBottom = document.getElementById('prev-projects-bottom');
+      const nextButtonBottom = document.getElementById('next-projects-bottom');
+      const featuredProjectCard = document.getElementById('featured-project-card');
+
+      function renderFeaturedProject() {
+        const featuredProject = projects[Math.floor(Math.random() * projects.length)];
+        featuredProjectCard.innerHTML = `
+          <a class="featured-project-card" href="${featuredProject.link}" target="_blank" rel="noreferrer">
+            <div class="featured-project-content">
+              <p class="project-meta">Featured project</p>
+              <h3 class="project-name">${featuredProject.title}</h3>
+              <p class="project-description">${featuredProject.description}</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+        `;
+      }
+
+      function renderProjects() {
+        const startIndex = currentPage * itemsPerPage;
+        const visibleProjects = projects.slice(startIndex, startIndex + itemsPerPage);
+
+        projectList.innerHTML = visibleProjects.map((project) => `
+          <a class="project-item" href="${project.link}" target="_blank" rel="noreferrer">
+            <div>
+              <p class="project-meta">${project.category}</p>
+              <h3 class="project-name">${project.title}</h3>
+              <p class="project-description">${project.description}</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+        `).join('');
+
+        pageLabel.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+        pageLabelBottom.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+        prevButton.disabled = currentPage === 0;
+        nextButton.disabled = currentPage === totalPages - 1;
+        prevButtonBottom.disabled = currentPage === 0;
+        nextButtonBottom.disabled = currentPage === totalPages - 1;
+      }
+
+      prevButton.addEventListener('click', () => {
+        if (currentPage > 0) {
+          currentPage -= 1;
+          renderProjects();
+        }
+      });
+
+      nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+          currentPage += 1;
+          renderProjects();
+        }
+      });
+
+      prevButtonBottom.addEventListener('click', () => {
+        if (currentPage > 0) {
+          currentPage -= 1;
+          renderProjects();
+        }
+      });
+
+      nextButtonBottom.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+          currentPage += 1;
+          renderProjects();
+        }
+      });
+
+      renderFeaturedProject();
+      renderProjects();
+    </script>
+  </body>
+</html>
