@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore public client reviews and LinkedIn recommendations for Krunalkumar Shah, highlighting collaboration, research, and practical technology work."
+    />
+    <meta
+      name="keywords"
+      content="client reviews, LinkedIn recommendations, Krunalkumar Shah testimonials, professional recommendations"
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="canonical" href="https://krunalkumar.vercel.app/client-reviews.html" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.vercel.app/sitemap.xml" />
+    <meta property="og:title" content="Client Reviews | Krunalkumar Shah" />
+    <meta
+      property="og:description"
+      content="View public client reviews and LinkedIn recommendations for Krunalkumar Shah and explore the professional value reflected in them."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.vercel.app/client-reviews.html" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Client Reviews | Krunalkumar Shah" />
+    <meta
+      name="twitter:description"
+      content="View public client reviews and LinkedIn recommendations for Krunalkumar Shah and explore the professional value reflected in them."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <title>Client Reviews | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Client Reviews and Recommendations",
+        "url": "https://krunalkumar.vercel.app/client-reviews.html",
+        "about": {
+          "@type": "Person",
+          "name": "Krunalkumar Shah"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
+    <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
+  </head>
+  <body id="top">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header">
+      <nav class="nav" id="navbar">
+        <a class="brand" href="index.html">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="projects.html">Projects</a>
+          <a class="nav-link" href="research.html">Research</a>
+          <a class="nav-link active" href="client-reviews.html">Client Reviews</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-hero reveal">
+        <p class="eyebrow">Client reviews</p>
+        <h1>Recommendations that reflect trust, collaboration, and thoughtful work.</h1>
+        <p class="hero-text">
+          Public recommendations on LinkedIn speak to the way I work with clients, peers, and collaborators. This page makes that social proof easier to access from the portfolio.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank">Open public recommendations</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/realkrunalkumar" target="_blank">Visit LinkedIn profile</a>
+        </div>
+      </section>
+
+      <section class="section-card reveal">
+        <div class="section-heading">
+          <p class="eyebrow">What people often highlight</p>
+          <h2>Strengths reflected in the recommendations</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Dependable collaboration</h3>
+            <p>Recommendations often reflect a calm, thoughtful, and dependable approach to working with others.</p>
+          </article>
+          <article class="info-card">
+            <h3>Research and practical execution</h3>
+            <p>Clients and peers frequently appreciate the balance between analytical thinking and real-world application.</p>
+          </article>
+          <article class="info-card">
+            <h3>Clear communication</h3>
+            <p>Professional relationships are often described as productive, supportive, and easy to work with.</p>
+          </article>
+          <article class="info-card">
+            <h3>Growth-oriented mindset</h3>
+            <p>The feedback reflects curiosity, consistency, and a willingness to contribute across evolving technical spaces.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Featured recommendation</p>
+          <h2>A standout recommendation worth highlighting</h2>
+        </div>
+        <div id="featured-recommendation-shell" class="featured-project-shell"></div>
+      </section>
+
+      <section class="section-card reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Recommendations</p>
+          <h2>Browse public LinkedIn recommendations</h2>
+        </div>
+        <div class="recommendation-carousel">
+          <div class="recommendation-controls">
+            <button class="carousel-btn" id="prev-recommendation" aria-label="Show previous recommendation">←</button>
+            <span class="page-label" id="recommendation-label">Recommendation 1 of 3</span>
+            <button class="carousel-btn" id="next-recommendation" aria-label="Show next recommendation">→</button>
+          </div>
+          <div class="recommendation-card" id="recommendation-card">
+            <p class="recommendation-quote" id="recommendation-quote"></p>
+            <div class="recommendation-author" id="recommendation-author"></div>
+            <div class="recommendation-role" id="recommendation-role"></div>
+            <div class="recommendation-date" id="recommendation-date"></div>
+          </div>
+        </div>
+        <div class="contact-actions" style="margin-top: 1rem;">
+          <a href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank">View LinkedIn recommendations</a>
+          <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank">Open full profile</a>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <h2>Let’s connect</h2>
+      <div class="contact-actions">
+        <a href="mailto:einstein1410@gmail.com"><span class="contact-icon">✉</span> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello"><span class="contact-icon">💬</span> WhatsApp</a>
+      </div>
+      <p><a href="#top">Back to top</a></p>
+      <small>© 2026 Krunalkumar Shah</small>
+    </footer>
+
+    <script src="assets/js/particle-bg.js"></script>
+    <script>
+      const recommendations = [
+        {
+          quote: "Being mentored by Krunalkumar was an incredible experience; his insights and encouragement greatly shaped my learning and career direction.",
+          author: "Md Intekhab Alam",
+          role: "Software Engineer | Frontend Developer | ReactJS",
+          date: "October 14, 2025"
+        },
+        {
+          quote: "Krunal is an exceptional developer but an even greater human with a positive, can-do attitude. He always sees the good in every situation and has an uncanny ability to find more efficient ways to get the job done.",
+          author: "Brandon Dith-Berry",
+          role: "RevOps Leader | AI Strategy & Enablement",
+          date: "September 23, 2025"
+        },
+        {
+          quote: "I had the pleasure of being mentored by Krunal Kumar Shah during my Advanced React mock interview. His guidance was exceptional and his feedback provided a fresh perspective on React that will be immensely helpful for my future growth.",
+          author: "Vijay Pratap Singh Jadon",
+          role: "Full Stack Developer | MERN Stack",
+          date: "April 19, 2025"
+        },
+        {
+          quote: "Krunalkumar is a valuable contributor to our initiative. He brings not only his expertise in cybersecurity, but also a vibrant, positive attitude that energizes the team.",
+          author: "Alice Pavaloiu",
+          role: "Co-founder at Open Ethics & English Right",
+          date: "April 9, 2025"
+        },
+        {
+          quote: "I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing—thoughtful, insightful, and highly engaging.",
+          author: "Anish Patel",
+          role: "Java Developer at Mphasis",
+          date: "March 9, 2025"
+        },
+        {
+          quote: "Krunal's expertise, dedication, and exceptional teaching skills were instrumental in shaping my understanding and approach to programming.",
+          author: "Vivek Dubey",
+          role: "Software Engineer II @ Ionage",
+          date: "December 9, 2024"
+        },
+        {
+          quote: "A brilliant mind who combines genius with remarkable simplicity, making complex concepts accessible and engaging.",
+          author: "Nonye Nwogu",
+          role: "Linux | AWS | Nutanix | VMware | DevOps",
+          date: "October 14, 2024"
+        },
+        {
+          quote: "A very engaged, knowledgeable professional who provided excellent support as a teaching assistant.",
+          author: "Dr. Mary Dunphy",
+          role: "CISSP, CISA, PMP, SABSA SCP, PCI-QSA, GCP-PCA",
+          date: "April 1, 2024"
+        },
+        {
+          quote: "A highly skilled cybersecurity expert whose dedication and expertise have significantly contributed to the success of our initiatives.",
+          author: "Reginald Osuji",
+          role: "Cybersecurity Trainer | Penetration Tester",
+          date: "March 9, 2024"
+        },
+        {
+          quote: "A dedicated and highly skilled professional with deep understanding and effective communication skills.",
+          author: "Ilham Laabab",
+          role: "Researcher",
+          date: "December 14, 2023"
+        },
+        {
+          quote: "A unique ability to ensure students grasp complex concepts in detail and guide them toward the best possible outcomes.",
+          author: "Cecilia Vargas",
+          role: "Software Engineer | CSS | Python | JavaScript",
+          date: "December 6, 2023"
+        },
+        {
+          quote: "A great mentor who helped make the program easier and guided me on how to succeed in this field.",
+          author: "Omar Millan",
+          role: "Aspiring Cybersecurity Professional",
+          date: "November 18, 2023"
+        },
+        {
+          quote: "Passionate, caring, and knowledgeable, with a talent for breaking down complicated code into understandable concepts.",
+          author: "Roberto Del Rosario",
+          role: "Full Stack AI Software Developer",
+          date: "November 17, 2023"
+        },
+        {
+          quote: "A positive attitude and collaborative spirit that made him an exceptional team player.",
+          author: "Shilpa Tirumuru",
+          role: "Senior Test Engineer",
+          date: "November 8, 2023"
+        },
+        {
+          quote: "A confident communicator who brings creativity, warmth, and strong interpersonal skills to every interaction.",
+          author: "Aakanksha Vora",
+          role: "HR Professional",
+          date: "September 28, 2023"
+        },
+        {
+          quote: "A unique blend of academic strength, mentorship, clear judgment, and dynamic personality.",
+          author: "Akash Kumar",
+          role: "Software Developer",
+          date: "September 4, 2023"
+        },
+        {
+          quote: "A mentor who is available, knowledgeable, and great at helping others work through challenges.",
+          author: "Camryn Scott",
+          role: "Cloud Engineer",
+          date: "June 12, 2023"
+        },
+        {
+          quote: "A strong technical background paired with a genuine passion for sharing knowledge and helping others grow.",
+          author: "Carlos Montoya",
+          role: "Learning Designer",
+          date: "May 9, 2023"
+        },
+        {
+          quote: "An extremely intelligent, articulate, diligent, and dedicated coach and mentor.",
+          author: "Tina Alfred, PhD, MPH",
+          role: "Epidemiologist | Medical Research Writer",
+          date: "February 6, 2023"
+        },
+        {
+          quote: "A great mentor and advisor with clear thinking and the ability to simplify complex technical problems.",
+          author: "Noriel Tunon",
+          role: "Senior Helpdesk Specialist",
+          date: "January 5, 2023"
+        },
+        {
+          quote: "Highly driven, motivated, and always willing to help people solve problems and grow.",
+          author: "Yankam Brenda, PhD",
+          role: "Statistician | Epidemiologist",
+          date: "December 18, 2022"
+        },
+        {
+          quote: "An outstanding communicator who helped students stay on track and taught with genuine care.",
+          author: "Nick Rothacher",
+          role: "Director of Student Success",
+          date: "September 25, 2022"
+        },
+        {
+          quote: "Smart, kind, and deeply supportive, with a strong background and a generous mentoring spirit.",
+          author: "Katherine Zuluaga",
+          role: "Operations Management Expert",
+          date: "August 20, 2022"
+        },
+        {
+          quote: "A great technical resource for programming and testing questions, always enjoyable to work with.",
+          author: "Shuaib Gill",
+          role: "Senior QA Lead | AWS Certified Architect",
+          date: "May 16, 2022"
+        },
+        {
+          quote: "An expert in his field with strong professional credibility and knowledge.",
+          author: "Kabir Mohammed Tukur",
+          role: "IT Leader | Consultant | Trainer",
+          date: "May 13, 2022"
+        },
+        {
+          quote: "A kind mentor whose work in data science inspired and helped others achieve their goals.",
+          author: "Puroshotam Singh",
+          role: "AI Engineering @ Crowe",
+          date: "March 9, 2022"
+        },
+        {
+          quote: "A well-qualified senior engineer with solid cybersecurity expertise and excellent soft skills.",
+          author: "Geovani dos Santos",
+          role: "Consulting | AI | Data Science | Cybersecurity",
+          date: "June 22, 2021"
+        },
+        {
+          quote: "A great interaction and a trusted resource for IT security and cybersecurity guidance.",
+          author: "Michael Horgle",
+          role: "Security Analyst | IT Support Specialist",
+          date: "January 20, 2021"
+        },
+        {
+          quote: "A hardworking, dedicated, and highly intelligent professional with tremendous potential.",
+          author: "Joseph Ede",
+          role: "Executive | Finance & Strategy",
+          date: "September 2, 2020"
+        },
+        {
+          quote: "An excellent professional who enjoys sharing technical knowledge and contributing to the IT community.",
+          author: "Eduardo Dias",
+          role: "Technical Project Manager",
+          date: "August 15, 2020"
+        }
+      ];
+
+      const featuredRecommendationShell = document.getElementById('featured-recommendation-shell');
+      const featuredRecommendationIndex = Math.floor(Math.random() * recommendations.length);
+      let currentRecommendation = 0;
+      const quoteEl = document.getElementById('recommendation-quote');
+      const authorEl = document.getElementById('recommendation-author');
+      const roleEl = document.getElementById('recommendation-role');
+      const dateEl = document.getElementById('recommendation-date');
+      const labelEl = document.getElementById('recommendation-label');
+      const prevBtn = document.getElementById('prev-recommendation');
+      const nextBtn = document.getElementById('next-recommendation');
+
+      function renderFeaturedRecommendation(index) {
+        const item = recommendations[index];
+        featuredRecommendationShell.innerHTML = `
+          <div class="featured-recommendation-card">
+            <span class="featured-recommendation-badge">Featured recommendation</span>
+            <p class="featured-recommendation-quote">“${item.quote}”</p>
+            <div class="featured-recommendation-author">${item.author}</div>
+            <div class="featured-recommendation-meta">${item.role}</div>
+            <div class="recommendation-date">${item.date || ''}</div>
+          </div>
+        `;
+      }
+
+      function renderRecommendation(index) {
+        const item = recommendations[index];
+        quoteEl.textContent = item.quote;
+        authorEl.textContent = item.author;
+        roleEl.textContent = item.role;
+        dateEl.textContent = item.date || '';
+        labelEl.textContent = `Recommendation ${index + 1} of ${recommendations.length}`;
+      }
+
+      function showRecommendation(direction) {
+        currentRecommendation = (currentRecommendation + direction + recommendations.length) % recommendations.length;
+        renderRecommendation(currentRecommendation);
+      }
+
+      prevBtn.addEventListener('click', () => showRecommendation(-1));
+      nextBtn.addEventListener('click', () => showRecommendation(1));
+
+      renderFeaturedRecommendation(featuredRecommendationIndex);
+      renderRecommendation(currentRecommendation);
+    </script>
+  </body>
+</html>
