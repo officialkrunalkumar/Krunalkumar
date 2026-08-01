@@ -189,7 +189,7 @@
             return;
           }
 
-          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here's my details and message: \nName: ${name}\nPhone: ${phone}\n\nMessage:\n${message}`);
+          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here's my details and message- \nName: ${name}\nPhone: ${phone}\n\nMessage:\n${message}`);
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
           formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened. Send your message there.</span>';
           form.reset();
