@@ -137,7 +137,7 @@
         <div class="section-heading">
           <p class="eyebrow">Reach out</p>
           <h2>Start a conversation</h2>
-          <p class="hero-text">If you’re reaching out from your website, just share a few details below and I’ll get your message instantly through WhatsApp.</p>
+          <p class="hero-text">If you’re reaching out from my website, just share a few details below and I’ll get your message instantly through WhatsApp.</p>
         </div>
 
         <form id="contact-form" class="contact-form">
@@ -189,7 +189,7 @@
             return;
           }
 
-          const text = encodeURIComponent(`Hello Krunalkumar,\nName: ${name}\nPhone: ${phone}\n\nMessage:\n${message}`);
+          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here's my details and message: \nName: ${name}\nPhone: ${phone}\n\nMessage:\n${message}`);
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
           formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened. Send your message there.</span>';
           form.reset();
