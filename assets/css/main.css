@@ -995,7 +995,7 @@ footer a:hover {
 
 .footer-bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
@@ -1019,11 +1019,6 @@ footer a:hover {
 
   .footer-brand .contact-actions {
     justify-content: center;
-  }
-
-  .footer-bottom {
-    justify-content: center;
-    text-align: center;
   }
 }
 
