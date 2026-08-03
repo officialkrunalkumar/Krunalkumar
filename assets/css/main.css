@@ -513,6 +513,32 @@ footer {
   margin-top: 0.9rem;
 }
 
+.research-figure {
+  margin: 1.75rem 0 0;
+}
+
+.research-figure img {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 18px;
+}
+
+.research-figure figcaption {
+  margin-top: 0.85rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.paper-meta {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
