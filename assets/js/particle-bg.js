@@ -157,6 +157,25 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// Conversion tracking: report high-intent clicks to Google Analytics.
+// Event delegation covers links anywhere on the page, including the
+// runtime-injected header/footer.
+document.addEventListener('click', (event) => {
+  if (typeof gtag !== 'function') return;
+  const link = event.target.closest('a');
+  if (!link) return;
+  const href = link.href || '';
+  if (href.includes('calendar.app.google')) {
+    gtag('event', 'book_call_click');
+  } else if (href.startsWith('mailto:')) {
+    gtag('event', 'email_click');
+  } else if (href.includes('wa.me')) {
+    gtag('event', 'whatsapp_link_click');
+  } else if (href.includes('.pdf')) {
+    gtag('event', 'resume_download');
+  }
+});
+
 // Header and footer are injected at runtime by assets/js/include-partials.js,
 // so everything that touches them initializes after 'partials:loaded' fires.
 function initSiteChrome() {

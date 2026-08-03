@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/contact.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.jpg" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Contact Krunalkumar Shah | Research, Cybersecurity & Automation" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="Get in touch with Krunalkumar Shah for research collaboration, cybersecurity projects, automation work, and professional opportunities."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.jpg" />
     <title>Contact Krunalkumar Shah | Research, Cybersecurity & Automation</title>
     <script type="application/ld+json">
       {
@@ -183,6 +183,7 @@
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
           awaitingWhatsAppReturn = true;
           formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
+          if (typeof gtag === 'function') gtag('event', 'contact_form_submit');
         });
 
         // When the visitor returns from WhatsApp, ask whether the message went through.
@@ -198,6 +199,7 @@
           document.getElementById('wa-sent').addEventListener('click', () => {
             form.reset();
             formStatus.innerHTML = '<span class="success-pill">🎉 Thank you! Your message is on its way — I will get back to you soon.</span>';
+            if (typeof gtag === 'function') gtag('event', 'contact_form_confirmed');
           });
 
           document.getElementById('wa-retry').addEventListener('click', () => {
