@@ -986,7 +986,7 @@ footer p {
 
 footer {
   margin: 0;
-  padding: 2.5rem 1.5rem 1.75rem;
+  padding: 2rem 1.5rem 1.5rem;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -1000,6 +1000,26 @@ footer {
   max-width: 1180px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.footer-brand {
+  text-align: left;
+}
+
+.footer-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f8fafc;
+}
+
+.footer-tagline {
+  margin-top: 0.4rem;
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.65;
 }
 
 .back-to-top {
@@ -1034,32 +1054,18 @@ footer a:hover {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 2.5rem;
   text-align: left;
-  padding-bottom: 1.6rem;
+  padding-bottom: 1.3rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.footer-name {
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #f8fafc;
-}
-
-.footer-tagline {
-  margin-top: 0.6rem;
-  color: #94a3b8;
-  font-weight: 500;
-  font-size: 0.95rem;
-  line-height: 1.65;
-}
-
-.footer-brand .contact-actions {
-  justify-content: flex-start;
-  margin-top: 1.1rem;
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-content: start;
 }
 
 .footer-col h3 {
@@ -1084,7 +1090,7 @@ footer a:hover {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
-  padding-top: 1.5rem;
+  padding-top: 1.2rem;
 }
 
 .footer-bottom small {
@@ -1100,14 +1106,27 @@ footer a:hover {
    13. Responsive breakpoints & reduced motion
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .footer-grid {
     grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-grid,
+  .footer-brand {
     text-align: center;
   }
 
-  .footer-brand .contact-actions {
-    justify-content: center;
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .footer-tagline {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -1115,6 +1134,7 @@ footer a:hover {
   .hero-section {
     grid-template-columns: 1fr;
   }
+
 
   .card-grid,
   .license-grid,
@@ -1137,8 +1157,13 @@ footer a:hover {
     right: 0;
     display: none;
     flex-direction: column;
+    flex-wrap: nowrap;
     gap: 0.35rem;
     padding: 0.9rem 1.2rem 1.2rem;
+    max-height: calc(100vh - 80px);
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: rgba(2, 6, 23, 0.97);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(125, 211, 252, 0.18);
