@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/projects.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="Browse Krunalkumar Shah’s portfolio of automation, research, AI, and integration projects."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <title>Krunalkumar Shah Projects | Automation & Research Work</title>
     <script type="application/ld+json">
       {
@@ -92,13 +92,26 @@
     <header class="site-header">
       <nav class="nav" id="navbar">
         <a class="brand" href="index.html">Krunalkumar Shah</a>
-        <div class="nav-list">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-list" id="nav-menu">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="about.html">About</a>
           <a class="nav-link active" href="projects.html">Projects</a>
           <a class="nav-link" href="research.html">Research</a>
-          <a class="nav-link" href="client-reviews.html">Client Reviews</a>
-          <a class="nav-link" href="contact.html">Contact</a>
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+              More
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a class="nav-link" href="client-reviews.html">Client Reviews</a>
+              <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
@@ -375,7 +388,7 @@
       function renderFeaturedProject() {
         const featuredProject = projects[Math.floor(Math.random() * projects.length)];
         featuredProjectCard.innerHTML = `
-          <a class="featured-project-card" href="${featuredProject.link}" target="_blank" rel="noreferrer">
+          <a class="featured-project-card" href="${featuredProject.link}" target="_blank" rel="noopener" rel="noreferrer">
             <div class="featured-project-content">
               <p class="project-meta">Featured project</p>
               <h3 class="project-name">${featuredProject.title}</h3>
@@ -391,7 +404,7 @@
         const visibleProjects = projects.slice(startIndex, startIndex + itemsPerPage);
 
         projectList.innerHTML = visibleProjects.map((project) => `
-          <a class="project-item" href="${project.link}" target="_blank" rel="noreferrer">
+          <a class="project-item" href="${project.link}" target="_blank" rel="noopener" rel="noreferrer">
             <div>
               <p class="project-meta">${project.category}</p>
               <h3 class="project-name">${project.title}</h3>
