@@ -18,8 +18,8 @@ web server can host it, and any computer with a browser can develop it.
 | `projects.html`       | Featured project spotlight + paginated gallery of 35+ GitHub repositories   |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
-| `internships.html`    | Internship tracks and an application form that submits via WhatsApp         |
-| `contact.html`        | Direct contact links and a WhatsApp-backed contact form                     |
+| `internships.html`    | Internship tracks, WhatsApp application form, and call-booking link         |
+| `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `404.html`            | Custom "page not found" (served automatically by Vercel / GitHub Pages)     |
 
 ## Project structure
