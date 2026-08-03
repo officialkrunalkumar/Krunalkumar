@@ -160,6 +160,12 @@ window.addEventListener('scroll', () => {
 // Header and footer are injected at runtime by assets/js/include-partials.js,
 // so everything that touches them initializes after 'partials:loaded' fires.
 function initSiteChrome() {
+  // Fresh gradient color for the brand name on every page load.
+  const brand = document.querySelector('.brand');
+  if (brand) {
+    brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
+  }
+
   function setFooterYear(year) {
     document.querySelectorAll('.footer-bottom small').forEach((element) => {
       element.textContent = element.textContent.replace(/\b\d{4}\b/, year);

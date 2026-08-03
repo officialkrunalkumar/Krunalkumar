@@ -102,11 +102,48 @@ img {
 }
 
 .brand {
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  --brand-hue: 199;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: #f8fafc;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .brand {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--brand-hue), 92%, 70%),
+      hsl(calc(var(--brand-hue) + 70), 92%, 70%),
+      #f8fafc,
+      hsl(var(--brand-hue), 92%, 70%)
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    animation: brand-flow 4s linear infinite, brand-hue-cycle 18s linear infinite;
+  }
+}
+
+/* Gradient tiles seamlessly (first and last stops match), so sliding it by
+   exactly one tile width per cycle loops without a visible jump. */
+@keyframes brand-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 150% 50%;
+  }
+}
+
+@keyframes brand-hue-cycle {
+  to {
+    filter: hue-rotate(360deg);
+  }
 }
 
 .nav-list {
