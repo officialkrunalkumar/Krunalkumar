@@ -15,12 +15,12 @@ web server can host it, and any computer with a browser can develop it.
 | --------------------- | -------------------------------------------------------------------------- |
 | `index.html`          | Home — hero, expertise cards, certifications, online presence               |
 | `about.html`          | Profile — education (with ranks), skills, community work, memberships       |
-| `projects.html`       | Featured project spotlight + paginated gallery of 35+ GitHub repositories   |
+| `projects.html`       | Case studies, featured spotlight + paginated gallery of 35+ repositories    |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
 | `internships.html`    | Internship tracks, WhatsApp application form, and call-booking link         |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
-| `404.html`            | Custom "page not found" (served automatically by Vercel / GitHub Pages)     |
+| `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 
 ## Project structure
 
@@ -38,6 +38,7 @@ web server can host it, and any computer with a browser can develop it.
 │   └── pdf/                      Resume
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages
 ├── robots.txt                    Crawl rules + sitemap pointer
+├── vercel.json                   Security headers (X-Frame-Options, nosniff, etc.)
 └── .claude/launch.json           Local preview server config (Claude Code)
 ```
 
@@ -85,9 +86,16 @@ annual edit needed.
 ### WhatsApp forms
 
 The contact and internship forms don't need a backend: on submit, JavaScript builds a prefilled
-`wa.me/<number>` message from the fields and opens WhatsApp. The number appears in
-`contact.html`, `internships.html`, and `partials/footer.html` — search-and-replace all three to
-change it.
+`wa.me/<number>` message from the fields and opens WhatsApp. When the visitor returns to the tab,
+the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
+keeps their details for a retry. The number appears in `contact.html`, `internships.html`, and
+`partials/footer.html` — search-and-replace all three to change it.
+
+### Analytics events
+
+Beyond page views, Google Analytics receives conversion events: `book_call_click`, `email_click`,
+`whatsapp_link_click`, `resume_download` (global click listener in `particle-bg.js`), plus
+`*_form_submit` / `*_form_confirmed` from the two forms.
 
 ### Visual layer
 
@@ -144,7 +152,8 @@ array in `projects.html`. To make it eligible for the Featured spotlight, also a
 
 ## SEO
 
-Per-page meta descriptions, canonicals, Open Graph/Twitter cards, and JSON-LD structured data
-(Person, WebSite, BreadcrumbList, ScholarlyArticle on the research page); `sitemap.xml` +
-`robots.txt`; custom 404 with `noindex`. Note: nav/footer links are JavaScript-injected, so the
-sitemap carries crawl discovery — keep it accurate.
+Per-page meta descriptions, canonicals, Open Graph/Twitter cards pointing to a dedicated 1200×630
+share image (`assets/images/og-image.jpg`), and JSON-LD structured data (Person, WebSite,
+BreadcrumbList, ScholarlyArticle on the research page); `sitemap.xml` + `robots.txt`; custom 404
+with `noindex`; security headers via `vercel.json`. Note: nav/footer links are JavaScript-injected,
+so the sitemap carries crawl discovery — keep it accurate.
