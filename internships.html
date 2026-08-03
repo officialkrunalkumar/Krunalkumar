@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/internships.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.jpg" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Internships with Krunalkumar Shah | Automation, AI & Security" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="Pick your path — AI/ML, software development, DevOps, front-end, back-end, cybersecurity, and more. Real projects, direct mentorship. Apply in a few clicks."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.jpg" />
     <title>Internships with Krunalkumar Shah | Automation, AI & Security</title>
     <script type="application/ld+json">
       {
@@ -223,6 +223,7 @@
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
           awaitingWhatsAppReturn = true;
           formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
+          if (typeof gtag === 'function') gtag('event', 'internship_form_submit');
         });
 
         // When the visitor returns from WhatsApp, ask whether the application went through.
@@ -238,6 +239,7 @@
           document.getElementById('wa-sent').addEventListener('click', () => {
             form.reset();
             formStatus.innerHTML = '<span class="success-pill">🎉 Thank you for applying! I will review your application and get back to you soon.</span>';
+            if (typeof gtag === 'function') gtag('event', 'internship_form_confirmed');
           });
 
           document.getElementById('wa-retry').addEventListener('click', () => {
