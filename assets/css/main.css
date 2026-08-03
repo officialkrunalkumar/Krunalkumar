@@ -88,10 +88,14 @@ img {
   transition: all 0.2s ease;
 }
 
-.nav-list a:hover,
-.nav-list a.active {
+.nav-list a:hover {
   background: var(--surface-alt);
   color: var(--accent-dark);
+}
+
+.nav-list a.active {
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 @media (min-width: 641px) {
@@ -165,10 +169,14 @@ img {
 }
 
 .nav-dropdown-toggle:hover,
-.nav-dropdown.open .nav-dropdown-toggle,
-.nav-dropdown.has-active .nav-dropdown-toggle {
+.nav-dropdown.open .nav-dropdown-toggle {
   background: var(--surface-alt);
   color: var(--accent-dark);
+}
+
+.nav-dropdown.has-active .nav-dropdown-toggle {
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .nav-caret {
