@@ -157,6 +157,26 @@ window.addEventListener('scroll', () => {
   }
 });
 
+function setFooterYear(year) {
+  document.querySelectorAll('.footer-bottom small').forEach((element) => {
+    element.textContent = element.textContent.replace(/\b\d{4}\b/, year);
+  });
+}
+
+setFooterYear(new Date().getFullYear());
+
+fetch(window.location.href, { method: 'HEAD', cache: 'no-store' })
+  .then((response) => {
+    const dateHeader = response.headers.get('date');
+    if (dateHeader) {
+      const serverDate = new Date(dateHeader);
+      if (!Number.isNaN(serverDate.getTime())) {
+        setFooterYear(serverDate.getFullYear());
+      }
+    }
+  })
+  .catch(() => {});
+
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.querySelector('.nav-list');
 const navDropdown = document.querySelector('.nav-dropdown');
