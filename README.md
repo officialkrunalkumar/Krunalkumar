@@ -141,7 +141,6 @@ array in `projects.html`. To make it eligible for the Featured spotlight, also a
   `sitemap.xml` lastmod fresh when content changes meaningfully.
 - One `<h1>` per page; sections use `<h2>`/`<h3>`.
 - The site is dark-theme only by design (`color-scheme: dark`).
-- `.claude/` is git-ignored — never commit or deploy it.
 
 ## SEO
 
