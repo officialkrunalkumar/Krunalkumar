@@ -65,6 +65,11 @@ based on the URL. When both partials are in place it fires a `partials:loaded` e
 **To change the nav or footer: edit the file in `partials/` and refresh. Never edit the header/footer
 markup inside individual pages — there is none.**
 
+The one exception: every page carries `<noscript>` copies of the header (same classes, minus the
+JS-only hamburger and More dropdown, with the page's own link pre-marked active) and the footer
+(verbatim copy of the partial) so visitors with JavaScript disabled still get styled navigation
+and contact links. When the nav or footer changes, update those blocks too.
+
 ### Responsive "priority+" navigation
 
 The navbar shows as many links as fit at the current width and moves the rest into a **More ▾**
@@ -129,7 +134,8 @@ unmatched URLs.
 
 **Add a page**
 1. Copy an existing page and replace `<main>` content, `<title>`, meta description, canonical URL, and Open Graph tags.
-2. Add its link to `partials/header.html` (nav) and `partials/footer.html` (Explore column).
+2. Add its link to `partials/header.html` (nav), `partials/footer.html` (Explore column), and the
+   `<noscript>` fallback nav and footer blocks in every page.
 3. Add a `<url>` entry to `sitemap.xml`.
 
 **Add a project** — append an object (`title`, `description`, `link`, `category`) to the `projects`
