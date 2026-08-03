@@ -849,6 +849,7 @@ footer {
 }
 
 .field input,
+.field select,
 .field textarea {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -865,6 +866,7 @@ footer {
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   outline: 2px solid rgba(125, 211, 252, 0.4);
   border-color: var(--accent);
