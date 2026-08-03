@@ -202,6 +202,8 @@
       const formStatus = document.getElementById('form-status');
 
       if (form && formStatus) {
+        let awaitingWhatsAppReturn = false;
+
         form.addEventListener('submit', (event) => {
           event.preventDefault();
 
@@ -219,8 +221,28 @@
 
           const text = encodeURIComponent(`Hello Krunalkumar, I would like to apply for an internship with you. Here are my details.\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nArea of interest: ${interest}\n\nWhy me:\n${reason}`);
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
-          formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened. Send your application there.</span>';
-          form.reset();
+          awaitingWhatsAppReturn = true;
+          formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
+        });
+
+        // When the visitor returns from WhatsApp, ask whether the application went through.
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState !== 'visible' || !awaitingWhatsAppReturn) return;
+          awaitingWhatsAppReturn = false;
+
+          formStatus.innerHTML =
+            '<span class="form-followup">Did your application go through on WhatsApp?' +
+            '<button type="button" id="wa-sent">Yes, sent it</button>' +
+            '<button type="button" id="wa-retry">Not yet</button></span>';
+
+          document.getElementById('wa-sent').addEventListener('click', () => {
+            form.reset();
+            formStatus.innerHTML = '<span class="success-pill">🎉 Thank you for applying! I will review your application and get back to you soon.</span>';
+          });
+
+          document.getElementById('wa-retry').addEventListener('click', () => {
+            formStatus.innerHTML = '<span class="success-pill">No problem — your details are still filled in. Try sending again, or email me at einstein1410@gmail.com.</span>';
+          });
         });
       }
     </script>
