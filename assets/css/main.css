@@ -94,6 +94,21 @@ img {
   color: var(--accent-dark);
 }
 
+@media (min-width: 641px) {
+  .nav-list.priority-nav {
+    flex: 1;
+    min-width: 0;
+    margin-left: 1.5rem;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+
+  .nav-list.priority-nav .nav-link,
+  .nav-list.priority-nav .nav-dropdown-toggle {
+    white-space: nowrap;
+  }
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -892,7 +907,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .nav-toggle {
     display: inline-flex;
   }
