@@ -24,6 +24,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/projects.html" />
     <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Krunalkumar Shah — Researcher, Engineer & Cybersecurity Professional" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
@@ -150,13 +153,13 @@
         <div class="project-carousel">
           <div class="carousel-controls">
             <button class="carousel-btn" id="prev-projects" aria-label="Show previous projects">←</button>
-            <span id="project-page-label" class="page-label">Page 1 of 8</span>
+            <span id="project-page-label" class="page-label">Page 1 of 9</span>
             <button class="carousel-btn" id="next-projects" aria-label="Show next projects">→</button>
           </div>
           <div id="project-list" class="project-list"></div>
           <div class="carousel-controls bottom-controls">
             <button class="carousel-btn" id="prev-projects-bottom" aria-label="Show previous projects">←</button>
-            <span id="project-page-label-bottom" class="page-label">Page 1 of 8</span>
+            <span id="project-page-label-bottom" class="page-label">Page 1 of 9</span>
             <button class="carousel-btn" id="next-projects-bottom" aria-label="Show next projects">→</button>
           </div>
         </div>
@@ -186,6 +189,12 @@
           description: 'An autonomous insurance claims workflow that extracts claim data, detects missing fields, and routes the process intelligently.',
           link: 'https://github.com/officialkrunalkumar/FNOL-Claim-Processing-Agent',
           category: 'AI / Insurance'
+        },
+        {
+          title: 'ChurnGPT 2.0 — AI Churn Analysis',
+          description: 'A multi-stage AI pipeline built at Zeni that digests company records, ticket and meeting notes, validates churn reasons, and recommends retention actions.',
+          link: 'https://github.com/officialkrunalkumar/011-ChurnGPT-2.0',
+          category: 'AI / RevOps'
         },
         {
           title: 'Teaching the Basics of C Programming',
@@ -389,6 +398,7 @@
 
       const spotlightTitles = new Set([
         'AI-Powered FNOL Claims Assistant',
+        'ChurnGPT 2.0 — AI Churn Analysis',
         'Sheet-Driven Task Automation Hub',
         'Social Publishing Automation Studio',
         'AI Tool Recommendation Assistant',

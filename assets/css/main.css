@@ -432,6 +432,41 @@ footer p {
   margin-top: 1.2rem;
 }
 
+.availability-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 1.1rem 0 0;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #dcfce7;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.availability-pill::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: availability-pulse 2s ease-out infinite;
+}
+
+@keyframes availability-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(74, 222, 128, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
 .chip {
   display: inline-flex;
   align-items: center;
@@ -642,6 +677,79 @@ footer p {
   margin-top: 0.35rem;
   font-size: 0.95rem;
   color: #94a3b8;
+}
+
+.paper-doi {
+  color: #7dd3fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.award-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.7rem 0 0;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fde68a;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+/* Career timeline (About page) */
+
+.timeline {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+}
+
+.timeline li {
+  position: relative;
+  margin-left: 0.4rem;
+  padding: 0 0 1.5rem 1.6rem;
+  border-left: 2px solid rgba(125, 211, 252, 0.25);
+}
+
+.timeline li:last-child {
+  padding-bottom: 0.2rem;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 0.4rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #7dd3fc;
+  box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.15);
+}
+
+.timeline-period {
+  margin: 0;
+  color: #7dd3fc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timeline-role {
+  margin: 0.15rem 0 0;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.timeline-desc {
+  margin: 0.25rem 0 0;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .tag {
@@ -908,7 +1016,7 @@ footer p {
 
 .contact-links a:hover {
   background: var(--accent);
-  color: white;
+  color: #0f172a;
 }
 
 .contact-actions {
@@ -934,7 +1042,7 @@ footer p {
 
 .contact-actions a:hover {
   background: var(--accent);
-  color: white;
+  color: #0f172a;
 }
 
 .contact-icon {

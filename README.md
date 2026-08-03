@@ -13,8 +13,8 @@ web server can host it, and any computer with a browser can develop it.
 
 | Page                  | Purpose                                                                    |
 | --------------------- | -------------------------------------------------------------------------- |
-| `index.html`          | Home — hero, expertise cards, certifications, online presence               |
-| `about.html`          | Profile — education (with ranks), skills, community work, memberships       |
+| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, certifications |
+| `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35+ repositories    |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
@@ -36,9 +36,10 @@ web server can host it, and any computer with a browser can develop it.
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
 │   ├── images/                   Portrait, certification badges, favicon, research flowchart (SVG)
 │   └── pdf/                      Resume
+├── .well-known/security.txt      RFC 9116 security contact file
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages
 ├── robots.txt                    Crawl rules + sitemap pointer
-├── vercel.json                   Security headers (X-Frame-Options, nosniff, etc.)
+├── vercel.json                   Security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
 └── .claude/launch.json           Local preview server config (Claude Code)
 ```
 
@@ -139,8 +140,9 @@ array in `projects.html`. To make it eligible for the Featured spotlight, also a
 
 **Change internship tracks** — edit the tag list and the `<select>` options in `internships.html`.
 
-**Update the resume** — replace the PDF in `assets/pdf/` (keep the filename, or update the links on
-`index.html`).
+**Update the resume** — replace `assets/pdf/Krunalkumar-Shah-Resume.pdf` (keep the filename, or update
+the link on `index.html`). The PDF path is served with `X-Robots-Tag: noindex` (see `vercel.json`) so
+the file never outranks the homepage in search.
 
 ## Conventions
 
