@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 700" role="img" aria-labelledby="fc-title">
+  <title id="fc-title">Flow chart of the proposed fork bomb defense</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <style>
+    .node-text { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; fill: #e2e8f0; text-anchor: middle; }
+    .branch-label { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 13px; font-style: italic; fill: #94a3b8; text-anchor: middle; }
+    .edge { stroke: #64748b; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+    .process { fill: rgba(15, 23, 42, 0.92); stroke: rgba(56, 189, 248, 0.65); stroke-width: 1.5; }
+    .decision { fill: rgba(30, 41, 59, 0.92); stroke: rgba(168, 85, 247, 0.7); stroke-width: 1.5; }
+    .kill { fill: rgba(248, 113, 113, 0.10); stroke: rgba(248, 113, 113, 0.75); stroke-width: 1.5; }
+    .allow { fill: rgba(74, 222, 128, 0.10); stroke: rgba(74, 222, 128, 0.7); stroke-width: 1.5; }
+  </style>
+
+  <rect x="0" y="0" width="920" height="700" rx="18" fill="#0b1120" opacity="0.55" />
+
+  <!-- Start -->
+  <rect x="340" y="18" width="240" height="44" rx="22" class="process" />
+  <text x="460" y="45" class="node-text">Process calls fork()</text>
+
+  <!-- D1: exception list -->
+  <polygon points="460,100 640,150 460,200 280,150" class="decision" />
+  <text x="460" y="146" class="node-text">Name in</text>
+  <text x="460" y="164" class="node-text">exception list?</text>
+
+  <!-- Trusted box -->
+  <rect x="705" y="122" width="190" height="56" rx="10" class="process" />
+  <text x="800" y="146" class="node-text">Trusted process —</text>
+  <text x="800" y="164" class="node-text">allowed, no checks</text>
+
+  <!-- D2: detection list -->
+  <polygon points="460,230 645,280 460,330 275,280" class="decision" />
+  <text x="460" y="276" class="node-text">Name in</text>
+  <text x="460" y="294" class="node-text">detection list?</text>
+
+  <!-- B1: count forks -->
+  <rect x="40" y="352" width="220" height="56" rx="10" class="process" />
+  <text x="150" y="376" class="node-text">Count fork calls in the</text>
+  <text x="150" y="394" class="node-text">inspection interval</text>
+
+  <!-- D3: threshold -->
+  <polygon points="150,435 285,480 150,525 15,480" class="decision" />
+  <text x="150" y="476" class="node-text">Count above</text>
+  <text x="150" y="494" class="node-text">threshold?</text>
+
+  <!-- Left kill -->
+  <rect x="40" y="562" width="220" height="56" rx="10" class="kill" />
+  <text x="150" y="586" class="node-text">Kill process &amp; add name</text>
+  <text x="150" y="604" class="node-text">to detection list</text>
+
+  <!-- B2: quarantine -->
+  <rect x="645" y="352" width="230" height="56" rx="10" class="process" />
+  <text x="760" y="376" class="node-text">Run under resource</text>
+  <text x="760" y="394" class="node-text">quarantine &amp; inspect</text>
+
+  <!-- D4: still consuming -->
+  <polygon points="760,435 880,480 760,525 640,480" class="decision" />
+  <text x="760" y="476" class="node-text">Abnormal use</text>
+  <text x="760" y="494" class="node-text">continues?</text>
+
+  <!-- Right kill -->
+  <rect x="660" y="566" width="200" height="48" rx="10" class="kill" />
+  <text x="760" y="595" class="node-text">Kill the process</text>
+
+  <!-- Remove from detection list -->
+  <rect x="425" y="452" width="190" height="56" rx="10" class="process" />
+  <text x="520" y="476" class="node-text">Remove name from</text>
+  <text x="520" y="494" class="node-text">detection list</text>
+
+  <!-- Allow terminal -->
+  <rect x="310" y="616" width="300" height="48" rx="24" class="allow" />
+  <text x="460" y="645" class="node-text">Fork allowed — system stays available</text>
+
+  <!-- Edges -->
+  <line x1="460" y1="62" x2="460" y2="96" class="edge" />
+  <line x1="640" y1="150" x2="701" y2="150" class="edge" />
+  <text x="668" y="140" class="branch-label">Yes</text>
+  <polyline points="895,150 908,150 908,640 616,640" class="edge" />
+  <line x1="460" y1="200" x2="460" y2="226" class="edge" />
+  <text x="474" y="218" class="branch-label">No</text>
+  <polyline points="645,280 760,280 760,348" class="edge" />
+  <text x="668" y="270" class="branch-label">Yes</text>
+  <polyline points="275,280 150,280 150,348" class="edge" />
+  <text x="252" y="270" class="branch-label">No</text>
+  <line x1="150" y1="408" x2="150" y2="431" class="edge" />
+  <line x1="150" y1="525" x2="150" y2="558" class="edge" />
+  <text x="163" y="546" class="branch-label">Yes</text>
+  <polyline points="285,480 390,480 390,612" class="edge" />
+  <text x="305" y="470" class="branch-label">No</text>
+  <line x1="760" y1="408" x2="760" y2="431" class="edge" />
+  <line x1="760" y1="525" x2="760" y2="562" class="edge" />
+  <text x="773" y="550" class="branch-label">Yes</text>
+  <line x1="640" y1="480" x2="619" y2="480" class="edge" />
+  <text x="630" y="470" class="branch-label">No</text>
+  <line x1="520" y1="508" x2="520" y2="612" class="edge" />
+</svg>
