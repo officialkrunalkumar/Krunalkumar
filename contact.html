@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/contact.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Contact Krunalkumar Shah | Research, Cybersecurity & Automation" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="Get in touch with Krunalkumar Shah for research collaboration, cybersecurity projects, automation work, and professional opportunities."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <title>Contact Krunalkumar Shah | Research, Cybersecurity & Automation</title>
     <script type="application/ld+json">
       {
@@ -92,13 +92,26 @@
     <header class="site-header">
       <nav class="nav" id="navbar">
         <a class="brand" href="index.html">Krunalkumar Shah</a>
-        <div class="nav-list">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-list" id="nav-menu">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="about.html">About</a>
           <a class="nav-link" href="projects.html">Projects</a>
           <a class="nav-link" href="research.html">Research</a>
-          <a class="nav-link" href="client-reviews.html">Client Reviews</a>
-          <a class="nav-link active" href="contact.html">Contact</a>
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+              More
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a class="nav-link" href="client-reviews.html">Client Reviews</a>
+              <a class="nav-link active" href="contact.html">Contact</a>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
@@ -124,10 +137,10 @@
           <article class="info-card">
             <h3>Online presence</h3>
             <div class="contact-links">
-              <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank">LinkedIn</a>
-              <a href="https://github.com/officialkrunalkumar" target="_blank">GitHub</a>
-              <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank">Google Scholar</a>
-              <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank">Credly</a>
+              <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
+              <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener">Credly</a>
             </div>
           </article>
         </div>

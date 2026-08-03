@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/research.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Krunalkumar Shah Research | Publications & Ideas" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="Explore Krunalkumar Shah’s research interests, publications, and technology-driven thinking."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <title>Krunalkumar Shah Research | Publications & Ideas</title>
     <script type="application/ld+json">
       {
@@ -92,13 +92,26 @@
     <header class="site-header">
       <nav class="nav" id="navbar">
         <a class="brand" href="index.html">Krunalkumar Shah</a>
-        <div class="nav-list">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-list" id="nav-menu">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="about.html">About</a>
           <a class="nav-link" href="projects.html">Projects</a>
           <a class="nav-link active" href="research.html">Research</a>
-          <a class="nav-link" href="client-reviews.html">Client Reviews</a>
-          <a class="nav-link" href="contact.html">Contact</a>
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+              More
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a class="nav-link" href="client-reviews.html">Client Reviews</a>
+              <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
@@ -121,7 +134,7 @@
           <article class="info-card">
             <h3>Published research</h3>
             <p>One of my published papers is available through IJRAT and reflects my academic direction in applied computing and technology-driven problem solving.</p>
-            <a class="btn btn-secondary" href="https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf" target="_blank">Open paper</a>
+            <a class="btn btn-secondary" href="https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf" target="_blank" rel="noopener">Open paper</a>
           </article>
         </div>
       </section>

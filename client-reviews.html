@@ -23,7 +23,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.vercel.app/client-reviews.html" />
-    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta property="og:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Client Reviews | Krunalkumar Shah" />
@@ -31,7 +31,7 @@
       name="twitter:description"
       content="View public client reviews and LinkedIn recommendations for Krunalkumar Shah and explore the professional value reflected in them."
     />
-    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/og-image.svg" />
+    <meta name="twitter:image" content="https://krunalkumar.vercel.app/assets/images/Krunal.png" />
     <title>Client Reviews | Krunalkumar Shah</title>
     <script type="application/ld+json">
       {
@@ -74,13 +74,26 @@
     <header class="site-header">
       <nav class="nav" id="navbar">
         <a class="brand" href="index.html">Krunalkumar Shah</a>
-        <div class="nav-list">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-list" id="nav-menu">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="about.html">About</a>
           <a class="nav-link" href="projects.html">Projects</a>
           <a class="nav-link" href="research.html">Research</a>
-          <a class="nav-link active" href="client-reviews.html">Client Reviews</a>
-          <a class="nav-link" href="contact.html">Contact</a>
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+              More
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a class="nav-link active" href="client-reviews.html">Client Reviews</a>
+              <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
@@ -93,8 +106,8 @@
           Public recommendations on LinkedIn speak to the way I work with clients, peers, and collaborators. This page makes that social proof easier to access from the portfolio.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank">Open public recommendations</a>
-          <a class="btn btn-secondary" href="https://www.linkedin.com/in/realkrunalkumar" target="_blank">Visit LinkedIn profile</a>
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank" rel="noopener">Open public recommendations</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener">Visit LinkedIn profile</a>
         </div>
       </section>
 
@@ -150,8 +163,8 @@
           </div>
         </div>
         <div class="contact-actions" style="margin-top: 1rem;">
-          <a href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank">View LinkedIn recommendations</a>
-          <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank">Open full profile</a>
+          <a href="https://www.linkedin.com/in/realkrunalkumar/details/recommendations/" target="_blank" rel="noopener">View LinkedIn recommendations</a>
+          <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener">Open full profile</a>
         </div>
       </section>
     </main>
