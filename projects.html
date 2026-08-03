@@ -88,6 +88,7 @@
       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTRG9KDJ"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <header class="site-header">
       <nav class="nav" id="navbar">
@@ -100,7 +101,7 @@
         <div class="nav-list" id="nav-menu">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="about.html">About</a>
-          <a class="nav-link active" href="projects.html">Projects</a>
+          <a class="nav-link active" href="projects.html" aria-current="page">Projects</a>
           <a class="nav-link" href="research.html">Research</a>
           <a class="nav-link" href="client-reviews.html">Client Reviews</a>
           <a class="nav-link" href="contact.html">Contact</a>
@@ -115,7 +116,7 @@
       </nav>
     </header>
 
-    <main class="page-shell">
+    <main id="main-content" class="page-shell">
       <section class="page-hero">
         <p class="eyebrow">Selected work</p>
         <h1>Projects that reflect automation, integration, and thoughtful problem solving.</h1>
@@ -384,10 +385,21 @@
       const nextButtonBottom = document.getElementById('next-projects-bottom');
       const featuredProjectCard = document.getElementById('featured-project-card');
 
+      const spotlightTitles = new Set([
+        'AI-Powered FNOL Claims Assistant',
+        'Sheet-Driven Task Automation Hub',
+        'Social Publishing Automation Studio',
+        'AI Tool Recommendation Assistant',
+        'Lead Reply Automation for SmartLead',
+        'Gmail Auto-Reply Orchestrator'
+      ]);
+
       function renderFeaturedProject() {
-        const featuredProject = projects[Math.floor(Math.random() * projects.length)];
+        const spotlightProjects = projects.filter((project) => spotlightTitles.has(project.title));
+        const featuredPool = spotlightProjects.length ? spotlightProjects : projects;
+        const featuredProject = featuredPool[Math.floor(Math.random() * featuredPool.length)];
         featuredProjectCard.innerHTML = `
-          <a class="featured-project-card" href="${featuredProject.link}" target="_blank" rel="noopener" rel="noreferrer">
+          <a class="featured-project-card" href="${featuredProject.link}" target="_blank" rel="noopener noreferrer">
             <div class="featured-project-content">
               <p class="project-meta">Featured project</p>
               <h3 class="project-name">${featuredProject.title}</h3>
@@ -403,7 +415,7 @@
         const visibleProjects = projects.slice(startIndex, startIndex + itemsPerPage);
 
         projectList.innerHTML = visibleProjects.map((project) => `
-          <a class="project-item" href="${project.link}" target="_blank" rel="noopener" rel="noreferrer">
+          <a class="project-item" href="${project.link}" target="_blank" rel="noopener noreferrer">
             <div>
               <p class="project-meta">${project.category}</p>
               <h3 class="project-name">${project.title}</h3>

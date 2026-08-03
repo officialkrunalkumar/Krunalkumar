@@ -88,6 +88,7 @@
       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTRG9KDJ"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <header class="site-header">
       <nav class="nav" id="navbar">
@@ -103,7 +104,7 @@
           <a class="nav-link" href="projects.html">Projects</a>
           <a class="nav-link" href="research.html">Research</a>
           <a class="nav-link" href="client-reviews.html">Client Reviews</a>
-          <a class="nav-link active" href="contact.html">Contact</a>
+          <a class="nav-link active" href="contact.html" aria-current="page">Contact</a>
           <div class="nav-dropdown" hidden>
             <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
               More
@@ -115,7 +116,7 @@
       </nav>
     </header>
 
-    <main class="page-shell">
+    <main id="main-content" class="page-shell">
       <section class="page-hero">
         <p class="eyebrow">Contact</p>
         <h1>Open to conversations, collaborations, and new opportunities.</h1>
@@ -156,7 +157,7 @@
           <div class="form-grid">
             <label class="field">
               <span>Your name</span>
-              <input type="text" placeholder="Firstname Lastname" name="name" required />
+              <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
             </label>
             <label class="field">
               <span>Contact number</span>
