@@ -46,6 +46,34 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "Security Against Fork Bomb Attack in Linux Based Systems",
+        "author": [
+          { "@type": "Person", "name": "Krunalkumar D. Shah" },
+          { "@type": "Person", "name": "Krunal V. Patel" }
+        ],
+        "datePublished": "2019-04",
+        "isPartOf": {
+          "@type": "PublicationIssue",
+          "issueNumber": "4",
+          "isPartOf": {
+            "@type": "PublicationVolume",
+            "volumeNumber": "7",
+            "isPartOf": {
+              "@type": "Periodical",
+              "name": "International Journal of Research in Advent Technology",
+              "issn": "2321-9637"
+            }
+          }
+        },
+        "url": "https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf",
+        "description": "Proposes a hybrid defense against fork bomb denial-of-service attacks on Linux, combining name-based detection lists with process resource quarantine to preserve system availability and eliminate permanent false positives.",
+        "keywords": "Linux, fork bomb, denial of service, process security, availability"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
           {
@@ -128,14 +156,64 @@
       <section class="section-card">
         <div class="section-heading">
           <p class="eyebrow">Publication</p>
-          <h2>Featured research paper</h2>
+          <h2>Security Against Fork Bomb Attack in Linux-Based Systems</h2>
+          <p class="paper-meta">
+            Krunalkumar D. Shah &amp; Krunal V. Patel · International Journal of Research in Advent Technology (IJRAT),
+            Vol. 7, No. 4, April 2019 · E-ISSN 2321-9637
+          </p>
         </div>
-        <div class="content-grid">
+
+        <div class="content-grid two-up">
           <article class="info-card">
-            <h3>Published research</h3>
-            <p>One of my published papers is available through IJRAT and reflects my academic direction in applied computing and technology-driven problem solving.</p>
-            <a class="btn btn-secondary" href="https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf" target="_blank" rel="noopener">Open paper</a>
+            <h3>The problem</h3>
+            <p>
+              A fork bomb is a denial-of-service attack in which a process endlessly replicates itself until the
+              process table and memory are exhausted, freezing the system. Because creating a process is a legitimate
+              operation that needs no special privileges, even hardened Linux systems are vulnerable — availability,
+              one of the three pillars of information security, breaks down.
+            </p>
           </article>
+          <article class="info-card">
+            <h3>Why existing defenses fall short</h3>
+            <p>
+              Static process limits reject legitimate work once the cap is hit. Rate limits misfire on fork-heavy
+              software such as CAD tools. Name-based blacklists never forgive: a legitimate process that shares a
+              name with a past offender is killed forever. Each approach trades one failure mode for another.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>The proposed defense</h3>
+            <p>
+              The paper combines name-based detection with process resource quarantine. New processes are monitored
+              for their fork rate; offenders are killed and their name recorded. When a recorded name reappears, it is
+              not killed outright — it runs inside a resource quarantine and is inspected. If it behaves, it is
+              released and removed from the list, eliminating permanent false positives.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Results</h3>
+            <p>
+              Evaluated with a bash fork bomb on Xubuntu 18.04 (kernel 4.15), the system identified an attack in as
+              little as 44&nbsp;ms at a threshold of 500 forks, while known offenders were handled instantly by name.
+              The system stayed responsive and available throughout the attack.
+            </p>
+          </article>
+        </div>
+
+        <figure class="research-figure">
+          <img
+            src="assets/images/research-flowchart.svg"
+            alt="Flow chart of the proposed fork bomb defense: a fork request is checked against an exception list, then a detection list; unknown processes are rate-checked against a threshold, and listed processes run under resource quarantine before being killed or released."
+            width="920"
+            height="700"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>How each fork request is screened — trusted names skip checks, unknown processes are rate-checked, and repeat offenders get quarantined instead of being permanently banned.</figcaption>
+        </figure>
+
+        <div class="hero-actions">
+          <a class="btn btn-secondary" href="https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf" target="_blank" rel="noopener">Read the full paper (PDF)</a>
         </div>
       </section>
 
