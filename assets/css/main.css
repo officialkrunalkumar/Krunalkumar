@@ -1069,11 +1069,21 @@ footer {
 }
 
 .footer-name {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #f8fafc;
+}
+
+.footer-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid rgba(125, 211, 252, 0.3);
 }
 
 .footer-tagline {
@@ -1146,6 +1156,14 @@ footer a:hover {
   font-weight: 600;
 }
 
+.link-icon {
+  width: 15px;
+  height: 15px;
+  vertical-align: -2px;
+  margin-right: 0.35rem;
+  fill: currentColor;
+}
+
 .footer-bottom {
   display: flex;
   justify-content: center;
@@ -1179,6 +1197,10 @@ footer a:hover {
   .footer-grid,
   .footer-brand {
     text-align: center;
+  }
+
+  .footer-name {
+    justify-content: center;
   }
 
   .footer-links {
