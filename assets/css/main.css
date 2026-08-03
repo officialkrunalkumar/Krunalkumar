@@ -296,6 +296,40 @@ img {
   }
 }
 
+/* No-JS fallback header — served inside <noscript> on every page, reusing the
+   real header's classes minus the JS-only hamburger and "More" dropdown.
+   Never rendered when JavaScript is enabled. */
+
+.noscript-header .nav {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.noscript-header .nav-list {
+  flex: 1;
+  min-width: 0;
+  margin-left: 1.5rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .noscript-header .nav-list {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-left: 0;
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+    box-shadow: none;
+  }
+}
+
 /* ==========================================================================
    4. Accessibility helpers
    ========================================================================== */
