@@ -1,0 +1,32 @@
+<!--
+  Shared site header — the single source of truth for the navigation.
+  Loaded into every page at runtime by assets/js/include-partials.js.
+  Just edit this file and refresh; the current page's nav link gets
+  class="active" and aria-current="page" automatically.
+-->
+<header class="site-header">
+  <nav class="nav" id="navbar">
+    <a class="brand" href="index.html">Krunalkumar Shah</a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-list" id="nav-menu">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="research.html">Research</a>
+      <a class="nav-link" href="client-reviews.html">Client Reviews</a>
+      <a class="nav-link" href="internships.html">Internships</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <div class="nav-dropdown" hidden>
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+          More
+          <span class="nav-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown-menu"></div>
+      </div>
+    </div>
+  </nav>
+</header>
