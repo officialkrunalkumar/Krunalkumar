@@ -209,11 +209,25 @@ img {
   }
 
   /* Keep the static (pre-swap) header pixel-identical to the enhanced one,
-     so the runtime swap is invisible. */
+     so the runtime swap is invisible. Before the More-dropdown JS takes over,
+     overflow scrolls horizontally on one row instead of wrapping to a second
+     ("safe center" left-aligns only when the links overflow). */
   .noscript-header .nav-list {
     flex: 0 0 auto;
     margin-left: 0;
-    justify-content: center;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    justify-content: safe center;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .noscript-header .nav-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .noscript-header .nav-list .nav-link {
+    white-space: nowrap;
   }
 }
 
@@ -1355,19 +1369,7 @@ footer a:hover {
 }
 
 .footer-bottom small {
-  color: #94a3b8;
-}
-
-.made-with {
-  white-space: nowrap;
-}
-
-.made-with-logo {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  vertical-align: -4px;
+  color: #cbd5e1;
 }
 
 .footer-bottom a {

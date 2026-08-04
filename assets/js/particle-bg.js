@@ -1,8 +1,7 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // A hint for fellow console-openers. The terminal itself lives at /terminal.
-console.log('%c👀 Opening the console, are we?', 'font-size:14px;font-weight:bold;color:#7dd3fc;');
-console.log('%cCurious minds are rewarded here: try visiting /terminal', 'color:#a5b4fc;');
+console.log('%c👀 curiosity opens consoles… it also opens /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 
 const canvas = document.getElementById('bg-canvas');
 if (canvas) {
@@ -189,8 +188,7 @@ function initSiteChrome() {
     brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
   }
 
-  // Target only the year span — rewriting the whole <small> would destroy
-  // the logo image in the made-with line.
+  // Target only the year span — the rest of the copyright line is static text.
   function setFooterYear(year) {
     document.querySelectorAll('.footer-bottom .copyright-year').forEach((element) => {
       element.textContent = year;
@@ -326,7 +324,11 @@ function initSiteChrome() {
   });
 }
 
-if (document.querySelector('.site-header')) {
+// Every page ships a static header (.noscript-header) that include-partials.js
+// swaps for the canonical partial — wiring the chrome against the static copy
+// would be thrown away in the swap. Initialize on the injected header; only
+// when no swap is pending (partial already in place) run immediately.
+if (document.querySelector('.site-header:not(.noscript-header)')) {
   initSiteChrome();
 } else {
   document.addEventListener('partials:loaded', initSiteChrome, { once: true });
