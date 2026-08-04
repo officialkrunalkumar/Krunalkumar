@@ -189,9 +189,11 @@ function initSiteChrome() {
     brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
   }
 
+  // Target only the year span — rewriting the whole <small> would destroy
+  // the logo image in the made-with line.
   function setFooterYear(year) {
-    document.querySelectorAll('.footer-bottom small').forEach((element) => {
-      element.textContent = element.textContent.replace(/\b\d{4}\b/, year);
+    document.querySelectorAll('.footer-bottom .copyright-year').forEach((element) => {
+      element.textContent = year;
     });
   }
 

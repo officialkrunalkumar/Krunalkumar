@@ -51,28 +51,20 @@ web server can host it, and any computer with a browser can develop it.
 
 ## Architecture
 
-### Shared header & footer (runtime partials)
+### Shared header & footer (static copies + runtime upgrade)
 
-Every page contains two placeholders instead of a copied header/footer:
+Every page ships a complete **static** header and footer — visible from the first paint, so there
+is no flash or pop-in — rendered without the JS-only extras. On load, `assets/js/include-partials.js`
+(deferred in the `<head>`, with the partials preloaded) fetches `partials/header.html` and
+`partials/footer.html` and swaps the static copies for the canonical versions, adding the hamburger
+and the More dropdown, then marks the current page's nav link with `class="active"` and
+`aria-current="page"`. When both partials are in place it fires a `partials:loaded` event, which
+`particle-bg.js` waits for before wiring up nav behavior. Visitors with JavaScript disabled simply
+keep the static copies — same look, minus the JS-only controls.
 
-```html
-<div id="header-placeholder"></div>
-...
-<div id="footer-placeholder"></div>
-```
-
-On load, `assets/js/include-partials.js` fetches `partials/header.html` and `partials/footer.html`,
-swaps them in, and marks the current page's nav link with `class="active"` and `aria-current="page"`
-based on the URL. When both partials are in place it fires a `partials:loaded` event, which
-`particle-bg.js` waits for before wiring up nav behavior.
-
-**To change the nav or footer: edit the file in `partials/` and refresh. Never edit the header/footer
-markup inside individual pages — there is none.**
-
-The one exception: every page carries `<noscript>` copies of the header (same classes, minus the
-JS-only hamburger and More dropdown, with the page's own link pre-marked active) and the footer
-(verbatim copy of the partial) so visitors with JavaScript disabled still get styled navigation
-and contact links. When the nav or footer changes, update those blocks too.
+**To change the nav or footer: edit the file in `partials/` (the canonical markup), then update the
+static copies in every page to match.** They are plain duplicates — a search-and-replace across
+pages handles it — and the static header keeps each page's own link pre-marked active.
 
 ### Clean URLs & domains
 
@@ -163,8 +155,7 @@ unmatched URLs.
    and Open Graph tags — all URLs extensionless (`https://krunalkumar.dpdns.org/newpage`, never
    `newpage.html`).
 2. Add its link — `href="/newpage"`, no `.html` — to `partials/header.html` (nav),
-   `partials/footer.html` (Explore column), and the `<noscript>` fallback nav and footer blocks in
-   every page.
+   `partials/footer.html` (Explore column), and the static header/footer copies in every page.
 3. Add an extensionless `<url>` entry to `sitemap.xml`.
 
 **Add a project** — append an object (`title`, `description`, `link`, `category`) to the `projects`
@@ -197,5 +188,6 @@ the file never outranks the homepage in search.
 Per-page meta descriptions, canonicals, Open Graph/Twitter cards pointing to a dedicated 1200×630
 share image (`assets/images/og-image.jpg`), and JSON-LD structured data (Person, WebSite,
 BreadcrumbList, ScholarlyArticle on the research page); `sitemap.xml` + `robots.txt`; custom 404
-with `noindex`; security headers via `vercel.json`. Note: nav/footer links are JavaScript-injected,
-so the sitemap carries crawl discovery — keep it accurate.
+with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
+links are present in the raw HTML — crawlers discover pages without JavaScript — but keep
+`sitemap.xml` accurate anyway; it remains the authoritative index request.
