@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://krunalkumar.vercel.app/sitemap.xml
+Sitemap: https://krunalkumar.dpdns.org/sitemap.xml
 
 # Crawl-delay can be added if needed for very high-traffic environments.
 # Disallow: /private/
