@@ -1,6 +1,11 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/admin", "destination": "/terminal", "permanent": false },
+    { "source": "/secret", "destination": "/terminal", "permanent": false },
+    { "source": "/hack", "destination": "/terminal", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/(.*)",
