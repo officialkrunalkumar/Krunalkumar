@@ -1,5 +1,9 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// A hint for fellow console-openers. The terminal itself lives at /terminal.
+console.log('%c👀 Opening the console, are we?', 'font-size:14px;font-weight:bold;color:#7dd3fc;');
+console.log('%cCurious minds are rewarded here: try visiting /terminal', 'color:#a5b4fc;');
+
 const canvas = document.getElementById('bg-canvas');
 if (canvas) {
   const ctx = canvas.getContext('2d');

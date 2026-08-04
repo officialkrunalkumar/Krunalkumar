@@ -22,6 +22,7 @@ web server can host it, and any computer with a browser can develop it.
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
+| `terminal.html`       | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
 
 ## Project structure
 
