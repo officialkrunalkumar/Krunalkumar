@@ -15,10 +15,11 @@ web server can host it, and any computer with a browser can develop it.
 | --------------------- | -------------------------------------------------------------------------- |
 | `index.html`          | Home — hero (with availability pill), expertise cards, selected work, certifications |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
+| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35+ repositories    |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
-| `internships.html`    | Internship tracks, WhatsApp application form, and call-booking link         |
+| `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 
@@ -39,8 +40,10 @@ web server can host it, and any computer with a browser can develop it.
 ├── .well-known/security.txt      RFC 9116 security contact file
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages
 ├── robots.txt                    Crawl rules + sitemap pointer
-├── vercel.json                   Security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
-└── .claude/launch.json           Local preview server config (Claude Code)
+├── vercel.json                   Clean URLs + security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
+└── .claude/
+    ├── launch.json               Local preview server config (Claude Code)
+    └── dev-server.py             Zero-dependency local server that mimics Vercel's clean URLs
 ```
 
 ---
@@ -69,6 +72,25 @@ The one exception: every page carries `<noscript>` copies of the header (same cl
 JS-only hamburger and More dropdown, with the page's own link pre-marked active) and the footer
 (verbatim copy of the partial) so visitors with JavaScript disabled still get styled navigation
 and contact links. When the nav or footer changes, update those blocks too.
+
+### Clean URLs & domains
+
+Pages live on disk as `about.html`, `services.html`, … but are **served extensionless**: `/about`,
+`/services`. `"cleanUrls": true` in `vercel.json` makes Vercel resolve `/about` to `about.html` and
+308-redirect `/about.html` → `/about`, so the `.html` form never appears in the address bar or the
+search index. Files are never renamed — the mapping happens at request time. Because of this:
+
+- **Internal links, canonicals, OG URLs, JSON-LD, and the sitemap always use the extensionless
+  form** — `href="/about"`, never `href="about.html"`; home is `href="/"`.
+- `include-partials.js` marks the active nav link by matching `location.pathname` (e.g. `/about`)
+  against nav hrefs, normalizing `/index.html`, `.html` suffixes, and trailing slashes.
+- The local dev server must resolve clean URLs too — see **Local development**.
+
+The primary domain is **<https://krunalkumar.dpdns.org>**. `krunalkumar.vercel.app` and
+`www.krunalkumar.dedyn.io` 308-redirect to it in one hop (configured in the Vercel dashboard, not
+in this repo). Every absolute URL in the codebase — canonicals, `og:url`, JSON-LD, `sitemap.xml`,
+`robots.txt`, `.well-known/security.txt` — must use the primary domain: redirects and canonicals
+must always agree, or search engines get mixed signals.
 
 ### Responsive "priority+" navigation
 
@@ -114,13 +136,16 @@ scroll-reveal animations via IntersectionObserver, and the floating back-to-top 
 ## Local development
 
 Pages must be served over HTTP — the partials are fetched at runtime, and browsers block `fetch()`
-on `file://` URLs. Any static server works:
+on `file://` URLs — and the server must resolve clean URLs (`/about` → `about.html`). The repo
+ships a zero-dependency server for exactly that (Python standard library only — no Node, no
+packages):
 
 ```bash
-python -m http.server 8137
+python .claude/dev-server.py 8123
 ```
 
-Then open <http://localhost:8137>. (VS Code's Live Server extension works too.)
+Then open <http://localhost:8123>. A plain `python -m http.server` will serve the pages only at
+their `.html` paths, so every internal link would 404 on it — use the dev server instead.
 
 ## Deployment
 
@@ -133,10 +158,13 @@ unmatched URLs.
 ## Common tasks
 
 **Add a page**
-1. Copy an existing page and replace `<main>` content, `<title>`, meta description, canonical URL, and Open Graph tags.
-2. Add its link to `partials/header.html` (nav), `partials/footer.html` (Explore column), and the
-   `<noscript>` fallback nav and footer blocks in every page.
-3. Add a `<url>` entry to `sitemap.xml`.
+1. Copy an existing page and replace `<main>` content, `<title>`, meta description, canonical URL,
+   and Open Graph tags — all URLs extensionless (`https://krunalkumar.dpdns.org/newpage`, never
+   `newpage.html`).
+2. Add its link — `href="/newpage"`, no `.html` — to `partials/header.html` (nav),
+   `partials/footer.html` (Explore column), and the `<noscript>` fallback nav and footer blocks in
+   every page.
+3. Add an extensionless `<url>` entry to `sitemap.xml`.
 
 **Add a project** — append an object (`title`, `description`, `link`, `category`) to the `projects`
 array in `projects.html`. To make it eligible for the Featured spotlight, also add its title to the
@@ -145,6 +173,11 @@ array in `projects.html`. To make it eligible for the Featured spotlight, also a
 **Add a recommendation** — append to the `recommendations` array in `client-reviews.html`.
 
 **Change internship tracks** — edit the tag list and the `<select>` options in `internships.html`.
+
+**Change mentorship pricing** — the ₹ figure lives in `internships.html` in three places (track
+card, the form's track `<select>` option, meta/OG descriptions); update all together. The refund
+and scholarship terms in the "Straight answers" section are public commitments — keep the page in
+sync with what is actually honored.
 
 **Update the resume** — replace `assets/pdf/Krunalkumar-Shah-Resume.pdf` (keep the filename, or update
 the link on `index.html`). The PDF path is served with `X-Robots-Tag: noindex` (see `vercel.json`) so
