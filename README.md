@@ -15,11 +15,11 @@ web server can host it, and any computer with a browser can develop it.
 | --------------------- | -------------------------------------------------------------------------- |
 | `index.html`          | Home — hero (with availability pill), expertise cards, selected work, certifications |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
-| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research |
+| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35+ repositories    |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
-| `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form |
+| `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
@@ -112,8 +112,10 @@ annual edit needed.
 The contact and internship forms don't need a backend: on submit, JavaScript builds a prefilled
 `wa.me/<number>` message from the fields and opens WhatsApp. When the visitor returns to the tab,
 the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
-keeps their details for a retry. The number appears in `contact.html`, `internships.html`, and
-`partials/footer.html` — search-and-replace all three to change it.
+keeps their details for a retry. A floating WhatsApp chat bubble (injected by `particle-bg.js`,
+stacked under the back-to-top button) offers the same direct line from every page. The number
+appears in `contact.html`, `internships.html`, `partials/footer.html`, and
+`assets/js/particle-bg.js` — search-and-replace all four to change it.
 
 ### Analytics events
 

@@ -711,6 +711,55 @@ footer p {
   box-shadow: 0 10px 24px rgba(20, 33, 61, 0.08);
 }
 
+/* FAQ accordions (Services & Internships) — native <details>, no JS needed */
+.faq-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.faq-list details {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.74));
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  border-radius: 18px;
+  padding: 0 1.2rem;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 0;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.faq-list details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-list details p {
+  margin: 0 0 1.1rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
 .license-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1292,7 +1341,7 @@ footer {
 .back-to-top {
   position: fixed;
   right: 1.2rem;
-  bottom: 1.2rem;
+  bottom: 5.4rem; /* stacked above the WhatsApp chat bubble */
   z-index: 40;
   width: 48px;
   height: 48px;
@@ -1313,6 +1362,34 @@ footer {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+/* Floating WhatsApp chat bubble — injected by particle-bg.js */
+.whatsapp-float {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: #25d366;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.45);
+}
+
+.whatsapp-float svg {
+  width: 27px;
+  height: 27px;
+  fill: #ffffff;
 }
 
 footer a:hover {
