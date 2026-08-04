@@ -11,7 +11,7 @@
     if (!mount) {
       return Promise.resolve();
     }
-    return fetch('partials/' + name + '.html')
+    return fetch('/partials/' + name + '.html')
       .then(function (response) {
         if (!response.ok) {
           throw new Error('HTTP ' + response.status);
@@ -32,8 +32,9 @@
   }
 
   function markActiveLink() {
-    var file = window.location.pathname.split('/').pop() || 'index.html';
-    var link = document.querySelector('.nav-list .nav-link[href="' + file + '"]');
+    var path = window.location.pathname.replace(/\.html$/, '').replace(/\/+$/, '');
+    if (path === '' || path === '/index') path = '/';
+    var link = document.querySelector('.nav-list .nav-link[href="' + path + '"]');
     if (link) {
       link.classList.add('active');
       link.setAttribute('aria-current', 'page');
