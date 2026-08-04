@@ -113,7 +113,8 @@ The contact and internship forms don't need a backend: on submit, JavaScript bui
 `wa.me/<number>` message from the fields and opens WhatsApp. When the visitor returns to the tab,
 the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
 keeps their details for a retry. A floating WhatsApp chat bubble (injected by `particle-bg.js`,
-stacked under the back-to-top button) offers the same direct line from every page. The number
+stacked under the back-to-top button) offers the same direct line from every page; its × hides it
+for the rest of the visit (sessionStorage) and back-to-top drops into its corner. The number
 appears in `contact.html`, `internships.html`, `partials/footer.html`, and
 `assets/js/particle-bg.js` — search-and-replace all four to change it.
 
