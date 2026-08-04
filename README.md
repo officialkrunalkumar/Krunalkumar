@@ -2,7 +2,7 @@
 
 Personal portfolio of **Krunalkumar Shah** — researcher, engineer, and cybersecurity-focused professional.
 
-**Live site:** <https://krunalkumar.vercel.app>
+**Live site:** <https://krunalkumar.dpdns.org>
 
 Built with plain HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies — any static
 web server can host it, and any computer with a browser can develop it.
