@@ -207,6 +207,14 @@ img {
   .nav-list.priority-nav .nav-dropdown-toggle {
     white-space: nowrap;
   }
+
+  /* Keep the static (pre-swap) header pixel-identical to the enhanced one,
+     so the runtime swap is invisible. */
+  .noscript-header .nav-list {
+    flex: 0 0 auto;
+    margin-left: 0;
+    justify-content: center;
+  }
 }
 
 .nav-toggle {
@@ -364,10 +372,6 @@ input:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-#header-placeholder {
-  min-height: 76px;
 }
 
 .skip-link {
@@ -1332,15 +1336,27 @@ footer a:hover {
 
 .footer-bottom {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.35rem;
   padding-top: 1.2rem;
 }
 
 .footer-bottom small {
   color: #94a3b8;
+}
+
+.made-with {
+  white-space: nowrap;
+}
+
+.made-with-logo {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  vertical-align: -4px;
 }
 
 .footer-bottom a {

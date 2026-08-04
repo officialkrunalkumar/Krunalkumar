@@ -1,13 +1,18 @@
-// Loads the shared header and footer from partials/ into every page at runtime.
-// Edit partials/header.html or partials/footer.html and simply refresh — no
-// build step needed. The current page's nav link automatically receives
-// class="active" and aria-current="page".
+// Upgrades the static header and footer with the shared partials at runtime.
+// Every page ships a complete static copy (visible from the first paint — no
+// flash), which this script swaps for the canonical version in partials/,
+// adding the JS-only extras (hamburger, More dropdown). The current page's
+// nav link automatically receives class="active" and aria-current="page".
+//
+// Edit partials/header.html or partials/footer.html for the canonical markup,
+// and keep the static copies in each page in sync (see README).
 //
 // Note: pages must be served over http(s) — fetch() does not work from file://
-// URLs. Use any local server (e.g. VS Code Live Server) when previewing.
+// URLs. Use the dev server (python .claude/dev-server.py) when previewing.
 (function () {
   function inject(name) {
-    var mount = document.getElementById(name + '-placeholder');
+    var mount = document.getElementById(name + '-placeholder') ||
+      document.querySelector(name === 'header' ? 'header.site-header' : 'footer#contact');
     if (!mount) {
       return Promise.resolve();
     }
