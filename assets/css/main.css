@@ -476,6 +476,17 @@ footer p {
   font-weight: 600;
 }
 
+/* Inline link inside running text (legal pages, timeline, etc.) */
+.text-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-link:hover {
+  color: var(--accent-dark);
+}
+
 /* ==========================================================================
    6. Buttons, chips & actions
    ========================================================================== */

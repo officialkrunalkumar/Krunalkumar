@@ -21,6 +21,9 @@ web server can host it, and any computer with a browser can develop it.
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
+| `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
+| `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
+| `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 | `terminal.html`       | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
 

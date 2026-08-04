@@ -159,6 +159,10 @@
               <span>Contact number</span>
               <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 82007 13617" oninput="this.value=this.value.replace(/[^0-9+ ]/g,'')" autocomplete="tel" required />
             </label>
+            <label class="field">
+              <span>Email address</span>
+              <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+            </label>
           </div>
 
           <label class="field full">
@@ -215,6 +219,7 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
         <small class="made-with">Made with ❤️ and 🤖 by <img class="made-with-logo" src="assets/images/favicon.jpg" alt="Krunalkumar" width="18" height="18" loading="lazy" decoding="async" /></small>
       </div>
     </footer>
@@ -233,14 +238,15 @@
           const formData = new FormData(form);
           const name = (formData.get('name') || '').toString().trim();
           const phone = (formData.get('phone') || '').toString().trim();
+          const email = (formData.get('email') || '').toString().trim();
           const message = (formData.get('message') || '').toString().trim();
 
-          if (!name || !phone || !message) {
+          if (!name || !phone || !email || !message) {
             formStatus.innerHTML = '<span class="success-pill">Please fill in all required fields.</span>';
             return;
           }
 
-          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${name}\nPhone: ${phone}\n\nMessage:\n${message}`);
+          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`);
           window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
           awaitingWhatsAppReturn = true;
           formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
