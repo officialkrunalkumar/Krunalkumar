@@ -161,7 +161,10 @@
 
         function cmdCat(arg) {
           if (!arg) { print('cat: missing file. Try: cat about.txt', 'dim'); return; }
-          var f = files[arg.toLowerCase()];
+          // Own-property check: a plain object lookup resolves inherited names
+          // like "constructor"/"__proto__" to Object.prototype members.
+          var key = arg.toLowerCase();
+          var f = Object.prototype.hasOwnProperty.call(files, key) ? files[key] : undefined;
           if (f) { f.forEach(function (l) { print(l); }); }
           else if (arg.indexOf('.secrets') === 0) { print('cat: .secrets/: Permission denied. <span class="dim">Nice try though — I respect it.</span>'); }
           else { print('cat: ' + esc(arg) + ': No such file'); }
@@ -299,14 +302,27 @@
           var parts = input.split(/\s+/);
           var name = parts[0].toLowerCase();
           var arg = parts.slice(1).join(' ');
-          var handler = commands[name];
+          // Own-property check: without it, typing "constructor" resolved the
+          // inherited Object constructor, ran it as a command, and its done()
+          // callback never fired — leaving busy=true and the prompt hidden
+          // until reload.
+          var handler = Object.prototype.hasOwnProperty.call(commands, name) ? commands[name] : undefined;
           if (!handler) {
             print('bash: ' + esc(name) + ': command not found <span class="dim">(try: help)</span>');
             return;
           }
           busy = true;
           promptRow.style.display = 'none';
-          handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+          // No command may leave the terminal wedged: if a handler throws, put
+          // the prompt back instead of stranding the hidden-busy state.
+          try {
+            handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+          } catch (error) {
+            busy = false;
+            promptRow.style.display = '';
+            print('bash: ' + esc(name) + ': unexpected error', 'warn');
+            cmd.focus();
+          }
         }
 
         cmd.addEventListener('keydown', function (event) {

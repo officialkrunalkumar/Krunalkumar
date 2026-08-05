@@ -515,7 +515,7 @@
           const reason = (formData.get('reason') || '').toString().trim();
 
           if (!name || !phone || !email || !track || !interest || !reason) {
-            formStatus.innerHTML = '<span class="success-pill">Please fill in all required fields.</span>';
+            formStatus.innerHTML = '<span class="error-pill">Please fill in all required fields.</span>';
             return;
           }
 
@@ -531,7 +531,7 @@
             if (typeof gtag === 'function') gtag('event', 'internship_form_submit');
           } else {
             // Pop-up blocked: give the visitor a direct link so the application is not silently lost.
-            formStatus.innerHTML = '<span class="success-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+            formStatus.innerHTML = '<span class="error-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
             // Only arm the "did it go through?" follow-up once they actually
             // leave for WhatsApp — otherwise any tab switch replaces the
             // rescue link with a question about a message that never went out.
