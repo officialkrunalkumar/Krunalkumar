@@ -1307,7 +1307,7 @@ footer p {
   border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
-.verify-status-offer .verify-status {
+.verify-status-info .verify-status {
   background: rgba(125, 211, 252, 0.14);
   color: #e0f2fe;
   border: 1px solid rgba(125, 211, 252, 0.35);
