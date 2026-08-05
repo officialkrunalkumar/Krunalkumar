@@ -579,11 +579,16 @@
           renderPage();
         }
 
-        // Rotate the featured card through the spotlight projects on each visit.
+        // Rotate the featured card through the spotlight projects on every
+        // visit. Clock-derived rather than Math.random(): with 8 spotlight
+        // items a random pick repeats back-to-back 1 reload in 8, which reads
+        // as "not rotating" — the time index guarantees consecutive reloads
+        // differ, and the site's no-browser-storage rule rules out remembering
+        // the last pick.
         const featuredLink = document.querySelector('#featured-project-card .featured-project-card');
         const spotlightItems = projectItems.filter((item) => item.hasAttribute('data-spotlight'));
         if (featuredLink && spotlightItems.length) {
-          const pick = spotlightItems[Math.floor(Math.random() * spotlightItems.length)];
+          const pick = spotlightItems[Math.floor(Date.now() / 1000) % spotlightItems.length];
           featuredLink.href = pick.href;
           featuredLink.querySelector('.project-name').textContent = pick.querySelector('.project-name').textContent;
           featuredLink.querySelector('.project-description').textContent = pick.querySelector('.project-description').textContent;
