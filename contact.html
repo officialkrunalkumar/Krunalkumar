@@ -7,16 +7,12 @@
       name="description"
       content="Contact Krunalkumar Shah for research collaboration, cybersecurity projects, automation work, and professional opportunities."
     />
-    <meta
-      name="keywords"
-      content="contact Krunalkumar Shah, WhatsApp contact, email Krunalkumar Shah, cybersecurity collaboration, research collaboration"
-    />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/contact" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Contact Krunalkumar Shah | Research, Cybersecurity & Automation" />
+    <meta property="og:title" content="Contact Krunalkumar Shah | Research & Automation" />
     <meta
       property="og:description"
       content="Get in touch with Krunalkumar Shah for research collaboration, cybersecurity projects, automation work, and professional opportunities."
@@ -29,19 +25,20 @@
     <meta property="og:image:alt" content="Krunalkumar Shah — Contact" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Contact Krunalkumar Shah | Research, Cybersecurity & Automation" />
+    <meta name="twitter:title" content="Contact Krunalkumar Shah | Research & Automation" />
     <meta
       name="twitter:description"
       content="Get in touch with Krunalkumar Shah for research collaboration, cybersecurity projects, automation work, and professional opportunities."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-contact.jpg" />
-    <title>Contact Krunalkumar Shah | Research, Cybersecurity & Automation</title>
+    <title>Contact Krunalkumar Shah | Research & Automation</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://krunalkumar.dpdns.org/#person",
         "name": "Krunalkumar Shah",
-        "url": "https://krunalkumar.dpdns.org/contact",
+        "url": "https://krunalkumar.dpdns.org/",
         "jobTitle": "Researcher, Engineer, Cybersecurity Professional"
       }
     </script>
@@ -65,9 +62,10 @@
         ]
       }
     </script>
+    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="preload" href="/partials/header.html" as="fetch" crossorigin />
-    <link rel="preload" href="/partials/footer.html" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="assets/js/include-partials.js"></script>
     <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
     <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
@@ -96,7 +94,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
           <header class="site-header noscript-header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main">
           <a class="brand" href="/">Krunalkumar Shah</a>
           <div class="nav-list">
             <a class="nav-link" href="/">Home</a>
@@ -121,6 +119,7 @@
       </section>
 
       <section class="section-card">
+        <h2 class="sr-only">Contact channels</h2>
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Direct contact</h3>
@@ -172,7 +171,7 @@
           </label>
 
           <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Send on WhatsApp</button>
+            <button class="btn btn-primary" type="submit" disabled>Send on WhatsApp</button>
             <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
           </div>
           <p class="form-note">Prefer email? Write to
@@ -240,6 +239,13 @@
       if (form && formStatus) {
         let awaitingWhatsAppReturn = false;
 
+        // The button ships disabled so a no-JS Enter press can't fire the raw
+        // POST (which a static host answers with an error page, losing the
+        // message) — CSS hides it in that case, but a display:none submit
+        // button still acts as the form's default button.
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = false;
+
         form.addEventListener('submit', (event) => {
           event.preventDefault();
 
@@ -256,14 +262,22 @@
 
           const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`);
           const waUrl = `https://wa.me/918200713617?text=${text}`;
-          const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
-          awaitingWhatsAppReturn = true;
+          // 'noopener' in the features string makes window.open return null even
+          // when the tab opens successfully, so sever the opener by hand instead.
+          const waWindow = window.open(waUrl, '_blank');
           if (waWindow) {
+            waWindow.opener = null;
+            awaitingWhatsAppReturn = true;
             formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
             if (typeof gtag === 'function') gtag('event', 'contact_form_submit');
           } else {
             // Pop-up blocked: give the visitor a direct link so the message is not silently lost.
             formStatus.innerHTML = '<span class="success-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+            // Only arm the "did it go through?" follow-up once they actually
+            // leave for WhatsApp — otherwise any tab switch replaces the
+            // rescue link with a question about a message that never went out.
+            const rescueLink = formStatus.querySelector('a');
+            if (rescueLink) rescueLink.addEventListener('click', () => { awaitingWhatsAppReturn = true; });
           }
         });
 

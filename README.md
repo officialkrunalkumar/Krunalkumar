@@ -16,11 +16,12 @@ web server can host it, and any computer with a browser can develop it.
 | `index.html`          | Home — hero (with availability pill), expertise cards, selected work, certifications |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
-| `projects.html`       | Case studies, featured spotlight + paginated gallery of 35+ repositories    |
+| `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
+| `verify.html`         | Certificate verification — looks up completion-certificate IDs in `assets/data/certificates.json` (client-side, no backend). QR codes on certificates deep-link here as `/verify?id=…`. Offer letters are deliberately not verifiable online — institutions email instead. The generator lives in a private repo; `/generate` redirects to it (see `vercel.json`) |
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
@@ -39,15 +40,13 @@ web server can host it, and any computer with a browser can develop it.
 │   ├── css/main.css              All styles — organized into 13 numbered sections (see its table of contents)
 │   ├── js/include-partials.js    Loads header/footer into every page at runtime
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
+│   ├── data/certificates.json    Public record backing the /verify certificate lookup — update when issuing or revoking
 │   ├── images/                   Portrait, certification badges, favicon, research flowchart (SVG)
 │   └── pdf/                      Resume
 ├── .well-known/security.txt      RFC 9116 security contact file
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages
 ├── robots.txt                    Crawl rules + sitemap pointer
-├── vercel.json                   Clean URLs + security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
-└── .claude/
-    ├── launch.json               Local preview server config (Claude Code)
-    └── dev-server.py             Zero-dependency local server that mimics Vercel's clean URLs
+└── vercel.json                   Clean URLs + security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
 ```
 
 ---
@@ -114,9 +113,11 @@ The contact and internship forms don't need a backend: on submit, JavaScript bui
 the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
 keeps their details for a retry. A floating WhatsApp chat bubble (injected by `particle-bg.js`,
 stacked under the back-to-top button) offers the same direct line from every page; its × hides it
-for the rest of the visit (sessionStorage) and back-to-top drops into its corner. The number
-appears in `contact.html`, `internships.html`, `partials/footer.html`, and
-`assets/js/particle-bg.js` — search-and-replace all four to change it.
+for the current page (the site deliberately uses no browser storage, so the bubble returns on the
+next page view) and back-to-top drops into its corner. The number
+appears in every page's static footer, both forms, the terminal easter egg, `refund.html`, and
+`assets/js/particle-bg.js` — to change it, search-and-replace `8200713617` across the whole repo
+rather than editing files from a list.
 
 ### Analytics events
 
@@ -135,16 +136,15 @@ scroll-reveal animations via IntersectionObserver, and the floating back-to-top 
 ## Local development
 
 Pages must be served over HTTP — the partials are fetched at runtime, and browsers block `fetch()`
-on `file://` URLs — and the server must resolve clean URLs (`/about` → `about.html`). The repo
-ships a zero-dependency server for exactly that (Python standard library only — no Node, no
-packages):
+on `file://` URLs — and the server must resolve clean URLs (`/about` → `about.html`). Vercel's
+`serve` does both out of the box (clean URLs are its default):
 
 ```bash
-python .claude/dev-server.py 8123
+npx serve .
 ```
 
-Then open <http://localhost:8123>. A plain `python -m http.server` will serve the pages only at
-their `.html` paths, so every internal link would 404 on it — use the dev server instead.
+Then open the printed localhost URL. A plain `python -m http.server` will serve the pages only at
+their `.html` paths, so every internal link would 404 on it — use `serve` instead.
 
 ## Deployment
 

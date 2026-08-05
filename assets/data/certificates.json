@@ -4,8 +4,8 @@
     "name": "Sample Student",
     "type": "Internship",
     "project": "Demonstration record — shows how a genuine certificate appears when verified",
-    "duration": "1 June 2026 – 31 August 2026",
-    "issued": "5 August 2026",
+    "duration": "1 May 2026 – 31 July 2026",
+    "issued": "1 August 2026",
     "status": "valid",
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
   },
@@ -13,8 +13,8 @@
     "id": "KS-MEN-2026-Krunal",
     "name": "Krunalkumar Shah",
     "type": "Mentorship",
-    "project": "He did an exception job during the internship and developed a solution to one cybersecurity problem.",
-    "duration": "1 June 2026 – 31 August 2026",
+    "project": "He did an exceptional job during the mentorship and developed a solution to one cybersecurity problem.",
+    "duration": "1 April 2026 – 30 June 2026",
     "issued": "1 July 2026",
     "status": "valid",
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."

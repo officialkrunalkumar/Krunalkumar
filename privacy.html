@@ -52,9 +52,10 @@
         ]
       }
     </script>
+    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="preload" href="/partials/header.html" as="fetch" crossorigin />
-    <link rel="preload" href="/partials/footer.html" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="assets/js/include-partials.js"></script>
     <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
     <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
@@ -83,7 +84,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
           <header class="site-header noscript-header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main">
           <a class="brand" href="/">Krunalkumar Shah</a>
           <div class="nav-list">
             <a class="nav-link" href="/">Home</a>
@@ -128,10 +129,10 @@
           number, email address, and a message. This website has no backend and stores none of it: when you
           press send, your browser opens WhatsApp with the message pre-filled, and it reaches me as an ordinary
           WhatsApp message. Nothing is saved on this site's servers.</p>
-          <p><strong>Analytics.</strong> The site uses Google Analytics 4 (loaded through Google Tag Manager) to
-          understand how the site is used — pages visited, approximate location, device and browser type, and
-          interaction events such as clicking the email, WhatsApp, or booking links. Google Analytics sets
-          cookies to do this.</p>
+          <p><strong>Analytics.</strong> The site uses Google Analytics 4 (loaded both directly and through
+          Google Tag Manager) to understand how the site is used — pages visited, approximate location, device
+          and browser type, and interaction events such as clicking the email, WhatsApp, resume, or booking
+          links, submitting a form, or verifying a certificate. Google Analytics sets cookies to do this.</p>
           <p><strong>Direct contact.</strong> If you email me, message me on WhatsApp, or book a call through
           Google Calendar, I receive whatever you choose to share, and it lives in those services under their
           own privacy policies.</p>

@@ -5,18 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Work with Krunalkumar Shah two ways: a free, selective internship (2–3 seats per cohort) or an open paid mentorship at ₹4,999/month with scholarships available. Real projects, honest certificates."
-    />
-    <meta
-      name="keywords"
-      content="internship with Krunalkumar Shah, free internship, paid mentorship program, mentorship with scholarship, AI ML internship, software development internship, cybersecurity internship, research mentorship"
+      content="Work with Krunalkumar Shah two ways: a free, selective internship (2–3 seats per cohort) or an open paid mentorship at ₹4,999/month with scholarships."
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/internships" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Internships & Mentorship with Krunalkumar Shah | Free & Paid Tracks" />
+    <meta property="og:title" content="Internships & Mentorship | Krunalkumar Shah" />
     <meta
       property="og:description"
       content="A free, selective internship for standout applicants — or open paid mentorship at ₹4,999/month, cancel anytime, scholarships up to 50%. Real projects either way."
@@ -29,13 +25,13 @@
     <meta property="og:image:alt" content="Krunalkumar Shah — Internships & Mentorship" />
     <meta property="og:site_name" content="Krunalkumar Shah Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Internships & Mentorship with Krunalkumar Shah | Free & Paid Tracks" />
+    <meta name="twitter:title" content="Internships & Mentorship | Krunalkumar Shah" />
     <meta
       name="twitter:description"
       content="A free, selective internship for standout applicants — or open paid mentorship at ₹4,999/month, cancel anytime, scholarships up to 50%. Real projects either way."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-internships.jpg" />
-    <title>Internships & Mentorship with Krunalkumar Shah | Free & Paid Tracks</title>
+    <title>Internships & Mentorship | Krunalkumar Shah</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -98,7 +94,7 @@
             "name": "Will my college accept this internship for credit?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "That is each college's decision — every institution applies its own internship policy. Krunalkumar provides an offer letter, a completion certificate describing the actual project work, and is available if the college wants to verify anything — every document can also be checked instantly at https://krunalkumar.dpdns.org/verify. Applicants should get approval from their training & placement cell or internship coordinator before starting."
+              "text": "That is each college's decision — every institution applies its own internship policy. Krunalkumar provides an offer letter, a completion certificate describing the actual project work, and is available if the college wants to verify anything. Completion certificates can be checked instantly at https://krunalkumar.dpdns.org/verify; offer letters are confirmed personally by email. Applicants should get approval from their training & placement cell or internship coordinator before starting."
             }
           },
           {
@@ -144,9 +140,10 @@
         ]
       }
     </script>
+    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="preload" href="/partials/header.html" as="fetch" crossorigin />
-    <link rel="preload" href="/partials/footer.html" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="assets/js/include-partials.js"></script>
     <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
     <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
@@ -176,7 +173,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
           <header class="site-header noscript-header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main">
           <a class="brand" href="/">Krunalkumar Shah</a>
           <div class="nav-list">
             <a class="nav-link" href="/">Home</a>
@@ -334,9 +331,10 @@
             <summary>Will my college accept this internship for credit?</summary>
             <p>That is your college&rsquo;s decision — every institution applies its own internship policy. I provide
             an offer letter, a completion certificate describing your actual project work, and I am available if
-            your college wants to verify anything — every document can also be checked instantly on the
-            <a class="text-link" href="/verify">verification page</a>. To be safe, get approval from your
-            training &amp; placement cell or internship coordinator <strong>before</strong> you start.</p>
+            your college wants to verify anything. Completion certificates can be checked instantly on the
+            <a class="text-link" href="/verify">verification page</a>; offer letters I confirm personally by
+            email. To be safe, get approval from your training &amp; placement cell or internship coordinator
+            <strong>before</strong> you start.</p>
           </details>
           <details>
             <summary>What does the ₹4,999/month mentorship include?</summary>
@@ -430,7 +428,7 @@
           </label>
 
           <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Apply via WhatsApp</button>
+            <button class="btn btn-primary" type="submit" disabled>Apply via WhatsApp</button>
             <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
           </div>
           <p class="form-note">Prefer not to use WhatsApp? Email your application to
@@ -498,6 +496,13 @@
       if (form && formStatus) {
         let awaitingWhatsAppReturn = false;
 
+        // The button ships disabled so a no-JS Enter press can't fire the raw
+        // POST (which a static host answers with an error page, losing the
+        // application) — CSS hides it in that case, but a display:none submit
+        // button still acts as the form's default button.
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = false;
+
         form.addEventListener('submit', (event) => {
           event.preventDefault();
 
@@ -516,14 +521,22 @@
 
           const text = encodeURIComponent(`Hello Krunalkumar, I am applying from your website. Here are my details.\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nTrack: ${track}\nArea of interest: ${interest}\n\nAbout me:\n${reason}`);
           const waUrl = `https://wa.me/918200713617?text=${text}`;
-          const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
-          awaitingWhatsAppReturn = true;
+          // 'noopener' in the features string makes window.open return null even
+          // when the tab opens successfully, so sever the opener by hand instead.
+          const waWindow = window.open(waUrl, '_blank');
           if (waWindow) {
+            waWindow.opener = null;
+            awaitingWhatsAppReturn = true;
             formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
             if (typeof gtag === 'function') gtag('event', 'internship_form_submit');
           } else {
             // Pop-up blocked: give the visitor a direct link so the application is not silently lost.
             formStatus.innerHTML = '<span class="success-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+            // Only arm the "did it go through?" follow-up once they actually
+            // leave for WhatsApp — otherwise any tab switch replaces the
+            // rescue link with a question about a message that never went out.
+            const rescueLink = formStatus.querySelector('a');
+            if (rescueLink) rescueLink.addEventListener('click', () => { awaitingWhatsAppReturn = true; });
           }
         });
 

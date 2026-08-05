@@ -7,10 +7,6 @@
       name="description"
       content="Explore Krunalkumar Shah’s projects in automation, AI workflows, cybersecurity, research, and practical integration solutions."
     />
-    <meta
-      name="keywords"
-      content="Krunalkumar Shah projects, automation projects, AI workflows, cybersecurity projects, research projects, integration solutions"
-    />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
@@ -39,10 +35,11 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": ["Person", "CreativeWork"],
+        "@type": "Person",
+        "@id": "https://krunalkumar.dpdns.org/#person",
         "name": "Krunalkumar Shah",
-        "url": "https://krunalkumar.dpdns.org/projects",
-        "jobTitle": "Automation Engineer, Researcher, Cybersecurity Professional",
+        "url": "https://krunalkumar.dpdns.org/",
+        "jobTitle": "Researcher, Engineer, Cybersecurity Professional",
         "description": "Portfolio showcasing automation, AI workflows, cybersecurity, and practical integration projects."
       }
     </script>
@@ -66,9 +63,10 @@
         ]
       }
     </script>
+    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="preload" href="/partials/header.html" as="fetch" crossorigin />
-    <link rel="preload" href="/partials/footer.html" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="assets/js/include-partials.js"></script>
     <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
     <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
@@ -97,7 +95,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
           <header class="site-header noscript-header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main">
           <a class="brand" href="/">Krunalkumar Shah</a>
           <div class="nav-list">
             <a class="nav-link" href="/">Home</a>
@@ -466,7 +464,8 @@
         </div>
           <div class="carousel-controls bottom-controls" style="display: none">
             <button class="carousel-btn" id="prev-projects-bottom" aria-label="Show previous projects">←</button>
-            <span id="project-page-label-bottom" class="page-label" aria-live="polite">Page 1 of 9</span>
+            <!-- No aria-live here: the top label already announces the page change once. -->
+            <span id="project-page-label-bottom" class="page-label">Page 1 of 9</span>
             <button class="carousel-btn" id="next-projects-bottom" aria-label="Show next projects">→</button>
           </div>
         </div>
@@ -522,7 +521,7 @@
     <script>
       (function () {
         const projectList = document.getElementById('project-list');
-        const projectItems = Array.from(projectList.querySelectorAll('.project-item'));
+        const projectItems = projectList ? Array.from(projectList.querySelectorAll('.project-item')) : [];
         const itemsPerPage = 4;
         const totalPages = Math.ceil(projectItems.length / itemsPerPage);
         let currentPage = 0;
@@ -538,6 +537,8 @@
         const nextButton = document.getElementById('next-projects');
         const prevButtonBottom = document.getElementById('prev-projects-bottom');
         const nextButtonBottom = document.getElementById('next-projects-bottom');
+        const pagerReady = projectItems.length && pageLabel && pageLabelBottom &&
+          prevButton && nextButton && prevButtonBottom && nextButtonBottom;
 
         function renderPage() {
           const start = currentPage * itemsPerPage;
@@ -548,10 +549,19 @@
           const label = 'Page ' + (currentPage + 1) + ' of ' + totalPages;
           pageLabel.textContent = label;
           pageLabelBottom.textContent = label;
-          prevButton.disabled = currentPage === 0;
-          nextButton.disabled = currentPage === totalPages - 1;
-          prevButtonBottom.disabled = currentPage === 0;
-          nextButtonBottom.disabled = currentPage === totalPages - 1;
+          const atStart = currentPage === 0;
+          const atEnd = currentPage === totalPages - 1;
+          // Disabling the button that currently holds focus would dump
+          // keyboard users back to the top of the page — hand focus to its
+          // counterpart first.
+          if (atStart && document.activeElement === prevButton) nextButton.focus();
+          if (atEnd && document.activeElement === nextButton) prevButton.focus();
+          if (atStart && document.activeElement === prevButtonBottom) nextButtonBottom.focus();
+          if (atEnd && document.activeElement === nextButtonBottom) prevButtonBottom.focus();
+          prevButton.disabled = atStart;
+          nextButton.disabled = atEnd;
+          prevButtonBottom.disabled = atStart;
+          nextButtonBottom.disabled = atEnd;
         }
 
         function changePage(delta) {
@@ -561,10 +571,13 @@
           renderPage();
         }
 
-        prevButton.addEventListener('click', () => changePage(-1));
-        nextButton.addEventListener('click', () => changePage(1));
-        prevButtonBottom.addEventListener('click', () => changePage(-1));
-        nextButtonBottom.addEventListener('click', () => changePage(1));
+        if (pagerReady) {
+          prevButton.addEventListener('click', () => changePage(-1));
+          nextButton.addEventListener('click', () => changePage(1));
+          prevButtonBottom.addEventListener('click', () => changePage(-1));
+          nextButtonBottom.addEventListener('click', () => changePage(1));
+          renderPage();
+        }
 
         // Rotate the featured card through the spotlight projects on each visit.
         const featuredLink = document.querySelector('#featured-project-card .featured-project-card');
@@ -575,8 +588,6 @@
           featuredLink.querySelector('.project-name').textContent = pick.querySelector('.project-name').textContent;
           featuredLink.querySelector('.project-description').textContent = pick.querySelector('.project-description').textContent;
         }
-
-        renderPage();
       })();
     </script>
   </body>
