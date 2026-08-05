@@ -8,5 +8,15 @@
     "issued": "5 August 2026",
     "status": "valid",
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
+  },
+  {
+    "id": "KS-INT-2026-Krunal",
+    "name": "Krunalkumar Shah",
+    "type": "Internship",
+    "project": "He did an exception job during the internship and developed a solution to one cybersecurity problem.",
+    "duration": "1 June 2026 – 31 August 2026",
+    "issued": "1 July 2026",
+    "status": "valid",
+    "note": ""
   }
 ]
