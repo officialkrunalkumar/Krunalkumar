@@ -7,10 +7,6 @@
       name="description"
       content="Explore public client reviews and LinkedIn recommendations for Krunalkumar Shah, highlighting collaboration, research, and practical technology work."
     />
-    <meta
-      name="keywords"
-      content="client reviews, LinkedIn recommendations, Krunalkumar Shah testimonials, professional recommendations"
-    />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
@@ -44,13 +40,35 @@
         "url": "https://krunalkumar.dpdns.org/client-reviews",
         "about": {
           "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
           "name": "Krunalkumar Shah"
         }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://krunalkumar.dpdns.org/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Client Reviews",
+            "item": "https://krunalkumar.dpdns.org/client-reviews"
+          }
+        ]
+      }
+    </script>
+    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="preload" href="/partials/header.html" as="fetch" crossorigin />
-    <link rel="preload" href="/partials/footer.html" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="assets/js/include-partials.js"></script>
     <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
     <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
@@ -79,7 +97,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
           <header class="site-header noscript-header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main">
           <a class="brand" href="/">Krunalkumar Shah</a>
           <div class="nav-list">
             <a class="nav-link" href="/">Home</a>

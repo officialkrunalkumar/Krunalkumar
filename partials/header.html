@@ -5,7 +5,7 @@
   class="active" and aria-current="page" automatically.
 -->
 <header class="site-header">
-  <nav class="nav" id="navbar">
+  <nav class="nav" id="navbar" aria-label="Main">
     <a class="brand" href="/">Krunalkumar Shah</a>
     <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
       <span class="nav-toggle-bar"></span>
@@ -22,7 +22,10 @@
       <a class="nav-link" href="/internships">Internships</a>
       <a class="nav-link" href="/contact">Contact</a>
       <div class="nav-dropdown" hidden>
-        <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+        <!-- Disclosure pattern, not a menu widget — aria-expanded alone is correct;
+             aria-haspopup would promise role="menu" semantics this plain link list
+             doesn't have. -->
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
           More
           <span class="nav-caret" aria-hidden="true">▾</span>
         </button>

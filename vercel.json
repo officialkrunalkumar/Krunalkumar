@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
+    { "source": "/favicon.ico", "destination": "/assets/images/favicon.jpg", "permanent": false },
     { "source": "/generate", "destination": "https://offer-letter-and-certificate-genera.vercel.app/", "permanent": false },
     { "source": "/admin", "destination": "/terminal", "permanent": false },
     { "source": "/secret", "destination": "/terminal", "permanent": false },

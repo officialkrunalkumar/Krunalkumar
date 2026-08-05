@@ -39,7 +39,7 @@
       }
       #screen { max-width: 900px; margin: 0 auto; word-break: break-word; }
       .line { white-space: pre-wrap; }
-      .dim { color: #4d7c6f; }
+      .dim { color: #5d907f; } /* dimmest shade that still clears WCAG AA on the #020617 background */
       .cyan { color: #7dd3fc; }
       .white { color: #e2e8f0; }
       .warn { color: #fbbf24; }
@@ -161,7 +161,7 @@
 
         function cmdCat(arg) {
           if (!arg) { print('cat: missing file. Try: cat about.txt', 'dim'); return; }
-          var f = files[arg];
+          var f = files[arg.toLowerCase()];
           if (f) { f.forEach(function (l) { print(l); }); }
           else if (arg.indexOf('.secrets') === 0) { print('cat: .secrets/: Permission denied. <span class="dim">Nice try though — I respect it.</span>'); }
           else { print('cat: ' + esc(arg) + ': No such file'); }
@@ -310,7 +310,13 @@
         }
 
         cmd.addEventListener('keydown', function (event) {
-          if (busy) { event.preventDefault(); return; }
+          // Swallow input while an animation runs, but never trap Tab or
+          // browser shortcuts (Ctrl/Cmd+R and friends) — keyboard users must
+          // be able to leave or refresh at any time.
+          if (busy) {
+            if (event.key !== 'Tab' && !event.ctrlKey && !event.metaKey) event.preventDefault();
+            return;
+          }
           if (event.key === 'Enter') {
             var value = cmd.value;
             cmd.value = '';

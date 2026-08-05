@@ -13,13 +13,42 @@ if (canvas) {
   let mouseActive = false;
   const particles = [];
 
+  // The two full-viewport gradients only depend on the canvas size, so they are
+  // rebuilt on resize instead of being reallocated on every animation frame.
+  let backgroundGradient = null;
+  let nebulaGradient = null;
+
+  function buildGradients() {
+    backgroundGradient = ctx.createRadialGradient(width * 0.2, height * 0.2, 0, width * 0.2, height * 0.2, Math.max(width, height));
+    backgroundGradient.addColorStop(0, 'rgba(35, 17, 84, 0.95)');
+    backgroundGradient.addColorStop(0.45, 'rgba(9, 15, 34, 0.96)');
+    backgroundGradient.addColorStop(1, 'rgba(2, 6, 23, 1)');
+
+    nebulaGradient = ctx.createRadialGradient(width * 0.8, height * 0.15, 40, width * 0.8, height * 0.15, width * 0.4);
+    nebulaGradient.addColorStop(0, 'rgba(96, 165, 250, 0.16)');
+    nebulaGradient.addColorStop(0.35, 'rgba(168, 85, 247, 0.12)');
+    nebulaGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  }
+
   function resizeCanvas() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    particles.length = 0;
+    buildGradients();
 
+    // Keep existing particles across resizes — mobile browsers fire resize on
+    // every URL-bar show/hide, and regenerating positions made the whole field
+    // visibly teleport mid-scroll. Only grow or shrink to the target count.
     const count = Math.min(140, Math.floor(width / 10));
-    for (let i = 0; i < count; i += 1) {
+    if (particles.length > count) {
+      particles.length = count;
+    }
+    // Pull kept particles back inside the new bounds — one stranded far
+    // outside after a viewport shrink is too slow to ever drift back.
+    particles.forEach((particle) => {
+      particle.x = Math.min(Math.max(particle.x, 0), width);
+      particle.y = Math.min(Math.max(particle.y, 0), height);
+    });
+    while (particles.length < count) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -33,29 +62,21 @@ if (canvas) {
     }
   }
 
-  function animate() {
+  function drawFrame() {
     ctx.clearRect(0, 0, width, height);
 
-    const background = ctx.createRadialGradient(width * 0.2, height * 0.2, 0, width * 0.2, height * 0.2, Math.max(width, height));
-    background.addColorStop(0, 'rgba(35, 17, 84, 0.95)');
-    background.addColorStop(0.45, 'rgba(9, 15, 34, 0.96)');
-    background.addColorStop(1, 'rgba(2, 6, 23, 1)');
-    ctx.fillStyle = background;
+    ctx.fillStyle = backgroundGradient;
     ctx.fillRect(0, 0, width, height);
 
-    const nebula = ctx.createRadialGradient(width * 0.8, height * 0.15, 40, width * 0.8, height * 0.15, width * 0.4);
-    nebula.addColorStop(0, 'rgba(96, 165, 250, 0.16)');
-    nebula.addColorStop(0.35, 'rgba(168, 85, 247, 0.12)');
-    nebula.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = nebula;
+    ctx.fillStyle = nebulaGradient;
     ctx.fillRect(0, 0, width, height);
 
     particles.forEach((particle, index) => {
       particle.x += particle.vx;
       particle.y += particle.vy;
 
-      if (particle.x < -20 || particle.x > width + 20) particle.vx *= -1;
-      if (particle.y < -20 || particle.y > height + 20) particle.vy *= -1;
+      if ((particle.x < -20 && particle.vx < 0) || (particle.x > width + 20 && particle.vx > 0)) particle.vx *= -1;
+      if ((particle.y < -20 && particle.vy < 0) || (particle.y > height + 20 && particle.vy > 0)) particle.vy *= -1;
 
       if (mouseActive) {
         const dx = mouseX - particle.x;
@@ -90,23 +111,37 @@ if (canvas) {
       ctx.fill();
     }
 
+  }
+
+  function animate() {
+    drawFrame();
     if (!prefersReducedMotion) {
       requestAnimationFrame(animate);
     }
   }
 
+  let resizeFrame = null;
   window.addEventListener('resize', () => {
-    resizeCanvas();
-    if (prefersReducedMotion) {
-      animate();
+    if (resizeFrame) {
+      cancelAnimationFrame(resizeFrame);
     }
+    resizeFrame = requestAnimationFrame(() => {
+      resizeCanvas();
+      // Repaint in the same frame: resizing the canvas clears it, and the
+      // animation loop's own rAF callback has already run by this point, so
+      // without this the cleared canvas would be the frame the user sees.
+      drawFrame();
+    });
   });
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
     mouseY = event.clientY;
     mouseActive = true;
   });
-  window.addEventListener('mouseleave', () => {
+  // mouseleave never bubbles to window — it must be observed on document,
+  // otherwise the cursor glow sticks at the last position when the pointer
+  // leaves the browser window.
+  document.addEventListener('mouseleave', () => {
     mouseActive = false;
   });
 
@@ -148,25 +183,17 @@ backToTopButton.className = 'back-to-top';
 backToTopButton.setAttribute('aria-label', 'Back to top');
 backToTopButton.innerHTML = '↑';
 backToTopButton.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 });
 document.body.appendChild(backToTopButton);
 
 // Floating WhatsApp chat bubble — opens a real conversation, no bot in between.
-// Dismissible: the × hides it for the rest of the visit (sessionStorage), and
-// the back-to-top button drops down to take its corner. It returns on the next
-// visit rather than disappearing forever. The global click listener below
-// reports bubble clicks as whatsapp_link_click.
-let waFloatDismissed = false;
-try {
-  waFloatDismissed = sessionStorage.getItem('waFloatDismissed') === '1';
-} catch (error) {
-  // Storage unavailable (privacy mode) — just show the bubble every page.
-}
-
-if (waFloatDismissed) {
-  document.body.classList.add('wa-dismissed');
-} else {
+// Dismissible: the × hides it for the current page, and the back-to-top button
+// drops down to take its corner. The site deliberately uses zero browser
+// storage, so the dismissal is in-memory only and the bubble returns on the
+// next page view. The global click listener below reports bubble clicks as
+// whatsapp_link_click.
+{
   const whatsappWrap = document.createElement('div');
   whatsappWrap.className = 'whatsapp-float-wrap';
 
@@ -187,11 +214,6 @@ if (waFloatDismissed) {
   whatsappClose.addEventListener('click', () => {
     whatsappWrap.remove();
     document.body.classList.add('wa-dismissed');
-    try {
-      sessionStorage.setItem('waFloatDismissed', '1');
-    } catch (error) {
-      // Storage unavailable — the bubble stays hidden for this page only.
-    }
   });
 
   whatsappWrap.appendChild(whatsappFloat);
@@ -295,6 +317,14 @@ function initSiteChrome() {
     navDropdownToggle.addEventListener('click', () => {
       const isOpen = navDropdown.classList.toggle('open');
       navDropdownToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Close the More menu when keyboard focus tabs out of it, matching the
+    // outside-click behavior pointer users get.
+    navDropdown.addEventListener('focusout', () => {
+      requestAnimationFrame(() => {
+        if (!navDropdown.contains(document.activeElement)) closeDropdown();
+      });
     });
   }
 

@@ -8,7 +8,7 @@
 // and keep the static copies in each page in sync (see README).
 //
 // Note: pages must be served over http(s) — fetch() does not work from file://
-// URLs. Use the dev server (python .claude/dev-server.py) when previewing.
+// URLs. Use a clean-URL-aware server (npx serve .) when previewing locally.
 (function () {
   function inject(name) {
     var mount = document.getElementById(name + '-placeholder') ||
@@ -16,7 +16,9 @@
     if (!mount) {
       return Promise.resolve();
     }
-    return fetch('/partials/' + name + '.html')
+    // Extensionless on purpose: with Vercel's cleanUrls the ".html" form costs
+    // a 308 redirect round-trip on every page view.
+    return fetch('/partials/' + name)
       .then(function (response) {
         if (!response.ok) {
           throw new Error('HTTP ' + response.status);
@@ -29,10 +31,18 @@
         var element = template.content.querySelector(name);
         if (element) {
           mount.replaceWith(element);
+        } else {
+          // A 200 response with no matching element (captive portal, rewriting
+          // proxy) is a failure too — restore the static mobile nav.
+          document.documentElement.classList.add('partials-failed');
         }
       })
       .catch(function (error) {
         console.error('Could not load partial "' + name + '":', error);
+        // The swap never happened, so the static chrome must stay fully
+        // usable — on mobile the CSS hides the static nav list in
+        // anticipation of the hamburger version, and this class re-shows it.
+        document.documentElement.classList.add('partials-failed');
       });
   }
 
