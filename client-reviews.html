@@ -137,7 +137,15 @@
           <p class="eyebrow">Featured recommendation</p>
           <h2>A standout recommendation worth highlighting</h2>
         </div>
-        <div id="featured-recommendation-shell" class="featured-project-shell"></div>
+        <div id="featured-recommendation-shell" class="featured-project-shell">
+          <div class="featured-recommendation-card">
+            <span class="featured-recommendation-badge">Featured recommendation</span>
+            <p class="featured-recommendation-quote">“Krunal is an exceptional developer but an even greater human with a positive, can-do attitude. He always sees the good in every situation and has an uncanny ability to find more efficient ways to get the job done.”</p>
+            <div class="featured-recommendation-author">Brandon Dith-Berry</div>
+            <div class="featured-recommendation-meta">RevOps Leader | AI Strategy &amp; Enablement</div>
+            <div class="recommendation-date">September 23, 2025</div>
+          </div>
+        </div>
       </section>
 
       <section class="section-card reveal">
@@ -146,16 +154,190 @@
           <h2>Browse public LinkedIn recommendations</h2>
         </div>
         <div class="recommendation-carousel">
-          <div class="recommendation-controls">
+          <div class="recommendation-controls" style="display: none">
             <button class="carousel-btn" id="prev-recommendation" aria-label="Show previous recommendation">←</button>
-            <span class="page-label" id="recommendation-label">Recommendation 1 of 3</span>
+            <span class="page-label" id="recommendation-label" aria-live="polite">Recommendation 1 of 30</span>
             <button class="carousel-btn" id="next-recommendation" aria-label="Show next recommendation">→</button>
           </div>
           <div class="recommendation-card" id="recommendation-card">
-            <p class="recommendation-quote" id="recommendation-quote"></p>
-            <div class="recommendation-author" id="recommendation-author"></div>
-            <div class="recommendation-role" id="recommendation-role"></div>
-            <div class="recommendation-date" id="recommendation-date"></div>
+            <p class="recommendation-quote">Being mentored by Krunalkumar was an incredible experience; his insights and encouragement greatly shaped my learning and career direction.</p>
+            <div class="recommendation-author">Md Intekhab Alam</div>
+            <div class="recommendation-role">Software Engineer | Frontend Developer | ReactJS</div>
+            <div class="recommendation-date">October 14, 2025</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Krunal is an exceptional developer but an even greater human with a positive, can-do attitude. He always sees the good in every situation and has an uncanny ability to find more efficient ways to get the job done.</p>
+            <div class="recommendation-author">Brandon Dith-Berry</div>
+            <div class="recommendation-role">RevOps Leader | AI Strategy &amp; Enablement</div>
+            <div class="recommendation-date">September 23, 2025</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">I had the pleasure of being mentored by Krunal Kumar Shah during my Advanced React mock interview. His guidance was exceptional and his feedback provided a fresh perspective on React that will be immensely helpful for my future growth.</p>
+            <div class="recommendation-author">Vijay Pratap Singh Jadon</div>
+            <div class="recommendation-role">Full Stack Developer | MERN Stack</div>
+            <div class="recommendation-date">April 19, 2025</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Krunalkumar is a valuable contributor to our initiative. He brings not only his expertise in cybersecurity, but also a vibrant, positive attitude that energizes the team.</p>
+            <div class="recommendation-author">Alice Pavaloiu</div>
+            <div class="recommendation-role">Co-founder at Open Ethics &amp; English Right</div>
+            <div class="recommendation-date">April 9, 2025</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing—thoughtful, insightful, and highly engaging.</p>
+            <div class="recommendation-author">Anish Patel</div>
+            <div class="recommendation-role">Java Developer at Mphasis</div>
+            <div class="recommendation-date">March 9, 2025</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Krunal's expertise, dedication, and exceptional teaching skills were instrumental in shaping my understanding and approach to programming.</p>
+            <div class="recommendation-author">Vivek Dubey</div>
+            <div class="recommendation-role">Software Engineer II @ Ionage</div>
+            <div class="recommendation-date">December 9, 2024</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A brilliant mind who combines genius with remarkable simplicity, making complex concepts accessible and engaging.</p>
+            <div class="recommendation-author">Nonye Nwogu</div>
+            <div class="recommendation-role">Linux | AWS | Nutanix | VMware | DevOps</div>
+            <div class="recommendation-date">October 14, 2024</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A very engaged, knowledgeable professional who provided excellent support as a teaching assistant.</p>
+            <div class="recommendation-author">Dr. Mary Dunphy</div>
+            <div class="recommendation-role">CISSP, CISA, PMP, SABSA SCP, PCI-QSA, GCP-PCA</div>
+            <div class="recommendation-date">April 1, 2024</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A highly skilled cybersecurity expert whose dedication and expertise have significantly contributed to the success of our initiatives.</p>
+            <div class="recommendation-author">Reginald Osuji</div>
+            <div class="recommendation-role">Cybersecurity Trainer | Penetration Tester</div>
+            <div class="recommendation-date">March 9, 2024</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A dedicated and highly skilled professional with deep understanding and effective communication skills.</p>
+            <div class="recommendation-author">Ilham Laabab</div>
+            <div class="recommendation-role">Researcher</div>
+            <div class="recommendation-date">December 14, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A unique ability to ensure students grasp complex concepts in detail and guide them toward the best possible outcomes.</p>
+            <div class="recommendation-author">Cecilia Vargas</div>
+            <div class="recommendation-role">Software Engineer | CSS | Python | JavaScript</div>
+            <div class="recommendation-date">December 6, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A great mentor who helped make the program easier and guided me on how to succeed in this field.</p>
+            <div class="recommendation-author">Omar Millan</div>
+            <div class="recommendation-role">Aspiring Cybersecurity Professional</div>
+            <div class="recommendation-date">November 18, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Passionate, caring, and knowledgeable, with a talent for breaking down complicated code into understandable concepts.</p>
+            <div class="recommendation-author">Roberto Del Rosario</div>
+            <div class="recommendation-role">Full Stack AI Software Developer</div>
+            <div class="recommendation-date">November 17, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A positive attitude and collaborative spirit that made him an exceptional team player.</p>
+            <div class="recommendation-author">Shilpa Tirumuru</div>
+            <div class="recommendation-role">Senior Test Engineer</div>
+            <div class="recommendation-date">November 8, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A confident communicator who brings creativity, warmth, and strong interpersonal skills to every interaction.</p>
+            <div class="recommendation-author">Aakanksha Vora</div>
+            <div class="recommendation-role">HR Professional</div>
+            <div class="recommendation-date">September 28, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A unique blend of academic strength, mentorship, clear judgment, and dynamic personality.</p>
+            <div class="recommendation-author">Akash Kumar</div>
+            <div class="recommendation-role">Software Developer</div>
+            <div class="recommendation-date">September 4, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A mentor who is available, knowledgeable, and great at helping others work through challenges.</p>
+            <div class="recommendation-author">Camryn Scott</div>
+            <div class="recommendation-role">Cloud Engineer</div>
+            <div class="recommendation-date">June 12, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A strong technical background paired with a genuine passion for sharing knowledge and helping others grow.</p>
+            <div class="recommendation-author">Carlos Montoya</div>
+            <div class="recommendation-role">Learning Designer</div>
+            <div class="recommendation-date">May 9, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">An extremely intelligent, articulate, diligent, and dedicated coach and mentor.</p>
+            <div class="recommendation-author">Tina Alfred, PhD, MPH</div>
+            <div class="recommendation-role">Epidemiologist | Medical Research Writer</div>
+            <div class="recommendation-date">February 6, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A great mentor and advisor with clear thinking and the ability to simplify complex technical problems.</p>
+            <div class="recommendation-author">Noriel Tunon</div>
+            <div class="recommendation-role">Senior Helpdesk Specialist</div>
+            <div class="recommendation-date">January 5, 2023</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Highly driven, motivated, and always willing to help people solve problems and grow.</p>
+            <div class="recommendation-author">Yankam Brenda, PhD</div>
+            <div class="recommendation-role">Statistician | Epidemiologist</div>
+            <div class="recommendation-date">December 18, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">An outstanding communicator who helped students stay on track and taught with genuine care.</p>
+            <div class="recommendation-author">Nick Rothacher</div>
+            <div class="recommendation-role">Director of Student Success</div>
+            <div class="recommendation-date">September 25, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">Smart, kind, and deeply supportive, with a strong background and a generous mentoring spirit.</p>
+            <div class="recommendation-author">Katherine Zuluaga</div>
+            <div class="recommendation-role">Operations Management Expert</div>
+            <div class="recommendation-date">August 20, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A great technical resource for programming and testing questions, always enjoyable to work with.</p>
+            <div class="recommendation-author">Shuaib Gill</div>
+            <div class="recommendation-role">Senior QA Lead | AWS Certified Architect</div>
+            <div class="recommendation-date">May 16, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">An expert in his field with strong professional credibility and knowledge.</p>
+            <div class="recommendation-author">Kabir Mohammed Tukur</div>
+            <div class="recommendation-role">IT Leader | Consultant | Trainer</div>
+            <div class="recommendation-date">May 13, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A kind mentor whose work in data science inspired and helped others achieve their goals.</p>
+            <div class="recommendation-author">Puroshotam Singh</div>
+            <div class="recommendation-role">AI Engineering @ Crowe</div>
+            <div class="recommendation-date">March 9, 2022</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A well-qualified senior engineer with solid cybersecurity expertise and excellent soft skills.</p>
+            <div class="recommendation-author">Geovani dos Santos</div>
+            <div class="recommendation-role">Consulting | AI | Data Science | Cybersecurity</div>
+            <div class="recommendation-date">June 22, 2021</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A great interaction and a trusted resource for IT security and cybersecurity guidance.</p>
+            <div class="recommendation-author">Michael Horgle</div>
+            <div class="recommendation-role">Security Analyst | IT Support Specialist</div>
+            <div class="recommendation-date">January 20, 2021</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">A hardworking, dedicated, and highly intelligent professional with tremendous potential.</p>
+            <div class="recommendation-author">Joseph Ede</div>
+            <div class="recommendation-role">Executive | Finance &amp; Strategy</div>
+            <div class="recommendation-date">September 2, 2020</div>
+          </div>
+          <div class="recommendation-card">
+            <p class="recommendation-quote">An excellent professional who enjoys sharing technical knowledge and contributing to the IT community.</p>
+            <div class="recommendation-author">Eduardo Dias</div>
+            <div class="recommendation-role">Technical Project Manager</div>
+            <div class="recommendation-date">August 15, 2020</div>
           </div>
         </div>
         <div class="contact-actions" style="margin-top: 1rem;">
@@ -212,232 +394,38 @@
 
     <script src="assets/js/particle-bg.js"></script>
     <script>
-      const recommendations = [
-        {
-          quote: "Being mentored by Krunalkumar was an incredible experience; his insights and encouragement greatly shaped my learning and career direction.",
-          author: "Md Intekhab Alam",
-          role: "Software Engineer | Frontend Developer | ReactJS",
-          date: "October 14, 2025"
-        },
-        {
-          quote: "Krunal is an exceptional developer but an even greater human with a positive, can-do attitude. He always sees the good in every situation and has an uncanny ability to find more efficient ways to get the job done.",
-          author: "Brandon Dith-Berry",
-          role: "RevOps Leader | AI Strategy & Enablement",
-          date: "September 23, 2025"
-        },
-        {
-          quote: "I had the pleasure of being mentored by Krunal Kumar Shah during my Advanced React mock interview. His guidance was exceptional and his feedback provided a fresh perspective on React that will be immensely helpful for my future growth.",
-          author: "Vijay Pratap Singh Jadon",
-          role: "Full Stack Developer | MERN Stack",
-          date: "April 19, 2025"
-        },
-        {
-          quote: "Krunalkumar is a valuable contributor to our initiative. He brings not only his expertise in cybersecurity, but also a vibrant, positive attitude that energizes the team.",
-          author: "Alice Pavaloiu",
-          role: "Co-founder at Open Ethics & English Right",
-          date: "April 9, 2025"
-        },
-        {
-          quote: "I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing—thoughtful, insightful, and highly engaging.",
-          author: "Anish Patel",
-          role: "Java Developer at Mphasis",
-          date: "March 9, 2025"
-        },
-        {
-          quote: "Krunal's expertise, dedication, and exceptional teaching skills were instrumental in shaping my understanding and approach to programming.",
-          author: "Vivek Dubey",
-          role: "Software Engineer II @ Ionage",
-          date: "December 9, 2024"
-        },
-        {
-          quote: "A brilliant mind who combines genius with remarkable simplicity, making complex concepts accessible and engaging.",
-          author: "Nonye Nwogu",
-          role: "Linux | AWS | Nutanix | VMware | DevOps",
-          date: "October 14, 2024"
-        },
-        {
-          quote: "A very engaged, knowledgeable professional who provided excellent support as a teaching assistant.",
-          author: "Dr. Mary Dunphy",
-          role: "CISSP, CISA, PMP, SABSA SCP, PCI-QSA, GCP-PCA",
-          date: "April 1, 2024"
-        },
-        {
-          quote: "A highly skilled cybersecurity expert whose dedication and expertise have significantly contributed to the success of our initiatives.",
-          author: "Reginald Osuji",
-          role: "Cybersecurity Trainer | Penetration Tester",
-          date: "March 9, 2024"
-        },
-        {
-          quote: "A dedicated and highly skilled professional with deep understanding and effective communication skills.",
-          author: "Ilham Laabab",
-          role: "Researcher",
-          date: "December 14, 2023"
-        },
-        {
-          quote: "A unique ability to ensure students grasp complex concepts in detail and guide them toward the best possible outcomes.",
-          author: "Cecilia Vargas",
-          role: "Software Engineer | CSS | Python | JavaScript",
-          date: "December 6, 2023"
-        },
-        {
-          quote: "A great mentor who helped make the program easier and guided me on how to succeed in this field.",
-          author: "Omar Millan",
-          role: "Aspiring Cybersecurity Professional",
-          date: "November 18, 2023"
-        },
-        {
-          quote: "Passionate, caring, and knowledgeable, with a talent for breaking down complicated code into understandable concepts.",
-          author: "Roberto Del Rosario",
-          role: "Full Stack AI Software Developer",
-          date: "November 17, 2023"
-        },
-        {
-          quote: "A positive attitude and collaborative spirit that made him an exceptional team player.",
-          author: "Shilpa Tirumuru",
-          role: "Senior Test Engineer",
-          date: "November 8, 2023"
-        },
-        {
-          quote: "A confident communicator who brings creativity, warmth, and strong interpersonal skills to every interaction.",
-          author: "Aakanksha Vora",
-          role: "HR Professional",
-          date: "September 28, 2023"
-        },
-        {
-          quote: "A unique blend of academic strength, mentorship, clear judgment, and dynamic personality.",
-          author: "Akash Kumar",
-          role: "Software Developer",
-          date: "September 4, 2023"
-        },
-        {
-          quote: "A mentor who is available, knowledgeable, and great at helping others work through challenges.",
-          author: "Camryn Scott",
-          role: "Cloud Engineer",
-          date: "June 12, 2023"
-        },
-        {
-          quote: "A strong technical background paired with a genuine passion for sharing knowledge and helping others grow.",
-          author: "Carlos Montoya",
-          role: "Learning Designer",
-          date: "May 9, 2023"
-        },
-        {
-          quote: "An extremely intelligent, articulate, diligent, and dedicated coach and mentor.",
-          author: "Tina Alfred, PhD, MPH",
-          role: "Epidemiologist | Medical Research Writer",
-          date: "February 6, 2023"
-        },
-        {
-          quote: "A great mentor and advisor with clear thinking and the ability to simplify complex technical problems.",
-          author: "Noriel Tunon",
-          role: "Senior Helpdesk Specialist",
-          date: "January 5, 2023"
-        },
-        {
-          quote: "Highly driven, motivated, and always willing to help people solve problems and grow.",
-          author: "Yankam Brenda, PhD",
-          role: "Statistician | Epidemiologist",
-          date: "December 18, 2022"
-        },
-        {
-          quote: "An outstanding communicator who helped students stay on track and taught with genuine care.",
-          author: "Nick Rothacher",
-          role: "Director of Student Success",
-          date: "September 25, 2022"
-        },
-        {
-          quote: "Smart, kind, and deeply supportive, with a strong background and a generous mentoring spirit.",
-          author: "Katherine Zuluaga",
-          role: "Operations Management Expert",
-          date: "August 20, 2022"
-        },
-        {
-          quote: "A great technical resource for programming and testing questions, always enjoyable to work with.",
-          author: "Shuaib Gill",
-          role: "Senior QA Lead | AWS Certified Architect",
-          date: "May 16, 2022"
-        },
-        {
-          quote: "An expert in his field with strong professional credibility and knowledge.",
-          author: "Kabir Mohammed Tukur",
-          role: "IT Leader | Consultant | Trainer",
-          date: "May 13, 2022"
-        },
-        {
-          quote: "A kind mentor whose work in data science inspired and helped others achieve their goals.",
-          author: "Puroshotam Singh",
-          role: "AI Engineering @ Crowe",
-          date: "March 9, 2022"
-        },
-        {
-          quote: "A well-qualified senior engineer with solid cybersecurity expertise and excellent soft skills.",
-          author: "Geovani dos Santos",
-          role: "Consulting | AI | Data Science | Cybersecurity",
-          date: "June 22, 2021"
-        },
-        {
-          quote: "A great interaction and a trusted resource for IT security and cybersecurity guidance.",
-          author: "Michael Horgle",
-          role: "Security Analyst | IT Support Specialist",
-          date: "January 20, 2021"
-        },
-        {
-          quote: "A hardworking, dedicated, and highly intelligent professional with tremendous potential.",
-          author: "Joseph Ede",
-          role: "Executive | Finance & Strategy",
-          date: "September 2, 2020"
-        },
-        {
-          quote: "An excellent professional who enjoys sharing technical knowledge and contributing to the IT community.",
-          author: "Eduardo Dias",
-          role: "Technical Project Manager",
-          date: "August 15, 2020"
+      (function () {
+        const cards = Array.from(document.querySelectorAll('.recommendation-carousel .recommendation-card'));
+        const label = document.getElementById('recommendation-label');
+        const prevBtn = document.getElementById('prev-recommendation');
+        const nextBtn = document.getElementById('next-recommendation');
+        const controls = document.querySelector('.recommendation-controls');
+        if (!cards.length || !label || !prevBtn || !nextBtn || !controls) return;
+
+        // Controls are hidden until JS runs, so no-JS visitors see every recommendation.
+        controls.style.display = '';
+
+        let current = 0;
+
+        function render() {
+          cards.forEach((card, index) => {
+            card.style.display = index === current ? '' : 'none';
+          });
+          label.textContent = 'Recommendation ' + (current + 1) + ' of ' + cards.length;
         }
-      ];
 
-      const featuredRecommendationShell = document.getElementById('featured-recommendation-shell');
-      const featuredRecommendationIndex = Math.floor(Math.random() * recommendations.length);
-      let currentRecommendation = 0;
-      const quoteEl = document.getElementById('recommendation-quote');
-      const authorEl = document.getElementById('recommendation-author');
-      const roleEl = document.getElementById('recommendation-role');
-      const dateEl = document.getElementById('recommendation-date');
-      const labelEl = document.getElementById('recommendation-label');
-      const prevBtn = document.getElementById('prev-recommendation');
-      const nextBtn = document.getElementById('next-recommendation');
+        prevBtn.addEventListener('click', () => {
+          current = (current - 1 + cards.length) % cards.length;
+          render();
+        });
 
-      function renderFeaturedRecommendation(index) {
-        const item = recommendations[index];
-        featuredRecommendationShell.innerHTML = `
-          <div class="featured-recommendation-card">
-            <span class="featured-recommendation-badge">Featured recommendation</span>
-            <p class="featured-recommendation-quote">“${item.quote}”</p>
-            <div class="featured-recommendation-author">${item.author}</div>
-            <div class="featured-recommendation-meta">${item.role}</div>
-            <div class="recommendation-date">${item.date || ''}</div>
-          </div>
-        `;
-      }
+        nextBtn.addEventListener('click', () => {
+          current = (current + 1) % cards.length;
+          render();
+        });
 
-      function renderRecommendation(index) {
-        const item = recommendations[index];
-        quoteEl.textContent = item.quote;
-        authorEl.textContent = item.author;
-        roleEl.textContent = item.role;
-        dateEl.textContent = item.date || '';
-        labelEl.textContent = `Recommendation ${index + 1} of ${recommendations.length}`;
-      }
-
-      function showRecommendation(direction) {
-        currentRecommendation = (currentRecommendation + direction + recommendations.length) % recommendations.length;
-        renderRecommendation(currentRecommendation);
-      }
-
-      prevBtn.addEventListener('click', () => showRecommendation(-1));
-      nextBtn.addEventListener('click', () => showRecommendation(1));
-
-      renderFeaturedRecommendation(featuredRecommendationIndex);
-      renderRecommendation(currentRecommendation);
+        render();
+      })();
     </script>
   </body>
 </html>

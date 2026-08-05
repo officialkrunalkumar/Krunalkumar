@@ -1261,6 +1261,12 @@ footer p {
   border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
+.form-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
 .form-followup {
   display: inline-flex;
   align-items: center;

@@ -103,6 +103,14 @@
           },
           {
             "@type": "Question",
+            "name": "How do payments work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Month to month, via UPI. Once a plan is confirmed on WhatsApp, Krunalkumar shares the payment QR personally. He never posts payment links or QR codes publicly — any that claim to be him are fake and should be reported to him directly."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "What if the first session isn’t what I expected?",
             "acceptedAnswer": {
               "@type": "Answer",
@@ -210,6 +218,9 @@
             the mentorship program — a training credential, not an inflated job title.</p>
             <p><strong>Scholarships:</strong> a limited number each month, up to 50% off, based on need and merit —
             request one in your application and we&rsquo;ll discuss it in the interview.</p>
+            <p><strong>Payment:</strong> month to month via UPI — once we confirm your plan, I share the payment QR
+            with you personally on WhatsApp. I never post payment links or QR codes publicly, so treat any that
+            claim to be me as fake and report them to me directly.</p>
           </article>
         </div>
       </section>
@@ -314,6 +325,12 @@
             review, and interview preparation. Billing is month to month and you can cancel anytime.</p>
           </details>
           <details>
+            <summary>How do payments work?</summary>
+            <p>Month to month, via UPI. Once we confirm your plan on WhatsApp, I share the payment QR with you
+            personally. I never post payment links or QR codes publicly — if you see one claiming to be me, it is
+            fake; please report it to me directly.</p>
+          </details>
+          <details>
             <summary>What if the first session isn&rsquo;t what I expected?</summary>
             <p>Say so within the first seven days of your first month and that month&rsquo;s fee is refunded in
             full — no forms, no argument. The details are in the <a class="text-link" href="/refund">Refund
@@ -346,7 +363,8 @@
           </div>
         </div>
 
-        <form id="internship-form" class="contact-form">
+        <!-- method="post" keeps form data out of the URL if this ever submits without JavaScript -->
+        <form id="internship-form" class="contact-form" method="post">
           <div class="form-grid">
             <label class="field">
               <span>Your name</span>
@@ -395,6 +413,14 @@
             <button class="btn btn-primary" type="submit">Apply via WhatsApp</button>
             <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
           </div>
+          <p class="form-note">Prefer not to use WhatsApp? Email your application to
+          <a class="text-link" href="mailto:einstein1410@gmail.com">einstein1410@gmail.com</a> instead — same
+          details, same consideration.</p>
+          <noscript>
+            <p class="form-note">This form needs JavaScript to open WhatsApp. Please email
+            <a class="text-link" href="mailto:einstein1410@gmail.com">einstein1410@gmail.com</a> or message me on
+            <a class="text-link" href="https://wa.me/918200713617">WhatsApp</a> directly.</p>
+          </noscript>
         </form>
       </section>
     </main>
@@ -469,10 +495,16 @@
           }
 
           const text = encodeURIComponent(`Hello Krunalkumar, I am applying from your website. Here are my details.\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nTrack: ${track}\nArea of interest: ${interest}\n\nAbout me:\n${reason}`);
-          window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
+          const waUrl = `https://wa.me/918200713617?text=${text}`;
+          const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
           awaitingWhatsAppReturn = true;
-          formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
-          if (typeof gtag === 'function') gtag('event', 'internship_form_submit');
+          if (waWindow) {
+            formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
+            if (typeof gtag === 'function') gtag('event', 'internship_form_submit');
+          } else {
+            // Pop-up blocked: give the visitor a direct link so the application is not silently lost.
+            formStatus.innerHTML = '<span class="success-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+          }
         });
 
         // When the visitor returns from WhatsApp, ask whether the application went through.

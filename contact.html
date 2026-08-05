@@ -149,7 +149,8 @@
           <p class="hero-text">If you’re reaching out from my website, just share a few details below and I’ll get your message instantly through WhatsApp.</p>
         </div>
 
-        <form id="contact-form" class="contact-form">
+        <!-- method="post" keeps form data out of the URL if this ever submits without JavaScript -->
+        <form id="contact-form" class="contact-form" method="post">
           <div class="form-grid">
             <label class="field">
               <span>Your name</span>
@@ -174,6 +175,14 @@
             <button class="btn btn-primary" type="submit">Send on WhatsApp</button>
             <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
           </div>
+          <p class="form-note">Prefer email? Write to
+          <a class="text-link" href="mailto:einstein1410@gmail.com">einstein1410@gmail.com</a> — no WhatsApp
+          needed.</p>
+          <noscript>
+            <p class="form-note">This form needs JavaScript to open WhatsApp. Please email
+            <a class="text-link" href="mailto:einstein1410@gmail.com">einstein1410@gmail.com</a> or message me on
+            <a class="text-link" href="https://wa.me/918200713617">WhatsApp</a> directly.</p>
+          </noscript>
         </form>
       </section>
     </main>
@@ -246,10 +255,16 @@
           }
 
           const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`);
-          window.open(`https://wa.me/918200713617?text=${text}`, '_blank', 'noopener,noreferrer');
+          const waUrl = `https://wa.me/918200713617?text=${text}`;
+          const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
           awaitingWhatsAppReturn = true;
-          formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
-          if (typeof gtag === 'function') gtag('event', 'contact_form_submit');
+          if (waWindow) {
+            formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
+            if (typeof gtag === 'function') gtag('event', 'contact_form_submit');
+          } else {
+            // Pop-up blocked: give the visitor a direct link so the message is not silently lost.
+            formStatus.innerHTML = '<span class="success-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+          }
         });
 
         // When the visitor returns from WhatsApp, ask whether the message went through.

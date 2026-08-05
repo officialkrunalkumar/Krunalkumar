@@ -164,11 +164,15 @@ unmatched URLs.
    `partials/footer.html` (Explore column), and the static header/footer copies in every page.
 3. Add an extensionless `<url>` entry to `sitemap.xml`.
 
-**Add a project** — append an object (`title`, `description`, `link`, `category`) to the `projects`
-array in `projects.html`. To make it eligible for the Featured spotlight, also add its title to the
-`spotlightTitles` set.
+**Add a project** — copy an existing `<a class="project-item">` card inside `#project-list` in
+`projects.html` and edit its category, title, description, and href. The gallery is static HTML
+(crawler-visible); the inline script only paginates it. Add the `data-spotlight` attribute to make
+the project eligible for the Featured spotlight rotation.
 
-**Add a recommendation** — append to the `recommendations` array in `client-reviews.html`.
+**Add a recommendation** — copy an existing `.recommendation-card` block inside
+`.recommendation-carousel` in `client-reviews.html` and edit the quote, author, role, and date.
+All cards are static HTML; the inline script only shows one at a time. The featured recommendation
+is a separate static block (`#featured-recommendation-shell`) — update it deliberately.
 
 **Change internship tracks** — edit the tag list and the `<select>` options in `internships.html`.
 
