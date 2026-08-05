@@ -49,6 +49,12 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/verify</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/privacy</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>yearly</changefreq>
