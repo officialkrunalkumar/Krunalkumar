@@ -18,5 +18,25 @@
     "issued": "1 July 2026",
     "status": "valid",
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
+  },
+  {
+    "id": "KS-MEN-2026-REVOKED",
+    "name": "Another Mentor",
+    "type": "Mentorship",
+    "project": "He did an exceptional job during the mentorship and developed a solution to one cybersecurity problem.",
+    "duration": "1 April 2026 – 30 June 2026",
+    "issued": "1 July 2026",
+    "status": "revoked",
+    "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
+  },
+  {
+    "id": "KS-INT-2026-PENDING",
+    "name": "Another Student",
+    "type": "Internship",
+    "project": "Demonstration record — shows how a genuine certificate appears when verified",
+    "duration": "1 May 2026 – 31 July 2026",
+    "issued": "1 August 2026",
+    "status": "pending",
+    "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
   }
 ]
