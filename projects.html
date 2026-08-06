@@ -63,29 +63,13 @@
         ]
       }
     </script>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
   <body id="top">
     <!-- Google Tag Manager (noscript) -->
@@ -104,7 +88,7 @@
             <a class="nav-link active" aria-current="page" href="/projects">Projects</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
-            <a class="nav-link" href="/client-reviews">Client Reviews</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -116,7 +100,7 @@
         <p class="eyebrow">Selected work</p>
         <h1>Projects that reflect automation, integration, and thoughtful problem solving.</h1>
         <p class="hero-text">
-          Explore Krunalkumar Shah’s automation, AI workflow, research-backed, and integration projects built to solve practical problems.
+          Explore my automation, AI workflow, research-backed, and integration projects — each one built to solve a practical problem.
         </p>
       </section>
 
@@ -484,7 +468,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-      <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -495,7 +482,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -523,87 +510,11 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
 
     <script src="/assets/js/particle-bg.js"></script>
-    <script>
-      (function () {
-        const projectList = document.getElementById('project-list');
-        const projectItems = projectList ? Array.from(projectList.querySelectorAll('.project-item')) : [];
-        const itemsPerPage = 4;
-        const totalPages = Math.ceil(projectItems.length / itemsPerPage);
-        let currentPage = 0;
-
-        // The pager is hidden until JS runs, so no-JS visitors simply see every project.
-        document.querySelectorAll('.project-carousel .carousel-controls').forEach((controls) => {
-          controls.style.display = '';
-        });
-
-        const pageLabel = document.getElementById('project-page-label');
-        const pageLabelBottom = document.getElementById('project-page-label-bottom');
-        const prevButton = document.getElementById('prev-projects');
-        const nextButton = document.getElementById('next-projects');
-        const prevButtonBottom = document.getElementById('prev-projects-bottom');
-        const nextButtonBottom = document.getElementById('next-projects-bottom');
-        const pagerReady = projectItems.length && pageLabel && pageLabelBottom &&
-          prevButton && nextButton && prevButtonBottom && nextButtonBottom;
-
-        function renderPage() {
-          const start = currentPage * itemsPerPage;
-          const end = start + itemsPerPage;
-          projectItems.forEach((item, index) => {
-            item.style.display = index >= start && index < end ? '' : 'none';
-          });
-          const label = 'Page ' + (currentPage + 1) + ' of ' + totalPages;
-          pageLabel.textContent = label;
-          pageLabelBottom.textContent = label;
-          const atStart = currentPage === 0;
-          const atEnd = currentPage === totalPages - 1;
-          // Disabling the button that currently holds focus would dump
-          // keyboard users back to the top of the page — hand focus to its
-          // counterpart first.
-          if (atStart && document.activeElement === prevButton) nextButton.focus();
-          if (atEnd && document.activeElement === nextButton) prevButton.focus();
-          if (atStart && document.activeElement === prevButtonBottom) nextButtonBottom.focus();
-          if (atEnd && document.activeElement === nextButtonBottom) prevButtonBottom.focus();
-          prevButton.disabled = atStart;
-          nextButton.disabled = atEnd;
-          prevButtonBottom.disabled = atStart;
-          nextButtonBottom.disabled = atEnd;
-        }
-
-        function changePage(delta) {
-          const next = currentPage + delta;
-          if (next < 0 || next > totalPages - 1) return;
-          currentPage = next;
-          renderPage();
-        }
-
-        if (pagerReady) {
-          prevButton.addEventListener('click', () => changePage(-1));
-          nextButton.addEventListener('click', () => changePage(1));
-          prevButtonBottom.addEventListener('click', () => changePage(-1));
-          nextButtonBottom.addEventListener('click', () => changePage(1));
-          renderPage();
-        }
-
-        // Rotate the featured card through the spotlight projects on every
-        // visit. Clock-derived rather than Math.random(): with 7 spotlight
-        // items a random pick repeats back-to-back 1 reload in 7, which reads
-        // as "not rotating" — the time index guarantees consecutive reloads
-        // differ, and the site's no-browser-storage rule rules out remembering
-        // the last pick.
-        const featuredLink = document.querySelector('#featured-project-card .featured-project-card');
-        const spotlightItems = projectItems.filter((item) => item.hasAttribute('data-spotlight'));
-        if (featuredLink && spotlightItems.length) {
-          const pick = spotlightItems[Math.floor(Date.now() / 1000) % spotlightItems.length];
-          featuredLink.href = pick.href;
-          featuredLink.querySelector('.project-name').textContent = pick.querySelector('.project-name').textContent;
-          featuredLink.querySelector('.project-description').textContent = pick.querySelector('.project-description').textContent;
-        }
-      })();
-    </script>
+    <script defer src="/assets/js/projects.js"></script>
   </body>
 </html>

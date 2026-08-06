@@ -52,29 +52,13 @@
         ]
       }
     </script>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
 
   <body id="top">
@@ -94,7 +78,7 @@
             <a class="nav-link" href="/projects">Projects</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
-            <a class="nav-link" href="/client-reviews">Client Reviews</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -127,12 +111,17 @@
           </label>
           <button class="btn btn-primary" type="submit" disabled>Verify</button>
         </form>
-        <div id="verify-result" class="verify-result" role="status" aria-live="polite" hidden></div>
+        <!-- Directly after the (JS-only) form, so without JavaScript this note is
+             the immediate answer to the "hit Verify" copy above it. -->
         <noscript>
-          <p class="form-note">This lookup needs JavaScript. If you cannot enable it, email
+          <p class="form-note">The instant lookup needs JavaScript. If you cannot enable it, email
           <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> with the certificate
           ID and I will confirm the record personally.</p>
         </noscript>
+        <!-- No hidden attribute: the empty div collapses visually, and keeping the
+             live region in the DOM from first paint means screen readers reliably
+             announce results — content is only ever mutated, never unhidden. -->
+        <div id="verify-result" class="verify-result" role="status" aria-live="polite"></div>
       </section>
 
       <section class="section-card">
@@ -172,7 +161,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-      <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -183,7 +175,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -211,157 +203,11 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
 
     <script src="/assets/js/particle-bg.js"></script>
-    <script>
-      (function () {
-        const form = document.getElementById('verify-form');
-        const input = document.getElementById('verify-id');
-        const result = document.getElementById('verify-result');
-        if (!form || !input || !result) return;
-
-        // The button ships disabled (and CSS-hidden without JS) because the
-        // lookup only exists client-side — a raw GET submit would just reload
-        // the page with no result.
-        const submitButton = form.querySelector('button[type="submit"]');
-        if (submitButton) submitButton.disabled = false;
-
-        const STATUS = {
-          valid: { className: 'verify-status-valid', label: '✓ Valid certificate' },
-          pending: { className: 'verify-status-pending', label: '⏳ Pending verification — this record is awaiting final confirmation' },
-          revoked: { className: 'verify-status-revoked', label: '✗ This certificate has been revoked' },
-        };
-        // Never default an unrecognised status to "valid" — on a verification
-        // page the safe answer for bad data is "cannot confirm".
-        const UNKNOWN_STATUS = {
-          className: 'verify-status-notfound',
-          label: '⚠ Record found, but its status could not be confirmed',
-        };
-
-        let certificatesPromise = null;
-
-        function loadCertificates() {
-          if (!certificatesPromise) {
-            certificatesPromise = fetch('/assets/data/certificates.json').then((response) => {
-              if (!response.ok) throw new Error('HTTP ' + response.status);
-              return response.json();
-            }).catch((error) => {
-              // Never cache a failure — one network blip must not poison every
-              // later "try again" for the rest of the session.
-              certificatesPromise = null;
-              throw error;
-            });
-          }
-          return certificatesPromise;
-        }
-
-        function addField(list, label, value) {
-          if (!value) return;
-          const dt = document.createElement('dt');
-          dt.textContent = label;
-          const dd = document.createElement('dd');
-          dd.textContent = value;
-          list.appendChild(dt);
-          list.appendChild(dd);
-        }
-
-        function showMessage(className, statusText, messageText) {
-          result.hidden = false;
-          result.textContent = '';
-          const card = document.createElement('div');
-          card.className = 'verify-card ' + className;
-          const status = document.createElement('p');
-          status.className = 'verify-status';
-          status.textContent = statusText;
-          card.appendChild(status);
-          if (messageText) {
-            const message = document.createElement('p');
-            message.className = 'verify-note';
-            message.textContent = messageText;
-            card.appendChild(message);
-          }
-          result.appendChild(card);
-        }
-
-        function showRecord(record) {
-          const statusInfo = STATUS[String(record.status || '').toLowerCase()] || UNKNOWN_STATUS;
-          result.hidden = false;
-          result.textContent = '';
-
-          const card = document.createElement('div');
-          card.className = 'verify-card ' + statusInfo.className;
-
-          const status = document.createElement('p');
-          status.className = 'verify-status';
-          status.textContent = statusInfo.label;
-          card.appendChild(status);
-
-          const fields = document.createElement('dl');
-          fields.className = 'verify-fields';
-          addField(fields, 'Certificate ID', record.id);
-          addField(fields, 'Issued to', record.name);
-          addField(fields, 'Type', record.type);
-          addField(fields, 'Work description', record.project);
-          addField(fields, 'Duration', record.duration);
-          addField(fields, 'Issued on', record.issued);
-          card.appendChild(fields);
-
-          if (record.note) {
-            const note = document.createElement('p');
-            note.className = 'verify-note';
-            note.textContent = record.note;
-            card.appendChild(note);
-          }
-
-          result.appendChild(card);
-        }
-
-        function verify(rawId) {
-          const id = rawId.trim().toUpperCase();
-          if (!id) {
-            result.hidden = true;
-            return;
-          }
-          showMessage('verify-status-info', 'Checking…', '');
-          loadCertificates()
-            .then((certificates) => {
-              const record = certificates.find((entry) => String(entry.id || '').toUpperCase() === id);
-              if (record) {
-                showRecord(record);
-                if (typeof gtag === 'function') gtag('event', 'certificate_verified', { certificate_status: record.status || 'unknown' });
-              } else {
-                showMessage(
-                  'verify-status-notfound',
-                  '✗ No record found for "' + id + '"',
-                  'Check the ID for typos — internship IDs look like KS-INT-2026-XXXXXX and mentorship IDs like KS-MEN-2026-XXXXXX. If the ID printed on a document is not found here, that document was not issued by me. You can report suspected fakes to krunalkumar@krunalkumar.dpdns.org.'
-                );
-              }
-            })
-            .catch(() => {
-              showMessage(
-                'verify-status-notfound',
-                'Could not load the verification records',
-                'Please try again in a moment, or email krunalkumar@krunalkumar.dpdns.org with the certificate ID.'
-              );
-            });
-        }
-
-        form.addEventListener('submit', (event) => {
-          event.preventDefault();
-          verify(input.value);
-        });
-
-        // QR codes deep-link here as /verify?id=KS-INT-2026-XXXXXX — verify immediately.
-        const params = new URLSearchParams(window.location.search);
-        const linkedId = params.get('id');
-        if (linkedId) {
-          input.value = linkedId.trim().toUpperCase();
-          verify(linkedId);
-        }
-      })();
-    </script>
+    <script defer src="/assets/js/verify.js"></script>
   </body>
 </html>

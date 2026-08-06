@@ -1,0 +1,281 @@
+// The hidden terminal easter egg (/terminal) — command handling, the fork
+// bomb demo, and its gtag events. Externalized from an inline block so the
+// page carries no executable inline scripts (CSP prep); loaded with defer.
+(function () {
+  var output = document.getElementById('output');
+  var cmd = document.getElementById('cmd');
+  var promptRow = document.querySelector('.prompt-row');
+  var busy = false;
+  var history = [];
+  var historyIndex = -1;
+
+  function esc(text) {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function print(html, cls) {
+    var line = document.createElement('div');
+    line.className = 'line' + (cls ? ' ' + cls : '');
+    line.innerHTML = html;
+    output.appendChild(line);
+    window.scrollTo(0, document.body.scrollHeight);
+    return line;
+  }
+
+  function printEcho(raw) {
+    print('<span class="ps1">visitor@krunalkumar:~$</span> <span class="white">' + esc(raw) + '</span>');
+  }
+
+  function track(name) {
+    if (typeof window.gtag === 'function') window.gtag('event', name);
+  }
+
+  var files = {
+    'about.txt': [
+      'Krunalkumar Shah — researcher, engineer, cybersecurity professional.',
+      'Published a defense against fork bomb attacks in Linux (IJRAT, 2019).',
+      'Former Assistant Professor. Builds AI & automation workflows for real teams.',
+      'Registered cyber expert volunteer supporting law enforcement since 2020.',
+      '',
+      'The visible site: <a href="/">krunalkumar.dpdns.org</a>'
+    ],
+    'research.txt': [
+      '“Security Against Fork Bomb Attack in Linux Based Systems” (IJRAT, 2019).',
+      'Detection in as little as 44 ms at a 500-fork threshold; repeat offenders',
+      'run in resource quarantine instead of being permanently banned.',
+      'Full paper: <a href="/research">/research</a>',
+      '',
+      'Fun fact: this terminal has a live demo. You just have to be brave enough',
+      'to type the forbidden three-character incantation. <span class="dim">(hint: man forkbomb)</span>'
+    ],
+    'todo.txt': [
+      '[x] publish security research',
+      '[x] teach computer science',
+      '[x] automate everything at work',
+      '[x] hide a terminal in the portfolio',
+      '[ ] see who actually finds it  <span class="dim">&larr; you are here</span>'
+    ]
+  };
+
+  function cmdHelp() {
+    print('Available commands:', 'white');
+    print('  <span class="cyan">help</span>          this list');
+    print('  <span class="cyan">whoami</span>        who are you?');
+    print('  <span class="cyan">ls</span>            list files');
+    print('  <span class="cyan">cat</span> &lt;file&gt;    read a file');
+    print('  <span class="cyan">man forkbomb</span>  a warning label');
+    print('  <span class="cyan">hack</span>          do the Hollywood thing');
+    print('  <span class="cyan">sudo</span> ...       try your luck');
+    print('  <span class="cyan">clear</span>         wipe the screen');
+    print('  <span class="cyan">exit</span>          back to the normal site');
+    print('<span class="dim">Some commands are not listed. This is a security site, after all.</span>');
+  }
+
+  function cmdLs() {
+    print('about.txt    research.txt    todo.txt    <span class="dim">.secrets/ (permission denied)</span>');
+  }
+
+  function cmdCat(arg) {
+    if (!arg) { print('cat: missing file. Try: cat about.txt', 'dim'); return; }
+    // Own-property check: a plain object lookup resolves inherited names
+    // like "constructor"/"__proto__" to Object.prototype members.
+    var key = arg.toLowerCase();
+    var f = Object.prototype.hasOwnProperty.call(files, key) ? files[key] : undefined;
+    if (f) { f.forEach(function (l) { print(l); }); }
+    else if (arg.indexOf('.secrets') === 0) { print('cat: .secrets/: Permission denied. <span class="dim">Nice try though — I respect it.</span>'); }
+    else { print('cat: ' + esc(arg) + ': No such file'); }
+  }
+
+  function cmdManForkbomb() {
+    print('FORKBOMB(1)                    Dangerous Things                    FORKBOMB(1)', 'dim');
+    print('');
+    print('<span class="white">NAME</span>');
+    print('     :(){ :|:& };:  — a shell function that summons every process at once');
+    print('');
+    print('<span class="white">DESCRIPTION</span>');
+    print('     Defines a function named <span class="cyan">:</span> that calls itself twice, forever.');
+    print('     Each copy spawns two more. The process table fills. The system dies.');
+    print('');
+    print('<span class="white">WARNING</span>');
+    print('     Never run this on a real machine. <span class="warn">This terminal, however,</span>');
+    print('     <span class="warn">is protected by published research. Feel free to try.</span>');
+  }
+
+  function cmdHack(done) {
+    var chars = '0123456789ABCDEF';
+    var count = 0;
+    var timer = setInterval(function () {
+      var row = '';
+      for (var i = 0; i < 8; i += 1) {
+        row += '0x';
+        for (var j = 0; j < 6; j += 1) row += chars[Math.floor(Math.random() * 16)];
+        row += ' ';
+      }
+      print(row, 'dim');
+      count += 1;
+      if (count > 14) {
+        clearInterval(timer);
+        print('ACCESS GRANTED', 'ok');
+        print('&hellip;to the publicly available portfolio you were already on. <a href="/projects">/projects</a>', 'dim');
+        done();
+      }
+    }, 90);
+  }
+
+  function forkBomb(done) {
+    track('fork_bomb_triggered');
+    var pid = 1337;
+    var procs = 1;
+    var start = null;
+    document.body.classList.add('shake');
+    print('');
+    var timer = setInterval(function () {
+      for (var i = 0; i < Math.min(procs, 6); i += 1) {
+        pid += Math.floor(Math.random() * 7) + 1;
+        print('[' + pid + '] -bash: fork: spawning <span class="cyan">:</span> &rarr; <span class="cyan">:|:&amp;</span>', 'dim');
+      }
+      procs *= 2;
+      if (!start) start = Date.now();
+      if (procs >= 512) {
+        clearInterval(timer);
+        document.body.classList.remove('shake');
+        print('');
+        // #output is a live region — glyphs stay aria-hidden so screen
+        // readers speak only the words.
+        print('<span aria-hidden="true">⚠</span> FORK RATE THRESHOLD EXCEEDED — 500 forks', 'alert');
+        setTimeout(function () {
+          print('<span aria-hidden="true">✓</span> Attack identified in 44 ms', 'ok');
+          print('<span aria-hidden="true">✓</span> Offending process name recorded: <span class="cyan">:</span>', 'ok');
+          print('<span aria-hidden="true">✓</span> Resource quarantine engaged — system responsive', 'ok');
+          print('');
+          print('<span class="white">That was a live demo of my published research:</span>');
+          print('“Security Against Fork Bomb Attack in Linux Based Systems” (IJRAT, 2019)');
+          print('Nominated for a best paper award &middot; <a href="/research">read how the defense works &rarr;</a>');
+          print('');
+          print('<span class="dim">You found the best easter egg on this site. Tell me on WhatsApp and</span>');
+          print('<span class="dim">the first coffee is on me: <a href="https://wa.me/918200713617?text=I%20detonated%20the%20fork%20bomb%20on%20your%20site">claim coffee</a></span>');
+          done();
+        }, 700);
+      }
+    }, 260);
+  }
+
+  var commands = {
+    help: function (a, done) { cmdHelp(); done(); },
+    whoami: function (a, done) {
+      print('visitor <span class="dim">(uid=1000, curiosity=high)</span>');
+      print('The more interesting question: <span class="cyan">cat about.txt</span>');
+      done();
+    },
+    ls: function (a, done) { cmdLs(); done(); },
+    pwd: function (a, done) { print('/home/visitor/easter-egg'); done(); },
+    date: function (a, done) { print(new Date().toString()); done(); },
+    echo: function (a, done) { print(esc(a) || ''); done(); },
+    cat: function (a, done) { cmdCat(a); done(); },
+    man: function (a, done) {
+      if (a === 'forkbomb') cmdManForkbomb();
+      else print('No manual entry for ' + esc(a || '(nothing)') + '. Try: man forkbomb', 'dim');
+      done();
+    },
+    forkbomb: function (a, done) { forkBomb(done); },
+    hack: function (a, done) { cmdHack(done); },
+    sudo: function (a, done) {
+      print('visitor is not in the sudoers file. This incident will be reported.', 'warn');
+      print('<span class="dim">(It will not. But it felt right to say.)</span>');
+      done();
+    },
+    clear: function (a, done) { output.innerHTML = ''; done(); },
+    exit: function (a, done) { print('logout'); setTimeout(function () { window.location.href = '/'; }, 500); done(); },
+    contact: function (a, done) {
+      print('email:    <a href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a>');
+      print('whatsapp: <a href="https://wa.me/918200713617?text=Hello">wa.me/918200713617</a>');
+      print('call:     <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener">book a slot</a>');
+      done();
+    },
+    rm: function (a, done) {
+      if (/-rf?\s+\/|\/\s*$/.test(a || '')) {
+        print('rm: cannot remove \'/\': the 404-page rockets live there. Request denied.', 'warn');
+      } else {
+        print('rm: read-only filesystem. Your curiosity is noted and appreciated.', 'dim');
+      }
+      done();
+    }
+  };
+
+  function run(raw) {
+    var input = raw.trim();
+    printEcho(raw);
+    if (!input) return;
+    history.push(raw);
+    historyIndex = history.length;
+
+    // The classic fork bomb, in any spacing.
+    if (input.replace(/\s+/g, '').indexOf(':(){:|:&};:') !== -1) {
+      busy = true;
+      promptRow.style.display = 'none';
+      forkBomb(function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+      return;
+    }
+
+    var parts = input.split(/\s+/);
+    var name = parts[0].toLowerCase();
+    var arg = parts.slice(1).join(' ');
+    // Own-property check: without it, typing "constructor" resolved the
+    // inherited Object constructor, ran it as a command, and its done()
+    // callback never fired — leaving busy=true and the prompt hidden
+    // until reload.
+    var handler = Object.prototype.hasOwnProperty.call(commands, name) ? commands[name] : undefined;
+    if (!handler) {
+      print('bash: ' + esc(name) + ': command not found <span class="dim">(try: help)</span>');
+      return;
+    }
+    busy = true;
+    promptRow.style.display = 'none';
+    // No command may leave the terminal wedged: if a handler throws, put
+    // the prompt back instead of stranding the hidden-busy state.
+    try {
+      handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+    } catch (error) {
+      busy = false;
+      promptRow.style.display = '';
+      print('bash: ' + esc(name) + ': unexpected error', 'warn');
+      cmd.focus();
+    }
+  }
+
+  cmd.addEventListener('keydown', function (event) {
+    // Swallow input while an animation runs, but never trap Tab or
+    // browser shortcuts (Ctrl/Cmd+R and friends) — keyboard users must
+    // be able to leave or refresh at any time.
+    if (busy) {
+      if (event.key !== 'Tab' && !event.ctrlKey && !event.metaKey) event.preventDefault();
+      return;
+    }
+    if (event.key === 'Enter') {
+      var value = cmd.value;
+      cmd.value = '';
+      run(value);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (historyIndex > 0) { historyIndex -= 1; cmd.value = history[historyIndex]; }
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (historyIndex < history.length - 1) { historyIndex += 1; cmd.value = history[historyIndex]; }
+      else { historyIndex = history.length; cmd.value = ''; }
+    }
+  });
+
+  document.body.addEventListener('click', function () {
+    if (!busy && !window.getSelection().toString()) cmd.focus();
+  });
+
+  // Boot banner
+  print('Last login: never — nobody was supposed to find this.', 'dim');
+  print('');
+  print('<span class="white">Welcome to the hidden terminal.</span> You are officially the curious type.');
+  print('This machine belongs to <span class="cyan">Krunalkumar Shah</span> — cybersecurity researcher.');
+  print('Type <span class="cyan">help</span> to look around. And whatever you do&hellip;');
+  print('do <span class="alert">NOT</span> type <span class="white">:(){ :|:& };:</span>');
+  print('');
+  track('easter_egg_terminal');
+})();

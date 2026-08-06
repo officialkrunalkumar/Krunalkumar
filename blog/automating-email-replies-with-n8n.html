@@ -11,6 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Automating Email Replies with n8n: A Practical Guide" />
     <meta
@@ -24,8 +26,10 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="A chain of workflow nodes representing an n8n automation" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
-    <meta property="article:published_time" content="2026-05-18" />
-    <meta property="article:author" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-05-18T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-06T18:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Automation" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Automating Email Replies with n8n: A Practical Guide" />
     <meta
@@ -42,7 +46,8 @@
         "description": "A practical walkthrough of automating email replies with n8n, drawn from real client work: how the workflow is structured, where AI fits, the mistakes to avoid, and how to keep a human in the loop.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/automating-email-replies-with-n8n.jpg",
         "datePublished": "2026-05-18",
-        "dateModified": "2026-05-18",
+        "dateModified": "2026-08-06",
+        "articleSection": "Automation",
         "author": {
           "@type": "Person",
           "@id": "https://krunalkumar.dpdns.org/#person",
@@ -72,7 +77,7 @@
         ]
       }
     </script>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/blog.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
@@ -81,21 +86,6 @@
     <script defer src="/assets/js/blog-toc.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
   <body id="top">
     <!-- Google Tag Manager (noscript) -->
@@ -114,7 +104,7 @@
           <a class="nav-link" href="/projects">Projects</a>
           <a class="nav-link" href="/research">Research</a>
           <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
-          <a class="nav-link" href="/client-reviews">Client Reviews</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
           <a class="nav-link" href="/internships">Internships</a>
           <a class="nav-link" href="/contact">Contact</a>
         </div>
@@ -124,6 +114,13 @@
     <main id="main-content" class="page-shell">
       <article>
         <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Automating Email Replies with n8n</li>
+            </ol>
+          </nav>
           <p class="eyebrow">Automation</p>
           <h1>Automating email replies with n8n</h1>
           <p class="hero-text">
@@ -140,7 +137,18 @@
 
         <section class="section-card">
           <div class="post-body">
-            <h2>Why n8n for this</h2>
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#why-n8n-for-this">Why n8n for this</a></li>
+                <li><a href="#the-anatomy-of-a-reply-automation-workflow">The anatomy of a reply-automation workflow</a></li>
+                <li><a href="#classify-before-you-generate">Classify before you generate</a></li>
+                <li><a href="#where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps — and where it shouldn't decide alone</a></li>
+                <li><a href="#the-mistakes-worth-avoiding">The mistakes worth avoiding</a></li>
+                <li><a href="#start-small-then-grow-the-trust">Start small, then grow the trust</a></li>
+              </ol>
+            </nav>
+            <h2 id="why-n8n-for-this">Why n8n for this</h2>
             <p>
               n8n is a workflow automation tool where you connect building blocks — triggers, logic, and actions — into
               a flow, without writing a whole application from scratch. For email reply automation it fits well for a
@@ -150,7 +158,7 @@
               it.
             </p>
 
-            <h2>The anatomy of a reply-automation workflow</h2>
+            <h2 id="the-anatomy-of-a-reply-automation-workflow">The anatomy of a reply-automation workflow</h2>
             <p>
               However fancy it looks, almost every email automation I build follows the same five-stage skeleton.
               Understanding this shape matters more than any single node:
@@ -188,7 +196,7 @@
               <figcaption>Every reliable email automation is a variation on this: trigger, gather context, classify, draft, then act — with logging throughout.</figcaption>
             </figure>
 
-            <h2>Classify before you generate</h2>
+            <h2 id="classify-before-you-generate">Classify before you generate</h2>
             <p>
               The temptation with AI is to skip straight to "let the model write a reply to anything." That's how you
               end up sending a cheerful sales pitch to someone who wrote "please remove me from your list." The fix is
@@ -201,7 +209,7 @@
               separates an automation people trust from one that quietly embarrasses them.
             </p>
 
-            <h2>Where AI helps — and where it shouldn't decide alone</h2>
+            <h2 id="where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps — and where it shouldn't decide alone</h2>
             <p>
               AI is excellent at the language part: understanding a messy human reply and drafting a fluent,
               on-tone response. Let it do that. What it should not do unsupervised is make irreversible decisions —
@@ -214,7 +222,7 @@
               </p>
             </blockquote>
 
-            <h2>The mistakes worth avoiding</h2>
+            <h2 id="the-mistakes-worth-avoiding">The mistakes worth avoiding</h2>
             <ul>
               <li><strong>No approval step for high-stakes replies.</strong> Start with a human approving AI drafts, and only remove the gate for categories once you trust them. Full autonomy on day one is how you get a bad send you can't take back.</li>
               <li><strong>Forgetting to log.</strong> If the CRM doesn't record what the automation did, you're flying blind and you'll double-reply or contradict yourself. Always write the outcome back.</li>
@@ -222,7 +230,7 @@
               <li><strong>Over-automating.</strong> Not every email should be automated. The value is in the repetitive, high-volume, low-judgment messages — leave the rest to a person.</li>
             </ul>
 
-            <h2>Start small, then grow the trust</h2>
+            <h2 id="start-small-then-grow-the-trust">Start small, then grow the trust</h2>
             <p>
               My advice for a first build: pick one narrow, high-volume category — say, auto-handling clear
               "not interested" replies — and automate only that, with a human approving each action at first. Watch it
@@ -250,7 +258,7 @@
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="/internships">Learn with me</a>
-              <a class="btn btn-secondary" href="/projects">See related projects</a>
+              <a class="btn btn-secondary" href="/services">Need this built for your business? See my services</a>
             </div>
           </div>
 
@@ -272,7 +280,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-          <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+          <div class="footer-cta-group">
+            <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+          </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -283,7 +294,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -311,7 +322,7 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
     <script src="/assets/js/particle-bg.js"></script>

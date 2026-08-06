@@ -11,6 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="I Open-Sourced My AI SDR: CleverResponder for SmartLead and Instantly" />
     <meta
@@ -24,8 +26,10 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="CleverResponder — an open-source AI SDR that handles campaign replies end to end" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
-    <meta property="article:published_time" content="2026-08-03" />
-    <meta property="article:author" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-03T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-06T18:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Automation" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="I Open-Sourced My AI SDR: CleverResponder for SmartLead and Instantly" />
     <meta
@@ -42,7 +46,8 @@
         "description": "I open-sourced CleverResponder — a fully functional AI SDR built in n8n for SmartLead and Instantly. It classifies campaign replies, drafts responses grounded in a knowledge doc, gets human approval in Slack, sends, and follows up.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/i-open-sourced-my-ai-sdr.jpg",
         "datePublished": "2026-08-03",
-        "dateModified": "2026-08-03",
+        "dateModified": "2026-08-06",
+        "articleSection": "Automation",
         "author": {
           "@type": "Person",
           "@id": "https://krunalkumar.dpdns.org/#person",
@@ -72,7 +77,7 @@
         ]
       }
     </script>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/blog.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
@@ -81,21 +86,6 @@
     <script defer src="/assets/js/blog-toc.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
   <body id="top">
     <!-- Google Tag Manager (noscript) -->
@@ -114,7 +104,7 @@
           <a class="nav-link" href="/projects">Projects</a>
           <a class="nav-link" href="/research">Research</a>
           <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
-          <a class="nav-link" href="/client-reviews">Client Reviews</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
           <a class="nav-link" href="/internships">Internships</a>
           <a class="nav-link" href="/contact">Contact</a>
         </div>
@@ -124,6 +114,13 @@
     <main id="main-content" class="page-shell">
       <article>
         <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">I Open-Sourced My AI SDR</li>
+            </ol>
+          </nav>
           <p class="eyebrow">Automation</p>
           <h1>I open-sourced my AI SDR</h1>
           <p class="hero-text">
@@ -141,7 +138,18 @@
 
         <section class="section-card">
           <div class="post-body">
-            <h2>The problem: replies are where campaigns go to die</h2>
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-problem-replies-are-where-campaigns-go-to-die">The problem: replies are where campaigns go to die</a></li>
+                <li><a href="#what-it-does-end-to-end">What it does, end to end</a></li>
+                <li><a href="#the-smartlead-build">The SmartLead build</a></li>
+                <li><a href="#the-slack-approval-gate">The Slack approval gate</a></li>
+                <li><a href="#the-instantly-build">The Instantly build</a></li>
+                <li><a href="#grab-the-workflows">Grab the workflows</a></li>
+              </ol>
+            </nav>
+            <h2 id="the-problem-replies-are-where-campaigns-go-to-die">The problem: replies are where campaigns go to die</h2>
             <p>
               Cold outreach tools are great at sending. The trouble starts when someone actually answers. Replies
               arrive at all hours, in every shape — "interested, send more info", "book me a call", "not interested",
@@ -155,7 +163,7 @@
               boring 80% of replies a fast, safe, supervised path, so humans only touch the messages that need them.
             </p>
 
-            <h2>What it does, end to end</h2>
+            <h2 id="what-it-does-end-to-end">What it does, end to end</h2>
             <ul>
               <li><strong>Receives</strong> every campaign reply through a webhook, the moment it lands.</li>
               <li><strong>Classifies</strong> it — interested, info requested, meeting requested, not interested, out of office, and more.</li>
@@ -164,7 +172,7 @@
               <li><strong>Sends and follows up</strong> — approved replies go out; meeting requests get a calendar link, and if no booking happens within a few days, the workflow checks in and nudges.</li>
             </ul>
 
-            <h2>The SmartLead build</h2>
+            <h2 id="the-smartlead-build">The SmartLead build</h2>
             <p>
               Here's the actual n8n canvas, redrawn for readability with every node and connection where it really
               sits (the original export lives in the repo):
@@ -190,7 +198,7 @@
               between automation that feels robotic and automation that feels like a colleague.
             </p>
 
-            <h2>The Slack approval gate</h2>
+            <h2 id="the-slack-approval-gate">The Slack approval gate</h2>
             <p>
               The load-bearing node in both workflows is n8n's <code>sendAndWait</code> Slack step. The AI's draft
               posts to a channel with two buttons, and the workflow literally pauses until a human clicks. Approve,
@@ -205,7 +213,7 @@
               </p>
             </blockquote>
 
-            <h2>The Instantly build</h2>
+            <h2 id="the-instantly-build">The Instantly build</h2>
             <figure class="post-figure">
               <a href="/assets/images/blog/instantly-workflow.svg" target="_blank" rel="noopener" aria-label="Open the Instantly workflow diagram full-screen">
                 <img src="/assets/images/blog/instantly-workflow.svg" alt="The Instantly CleverResponder n8n canvas: a reply is matched to its lead through a UUID lookup with a retry loop, classified by an AI reply decision, drafted with a knowledge doc, redacted and polished, approved in Slack, sent, and followed up through a 3-day reminder loop" width="1217" height="384" loading="lazy" decoding="async" />
@@ -225,7 +233,7 @@
               sends the reminder — and comes back around until the meeting books or the team says stop.
             </p>
 
-            <h2>Grab the workflows</h2>
+            <h2 id="grab-the-workflows">Grab the workflows</h2>
             <p>
               Both builds are open source — each repo has the complete n8n workflow JSON you can import directly,
               plus the canvas export and a README:
@@ -281,7 +289,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-          <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+          <div class="footer-cta-group">
+            <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+          </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -292,7 +303,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -320,7 +331,7 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
     <script src="/assets/js/particle-bg.js"></script>

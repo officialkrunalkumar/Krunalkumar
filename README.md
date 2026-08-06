@@ -18,7 +18,8 @@ web server can host it, and any computer with a browser can develop it.
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel              |
+| `blog/`               | Blog — `/blog` index (10 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD |
+| `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `verify.html`         | Certificate verification — looks up completion-certificate IDs in `assets/data/certificates.json` (client-side, no backend). QR codes on certificates deep-link here as `/verify?id=…`. Offer letters are deliberately not verifiable online — institutions email instead. The generator lives in a private repo; `/generate` redirects to it (see `vercel.json`) |
@@ -33,20 +34,36 @@ web server can host it, and any computer with a browser can develop it.
 ```
 ├── index.html, about.html, ...   Pages (content only — header/footer are injected)
 ├── 404.html                      Custom not-found page (noindex)
+├── favicon.ico                   Favicon, served from the site root
+├── blog/
+│   ├── index.html                Blog index — static card grid of every post
+│   └── *.html                    One file per article (10 posts), static TOC in the markup
 ├── partials/
 │   ├── header.html               ★ Single source of truth for the navigation
 │   └── footer.html               ★ Single source of truth for the footer
 ├── assets/
 │   ├── css/main.css              All styles — organized into 13 numbered sections (see its table of contents)
+│   ├── css/blog.css              Blog-only styles (index cards + post layout), loaded by blog pages
+│   ├── js/boot.js                Head bootstrap: js-detect, partials-failure timer, GA4 + GTM loaders
 │   ├── js/include-partials.js    Loads header/footer into every page at runtime
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
+│   ├── js/wa-form.js             Shared WhatsApp form handler (contact + internship forms)
+│   ├── js/projects.js            Projects gallery pager + featured-card rotation
+│   ├── js/client-reviews.js      Recommendations carousel + featured-card rotation
+│   ├── js/blog-index.js          Blog index "Show more" reveal
+│   ├── js/blog-toc.js            Fallback TOC builder for posts that lack a static one
+│   ├── js/verify.js              Certificate lookup on /verify
+│   ├── js/terminal.js            Terminal easter-egg logic
+│   ├── js/404.js                 404 rocket flight-path & headline randomizer
 │   ├── data/certificates.json    Public record backing the /verify certificate lookup — update when issuing or revoking
-│   ├── images/                   Portrait, certification badges, favicon, research flowchart (SVG)
+│   ├── images/                   Portrait, logo, certification badges, OG share images, research flowchart (SVG)
+│   ├── images/blog/              Blog post cover art (SVG) + og/ share images
 │   └── pdf/                      Resume
 ├── .well-known/security.txt      RFC 9116 security contact file
-├── sitemap.xml                   Search-engine sitemap — update when adding pages
+├── sitemap.xml                   Search-engine sitemap — update when adding pages or posts
+├── feed.xml / atom.xml           RSS + Atom feeds for the blog — update when adding posts
 ├── robots.txt                    Crawl rules + sitemap pointer
-└── vercel.json                   Clean URLs + security headers (CSP, X-Frame-Options, nosniff, etc.) + noindex on the resume PDF
+└── vercel.json                   Clean URLs + security headers (strict CSP, X-Frame-Options, nosniff, etc.) + Cache-Control for assets + noindex on the resume PDF, /partials, and /assets/data
 ```
 
 ---
@@ -68,6 +85,18 @@ keep the static copies — same look, minus the JS-only controls.
 static copies in every page to match.** They are plain duplicates — a search-and-replace across
 pages handles it — and the static header keeps each page's own link pre-marked active.
 
+### One head bootstrap, zero inline scripts
+
+`assets/js/boot.js` is the single `<head>` script on every page — loaded synchronously (no
+`defer`) right before `main.css` so the `js` class lands before first paint. It consolidates what
+each page used to carry as three inline blocks: JS detection, the partials-failure fallback timer,
+and both analytics loaders (GA4 gtag + GTM — Google deduplicates). Because of it, **no page ships
+any executable inline script or inline event-handler attribute**, and the CSP in `vercel.json`
+drops `'unsafe-inline'` from `script-src` — an inline script would simply be blocked, so keep new
+behavior in external files loaded with `defer` (see the per-page files under `assets/js/`).
+`<script type="application/ld+json">` blocks are data, not executable code, and are CSP-exempt.
+The GTM `<noscript>` iframe at the top of each `<body>` stays as the no-JS fallback.
+
 ### Clean URLs & domains
 
 Pages live on disk as `about.html`, `services.html`, … but are **served extensionless**: `/about`,
@@ -83,7 +112,8 @@ search index. Files are never renamed — the mapping happens at request time. B
 
 The primary domain is **<https://krunalkumar.dpdns.org>**. `krunalkumar.vercel.app` and
 `www.krunalkumar.dedyn.io` 308-redirect to it in one hop (configured in the Vercel dashboard, not
-in this repo). Every absolute URL in the codebase — canonicals, `og:url`, JSON-LD, `sitemap.xml`,
+in this repo — the old `CNAME` file was removed; Vercel manages the domain, so no file in the
+repo is involved). Every absolute URL in the codebase — canonicals, `og:url`, JSON-LD, `sitemap.xml`,
 `robots.txt`, `.well-known/security.txt` — must use the primary domain: redirects and canonicals
 must always agree, or search engines get mixed signals.
 
@@ -111,19 +141,32 @@ annual edit needed.
 The contact and internship forms don't need a backend: on submit, JavaScript builds a prefilled
 `wa.me/<number>` message from the fields and opens WhatsApp. When the visitor returns to the tab,
 the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
-keeps their details for a retry. A floating WhatsApp chat bubble (injected by `particle-bg.js`,
+keeps their details for a retry. Both forms share one handler, `assets/js/wa-form.js`, wired
+declaratively (no inline script): mark the `<form>` with `data-wa-form` and it self-initialises on
+DOMContentLoaded. Five `data-*` attributes configure it, all required — `data-wa-fields`
+(space-separated required field names, in display order), `data-wa-message-template` (the WhatsApp
+message with `{field}` placeholders and `\n` for line breaks), `data-wa-analytics-prefix` (gtag
+event prefix — `contact_form` fires `contact_form_submit` / `contact_form_confirmed`),
+`data-wa-followup-question` (asked when the visitor returns from WhatsApp), and
+`data-wa-confirmed-message` (success copy). Tel inputs inside such forms are filtered to
+`[0-9+ ]` as the visitor types — pair them with a visible `.form-hint`. See the header comment in
+`wa-form.js` for the full contract and a worked example.
+
+A floating WhatsApp chat bubble (injected by `particle-bg.js`,
 stacked under the back-to-top button) offers the same direct line from every page; its × hides it
 for the current page (the site deliberately uses no browser storage, so the bubble returns on the
 next page view) and back-to-top drops into its corner. The number
-appears in every page's static footer, both forms, the terminal easter egg, `refund.html`, and
-`assets/js/particle-bg.js` — to change it, search-and-replace `8200713617` across the whole repo
-rather than editing files from a list.
+appears in every page's static footer, both form pages, the terminal easter egg, `refund.html`,
+`assets/js/particle-bg.js`, `assets/js/terminal.js`, and `assets/js/wa-form.js` (`WA_NUMBER`) — to
+change it, search-and-replace `8200713617` across the whole repo rather than editing files from a
+list.
 
 ### Analytics events
 
-Beyond page views, Google Analytics receives conversion events: `book_call_click`, `email_click`,
-`whatsapp_link_click`, `resume_download` (global click listener in `particle-bg.js`), plus
-`*_form_submit` / `*_form_confirmed` from the two forms.
+Both trackers (GA4 gtag + GTM) are loaded by `boot.js`. Beyond page views, Google Analytics
+receives conversion events: `book_call_click`, `email_click`, `whatsapp_link_click`,
+`resume_download` (global click listener in `particle-bg.js`), plus `*_form_submit` /
+`*_form_confirmed` from `wa-form.js`.
 
 ### Visual layer
 
@@ -164,15 +207,31 @@ unmatched URLs.
    `partials/footer.html` (Explore column), and the static header/footer copies in every page.
 3. Add an extensionless `<url>` entry to `sitemap.xml`.
 
+**Add a blog post**
+1. Copy an existing `blog/*.html` post and replace the article content and the whole `<head>`
+   metadata set: `<title>`, meta description, canonical (`/blog/<slug>`, extensionless), OG/Twitter
+   tags pointing at the post's own share image, ISO-dated `article:published_time` /
+   `article:modified_time`, and the BlogPosting + BreadcrumbList JSON-LD (matching dates). Keep the
+   `feed.xml` / `atom.xml` `<link rel="alternate">` tags. Write the static "In this article" TOC
+   (`.post-toc`) to match the post's `h2` headings — `blog-toc.js` only builds one when the static
+   TOC is missing.
+2. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`
+   (`blog-index.js` shows the first six and hides the rest behind Show more, so newest goes first).
+3. Update the "From the blog" column if the post should be one of the five highlighted there — in
+   `partials/footer.html` AND the static footer copies in every page.
+4. Add an extensionless `<url>` entry to `sitemap.xml`.
+5. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
+
 **Add a project** — copy an existing `<a class="project-item">` card inside `#project-list` in
 `projects.html` and edit its category, title, description, and href. The gallery is static HTML
-(crawler-visible); the inline script only paginates it. Add the `data-spotlight` attribute to make
-the project eligible for the Featured spotlight rotation.
+(crawler-visible); `assets/js/projects.js` only paginates it. Add the `data-spotlight` attribute to
+make the project eligible for the Featured spotlight rotation.
 
 **Add a recommendation** — copy an existing `.recommendation-card` block inside
 `.recommendation-carousel` in `client-reviews.html` and edit the quote, author, role, and date.
-All cards are static HTML; the inline script only shows one at a time. The featured recommendation
-is a separate static block (`#featured-recommendation-shell`) — update it deliberately.
+All cards are static HTML; `assets/js/client-reviews.js` only shows one at a time. The featured
+recommendation is a separate static block (`#featured-recommendation-shell`) — update it
+deliberately.
 
 **Change internship tracks** — edit the tag list and the `<select>` options in `internships.html`.
 
@@ -192,13 +251,22 @@ the file never outranks the homepage in search.
   `sitemap.xml` lastmod fresh when content changes meaningfully.
 - One `<h1>` per page; sections use `<h2>`/`<h3>`.
 - The site is dark-theme only by design (`color-scheme: dark`).
+- No inline scripts, ever: `boot.js` is the only `<head>` bootstrap; everything else is an external
+  file loaded with `defer`, and no element carries an inline event handler (`onclick=` etc.). The
+  CSP has no `'unsafe-inline'` for scripts, so violations are blocked, not just frowned upon.
+- `vercel.json` sets Cache-Control on `/assets/` (1 day, with a week of stale-while-revalidate;
+  images get 30 days) — cache-sensitive changes to an asset may warrant a new filename.
+- `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
+  so fetched fragments and raw JSON never appear in search results.
 
 ## SEO
 
 Per-page meta descriptions, canonicals, Open Graph/Twitter cards pointing to a dedicated 1200×630
-share image (`assets/images/og-image.jpg`), and JSON-LD structured data (Person, WebSite,
-BreadcrumbList, ScholarlyArticle on the research page); `sitemap.xml` + `robots.txt`; custom 404
-with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
+share image (`assets/images/og-image.jpg`; blog posts have their own under
+`assets/images/blog/og/`), and JSON-LD structured data (Person, WebSite, BreadcrumbList,
+ScholarlyArticle on the research page, BlogPosting on blog posts); `sitemap.xml` + `robots.txt` +
+RSS/Atom feeds (`feed.xml` / `atom.xml`, advertised via `<link rel="alternate">` on blog pages);
+custom 404 with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
 links are present in the raw HTML — crawlers discover pages without JavaScript — but keep
 `sitemap.xml` accurate anyway; it remains the authoritative index request.
 
