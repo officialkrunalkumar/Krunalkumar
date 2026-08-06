@@ -39,7 +39,7 @@
         "@id": "https://krunalkumar.dpdns.org/#person",
         "name": "Krunalkumar Shah",
         "url": "https://krunalkumar.dpdns.org/",
-        "jobTitle": "Researcher, Engineer, Cybersecurity Professional"
+        "jobTitle": "Researcher, Engineer, Cybersecurity Consultant"
       }
     </script>
     <script type="application/ld+json">
@@ -63,12 +63,12 @@
       }
     </script>
     <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
-    <script defer src="assets/js/include-partials.js"></script>
-    <link rel="icon" type="image/jpeg" href="assets/images/favicon.jpg" />
-    <link rel="apple-touch-icon" href="assets/images/favicon.jpg" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
     <script>
@@ -191,7 +191,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <p class="footer-name">
-            <img class="footer-logo" src="assets/images/favicon.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
@@ -241,77 +241,17 @@
       </div>
     </footer>
 
-    <script src="assets/js/particle-bg.js"></script>
+    <script src="/assets/js/particle-bg.js"></script>
+    <script src="/assets/js/wa-form.js"></script>
     <script>
-      const form = document.getElementById('contact-form');
-      const formStatus = document.getElementById('form-status');
-
-      if (form && formStatus) {
-        let awaitingWhatsAppReturn = false;
-
-        // The button ships disabled so a no-JS Enter press can't fire the raw
-        // POST (which a static host answers with an error page, losing the
-        // message) — CSS hides it in that case, but a display:none submit
-        // button still acts as the form's default button.
-        const submitButton = form.querySelector('button[type="submit"]');
-        if (submitButton) submitButton.disabled = false;
-
-        form.addEventListener('submit', (event) => {
-          event.preventDefault();
-
-          const formData = new FormData(form);
-          const name = (formData.get('name') || '').toString().trim();
-          const phone = (formData.get('phone') || '').toString().trim();
-          const email = (formData.get('email') || '').toString().trim();
-          const message = (formData.get('message') || '').toString().trim();
-
-          if (!name || !phone || !email || !message) {
-            formStatus.innerHTML = '<span class="error-pill">Please fill in all required fields.</span>';
-            return;
-          }
-
-          const text = encodeURIComponent(`Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`);
-          const waUrl = `https://wa.me/918200713617?text=${text}`;
-          // 'noopener' in the features string makes window.open return null even
-          // when the tab opens successfully, so sever the opener by hand instead.
-          const waWindow = window.open(waUrl, '_blank');
-          if (waWindow) {
-            waWindow.opener = null;
-            awaitingWhatsAppReturn = true;
-            formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
-            if (typeof gtag === 'function') gtag('event', 'contact_form_submit');
-          } else {
-            // Pop-up blocked: give the visitor a direct link so the message is not silently lost.
-            formStatus.innerHTML = '<span class="error-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
-            // Only arm the "did it go through?" follow-up once they actually
-            // leave for WhatsApp — otherwise any tab switch replaces the
-            // rescue link with a question about a message that never went out.
-            const rescueLink = formStatus.querySelector('a');
-            if (rescueLink) rescueLink.addEventListener('click', () => { awaitingWhatsAppReturn = true; });
-          }
-        });
-
-        // When the visitor returns from WhatsApp, ask whether the message went through.
-        document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState !== 'visible' || !awaitingWhatsAppReturn) return;
-          awaitingWhatsAppReturn = false;
-
-          formStatus.innerHTML =
-            '<span class="form-followup">Did your message go through on WhatsApp?' +
-            '<button type="button" id="wa-sent">Yes, sent it</button>' +
-            '<button type="button" id="wa-retry">Not yet</button></span>';
-
-          document.getElementById('wa-sent').addEventListener('click', () => {
-            form.reset();
-            formStatus.innerHTML = '<span class="success-pill">🎉 Thank you! Your message is on its way — I will get back to you soon.</span>';
-            if (typeof gtag === 'function') gtag('event', 'contact_form_confirmed');
-          });
-
-          document.getElementById('wa-retry').addEventListener('click', () => {
-            formStatus.innerHTML = '<span class="success-pill">No problem — your details are still filled in. Try sending again, or email me at krunalkumar@krunalkumar.dpdns.org.</span>';
-          });
-        });
-      }
+      initWhatsAppForm({
+        formId: 'contact-form',
+        fields: ['name', 'phone', 'email', 'message'],
+        buildMessage: (v) => `Hello Krunalkumar, I am reaching out to you from your website. Here are my details. \nName: ${v.name}\nPhone: ${v.phone}\nEmail: ${v.email}\n\nMessage:\n${v.message}`,
+        analyticsPrefix: 'contact_form',
+        followupQuestion: 'Did your message go through on WhatsApp?',
+        confirmedMessage: '🎉 Thank you! Your message is on its way — I will get back to you soon.'
+      });
     </script>
   </body>
 </html>

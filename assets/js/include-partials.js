@@ -49,6 +49,8 @@
   function markActiveLink() {
     var path = window.location.pathname.replace(/\.html$/, '').replace(/\/+$/, '');
     if (path === '' || path === '/index') path = '/';
+    // Blog posts live under /blog/<slug> — highlight the "Blog" nav link there.
+    if (path.indexOf('/blog/') === 0) path = '/blog';
     var link = document.querySelector('.nav-list .nav-link[href="' + path + '"]');
     if (link) {
       link.classList.add('active');
