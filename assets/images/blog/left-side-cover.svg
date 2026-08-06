@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Character over Career — the five choices I live by, choosing the left side of each letter">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="170" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">MINDSET</text>
+    <text x="80" y="250" fill="#f8fafc" font-size="60" font-weight="800">Character over Career</text>
+    <text x="80" y="315" fill="#e2e8f0" font-size="30" font-weight="600">Five choices I live by — I pick the</text>
+    <text x="80" y="356" fill="#e2e8f0" font-size="30" font-weight="600">left side of every letter.</text>
+    <text x="80" y="560" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+    <!-- paired-word list, left chosen (accent) over right (muted) -->
+    <g font-size="26" font-weight="700">
+      <text x="720" y="205" fill="#7dd3fc">Character</text><text x="905" y="205" fill="#475569" font-weight="600">Career</text>
+      <text x="720" y="255" fill="#7dd3fc">Satisfaction</text><text x="935" y="255" fill="#475569" font-weight="600">Success</text>
+      <text x="720" y="305" fill="#7dd3fc">Failure</text><text x="875" y="305" fill="#475569" font-weight="600">Fear</text>
+      <text x="720" y="355" fill="#7dd3fc">People</text><text x="875" y="355" fill="#475569" font-weight="600">Place</text>
+      <text x="720" y="405" fill="#7dd3fc">Goal</text><text x="845" y="405" fill="#475569" font-weight="600">Gossip</text>
+    </g>
+    <g stroke="#334155" stroke-width="2">
+      <line x1="862" y1="197" x2="898" y2="197"/>
+      <line x1="892" y1="247" x2="928" y2="247"/>
+      <line x1="812" y1="297" x2="868" y2="297"/>
+      <line x1="812" y1="347" x2="868" y2="347"/>
+      <line x1="788" y1="397" x2="838" y2="397"/>
+    </g>
+  </g>
+</svg>

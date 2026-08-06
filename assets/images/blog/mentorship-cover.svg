@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What running internship cohorts taught me about mentorship">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.75" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- mentor node connected to mentee nodes -->
+  <g stroke="#38bdf8" stroke-width="3" opacity="0.85">
+    <line x1="870" y1="300" x2="1020" y2="180"/>
+    <line x1="870" y1="300" x2="1060" y2="330"/>
+    <line x1="870" y1="300" x2="1000" y2="450"/>
+  </g>
+  <circle cx="870" cy="300" r="46" fill="#7dd3fc"/>
+  <circle cx="1020" cy="180" r="24" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+  <circle cx="1060" cy="330" r="24" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+  <circle cx="1000" cy="450" r="24" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">MENTORSHIP</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="58" font-weight="800">What running internship</text>
+    <text x="80" y="350" fill="#f8fafc" font-size="58" font-weight="800">cohorts taught me</text>
+    <text x="80" y="420" fill="#e2e8f0" font-size="30" font-weight="600">Small groups, real projects, honest feedback.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

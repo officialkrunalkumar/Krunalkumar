@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: How to succeed in software development and automation — make it work, modular, readable, then optimized">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- ascending staircase of four steps -->
+  <g>
+    <rect x="740" y="430" width="90" height="70" rx="8" fill="#38bdf8" opacity="0.55"/>
+    <rect x="830" y="360" width="90" height="140" rx="8" fill="#38bdf8" opacity="0.7"/>
+    <rect x="920" y="290" width="90" height="210" rx="8" fill="#38bdf8" opacity="0.85"/>
+    <rect x="1010" y="220" width="90" height="280" rx="8" fill="#7dd3fc"/>
+    <text x="785" y="475" fill="#0b1220" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" text-anchor="middle">1</text>
+    <text x="875" y="440" fill="#0b1220" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" text-anchor="middle">2</text>
+    <text x="965" y="405" fill="#0b1220" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" text-anchor="middle">3</text>
+    <text x="1055" y="370" fill="#0b1220" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" text-anchor="middle">4</text>
+  </g>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">CRAFT</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="54" font-weight="800">How to succeed in software</text>
+    <text x="80" y="345" fill="#f8fafc" font-size="54" font-weight="800">&amp; automation</text>
+    <text x="80" y="415" fill="#e2e8f0" font-size="28" font-weight="600">Make it work → modular → readable → optimized.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>
