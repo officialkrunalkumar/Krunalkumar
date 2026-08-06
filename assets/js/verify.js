@@ -34,7 +34,10 @@
 
   function loadCertificates() {
     if (!certificatesPromise) {
-      certificatesPromise = fetch('/assets/data/certificates.json').then((response) => {
+      // cache: 'no-cache' — always revalidate with the server. A verification
+      // page must never answer from a stale copy: a revoked certificate could
+      // keep showing "valid", or a freshly issued ID could be called fake.
+      certificatesPromise = fetch('/assets/data/certificates.json', { cache: 'no-cache' }).then((response) => {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
       }).catch((error) => {
