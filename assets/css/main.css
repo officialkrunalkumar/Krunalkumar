@@ -23,15 +23,10 @@
 
 :root {
   color-scheme: dark;
-  --bg: #f8fbff;
-  --surface: #ffffff;
-  --surface-alt: #f1f5ff;
   --text: #f8fafc;
   --muted: #e2e8f0;
   --accent: #7dd3fc;
   --accent-dark: #38bdf8;
-  --border: rgba(255, 255, 255, 0.2);
-  --shadow: rgba(2, 6, 23, 0.25);
 }
 
 /* ==========================================================================
@@ -501,7 +496,7 @@ main {
   letter-spacing: 0.25em;
   text-transform: uppercase;
   font-weight: 800;
-  color: #7dd3fc;
+  color: var(--accent);
 }
 
 h1,
@@ -857,7 +852,7 @@ footer p {
 }
 
 .paper-doi {
-  color: #7dd3fc;
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -903,13 +898,13 @@ footer p {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #7dd3fc;
+  background: var(--accent);
   box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.15);
 }
 
 .timeline-period {
   margin: 0;
-  color: #7dd3fc;
+  color: var(--accent);
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -993,7 +988,7 @@ footer p {
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   background: rgba(125, 211, 252, 0.16);
-  color: #7dd3fc;
+  color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1013,7 +1008,7 @@ footer p {
 }
 
 .featured-recommendation-meta {
-  color: #7dd3fc;
+  color: var(--accent);
   font-size: 0.95rem;
 }
 
@@ -1091,7 +1086,7 @@ footer p {
 }
 
 .project-meta {
-  color: #7dd3fc;
+  color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1161,7 +1156,7 @@ footer p {
 }
 
 .recommendation-role {
-  color: #7dd3fc;
+  color: var(--accent);
   font-size: 0.95rem;
   margin-top: 0.2rem;
 }
@@ -1287,7 +1282,7 @@ footer p {
 
 .form-status {
   margin: 0;
-  color: #7dd3fc;
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -1386,7 +1381,7 @@ footer p {
 
 .verify-fields dt {
   font-weight: 700;
-  color: #7dd3fc;
+  color: var(--accent);
 }
 
 .verify-fields dd {
@@ -1498,7 +1493,7 @@ footer {
   height: 48px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #38bdf8, #0f172a);
+  background: linear-gradient(135deg, var(--accent-dark), #0f172a);
   color: #f8fafc;
   font-size: 1.1rem;
   cursor: pointer;
@@ -1595,8 +1590,11 @@ footer a:hover {
 
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  /* auto tracks size each column to its content; space-evenly keeps the
+     gaps between columns equal but trimmed, with breathing room at the edges. */
+  grid-template-columns: auto auto auto;
+  justify-content: space-evenly;
+  gap: 1.5rem 2rem;
   align-content: start;
 }
 
@@ -1652,6 +1650,18 @@ footer a:hover {
    ========================================================================== */
 
 @media (max-width: 900px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid,
+  .license-grid,
+  .content-grid,
+  .content-grid.two-up,
+  .content-grid.three-up {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 1.75rem;
@@ -1676,21 +1686,6 @@ footer a:hover {
   .footer-tagline {
     margin-left: auto;
     margin-right: auto;
-  }
-}
-
-@media (max-width: 900px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-  }
-
-
-  .card-grid,
-  .license-grid,
-  .content-grid,
-  .content-grid.two-up,
-  .content-grid.three-up {
-    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1742,9 +1737,7 @@ footer a:hover {
     position: static;
     display: contents;
   }
-}
 
-@media (max-width: 640px) {
   .hero-section,
   .section-card,
   footer {
