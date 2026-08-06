@@ -1,8 +1,11 @@
 // Builds the "In this article" jump-box on blog posts from the h2 headings
-// inside .post-body. Runs only when JS is available — no-JS readers simply
-// scroll, and nothing is lost. New posts get a TOC automatically as long as
-// they include this script and use h2 section headings.
+// inside .post-body. Posts now ship a static TOC in the markup, so this
+// script is a fallback for future posts without one — it bails out when a
+// .post-toc already exists. New posts still get a TOC automatically as long
+// as they include this script and use h2 section headings.
 (function () {
+  if (document.querySelector('.post-toc')) return; // static TOC already in the markup
+
   var body = document.querySelector('.post-body');
   if (!body) return;
 

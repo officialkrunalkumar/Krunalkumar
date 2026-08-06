@@ -8,6 +8,44 @@
    Article pages
    -------------------------------------------------------------------------- */
 
+/* Breadcrumb trail above the article title — small, muted, one line */
+.breadcrumbs {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: #94a3b8;
+}
+
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbs li + li::before {
+  content: "/";
+  margin: 0 0.5rem;
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.breadcrumbs a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
 .post-cover {
   margin: 1.5rem 0 0;
 }
@@ -63,6 +101,28 @@
 
 .post-body blockquote p {
   margin: 0;
+}
+
+/* Warning callout — deliberately distinct from a quote: amber accent matching
+   the site's award/pending styling, for cautions inside post bodies. */
+.post-callout {
+  margin: 1.4rem 0;
+  padding: 0.9rem 1.2rem;
+  border-left: 3px solid #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 0 14px 14px 0;
+}
+
+.post-callout p {
+  margin: 0 0 0.5rem;
+}
+
+.post-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.post-callout strong {
+  color: #fde68a;
 }
 
 .post-body code {

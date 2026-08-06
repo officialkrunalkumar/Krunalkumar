@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#0f172a" />
     <title>Page not found | Krunalkumar Shah</title>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
@@ -150,22 +150,6 @@
     </style>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
 
   <body id="top">
@@ -185,7 +169,7 @@
             <a class="nav-link" href="/projects">Projects</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
-            <a class="nav-link" href="/client-reviews">Client Reviews</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -248,7 +232,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-      <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -259,7 +246,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -287,41 +274,11 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
 
     <script src="/assets/js/particle-bg.js"></script>
-    <script>
-      // Every visit gets a random flight path for the lost rocket and a random headline.
-      (function () {
-        const rocket = document.querySelector('.nf-rocket');
-        if (rocket) {
-          const flights = [
-            ['nf-fly', '16s'],
-            ['nf-fly-2', '14s'],
-            ['nf-fly-3', '18s'],
-          ];
-          const flight = flights[Math.floor(Math.random() * flights.length)];
-          rocket.style.animationName = flight[0];
-          rocket.style.animationDuration = flight[1];
-        }
-
-        const title = document.getElementById('nf-title');
-        if (title) {
-          const headlines = [
-            'This page seems to have wandered off.',
-            'Houston, we have a problem — this page does not exist.',
-            'This page drifted out of orbit.',
-            'You have reached the edge of the known universe.',
-            'Page lost in space. The rocket is still searching.',
-            'These coordinates point to empty space.',
-            'This link burned up on re-entry.',
-            'Signal lost. This page is off the star map.',
-          ];
-          title.textContent = headlines[Math.floor(Math.random() * headlines.length)];
-        }
-      })();
-    </script>
+    <script defer src="/assets/js/404.js"></script>
   </body>
 </html>

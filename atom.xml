@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Krunalkumar Shah — Blog</title>
+  <subtitle>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</subtitle>
+  <link href="https://krunalkumar.dpdns.org/blog" />
+  <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
+  <id>https://krunalkumar.dpdns.org/blog</id>
+  <updated>2026-08-06T18:00:00+05:30</updated>
+  <author>
+    <name>Krunalkumar Shah</name>
+  </author>
+  <entry>
+    <title>I Open-Sourced My AI SDR | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr" />
+    <id>https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr</id>
+    <published>2026-08-03T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>CleverResponder is my open-source AI SDR for SmartLead and Instantly: it classifies replies, drafts with AI, gets Slack approval, sends, and follows up.</summary>
+  </entry>
+  <entry>
+    <title>Character Over Career: Five Choices I Live By</title>
+    <link href="https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by" />
+    <id>https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by</id>
+    <published>2026-07-27T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Character over career, satisfaction over success, failure over fear, people over place, goal over gossip — five choices that guide how I live and work.</summary>
+  </entry>
+  <entry>
+    <title>My Career Story: From Classroom to AI | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai" />
+    <id>https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai</id>
+    <published>2026-07-19T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>From a $6 mentoring session to published security research, 5,000+ interviews, and AI pipelines — my honest career story, setbacks included.</summary>
+  </entry>
+  <entry>
+    <title>The Four M's Every Business Runs On | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs" />
+    <id>https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs</id>
+    <published>2026-07-10T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Manpower, money, mind, and management: what each pillar means, why businesses fail when one is missing, and how management binds the rest.</summary>
+  </entry>
+  <entry>
+    <title>Lessons from Running Internship Cohorts | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship" />
+    <id>https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship</id>
+    <published>2026-07-02T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Why small cohorts beat crowds, hiring for hunger over resumes, giving real work instead of exercises, and why mentorship is mostly restraint.</summary>
+  </entry>
+  <entry>
+    <title>How to Stand Out in an Internship Interview</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview" />
+    <id>https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview</id>
+    <published>2026-06-24T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Advice from 5,000+ interviews: why attitude beats aptitude, the homework nobody does, mistakes that sink candidates, and questions worth asking.</summary>
+  </entry>
+  <entry>
+    <title>Smart Feedback: How to Give and Receive It</title>
+    <link href="https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it" />
+    <id>https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it</id>
+    <published>2026-06-15T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Why vague praise fails, a three-part structure for feedback that actually helps, and how to receive criticism without getting defensive.</summary>
+  </entry>
+  <entry>
+    <title>How to Succeed in Software Development: The Four-Step Path</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development" />
+    <id>https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development</id>
+    <published>2026-06-05T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>Make it work, make it modular, make it readable, then optimize. Why this order is the key to building software and automations that last.</summary>
+  </entry>
+  <entry>
+    <title>What Is a Fork Bomb in Linux? | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb" />
+    <id>https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb</id>
+    <published>2026-05-27T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>How one line of Bash can freeze a hardened Linux system, why ulimit and blacklists fall short, and the smarter defense from my research.</summary>
+  </entry>
+  <entry>
+    <title>Automating Email Replies with n8n | Krunalkumar Shah</title>
+    <link href="https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n" />
+    <id>https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n</id>
+    <published>2026-05-18T09:00:00+05:30</published>
+    <updated>2026-08-06T18:00:00+05:30</updated>
+    <summary>How I build email reply automations with n8n: the five-stage workflow, where AI helps, guardrails that prevent bad sends, and mistakes to avoid.</summary>
+  </entry>
+</feed>

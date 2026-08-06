@@ -140,29 +140,13 @@
         ]
       }
     </script>
-    <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(document.querySelector('.noscript-header')){document.documentElement.classList.add('partials-failed');}},3000);});</script>
+    <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-2SYTX4B5TW');
-    </script>
-    <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NTRG9KDJ');</script>
-    <!-- End Google Tag Manager -->
   </head>
 
   <body id="top">
@@ -182,7 +166,7 @@
             <a class="nav-link" href="/projects">Projects</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
-            <a class="nav-link" href="/client-reviews">Client Reviews</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link active" aria-current="page" href="/internships">Internships</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -383,7 +367,12 @@
         </div>
 
         <!-- method="post" keeps form data out of the URL if this ever submits without JavaScript -->
-        <form id="internship-form" class="contact-form" method="post">
+        <form id="internship-form" class="contact-form" method="post" data-wa-form
+          data-wa-fields="name phone email track interest reason"
+          data-wa-message-template="Hello Krunalkumar, I am applying from your website. Here are my details.\nName: {name}\nPhone: {phone}\nEmail: {email}\nTrack: {track}\nArea of interest: {interest}\n\nAbout me:\n{reason}"
+          data-wa-analytics-prefix="internship_form"
+          data-wa-followup-question="Did your application go through on WhatsApp?"
+          data-wa-confirmed-message="🎉 Thank you for applying! I will review your application and get back to you soon.">
           <div class="form-grid">
             <label class="field">
               <span>Your name</span>
@@ -391,7 +380,8 @@
             </label>
             <label class="field">
               <span>Contact number</span>
-              <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 82007 13617" oninput="this.value=this.value.replace(/[^0-9+ ]/g,'')" autocomplete="tel" required />
+              <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="apply-phone-hint" required />
+              <p class="form-hint" id="apply-phone-hint">Digits, spaces, and + only.</p>
             </label>
             <label class="field">
               <span>Email address</span>
@@ -455,7 +445,10 @@
             Researcher, engineer, and cybersecurity-focused professional building practical solutions across
             automation, AI workflows, and intelligent digital systems.
           </p>
-      <a class="btn btn-secondary footer-cta" href="/internships">Work with me</a>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
         </div>
         <div class="footer-links">
           <nav class="footer-col" aria-label="Footer">
@@ -466,7 +459,7 @@
             <a href="/projects">Projects</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
-            <a href="/client-reviews">Client Reviews</a>
+            <a href="/client-reviews">Recommendations</a>
             <a href="/internships">Internships</a>
             <a href="/contact">Contact</a>
           </nav>
@@ -494,21 +487,11 @@
       </div>
       <div class="footer-bottom">
         <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
-        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a></small>
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
       </div>
     </footer>
 
     <script src="/assets/js/particle-bg.js"></script>
     <script src="/assets/js/wa-form.js"></script>
-    <script>
-      initWhatsAppForm({
-        formId: 'internship-form',
-        fields: ['name', 'phone', 'email', 'track', 'interest', 'reason'],
-        buildMessage: (v) => `Hello Krunalkumar, I am applying from your website. Here are my details.\nName: ${v.name}\nPhone: ${v.phone}\nEmail: ${v.email}\nTrack: ${v.track}\nArea of interest: ${v.interest}\n\nAbout me:\n${v.reason}`,
-        analyticsPrefix: 'internship_form',
-        followupQuestion: 'Did your application go through on WhatsApp?',
-        confirmedMessage: '🎉 Thank you for applying! I will review your application and get back to you soon.'
-      });
-    </script>
   </body>
 </html>

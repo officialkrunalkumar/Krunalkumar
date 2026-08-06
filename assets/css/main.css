@@ -62,6 +62,13 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* CSS twin of the gradients particle-bg.js paints onto the canvas — shown
+     before the script's first frame and, without JS, forever, so the page
+     keeps the same ambience either way (only the drifting particles need
+     JS). The canvas bitmap paints opaquely over this once the script runs. */
+  background:
+    radial-gradient(circle 40vw at 80% 15%, rgba(96, 165, 250, 0.16), rgba(168, 85, 247, 0.12) 35%, rgba(0, 0, 0, 0) 100%),
+    radial-gradient(circle farthest-side at 20% 20%, rgba(35, 17, 84, 0.95), rgba(9, 15, 34, 0.96) 45%, rgb(2, 6, 23) 100%);
 }
 
 a {
@@ -205,10 +212,13 @@ img {
     white-space: nowrap;
   }
 
-  /* Keep the static (pre-swap) header pixel-identical to the enhanced one,
-     so the runtime swap is invisible. Before the More-dropdown JS takes over,
-     overflow scrolls horizontally on one row instead of wrapping to a second
-     ("safe center" left-aligns only when the links overflow). */
+  /* Keep the static header pixel-identical to the enhanced one — with JS the
+     runtime swap is then invisible, and without JS the page simply looks the
+     same. Overflow scrolls horizontally on one row instead of wrapping to a
+     second ("safe center" left-aligns only when the links overflow, so the
+     leading links are always reachable). The late-file .noscript-header
+     .nav-list baseline is scoped to max-width 640px so it cannot override
+     this row treatment. */
   .noscript-header .nav-list {
     flex: 0 0 auto;
     margin-left: 0;
@@ -225,6 +235,46 @@ img {
 
   .noscript-header .nav-list .nav-link {
     white-space: nowrap;
+  }
+
+  /* When JS is on, this static header is about to be swapped for the
+     priority-nav version — pin it to a single non-wrapping row so the swap
+     never shifts the content below it. Without JS the class never appears
+     and the wrapping behaviour above stays. */
+  html.js .noscript-header .nav {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  /* If the partial fetch fails the static header stays for good — undo the
+     pre-swap clipping so nothing is hidden; the one-row scroll treatment
+     above already keeps every link reachable. Must come after the html.js
+     rule (same specificity). */
+  html.partials-failed .noscript-header .nav {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+}
+
+/* Between 641px and ~1039px the nine links genuinely overflow the one-row
+   static nav. With JS the overflow folds into the "More ▾" disclosure; without
+   it the row scrolls — so give that scroll an affordance (edge fade + thin
+   scrollbar) instead of the invisible default. */
+@media (min-width: 641px) and (max-width: 1039px) {
+  .noscript-header .nav-list {
+    scrollbar-width: thin;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+  }
+
+  .noscript-header .nav-list::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+  }
+
+  .noscript-header .nav-list::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.4);
+    border-radius: 999px;
   }
 }
 
@@ -349,19 +399,22 @@ img {
   gap: 0.5rem;
 }
 
-.noscript-header .nav-list {
-  flex: 1;
-  min-width: 0;
-  margin-left: 1.5rem;
-  justify-content: flex-end;
-}
-
+/* Mobile-only baseline for the static nav — at 641px+ the one-row
+   "pixel-identical" treatment in the header media block governs instead
+   (this used to be unscoped and its flex-end overrode that row treatment,
+   leaving the leading links unreachable behind the scroll start edge).
+   The list takes a full-width row of its own (flex-basis 100%) so the
+   chips wrap across the whole header width — sharing the row with the
+   brand squeezed them into a one-chip-per-line 500px-tall column. */
 @media (max-width: 640px) {
   .noscript-header .nav-list {
     position: static;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    flex: 1 0 100%;
+    min-width: 0;
+    justify-content: center;
     gap: 0.35rem;
     margin-left: 0;
     padding: 0;
@@ -387,6 +440,15 @@ img {
      navigation at all. Must come after the html.js rule (same specificity). */
   html.partials-failed .noscript-header .nav-list {
     display: flex;
+  }
+
+  /* Whenever the full wrapped link list is the permanent chrome (no JS, or
+     the partial fetch failed), the header is several rows tall — let it
+     scroll away with the page instead of pinning a third of a phone screen.
+     The JS version pins because its hamburger bar is only one row. */
+  html:not(.js) .noscript-header,
+  html.partials-failed .noscript-header {
+    position: static;
   }
 }
 
@@ -423,8 +485,14 @@ textarea:focus-visible {
 /* Without JavaScript the WhatsApp handoff cannot run, and a raw POST to this
    static host returns an error page that eats the visitor's message — hide the
    submit button and let each form's noscript note point to email instead. */
-html:not(.js) .contact-form button[type="submit"],
-html:not(.js) .verify-lookup button[type="submit"] {
+html:not(.js) .contact-form button[type="submit"] {
+  display: none;
+}
+
+/* The certificate lookup is entirely fetch-driven, so without JS the whole
+   form is inert — hide it rather than leave a field whose Enter does nothing,
+   and let the noscript note right below the heading carry the alternative. */
+html:not(.js) .verify-lookup {
   display: none;
 }
 
@@ -1245,6 +1313,14 @@ footer p {
   font-size: 0.95rem;
 }
 
+/* Small muted helper line inside a field (formats, examples, requirements) */
+.form-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -1552,12 +1628,14 @@ footer {
   fill: #ffffff;
 }
 
+/* 28px hit area, pushed diagonally off the bubble so only a sliver of the two
+   circles overlaps — a mis-tap near the bubble's centre can never dismiss it. */
 .whatsapp-float-close {
   position: absolute;
-  top: -7px;
-  right: -7px;
-  width: 22px;
-  height: 22px;
+  top: -12px;
+  right: -12px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1566,7 +1644,7 @@ footer {
   border-radius: 50%;
   background: rgba(15, 23, 42, 0.92);
   color: #cbd5e1;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1;
   cursor: pointer;
 }
@@ -1579,6 +1657,44 @@ footer {
 /* Once the bubble is dismissed, back-to-top reclaims the corner. */
 body.wa-dismissed .back-to-top {
   bottom: 1.2rem;
+}
+
+/* Pause control for the animated particle background (WCAG 2.2.2) — injected
+   by particle-bg.js. Lives in the bottom-left corner so it never collides with
+   the back-to-top / WhatsApp stack on the right; deliberately dimmed until
+   hovered or focused. Not rendered under prefers-reduced-motion (the canvas
+   is already static there). */
+.bg-pause-toggle {
+  position: fixed;
+  left: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #cbd5e1;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.bg-pause-toggle:hover,
+.bg-pause-toggle:focus-visible {
+  opacity: 1;
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 1);
+}
+
+.bg-pause-toggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
 }
 
 footer a:hover {
@@ -1604,9 +1720,22 @@ footer a:hover {
   align-content: start;
 }
 
+.footer-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+}
+
 .footer-cta {
   display: inline-block;
   margin-top: 1.1rem;
+}
+
+/* Inside the group the wrapper owns the offset — without this the buttons
+   would double up the top margin. */
+.footer-cta-group .footer-cta {
+  margin-top: 0;
 }
 
 .footer-col h3 {
@@ -1693,6 +1822,11 @@ footer a:hover {
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* Match the centered footer text — the flex children ignore text-align. */
+  .footer-cta-group {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1770,6 +1904,12 @@ footer a:hover {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* particle-bg.js already skips the button here — this is the safety net so
+     it can never appear when the background is a static frame anyway. */
+  .bg-pause-toggle {
+    display: none;
   }
 
   *,

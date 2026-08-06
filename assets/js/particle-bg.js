@@ -13,10 +13,22 @@ if (canvas) {
   let mouseActive = false;
   const particles = [];
 
+  // WCAG 2.2.2 pause state — read before the loop starts so a visitor who
+  // paused the animation on a previous page keeps it paused here.
+  let animationPaused = false;
+  try {
+    animationPaused = localStorage.getItem('bg-animation-paused') === '1';
+  } catch (error) {
+    // Storage can be blocked (strict privacy modes) — default to animating.
+  }
+
   // The two full-viewport gradients only depend on the canvas size, so they are
   // rebuilt on resize instead of being reallocated on every animation frame.
+  // The cursor glow gradient likewise only depends on the pointer position, so
+  // it is rebuilt in the mousemove handler and reused across frames.
   let backgroundGradient = null;
   let nebulaGradient = null;
+  let mouseGlow = null;
 
   function buildGradients() {
     backgroundGradient = ctx.createRadialGradient(width * 0.2, height * 0.2, 0, width * 0.2, height * 0.2, Math.max(width, height));
@@ -62,7 +74,10 @@ if (canvas) {
     }
   }
 
-  function drawFrame() {
+  // dt is elapsed time normalised to a 60fps tick (1 == ~16.7ms), so positions
+  // advance at the same perceived speed however often frames actually land.
+  // dt 0 is a pure repaint: nothing moves (matters while paused).
+  function drawFrame(dt) {
     ctx.clearRect(0, 0, width, height);
 
     ctx.fillStyle = backgroundGradient;
@@ -72,8 +87,8 @@ if (canvas) {
     ctx.fillRect(0, 0, width, height);
 
     particles.forEach((particle, index) => {
-      particle.x += particle.vx;
-      particle.y += particle.vy;
+      particle.x += particle.vx * dt;
+      particle.y += particle.vy * dt;
 
       if ((particle.x < -20 && particle.vx < 0) || (particle.x > width + 20 && particle.vx > 0)) particle.vx *= -1;
       if ((particle.y < -20 && particle.vy < 0) || (particle.y > height + 20 && particle.vy > 0)) particle.vy *= -1;
@@ -84,15 +99,18 @@ if (canvas) {
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < 220) {
           const force = (220 - distance) / 220;
-          particle.vx += (dx / distance) * 0.008 * force;
-          particle.vy += (dy / distance) * 0.008 * force;
+          particle.vx += (dx / distance) * 0.008 * force * dt;
+          particle.vy += (dy / distance) * 0.008 * force * dt;
         }
       }
 
-      particle.vx *= 0.98;
-      particle.vy *= 0.98;
-      particle.vx += Math.sin((Date.now() * particle.drift) + index) * 0.0008;
-      particle.vy += Math.cos((Date.now() * particle.drift) + index * 0.7) * 0.0008;
+      // Damping and drift forces are dt-scaled like the positions above, so
+      // the velocity model behaves the same at 30fps as it did at 60.
+      const damping = Math.pow(0.98, dt);
+      particle.vx *= damping;
+      particle.vy *= damping;
+      particle.vx += Math.sin((Date.now() * particle.drift) + index) * 0.0008 * dt;
+      particle.vy += Math.cos((Date.now() * particle.drift) + index * 0.7) * 0.0008 * dt;
 
       ctx.beginPath();
       ctx.fillStyle = `hsla(${particle.hue}, 90%, 75%, ${particle.alpha})`;
@@ -100,12 +118,8 @@ if (canvas) {
       ctx.fill();
     });
 
-    if (mouseActive) {
-      const glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 260);
-      glow.addColorStop(0, 'rgba(255,255,255,0.24)');
-      glow.addColorStop(0.35, 'rgba(125,211,252,0.12)');
-      glow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = glow;
+    if (mouseActive && mouseGlow) {
+      ctx.fillStyle = mouseGlow;
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 180, 0, Math.PI * 2);
       ctx.fill();
@@ -113,11 +127,30 @@ if (canvas) {
 
   }
 
-  function animate() {
-    drawFrame();
-    if (!prefersReducedMotion) {
+  // The loop is capped to ~30fps — plenty for a slow ambient drift, and half
+  // the paint cost of a vsync-locked loop on 60Hz displays.
+  const frameInterval = 1000 / 30;
+  let lastFrameTime = 0;
+  // Single-flight guard: pause→resume inside one frame must not stack a
+  // second concurrent rAF loop on top of the still-pending callback.
+  let framePending = false;
+
+  function scheduleFrame() {
+    if (!framePending) {
+      framePending = true;
       requestAnimationFrame(animate);
     }
+  }
+
+  function animate(timestamp) {
+    framePending = false;
+    if (prefersReducedMotion || animationPaused) return;
+    scheduleFrame();
+    const elapsed = timestamp - lastFrameTime;
+    if (elapsed < frameInterval) return;
+    lastFrameTime = timestamp;
+    // Clamp dt so a background-tab wake-up doesn't teleport the particles.
+    drawFrame(Math.min(elapsed / (1000 / 60), 3));
   }
 
   let resizeFrame = null;
@@ -130,13 +163,19 @@ if (canvas) {
       // Repaint in the same frame: resizing the canvas clears it, and the
       // animation loop's own rAF callback has already run by this point, so
       // without this the cleared canvas would be the frame the user sees.
-      drawFrame();
+      drawFrame(0);
     });
   });
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
     mouseY = event.clientY;
     mouseActive = true;
+    // Gradients are immutable once created, so following the pointer means a
+    // rebuild — but only here, on actual movement, never per frame.
+    mouseGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 260);
+    mouseGlow.addColorStop(0, 'rgba(255,255,255,0.24)');
+    mouseGlow.addColorStop(0.35, 'rgba(125,211,252,0.12)');
+    mouseGlow.addColorStop(1, 'rgba(0,0,0,0)');
   });
   // mouseleave never bubbles to window — it must be observed on document,
   // otherwise the cursor glow sticks at the last position when the pointer
@@ -146,10 +185,58 @@ if (canvas) {
   });
 
   resizeCanvas();
-  animate();
+  // First paint is immediate and static; the loop takes over from there.
+  drawFrame(0);
+  if (!prefersReducedMotion && !animationPaused) {
+    scheduleFrame();
+  }
+
+  // WCAG 2.2.2 pause control — auto-playing motion needs a way to stop it.
+  // Under prefers-reduced-motion the canvas is already a single static frame,
+  // so the button would be a no-op and is not rendered at all.
+  if (!prefersReducedMotion) {
+    const pauseButton = document.createElement('button');
+    pauseButton.className = 'bg-pause-toggle';
+    pauseButton.type = 'button';
+
+    const pauseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg>';
+    const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5v14l11-7z"/></svg>';
+
+    function syncPauseButton() {
+      pauseButton.setAttribute('aria-pressed', String(animationPaused));
+      pauseButton.setAttribute('aria-label', animationPaused ? 'Resume background animation' : 'Pause background animation');
+      pauseButton.innerHTML = animationPaused ? playIcon : pauseIcon;
+    }
+
+    syncPauseButton();
+
+    pauseButton.addEventListener('click', () => {
+      animationPaused = !animationPaused;
+      syncPauseButton();
+      try {
+        if (animationPaused) {
+          localStorage.setItem('bg-animation-paused', '1');
+        } else {
+          localStorage.removeItem('bg-animation-paused');
+        }
+      } catch (error) {
+        // Storage blocked — the choice still applies for this page view.
+      }
+      if (!animationPaused) {
+        // Reset the clock so the pause gap is not counted as elapsed time.
+        lastFrameTime = performance.now();
+        scheduleFrame();
+      }
+    });
+
+    document.body.appendChild(pauseButton);
+  }
 }
 
-const revealTargets = document.querySelectorAll('.hero-copy, .hero-card, .section-card, .info-card, .license-card, .project-item, .contact-links, .contact-actions, .interactive-strip, .page-hero');
+// Above-the-fold hero blocks (.hero-copy, .hero-card, .page-hero) are left out
+// on purpose: they must be visible at first paint, so only content that starts
+// below the fold gets the scroll-reveal treatment.
+const revealTargets = document.querySelectorAll('.section-card, .info-card, .license-card, .project-item, .contact-links, .contact-actions, .interactive-strip');
 const revealEnabled = 'IntersectionObserver' in window;
 
 revealTargets.forEach((element) => {
@@ -196,10 +283,9 @@ document.body.appendChild(backToTopButton);
 
 // Floating WhatsApp chat bubble — opens a real conversation, no bot in between.
 // Dismissible: the × hides it for the current page, and the back-to-top button
-// drops down to take its corner. The site deliberately uses zero browser
-// storage, so the dismissal is in-memory only and the bubble returns on the
-// next page view. The global click listener below reports bubble clicks as
-// whatsapp_link_click.
+// drops down to take its corner. The dismissal is deliberately in-memory only
+// (no browser storage), so the bubble returns on the next page view. The
+// global click listener below reports bubble clicks as whatsapp_link_click.
 {
   const whatsappWrap = document.createElement('div');
   whatsappWrap.className = 'whatsapp-float-wrap';
@@ -265,25 +351,9 @@ function initSiteChrome() {
   }
 
   // Target only the year span — the rest of the copyright line is static text.
-  function setFooterYear(year) {
-    document.querySelectorAll('.footer-bottom .copyright-year').forEach((element) => {
-      element.textContent = year;
-    });
-  }
-
-  setFooterYear(new Date().getFullYear());
-
-  fetch(window.location.href, { method: 'HEAD', cache: 'no-store' })
-    .then((response) => {
-      const dateHeader = response.headers.get('date');
-      if (dateHeader) {
-        const serverDate = new Date(dateHeader);
-        if (!Number.isNaN(serverDate.getTime())) {
-          setFooterYear(serverDate.getFullYear());
-        }
-      }
-    })
-    .catch(() => {});
+  document.querySelectorAll('.footer-bottom .copyright-year').forEach((element) => {
+    element.textContent = new Date().getFullYear();
+  });
 
   const navToggle = document.querySelector('.nav-toggle');
   const navMenu = document.querySelector('.nav-list');
@@ -401,9 +471,17 @@ function initSiteChrome() {
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closeDropdown();
-      closeMobileMenu();
+    if (event.key !== 'Escape') return;
+    // Closing a menu that contains the focused element would drop focus to
+    // <body>; hand it back to the toggle that opened the menu instead.
+    const dropdownHadFocus = navDropdown && navDropdown.classList.contains('open') && navDropdown.contains(document.activeElement);
+    const menuHadFocus = navMenu && navMenu.classList.contains('open') && navMenu.contains(document.activeElement);
+    closeDropdown();
+    closeMobileMenu();
+    if (dropdownHadFocus && navDropdownToggle) {
+      navDropdownToggle.focus();
+    } else if (menuHadFocus && navToggle) {
+      navToggle.focus();
     }
   });
 }
