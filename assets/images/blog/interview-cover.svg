@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: How to stand out in an internship interview — advice from someone who reviews the applications">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- two conversation bubbles -->
+  <g>
+    <rect x="850" y="170" width="220" height="110" rx="24" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+    <path d="M 890 280 L 878 322 L 930 280 Z" fill="#7dd3fc"/>
+    <rect x="930" y="330" width="180" height="90" rx="22" fill="#7dd3fc" opacity="0.92"/>
+    <path d="M 1060 420 L 1076 456 L 1018 420 Z" fill="#7dd3fc" opacity="0.92"/>
+    <circle cx="900" cy="225" r="7" fill="#7dd3fc"/>
+    <circle cx="945" cy="225" r="7" fill="#7dd3fc"/>
+    <circle cx="990" cy="225" r="7" fill="#7dd3fc"/>
+    <rect x="955" y="360" width="130" height="8" rx="4" fill="#0f172a"/>
+    <rect x="955" y="382" width="90" height="8" rx="4" fill="#0f172a"/>
+  </g>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">CAREERS</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="56" font-weight="800">How to stand out in an</text>
+    <text x="80" y="350" fill="#f8fafc" font-size="56" font-weight="800">internship interview</text>
+    <text x="80" y="420" fill="#e2e8f0" font-size="30" font-weight="600">From someone who reviews the applications.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

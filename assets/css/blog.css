@@ -1,0 +1,311 @@
+/* ==========================================================================
+   blog.css — styles for the /blog listing and article pages.
+   Layered on top of main.css and reuses its design tokens; loaded only by
+   pages under /blog/.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Article pages
+   -------------------------------------------------------------------------- */
+
+.post-cover {
+  margin: 1.5rem 0 0;
+}
+
+.post-cover img {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.24);
+}
+
+.post-body h2 {
+  margin: 2.2rem 0 0.8rem;
+  font-size: 1.5rem;
+  /* Keep anchored headings clear of the sticky navbar when jumped to
+     from the "In this article" box. */
+  scroll-margin-top: 5.5rem;
+}
+
+.post-body h2:first-child {
+  margin-top: 0;
+}
+
+.post-body h3 {
+  margin: 1.6rem 0 0.6rem;
+}
+
+.post-body p,
+.post-body li {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.post-body ul,
+.post-body ol {
+  padding-left: 1.4rem;
+  margin: 0.8rem 0 1.2rem;
+}
+
+.post-body li {
+  margin: 0.4rem 0;
+}
+
+.post-body blockquote {
+  margin: 1.4rem 0;
+  padding: 0.9rem 1.2rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(125, 211, 252, 0.08);
+  border-radius: 0 14px 14px 0;
+  font-weight: 600;
+}
+
+.post-body blockquote p {
+  margin: 0;
+}
+
+.post-body code {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.95em;
+  background: rgba(125, 211, 252, 0.12);
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+}
+
+.post-body pre {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+}
+
+.post-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.post-figure {
+  margin: 1.8rem 0;
+}
+
+.post-figure svg,
+.post-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+}
+
+.post-figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* "In this article" jump-box (built by assets/js/blog-toc.js) */
+.post-toc {
+  margin: 0 0 1.8rem;
+  padding: 1rem 1.3rem;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.post-toc ol {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+  columns: 2;
+  column-gap: 2rem;
+}
+
+.post-toc li {
+  margin: 0.3rem 0;
+  break-inside: avoid;
+  color: #e2e8f0;
+}
+
+.post-toc a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.post-toc a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .post-toc ol {
+    columns: 1;
+  }
+}
+
+/* Related reading (internal cross-links between posts) */
+.related-reading {
+  margin-top: 2.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(125, 211, 252, 0.2);
+}
+
+.related-reading ul {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.related-reading li {
+  margin: 0;
+}
+
+.related-reading a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.related-reading a::before {
+  content: "→";
+  color: var(--accent-dark);
+}
+
+.related-reading a:hover {
+  text-decoration: underline;
+}
+
+/* Closing call-to-action box */
+.post-cta {
+  margin-top: 2.4rem;
+  padding: 1.6rem;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(125, 211, 252, 0.12), rgba(56, 189, 248, 0.06));
+}
+
+.post-cta h2 {
+  margin: 0 0 0.5rem;
+}
+
+.post-cta .hero-actions {
+  margin-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Blog listing (/blog)
+   -------------------------------------------------------------------------- */
+
+/* Featured post — one full-width card above the grid */
+a.featured-post {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+  padding: 0;
+}
+
+a.featured-post:hover {
+  transform: translateY(-3px);
+}
+
+/* Rendered at natural aspect ratio, never cropped — the artwork carries
+   content (the paired words), so the full image must stay visible. */
+.featured-post img {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  border: none;
+}
+
+.featured-post-body {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  justify-content: center;
+}
+
+.featured-post-body h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.35;
+}
+
+.featured-post-body .excerpt {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  a.featured-post {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-post img {
+    border-right: none;
+    border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+  }
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.2rem;
+}
+
+a.post-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+a.post-card:hover {
+  transform: translateY(-3px);
+}
+
+.post-card img {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+  width: 100%;
+  height: auto;
+}
+
+.post-card-body {
+  padding: 1.1rem 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.post-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.post-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.post-card .excerpt {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.post-card .read-more {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
