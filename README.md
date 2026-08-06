@@ -174,6 +174,22 @@ receives conversion events: `book_call_click`, `email_click`, `whatsapp_link_cli
 scroll-reveal animations via IntersectionObserver, and the floating back-to-top button.
 `main.css` is a single file organized into 13 numbered sections with a table of contents at the top.
 
+The page background is a **single token**: `--bg-base` in section 1 (with `--bg-base-rgb`, the
+space-separated twin used by the `rgb(var(--bg-base-rgb) / <alpha>)` surfaces that tint with the
+page — the header, dropdown, section cards, footer and mobile nav panel). It is currently
+`#0a1324`. Changing it is a four-part edit, not a one-liner — see
+[Changing the page darkness](#changing-the-page-darkness).
+
+The `#bg-canvas` gradient in `main.css` and the canvas gradient `particle-bg.js` paints over it are
+**the same three stops** — the CSS one shows before the first animation frame and, with JS off,
+forever. They used to be hand-maintained copies, which was a live hazard: the two files sit in the
+same 1-hour cache bucket (`/assets/(js|css)/`) but expire independently, so a returning visitor
+could pair a fresh stylesheet with a stale script and get the whole viewport repainted in the old
+shade. `buildGradients()` now reads `--bg-base`, `--bg-mid` and `--bg-glow` from the stylesheet at
+runtime instead, which makes `main.css` the single source of truth and removes the drift entirely.
+The hardcoded values left in that function are fallbacks for a failed stylesheet load only — don't
+"fix" them to match a new palette.
+
 ---
 
 ## Local development
@@ -244,18 +260,65 @@ sync with what is actually honored.
 the link on `index.html`). The PDF path is served with `X-Robots-Tag: noindex` (see `vercel.json`) so
 the file never outranks the homepage in search.
 
+### Changing the page darkness
+
+Pick the new base, work out the **rgb delta** from the current `--bg-base` (`#0a1324` =
+`rgb(10, 19, 36)`), then apply that same delta to everything in the "shift with it" list. Applying
+it to the base alone is the mistake to avoid: card fills are ~80% opaque, so they barely move when
+the page does, and the elevation gap closes almost 1:1. Measured, a ~4 L\* lift of the base alone
+cut `.info-card`'s elevation from +5.4 L\* to +1.4 — cards stop reading as raised and survive only
+on their borders.
+
+Shift with it:
+
+1. `--bg-base` and `--bg-base-rgb` in section 1 of `main.css` (keep the hex and the
+   space-separated channels the same colour), plus `--bg-mid` if you want the gradient's midpoint
+   to move with it. The `#bg-canvas` gradient and the canvas in `particle-bg.js` both read these,
+   so neither needs editing.
+2. The raised-surface fills — **15 in `main.css` and 2 in `blog.css`** (`.post-body pre` and
+   `.post-toc`): `rgba(23, 36, 55, …)`, `rgba(38, 54, 72, …)`, `rgba(16, 28, 49, …)`, and the
+   button hexes `#172437` / `#192534`. Only `background` declarations — never a `box-shadow` that
+   happens to use the same numbers.
+3. The artwork, which is anchored to the same palette: the gradient stops in the 12
+   `assets/images/blog/*.svg` covers, and the inline `<svg>` figure panels inside blog posts
+   (`#131f2d`). `.post-cover` has no background of its own, so a cover left behind prints as a
+   visibly darker rectangle against the page.
+4. The `theme-color` meta in all 24 chrome-bearing pages — it tracks `--bg-base`, since the mobile
+   address bar sits flush above the page-tinted sticky header. Leave `terminal.html` alone: it is
+   standalone, has its own inline `<style>`, and its palette is deliberately not the site palette.
+
+Leave alone:
+
+- **Box-shadows.** They keep their dark `rgba(2, 6, 23, …)` / `rgba(15, 23, 42, …)` values on
+  purpose — a shadow has to stay darker than whatever the page becomes.
+- **Dark ink on light surfaces** — `color: #0f172a` on accent pills, `:hover` states, and form
+  inputs. That is text on a *light* background, so lightening it lowers contrast.
+
+Then re-check contrast. The tightest values are the dim blog meta grey (`#94a3b8`, currently
+7.2:1) and anything on the brightest corner of the gradient; body text should stay in the low
+teens. Keep normal text at 4.5:1 or better. Going much lighter than about `#0d1729` also starts
+crowding the raised surfaces even when you do shift them.
+
 ## Conventions
 
 - Every image needs `alt`, `width`/`height`, and (below the fold) `loading="lazy" decoding="async"`.
 - Every indexed page needs a unique `<title>`, meta description, canonical, and OG tags; keep
   `sitemap.xml` lastmod fresh when content changes meaningfully.
 - One `<h1>` per page; sections use `<h2>`/`<h3>`.
-- The site is dark-theme only by design (`color-scheme: dark`).
+- The site is dark-theme only by design (`color-scheme: dark`). There is no light mode and no theme
+  toggle: the palette is still ~83% hardcoded literals (220 of them) against seven custom
+  properties, so a second theme would mean tokenizing every colour first, not adding a button.
+- Changing the page darkness means editing four things together — see
+  [Changing the page darkness](#changing-the-page-darkness). Editing `--bg-base` alone leaves the
+  cards behind and flattens the site.
 - No inline scripts, ever: `boot.js` is the only `<head>` bootstrap; everything else is an external
   file loaded with `defer`, and no element carries an inline event handler (`onclick=` etc.). The
   CSP has no `'unsafe-inline'` for scripts, so violations are blocked, not just frowned upon.
 - `vercel.json` sets Cache-Control on `/assets/` (1 day, with a week of stale-while-revalidate;
-  images get 30 days) — cache-sensitive changes to an asset may warrant a new filename.
+  images get 30 days; **JS and CSS get 1 hour with a day of stale-while-revalidate**) —
+  cache-sensitive changes to an asset may warrant a new filename. Note that separate files expire
+  independently, so a change spanning several of them can be seen half-applied by a returning
+  visitor; prefer making one file the source of truth over keeping copies in sync.
 - **Exception:** `/assets/data/` is served `no-cache, must-revalidate`, and `verify.js` fetches
   `certificates.json` with `cache: 'no-cache'`. A verification page must never answer from a stale
   copy — a revoked certificate would keep reading "valid", and a newly issued ID would be called

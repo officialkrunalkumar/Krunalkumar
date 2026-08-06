@@ -30,11 +30,23 @@ if (canvas) {
   let nebulaGradient = null;
   let mouseGlow = null;
 
+  // The base gradient's stops are read from the CSS custom properties rather
+  // than duplicated here. This canvas paints opaquely over the #bg-canvas CSS
+  // gradient, so a hardcoded copy that drifted from main.css — or, worse, a
+  // stale cached copy of one file paired with a fresh copy of the other —
+  // would repaint the whole viewport in the wrong shade. Reading the token
+  // makes main.css the single source of truth. The fallbacks only apply if the
+  // stylesheet failed to load, in which case there is nothing to match anyway.
+  function cssColor(name, fallback) {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return value || fallback;
+  }
+
   function buildGradients() {
     backgroundGradient = ctx.createRadialGradient(width * 0.2, height * 0.2, 0, width * 0.2, height * 0.2, Math.max(width, height));
-    backgroundGradient.addColorStop(0, 'rgba(35, 17, 84, 0.95)');
-    backgroundGradient.addColorStop(0.45, 'rgba(9, 15, 34, 0.96)');
-    backgroundGradient.addColorStop(1, 'rgba(2, 6, 23, 1)');
+    backgroundGradient.addColorStop(0, cssColor('--bg-glow', 'rgba(35, 17, 84, 0.95)'));
+    backgroundGradient.addColorStop(0.45, cssColor('--bg-mid', 'rgba(17, 28, 47, 0.96)'));
+    backgroundGradient.addColorStop(1, cssColor('--bg-base', '#0a1324'));
 
     nebulaGradient = ctx.createRadialGradient(width * 0.8, height * 0.15, 40, width * 0.8, height * 0.15, width * 0.4);
     nebulaGradient.addColorStop(0, 'rgba(96, 165, 250, 0.16)');
