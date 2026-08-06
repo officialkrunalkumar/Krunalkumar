@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1221 467" role="img" aria-label="Authentic n8n canvas of the SmartLead CleverResponder workflow: Receive Replies, Set Email Body, and a rules-based Route Reply switch fan out to a meeting branch with calendar link and reminders, and an AI branch where suggested replies are approved in Slack before sending" font-family="'Segoe UI', Tahoma, sans-serif">
+  <defs>
+    <pattern id="dotgrid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="1.1" fill="#1e293b"/>
+    </pattern>
+    <g id="g-bolt"><path d="M13.5 2 L6.5 14 h4.6 l-2.4 8 7.8-12.4 h-4.6 z" fill="#e11d48"/></g>
+    <g id="g-pencil"><path d="M4.5 19.5 l1.8-5.2 9.6-9.6 3.4 3.4-9.6 9.6-5.2 1.8 z" fill="#7c3aed"/><path d="M6.3 14.3 l3.4 3.4" stroke="#f8fafc" stroke-width="1" fill="none"/></g>
+    <g id="g-globe"><circle cx="12" cy="12" r="8.6" fill="none" stroke="#2563eb" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="3.8" ry="8.6" fill="none" stroke="#2563eb" stroke-width="1.4"/><path d="M3.4 12 h17.2" stroke="#2563eb" stroke-width="1.4"/></g>
+    <g id="g-wait"><circle cx="12" cy="12" r="9" fill="#7f1d1d"/><rect x="8.6" y="7.5" width="2.4" height="9" rx="1" fill="#fecaca"/><rect x="13" y="7.5" width="2.4" height="9" rx="1" fill="#fecaca"/></g>
+    <g id="g-if"><rect x="4" y="6" width="16" height="2.6" rx="1.3" fill="#16a34a"/><rect x="4" y="10.7" width="16" height="2.6" rx="1.3" fill="#16a34a"/><rect x="4" y="15.4" width="16" height="2.6" rx="1.3" fill="#16a34a"/><circle cx="9" cy="7.3" r="2" fill="#16a34a" stroke="#f8fafc" stroke-width="1"/><circle cx="15" cy="12" r="2" fill="#16a34a" stroke="#f8fafc" stroke-width="1"/><circle cx="10.5" cy="16.7" r="2" fill="#16a34a" stroke="#f8fafc" stroke-width="1"/></g>
+    <g id="g-slack"><rect x="10.6" y="3.5" width="2.9" height="17" rx="1.4" fill="#36C5F0" transform="translate(-3.4 0)"/><rect x="10.6" y="3.5" width="2.9" height="17" rx="1.4" fill="#E01E5A" transform="translate(3.4 0)"/><rect x="3.5" y="10.6" width="17" height="2.9" rx="1.4" fill="#2EB67D" transform="translate(0 -3.4)"/><rect x="3.5" y="10.6" width="17" height="2.9" rx="1.4" fill="#ECB22E" transform="translate(0 3.4)"/></g>
+    <g id="g-ai"><circle cx="12" cy="12" r="9.4" fill="#0f172a"/><g stroke="#f8fafc" stroke-width="2" stroke-linecap="round"><path d="M12 5.4 V18.6"/><path d="M6.3 8.7 L17.7 15.3"/><path d="M6.3 15.3 L17.7 8.7"/></g></g>
+    <g id="g-doc"><rect x="6" y="3" width="12" height="18" rx="2" fill="#4285F4"/><g stroke="#ffffff" stroke-width="1.4"><path d="M9 9.5 h6"/><path d="M9 12.5 h6"/><path d="M9 15.5 h4"/></g></g>
+    <g id="card"><rect x="-21" y="-21" width="42" height="42" rx="9" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/></g>
+    <g id="plus"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="none" stroke="#64748b" stroke-width="1.2"/><path d="M-2.5 0 h5 M0 -2.5 v5" stroke="#64748b" stroke-width="1.2"/></g>
+  </defs>
+
+  <rect width="1221" height="467" rx="14" fill="#0b1220"/>
+  <rect width="1221" height="467" rx="14" fill="url(#dotgrid)"/>
+  <text x="20" y="26" fill="#7dd3fc" font-size="12" font-weight="800" letter-spacing="2.5">CLEVERRESPONDER · SMARTLEAD — n8n CANVAS</text>
+
+  <!-- ================= connectors ================= -->
+  <g stroke="#64748b" stroke-width="1.4" fill="none">
+    <path d="M 98 215 L 112 215"/>
+    <path d="M 158 215 L 171 215"/>
+    <path d="M 214 148 C 280 148 310 157 351 157"/>
+    <path d="M 214 160 C 280 158 310 157 351 157"/>
+    <path d="M 214 172 C 285 168 315 158 351 157"/>
+    <path d="M 214 262 C 285 268 310 296 349 299"/>
+    <path d="M 214 274 C 285 278 310 297 349 299"/>
+    <path d="M 214 286 C 285 288 310 298 349 299"/>
+    <path d="M 397 157 L 414 157"/>
+    <path d="M 459 157 L 485 157"/>
+    <path d="M 530 157 L 549 157"/>
+    <path d="M 594 157 L 614 157"/>
+    <path d="M 659 150 C 680 142 690 127 699 127"/>
+    <path d="M 659 164 C 680 174 690 192 699 192"/>
+    <path d="M 431 299 L 455 299"/>
+    <path d="M 500 299 L 523 299"/>
+    <path d="M 568 299 L 585 299"/>
+    <path d="M 631 292 C 650 282 655 259 660 257"/>
+    <path d="M 631 306 C 650 318 655 338 660 340"/>
+    <path d="M 705 257 L 725 257"/>
+    <path d="M 770 257 L 792 257"/>
+    <path d="M 837 257 L 865 257"/>
+    <path d="M 910 257 L 939 257"/>
+    <path d="M 984 257 L 1004 257"/>
+    <path d="M 1049 250 C 1072 238 1088 196 1097 193"/>
+    <path d="M 1049 264 C 1072 278 1088 308 1097 311"/>
+    <path d="M 744 198 C 790 224 820 233 880 233 L 1052 233 C 1075 233 1090 212 1099 205"/>
+    <path d="M 412 350 L 412 322"/>
+  </g>
+  <g fill="#64748b">
+    <path d="M 109 211.5 L 115 215 L 109 218.5 Z"/>
+    <path d="M 168 211.5 L 174 215 L 168 218.5 Z"/>
+    <path d="M 348 153.5 L 354 157 L 348 160.5 Z"/>
+    <path d="M 346 295.5 L 352 299 L 346 302.5 Z"/>
+    <path d="M 411 153.5 L 417 157 L 411 160.5 Z"/>
+    <path d="M 482 153.5 L 488 157 L 482 160.5 Z"/>
+    <path d="M 546 153.5 L 552 157 L 546 160.5 Z"/>
+    <path d="M 611 153.5 L 617 157 L 611 160.5 Z"/>
+    <path d="M 696 123.5 L 702 127 L 696 130.5 Z"/>
+    <path d="M 696 188.5 L 702 192 L 696 195.5 Z"/>
+    <path d="M 452 295.5 L 458 299 L 452 302.5 Z"/>
+    <path d="M 520 295.5 L 526 299 L 520 302.5 Z"/>
+    <path d="M 582 295.5 L 588 299 L 582 302.5 Z"/>
+    <path d="M 657 253.5 L 663 257 L 657 260.5 Z"/>
+    <path d="M 657 336.5 L 663 340 L 657 343.5 Z"/>
+    <path d="M 722 253.5 L 728 257 L 722 260.5 Z"/>
+    <path d="M 789 253.5 L 795 257 L 789 260.5 Z"/>
+    <path d="M 862 253.5 L 868 257 L 862 260.5 Z"/>
+    <path d="M 936 253.5 L 942 257 L 936 260.5 Z"/>
+    <path d="M 1001 253.5 L 1007 257 L 1001 260.5 Z"/>
+    <path d="M 1094 189.5 L 1100 193 L 1094 196.5 Z"/>
+    <path d="M 1094 307.5 L 1100 311 L 1094 314.5 Z"/>
+    <path d="M 1096 201.5 L 1102 205 L 1096 208.5 Z"/>
+    <path d="M 408.5 325 L 412 319 L 415.5 325 Z"/>
+  </g>
+  <use href="#plus" x="754" y="127"/>
+  <use href="#plus" x="754" y="192"/>
+  <use href="#plus" x="712" y="340"/>
+  <use href="#plus" x="866" y="270"/>
+  <circle cx="412" cy="337" r="6" fill="#0b1220" stroke="#64748b" stroke-width="1.2"/>
+  <path d="M 409 337 h6 M 412 334 v6" stroke="#64748b" stroke-width="1.2"/>
+
+  <!-- ================= nodes & labels (11px, n8n-style wrapped) ================= -->
+  <use href="#card" x="76" y="215"/><use href="#g-bolt" x="64" y="203"/>
+  <text x="76" y="251" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Receive</text>
+  <text x="76" y="264" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Replies</text>
+  <text x="105" y="206" fill="#94a3b8" font-size="7.5" text-anchor="middle">5 items</text>
+
+  <use href="#card" x="135" y="215"/><use href="#g-pencil" x="123" y="203"/>
+  <text x="135" y="251" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Set Email</text>
+  <text x="135" y="264" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Body</text>
+  <text x="135" y="276" fill="#94a3b8" font-size="8.5" text-anchor="middle">manual</text>
+
+  <rect x="172" y="128" width="42" height="170" rx="9" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+  <g fill="#64748b" font-size="7">
+    <text x="177" y="141">Meeting R…</text>
+    <text x="177" y="154">Not Intere…</text>
+    <text x="177" y="167">Do Not Co…</text>
+    <text x="177" y="180">Informati…</text>
+    <text x="177" y="193">Out Of Off…</text>
+    <text x="177" y="206">Wrong Per…</text>
+    <text x="177" y="219">Meeting Li…</text>
+    <text x="177" y="232">Sender Or…</text>
+    <text x="177" y="245">Autoresp…</text>
+    <text x="177" y="258">Human Fo…</text>
+    <text x="177" y="271">Auto Repl…</text>
+    <text x="177" y="284">Categoriz…</text>
+  </g>
+  <text x="193" y="314" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Route Reply</text>
+  <text x="193" y="326" fill="#94a3b8" font-size="8.5" text-anchor="middle">mode: Rules</text>
+
+  <use href="#card" x="375" y="157"/><use href="#g-pencil" x="363" y="145"/>
+  <text x="375" y="193" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting Reply</text>
+  <text x="375" y="206" fill="#94a3b8" font-size="8.5" text-anchor="middle">manual</text>
+
+  <use href="#card" x="437" y="157"/><use href="#g-globe" x="425" y="145"/>
+  <text x="437" y="120" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Send</text>
+  <text x="437" y="132" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting Link</text>
+
+  <use href="#card" x="508" y="157"/><use href="#g-wait" x="496" y="145"/>
+  <text x="508" y="193" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">4 Days</text>
+
+  <use href="#card" x="572" y="157"/><use href="#g-slack" x="560" y="145"/>
+  <text x="572" y="193" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting</text>
+  <text x="572" y="206" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Reminder</text>
+  <text x="572" y="219" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Notification</text>
+  <text x="572" y="231" fill="#94a3b8" font-size="8.5" text-anchor="middle">sendAndWait</text>
+
+  <use href="#card" x="637" y="157"/><use href="#g-if" x="625" y="145"/>
+  <text x="637" y="120" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Send</text>
+  <text x="637" y="132" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Reminder?</text>
+
+  <use href="#card" x="722" y="127"/><use href="#g-globe" x="710" y="115"/>
+  <text x="722" y="88" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting Book</text>
+  <text x="722" y="100" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Reminder</text>
+
+  <use href="#card" x="722" y="192"/><use href="#g-slack" x="710" y="180"/>
+  <text x="793" y="196" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="start">Good Luck for Meeting</text>
+  <text x="793" y="208" fill="#94a3b8" font-size="8.5" text-anchor="start">post: message</text>
+
+  <rect x="349" y="279" width="82" height="40" rx="9" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+  <use href="#g-ai" x="354" y="287"/>
+  <text x="404" y="297" fill="#0f172a" font-size="9.5" font-weight="800" text-anchor="middle">Suggest</text>
+  <text x="404" y="309" fill="#0f172a" font-size="9.5" font-weight="800" text-anchor="middle">Replies</text>
+
+  <use href="#card" x="412" y="373"/><use href="#g-doc" x="400" y="361"/>
+  <text x="412" y="409" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">cleverviral</text>
+  <text x="412" y="421" fill="#94a3b8" font-size="8.5" text-anchor="middle">get: document</text>
+
+  <use href="#card" x="478" y="299"/><use href="#g-pencil" x="466" y="287"/>
+  <text x="478" y="335" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Set Reply</text>
+  <text x="478" y="347" fill="#94a3b8" font-size="8.5" text-anchor="middle">manual</text>
+
+  <use href="#card" x="546" y="299"/><use href="#g-slack" x="534" y="287"/>
+  <text x="546" y="335" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Approve /</text>
+  <text x="546" y="348" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Disapprove</text>
+  <text x="546" y="360" fill="#94a3b8" font-size="8.5" text-anchor="middle">sendAndWait</text>
+
+  <use href="#card" x="608" y="299"/><use href="#g-if" x="596" y="287"/>
+  <text x="608" y="335" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">If</text>
+
+  <use href="#card" x="683" y="257"/><use href="#g-globe" x="671" y="245"/>
+  <text x="683" y="293" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Send Reply</text>
+
+  <use href="#card" x="748" y="257"/><use href="#g-slack" x="736" y="245"/>
+  <text x="748" y="307" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Slack</text>
+
+  <use href="#card" x="815" y="257"/><use href="#g-if" x="803" y="245"/>
+  <text x="815" y="293" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting Link</text>
+  <text x="815" y="306" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Included?</text>
+
+  <use href="#card" x="888" y="257"/><use href="#g-wait" x="876" y="245"/>
+  <text x="888" y="220" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">4 Days Wait</text>
+
+  <use href="#card" x="962" y="257"/><use href="#g-slack" x="950" y="245"/>
+  <text x="962" y="293" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting</text>
+  <text x="962" y="306" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Reminder</text>
+  <text x="962" y="318" fill="#94a3b8" font-size="8.5" text-anchor="middle">sendAndWait</text>
+
+  <use href="#card" x="1027" y="257"/><use href="#g-if" x="1015" y="245"/>
+  <text x="1027" y="220" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Check</text>
+
+  <use href="#card" x="1120" y="192"/><use href="#g-globe" x="1108" y="180"/>
+  <text x="1120" y="153" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Send Meeting</text>
+  <text x="1120" y="165" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Reminder</text>
+
+  <use href="#card" x="1120" y="312"/><use href="#g-slack" x="1108" y="300"/>
+  <text x="1120" y="348" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Good Luck for</text>
+  <text x="1120" y="361" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Meeting Text</text>
+  <text x="1120" y="373" fill="#94a3b8" font-size="8.5" text-anchor="middle">post: message</text>
+
+  <use href="#card" x="683" y="340"/><use href="#g-slack" x="671" y="328"/>
+  <text x="683" y="376" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Manual Reply</text>
+  <text x="683" y="389" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">Notification</text>
+  <text x="683" y="401" fill="#94a3b8" font-size="8.5" text-anchor="middle">post: message</text>
+</svg>
