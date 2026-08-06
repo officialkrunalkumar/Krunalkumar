@@ -105,6 +105,21 @@
   color: var(--muted);
 }
 
+/* Diagrams wrapped in a link open full-screen in a new tab, where the SVG
+   can be zoomed freely. */
+.post-figure a {
+  display: block;
+}
+
+.post-figure a img {
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.post-figure a:hover img {
+  transform: scale(1.01);
+}
+
 /* "In this article" jump-box (built by assets/js/blog-toc.js) */
 .post-toc {
   margin: 0 0 1.8rem;

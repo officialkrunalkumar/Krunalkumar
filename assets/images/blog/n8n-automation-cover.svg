@@ -26,8 +26,8 @@
   <path d="M 1076 240 L 1116 240 M 1076 260 L 1116 260 M 1076 280 L 1101 280" stroke="#7dd3fc" stroke-width="4" fill="none"/>
   <g font-family="'Segoe UI', Tahoma, sans-serif">
     <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AUTOMATION</text>
-    <text x="80" y="280" fill="#f8fafc" font-size="56" font-weight="800">Automating email replies</text>
-    <text x="80" y="350" fill="#f8fafc" font-size="56" font-weight="800">with n8n</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="56" font-weight="800">Automating email</text>
+    <text x="80" y="350" fill="#f8fafc" font-size="56" font-weight="800">replies with n8n</text>
     <text x="80" y="420" fill="#e2e8f0" font-size="30" font-weight="600">A practical guide from real client work.</text>
     <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
   </g>

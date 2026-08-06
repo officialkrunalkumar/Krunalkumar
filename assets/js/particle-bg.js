@@ -160,17 +160,24 @@ revealTargets.forEach((element) => {
 });
 
 if (revealEnabled) {
-  const revealObserver = new IntersectionObserver((entries, observer) => {
+  const onReveal = (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
+  };
+
+  const revealObserver = new IntersectionObserver(onReveal, { threshold: 0.12 });
+  // An element taller than the viewport (e.g. a full blog post card on a
+  // phone) can never reach 12% visibility, so it would stay hidden forever.
+  // Such elements reveal as soon as any part of them enters the viewport.
+  const tallRevealObserver = new IntersectionObserver(onReveal, { threshold: 0 });
 
   document.querySelectorAll('.reveal.reveal-animated').forEach((element) => {
-    revealObserver.observe(element);
+    const isTallerThanViewport = element.offsetHeight > window.innerHeight * 0.8;
+    (isTallerThanViewport ? tallRevealObserver : revealObserver).observe(element);
   });
 } else {
   document.querySelectorAll('.reveal').forEach((element) => {

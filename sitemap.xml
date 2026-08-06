@@ -91,6 +91,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/client-reviews</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
