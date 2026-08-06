@@ -43,7 +43,9 @@
       // when the tab opens successfully, so sever the opener by hand instead.
       var waWindow = window.open(waUrl, '_blank');
       if (waWindow) {
-        waWindow.opener = null;
+        // Guarded: if the new tab has already navigated cross-origin, touching
+        // .opener can throw, and the success message below must still render.
+        try { waWindow.opener = null; } catch (e) { /* cross-origin — ignore */ }
         awaitingWhatsAppReturn = true;
         formStatus.innerHTML = '<span class="success-pill">✓ WhatsApp opened — press Send there, then come back here.</span>';
         if (typeof gtag === 'function') gtag('event', options.analyticsPrefix + '_submit');

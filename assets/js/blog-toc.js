@@ -21,8 +21,12 @@
   var list = document.createElement('ol');
   headings.forEach(function (h2, i) {
     if (!h2.id) {
-      var slug = h2.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-      h2.id = slug || 'section-' + (i + 1);
+      var slug = h2.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'section-' + (i + 1);
+      // Repeated heading text must not produce a duplicate id — every TOC
+      // link would jump to the first occurrence.
+      var unique = slug, n = 2;
+      while (document.getElementById(unique)) unique = slug + '-' + n++;
+      h2.id = unique;
     }
     var item = document.createElement('li');
     var link = document.createElement('a');

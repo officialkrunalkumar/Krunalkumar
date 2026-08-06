@@ -1365,6 +1365,12 @@ footer p {
   border: 1px solid rgba(125, 211, 252, 0.35);
 }
 
+.verify-status-pending .verify-status {
+  background: rgba(251, 191, 36, 0.14);
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+}
+
 .verify-status-revoked .verify-status,
 .verify-status-notfound .verify-status {
   background: rgba(248, 113, 113, 0.14);

@@ -231,6 +231,7 @@
 
         const STATUS = {
           valid: { className: 'verify-status-valid', label: '✓ Valid certificate' },
+          pending: { className: 'verify-status-pending', label: '⏳ Pending verification — this record is awaiting final confirmation' },
           revoked: { className: 'verify-status-revoked', label: '✗ This certificate has been revoked' },
         };
         // Never default an unrecognised status to "valid" — on a verification
@@ -320,14 +321,17 @@
 
         function verify(rawId) {
           const id = rawId.trim().toUpperCase();
-          if (!id) return;
+          if (!id) {
+            result.hidden = true;
+            return;
+          }
           showMessage('verify-status-info', 'Checking…', '');
           loadCertificates()
             .then((certificates) => {
-              const record = certificates.find((entry) => entry.id.toUpperCase() === id);
+              const record = certificates.find((entry) => String(entry.id || '').toUpperCase() === id);
               if (record) {
                 showRecord(record);
-                if (typeof gtag === 'function') gtag('event', 'certificate_verified');
+                if (typeof gtag === 'function') gtag('event', 'certificate_verified', { certificate_status: record.status || 'unknown' });
               } else {
                 showMessage(
                   'verify-status-notfound',
