@@ -63,7 +63,7 @@ web server can host it, and any computer with a browser can develop it.
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages or posts
 ├── feed.xml / atom.xml           RSS + Atom feeds for the blog — update when adding posts
 ├── robots.txt                    Crawl rules + sitemap pointer
-└── vercel.json                   Clean URLs + security headers (strict CSP, X-Frame-Options, nosniff, etc.) + Cache-Control for assets + noindex on the resume PDF, /partials, and /assets/data
+└── vercel.json                   Clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
 ```
 
 ---
@@ -256,6 +256,10 @@ the file never outranks the homepage in search.
   CSP has no `'unsafe-inline'` for scripts, so violations are blocked, not just frowned upon.
 - `vercel.json` sets Cache-Control on `/assets/` (1 day, with a week of stale-while-revalidate;
   images get 30 days) — cache-sensitive changes to an asset may warrant a new filename.
+- **Exception:** `/assets/data/` is served `no-cache, must-revalidate`, and `verify.js` fetches
+  `certificates.json` with `cache: 'no-cache'`. A verification page must never answer from a stale
+  copy — a revoked certificate would keep reading "valid", and a newly issued ID would be called
+  fake. Keep both in place if that file's caching is ever revisited.
 - `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
   so fetched fragments and raw JSON never appear in search results.
 
@@ -264,7 +268,9 @@ the file never outranks the homepage in search.
 Per-page meta descriptions, canonicals, Open Graph/Twitter cards pointing to a dedicated 1200×630
 share image (`assets/images/og-image.jpg`; blog posts have their own under
 `assets/images/blog/og/`), and JSON-LD structured data (Person, WebSite, BreadcrumbList,
-ScholarlyArticle on the research page, BlogPosting on blog posts); `sitemap.xml` + `robots.txt` +
+ProfessionalService on the home page — the business entity, carrying the Udyam/MSME registration
+number and linked to the Person node by `@id`; ScholarlyArticle on the research page, BlogPosting on
+blog posts); `sitemap.xml` + `robots.txt` +
 RSS/Atom feeds (`feed.xml` / `atom.xml`, advertised via `<link rel="alternate">` on blog pages);
 custom 404 with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
 links are present in the raw HTML — crawlers discover pages without JavaScript — but keep

@@ -8,7 +8,7 @@
     <lastBuildDate>Thu, 06 Aug 2026 18:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>I Open-Sourced My AI SDR | Krunalkumar Shah</title>
+      <title>I Open-Sourced My AI SDR</title>
       <link>https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr</link>
       <guid>https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr</guid>
       <description>CleverResponder is my open-source AI SDR for SmartLead and Instantly: it classifies replies, drafts with AI, gets Slack approval, sends, and follows up.</description>
@@ -22,21 +22,21 @@
       <pubDate>Mon, 27 Jul 2026 09:00:00 +0530</pubDate>
     </item>
     <item>
-      <title>My Career Story: From Classroom to AI | Krunalkumar Shah</title>
+      <title>My Career Story: From Classroom to AI</title>
       <link>https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai</link>
       <guid>https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai</guid>
       <description>From a $6 mentoring session to published security research, 5,000+ interviews, and AI pipelines — my honest career story, setbacks included.</description>
       <pubDate>Sun, 19 Jul 2026 09:00:00 +0530</pubDate>
     </item>
     <item>
-      <title>The Four M's Every Business Runs On | Krunalkumar Shah</title>
+      <title>The Four M's Every Business Runs On</title>
       <link>https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs</link>
       <guid>https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs</guid>
       <description>Manpower, money, mind, and management: what each pillar means, why businesses fail when one is missing, and how management binds the rest.</description>
       <pubDate>Fri, 10 Jul 2026 09:00:00 +0530</pubDate>
     </item>
     <item>
-      <title>Lessons from Running Internship Cohorts | Krunalkumar Shah</title>
+      <title>Lessons from Running an Internship Cohort</title>
       <link>https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship</link>
       <guid>https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship</guid>
       <description>Why small cohorts beat crowds, hiring for hunger over resumes, giving real work instead of exercises, and why mentorship is mostly restraint.</description>
@@ -64,14 +64,14 @@
       <pubDate>Fri, 05 Jun 2026 09:00:00 +0530</pubDate>
     </item>
     <item>
-      <title>What Is a Fork Bomb in Linux? | Krunalkumar Shah</title>
+      <title>What Is a Fork Bomb in Linux?</title>
       <link>https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb</link>
       <guid>https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb</guid>
       <description>How one line of Bash can freeze a hardened Linux system, why ulimit and blacklists fall short, and the smarter defense from my research.</description>
       <pubDate>Wed, 27 May 2026 09:00:00 +0530</pubDate>
     </item>
     <item>
-      <title>Automating Email Replies with n8n | Krunalkumar Shah</title>
+      <title>Automating Email Replies with n8n</title>
       <link>https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n</link>
       <guid>https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n</guid>
       <description>How I build email reply automations with n8n: the five-stage workflow, where AI helps, guardrails that prevent bad sends, and mistakes to avoid.</description>
