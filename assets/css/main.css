@@ -23,6 +23,36 @@
 
 :root {
   color-scheme: dark;
+  /* Page background — the one place to lighten or darken the whole site.
+     --bg-base-rgb must stay the same colour as --bg-base (space-separated
+     channels, for the rgb(var(--bg-base-rgb) / a) surfaces that tint with the
+     page: header, dropdown, section cards, footer, mobile nav).
+
+     particle-bg.js reads --bg-base/--bg-mid/--bg-glow at runtime, so the
+     canvas gradient follows this block automatically — do not re-hardcode
+     those stops there.
+
+     What must be shifted BY HAND, by the same rgb delta applied here:
+       - the raised-surface fills rgba(23,36,55,…) / rgba(38,54,72,…) /
+         rgba(16,28,49,…) and the button hexes #172437 / #192534 —
+         15 in this file plus 2 in blog.css (.post-body pre, .post-toc)
+       - the artwork: assets/images/blog/*.svg cover gradients and the inline
+         <svg> figure panels in blog posts (#131f2d)
+       - the theme-color meta in every page (tracks --bg-base)
+
+     The card fills are the real constraint. They are ~80% opaque, so they
+     barely shift when this value does: lightening the page alone closes the
+     gap almost 1:1 and cards flatten into the background. Measured, raising
+     the base ~4 L* on its own cut .info-card's elevation from +5.4 L* to +1.4.
+     Shift them together and the hierarchy holds (currently +5 to +8 L*).
+
+     Shadows are the one thing that must NOT follow — they have to stay darker
+     than whatever the page becomes, so they keep their original dark values.
+     (main.css:836 is a pre-existing exception at rgba(20,33,61,.08).) */
+  --bg-base: #0a1324;
+  --bg-base-rgb: 10 19 36;
+  --bg-mid: rgba(17, 28, 47, 0.96);
+  --bg-glow: rgba(35, 17, 84, 0.95);
   --text: #f8fafc;
   --muted: #e2e8f0;
   --accent: #7dd3fc;
@@ -50,7 +80,7 @@ body {
   font-size: 1.05rem;
   line-height: 1.7;
   color: #e2f0ff;
-  background: #020617;
+  background: var(--bg-base);
   position: relative;
   isolation: isolate;
   overflow-x: hidden;
@@ -68,7 +98,7 @@ body {
      JS). The canvas bitmap paints opaquely over this once the script runs. */
   background:
     radial-gradient(circle 40vw at 80% 15%, rgba(96, 165, 250, 0.16), rgba(168, 85, 247, 0.12) 35%, rgba(0, 0, 0, 0) 100%),
-    radial-gradient(circle farthest-side at 20% 20%, rgba(35, 17, 84, 0.95), rgba(9, 15, 34, 0.96) 45%, rgb(2, 6, 23) 100%);
+    radial-gradient(circle farthest-side at 20% 20%, var(--bg-glow), var(--bg-mid) 45%, var(--bg-base) 100%);
 }
 
 a {
@@ -89,7 +119,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(2, 6, 23, 0.68);
+  background: rgb(var(--bg-base-rgb) / 0.68);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -289,7 +319,7 @@ img {
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(23, 36, 55, 0.85);
   cursor: pointer;
 }
 
@@ -362,7 +392,7 @@ img {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.5rem;
-  background: rgba(2, 6, 23, 0.97);
+  background: rgb(var(--bg-base-rgb) / 0.97);
   border: 1px solid rgba(125, 211, 252, 0.22);
   border-radius: 16px;
   box-shadow: 0 18px 40px rgba(2, 6, 23, 0.55);
@@ -689,23 +719,23 @@ footer p {
 }
 
 .btn-primary {
-  background: #0f172a;
+  background: #172437;
   color: #f8fafc;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-primary:hover {
-  background: #111827;
+  background: #192534;
 }
 
 .btn-secondary {
-  background: #0f172a;
+  background: #172437;
   color: #f8fafc;
   border: 1px solid rgba(125, 211, 252, 0.25);
 }
 
 .btn-secondary:hover {
-  background: #111827;
+  background: #192534;
   color: #f8fafc;
 }
 
@@ -715,7 +745,7 @@ footer p {
 
 .hero-card,
 .section-card {
-  background: rgba(2, 6, 23, 0.88);
+  background: rgb(var(--bg-base-rgb) / 0.88);
   color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 24px;
@@ -724,7 +754,7 @@ footer p {
 
 .hero-card {
   padding: 1.2rem;
-  background: linear-gradient(145deg, rgba(8, 15, 36, 0.9), rgba(15, 23, 42, 0.84));
+  background: linear-gradient(145deg, rgba(16, 28, 49, 0.9), rgba(23, 36, 55, 0.84));
   border: 1px solid rgba(125, 211, 252, 0.16);
 }
 
@@ -744,7 +774,7 @@ footer p {
 }
 
 .profile-highlights div {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.92));
+  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.92));
   border: 1px solid rgba(125, 211, 252, 0.22);
   border-radius: 16px;
   padding: 0.9rem;
@@ -802,7 +832,7 @@ footer p {
 
 .info-card,
 .license-card {
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.74));
+  background: linear-gradient(145deg, rgba(23, 36, 55, 0.8), rgba(38, 54, 72, 0.74));
   border: 1px solid rgba(125, 211, 252, 0.14);
   border-radius: 18px;
   padding: 1.2rem;
@@ -822,7 +852,7 @@ footer p {
 }
 
 .faq-list details {
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.74));
+  background: linear-gradient(145deg, rgba(23, 36, 55, 0.8), rgba(38, 54, 72, 0.74));
   border: 1px solid rgba(125, 211, 252, 0.14);
   border-radius: 18px;
   padding: 0 1.2rem;
@@ -1022,7 +1052,7 @@ footer p {
   gap: 1rem;
   padding: 1.2rem 1.2rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.82));
+  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.24);
   color: #f8fafc;
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
@@ -1044,7 +1074,7 @@ footer p {
   gap: 0.8rem;
   padding: 1.3rem 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.82));
+  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.24);
   color: #f8fafc;
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
@@ -1096,7 +1126,7 @@ footer p {
 
 .carousel-btn {
   border: 1px solid rgba(125, 211, 252, 0.3);
-  background: rgba(15, 23, 42, 0.92);
+  background: rgba(23, 36, 55, 0.92);
   color: #f8fafc;
   border-radius: 999px;
   width: 42px;
@@ -1135,7 +1165,7 @@ footer p {
   gap: 0.8rem;
   padding: 1rem;
   border-radius: 18px;
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.78));
+  background: linear-gradient(145deg, rgba(23, 36, 55, 0.9), rgba(38, 54, 72, 0.78));
   border: 1px solid rgba(125, 211, 252, 0.18);
   color: #f8fafc;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -1206,7 +1236,7 @@ footer p {
 .recommendation-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.82));
+  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
@@ -1411,7 +1441,7 @@ footer p {
 .verify-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.82));
+  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
@@ -1524,7 +1554,7 @@ footer {
   text-align: center;
   position: relative;
   z-index: 1;
-  background: rgba(2, 6, 23, 0.55);
+  background: rgb(var(--bg-base-rgb) / 0.55);
   color: var(--text);
   border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
@@ -1575,7 +1605,7 @@ footer {
   height: 48px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent-dark), #0f172a);
+  background: linear-gradient(135deg, var(--accent-dark), #172437);
   color: #f8fafc;
   font-size: 1.1rem;
   cursor: pointer;
@@ -1642,7 +1672,7 @@ footer {
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.92);
+  background: rgba(23, 36, 55, 0.92);
   color: #cbd5e1;
   font-size: 1.05rem;
   line-height: 1;
@@ -1651,7 +1681,7 @@ footer {
 
 .whatsapp-float-close:hover {
   color: #ffffff;
-  background: rgba(15, 23, 42, 1);
+  background: rgba(23, 36, 55, 1);
 }
 
 /* Once the bubble is dismissed, back-to-top reclaims the corner. */
@@ -1677,7 +1707,7 @@ body.wa-dismissed .back-to-top {
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(23, 36, 55, 0.85);
   color: #cbd5e1;
   cursor: pointer;
   opacity: 0.65;
@@ -1688,7 +1718,7 @@ body.wa-dismissed .back-to-top {
 .bg-pause-toggle:focus-visible {
   opacity: 1;
   color: #f8fafc;
-  background: rgba(15, 23, 42, 1);
+  background: rgba(23, 36, 55, 1);
 }
 
 .bg-pause-toggle svg {
@@ -1848,7 +1878,7 @@ footer a:hover {
     max-height: calc(100dvh - 80px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: rgba(2, 6, 23, 0.97);
+    background: rgb(var(--bg-base-rgb) / 0.97);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(125, 211, 252, 0.18);
     box-shadow: 0 24px 40px rgba(2, 6, 23, 0.5);

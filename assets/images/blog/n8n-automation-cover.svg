@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Automating email replies with n8n — a practical guide from real client work">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#020617"/>
-      <stop offset="1" stop-color="#0f172a"/>
+      <stop offset="0" stop-color="#0a1324"/>
+      <stop offset="1" stop-color="#172437"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.75" cy="0.45" r="0.6">
       <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
@@ -22,7 +22,7 @@
   <rect x="1056" y="210" width="80" height="80" rx="18" fill="none" stroke="#7dd3fc" stroke-width="4"/>
   <rect x="906" y="360" width="80" height="80" rx="18" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-dasharray="8 8"/>
   <path d="M 776 235 L 796 258 L 816 235 M 776 268 L 816 268" stroke="#7dd3fc" stroke-width="4" fill="none"/>
-  <path d="M 926 235 L 946 260 L 966 235" stroke="#0f172a" stroke-width="5" fill="none"/>
+  <path d="M 926 235 L 946 260 L 966 235" stroke="#172437" stroke-width="5" fill="none"/>
   <path d="M 1076 240 L 1116 240 M 1076 260 L 1116 260 M 1076 280 L 1101 280" stroke="#7dd3fc" stroke-width="4" fill="none"/>
   <g font-family="'Segoe UI', Tahoma, sans-serif">
     <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AUTOMATION</text>

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Smart feedback — how to give and receive feedback that actually makes people better">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#020617"/>
-      <stop offset="1" stop-color="#0f172a"/>
+      <stop offset="0" stop-color="#0a1324"/>
+      <stop offset="1" stop-color="#172437"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.78" cy="0.5" r="0.6">
       <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
@@ -16,7 +16,7 @@
     <path d="M 1050 220 A 130 130 0 1 1 920 310" stroke="#7dd3fc" stroke-width="10"/>
     <path d="M 905 340 L 925 295 L 950 335 Z" fill="#7dd3fc" stroke="none"/>
     <circle cx="975" cy="300" r="34" fill="#7dd3fc" opacity="0.92" stroke="none"/>
-    <path d="M 962 300 L 972 312 L 992 288" stroke="#0f172a" stroke-width="7" fill="none"/>
+    <path d="M 962 300 L 972 312 L 992 288" stroke="#172437" stroke-width="7" fill="none"/>
   </g>
   <g font-family="'Segoe UI', Tahoma, sans-serif">
     <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">MENTORSHIP</text>

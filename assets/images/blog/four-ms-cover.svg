@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: The four M's every business runs on — manpower, money, mind, and management">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#020617"/>
-      <stop offset="1" stop-color="#0f172a"/>
+      <stop offset="0" stop-color="#0a1324"/>
+      <stop offset="1" stop-color="#172437"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
       <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
@@ -19,7 +19,7 @@
     <rect x="912" y="210" width="70" height="230" rx="8" fill="#38bdf8" opacity="0.84"/>
     <rect x="1012" y="210" width="70" height="230" rx="8" fill="#7dd3fc"/>
     <rect x="690" y="440" width="440" height="20" rx="6" fill="#334155"/>
-    <g font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" fill="#0b1220" text-anchor="middle">
+    <g font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" fill="#131f2d" text-anchor="middle">
       <text x="747" y="335" transform="rotate(-90 747 335)">MANPOWER</text>
       <text x="847" y="335" transform="rotate(-90 847 335)">MONEY</text>
       <text x="947" y="335" transform="rotate(-90 947 335)">MIND</text>
