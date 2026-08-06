@@ -201,3 +201,4 @@ BreadcrumbList, ScholarlyArticle on the research page); `sitemap.xml` + `robots.
 with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
 links are present in the raw HTML — crawlers discover pages without JavaScript — but keep
 `sitemap.xml` accurate anyway; it remains the authoritative index request.
+
