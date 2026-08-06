@@ -10,8 +10,8 @@
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
   },
   {
-    "id": "KS-MEN-2026-Krunal",
-    "name": "Krunalkumar Shah",
+    "id": "KS-MEN-2026-SAMPLE",
+    "name": "Sample Mentor",
     "type": "Mentorship",
     "project": "He did an exceptional job during the mentorship and developed a solution to one cybersecurity problem.",
     "duration": "1 April 2026 – 30 June 2026",
