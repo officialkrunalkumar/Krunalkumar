@@ -2,6 +2,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 // A hint for fellow console-openers. The terminal itself lives at /terminal.
 console.log('%c👀 curiosity opens consoles… it also opens /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
+console.log('%c⌨️  press . for the background controls — or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 
 const canvas = document.getElementById('bg-canvas');
 if (canvas) {
@@ -18,14 +19,39 @@ if (canvas) {
   // is well below this.
   const MAX_SPEED = 0.95;
 
+  // Visitor-adjustable density and speed (k/s and l/a, plus the settings
+  // popover). Both are multipliers over the width-derived defaults rather than
+  // absolute numbers: resizeCanvas recomputes the base count from the viewport
+  // on every resize — and mobile browsers fire resize on every URL-bar
+  // show/hide — so an absolute count would be wiped seconds after it was set.
+  //
+  // Deliberately not stored anywhere. This is a toy, and someone who cranks
+  // the field to 460 dots should not carry that paint cost into every later
+  // page. Reloading, or following any link, returns the background to default.
+  const MIN_PARTICLES = 24;
+  const DENSITY_STEP = 1.25;
+  const SPEED_STEP = 1.3;
+  const MIN_SPEED_SCALE = 0.25;
+  const MAX_SPEED_SCALE = 2.5;
+  let densityScale = 1;
+  let speedScale = 1;
+
   // WCAG 2.2.2 pause state — read before the loop starts so a visitor who
-  // paused the animation on a previous page keeps it paused here.
+  // paused the animation on a previous page keeps it paused here. Scoped to
+  // the tab session, like every other choice this script remembers: nothing
+  // it stores outlives the visit.
+  const PAUSE_KEY = 'bgAnimationPaused';
   let animationPaused = false;
   try {
-    animationPaused = localStorage.getItem('bg-animation-paused') === '1';
+    animationPaused = sessionStorage.getItem(PAUSE_KEY) === '1';
   } catch (error) {
     // Storage can be blocked (strict privacy modes) — default to animating.
   }
+
+  // Assigned when the pause button is built. The `p` shortcut calls this exact
+  // function rather than reimplementing the toggle, so the aria-pressed sync
+  // and the stored pause state can never drift from what the button does.
+  let togglePause = null;
 
   // The two full-viewport gradients only depend on the canvas size, so they are
   // rebuilt on resize instead of being reallocated on every animation frame.
@@ -56,6 +82,73 @@ if (canvas) {
     nebulaGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
   }
 
+  // The default field: one dot per 7px of width, capped so an ultrawide
+  // monitor does not pay for a field nobody reads as denser. A 375px phone
+  // lands at ~53, a 1440px laptop at 200.
+  function baseCount() {
+    return Math.max(1, Math.min(200, Math.floor(width / 7)));
+  }
+
+  // Hand-tuned ceiling for `k`. Small screens are the ones that actually feel
+  // a heavy field — weaker GPUs, and every dot is an arc() fill per frame — so
+  // they top out far below the desktop limit.
+  function maxCount() {
+    return width < 700 ? 170 : 460;
+  }
+
+  function targetCount() {
+    return Math.min(maxCount(), Math.max(MIN_PARTICLES, Math.round(baseCount() * densityScale)));
+  }
+
+  // Clamp the multiplier itself, not just the resulting count, so repeated
+  // presses past the ceiling cannot bank up invisible headroom and leave the
+  // first several presses of the opposite key looking dead.
+  //
+  // Only ever called from the density controls, never from resize. This
+  // rewrites persistent state against the *current* width, so calling it on
+  // resize would let a transient bad width corrupt the visitor's setting — a
+  // 0-width first layout resolves baseCount() to 1 and pins the scale at 24,
+  // which the next real resize then re-clamps straight to the ceiling.
+  // resizeCanvas leaves the scale alone and lets targetCount clamp the count,
+  // so a viewport change caps the field without destroying the chosen value:
+  // shrink the window and the count drops, restore it and the density is back.
+  function clampDensityScale() {
+    const base = baseCount();
+    densityScale = Math.min(maxCount() / base, Math.max(MIN_PARTICLES / base, densityScale));
+  }
+
+  function spawnParticle() {
+    // Direction is seeded randomly, then steered by the drift force and the
+    // cursor. Magnitude is a per-particle constant so the field keeps a
+    // varied, organic pace instead of every dot moving in lockstep — see
+    // the speed handling in drawFrame.
+    const angle = Math.random() * Math.PI * 2;
+    const cruise = Math.random() * 0.2 + 0.18;
+    return {
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: Math.cos(angle) * cruise,
+      vy: Math.sin(angle) * cruise,
+      cruise,
+      radius: Math.random() * 1.5 + 0.4,
+      alpha: Math.random() * 0.7 + 0.2,
+      hue: 180 + Math.random() * 80,
+      drift: Math.random() * 0.01 + 0.005,
+    };
+  }
+
+  // Grow or shrink the field to the current target. Shared by resize and by
+  // the density controls, so both take the same path.
+  function syncParticleCount() {
+    const count = targetCount();
+    if (particles.length > count) {
+      particles.length = count;
+    }
+    while (particles.length < count) {
+      particles.push(spawnParticle());
+    }
+  }
+
   function resizeCanvas() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
@@ -64,35 +157,14 @@ if (canvas) {
     // Keep existing particles across resizes — mobile browsers fire resize on
     // every URL-bar show/hide, and regenerating positions made the whole field
     // visibly teleport mid-scroll. Only grow or shrink to the target count.
-    const count = Math.min(165, Math.floor(width / 9));
-    if (particles.length > count) {
-      particles.length = count;
-    }
-    // Pull kept particles back inside the new bounds — one stranded far
+    //
+    // Pull kept particles back inside the new bounds first — one stranded far
     // outside after a viewport shrink is too slow to ever drift back.
     particles.forEach((particle) => {
       particle.x = Math.min(Math.max(particle.x, 0), width);
       particle.y = Math.min(Math.max(particle.y, 0), height);
     });
-    while (particles.length < count) {
-      // Direction is seeded randomly, then steered by the drift force and the
-      // cursor. Magnitude is a per-particle constant so the field keeps a
-      // varied, organic pace instead of every dot moving in lockstep — see
-      // the speed handling in drawFrame.
-      const angle = Math.random() * Math.PI * 2;
-      const cruise = Math.random() * 0.2 + 0.18;
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: Math.cos(angle) * cruise,
-        vy: Math.sin(angle) * cruise,
-        cruise,
-        radius: Math.random() * 1.5 + 0.4,
-        alpha: Math.random() * 0.7 + 0.2,
-        hue: 180 + Math.random() * 80,
-        drift: Math.random() * 0.01 + 0.005,
-      });
-    }
+    syncParticleCount();
   }
 
   // dt is elapsed time normalised to a 60fps tick (1 == ~16.7ms), so positions
@@ -106,6 +178,11 @@ if (canvas) {
 
     ctx.fillStyle = nebulaGradient;
     ctx.fillRect(0, 0, width, height);
+
+    // The speed control scales the whole model — each particle's own cruise
+    // speed and the ceiling together — so the field keeps its varied pace
+    // instead of flattening toward one uniform velocity at the extremes.
+    const speedCeiling = MAX_SPEED * speedScale;
 
     particles.forEach((particle, index) => {
       particle.x += particle.vx * dt;
@@ -138,12 +215,13 @@ if (canvas) {
       // ~0.3 px/s, because it reverses long before any speed can build.
       // Energy picked up from the cursor decays back to cruise gradually, so
       // particles visibly accelerate as they are drawn in, then settle.
+      const cruise = particle.cruise * speedScale;
       const speed = Math.hypot(particle.vx, particle.vy);
       if (speed > 1e-6) {
-        const eased = speed > particle.cruise
-          ? Math.max(particle.cruise, speed * Math.pow(0.98, dt))
-          : particle.cruise;
-        const target = Math.min(eased, MAX_SPEED);
+        const eased = speed > cruise
+          ? Math.max(cruise, speed * Math.pow(0.98, dt))
+          : cruise;
+        const target = Math.min(eased, speedCeiling);
         particle.vx = (particle.vx / speed) * target;
         particle.vy = (particle.vy / speed) * target;
       }
@@ -192,6 +270,9 @@ if (canvas) {
       // animation loop's own rAF callback has already run by this point, so
       // without this the cleared canvas would be the frame the user sees.
       drawFrame(0);
+      // The count is width-derived, so the popover's readout goes stale on
+      // resize even though the visitor changed nothing.
+      syncPanel();
     });
   });
   window.addEventListener('mousemove', (event) => {
@@ -232,14 +313,14 @@ if (canvas) {
 
     syncPauseButton();
 
-    pauseButton.addEventListener('click', () => {
+    togglePause = function () {
       animationPaused = !animationPaused;
       syncPauseButton();
       try {
         if (animationPaused) {
-          localStorage.setItem('bg-animation-paused', '1');
+          sessionStorage.setItem(PAUSE_KEY, '1');
         } else {
-          localStorage.removeItem('bg-animation-paused');
+          sessionStorage.removeItem(PAUSE_KEY);
         }
       } catch (error) {
         // Storage blocked — the choice still applies for this page view.
@@ -249,10 +330,277 @@ if (canvas) {
         lastFrameTime = performance.now();
         scheduleFrame();
       }
-    });
+    };
+
+    pauseButton.addEventListener('click', togglePause);
 
     document.body.appendChild(pauseButton);
   }
+
+  // --- Visitor controls ------------------------------------------------------
+  // Two ways in, one implementation behind them: the k/s/l/a/p keys and the
+  // settings popover next to the pause button both call adjustDensity /
+  // adjustSpeed / togglePause. The popover is not decoration — it is the
+  // pointer and screen-reader path to the same controls, it carries the
+  // off switch that WCAG 2.1.4 wants for single-character shortcuts, and it is
+  // the only way anyone discovers the keys without opening a console.
+
+  // One reused toast element rather than a node per press: holding a key
+  // repeats at ~30/s and spawn-and-remove would thrash the DOM.
+  const toast = document.createElement('div');
+  toast.className = 'bg-hint-toast';
+  toast.setAttribute('role', 'status');
+  document.body.appendChild(toast);
+
+  let toastTimer = null;
+  function showToast(message) {
+    // The toast is part of the chrome, so it stays quiet until the chrome is
+    // asked for. Pressing k with the controls hidden still adds dots — the
+    // change is visible in the background itself.
+    if (!controlsShown) return;
+    // While the popover is open its own <output> elements show — and, being
+    // implicit live regions, announce — the same values. A toast on top of it
+    // would just be a second copy of what is already on screen.
+    if (panel && !panel.hidden) return;
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 1400);
+  }
+
+  const panel = document.createElement('div');
+  panel.className = 'bg-settings-panel';
+  panel.id = 'bg-settings-panel';
+  panel.hidden = true;
+  // Under prefers-reduced-motion the canvas is one static frame, so speed is
+  // meaningless and pause has no button to drive — the density row is still
+  // worth having, since a denser static field is a real, visible change.
+  panel.innerHTML =
+    '<p class="bg-settings-title">Background</p>' +
+    '<div class="bg-settings-row">' +
+      '<span>Dots</span>' +
+      '<button type="button" data-bg-act="dots-down" aria-label="Fewer dots">&minus;</button>' +
+      '<output class="bg-settings-value" data-bg-out="dots">0</output>' +
+      '<button type="button" data-bg-act="dots-up" aria-label="More dots">+</button>' +
+    '</div>' +
+    (prefersReducedMotion ? '' :
+    '<div class="bg-settings-row">' +
+      '<span>Speed</span>' +
+      '<button type="button" data-bg-act="speed-down" aria-label="Slower">&minus;</button>' +
+      '<output class="bg-settings-value" data-bg-out="speed">1.00&times;</output>' +
+      '<button type="button" data-bg-act="speed-up" aria-label="Faster">+</button>' +
+    '</div>') +
+    '<label class="bg-settings-check">' +
+      '<input type="checkbox" data-bg-act="shortcuts"> Keyboard shortcuts' +
+    '</label>' +
+    '<p class="bg-settings-keys">' + (prefersReducedMotion ? 'k / s dots' : 'k / s dots · l / a speed · p pause') + '</p>';
+
+  const settingsToggle = document.createElement('button');
+  settingsToggle.className = 'bg-settings-toggle';
+  settingsToggle.type = 'button';
+  settingsToggle.setAttribute('aria-expanded', 'false');
+  settingsToggle.setAttribute('aria-controls', 'bg-settings-panel');
+  settingsToggle.setAttribute('aria-label', 'Background settings');
+  settingsToggle.innerHTML =
+    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<rect x="3" y="6.2" width="18" height="1.6" rx="0.8"/>' +
+    '<rect x="3" y="16.2" width="18" height="1.6" rx="0.8"/>' +
+    '<circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg>';
+
+  const dotsOut = panel.querySelector('[data-bg-out="dots"]');
+  const speedOut = panel.querySelector('[data-bg-out="speed"]');
+  const shortcutsBox = panel.querySelector('[data-bg-act="shortcuts"]');
+
+  // Someone who turns the letter keys off wants them off for the rest of the
+  // visit, not just this page — so this one survives navigation, in the same
+  // tab-scoped storage as the pause state and the WhatsApp bubble's dismissal.
+  // Dots and speed do not: those reset on every page load by design.
+  const SHORTCUTS_KEY = 'bgShortcutsOff';
+  let shortcutsEnabled = true;
+  try {
+    shortcutsEnabled = sessionStorage.getItem(SHORTCUTS_KEY) !== '1';
+  } catch (error) {
+    // Storage blocked — shortcuts stay on, and the checkbox still works for
+    // this page view.
+  }
+  shortcutsBox.checked = shortcutsEnabled;
+
+  function syncPanel() {
+    dotsOut.textContent = String(targetCount());
+    if (speedOut) {
+      speedOut.textContent = speedScale.toFixed(2) + '×';
+    }
+  }
+
+  function adjustDensity(direction) {
+    const before = targetCount();
+    densityScale *= direction > 0 ? DENSITY_STEP : 1 / DENSITY_STEP;
+    clampDensityScale();
+    syncParticleCount();
+    // Repaint immediately. The loop would catch up within ~33ms, but it is not
+    // running at all while paused or under prefers-reduced-motion, and there
+    // the change would otherwise not appear until the next resize.
+    drawFrame(0);
+    const after = targetCount();
+    showToast(after === before ? 'Dots: ' + after + ' (limit)' : 'Dots: ' + after);
+    syncPanel();
+  }
+
+  function adjustSpeed(direction) {
+    // Nothing is moving under reduced motion, so there is no speed to change.
+    if (prefersReducedMotion) return;
+    const before = speedScale;
+    speedScale = Math.min(MAX_SPEED_SCALE, Math.max(MIN_SPEED_SCALE, speedScale * (direction > 0 ? SPEED_STEP : 1 / SPEED_STEP)));
+    showToast('Speed: ' + speedScale.toFixed(2) + '×' + (speedScale === before ? ' (limit)' : ''));
+    syncPanel();
+  }
+
+  // The dots/speed controls are the easter egg, so they stay out of the corner
+  // until `.` asks for them. The pause button is not part of this — it is the
+  // WCAG 2.2.2 escape hatch for auto-playing motion, and a control nobody can
+  // find is not a mechanism to stop anything. It stays visible always.
+  //
+  // Revealing rides in sessionStorage so it survives a click through to the
+  // next page; a visitor who went looking for the controls should not have to
+  // go looking again on every page of the site.
+  const CONTROLS_KEY = 'bgControlsShown';
+  let controlsShown = false;
+  try {
+    controlsShown = sessionStorage.getItem(CONTROLS_KEY) === '1';
+  } catch (error) {
+    // Storage blocked — the controls start hidden and `.` still reveals them.
+  }
+
+  function setControlsShown(next) {
+    controlsShown = next;
+    document.body.classList.toggle('bg-controls-shown', controlsShown);
+    try {
+      if (controlsShown) {
+        sessionStorage.setItem(CONTROLS_KEY, '1');
+      } else {
+        sessionStorage.removeItem(CONTROLS_KEY);
+      }
+    } catch (error) {
+      // Storage blocked — the choice still applies for this page view.
+    }
+    if (!controlsShown) {
+      setPanelOpen(false);
+      toast.classList.remove('visible');
+    }
+  }
+
+  function setPanelOpen(open) {
+    panel.hidden = !open;
+    settingsToggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      // The toggle reveals on keyboard focus even while hidden, so the panel
+      // can be opened from a corner that looks empty. Pin the chrome open in
+      // that case, or the toggle vanishes the moment focus moves inside.
+      setControlsShown(true);
+      syncPanel();
+      toast.classList.remove('visible');
+    }
+  }
+
+  settingsToggle.addEventListener('click', () => setPanelOpen(panel.hidden));
+
+  panel.addEventListener('click', (event) => {
+    const action = event.target.closest('[data-bg-act]');
+    if (!action) return;
+    switch (action.dataset.bgAct) {
+      case 'dots-up': adjustDensity(1); break;
+      case 'dots-down': adjustDensity(-1); break;
+      case 'speed-up': adjustSpeed(1); break;
+      case 'speed-down': adjustSpeed(-1); break;
+      case 'shortcuts':
+        shortcutsEnabled = action.checked;
+        try {
+          if (shortcutsEnabled) {
+            sessionStorage.removeItem(SHORTCUTS_KEY);
+          } else {
+            sessionStorage.setItem(SHORTCUTS_KEY, '1');
+          }
+        } catch (error) {
+          // Storage blocked — the choice still applies for this page view.
+        }
+        break;
+      default: break;
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (panel.hidden) return;
+    if (panel.contains(event.target) || settingsToggle.contains(event.target)) return;
+    setPanelOpen(false);
+  });
+
+  // Anything with a caret in it means the visitor is typing, not steering the
+  // background — shared by every key handler below.
+  const EDITABLE = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]';
+
+  // Escape closes the popover whether or not the letter keys are switched on,
+  // so this cannot live in the shortcut handler below. Focus goes back to the
+  // toggle rather than being dropped on <body>.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || panel.hidden) return;
+    const hadFocus = panel.contains(document.activeElement);
+    setPanelOpen(false);
+    if (hadFocus) settingsToggle.focus();
+  });
+
+  // `.` is also outside the shortcut handler, and outside its enabled check on
+  // purpose: it is the way back to the popover, and the popover holds the
+  // switch that turns the letter keys off. Gating it on that switch would let
+  // a visitor lock themselves out of their own off switch.
+  //
+  // A period rather than a letter, so it cannot collide with the single-letter
+  // quick-navigation keys screen readers bind in browse mode.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== '.') return;
+    if (event.ctrlKey || event.altKey || event.metaKey || event.isComposing) return;
+    if (event.target && event.target.closest && event.target.closest(EDITABLE)) return;
+    setControlsShown(!controlsShown);
+    if (controlsShown) showToast('Controls shown · . to hide');
+    event.preventDefault();
+  });
+
+  // Bare single letters, so everything that could be real typing is excluded
+  // first. Modifier combos belong to the browser (Ctrl+S, Ctrl+A, Ctrl+L);
+  // isComposing means an IME candidate window is open and the letter is part
+  // of a word being composed; a caret inside any editable element means the
+  // visitor is filling in the contact form. Keys pressed while browser chrome
+  // holds focus — the address bar, the find bar — never reach the document at
+  // all, so they need no handling here. Screen readers in browse mode capture
+  // single letters as their own quick-nav keys and likewise never pass them on.
+  document.addEventListener('keydown', (event) => {
+    if (!shortcutsEnabled) return;
+    if (event.ctrlKey || event.altKey || event.metaKey || event.isComposing) return;
+    if (typeof event.key !== 'string') return;
+    if (event.target && event.target.closest && event.target.closest(EDITABLE)) return;
+
+    switch (event.key.toLowerCase()) {
+      case 'k': adjustDensity(1); break;
+      case 's': adjustDensity(-1); break;
+      case 'l': adjustSpeed(1); break;
+      case 'a': adjustSpeed(-1); break;
+      case 'p':
+        // Absent under prefers-reduced-motion, where there is no pause button
+        // because there is no animation to pause.
+        if (!togglePause) return;
+        togglePause();
+        showToast(animationPaused ? 'Paused' : 'Playing');
+        break;
+      default: return;
+    }
+    event.preventDefault();
+  });
+
+  syncPanel();
+  // Applies the body class for a visitor who already revealed the controls
+  // earlier in the same visit; a no-op on a first page load.
+  setControlsShown(controlsShown);
+  document.body.appendChild(panel);
+  document.body.appendChild(settingsToggle);
 }
 
 // Above-the-fold hero blocks (.hero-copy, .hero-card, .page-hero) are left out
