@@ -38,5 +38,15 @@
     "issued": "",
     "status": "pending",
     "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
+  },
+  {
+    "id": "KS-MEN-2026-TEST",
+    "name": "TEST Mentee",
+    "type": "Mentorship",
+    "project": "Completed the mentorship track and developed a solution to an applied cybersecurity problem.",
+    "duration": "1 April 2026 – 30 June 2026",
+    "issued": "",
+    "status": "",
+    "note": "This is a sample entry for demonstration only. Real certificates carry their ID printed next to the QR code on the document."
   }
 ]
