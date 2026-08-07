@@ -24,11 +24,8 @@ if (canvas) {
 
   // The two full-viewport gradients only depend on the canvas size, so they are
   // rebuilt on resize instead of being reallocated on every animation frame.
-  // The cursor glow gradient likewise only depends on the pointer position, so
-  // it is rebuilt in the mousemove handler and reused across frames.
   let backgroundGradient = null;
   let nebulaGradient = null;
-  let mouseGlow = null;
 
   // The base gradient's stops are read from the CSS custom properties rather
   // than duplicated here. This canvas paints opaquely over the #bg-canvas CSS
@@ -129,14 +126,6 @@ if (canvas) {
       ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
       ctx.fill();
     });
-
-    if (mouseActive && mouseGlow) {
-      ctx.fillStyle = mouseGlow;
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 180, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
   }
 
   // The loop is capped to ~30fps — plenty for a slow ambient drift, and half
@@ -182,16 +171,10 @@ if (canvas) {
     mouseX = event.clientX;
     mouseY = event.clientY;
     mouseActive = true;
-    // Gradients are immutable once created, so following the pointer means a
-    // rebuild — but only here, on actual movement, never per frame.
-    mouseGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 260);
-    mouseGlow.addColorStop(0, 'rgba(255,255,255,0.24)');
-    mouseGlow.addColorStop(0.35, 'rgba(125,211,252,0.12)');
-    mouseGlow.addColorStop(1, 'rgba(0,0,0,0)');
   });
   // mouseleave never bubbles to window — it must be observed on document,
-  // otherwise the cursor glow sticks at the last position when the pointer
-  // leaves the browser window.
+  // otherwise the particles keep being pulled toward the last pointer position
+  // after the cursor has left the browser window.
   document.addEventListener('mouseleave', () => {
     mouseActive = false;
   });
