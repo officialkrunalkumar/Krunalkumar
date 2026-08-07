@@ -13,6 +13,11 @@ if (canvas) {
   let mouseActive = false;
   const particles = [];
 
+  // Velocity ceiling, in px per 60fps tick. Only approached while the cursor
+  // is pulling — free-drifting particles sit at their own cruise speed, which
+  // is well below this.
+  const MAX_SPEED = 0.95;
+
   // WCAG 2.2.2 pause state — read before the loop starts so a visitor who
   // paused the animation on a previous page keeps it paused here.
   let animationPaused = false;
@@ -59,7 +64,7 @@ if (canvas) {
     // Keep existing particles across resizes — mobile browsers fire resize on
     // every URL-bar show/hide, and regenerating positions made the whole field
     // visibly teleport mid-scroll. Only grow or shrink to the target count.
-    const count = Math.min(140, Math.floor(width / 10));
+    const count = Math.min(165, Math.floor(width / 9));
     if (particles.length > count) {
       particles.length = count;
     }
@@ -70,11 +75,18 @@ if (canvas) {
       particle.y = Math.min(Math.max(particle.y, 0), height);
     });
     while (particles.length < count) {
+      // Direction is seeded randomly, then steered by the drift force and the
+      // cursor. Magnitude is a per-particle constant so the field keeps a
+      // varied, organic pace instead of every dot moving in lockstep — see
+      // the speed handling in drawFrame.
+      const angle = Math.random() * Math.PI * 2;
+      const cruise = Math.random() * 0.2 + 0.18;
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
+        vx: Math.cos(angle) * cruise,
+        vy: Math.sin(angle) * cruise,
+        cruise,
         radius: Math.random() * 1.5 + 0.4,
         alpha: Math.random() * 0.7 + 0.2,
         hue: 180 + Math.random() * 80,
@@ -108,18 +120,33 @@ if (canvas) {
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < 220) {
           const force = (220 - distance) / 220;
-          particle.vx += (dx / distance) * 0.008 * force * dt;
-          particle.vy += (dy / distance) * 0.008 * force * dt;
+          particle.vx += (dx / distance) * 0.03 * force * dt;
+          particle.vy += (dy / distance) * 0.03 * force * dt;
         }
       }
 
-      // Damping and drift forces are dt-scaled like the positions above, so
-      // the velocity model behaves the same at 30fps as it did at 60.
-      const damping = Math.pow(0.98, dt);
-      particle.vx *= damping;
-      particle.vy *= damping;
-      particle.vx += Math.sin((Date.now() * particle.drift) + index) * 0.0008 * dt;
-      particle.vy += Math.cos((Date.now() * particle.drift) + index * 0.7) * 0.0008 * dt;
+      // Drift forces are dt-scaled like the positions above, so the velocity
+      // model behaves the same at 30fps as it did at 60. They only steer
+      // direction now — the magnitude is set immediately below.
+      particle.vx += Math.sin((Date.now() * particle.drift) + index) * 0.0012 * dt;
+      particle.vy += Math.cos((Date.now() * particle.drift) + index * 0.7) * 0.0012 * dt;
+
+      // Speed is eased toward this particle's own cruise speed rather than
+      // toward zero. The previous model multiplied by 0.98^dt every frame,
+      // which bled all velocity away within about a second and left the field
+      // effectively frozen — the oscillating drift alone sustained only
+      // ~0.3 px/s, because it reverses long before any speed can build.
+      // Energy picked up from the cursor decays back to cruise gradually, so
+      // particles visibly accelerate as they are drawn in, then settle.
+      const speed = Math.hypot(particle.vx, particle.vy);
+      if (speed > 1e-6) {
+        const eased = speed > particle.cruise
+          ? Math.max(particle.cruise, speed * Math.pow(0.98, dt))
+          : particle.cruise;
+        const target = Math.min(eased, MAX_SPEED);
+        particle.vx = (particle.vx / speed) * target;
+        particle.vy = (particle.vy / speed) * target;
+      }
 
       ctx.beginPath();
       ctx.fillStyle = `hsla(${particle.hue}, 90%, 75%, ${particle.alpha})`;

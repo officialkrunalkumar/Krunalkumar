@@ -26,7 +26,8 @@
   /* Page background — the one place to lighten or darken the whole site.
      --bg-base-rgb must stay the same colour as --bg-base (space-separated
      channels, for the rgb(var(--bg-base-rgb) / a) surfaces that tint with the
-     page: header, dropdown, section cards, footer, mobile nav).
+     page: dropdown, section cards, footer, mobile nav).
+     The sticky header is deliberately NOT in that list — see .site-header.
 
      particle-bg.js reads --bg-base/--bg-mid/--bg-glow at runtime, so the
      canvas gradient follows this block automatically — do not re-hardcode
@@ -119,7 +120,16 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgb(var(--bg-base-rgb) / 0.68);
+  /* Raised-surface fill, not the page tint. The canvas glow is centred at
+     height * 0.2 — directly under the header — so tinting with --bg-base
+     (the darkest token) at partial alpha subtracted ~3 L* from the page
+     behind it: the bar read as a shadow cut into the layout rather than a
+     surface above it. This sits ~1.5 L* above the page instead. It is one
+     step darker than the card fill rgba(23,36,55,…), which lifted the bar
+     ~3 L* and read too light for a full-width band. Being a literal, it
+     must be shifted by hand with the other raised fills — see the token
+     block at the top of this file. */
+  background: rgb(20 32 50 / 0.8);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
