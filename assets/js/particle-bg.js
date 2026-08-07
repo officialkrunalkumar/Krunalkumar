@@ -4,6 +4,11 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 console.log('%c👀 curiosity opens consoles… it also opens /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 console.log('%c⌨️  press . for the background controls — or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 
+// Assigned when the WhatsApp bubble is built near the bottom of this file. The
+// `w` shortcut belongs with the other background keys, which are wired up in
+// the canvas block below — long before the bubble exists.
+let toggleWhatsappBubble = null;
+
 const canvas = document.getElementById('bg-canvas');
 if (canvas) {
   const ctx = canvas.getContext('2d');
@@ -393,7 +398,11 @@ if (canvas) {
     '<label class="bg-settings-check">' +
       '<input type="checkbox" data-bg-act="shortcuts"> Keyboard shortcuts' +
     '</label>' +
-    '<p class="bg-settings-keys">' + (prefersReducedMotion ? 'k / s dots' : 'k / s dots · l / a speed · p pause') + '</p>';
+    // Every key governed by the checkbox above has to be listed here, or
+    // switching shortcuts off would silently disable something unlisted.
+    '<p class="bg-settings-keys">' + (prefersReducedMotion
+      ? 'k / s dots · w chat bubble'
+      : 'k / s dots · l / a speed · p pause · w chat bubble') + '</p>';
 
   const settingsToggle = document.createElement('button');
   settingsToggle.className = 'bg-settings-toggle';
@@ -590,6 +599,14 @@ if (canvas) {
         togglePause();
         showToast(animationPaused ? 'Paused' : 'Playing');
         break;
+      case 'w': {
+        // Null only if the bubble was never built — it always is, but this
+        // handler is wired before that code runs, so guard rather than assume.
+        if (!toggleWhatsappBubble) return;
+        const hidden = toggleWhatsappBubble();
+        showToast(hidden ? 'WhatsApp hidden' : 'WhatsApp shown');
+        break;
+      }
       default: return;
     }
     event.preventDefault();
@@ -652,21 +669,24 @@ backToTopButton.addEventListener('click', () => {
 document.body.appendChild(backToTopButton);
 
 // Floating WhatsApp chat bubble — opens a real conversation, no bot in between.
-// Dismissible: the × hides it for the rest of the visit (sessionStorage), and
-// the back-to-top button drops down to take its corner. The bubble returns
-// once the tab is closed and the site is opened fresh. sessionStorage access
-// is wrapped in try/catch because private modes can block storage entirely.
+// Hideable two ways: the × on the bubble, and the `w` background shortcut,
+// which unlike the × can also bring it back. Either way the back-to-top button
+// drops down to take its corner, and the choice lasts the visit — the bubble
+// returns once the tab is closed and the site is opened fresh. sessionStorage
+// access is wrapped in try/catch because private modes can block storage.
 // The global click listener below reports bubble clicks as whatsapp_link_click.
 {
   const WA_DISMISSED_KEY = 'waFloatDismissed';
-  let waDismissed = false;
+  let waHidden = false;
   try {
-    waDismissed = sessionStorage.getItem(WA_DISMISSED_KEY) === '1';
+    waHidden = sessionStorage.getItem(WA_DISMISSED_KEY) === '1';
   } catch (e) { /* storage unavailable — fall back to per-page dismissal */ }
 
-  if (waDismissed) {
-    document.body.classList.add('wa-dismissed');
-  } else {
+  // Always built, then hidden by a class when dismissed. The previous version
+  // removed the node outright, which a toggle cannot undo without rebuilding
+  // it; the stylesheet's display:none keeps it out of the tab order just as
+  // removal did.
+  {
     const whatsappWrap = document.createElement('div');
     whatsappWrap.className = 'whatsapp-float-wrap';
 
@@ -684,17 +704,32 @@ document.body.appendChild(backToTopButton);
     whatsappClose.type = 'button';
     whatsappClose.setAttribute('aria-label', 'Hide the WhatsApp chat button');
     whatsappClose.textContent = '×';
-    whatsappClose.addEventListener('click', () => {
-      whatsappWrap.remove();
-      document.body.classList.add('wa-dismissed');
+    function setWhatsappHidden(next) {
+      waHidden = next;
+      document.body.classList.toggle('wa-dismissed', waHidden);
       try {
-        sessionStorage.setItem(WA_DISMISSED_KEY, '1');
-      } catch (e) { /* storage unavailable — dismissal lasts this page only */ }
-    });
+        if (waHidden) {
+          sessionStorage.setItem(WA_DISMISSED_KEY, '1');
+        } else {
+          sessionStorage.removeItem(WA_DISMISSED_KEY);
+        }
+      } catch (e) { /* storage unavailable — the choice lasts this page only */ }
+    }
+
+    whatsappClose.addEventListener('click', () => setWhatsappHidden(true));
+
+    // Handed to the `w` shortcut up in the canvas block, which runs earlier in
+    // this file than the bubble is built. Returns the new state so the caller
+    // can say which way it went without reaching back in here.
+    toggleWhatsappBubble = function () {
+      setWhatsappHidden(!waHidden);
+      return waHidden;
+    };
 
     whatsappWrap.appendChild(whatsappFloat);
     whatsappWrap.appendChild(whatsappClose);
     document.body.appendChild(whatsappWrap);
+    setWhatsappHidden(waHidden);
   }
 }
 

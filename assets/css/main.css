@@ -1694,7 +1694,13 @@ footer {
   background: rgba(23, 36, 55, 1);
 }
 
-/* Once the bubble is dismissed, back-to-top reclaims the corner. */
+/* Once the bubble is dismissed, back-to-top reclaims the corner. The bubble
+   itself stays in the DOM so the `w` shortcut can bring it back; display:none
+   keeps it out of the tab order exactly as removing the node used to. */
+body.wa-dismissed .whatsapp-float-wrap {
+  display: none;
+}
+
 body.wa-dismissed .back-to-top {
   bottom: 1.2rem;
 }
