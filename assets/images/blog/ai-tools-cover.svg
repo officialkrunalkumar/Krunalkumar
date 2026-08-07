@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: which AI tool for which job — jobs mapped to the tools that fit them">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1324"/>
+      <stop offset="1" stop-color="#172437"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.62">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- job → tool mapping: one spine, six branches -->
+  <g stroke="#38bdf8" stroke-width="3" opacity="0.55" fill="none">
+    <path d="M 800 315 L 856 315"/>
+    <path d="M 856 155 L 856 475"/>
+    <path d="M 856 155 L 912 155"/>
+    <path d="M 856 219 L 912 219"/>
+    <path d="M 856 283 L 912 283"/>
+    <path d="M 856 347 L 912 347"/>
+    <path d="M 856 411 L 912 411"/>
+    <path d="M 856 475 L 912 475"/>
+  </g>
+
+  <!-- the job -->
+  <rect x="720" y="283" width="80" height="64" rx="14" fill="#7dd3fc"/>
+  <text x="760" y="322" fill="#0a1324" font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" text-anchor="middle">JOB</text>
+
+  <!-- the six destinations -->
+  <g font-family="'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#e2e8f0">
+    <rect x="912" y="135" width="212" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="932" y="161">Think · assistant</text>
+    <rect x="912" y="199" width="212" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="932" y="225">Verify · research</text>
+    <rect x="912" y="263" width="212" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="932" y="289">Design · slides</text>
+    <rect x="912" y="327" width="212" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="932" y="353">Render · media</text>
+    <rect x="912" y="391" width="212" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="932" y="417">Build · code</text>
+    <rect x="912" y="455" width="212" height="40" rx="12" fill="#7dd3fc"/>
+    <text x="932" y="481" fill="#0a1324">Repeat · automate</text>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="185" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AI TOOLS</text>
+    <text x="80" y="262" fill="#f8fafc" font-size="56" font-weight="800">Which AI tool</text>
+    <text x="80" y="328" fill="#f8fafc" font-size="56" font-weight="800">for which job</text>
+    <text x="80" y="396" fill="#e2e8f0" font-size="29" font-weight="600">What each one is good at, what the free</text>
+    <text x="80" y="437" fill="#e2e8f0" font-size="29" font-weight="600">tier gives you, and where free stops.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

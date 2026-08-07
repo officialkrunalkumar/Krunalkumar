@@ -5,8 +5,15 @@
     <link>https://krunalkumar.dpdns.org/blog</link>
     <description>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 06 Aug 2026 18:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Fri, 07 Aug 2026 09:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Which AI Tool for Which Job: A Practitioner's Map</title>
+      <link>https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job</link>
+      <guid>https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job</guid>
+      <description>Chat, research, slides, images, video, meetings, code, automation — which AI tool fits each job, what the free tiers give you, and exactly where free stops.</description>
+      <pubDate>Fri, 07 Aug 2026 09:00:00 +0530</pubDate>
+    </item>
     <item>
       <title>I Open-Sourced My AI SDR</title>
       <link>https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr</link>
