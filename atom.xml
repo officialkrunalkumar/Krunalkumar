@@ -5,10 +5,18 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-06T18:00:00+05:30</updated>
+  <updated>2026-08-07T09:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>Which AI Tool for Which Job: A Practitioner's Map</title>
+    <link href="https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job" />
+    <id>https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job</id>
+    <published>2026-08-07T09:00:00+05:30</published>
+    <updated>2026-08-07T09:00:00+05:30</updated>
+    <summary>Chat, research, slides, images, video, meetings, code, automation — which AI tool fits each job, what the free tiers give you, and exactly where free stops.</summary>
+  </entry>
   <entry>
     <title>I Open-Sourced My AI SDR</title>
     <link href="https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr" />

@@ -148,6 +148,57 @@
   padding: 0;
 }
 
+/* Comparison tables. The wrapper scrolls on narrow screens so the page body
+   never has to — the table itself keeps a readable minimum width. */
+.post-table-wrap {
+  margin: 1.8rem 0;
+  overflow-x: auto;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 14px;
+}
+
+.post-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.post-table caption {
+  caption-side: bottom;
+  padding: 0.8rem 1rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.post-table th,
+.post-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+
+.post-table thead th {
+  background: rgba(125, 211, 252, 0.1);
+  color: #7dd3fc;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.post-table tbody td:first-child {
+  color: #f8fafc;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.post-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .post-figure {
   margin: 1.8rem 0;
 }
