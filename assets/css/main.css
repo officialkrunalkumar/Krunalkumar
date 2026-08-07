@@ -1737,6 +1737,170 @@ body.wa-dismissed .back-to-top {
   fill: currentColor;
 }
 
+/* Background settings popover and its toggle — injected by particle-bg.js.
+   The toggle sits immediately right of the pause button (1.2rem + its 40px
+   width + an 8px gap), so neither rule has to know about the other. */
+.bg-settings-toggle {
+  position: fixed;
+  left: calc(1.2rem + 48px);
+  bottom: 1.2rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 999px;
+  background: rgba(23, 36, 55, 0.85);
+  color: #cbd5e1;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.bg-settings-toggle:hover,
+.bg-settings-toggle:focus-visible,
+.bg-settings-toggle[aria-expanded="true"] {
+  opacity: 1;
+  color: #f8fafc;
+  background: rgba(23, 36, 55, 1);
+}
+
+/* The dots/speed controls are the hidden half: particle-bg.js adds
+   .bg-controls-shown to <body> when the visitor presses `.`, and the toast is
+   gated on the same state in JS. The :not(:focus-visible) carve-out is the
+   skip-link pattern — the toggle is still reachable by Tab from an apparently
+   empty corner, which is what keeps the shortcuts off switch inside the
+   popover findable (WCAG 2.1.4).
+
+   The pause button is deliberately not here. It is the WCAG 2.2.2 mechanism
+   for stopping auto-playing motion, and hiding it behind an undiscoverable
+   keypress would be the same as not having one. */
+body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bg-settings-toggle svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.bg-settings-panel {
+  position: fixed;
+  left: 1.2rem;
+  bottom: 4.4rem;
+  z-index: 41;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 224px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.97);
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+}
+
+/* display:flex above matches [hidden] on specificity and wins on order, so the
+   attribute alone would not hide the panel. */
+.bg-settings-panel[hidden] {
+  display: none;
+}
+
+.bg-settings-title {
+  margin: 0;
+  color: #7dd3fc;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.bg-settings-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.bg-settings-row button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.9);
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bg-settings-row button:hover {
+  background: rgba(51, 65, 85, 0.95);
+  color: #ffffff;
+}
+
+/* Fixed width and tabular figures so the row does not reflow as the value
+   steps between two and three digits. */
+.bg-settings-value {
+  min-width: 3.4rem;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.bg-settings-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.bg-settings-keys {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+/* Value readout for the keyboard shortcuts. Bottom-left, clear of the reading
+   column — a centred toast would land on the paragraph being read partway
+   down a blog post. Suppressed by particle-bg.js while the popover is open,
+   which shows the same numbers in the same corner. */
+.bg-hint-toast {
+  position: fixed;
+  left: 1.2rem;
+  bottom: 4.4rem;
+  z-index: 39;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s;
+}
+
+.bg-hint-toast.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
 footer a:hover {
   color: var(--accent);
 }
@@ -1950,6 +2114,12 @@ footer a:hover {
      it can never appear when the background is a static frame anyway. */
   .bg-pause-toggle {
     display: none;
+  }
+
+  /* With the pause button gone, the settings toggle takes the corner rather
+     than floating beside an empty slot. */
+  .bg-settings-toggle {
+    left: 1.2rem;
   }
 
   *,

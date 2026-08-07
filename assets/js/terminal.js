@@ -18,7 +18,18 @@
     line.className = 'line' + (cls ? ' ' + cls : '');
     line.innerHTML = html;
     output.appendChild(line);
-    window.scrollTo(0, document.body.scrollHeight);
+    // Scroll the minimum needed to keep the newest output in view. The old
+    // scrollTo(0, body.scrollHeight) jumped to the bottom of the *document*,
+    // and body carries 40vh of bottom padding — so the moment output grew
+    // enough to make the page scrollable, it was shoved 40vh up the screen,
+    // stranding its first lines above the fold with dead space underneath.
+    //
+    // The prompt sits after #output, so it is the right anchor while it is
+    // showing. During a command it is display:none and cannot be scrolled to,
+    // so the new line stands in; the cmd.focus() in run()'s done callback then
+    // brings the restored prompt back into view on its own.
+    var anchor = promptRow && promptRow.style.display !== 'none' ? promptRow : line;
+    anchor.scrollIntoView({ block: 'nearest' });
     return line;
   }
 
@@ -101,6 +112,30 @@
     print('     <span class="warn">is protected by published research. Feel free to try.</span>');
   }
 
+  // Documents the background controls that live on every other page. Unlisted
+  // in help, like forkbomb — the console hint on those pages points here, and
+  // finding it is the point.
+  function cmdMagic() {
+    print('MAGIC(1)                    Background Controls                    MAGIC(1)', 'dim');
+    print('');
+    print('<span class="white">NAME</span>');
+    print('     the drifting dots — the starfield behind every page takes requests');
+    print('');
+    print('<span class="white">KEYS</span>');
+    print('     <span class="cyan">.</span>    show or hide the controls <span class="dim">(they start hidden)</span>');
+    print('     <span class="cyan">k</span>    more dots            <span class="cyan">s</span>    fewer dots');
+    print('     <span class="cyan">l</span>    faster drift         <span class="cyan">a</span>    slower drift');
+    print('     <span class="cyan">p</span>    pause or resume the drift');
+    print('');
+    print('<span class="white">NOTES</span>');
+    print('     The keys go quiet the moment you click into a form, so the');
+    print('     contact page still spells your name the way you typed it.');
+    print('     Nothing is remembered — reload and it is back to how it shipped.');
+    print('');
+    print('<span class="white">BUGS</span>');
+    print('     Does not work here; no starfield to bother. Try <a href="/">the home page</a>.');
+  }
+
   function cmdHack(done) {
     var chars = '0123456789ABCDEF';
     var count = 0;
@@ -177,6 +212,7 @@
       else print('No manual entry for ' + esc(a || '(nothing)') + '. Try: man forkbomb', 'dim');
       done();
     },
+    magic: function (a, done) { cmdMagic(); done(); },
     forkbomb: function (a, done) { forkBomb(done); },
     hack: function (a, done) { cmdHack(done); },
     sudo: function (a, done) {
