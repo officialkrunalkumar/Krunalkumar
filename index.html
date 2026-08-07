@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redirecting to krunalkumar.dpdns.org</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://krunalkumar.dpdns.org/">
+<script>
+// Path-preserving redirect: /Krunalkumar/foo?a=1 -> https://krunalkumar.dpdns.org/foo?a=1
+// Runs in <head> so it fires before the body is parsed. The <meta refresh> below
+// is the no-JS fallback (it cannot preserve the path, so it targets the root).
+(function () {
+  var LIVE = 'https://krunalkumar.dpdns.org';
+  var BASE = '/Krunalkumar';
+  var path = location.pathname;
+  if (path.indexOf(BASE) === 0) path = path.slice(BASE.length);
+  if (path.charAt(0) !== '/') path = '/' + path;
+  location.replace(LIVE + path + location.search + location.hash);
+})();
+</script>
+<meta http-equiv="refresh" content="0; url=https://krunalkumar.dpdns.org/">
+<style>
+  :root { color-scheme: dark }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: #0b0f14; color: #c9d4e0; text-align: center; padding: 1.5rem;
+    font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  a { color: #6ea8fe }
+</style>
+</head>
+<body>
+  <main>
+    <p>Taking you to <a href="https://krunalkumar.dpdns.org/">krunalkumar.dpdns.org</a>&hellip;</p>
+    <p><small>Not redirected? Use the link above.</small></p>
+  </main>
+</body>
+</html>
