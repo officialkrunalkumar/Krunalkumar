@@ -126,6 +126,7 @@
     print('     <span class="cyan">k</span>    more dots            <span class="cyan">s</span>    fewer dots');
     print('     <span class="cyan">l</span>    faster drift         <span class="cyan">a</span>    slower drift');
     print('     <span class="cyan">p</span>    pause or resume the drift');
+    print('     <span class="cyan">w</span>    hide or show the WhatsApp bubble');
     print('');
     print('<span class="white">NOTES</span>');
     print('     The keys go quiet the moment you click into a form, so the');
