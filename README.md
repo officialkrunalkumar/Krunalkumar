@@ -13,12 +13,12 @@ web server can host it, and any computer with a browser can develop it.
 
 | Page                  | Purpose                                                                    |
 | --------------------- | -------------------------------------------------------------------------- |
-| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, certifications |
+| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `blog/`               | Blog — `/blog` index (10 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD |
+| `blog/`               | Blog — `/blog` index (11 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
@@ -37,7 +37,7 @@ web server can host it, and any computer with a browser can develop it.
 ├── favicon.ico                   Favicon, served from the site root
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
-│   └── *.html                    One file per article (10 posts), static TOC in the markup
+│   └── *.html                    One file per article (11 posts), static TOC in the markup
 ├── partials/
 │   ├── header.html               ★ Single source of truth for the navigation
 │   └── footer.html               ★ Single source of truth for the footer
@@ -233,7 +233,7 @@ unmatched URLs.
    TOC is missing.
 2. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`
    (`blog-index.js` shows the first six and hides the rest behind Show more, so newest goes first).
-3. Update the "From the blog" column if the post should be one of the five highlighted there — in
+3. Update the "From the blog" column if the post should be one of the six highlighted there — in
    `partials/footer.html` AND the static footer copies in every page.
 4. Add an extensionless `<url>` entry to `sitemap.xml`.
 5. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
