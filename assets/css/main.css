@@ -798,23 +798,27 @@ footer p {
   transform: translateY(-2px);
 }
 
-/* Accent fill so the primary action outranks the #1f2c3f card surfaces it
-   sits on. Gradient stays inside the site's sky family (--accent sky-300 →
-   sky-500); dark ink clears AA even on the darkest stop (~6.3:1).
-   text-shadow: none is load-bearing — the global body text-shadow (a dark
-   halo tuned for light-on-dark) smears dark glyphs on light fills. */
+/* Primary CTA: the deepest, most saturated member of the site's own sky
+   family, with white text — everything else interactive is pale sky on
+   dark, so the one fully-saturated cerulean block is what the eye finds
+   first, while still reading as a sibling of the outline .btn-secondary
+   next to it (filled = act now, outline = alternate path).
+   White text clears AA on both stops (~4.7:1 top, ~7.5:1 bottom); hover
+   deepens (pressed feel) rather than brightening, so it stays passing.
+   text-shadow: none is load-bearing — the global body text-shadow smears
+   glyph edges on saturated mid-tone fills. */
 .btn-primary {
-  background: linear-gradient(180deg, var(--accent), #0ea5e9);
-  color: #0a1a28;
+  background: linear-gradient(180deg, #077ab8, #02598a);
+  color: #ffffff;
   text-shadow: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 6px 18px rgba(56, 189, 248, 0.28), 0 10px 25px rgba(2, 6, 23, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 6px 18px rgba(14, 165, 233, 0.3), 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(180deg, #a5e3fd, var(--accent-dark));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 8px 22px rgba(56, 189, 248, 0.4), 0 10px 25px rgba(2, 6, 23, 0.22);
+  background: linear-gradient(180deg, #0470ab, #024f7a);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 8px 22px rgba(14, 165, 233, 0.42), 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-secondary {
