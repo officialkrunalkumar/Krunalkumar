@@ -58,6 +58,16 @@
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.24);
 }
 
+/* Reading measure: uncapped, article lines ran ~120-140 characters across the
+   1180px card — well past the ~80ch comfort ceiling for sustained reading.
+   Left-aligned (not centered) so body text shares its left edge with the
+   title, breadcrumbs, and TOC above it; figures and code inherit the same
+   cap and stay visually aligned. The cover image sits outside .post-body
+   and keeps the full card width. */
+.post-body {
+  max-width: 72ch;
+}
+
 .post-body h2 {
   margin: 2.2rem 0 0.8rem;
   font-size: 1.5rem;
