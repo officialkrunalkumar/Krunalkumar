@@ -282,11 +282,12 @@ Shift with it:
    space-separated channels the same colour), plus `--bg-mid` if you want the gradient's midpoint
    to move with it. The `#bg-canvas` gradient and the canvas in `particle-bg.js` both read these,
    so neither needs editing.
-2. The raised-surface fills — **22 `background` declarations in `main.css`** (grep the values —
+2. The raised-surface fills — the `background` declarations in `main.css` (grep the values —
    solids and gradient stops both) **and 3 in `blog.css`** (`.post-body pre`, `.post-toc`, and
    `.blog-filter`): `rgba(31, 44, 63, …)`, `rgba(46, 62, 80, …)`, `rgba(24, 36, 57, …)`, and the
-   button hexes `#1f2c3f` / `#212d3c`. Only `background` declarations — never a `box-shadow` that
-   happens to use the same numbers.
+   secondary-button hexes `#1f2c3f` / `#212d3c` (`.btn-primary` is accent-filled via
+   `--accent-dark` and does not shift with the surfaces). Only `background` declarations —
+   never a `box-shadow` that happens to use the same numbers.
 3. The artwork, which is anchored to the same palette: the gradient stops in every
    `*-cover.svg` under `assets/images/blog/` (15 today — count them, don't trust this number), and the inline `<svg>` figure panels inside blog posts
    (`#1b2735`). `.post-cover` has no background of its own, so a cover left behind prints as a
