@@ -32,9 +32,33 @@
   </url>
   <url>
     <loc>https://krunalkumar.dpdns.org/blog</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/blog/types-of-cyberattacks</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/blog/security-compliance-explained</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/blog/india-it-act-explained</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job</loc>
@@ -86,7 +110,7 @@
   </url>
   <url>
     <loc>https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

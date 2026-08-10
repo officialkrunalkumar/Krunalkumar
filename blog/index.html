@@ -47,6 +47,10 @@
           "name": "Krunalkumar Shah"
         },
         "blogPost": [
+          { "@type": "BlogPosting", "headline": "Types of Cyberattacks, Mapped: Causes, Defenses, and the CIA Triad", "url": "https://krunalkumar.dpdns.org/blog/types-of-cyberattacks", "datePublished": "2026-08-10" },
+          { "@type": "BlogPosting", "headline": "Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More", "url": "https://krunalkumar.dpdns.org/blog/security-compliance-explained", "datePublished": "2026-08-10" },
+          { "@type": "BlogPosting", "headline": "India's IT Law, Explained: From the IT Act 2000 to the DPDP Era", "url": "https://krunalkumar.dpdns.org/blog/india-it-act-explained", "datePublished": "2026-08-10" },
+          { "@type": "BlogPosting", "headline": "How Cybercrime Cases Are Solved: From First Alert to the Courtroom", "url": "https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved", "datePublished": "2026-08-10" },
           { "@type": "BlogPosting", "headline": "Which AI Tool for Which Job: A Practitioner's Map", "url": "https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job", "datePublished": "2026-08-07" },
           { "@type": "BlogPosting", "headline": "I Open-Sourced My AI SDR: CleverResponder for SmartLead and Instantly", "url": "https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr", "datePublished": "2026-08-03" },
           { "@type": "BlogPosting", "headline": "Character Over Career: Five Choices I Live By", "url": "https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by", "datePublished": "2026-07-27" },
@@ -111,12 +115,24 @@
         </p>
       </section>
 
+      <!-- Category filters — wired up by blog-index.js and hidden without JS:
+           every card is already visible then, so inert buttons would only
+           mislead. Categories are deliberately few and fixed; a category can
+           graduate to its own landing page once it holds ~8-10 posts. -->
+      <div class="blog-filters" role="group" aria-label="Filter articles by topic" style="display: none">
+        <button type="button" class="blog-filter is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="blog-filter" data-filter="security" aria-pressed="false">Security</button>
+        <button type="button" class="blog-filter" data-filter="automation-ai" aria-pressed="false">Automation &amp; AI</button>
+        <button type="button" class="blog-filter" data-filter="career-mentorship" aria-pressed="false">Career &amp; Mentorship</button>
+        <button type="button" class="blog-filter" data-filter="business" aria-pressed="false">Business</button>
+      </div>
+
       <section class="section-card">
         <div class="section-heading">
           <p class="eyebrow">Featured</p>
         </div>
-        <a class="featured-post info-card" href="/blog/character-over-career-the-choices-i-live-by">
-          <img src="/assets/images/blog/left-side-cover.svg" alt="Cover: Character over career — five paired choices with the left side of each letter chosen" width="1200" height="630" loading="lazy" decoding="async" />
+        <a class="featured-post info-card" href="/blog/character-over-career-the-choices-i-live-by" data-category="career-mentorship">
+          <img src="/assets/images/blog/left-side-cover.svg" alt="Cover: Character over career — five paired choices with the left side of each letter chosen" width="1200" height="630" fetchpriority="high" decoding="async" />
           <div class="featured-post-body">
             <p class="post-meta">Mindset · 27 July 2026 · 6 min read</p>
             <h2>Character over career: five choices I live by</h2>
@@ -133,7 +149,47 @@
       <section class="section-card">
         <div class="blog-grid">
 
-          <a class="post-card info-card" href="/blog/which-ai-tool-for-which-job">
+          <a class="post-card info-card" href="/blog/types-of-cyberattacks" data-category="security">
+            <img src="/assets/images/blog/attack-types-cover.svg" alt="Cover: Types of cyberattacks, mapped — the CIA triad as three connected nodes" width="1200" height="630" loading="lazy" decoding="async" />
+            <div class="post-card-body">
+              <p class="post-meta">Security · 10 August 2026 · 13 min read</p>
+              <h3>Types of cyberattacks, mapped: causes, defenses, and the CIA triad</h3>
+              <p class="excerpt">Six attack families, what each one breaks, why they keep working, and where prevention ends and mitigation begins — the trunk of a new security series.</p>
+              <span class="read-more">Read article →</span>
+            </div>
+          </a>
+
+          <a class="post-card info-card" href="/blog/security-compliance-explained" data-category="security">
+            <img src="/assets/images/blog/compliance-cover.svg" alt="Cover: Security compliance, explained: GDPR, HIPAA, PCI DSS, SOC 2, and more" width="1200" height="630" loading="lazy" decoding="async" />
+            <div class="post-card-body">
+              <p class="post-meta">Security · 10 August 2026 · 12 min read</p>
+              <h3>Security compliance, explained: GDPR, HIPAA, PCI DSS, SOC 2, and more</h3>
+              <p class="excerpt">A practical guide to security and privacy compliance — GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO/IEC 27001, and SOC 2 — what each one is, who it binds, the requirements that matter, and how to tell which apply to you.</p>
+              <span class="read-more">Read article →</span>
+            </div>
+          </a>
+
+          <a class="post-card info-card" href="/blog/india-it-act-explained" data-category="security">
+            <img src="/assets/images/blog/india-it-cover.svg" alt="Cover: India's IT law, explained: from the IT Act 2000 to the DPDP era" width="1200" height="630" loading="lazy" decoding="async" />
+            <div class="post-card-body">
+              <p class="post-meta">Security · 10 August 2026 · 16 min read</p>
+              <h3>India's IT law, explained: from the IT Act 2000 to the DPDP era</h3>
+              <p class="excerpt">A practitioner's map of India's IT law — the IT Act 2000, Sections 43 to 79, the struck-down 66A, the 2021 Rules, CERT-In directions, BNSS 94, and the DPDP Act.</p>
+              <span class="read-more">Read article →</span>
+            </div>
+          </a>
+
+          <a class="post-card info-card" href="/blog/how-cybercrime-cases-are-solved" data-category="security">
+            <img src="/assets/images/blog/cybercrime-case-cover.svg" alt="Cover: How cybercrime cases are solved: from first alert to the courtroom" width="1200" height="630" loading="lazy" decoding="async" />
+            <div class="post-card-body">
+              <p class="post-meta">Security · 10 August 2026 · 14 min read</p>
+              <h3>How cybercrime cases are solved: from first alert to the courtroom</h3>
+              <p class="excerpt">How a cybercrime case actually gets solved — incident response, the police investigation, digital forensics, chain of custody, and what makes electronic evidence stand in an Indian court.</p>
+              <span class="read-more">Read article →</span>
+            </div>
+          </a>
+
+          <a class="post-card info-card" href="/blog/which-ai-tool-for-which-job" data-category="automation-ai">
             <img src="/assets/images/blog/ai-tools-cover.svg" alt="Cover: which AI tool for which job" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">AI tools · 7 August 2026 · 18 min read</p>
@@ -143,7 +199,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/i-open-sourced-my-ai-sdr">
+          <a class="post-card info-card" href="/blog/i-open-sourced-my-ai-sdr" data-category="automation-ai">
             <img src="/assets/images/blog/ai-sdr-cover.svg" alt="Cover: I open-sourced my AI SDR" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Automation · 3 August 2026 · 6 min read</p>
@@ -153,7 +209,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/my-career-story-from-classroom-to-research-and-ai">
+          <a class="post-card info-card" href="/blog/my-career-story-from-classroom-to-research-and-ai" data-category="career-mentorship">
             <img src="/assets/images/blog/career-story-cover.svg" alt="Cover: My career story" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Career story · 19 July 2026 · 9 min read</p>
@@ -163,7 +219,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/the-four-ms-every-business-needs">
+          <a class="post-card info-card" href="/blog/the-four-ms-every-business-needs" data-category="business">
             <img src="/assets/images/blog/four-ms-cover.svg" alt="Cover: The four M's every business runs on" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Business · 10 July 2026 · 5 min read</p>
@@ -173,7 +229,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/what-running-internship-cohorts-taught-me-about-mentorship">
+          <a class="post-card info-card" href="/blog/what-running-internship-cohorts-taught-me-about-mentorship" data-category="career-mentorship">
             <img src="/assets/images/blog/mentorship-cover.svg" alt="Cover: What running an internship cohort is teaching me about mentorship" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Mentorship · 2 July 2026 · 5 min read</p>
@@ -183,7 +239,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/how-to-stand-out-in-an-internship-interview">
+          <a class="post-card info-card" href="/blog/how-to-stand-out-in-an-internship-interview" data-category="career-mentorship">
             <img src="/assets/images/blog/interview-cover.svg" alt="Cover: How to stand out in an internship interview" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Careers · 24 June 2026 · 6 min read</p>
@@ -193,7 +249,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/smart-feedback-how-to-give-and-receive-it">
+          <a class="post-card info-card" href="/blog/smart-feedback-how-to-give-and-receive-it" data-category="career-mentorship">
             <img src="/assets/images/blog/smart-feedback-cover.svg" alt="Cover: Smart feedback — how to give and receive it" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Mentorship · 15 June 2026 · 4 min read</p>
@@ -203,7 +259,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/how-to-succeed-in-software-development">
+          <a class="post-card info-card" href="/blog/how-to-succeed-in-software-development" data-category="career-mentorship">
             <img src="/assets/images/blog/four-steps-cover.svg" alt="Cover: How to Succeed in Software Development: The Four-Step Path" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Craft · 5 June 2026 · 5 min read</p>
@@ -213,7 +269,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/what-is-a-fork-bomb">
+          <a class="post-card info-card" href="/blog/what-is-a-fork-bomb" data-category="security">
             <img src="/assets/images/blog/fork-bomb-cover.svg" alt="Cover: What is a fork bomb, and why can it freeze a Linux system?" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Linux security · 27 May 2026 · 5 min read</p>
@@ -223,7 +279,7 @@
             </div>
           </a>
 
-          <a class="post-card info-card" href="/blog/automating-email-replies-with-n8n">
+          <a class="post-card info-card" href="/blog/automating-email-replies-with-n8n" data-category="automation-ai">
             <img src="/assets/images/blog/n8n-automation-cover.svg" alt="Cover: Automating email replies with n8n" width="1200" height="630" loading="lazy" decoding="async" />
             <div class="post-card-body">
               <p class="post-meta">Automation · 18 May 2026 · 5 min read</p>
@@ -286,12 +342,13 @@
           </nav>
           <nav class="footer-col" aria-label="From the blog">
             <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
             <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
-            <a href="/blog/i-open-sourced-my-ai-sdr">I open-sourced my AI SDR</a>
-            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
-            <a href="/blog/how-to-stand-out-in-an-internship-interview">Standing out in interviews</a>
-            <a href="/blog/my-career-story-from-classroom-to-research-and-ai">My career story</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>
           </nav>
           <div class="footer-col">

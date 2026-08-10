@@ -8,6 +8,13 @@
    Article pages
    -------------------------------------------------------------------------- */
 
+/* Article text deliberately runs the full card width: the owner prefers
+   long lines and shorter pages over a capped reading measure (a 72ch
+   column was tried and rejected — the leftover side space read as empty,
+   and shrinking the card was rejected too). The card's own padding is the
+   only inset. If a measure cap is ever revisited, it needs a design that
+   fills the card — not an island of text. */
+
 /* Breadcrumb trail above the article title — small, muted, one line */
 .breadcrumbs {
   margin: 0 0 1rem;
@@ -56,16 +63,6 @@
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.24);
-}
-
-/* Reading measure: uncapped, article lines ran ~120-140 characters across the
-   1180px card — well past the ~80ch comfort ceiling for sustained reading.
-   Left-aligned (not centered) so body text shares its left edge with the
-   title, breadcrumbs, and TOC above it; figures and code inherit the same
-   cap and stay visually aligned. The cover image sits outside .post-body
-   and keeps the full card width. */
-.post-body {
-  max-width: 72ch;
 }
 
 .post-body h2 {
@@ -446,4 +443,38 @@ a.post-card:hover {
   padding-top: 0.6rem;
   font-weight: 700;
   color: var(--accent);
+}
+
+/* Category filter chips on the blog index — revealed by blog-index.js.
+   Active chip flips to the solid accent so state is carried by more than
+   color alone (filled vs outlined). */
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0.2rem;
+}
+
+.blog-filter {
+  padding: 0.4rem 0.95rem;
+  border: 1px solid rgba(125, 211, 252, 0.3);
+  border-radius: 999px;
+  background: rgba(31, 44, 63, 0.55);
+  color: #cbd5e1;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.blog-filter:hover {
+  color: var(--accent);
+  border-color: rgba(125, 211, 252, 0.6);
+}
+
+.blog-filter.is-active {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #0a1a28;
 }

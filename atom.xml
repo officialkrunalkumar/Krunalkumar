@@ -5,10 +5,42 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-07T09:00:00+05:30</updated>
+  <updated>2026-08-10T09:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>Types of Cyberattacks, Mapped: Causes, Defenses, and the CIA Triad</title>
+    <link href="https://krunalkumar.dpdns.org/blog/types-of-cyberattacks" />
+    <id>https://krunalkumar.dpdns.org/blog/types-of-cyberattacks</id>
+    <published>2026-08-10T09:00:00+05:30</published>
+    <updated>2026-08-10T09:00:00+05:30</updated>
+    <summary>Six attack families, what each one breaks, why they keep working, and the prevention and mitigation that actually help — one practical map built on the CIA triad.</summary>
+  </entry>
+  <entry>
+    <title>Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More</title>
+    <link href="https://krunalkumar.dpdns.org/blog/security-compliance-explained" />
+    <id>https://krunalkumar.dpdns.org/blog/security-compliance-explained</id>
+    <published>2026-08-10T09:00:00+05:30</published>
+    <updated>2026-08-10T09:00:00+05:30</updated>
+    <summary>A practical guide to security and privacy compliance — GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO/IEC 27001, and SOC 2 — what each one is, who it binds, the requirements that matter, and how to tell which apply to you.</summary>
+  </entry>
+  <entry>
+    <title>India's IT Law, Explained: From the IT Act 2000 to the DPDP Era</title>
+    <link href="https://krunalkumar.dpdns.org/blog/india-it-act-explained" />
+    <id>https://krunalkumar.dpdns.org/blog/india-it-act-explained</id>
+    <published>2026-08-10T09:00:00+05:30</published>
+    <updated>2026-08-10T09:00:00+05:30</updated>
+    <summary>A practitioner's map of India's IT law — the IT Act 2000, Sections 43 to 79, the struck-down 66A, the 2021 Rules, CERT-In directions, BNSS 94, and the DPDP Act.</summary>
+  </entry>
+  <entry>
+    <title>How Cybercrime Cases Are Solved: From First Alert to the Courtroom</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved" />
+    <id>https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved</id>
+    <published>2026-08-10T09:00:00+05:30</published>
+    <updated>2026-08-10T09:00:00+05:30</updated>
+    <summary>How a cybercrime case actually gets solved — incident response, the police investigation, digital forensics, chain of custody, and what makes electronic evidence stand in an Indian court.</summary>
+  </entry>
   <entry>
     <title>Which AI Tool for Which Job: A Practitioner's Map</title>
     <link href="https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job" />
@@ -86,7 +118,7 @@
     <link href="https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb" />
     <id>https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb</id>
     <published>2026-05-27T09:00:00+05:30</published>
-    <updated>2026-08-06T18:00:00+05:30</updated>
+    <updated>2026-08-10T09:00:00+05:30</updated>
     <summary>How one line of Bash can freeze a hardened Linux system, why ulimit and blacklists fall short, and the smarter defense from my research.</summary>
   </entry>
   <entry>

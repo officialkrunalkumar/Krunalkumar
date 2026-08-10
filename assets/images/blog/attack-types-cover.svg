@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Types of cyberattacks, mapped — the CIA triad drawn as three connected nodes for confidentiality, integrity, and availability">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="rgba(88,52,166,0.35)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="140" cy="90" r="2"/><circle cx="420" cy="60" r="1.5"/><circle cx="700" cy="110" r="2"/>
+    <circle cx="90" cy="420" r="1.5"/><circle cx="320" cy="540" r="2"/><circle cx="1130" cy="70" r="1.5"/>
+    <circle cx="1060" cy="560" r="2"/><circle cx="620" cy="580" r="1.5"/>
+  </g>
+
+  <text x="80" y="150" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+  <text x="80" y="240" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">Types of cyberattacks,</text>
+  <text x="80" y="312" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">mapped</text>
+  <text x="80" y="390" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">Six families, their causes, and the</text>
+  <text x="80" y="432" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">defenses that actually work.</text>
+  <text x="80" y="560" fill="#8fa0b8" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+
+  <!-- CIA triad: three nodes joined in a triangle -->
+  <g stroke="#38bdf8" stroke-width="2.5" opacity="0.85">
+    <line x1="960" y1="170" x2="852" y2="380"/>
+    <line x1="960" y1="170" x2="1068" y2="380"/>
+    <line x1="852" y1="380" x2="1068" y2="380"/>
+  </g>
+  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
+    <circle cx="960" cy="170" r="52" fill="#7dd3fc"/>
+    <text x="960" y="185" fill="#131f2d" font-size="42" font-weight="800">C</text>
+    <circle cx="852" cy="380" r="52" fill="#a855f7"/>
+    <text x="852" y="395" fill="#131f2d" font-size="42" font-weight="800">I</text>
+    <circle cx="1068" cy="380" r="52" fill="#4ade80"/>
+    <text x="1068" y="395" fill="#131f2d" font-size="42" font-weight="800">A</text>
+    <text x="960" y="100" fill="#94a3b8" font-size="20">Confidentiality</text>
+    <text x="806" y="465" fill="#94a3b8" font-size="20">Integrity</text>
+    <text x="1090" y="465" fill="#94a3b8" font-size="20">Availability</text>
+  </g>
+</svg>

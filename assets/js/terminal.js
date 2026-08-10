@@ -13,11 +13,21 @@
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  // Sticky-scroll rule, the same one real terminals use: follow the newest
+  // output only while the reader is already at (or near) the bottom. Someone
+  // who has scrolled up to reread the head of a long listing must be able to
+  // stay there while more lines arrive below.
+  function nearBottom() {
+    return document.documentElement.scrollHeight - window.scrollY - window.innerHeight < 160;
+  }
+
   function print(html, cls) {
+    var follow = nearBottom();
     var line = document.createElement('div');
     line.className = 'line' + (cls ? ' ' + cls : '');
     line.innerHTML = html;
     output.appendChild(line);
+    if (!follow) return line;
     // Scroll the minimum needed to keep the newest output in view. The old
     // scrollTo(0, body.scrollHeight) jumped to the bottom of the *document*,
     // and body carries 40vh of bottom padding — so the moment output grew
@@ -140,6 +150,14 @@
     print('     <span class="cyan">p</span>    pause or resume the drift');
     print('     <span class="cyan">w</span>    hide or show the WhatsApp bubble');
     print('');
+    print('<span class="white">ELSEWHERE</span>');
+    print('     Tap the portrait on <a href="/">the home page</a> six times, quickly.');
+    print('     The name in the navbar becomes a dance floor — fire crackers');
+    print('     included. Six more taps end the party. Nothing is saved; the');
+    print('     morning after is only ever a reload away.');
+    print('');
+    print('     Also: the kitchen keeps a kettle. <span class="dim">(try: teapot)</span>');
+    print('');
     print('<span class="white">NOTES</span>');
     print('     The keys go quiet the moment you click into a form, so the');
     print('     contact page still spells your name the way you typed it.');
@@ -236,6 +254,16 @@
     },
     clear: function (a, done) { output.innerHTML = ''; done(); },
     exit: function (a, done) { print('logout'); setTimeout(function () { window.location.href = '/'; }, 500); done(); },
+    // Unlisted, like forkbomb and magic. RFC 2324 is honored in this house.
+    teapot: function (a, done) {
+      print('HTTP/1.1 <span class="warn">418 I\'m a teapot</span>');
+      print('This server refuses to brew coffee. <span class="dim">(RFC 2324, very serious)</span>');
+      print('');
+      print('Putting the kettle on…');
+      track('easter_egg_teapot_cmd');
+      setTimeout(function () { window.location.href = '/teapot'; }, 1200);
+      done();
+    },
     contact: function (a, done) {
       print('email:    <a href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a>');
       print('whatsapp: <a href="https://wa.me/918200713617?text=Hello">wa.me/918200713617</a>');
@@ -263,7 +291,7 @@
     if (input.replace(/\s+/g, '').indexOf(':(){:|:&};:') !== -1) {
       busy = true;
       promptRow.style.display = 'none';
-      forkBomb(function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+      forkBomb(function () { busy = false; promptRow.style.display = ''; cmd.focus({ preventScroll: !nearBottom() }); });
       return;
     }
 
@@ -284,7 +312,7 @@
     // No command may leave the terminal wedged: if a handler throws, put
     // the prompt back instead of stranding the hidden-busy state.
     try {
-      handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus(); });
+      handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus({ preventScroll: !nearBottom() }); });
     } catch (error) {
       busy = false;
       promptRow.style.display = '';
@@ -316,7 +344,10 @@
   });
 
   document.body.addEventListener('click', function () {
-    if (!busy && !window.getSelection().toString()) cmd.focus();
+    // preventScroll: a click while scrolled up (rereading long output) must
+    // not yank the viewport down to the prompt; typing Enter later brings it
+    // back naturally via print()'s sticky follow.
+    if (!busy && !window.getSelection().toString()) cmd.focus({ preventScroll: true });
   });
 
   // Boot banner

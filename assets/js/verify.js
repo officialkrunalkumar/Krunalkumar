@@ -74,7 +74,56 @@
     return status;
   }
 
+  // Result-card feedback motion. A valid certificate earns a short firecracker
+  // burst (the same .fx-spark system as the homepage dance egg); every
+  // non-valid outcome gets one brief head-shake — the physical "no",
+  // deliberately unfestive on a trust-critical page. "pending" gets neither:
+  // it is neutral news. Both respect prefers-reduced-motion.
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const SPARK_COLORS = ['#7dd3fc', '#a855f7', '#4ade80', '#fbbf24', '#f8fafc'];
+
+  function throwSparks(target) {
+    const rect = target.getBoundingClientRect();
+    for (let i = 0; i < 8; i += 1) {
+      const spark = document.createElement('span');
+      spark.className = 'fx-spark';
+      spark.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
+      spark.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      spark.style.top = (rect.top + Math.random() * Math.min(rect.height, 70)) + 'px';
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 40 + Math.random() * 80;
+      spark.style.setProperty('--dx', (Math.cos(angle) * distance) + 'px');
+      spark.style.setProperty('--dy', (Math.sin(angle) * distance - 30) + 'px');
+      spark.addEventListener('animationend', () => spark.remove());
+      document.body.appendChild(spark);
+    }
+  }
+
+  // Delayed burst timers, cancelled whenever a new result is rendered so a
+  // rapid re-submit can't fire success sparks against the previous (now
+  // detached) card — a detached card measures 0x0 at the top-left corner.
+  let celebrateTimers = [];
+  function clearCelebrate() {
+    celebrateTimers.forEach(clearTimeout);
+    celebrateTimers = [];
+  }
+
+  function celebrate(card) {
+    if (prefersReducedMotion) return;
+    const anchor = card.querySelector('.verify-status') || card;
+    throwSparks(anchor);
+    celebrateTimers.push(setTimeout(() => throwSparks(anchor), 200));
+    celebrateTimers.push(setTimeout(() => throwSparks(anchor), 420));
+  }
+
+  function headShake(card) {
+    if (prefersReducedMotion) return;
+    card.classList.add('verify-shake');
+    card.addEventListener('animationend', () => card.classList.remove('verify-shake'), { once: true });
+  }
+
   function showMessage(className, glyph, statusText, messageText) {
+    clearCelebrate();
     result.textContent = '';
     const card = document.createElement('div');
     card.className = 'verify-card ' + className;
@@ -86,9 +135,11 @@
       card.appendChild(message);
     }
     result.appendChild(card);
+    if (className.indexOf('verify-status-notfound') !== -1) headShake(card);
   }
 
   function showRecord(record) {
+    clearCelebrate();
     const statusInfo = STATUS[String(record.status || '').toLowerCase()] || UNKNOWN_STATUS;
     result.textContent = '';
 
@@ -114,6 +165,13 @@
     }
 
     result.appendChild(card);
+
+    const statusKey = String(record.status || '').toLowerCase();
+    if (statusKey === 'valid') {
+      celebrate(card);
+    } else if (statusKey !== 'pending') {
+      headShake(card);
+    }
   }
 
   function verify(rawId) {

@@ -13,12 +13,12 @@ web server can host it, and any computer with a browser can develop it.
 
 | Page                  | Purpose                                                                    |
 | --------------------- | -------------------------------------------------------------------------- |
-| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications |
+| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait toggle "dance mode" — the brand name's gradient animations speed up (wired in `particle-bg.js`; nothing stored, reload resets, inert under reduced motion) |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `blog/`               | Blog — `/blog` index (11 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD |
+| `blog/`               | Blog — `/blog` index (15 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
@@ -28,6 +28,7 @@ web server can host it, and any computer with a browser can develop it.
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 | `terminal.html`       | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
+| `teapot.html`         | 🫖 Hidden easter egg #3 — HTTP 418 as an animated cartoon tea party (`/teapot`). Unlisted everywhere except the terminal's `teapot` command and a hint in `magic`; `noindex`, not in the sitemap; animations stop under reduced motion |
 | `google46d0a7ad3f01b5a6.html` | ⚠️ **Do not delete or rename.** Google Search Console ownership proof — Google re-checks it periodically, and removing it eventually breaks Search Console access (search data, indexing, sitemaps). Invisible to visitors; unrelated to analytics/GTM |
 
 ## Project structure
@@ -38,29 +39,31 @@ web server can host it, and any computer with a browser can develop it.
 ├── favicon.ico                   Favicon, served from the site root
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
-│   └── *.html                    One file per article (11 posts), static TOC in the markup
+│   └── *.html                    One file per article (15 posts), static TOC in the markup
 ├── partials/
 │   ├── header.html               ★ Single source of truth for the navigation
 │   └── footer.html               ★ Single source of truth for the footer
 ├── assets/
 │   ├── css/main.css              All styles — organized into 13 numbered sections (see its table of contents)
 │   ├── css/blog.css              Blog-only styles (index cards + post layout), loaded by blog pages
-│   ├── js/boot.js                Head bootstrap: js-detect, partials-failure timer, GA4 + GTM loaders
+│   ├── js/boot.js                Head bootstrap: js-detect, partials-failure timer, GA4 loader
 │   ├── js/include-partials.js    Loads header/footer into every page at runtime
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
 │   ├── js/wa-form.js             Shared WhatsApp form handler (contact + internship forms)
 │   ├── js/projects.js            Projects gallery pager + featured-card rotation
 │   ├── js/client-reviews.js      Recommendations carousel + featured-card rotation
-│   ├── js/blog-index.js          Blog index "Show more" reveal
+│   ├── js/blog-index.js          Blog index category filter chips + "Show more" reveal
 │   ├── js/blog-toc.js            Fallback TOC builder for posts that lack a static one
 │   ├── js/verify.js              Certificate lookup on /verify
 │   ├── js/terminal.js            Terminal easter-egg logic
+│   ├── js/teapot.js              /teapot tap-to-pour logic + discovery event
 │   ├── js/404.js                 404 rocket flight-path & headline randomizer
 │   ├── data/certificates.json    Public record backing the /verify certificate lookup — update when issuing or revoking
 │   ├── images/                   Portrait, logo, certification badges, OG share images, research flowchart (SVG)
 │   ├── images/blog/              Blog post cover art (SVG) + og/ share images
 │   └── pdf/                      Resume
 ├── .well-known/security.txt      RFC 9116 security contact file
+├── site.webmanifest              Web app manifest (install metadata + icons; theme tracks --bg-base)
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages or posts
 ├── feed.xml / atom.xml           RSS + Atom feeds for the blog — update when adding posts
 ├── robots.txt                    Crawl rules + sitemap pointer
@@ -91,12 +94,12 @@ pages handles it — and the static header keeps each page's own link pre-marked
 `assets/js/boot.js` is the single `<head>` script on every page — loaded synchronously (no
 `defer`) right before `main.css` so the `js` class lands before first paint. It consolidates what
 each page used to carry as three inline blocks: JS detection, the partials-failure fallback timer,
-and both analytics loaders (GA4 gtag + GTM — Google deduplicates). Because of it, **no page ships
+and the GA4 analytics loader. Because of it, **no page ships
 any executable inline script or inline event-handler attribute**, and the CSP in `vercel.json`
 drops `'unsafe-inline'` from `script-src` — an inline script would simply be blocked, so keep new
 behavior in external files loaded with `defer` (see the per-page files under `assets/js/`).
 `<script type="application/ld+json">` blocks are data, not executable code, and are CSP-exempt.
-The GTM `<noscript>` iframe at the top of each `<body>` stays as the no-JS fallback.
+(A GTM container used to load here too; it was published empty and removed — GA4 alone remains.)
 
 ### Clean URLs & domains
 
@@ -155,8 +158,8 @@ event prefix — `contact_form` fires `contact_form_submit` / `contact_form_conf
 
 A floating WhatsApp chat bubble (injected by `particle-bg.js`,
 stacked under the back-to-top button) offers the same direct line from every page; its × hides it
-for the current page (the site deliberately uses no browser storage, so the bubble returns on the
-next page view) and back-to-top drops into its corner. The number
+for the rest of the tab session (kept in `sessionStorage` — no localStorage, no cookies — so the
+bubble returns on a fresh visit) and back-to-top drops into its corner. The number
 appears in every page's static footer, both form pages, the terminal easter egg, `refund.html`,
 `assets/js/particle-bg.js`, `assets/js/terminal.js`, and `assets/js/wa-form.js` (`WA_NUMBER`) — to
 change it, search-and-replace `8200713617` across the whole repo rather than editing files from a
@@ -164,10 +167,12 @@ list.
 
 ### Analytics events
 
-Both trackers (GA4 gtag + GTM) are loaded by `boot.js`. Beyond page views, Google Analytics
-receives conversion events: `book_call_click`, `email_click`, `whatsapp_link_click`,
-`resume_download` (global click listener in `particle-bg.js`), plus `*_form_submit` /
-`*_form_confirmed` from `wa-form.js`.
+GA4 (gtag) is loaded by `boot.js`. Beyond page views, Google Analytics receives conversion
+events: `book_call_click`, `email_click`, `whatsapp_link_click`, `resume_download` (and
+`pdf_download` for non-resume PDFs) via the global click listener in `particle-bg.js` — mirrored
+on `/terminal` by `terminal.js` — plus `*_form_submit` / `*_form_confirmed` from `wa-form.js`,
+`certificate_verified` from `verify.js`, and the easter-egg events `easter_egg_terminal`,
+`fork_bomb_triggered`, `easter_egg_dance`, `easter_egg_teapot`, `easter_egg_teapot_cmd`, and `easter_egg_teapot_pour`.
 
 ### Visual layer
 
@@ -232,9 +237,10 @@ unmatched URLs.
    `feed.xml` / `atom.xml` `<link rel="alternate">` tags. Write the static "In this article" TOC
    (`.post-toc`) to match the post's `h2` headings — `blog-toc.js` only builds one when the static
    TOC is missing.
-2. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`
+2. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`, with a
+   `data-category` attribute so the filter chips pick it up
    (`blog-index.js` shows the first six and hides the rest behind Show more, so newest goes first).
-3. Update the "From the blog" column if the post should be one of the six highlighted there — in
+3. Update the "From the blog" column if the post should be one of the seven highlighted there — in
    `partials/footer.html` AND the static footer copies in every page.
 4. Add an extensionless `<url>` entry to `sitemap.xml`.
 5. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
@@ -276,17 +282,20 @@ Shift with it:
    space-separated channels the same colour), plus `--bg-mid` if you want the gradient's midpoint
    to move with it. The `#bg-canvas` gradient and the canvas in `particle-bg.js` both read these,
    so neither needs editing.
-2. The raised-surface fills — **15 in `main.css` and 2 in `blog.css`** (`.post-body pre` and
-   `.post-toc`): `rgba(31, 44, 63, …)`, `rgba(46, 62, 80, …)`, `rgba(24, 36, 57, …)`, and the
+2. The raised-surface fills — **22 `background` declarations in `main.css`** (grep the values —
+   solids and gradient stops both) **and 3 in `blog.css`** (`.post-body pre`, `.post-toc`, and
+   `.blog-filter`): `rgba(31, 44, 63, …)`, `rgba(46, 62, 80, …)`, `rgba(24, 36, 57, …)`, and the
    button hexes `#1f2c3f` / `#212d3c`. Only `background` declarations — never a `box-shadow` that
    happens to use the same numbers.
-3. The artwork, which is anchored to the same palette: the gradient stops in the 12
-   `assets/images/blog/*.svg` covers, and the inline `<svg>` figure panels inside blog posts
+3. The artwork, which is anchored to the same palette: the gradient stops in every
+   `*-cover.svg` under `assets/images/blog/` (15 today — count them, don't trust this number), and the inline `<svg>` figure panels inside blog posts
    (`#1b2735`). `.post-cover` has no background of its own, so a cover left behind prints as a
    visibly darker rectangle against the page.
-4. The `theme-color` meta in all 25 chrome-bearing pages — it tracks `--bg-base`, since the mobile
+4. The `theme-color` meta in all 29 chrome-bearing pages — it tracks `--bg-base`, since the mobile
    address bar sits flush above the page-tinted sticky header. Leave `terminal.html` alone: it is
    standalone, has its own inline `<style>`, and its palette is deliberately not the site palette.
+   `teapot.html` is standalone too but DOES track the site palette — shift its `theme-color`,
+   its body gradient, and the `#121b2c`/`#1b2735`-family hexes in its inline scene.
 5. The `theme_color` and `background_color` in `site.webmanifest` — both track `--bg-base`, and the
    app icons (`assets/images/icon-*.png`, `apple-touch-icon.png`) plus the root `og-*.jpg` cards
    bake the palette into pixels, so regenerate them after any sizable shift.
