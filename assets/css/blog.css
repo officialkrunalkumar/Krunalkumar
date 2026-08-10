@@ -135,7 +135,7 @@
 }
 
 .post-body pre {
-  background: rgba(23, 36, 55, 0.9);
+  background: rgba(31, 44, 63, 0.9);
   border: 1px solid rgba(125, 211, 252, 0.2);
   border-radius: 14px;
   padding: 1rem 1.2rem;
@@ -237,7 +237,7 @@
   padding: 1rem 1.3rem;
   border: 1px solid rgba(125, 211, 252, 0.2);
   border-radius: 14px;
-  background: rgba(23, 36, 55, 0.65);
+  background: rgba(31, 44, 63, 0.65);
 }
 
 .post-toc ol {
@@ -378,7 +378,9 @@ a.featured-post:hover {
 
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  /* min() lets the column floor compress on 320px-class phones instead of
+     overflowing the card. */
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
   gap: 1.2rem;
 }
 

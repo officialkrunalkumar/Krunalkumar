@@ -58,10 +58,9 @@ if (canvas) {
   // and the stored pause state can never drift from what the button does.
   let togglePause = null;
 
-  // The two full-viewport gradients only depend on the canvas size, so they are
+  // The full-viewport gradient only depends on the canvas size, so it is
   // rebuilt on resize instead of being reallocated on every animation frame.
   let backgroundGradient = null;
-  let nebulaGradient = null;
 
   // The base gradient's stops are read from the CSS custom properties rather
   // than duplicated here. This canvas paints opaquely over the #bg-canvas CSS
@@ -76,15 +75,12 @@ if (canvas) {
   }
 
   function buildGradients() {
-    backgroundGradient = ctx.createRadialGradient(width * 0.2, height * 0.2, 0, width * 0.2, height * 0.2, Math.max(width, height));
-    backgroundGradient.addColorStop(0, cssColor('--bg-glow', 'rgba(35, 17, 84, 0.95)'));
-    backgroundGradient.addColorStop(0.45, cssColor('--bg-mid', 'rgba(17, 28, 47, 0.96)'));
-    backgroundGradient.addColorStop(1, cssColor('--bg-base', '#0a1324'));
-
-    nebulaGradient = ctx.createRadialGradient(width * 0.8, height * 0.15, 40, width * 0.8, height * 0.15, width * 0.4);
-    nebulaGradient.addColorStop(0, 'rgba(96, 165, 250, 0.16)');
-    nebulaGradient.addColorStop(0.35, 'rgba(168, 85, 247, 0.12)');
-    nebulaGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    // Radius must equal the CSS twin's `farthest-side` (= max(w,h)/2), or the
+    // first canvas frame visibly shifts the edge shading it paints over.
+    backgroundGradient = ctx.createRadialGradient(width * 0.5, height * 0.5, 0, width * 0.5, height * 0.5, Math.max(width, height) / 2);
+    backgroundGradient.addColorStop(0, cssColor('--bg-glow', 'rgba(43, 25, 92, 0.95)'));
+    backgroundGradient.addColorStop(0.45, cssColor('--bg-mid', 'rgba(25, 36, 55, 0.96)'));
+    backgroundGradient.addColorStop(1, cssColor('--bg-base', '#121b2c'));
   }
 
   // The default field: one dot per 7px of width, capped so an ultrawide
@@ -179,9 +175,6 @@ if (canvas) {
     ctx.clearRect(0, 0, width, height);
 
     ctx.fillStyle = backgroundGradient;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = nebulaGradient;
     ctx.fillRect(0, 0, width, height);
 
     // The speed control scales the whole model — each particle's own cruise
@@ -310,9 +303,13 @@ if (canvas) {
     const pauseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg>';
     const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5v14l11-7z"/></svg>';
 
+    // Constant label + aria-pressed for state. Swapping the label between
+    // Pause/Resume while also toggling aria-pressed made screen readers
+    // announce contradictions ("Resume…, pressed"); APG says pick one signal.
+    pauseButton.setAttribute('aria-label', 'Pause background animation');
+
     function syncPauseButton() {
       pauseButton.setAttribute('aria-pressed', String(animationPaused));
-      pauseButton.setAttribute('aria-label', animationPaused ? 'Resume background animation' : 'Pause background animation');
       pauseButton.innerHTML = animationPaused ? playIcon : pauseIcon;
     }
 
@@ -755,8 +752,12 @@ document.addEventListener('click', (event) => {
     gtag('event', 'email_click');
   } else if (href.includes('wa.me')) {
     gtag('event', 'whatsapp_link_click');
-  } else if (href.includes('.pdf')) {
+  } else if (href.includes('Krunalkumar-Shah-Resume.pdf')) {
     gtag('event', 'resume_download');
+  } else if (href.includes('.pdf')) {
+    // Any other PDF (currently the IJRAT research paper) — kept separate so
+    // paper downloads can never inflate the resume conversion metric.
+    gtag('event', 'pdf_download');
   }
 });
 

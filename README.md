@@ -177,7 +177,7 @@ scroll-reveal animations via IntersectionObserver, and the floating back-to-top 
 The page background is a **single token**: `--bg-base` in section 1 (with `--bg-base-rgb`, the
 space-separated twin used by the `rgb(var(--bg-base-rgb) / <alpha>)` surfaces that tint with the
 page — the header, dropdown, section cards, footer and mobile nav panel). It is currently
-`#0a1324`. Changing it is a four-part edit, not a one-liner — see
+`#121b2c`. Changing it is a four-part edit, not a one-liner — see
 [Changing the page darkness](#changing-the-page-darkness).
 
 The `#bg-canvas` gradient in `main.css` and the canvas gradient `particle-bg.js` paints over it are
@@ -262,8 +262,8 @@ the file never outranks the homepage in search.
 
 ### Changing the page darkness
 
-Pick the new base, work out the **rgb delta** from the current `--bg-base` (`#0a1324` =
-`rgb(10, 19, 36)`), then apply that same delta to everything in the "shift with it" list. Applying
+Pick the new base, work out the **rgb delta** from the current `--bg-base` (`#121b2c` =
+`rgb(18, 27, 44)`), then apply that same delta to everything in the "shift with it" list. Applying
 it to the base alone is the mistake to avoid: card fills are ~80% opaque, so they barely move when
 the page does, and the elevation gap closes almost 1:1. Measured, a ~4 L\* lift of the base alone
 cut `.info-card`'s elevation from +5.4 L\* to +1.4 — cards stop reading as raised and survive only
@@ -276,14 +276,14 @@ Shift with it:
    to move with it. The `#bg-canvas` gradient and the canvas in `particle-bg.js` both read these,
    so neither needs editing.
 2. The raised-surface fills — **15 in `main.css` and 2 in `blog.css`** (`.post-body pre` and
-   `.post-toc`): `rgba(23, 36, 55, …)`, `rgba(38, 54, 72, …)`, `rgba(16, 28, 49, …)`, and the
-   button hexes `#172437` / `#192534`. Only `background` declarations — never a `box-shadow` that
+   `.post-toc`): `rgba(31, 44, 63, …)`, `rgba(46, 62, 80, …)`, `rgba(24, 36, 57, …)`, and the
+   button hexes `#1f2c3f` / `#212d3c`. Only `background` declarations — never a `box-shadow` that
    happens to use the same numbers.
 3. The artwork, which is anchored to the same palette: the gradient stops in the 12
    `assets/images/blog/*.svg` covers, and the inline `<svg>` figure panels inside blog posts
-   (`#131f2d`). `.post-cover` has no background of its own, so a cover left behind prints as a
+   (`#1b2735`). `.post-cover` has no background of its own, so a cover left behind prints as a
    visibly darker rectangle against the page.
-4. The `theme-color` meta in all 24 chrome-bearing pages — it tracks `--bg-base`, since the mobile
+4. The `theme-color` meta in all 25 chrome-bearing pages — it tracks `--bg-base`, since the mobile
    address bar sits flush above the page-tinted sticky header. Leave `terminal.html` alone: it is
    standalone, has its own inline `<style>`, and its palette is deliberately not the site palette.
 

@@ -41,6 +41,18 @@
     if (typeof window.gtag === 'function') window.gtag('event', name);
   }
 
+  // This page prints real conversion links (contact, the fork-bomb coffee
+  // offer) but does not load particle-bg.js, whose delegation reports them
+  // everywhere else — mirror the same event names here for parity.
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest ? event.target.closest('a') : null;
+    if (!link) return;
+    var href = link.href || '';
+    if (href.indexOf('calendar.app.google') !== -1) track('book_call_click');
+    else if (href.indexOf('mailto:') === 0) track('email_click');
+    else if (href.indexOf('wa.me') !== -1) track('whatsapp_link_click');
+  });
+
   var files = {
     'about.txt': [
       'Krunalkumar Shah — researcher, engineer, cybersecurity professional.',
@@ -122,7 +134,7 @@
     print('     the drifting dots — the starfield behind every page takes requests');
     print('');
     print('<span class="white">KEYS</span>');
-    print('     <span class="cyan">.</span>    show or hide the controls <span class="dim">(they start hidden)</span>');
+    print('     <span class="cyan">.</span>    show or hide the controls <span class="dim">(hidden until you reveal them; the choice lasts the tab session)</span>');
     print('     <span class="cyan">k</span>    more dots            <span class="cyan">s</span>    fewer dots');
     print('     <span class="cyan">l</span>    faster drift         <span class="cyan">a</span>    slower drift');
     print('     <span class="cyan">p</span>    pause or resume the drift');
@@ -131,7 +143,8 @@
     print('<span class="white">NOTES</span>');
     print('     The keys go quiet the moment you click into a form, so the');
     print('     contact page still spells your name the way you typed it.');
-    print('     Nothing is remembered — reload and it is back to how it shipped.');
+    print('     Dots and speed reset on every page load; pause, the chat bubble,');
+    print('     and the revealed controls last until the tab is closed.');
     print('');
     print('<span class="white">BUGS</span>');
     print('     Does not work here; no starfield to bother. Try <a href="/">the home page</a>.');
