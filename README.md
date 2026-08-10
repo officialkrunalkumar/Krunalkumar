@@ -28,6 +28,7 @@ web server can host it, and any computer with a browser can develop it.
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 | `terminal.html`       | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
+| `google46d0a7ad3f01b5a6.html` | ⚠️ **Do not delete or rename.** Google Search Console ownership proof — Google re-checks it periodically, and removing it eventually breaks Search Console access (search data, indexing, sitemaps). Invisible to visitors; unrelated to analytics/GTM |
 
 ## Project structure
 
