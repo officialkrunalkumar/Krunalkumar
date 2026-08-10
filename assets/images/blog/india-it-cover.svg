@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: India's IT law, explained — scales of justice standing on circuit traces, beside year chips for 2000, 2008, 2021 and 2023 marking the IT Act, its amendment, the intermediary rules and the DPDP Act">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="rgba(88,52,166,0.35)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="140" cy="90" r="2"/><circle cx="420" cy="60" r="1.5"/><circle cx="700" cy="110" r="2"/>
+    <circle cx="90" cy="420" r="1.5"/><circle cx="320" cy="540" r="2"/><circle cx="1130" cy="70" r="1.5"/>
+    <circle cx="1060" cy="560" r="2"/><circle cx="620" cy="580" r="1.5"/>
+  </g>
+
+  <text x="80" y="150" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+  <text x="80" y="240" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">India&#8217;s IT law,</text>
+  <text x="80" y="312" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">explained</text>
+  <text x="80" y="390" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">From the IT Act 2000 to the DPDP era &#8212;</text>
+  <text x="80" y="432" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">the legal stack your systems run on.</text>
+  <text x="80" y="560" fill="#8fa0b8" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+
+  <!-- Scales of justice over circuit traces -->
+  <g>
+    <circle cx="900" cy="140" r="9" fill="#7dd3fc"/>
+    <line x1="900" y1="140" x2="900" y2="420" stroke="#7dd3fc" stroke-width="5"/>
+    <line x1="800" y1="200" x2="1000" y2="200" stroke="#7dd3fc" stroke-width="5"/>
+    <circle cx="900" cy="200" r="6" fill="#fbbf24"/>
+    <g stroke="#94a3b8" stroke-width="2.5">
+      <line x1="800" y1="200" x2="775" y2="285"/>
+      <line x1="800" y1="200" x2="825" y2="285"/>
+      <line x1="1000" y1="200" x2="975" y2="285"/>
+      <line x1="1000" y1="200" x2="1025" y2="285"/>
+    </g>
+    <path d="M 765 285 A 35 20 0 0 0 835 285 Z" fill="#a855f7"/>
+    <path d="M 965 285 A 35 20 0 0 0 1035 285 Z" fill="#4ade80"/>
+    <rect x="845" y="420" width="110" height="12" rx="6" fill="#7dd3fc"/>
+    <g stroke="#a855f7" stroke-width="2.5" fill="none" opacity="0.8">
+      <path d="M 860 460 h 60 v 30 h 55"/>
+      <path d="M 940 460 v 45 h -75"/>
+    </g>
+    <circle cx="975" cy="490" r="5" fill="#4ade80"/>
+    <circle cx="865" cy="505" r="5" fill="#fbbf24"/>
+    <circle cx="860" cy="460" r="4" fill="#7dd3fc"/>
+  </g>
+
+  <!-- Year chips: the four milestones -->
+  <g font-family="'Segoe UI',sans-serif" text-anchor="middle" font-size="22" font-weight="800">
+    <rect x="1080" y="164" width="90" height="40" rx="20" fill="#e2e8f0"/>
+    <text x="1125" y="191" fill="#131f2d">2000</text>
+    <rect x="1080" y="228" width="90" height="40" rx="20" fill="#e2e8f0"/>
+    <text x="1125" y="255" fill="#131f2d">2008</text>
+    <rect x="1080" y="292" width="90" height="40" rx="20" fill="#e2e8f0"/>
+    <text x="1125" y="319" fill="#131f2d">2021</text>
+    <rect x="1080" y="356" width="90" height="40" rx="20" fill="#e2e8f0"/>
+    <text x="1125" y="383" fill="#131f2d">2023</text>
+  </g>
+</svg>

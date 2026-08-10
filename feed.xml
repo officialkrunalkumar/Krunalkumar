@@ -5,8 +5,36 @@
     <link>https://krunalkumar.dpdns.org/blog</link>
     <description>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 07 Aug 2026 09:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Mon, 10 Aug 2026 09:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Types of Cyberattacks, Mapped: Causes, Defenses, and the CIA Triad</title>
+      <link>https://krunalkumar.dpdns.org/blog/types-of-cyberattacks</link>
+      <guid>https://krunalkumar.dpdns.org/blog/types-of-cyberattacks</guid>
+      <description>Six attack families, what each one breaks, why they keep working, and the prevention and mitigation that actually help — one practical map built on the CIA triad.</description>
+      <pubDate>Mon, 10 Aug 2026 09:00:00 +0530</pubDate>
+    </item>
+    <item>
+      <title>Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More</title>
+      <link>https://krunalkumar.dpdns.org/blog/security-compliance-explained</link>
+      <guid>https://krunalkumar.dpdns.org/blog/security-compliance-explained</guid>
+      <description>A practical guide to security and privacy compliance — GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO/IEC 27001, and SOC 2 — what each one is, who it binds, the requirements that matter, and how to tell which apply to you.</description>
+      <pubDate>Mon, 10 Aug 2026 09:00:00 +0530</pubDate>
+    </item>
+    <item>
+      <title>India's IT Law, Explained: From the IT Act 2000 to the DPDP Era</title>
+      <link>https://krunalkumar.dpdns.org/blog/india-it-act-explained</link>
+      <guid>https://krunalkumar.dpdns.org/blog/india-it-act-explained</guid>
+      <description>A practitioner's map of India's IT law — the IT Act 2000, Sections 43 to 79, the struck-down 66A, the 2021 Rules, CERT-In directions, BNSS 94, and the DPDP Act.</description>
+      <pubDate>Mon, 10 Aug 2026 09:00:00 +0530</pubDate>
+    </item>
+    <item>
+      <title>How Cybercrime Cases Are Solved: From First Alert to the Courtroom</title>
+      <link>https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved</link>
+      <guid>https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved</guid>
+      <description>How a cybercrime case actually gets solved — incident response, the police investigation, digital forensics, chain of custody, and what makes electronic evidence stand in an Indian court.</description>
+      <pubDate>Mon, 10 Aug 2026 09:00:00 +0530</pubDate>
+    </item>
     <item>
       <title>Which AI Tool for Which Job: A Practitioner's Map</title>
       <link>https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job</link>

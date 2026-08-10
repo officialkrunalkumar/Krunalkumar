@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="GDPR, CCPA, HIPAA, PCI DSS, SOX, ISO 27001, SOC 2 — what each framework is, who it binds, what it costs to ignore, and where to start."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/security-compliance-explained" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More" />
+    <meta
+      property="og:description"
+      content="Seven security and privacy frameworks demystified — law vs. standard, who each one binds, the requirements that actually matter, and how to work out which apply to you."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/security-compliance-explained" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/security-compliance-explained.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A shield with a check mark beside framework chips labeled GDPR, HIPAA, PCI, and ISO" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-10T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-10T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More" />
+    <meta
+      name="twitter:description"
+      content="Seven security and privacy frameworks demystified — law vs. standard, who each one binds, the requirements that actually matter, and how to work out which apply to you."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/security-compliance-explained.jpg" />
+    <title>GDPR, HIPAA, PCI DSS &amp; SOC 2 Explained | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Security Compliance, Explained: GDPR, HIPAA, PCI DSS, SOC 2, and More",
+        "description": "A practical guide to security and privacy compliance frameworks — GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO/IEC 27001, and SOC 2 — what each one is, who must care, the requirements that matter in practice, and how to decide which apply to you.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/security-compliance-explained.jpg",
+        "datePublished": "2026-08-10",
+        "dateModified": "2026-08-10",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/security-compliance-explained"
+        },
+        "keywords": "security compliance, GDPR, CCPA, CPRA, HIPAA, PCI DSS, SOX, ISO 27001, SOC 2, DPDP Act, data privacy, compliance frameworks"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "Security compliance, explained", "item": "https://krunalkumar.dpdns.org/blog/security-compliance-explained" }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Security compliance, explained</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>Security compliance, explained: GDPR, HIPAA, PCI DSS, SOC 2, and more</h1>
+          <p class="hero-text">
+            The alphabet soup of compliance hides one clarifying distinction: some of these frameworks are laws,
+            one is a contract you already signed, some are certifiable standards, and one is an auditor's
+            attestation. Sort the seven that way — with the requirements that matter in practice — and it becomes
+            obvious which are obligations, which are choices, and which are actually yours.
+          </p>
+          <p class="post-meta">Published 10 August 2026 · 12 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/compliance-cover.svg" alt="A shield with a check mark beside framework chips labeled GDPR, HIPAA, PCI, and ISO, next to the article title" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-body">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#compliance-is-trust-made-auditable">Compliance is trust made auditable</a></li>
+                <li><a href="#the-lay-of-the-land">The lay of the land: seven frameworks in one table</a></li>
+                <li><a href="#gdpr-the-law-with-global-reach">GDPR: the law with global reach</a></li>
+                <li><a href="#ccpa-cpra-californias-privacy-law">CCPA/CPRA: California's privacy law</a></li>
+                <li><a href="#hipaa-health-data-in-the-us">HIPAA: health data in the US</a></li>
+                <li><a href="#pci-dss-the-standard-you-signed-up-for">PCI DSS: the standard you signed up for</a></li>
+                <li><a href="#sox-when-security-meets-financial-reporting">SOX: when security meets financial reporting</a></li>
+                <li><a href="#iso-iec-27001-the-certifiable-standard">ISO/IEC 27001: the certifiable standard</a></li>
+                <li><a href="#soc-2-the-report-your-customers-ask-for">SOC 2: the report your customers ask for</a></li>
+                <li><a href="#the-common-backbone">The common backbone: build once, map many</a></li>
+                <li><a href="#how-to-choose-what-applies-to-you">How to choose what applies to you</a></li>
+              </ol>
+            </nav>
+
+            <h2 id="compliance-is-trust-made-auditable">Compliance is trust made auditable</h2>
+            <p>
+              Every security consulting conversation I have eventually lands on the same question. Not "how do we
+              stop attackers" — that one comes with the territory — but some version of: <em>"GDPR, HIPAA, SOC 2,
+              ISO-something… which of these actually apply to us?"</em> It comes from founders, engineering leads,
+              and operations people holding a 300-question vendor questionnaire — always in the same slightly
+              exhausted tone.
+            </p>
+            <p>
+              It's a fair question, because the alphabet soup hides a real distinction: these frameworks are not
+              the same <em>kind</em> of thing. Some are laws, with regulators and fines behind them. One is a
+              contract you accepted the day you started taking card payments. Some are voluntary standards you can
+              certify against, and one is an accountant's opinion about you. Mix those categories up and you get
+              the classic failure mode I keep meeting: a company proudly chasing a certificate it doesn't need
+              while ignoring a law that already applies to it.
+            </p>
+            <p>
+              Here is the framing that unlocks all of it: <strong>compliance is trust made auditable.</strong>
+              Every framework below turns "trust us with your data" into something a third party can verify. And every one of them is a <strong>floor, not a ceiling</strong> — the minimum a
+              regulator, bank, or customer will accept, not a level attackers find inconvenient. The attack
+              families I mapped in <a class="text-link" href="/blog/types-of-cyberattacks">the previous post</a>
+              do not check your certification status before firing.
+            </p>
+
+            <h2 id="the-lay-of-the-land">The lay of the land: seven frameworks in one table</h2>
+            <p>
+              Before the deep dives, orientation. The most useful column is the second one — <em>what kind of
+              thing is this?</em> — because it tells you who enforces the framework and what actually happens when
+              you fall short.
+            </p>
+            <div class="post-table-wrap">
+              <table class="post-table">
+                <caption>The seven frameworks at a glance — what each one is, who it binds, and what it protects.</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Framework</th>
+                    <th scope="col">What it is</th>
+                    <th scope="col">Who it applies to</th>
+                    <th scope="col">What it protects</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>GDPR</td>
+                    <td>EU law (reaches worldwide)</td>
+                    <td>Anyone offering services to, or monitoring, people in the EU</td>
+                    <td>Personal data of people in the EU</td>
+                  </tr>
+                  <tr>
+                    <td>CCPA/CPRA</td>
+                    <td>California law</td>
+                    <td>For-profit businesses over revenue or data-volume thresholds</td>
+                    <td>California residents' personal information</td>
+                  </tr>
+                  <tr>
+                    <td>HIPAA</td>
+                    <td>US federal law</td>
+                    <td>Covered entities and their business associates</td>
+                    <td>Protected health information (PHI)</td>
+                  </tr>
+                  <tr>
+                    <td>PCI DSS</td>
+                    <td>Contractual industry standard</td>
+                    <td>Anyone storing, processing, or transmitting card data</td>
+                    <td>Payment card data</td>
+                  </tr>
+                  <tr>
+                    <td>SOX</td>
+                    <td>US federal law</td>
+                    <td>Companies listed on US stock exchanges</td>
+                    <td>Integrity of financial reporting</td>
+                  </tr>
+                  <tr>
+                    <td>ISO/IEC 27001</td>
+                    <td>Certifiable international standard</td>
+                    <td>Any organization, voluntarily</td>
+                    <td>Information assets, via a managed ISMS</td>
+                  </tr>
+                  <tr>
+                    <td>SOC 2</td>
+                    <td>Attestation (AICPA)</td>
+                    <td>Service organizations holding customer data</td>
+                    <td>Customer data, per the Trust Services Criteria</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure class="post-figure">
+              <svg viewBox="0 0 1160 640" role="img" aria-label="Map of compliance frameworks on two axes: law versus voluntary standard, and general-purpose versus sector-specific. GDPR, CCPA/CPRA, and India's DPDP Act sit in the general-purpose law quadrant; HIPAA and SOX in the sector-specific law quadrant; PCI DSS in the sector-specific standard quadrant; ISO/IEC 27001 and SOC 2 in the general-purpose standard quadrant" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1160" height="640" rx="18" fill="#1b2735"/>
+                <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">WHERE EACH FRAMEWORK LIVES</text>
+                <g font-family="'Segoe UI',sans-serif">
+                  <g font-size="15">
+                    <rect x="672" y="34" width="16" height="16" rx="4" fill="#7dd3fc"/>
+                    <text x="696" y="47" fill="#e2e8f0">Law</text>
+                    <rect x="748" y="34" width="16" height="16" rx="4" fill="#fbbf24"/>
+                    <text x="772" y="47" fill="#e2e8f0">Contractual</text>
+                    <rect x="880" y="34" width="16" height="16" rx="4" fill="#a855f7"/>
+                    <text x="904" y="47" fill="#e2e8f0">Certifiable</text>
+                    <rect x="1002" y="34" width="16" height="16" rx="4" fill="#4ade80"/>
+                    <text x="1026" y="47" fill="#e2e8f0">Attestation</text>
+                  </g>
+                  <line x1="580" y1="96" x2="580" y2="556" stroke="rgba(226,232,240,0.25)" stroke-width="2"/>
+                  <line x1="60" y1="326" x2="1100" y2="326" stroke="rgba(226,232,240,0.25)" stroke-width="2"/>
+                  <text x="580" y="86" fill="#e2e8f0" font-size="17" font-weight="700" text-anchor="middle">LAW — regulators, fines, courts</text>
+                  <text x="580" y="590" fill="#e2e8f0" font-size="17" font-weight="700" text-anchor="middle">STANDARD — contracts, auditors, customers</text>
+                  <text x="66" y="316" fill="#94a3b8" font-size="15" font-weight="700">GENERAL-PURPOSE</text>
+                  <text x="1094" y="316" fill="#94a3b8" font-size="15" font-weight="700" text-anchor="end">SECTOR-SPECIFIC</text>
+                  <!-- Laws, general-purpose -->
+                  <rect x="100" y="130" width="130" height="46" rx="10" fill="#7dd3fc"/>
+                  <text x="165" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">GDPR</text>
+                  <text x="165" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">Personal data · EU reach</text>
+                  <rect x="280" y="130" width="180" height="46" rx="10" fill="#7dd3fc"/>
+                  <text x="370" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">CCPA/CPRA</text>
+                  <text x="370" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">California residents</text>
+                  <rect x="170" y="228" width="180" height="46" rx="10" fill="#7dd3fc"/>
+                  <text x="260" y="258" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">DPDP Act</text>
+                  <text x="260" y="296" fill="#94a3b8" font-size="15" text-anchor="middle">India · phasing in</text>
+                  <!-- Laws, sector-specific -->
+                  <rect x="650" y="130" width="140" height="46" rx="10" fill="#7dd3fc"/>
+                  <text x="720" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">HIPAA</text>
+                  <text x="720" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">US health data (PHI)</text>
+                  <rect x="860" y="130" width="120" height="46" rx="10" fill="#7dd3fc"/>
+                  <text x="920" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">SOX</text>
+                  <text x="920" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">Public-company financials</text>
+                  <!-- Standards, general-purpose -->
+                  <rect x="100" y="396" width="220" height="46" rx="10" fill="#a855f7"/>
+                  <text x="210" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">ISO/IEC 27001</text>
+                  <text x="210" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">Certifiable ISMS</text>
+                  <rect x="370" y="396" width="130" height="46" rx="10" fill="#4ade80"/>
+                  <text x="435" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">SOC 2</text>
+                  <text x="435" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">CPA attestation</text>
+                  <!-- Standards, sector-specific -->
+                  <rect x="760" y="396" width="160" height="46" rx="10" fill="#fbbf24"/>
+                  <text x="840" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">PCI DSS</text>
+                  <text x="840" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">Payment card data</text>
+                </g>
+              </svg>
+              <figcaption>
+                Two questions locate every framework: is it a law or a standard, and is it general-purpose or tied
+                to a sector or data type? Color shows how each one is enforced.
+              </figcaption>
+            </figure>
+
+            <div class="post-callout" role="note">
+              <p>
+                <strong>A necessary disclaimer:</strong> this article is practitioner orientation, not legal
+                advice. Applicability turns on details — where entities are incorporated, what contracts say, how
+                data actually flows — so before you rely on any of this for real obligations, talk to qualified
+                counsel. I map the terrain; lawyers draw your property lines.
+              </p>
+            </div>
+
+            <h2 id="gdpr-the-law-with-global-reach">GDPR: the law with global reach</h2>
+            <p>
+              The EU's General Data Protection Regulation, in force since May 2018, is the law every other privacy
+              law gets compared to. The part people consistently underestimate is its reach: GDPR applies to
+              organizations <em>anywhere in the world</em> that offer goods or services to people in the EU or
+              monitor their behavior. A Bangalore SaaS company with EU signups, or an American site profiling EU
+              visitors with tracking pixels, is in scope without ever opening a European office.
+            </p>
+            <p>
+              In practice, four obligations dominate. You need a <strong>lawful basis</strong> for every
+              processing purpose — consent is only one of six, and often the worst choice, because it can be
+              withdrawn. You must honor <strong>data-subject rights</strong>: access, rectification, erasure,
+              portability, and objection, generally within a month. You must keep <strong>records of
+              processing</strong> and put proper contracts in front of every processor handling data for you. And
+              you must report qualifying <strong>breaches within 72 hours</strong> of becoming aware — a deadline
+              that assumes you rehearsed before the incident.
+            </p>
+            <p>
+              The penalty structure has two tiers: up to €10 million or 2% of total worldwide annual turnover for
+              procedural failures, and up to €20 million or 4% for violations of core principles and rights —
+              whichever is <em>higher</em>, and EU courts have confirmed that "turnover" means the whole corporate
+              group's. Individual fines have already crossed the billion-euro mark. <strong>Start here:</strong>
+              build the record of what personal data you hold, why, and where it flows. Every other GDPR
+              obligation hangs off that map.
+            </p>
+
+            <h2 id="ccpa-cpra-californias-privacy-law">CCPA/CPRA: California's privacy law</h2>
+            <p>
+              The California Consumer Privacy Act (2018), expanded by the CPRA ballot measure with most changes
+              effective 2023, is America's closest thing to GDPR — and it created the CPPA, the first dedicated
+              privacy regulator in the US. It applies to for-profit businesses doing business in California that
+              cross any one threshold: annual gross revenue above $25 million (inflation-adjusted — about $26.6
+              million now), personal information of 100,000 or more California consumers or households, or half
+              of revenue derived from selling or sharing personal information. That middle threshold counts
+              identifiers like cookies and device IDs, so consumer sites cross it faster than founders expect.
+            </p>
+            <p>
+              The requirements that matter: honor consumer rights (know, delete, correct, opt out of sale or
+              sharing, limit sensitive data use); recognize that <strong>"sharing" includes cross-context
+              behavioral advertising</strong>, which pulls in the ad pixels most marketing teams run; and provide the
+              "Do Not Sell or Share" mechanism while honoring Global Privacy Control browser signals.
+            </p>
+            <p>
+              Enforcement comes from the CPPA and the state Attorney General: penalties of $2,500 per violation,
+              $7,500 when intentional or involving minors (inflation-adjusted to $2,663 and $7,988), counted per
+              consumer — and since 2023 there is no automatic cure period. Consumers can also sue directly over
+              breaches of unencrypted data, with statutory damages per person that make class actions attractive.
+              <strong>Start here:</strong> check the thresholds honestly, then audit your tags and pixels — most
+              companies that say "we don't sell data" are "sharing" it under the statutory definition.
+            </p>
+
+            <h2 id="hipaa-health-data-in-the-us">HIPAA: health data in the US</h2>
+            <p>
+              HIPAA is a 1996 US federal law whose privacy teeth live in three rules. It binds <strong>covered
+              entities</strong> — healthcare providers, health plans, and clearinghouses — and, crucially,
+              their <strong>business associates</strong>: any vendor that creates, receives, or maintains
+              protected health information on their behalf. If your SaaS product stores patient data for a
+              clinic, HIPAA applies to you directly, business associate agreement signed or not.
+            </p>
+            <p>
+              The <strong>Privacy Rule</strong> governs how PHI may be used and disclosed, anchored by the
+              "minimum necessary" principle. The <strong>Security Rule</strong> requires administrative, physical,
+              and technical safeguards for electronic PHI, all flowing from a risk analysis — it is deliberately
+              technology-neutral, which means it never goes out of date and never tells you exactly what to buy.
+              The <strong>Breach Notification Rule</strong> requires notifying affected individuals within 60
+              days; breaches affecting 500 or more people must also go to HHS and, in the affected states, the
+              media, while smaller ones are reported annually.
+            </p>
+            <p>
+              Civil penalties run on four culpability tiers, inflation-adjusted every year — the top tier now
+              exceeds $70,000 per violation with annual caps above $2 million per provision — and knowing misuse
+              of PHI can be referred for criminal prosecution. <strong>Start here:</strong> if you touch US health
+              data, determine whether you're a business associate, then do the risk analysis for real — it is both
+              the first legal requirement and the gap most commonly cited in enforcement actions.
+            </p>
+
+            <h2 id="pci-dss-the-standard-you-signed-up-for">PCI DSS: the standard you signed up for</h2>
+            <p>
+              PCI DSS is the odd one out: not a law at all, but a contractual standard from the PCI Security
+              Standards Council, founded by the card brands. It binds you through your merchant agreement — the
+              day you started accepting cards, you agreed to it, whether anyone mentioned it or not. It applies to
+              every organization that stores, processes, or transmits cardholder data, from a global processor to
+              a bakery with a card terminal.
+            </p>
+            <p>
+              The current version is <strong>v4.0.1</strong> — v4.0 (published March 2022) was superseded by a
+              clarifications-only revision in June 2024 and retired at the end of that year, and the final tranche
+              of future-dated v4 requirements became mandatory on 31 March 2025. The standard organizes
+              <strong>12 requirements</strong> under six goals: secure networks, protected account data,
+              vulnerability management, access control, monitoring and testing, and security policy. How you prove
+              compliance scales with volume — the largest merchants undergo on-site assessments by a Qualified
+              Security Assessor; most businesses complete a self-assessment questionnaire.
+            </p>
+            <p>
+              There is no regulator. Consequences arrive commercially: card brands fine your acquiring bank —
+              figures of $5,000 to $100,000 a month are commonly cited — and the bank passes the cost to you,
+              raises your fees, or terminates your ability to take cards, which for most businesses is the real
+              death penalty. <strong>Start here:</strong> shrink your scope. Use your processor's hosted payment
+              fields or tokenization so raw card data never touches your systems — it collapses most of the
+              standard into the shortest questionnaire and makes the remainder tractable.
+            </p>
+
+            <h2 id="sox-when-security-meets-financial-reporting">SOX: when security meets financial reporting</h2>
+            <p>
+              The Sarbanes-Oxley Act of 2002 — the post-Enron law — is not a privacy framework at all: it
+              protects investors by holding US-listed companies accountable for the integrity of their financial
+              reporting. Security people meet it anyway.
+            </p>
+            <p>
+              <strong>Section 302</strong> makes the CEO and CFO personally certify every quarterly and annual
+              report. <strong>Section 404</strong> requires management to assess internal control over financial
+              reporting each year (404(a)), with an independent auditor attesting to that assessment for larger
+              filers (404(b) — smaller and newer public companies are exempt from the attestation, not the
+              assessment). Signing a certification you know to be false carries personal criminal exposure — which
+              is precisely why executives suddenly care about controls.
+            </p>
+            <p>
+              The security angle is <strong>IT general controls</strong>: access management, change management,
+              and operations controls over every system that feeds the financial statements — the ERP, billing,
+              revenue pipelines, and the integrations between them. The auditor's questions are effectively "who
+              could change a number?" and "would you know?" — which are access control and logging questions
+              wearing a suit. A serious control failure becomes a disclosed material weakness — and markets punish those. <strong>Start here:</strong> if an IPO is anywhere on your horizon, inventory every
+              system that touches revenue and lock down access and change management a year before you think you
+              need to — retrofitting ITGCs under audit pressure is miserable.
+            </p>
+
+            <h2 id="iso-iec-27001-the-certifiable-standard">ISO/IEC 27001: the certifiable standard</h2>
+            <p>
+              ISO/IEC 27001 is the international standard you can actually be certified against. What it
+              certifies is an <strong>information security management system</strong> — not a checklist of tools
+              but a management loop: assess your risks, choose controls proportionate to them, document why in a
+              Statement of Applicability, and keep the loop turning. Two organizations with the same certificate
+              can run very different controls, legitimately, because their risks differ.
+            </p>
+            <p>
+              The current edition is the <strong>2022 revision</strong>, which restructured Annex A from 114
+              controls in 14 domains down to <strong>93 controls in four themes</strong> — organizational, people,
+              physical, technological — and added explicitly modern ones like threat intelligence, cloud security,
+              and data leakage prevention. The transition window from the 2013 edition closed in October 2025, so
+              a certificate referencing the old version is now expired paper. Certification itself comes from an
+              accredited body on a three-year cycle with annual surveillance audits — it is a relationship, not
+              an event.
+            </p>
+            <p>
+              Who needs it: anyone selling B2B where customers demand evidence, especially outside the US —
+              globally it plays the role SOC 2 plays in America, and enterprise deals in Europe and Asia often
+              simply require it. <strong>Start here:</strong> define the scope narrowly and honestly, and do the
+              risk assessment yourselves before buying a 200-document template pack. Auditors test whether the
+              system reflects how you actually work; borrowed paperwork fails that test in the first interview.
+            </p>
+
+            <h2 id="soc-2-the-report-your-customers-ask-for">SOC 2: the report your customers ask for</h2>
+            <p>
+              SOC 2 is not a certification, despite every marketing page saying otherwise — it is an
+              <strong>attestation</strong>: a licensed CPA firm examines your controls against the AICPA's
+              <strong>Trust Services Criteria</strong> and issues a formal opinion. Security (the common criteria)
+              is mandatory in every report; Availability, Processing Integrity, Confidentiality, and Privacy are
+              added based on what you promise customers. The criteria are the 2017 set, refreshed with revised
+              points of focus in 2022.
+            </p>
+            <p>
+              The distinction that matters commercially is <strong>Type I versus Type II</strong>. A Type I says
+              your controls were suitably designed on a given date. A Type II says they actually
+              <em>operated effectively</em> over a review period, typically three to twelve months — and that is
+              the one sophisticated buyers want, because designing a control for a Tuesday is easy and running it
+              for a year is not. There is no public register and no logo: the report is a confidential document shared
+              under NDA — which is exactly what makes it useful to the teams reviewing you.
+            </p>
+            <p>
+              Who needs it: US-market B2B SaaS, where it has become the de facto ticket to enterprise deals — often
+              the difference between a two-week security review and a two-quarter one. <strong>Start here:</strong>
+              pick criteria narrowly (Security plus Availability covers most first reports), run a readiness
+              assessment, and treat Type I as the stepping stone while your Type II observation window runs.
+            </p>
+
+            <h2 id="the-common-backbone">The common backbone: build once, map many</h2>
+            <p>
+              Seven frameworks in, you may have noticed the trick: <strong>they keep asking for the same
+              things</strong>. Strip away the legal wrappers and a common backbone of controls satisfies large
+              chunks of every framework at once:
+            </p>
+            <ul>
+              <li><strong>Access control and least privilege</strong> — GDPR's security principle, HIPAA's access safeguards, PCI DSS requirements 7 and 8, SOX ITGCs, ISO's technological controls, SOC 2's common criteria. One discipline, six frameworks.</li>
+              <li><strong>Encryption in transit and at rest</strong> — named or implied by every single one, and the difference between "incident" and "notifiable breach" under several.</li>
+              <li><strong>Logging and monitoring</strong> — you cannot notify within 72 hours (GDPR) or 60 days (HIPAA) about something you never noticed.</li>
+              <li><strong>Incident response</strong> — a rehearsed plan is the shared assumption behind every breach-notification clock.</li>
+              <li><strong>Vendor management</strong> — GDPR processor contracts, HIPAA business associate agreements, ISO supplier controls, SOC 2 vendor criteria: your compliance is only as good as the companies you hand data to.</li>
+              <li><strong>Data minimization and retention</strong> — data you never collected, or already deleted on schedule, is data no framework can punish you for mishandling.</li>
+            </ul>
+            <p>
+              The practical consequence: <strong>build the control once, then map it many times</strong>.
+              Maintain one internal control set, each control mapped to the frameworks it satisfies — exactly
+              what compliance automation platforms sell, and a play you can run in a spreadsheet. The warning is the mirror image: checkbox theater. Plenty of breached companies held
+              clean audit reports, because an audit samples evidence on a schedule while attackers probe reality
+              continuously. Compliance <em>evidences</em> security; it does not create it.
+            </p>
+
+            <h2 id="how-to-choose-what-applies-to-you">How to choose what applies to you</h2>
+            <p>
+              When a client asks me "which of these apply to us?", I walk the same four questions every time:
+            </p>
+            <ul>
+              <li>
+                <strong>Where are your users?</strong> People in the EU pull in GDPR (the UK runs a parallel
+                version). California residents at threshold volumes pull in CCPA/CPRA — and a growing list of
+                other US states now have laws that mostly rhyme with California's. Users in India pull in the
+                DPDP Act 2023, whose implementing rules were notified in late 2025 and phase in through 2027 with
+                penalties up to ₹250 crore — a regime I walk through in
+                <a class="text-link" href="/blog/india-it-act-explained">India's IT law, explained</a>.
+              </li>
+              <li>
+                <strong>What data do you touch?</strong> Card payments mean PCI DSS already binds you. US health
+                data likely makes you a HIPAA business associate. Special-category data under GDPR raises the bar
+                further.
+              </li>
+              <li>
+                <strong>What are you?</strong> A US-listed company (or one planning to be) owns SOX. A healthcare
+                provider or insurer is a HIPAA covered entity. Sector determines the non-negotiables.
+              </li>
+              <li>
+                <strong>Who is asking?</strong> Enterprise customers demanding proof push you to SOC 2 in the US
+                and ISO/IEC 27001 internationally. If nobody is asking yet, you may not need a certificate this
+                year — the laws above apply either way.
+              </li>
+            </ul>
+            <p>
+              Then sequence it: <strong>laws first</strong>, because they are not optional; <strong>contractual
+              obligations next</strong>, because PCI DSS is already in force the day you take a card; and
+              <strong>certifications when customers make them worth it</strong>. Underneath all three layers, build the backbone controls once and let each
+              framework audit its slice. That is what compliance looks like when it works: not paperwork about
+              security, but trust — made auditable.
+            </p>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/types-of-cyberattacks">Types of cyberattacks, mapped: causes, defenses, and the CIA triad</a></li>
+              <li><a href="/blog/what-is-a-fork-bomb">What is a fork bomb, and why can it freeze a Linux system?</a></li>
+              <li><a href="/blog/india-it-act-explained">India's IT law, explained: from the IT Act 2000 to the DPDP era</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Not sure which frameworks apply to you?</h2>
+            <p>
+              I help teams answer exactly this — map the data you hold, work out which laws and standards actually
+              bind you, and build the backbone controls once instead of seven times. A compliance-readiness
+              conversation costs nothing and usually saves months.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/contact">Get in touch</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
+            automation, AI workflows, and intelligent digital systems.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

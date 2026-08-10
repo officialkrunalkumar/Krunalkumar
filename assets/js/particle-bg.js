@@ -78,7 +78,7 @@ if (canvas) {
     // Radius must equal the CSS twin's `farthest-side` (= max(w,h)/2), or the
     // first canvas frame visibly shifts the edge shading it paints over.
     backgroundGradient = ctx.createRadialGradient(width * 0.5, height * 0.5, 0, width * 0.5, height * 0.5, Math.max(width, height) / 2);
-    backgroundGradient.addColorStop(0, cssColor('--bg-glow', 'rgba(43, 25, 92, 0.95)'));
+    backgroundGradient.addColorStop(0, cssColor('--bg-glow', 'rgba(25, 36, 55, 0.96)'));
     backgroundGradient.addColorStop(0.45, cssColor('--bg-mid', 'rgba(25, 36, 55, 0.96)'));
     backgroundGradient.addColorStop(1, cssColor('--bg-base', '#121b2c'));
   }
@@ -768,6 +768,81 @@ function initSiteChrome() {
   const brand = document.querySelector('.brand');
   if (brand) {
     brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
+  }
+
+  // 🥚 Six quick taps on the homepage portrait put the brand name into dance
+  // mode: the gradient bounces direction, the hue jumps at random, the name
+  // wiggles, and firecracker sparks burst around it. Six more taps calm it
+  // down. Deliberately stores nothing (unlike the background controls): a
+  // reload always resets it, like a wink should. Skipped entirely under
+  // prefers-reduced-motion — a party trick must never override that choice.
+  const heroPortrait = document.querySelector('.hero-card img[src*="Krunal"]');
+  if (brand && heroPortrait && !prefersReducedMotion) {
+    const SPARK_COLORS = ['#7dd3fc', '#a855f7', '#4ade80', '#fbbf24', '#f87171', '#f8fafc'];
+    let taps = 0;
+    let lastTap = 0;
+    let dancing = false;
+    let danceTimer = null;
+    let reported = false;
+
+    function throwSparks() {
+      // Rect is re-read every burst so sparks track the sticky header as the
+      // page scrolls (position: fixed shares the viewport coordinate space).
+      //
+      // Skip while the tab is hidden: a background tab still fires the timer
+      // but never completes CSS animations, so the animationend cleanup below
+      // never runs and the sparks would pile up unbounded until the tab is
+      // seen again. No sparks are visible there anyway.
+      if (document.hidden) return;
+      const rect = brand.getBoundingClientRect();
+      for (let i = 0; i < 4; i += 1) {
+        const spark = document.createElement('span');
+        spark.className = 'fx-spark';
+        spark.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
+        spark.style.left = (rect.left + Math.random() * rect.width) + 'px';
+        spark.style.top = (rect.top + Math.random() * rect.height) + 'px';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 30 + Math.random() * 70;
+        // Slight upward bias: firecrackers pop up more than they fall.
+        spark.style.setProperty('--dx', (Math.cos(angle) * distance) + 'px');
+        spark.style.setProperty('--dy', (Math.sin(angle) * distance - 24) + 'px');
+        spark.addEventListener('animationend', () => spark.remove());
+        document.body.appendChild(spark);
+      }
+    }
+
+    function setDancing(next) {
+      dancing = next;
+      brand.classList.toggle('brand-dancing', dancing);
+      if (dancing) {
+        // Random hue jumps, out of step with the CSS hue spin, so the colors
+        // never settle into a predictable sweep.
+        danceTimer = setInterval(() => {
+          brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
+          throwSparks();
+        }, 260);
+        if (!reported) {
+          reported = true;
+          if (typeof gtag === 'function') gtag('event', 'easter_egg_dance');
+        }
+      } else {
+        clearInterval(danceTimer);
+        danceTimer = null;
+        // Leave the name on a fresh random hue as a parting souvenir.
+        brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
+      }
+    }
+
+    heroPortrait.addEventListener('click', () => {
+      const now = performance.now();
+      // A pause over 1.5s restarts the count — the egg answers deliberate
+      // tapping, not six stray clicks spread across a whole visit.
+      taps = now - lastTap > 1500 ? 1 : taps + 1;
+      lastTap = now;
+      if (taps < 6) return;
+      taps = 0;
+      setDancing(!dancing);
+    });
   }
 
   // Target only the year span — the rest of the copyright line is static text.

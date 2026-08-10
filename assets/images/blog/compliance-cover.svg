@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Security compliance, explained — a shield with a check mark beside framework chips labeled GDPR, HIPAA, PCI, and ISO">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="rgba(88,52,166,0.35)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="160" cy="80" r="2"/><circle cx="440" cy="55" r="1.5"/><circle cx="690" cy="100" r="2"/>
+    <circle cx="100" cy="440" r="1.5"/><circle cx="340" cy="550" r="2"/><circle cx="1120" cy="80" r="1.5"/>
+    <circle cx="1050" cy="590" r="2"/><circle cx="640" cy="585" r="1.5"/>
+  </g>
+
+  <text x="80" y="150" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+  <text x="80" y="240" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">Security compliance,</text>
+  <text x="80" y="312" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">explained</text>
+  <text x="80" y="390" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">What each framework is, who it binds,</text>
+  <text x="80" y="432" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">and where to start.</text>
+  <text x="80" y="560" fill="#8fa0b8" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+
+  <!-- Shield with check mark, framework chips below -->
+  <path d="M955 96 L1070 138 V250 C1070 328 1022 380 955 406 C888 380 840 328 840 250 V138 Z" fill="rgba(125,211,252,0.12)" stroke="#7dd3fc" stroke-width="3"/>
+  <polyline points="906,248 943,290 1010,206" fill="none" stroke="#4ade80" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
+    <rect x="810" y="452" width="140" height="46" rx="10" fill="#7dd3fc"/>
+    <text x="880" y="482" fill="#131f2d" font-size="22" font-weight="800">GDPR</text>
+    <rect x="970" y="452" width="140" height="46" rx="10" fill="#4ade80"/>
+    <text x="1040" y="482" fill="#131f2d" font-size="22" font-weight="800">HIPAA</text>
+    <rect x="810" y="514" width="140" height="46" rx="10" fill="#fbbf24"/>
+    <text x="880" y="544" fill="#131f2d" font-size="22" font-weight="800">PCI</text>
+    <rect x="970" y="514" width="140" height="46" rx="10" fill="#a855f7"/>
+    <text x="1040" y="544" fill="#131f2d" font-size="22" font-weight="800">ISO</text>
+  </g>
+</svg>

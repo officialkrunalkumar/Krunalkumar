@@ -36,7 +36,8 @@
      What must be shifted BY HAND, by the same rgb delta applied here:
        - the raised-surface fills rgba(31,44,63,…) / rgba(46,62,80,…) /
          rgba(24,36,57,…) and the button hexes #1f2c3f / #212d3c —
-         15 in this file plus 2 in blog.css (.post-body pre, .post-toc)
+         22 background declarations in this file plus 3 in blog.css
+         (.post-body pre, .post-toc, .blog-filter) — grep, don't count on this
        - the artwork: assets/images/blog/*.svg cover gradients and the inline
          <svg> figure panels in blog posts (#1b2735)
        - the theme-color meta in every page (tracks --bg-base)
@@ -53,7 +54,12 @@
   --bg-base: #121b2c;
   --bg-base-rgb: 18 27 44;
   --bg-mid: rgba(25, 36, 55, 0.96);
-  --bg-glow: rgba(43, 25, 92, 0.95);
+  /* Deliberately equal to --bg-mid: the page's radial gradient is a NEUTRAL
+     vignette (soft luminance falloff, no hue). It used to be a purple glow
+     (rgba(43, 25, 92, 0.95)); centered behind article text it read as a
+     distracting colored circle, so the color was removed by choice. Restore
+     the old value here if the purple ambience is ever wanted back. */
+  --bg-glow: rgba(25, 36, 55, 0.96);
   --text: #f8fafc;
   --muted: #e2e8f0;
   --accent: #7dd3fc;
@@ -170,6 +176,18 @@ img {
     text-shadow: none;
     animation: brand-flow 4s linear infinite, brand-hue-cycle 18s linear infinite;
   }
+
+  /* 🥚 Dance mode (six taps on the homepage portrait — particle-bg.js).
+     The flow runs fast AND alternates direction so the gradient bounces
+     instead of marching left-to-right; the hue filter spins quickly while
+     JS also jumps --brand-hue at random, so the colors never settle; and a
+     wiggle rides on top. Transform-only, so header layout never shifts. */
+  .brand.brand-dancing {
+    animation:
+      brand-flow 0.7s ease-in-out infinite alternate,
+      brand-hue-cycle 2.2s linear infinite,
+      brand-dance 0.5s ease-in-out infinite;
+  }
 }
 
 /* Gradient tiles seamlessly (first and last stops match), so sliding it by
@@ -187,6 +205,53 @@ img {
   to {
     filter: hue-rotate(360deg);
   }
+}
+
+@keyframes brand-dance {
+  0%, 100% {
+    transform: rotate(-1.5deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1.5deg) translateY(-2px);
+  }
+}
+
+/* Firecracker sparks — shared by dance mode (particle-bg.js) and the
+   verify page's success celebration (verify.js). Each spark gets a random
+   color and a random flight vector in --dx/--dy, and removes itself when
+   its animation ends. */
+.fx-spark {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 60;
+  animation: fx-spark-fly 0.8s ease-out forwards;
+}
+
+@keyframes fx-spark-fly {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.2);
+  }
+}
+
+/* Verify page: one short head-shake on any non-valid outcome — the physical
+   gesture for "no", deliberately unfestive on a trust-critical page. */
+.verify-shake {
+  animation: verify-shake 0.4s ease-in-out 1;
+}
+
+@keyframes verify-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-7px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
 }
 
 .nav-list {
