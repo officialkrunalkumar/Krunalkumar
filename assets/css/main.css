@@ -109,6 +109,9 @@ a {
 img {
   display: block;
   max-width: 100%;
+  /* Pairs with the width/height attributes on every <img>: keeps the declared
+     aspect ratio when max-width scales the image down. */
+  height: auto;
 }
 
 /* ==========================================================================
@@ -2147,5 +2150,54 @@ footer a:hover {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   Print — ink-friendly output for /verify, legal pages, and blog posts.
+   The dark theme is screen chrome; on paper everything drops to black on
+   white, and the interactive/floating layer disappears entirely.
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 1.6cm;
+  }
+
+  /* color-scheme: dark would otherwise give print PREVIEW a dark backdrop
+     behind the transparent backgrounds; paper is white, so say so. */
+  html {
+    color-scheme: light;
+    background: #fff !important;
+  }
+
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  #bg-canvas,
+  .site-header,
+  footer,
+  .skip-link,
+  .whatsapp-float-wrap,
+  .back-to-top,
+  .bg-pause-toggle,
+  .bg-settings-toggle,
+  .bg-settings-panel,
+  .bg-hint-toast {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .section-card,
+  .info-card,
+  .license-card {
+    border: 1px solid #bbb;
+    break-inside: avoid;
   }
 }

@@ -286,6 +286,9 @@ Shift with it:
 4. The `theme-color` meta in all 25 chrome-bearing pages — it tracks `--bg-base`, since the mobile
    address bar sits flush above the page-tinted sticky header. Leave `terminal.html` alone: it is
    standalone, has its own inline `<style>`, and its palette is deliberately not the site palette.
+5. The `theme_color` and `background_color` in `site.webmanifest` — both track `--bg-base`, and the
+   app icons (`assets/images/icon-*.png`, `apple-touch-icon.png`) plus the root `og-*.jpg` cards
+   bake the palette into pixels, so regenerate them after any sizable shift.
 
 Leave alone:
 

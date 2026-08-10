@@ -1,0 +1,15 @@
+{
+  "name": "Krunalkumar Shah — Cybersecurity & Automation",
+  "short_name": "Krunalkumar",
+  "description": "Cybersecurity professional and published Linux security researcher, building AI-driven automation.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#121b2c",
+  "theme_color": "#121b2c",
+  "icons": [
+    { "src": "/assets/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/images/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
