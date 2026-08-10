@@ -35,8 +35,9 @@
 
      What must be shifted BY HAND, by the same rgb delta applied here:
        - the raised-surface fills rgba(31,44,63,…) / rgba(46,62,80,…) /
-         rgba(24,36,57,…) and the button hexes #1f2c3f / #212d3c —
-         22 background declarations in this file plus 3 in blog.css
+         rgba(24,36,57,…) and the secondary-button hexes #1f2c3f / #212d3c
+         (.btn-primary is accent-filled and does not shift) —
+         background declarations in this file plus 3 in blog.css
          (.post-body pre, .post-toc, .blog-filter) — grep, don't count on this
        - the artwork: assets/images/blog/*.svg cover gradients and the inline
          <svg> figure panels in blog posts (#1b2735)
@@ -797,14 +798,17 @@ footer p {
   transform: translateY(-2px);
 }
 
+/* Accent fill so the primary action outranks the #1f2c3f card surfaces it
+   sits on — same pairing as .blog-filter.is-active (dark ink on --accent-dark
+   clears AA at ~8.2:1; the lighter --accent hover still clears ~10:1). */
 .btn-primary {
-  background: #1f2c3f;
-  color: #f8fafc;
+  background: var(--accent-dark);
+  color: #0a1a28;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-primary:hover {
-  background: #212d3c;
+  background: var(--accent);
 }
 
 .btn-secondary {
