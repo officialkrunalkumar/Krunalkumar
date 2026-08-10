@@ -288,8 +288,30 @@ if (canvas) {
   resizeCanvas();
   // First paint is immediate and static; the loop takes over from there.
   drawFrame(0);
-  if (!prefersReducedMotion && !animationPaused) {
-    scheduleFrame();
+  // The ambient loop waits for window load + an idle slot: during page load
+  // its rAF work competes with first paint on throttled phones (Lighthouse
+  // attributed 0.5-0.8s of load-time main-thread work to it). The static
+  // frame above already matches the CSS twin gradient, so the wait is
+  // invisible. The pause button's resume path can still start the loop
+  // earlier — that's user-initiated and fine.
+  const startAmbientLoop = () => {
+    if (!prefersReducedMotion && !animationPaused) {
+      scheduleFrame();
+    }
+  };
+  const queueAmbientStart = () => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(startAmbientLoop, { timeout: 2000 });
+    } else {
+      setTimeout(startAmbientLoop, 250);
+    }
+  };
+  if (document.readyState === 'complete') {
+    queueAmbientStart();
+  } else {
+    window.addEventListener('load', queueAmbientStart, { once: true });
+    // Failsafe: one stalled subresource must not keep the scene frozen.
+    setTimeout(startAmbientLoop, 4000);
   }
 
   // WCAG 2.2.2 pause control — auto-playing motion needs a way to stop it.
