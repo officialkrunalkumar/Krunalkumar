@@ -799,16 +799,22 @@ footer p {
 }
 
 /* Accent fill so the primary action outranks the #1f2c3f card surfaces it
-   sits on — same pairing as .blog-filter.is-active (dark ink on --accent-dark
-   clears AA at ~8.2:1; the lighter --accent hover still clears ~10:1). */
+   sits on. Gradient stays inside the site's sky family (--accent sky-300 →
+   sky-500); dark ink clears AA even on the darkest stop (~6.3:1).
+   text-shadow: none is load-bearing — the global body text-shadow (a dark
+   halo tuned for light-on-dark) smears dark glyphs on light fills. */
 .btn-primary {
-  background: var(--accent-dark);
+  background: linear-gradient(180deg, var(--accent), #0ea5e9);
   color: #0a1a28;
-  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.22);
+  text-shadow: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 6px 18px rgba(56, 189, 248, 0.28), 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-primary:hover {
-  background: var(--accent);
+  background: linear-gradient(180deg, #a5e3fd, var(--accent-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 22px rgba(56, 189, 248, 0.4), 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-secondary {

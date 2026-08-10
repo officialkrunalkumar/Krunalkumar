@@ -477,4 +477,6 @@ a.post-card:hover {
   background: var(--accent-dark);
   border-color: var(--accent-dark);
   color: #0a1a28;
+  /* The global body text-shadow smears dark glyphs on light fills. */
+  text-shadow: none;
 }
