@@ -34,11 +34,11 @@
      those stops there.
 
      What must be shifted BY HAND, by the same rgb delta applied here:
-       - the raised-surface fills rgba(23,36,55,…) / rgba(38,54,72,…) /
-         rgba(16,28,49,…) and the button hexes #172437 / #192534 —
+       - the raised-surface fills rgba(31,44,63,…) / rgba(46,62,80,…) /
+         rgba(24,36,57,…) and the button hexes #1f2c3f / #212d3c —
          15 in this file plus 2 in blog.css (.post-body pre, .post-toc)
        - the artwork: assets/images/blog/*.svg cover gradients and the inline
-         <svg> figure panels in blog posts (#131f2d)
+         <svg> figure panels in blog posts (#1b2735)
        - the theme-color meta in every page (tracks --bg-base)
 
      The card fills are the real constraint. They are ~80% opaque, so they
@@ -49,11 +49,11 @@
 
      Shadows are the one thing that must NOT follow — they have to stay darker
      than whatever the page becomes, so they keep their original dark values.
-     (main.css:836 is a pre-existing exception at rgba(20,33,61,.08).) */
-  --bg-base: #0a1324;
-  --bg-base-rgb: 10 19 36;
-  --bg-mid: rgba(17, 28, 47, 0.96);
-  --bg-glow: rgba(35, 17, 84, 0.95);
+     (the card-hover shadow is a pre-existing exception at rgba(20,33,61,.08).) */
+  --bg-base: #121b2c;
+  --bg-base-rgb: 18 27 44;
+  --bg-mid: rgba(25, 36, 55, 0.96);
+  --bg-glow: rgba(43, 25, 92, 0.95);
   --text: #f8fafc;
   --muted: #e2e8f0;
   --accent: #7dd3fc;
@@ -93,13 +93,12 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  /* CSS twin of the gradients particle-bg.js paints onto the canvas — shown
+  /* CSS twin of the gradient particle-bg.js paints onto the canvas — shown
      before the script's first frame and, without JS, forever, so the page
      keeps the same ambience either way (only the drifting particles need
      JS). The canvas bitmap paints opaquely over this once the script runs. */
   background:
-    radial-gradient(circle 40vw at 80% 15%, rgba(96, 165, 250, 0.16), rgba(168, 85, 247, 0.12) 35%, rgba(0, 0, 0, 0) 100%),
-    radial-gradient(circle farthest-side at 20% 20%, var(--bg-glow), var(--bg-mid) 45%, var(--bg-base) 100%);
+    radial-gradient(circle farthest-side at 50% 50%, var(--bg-glow), var(--bg-mid) 45%, var(--bg-base) 100%);
 }
 
 a {
@@ -120,16 +119,15 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  /* Raised-surface fill, not the page tint. The canvas glow is centred at
-     height * 0.2 — directly under the header — so tinting with --bg-base
-     (the darkest token) at partial alpha subtracted ~3 L* from the page
-     behind it: the bar read as a shadow cut into the layout rather than a
+  /* Raised-surface fill, not the page tint. Tinting with --bg-base (the
+     darkest token) at partial alpha subtracted ~3 L* from the page behind
+     it: the bar read as a shadow cut into the layout rather than a
      surface above it. This sits ~1.5 L* above the page instead. It is one
-     step darker than the card fill rgba(23,36,55,…), which lifted the bar
+     step darker than the card fill rgba(31,44,63,…), which lifted the bar
      ~3 L* and read too light for a full-width band. Being a literal, it
      must be shifted by hand with the other raised fills — see the token
      block at the top of this file. */
-  background: rgb(20 32 50 / 0.8);
+  background: rgb(28 40 58 / 0.8);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -329,7 +327,7 @@ img {
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 12px;
-  background: rgba(23, 36, 55, 0.85);
+  background: rgba(31, 44, 63, 0.85);
   cursor: pointer;
 }
 
@@ -634,11 +632,14 @@ footer p {
   font-weight: 600;
 }
 
-/* Inline link inside running text (legal pages, timeline, etc.) */
+/* Inline link inside running text (legal pages, timeline, etc.).
+   overflow-wrap so the full email address can break instead of forcing
+   320px-class phones to zoom out (same fix as .verify-status below). */
 .text-link {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
+  overflow-wrap: anywhere;
 }
 
 .text-link:hover {
@@ -729,23 +730,23 @@ footer p {
 }
 
 .btn-primary {
-  background: #172437;
+  background: #1f2c3f;
   color: #f8fafc;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.22);
 }
 
 .btn-primary:hover {
-  background: #192534;
+  background: #212d3c;
 }
 
 .btn-secondary {
-  background: #172437;
+  background: #1f2c3f;
   color: #f8fafc;
   border: 1px solid rgba(125, 211, 252, 0.25);
 }
 
 .btn-secondary:hover {
-  background: #192534;
+  background: #212d3c;
   color: #f8fafc;
 }
 
@@ -764,7 +765,7 @@ footer p {
 
 .hero-card {
   padding: 1.2rem;
-  background: linear-gradient(145deg, rgba(16, 28, 49, 0.9), rgba(23, 36, 55, 0.84));
+  background: linear-gradient(145deg, rgba(24, 36, 57, 0.9), rgba(31, 44, 63, 0.84));
   border: 1px solid rgba(125, 211, 252, 0.16);
 }
 
@@ -784,7 +785,7 @@ footer p {
 }
 
 .profile-highlights div {
-  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.92));
+  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.92));
   border: 1px solid rgba(125, 211, 252, 0.22);
   border-radius: 16px;
   padding: 0.9rem;
@@ -842,7 +843,7 @@ footer p {
 
 .info-card,
 .license-card {
-  background: linear-gradient(145deg, rgba(23, 36, 55, 0.8), rgba(38, 54, 72, 0.74));
+  background: linear-gradient(145deg, rgba(31, 44, 63, 0.8), rgba(46, 62, 80, 0.74));
   border: 1px solid rgba(125, 211, 252, 0.14);
   border-radius: 18px;
   padding: 1.2rem;
@@ -862,7 +863,7 @@ footer p {
 }
 
 .faq-list details {
-  background: linear-gradient(145deg, rgba(23, 36, 55, 0.8), rgba(38, 54, 72, 0.74));
+  background: linear-gradient(145deg, rgba(31, 44, 63, 0.8), rgba(46, 62, 80, 0.74));
   border: 1px solid rgba(125, 211, 252, 0.14);
   border-radius: 18px;
   padding: 0 1.2rem;
@@ -1062,7 +1063,7 @@ footer p {
   gap: 1rem;
   padding: 1.2rem 1.2rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
+  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.24);
   color: #f8fafc;
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
@@ -1084,7 +1085,7 @@ footer p {
   gap: 0.8rem;
   padding: 1.3rem 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
+  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.24);
   color: #f8fafc;
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
@@ -1136,7 +1137,7 @@ footer p {
 
 .carousel-btn {
   border: 1px solid rgba(125, 211, 252, 0.3);
-  background: rgba(23, 36, 55, 0.92);
+  background: rgba(31, 44, 63, 0.92);
   color: #f8fafc;
   border-radius: 999px;
   width: 42px;
@@ -1175,7 +1176,7 @@ footer p {
   gap: 0.8rem;
   padding: 1rem;
   border-radius: 18px;
-  background: linear-gradient(145deg, rgba(23, 36, 55, 0.9), rgba(38, 54, 72, 0.78));
+  background: linear-gradient(145deg, rgba(31, 44, 63, 0.9), rgba(46, 62, 80, 0.78));
   border: 1px solid rgba(125, 211, 252, 0.18);
   color: #f8fafc;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -1246,7 +1247,7 @@ footer p {
 .recommendation-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
+  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
@@ -1378,9 +1379,12 @@ footer p {
   resize: vertical;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
+/* Soft ring for pointer focus only. Keyboard focus falls through to the
+   global :focus-visible rule (solid accent, 10:1) — the 40%-alpha ring
+   alone is ~2.8:1 against the card, below the 3:1 WCAG 1.4.11 minimum. */
+.field input:focus:not(:focus-visible),
+.field select:focus:not(:focus-visible),
+.field textarea:focus:not(:focus-visible) {
   outline: 2px solid rgba(125, 211, 252, 0.4);
   border-color: var(--accent);
 }
@@ -1451,7 +1455,7 @@ footer p {
 .verify-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(23, 36, 55, 0.95), rgba(38, 54, 72, 0.82));
+  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
   border: 1px solid rgba(125, 211, 252, 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
@@ -1609,15 +1613,15 @@ footer {
 .back-to-top {
   position: fixed;
   right: 1.2rem;
-  bottom: 5.4rem; /* stacked above the WhatsApp chat bubble */
+  bottom: 4.8rem; /* stacked above the WhatsApp chat bubble */
   z-index: 40;
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent-dark), #172437);
+  background: linear-gradient(135deg, var(--accent-dark), #1f2c3f);
   color: #f8fafc;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.24);
   opacity: 0;
@@ -1649,8 +1653,8 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   border-radius: 999px;
   background: #25d366;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.35);
@@ -1663,35 +1667,44 @@ footer {
 }
 
 .whatsapp-float svg {
-  width: 27px;
-  height: 27px;
+  width: 22px;
+  height: 22px;
   fill: #ffffff;
 }
 
-/* 28px hit area, pushed diagonally off the bubble so only a sliver of the two
-   circles overlaps — a mis-tap near the bubble's centre can never dismiss it. */
+/* 20px visual circle (proportional to the 42px bubble), pushed diagonally off
+   the bubble so only a sliver of the two circles overlaps — a mis-tap near the
+   bubble's centre can never dismiss it. The ::before pseudo-element pads the
+   tap target back out to 28px without growing the visible circle. */
 .whatsapp-float-close {
   position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 28px;
-  height: 28px;
+  top: -9px;
+  right: -9px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
-  background: rgba(23, 36, 55, 0.92);
+  background: rgba(31, 44, 63, 0.92);
   color: #cbd5e1;
-  font-size: 1.05rem;
+  font-size: 0.8rem;
   line-height: 1;
   cursor: pointer;
 }
 
+.whatsapp-float-close::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+}
+
 .whatsapp-float-close:hover {
   color: #ffffff;
-  background: rgba(23, 36, 55, 1);
+  background: rgba(31, 44, 63, 1);
 }
 
 /* Once the bubble is dismissed, back-to-top reclaims the corner. The bubble
@@ -1718,12 +1731,12 @@ body.wa-dismissed .back-to-top {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 999px;
-  background: rgba(23, 36, 55, 0.85);
+  background: rgba(31, 44, 63, 0.85);
   color: #cbd5e1;
   cursor: pointer;
   opacity: 0.65;
@@ -1734,32 +1747,32 @@ body.wa-dismissed .back-to-top {
 .bg-pause-toggle:focus-visible {
   opacity: 1;
   color: #f8fafc;
-  background: rgba(23, 36, 55, 1);
+  background: rgba(31, 44, 63, 1);
 }
 
 .bg-pause-toggle svg {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   fill: currentColor;
 }
 
 /* Background settings popover and its toggle — injected by particle-bg.js.
-   The toggle sits immediately right of the pause button (1.2rem + its 40px
+   The toggle sits immediately right of the pause button (1.2rem + its 32px
    width + an 8px gap), so neither rule has to know about the other. */
 .bg-settings-toggle {
   position: fixed;
-  left: calc(1.2rem + 48px);
+  left: calc(1.2rem + 40px);
   bottom: 1.2rem;
   z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 999px;
-  background: rgba(23, 36, 55, 0.85);
+  background: rgba(31, 44, 63, 0.85);
   color: #cbd5e1;
   cursor: pointer;
   opacity: 0.65;
@@ -1771,7 +1784,7 @@ body.wa-dismissed .back-to-top {
 .bg-settings-toggle[aria-expanded="true"] {
   opacity: 1;
   color: #f8fafc;
-  background: rgba(23, 36, 55, 1);
+  background: rgba(31, 44, 63, 1);
 }
 
 /* The dots/speed controls are the hidden half: particle-bg.js adds
@@ -1790,15 +1803,15 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
 }
 
 .bg-settings-toggle svg {
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   fill: currentColor;
 }
 
 .bg-settings-panel {
   position: fixed;
   left: 1.2rem;
-  bottom: 4.4rem;
+  bottom: 3.9rem;
   z-index: 41;
   display: flex;
   flex-direction: column;
@@ -1807,7 +1820,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
   padding: 0.85rem 0.95rem;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.97);
+  background: rgba(23, 31, 50, 0.97);
   box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
   color: #e2e8f0;
   font-size: 0.82rem;
@@ -1841,7 +1854,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
   padding: 0;
   border: 1px solid rgba(125, 211, 252, 0.28);
   border-radius: 8px;
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(38, 49, 67, 0.9);
   color: #e2e8f0;
   font-size: 0.95rem;
   line-height: 1;
@@ -1849,7 +1862,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
 }
 
 .bg-settings-row button:hover {
-  background: rgba(51, 65, 85, 0.95);
+  background: rgba(59, 73, 93, 0.95);
   color: #ffffff;
 }
 
@@ -1883,12 +1896,12 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
 .bg-hint-toast {
   position: fixed;
   left: 1.2rem;
-  bottom: 4.4rem;
+  bottom: 3.9rem;
   z-index: 39;
   padding: 0.35rem 0.75rem;
   border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.94);
+  background: rgba(23, 31, 50, 0.94);
   color: #e2e8f0;
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;

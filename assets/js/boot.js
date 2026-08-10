@@ -1,9 +1,11 @@
 // Shared head bootstrap, loaded synchronously (no defer) so the `js` class
 // lands before first paint — the CSS that hides the static mobile nav keys
-// off it. Consolidates what every page used to carry as three inline blocks:
-// JS detection, the partials-failure fallback timer, and both analytics
-// loaders (GA4 gtag + GTM — Google is configured to deduplicate). One file,
-// one edit point, and no inline scripts, so the CSP can drop 'unsafe-inline'.
+// off it. Consolidates what every page used to carry as inline blocks:
+// JS detection, the partials-failure fallback timer, and the GA4 loader.
+// One file, one edit point, and no inline scripts, so the CSP can drop
+// 'unsafe-inline'. (A GTM container used to load here too; it was published
+// empty — zero tags — so it cost ~314KB per page view for nothing and was
+// removed. If GTM is ever wanted again, publish the container's tags first.)
 (function () {
   document.documentElement.classList.add('js');
   window.addEventListener('load', function () {
@@ -24,11 +26,4 @@
   g.async = true;
   g.src = 'https://www.googletagmanager.com/gtag/js?id=G-2SYTX4B5TW';
   document.head.appendChild(g);
-
-  // Google Tag Manager
-  window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-  var t = document.createElement('script');
-  t.async = true;
-  t.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-NTRG9KDJ';
-  document.head.appendChild(t);
 })();

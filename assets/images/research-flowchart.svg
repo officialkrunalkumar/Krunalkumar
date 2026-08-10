@@ -10,13 +10,13 @@
     .node-text { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; fill: #e2e8f0; text-anchor: middle; }
     .branch-label { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 13px; font-style: italic; fill: #94a3b8; text-anchor: middle; }
     .edge { stroke: #64748b; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
-    .process { fill: rgba(15, 23, 42, 0.92); stroke: rgba(56, 189, 248, 0.65); stroke-width: 1.5; }
-    .decision { fill: rgba(30, 41, 59, 0.92); stroke: rgba(168, 85, 247, 0.7); stroke-width: 1.5; }
+    .process { fill: rgba(23, 31, 50, 0.92); stroke: rgba(56, 189, 248, 0.65); stroke-width: 1.5; }
+    .decision { fill: rgba(38, 49, 67, 0.92); stroke: rgba(168, 85, 247, 0.7); stroke-width: 1.5; }
     .kill { fill: rgba(248, 113, 113, 0.10); stroke: rgba(248, 113, 113, 0.75); stroke-width: 1.5; }
     .allow { fill: rgba(74, 222, 128, 0.10); stroke: rgba(74, 222, 128, 0.7); stroke-width: 1.5; }
   </style>
 
-  <rect x="0" y="0" width="920" height="700" rx="18" fill="#0b1120" opacity="0.55" />
+  <rect x="0" y="0" width="920" height="700" rx="18" fill="#131928" opacity="0.55" />
 
   <!-- Start -->
   <rect x="340" y="18" width="240" height="44" rx="22" class="process" />

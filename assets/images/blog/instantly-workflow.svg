@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1217 384" role="img" aria-label="Authentic n8n canvas of the Instantly CleverResponder workflow: a reply is matched to its lead by UUID, classified and drafted by AI grounded in a knowledge doc, approved in Slack, sent, and followed up with a three-day reminder loop" font-family="'Segoe UI', Tahoma, sans-serif">
   <defs>
     <pattern id="dotgrid2" width="18" height="18" patternUnits="userSpaceOnUse">
-      <circle cx="1.2" cy="1.2" r="1.1" fill="#1e293b"/>
+      <circle cx="1.2" cy="1.2" r="1.1" fill="#263143"/>
     </pattern>
     <g id="i-bolt"><path d="M13.5 2 L6.5 14 h4.6 l-2.4 8 7.8-12.4 h-4.6 z" fill="#e11d48"/></g>
     <g id="i-pencil"><path d="M4.5 19.5 l1.8-5.2 9.6-9.6 3.4 3.4-9.6 9.6-5.2 1.8 z" fill="#7c3aed"/><path d="M6.3 14.3 l3.4 3.4" stroke="#f8fafc" stroke-width="1" fill="none"/></g>
@@ -16,7 +16,7 @@
     <g id="plus2"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="none" stroke="#64748b" stroke-width="1.2"/><path d="M-2.5 0 h5 M0 -2.5 v5" stroke="#64748b" stroke-width="1.2"/></g>
   </defs>
 
-  <rect width="1217" height="384" rx="14" fill="#131f2d"/>
+  <rect width="1217" height="384" rx="14" fill="#1b2735"/>
   <rect width="1217" height="384" rx="14" fill="url(#dotgrid2)"/>
   <text x="20" y="26" fill="#7dd3fc" font-size="12" font-weight="800" letter-spacing="2.5">CLEVERRESPONDER · INSTANTLY — n8n CANVAS</text>
 
@@ -79,7 +79,7 @@
   <path d="M 1128 210 L 1135 210" stroke="#64748b" stroke-width="1.2"/>
   <use href="#plus2" x="1168" y="115"/>
   <path d="M 1157 115 L 1162 115" stroke="#64748b" stroke-width="1.2"/>
-  <circle cx="509" cy="245" r="6" fill="#131f2d" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="509" cy="245" r="6" fill="#1b2735" stroke="#64748b" stroke-width="1.2"/>
   <path d="M 506 245 h6 M 509 242 v6" stroke="#64748b" stroke-width="1.2"/>
 
   <!-- ================= nodes & labels (11px, n8n-style wrapped) ================= -->
