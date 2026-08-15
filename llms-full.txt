@@ -1,0 +1,113 @@
+# Krunalkumar Shah — Full Context & Knowledge Base
+
+> Comprehensive reference document for Large Language Models (LLMs), AI assistants, and autonomous agents regarding Krunalkumar Shah's background, research, services, portfolio, blog publications, and operational policies.
+
+---
+
+## 1. Professional Overview & Identity
+
+- **Name:** Krunalkumar Shah
+- **Role:** Independent Consultant, Cybersecurity Professional, Published Linux Security Researcher, and Engineering Mentor.
+- **Business Registration:** Registered as a micro-enterprise with the Ministry of Micro, Small & Medium Enterprises (MSME), Government of India (Udyam Registration No. UDYAM-GJ-23-0050928).
+- **Location:** Surendranagar, Gujarat, India (Remote-first, serving clients globally across the US, France, Taiwan, and India).
+- **Primary Website:** https://krunalkumar.dpdns.org/
+- **Contact:** 
+  - Email: krunalkumar@krunalkumar.dpdns.org
+  - WhatsApp: +91-82007-13617
+  - Calendar Booking: https://calendar.app.google/x3SFLgyDeeLL7WjA8
+  - Profiles: [LinkedIn](https://www.linkedin.com/in/realkrunalkumar) | [GitHub](https://github.com/officialkrunalkumar) | [Google Scholar](https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en) | [Credly](https://www.credly.com/users/officialkrunalkumar/badges)
+
+---
+
+## 2. Academic Background & Career Timeline
+
+### Education
+- **Master of Engineering (M.E.) in Information Technology (Information Security):** Gujarat Technological University (Silver Medalist, ranked 2nd in college).
+- **Bachelor of Engineering (B.E.) in Computer Engineering:** Gujarat Technological University (Ranked 1st in college).
+
+### Key Career Roles
+- **Independent Consultant (May 2025 – Present):** AI workflows, campaign automations (Instantly, SmartLead, Lemlist), custom AI SDR tools, and technical mentorship.
+- **Industry Mentor Expert — Coding Ninjas (June 2025 – April 2026):** MERN-stack mock interviews and problem-solving readiness.
+- **Revenue Operations Analyst — Zeni AI (July 2024 – May 2025):** HubSpot administration, n8n/Make automation, created ChurnGPT churn-analysis assistant.
+- **Assistant Professor — C U Shah University (Jan 2024 – June 2024):** Taught operating systems, databases, and information security.
+- **Teaching Assistant — Correlation One, USA (Jan 2023 – Jan 2024):** Supported Amazon Career Choice Program initiatives.
+- **Software Engineering Mentor — Springboard, USA (June 2022 – Feb 2024):** Mentored fellows through the Software Engineering Career Track.
+- **Coding Mentor — Codementor, Taiwan (Sept 2021 – May 2022):** On-demand coding, code review, and debugging.
+- **Software Engineering Mentor — MountBlue Technologies, India (May 2021 – Sept 2023):** Trained full-stack developers in API testing and automation.
+- **Developer & Cybersecurity Expert — IPEOS I-Solution, France (Jan 2021 – May 2021):** Full-stack web development and application security.
+- **Subject Matter Expert & Tutor — Chegg, USA (Sept 2020 – Jan 2021):** Computer science tutoring and doubt resolution.
+
+### Community & Certifications
+- **Community Manager:** Open Ethics (AI ethics framework contributor).
+- **Cybersecurity Volunteer:** Registered Cyber Expert Volunteer supporting law enforcement since 2020.
+- **Memberships:** Internet Society (ISOC) lifetime global member; International Association of Engineers (IAENG).
+- **Certifications:** Google IT Automation with Python, Cisco Security Analyst, IBM Security Specialist, IBM Communication Specialist, Linux Foundation Professional, IBM Remote Working Specialist, IBM Python for Data Science, IBM Enterprise Design Thinking, CertiProf Scrum Foundation.
+
+---
+
+## 3. Core Service Offerings
+
+1. **Automation & AI Workflow Development:** CRM automation (HubSpot), multi-platform data synchronizations (Mixpanel, Chargebee, ClickUp), and autonomous AI pipelines using n8n and Make.
+2. **Software Development:** Custom full-stack web applications, internal operational tools, REST API bridges, and responsive dashboards.
+3. **Cybersecurity Review & Hardening:** Architecture audits, web app vulnerability assessments, and Linux server hardening.
+4. **Personal Cyber Help:** Device inspection (spyware/malware removal), account recovery (compromised social media/email), and security posture checks (strictly for authorized account owners only).
+5. **Guidance, Coaching & Mentorship:** 1:1 career roadmaps, mock technical interviews, resume/portfolio audits, and software engineering mentorship.
+6. **Research & Technical Writing:** Academic-grade documentation, visual workflow library authoring (Lucidchart), and technical articles.
+
+---
+
+## 4. Academic Research & Publications
+
+### "Security Against Fork Bomb Attack in Linux Based Systems"
+- **Authors:** Krunalkumar D. Shah & Krunal V. Patel
+- **Journal:** *International Journal of Research in Advent Technology (IJRAT)*, Vol. 7, No. 4, April 2019 (E-ISSN: 2321-9637).
+- **DOI:** [10.32622/ijrat.74201911](https://doi.org/10.32622/ijrat.74201911)
+- **Award:** Nominated for Best Paper Award in Linux research at IAENG.
+- **Core Mechanism:** Proposes a hybrid mitigation model combining process exception lists, dynamic rate-checking, and process resource quarantining. When a recorded process name repeats, it runs inside a resource-quarantined sandbox for inspection rather than being permanently killed, preventing false positives on fork-heavy legitimate applications (e.g., CAD tools).
+- **Benchmarks:** Tested on Xubuntu 18.04 (Kernel 4.15) with Bash fork bombs, detecting and mitigating attacks in ~44 ms at a 500-fork threshold while preserving OS availability.
+
+---
+
+## 5. Featured Projects & Open-Source Repositories
+
+- **ChurnGPT 2.0 (`011-ChurnGPT-2.0`):** Multi-stage AI pipeline digesting CRM records, tickets, and meeting transcripts to diagnose churn causes and propose retention actions.
+- **AI-Powered FNOL Claims Assistant (`FNOL-Claim-Processing-Agent`):** Autonomous insurance workflow extracting intake data, catching missing fields, and routing First Notice of Loss claims.
+- **Sheet-Driven Task Automation Hub (`Google-Sheet-ClickUp-Integration-Automation`):** Google Apps Script two-way sync between Google Sheets and ClickUp tasks.
+- **Social Publishing Studio (`Automated-Instagram-Poster`):** Flask and n8n pipeline automating scheduled Instagram content delivery.
+- **CleverResponder / AI AutoResponders (`SmartLead-AutoResponder`, `Instantly-AutoResponder`, `GMail-Auto-Responder`):** Autonomous inbound reply classifiers and AI draft generators with Slack human-in-the-loop approvals.
+- **HubSpot RevOps Integrations:** Extensive suite of Make/n8n/Google Apps Script automations syncing Mixpanel, Chargebee, and custom meeting objects into HubSpot CRM.
+
+---
+
+## 6. Blog Publications & Practitioner Guides
+
+1. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
+2. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
+3. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
+4. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
+5. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
+6. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
+7. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
+8. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
+9. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+
+---
+
+## 7. Internship, Mentorship & Credential Verification
+
+### Educational Programs
+- **Free Internship (Selective):** 2–3 seats per cohort, ~3 months long, zero fees. Interns ship real production work and receive verified project completion certificates.
+- **Paid Mentorship (Open):** ₹4,999/month (India) or $120/month (International via Wise), cancel anytime. Features weekly 1:1 sessions, custom roadmaps, code reviews, and scholarships up to 50%.
+- **Separation Rule:** Mentorship participation never converts into an internship title; each certificate honestly reflects the exact program completed.
+
+### Certificate Verification System
+- Public verification is accessible at `https://krunalkumar.dpdns.org/verify`.
+- Every completion certificate features a unique ID (e.g., `KS-INT-2026-XXXXXX` or `KS-MEN-2026-XXXXXX`) that verifies against client-side records in `assets/data/certificates.json`.
+
+---
+
+## 8. Policies & Operational Guidelines
+
+- **Privacy (DPDP Act 2023):** No server-side form databases; form submissions route straight to WhatsApp messages. Uses Google Analytics 4 (cookies can be opted out freely without breaking site features).
+- **Terms & Rules:** Work is performed strictly on authorized accounts/devices with proven ownership. No device bypassing or unauthorized surveillance.
+- **Refunds:** Mentorship includes a 100% money-back guarantee within the first 7 days of the first month. Consulting milestones not yet started are fully refundable.
