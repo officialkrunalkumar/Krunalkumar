@@ -1,7 +1,85 @@
+# ==============================================================================
+# Default rule for all web crawlers & search engines
+# ==============================================================================
 User-agent: *
 Allow: /
+Disallow: /partials/
+Disallow: /assets/data/
 
+# ==============================================================================
+# AI Search, Real-Time Assistants & Answer Engines
+# ==============================================================================
+# OpenAI (ChatGPT browsing & user queries)
+User-agent: ChatGPT-User
+Allow: /
+
+# OpenAI (Automated training / general agent crawler)
+User-agent: GPTBot
+Allow: /
+
+# OpenAI (SearchGPT search crawler)
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic / Claude (Search & AI training crawler)
+User-agent: ClaudeBot
+Allow: /
+
+# Anthropic / Claude (Direct user-initiated URL fetches)
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity AI (Real-time search & retrieval)
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI (Gemini & Vertex AI crawling)
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence (Siri, Safari suggestions & AI models)
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta / Facebook AI
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Microsoft / Bing Copilot
+User-agent: Bingbot
+Allow: /
+
+# Mistral AI
+User-agent: MistralBot
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# You.com Search
+User-agent: YouBot
+Allow: /
+
+# Amazon AI / Alexa
+User-agent: Amazonbot
+Allow: /
+
+# ByteDance AI (Doubao / TikTok search)
+User-agent: Bytespider
+Allow: /
+
+# DuckDuckGo Search & DuckAssist
+User-agent: DuckDuckBot
+Allow: /
+
+# ==============================================================================
+# Sitemaps & Context Feeds
+# ==============================================================================
 Sitemap: https://krunalkumar.dpdns.org/sitemap.xml
-
-# Crawl-delay can be added if needed for very high-traffic environments.
-# Disallow: /private/
