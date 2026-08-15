@@ -1,0 +1,34 @@
+# Krunalkumar Shah
+
+> Independent consultant specializing in cybersecurity, automation, and AI workflows. Published Linux security researcher and technical mentor. Micro enterprise registered with MSME, Govt. of India (UDYAM-GJ-23-0050928).
+
+## Summary
+
+- [Home](https://krunalkumar.dpdns.org/): Profile summary, core technical domains, credential highlights, and selected open-source builds.
+- [About](https://krunalkumar.dpdns.org/about): Education (M.E. IT / Information Security, B.E. Computer Engineering), international career across 4 countries (India, USA, France, Taiwan), skill matrix, and community roles.
+- [Services](https://krunalkumar.dpdns.org/services): Scoped consulting offerings: AI workflow automation (n8n, Make, HubSpot), full-stack development, Linux/web cybersecurity hardening, personal malware/account recovery, and technical writing.
+- [Projects](https://krunalkumar.dpdns.org/projects): Complete index of 35+ production automation and AI repositories (ChurnGPT 2.0, FNOL Claims Assistant, CleverResponder, HubSpot integrations).
+- [Research](https://krunalkumar.dpdns.org/research): Academic paper "Security Against Fork Bomb Attack in Linux Based Systems" (IJRAT 2019, DOI: 10.32622/ijrat.74201911) detailing process resource quarantine mechanisms.
+- [Internships & Mentorship](https://krunalkumar.dpdns.org/internships): Free selective 3-month project cohorts and structured 1:1 paid technical mentorship programs.
+- [Recommendations](https://krunalkumar.dpdns.org/client-reviews): 30 verified public LinkedIn testimonials covering software delivery, RevOps automation, and mentoring.
+- [Certificate Verification](https://krunalkumar.dpdns.org/verify): Public ID lookup system for verifying issued mentorship and internship completion credentials.
+- [Contact](https://krunalkumar.dpdns.org/contact): Direct communication lines via email, WhatsApp, and Google Calendar scheduling.
+
+## Articles & Technical Writing
+
+- [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
+- [Security Compliance, Explained](https://krunalkumar.dpdns.org/blog/security-compliance-explained): Practical enterprise guide to GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2 frameworks.
+- [India's IT Law, Explained](https://krunalkumar.dpdns.org/blog/india-it-act-explained): Legal analysis of the IT Act 2000, intermediary guidelines, CERT-In directions, and DPDP Act 2023.
+- [How Cybercrime Cases Are Solved](https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved): Incident response lifecycle, forensic disk/memory acquisition, chain of custody, and courtroom evidence standards.
+- [Which AI Tool for Which Job](https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job): Benchmark matrix comparing AI assistants across research, coding, slides, and workflow integration.
+- [Automating Email Replies with n8n](https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n): 5-stage automated architecture: trigger, parsing, classification, draft generation, and human-in-the-loop Slack actions.
+- [What Is a Fork Bomb in Linux?](https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb): Bash process exhaustion analysis, ulimit edge cases, and dynamic process quarantine solutions.
+- [I Open-Sourced My AI SDR](https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr): CleverResponder architecture for inbound reply handling via SmartLead and Instantly.
+
+## Optional
+
+- [Full Context Knowledge Base](https://krunalkumar.dpdns.org/llms-full.txt): Complete consolidated documentation and knowledge base in one plain-text file.
+- [Privacy Policy](https://krunalkumar.dpdns.org/privacy): DPDP Act 2023 data compliance, Google Analytics cookies, and third-party processors.
+- [Terms of Service](https://krunalkumar.dpdns.org/terms): Consulting agreements, authorized access restrictions, IP assignment, and liability terms.
+- [Refund Policy](https://krunalkumar.dpdns.org/refund): Mentorship 7-day refund guarantee, milestone-based consulting terms, and Wise international transfer guidelines.
+- [Security Contact](https://krunalkumar.dpdns.org/.well-known/security.txt): RFC 9116 security vulnerability reporting contact.
