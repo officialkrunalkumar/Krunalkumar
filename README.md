@@ -66,7 +66,9 @@ web server can host it, and any computer with a browser can develop it.
 ├── site.webmanifest              Web app manifest (install metadata + icons; theme tracks --bg-base)
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages or posts
 ├── feed.xml / atom.xml           RSS + Atom feeds for the blog — update when adding posts
-├── robots.txt                    Crawl rules + sitemap pointer
+├── llms.txt                      Curated link index for AI crawlers/assistants — update when adding pages or posts
+├── llms-full.txt                 Full plain-text knowledge base (bio, career, research, projects, policies) for AI crawlers
+├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
 └── vercel.json                   Clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
 ```
 
@@ -228,6 +230,8 @@ unmatched URLs.
 2. Add its link — `href="/newpage"`, no `.html` — to `partials/header.html` (nav),
    `partials/footer.html` (Explore column), and the static header/footer copies in every page.
 3. Add an extensionless `<url>` entry to `sitemap.xml`.
+4. Add a bullet to the `## Summary` section of `llms.txt` (and, if the page carries facts worth
+   quoting, a section in `llms-full.txt`).
 
 **Add a blog post**
 1. Copy an existing `blog/*.html` post and replace the article content and the whole `<head>`
@@ -244,6 +248,9 @@ unmatched URLs.
    `partials/footer.html` AND the static footer copies in every page.
 4. Add an extensionless `<url>` entry to `sitemap.xml`.
 5. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
+6. Add the post to **both** `llms.txt` (under `## Technical Articles` or
+   `## Career, Mentorship & Practice`) and section 6 of `llms-full.txt` (title, date, one-line
+   summary, and the post URL). The two files list the same posts — keep them in step.
 
 **Add a project** — copy an existing `<a class="project-item">` card inside `#project-list` in
 `projects.html` and edit its category, title, description, and href. The gallery is static HTML
@@ -352,4 +359,31 @@ RSS/Atom feeds (`feed.xml` / `atom.xml`, advertised via `<link rel="alternate">`
 custom 404 with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
 links are present in the raw HTML — crawlers discover pages without JavaScript — but keep
 `sitemap.xml` accurate anyway; it remains the authoritative index request.
+
+### AI crawlers — `llms.txt` and `llms-full.txt`
+
+Two plain-text files at the site root, aimed at LLM crawlers and assistants (ChatGPT, Claude,
+Perplexity, Gemini) rather than search engines:
+
+- **`llms.txt`** — a curated link index in the [llms.txt](https://llmstxt.org/) format: `#` title,
+  a `>` blockquote summary, then `## ` sections of `- [Name](url): description` bullets. Sections
+  are `Summary`, `Full Context`, `Technical Articles`, `Career, Mentorship & Practice`, and
+  `Optional`.
+- **`llms-full.txt`** — the whole story in one file: identity, career timeline, research detail,
+  project catalog, program terms, and policies, so an assistant can answer without fetching pages.
+
+Conventions worth keeping:
+
+- **`## Optional` means "safe to skip."** In the llms.txt format that heading tells a crawler with a
+  tight context budget to drop those links first. Only genuinely secondary things belong there
+  (policies, the security contact) — never `llms-full.txt`, which is why it sits under its own
+  `## Full Context` heading.
+- **Every URL is absolute and extensionless**, matching `cleanUrls` in `vercel.json`
+  (`https://krunalkumar.dpdns.org/about`, never `/about.html`).
+- **Facts in `llms-full.txt` are load-bearing** — an assistant will quote them verbatim. Dates,
+  pricing, counts ("35+ projects", "30 testimonials"), and registration numbers must match the
+  pages they came from; when a page changes, re-check the corresponding claim here.
+- **No HTML link is needed.** Like `robots.txt`, these are found by root-path convention, and both
+  are listed in `sitemap.xml`. There is no registered `<link rel>` for llms.txt, so nothing in
+  `partials/footer.html` or the page `<head>` needs to point at them.
 

@@ -81,15 +81,38 @@
 
 ## 6. Blog Publications & Practitioner Guides
 
+Complete index at https://krunalkumar.dpdns.org/blog
+
 1. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
+   https://krunalkumar.dpdns.org/blog/types-of-cyberattacks
 2. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
+   https://krunalkumar.dpdns.org/blog/security-compliance-explained
 3. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
+   https://krunalkumar.dpdns.org/blog/india-it-act-explained
 4. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
+   https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved
 5. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
+   https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job
 6. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
+   https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr
 7. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
-8. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
-9. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+   https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by
+8. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
+   https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai
+9. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
+   https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs
+10. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
+   https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship
+11. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
+   https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview
+12. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
+   https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it
+13. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
+   https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development
+14. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
+   https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb
+15. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+   https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n
 
 ---
 
