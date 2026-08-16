@@ -768,6 +768,14 @@ document.addEventListener('click', (event) => {
   const link = event.target.closest('a');
   if (!link) return;
   const href = link.href || '';
+  // Blog share links must be checked first: the WhatsApp share target is a
+  // wa.me URL, and the branch below would otherwise book it as an inbound
+  // whatsapp_link_click — inflating a contact conversion with a share.
+  const shareNetwork = link.getAttribute('data-share');
+  if (shareNetwork) {
+    gtag('event', 'article_share', { method: shareNetwork });
+    return;
+  }
   if (href.includes('calendar.app.google')) {
     gtag('event', 'book_call_click');
   } else if (href.startsWith('mailto:')) {
