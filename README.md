@@ -54,6 +54,7 @@ web server can host it, and any computer with a browser can develop it.
 │   ├── js/client-reviews.js      Recommendations carousel + featured-card rotation
 │   ├── js/blog-index.js          Blog index category filter chips + "Show more" reveal
 │   ├── js/blog-toc.js            Fallback TOC builder for posts that lack a static one
+│   ├── js/blog-share.js          Copy-link button in the post share row (the network links need no JS)
 │   ├── js/verify.js              Certificate lookup on /verify
 │   ├── js/terminal.js            Terminal easter-egg logic
 │   ├── js/teapot.js              /teapot tap-to-pour logic + discovery event
@@ -241,14 +242,21 @@ unmatched URLs.
    `feed.xml` / `atom.xml` `<link rel="alternate">` tags. Write the static "In this article" TOC
    (`.post-toc`) to match the post's `h2` headings — `blog-toc.js` only builds one when the static
    TOC is missing.
-2. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`, with a
+2. Update the `.post-share` block (it sits between `.post-body` and `.related-reading`): the three
+   network `href`s hard-code this post's canonical URL and its og:title, so a copied post would
+   otherwise share the post it was copied from. Encode the URL and title with `encodeURIComponent`,
+   and write the `&` between X's `text=` and `url=` params as `&amp;`. The copy-link `<button>`
+   ships with the `hidden` attribute — `blog-share.js` unhides it, so a visitor without JavaScript
+   sees three working links instead of a dead button. Keep the `<script defer
+   src="/assets/js/blog-share.js">` tag next to `blog-toc.js` in the head.
+3. Add the post's card — a `.post-card` inside `.blog-grid` — to `blog/index.html`, with a
    `data-category` attribute so the filter chips pick it up
    (`blog-index.js` shows the first six and hides the rest behind Show more, so newest goes first).
-3. Update the "From the blog" column if the post should be one of the seven highlighted there — in
+4. Update the "From the blog" column if the post should be one of the seven highlighted there — in
    `partials/footer.html` AND the static footer copies in every page.
-4. Add an extensionless `<url>` entry to `sitemap.xml`.
-5. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
-6. Add the post to **both** `llms.txt` (under `## Technical Articles` or
+5. Add an extensionless `<url>` entry to `sitemap.xml`.
+6. Add an `<item>` to `feed.xml` and an `<entry>` to `atom.xml`.
+7. Add the post to **both** `llms.txt` (under `## Technical Articles` or
    `## Career, Mentorship & Practice`) and section 6 of `llms-full.txt` (title, date, one-line
    summary, and the post URL). The two files list the same posts — keep them in step.
 

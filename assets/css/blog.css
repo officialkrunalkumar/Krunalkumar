@@ -275,6 +275,69 @@
   }
 }
 
+/* Share row (sits between the article body and Related reading).
+   The three network links are plain <a href> and work with JavaScript off;
+   only the copy-link button needs JS, so it ships with the `hidden`
+   attribute and blog-share.js unhides it. */
+.post-share {
+  margin-top: 2.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(125, 211, 252, 0.2);
+}
+
+.post-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  /* The live region is an empty sr-only <p>; keep it out of the gap flow. */
+  align-items: center;
+}
+
+.post-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  border-radius: 999px;
+  background: rgba(31, 44, 63, 0.55);
+  color: #cbd5e1;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.post-share-btn:hover {
+  color: var(--accent);
+  border-color: rgba(125, 211, 252, 0.6);
+  background: rgba(46, 62, 80, 0.6);
+  text-decoration: none;
+}
+
+.post-share-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  flex: none;
+}
+
+/* Confirmation swap after a successful copy. Reverts after ~2s in JS. */
+.post-share-btn.is-copied {
+  color: var(--accent);
+  border-color: var(--accent-dark);
+}
+
+@media (max-width: 640px) {
+  /* Four pills wrap to two rows on a phone rather than shrinking the tap
+     targets below the 44px-ish comfortable minimum. */
+  .post-share-btn {
+    padding: 0.5rem 0.9rem;
+  }
+}
+
 /* Related reading (internal cross-links between posts) */
 .related-reading {
   margin-top: 2.4rem;
