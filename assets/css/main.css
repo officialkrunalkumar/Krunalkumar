@@ -896,6 +896,13 @@ footer p {
   margin-top: 1.5rem;
 }
 
+/* Deep links (e.g. /services#corporate-training) must clear the sticky header.
+   Applied unconditionally rather than via :target — on a fresh load with a hash,
+   the fragment scroll runs before :target styles resolve, so the margin is ignored. */
+main [id] {
+  scroll-margin-top: 6rem;
+}
+
 .section-heading {
   margin-bottom: 1.2rem;
 }

@@ -58,8 +58,37 @@
     }
   }
 
+  // The browser scrolls to a #fragment while these partials are still in
+  // flight, so swapping the header and footer moves the target out from under
+  // the position it just scrolled to — deep links land at the top of the page.
+  // Re-apply the scroll once the real chrome is in place.
+  function applyHashTarget() {
+    if (!window.location.hash) {
+      return;
+    }
+    var target;
+    try {
+      target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+    } catch (error) {
+      return; // Malformed percent-encoding in the hash.
+    }
+    if (!target) {
+      return;
+    }
+    // 'instant' overrides the smooth scroll-behavior set in CSS: this is a
+    // correction to a scroll that already happened, not a new navigation, so
+    // it should not visibly travel down the page. scroll-margin-top on
+    // main [id] keeps the target clear of the sticky header.
+    target.scrollIntoView({ block: 'start', behavior: 'instant' });
+  }
+
   Promise.all([inject('header'), inject('footer')]).then(function () {
     markActiveLink();
+    // Called directly rather than inside requestAnimationFrame: rAF callbacks
+    // do not fire in a background tab, which is exactly when a deep link is
+    // most likely to be opened. scrollIntoView flushes layout itself, so the
+    // freshly injected header and footer are already measured.
+    applyHashTarget();
     document.dispatchEvent(new CustomEvent('partials:loaded'));
   });
 })();

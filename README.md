@@ -15,7 +15,7 @@ web server can host it, and any computer with a browser can develop it.
 | --------------------- | -------------------------------------------------------------------------- |
 | `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait toggle "dance mode" — the brand name's gradient animations speed up (wired in `particle-bg.js`; nothing stored, reload resets, inert under reduced motion) |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
-| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, research — with FAQ (FAQPage JSON-LD) |
+| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `blog/`               | Blog — `/blog` index (15 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
