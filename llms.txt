@@ -6,7 +6,7 @@
 
 - [Home](https://krunalkumar.dpdns.org/): Profile summary, core technical domains, credential highlights, and selected open-source builds.
 - [About](https://krunalkumar.dpdns.org/about): Education (M.E. IT / Information Security, B.E. Computer Engineering), international career across 4 countries (India, USA, France, Taiwan), skill matrix, and community roles.
-- [Services](https://krunalkumar.dpdns.org/services): Scoped consulting offerings: AI workflow automation (n8n, Make, HubSpot), full-stack development, Linux/web cybersecurity hardening, personal malware/account recovery, and technical writing.
+- [Services](https://krunalkumar.dpdns.org/services): Scoped consulting offerings: AI workflow automation (n8n, Make, HubSpot), full-stack development, Linux/web cybersecurity hardening, personal malware/account recovery, corporate and team training, and technical writing.
 - [Projects](https://krunalkumar.dpdns.org/projects): Complete index of 35+ production automation and AI repositories (ChurnGPT 2.0, FNOL Claims Assistant, CleverResponder, HubSpot integrations).
 - [Research](https://krunalkumar.dpdns.org/research): Academic paper "Security Against Fork Bomb Attack in Linux Based Systems" (IJRAT 2019, DOI: 10.32622/ijrat.74201911) detailing process resource quarantine mechanisms.
 - [Blog](https://krunalkumar.dpdns.org/blog): Index of all published articles on cybersecurity, AI automation, and engineering practice.

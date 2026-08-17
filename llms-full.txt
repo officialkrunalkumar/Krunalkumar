@@ -53,6 +53,7 @@
 4. **Personal Cyber Help:** Device inspection (spyware/malware removal), account recovery (compromised social media/email), and security posture checks (strictly for authorized account owners only).
 5. **Guidance, Coaching & Mentorship:** 1:1 career roadmaps, mock technical interviews, resume/portfolio audits, and software engineering mentorship.
 6. **Research & Technical Writing:** Academic-grade documentation, visual workflow library authoring (Lucidchart), and technical articles.
+7. **Corporate & Team Training:** Instructor-led sessions for one company team at a time — security awareness, Linux/systems security, automation and AI workflows, engineering practice, technical writing, and professional skills. Remote or on site, half a day to three days, 10–40 attendees, quoted per session or per program. NOTE: this is a newly opened service line; no corporate engagement has been delivered under his own name yet, and this is stated openly on the services page.
 
 ---
 
@@ -121,7 +122,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
 ### Educational Programs
 - **Free Internship (Selective):** 2–3 seats per cohort, ~3 months long, zero fees. Interns ship real production work and receive verified project completion certificates.
 - **Paid Mentorship (Open):** ₹4,999/month (India) or $120/month (International via Wise), cancel anytime. Features weekly 1:1 sessions, custom roadmaps, code reviews, and scholarships up to 50%.
-- **Separation Rule:** Mentorship participation never converts into an internship title; each certificate honestly reflects the exact program completed.
+- **Separation Rule:** Mentorship participation never converts into an internship title; each certificate honestly reflects the exact program completed. Corporate training is a separate paid B2B service, distinct from both the free internship and the paid 1:1 mentorship.
 
 ### Certificate Verification System
 - Public verification is accessible at `https://krunalkumar.dpdns.org/verify`.
