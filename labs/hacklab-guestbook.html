@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex" />
+  <title>Guestbook</title>
+  <!--
+    The deliberately-vulnerable victim page for the HackLab XSS challenge.
+
+    It is served as its own document (not srcdoc) precisely so it carries its
+    own Content-Security-Policy from the response headers rather than
+    inheriting the site's strict one — see the header rule for this exact path
+    in vercel.json. That permissive CSP is what lets the student's injected
+    inline script actually run, which is the whole point of an XSS exercise.
+
+    It is loaded into an <iframe sandbox="allow-scripts"> with NO
+    allow-same-origin, so despite the loose CSP it runs in a unique opaque
+    origin: it cannot read the parent page, cannot touch cookies or storage,
+    and cannot make a credentialed request anywhere. It can only postMessage
+    back to the parent, which is how a solve is detected. The only content it
+    ever renders is a comment the parent forwards from the visitor's own
+    textarea, so the "attacker" is always the visitor attacking their own
+    sealed sandbox.
+  -->
+  <style>
+    body { font: 14px system-ui, sans-serif; margin: 12px; color: #e2e8f0; background: #0b1220; }
+    h4 { margin: 0.2rem 0 0.6rem; }
+    .box { border: 1px solid #334155; padding: 10px; border-radius: 8px; background: #0f172a; }
+    .muted { color: #94a3b8; font-size: 12px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <script>
+    /* The moderator's session token — the credential an XSS here would steal. */
+    window.SESSION = 'MOD-SESSION-7f3a91c8e2';
+
+    /* The vulnerable sink. Comments arrive from the parent and are written as
+       raw HTML with no escaping — exactly the bug the challenge teaches. */
+    window.addEventListener('message', function (ev) {
+      if (!ev.data || typeof ev.data.comment !== 'string') return;
+      document.getElementById('c').innerHTML =
+        '<b>Visitor wrote:</b><br>' + ev.data.comment;
+    });
+
+    /* Tell the parent we are ready to receive comments. */
+    if (window.parent !== window) window.parent.postMessage({ ready: true }, '*');
+  </script>
+
+  <h4>Community Guestbook</h4>
+  <div class="box" id="c"><b>Visitor wrote:</b><br>Welcome to our guestbook!</div>
+  <p class="muted">You are viewing this as a logged-in moderator. Your session token is in
+    <code>window.SESSION</code>.</p>
+</body>
+</html>

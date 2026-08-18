@@ -68,6 +68,7 @@
 - [URL & phishing link inspector](https://krunalkumar.dpdns.org/labs/url-inspector): Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
 - [Password strength checker & generator](https://krunalkumar.dpdns.org/labs/password): Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
 - [SSL/TLS certificate decoder](https://krunalkumar.dpdns.org/labs/cert-decoder): Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
+- [Certificate builder](https://krunalkumar.dpdns.org/labs/certificate-forge): The certificate decoder in reverse. Generates a real RSA-2048 or ECDSA P-256 keypair with WebCrypto, then hand-encodes a self-signed X.509 certificate, a PKCS#10 CSR and a two-certificate chain of trust, with the ASN.1/DER shown byte by byte and the output verified against a real X.509 parser. Also signs messages and demonstrates tamper detection. Entirely client-side.
 - [Encoder & decoder](https://krunalkumar.dpdns.org/labs/encoding): Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
 - [Classical cipher playground](https://krunalkumar.dpdns.org/labs/cipher): Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
 - [Image steganography](https://krunalkumar.dpdns.org/labs/steganography): Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
@@ -78,6 +79,34 @@
 
 Nothing in this section uploads anything. There is no server behind these tools: evidence files, tokens, passwords and email headers are processed in the visitor's own browser tab, which is the reason they exist.
 
+
+## Digital forensics tools — drop a file, all client-side
+
+- [HAR analyzer](https://krunalkumar.dpdns.org/labs/har-analyzer): Find the secrets in a browser network export - tokens, cookies, keys, PII - and download a redacted copy safe to share.
+- [SQLite browser](https://krunalkumar.dpdns.org/labs/sqlite-browser): Open any SQLite database - Chrome history, WhatsApp, app data - browse tables, run SQL, timestamps decoded.
+- [Archive inspector](https://krunalkumar.dpdns.org/labs/archive-inspector): Inspect a ZIP without extracting it: zip-slip paths, zip bombs, encrypted entries and disguised executables.
+- [PCAP analyzer](https://krunalkumar.dpdns.org/labs/pcap-analyzer): Read a packet capture: top talkers, protocols, DNS and HTTP, and plaintext credentials from unencrypted traffic.
+- [Memory dump extractor](https://krunalkumar.dpdns.org/labs/memory-strings): Pull strings (ASCII and UTF-16), URLs, keys, crypto addresses and embedded files out of a memory dump.
+- [Registry hive parser](https://krunalkumar.dpdns.org/labs/registry-viewer): Parse a Windows registry hive for autostart keys, USB history and recent activity. No Windows required.
+
+## Interactive visualisers — canvas and WebGL, in the browser
+
+- [Live hash cracking](https://krunalkumar.dpdns.org/labs/hash-cracker): Watch a weak password hash fall in real time, with the guesses-per-second counter ticking. Off the main thread.
+- [Algorithm visualizer](https://krunalkumar.dpdns.org/labs/algorithm-visualizer): Sorting and pathfinding, animated and steppable. See why O(n log n) beats O(n2) instead of being told.
+- [CPU simulator](https://krunalkumar.dpdns.org/labs/cpu-simulator): Write assembly and step through it one instruction at a time, watching registers, flags, stack and memory change.
+- [Shader playground](https://krunalkumar.dpdns.org/labs/shader-playground): Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers.
+- [Inside a processor](https://krunalkumar.dpdns.org/labs/processor-explorer): Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D, entirely client-side.
+- [Word cloud generator](https://krunalkumar.dpdns.org/labs/word-cloud): A free word cloud generator: paste text and the most frequent words are sized biggest and spiral-packed into shape masks (heart, star, circle, diamond, cloud), with colour palettes and font choices, downloadable as a PNG. Filler words are removed automatically. Everything runs in the browser with no upload and no watermark; a wordart.com-style tool made free and private.
+- [TCP](https://krunalkumar.dpdns.org/labs/tcp-congestion): TCP made watchable in three families: the three-way handshake and four-way close with real sequence and acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery on triple-duplicate ACKs and collapse to one on a timeout, plotted as the classic sawtooth. A live simulation checked against RFC 793 examples, entirely client-side.
+- [Buffer overflow](https://krunalkumar.dpdns.org/labs/buffer-overflow): A stack buffer overflow drawn byte by byte on a real downward-growing stack: watch a string copy overwrite the saved frame pointer and the return address, hijack control flow to injected shellcode (as a diagram, never executed), then enable a stack canary and watch it catch the overflow. A defences panel shows what NX and ASLR each stop and how each is bypassed. Entirely client-side, a teaching diagram for defenders.
+- [Regex engine](https://krunalkumar.dpdns.org/labs/regex-engine): A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length and compares it with the linear-time state-machine engines. All three engines are differentially tested against JavaScript RegExp. Entirely client-side.
+- [Cryptography](https://krunalkumar.dpdns.org/labs/cryptography): AES-128 stepped through all 40 transformations with a live avalanche measurement, SHA-256 across its 64 compression rounds, and Diffie-Hellman, RSA and elliptic-curve key exchange with small checkable numbers plus a working brute-force attacker. Teaching implementations, verified against FIPS-197 and FIPS-180-4 test vectors. Entirely client-side.
+- [OS algorithms](https://krunalkumar.dpdns.org/labs/os-algorithms): CPU scheduling (FCFS, SJF, SRTF, round robin, priority), page replacement (FIFO, LRU, OPT, clock, LFU), disk scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK), memory allocation (first/best/worst/next fit) and the Banker safety check, stepped through one unit of time at a time with every algorithm compared side by side. Entirely client-side.
+- [Fractal explorer](https://krunalkumar.dpdns.org/labs/fractal-explorer): Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant.
+
+## HackLab — a deliberately vulnerable app for learning offensive security
+
+- [HackLab](https://krunalkumar.dpdns.org/labs/hacklab): Break real vulnerabilities in your browser — SQL injection against a live SQLite engine, reflected XSS in a sandboxed opaque-origin frame, path traversal, command injection and IDOR. Every target is a throwaway in-memory fake; nothing is uploaded and there is no server to attack. Each challenge pairs the exploit with its real-world fix.
 
 ## Network lookup tools — these DO make requests
 

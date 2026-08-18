@@ -319,6 +319,22 @@
         </div>
       </section>
 
+      <section class="section-card lab-feature" id="hacklab-feature">
+        <div class="lab-feature-body">
+          <p class="eyebrow">New &mdash; the offensive side</p>
+          <h2>HackLab: break it to understand it</h2>
+          <p>
+            A deliberately vulnerable app you are meant to attack. The SQL injection runs against
+            a real SQLite engine and genuinely executes; the cross-site scripting really fires,
+            inside a sealed frame that can harm nothing. Six challenges &mdash; SQL injection, XSS,
+            path traversal, command injection and IDOR &mdash; each with a live target, progressive
+            hints, and the real-world fix. Nothing is uploaded, and the only thing you attack is a
+            throwaway running in your own tab.
+          </p>
+          <a class="btn btn-primary" href="/labs/hacklab">Enter HackLab</a>
+        </div>
+      </section>
+
       <section class="section-card" id="security-tools">
         <div class="section-heading">
           <p class="eyebrow">Also in Labs</p>
@@ -336,77 +352,127 @@
           <a class="lab-card" href="/labs/hash">
             <span class="lab-card-name">Hash generator</span>
             <p class="lab-card-desc">MD5 through SHA-512 and HMAC, for text or a whole file. Verify a checksum, or identify a hash you cannot place.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">A safe, sandboxed target</span>
           </a>
           <a class="lab-card" href="/labs/file-inspector">
             <span class="lab-card-name">File inspector</span>
             <p class="lab-card-desc">What a file really is, read from its magic bytes rather than its extension &mdash; plus hex, strings and an entropy graph.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Magic bytes &amp; entropy</span>
           </a>
           <a class="lab-card" href="/labs/jwt">
             <span class="lab-card-name">JWT decoder</span>
             <p class="lab-card-desc">Decode and verify a token without handing that bearer credential to whoever runs the website.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Decoded &amp; verified locally</span>
           </a>
           <a class="lab-card" href="/labs/exif">
             <span class="lab-card-name">EXIF viewer</span>
             <p class="lab-card-desc">The camera, the exact second and the GPS coordinates inside a photo. Then download a copy with all of it gone.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Reads the file&rsquo;s own metadata</span>
           </a>
           <a class="lab-card" href="/labs/email-headers">
             <span class="lab-card-name">Email header analyzer</span>
             <p class="lab-card-desc">Trace the real delivery path of a suspicious message, and read what SPF, DKIM and DMARC actually said.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Parses the raw headers</span>
           </a>
           <a class="lab-card" href="/labs/url-inspector">
             <span class="lab-card-name">URL inspector</span>
             <p class="lab-card-desc">Take a phishing link apart without opening it. Homograph characters, buried domains, nested encoding.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Unwraps redirects &amp; params</span>
           </a>
           <a class="lab-card" href="/labs/password">
             <span class="lab-card-name">Password strength</span>
             <p class="lab-card-desc">Real entropy and offline crack times against four hash types &mdash; not a checklist of capitals and symbols.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Entropy maths, offline</span>
           </a>
           <a class="lab-card" href="/labs/cert-decoder">
             <span class="lab-card-name">Certificate decoder</span>
             <p class="lab-card-desc">Read an X.509 PEM without OpenSSL: subject, SANs, key size, expiry and fingerprints.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">X.509 parsed in-page</span>
+          </a>
+          <a class="lab-card" href="/labs/certificate-forge">
+            <span class="lab-card-name">Certificate builder</span>
+            <p class="lab-card-desc">The decoder in reverse: generate a real keypair, then build a self-signed X.509 certificate, a CSR and a chain of trust &mdash; the DER shown byte by byte. It parses in openssl.</p>
+            <span class="lab-card-engine">WebCrypto keys, hand-built DER</span>
           </a>
           <a class="lab-card" href="/labs/encoding">
             <span class="lab-card-name">Encoder / decoder</span>
             <p class="lab-card-desc">Base64, Base32, Base58, hex, URL, HTML, binary and Morse, with automatic detection of what you pasted.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">A dozen codecs, auto-detected</span>
           </a>
           <a class="lab-card" href="/labs/cipher">
             <span class="lab-card-name">Cipher playground</span>
             <p class="lab-card-desc">Caesar, Vigen&egrave;re, Atbash and XOR &mdash; and the buttons that break all of them without a key.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Classical ciphers, by hand</span>
           </a>
           <a class="lab-card" href="/labs/steganography">
             <span class="lab-card-name">Steganography</span>
             <p class="lab-card-desc">Hide a message in the low bits of an image, extract one, or amplify those bits to see if anything is there.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Reads the pixels themselves</span>
           </a>
           <a class="lab-card" href="/labs/regex">
             <span class="lab-card-name">Regex tester</span>
             <p class="lab-card-desc">Live matching with capture groups, plus a ReDoS check that catches catastrophic backtracking before production does.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">A real regex engine</span>
           </a>
           <a class="lab-card" href="/labs/cvss">
             <span class="lab-card-name">CVSS calculator</span>
             <p class="lab-card-desc">The official v3.1 base score, with every metric explained and its contribution shown.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">The official CVSS formula</span>
           </a>
           <a class="lab-card" href="/labs/subnet">
             <span class="lab-card-name">Subnet calculator</span>
             <p class="lab-card-desc">CIDR ranges, masks in every notation, and the binary that makes a /24 finally make sense.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Bitwise IP arithmetic</span>
           </a>
           <a class="lab-card" href="/labs/timestamp">
             <span class="lab-card-name">Timestamp converter</span>
             <p class="lab-card-desc">One number read under Unix, Windows FILETIME, WebKit, Cocoa and HFS+ at once &mdash; so you can tell which wrote it.</p>
-            <span class="lab-card-engine">Nothing uploaded</span>
+            <span class="lab-card-engine">Every epoch, converted</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card" id="forensics-tools">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs</p>
+          <h2>Digital forensics &mdash; drop a file, find the evidence</h2>
+          <p>
+            Point these at a file and they pull it apart: a browser network export full of tokens, a
+            SQLite database from a phone, a suspicious ZIP, a packet capture, a memory dump, a Windows
+            registry hive. All of it parsed in your browser, because the whole reason to analyse a
+            file you do not trust is that you do not want to hand it to anyone.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/har-analyzer">
+            <span class="lab-card-name">HAR analyzer</span>
+            <p class="lab-card-desc">Find the secrets in a browser network export &mdash; tokens, cookies, keys, PII &mdash; and download a redacted copy safe to share.</p>
+            <span class="lab-card-engine">Parses a HAR capture</span>
+          </a>
+          <a class="lab-card" href="/labs/sqlite-browser">
+            <span class="lab-card-name">SQLite browser</span>
+            <p class="lab-card-desc">Open any SQLite database &mdash; Chrome history, WhatsApp, app data &mdash; browse tables, run SQL, timestamps decoded.</p>
+            <span class="lab-card-engine">A real SQLite engine (sql.js)</span>
+          </a>
+          <a class="lab-card" href="/labs/archive-inspector">
+            <span class="lab-card-name">Archive inspector</span>
+            <p class="lab-card-desc">Inspect a ZIP without extracting it: zip-slip paths, zip bombs, encrypted entries and disguised executables.</p>
+            <span class="lab-card-engine">Reads ZIP/TAR/GZIP structure</span>
+          </a>
+          <a class="lab-card" href="/labs/pcap-analyzer">
+            <span class="lab-card-name">PCAP analyzer</span>
+            <p class="lab-card-desc">Read a packet capture: top talkers, protocols, DNS and HTTP, and plaintext credentials from unencrypted traffic.</p>
+            <span class="lab-card-engine">Decodes packet captures</span>
+          </a>
+          <a class="lab-card" href="/labs/memory-strings">
+            <span class="lab-card-name">Memory dump extractor</span>
+            <p class="lab-card-desc">Pull strings (ASCII and UTF-16), URLs, keys, crypto addresses and embedded files out of a memory dump.</p>
+            <span class="lab-card-engine">Carves strings from a dump</span>
+          </a>
+          <a class="lab-card" href="/labs/registry-viewer">
+            <span class="lab-card-name">Registry hive parser</span>
+            <p class="lab-card-desc">Parse a Windows registry hive for autostart keys, USB history and recent activity. No Windows required.</p>
+            <span class="lab-card-engine">Parses Windows hive files</span>
           </a>
         </div>
       </section>
@@ -449,6 +515,81 @@
             <span class="lab-card-name">Password breach check</span>
             <p class="lab-card-desc">Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.</p>
             <span class="lab-card-engine">Queries Have I Been Pwned</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card" id="visualiser-tools">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs</p>
+          <h2>Interactive visualisers</h2>
+          <p>
+            The ones you play with rather than run. Watch a weak password get cracked live, see
+            sorting and pathfinding algorithms animate, step through assembly one instruction at a
+            time, step an operating system through its own scheduling and paging decisions, write a shader and see it on your GPU, or zoom forever into the Mandelbrot set.
+            All canvas and WebGL, all on your own machine.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/os-algorithms">
+            <span class="lab-card-name">OS algorithms</span>
+            <p class="lab-card-desc">Scheduling, paging, disk and deadlock &mdash; 26 algorithms you step through one time unit at a time, then score against each other on your own input.</p>
+            <span class="lab-card-engine">26 algorithms, stepped</span>
+          </a>
+          <a class="lab-card" href="/labs/cryptography">
+            <span class="lab-card-name">Cryptography</span>
+            <p class="lab-card-desc">AES round by round, SHA-256 across all 64 rounds, and RSA, Diffie-Hellman and elliptic curves with numbers small enough to check by hand. Verified against the NIST vectors.</p>
+            <span class="lab-card-engine">AES &amp; SHA, NIST-checked</span>
+          </a>
+          <a class="lab-card" href="/labs/regex-engine">
+            <span class="lab-card-name">Regex engine</span>
+            <p class="lab-card-desc">Parse a pattern into a tree, build the NFA, determinise it, then watch a backtracking engine go exponential on (a+)+ and nineteen characters. ReDoS, measured.</p>
+            <span class="lab-card-engine">NFA, DFA &amp; backtracking</span>
+          </a>
+          <a class="lab-card" href="/labs/buffer-overflow">
+            <span class="lab-card-name">Buffer overflow</span>
+            <p class="lab-card-desc">Copy a string into a fixed buffer and watch it climb over the saved frame pointer into the return address, byte by byte. Then hijack control flow, and watch a stack canary catch it.</p>
+            <span class="lab-card-engine">A byte-addressed stack model</span>
+          </a>
+          <a class="lab-card" href="/labs/tcp-congestion">
+            <span class="lab-card-name">TCP</span>
+            <p class="lab-card-desc">Step through the three-way handshake with real sequence numbers, walk both ends of the TCP state machine, and watch Reno congestion control draw its slow-start-and-back-off sawtooth.</p>
+            <span class="lab-card-engine">A live TCP Reno simulation</span>
+          </a>
+          <a class="lab-card" href="/labs/word-cloud">
+            <span class="lab-card-name">Word cloud generator</span>
+            <p class="lab-card-desc">Paste any text and the most frequent words become the biggest, packed into a heart, star or cloud shape in colours you choose. Download the PNG — free, no watermark, nothing uploaded.</p>
+            <span class="lab-card-engine">Canvas spiral-packing</span>
+          </a>
+          <a class="lab-card" href="/labs/processor-explorer">
+            <span class="lab-card-name">Inside a processor</span>
+            <p class="lab-card-desc">Fly from the chip package down to a single transistor &mdash; six labelled levels, data pulsing through every one.</p>
+            <span class="lab-card-engine">Semantic-zoom canvas</span>
+          </a>
+          <a class="lab-card" href="/labs/hash-cracker">
+            <span class="lab-card-name">Live hash cracking</span>
+            <p class="lab-card-desc">Watch a weak password hash fall in real time, with the guesses-per-second counter ticking. Off the main thread.</p>
+            <span class="lab-card-engine">Cracks in a Web Worker</span>
+          </a>
+          <a class="lab-card" href="/labs/algorithm-visualizer">
+            <span class="lab-card-name">Algorithm visualizer</span>
+            <p class="lab-card-desc">Sorting and pathfinding, animated and steppable. See why O(n log n) beats O(n&sup2;) instead of being told.</p>
+            <span class="lab-card-engine">13 sorts, 6 pathfinders</span>
+          </a>
+          <a class="lab-card" href="/labs/cpu-simulator">
+            <span class="lab-card-name">CPU simulator</span>
+            <p class="lab-card-desc">Write assembly and step through it one instruction at a time, watching registers, flags, stack and memory change.</p>
+            <span class="lab-card-engine">A two-pass assembler + CPU</span>
+          </a>
+          <a class="lab-card" href="/labs/shader-playground">
+            <span class="lab-card-name">Shader playground</span>
+            <p class="lab-card-desc">Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers.</p>
+            <span class="lab-card-engine">Your GPU, live GLSL</span>
+          </a>
+          <a class="lab-card" href="/labs/fractal-explorer">
+            <span class="lab-card-name">Fractal explorer</span>
+            <p class="lab-card-desc">Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant.</p>
+            <span class="lab-card-engine">WebGL, arbitrary zoom</span>
           </a>
         </div>
       </section>

@@ -204,7 +204,10 @@
       no && no.addEventListener('click', function () { window.location.href = '/'; });
     },
 
-    /* Wire a tool up: gate, run button, Ctrl+Enter, and an optional file drop. */
+    /* Wire a tool up: gate, run button, Ctrl+Enter, and an optional file drop.
+       Fullscreen is handled separately by lab-fullscreen.js, which every tool
+       page loads and which self-guards against double-wiring — so it is not
+       touched here. */
     define: function (spec) {
       LabTool.gate(spec.id);
       var runBtn = document.getElementById(spec.runId || 'tool-run');
