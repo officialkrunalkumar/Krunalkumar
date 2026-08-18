@@ -850,41 +850,6 @@ pre.lab-example:hover .lab-copy,
   .lab-status { order: 10; }
 }
 
-/* --------------------------------------------------------------------------
-   Breadcrumbs. Copied from blog.css rather than loading that whole stylesheet
-   on lab pages — these six rules are all the labs need from it, and they must
-   match the blog exactly so the two sections read as one site.
-   -------------------------------------------------------------------------- */
-
-.breadcrumbs { margin: 0 0 1rem; font-size: 0.9rem; }
-
-.breadcrumbs ol {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  color: #94a3b8;
-}
-
-.breadcrumbs li { display: inline-flex; align-items: center; }
-
-.breadcrumbs li + li::before {
-  content: "/";
-  margin: 0 0.5rem;
-  color: rgba(148, 163, 184, 0.6);
-}
-
-.breadcrumbs a {
-  display: inline-block;
-  padding: 0.25rem 0;
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.breadcrumbs a:hover { text-decoration: underline; }
-
 /* ==========================================================================
    7. Language grid (hub page)
    ========================================================================== */

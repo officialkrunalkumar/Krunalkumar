@@ -695,14 +695,27 @@ which answers `S` automatically — the other two options would start partitioni
 
 Per-page meta descriptions, canonicals, Open Graph/Twitter cards pointing to a dedicated 1200×630
 share image (`assets/images/og-image.jpg`; blog posts have their own under
-`assets/images/blog/og/`), and JSON-LD structured data (Person, WebSite, BreadcrumbList,
-ProfessionalService on the home page — the business entity, carrying the Udyam/MSME registration
-number and linked to the Person node by `@id`; ScholarlyArticle on the research page, BlogPosting on
-blog posts); `sitemap.xml` + `robots.txt` +
+`assets/images/blog/og/`), and JSON-LD structured data (ProfilePage wrapping the Person node,
+WebSite and ProfessionalService on the home page — the business entity, carrying the Udyam/MSME
+registration number and linked to the Person node by `@id`; ScholarlyArticle on the research page,
+BlogPosting on blog posts); `sitemap.xml` + `robots.txt` +
 RSS/Atom feeds (`feed.xml` / `atom.xml`, advertised via `<link rel="alternate">` on blog pages);
 custom 404 with `noindex`; security headers via `vercel.json`. Since the static-header change, nav and footer
 links are present in the raw HTML — crawlers discover pages without JavaScript — but keep
 `sitemap.xml` accurate anyway; it remains the authoritative index request.
+
+Two rules worth keeping when adding a page:
+
+- **Titles ≤ 60 characters, meta descriptions 140–160.** Longer ones are not penalised by Google,
+  but they get truncated in the SERP and every third-party auditor (Semrush, Ahrefs, Sitebulb)
+  counts them as a defect — which is what a "low SEO score" usually is. `og:description`,
+  `twitter:description` and the JSON-LD `description` deliberately keep the longer text: no length
+  rule applies there, and social cards and AI crawlers benefit from the detail.
+- **Every page except the home page carries a breadcrumb**, both visible and as `BreadcrumbList`
+  JSON-LD, and the two must use the same labels. Put the `<nav class="breadcrumbs">` first inside
+  `.page-hero`, above the eyebrow. Styling lives in section 5 of `main.css` so blog, labs and the
+  top-level pages all share one definition — do not re-declare it in `blog.css` or `labs.css`. The
+  home page has none on purpose: a one-item trail is ignored by Google and says nothing.
 
 ### AI crawlers — `llms.txt` and `llms-full.txt`
 
