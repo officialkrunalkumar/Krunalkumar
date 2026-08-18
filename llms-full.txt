@@ -136,12 +136,12 @@ Complete index at https://krunalkumar.dpdns.org/blog
 - **Terms & Rules:** Work is performed strictly on authorized accounts/devices with proven ownership. No device bypassing or unauthorized surveillance.
 - **Refunds:** Mentorship includes a 100% money-back guarantee within the first 7 days of the first month. Consulting milestones not yet started are fully refundable.
 
-## Security & digital forensics tools
+## Security tools
 
-Fifteen browser-based tools at /labs/<name>. Each runs entirely in the visitor's
-tab with no network requests, no account and no history. This is not a privacy
-footnote but the design constraint: the inputs these tools take — evidence files,
-production JWTs, passwords, photographs with GPS in them, raw email headers —
+Sixteen browser-based security tools at /labs/<name>. Each runs entirely in the
+visitor's tab with no network requests, no account and no history. This is not a
+privacy footnote but the design constraint: the inputs these tools take — evidence
+files, production JWTs, passwords, photographs with GPS in them, raw email headers —
 are precisely the data that should never be uploaded to a third party, and every
 popular online equivalent does exactly that.
 
@@ -153,6 +153,7 @@ popular online equivalent does exactly that.
 - /labs/url-inspector — URL & phishing link inspector. Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
 - /labs/password — Password strength checker & generator. Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
 - /labs/cert-decoder — SSL/TLS certificate decoder. Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
+- /labs/certificate-forge — Certificate & digital signature builder. The decoder in reverse: generates a real RSA-2048 or ECDSA P-256 keypair with WebCrypto, then hand-encodes a self-signed X.509 certificate, a PKCS#10 CSR and a two-certificate chain of trust, with the ASN.1/DER shown byte by byte. Also signs messages and demonstrates tamper detection. The output is verified against a real X.509 parser and parses in openssl. Nothing is uploaded.
 - /labs/encoding — Encoder & decoder. Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
 - /labs/cipher — Classical cipher playground. Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
 - /labs/steganography — Image steganography. Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
@@ -175,3 +176,50 @@ There is no proxy — the visitor's browser contacts the vendor directly.
 - /labs/ct-log — Certificate transparency. Queries SSLMate Cert Spotter. Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target.
 - /labs/rdap — Domain registration (RDAP). Queries the authoritative registry. Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.
 - /labs/breach-check — Password breach check. Queries Have I Been Pwned. Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.
+
+## Digital forensics tools
+
+Six file-forensics tools at /labs/<name>, on the same offline shell as the
+security tools: you drop a file and it is parsed in your tab, never uploaded.
+They read real container and dump formats rather than guessing.
+
+- /labs/har-analyzer — HAR analyzer. Parses a browser HAR capture: every request, timing waterfall, headers, cookies, sizes and a flag for anything sent in the clear or leaking credentials.
+- /labs/sqlite-browser — SQLite database browser. Opens a .sqlite/.db file with a real SQLite engine (sql.js), lists tables and schema, and runs read-only SQL against it — all in the browser.
+- /labs/archive-inspector — Archive inspector. Reads the structure of ZIP, TAR and GZIP archives without extracting: entries, sizes, compression, timestamps and ZIP64, plus zip-bomb and path-traversal warnings.
+- /labs/pcap-analyzer — PCAP analyzer. Decodes a packet capture (pcap/pcapng): Ethernet/IP/TCP/UDP layers, conversations, DNS and HTTP, and plaintext credentials carved from the stream.
+- /labs/memory-strings — Memory string extractor. Carves printable ASCII and UTF-16 strings from a raw memory or process dump, with length filtering and pattern highlighting for URLs, keys and paths.
+- /labs/registry-viewer — Windows registry viewer. Parses a raw Windows registry hive file into its key/value tree, decoding every value type, without a Windows machine.
+
+## Interactive visualisers
+
+Thirteen visualisers at /labs/<name>. Where the tools are request/response, these
+run live: a canvas, a simulation, an algorithm stepped one frame at a time. Many
+share a chassis (assets/js/labs/viz/multi-shell.js) giving tabs, a transport
+(reset/back/play/step/end), a speed control and a compare table. Every algorithmic
+core is tested against known-answer vectors in a Node harness under _labtools/.
+All run entirely client-side.
+
+- /labs/os-algorithms — Operating system algorithm visualiser. CPU scheduling (FCFS, SJF, SRTF, round robin, priority), page replacement (FIFO, LRU, OPT, clock, LFU), disk scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK), memory allocation (first/best/worst/next fit) and the Banker safety check — 26 algorithms stepped one time unit at a time with every algorithm compared on the same input. Reproduces Belady’s anomaly.
+- /labs/cryptography — Cryptography visualiser. AES-128 stepped through all 40 transformations with a live avalanche measurement, SHA-256 across its 64 compression rounds, and Diffie-Hellman, RSA and elliptic-curve key exchange with small checkable numbers plus a working brute-force attacker. Teaching implementations, verified against FIPS-197 and FIPS-180-4 test vectors.
+- /labs/regex-engine — Regex engine & ReDoS visualiser. A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length versus the linear state-machine engines. All three engines are differentially tested against JavaScript RegExp.
+- /labs/buffer-overflow — Stack buffer overflow visualiser. A stack overflow drawn byte by byte on a real downward-growing stack: a string copy overwrites the saved frame pointer and return address, control flow is hijacked to injected shellcode (a diagram, never executed), then a stack canary catches it. A defences panel shows what NX and ASLR stop and how each is bypassed.
+- /labs/tcp-congestion — TCP visualiser. The three-way handshake and four-way close with real sequence/acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery and timeout collapse, plotted as the classic sawtooth. Checked against RFC 793 examples.
+- /labs/word-cloud — Word cloud generator. Paste text and the most frequent words are sized biggest and spiral-packed into shape masks (heart, star, circle, diamond, cloud), with colour palettes and font choices, downloadable as a PNG. Filler words removed automatically. A free, private, no-watermark alternative to wordart-style sites.
+- /labs/processor-explorer — Inside a processor. Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D.
+- /labs/hash-cracker — Live hash cracker. Watch a weak password hash fall in real time with a guesses-per-second counter, wordlist then brute force against MD5/SHA-1/SHA-256, in a Web Worker so the page stays responsive and Stop works instantly.
+- /labs/algorithm-visualizer — Algorithm visualizer. Thirteen sorting algorithms and six pathfinding algorithms, animated and steppable, so O(n log n) beating O(n²) is shown rather than asserted.
+- /labs/cpu-simulator — CPU & assembly simulator. Write assembly for a small clean instruction set and single-step it, watching registers, flags, memory and the stack change. A real two-pass assembler, no eval.
+- /labs/shader-playground — GLSL shader playground. Write a fragment shader and see it render live on the GPU, with time and mouse uniforms and compile errors reported with line numbers.
+- /labs/fractal-explorer — Fractal explorer. Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on the GPU, with several colour palettes; hover to pick a Julia constant.
+
+## Language playgrounds, terminals & HackLab
+
+The rest of Labs. Real language runtimes compiled to WebAssembly and vendored
+locally (no CDN), full operating systems under x86 emulation, and a deliberately
+vulnerable XSS playground.
+
+- Language playgrounds at /labs/<name>: c, cpp, python, javascript, typescript, php, ruby, perl, lua, sql (SQLite), postgres (PGlite). Each is a genuine compiler or interpreter running in the browser via WebAssembly, with stdin support where relevant — not a sandbox that fakes output.
+- OS terminals: /labs/linux, /labs/dos (FreeDOS) and /labs/bsd (OpenBSD), each a real operating system booted under x86 emulation (v86) in the tab.
+- /labs/api — HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
+- /labs/typing — Typing speed test. WPM and accuracy over configurable text, entirely offline.
+- /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks (reflected and stored XSS against a deliberately vulnerable guestbook), with its own strict CSP isolating it from the rest of the site. For learning the offensive side in a place where breaking things is the point.

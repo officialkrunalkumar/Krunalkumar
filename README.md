@@ -388,6 +388,17 @@ which is both the privacy claim on the pages and the reason the section costs no
 | `/labs/typing` | Typing speed test — code and prose | 0 KB |
 | `/labs/api` | HTTP request tester — the browser's own fetch, no proxy | 0 KB |
 
+### HackLab — the vulnerable app sandbox (`/labs/hacklab`)
+
+The offensive counterpart to the defensive tools: a deliberately vulnerable app the visitor is meant to break. Six challenges, each a live target with an objective, progressive hints, the full solution, and the real-world fix.
+
+The two that matter for safety:
+
+- **SQL injection is real.** It runs against `sql.js` (loaded via a plain `<script>` ahead of `hacklab.js`, the same engine as `/labs/sql`) on a throwaway in-memory database. The injection genuinely executes; there is simply nothing behind it.
+- **XSS is real, and sandboxed.** The victim page is an `<iframe sandbox="allow-scripts">` with **no** `allow-same-origin`, giving it a unique opaque origin: the injected script runs but cannot read the page, touch storage, or make a credentialed request. It signals success by `postMessage` back to the parent. This required widening the CSP `frame-src` to `'self' blob:` — and the srcdoc/inline-script interaction under the strict global CSP is exactly the kind of thing verified against `prodserve.js`, never assumed.
+
+Traversal, command injection and IDOR run against in-memory fakes. `hacklab.js` makes no network calls, holding to the same rule as the offline tools even though it is not built on `tool-shell.js`. Progress is stored under `lab.hacklab.solved` on the device only.
+
 ### Security & digital forensics tools
 
 Fifteen tools sharing one shell (`assets/js/labs/tool-shell.js`), each implemented as a single
@@ -410,6 +421,7 @@ modules contains a `fetch`, an `XMLHttpRequest` or a `sendBeacon`. The only inpu
 | `/labs/url-inspector` | Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects. |
 | `/labs/password` | Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues. |
 | `/labs/cert-decoder` | Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints. |
+| `/labs/certificate-forge` | Generate a real keypair and hand-build a self-signed X.509 cert, a CSR and a chain of trust; the DER is shown and the PEM parses in openssl. |
 | `/labs/encoding` | Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection. |
 | `/labs/cipher` | Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key. |
 | `/labs/steganography` | Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data. |
@@ -477,6 +489,38 @@ The machine is also completely sealed — no network device, and no way to reach
 used by the language pages, since those are JavaScript objects and this is a separate CPU.
 
 ### CSP and caching
+
+### Digital forensics tools
+
+Six file-drop analysis tools on `tool-shell.js`, each a from-scratch parser of a binary format (HAR JSON, the SQLite file header via sql.js, the ZIP central directory, PCAP/PCAPNG, raw memory, the `regf` registry hive). Same rule as the rest of the offline set: no network call, everything computed from the dropped bytes.
+
+| Route | What it does |
+|---|---|
+| `/labs/har-analyzer` | Find the secrets in a browser network export - tokens, cookies, keys, PII - and download a redacted copy safe to share. |
+| `/labs/sqlite-browser` | Open any SQLite database - Chrome history, WhatsApp, app data - browse tables, run SQL, timestamps decoded. |
+| `/labs/archive-inspector` | Inspect a ZIP without extracting it: zip-slip paths, zip bombs, encrypted entries and disguised executables. |
+| `/labs/pcap-analyzer` | Read a packet capture: top talkers, protocols, DNS and HTTP, and plaintext credentials from unencrypted traffic. |
+| `/labs/memory-strings` | Pull strings (ASCII and UTF-16), URLs, keys, crypto addresses and embedded files out of a memory dump. |
+| `/labs/registry-viewer` | Parse a Windows registry hive for autostart keys, USB history and recent activity. No Windows required. |
+
+### Interactive visualisers
+
+Seven canvas/WebGL toys on their own tiny shell, `viz-shell.js` (not `tool-shell.js` — these are live loops, not request/response). The hash cracker runs its loop in a Blob-URL Web Worker so the page stays responsive and Stop works; the CPU simulator assembles with a real two-pass parser rather than `eval` (which the CSP forbids anyway); the shader and fractal labs compile GLSL on the GPU; the OS algorithm visualiser precomputes every frame up front so you can step backwards through a simulation as freely as forwards.
+
+| Route | What it does |
+|---|---|
+| `/labs/hash-cracker` | Watch a weak password hash fall in real time, with the guesses-per-second counter ticking. Off the main thread. |
+| `/labs/algorithm-visualizer` | Sorting and pathfinding, animated and steppable. See why O(n log n) beats O(n2) instead of being told. |
+| `/labs/cpu-simulator` | Write assembly and step through it one instruction at a time, watching registers, flags, stack and memory change. |
+| `/labs/shader-playground` | Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers. |
+| `/labs/fractal-explorer` | Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant. |
+| `/labs/processor-explorer` | Fly from the chip package down to a single transistor - six labelled levels of semantic zoom, with data pulsing through every one. |
+| `/labs/word-cloud` | Paste text and get a frequency-sized word cloud packed into a heart, star or cloud shape, in colours you choose, downloadable as a PNG. No upload, no watermark. |
+| `/labs/tcp-congestion` | Step the three-way handshake with real seq/ack numbers, walk the TCP state machine, and watch Reno congestion control draw its sawtooth. Simulated, checked against RFC 793. |
+| `/labs/buffer-overflow` | Watch a string copy climb over the saved frame pointer into the return address on a real byte-addressed stack, then hijack control flow and watch a stack canary catch it. NX/ASLR limits shown honestly. |
+| `/labs/regex-engine` | Parse, Thompson NFA, subset construction, backtracking and a measured ReDoS blowup. Differentially tested against JavaScript RegExp. |
+| `/labs/cryptography` | Step AES-128 round by round, SHA-256 across 64 rounds, and RSA/Diffie-Hellman/ECDH with checkable numbers. Checked against the NIST FIPS vectors. |
+| `/labs/os-algorithms` | Step CPU scheduling, page replacement, disk scheduling, memory allocation and the Banker safety check one unit of time at a time, then compare every algorithm on the same input. |
 
 ### Network lookup tools
 
@@ -613,7 +657,7 @@ The tty on that image does not map CR to NL. Sending `
 ` for Enter meant nothing reading stdin
 ever saw a line ending — `cat >> file` swallowed every line into one — and the echo came back as a
 lone CR, which simply overwrote the same row on screen. Backspace is a separate trap: the shell
-erases with `` followed by `ESC[J` (erase to end of display), so that sequence has to be handled
+erases with a backspace (`0x08`) followed by `ESC[J` (erase to end of display), so that sequence has to be handled
 or the character stays on screen.
 
 ### DOS mode switching uses `screen-set-size`
