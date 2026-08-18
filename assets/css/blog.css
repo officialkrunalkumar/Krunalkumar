@@ -15,43 +15,8 @@
    only inset. If a measure cap is ever revisited, it needs a design that
    fills the card — not an island of text. */
 
-/* Breadcrumb trail above the article title — small, muted, one line */
-.breadcrumbs {
-  margin: 0 0 1rem;
-  font-size: 0.9rem;
-}
-
-.breadcrumbs ol {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  color: #94a3b8;
-}
-
-.breadcrumbs li {
-  display: inline-flex;
-  align-items: center;
-}
-
-.breadcrumbs li + li::before {
-  content: "/";
-  margin: 0 0.5rem;
-  color: rgba(148, 163, 184, 0.6);
-}
-
-.breadcrumbs a {
-  display: inline-block;
-  padding: 0.25rem 0;
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.breadcrumbs a:hover {
-  text-decoration: underline;
-}
+/* Breadcrumb trail: styled in main.css so blog, labs and the top-level pages
+   all read as one site. */
 
 .post-cover {
   margin: 1.5rem 0 0;
