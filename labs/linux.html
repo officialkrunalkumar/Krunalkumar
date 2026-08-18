@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A real Linux terminal in your browser. Genuine kernel, BusyBox shell, pipes and processes — running on your own machine with nothing uploaded. Free, no sign-up." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/linux" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Online Linux Terminal — A Real Kernel in Your Browser" />
+    <meta property="og:description" content="Boot a genuine Linux kernel in a browser tab. Real shell, real processes, no network, nothing uploaded. Safe enough to run a fork bomb." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/linux" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Online Linux Terminal" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Online Linux Terminal — A Real Kernel in Your Browser" />
+    <meta name="twitter:description" content="Boot a genuine Linux kernel in a browser tab. Nothing is uploaded, and it is safe enough to run a fork bomb." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <title>Online Linux Terminal — Real Kernel | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Online Linux Terminal",
+        "url": "https://krunalkumar.dpdns.org/labs/linux",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Linux terminal emulator",
+        "operatingSystem": "Any modern web browser",
+        "browserRequirements": "Requires JavaScript and WebAssembly",
+        "description": "A real Linux kernel with a BusyBox shell, booted inside your browser with an x86 emulator. No sign-up, no server, nothing uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Real Linux kernel in the browser",
+                "BusyBox shell and coreutils",
+                "Pipes, redirection and job control",
+                "Isolated 64 MB machine",
+                "Safe to run destructive commands"
+        ],
+        "author": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        },
+        "publisher": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is this a real Linux or a simulation of one?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A real one. v86 emulates a 32-bit x86 processor in WebAssembly, and a genuine Linux kernel boots on it with a BusyBox userland. Pipes, redirection, signals, /proc and the process table are the kernel's own implementations, not imitations."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I run Python or compile C in here?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and this is the most common misunderstanding. The image is BusyBox only - there is no Python, Perl, Ruby or gcc inside it. Adding them would mean a multi-hundred-megabyte disk image. The emulated machine also cannot reach the language runtimes used by /labs: those live in JavaScript, and this is a separate CPU with its own memory. For running code, use the language playgrounds in Labs instead."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is it safe to run a fork bomb?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes - that is precisely the point. The emulated machine is given a fixed 64 MB of RAM that it physically cannot exceed. A fork bomb exhausts the emulated process table and the emulated kernel responds exactly as a real one would, which is genuinely interesting to watch. Your browser and your computer are unaffected. Press Reboot when you have seen enough."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Which commands are available? There is no man, apt or info.",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "There are 227 of them, all provided by BusyBox as a single binary. That covers ls, cat, grep, sed, awk, find, vi, tar, du, df, ps, kill, mount, wget, diff, cpio, crond and most of what you would reach for day to day. What is missing is documentation and packaging: BusyBox ships no man pages (they would multiply the image size), so use <code>command --help</code> instead, and there is no apt or apk because Buildroot has no package manager and the machine has no network to fetch from. Run <code>busybox --list</code> to see the full set."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does it have internet access?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no network device attached, so ping, wget and apt will all fail. That is deliberate: it keeps the machine completely sealed, and it means nothing you do inside can reach anything outside."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Do my files survive a reload?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The disk is read-only and the RAM disappears when the page unloads. Every boot gives you an identical fresh machine, which also means you can break it as thoroughly as you like."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does any of this touch a server?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Only to download the 8 MB machine image the first time. After that your browser has it cached and the whole thing runs on your own processor. Nothing you type is transmitted anywhere."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is it slower than my real machine?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Every x86 instruction is being interpreted by WebAssembly rather than run natively. For a shell and BusyBox tools that is perfectly comfortable; it is not the place to benchmark anything."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Online Linux Terminal",
+                        "item": "https://krunalkumar.dpdns.org/labs/linux"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/vendor/editor/prism.css" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Linux terminal</li>
+          </ol>
+        </nav>
+        <h1>A real Linux terminal, running in your browser</h1>
+        <p class="hero-text">
+          This is not a shell simulator with a list of pretend commands. An x86 processor is
+          emulated in WebAssembly, a genuine Linux kernel boots on it, and BusyBox gives you the
+          userland. The pipes, the process table and the signals are the kernel&rsquo;s own. It runs
+          on your machine, it has no network, and you can break it as badly as you like.
+        </p>
+        <ul class="lab-facts">
+          <li>Genuine Linux kernel</li>
+          <li>~8 MB once, then cached</li>
+          <li>No network, fully sealed</li>
+          <li>Fresh machine every boot</li>
+        </ul>
+      </section>
+
+      <div class="lab lab-linux" id="linux">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This boots a real but deliberately minimal Linux machine inside your browser.
+              Please read what it is and is not, then choose whether to continue.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What is not supported</p>
+                <ul class="lab-gate-list">
+                  <li>No Python, Perl, Ruby or gcc &mdash; BusyBox only</li>
+                  <li>No internet: apt, wget and ping will all fail</li>
+                  <li>No installing packages of any kind</li>
+                  <li>Nothing is saved &mdash; every boot starts fresh</li>
+                  <li>Far slower than a real machine; not for benchmarks</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">What you get</p>
+                <ul class="lab-gate-list">
+                  <li>A real kernel, shell, filesystem and process table</li>
+                  <li>Everything runs on your CPU, in your RAM</li>
+                  <li>Capped at 64 MB, so it cannot affect your computer</li>
+                  <li>Safe to run destructive commands on purpose</li>
+                  <li>Free, no account, no limits</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; boot it</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <button class="lab-btn lab-btn-run" type="button" id="linux-start">&#9654; Boot</button>
+          <button class="lab-btn lab-btn-stop" type="button" id="linux-stop" disabled>&#9632; Power off</button>
+          <button class="lab-btn" type="button" id="linux-reset" disabled>&#8635; Reboot</button>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+          <span class="lab-status" id="linux-status">Ready</span>
+          <span class="spacer"></span>
+          <div class="lab-storage">
+            <button class="lab-btn lab-btn-icon" type="button" id="lab-storage-btn"
+                    aria-expanded="false" aria-controls="lab-storage-panel"
+                    title="Storage used on this device" aria-label="Storage used on this device">
+              <svg class="lab-meter-ring" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                <circle class="track" cx="10" cy="10" r="8"></circle>
+                <circle class="value" id="lab-meter-value" cx="10" cy="10" r="8" stroke-dasharray="0 50.27"></circle>
+              </svg>
+            </button>
+            <div class="lab-storage-panel" id="lab-storage-panel" hidden>
+              <h3>Storage on this device</h3>
+              <div class="lab-storage-row"><span>Saved code (all labs)</span><span id="lab-store-site">0 B</span></div>
+              <div class="lab-storage-row"><span>Downloaded runtimes</span><span id="lab-store-quota">&mdash;</span></div>
+              <div class="lab-storage-bar"><i id="lab-store-bar" style="width:0%"></i></div>
+              <p class="lab-storage-note">
+                This machine saves nothing itself &mdash; every boot starts fresh. The first figure is your saved code in local storage, the second the downloaded runtimes in this site&rsquo;s cache. They
+                cover the whole Labs section, and the buttons remove exactly those two things and
+                nothing else. Removing the runtimes is safe: they download again on the next boot.
+              </p>
+              <button class="lab-btn" type="button" id="lab-store-clear">Clear saved code &amp; settings</button>
+              <button class="lab-btn" type="button" id="lab-store-clear-rt">Remove downloaded runtimes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-panes">
+          <div class="lab-pane lab-terminal-wrap">
+            <div class="lab-pane-label"><span>tty1</span><span>click the terminal, then type</span></div>
+            <p class="linux-hint" id="linux-hint">
+              Press <strong>Boot</strong> to start the machine. The first boot downloads an 8 MB
+              disk image; after that your browser has it and boots take a couple of seconds.
+              You are logged in as <code>root</code> automatically.
+            </p>
+            <div class="lab-terminal" id="linux-terminal" role="log" aria-live="polite"
+                 tabindex="0" aria-label="Linux terminal"></div>
+            <!-- Keyboard and clipboard target. A div is not editable, and
+                 browsers do not fire paste events at non-editable elements —
+                 which is why Ctrl+V and right-click paste both did nothing
+                 when the div held focus. Every browser terminal solves this
+                 the same way: an offscreen textarea takes the keystrokes. -->
+            <label class="sr-only" for="linux-input">Terminal input</label>
+            <textarea id="linux-input" class="lab-hidden-input" autocomplete="off"
+                      autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Things to try</h2>
+          <p>Click the screen first so the keyboard is directed at the machine rather than the page.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Look around</h3>
+            <p>BusyBox provides the usual tools; start by seeing what is on the disk.</p>
+            <pre class="lab-example"><code class="language-bash">ls -la /
+cat /proc/cpuinfo
+uname -a
+df -h</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>Pipes and redirection</h3>
+            <p>The real thing, handled by the real kernel.</p>
+            <pre class="lab-example"><code class="language-bash">cat /proc/meminfo | head -5
+ls /bin | wc -l
+echo hello &gt; /tmp/a.txt
+cat /tmp/a.txt</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>Write and run a shell script</h3>
+            <p>vi is available, but a heredoc is quicker.</p>
+            <pre class="lab-example"><code class="language-bash">cat &gt; hello.sh &lt;&lt;'EOF'
+#!/bin/sh
+for i in 1 2 3 4 5; do
+  echo "line $i"
+done
+EOF
+chmod +x hello.sh
+./hello.sh</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>Processes and signals</h3>
+            <p>Start a background job, then kill it.</p>
+            <pre class="lab-example"><code class="language-bash">sleep 300 &amp;
+ps
+kill %1
+ps</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Safe by construction</p>
+          <h2>Yes, you can run a fork bomb</h2>
+          <p>
+            A fork bomb is a process that endlessly replicates itself until the process table and
+            memory are exhausted, freezing the system. On a real machine that is a denial-of-service
+            attack. In here it is a demonstration, because the emulated machine has a hard 64 MB
+            ceiling it cannot exceed and lives entirely inside a tab you can close.
+          </p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The one that works here</h3>
+            <p>
+              Run it, watch the machine stop responding, then press <strong>Reboot</strong>.
+              Your browser will not notice.
+            </p>
+            <pre class="lab-example"><code class="language-bash">f(){ f|f&amp; };f</code></pre>
+            <p>
+              It defines a function <code>f</code> that pipes itself into a background copy of
+              itself, then calls it. Each call spawns two more, and neither ever exits.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Why not the famous version?</h3>
+            <p>
+              The one everybody quotes uses <code>:</code> as the function name:
+            </p>
+            <pre class="lab-example"><code class="language-bash">:(){ :|:&amp; };:</code></pre>
+            <p>
+              Paste that here and the shell answers
+              <code>syntax error: bad function name</code>. It is a bash-ism &mdash; bash allows
+              <code>:</code> as an identifier, and this machine runs BusyBox&rsquo;s
+              <code>ash</code>, which requires an ordinary name. Same bomb, same mechanism, one
+              character of difference. It is a neat reminder that &ldquo;works in bash&rdquo; and
+              &ldquo;works in sh&rdquo; are not the same claim.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Why this is worth seeing</h3>
+            <p>
+              Reading about resource exhaustion is not the same as watching a process table fill up.
+              I wrote about the mechanics in
+              <a href="/blog/what-is-a-fork-bomb">what is a fork bomb</a>, and published a paper on
+              defending against them in
+              <a href="/research">Linux-based systems</a> &mdash; this is the safest place I know of
+              to see the behaviour those describe.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How this actually works</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>An emulated processor</h3>
+            <p>
+              v86 implements a 32-bit x86 CPU, a chipset, a VGA adapter and a disk controller in
+              WebAssembly. The kernel does not know it is not on real hardware; it probes the same
+              devices and runs the same instructions. Everything above the CPU is therefore
+              genuine, which is why the shell behaves exactly as it does anywhere else.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Why it cannot reach the rest of Labs</h3>
+            <p>
+              The Python and SQLite runtimes on the language pages are JavaScript objects in the
+              browser. This machine is a separate CPU with its own address space, and there is no
+              bridge between the two. That is a security property rather than a missing feature:
+              the emulated machine cannot see or touch anything outside itself.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is this a real Linux or a simulation of one?</summary>
+            <div>A real one. v86 emulates a 32-bit x86 processor in WebAssembly, and a genuine Linux kernel boots on it with a BusyBox userland. Pipes, redirection, signals, /proc and the process table are the kernel's own implementations, not imitations.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I run Python or compile C in here?</summary>
+            <div>No, and this is the most common misunderstanding. The image is BusyBox only — there is no Python, Perl, Ruby or gcc inside it. Adding them would mean a multi-hundred-megabyte disk image. The emulated machine also cannot reach the language runtimes used by /labs: those live in JavaScript, and this is a separate CPU with its own memory. For running code, use the language playgrounds in Labs instead.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is it safe to run a fork bomb?</summary>
+            <div>Yes — that is precisely the point. The emulated machine is given a fixed 64 MB of RAM that it physically cannot exceed. A fork bomb exhausts the emulated process table and the emulated kernel responds exactly as a real one would, which is genuinely interesting to watch. Your browser and your computer are unaffected. Press Reboot when you have seen enough.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Which commands are available? There is no man, apt or info.</summary>
+            <div>There are 227 of them, all provided by BusyBox as a single binary. That covers ls, cat, grep, sed, awk, find, vi, tar, du, df, ps, kill, mount, wget, diff, cpio, crond and most of what you would reach for day to day. What is missing is documentation and packaging: BusyBox ships no man pages (they would multiply the image size), so use <code>command --help</code> instead, and there is no apt or apk because Buildroot has no package manager and the machine has no network to fetch from. Run <code>busybox --list</code> to see the full set.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does it have internet access?</summary>
+            <div>No. There is no network device attached, so ping, wget and apt will all fail. That is deliberate: it keeps the machine completely sealed, and it means nothing you do inside can reach anything outside.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Do my files survive a reload?</summary>
+            <div>No. The disk is read-only and the RAM disappears when the page unloads. Every boot gives you an identical fresh machine, which also means you can break it as thoroughly as you like.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does any of this touch a server?</summary>
+            <div>Only to download the 8 MB machine image the first time. After that your browser has it cached and the whole thing runs on your own processor. Nothing you type is transmitted anywhere.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is it slower than my real machine?</summary>
+            <div>Every x86 instruction is being interpreted by WebAssembly rather than run natively. For a shell and BusyBox tools that is perfectly comfortable; it is not the place to benchmark anything.</div>
+          </details>
+      </section>
+
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>
+            These playgrounds run a lot of machinery inside your browser, and browsers differ. If a
+            program that should run does not, if the output looks wrong, or if anything is odd on
+            your phone &mdash; I would genuinely like to know. Feature requests are welcome too.
+          </p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=linux#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Linux%20terminal%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Want to run actual code?</h2>
+          <p>The language playgrounds are the right place for that &mdash; same privacy, real interpreters.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/python"><span class="lab-card-name">Python</span><p class="lab-card-desc">Genuine CPython with the standard library.</p></a>
+          <a class="lab-card" href="/labs/javascript"><span class="lab-card-name">JavaScript</span><p class="lab-card-desc">Runs instantly with nothing to download.</p></a>
+          <a class="lab-card" href="/labs/sql"><span class="lab-card-name">SQL</span><p class="lab-card-desc">A real SQLite engine with sample data.</p></a>
+          <a class="lab-card" href="/labs/dos"><span class="lab-card-name">DOS prompt</span><p class="lab-card-desc">Real FreeDOS &mdash; DIR, COPY, batch files and a few games.</p></a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
+            automation, AI workflows, and intelligent digital systems.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/vendor/editor/prism.js"></script>
+    <script defer src="/assets/vendor/editor/prism-langs.js"></script>
+    <script defer src="/assets/vendor/v86/libv86.js"></script>
+    <script defer src="/assets/js/labs/lab-cache.js"></script>
+    <script defer src="/assets/js/labs/linux-app.js"></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+  </body>
+</html>

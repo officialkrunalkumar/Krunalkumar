@@ -281,6 +281,31 @@ img {
   font-weight: 700;
 }
 
+/* Nav spacing is fluid rather than stepped: clamp() sets a floor that keeps
+   ten entries readable on a small laptop, a vw-proportional middle that opens
+   up as the screen grows, and a ceiling so a 4K monitor does not stretch the
+   list into a scattered line.
+
+       gap      0.45rem  ..  1.0vw   ..  1.5rem     (7.2px .. 24px)
+       padding  0.6rem   ..  0.8vw   ..  1.1rem     (9.6px .. 17.6px)
+
+   Nothing here has to predict whether the entries fit. particle-bg.js measures
+   the real rendered widths on every resize and moves the tail into the "More"
+   dropdown only if they genuinely overflow — so this controls how generous the
+   spacing is, and the dropdown remains the automatic safety valve. Below 640px
+   none of it applies: the hamburger takes over. */
+@media (min-width: 641px) {
+  .nav-list { gap: clamp(0.45rem, 1vw, 1.5rem); }
+  .nav-list a { padding: 0.45rem clamp(0.6rem, 0.8vw, 1.1rem); }
+}
+
+/* The bar itself widens past the 1180px body measure on a large monitor. The
+   nav is the one element that genuinely benefits from the extra width, and it
+   buys enough room to keep all ten entries out of the dropdown. */
+@media (min-width: 1280px) {
+  .nav { max-width: 1320px; }
+}
+
 @media (min-width: 641px) {
   /* Two-row header: the brand sits centered above the nav. The negative
      sticky offset equals the brand row's height (0.85rem padding + 2rem
@@ -2101,12 +2126,17 @@ footer a:hover {
     grid-template-columns: 1fr;
   }
 
+  /* minmax(0, 1fr) rather than 1fr: a bare 1fr track has an automatic minimum
+     of min-content, so one unbreakable child — a long code line, a URL — makes
+     the whole track wider than the screen and the page scrolls sideways.
+     minmax(0, …) lets the track shrink and hands the overflow to the child,
+     which is where overflow-x: auto can actually deal with it. */
   .card-grid,
   .license-grid,
   .content-grid,
   .content-grid.two-up,
   .content-grid.three-up {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .footer-grid {
@@ -2205,7 +2235,7 @@ footer a:hover {
   .content-grid.three-up,
   .project-list,
   .form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero-actions {

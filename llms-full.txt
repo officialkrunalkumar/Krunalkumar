@@ -135,3 +135,43 @@ Complete index at https://krunalkumar.dpdns.org/blog
 - **Privacy (DPDP Act 2023):** No server-side form databases; form submissions route straight to WhatsApp messages. Uses Google Analytics 4 (cookies can be opted out freely without breaking site features).
 - **Terms & Rules:** Work is performed strictly on authorized accounts/devices with proven ownership. No device bypassing or unauthorized surveillance.
 - **Refunds:** Mentorship includes a 100% money-back guarantee within the first 7 days of the first month. Consulting milestones not yet started are fully refundable.
+
+## Security & digital forensics tools
+
+Fifteen browser-based tools at /labs/<name>. Each runs entirely in the visitor's
+tab with no network requests, no account and no history. This is not a privacy
+footnote but the design constraint: the inputs these tools take — evidence files,
+production JWTs, passwords, photographs with GPS in them, raw email headers —
+are precisely the data that should never be uploaded to a third party, and every
+popular online equivalent does exactly that.
+
+- /labs/hash — Hash generator & verifier. MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification.
+- /labs/file-inspector — File type inspector & hex viewer. Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph.
+- /labs/jwt — JWT decoder & verifier. Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted.
+- /labs/exif — EXIF viewer & metadata remover. Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy.
+- /labs/email-headers — Email header analyzer. Parses the Received chain, reads SPF, DKIM and DMARC results, detects Reply-To spoofing and extracts the originating IP.
+- /labs/url-inspector — URL & phishing link inspector. Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
+- /labs/password — Password strength checker & generator. Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
+- /labs/cert-decoder — SSL/TLS certificate decoder. Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
+- /labs/encoding — Encoder & decoder. Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
+- /labs/cipher — Classical cipher playground. Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
+- /labs/steganography — Image steganography. Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
+- /labs/regex — Regex tester & ReDoS checker. Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns.
+- /labs/cvss — CVSS v3.1 calculator. The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
+- /labs/subnet — Subnet & CIDR calculator. IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification.
+- /labs/timestamp — Forensic timestamp converter. Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it.
+
+## Network lookup tools
+
+Five tools at /labs/<name> that DO make network requests, unlike the rest of Labs.
+They are built on assets/js/labs/net-tool-shell.js, never tool-shell.js, whose header
+promises that nothing built on it opens a connection. Each names its vendor and what
+that vendor learns before any request fires; nothing fires on page load or on a
+keystroke; every request is echoed on screen; and a running request count is shown.
+There is no proxy — the visitor's browser contacts the vendor directly.
+
+- /labs/dns — DNS lookup. Queries Google or Cloudflare. A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there.
+- /labs/email-security — Email security audit. Queries Google Public DNS. Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone.
+- /labs/ct-log — Certificate transparency. Queries SSLMate Cert Spotter. Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target.
+- /labs/rdap — Domain registration (RDAP). Queries the authoritative registry. Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.
+- /labs/breach-check — Password breach check. Queries Have I Been Pwned. Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.

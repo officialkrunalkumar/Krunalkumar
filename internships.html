@@ -142,10 +142,12 @@
     </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
   </head>
@@ -161,6 +163,7 @@
             <a class="nav-link" href="/about">About</a>
             <a class="nav-link" href="/services">Services</a>
             <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
@@ -278,6 +281,38 @@
             <h3>Professional growth</h3>
             <p>Learn practical workflows, professional communication, and how real client work actually gets done.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Before you apply</p>
+          <h2>Practise the coding round right here</h2>
+          <p>
+            Every interview I have ever sat on both sides of came down to writing something small
+            and correct under mild pressure. You can rehearse exactly that on this site &mdash; the
+            playgrounds in <a href="/labs">Labs</a> run real interpreters in your own browser, so
+            there is nothing to install, no account, and no time limit. Your code never leaves your
+            machine, which also means you can practise from a locked-down college or office laptop.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/python">
+            <span class="lab-card-name">Python</span>
+            <p class="lab-card-desc">Real CPython. Best for the algorithm and data-structure rounds.</p>
+          </a>
+          <a class="lab-card" href="/labs/sql">
+            <span class="lab-card-name">SQL</span>
+            <p class="lab-card-desc">A live SQLite database. Joins, grouping and window functions.</p>
+          </a>
+          <a class="lab-card" href="/labs/javascript">
+            <span class="lab-card-name">JavaScript</span>
+            <p class="lab-card-desc">Nothing to download. Good for closures and async questions.</p>
+          </a>
+          <a class="lab-card" href="/labs/linux">
+            <span class="lab-card-name">Linux terminal</span>
+            <p class="lab-card-desc">A real shell for the command-line questions that catch people out.</p>
+          </a>
         </div>
       </section>
 
@@ -460,6 +495,7 @@
             <a href="/about">About</a>
             <a href="/services">Services</a>
             <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
             <a href="/client-reviews">Recommendations</a>

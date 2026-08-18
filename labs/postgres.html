@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Run PostgreSQL online for free. The actual Postgres server compiled to WebAssembly, with window functions, CTEs and JSONB. Nothing is uploaded." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/postgres" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Online PostgreSQL Editor — Real Postgres | Krunalkumar Shah" />
+    <meta property="og:description" content="Run PostgreSQL online for free. The actual Postgres server compiled to WebAssembly, with window functions, CTEs and JSONB. Nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/postgres" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Online PostgreSQL Compiler" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Online PostgreSQL Editor — Real Postgres | Krunalkumar Shah" />
+    <meta name="twitter:description" content="Run PostgreSQL online for free. The actual Postgres server compiled to WebAssembly, with window functions, CTEs and JSONB. Nothing is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <title>Online PostgreSQL Editor — Real Postgres | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Online PostgreSQL Compiler",
+        "url": "https://krunalkumar.dpdns.org/labs/postgres",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Online compiler",
+        "operatingSystem": "Any modern web browser",
+        "browserRequirements": "Requires JavaScript and WebAssembly",
+        "description": "Run PostgreSQL online for free. The actual Postgres server compiled to WebAssembly, with window functions, CTEs and JSONB. Nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Real PostgreSQL on WebAssembly",
+                "Window functions and recursive CTEs",
+                "JSONB with the full operator set",
+                "Results as a formatted table",
+                "Offline capable once cached"
+        ],
+        "author": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        },
+        "publisher": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is this really PostgreSQL, or something compatible?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It is genuinely PostgreSQL — the server source, compiled to WebAssembly by the PGlite project. That is why JSONB, window functions and Postgres' own error messages all behave exactly as they do on a real install."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How is this different from the SQL playground?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The other one runs SQLite, which is a different database with a different dialect. SQLite is 700 KB and starts instantly; Postgres is 17 MB and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does my data persist?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. A fresh in-memory database is created per run, which is why the starter script carries its own schema. Keep the CREATE and INSERT statements at the top."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I install extensions like PostGIS?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Only what is bundled is available, and there is no network to fetch anything from."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is my SQL private?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Completely. The server runs in your browser's memory and is destroyed when the run ends. Nothing is transmitted."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Online PostgreSQL Compiler",
+                        "item": "https://krunalkumar.dpdns.org/labs/postgres"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/vendor/editor/prism.css" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Online PostgreSQL Compiler</li>
+          </ol>
+        </nav>
+        <h1>Online PostgreSQL compiler</h1>
+        <p class="hero-text">This is the real PostgreSQL server — not a Postgres-compatible engine, not a translation layer — compiled to WebAssembly and running single-user inside your tab. The dialect, the data types, the error messages and the planner are all genuinely Postgres, which is what makes it worth 17 MB when SQLite is 700 KB.</p>
+        <ul class="lab-facts">
+          <li>The actual Postgres server</li>
+          <li>~17 MB once, then cached</li>
+          <li>Window functions, CTEs, JSONB</li>
+          <li>Fresh database every run</li>
+        </ul>
+      </section>
+
+      <div class="lab" id="lab" data-lang="postgres" data-pane="editor">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This playground runs entirely inside your browser. Please read what it
+              can and cannot do, then choose whether to continue.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What is not supported</p>
+                <ul class="lab-gate-list">
+                  <li>Installing libraries or packages of any kind</li>
+                  <li>Network access from your program</li>
+                  <li>Reading or writing files on your computer</li>
+                  <li>Long-running, timing-sensitive or benchmark work</li>
+                  <li>Anything beyond the standard library</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">What you get</p>
+                <ul class="lab-gate-list">
+                  <li>Your code runs on your machine, in your RAM</li>
+                  <li>Nothing is uploaded, logged or stored by us</li>
+                  <li>No account, no queue, no execution limits</li>
+                  <li>Works offline once the runtime is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start coding</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="lab-lang">Language</label>
+          <select class="lab-select" id="lab-lang"></select>
+          <button class="lab-btn lab-btn-run" type="button" id="lab-run">&#9654; Run</button>
+          <button class="lab-btn lab-btn-stop" type="button" id="lab-stop" disabled>&#9632; Stop</button>
+          <span class="lab-status" id="lab-status">Ready</span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-persist" aria-pressed="false"
+                  title="Remember my code on this device" aria-label="Remember my code on this device">&#128204;</button>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-reset"
+                  title="Reset to the starter program" aria-label="Reset to the starter program">&#8635;</button>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+          <div class="lab-storage">
+            <button class="lab-btn lab-btn-icon" type="button" id="lab-storage-btn"
+                    aria-expanded="false" aria-controls="lab-storage-panel"
+                    title="Storage used on this device" aria-label="Storage used on this device">
+              <svg class="lab-meter-ring" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+                <circle class="track" cx="10" cy="10" r="8"></circle>
+                <circle class="value" id="lab-meter-value" cx="10" cy="10" r="8"
+                        stroke-dasharray="0 50.27"></circle>
+              </svg>
+            </button>
+            <div class="lab-storage-panel" id="lab-storage-panel" hidden>
+              <h3>Storage on this device</h3>
+              <div class="lab-storage-row">
+                <span>Your saved code</span><span id="lab-store-site">0 B</span>
+              </div>
+              <div class="lab-storage-row">
+                <span>Downloaded runtimes</span><span id="lab-store-quota">&mdash;</span>
+              </div>
+              <div class="lab-storage-bar"><i id="lab-store-bar" style="width:0%"></i></div>
+              <p class="lab-storage-note">
+                The first is your own code and settings in this browser&rsquo;s local storage; the second is the language runtimes held in this site&rsquo;s own cache. Both are this site only. Your browser will not let a page reach any other
+                site&rsquo;s storage, and the buttons below remove exactly these two things and
+                nothing else &mdash; no cookies, no history, nothing belonging to another app.
+                Removing the runtimes is safe: the next run simply downloads them again.
+              </p>
+              <button class="lab-btn" type="button" id="lab-store-clear">Clear saved code &amp; settings</button>
+              <button class="lab-btn" type="button" id="lab-store-clear-rt">Remove downloaded runtimes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-warn" id="lab-warn" hidden>
+          <p class="lab-warn-text" id="lab-warn-text"></p>
+          <button class="lab-warn-kill" type="button" id="lab-warn-kill">Cancel now</button>
+        </div>
+
+        <div class="lab-tabs" role="tablist" aria-label="Editor or output">
+          <button class="lab-tab" type="button" role="tab" data-pane="editor" aria-selected="true">Code</button>
+          <button class="lab-tab" type="button" role="tab" data-pane="output" aria-selected="false">Output</button>
+        </div>
+
+        <div class="lab-panes">
+          <div class="lab-pane">
+            <div class="lab-pane-label">
+              <span id="lab-file">query.sql</span>
+              <span id="lab-engine"></span>
+            </div>
+            <div class="lab-editor" id="lab-editor" spellcheck="false"
+                 aria-label="Code editor"></div>
+          </div>
+          <div class="lab-pane lab-terminal-wrap">
+            <div class="lab-pane-label"><span>Output</span><span>Ctrl + Enter to run</span></div>
+            <div class="lab-terminal" id="lab-terminal" role="log" aria-live="polite"></div>
+            <div id="lab-stdin-pane" hidden>
+              <label class="sr-only" for="lab-stdin">Input (stdin)</label>
+              <textarea class="lab-stdin" id="lab-stdin" spellcheck="false"
+                        placeholder="Input (stdin) &mdash; one value per line, read before the program starts"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How to run PostgreSQL online</h2>
+        </div>
+        <ol class="lab-steps">
+          <li>Accept the short notice, then replace the starter script with your own SQL.</li>
+          <li>The database is created fresh on every run, so keep your <code>CREATE TABLE</code> and <code>INSERT</code> statements in the script.</li>
+          <li>Press <strong>Run</strong>, or <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</li>
+          <li>The first run downloads the server (~17 MB) and takes a few seconds; after that a query runs in well under a second.</li>
+          <li>Every statement returning rows is rendered as its own table.</li>
+        </ol>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this PostgreSQL playground supports</h2>
+          <p>Almost all of Postgres, because it is Postgres. The limits are the sandbox and the single-user, in-memory setup around it.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Works here</h3>
+            <ul class="lab-gate-list">
+            <li>Window functions, recursive CTEs, <code>LATERAL</code> joins and subqueries</li>
+            <li><code>JSONB</code> with <code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>?</code> and the containment operators</li>
+            <li>Arrays, <code>ENUM</code>, <code>SERIAL</code>, <code>NUMERIC</code>, <code>UUID</code>, ranges and the full type system</li>
+            <li><code>generate_series</code>, string functions, date arithmetic and intervals</li>
+            <li>Views, triggers, constraints, indexes and transactions</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Does not work here</h3>
+            <ul class="lab-gate-list">
+            <li>Extensions that are not bundled — there is no way to install one</li>
+            <li>Replication, multiple connections and anything about concurrency</li>
+            <li>Saving the database: it lives only for the duration of a run</li>
+            <li><code>COPY</code> from a file on your computer</li>
+            <li>Meaningful performance work — a WASM build is not the place to tune a query plan</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>PostgreSQL queries to try</h2>
+          <p>Each one is complete and was run against this exact build. Copy any of them straight over the editor.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Window functions</h3>
+            <p>Rank within a group — the thing SQLite users most often miss.</p>
+            <pre class="lab-example"><code class="language-sql">CREATE TABLE emp (name TEXT, dept TEXT, salary NUMERIC);
+
+INSERT INTO emp VALUES
+  ('Asha','Engineering',92000), ('Ben','Engineering',78000),
+  ('Chitra','Design',71000), ('Eli','Design',83000);
+
+SELECT name, dept, salary,
+       RANK()       OVER (PARTITION BY dept ORDER BY salary DESC) AS rank,
+       ROUND(AVG(salary) OVER (PARTITION BY dept)) AS dept_avg
+FROM emp
+ORDER BY dept, rank;</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>JSONB</h3>
+            <p>Postgres' JSON type, with operators SQLite simply does not have.</p>
+            <pre class="lab-example"><code class="language-sql">CREATE TABLE events (id SERIAL PRIMARY KEY, payload JSONB);
+
+INSERT INTO events (payload) VALUES
+  ('{"user":"asha","action":"login","tags":["web","in"]}'),
+  ('{"user":"ben","action":"purchase","amount":250}');
+
+SELECT payload-&gt;&gt;'user' AS person,
+       payload-&gt;&gt;'action' AS action,
+       payload-&gt;'tags' AS tags
+FROM events
+WHERE payload ? 'user';</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>Generate a series</h3>
+            <p>generate_series is a Postgres staple for building test data.</p>
+            <pre class="lab-example"><code class="language-sql">SELECT d::date AS day,
+       EXTRACT(DOW FROM d) AS day_of_week
+FROM generate_series('2026-01-01'::date, '2026-01-07'::date, '1 day') AS d;</code></pre>
+          </article>
+          <article class="info-card">
+            <h3>CTE with a recursive term</h3>
+            <p>Recursive CTEs walk hierarchies — org charts, trees, graphs.</p>
+            <pre class="lab-example"><code class="language-sql">WITH RECURSIVE countdown(n) AS (
+  SELECT 5
+  UNION ALL
+  SELECT n - 1 FROM countdown WHERE n &gt; 1
+)
+SELECT n, REPEAT('*', n) AS bar FROM countdown;</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is this really PostgreSQL, or something compatible?</summary>
+            <div>It is genuinely PostgreSQL — the server source, compiled to WebAssembly by the PGlite project. That is why JSONB, window functions and Postgres' own error messages all behave exactly as they do on a real install.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How is this different from the SQL playground?</summary>
+            <div>The other one runs SQLite, which is a different database with a different dialect. SQLite is 700 KB and starts instantly; Postgres is 17 MB and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does my data persist?</summary>
+            <div>No. A fresh in-memory database is created per run, which is why the starter script carries its own schema. Keep the CREATE and INSERT statements at the top.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I install extensions like PostGIS?</summary>
+            <div>No. Only what is bundled is available, and there is no network to fetch anything from.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is my SQL private?</summary>
+            <div>Completely. The server runs in your browser's memory and is destroyed when the run ends. Nothing is transmitted.</div>
+          </details>
+      </section>
+
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>
+            These playgrounds run a lot of machinery inside your browser, and browsers differ. If a
+            program that should run does not, if the output looks wrong, or if anything is odd on
+            your phone &mdash; I would genuinely like to know. Feature requests are welcome too.
+          </p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=postgres#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Online PostgreSQL Compiler%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Other playgrounds</h2>
+          <p>Every one of them runs the same way: on your machine, with nothing sent anywhere.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/javascript"><span class="lab-card-name">JavaScript</span><p class="lab-card-desc">Run JavaScript instantly with zero download</p></a>
+          <a class="lab-card" href="/labs/typescript"><span class="lab-card-name">TypeScript</span><p class="lab-card-desc">Real tsc type-checking, then it runs</p></a>
+          <a class="lab-card" href="/labs/perl"><span class="lab-card-name">Perl</span><p class="lab-card-desc">Real Perl 5 — regular expressions at their best</p></a>
+          <a class="lab-card" href="/labs/linux"><span class="lab-card-name">Linux terminal</span><p class="lab-card-desc">A real kernel and a 227-command BusyBox shell, booted in your tab.</p></a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
+            automation, AI workflows, and intelligent digital systems.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/vendor/editor/prism.js"></script>
+    <script defer src="/assets/vendor/editor/prism-langs.js"></script>
+    <script defer src="/assets/vendor/editor/codejar.js"></script>
+    <script defer src="/assets/js/labs/lab-cache.js"></script>
+    <script defer src="/assets/js/labs/lab-runtimes.js"></script>
+    <script defer src="/assets/js/labs/lab-app.js"></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+  </body>
+</html>
