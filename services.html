@@ -182,10 +182,12 @@
     </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
   </head>
@@ -201,6 +203,7 @@
             <a class="nav-link" href="/about">About</a>
             <a class="nav-link active" aria-current="page" href="/services">Services</a>
             <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
@@ -377,6 +380,39 @@
 
       <section class="section-card">
         <div class="section-heading">
+          <p class="eyebrow">Try before you book</p>
+          <h2>Your team can write code here during the session</h2>
+          <p>
+            Training days lose their first hour to installation &mdash; the wrong Python version, a
+            proxy blocking pip, an IT policy that forbids installers altogether. The playgrounds in
+            <a href="/labs">Labs</a> sidestep all of it: real interpreters running inside the
+            browser, on a locked-down corporate laptop, with nothing to install and no account to
+            create. Nothing anyone types is uploaded, so it clears a security review as easily as
+            it clears the firewall.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/python">
+            <span class="lab-card-name">Python</span>
+            <p class="lab-card-desc">Genuine CPython with the standard library, for scripting and automation sessions.</p>
+          </a>
+          <a class="lab-card" href="/labs/sql">
+            <span class="lab-card-name">SQL</span>
+            <p class="lab-card-desc">A real SQLite engine and sample data, for reporting and analysis workshops.</p>
+          </a>
+          <a class="lab-card" href="/labs/linux">
+            <span class="lab-card-name">Linux terminal</span>
+            <p class="lab-card-desc">A real kernel and shell &mdash; safe to break, which is the point in a security session.</p>
+          </a>
+          <a class="lab-card" href="/labs">
+            <span class="lab-card-name">All playgrounds</span>
+            <p class="lab-card-desc">Five languages plus Linux, every one running locally and free.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
           <p class="eyebrow">Questions, answered straight</p>
           <h2>Frequently asked questions</h2>
         </div>
@@ -515,6 +551,7 @@
             <a href="/about">About</a>
             <a href="/services">Services</a>
             <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
             <a href="/client-reviews">Recommendations</a>

@@ -40,6 +40,55 @@
 - [Standing Out in an Internship Interview](https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview): What impresses a reviewer, the mistakes that sink candidates, and smart questions to ask.
 - [Smart Feedback: How to Give and Receive](https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it): Why vague praise fails, a structure for useful feedback, and how to take criticism without getting defensive.
 
+## Labs — free online compilers that run in the browser
+
+- [Labs hub](https://krunalkumar.dpdns.org/labs): Five language playgrounds and a real Linux terminal, all executing locally in the visitor's browser. No server, no sign-up, nothing uploaded.
+- [Online Python compiler](https://krunalkumar.dpdns.org/labs/python): Genuine CPython on WebAssembly with the standard library and input() support. No pip.
+- [Online JavaScript compiler](https://krunalkumar.dpdns.org/labs/javascript): Runs on the browser's own engine in an isolated Web Worker. Nothing to download.
+- [Online TypeScript compiler](https://krunalkumar.dpdns.org/labs/typescript): The official tsc, doing real type checking before anything runs.
+- [Online SQL compiler](https://krunalkumar.dpdns.org/labs/sql): A real SQLite engine in memory, with results rendered as a table.
+- [Online Lua compiler](https://krunalkumar.dpdns.org/labs/lua): Lua 5.4 on WebAssembly, with metatables and coroutines.
+- [Online Linux terminal](https://krunalkumar.dpdns.org/labs/linux): A genuine Linux kernel and BusyBox shell booted in the browser via x86 emulation. No network, safe to break.
+- [Online C compiler](https://krunalkumar.dpdns.org/labs/c): A real clang and lld toolchain in the browser. structs, pointers, malloc, scanf.
+- [Online C++ compiler](https://krunalkumar.dpdns.org/labs/cpp): Real clang with libc++ and the full STL: vector, string, map, algorithm, templates.
+- [Online PHP compiler](https://krunalkumar.dpdns.org/labs/php): Real PHP 8.4 with enums, match and the full array library.
+- [Online Ruby compiler](https://krunalkumar.dpdns.org/labs/ruby): Real CRuby from the Ruby core team. Blocks, mixins, enumerables.
+- [Online PostgreSQL compiler](https://krunalkumar.dpdns.org/labs/postgres): The actual Postgres server with window functions, CTEs and JSONB.
+- [Online DOS prompt](https://krunalkumar.dpdns.org/labs/dos): Real FreeDOS booted in the browser. DIR, COPY, batch files, VIM and NASM.
+- [Typing speed test for programmers](https://krunalkumar.dpdns.org/labs/typing): Measured on real code, not just prose. WPM and accuracy, nothing uploaded.
+
+
+## Security & digital forensics tools — all client-side
+
+- [Hash generator & verifier](https://krunalkumar.dpdns.org/labs/hash): MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification.
+- [File type inspector & hex viewer](https://krunalkumar.dpdns.org/labs/file-inspector): Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph.
+- [JWT decoder & verifier](https://krunalkumar.dpdns.org/labs/jwt): Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted.
+- [EXIF viewer & metadata remover](https://krunalkumar.dpdns.org/labs/exif): Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy.
+- [Email header analyzer](https://krunalkumar.dpdns.org/labs/email-headers): Parses the Received chain, reads SPF, DKIM and DMARC results, detects Reply-To spoofing and extracts the originating IP.
+- [URL & phishing link inspector](https://krunalkumar.dpdns.org/labs/url-inspector): Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
+- [Password strength checker & generator](https://krunalkumar.dpdns.org/labs/password): Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
+- [SSL/TLS certificate decoder](https://krunalkumar.dpdns.org/labs/cert-decoder): Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
+- [Encoder & decoder](https://krunalkumar.dpdns.org/labs/encoding): Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
+- [Classical cipher playground](https://krunalkumar.dpdns.org/labs/cipher): Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
+- [Image steganography](https://krunalkumar.dpdns.org/labs/steganography): Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
+- [Regex tester & ReDoS checker](https://krunalkumar.dpdns.org/labs/regex): Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns.
+- [CVSS v3.1 calculator](https://krunalkumar.dpdns.org/labs/cvss): The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
+- [Subnet & CIDR calculator](https://krunalkumar.dpdns.org/labs/subnet): IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification.
+- [Forensic timestamp converter](https://krunalkumar.dpdns.org/labs/timestamp): Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it.
+
+Nothing in this section uploads anything. There is no server behind these tools: evidence files, tokens, passwords and email headers are processed in the visitor's own browser tab, which is the reason they exist.
+
+
+## Network lookup tools — these DO make requests
+
+- [DNS lookup](https://krunalkumar.dpdns.org/labs/dns): A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there. Queries Google or Cloudflare directly from the visitor's browser; no proxy.
+- [Email security audit](https://krunalkumar.dpdns.org/labs/email-security): Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone. Queries Google Public DNS directly from the visitor's browser; no proxy.
+- [Certificate transparency](https://krunalkumar.dpdns.org/labs/ct-log): Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target. Queries SSLMate Cert Spotter directly from the visitor's browser; no proxy.
+- [Domain registration (RDAP)](https://krunalkumar.dpdns.org/labs/rdap): Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path. Queries the authoritative registry directly from the visitor's browser; no proxy.
+- [Password breach check](https://krunalkumar.dpdns.org/labs/breach-check): Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise. Queries Have I Been Pwned directly from the visitor's browser; no proxy.
+
+These are deliberately separated from the fifteen offline security tools. They still use no proxy — the visitor's browser contacts the vendor directly — but unlike the rest of Labs, a request genuinely leaves the machine, and each page says which vendor and what they learn before anything fires.
+
 ## Optional
 
 - [Privacy Policy](https://krunalkumar.dpdns.org/privacy): DPDP Act 2023 data compliance, Google Analytics cookies, and third-party processors.

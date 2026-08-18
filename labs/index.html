@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Free online compilers for Python, C, C++, PHP, Perl, Ruby, PostgreSQL, JavaScript, TypeScript, SQL and Lua. Everything runs inside your browser — no sign-up, no uploads, no limits." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Labs — Free Online Compilers That Run in Your Browser" />
+    <meta property="og:description" content="Python, C, C++, PHP, Perl, Ruby, PostgreSQL, JavaScript, TypeScript, SQL and Lua, all running locally in your browser. Your code never leaves your machine." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Krunalkumar Shah — Labs" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Labs — Free Online Compilers That Run in Your Browser" />
+    <meta name="twitter:description" content="Eleven languages, three real machines and a couple of other tools, all running locally in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <title>Labs — Free Online Compilers | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Online compilers by Krunalkumar Shah",
+        "description": "Free browser-based compilers and interpreters that run entirely on the user's own device.",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "C online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/c"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "SQL online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/sql"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "C++ online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/cpp"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 4,
+                        "name": "Perl online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/perl"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 5,
+                        "name": "Python online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/python"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 6,
+                        "name": "Lua online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/lua"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 7,
+                        "name": "PHP online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/php"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 8,
+                        "name": "JavaScript online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/javascript"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 9,
+                        "name": "Ruby online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/ruby"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 10,
+                        "name": "PostgreSQL online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/postgres"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 11,
+                        "name": "TypeScript online compiler",
+                        "url": "https://krunalkumar.dpdns.org/labs/typescript"
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is this really free?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, permanently. There is no server doing the work, so there is no cost to pass on. No account, no trial, no execution limits."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does my code get uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests are for the runtime files themselves."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I install libraries or packages?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. pip, npm, LuaRocks and every other package manager need a network connection and a registry, neither of which exists here. Standard libraries only."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is the first run slower than the rest?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Most languages need a runtime downloaded once — between 420 KB and 58 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What happens if I write an infinite loop?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Your program runs in a Web Worker, isolated from the page, so the tab stays responsive. A warning with a Cancel button appears after a few seconds, and anything still running at sixty seconds is stopped automatically."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does this work on a phone?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, though the editor is more comfortable on a larger screen. The lighter languages - JavaScript, Lua and SQL - are the best fit for a phone."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I use it offline?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Once a language's runtime is cached, that playground keeps working without a connection."
+                        }
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li aria-current="page">Labs</li>
+          </ol>
+        </nav>
+        <h1>Online compilers that run on your machine, not ours</h1>
+        <p class="hero-text">
+          Eleven languages, three real machines and a couple of other tools, all executing inside your own browser tab.
+          There is no server compiling your code, which means no queue, no account, no usage cap
+          &mdash; and no copy of your work anywhere but your own computer. Free, and staying that way.
+        </p>
+        <ul class="lab-facts">
+          <li>Nothing is uploaded</li>
+          <li>No sign-up</li>
+          <li>Works offline once cached</li>
+          <li>Free forever</li>
+        </ul>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Pick a language</h2>
+          <p>
+            Ordered by the year each language first appeared &mdash; a small timeline of the
+            things people actually write. The download figure is a one-time cost per language;
+            your browser caches it, so everything after the first run starts immediately.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/c">
+            <span class="lab-card-name">C <span class="lab-card-size">~58 MB</span></span>
+            <p class="lab-card-desc">A real clang and libc. structs, pointers, malloc and scanf all work.</p>
+            <span class="lab-card-engine">1972 &middot; clang + lld on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/sql">
+            <span class="lab-card-name">SQL <span class="lab-card-size">~700 KB</span></span>
+            <p class="lab-card-desc">A real SQLite engine. Results come back as a formatted table.</p>
+            <span class="lab-card-engine">1974 &middot; SQLite on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/cpp">
+            <span class="lab-card-name">C++ <span class="lab-card-size">~58 MB</span></span>
+            <p class="lab-card-desc">Real clang with libc++ &mdash; vector, string, map, algorithm, templates.</p>
+            <span class="lab-card-engine">1985 &middot; clang + libc++ on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/perl">
+            <span class="lab-card-name">Perl <span class="lab-card-size">~16 MB</span></span>
+            <p class="lab-card-desc">Real Perl 5. Regular expressions doing what they do best.</p>
+            <span class="lab-card-engine">1987 &middot; Perl 5 on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/python">
+            <span class="lab-card-name">Python <span class="lab-card-size">~6 MB</span></span>
+            <p class="lab-card-desc">Genuine CPython with the full standard library and input() support.</p>
+            <span class="lab-card-engine">1991 &middot; CPython on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/lua">
+            <span class="lab-card-name">Lua <span class="lab-card-size">~420 KB</span></span>
+            <p class="lab-card-desc">Lua 5.4 with metatables and coroutines. Starts almost instantly.</p>
+            <span class="lab-card-engine">1993 &middot; Lua 5.4 on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/php">
+            <span class="lab-card-name">PHP <span class="lab-card-size">~14 MB</span></span>
+            <p class="lab-card-desc">Real PHP 8.4 &mdash; enums, match, readonly properties, the array library.</p>
+            <span class="lab-card-engine">1994 &middot; PHP 8.4 on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/javascript">
+            <span class="lab-card-name">JavaScript <span class="lab-card-size">0 KB</span></span>
+            <p class="lab-card-desc">Runs on your browser&rsquo;s own engine. Nothing to download at all.</p>
+            <span class="lab-card-engine">1995 &middot; Your browser&rsquo;s JS engine</span>
+          </a>
+          <a class="lab-card" href="/labs/ruby">
+            <span class="lab-card-name">Ruby <span class="lab-card-size">~17 MB</span></span>
+            <p class="lab-card-desc">Real CRuby from the core team. Blocks, mixins and enumerables.</p>
+            <span class="lab-card-engine">1995 &middot; CRuby on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/postgres">
+            <span class="lab-card-name">PostgreSQL <span class="lab-card-size">~17 MB</span></span>
+            <p class="lab-card-desc">The actual Postgres server &mdash; window functions, CTEs, JSONB.</p>
+            <span class="lab-card-engine">1996 &middot; PostgreSQL on WebAssembly</span>
+          </a>
+          <a class="lab-card" href="/labs/typescript">
+            <span class="lab-card-name">TypeScript <span class="lab-card-size">~2 MB</span></span>
+            <p class="lab-card-desc">The official compiler, doing real type checking, then it runs.</p>
+            <span class="lab-card-engine">2012 &middot; TypeScript compiler &rarr; JS engine</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs</p>
+          <h2>Experience a real operating system</h2>
+          <p>
+            Beyond the language playgrounds, two entire operating systems boot inside your browser
+            on an emulated x86 machine: <a href="/labs/linux">Linux</a>, running a genuine kernel
+            with a BusyBox userland, and a <a href="/labs/dos">FreeDOS prompt</a> with DIR, batch
+            files and a few games still on the disk. Not simulations of a shell &mdash; real
+            systems, with real process tables and real file systems, which is exactly why you can
+            safely do things to them you would never do to your own machine, including running a
+            <a href="/blog/what-is-a-fork-bomb">fork bomb</a> and watching what actually happens. Real BusyBox shell, real
+            filesystem, real pipes and redirection. It is a genuine machine, which is why you can
+            safely do things to it that you would never do to your own &mdash; including running a
+            <a href="/blog/what-is-a-fork-bomb">fork bomb</a> and watching what actually happens.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/linux">
+            <span class="lab-card-name">Linux terminal <span class="lab-card-size">~8 MB</span></span>
+            <p class="lab-card-desc">A genuine kernel and a 227-command BusyBox shell, booted in your tab.</p>
+            <span class="lab-card-engine">Linux on x86 emulation (v86)</span>
+          </a>
+          <a class="lab-card" href="/labs/bsd">
+            <span class="lab-card-name">BSD shell <span class="lab-card-size">~1.4 MB</span></span>
+            <p class="lab-card-desc">A real OpenBSD kernel and ksh &mdash; the family the macOS command line comes from. Deliberately minimal.</p>
+            <span class="lab-card-engine">OpenBSD on x86 emulation (v86)</span>
+          </a>
+          <a class="lab-card" href="/labs/dos">
+            <span class="lab-card-name">DOS prompt <span class="lab-card-size">~720 KB</span></span>
+            <p class="lab-card-desc">Real FreeDOS. DIR, COPY, batch files &mdash; plus VIM, NASM and a few games.</p>
+            <span class="lab-card-engine">FreeDOS on x86 emulation (v86)</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card" id="security-tools">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs</p>
+          <h2>Cybersecurity &amp; digital forensics tools</h2>
+          <p>
+            Fifteen tools for the work where &ldquo;nothing leaves your browser&rdquo; stops being a
+            nice line and becomes the reason to use them at all. An evidence file, a production
+            token, a photograph with GPS in it, the headers of a phishing email &mdash; these are
+            exactly the things people paste into a random website without thinking, and almost
+            every online tool of this kind uploads them. These do not, because there is no server
+            behind them to upload to.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/hash">
+            <span class="lab-card-name">Hash generator</span>
+            <p class="lab-card-desc">MD5 through SHA-512 and HMAC, for text or a whole file. Verify a checksum, or identify a hash you cannot place.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/file-inspector">
+            <span class="lab-card-name">File inspector</span>
+            <p class="lab-card-desc">What a file really is, read from its magic bytes rather than its extension &mdash; plus hex, strings and an entropy graph.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/jwt">
+            <span class="lab-card-name">JWT decoder</span>
+            <p class="lab-card-desc">Decode and verify a token without handing that bearer credential to whoever runs the website.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/exif">
+            <span class="lab-card-name">EXIF viewer</span>
+            <p class="lab-card-desc">The camera, the exact second and the GPS coordinates inside a photo. Then download a copy with all of it gone.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/email-headers">
+            <span class="lab-card-name">Email header analyzer</span>
+            <p class="lab-card-desc">Trace the real delivery path of a suspicious message, and read what SPF, DKIM and DMARC actually said.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/url-inspector">
+            <span class="lab-card-name">URL inspector</span>
+            <p class="lab-card-desc">Take a phishing link apart without opening it. Homograph characters, buried domains, nested encoding.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/password">
+            <span class="lab-card-name">Password strength</span>
+            <p class="lab-card-desc">Real entropy and offline crack times against four hash types &mdash; not a checklist of capitals and symbols.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/cert-decoder">
+            <span class="lab-card-name">Certificate decoder</span>
+            <p class="lab-card-desc">Read an X.509 PEM without OpenSSL: subject, SANs, key size, expiry and fingerprints.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/encoding">
+            <span class="lab-card-name">Encoder / decoder</span>
+            <p class="lab-card-desc">Base64, Base32, Base58, hex, URL, HTML, binary and Morse, with automatic detection of what you pasted.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/cipher">
+            <span class="lab-card-name">Cipher playground</span>
+            <p class="lab-card-desc">Caesar, Vigen&egrave;re, Atbash and XOR &mdash; and the buttons that break all of them without a key.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/steganography">
+            <span class="lab-card-name">Steganography</span>
+            <p class="lab-card-desc">Hide a message in the low bits of an image, extract one, or amplify those bits to see if anything is there.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/regex">
+            <span class="lab-card-name">Regex tester</span>
+            <p class="lab-card-desc">Live matching with capture groups, plus a ReDoS check that catches catastrophic backtracking before production does.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/cvss">
+            <span class="lab-card-name">CVSS calculator</span>
+            <p class="lab-card-desc">The official v3.1 base score, with every metric explained and its contribution shown.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/subnet">
+            <span class="lab-card-name">Subnet calculator</span>
+            <p class="lab-card-desc">CIDR ranges, masks in every notation, and the binary that makes a /24 finally make sense.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/timestamp">
+            <span class="lab-card-name">Timestamp converter</span>
+            <p class="lab-card-desc">One number read under Unix, Windows FILETIME, WebKit, Cocoa and HFS+ at once &mdash; so you can tell which wrote it.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card" id="network-tools">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs &mdash; these use the network</p>
+          <h2>Network lookup tools</h2>
+          <p>
+            Everything above this line runs with no server at all. These five are different, and
+            they are kept separate so that difference is never something you have to remember:
+            each one sends a query to a named third party, and each says who and what before you
+            press anything. There is still no proxy of mine in the path &mdash; your browser talks
+            to the resolver or registry directly, and I never see it. Some things genuinely cannot
+            be done offline, and looking up a DNS record is one of them.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/dns">
+            <span class="lab-card-name">DNS lookup</span>
+            <p class="lab-card-desc">A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly &mdash; this is how it gets there.</p>
+            <span class="lab-card-engine">Queries Google or Cloudflare</span>
+          </a>
+          <a class="lab-card" href="/labs/email-security">
+            <span class="lab-card-name">Email security audit</span>
+            <p class="lab-card-desc">Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone.</p>
+            <span class="lab-card-engine">Queries Google Public DNS</span>
+          </a>
+          <a class="lab-card" href="/labs/ct-log">
+            <span class="lab-card-name">Certificate transparency</span>
+            <p class="lab-card-desc">Every certificate ever logged for a domain, and the subdomains printed on them &mdash; discovered without sending a single packet to the target.</p>
+            <span class="lab-card-engine">Queries SSLMate Cert Spotter</span>
+          </a>
+          <a class="lab-card" href="/labs/rdap">
+            <span class="lab-card-name">Domain registration (RDAP)</span>
+            <p class="lab-card-desc">Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.</p>
+            <span class="lab-card-engine">Queries the authoritative registry</span>
+          </a>
+          <a class="lab-card" href="/labs/breach-check">
+            <span class="lab-card-name">Password breach check</span>
+            <p class="lab-card-desc">Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.</p>
+            <span class="lab-card-engine">Queries Have I Been Pwned</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Also in Labs</p>
+          <h2>Other tools</h2>
+          <p>
+            Not compilers, but the same rules apply: they run in your browser, and nothing you
+            type is stored or sent anywhere we control.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/typing">
+            <span class="lab-card-name">Typing speed test <span class="lab-card-size">0 KB</span></span>
+            <p class="lab-card-desc">Measured on real code as well as prose &mdash; the punctuation that actually slows programmers down.</p>
+            <span class="lab-card-engine">Nothing to download</span>
+          </a>
+          <a class="lab-card" href="/labs/api">
+            <span class="lab-card-name">API tester <span class="lab-card-size">0 KB</span></span>
+            <p class="lab-card-desc">HTTP requests straight from your browser. No proxy in the path, so nothing you send is relayed through anyone.</p>
+            <span class="lab-card-engine">Your browser&rsquo;s own fetch</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How this works, and why it is different</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Everything is local</h3>
+            <p>
+              Each language ships as a WebAssembly build of its real interpreter. When you press
+              Run, that interpreter is handed your code inside a Web Worker in your own tab. Your
+              processor does the work and your RAM holds the result. There is no compile server
+              behind this page, so there is nothing for anyone to read, log or leak.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>What that costs you</h3>
+            <p>
+              Honesty matters more than a feature list here: because there is no server, there is
+              also no package manager, no network access from your code, and no access to files on
+              your computer. If you need <code>pip install</code> or <code>npm i</code>, this is
+              not the right tool. If you want to run a program and see what it prints, it is.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Runaway programs are safe</h3>
+            <p>
+              Infinite loops and runaway allocations are contained by design. Your code runs in a
+              Worker isolated from the page, so the tab never freezes and the Stop button always
+              works. A watchdog warns you when a program runs unusually long or allocates memory
+              unusually fast, and stops it outright at sixty seconds.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>It works on a plane</h3>
+            <p>
+              Once a language&rsquo;s runtime has been downloaded once, your browser keeps it. From
+              then on the playground works with no internet connection at all &mdash; something no
+              server-backed online compiler can offer, at any price.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card" id="lab-feedback">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>
+            These playgrounds run a lot of machinery inside your browser, and browsers differ.
+            If something breaks &mdash; a program that should run and does not, output that looks
+            wrong, anything odd on your phone &mdash; the quickest route is
+            <a href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20something%20is%20broken%20in%20Labs%3A%20" target="_blank" rel="noopener">a WhatsApp message</a>.
+            Or fill this in and it opens WhatsApp with the details already written out.
+          </p>
+          <p class="lab-report-context" id="lab-feedback-context" hidden></p>
+        </div>
+
+        <form id="lab-feedback-form" class="contact-form" method="post" data-wa-form
+          data-wa-fields="name phone email message"
+          data-wa-message-template="Hello Krunalkumar, I am reporting something from the Labs section of your website.
+Lab: Labs hub (https://krunalkumar.dpdns.org/labs)
+Name: {name}
+Contact: {phone}
+Email: {email}
+
+What is breaking / feedback:
+{message}"
+          data-wa-analytics-prefix="lab_feedback"
+          data-wa-followup-question="Did your report go through on WhatsApp?"
+          data-wa-confirmed-message="🙏 Thank you — that genuinely helps. I will look into it and get back to you.">
+          <div class="form-grid">
+            <label class="field">
+              <span>Your name</span>
+              <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
+            </label>
+            <label class="field">
+              <span>Contact number</span>
+              <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="lab-phone-hint" required />
+              <p class="form-hint" id="lab-phone-hint">Digits, spaces, and + only.</p>
+            </label>
+            <label class="field">
+              <span>Email address</span>
+              <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+            </label>
+          </div>
+
+          <label class="field full">
+            <span>What is breaking, or any feedback</span>
+            <textarea name="message" rows="6" required
+              placeholder="What you were running, what you expected, what happened instead — and your browser and device if you know them."></textarea>
+          </label>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" disabled>Send on WhatsApp</button>
+            <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          </div>
+          <p class="form-note">Prefer email? Write to
+          <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> &mdash;
+          no WhatsApp needed.</p>
+          <noscript>
+            <p class="form-note">This form needs JavaScript to open WhatsApp. Please email
+            <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> or message me on
+            <a class="text-link" href="https://wa.me/918200713617" target="_blank" rel="noopener">WhatsApp</a> directly.</p>
+          </noscript>
+        </form>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is this really free?</summary>
+            <div>Yes, permanently. There is no server doing the work, so there is no cost to pass on. No account, no trial, no execution limits.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does my code get uploaded?</summary>
+            <div>No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests are for the runtime files themselves.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I install libraries or packages?</summary>
+            <div>No. pip, npm, LuaRocks and every other package manager need a network connection and a registry, neither of which exists here. Standard libraries only.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is the first run slower than the rest?</summary>
+            <div>Most languages need a runtime downloaded once — between 420 KB and 58 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What happens if I write an infinite loop?</summary>
+            <div>Your program runs in a Web Worker, isolated from the page, so the tab stays responsive. A warning with a Cancel button appears after a few seconds, and anything still running at sixty seconds is stopped automatically.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does this work on a phone?</summary>
+            <div>Yes, though the editor is more comfortable on a larger screen. The lighter languages &mdash; JavaScript, Lua and SQL &mdash; are the best fit for a phone.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I use it offline?</summary>
+            <div>Yes. Once a language's runtime is cached, that playground keeps working without a connection.</div>
+          </details>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
+            automation, AI workflows, and intelligent digital systems.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-feedback.js"></script>
+    <script src="/assets/js/wa-form.js" defer></script>
+  </body>
+</html>

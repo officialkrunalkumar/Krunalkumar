@@ -101,10 +101,12 @@
     </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
   </head>
@@ -119,6 +121,7 @@
             <a class="nav-link" href="/about">About</a>
             <a class="nav-link" href="/services">Services</a>
             <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
             <a class="nav-link active" aria-current="page" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
@@ -198,6 +201,16 @@
           <figcaption>How each fork request is screened — trusted names skip checks, unknown processes are rate-checked, and repeat offenders get quarantined instead of being permanently banned.</figcaption>
         </figure>
 
+        <div class="lab-cta">
+          <p class="lab-cta-text">
+            <strong>See it happen.</strong> The behaviour this paper describes &mdash; a process
+            table filling until the system stops responding &mdash; can be watched safely in a real
+            Linux machine that boots inside your browser. It is capped at 64&nbsp;MB and sealed off
+            from your computer, so setting off a fork bomb there costs you one click on Reboot.
+          </p>
+          <a class="btn btn-primary" href="/labs/linux">Try it in the Linux terminal</a>
+        </div>
+
         <div class="hero-actions">
           <a class="btn btn-secondary" href="https://www.ijrat.org/downloads/Vol-7/april-2019/PaperID-74201911.pdf" target="_blank" rel="noopener">Read the full paper (PDF)</a>
         </div>
@@ -248,6 +261,7 @@
             <a href="/about">About</a>
             <a href="/services">Services</a>
             <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
             <a href="/research">Research</a>
             <a href="/blog">Blog</a>
             <a href="/client-reviews">Recommendations</a>

@@ -1,0 +1,1342 @@
+/* ==========================================================================
+   labs.css — the /labs code playgrounds and the /linux terminal
+   --------------------------------------------------------------------------
+   Everything here runs on top of main.css, which owns the page chrome
+   (header, footer, buttons, cards). This file only styles the lab shell.
+
+   The terminal panes deliberately reuse the palette from terminal.html —
+   #020617 ground, #86efac phosphor green, Cascadia Code — so the labs read
+   as the same machine as the /terminal easter egg rather than a bolted-on
+   widget. Those values are hard-coded rather than tokenised because the
+   terminal is a fixed "screen" that must NOT follow the page if main.css's
+   --bg-base is ever lightened (see the long note in main.css §1).
+
+   Contents:
+     1. Lab shell & layout
+     2. Toolbar (language picker, run/stop, storage, persist)
+     3. Editor pane
+     4. Terminal & stdin panes
+     5. Consent gate overlay
+     6. Storage popover
+     7. Language grid (hub page)
+     8. Responsive & reduced motion
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Lab shell & layout
+   ========================================================================== */
+
+.lab {
+  position: relative;
+  margin: 2rem 0 2.5rem;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  border-radius: 14px;
+  background: rgba(24, 36, 57, 0.82);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+  overflow: hidden;
+}
+
+/* The two panes sit side by side on desktop and stack on phones. The grid
+   (not flex) so the editor and terminal share one row height exactly —
+   a flex row lets the taller child drive the other's scroll container and
+   the terminal ends up unscrollable. */
+/* A DEFINITE height, not min-height. A scrollable child needs an ancestor
+   whose height does not grow with content — with min-height alone the row
+   simply expands and .lab-editor / .lab-terminal never overflow, so neither
+   pane ever scrolls. */
+.lab-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  height: min(62vh, 540px);
+  min-height: 360px;
+}
+
+.lab-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* lets long code lines scroll instead of stretching the grid */
+  min-height: 0; /* and this lets the editor/terminal inside actually scroll */
+}
+
+.lab-pane + .lab-pane {
+  border-left: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+.lab-pane-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+
+/* ==========================================================================
+   2. Toolbar
+   ========================================================================== */
+
+.lab-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(15, 23, 42, 0.78);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+.lab-toolbar .spacer { flex: 1 1 auto; }
+
+.lab-select {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 2rem 0.4rem 0.7rem;
+  color: #f8fafc;
+  background-color: #1f2c3f;
+  /* Inline chevron: an <select> cannot be styled cross-browser without
+     appearance:none, and that also removes the arrow. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%237dd3fc' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 0.7rem;
+  border: 1px solid rgba(125, 211, 252, 0.3);
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.lab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.42rem 0.85rem;
+  color: #f8fafc;
+  background: #1f2c3f;
+  border: 1px solid rgba(125, 211, 252, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lab-btn:hover:not(:disabled) { background: #2e3e50; border-color: rgba(125, 211, 252, 0.55); }
+.lab-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.lab-btn-run { background: #0f766e; border-color: #14b8a6; }
+.lab-btn-run:hover:not(:disabled) { background: #115e59; }
+.lab-btn-stop { background: #7f1d1d; border-color: #ef4444; }
+.lab-btn-stop:hover:not(:disabled) { background: #991b1b; }
+
+/* Square icon-only buttons (persist, reset, storage). */
+.lab-btn-icon {
+  padding: 0.42rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  justify-content: center;
+}
+
+.lab-btn-icon[aria-pressed='true'] {
+  background: #0f766e;
+  border-color: #14b8a6;
+  color: #ecfdf5;
+}
+
+.lab-status {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.lab-status.is-busy { color: #fbbf24; }
+.lab-status.is-ok   { color: #4ade80; }
+.lab-status.is-err  { color: #f87171; }
+
+/* ==========================================================================
+   3. Editor pane
+   --------------------------------------------------------------------------
+   CodeJar turns a contenteditable <div> into an editor and re-runs Prism on
+   every keystroke. Prism's own theme ships its own background and padding,
+   which would fight the pane, so .lab-editor overrides both.
+   ========================================================================== */
+
+.lab-editor {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  tab-size: 4;
+  color: #e2e8f0;
+  background: #020617;
+  white-space: pre;
+  outline: none;
+  caret-color: #86efac;
+  resize: none;
+  border: 0;
+}
+
+.lab-editor:focus-visible { box-shadow: inset 0 0 0 2px rgba(125, 211, 252, 0.55); }
+
+/* Prism's tomorrow theme sets these on code[class*=language-]; neutralise so
+   the pane owns its own surface. */
+.lab-editor[class*='language-'],
+.lab-editor pre[class*='language-'] {
+  background: none;
+  margin: 0;
+  padding: 0;
+  text-shadow: none;
+}
+
+/* ==========================================================================
+   4. Terminal & stdin panes
+   ========================================================================== */
+
+.lab-terminal {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #86efac;
+  background: #020617;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Same CRT treatment as terminal.html, scoped to the pane instead of the
+   whole page. Kept subtle enough not to hurt text contrast. */
+.lab-terminal-wrap { position: relative; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.lab-terminal-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px);
+}
+
+.lab-terminal .t-dim  { color: #5d907f; }
+.lab-terminal .t-info { color: #7dd3fc; }
+.lab-terminal .t-warn { color: #fbbf24; }
+.lab-terminal .t-err  { color: #f87171; }
+.lab-terminal .t-ok   { color: #4ade80; }
+.lab-terminal .t-out  { color: #e2e8f0; }
+
+.lab-stdin {
+  display: block;
+  width: 100%;
+  min-height: 74px;
+  max-height: 180px;
+  padding: 0.7rem 1rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+  background: #0b1220;
+  border: 0;
+  border-top: 1px solid rgba(125, 211, 252, 0.18);
+  outline: none;
+  resize: vertical;
+}
+
+.lab-stdin:focus-visible { box-shadow: inset 0 0 0 2px rgba(125, 211, 252, 0.45); }
+.lab-stdin::placeholder { color: #475569; }
+
+/* The Linux page is terminal-only: one full-width pane, taller by default.
+   Definite height again — this is the scrolling viewport for the kernel's
+   serial output, which is far longer than the pane. */
+.lab-linux .lab-panes { grid-template-columns: minmax(0, 1fr); height: min(70vh, 620px); }
+.lab-linux .lab-terminal { white-space: pre; overflow: auto; }
+
+/* ==========================================================================
+   5. Consent gate overlay
+   --------------------------------------------------------------------------
+   Deliberately covers ONLY .lab, never the page. The surrounding article
+   stays readable and indexable — a full-page interstitial is what Google's
+   intrusive-interstitial guidance penalises on mobile, and it would bury the
+   content these pages exist to rank for.
+   ========================================================================== */
+
+.lab-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(2, 6, 23, 0.94);
+  backdrop-filter: blur(3px);
+}
+
+.lab[data-consent='granted'] .lab-gate { display: none; }
+
+.lab-gate-card {
+  max-width: 46rem;
+  max-height: 100%;
+  overflow: auto;
+  padding: 1.4rem 1.6rem;
+  background: rgba(31, 44, 63, 0.96);
+  border: 1px solid rgba(125, 211, 252, 0.3);
+  border-radius: 12px;
+}
+
+.lab-gate-card h2 { margin: 0 0 0.6rem; font-size: 1.12rem; color: #f8fafc; }
+.lab-gate-card p  { margin: 0 0 0.85rem; font-size: 0.9rem; line-height: 1.6; color: #e2e8f0; }
+
+.lab-gate-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
+
+.lab-gate-list { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; line-height: 1.65; color: #cbd5e1; }
+.lab-gate-list li { margin-bottom: 0.3rem; }
+.lab-gate-list li::marker { color: #7dd3fc; }
+
+.lab-gate-h {
+  margin: 0 0 0.4rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lab-gate-h.limits { color: #fbbf24; }
+.lab-gate-h.privacy { color: #4ade80; }
+
+.lab-gate-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+/* ==========================================================================
+   6. Storage popover
+   ========================================================================== */
+
+.lab-storage { position: relative; }
+
+.lab-storage-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  z-index: 6;
+  width: min(21rem, 78vw);
+  padding: 0.95rem 1.05rem;
+  background: rgba(31, 44, 63, 0.98);
+  border: 1px solid rgba(125, 211, 252, 0.32);
+  border-radius: 10px;
+  box-shadow: 0 16px 34px rgba(2, 6, 23, 0.55);
+}
+
+.lab-storage-panel[hidden] { display: none; }
+.lab-storage-panel h3 { margin: 0 0 0.6rem; font-size: 0.9rem; color: #f8fafc; }
+
+.lab-storage-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: #cbd5e1;
+}
+.lab-storage-row span:last-child {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  color: #7dd3fc;
+}
+
+.lab-storage-bar {
+  height: 6px;
+  margin: 0.55rem 0 0.7rem;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+.lab-storage-bar i { display: block; height: 100%; background: linear-gradient(90deg, #14b8a6, #7dd3fc); }
+
+.lab-storage-note { margin: 0.65rem 0 0.8rem; font-size: 0.75rem; line-height: 1.6; color: #94a3b8; }
+
+/* The meter icon reads as a ring that fills with usage. */
+.lab-meter-ring { transform: rotate(-90deg); }
+.lab-meter-ring circle { fill: none; stroke-width: 3; }
+.lab-meter-ring .track { stroke: rgba(148, 163, 184, 0.35); }
+.lab-meter-ring .value { stroke: #7dd3fc; stroke-linecap: round; transition: stroke-dasharray 0.3s ease; }
+
+/* --------------------------------------------------------------------------
+   Watchdog banner — sits between the toolbar and the panes so it pushes the
+   editor down rather than covering it. Amber for "this is taking a while",
+   and the Cancel button is styled loud on purpose: at the point this appears
+   the user wants one obvious way out.
+   -------------------------------------------------------------------------- */
+
+.lab-warn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #fef3c7;
+  background: rgba(120, 53, 15, 0.55);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.5);
+}
+
+.lab-warn[hidden] { display: none; }
+.lab-warn-text { flex: 1 1 16rem; margin: 0; }
+
+.lab-warn-kill {
+  flex: 0 0 auto;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  color: #fff;
+  background: #dc2626;
+  border: 1px solid #f87171;
+  border-radius: 8px;
+  cursor: pointer;
+  animation: lab-pulse 1.4s ease-in-out infinite;
+}
+
+.lab-warn-kill:hover { background: #b91c1c; }
+
+@keyframes lab-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55); }
+  50%      { box-shadow: 0 0 0 7px rgba(220, 38, 38, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-warn-kill { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Linux terminal: blinking block cursor, selectable output.
+   The cursor is a real element in the text flow rather than a caret, because
+   the pane is not editable and so has no caret to style.
+   -------------------------------------------------------------------------- */
+
+.lab-cursor {
+  background: #86efac;
+  color: #020617;
+  animation: lab-blink 1.06s step-end infinite;
+}
+
+@keyframes lab-blink {
+  0%, 49%   { background: #86efac; color: #020617; }
+  50%, 100% { background: transparent; color: inherit; }
+}
+
+/* Output must stay selectable so copy works, and the focus ring has to be
+   visible because keystrokes only reach the machine while this pane is
+   focused. */
+#linux-terminal {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+
+#linux-terminal:focus,
+#linux-terminal:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(125, 211, 252, 0.55);
+}
+
+/* The offscreen keyboard/clipboard target for the Linux terminal. It must be
+   focusable and genuinely editable (so paste events fire) but never visible
+   and never in the way of selecting the output above it — hence 1px rather
+   than 0, opacity 0 rather than display:none, and pointer-events: none so a
+   mouse drag selects the terminal text instead of this. */
+.lab-hidden-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  resize: none;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: pre;
+}
+
+/* --------------------------------------------------------------------------
+   The DOS screen is v86's own, not a terminal we paint. It holds both an
+   80x25 text <div> and a <canvas> for graphics mode, and v86 writes inline
+   styles onto both - so this styles the container and colours only, leaving
+   the font metrics alone because v86 measures them to place the cursor.
+   -------------------------------------------------------------------------- */
+
+.dos-screen {
+  flex: 1;
+  min-height: 0;
+  padding: 0.8rem 1rem;
+  overflow: auto;
+  background: #020617;
+  outline: none;
+}
+
+.dos-text {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #86efac;
+  white-space: pre;
+  overflow: auto;
+}
+
+/* v86 draws graphics mode straight into this canvas; it is moved in from the
+   hidden shadow container only while a graphical program is running. */
+.dos-screen > canvas { max-width: 100%; height: auto; image-rendering: pixelated; }
+.lab.is-graphical .dos-text { display: none; }
+
+/* Graphics mode is a bitmap - centre it rather than leaving it hard left in a
+   pane shaped for text. */
+.lab.is-graphical .dos-screen { display: flex; align-items: center; justify-content: center; }
+
+/* The machine only receives keystrokes while it holds focus. Show that, or
+   "I typed and nothing happened" is impossible for anyone to diagnose. */
+.lab.is-capturing .dos-screen { box-shadow: inset 0 0 0 2px rgba(74, 222, 128, 0.55); }
+
+.lab:not(.is-capturing) .dos-screen::after {
+  content: 'click to type';
+  position: sticky;
+  bottom: 0;
+  float: right;
+  padding: 0.15rem 0.5rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   "Try it" callout, used on content pages that link into Labs. Reads as a
+   pull-quote rather than a banner, because it follows text the reader chose.
+   -------------------------------------------------------------------------- */
+
+.lab-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.24), rgba(31, 44, 63, 0.72));
+  border: 1px solid rgba(74, 222, 128, 0.34);
+  border-left: 3px solid #4ade80;
+  border-radius: 12px;
+}
+
+.lab-cta-text {
+  flex: 1 1 20rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #e2e8f0;
+}
+
+.lab-cta-text strong { color: #86efac; }
+
+.lab-cta code {
+  padding: 0.1rem 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.86em;
+  background: rgba(2, 6, 23, 0.6);
+  border-radius: 4px;
+}
+
+.lab-cta .btn { flex: 0 0 auto; }
+
+@media (max-width: 560px) {
+  .lab-cta { padding: 0.95rem 1rem; }
+  .lab-cta .btn { width: 100%; text-align: center; }
+}
+
+/* --------------------------------------------------------------------------
+   Typing speed test
+   -------------------------------------------------------------------------- */
+
+.typing-passage {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  overflow: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #020617;
+  cursor: text;
+  user-select: none;   /* selecting the target text helps nobody */
+}
+
+.typing-passage .ty-todo { color: #64748b; }
+.typing-passage .ty-ok   { color: #86efac; }
+
+/* A wrong character has to be unmissable, and it must still be legible when
+   it is a space — hence the background rather than only a colour. */
+.typing-passage .ty-bad {
+  color: #fecaca;
+  background: rgba(220, 38, 38, 0.45);
+  border-radius: 2px;
+}
+
+.typing-passage .ty-at {
+  color: #020617;
+  background: #7dd3fc;
+  border-radius: 2px;
+  animation: lab-blink 1.06s step-end infinite;
+}
+
+.typing-input {
+  display: block;
+  width: 100%;
+  min-height: 5.5rem;
+  padding: 0.85rem 1.2rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background: #0b1220;
+  border: 0;
+  border-top: 1px solid rgba(125, 211, 252, 0.18);
+  outline: none;
+  resize: vertical;
+  white-space: pre;
+}
+
+.typing-input:focus-visible { box-shadow: inset 0 0 0 2px rgba(125, 211, 252, 0.45); }
+.typing-input::placeholder { color: #475569; }
+
+.typing-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.typing-stats b { color: #7dd3fc; font-size: 0.95rem; }
+.typing-stats .typing-best b { color: #4ade80; }
+
+.typing-result {
+  margin: 0;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.92rem;
+  color: #ecfdf5;
+  background: rgba(15, 118, 110, 0.35);
+  border-top: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.typing-result[hidden] { display: none; }
+
+.lab-typing .lab-panes { grid-template-columns: minmax(0, 1fr); height: min(58vh, 480px); }
+
+@media (max-width: 900px) {
+  .lab-typing .lab-panes { height: auto; }
+  .lab-typing .lab-pane { height: 62vh; min-height: 320px; }
+}
+
+@media (max-width: 560px) {
+  .typing-passage { font-size: 16px; }
+  .typing-input { font-size: 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   API tester
+   -------------------------------------------------------------------------- */
+
+.api-url-row {
+  padding: 0.6rem 0.85rem;
+  background: rgba(15, 23, 42, 0.55);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+.api-url {
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  background: #020617;
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 8px;
+  outline: none;
+}
+
+.api-url:focus-visible { border-color: rgba(125, 211, 252, 0.7); }
+.api-url::placeholder { color: #475569; }
+
+.api-field {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 0.8rem 1rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background: #020617;
+  border: 0;
+  outline: none;
+  resize: none;
+}
+
+.api-field:focus-visible { box-shadow: inset 0 0 0 2px rgba(125, 211, 252, 0.45); }
+.api-field::placeholder { color: #475569; }
+
+#api-body-pane {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+#api-body-pane[hidden] { display: none; }
+
+@media (max-width: 560px) {
+  .api-url, .api-field { font-size: 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   "Something broken?" callout. The form itself lives once, on the hub; these
+   are the routes to it from the individual playgrounds.
+   -------------------------------------------------------------------------- */
+
+.lab-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.lab-report-actions .lab-btn { padding: 0.55rem 1rem; }
+
+.lab-report-context {
+  margin: 0.6rem 0 0;
+  padding: 0.4rem 0.75rem;
+  display: inline-block;
+  font-size: 0.84rem;
+  color: #4ade80;
+  background: rgba(15, 118, 110, 0.22);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: 999px;
+}
+
+.lab-report-context[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
+   Copy button on the example blocks
+   -------------------------------------------------------------------------- */
+
+pre.lab-example.has-copy { position: relative; padding-right: 5rem; }
+
+.lab-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font: inherit;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.28rem 0.6rem;
+  color: #cbd5e1;
+  background: rgba(31, 44, 63, 0.95);
+  border: 1px solid rgba(125, 211, 252, 0.32);
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+pre.lab-example:hover .lab-copy,
+.lab-copy:focus-visible { opacity: 1; }
+.lab-copy:hover { border-color: rgba(125, 211, 252, 0.7); }
+.lab-copy.is-ok  { color: #4ade80; border-color: #4ade80; opacity: 1; }
+.lab-copy.is-err { color: #fbbf24; border-color: #fbbf24; opacity: 1; }
+
+/* Touch has no hover, so the button must be permanently visible there. */
+@media (hover: none) {
+  .lab-copy { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-cursor { animation: none; }
+  .lab-copy { transition: none; }
+}
+
+/* ==========================================================================
+   Fullscreen & mobile pane tabs
+   --------------------------------------------------------------------------
+   Fullscreen uses the real Fullscreen API on the .lab element, so Esc is
+   handled by the browser itself rather than a key listener of ours — which
+   also means it behaves the way the user already expects, and cannot trap
+   them if our JS throws.
+
+   On phones the two panes are tabbed rather than stacked. Stacked, each pane
+   gets roughly a third of a small screen and the virtual keyboard covers most
+   of that; tabbed, whichever one you are using gets the whole area.
+   ========================================================================== */
+
+.lab:fullscreen,
+.lab:-webkit-full-screen {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #020617;
+}
+
+.lab:fullscreen .lab-panes { height: auto; flex: 1; min-height: 0; }
+.lab:fullscreen .lab-pane  { min-height: 0; height: auto; }
+
+/* Tabs are a phone affordance only; on desktop both panes are always visible. */
+.lab-tabs { display: none; }
+
+.lab-tab {
+  flex: 1 1 0;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 0.5rem;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.7);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.lab-tab[aria-selected='true'] { color: #7dd3fc; border-bottom-color: #7dd3fc; }
+
+@media (max-width: 900px) {
+  .lab-tabs { display: flex; border-bottom: 1px solid rgba(125, 211, 252, 0.18); }
+
+  /* One pane at a time, filling the area the tabs left over. */
+  .lab:not(.lab-linux)[data-pane='editor'] .lab-terminal-wrap { display: none; }
+  .lab:not(.lab-linux)[data-pane='output'] .lab-pane:first-child { display: none; }
+  .lab:not(.lab-linux) .lab-pane { height: 58vh; min-height: 260px; }
+  .lab:not(.lab-linux) .lab-pane + .lab-pane { border-top: 0; }
+}
+
+/* Fullscreen on a phone: use the whole viewport rather than a fixed slice. */
+@media (max-width: 900px) {
+  .lab:fullscreen .lab-pane,
+  .lab:fullscreen .lab-linux .lab-pane { height: auto; flex: 1; min-height: 0; }
+}
+
+/* iOS Safari zooms the page when a control smaller than 16px takes focus, and
+   never zooms back out. The editor and stdin box are the two that get focus. */
+@media (max-width: 560px) {
+  .lab-editor, .lab-stdin, .lab-terminal { font-size: 16px; }
+  .lab-toolbar { padding: 0.55rem; }
+  .lab-btn { padding: 0.42rem 0.6rem; font-size: 0.8rem; }
+  .lab-status { order: 10; }
+}
+
+/* --------------------------------------------------------------------------
+   Breadcrumbs. Copied from blog.css rather than loading that whole stylesheet
+   on lab pages — these six rules are all the labs need from it, and they must
+   match the blog exactly so the two sections read as one site.
+   -------------------------------------------------------------------------- */
+
+.breadcrumbs { margin: 0 0 1rem; font-size: 0.9rem; }
+
+.breadcrumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: #94a3b8;
+}
+
+.breadcrumbs li { display: inline-flex; align-items: center; }
+
+.breadcrumbs li + li::before {
+  content: "/";
+  margin: 0 0.5rem;
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.breadcrumbs a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.breadcrumbs a:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   7. Language grid (hub page)
+   ========================================================================== */
+
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.6rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.05rem 1.15rem;
+  background: rgba(31, 44, 63, 0.8);
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.lab-card:hover,
+.lab-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(125, 211, 252, 0.5);
+  background: rgba(46, 62, 80, 0.85);
+}
+
+.lab-card-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.lab-card-size {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #7dd3fc;
+  white-space: nowrap;
+}
+
+.lab-card-desc { margin: 0; font-size: 0.84rem; line-height: 1.55; color: #cbd5e1; }
+
+.lab-card-engine {
+  margin-top: 0.15rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+/* Inline "what this is" strip above the lab on language pages. */
+.lab-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-facts li {
+  padding: 0.28rem 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 999px;
+}
+
+.linux-hint {
+  margin: 0;
+  padding: 1.1rem 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.55);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+
+.linux-hint[hidden] { display: none; }
+
+/* ==========================================================================
+   9. Article furniture used by the lab pages
+   --------------------------------------------------------------------------
+   The FAQ uses <details> so the answers are in the DOM (and therefore
+   indexable, and matching the FAQPage schema) while staying collapsed.
+   ========================================================================== */
+
+.lab-steps {
+  margin: 0;
+  padding-left: 1.35rem;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: #e2e8f0;
+}
+
+.lab-steps li { margin-bottom: 0.5rem; padding-left: 0.2rem; }
+.lab-steps li::marker { color: #7dd3fc; font-weight: 700; }
+
+.lab-example {
+  margin: 0.7rem 0 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  tab-size: 4;
+  color: #e2e8f0;
+  background: #020617;
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  border-radius: 8px;
+}
+
+.lab-example code { background: none; padding: 0; font: inherit; }
+
+/* Belt and braces for the grid fix in main.css: the block must never be able
+   to report a min-content width larger than its column. */
+.lab-example { max-width: 100%; min-width: 0; }
+.info-card, .lab-card { min-width: 0; }
+
+.lab-faq {
+  border-bottom: 1px solid rgba(125, 211, 252, 0.16);
+}
+
+.lab-faq:first-of-type { border-top: 1px solid rgba(125, 211, 252, 0.16); }
+
+.lab-faq > summary {
+  padding: 0.9rem 2rem 0.9rem 0;
+  position: relative;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #f8fafc;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Safari still paints the default triangle without this. */
+.lab-faq > summary::-webkit-details-marker { display: none; }
+
+.lab-faq > summary::after {
+  content: '+';
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #7dd3fc;
+}
+
+.lab-faq[open] > summary::after { content: '2'; }
+.lab-faq > summary:hover { color: #7dd3fc; }
+.lab-faq > summary:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 3px; border-radius: 4px; }
+
+.lab-faq > div {
+  padding: 0 2rem 1rem 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   8. Responsive & reduced motion
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  /* Stacked, and each pane gets its own definite height so both keep scrolling. */
+  .lab-panes { grid-template-columns: minmax(0, 1fr); height: auto; min-height: 0; }
+  .lab-pane + .lab-pane { border-left: 0; border-top: 1px solid rgba(125, 211, 252, 0.18); }
+  .lab-pane { height: 46vh; min-height: 240px; }
+  .lab-linux .lab-panes { height: auto; }
+  .lab-linux .lab-pane { height: 62vh; min-height: 300px; }
+  .lab-gate-cols { grid-template-columns: 1fr; gap: 0.8rem; }
+}
+
+@media (max-width: 560px) {
+  .lab-toolbar { gap: 0.45rem; padding: 0.6rem; }
+  .lab-select { flex: 1 1 100%; }
+  .lab-status { flex: 1 1 100%; white-space: normal; }
+  .lab-gate-card { padding: 1.1rem; }
+  .lab-storage-panel { width: min(19rem, 88vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-card,
+  .lab-meter-ring .value { transition: none; }
+  .lab-card:hover, .lab-card:focus-visible { transform: none; }
+}
+
+/* Printing a playground is meaningless — keep the code, drop the chrome. */
+@media print {
+  .lab-toolbar, .lab-gate, .lab-storage-panel, .lab-stdin { display: none !important; }
+  .lab { border-color: #999; box-shadow: none; }
+}
+
+/* ==========================================================================
+   Security & digital forensics tools
+   --------------------------------------------------------------------------
+   The tool pages reuse the playground chrome — same shell, same gate, same
+   terminal pane — and add the few controls a compiler never needed: a file
+   drop zone, plain text fields, and a metrics grid for CVSS.
+   ========================================================================== */
+
+.lab-tool .lab-panes {
+  height: min(56vh, 460px);
+  min-height: 300px;
+}
+.lab-tool .lab-panes-single { grid-template-columns: minmax(0, 1fr); }
+
+.lab-pane-input {
+  border-right: 1px solid rgba(125, 211, 252, 0.14);
+  background: rgba(15, 23, 42, 0.5);
+}
+.lab-pane-input > div { display: contents; }
+
+/* Text areas and fields ---------------------------------------------------- */
+.lab-toolinput {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 0;
+  resize: none;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: #f8fafc;
+  background: transparent;
+}
+.lab-toolinput:focus-visible { outline: 2px solid rgba(125, 211, 252, 0.5); outline-offset: -2px; }
+.lab-toolinput::placeholder { color: #64748b; }
+
+.lab-toolfield {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  padding: 0.5rem 0.7rem;
+  color: #f8fafc;
+  background: #0f172a;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 8px;
+}
+.lab-toolfield:focus-visible { outline: 2px solid rgba(125, 211, 252, 0.5); outline-offset: 1px; }
+.lab-toolfield::placeholder { color: #64748b; }
+.lab-toolfield[readonly] { color: #7dd3fc; cursor: text; }
+
+/* A single short answer — a password, a CIDR block — reads better large. */
+.lab-toolfield-lg {
+  margin: 1rem;
+  font-size: 1rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.lab-fieldrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(15, 23, 42, 0.55);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+.lab-resultbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(15, 23, 42, 0.78);
+  border-top: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+/* Drop zone ---------------------------------------------------------------- */
+.lab-drop {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 1rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed rgba(125, 211, 252, 0.35);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.45);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.lab-drop:hover,
+.lab-drop:focus-visible,
+.lab-drop.is-over {
+  border-color: rgba(125, 211, 252, 0.8);
+  background: rgba(125, 211, 252, 0.08);
+  outline: none;
+}
+.lab-drop-icon { margin: 0; font-size: 1.6rem; line-height: 1; color: #7dd3fc; }
+.lab-drop-main { margin: 0; font-size: 0.95rem; color: #f8fafc; }
+.lab-drop-hint { margin: 0; font-size: 0.8rem; color: #94a3b8; }
+.lab-drop-name {
+  margin: 0.4rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  color: #7dd3fc;
+  word-break: break-all;
+}
+
+/* Steganography preview ---------------------------------------------------- */
+.lab-stegrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 14rem);
+  align-items: stretch;
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+.lab-stegrow .lab-drop { margin: 1rem; }
+.lab-stegpreview {
+  align-self: center;
+  justify-self: center;
+  max-width: calc(100% - 2rem);
+  max-height: 11rem;
+  margin: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  background: #020617;
+  image-rendering: pixelated;
+}
+
+/* CVSS metric grid --------------------------------------------------------- */
+.lab-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.7rem 0.9rem;
+  padding: 0.9rem;
+  background: rgba(15, 23, 42, 0.55);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.14);
+}
+.lab-metric { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.lab-metric label { font-size: 0.78rem; color: #94a3b8; }
+.lab-metric .lab-select { width: 100%; }
+
+/* Regex flag checkboxes ---------------------------------------------------- */
+.lab-flags {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+.lab-flags label { display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; }
+.lab-flags input { accent-color: #7dd3fc; cursor: pointer; }
+
+@media (max-width: 860px) {
+  .lab-tool .lab-panes { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .lab-tool .lab-pane-input { border-right: 0; border-bottom: 1px solid rgba(125, 211, 252, 0.14); }
+  .lab-tool .lab-toolinput { min-height: 9rem; }
+  .lab-tool .lab-terminal { min-height: 18rem; max-height: 60vh; }
+  .lab-stegrow { grid-template-columns: minmax(0, 1fr); }
+  .lab-stegpreview { max-height: 9rem; }
+}
+
+/* The result field is a textarea so multi-line output survives; it should
+   still read as a one-line field until the content needs the second row. */
+.lab-toolresult {
+  resize: vertical;
+  min-height: 2.4rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ==========================================================================
+   Network-backed tools
+   --------------------------------------------------------------------------
+   These are visually distinguished from the rest of Labs on purpose. Every
+   other tool keeps your data on the machine; these send a lookup to a named
+   third party. The amber accent and the persistent banner exist so that
+   difference is never something a visitor has to remember.
+   ========================================================================== */
+
+.lab-nettool {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* The accent is a left border rather than a flex bullet. A bullet is a flex
+   item, so it pushed the text 18px right of every other control in the panel —
+   the toolbar and the pane labels sit at the panel's padding edge, and the
+   banner text did not, which reads as the text hanging out of alignment.
+   Subtracting the border width from the left padding puts the text back on
+   exactly the same vertical line as the toolbar below it. */
+.lab-netnote {
+  display: block;
+  margin: 0;
+  padding: 0.65rem 0.85rem 0.65rem calc(0.85rem - 3px);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #fde68a;
+  background: rgba(251, 191, 36, 0.09);
+  border-left: 3px solid #fbbf24;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+}
+.lab-netnote strong { color: #fbbf24; font-weight: 600; }
+
+.lab-gate-foot {
+  margin: 0.9rem 0 0;
+  padding-top: 0.9rem;
+  font-size: 0.86rem;
+  color: #fde68a;
+  border-top: 1px solid rgba(251, 191, 36, 0.22);
+}
+
+/* Running count of requests this page has caused. */
+.lab-netcount {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  white-space: nowrap;
+}
+
+/* The vendor picker, where the visitor gets a real choice of who to ask. */
+.lab-vendorpick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+@media (max-width: 560px) {
+  /* The toolbar drops to 0.6rem padding below 560px, so the banner has to
+     follow it or the text stops lining up again. */
+  .lab-netnote {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.6rem 0.6rem calc(0.6rem - 3px);
+  }
+  .lab-netcount { flex: 1 1 100%; text-align: center; }
+}

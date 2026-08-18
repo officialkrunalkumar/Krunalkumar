@@ -564,7 +564,17 @@ if (canvas) {
 
   // Anything with a caret in it means the visitor is typing, not steering the
   // background — shared by every key handler below.
-  const EDITABLE = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]';
+  // [contenteditable] has more truthy spellings than "" and "true": CodeJar,
+  // which powers the /labs editors, sets contenteditable="plaintext-only", and
+  // that slipped straight past an equality-matched list — every letter below
+  // was stealing keystrokes from anyone typing code. Matching "present and not
+  // explicitly false" is the only form that cannot be out-guessed by a value
+  // nobody thought of. #linux-terminal is listed separately because it is not
+  // editable at all: it is a plain div that forwards keystrokes to an emulated
+  // machine, so it owns its keyboard just as completely as a text field does.
+  const EDITABLE = 'input, textarea, select, ' +
+    '[contenteditable]:not([contenteditable="false"]), ' +
+    '#linux-terminal, #dos-screen, #dos-text, .lab-editor';
 
   // Escape closes the popover whether or not the letter keys are switched on,
   // so this cannot live in the shortcut handler below. Focus goes back to the

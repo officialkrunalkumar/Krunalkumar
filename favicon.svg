@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ks_">
+  <rect width="64" height="64" rx="14" fill="#121b2c"/>
+  <text x="26" y="41" text-anchor="middle"
+        font-family="Consolas, 'Cascadia Mono', ui-monospace, monospace"
+        font-size="30" font-weight="700" fill="#7dd3fc">ks</text>
+  <rect x="40" y="36" width="14" height="5" rx="2.5" fill="#86efac"/>
+</svg>

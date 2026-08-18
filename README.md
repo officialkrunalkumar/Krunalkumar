@@ -40,6 +40,12 @@ web server can host it, and any computer with a browser can develop it.
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
 │   └── *.html                    One file per article (15 posts), static TOC in the markup
+├── sw.js                         Service worker — caches /assets/vendor only (see Labs)
+├── labs/
+│   ├── index.html                Labs hub — language grid, OS grid, security tools, FAQ
+│   ├── javascript.html, typescript.html, python.html, c.html, cpp.html, sql.html, lua.html
+│   │                             One page per language; all share the same lab app
+│   └── linux.html                Real Linux (v86) — a separate app, not a language page
 ├── partials/
 │   ├── header.html               ★ Single source of truth for the navigation
 │   └── footer.html               ★ Single source of truth for the footer
@@ -354,6 +360,292 @@ crowding the raised surfaces even when you do shift them.
   fake. Keep both in place if that file's caching is ever revisited.
 - `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
   so fetched fragments and raw JSON never appear in search results.
+
+## Labs (`/labs`)
+
+Eleven language playgrounds, three real operating systems, fifteen security and forensics
+tools, a typing test and an API tester, all executing **on the visitor's machine**.
+There is no compile server: every runtime is a WebAssembly build of the real interpreter, fetched
+from `/assets/vendor/` and run inside a Web Worker. No user code is ever transmitted anywhere,
+which is both the privacy claim on the pages and the reason the section costs nothing to operate.
+
+| Route | Engine | First-load |
+|---|---|---|
+| `/labs/c` | Real clang + lld on WebAssembly | ~58 MB |
+| `/labs/sql` | SQLite on WebAssembly (sql.js) | ~700 KB |
+| `/labs/cpp` | Real clang + libc++ on WebAssembly | ~58 MB |
+| `/labs/python` | CPython on WebAssembly (Pyodide) | ~12 MB |
+| `/labs/lua` | Lua 5.4 on WebAssembly (Wasmoon) | ~420 KB |
+| `/labs/php` | Real PHP 8.4 on WebAssembly | ~14 MB |
+| `/labs/javascript` | The browser's own JS engine, in a blob Worker | 0 KB |
+| `/labs/ruby` | Real CRuby on WebAssembly (ruby.wasm) | ~17 MB |
+| `/labs/postgres` | The actual PostgreSQL server (PGlite) | ~17 MB |
+| `/labs/typescript` | Official `tsc` — real type checking, then run | ~9.6 MB |
+| `/labs/linux` | A real Linux kernel + BusyBox on x86 emulation (v86) | ~8 MB |
+| `/labs/dos` | Real FreeDOS on x86 emulation (v86) | ~720 KB |
+| `/labs/bsd` | Real OpenBSD on x86 emulation (v86) | ~1.4 MB |
+| `/labs/perl` | Real Perl 5 on WebAssembly (WebPerl) | ~16 MB |
+| `/labs/typing` | Typing speed test — code and prose | 0 KB |
+| `/labs/api` | HTTP request tester — the browser's own fetch, no proxy | 0 KB |
+
+### Security & digital forensics tools
+
+Fifteen tools sharing one shell (`assets/js/labs/tool-shell.js`), each implemented as a single
+module under `assets/js/labs/tools/`. They carry no runtime download at all — every one is
+plain JavaScript plus `crypto.subtle`, so the whole suite adds about 130 KB to the repo and
+nothing to first load.
+
+The privacy claim here is stronger than it is for the compilers, and load-bearing: these tools
+take evidence files, production tokens, passwords, photographs and raw mail headers. None of the
+modules contains a `fetch`, an `XMLHttpRequest` or a `sendBeacon`. The only input path is
+`FileReader` over a file the visitor picked, and the only output path is a blob URL download.
+
+| Route | What it does |
+|---|---|
+| `/labs/hash` | MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification. |
+| `/labs/file-inspector` | Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph. |
+| `/labs/jwt` | Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted. |
+| `/labs/exif` | Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy. |
+| `/labs/email-headers` | Parses the Received chain, reads SPF, DKIM and DMARC results, detects Reply-To spoofing and extracts the originating IP. |
+| `/labs/url-inspector` | Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects. |
+| `/labs/password` | Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues. |
+| `/labs/cert-decoder` | Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints. |
+| `/labs/encoding` | Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection. |
+| `/labs/cipher` | Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key. |
+| `/labs/steganography` | Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data. |
+| `/labs/regex` | Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns. |
+| `/labs/cvss` | The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings. |
+| `/labs/subnet` | IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification. |
+| `/labs/timestamp` | Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it. |
+
+All fifteen are listed on the hub under **Cybersecurity & digital forensics tools** and share the
+`SoftwareApplication` + `FAQPage` + `BreadcrumbList` schema emitted by the page generator. Their
+Open Graph card is `assets/images/og-labs-security.jpg`; the compilers and terminals use
+`assets/images/og-labs.jpg`.
+
+Languages are ordered by the year each first appeared, and every registry entry carries its
+`year`, which the hub cards show. `/krun` and `/lab` redirect to `/labs`; `/linux` 301s to
+`/labs/linux`.
+
+
+### How a run works
+
+1. `lab-runtimes.js` is the **single source of truth** for what exists — name, engine, first-load
+   size, Prism grammar, execution mode and the starter program. Adding a language means an entry
+   here plus a branch in `lab-worker.js`; nothing else in the UI changes.
+2. `lab-app.js` owns the page: editor (CodeJar + Prism), terminal pane, consent gate, storage
+   meter, watchdog, and the language picker, which swaps language via `pushState` without a reload.
+3. Execution happens in a Worker, never on the main thread:
+   - **WASM runtimes** (Python, SQL, Lua) go to `lab-worker.js`.
+   - **JavaScript** becomes the *source of a Blob Worker*. That is deliberate: the CSP allows
+     `'wasm-unsafe-eval'` but **not** `'unsafe-eval'`, so `eval()` and `new Function()` are both
+     blocked. Making the program *be* the worker script sidesteps the question entirely.
+   - **TypeScript** is type-checked by `ts.createProgram` (not `transpileModule`, which only strips
+     annotations and would let `const n: number = "x"` run), then the emitted JS takes the
+     JavaScript path. The `lib.*.d.ts` chain lives in `assets/vendor/typescript/lib/`; `lab-worker.js`
+     injects an ambient declaration for exactly the globals the sandbox provides — no `lib.dom`,
+     because there is no DOM in a Worker.
+
+### Why a Worker, and what stops a runaway program
+
+A tight `while (true) {}` cannot be interrupted from the inside. The only reliable remedy is
+`worker.terminate()` from the main thread, which is why nothing runs on the main thread and the
+Stop button always works. On top of that `lab-app.js` escalates rather than killing silently:
+an amber banner with a loud Cancel after 8s, a warning if the JS heap climbs steeply, an
+immediate stop past a 4 MB output cap, and a hard terminate at 60s.
+
+### stdin, and why there is no interactive prompt
+
+Input is supplied up-front in the Input panel rather than read interactively. Blocking reads from a
+Worker need `SharedArrayBuffer` + `Atomics.wait`, which needs COOP/COEP headers, which would break
+the embedded analytics. Pre-supplied stdin is how most online compilers work anyway and costs no
+headers at all.
+
+### `/labs/linux`
+
+`v86` emulates a 32-bit x86 machine; a genuine Linux kernel boots on it with a 227-applet BusyBox
+userland. The image boots with `console=ttyS0`, so the kernel talks over the emulated **serial
+port** — `linux-app.js` renders the terminal itself from `serial0-output-byte` rather than using
+v86's VGA screen, which is why the pane matches the site and why `clear`, backspace and arrow keys
+are handled explicitly. Login is automated (`root`, no password) and `dmesg` is replayed on boot,
+because the kernel log goes to the VGA console the user never sees.
+
+`memory_size` is a ceiling the emulator enforces, so a fork bomb exhausts *its* 64 MB and nothing
+else — which is what makes it safe to demonstrate. Note the shell is BusyBox `ash`, not bash: the
+famous `:(){ :|:& };:` is rejected with `bad function name`, and the working form is `f(){ f|f& };f`.
+The machine is also completely sealed — no network device, and no way to reach the WASM runtimes
+used by the language pages, since those are JavaScript objects and this is a separate CPU.
+
+### CSP and caching
+
+### Network lookup tools
+
+Five tools that **do** make requests, kept deliberately separate from the fifteen offline ones.
+They are built on `assets/js/labs/net-tool-shell.js` and never on `tool-shell.js`, because that
+file's header promises nothing built on it opens a connection — and fifteen pages depend on that
+being literally true.
+
+The rule they follow is not "no network" but: the visitor must know **who** is being contacted and
+**what they learn**, before anything fires. So the shell enforces that the vendor is named up
+front, that nothing fires on page load or a keystroke (only an explicit press), that every request
+is echoed into the output pane as it goes out, and that a running request count stays visible.
+There is still no proxy — the browser contacts the vendor directly.
+
+| Route | Vendor | What it does |
+|---|---|---|
+| `/labs/dns` | Google or Cloudflare | A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there. |
+| `/labs/email-security` | Google Public DNS | Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone. |
+| `/labs/ct-log` | SSLMate Cert Spotter | Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target. |
+| `/labs/rdap` | the authoritative registry | Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path. |
+| `/labs/breach-check` | Have I Been Pwned | Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise. |
+
+Every endpoint was verified from a real browser under the production CSP, not just with curl —
+curl proves a server *sends* `Access-Control-Allow-Origin`, not that a browser *accepts* the
+exchange. Two findings from that: HIBP's `Add-Padding` header triggers a preflight that does
+succeed, and `crt.sh` timed out on every attempt, which is why CT search uses Cert Spotter.
+
+### Two consent gates, two storage keys
+
+Every lab stores its consent under `lab.consent`, because they all make the same promise —
+nothing you type leaves the machine — so agreeing once reasonably covers all of them.
+
+`/labs/api` is the exception and stores `lab.consent.network` instead. It makes the *opposite*
+promise: the request genuinely goes out. While it shared the common key, a visitor who accepted
+a "nothing you paste is uploaded" gate on any of the fifteen offline tools arrived at the API
+tester with the network warning already dismissed, having never seen it — the one notice that
+actually matters was the one almost nobody read. The asymmetry is deliberate and one-way:
+accepting the network gate does not unlock the offline tools either.
+
+Three site-wide additions in `vercel.json`, all needed by the runtimes and tools:
+
+- `'wasm-unsafe-eval'` in `script-src` — permits `WebAssembly.instantiate` and **nothing else**;
+  `eval()` and `new Function()` stay blocked.
+- `worker-src 'self' blob:` — for the JavaScript/TypeScript blob Worker, and for the regex
+  tester, which runs both its matching and its ReDoS probe in a terminable Worker so a pattern
+  with catastrophic backtracking gets cancelled instead of freezing the tab.
+- `img-src ... blob:` — the EXIF stripper and the steganography tool decode an image the visitor
+  chose through a blob URL. Without this they fail silently in production while working fine
+  against a server that sends no CSP at all, which is exactly why `scratchpad/prodserve.js`
+  exists.
+
+These are on the single site-wide rule on purpose. A browser receiving more than one CSP header
+enforces the **intersection**, so a second, looser rule scoped to `/labs` would be ignored in
+favour of the stricter global one and WebAssembly would still be blocked.
+
+`/assets/vendor/*` is served `immutable, max-age=31536000`. Those files are version-pinned and never
+change in place, so repeat visits cost zero bandwidth — which is what keeps the section inside a
+Vercel Hobby allowance.
+
+### The storage meter
+
+The ring in the toolbar reports two figures, deliberately separated because only one is ours to
+clear: bytes this lab wrote to `localStorage` (clearable in the panel), and the total size of the
+runtimes downloaded so far. The second is tracked by recording each runtime as it loads rather than
+asking `navigator.storage.estimate()` — the runtimes live in the browser's HTTP cache, which the
+Storage API does not measure and no page may inspect, so `estimate()` reported `0 B` against a
+1.9 GB quota no matter what had been fetched.
+
+### Editing the pages
+
+`labs/*.html` and `labs/linux.html` are **generated**. The generator lives outside the repo (see
+the session notes); if you edit a lab page by hand, keep the change in the HTML — or regenerate and
+re-apply. Structure is shared; all prose is authored per language on purpose, because near-identical
+pages across a language set is exactly what gets read as thin content.
+
+### C and C++ run a real clang
+
+`/labs/c` and `/labs/cpp` share a genuine toolchain: clang and lld compiled to WebAssembly (the
+wasm-clang project), linked against a real libc and libc++. The pipeline is the real one — clang
+`-cc1` emits a wasm32-wasi object, lld links it, the resulting module is instantiated and run. That
+is why the whole STL works: `vector`, `string`, `map`, `<algorithm>`, templates, lambdas, virtual
+dispatch, `unique_ptr`.
+
+It is ~58 MB, fetched only on the first Run. An earlier version used the JSCPP interpreter and was
+removed after testing showed it could not compile `struct`, `enum`, `class`, `std::string` or
+`std::vector` — worth remembering before swapping in any "lightweight" C++ engine.
+
+`shared.js` carries two local patches, both marked `PATCHED` in the source: the language is a
+caller option (upstream always compiles `-x c++`, which would silently change what C means), and
+the emitted filename follows it so diagnostics read `main.c` rather than `main.cc`.
+
+### The service worker (`sw.js`)
+
+Runtimes are cached through the Cache API rather than being left to the HTTP cache, because the
+HTTP cache is invisible and untouchable from JavaScript. Without this, `storage.estimate()`
+reported `0 B` however much had been downloaded, and there was no way to offer a "remove the
+downloaded runtimes" button at all.
+
+The fetch handler returns early for anything that is not a same-origin `/assets/vendor/` request —
+no HTML, CSS or site JS is intercepted, so there is no stale-page class of bug. It has to be a
+service worker rather than a fetch wrapper because Pyodide fetches its own `.wasm` internally and
+`importScripts()` bypasses any shim; only a service worker sees those requests.
+
+The storage panel then reports two genuinely separate figures, each with its own button: code and
+settings in `localStorage`, and runtimes in `caches`. Clearing one never touches the other.
+
+### The absolute VENDOR url in lab-worker.js
+
+`VENDOR` is `self.location.origin + '/assets/vendor/'`, not `/assets/vendor/`. Some Emscripten
+builds hand the path from `locateFile()` to their own loader, which resolves it against the
+emitting script rather than the document root. WebPerl silently failed that way — it initialised
+with no standard library and then produced no output at all, with no error anywhere. An absolute
+URL removes the ambiguity for every runtime, and is the single line to change if these assets ever
+move to separate storage.
+
+### Worker scripts are cached separately
+
+`new Worker(url)` uses a store the normal HTTP cache and a page reload do not touch, so a deployed
+fix can keep running the previous worker indefinitely. `lab-app.js` appends `?v=WORKER_VERSION` —
+bump it whenever `lab-worker.js` changes.
+
+### Never name a worker helper `out`
+
+Emscripten builds declare `var out = Module["print"] || …` at global scope, and `importScripts()`
+runs them in exactly that scope — so a function called `out` in `lab-worker.js` is silently
+replaced the moment such a runtime loads. WebPerl does this. The symptom is brutal: the program
+runs, the output is captured, and then nothing is ever posted to the page, with no error. Any
+runtime loaded afterwards in the same worker loses its output too. The helper is called `labOut`
+for this reason.
+
+### The Linux terminal sends LF, not CR
+
+The tty on that image does not map CR to NL. Sending `
+` for Enter meant nothing reading stdin
+ever saw a line ending — `cat >> file` swallowed every line into one — and the echo came back as a
+lone CR, which simply overwrote the same row on screen. Backspace is a separate trap: the shell
+erases with `` followed by `ESC[J` (erase to end of display), so that sequence has to be handled
+or the character stays on screen.
+
+### DOS mode switching uses `screen-set-size`
+
+This build of v86 emits only `screen-put-char` and `screen-set-size`. There is no
+`screen-set-mode` event, so a listener for one is never called. The third element of the
+`screen-set-size` payload is the bit depth, and `0` means text mode — that is the actual flag for
+swapping between the text pane and the canvas.
+
+### Not shipped, and why
+
+- **R** — WebR was not attempted; it is the largest of the candidates by some distance.
+### `/labs/bsd` — the Mac-flavour terminal
+
+OpenBSD, booted from its 1.44 MB install floppy. macOS itself can never be offered by anyone: it
+is licensed to Apple hardware, cannot be redistributed, and v86 emulates a 32-bit PC that could
+not boot it regardless. But the macOS command line *is* BSD underneath, and this is real BSD.
+
+The page is explicit that it is small, because it is: the installer's rescue ramdisk carries
+nineteen commands (cat, chgrp, chmod, cp, cpio, dd, df, ed, ksh, ln, ls, mkdir, mv, pax, rm, sh,
+sleep, stty, tar) and no grep, sed, awk or uname. It is there to *feel* BSD — `ls -G` rather than
+`ls --color` — not to get work done; the Linux terminal next door has 227 BusyBox applets for
+that.
+
+`bsd-app.js` is derived from `dos-app.js` because both render VGA text via `get_text_row()` rather
+than a serial stream. The one addition is a poll for the `(I)nstall, (U)pgrade or (S)hell?` prompt,
+which answers `S` automatically — the other two options would start partitioning a disk.
+- **Java** — needs either CheerpJ (a third-party CDN script, which would puncture the privacy
+  claim, plus non-commercial licensing) or DoppioJVM (unmaintained, Java 8, ~40 MB).
+- **Windows cmd** — Windows cannot be redistributed and is far too large; ReactOS boots under v86
+  but is 500 MB+ and lands in a GUI. FreeDOS (~0.7 MB) is the honest equivalent and is the planned
+  route for a real `C:\>` prompt.
 
 ## SEO
 
