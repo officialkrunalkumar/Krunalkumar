@@ -50,6 +50,8 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
     <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
     <link rel="preload" href="/partials/header" as="fetch" crossorigin />
     <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -73,6 +75,26 @@
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
         </nav>
       </header>
@@ -142,8 +164,17 @@
                 is no server behind this site.</p>
               <textarea class="chat-blob" id="chat-offer-out" readonly rows="4"
                         placeholder="generating…"></textarea>
-              <button class="btn btn-secondary" type="button"
-                      data-copy-target="chat-offer-out">Copy code</button>
+              <div class="chat-actions">
+                <button class="btn btn-secondary" type="button"
+                        data-copy-target="chat-offer-out">Copy code</button>
+                <button class="btn btn-secondary" type="button"
+                        data-qr-for="chat-offer-out">Show QR</button>
+              </div>
+              <div class="chat-qr" data-qr-holder="chat-offer-out" hidden>
+                <canvas class="chat-qr-canvas"></canvas>
+                <p class="chat-note">Point the other phone's camera at this. The
+                  code is too long to read out, but nothing has to be typed.</p>
+              </div>
             </li>
             <li>
               <h3>2. Paste what they send back</h3>
@@ -174,8 +205,17 @@
               <h3>2. Send this back to them</h3>
               <textarea class="chat-blob" id="chat-answer-out" readonly rows="4"
                         placeholder="appears once you answer"></textarea>
-              <button class="btn btn-secondary" type="button"
-                      data-copy-target="chat-answer-out">Copy reply</button>
+              <div class="chat-actions">
+                <button class="btn btn-secondary" type="button"
+                        data-copy-target="chat-answer-out">Copy reply</button>
+                <button class="btn btn-secondary" type="button"
+                        data-qr-for="chat-answer-out">Show QR</button>
+              </div>
+              <div class="chat-qr" data-qr-holder="chat-answer-out" hidden>
+                <canvas class="chat-qr-canvas"></canvas>
+                <p class="chat-note">Scan this back on their phone to finish the
+                  handshake.</p>
+              </div>
             </li>
           </ol>
         </div>
@@ -189,7 +229,30 @@
             <input class="chat-input" id="chat-input" type="text" maxlength="2000"
                    placeholder="connect first…" autocomplete="off" disabled />
             <button class="btn btn-primary chat-send" id="chat-send" type="submit" disabled>Send</button>
+            <button class="btn btn-secondary chat-send" id="chat-file-btn" type="button" disabled
+                    title="Send a file">File</button>
+            <input id="chat-file" type="file" hidden />
           </form>
+          <div class="chat-av-controls">
+            <button class="btn btn-secondary" id="chat-voice" type="button" disabled>Voice</button>
+            <button class="btn btn-secondary" id="chat-video" type="button" disabled>Video</button>
+            <button class="btn btn-secondary" id="chat-av-stop" type="button" hidden>Stop camera</button>
+            <span class="chat-note chat-av-note">One-to-one only &mdash; relaying video needs a media server.</span>
+          </div>
+          <div class="chat-av" id="chat-av" hidden>
+            <figure class="chat-av-cell">
+              <video id="chat-remote" autoplay playsinline></video>
+              <figcaption>Them</figcaption>
+            </figure>
+            <figure class="chat-av-cell is-self">
+              <video id="chat-local" autoplay playsinline muted></video>
+              <figcaption>You</figcaption>
+            </figure>
+          </div>
+          <div class="chat-xfer" id="chat-xfer" hidden>
+            <div class="chat-xfer-track"><div class="chat-xfer-bar" id="chat-xfer-bar"></div></div>
+            <p class="chat-xfer-text" id="chat-xfer-text"></p>
+          </div>
         </div>
 
         <!-- ============ the inspector — the actual lesson ============ -->
@@ -332,6 +395,7 @@
 
     <script src="/assets/js/particle-bg.js" defer></script>
     <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/qr.js"></script>
     <script defer src="/assets/js/labs/chat.js"></script>
     <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
   </body>

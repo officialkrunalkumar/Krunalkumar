@@ -7,6 +7,37 @@
 // empty — zero tags — so it cost ~314KB per page view for nothing and was
 // removed. If GTM is ever wanted again, publish the container's tags first.)
 (function () {
+  // The visitor's theme, restored before anything paints. This has to live
+  // here rather than in theme.js: theme.js is deferred, so by the time it runs
+  // the page has already painted in the default dark, and a returning
+  // light-theme visitor would see the wrong theme flash first. This file is
+  // synchronous and sits above the stylesheet link, so the attribute is on
+  // <html> before the CSS is even fetched.
+  //
+  // Light stays opt-in. No stored value means dark, and prefers-color-scheme
+  // is deliberately not consulted — following the OS handed a light site to
+  // people who never asked for one.
+  // Each read is guarded on its own: if sessionStorage throws (blocked in some
+  // privacy modes) a single try around all three would skip the localStorage
+  // reads too, and the choice would look lost.
+  function readTheme(area, key) {
+    try {
+      var s = window[area];
+      return s ? s.getItem(key) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  var savedTheme =
+    readTheme('sessionStorage', 'site.theme') ||   // this tab, even if localStorage is unavailable
+    readTheme('localStorage', 'site.theme') ||     // every future visit
+    readTheme('localStorage', 'lab.theme');        // the key this used to use
+
+  if (savedTheme === 'light' || savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+
   document.documentElement.classList.add('js');
   window.addEventListener('load', function () {
     setTimeout(function () {

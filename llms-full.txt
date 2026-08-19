@@ -142,7 +142,7 @@ A contemplative page, deliberately unlike the rest of the site: an illustrated
 Buddha sitting cross-legged on a lotus, a verse from the Pali Canon, and a guided
 breath.
 
-- **50 verses**, one chosen at random on load and again on every tap, never the
+- **405 verses**, one chosen at random on load and again on every tap, never the
   same twice in a row. Sources: Dhammapada (30), Samyutta Nikaya, Anguttara
   Nikaya, Majjhima Nikaya, Itivuttaka, Udana, Sutta Nipata, Theragatha,
   Therigatha, Karaniya Metta Sutta.
@@ -162,6 +162,35 @@ breath.
 - **Tapping him** changes the verse, with a bounce and a burst of sparkles.
 - **Fullscreen mode** hands the entire screen to the scene.
 - Nothing is collected, counted or stored. There is no sign-up.
+
+## Peer-to-peer chat (/labs/chat)
+
+The only lab on the site that opens a network connection. Every other tool runs
+entirely inside the tab with no requests of any kind; this one connects two
+browsers directly to each other, and says so prominently before anything else.
+
+- **No server.** Two browsers exchange a short code by whatever channel the two
+  people already share — chat app, email, a QR scanned off the other screen —
+  and after that the connection is direct. Nothing is stored, nothing passes
+  through this site, and there is no account or database behind it.
+- **Why the code exists at all.** A browser cannot accept an incoming
+  connection. No JavaScript API binds a socket and listens; fetch, WebSocket,
+  EventSource and RTCPeerConnection all dial outward. A page that could listen
+  would turn every open tab into a reachable server. So neither side can find
+  the other unaided, and the first message has to be carried by hand.
+- **Code size.** 243 characters for the invitation, 147 for the reply. The full
+  SDP is never transmitted: 14 of its 21 lines are identical on every WebRTC
+  connection and are rebuilt from a template, leaving only the ICE credentials,
+  the DTLS fingerprint and the addresses.
+- **Group chat** uses a star: everyone connects to the host, who repeats what it
+  hears. N-1 exchanges rather than N(N-1)/2.
+- **File transfer** is chunked with backpressure. No size limit in Chrome or
+  Edge, where each chunk is written straight to disk; 512 MB elsewhere, where it
+  has to be held in memory.
+- **Voice and video are one-to-one only**, because relaying video needs a media
+  server and relaying text does not.
+- **Live inspector** showing ICE candidates by type, gathering and connection
+  state, and which path finally carried the traffic.
 
 ## Security tools
 
@@ -250,3 +279,23 @@ vulnerable XSS playground.
 - /labs/api — HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
 - /labs/typing — Typing speed test. WPM and accuracy over configurable text, entirely offline.
 - /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks (reflected and stored XSS against a deliberately vulnerable guestbook), with its own strict CSP isolating it from the rest of the site. For learning the offensive side in a place where breaking things is the point.
+
+## Reading the site: search and themes
+
+**Search.** Every page has a search button in the header. It runs against a prebuilt
+index covering all 88 pages and opens a full-screen panel, on a phone and a laptop
+alike. The index ships with the site and the matching happens in the tab, so no
+search query is ever sent anywhere.
+
+**Themes.** A light/dark toggle sits beside it. The site is dark by default and
+light is opt-in — it deliberately does not follow the operating system setting,
+because that would hand a light site to anyone with a light desktop without their
+asking. The choice is stored locally and applied before the first paint, so a
+returning visitor never sees the wrong theme flash.
+
+Both themes are held to the WCAG AA contrast floor (4.5:1 for body text, 3:1 for
+large text) on every page. Elements that are dark instruments by design — the
+terminals, the code editor, the visualiser canvases, HackLab's simulated corporate
+portal — keep their dark palette in both themes rather than being re-coloured, so
+they read the same either way.
+

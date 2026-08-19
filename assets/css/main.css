@@ -35,12 +35,12 @@
 
      What must be shifted BY HAND, by the same rgb delta applied here:
        - the raised-surface fills rgba(31,44,63,…) / rgba(46,62,80,…) /
-         rgba(24,36,57,…) and the secondary-button hexes #1f2c3f / #212d3c
+         rgba(24,36,57,…) and the secondary-button hexes var(--surf-1) / var(--surf-2)
          (.btn-primary is accent-filled and does not shift) —
          background declarations in this file plus 3 in blog.css
          (.post-body pre, .post-toc, .blog-filter) — grep, don't count on this
        - the artwork: assets/images/blog/*.svg cover gradients and the inline
-         <svg> figure panels in blog posts (#1b2735)
+         <svg> figure panels in blog posts (var(--surf-4))
        - the theme-color meta in every page (tracks --bg-base)
 
      The card fills are the real constraint. They are ~80% opaque, so they
@@ -52,7 +52,7 @@
      Shadows are the one thing that must NOT follow — they have to stay darker
      than whatever the page becomes, so they keep their original dark values.
      (the card-hover shadow is a pre-existing exception at rgba(20,33,61,.08).) */
-  --bg-base: #121b2c;
+  --bg-base: var(--surf-5);
   --bg-base-rgb: 18 27 44;
   --bg-mid: rgba(25, 36, 55, 0.96);
   /* Deliberately equal to --bg-mid: the page's radial gradient is a NEUTRAL
@@ -61,10 +61,10 @@
      distracting colored circle, so the color was removed by choice. Restore
      the old value here if the purple ambience is ever wanted back. */
   --bg-glow: rgba(25, 36, 55, 0.96);
-  --text: #f8fafc;
-  --muted: #e2e8f0;
-  --accent: #7dd3fc;
-  --accent-dark: #38bdf8;
+  --text: var(--ink);
+  --muted: var(--ink-2);
+  --accent: var(--accent-1);
+  --accent-dark: var(--accent-2);
 }
 
 /* ==========================================================================
@@ -87,7 +87,7 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #e2f0ff;
+  color: var(--ink-tint);
   background: var(--bg-base);
   position: relative;
   isolation: isolate;
@@ -153,21 +153,27 @@ img {
 
 .brand {
   --brand-hue: 199;
+  --brand-l: 70%;
   font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .brand {
+    /* Lightness is a token because the stops are painted straight onto the
+       page: background-clip:text means `color` is ignored, so a light theme
+       cannot fix this the usual way. At 70% these pastels sat around 1.2:1 on
+       white — the name was legible only where the dark middle stop passed
+       under it. See --brand-l in the light block. */
     background: linear-gradient(
       90deg,
-      hsl(var(--brand-hue), 92%, 70%),
-      hsl(calc(var(--brand-hue) + 70), 92%, 70%),
-      #f8fafc,
-      hsl(var(--brand-hue), 92%, 70%)
+      hsl(var(--brand-hue), 92%, var(--brand-l)),
+      hsl(calc(var(--brand-hue) + 70), 92%, var(--brand-l)),
+      var(--ink),
+      hsl(var(--brand-hue), 92%, var(--brand-l))
     );
     background-size: 300% 100%;
     -webkit-background-clip: text;
@@ -264,7 +270,7 @@ img {
 .nav-list a {
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-weight: 600;
   transition: all 0.2s ease;
 }
@@ -272,7 +278,7 @@ img {
 .nav-list a:hover {
   /* Dark pill, not the light --surface-alt one: light-on-light put accent text
      at 1.96:1 contrast, far below the WCAG AA 4.5:1 floor. */
-  background: rgba(125, 211, 252, 0.12);
+  background: rgb(var(--accent-rgb) / 0.12);
   color: var(--accent);
 }
 
@@ -405,7 +411,7 @@ img {
   }
 
   .noscript-header .nav-list::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.4);
+    background: rgb(var(--line-rgb) / 0.4);
     border-radius: 999px;
   }
 }
@@ -419,9 +425,9 @@ img {
   width: 44px;
   height: 44px;
   padding: 0;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 12px;
-  background: rgba(31, 44, 63, 0.85);
+  background: var(--sheet-85);
   cursor: pointer;
 }
 
@@ -430,7 +436,7 @@ img {
   width: 20px;
   height: 2px;
   border-radius: 999px;
-  background: #e2f0ff;
+  background: var(--ink-tint);
   transition: transform 0.25s ease, opacity 0.2s ease;
 }
 
@@ -458,7 +464,7 @@ img {
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: #e2e8f0;
+  color: var(--ink-2);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -467,7 +473,7 @@ img {
 
 .nav-dropdown-toggle:hover,
 .nav-dropdown.open .nav-dropdown-toggle {
-  background: rgba(125, 211, 252, 0.12);
+  background: rgb(var(--accent-rgb) / 0.12);
   color: var(--accent);
 }
 
@@ -495,7 +501,7 @@ img {
   gap: 0.25rem;
   padding: 0.5rem;
   background: rgb(var(--bg-base-rgb) / 0.97);
-  border: 1px solid rgba(125, 211, 252, 0.22);
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
   border-radius: 16px;
   box-shadow: 0 18px 40px rgba(2, 6, 23, 0.55);
 }
@@ -604,7 +610,7 @@ textarea:focus-visible {
   padding: 0.6rem 1rem;
   border-radius: 999px;
   background: var(--accent);
-  color: #0f172a;
+  color: var(--surf-0);
   font-weight: 700;
   transform: translateY(-200%);
   transition: transform 0.2s ease;
@@ -697,7 +703,7 @@ main {
   align-items: center;
   margin: 0;
   padding: 0;
-  color: #94a3b8;
+  color: var(--ink-4);
 }
 
 .breadcrumbs li {
@@ -708,7 +714,7 @@ main {
 .breadcrumbs li + li::before {
   content: "/";
   margin: 0 0.5rem;
-  color: rgba(148, 163, 184, 0.6);
+  color: rgb(var(--line-rgb) / 0.6);
 }
 
 .breadcrumbs a {
@@ -762,7 +768,7 @@ h2 {
 .info-card p,
 .license-card p,
 footer p {
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-weight: 600;
 }
 
@@ -838,16 +844,16 @@ footer p {
   align-items: center;
   padding: 0.55rem 0.8rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.12);
-  color: #e2f0ff;
-  border: 1px solid rgba(125, 211, 252, 0.2);
+  background: rgb(var(--accent-rgb) / 0.12);
+  color: var(--ink-tint);
+  border: 1px solid rgb(var(--accent-rgb) / 0.2);
   font-weight: 700;
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .chip:hover {
   transform: translateY(-2px);
-  background: rgba(125, 211, 252, 0.2);
+  background: rgb(var(--accent-rgb) / 0.2);
 }
 
 .btn {
@@ -887,14 +893,14 @@ footer p {
 }
 
 .btn-secondary {
-  background: #1f2c3f;
-  color: #f8fafc;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  background: var(--surf-1);
+  color: var(--ink);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
 }
 
 .btn-secondary:hover {
-  background: #212d3c;
-  color: #f8fafc;
+  background: var(--surf-2);
+  color: var(--ink);
 }
 
 /* ==========================================================================
@@ -912,8 +918,8 @@ footer p {
 
 .hero-card {
   padding: 1.2rem;
-  background: linear-gradient(145deg, rgba(24, 36, 57, 0.9), rgba(31, 44, 63, 0.84));
-  border: 1px solid rgba(125, 211, 252, 0.16);
+  background: linear-gradient(145deg, rgb(var(--well-rgb) / 0.9), rgb(var(--sheet-rgb) / 0.84));
+  border: 1px solid rgb(var(--accent-rgb) / 0.16);
 }
 
 .hero-card img {
@@ -921,7 +927,7 @@ footer p {
   height: 360px;
   object-fit: cover;
   width: 100%;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 8px 24px rgb(var(--deep-rgb) / 0.12);
 }
 
 .profile-highlights {
@@ -932,8 +938,8 @@ footer p {
 }
 
 .profile-highlights div {
-  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.92));
-  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: linear-gradient(135deg, var(--sheet-95), rgb(var(--raise-rgb) / 0.92));
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
   border-radius: 16px;
   padding: 0.9rem;
   text-align: center;
@@ -946,14 +952,14 @@ footer p {
 
 .profile-highlights strong {
   display: block;
-  color: #f8fafc;
+  color: var(--ink);
   font-size: 1rem;
   margin-bottom: 0.2rem;
 }
 
 .profile-highlights span {
   font-size: 0.9rem;
-  color: #cbd5e1;
+  color: var(--ink-3);
 }
 
 .section-card {
@@ -997,8 +1003,8 @@ main [id] {
 
 .info-card,
 .license-card {
-  background: linear-gradient(145deg, rgba(31, 44, 63, 0.8), rgba(46, 62, 80, 0.74));
-  border: 1px solid rgba(125, 211, 252, 0.14);
+  background: linear-gradient(145deg, var(--sheet-80), rgb(var(--raise-rgb) / 0.74));
+  border: 1px solid rgb(var(--accent-rgb) / 0.14);
   border-radius: 18px;
   padding: 1.2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1017,8 +1023,8 @@ main [id] {
 }
 
 .faq-list details {
-  background: linear-gradient(145deg, rgba(31, 44, 63, 0.8), rgba(46, 62, 80, 0.74));
-  border: 1px solid rgba(125, 211, 252, 0.14);
+  background: linear-gradient(145deg, var(--sheet-80), rgb(var(--raise-rgb) / 0.74));
+  border: 1px solid rgb(var(--accent-rgb) / 0.14);
   border-radius: 18px;
   padding: 0 1.2rem;
 }
@@ -1032,7 +1038,7 @@ main [id] {
   gap: 1rem;
   padding: 1.05rem 0;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--ink-5);
 }
 
 .faq-list summary::-webkit-details-marker {
@@ -1055,7 +1061,7 @@ main [id] {
 
 .faq-list details p {
   margin: 0 0 1.1rem;
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-weight: 600;
 }
 
@@ -1074,7 +1080,7 @@ main [id] {
   margin: 0;
   font-weight: 600;
   text-align: center;
-  color: #e2e8f0;
+  color: var(--ink-2);
 }
 
 /* ==========================================================================
@@ -1105,13 +1111,13 @@ main [id] {
   margin-top: 0.85rem;
   text-align: center;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--ink-4);
 }
 
 .paper-meta {
   margin-top: 0.35rem;
   font-size: 0.95rem;
-  color: #94a3b8;
+  color: var(--ink-4);
 }
 
 .paper-doi {
@@ -1146,7 +1152,7 @@ main [id] {
   position: relative;
   margin-left: 0.4rem;
   padding: 0 0 1.5rem 1.6rem;
-  border-left: 2px solid rgba(125, 211, 252, 0.25);
+  border-left: 2px solid rgb(var(--accent-rgb) / 0.25);
 }
 
 .timeline li:last-child {
@@ -1162,7 +1168,7 @@ main [id] {
   height: 12px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.15);
+  box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.15);
 }
 
 .timeline-period {
@@ -1177,12 +1183,12 @@ main [id] {
 .timeline-role {
   margin: 0.15rem 0 0;
   font-weight: 800;
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 .timeline-desc {
   margin: 0.25rem 0 0;
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -1192,10 +1198,10 @@ main [id] {
   align-items: center;
   padding: 0.4rem 0.7rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.16);
-  color: #e2f0ff;
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--ink-tint);
   font-size: 0.9rem;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
 }
 
 .compact-card h3 {
@@ -1217,16 +1223,16 @@ main [id] {
   gap: 1rem;
   padding: 1.2rem 1.2rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
-  border: 1px solid rgba(125, 211, 252, 0.24);
-  color: #f8fafc;
+  background: linear-gradient(135deg, var(--sheet-95), rgb(var(--raise-rgb) / 0.82));
+  border: 1px solid rgb(var(--accent-rgb) / 0.24);
+  color: var(--ink);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .featured-project-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(125, 211, 252, 0.45);
+  border-color: rgb(var(--accent-rgb) / 0.45);
 }
 
 .featured-project-content {
@@ -1239,9 +1245,9 @@ main [id] {
   gap: 0.8rem;
   padding: 1.3rem 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
-  border: 1px solid rgba(125, 211, 252, 0.24);
-  color: #f8fafc;
+  background: linear-gradient(135deg, var(--sheet-95), rgb(var(--raise-rgb) / 0.82));
+  border: 1px solid rgb(var(--accent-rgb) / 0.24);
+  color: var(--ink);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
 
@@ -1250,7 +1256,7 @@ main [id] {
   align-self: flex-start;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.16);
+  background: rgb(var(--accent-rgb) / 0.16);
   color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
@@ -1262,12 +1268,12 @@ main [id] {
   margin: 0;
   font-size: 1.04rem;
   line-height: 1.8;
-  color: #e2f0ff;
+  color: var(--ink-tint);
 }
 
 .featured-recommendation-author {
   font-weight: 800;
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 .featured-recommendation-meta {
@@ -1290,9 +1296,9 @@ main [id] {
 }
 
 .carousel-btn {
-  border: 1px solid rgba(125, 211, 252, 0.3);
-  background: rgba(31, 44, 63, 0.92);
-  color: #f8fafc;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  background: rgb(var(--sheet-rgb) / 0.92);
+  color: var(--ink);
   border-radius: 999px;
   width: 42px;
   height: 42px;
@@ -1302,7 +1308,7 @@ main [id] {
 }
 
 .carousel-btn:hover:not(:disabled) {
-  background: rgba(125, 211, 252, 0.18);
+  background: rgb(var(--accent-rgb) / 0.18);
   transform: translateY(-1px);
 }
 
@@ -1314,7 +1320,7 @@ main [id] {
 .page-label {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #cbd5e1;
+  color: var(--ink-3);
 }
 
 .project-list {
@@ -1330,15 +1336,15 @@ main [id] {
   gap: 0.8rem;
   padding: 1rem;
   border-radius: 18px;
-  background: linear-gradient(145deg, rgba(31, 44, 63, 0.9), rgba(46, 62, 80, 0.78));
-  border: 1px solid rgba(125, 211, 252, 0.18);
-  color: #f8fafc;
+  background: linear-gradient(145deg, var(--sheet-90), rgb(var(--raise-rgb) / 0.78));
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  color: var(--ink);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-item:hover {
   transform: translateY(-2px);
-  border-color: rgba(125, 211, 252, 0.4);
+  border-color: rgb(var(--accent-rgb) / 0.4);
   box-shadow: 0 10px 24px rgba(2, 6, 23, 0.18);
 }
 
@@ -1359,7 +1365,7 @@ main [id] {
 
 .project-description {
   margin: 0;
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -1368,8 +1374,8 @@ main [id] {
   flex-shrink: 0;
   padding: 0.45rem 0.7rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.16);
-  color: #f8fafc;
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--ink);
   font-size: 0.82rem;
   font-weight: 700;
   white-space: nowrap;
@@ -1401,8 +1407,8 @@ main [id] {
 .recommendation-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
-  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: linear-gradient(135deg, var(--sheet-95), rgb(var(--raise-rgb) / 0.82));
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
 
@@ -1410,12 +1416,12 @@ main [id] {
   margin: 0 0 1rem;
   font-size: 1.02rem;
   line-height: 1.8;
-  color: #e2f0ff;
+  color: var(--ink-tint);
 }
 
 .recommendation-author {
   font-weight: 800;
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 .recommendation-role {
@@ -1425,7 +1431,7 @@ main [id] {
 }
 
 .recommendation-date {
-  color: #cbd5e1;
+  color: var(--ink-3);
   font-size: 0.9rem;
   margin-top: 0.4rem;
 }
@@ -1443,15 +1449,15 @@ main [id] {
 .contact-links a {
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.16);
-  color: #f8fafc;
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--ink);
   font-weight: 700;
-  border: 1px solid rgba(125, 211, 252, 0.35);
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
 }
 
 .contact-links a:hover {
   background: var(--accent);
-  color: #0f172a;
+  color: var(--surf-0);
 }
 
 .contact-actions {
@@ -1469,15 +1475,15 @@ main [id] {
   gap: 0.45rem;
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.16);
-  color: #f8fafc;
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--ink);
   font-weight: 700;
-  border: 1px solid rgba(125, 211, 252, 0.35);
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
 }
 
 .contact-actions a:hover {
   background: var(--accent);
-  color: #0f172a;
+  color: var(--surf-0);
 }
 
 .contact-icon {
@@ -1501,7 +1507,7 @@ main [id] {
   flex-direction: column;
   gap: 0.45rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--ink-2);
 }
 
 .field span {
@@ -1513,7 +1519,7 @@ main [id] {
   margin: 0;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #94a3b8;
+  color: var(--ink-4);
 }
 
 .field input,
@@ -1521,10 +1527,10 @@ main [id] {
 .field textarea {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 14px;
   background: rgba(248, 250, 252, 0.95);
-  color: #0f172a;
+  color: var(--surf-0);
   font: inherit;
 }
 
@@ -1539,7 +1545,7 @@ main [id] {
 .field input:focus:not(:focus-visible),
 .field select:focus:not(:focus-visible),
 .field textarea:focus:not(:focus-visible) {
-  outline: 2px solid rgba(125, 211, 252, 0.4);
+  outline: 2px solid rgb(var(--accent-rgb) / 0.4);
   border-color: var(--accent);
 }
 
@@ -1587,7 +1593,7 @@ main [id] {
 .form-note {
   margin: 0.8rem 0 0;
   font-size: 0.95rem;
-  color: #cbd5e1;
+  color: var(--ink-3);
 }
 
 /* Certificate verification page */
@@ -1609,8 +1615,8 @@ main [id] {
 .verify-card {
   padding: 1.3rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(31, 44, 63, 0.95), rgba(46, 62, 80, 0.82));
-  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: linear-gradient(135deg, var(--sheet-95), rgb(var(--raise-rgb) / 0.82));
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18);
 }
 
@@ -1634,9 +1640,9 @@ main [id] {
 }
 
 .verify-status-info .verify-status {
-  background: rgba(125, 211, 252, 0.14);
+  background: rgb(var(--accent-rgb) / 0.14);
   color: #e0f2fe;
-  border: 1px solid rgba(125, 211, 252, 0.35);
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
 }
 
 .verify-status-pending .verify-status {
@@ -1666,14 +1672,14 @@ main [id] {
 
 .verify-fields dd {
   margin: 0;
-  color: #e2f0ff;
+  color: var(--ink-tint);
   overflow-wrap: anywhere;
 }
 
 .verify-note {
   margin: 1rem 0 0;
   font-size: 0.95rem;
-  color: #cbd5e1;
+  color: var(--ink-3);
 }
 
 @media (max-width: 640px) {
@@ -1697,9 +1703,9 @@ main [id] {
 .form-followup button {
   padding: 0.45rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(125, 211, 252, 0.35);
-  background: rgba(125, 211, 252, 0.16);
-  color: #f8fafc;
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--ink);
   font: inherit;
   font-size: 0.9rem;
   font-weight: 700;
@@ -1709,7 +1715,7 @@ main [id] {
 
 .form-followup button:hover {
   background: var(--accent);
-  color: #0f172a;
+  color: var(--surf-0);
 }
 
 /* ==========================================================================
@@ -1746,19 +1752,19 @@ footer {
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 .footer-logo {
   width: 32px;
   height: 32px;
   border-radius: 9px;
-  border: 1px solid rgba(125, 211, 252, 0.3);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
 }
 
 .footer-tagline {
   margin-top: 0.4rem;
-  color: #94a3b8;
+  color: var(--ink-4);
   font-weight: 500;
   font-size: 0.95rem;
   line-height: 1.65;
@@ -1773,8 +1779,8 @@ footer {
   height: 38px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent-dark), #1f2c3f);
-  color: #f8fafc;
+  background: linear-gradient(135deg, var(--accent-dark), var(--surf-1));
+  color: var(--ink);
   font-size: 1rem;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.24);
@@ -1842,8 +1848,8 @@ footer {
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
-  background: rgba(31, 44, 63, 0.92);
-  color: #cbd5e1;
+  background: rgb(var(--sheet-rgb) / 0.92);
+  color: var(--ink-3);
   font-size: 0.8rem;
   line-height: 1;
   cursor: pointer;
@@ -1858,7 +1864,7 @@ footer {
 
 .whatsapp-float-close:hover {
   color: #ffffff;
-  background: rgba(31, 44, 63, 1);
+  background: rgb(var(--sheet-rgb) / 1);
 }
 
 /* Once the bubble is dismissed, back-to-top reclaims the corner. The bubble
@@ -1888,10 +1894,10 @@ body.wa-dismissed .back-to-top {
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 999px;
-  background: rgba(31, 44, 63, 0.85);
-  color: #cbd5e1;
+  background: var(--sheet-85);
+  color: var(--ink-3);
   cursor: pointer;
   opacity: 0.65;
   transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -1900,8 +1906,8 @@ body.wa-dismissed .back-to-top {
 .bg-pause-toggle:hover,
 .bg-pause-toggle:focus-visible {
   opacity: 1;
-  color: #f8fafc;
-  background: rgba(31, 44, 63, 1);
+  color: var(--ink);
+  background: rgb(var(--sheet-rgb) / 1);
 }
 
 .bg-pause-toggle svg {
@@ -1924,10 +1930,10 @@ body.wa-dismissed .back-to-top {
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 999px;
-  background: rgba(31, 44, 63, 0.85);
-  color: #cbd5e1;
+  background: var(--sheet-85);
+  color: var(--ink-3);
   cursor: pointer;
   opacity: 0.65;
   transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -1937,8 +1943,8 @@ body.wa-dismissed .back-to-top {
 .bg-settings-toggle:focus-visible,
 .bg-settings-toggle[aria-expanded="true"] {
   opacity: 1;
-  color: #f8fafc;
-  background: rgba(31, 44, 63, 1);
+  color: var(--ink);
+  background: rgb(var(--sheet-rgb) / 1);
 }
 
 /* The dots/speed controls are the hidden half: particle-bg.js adds
@@ -1972,11 +1978,11 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
   gap: 0.55rem;
   width: 224px;
   padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 14px;
   background: rgba(23, 31, 50, 0.97);
   box-shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-size: 0.82rem;
 }
 
@@ -1988,7 +1994,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
 
 .bg-settings-title {
   margin: 0;
-  color: #7dd3fc;
+  color: var(--accent-1);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.09em;
@@ -2006,10 +2012,10 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
   width: 26px;
   height: 26px;
   padding: 0;
-  border: 1px solid rgba(125, 211, 252, 0.28);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
   border-radius: 8px;
   background: rgba(38, 49, 67, 0.9);
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-size: 0.95rem;
   line-height: 1;
   cursor: pointer;
@@ -2024,7 +2030,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
    steps between two and three digits. */
 .bg-settings-value {
   min-width: 3.4rem;
-  color: #cbd5e1;
+  color: var(--ink-3);
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -2038,7 +2044,7 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
 
 .bg-settings-keys {
   margin: 0;
-  color: #94a3b8;
+  color: var(--ink-4);
   font-size: 0.72rem;
   line-height: 1.5;
 }
@@ -2053,10 +2059,10 @@ body:not(.bg-controls-shown) .bg-settings-toggle:not(:focus-visible) {
   bottom: 3.9rem;
   z-index: 39;
   padding: 0.35rem 0.75rem;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 999px;
   background: rgba(23, 31, 50, 0.94);
-  color: #e2e8f0;
+  color: var(--ink-2);
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -2127,7 +2133,7 @@ footer a:hover {
 .footer-col a {
   display: block;
   padding: 0.28rem 0;
-  color: #cbd5e1;
+  color: var(--ink-3);
   font-weight: 600;
 }
 
@@ -2149,11 +2155,11 @@ footer a:hover {
 }
 
 .footer-bottom small {
-  color: #cbd5e1;
+  color: var(--ink-3);
 }
 
 .footer-bottom a {
-  color: #cbd5e1;
+  color: var(--ink-3);
   font-weight: 600;
 }
 
@@ -2232,7 +2238,7 @@ footer a:hover {
     overscroll-behavior: contain;
     background: rgb(var(--bg-base-rgb) / 0.97);
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(125, 211, 252, 0.18);
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
     box-shadow: 0 24px 40px rgba(2, 6, 23, 0.5);
   }
 
@@ -2432,4 +2438,861 @@ footer a:hover {
 @media (prefers-reduced-motion: reduce) {
   .footer-still::after { animation: none; opacity: 0; }
   .footer-still:hover { transform: none; }
+}
+
+/* ==========================================================================
+   Site search and the theme toggle
+   --------------------------------------------------------------------------
+   Both live in the navigation as single icons. An earlier version parked a
+   14rem input in the bar, which crowded the links beside it and wrapped the
+   whole thing onto a second line on a phone. The search opens a centred
+   overlay instead — roomier than a dropdown, and identical on every size.
+   ========================================================================== */
+
+/* The nav is a column — brand on one row, links on the next — so a third
+   flex child added a third row and grew the header by 50px. These float in
+   the top-right corner instead and cost no layout at all. */
+.nav { position: relative; }
+
+.nav-tools {
+  position: absolute;
+  top: 0.55rem;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 5;
+}
+
+.search-open,
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  flex: 0 0 auto;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+.search-open:hover,
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.12);
+}
+.search-open:focus-visible,
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.search-open svg, .theme-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
+
+.theme-toggle .theme-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .theme-sun { display: block; }
+:root[data-theme="light"] .theme-toggle .theme-moon { display: none; }
+
+/* ---- the overlay ---- */
+.site-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  padding: clamp(3rem, 12vh, 8rem) 1rem 2rem;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(3px);
+}
+.site-search-overlay[hidden] { display: none; }
+
+.site-search-box {
+  width: min(40rem, 100%);
+  background: rgb(var(--bg-base-rgb) / 0.99);
+  border: 1px solid rgb(var(--line-rgb) / 0.32);
+  border-radius: 0.8rem;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.6);
+  overflow: hidden;
+}
+
+.site-search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.22);
+}
+.site-search-field svg { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; color: var(--muted); }
+
+.site-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.2rem 0;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+}
+.site-search-input:focus { outline: none; }
+.site-search-input::placeholder { color: var(--muted); opacity: 0.75; }
+
+.site-search-close {
+  flex: 0 0 auto;
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+.site-search-close:hover { color: var(--text); border-color: var(--accent); }
+
+.site-search-panel { max-height: min(28rem, 55vh); overflow-y: auto; }
+.site-search-list { list-style: none; margin: 0; padding: 0.35rem; }
+
+.site-search-hit {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.45rem;
+  text-decoration: none;
+  color: var(--text);
+}
+.site-search-hit:hover,
+.site-search-hit.is-active { background: rgb(var(--accent-rgb) / 0.14); }
+
+.site-search-hit-top { display: flex; align-items: baseline; gap: 0.5rem; }
+.site-search-hit-title { font-weight: 600; font-size: 0.94rem; }
+.site-search-hit-tag {
+  margin-left: auto;
+  flex: 0 0 auto;
+  font-size: 0.66rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.site-search-hit-snip {
+  font-size: 0.81rem;
+  line-height: 1.55;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.site-search-none { margin: 0; padding: 1rem; font-size: 0.88rem; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .site-search-overlay { padding: 0; align-items: stretch; }
+  .site-search-box { width: 100%; height: 100%; border: 0; border-radius: 0; }
+  .site-search-panel { max-height: calc(100vh - 4.5rem); }
+  /* Both icons stay in the bar, at a size a thumb can actually hit. They were
+     29px — present, but under the 40px every platform guideline asks for.
+
+     They also come out of the absolute corner here. Absolute made sense at
+     641px and up, where the nav is a column and a third flex child would add
+     a whole row; but at phone widths the nav is a plain row and .nav-list is
+     an absolute dropdown, so the row holds only the brand and the hamburger.
+     Floating over that row reserved no space, and at 320px the toggle landed
+     on top of the last 33px of the brand. In the flow the brand simply gives
+     way instead. */
+  .nav-tools {
+    position: static;
+    order: 1;
+    margin-left: auto;
+    margin-right: 0.55rem;
+    gap: 0.25rem;
+  }
+
+  .nav-toggle { order: 2; }
+
+  /* Without min-width:0 a flex item refuses to shrink below its content, so
+     the long name would push the icons off the bar rather than truncate. */
+  .brand {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 0.6rem;   /* the ellipsis should not touch the first icon */
+  }
+
+  .search-open, .theme-toggle { width: 2.5rem; height: 2.5rem; }
+  .search-open svg, .theme-toggle svg { width: 1.15rem; height: 1.15rem; }
+}
+
+/* ==========================================================================
+   Themes
+   --------------------------------------------------------------------------
+   The site was built dark, with its colours written out in full in 707 places.
+   Rather than hand-edit those, the recurring ones became the tokens below and
+   each has a value per theme.
+
+   Three things deliberately do NOT change:
+     - Terminal panes, the editor and syntax highlighting stay dark. A terminal
+       that turns white is not a light theme, it is a broken terminal, and every
+       real editor keeps its canvas dark under a light UI.
+     - Status colours (red, green, amber) stay as they are; they read on either
+       ground and remapping them would make errors less obvious, not more.
+     - /buddha keeps its own palette. It is a dawn scene, not chrome.
+
+   No theme is forced. Without a stored choice the site follows the operating
+   system, which is what prefers-color-scheme is for.
+   ========================================================================== */
+
+:root {
+  --accent-rgb: 125 211 252;
+  --line-rgb: 148 163 184;
+  --sheet-rgb: 31 44 63;
+  --raise-rgb: 46 62 80;
+  --well-rgb: 24 36 57;
+  --deep-rgb: 15 23 42;
+  --accent2-rgb: 56 189 248;
+  --ink: #f8fafc;
+  --ink-2: #e2e8f0;
+  --ink-3: #cbd5e1;
+  --ink-4: #94a3b8;
+  --ink-tint: #e2f0ff;
+  --ink-5: #f1f5f9;
+  --accent-1: #7dd3fc;
+  --accent-2: #38bdf8;
+  --surf-0: #0f172a;
+  --surf-1: #1f2c3f;
+  --surf-2: #212d3c;
+  --surf-3: #18243a;
+  --surf-4: #1b2735;
+  --surf-5: #121b2c;
+  --sheet-95: rgb(var(--sheet-rgb) / 0.95);
+  --sheet-90: rgb(var(--sheet-rgb) / 0.9);
+  --sheet-85: rgb(var(--sheet-rgb) / 0.85);
+  --sheet-80: rgb(var(--sheet-rgb) / 0.8);
+  --sheet-75: rgb(var(--sheet-rgb) / 0.75);
+  --sheet-70: rgb(var(--sheet-rgb) / 0.7);
+  --sheet-60: rgb(var(--sheet-rgb) / 0.6);
+  --raise-85: rgb(var(--raise-rgb) / 0.85);
+  --raise-80: rgb(var(--raise-rgb) / 0.8);
+  --raise-70: rgb(var(--raise-rgb) / 0.7);
+  --well-75: rgb(var(--well-rgb) / 0.75);
+  --well-70: rgb(var(--well-rgb) / 0.7);
+  --scrim: rgba(2, 6, 23, 0.72);
+  --line-30: rgb(var(--line-rgb) / 0.3);
+  --line-28: rgb(var(--line-rgb) / 0.28);
+  --line-25: rgb(var(--line-rgb) / 0.25);
+  --line-22: rgb(var(--line-rgb) / 0.22);
+  --line-18: rgb(var(--line-rgb) / 0.18);
+  --line-15: rgb(var(--line-rgb) / 0.15);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-base: #f5f8fc;
+  --bg-base-rgb: 245 248 252;
+  --bg-mid: rgba(226, 236, 247, 0.96);
+  --bg-glow: rgba(214, 228, 244, 0.96);
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0369a1;
+  --accent-dark: #0284c7;
+
+  --accent-rgb: 3 105 161;
+  --line-rgb: 71 85 105;
+  --sheet-rgb: 255 255 255;
+  --raise-rgb: 241 246 252;
+  --well-rgb: 233 240 249;
+  --deep-rgb: 203 216 232;
+  --accent2-rgb: 2 132 199;
+  --ink: #0f172a;
+  --ink-2: #1e293b;
+  --ink-3: #334155;
+  --ink-4: #52616f;
+  --ink-tint: #12304d;
+  --ink-5: #1e293b;
+  --accent-1: #0369a1;
+  --accent-2: #0284c7;
+  --surf-0: #e6edf5;
+  --surf-1: #ffffff;
+  --surf-2: #f4f7fb;
+  --surf-3: #eef3f9;
+  --surf-4: #eaf0f7;
+  --surf-5: #f7f9fc;
+  --sheet-95: rgba(255, 255, 255, 0.97);
+  --sheet-90: rgba(255, 255, 255, 0.94);
+  --sheet-85: rgba(255, 255, 255, 0.9);
+  --sheet-80: rgba(255, 255, 255, 0.86);
+  --sheet-75: rgba(255, 255, 255, 0.82);
+  --sheet-70: rgba(255, 255, 255, 0.78);
+  --sheet-60: rgba(255, 255, 255, 0.7);
+  --raise-85: rgba(241, 246, 252, 0.95);
+  --raise-80: rgba(241, 246, 252, 0.9);
+  --raise-70: rgba(241, 246, 252, 0.84);
+  --well-75: rgba(233, 240, 249, 0.9);
+  --well-70: rgba(233, 240, 249, 0.86);
+  --scrim: rgb(var(--deep-rgb) / 0.72);
+  --line-30: rgba(71, 85, 105, 0.28);
+  --line-28: rgba(71, 85, 105, 0.26);
+  --line-25: rgba(71, 85, 105, 0.24);
+  --line-22: rgba(71, 85, 105, 0.2);
+  --line-18: rgba(71, 85, 105, 0.17);
+  --line-15: rgba(71, 85, 105, 0.14);
+}
+
+/* Light is opt-in only.
+
+   This used to follow prefers-color-scheme, which meant anyone whose machine
+   was set to light got a light site without ever asking for one — and since
+   the conversion is partial, that looked worse than either theme on its own.
+   The site stays dark unless the toggle is used. */
+
+/* The one place a light theme must not reach. */
+:root[data-theme="light"] .lab-terminal,
+:root[data-theme="light"] .lab-editor,
+:root[data-theme="light"] .chat-log,
+:root[data-theme="light"] .chat-blob,
+:root[data-theme="light"] .typing-passage,
+:root[data-theme="light"] pre.lab-example,
+:root[data-theme="light"] .post-body pre {
+  background: #020617;
+  color: #e2e8f0;
+
+  /* Setting the ground and the body text was not enough. Everything coloured
+     inside these panes — the t-* output classes, syntax highlighting — reaches
+     for the accent and ink tokens, and those flip. On #020617 the light
+     theme's navy accent came out at 3.4:1. Re-pinning the tokens here means
+     every descendant resolves them exactly as it does in the dark theme, so
+     one block covers the whole family instead of a rule per class. */
+  --accent-1: #7dd3fc;
+  --accent-2: #38bdf8;
+  --accent-rgb: 125 211 252;
+  --accent2-rgb: 56 189 248;
+  --ink: #f8fafc;
+  --ink-2: #e2e8f0;
+  --ink-3: #cbd5e1;
+  --ink-4: #94a3b8;
+  --ink-5: #f1f5f9;
+}
+
+/* The toggle itself. */
+
+
+/* At 375px the bar holds the brand, the search icon and the hamburger, and the
+   three together are about 11px wider than the screen. Rather than truncating
+   the name, the brand gives back a fraction of a point below 420px. */
+/* The one-row phone layout runs to 640px, and the full 1.25rem brand only
+   fits from about 530px up — large phones (430-480px) were clipping the name
+   at the default size because this band stopped at 420. */
+@media (max-width: 530px) {
+  .brand { font-size: 1.02rem; letter-spacing: 0; }
+}
+
+/* 375px — the single most common phone width — sat just inside the 530 band
+   and still needed about 3px more than it had, so the name lost its last
+   letter. One step down covers 361-384.
+
+   Sized with headroom rather than to the millimetre: a phone gives the full
+   375px because its scrollbar is an overlay, but a 375px-wide desktop window
+   spends about 15px on a classic scrollbar, and a value that only just fits
+   the phone case truncates in the other one. */
+@media (max-width: 384px) {
+  .brand { font-size: 0.9rem; }
+}
+/* Below 360px the bar runs out of room: two 40px icons and a 44px hamburger
+   leave about 144px for a sixteen-character name, and it was truncating to
+   "Krunalkumar Sha…". Trimming the nav's side padding gives back 16px and the
+   name steps down to meet it, which keeps it whole rather than clipped. */
+@media (max-width: 360px) {
+  .nav { padding-left: 1rem; padding-right: 1rem; }
+  .nav-tools { margin-right: 0.35rem; }
+  .brand { font-size: 0.86rem; }
+}
+
+@media (max-width: 330px) {
+  .brand { font-size: 0.78rem; }
+}
+
+/* ==========================================================================
+   Light theme corrections
+   --------------------------------------------------------------------------
+   Found by walking every visible element with text, computing its contrast
+   against its real background, and listing whatever fell under the WCAG AA
+   threshold. Seven distinct rules failed; these are those seven. Each was a
+   colour written out in full for a dark ground — white headings, cream on a
+   warm pill, pale green in a status chip — none of which survive on paper.
+   ========================================================================== */
+
+:root[data-theme="light"] {
+  /* Headings were pure white. */
+  --heading: #0b1220;
+}
+
+:root[data-theme="light"] .page-hero h1,
+:root[data-theme="light"] h1 { color: #0b1220; }
+
+/* The availability chip: pale green on pale grey was a 1.03 ratio, which is
+   to say invisible. Dark green on a soft green ground instead. */
+:root[data-theme="light"] .availability-pill {
+  color: #14532d;
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(21, 128, 61, 0.35);
+}
+:root[data-theme="light"] .availability-pill::before,
+:root[data-theme="light"] .availability-dot { background: #15803d; }
+
+/* The doorway to /buddha keeps its dawn colours, but they have to sit on a
+   ground dark enough to carry them, or the cream text vanishes. */
+:root[data-theme="light"] .footer-still {
+  color: #4a2410;
+  background: linear-gradient(135deg, rgba(233, 150, 98, 0.34), rgba(255, 214, 140, 0.34));
+  border-color: rgba(180, 105, 40, 0.5);
+}
+:root[data-theme="light"] .footer-still:hover,
+:root[data-theme="light"] .footer-still:focus-visible {
+  color: #34190a;
+  background: linear-gradient(135deg, rgba(233, 150, 98, 0.5), rgba(255, 214, 140, 0.5));
+  border-color: rgba(180, 105, 40, 0.75);
+}
+:root[data-theme="light"] .footer-still-icon { color: #b4691f; }
+:root[data-theme="light"] .footer-still::after {
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+}
+
+/* The footer sets a pale colour on its descendants, which the toggle inherited. */
+/* The footer and header were built as dark slabs and are deliberately not
+   tinted with the page. In light mode that left two dark bars floating on
+   white, which read as a rendering fault rather than a design. */
+:root[data-theme="light"] .site-header {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.24);
+}
+:root[data-theme="light"] footer#contact {
+  background: #e9eff7;
+  color: #1e293b;
+}
+:root[data-theme="light"] footer#contact a { color: #334155; }
+:root[data-theme="light"] footer#contact a:hover { color: var(--accent); }
+:root[data-theme="light"] .footer-name,
+:root[data-theme="light"] footer#contact h3 { color: #0b1220; }
+:root[data-theme="light"] .footer-legal,
+:root[data-theme="light"] .footer-msme,
+:root[data-theme="light"] footer#contact small { color: #475569; }
+
+/* The brand is gradient text clipped to the glyphs; on a light bar its dark
+   stops would disappear, so it gets a darker ramp. */
+:root[data-theme="light"] .brand {
+  --brand-hue: 205;
+  /* The 18s hue-rotate means this one value has to hold for every hue, and
+     hues are not equally dark at equal lightness: at 34% the blue phase is a
+     comfortable 6.2:1 on white while the yellow phase is 2.6:1.
+
+     The size matters too. On a desktop the name is 20-24px bold, which counts
+     as large text and needs only 3:1 — 30% cleared that. On a phone it steps
+     down to about 15px, which is ordinary text at 4.5:1, and 30% failed there
+     at 3.5:1. 24% puts the worst phase (yellow) at 4.85:1, so the name holds
+     at every size and every point in the rotation. */
+  --brand-l: 24%;
+  color: #0b1220;
+}
+
+/* Buttons: the primary is accent-filled and fine, but the secondary was a
+   dark slab with pale text. */
+:root[data-theme="light"] .btn-secondary {
+  color: #0f172a;
+  background: #ffffff;
+  border-color: rgb(var(--line-rgb) / 0.4);
+}
+:root[data-theme="light"] .btn-secondary:hover {
+  background: #eef3f9;
+  border-color: var(--accent);
+}
+:root[data-theme="light"] .btn-primary { color: #ffffff; }
+
+/* The doorway button sits inside footer#contact, whose own `a` rule was
+   competing with the block above. An id in the selector settles it, and the
+   spans are named explicitly because they inherit rather than carry a colour. */
+:root[data-theme="light"] footer#contact a.footer-still,
+:root[data-theme="light"] footer#contact a.footer-still span,
+:root[data-theme="light"] footer#contact a.footer-still .footer-still-sub {
+  color: #4a2410;
+}
+:root[data-theme="light"] footer#contact a.footer-still:hover,
+:root[data-theme="light"] footer#contact a.footer-still:hover span {
+  color: #34190a;
+}
+
+
+/* ==========================================================================
+   Light theme: text
+   --------------------------------------------------------------------------
+   Generated rather than hand-written. Every rule in the stylesheets that set
+   a light text colour got a counterpart here with the same hue and saturation
+   at a lightness that reads on paper. Chasing these one at a time was how the
+   hero ended up invisible: one gets spotted, five do not.
+
+   Excluded on purpose: terminal panes, the editor, code blocks, syntax
+   highlighting and the buddha scene. Those keep a dark ground in both themes,
+   so their pale text is already correct.
+   ========================================================================== */
+
+:root[data-theme="light"] h1 { color: #212121; }
+:root[data-theme="light"] .availability-pill { color: #008f31; }
+:root[data-theme="light"] .award-pill { color: #8f7200; }
+:root[data-theme="light"] .success-pill { color: #008f31; }
+:root[data-theme="light"] .verify-status-valid .verify-status { color: #008f31; }
+:root[data-theme="light"] .verify-status-info .verify-status { color: #00568f; }
+:root[data-theme="light"] .verify-status-pending .verify-status { color: #8f7200; }
+:root[data-theme="light"] .verify-status-revoked .verify-status, :root[data-theme="light"] .verify-status-notfound .verify-status { color: #8f0000; }
+:root[data-theme="light"] .bg-settings-row button:hover { color: #212121; }
+:root[data-theme="light"] .footer-still:hover, :root[data-theme="light"] .footer-still:focus-visible { color: #8f6300; }
+:root[data-theme="light"] .footer-still-icon { color: #8f5600; }
+:root[data-theme="light"] .post-callout strong { color: #8f7200; }
+:root[data-theme="light"] .lab-btn-icon[aria-pressed='true'] { color: #008f4c; }
+:root[data-theme="light"] .lab-status.is-busy { color: #8f6700; }
+:root[data-theme="light"] .lab-status.is-ok { color: #058a35; }
+:root[data-theme="light"] .lab-fail-link { color: #005e8f; }
+:root[data-theme="light"] .lab-gate-h.limits { color: #8f6700; }
+:root[data-theme="light"] .lab-gate-h.privacy { color: #05672a; }
+:root[data-theme="light"] .lab-warn-kill { color: #212121; }
+:root[data-theme="light"] .lab-cta-text strong { color: #008f34; }
+:root[data-theme="light"] .typing-stats .typing-best b { color: #04561f; }
+:root[data-theme="light"] .typing-result { color: #008f4c; }
+:root[data-theme="light"] .lab-report-context { color: #058a35; }
+:root[data-theme="light"] .lab-copy.is-ok { color: #058a35; }
+:root[data-theme="light"] .lab-copy.is-err { color: #8f6700; }
+:root[data-theme="light"] .lab-netnote strong { color: #7a5700; }
+:root[data-theme="light"] .lab-gate-foot { color: #745c00; }
+:root[data-theme="light"] .hl-list-cat { color: #00438f; }
+:root[data-theme="light"] .hl-list-check { color: #058a35; }
+:root[data-theme="light"] .hl-alldone { color: #008f32; }
+:root[data-theme="light"] .hl-solved-banner { color: #058a35; }
+:root[data-theme="light"] .hl-result.is-ok { color: #008f34; }
+:root[data-theme="light"] .hl-result.is-err { color: #8f0000; }
+:root[data-theme="light"] .hl-flag { color: #058a35; }
+:root[data-theme="light"] .hl-win { color: #008f32; }
+:root[data-theme="light"] .hl-win strong { color: #058a35; }
+:root[data-theme="light"] .hl-hint strong { color: #8f6700; }
+:root[data-theme="light"] .hl-fix h3 { color: #008f34; }
+:root[data-theme="light"] .hl-fix p { color: #008f46; }
+:root[data-theme="light"] .lab-shader-errors { color: #8f0000; }
+:root[data-theme="light"] .chat-warn strong { color: #8f6500; }
+:root[data-theme="light"] .chat-status.is-busy { color: #8f6d00; }
+:root[data-theme="light"] .chat-status.is-good { color: #058a35; }
+:root[data-theme="light"] .chat-file-link { color: #058a35; }
+
+/* Controls that carry their own filled background keep light text: the
+   generator darkened everything that looked pale, which is right on the page
+   and wrong on a blue button. */
+:root[data-theme="light"] .btn-primary,
+:root[data-theme="light"] .btn-primary:hover,
+:root[data-theme="light"] footer#contact a.btn-primary,
+:root[data-theme="light"] .back-to-top,
+/* White is right on the green WhatsApp bubble and the netcat role chip, both
+   of which keep a saturated ground in either theme. It was wrong for the two
+   that were grouped in here by mistake:
+
+     .whatsapp-float-close  sits on rgb(var(--sheet-rgb) / 0.92), which is
+                            white in this theme — a white glyph on a white
+                            pill, 1.01:1. It has its own rule below.
+     .lab-card-engine       was contradicted 30 lines further down anyway;
+                            the later rule was the one taking effect, so this
+                            only made the file read as if it did something. */
+:root[data-theme="light"] .whatsapp-float,
+:root[data-theme="light"] .chat-role-nc {
+  color: #ffffff;
+}
+
+/* The dismiss badge on the floating WhatsApp button. */
+:root[data-theme="light"] .whatsapp-float-close {
+  color: #0f172a;
+  background: #ffffff;
+  border-color: rgb(var(--line-rgb) / 0.55);
+}
+
+/* A hair darker so the status chip clears AA rather than sitting at 3.96. */
+:root[data-theme="light"] .availability-pill,
+:root[data-theme="light"] .success-pill,
+:root[data-theme="light"] .verify-status-valid .verify-status { color: #0a6b28; }
+:root[data-theme="light"] .award-pill,
+:root[data-theme="light"] .verify-status-pending .verify-status { color: #6b5600; }
+:root[data-theme="light"] .verify-status-revoked .verify-status { color: #7a0000; }
+
+/* ==========================================================================
+   Light theme: the last of the contrast failures
+   --------------------------------------------------------------------------
+   Found by rendering ten pages in an iframe under the light theme and reading
+   every element's real contrast, gradients included. These are what was left.
+   ========================================================================== */
+
+/* Marginal, at 4.1 against white — a shade darker clears AA. */
+:root[data-theme="light"] .nav-link { color: #0b5f8a; }
+:root[data-theme="light"] .nav-link:hover,
+:root[data-theme="light"] .nav-link.active { color: #0b1220; }
+
+/* White on the accent was 4.1. Darkening the fill is better than lightening
+   the arrow, which has nowhere left to go. */
+:root[data-theme="light"] .back-to-top {
+  background: #075985;
+  color: #ffffff;
+}
+
+/* Sits on a card, not on a filled button — it should not have been forced
+   white with the other controls. */
+:root[data-theme="light"] .lab-card-engine { color: #475569; }
+
+/* The active filter chip is accent-filled, so its label goes light. The fill
+   also darkens a step: white on --accent-dark (#0284c7) is 4.1:1, just under
+   the 4.5:1 floor for a 0.8rem label. #0369a1 carries the same hue at 5.9:1. */
+:root[data-theme="light"] .blog-filter.is-active,
+:root[data-theme="light"] .blog-filter[aria-pressed="true"] {
+  color: #ffffff;
+  background: #0369a1;
+  border-color: #0369a1;
+}
+
+/* The chat warning was cream on amber for a dark ground. */
+:root[data-theme="light"] .chat-warn {
+  color: #5a3210;
+  background: rgba(251, 191, 36, 0.16);
+  border-color: rgba(180, 105, 20, 0.4);
+}
+:root[data-theme="light"] .chat-warn strong { color: #3d2108; }
+
+/* The leak table flags findings in red and defences in green. Both were tuned
+   for a dark ground and neither survived on the light one. */
+:root[data-theme="light"] .leak-table tr.is-bad .leak-value { color: #a11212; }
+:root[data-theme="light"] .leak-table tr.is-good .leak-value { color: #0a6b28; }
+:root[data-theme="light"] .leak-value { color: #1e293b; }
+:root[data-theme="light"] .chat-status.is-good { color: #0a6b28; }
+:root[data-theme="light"] .chat-status.is-bad { color: #a11212; }
+:root[data-theme="light"] .chat-status.is-busy { color: #7a5a00; }
+
+/* Pre-existing, and caught by the same audit: the back-to-top arrow was
+   near-white on a light sky blue, 2.05:1. Darkening the fill fixes it in the
+   dark theme without touching the light one, which already overrides it. */
+.back-to-top { background: #0369a1; color: #ffffff; }
+.back-to-top:hover { background: #075985; }
+
+/* --------------------------------------------------------------------------
+   Search overlay on a phone
+   --------------------------------------------------------------------------
+   Full screen rather than a floating card: on a 375px screen a centred dialog
+   with margins wastes the room the results need, and the on-screen keyboard
+   takes half of what is left.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .site-search-field { padding: 1rem; gap: 0.7rem; }
+  .site-search-input { font-size: 1.05rem; }   /* 16px+ stops iOS zooming in */
+  .site-search-close { padding: 0.4rem 0.7rem; font-size: 0.78rem; }
+  .site-search-hit { padding: 0.85rem 0.9rem; }
+  .site-search-hit-title { font-size: 1rem; }
+  .site-search-hit-snip { -webkit-line-clamp: 3; }
+  /* Room for the keyboard, and for a thumb reaching the first result. */
+  .site-search-panel { max-height: calc(100dvh - 5rem); }
+}
+
+/* ==========================================================================
+   Light theme: the parts that are meant to stay dark
+   --------------------------------------------------------------------------
+   Three families of widget are drawn as dark instruments on purpose — the
+   visualisers, the two filled transport buttons, and the fake corporate portal
+   in HackLab. Each paints its own ground and each was written once, for dark.
+   The light theme only ever changed the text around them, which is how they
+   ended up dark-on-dark.
+   ========================================================================== */
+
+/* The visualisers are dark instruments, and every one of them was drawn once,
+   for dark. Their panels are translucent navy — .wc-side is rgba(11,18,32,.6)
+   — which reads as intended over a dark page and turns mid-grey over a light
+   one, stranding their dark-theme labels at about 1.1:1.
+
+   Two things are needed. The mount gets an opaque ground, so those translucent
+   panels composite over what they were drawn against. And the site's generated
+   light text overrides are neutralised inside it: each widget injects its own
+   stylesheet scoped by root id (#wordcloudviz .wc-gt, and so on), and an id
+   selector outranks anything here, so the widget's real colours survive while
+   the site's blanket re-inking does not.
+
+   Scoped to the mounts rather than .lab-viz: the viz root also holds ordinary
+   site chrome — the gate card, the toolbar, .lab-pane, the run buttons — which
+   is meant to go light. Treating the whole root as an instrument turned those
+   panes into light-on-light. Only the mounts hold injected widget markup. */
+:root[data-theme="light"] .lab-multi-mount,
+:root[data-theme="light"] .lab-cpu-mount,
+:root[data-theme="light"] .lab-osalgo-mount,
+:root[data-theme="light"] .lab-proc-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+
+/* :not([class]) is the whole point of this rule and was missing from the first
+   version. Without it the selector also caught the widgets' OWN elements, and
+   at (0,3,1) it outranked their class-scoped rules — so every label, hint,
+   table cell and status tag in the multi-shell labs (tcp, crypto, regex-engine,
+   buffer-overflow) collapsed to a single flat ink. Text stayed readable at
+   ~13.7:1, but the colour coding those labs teach with was gone: matched/no
+   match, client/server, safe/smashed all rendered identically.
+
+   os-algorithms was the tell — it injects the same rules scoped by root id
+   (#osalgoviz .oa-field-label), which outranks this, and it never flattened.
+
+   Class-less elements are the ones that actually needed rescuing: they carry no
+   widget colour of their own, so they were picking up the site's generated
+   light overrides and going dark-on-dark. Anything the widget styled itself
+   now keeps its own colour. */
+:root[data-theme="light"] .lab-multi-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]),
+:root[data-theme="light"] .lab-cpu-mount   :is(span, div, p, b, i, small, label, td, th, li):not([class]),
+:root[data-theme="light"] .lab-osalgo-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]),
+:root[data-theme="light"] .lab-proc-mount  :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}
+
+/* Run and Stop are filled with #0f766e and #7f1d1d in both themes; only the
+   label was re-inked, which left dark-on-dark at 3.26:1 and 1.41:1. */
+:root[data-theme="light"] .lab-btn-run,
+:root[data-theme="light"] .lab-btn-stop {
+  color: #f8fafc;
+}
+
+/* HackLab's mock portal is deliberately a dark corporate app — the point is
+   that it looks like something you would be attacking. Its ground is fixed at
+   rgba(9,15,28,0.92), so its text keeps the dark-theme inks. */
+:root[data-theme="light"] .hl-app,
+:root[data-theme="light"] .hl-app-title,
+:root[data-theme="light"] .hl-label,
+:root[data-theme="light"] .hl-field span,
+:root[data-theme="light"] .hl-app p,
+:root[data-theme="light"] .hl-app span,
+:root[data-theme="light"] .hl-app label {
+  color: #e2e8f0;
+}
+:root[data-theme="light"] .hl-label,
+:root[data-theme="light"] .hl-app .hl-label {
+  color: #94a3b8;
+}
+
+/* The challenge list sits on a light card, so these go the other way. */
+:root[data-theme="light"] .hl-list-level { color: #475569; }
+:root[data-theme="light"] .hl-list-lock { color: #3f4a56; }
+:root[data-theme="light"] .hl-list-cat { color: #00347a; }
+:root[data-theme="light"] .hl-list-title { color: #0f172a; }
+
+/* Accent-filled submit button: the label goes white rather than near-black.
+   The ghost variant is excluded — it has no fill, so it sits on the light
+   card and a white label there is 1.13:1. */
+:root[data-theme="light"] .hl-btn:not(.hl-btn-ghost) { color: #ffffff; }
+
+/* A locked challenge dims to 0.5, which reads as "not yet yours" against the
+   dark card but drops its title to 3.38:1 against the light one. 0.68 keeps
+   the row visibly muted and clears the floor at 6.4:1. */
+:root[data-theme="light"] .hl-list-item.is-locked {
+  opacity: 0.68;
+}
+
+/* The stats strip under a visualiser canvas sits on .lab-vizstage, which is
+   #020617 in both themes. Its own ground is rgb(var(--deep-rgb) / 0.72), and
+   --deep-rgb flips light — so the strip turned pale over a black stage while
+   its readouts kept the dark palette. It belongs to the stage, so it stays
+   dark and its text with it. */
+:root[data-theme="light"] .lab-vizstats {
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+}
+:root[data-theme="light"] .lab-vizstats :is(span, div, b, i, small, label) {
+  color: inherit;
+}
+
+/* Control bars that live outside the dark stage. The widget draws them in its
+   own dark palette, but they sit on the light lab card, so they re-ink. The
+   stage itself (.pv-stage, #020610) is untouched — the readouts inside it are
+   correct as drawn. */
+:root[data-theme="light"] .cpu-speed span,
+:root[data-theme="light"] .pv-bar,
+:root[data-theme="light"] .pv-bar span,
+:root[data-theme="light"] .pv-slider {
+  color: #475569;
+}
+
+/* Dimmed to 0.7 by design, which on the light panel left it at 2.8:1. */
+:root[data-theme="light"] .crackviz-presets-label {
+  color: #1f2937;
+}
+
+/* The network note on the five labs that reach outside the browser. Only its
+   <strong> was re-inked; the sentence around it kept #fde68a, a pale amber
+   meant for a dark panel, which on the light note ground was 1.06:1 — present
+   in the markup and invisible on the screen. */
+:root[data-theme="light"] .lab-netnote {
+  color: #713f12;
+}
+
+/* The typing lab's readouts sit on a panel a shade darker than paper
+   (rgb(210,222,236)), so the two accent colours that clear AA on white fall
+   just under it here. Both go a step darker. */
+:root[data-theme="light"] .typing-stats b {
+  color: #024c77;
+}
+
+/* A disabled control is exempt from the contrast floor, but "Reboot" and
+   "Stop" are read while they are greyed out — you look at them to see whether
+   the machine is up. Against a dark button 0.45 still leaves them legible;
+   against a white one it is 2.94:1, so the light theme dims them less. */
+:root[data-theme="light"] .lab-btn:disabled {
+  opacity: 0.6;
+}
+
+/* The lab's Code/Output tabs. --accent-1 on the tab strip is 4.43:1 in this
+   theme — a hair under, and these are 0.82rem labels. */
+:root[data-theme="light"] .lab-tab[aria-selected='true'] {
+  color: #025a8a;
+  border-bottom-color: #025a8a;
+}
+
+/* ==========================================================================
+   Light theme: drop the dark text-shadow
+   --------------------------------------------------------------------------
+   body carries text-shadow: 0 1px 2px rgba(2,6,23,0.7) and h1 carries a 10px
+   version at 0.8 — both there to lift pale text off the dark page. On paper
+   they do the opposite: a near-black blur smeared around near-black glyphs,
+   which reads as smudged rather than crisp. blog.css already had to set
+   text-shadow: none on one element for exactly this reason ("the global body
+   text-shadow smears dark glyphs on light fills"); this generalises that fix
+   instead of leaving it to be rediscovered per element.
+
+   /buddha is excluded — it keeps one palette in both themes, so its shadows
+   should not change either.
+   ========================================================================== */
+
+:root[data-theme="light"] body:not(.buddha),
+:root[data-theme="light"] body:not(.buddha) * {
+  text-shadow: none;
+}
+
+/* Except inside the panes that stay dark whatever the theme, where the shadow
+   is still doing its original job. Listed with `body` so this outranks the
+   reset above rather than tying with it. */
+:root[data-theme="light"] body :is(.lab-terminal, .lab-editor, .chat-log,
+  .chat-blob, .typing-passage, pre.lab-example, .post-body pre),
+:root[data-theme="light"] body :is(.lab-terminal, .lab-editor, .chat-log,
+  .chat-blob, .typing-passage, pre.lab-example, .post-body pre) * {
+  text-shadow: 0 1px 2px rgba(2, 6, 23, 0.7);
+}
+
+/* The visualiser build-failure notice sits on the light lab card here. */
+:root[data-theme="light"] .lab-viz-error {
+  color: #b91c1c;
+}
+
+/* "Starting the visualiser…" — the line that stays on screen if a widget never
+   loads, so it is the one message a stuck visitor actually needs to read. It
+   lives inside the mount, whose ground is pinned dark in this theme, and it
+   carries a class so the :not([class]) rescue above does not reach it. Its
+   --ink-4 went dark on a dark ground: 2.94:1. Pinned back to the dark-theme
+   ink, which is what its background expects. */
+:root[data-theme="light"] .lab-proc-fallback {
+  color: #94a3b8;
 }
