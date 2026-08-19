@@ -738,6 +738,18 @@
 
   var localStream = null;
 
+  /* Chromium exposes document.featurePolicy; the renamed document.permissionsPolicy
+     is not widely shipped yet. Where neither exists we cannot tell in advance and
+     fall through to getUserMedia, which is the correct conservative answer. */
+  function policyWithholds(feature) {
+    var fp = document.featurePolicy || document.permissionsPolicy;
+    try {
+      return !!(fp && typeof fp.allowsFeature === 'function' && !fp.allowsFeature(feature));
+    } catch (e) {
+      return false;
+    }
+  }
+
   function startMedia(withVideo) {
     if (peers.length !== 1) {
       say('system', 'Voice and video are one-to-one only. Relaying video needs a ' +
@@ -745,7 +757,26 @@
       return;
     }
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      say('system', 'This browser will not give a page access to the camera or microphone.');
+      say('system', 'This browser will not give a page access to the camera or microphone. ' +
+                    'getUserMedia also needs a secure context, so http:// pages other than ' +
+                    'localhost are refused outright.');
+      return;
+    }
+
+    // A Permissions-Policy header can withhold the camera from the page itself,
+    // in which case the browser refuses before it ever asks the visitor — and
+    // reports it as NotAllowedError, indistinguishable from "you clicked Block".
+    // This site shipped `camera=(), microphone=()` for a while, an EMPTY
+    // allowlist, which denies the feature to every origin including its own.
+    // Worth naming precisely, because no amount of clicking Allow can fix it.
+    var withheld = [];
+    if (policyWithholds('microphone')) withheld.push('microphone');
+    if (withVideo && policyWithholds('camera')) withheld.push('camera');
+    if (withheld.length) {
+      say('system', 'This page is not permitted to use the ' + withheld.join(' or ') +
+                    '. That is a Permissions-Policy header on the site, not a choice you ' +
+                    'made — the browser refuses before asking, and granting permission ' +
+                    'cannot override it.');
       return;
     }
     navigator.mediaDevices.getUserMedia({
@@ -763,8 +794,15 @@
       if (el.avVideo) el.avVideo.disabled = true;
       say('system', withVideo ? 'Camera and microphone on.' : 'Microphone on.');
     }).catch(function (err) {
-      say('system', 'Could not open the ' + (withVideo ? 'camera' : 'microphone') +
-                    ': ' + (err.message || err.name));
+      var name = err && err.name;
+      var why =
+        name === 'NotAllowedError'  ? 'permission was refused — either you or your browser ' +
+                                      'blocked it, or a Permissions-Policy header withheld it' :
+        name === 'NotFoundError'    ? 'no such device is attached' :
+        name === 'NotReadableError' ? 'the device is attached but another application is holding it' :
+        name === 'OverconstrainedError' ? 'no attached device matches the requested resolution' :
+        (err && err.message) || name || 'unknown error';
+      say('system', 'Could not open the ' + (withVideo ? 'camera' : 'microphone') + ': ' + why + '.');
     });
   }
 
