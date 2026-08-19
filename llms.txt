@@ -124,3 +124,9 @@ These are deliberately separated from the fifteen offline security tools. They s
 - [Terms of Service](https://krunalkumar.dpdns.org/terms): Consulting agreements, authorized access restrictions, IP assignment, and liability terms.
 - [Refund Policy](https://krunalkumar.dpdns.org/refund): Mentorship 7-day refund guarantee, milestone-based consulting terms, and Wise international transfer guidelines.
 - [Security Contact](https://krunalkumar.dpdns.org/.well-known/security.txt): RFC 9116 security vulnerability reporting contact.
+
+## A Still Place
+- [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page — an illustrated Buddha at dawn who
+  breathes, opens his eyes every nine seconds and smiles; one of 50 verses from the Pali Canon, re-picked on
+  load and on every tap; and a 4s-in / 6s-out breathing guide. Every verse carries its citation, because a
+  great many sayings passed around as the Buddha's were never his. Has a fullscreen mode.

@@ -1,0 +1,741 @@
+/* ==========================================================================
+   buddha.css — /buddha, a still page.
+   --------------------------------------------------------------------------
+   The rest of the site is cool navy and sky blue. This page keeps that as the
+   night it begins in, then warms it: indigo at the top of the screen falling
+   to dawn gold at the horizon, which is where the figure sits. Warmth is the
+   whole point — a cold shrine does not make anyone smile.
+
+   Everything that moves here is slow. Nothing loops faster than four seconds,
+   most things take ten to ninety, and the breathing ring is deliberately
+   4s in / 6s out because a longer exhale is what actually settles a nervous
+   system. If you speed any of this up, the page stops working.
+
+   Motion is transform/opacity only, so the whole scene composites on the GPU
+   and costs nothing to run while someone sits with it. Every animation is
+   switched off under prefers-reduced-motion — for a page whose purpose is
+   calm, ignoring that setting would be a contradiction.
+   ========================================================================== */
+
+.buddha {
+  /* Dawn ramp, an hour later than it used to be: soft lilac overhead falling
+     to warm cream at the horizon rather than night falling to gold. The type
+     had to go dark to follow it — pale text on a pale sky was unreadable. */
+  --dawn-night: #5f5892;
+  --dawn-deep: #8076ab;
+  --dawn-violet: #b096b8;
+  --dawn-rose: #d3a099;
+  --dawn-amber: #f2c089;
+  --dawn-gold: #ffe6bd;
+  --dawn-cream: #fff6e4;
+
+  --leaf: #b8cf9a;
+  --lotus: #ffd9e0;
+  --lotus-deep: #e8a0b4;
+
+  --ink: #3a2110;
+  --ink-soft: rgba(58, 33, 16, 0.82);
+  --ink-faint: rgba(58, 33, 16, 0.6);
+
+  --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The shared particle canvas belongs to the rest of the site; this page paints
+   its own sky and would only fight with it. */
+.buddha #bg-canvas { display: none; }
+
+/* --------------------------------------------------------------------------
+   1. The scene
+   --------------------------------------------------------------------------
+   One tall stage holding sky, sun, hills, tree, halo, figure and water. Each
+   layer is absolutely positioned inside it so they can be parallaxed and
+   animated independently without ever reflowing one another.
+   -------------------------------------------------------------------------- */
+
+.b-scene {
+  position: relative;
+  /* The site header sits above this, so a plain 100svh hero would always hang
+     its last ~140px below the fold. --b-header is measured in buddha.js after
+     the shared header partial swaps in, and falls back to 0 without JS. */
+  min-height: calc(100svh - var(--b-header, 0px));
+  min-height: calc(100vh - var(--b-header, 0px));
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--dawn-night) 0%,
+      var(--dawn-deep) 16%,
+      var(--dawn-violet) 32%,
+      var(--dawn-rose) 50%,
+      var(--dawn-amber) 68%,
+      var(--dawn-gold) 86%,
+      var(--dawn-cream) 100%
+    );
+}
+
+/* Sun: a soft bloom sitting on the horizon rather than a hard disc, so the
+   light reads as atmosphere instead of a sticker. */
+.b-sun {
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  width: min(120vw, 1100px);
+  aspect-ratio: 1;
+  translate: -50% 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 236, 194, 0.92) 0%,
+    rgba(255, 206, 132, 0.55) 18%,
+    rgba(233, 150, 98, 0.28) 36%,
+    rgba(122, 74, 82, 0.12) 58%,
+    transparent 72%
+  );
+  animation: b-sun-breathe 24s var(--ease-calm) infinite;
+}
+
+@keyframes b-sun-breathe {
+  0%, 100% { opacity: 0.88; scale: 1; }
+  50%      { opacity: 1;    scale: 1.05; }
+}
+
+/* Light rays fanning from the horizon. Kept under 10% opacity — any stronger
+   and it reads as a lens flare rather than morning. */
+.b-rays {
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  width: 180vmax;
+  height: 180vmax;
+  translate: -50% 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.07;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 230, 189, 0.9) 0deg 2deg,
+    transparent 2deg 11deg
+  );
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 55%);
+  animation: b-rays-turn 240s linear infinite;
+}
+
+@keyframes b-rays-turn {
+  from { rotate: 0deg; }
+  to   { rotate: 360deg; }
+}
+
+/* Distant hills, two layers for depth. */
+.b-hills {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 34%;
+  pointer-events: none;
+  z-index: 2;
+}
+.b-hills svg { width: 100%; height: 100%; display: block; }
+
+/* --------------------------------------------------------------------------
+   2. The figure
+   -------------------------------------------------------------------------- */
+
+.b-figure {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: end center;
+  padding-block-start: clamp(4rem, 14vh, 9rem);
+}
+
+.b-buddha {
+  width: clamp(220px, 40vmin, 430px);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 60px rgba(255, 198, 120, 0.28));
+}
+
+/* The halo breathes on the same 10s cycle as the guide ring, so the whole
+   scene inhales and exhales together. */
+.b-halo {
+  position: absolute;
+  left: 50%;
+  bottom: 34%;
+  width: clamp(300px, 58vmin, 620px);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 232, 186, 0.34) 0%,
+    rgba(255, 205, 130, 0.2) 34%,
+    rgba(255, 180, 110, 0.09) 52%,
+    transparent 68%
+  );
+  animation: b-breathe 10s var(--ease-calm) infinite;
+}
+
+@keyframes b-breathe {
+  0%   { scale: 0.94; opacity: 0.72; }
+  40%  { scale: 1.06; opacity: 1; }     /* 4s inhale */
+  100% { scale: 0.94; opacity: 0.72; }  /* 6s exhale — longer on purpose */
+}
+
+/* --------------------------------------------------------------------------
+   3. Water, lotuses, leaves, motes
+   -------------------------------------------------------------------------- */
+
+.b-water {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 22%;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 238, 205, 0.24) 0%,
+    rgba(214, 160, 148, 0.28) 40%,
+    rgba(126, 106, 150, 0.4) 100%
+  );
+  backdrop-filter: blur(1px);
+}
+
+/* Concentric rings spreading from where the figure meets the water. Three of
+   them, staggered, so there is always one mid-spread. */
+.b-ripple {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 40px;
+  height: 12px;
+  translate: -50% 0;
+  border: 1px solid rgba(255, 230, 189, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  animation: b-ripple 9s var(--ease-calm) infinite;
+}
+.b-ripple:nth-of-type(2) { animation-delay: 3s; }
+.b-ripple:nth-of-type(3) { animation-delay: 6s; }
+
+@keyframes b-ripple {
+  0%   { scale: 0.4 0.4; opacity: 0; }
+  15%  { opacity: 0.55; }
+  100% { scale: 9 4; opacity: 0; }
+}
+
+.b-lotus {
+  position: absolute;
+  bottom: 4%;
+  width: clamp(34px, 6vmin, 62px);
+  z-index: 6;
+  pointer-events: none;
+  animation: b-float 13s ease-in-out infinite;
+}
+.b-lotus--a { left: 12%; animation-delay: 0s;    scale: 0.9; }
+.b-lotus--b { left: 78%; animation-delay: -4.5s; scale: 1.05; }
+.b-lotus--c { left: 30%; bottom: 1%; animation-delay: -8s; scale: 0.72; opacity: 0.85; }
+
+@keyframes b-float {
+  0%, 100% { translate: 0 0;     rotate: -2deg; }
+  50%      { translate: 0 -10px; rotate: 2deg; }
+}
+
+/* Bodhi leaves. Each is given its own path by custom properties set inline in
+   the markup, so one keyframe serves all of them without a rule per leaf. */
+.b-leaf {
+  position: absolute;
+  top: -8%;
+  left: var(--x, 50%);
+  width: var(--size, 26px);
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0;
+  animation: b-fall var(--dur, 22s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes b-fall {
+  0%   { translate: 0 0;            rotate: 0deg;   opacity: 0; }
+  8%   { opacity: 0.85; }
+  25%  { translate: 40px 26vh;      rotate: 70deg; }
+  50%  { translate: -30px 52vh;     rotate: 150deg; }
+  75%  { translate: 34px 78vh;      rotate: 250deg; }
+  92%  { opacity: 0.6; }
+  100% { translate: -14px 104vh;    rotate: 340deg; opacity: 0; }
+}
+
+/* Motes of light drifting up out of the water. */
+.b-mote {
+  position: absolute;
+  bottom: 6%;
+  left: var(--x, 50%);
+  width: var(--size, 3px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 236, 194, 0.9);
+  box-shadow: 0 0 8px 2px rgba(255, 214, 150, 0.55);
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  animation: b-rise var(--dur, 16s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes b-rise {
+  0%   { translate: 0 0;          opacity: 0; }
+  12%  { opacity: 0.9; }
+  50%  { translate: 18px -34vh;   opacity: 0.7; }
+  100% { translate: -10px -72vh;  opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   4. The words
+   -------------------------------------------------------------------------- */
+
+.b-words {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  justify-items: center;
+  gap: 1.4rem;
+  padding: clamp(1.5rem, 4vh, 3rem) 1.25rem clamp(2.5rem, 7vh, 4.5rem);
+  text-align: center;
+}
+
+.b-quote {
+  max-width: 30ch;
+  margin: 0;
+  font-size: clamp(1.35rem, 3.6vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.45;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-shadow: 0 1px 18px rgba(255, 250, 236, 0.55);
+  text-wrap: balance;
+}
+
+.b-quote::before { content: '\201C'; opacity: 0.4; margin-inline-end: 0.06em; }
+.b-quote::after  { content: '\201D'; opacity: 0.4; margin-inline-start: 0.06em; }
+
+.b-cite {
+  display: block;
+  font-size: 0.82rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* The quote swap: out and back in, both short enough not to feel like waiting. */
+.b-fading { opacity: 0; translate: 0 8px; }
+.b-quote, .b-cite {
+  transition: opacity 700ms var(--ease-calm), translate 700ms var(--ease-calm);
+}
+
+.b-another {
+  font: inherit;
+  font-size: 0.86rem;
+  letter-spacing: 0.1em;
+  padding: 0.55rem 1.35rem;
+  color: var(--ink-soft);
+  background: rgba(255, 250, 236, 0.42);
+  border: 1px solid rgba(90, 52, 20, 0.28);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 400ms var(--ease-calm), color 400ms var(--ease-calm),
+              border-color 400ms var(--ease-calm);
+}
+.b-another:hover {
+  background: rgba(255, 252, 244, 0.7);
+  border-color: rgba(90, 52, 20, 0.5);
+  color: var(--ink);
+}
+.b-another:focus-visible {
+  outline: 2px solid #6b3f18;
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Breathing guide
+   --------------------------------------------------------------------------
+   The one interactive thing on the page, and the one most likely to actually
+   change how a visitor feels. Ring and label share the 10s cycle with the
+   halo; buddha.js only writes the label, so the two can never drift apart.
+   -------------------------------------------------------------------------- */
+
+.b-breath {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  gap: 0.9rem;
+  padding-block-end: clamp(1.5rem, 5vh, 3rem);
+}
+
+
+.b-breath-label {
+  min-height: 1.4em;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  /* Dark, not faint cream. This sits at the bottom of the scene where the sky
+     has become bright gold, and pale text on that was unreadable. The light
+     shadow keeps it legible if it ever rides up onto the darker rose band. */
+  color: #4a2a0e;
+  text-shadow: 0 1px 0 rgba(255, 242, 214, 0.5);
+  transition: opacity 900ms var(--ease-calm);
+}
+
+/* --------------------------------------------------------------------------
+   6. Reading section below the fold
+   -------------------------------------------------------------------------- */
+
+.b-below {
+  position: relative;
+  z-index: 10;
+  padding: clamp(3rem, 9vh, 6rem) 1.25rem clamp(4rem, 10vh, 7rem);
+  background: linear-gradient(to bottom, var(--dawn-gold) 0%, #8a6a52 26%, var(--bg-base) 100%);
+}
+
+.b-below-inner {
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.b-below h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  margin: 0 0 1.2rem;
+  color: #fdf6e8;
+}
+
+.b-below p {
+  margin: 0 0 1.1rem;
+  line-height: 1.85;
+  color: rgba(253, 246, 232, 0.82);
+}
+
+.b-below a { color: var(--dawn-cream); }
+
+.b-back {
+  display: inline-block;
+  margin-block-start: 1.5rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.1em;
+  color: rgba(253, 246, 232, 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   7. Stillness for those who ask for it
+   --------------------------------------------------------------------------
+   Not a degraded version — the scene is composed so it is complete standing
+   still. Leaves and motes are removed rather than frozen mid-air, because a
+   leaf stopped halfway down the screen looks broken rather than peaceful.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .b-sun, .b-rays, .b-halo, .b-ripple, .b-lotus {
+    animation: none;
+  }
+  .b-leaf, .b-mote, .b-ripple { display: none; }
+  .b-halo { scale: 1; opacity: 0.9; }
+  .b-quote, .b-cite, .b-breath-label { transition-duration: 1ms; }
+}
+
+@media (max-width: 640px) {
+  .b-halo { bottom: 30%; }
+  .b-lotus--c { display: none; }
+  .b-quote { max-width: 22ch; }
+}
+
+/* ==========================================================================
+   8. Making him live
+   --------------------------------------------------------------------------
+   Four idle motions, all slow, all on different periods so they never fall
+   into lockstep and start looking mechanical: he breathes on 10s with the
+   guide ring, the aura pulses on 10s with him, the light in his hands
+   twinkles on 3.2s, and every 13s he opens his eyes for a moment and looks
+   out. That last one is the whole trick — a face that is always closed is an
+   ornament, and a face that opens now and then is a presence.
+   ========================================================================== */
+
+.b-figure {
+  border: 0;
+  background: none;
+  padding: clamp(4rem, 14vh, 9rem) 0 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.b-figure:focus-visible { outline: 2px solid var(--dawn-cream); outline-offset: 8px; border-radius: 1rem; }
+
+/* Hinged at the lotus, because a body that scales from its centre looks like
+   it is inflating rather than breathing. */
+.b-live {
+  transform-origin: 50% 88%;
+  transform-box: fill-box;
+  animation: b-live-breathe 10s var(--ease-calm) infinite;
+}
+@keyframes b-live-breathe {
+  0%   { transform: scale(0.985) translateY(2px); }
+  40%  { transform: scale(1.015) translateY(-3px); }
+  100% { transform: scale(0.985) translateY(2px); }
+}
+
+.b-aura {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  animation: b-aura-pulse 10s var(--ease-calm) infinite;
+}
+@keyframes b-aura-pulse {
+  0%, 100% { opacity: 0.62; transform: scale(0.94); }
+  40%      { opacity: 1;    transform: scale(1.05); }
+}
+
+/* Every nine seconds he opens his eyes for a second and a half, then closes
+   them again. That is the only thing on his face that moves. An earlier version
+   was open for 0.65s in every 13s, which meant you could watch the page for a
+   minute and never catch it. */
+.b-eyes--shut { animation: b-shut 9s ease-in-out infinite; }
+.b-eyes--open { opacity: 0; animation: b-open 9s ease-in-out infinite; }
+
+@keyframes b-shut {
+  0%, 64%, 92%, 100% { opacity: 1; }
+  70%, 86%           { opacity: 0; }
+}
+@keyframes b-open {
+  0%, 64%, 92%, 100% { opacity: 0; }
+  70%, 86%           { opacity: 1; }
+}
+
+/* Rays behind the head, one turn every minute and a half. */
+.b-rays-spin {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: b-rays-spin 90s linear infinite;
+}
+@keyframes b-rays-spin { to { transform: rotate(360deg); } }
+
+.b-urna {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: b-urna-pulse 4.5s ease-in-out infinite;
+}
+@keyframes b-urna-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.85); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+.b-spark {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  animation: b-twinkle 3.2s ease-in-out infinite;
+}
+@keyframes b-twinkle {
+  0%, 100% { opacity: 0.55; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.25); }
+}
+
+.b-petals {
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+  animation: b-sway 7s ease-in-out infinite;
+}
+@keyframes b-sway {
+  0%, 100% { transform: rotate(-1.1deg); }
+  50%      { transform: rotate(1.1deg); }
+}
+
+/* The tap: a bounce, a brighter aura, and a wider smile for a moment. */
+.b-figure.is-tapped .b-live { animation: b-bounce 900ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes b-bounce {
+  0%   { transform: scale(1) translateY(0); }
+  28%  { transform: scale(1.07) translateY(-14px); }
+  55%  { transform: scale(0.98) translateY(3px); }
+  100% { transform: scale(1) translateY(0); }
+}
+.b-figure.is-tapped .b-aura { animation: b-aura-flash 900ms ease-out; }
+@keyframes b-aura-flash {
+  0%   { opacity: 1; transform: scale(1); }
+  40%  { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0.62; transform: scale(0.94); }
+}
+/* The smile is deliberately not animated — see buddha.html. Tapping still
+   bounces him, flashes the aura and turns the verse over; the mouth stays put. */
+
+.b-sparkles circle { pointer-events: none; }
+
+/* ==========================================================================
+   9. Wide screens: him on one side, the verse on the other
+   --------------------------------------------------------------------------
+   Stacked, the verse sits below the fold and has to be scrolled to, which
+   breaks the one thing this page is for. Side by side, the figure and the
+   words are taken in together and nothing needs scrolling at all.
+   ========================================================================== */
+
+@media (min-width: 900px) {
+  .b-scene {
+    grid-template-columns: 1.02fr 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    column-gap: clamp(1rem, 4vw, 4.5rem);
+    padding-inline: clamp(2rem, 7vw, 7rem);
+  }
+  .b-figure { padding: 0; place-self: center; }
+  .b-buddha { width: clamp(280px, 34vmin, 460px); }
+
+  .b-words {
+    text-align: left;
+    justify-items: start;
+    padding: 0;
+  }
+  .b-quote { max-width: 19ch; }
+  .b-quote, .b-cite { text-align: left; }
+  .b-breath { place-items: start; padding-block-end: 0; padding-block-start: 0.5rem; }
+
+  /* The halo belongs behind him, not behind the middle of the page. */
+  .b-halo { left: 28%; bottom: 26%; width: clamp(320px, 40vmin, 560px); }
+  .b-ripple { left: 28%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b-live, .b-aura, .b-spark, .b-petals, .b-rays-spin, .b-urna,
+  .b-eyes--shut, .b-eyes--open,
+  .b-figure.is-tapped .b-live, .b-figure.is-tapped .b-aura { animation: none; }
+  .b-eyes--shut { opacity: 1; }
+  .b-eyes--open { opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   9b. Fitting the wide layout into one screen
+   --------------------------------------------------------------------------
+   Side by side is only worth having if nothing has to be scrolled to. At 19ch
+   the longest verse wrapped to seven lines and pushed the breathing guide off
+   the bottom, so the column is wider and the type a little smaller — the verse
+   still reads as display type, it just stops being a tower.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 900px) {
+  .b-scene { max-height: calc(100svh - var(--b-header, 0px)); }
+
+  .b-words { gap: 1.05rem; }
+
+  .b-quote {
+    max-width: 26ch;
+    font-size: clamp(1.25rem, 2.05vw, 1.95rem);
+    line-height: 1.4;
+  }
+
+  .b-breath {
+    gap: 0.6rem;
+    padding-block-start: 0.25rem;
+  }
+}
+
+/* Short-but-wide screens (laptops at 1280x720, split windows) need the verse
+   smaller still, or the breathing guide is the thing that gets cut. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .b-quote { font-size: clamp(1.1rem, 1.75vw, 1.6rem); max-width: 30ch; }
+  .b-words { gap: 0.8rem; }
+  .b-buddha { width: clamp(240px, 30vmin, 380px); }
+}
+
+/* ==========================================================================
+   10. Filling the screen
+   --------------------------------------------------------------------------
+   The scene alone goes fullscreen, not the document, so the site header and
+   the section below simply are not there — nothing to hide, nothing to
+   restore. In that state the hero can take the whole viewport back, because
+   there is no longer a header to subtract.
+   ========================================================================== */
+
+.b-fs {
+  position: absolute;
+  top: clamp(0.75rem, 2vh, 1.4rem);
+  right: clamp(0.75rem, 2vw, 1.4rem);
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  color: var(--ink-soft);
+  background: rgba(255, 250, 236, 0.45);
+  border: 1px solid rgba(90, 52, 20, 0.26);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 300ms var(--ease-calm), color 300ms var(--ease-calm),
+              border-color 300ms var(--ease-calm), opacity 300ms var(--ease-calm);
+}
+.b-fs:hover { background: rgba(255, 252, 244, 0.75); border-color: rgba(90, 52, 20, 0.5); color: var(--ink); }
+.b-fs:focus-visible { outline: 2px solid #6b3f18; outline-offset: 3px; }
+.b-fs svg { width: 1.15rem; height: 1.15rem; display: block; }
+.b-fs .b-fs-out { display: none; }
+
+.b-scene:fullscreen .b-fs .b-fs-in,
+.b-scene:-webkit-full-screen .b-fs .b-fs-in { display: none; }
+.b-scene:fullscreen .b-fs .b-fs-out,
+.b-scene:-webkit-full-screen .b-fs .b-fs-out { display: block; }
+
+/* No header above it any more, so take the height back. */
+.b-scene:fullscreen,
+.b-scene:-webkit-full-screen {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+}
+
+/* A little more room for the verse when it has the whole screen. */
+@media (min-width: 900px) {
+  .b-scene:fullscreen .b-quote { font-size: clamp(1.5rem, 2.6vw, 2.6rem); max-width: 24ch; }
+  .b-scene:fullscreen .b-buddha { width: clamp(300px, 38vmin, 520px); }
+}
+
+/* ==========================================================================
+   11. The breaker
+   --------------------------------------------------------------------------
+   The scene ended and the reading began with nothing between them, so the two
+   ran together. A tapered rule either side of a slowly turning dharma wheel
+   closes the scene off and hands the page over.
+   ========================================================================== */
+
+.b-breaker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.9rem, 3vw, 2rem);
+  width: min(34rem, 82vw);
+  margin: 0 auto clamp(2rem, 6vh, 3.5rem);
+  color: rgba(90, 52, 20, 0.55);
+}
+
+.b-breaker-rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(to right, transparent, currentColor);
+}
+.b-breaker-rule:last-child {
+  background: linear-gradient(to left, transparent, currentColor);
+}
+
+.b-breaker-mark {
+  flex: 0 0 auto;
+  width: clamp(1.6rem, 4vw, 2.3rem);
+  height: clamp(1.6rem, 4vw, 2.3rem);
+  opacity: 0.75;
+  animation: b-breaker-turn 60s linear infinite;
+}
+
+@keyframes b-breaker-turn { to { rotate: 360deg; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .b-breaker-mark { animation: none; }
+}

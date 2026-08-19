@@ -23,6 +23,7 @@ web server can host it, and any computer with a browser can develop it.
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `verify.html`         | Certificate verification — looks up completion-certificate IDs in `assets/data/certificates.json` (client-side, no backend). QR codes on certificates deep-link here as `/verify?id=…`. Offer letters are deliberately not verifiable online — institutions email instead. The generator lives in a private repo; `/generate` redirects to it (see `vercel.json`) |
+| `buddha.html`         | 🪷 A still place (`/buddha`) — a cross-legged Buddha drawn in inline SVG, a verse from the Pali Canon that changes on load and on every tap, and a 4s-in / 6s-out breathing guide. Every one of the 50 verses carries its citation: most "Buddha quotes" in circulation are modern fabrications, so anything added here must be checked against suttacentral.net or accesstoinsight.org first. He breathes on a 10s cycle, and every 9s opens his eyes and grins for 1.8s. Tapping him bounces him, bursts 14 sparkles and turns the verse over. A fullscreen button hands the whole screen to the scene. Styles in `assets/css/buddha.css`, behaviour in `assets/js/buddha.js`; all motion is transform/opacity only and stops dead under `prefers-reduced-motion` |
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
@@ -360,6 +361,51 @@ crowding the raised surfaces even when you do shift them.
   fake. Keep both in place if that file's caching is ever revisited.
 - `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
   so fetched fragments and raw JSON never appear in search results.
+
+## A still place (`/buddha`)
+
+A quiet page, deliberately unlike the rest of the site.
+
+**The verses.** 50 of them, in `assets/js/buddha.js`, one picked at random on load
+and again on every tap, never the same one twice running. Each carries its
+citation — 30 from the Dhammapada, the rest from the Samyutta, Anguttara and
+Majjhima Nikayas, the Itivuttaka, Udana, Sutta Nipata, Theragatha, Therigatha and
+the Karaniya Metta Sutta. That constraint is load-bearing: a large share of the
+"Buddha quotes" in circulation were never said by him. "Holding on to anger is
+like grasping a hot coal", "what you think, you become" and "peace comes from
+within" are all modern inventions, and the first draft of this file contained one
+before it was checked. **Add nothing here without a citation verified against
+suttacentral.net or accesstoinsight.org.**
+
+**The figure.** Inline SVG, not an image — the site's CSP is `img-src 'self'`, so
+an off-origin picture would be blocked outright, and vector stays sharp from a
+phone to a 5K display. Drawn cute on purpose: the page should work for a child as
+well as an adult.
+
+**The motion.** Four idle cycles on deliberately different periods so they never
+sync up and start looking mechanical — he breathes on 10s hinged at the lotus,
+the aura pulses with him, the light in his hands twinkles on 3.2s, the halo rays
+turn once every 90s. Every 9s he opens his eyes and breaks into an open smile for
+1.8s. An earlier version opened them for 0.65s in every 13s, which meant you
+could watch for a minute and never catch it.
+
+**Tapping him** bounces the figure, flashes the aura, bursts 14 sparkles and
+turns the verse over, with a 900ms guard so a fast second tap cannot start a
+second bounce mid-flight.
+
+**Layout.** Above 900px the verse sits beside him and the whole scene fits one
+screen without scrolling. That needs the scene's own offset from the top of the
+document, measured into `--b-header` by `buddha.js` — a plain `100svh` hero sits
+below the site header and always hangs its last ~140px past the fold. Narrower
+than 900px it stacks, and scrolling there is fine.
+
+**Fullscreen.** The button fullscreens the scene only, so the header and the
+section below are absent rather than hidden, and `--b-header` drops to 0 while it
+is active. Hidden entirely where element fullscreen is unavailable (iOS Safari).
+
+All motion is transform/opacity only, and the whole thing goes still under
+`prefers-reduced-motion` — leaves and motes are removed rather than frozen,
+because a leaf stopped halfway down the screen looks broken rather than peaceful.
 
 ## Labs (`/labs`)
 

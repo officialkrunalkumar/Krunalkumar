@@ -136,6 +136,33 @@ Complete index at https://krunalkumar.dpdns.org/blog
 - **Terms & Rules:** Work is performed strictly on authorized accounts/devices with proven ownership. No device bypassing or unauthorized surveillance.
 - **Refunds:** Mentorship includes a 100% money-back guarantee within the first 7 days of the first month. Consulting milestones not yet started are fully refundable.
 
+## A still place (/buddha)
+
+A contemplative page, deliberately unlike the rest of the site: an illustrated
+Buddha sitting cross-legged on a lotus, a verse from the Pali Canon, and a guided
+breath.
+
+- **50 verses**, one chosen at random on load and again on every tap, never the
+  same twice in a row. Sources: Dhammapada (30), Samyutta Nikaya, Anguttara
+  Nikaya, Majjhima Nikaya, Itivuttaka, Udana, Sutta Nipata, Theragatha,
+  Therigatha, Karaniya Metta Sutta.
+- **Every verse is cited.** This matters more than it looks: a large share of the
+  "Buddha quotes" in circulation are modern fabrications — "holding on to anger
+  is like grasping a hot coal", "what you think, you become", "peace comes from
+  within" and "three things cannot be long hidden" among them. Everything shown
+  here was checked against suttacentral.net or accesstoinsight.org.
+- **The breathing guide** runs 4 seconds in, 6 seconds out. The longer exhale is
+  the part that settles a nervous system, and the halo and the figure breathe on
+  the same cycle.
+- **The figure is inline SVG**, not a photograph — the site's Content Security
+  Policy is `img-src 'self'`, so an off-origin image would be blocked, and vector
+  stays sharp at any size. He breathes, the halo rays turn, the light in his
+  hands twinkles, and every nine seconds he opens his eyes and grins for a second
+  and a half.
+- **Tapping him** changes the verse, with a bounce and a burst of sparkles.
+- **Fullscreen mode** hands the entire screen to the scene.
+- Nothing is collected, counted or stored. There is no sign-up.
+
 ## Security tools
 
 Sixteen browser-based security tools at /labs/<name>. Each runs entirely in the
