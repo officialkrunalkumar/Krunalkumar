@@ -92,6 +92,23 @@
       <section class="b-scene" aria-labelledby="b-title">
         <h1 id="b-title" class="sr-only">A still place — sit for a moment</h1>
 
+        <div class="b-audio">
+          <button class="b-audio-toggle" type="button" aria-pressed="false"
+                  aria-label="Turn the sound on" title="Sound off">
+            <svg class="b-audio-icon b-audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+              <path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <svg class="b-audio-icon b-audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+              <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+          <input class="b-audio-vol" type="range" min="0" max="100" step="1" value="65"
+                 aria-label="Sound volume" disabled />
+        </div>
+
         <button class="b-fs" type="button" aria-label="Fill the screen" title="Fill the screen">
           <svg class="b-fs-in" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M4 10V4h6M20 10V4h-6M4 14v6h6M20 14v6h-6" fill="none" stroke="currentColor"
@@ -484,5 +501,6 @@
 
     <script src="/assets/js/include-partials.js" defer></script>
     <script src="/assets/js/buddha.js" defer></script>
+    <script src="/assets/js/buddha-sound.js" defer></script>
   </body>
 </html>
