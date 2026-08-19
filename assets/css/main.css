@@ -2357,3 +2357,79 @@ footer a:hover {
     break-inside: avoid;
   }
 }
+
+/* --------------------------------------------------------------------------
+   The quiet doorway to /buddha
+   --------------------------------------------------------------------------
+   It sat under the two call-to-action buttons as an unstyled text link and read
+   as an afterthought. It is the one warm thing in a footer of business links,
+   so it gets its own treatment: dawn colours rather than the site's blues, a
+   lotus, and a slow shimmer that crosses it every eight seconds. The shimmer is
+   the whole trick — it catches the eye without ever asking loudly.
+   -------------------------------------------------------------------------- */
+
+.footer-still {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+  padding: 0.72rem 1.5rem;
+  overflow: hidden;
+  font-size: 0.94rem;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  color: #ffeccb;
+  text-decoration: none;
+  background:
+    linear-gradient(135deg, rgba(233, 150, 98, 0.26), rgba(255, 214, 140, 0.1));
+  border: 1px solid rgba(255, 206, 132, 0.45);
+  border-radius: 999px;
+  box-shadow: 0 0 0 0 rgba(255, 206, 132, 0.35);
+  transition: background 400ms ease, border-color 400ms ease,
+              box-shadow 400ms ease, transform 400ms ease, color 400ms ease;
+}
+
+.footer-still:hover,
+.footer-still:focus-visible {
+  color: #fff8e8;
+  background: linear-gradient(135deg, rgba(233, 150, 98, 0.42), rgba(255, 214, 140, 0.2));
+  border-color: rgba(255, 224, 170, 0.75);
+  box-shadow: 0 0 24px 2px rgba(255, 196, 110, 0.28);
+  transform: translateY(-1px);
+}
+
+.footer-still-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  color: #ffd9a0;
+}
+
+.footer-still-sub {
+  font-size: 0.8rem;
+  opacity: 0.72;
+}
+
+/* A band of light crossing the pill, once every eight seconds. */
+.footer-still::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -40%;
+  width: 35%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 244, 214, 0.4), transparent);
+  animation: footer-still-sheen 8s ease-in-out infinite;
+}
+
+@keyframes footer-still-sheen {
+  0%, 62% { transform: translateX(0); opacity: 0; }
+  70%     { opacity: 1; }
+  95%     { transform: translateX(420%); opacity: 0; }
+  100%    { transform: translateX(420%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-still::after { animation: none; opacity: 0; }
+  .footer-still:hover { transform: none; }
+}
