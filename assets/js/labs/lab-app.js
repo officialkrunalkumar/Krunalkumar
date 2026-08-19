@@ -195,6 +195,7 @@
     outputBytes = 0;
     outputCapped = false;
     el.terminal.textContent = '';
+    hideFailure();
   }
 
   /* ========================================================================
@@ -229,6 +230,34 @@
   function hideWarning() {
     el.warn.hidden = true;
     el.warnText.textContent = '';
+  }
+
+  /* ------------------------------------------------------------------------
+     Runtime failure banner — the wording, markup and retry button live in
+     assets/js/labs/lab-fail.js, shared with the v86 and sql.js labs.
+     ---------------------------------------------------------------------- */
+  function runtimeName(lang) {
+    var meta = LAB_RUNTIMES[lang];
+    return ((meta && meta.name) || lang) + ' runtime';
+  }
+
+  function showFailure(info) {
+    if (!window.LabFail) return;   // page did not include lab-fail.js
+    window.LabFail.show({
+      anchor: el.terminal,
+      what: runtimeName((info && info.lang) || current),
+      kind: info && info.kind,
+      retry: function () {
+        // A runtime that died half-way can leave the worker holding a broken
+        // module, so the retry starts a new worker rather than reusing it.
+        killWorker();
+        run();
+      }
+    });
+  }
+
+  function hideFailure() {
+    if (window.LabFail) window.LabFail.hide();
   }
 
   function startWatchdog() {
@@ -297,10 +326,12 @@
     workerLang = null;
   }
 
-  function finishRun(ok, ms, note) {
+  function finishRun(ok, ms, note, loadFailed) {
     // A completed run means the runtime downloaded and instantiated, which is
-    // exactly when the storage meter's figure becomes true.
-    if (!note) markRuntimeFetched(current);
+    // exactly when the storage meter's figure becomes true. A run that ended
+    // because the runtime never arrived proves the opposite, so it must not
+    // bank bytes that are not on disk.
+    if (!note && !loadFailed) markRuntimeFetched(current);
     running = false;
     stopWatchdogTimer();
     hideWarning();
@@ -322,7 +353,7 @@
   // separate from the normal HTTP cache — a plain reload does not refresh
   // them, so without a version in the URL a deployed fix can keep running the
   // previous worker for as long as the entry survives.
-  var WORKER_VERSION = '2026-08-18-1';
+  var WORKER_VERSION = '2026-08-19-1';
 
   function newGenericWorker() {
     var w = new Worker('/assets/js/labs/lab-worker.js?v=' + WORKER_VERSION);
@@ -330,12 +361,18 @@
       var msg = event.data || {};
       if (msg.type === 'out') write(msg.text, msg.cls);
       else if (msg.type === 'status') setStatus(msg.text, 'is-busy');
-      else if (msg.type === 'done') finishRun(msg.ok, msg.ms);
+      else if (msg.type === 'done') {
+        if (msg.failure) showFailure(msg.failure);
+        finishRun(msg.ok, msg.ms, null, !!msg.failure);
+      }
       else if (msg.type === 'transpiled') onTranspiled(msg);
     };
     w.onerror = function (event) {
+      // Reaching here means the worker script itself never started \u2014 the
+      // worker's own try/catch reports everything after that point.
       write('Runtime error: ' + (event.message || 'worker failed to start') + '\n', 't-err');
-      finishRun(false, 0);
+      showFailure({ kind: 'network', lang: current });
+      finishRun(false, 0, null, true);
     };
     return w;
   }
@@ -371,12 +408,17 @@
       .then(function (text) { sandboxSource = text; start(text); })
       .catch(function (err) {
         write('Could not load the sandbox: ' + err + '\n', 't-err');
-        finishRun(false, 0);
+        showFailure({ kind: 'network', lang: current });
+        finishRun(false, 0, null, true);
       });
   }
 
   function onTranspiled(msg) {
-    if (!msg.js) { finishRun(false, 0); return; }
+    if (!msg.js) {
+      if (msg.failure) showFailure(msg.failure);
+      finishRun(false, 0, null, !!msg.failure);
+      return;
+    }
     killWorker();
     runInBlobWorker(msg.js);
   }

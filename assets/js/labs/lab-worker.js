@@ -30,7 +30,10 @@
           { type: 'transpile', code }            (TypeScript -> JavaScript)
      out  { type: 'status',     text }           progress, shown in toolbar
           { type: 'out',        cls, text }      cls -> .t-* class in the CSS
-          { type: 'done',       ok, ms }
+          { type: 'done',       ok, ms, failure }
+                                             failure is null for a normal run,
+                                             or { kind, lang } when the runtime
+                                             itself never finished loading
           { type: 'transpiled', js, error }
    ========================================================================== */
 
@@ -48,6 +51,37 @@
    storage: point this at that origin and nothing else needs touching. */
 var VENDOR = self.location.origin + '/assets/vendor/';
 var loaded = {};   // lang -> instantiated runtime
+
+/* Which entry in `loaded` proves a language's runtime finished initialising.
+   A runtime that never downloaded and a program with a syntax error both land
+   in the same catch at the bottom of this file, and reporting the first as if
+   it were the second sends people hunting for a bug in code that is fine. */
+var RUNTIME_KEY = {
+  python: 'python', sql: 'sql', lua: 'luaReady', c: 'clang', cpp: 'clang',
+  postgres: 'pglite', ruby: 'rubyReady', perl: 'perlReady', php: 'php'
+};
+
+function runtimeLoaded(lang) {
+  var key = RUNTIME_KEY[lang];
+  return key ? !!loaded[key] : true;   // unmapped languages: assume it loaded
+}
+
+/* Best-effort cause, used only to choose the wording the page shows. A wrong
+   guess costs a less helpful sentence, never a wrong result. */
+function failureKind(err) {
+  var text = String((err && err.message) || err);
+  if (typeof WebAssembly === 'undefined') return 'unsupported';
+  if (err instanceof RangeError) return 'memory';
+  if (/out of memory|\bOOM\b|enlarge memory|allocation failed|buffer allocation/i.test(text)) return 'memory';
+  // A download failure wearing a compiler error's clothes: the bytes arrived,
+  // they were just an error page. Must be tested before the support rule below,
+  // which would otherwise blame the browser and hide the retry button.
+  if (/magic word|magic number|MIME type|fetching of the wasm failed|status code is not ok/i.test(text)) return 'network';
+  if (/failed to fetch|load failed|network|importScripts|net::|ERR_|failed to load/i.test(text)) return 'network';
+  if (/refused to compile|blocked by CSP|wasm-unsafe-eval/i.test(text)) return 'unsupported';
+  if (/WebAssembly|\bwasm\b/i.test(text) && /not supported|unsupported|disabled/i.test(text)) return 'unsupported';
+  return 'unknown';
+}
 var stdinLines = [];
 var stdinCursor = 0;
 
@@ -193,6 +227,8 @@ async function runLua(code) {
   status('Running…');
   // A fresh engine per run: Lua globals must not leak between runs.
   var lua = await loaded.luaFactory.createEngine();
+  // The factory constructor does not fetch glue.wasm — createEngine() does.
+  loaded.luaReady = true;
   try {
     lua.global.set('print', function () {
       var parts = [];
@@ -273,6 +309,14 @@ async function clangApi() {
     clang: 'clang.wasm', lld: 'lld.wasm', memfs: 'memfs.wasm', sysroot: 'sysroot.tar'
   });
   await api.ready;
+  // api.ready only waits for memfs.wasm and sysroot.tar. clang.wasm and
+  // lld.wasm together are another ~50 MB, fetched lazily on the first compile —
+  // pull them now so a failed download is reported as a failed download rather
+  // than as an error in whatever the user happened to be compiling.
+  if (typeof api.getModule === 'function') {
+    await api.getModule('clang.wasm');
+    await api.getModule('lld.wasm');
+  }
   loaded.clang = api;
   return api;
 }
@@ -303,7 +347,7 @@ async function pgliteDb() {
   var mod = await import(VENDOR + 'pglite/index.js');
   var PGlite = mod.PGlite || (mod.default && mod.default.PGlite);
   if (!PGlite) throw new Error('PGlite failed to load.');
-  loaded.pgliteCtor = PGlite;
+  loaded.pglite = PGlite;
   return PGlite;
 }
 
@@ -362,6 +406,9 @@ async function runRuby(code) {
   status('Starting Ruby…');
   var module = await WebAssembly.compileStreaming(fetch(VENDOR + 'ruby/ruby.wasm'));
   var vm = await mod.DefaultRubyVM(module);
+  // rubyVm() only proves the 100 KB loader arrived. The 16.6 MB ruby.wasm is
+  // fetched here, so this is the first point at which Ruby can actually run.
+  loaded.rubyReady = true;
   status('Running…');
 
   // Route Ruby's own stdout/stderr into the terminal a line at a time.
@@ -422,13 +469,16 @@ async function runPerl(code) {
       stderr: perlPushChar
     };
     importScripts(VENDOR + 'perl/emperl.js');
-    await new Promise(function (resolve) {
+    var booted = await new Promise(function (resolve) {
       var started = Date.now();
       var check = setInterval(function () {
-        if (self.Module && self.Module.calledRun) { clearInterval(check); resolve(); }
-        else if (Date.now() - started > 40000) { clearInterval(check); resolve(); }
+        if (self.Module && self.Module.calledRun) { clearInterval(check); resolve(true); }
+        else if (Date.now() - started > 40000) { clearInterval(check); resolve(false); }
       }, 40);
     });
+    // Timing out means emperl.data or emperl.wasm never arrived. Falling
+    // through would run nothing and report success.
+    if (!booted) throw new Error('Perl failed to load — fetching the runtime timed out.');
     loaded.perlReady = true;
   }
 
@@ -495,8 +545,11 @@ async function runPhp(code) {
     status('Downloading PHP (~14 MB, cached after this)…');
     stubDocumentForEmscripten();
     var mod = await import(VENDOR + 'php/PhpWeb.mjs');
-    loaded.php = new mod.PhpWeb({ persist: false });
-    await loaded.php.binary;
+    var instance = new mod.PhpWeb({ persist: false });
+    // The constructor returns immediately; this is where the 13.8 MB wasm
+    // lands. Caching before it settles would pin a rejected promise forever.
+    await instance.binary;
+    loaded.php = instance;
   }
   status('Running…');
   var php = loaded.php;
@@ -667,7 +720,12 @@ self.onmessage = async function (event) {
       await transpile(msg.code);
     } catch (err) {
       labOut(String((err && err.message) || err) + '\n', 't-err');
-      post({ type: 'transpiled', js: null, error: String(err) });
+      // TypeScript answers here rather than through 'done', so the same
+      // load-versus-program distinction has to be drawn again.
+      post({
+        type: 'transpiled', js: null, error: String(err),
+        failure: loaded.ts ? null : { kind: failureKind(err), lang: 'typescript' }
+      });
     }
     return;
   }
@@ -695,6 +753,12 @@ self.onmessage = async function (event) {
     // program), so they are reported as program output, not as a lab failure.
     var text = (err && err.message) ? err.message : String(err);
     labOut(text.replace(/\s+$/, '') + '\n', 't-err');
-    post({ type: 'done', ok: false, ms: Date.now() - started });
+    // ...but if the runtime never finished loading, the program never ran at
+    // all. Saying only "error" there reads as a mistake in the user's code.
+    post({
+      type: 'done', ok: false, ms: Date.now() - started,
+      failure: runtimeLoaded(msg.lang) ? null
+                                       : { kind: failureKind(err), lang: msg.lang }
+    });
   }
 };

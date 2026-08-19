@@ -319,7 +319,19 @@
   function boot() {
     if (emulator) return;
     var Ctor = Machine();
-    if (!Ctor) { setStatus('Emulator failed to load', 'is-err'); return; }
+    if (!Ctor) {
+      // libv86.js is a plain <script> tag, so a missing global here means that
+      // file never arrived — not that the emulator misbehaved. Nothing has
+      // booted, so a reload is the only retry that means anything.
+      setStatus('Emulator failed to load', 'is-err');
+      if (window.LabFail) {
+        window.LabFail.show({
+          anchor: el.term, what: 'Linux emulator', kind: 'network',
+          retry: function () { location.reload(); }
+        });
+      }
+      return;
+    }
 
     el.start.disabled = true;
     el.stop.disabled = false;

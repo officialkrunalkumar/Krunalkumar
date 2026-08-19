@@ -229,6 +229,48 @@
   background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px);
 }
 
+/* --------------------------------------------------------------------------
+   Runtime failure banner - sits under the output and above stdin, so it reads
+   as the explanation of the red text just printed rather than a separate
+   alert. Blue rather than the watchdog's amber on purpose: this is an
+   explanation and a way forward, not a warning about something still running.
+   -------------------------------------------------------------------------- */
+
+.lab-fail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #e0f2fe;
+  background: rgba(12, 74, 110, 0.55);
+  border-top: 1px solid rgba(56, 189, 248, 0.45);
+}
+
+.lab-fail[hidden] { display: none; }
+.lab-fail-text { flex: 1 1 16rem; margin: 0; }
+.lab-fail-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 0.85rem; }
+
+.lab-fail-retry {
+  font: inherit;
+  font-weight: 700;
+  padding: 0.35rem 0.9rem;
+  color: #04283a;
+  background: #38bdf8;
+  border: 0;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.lab-fail-retry:hover { background: #7dd3fc; }
+.lab-fail-retry[hidden] { display: none; }
+.lab-fail-link { color: #bae6fd; }
+
+.lab-fail-retry:focus-visible,
+.lab-fail-link:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 2px; }
+
 .lab-terminal .t-dim  { color: #5d907f; }
 .lab-terminal .t-info { color: #7dd3fc; }
 .lab-terminal .t-warn { color: #fbbf24; }

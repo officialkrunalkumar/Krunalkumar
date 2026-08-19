@@ -1247,9 +1247,19 @@
      Opening the file
      ====================================================================== */
 
+  function sqlFailed(kind) {
+    var anchor = document.getElementById('tool-out');
+    if (!window.LabFail || !anchor) return;
+    window.LabFail.show({
+      anchor: anchor, what: 'SQLite engine (sql.js)', kind: kind,
+      retry: function () { location.reload(); }
+    });
+  }
+
   function ensureSql() {
     if (sqlReady) return sqlReady;
     if (typeof initSqlJs !== 'function') {
+      sqlFailed('network');
       sqlReady = Promise.reject(new Error(
         'sql.js is not loaded. The page includes it with a <script> tag before ' +
         'this module; without it there is no SQLite engine to open the file with.'));
@@ -1260,7 +1270,12 @@
        and nothing here points anywhere but this origin. */
     sqlReady = initSqlJs({
       locateFile: function (f) { return '/assets/vendor/sqljs/' + f; }
-    }).then(function (mod) { SQL = mod; return mod; });
+    }).then(function (mod) { SQL = mod; return mod; })
+      .catch(function (err) {
+        sqlReady = null;              // clear it so a retry gets a fresh attempt
+        sqlFailed(window.LabFail ? window.LabFail.classify(err) : 'unknown');
+        throw err;
+      });
     return sqlReady;
   }
 
