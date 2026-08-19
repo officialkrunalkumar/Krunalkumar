@@ -1920,3 +1920,226 @@ pre.lab-example:hover .lab-copy,
 }
 .lab-viz.is-fullscreen .oa-side,
 .lab-viz.is-fullscreen .oa-main { overflow-y: auto; }
+
+/* ==========================================================================
+   Peer-to-peer chat (/labs/chat)
+   --------------------------------------------------------------------------
+   The only lab that opens a network connection, so the warning at the top is
+   styled to be read rather than skipped. The inspector below the conversation
+   is the real content — it is what turns a chat box into a lesson — so it gets
+   monospace and room to breathe rather than being tucked away.
+   ========================================================================== */
+
+.chat-warn {
+  max-width: 70ch;
+  margin: 0 auto 2rem;
+  padding: 1rem 1.2rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #fde8c8;
+  background: rgba(120, 53, 15, 0.4);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  border-radius: 0.6rem;
+}
+.chat-warn strong { color: #fff3d6; }
+
+.lab-chat { display: grid; gap: 1.5rem; }
+
+.chat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chat-status {
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(31, 44, 63, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+.chat-status.is-busy { color: #fcd34d; border-color: rgba(252, 211, 77, 0.5); }
+.chat-status.is-good { color: #4ade80; border-color: rgba(74, 222, 128, 0.5); }
+.chat-status.is-bad  { color: #f87171; border-color: rgba(248, 113, 113, 0.5); }
+
+.chat-nick-wrap { flex: 1 1 10rem; }
+.chat-nick {
+  width: 100%;
+  max-width: 14rem;
+  padding: 0.45rem 0.8rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: #1f2c3f;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 0.4rem;
+}
+.chat-reset {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.45rem 1rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+.chat-reset:hover { color: var(--text); border-color: var(--accent); }
+
+/* ---- pick a side ---- */
+.chat-pick { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+
+.chat-role {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.4rem;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: rgba(31, 44, 63, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: border-color 250ms ease, background 250ms ease, transform 250ms ease;
+}
+.chat-role:hover { border-color: var(--accent); background: rgba(46, 62, 80, 0.85); transform: translateY(-2px); }
+.chat-role-title { font-size: 1.1rem; font-weight: 600; }
+.chat-role-nc {
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: rgba(2, 6, 23, 0.6);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.3rem;
+  justify-self: start;
+}
+.chat-role-note { font-size: 0.86rem; color: var(--muted); line-height: 1.6; }
+
+/* ---- the two-step handshake ---- */
+.chat-steps { display: grid; gap: 1.5rem; margin: 0; padding: 0; list-style: none; }
+.chat-steps h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.chat-note { margin: 0 0 0.6rem; font-size: 0.86rem; color: var(--muted); line-height: 1.65; }
+
+.chat-blob {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  word-break: break-all;
+  color: #86efac;
+  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 0.45rem;
+  resize: vertical;
+}
+
+/* ---- the conversation ---- */
+.chat-room { display: grid; gap: 0.75rem; }
+
+.chat-log {
+  min-height: 12rem;
+  max-height: 24rem;
+  overflow-y: auto;
+  padding: 0.9rem 1rem;
+  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.chat-msg { margin-bottom: 0.5rem; display: flex; gap: 0.55rem; }
+.chat-msg.is-system { color: #7dd3fc; font-style: italic; display: block; }
+.chat-msg-who { flex: 0 0 auto; font-weight: 600; color: var(--accent); }
+.chat-msg.is-them .chat-msg-who { color: #fbbf24; }
+.chat-msg-text { color: #e2e8f0; word-break: break-word; }
+
+.chat-form { display: flex; gap: 0.6rem; }
+.chat-input {
+  flex: 1 1 auto;
+  padding: 0.65rem 0.9rem;
+  font: inherit;
+  color: var(--text);
+  background: #1f2c3f;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 0.45rem;
+}
+.chat-input:disabled { opacity: 0.5; }
+.chat-send { flex: 0 0 auto; }
+
+/* ---- the inspector: the reason this page exists ---- */
+.chat-inspect {
+  padding: 1rem 1.1rem;
+  background: rgba(24, 36, 57, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 0.6rem;
+}
+.chat-inspect h3 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.chat-cands {
+  margin: 0 0 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+.chat-trace {
+  max-height: 15rem;
+  overflow-y: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: #cbd5e1;
+}
+.chat-trace-line { padding: 0.1rem 0; }
+.chat-trace-t { color: #64748b; margin-right: 0.4rem; }
+.chat-trace-line.is-good { color: #4ade80; }
+.chat-trace-line.is-bad  { color: #f87171; }
+.chat-trace-line.is-cand { color: #7dd3fc; }
+
+/* ---- the netcat mapping table ---- */
+.chat-map {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.chat-map caption {
+  text-align: left;
+  padding-bottom: 0.6rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.chat-map th, .chat-map td {
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+.chat-map th { color: var(--accent); font-weight: 600; }
+.chat-map td:first-child { white-space: nowrap; }
+
+@media (max-width: 620px) {
+  .chat-map, .chat-map thead, .chat-map tbody, .chat-map tr, .chat-map th, .chat-map td { display: block; }
+  .chat-map thead { display: none; }
+  .chat-map tr { padding: 0.6rem 0; border-bottom: 1px solid rgba(148, 163, 184, 0.18); }
+  .chat-map td { border: 0; padding: 0.2rem 0; }
+  .chat-map td:first-child { color: var(--accent); font-family: monospace; }
+}
+
+.chat-roster {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--accent);
+  padding: 0.45rem 0.7rem;
+  background: rgba(31, 44, 63, 0.7);
+  border-radius: 0.4rem;
+}
+.chat-nick.is-wanted {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
+}
