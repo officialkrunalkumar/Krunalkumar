@@ -148,7 +148,7 @@ These are deliberately separated from the fifteen offline security tools. They s
 ## Reading the site
 - Every page carries a search button and a light/dark toggle in the header. Search runs against a
   prebuilt index of all 88 pages and opens a full-screen panel; it is entirely client-side, so no
-  query ever leaves the browser. The light theme is opt-in — the site stays dark unless the toggle
+  query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in — the site stays dark unless the toggle
   is used, and the choice is remembered locally. Both themes are checked against the WCAG AA
   contrast floor across every page.
 

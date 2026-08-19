@@ -57,6 +57,7 @@
 
   function open() {
     build();
+    if (typeof window.gtag === 'function') window.gtag('event', 'search_open');
     overlay.hidden = false;
     document.documentElement.style.overflow = 'hidden';
     load();
@@ -135,9 +136,27 @@
     return (from > 0 ? '…' : '') + text + (from + 190 < b.length ? '…' : '');
   }
 
+  // render() runs on every keystroke, so the report is debounced to fire once
+  // the typing settles — otherwise "pyth" and "pytho" would each count.
+  //
+  // The RESULT COUNT goes to analytics; the query never does. llms-full.txt
+  // tells readers "no search query is ever sent anywhere", and that stays true.
+  // A zero-result count still flags a content gap worth looking at, and it does
+  // it without turning the search box into a log of what people typed.
+  var reportTimer = null;
+  function reportSearch(count) {
+    if (reportTimer) clearTimeout(reportTimer);
+    reportTimer = setTimeout(function () {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'site_search', { results: count });
+      }
+    }, 900);
+  }
+
   function render(results, words) {
     var panel = $panel();
     if (!panel) return;
+    reportSearch(results.length);
     panel.innerHTML = '';
     if (!results.length) {
       var none = document.createElement('p');
@@ -156,6 +175,11 @@
       var li = document.createElement('li');
       var a = document.createElement('a');
       a.href = r.page.u;
+      a.addEventListener('click', function () {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'search_result_click', { destination: r.page.u });
+        }
+      });
       a.className = 'site-search-hit';
       a.setAttribute('role', 'option');
       a.setAttribute('aria-selected', i === active ? 'true' : 'false');

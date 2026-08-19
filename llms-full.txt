@@ -285,7 +285,9 @@ vulnerable XSS playground.
 **Search.** Every page has a search button in the header. It runs against a prebuilt
 index covering all 88 pages and opens a full-screen panel, on a phone and a laptop
 alike. The index ships with the site and the matching happens in the tab, so no
-search query is ever sent anywhere.
+search query is ever sent anywhere. Analytics is told only that a search ran and how
+many results it returned — a zero-result count shows where the site is missing
+something — never what was typed.
 
 **Themes.** A light/dark toggle sits beside it. The site is dark by default and
 light is opt-in — it deliberately does not follow the operating system setting,

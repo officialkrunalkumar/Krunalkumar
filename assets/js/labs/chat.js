@@ -465,6 +465,9 @@
     dc.onopen = function () {
       trace('data channel open — everything from here is peer to peer', 'good');
       setStatus('Connected', 'good');
+      // That a connection succeeded, nothing about it. No names, no message
+      // content, no addresses — none of that leaves the pair of browsers.
+      if (typeof window.gtag === 'function') window.gtag('event', 'chat_peer_connected');
       el.input.disabled = false;
       el.send.disabled = false;
       if (el.fileBtn) el.fileBtn.disabled = false;
@@ -773,6 +776,9 @@
     if (policyWithholds('microphone')) withheld.push('microphone');
     if (withVideo && policyWithholds('camera')) withheld.push('camera');
     if (withheld.length) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'media_blocked', { reason: 'permissions_policy' });
+      }
       say('system', 'This page is not permitted to use the ' + withheld.join(' or ') +
                     '. That is a Permissions-Policy header on the site, not a choice you ' +
                     'made — the browser refuses before asking, and granting permission ' +
@@ -793,6 +799,9 @@
       if (el.avVoice) el.avVoice.disabled = true;
       if (el.avVideo) el.avVideo.disabled = true;
       say('system', withVideo ? 'Camera and microphone on.' : 'Microphone on.');
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'media_start', { media: withVideo ? 'video' : 'voice' });
+      }
     }).catch(function (err) {
       var name = err && err.name;
       var why =
@@ -802,6 +811,9 @@
         name === 'NotReadableError' ? 'the device is attached but another application is holding it' :
         name === 'OverconstrainedError' ? 'no attached device matches the requested resolution' :
         (err && err.message) || name || 'unknown error';
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'media_blocked', { reason: name || 'unknown' });
+      }
       say('system', 'Could not open the ' + (withVideo ? 'camera' : 'microphone') + ': ' + why + '.');
     });
   }

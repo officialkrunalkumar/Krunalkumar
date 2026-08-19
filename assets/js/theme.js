@@ -64,7 +64,14 @@
   document.addEventListener('click', function (e) {
     var btn = e.target && e.target.closest && e.target.closest('#theme-toggle');
     if (!btn) return;
-    apply(current() === 'light' ? 'dark' : 'light', true);
+    var next = current() === 'light' ? 'dark' : 'light';
+    apply(next, true);
+    // Only the press is reported, never the theme a page happens to load in —
+    // otherwise every page view of a light-theme visitor would count as a
+    // change and the numbers would say nothing.
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'theme_change', { theme: next });
+    }
   });
 
   // Reassert once the shared header has landed, so the label is right. Neither
