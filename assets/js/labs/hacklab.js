@@ -66,9 +66,29 @@
   var sqlReady = null;
   function getSql() {
     if (!sqlReady) {
-      sqlReady = initSqlJs({ locateFile: function (f) { return '/assets/vendor/sqljs/' + f; } });
+      // sql-wasm.js arrives as a plain <script> tag, so a missing global means
+      // it never downloaded — every SQL challenge below depends on it.
+      if (typeof initSqlJs !== 'function') {
+        sqlFailed('network');
+        return Promise.reject(new Error('sql.js failed to load'));
+      }
+      sqlReady = initSqlJs({ locateFile: function (f) { return '/assets/vendor/sqljs/' + f; } })
+        .catch(function (err) {
+          sqlReady = null;            // clear it so a retry gets a fresh attempt
+          sqlFailed(window.LabFail ? window.LabFail.classify(err) : 'unknown');
+          throw err;
+        });
     }
     return sqlReady;
+  }
+
+  function sqlFailed(kind) {
+    var anchor = document.getElementById('hacklab');
+    if (!window.LabFail || !anchor) return;
+    window.LabFail.show({
+      anchor: anchor, what: 'SQLite engine (sql.js)', kind: kind,
+      retry: function () { location.reload(); }
+    });
   }
 
   /* ====================================================================== *
