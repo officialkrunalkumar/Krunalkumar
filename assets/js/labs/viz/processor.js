@@ -968,9 +968,14 @@
       if (mount) mount.parentNode.removeChild(mount);
       build();
     } catch (err) {
+      // Styled by class, not inline. This paragraph is appended to `root`,
+      // not to the mount — the mount was removed a few lines up — so it lands
+      // on .lab, whose ground follows the theme. An inline colour outranks
+      // every stylesheet rule and cannot follow it: the pink this used to
+      // carry is 8.4:1 on the dark card and 1.68:1 on the light one, which
+      // hid the very message that explains why the visualiser is blank.
       var msg = document.createElement('p');
-      msg.style.cssText = 'padding:1.5rem;color:#fca5a5;line-height:1.6;font-family:' +
-        "'Cascadia Code','Fira Code',Consolas,monospace;font-size:0.85rem";
+      msg.className = 'lab-viz-error';
       msg.textContent = 'The processor explorer failed to start: ' +
         (err && err.message ? err.message : String(err)) +
         '  —  please report this, it is a bug rather than something you did.';

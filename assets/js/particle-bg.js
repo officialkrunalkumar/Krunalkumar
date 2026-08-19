@@ -83,6 +83,30 @@ if (canvas) {
     backgroundGradient.addColorStop(1, cssColor('--bg-base', '#121b2c'));
   }
 
+  // The gradient stops above are CSS custom properties, read once and baked
+  // into a CanvasGradient. CSS restyles itself when data-theme flips; a canvas
+  // does not. Without the observer further down, toggling to light left this
+  // canvas painting the dark navy across the whole viewport while the text on
+  // top of it went near-black — measured 1.01:1, the headline simply vanished.
+  let particleLightness = 75;
+
+  function syncThemeColours() {
+    // 75% is a pastel that glows on the dark page and washes out on the light
+    // one; 45% is the same hue with enough depth to read against paper.
+    particleLightness =
+      document.documentElement.getAttribute('data-theme') === 'light' ? 45 : 75;
+  }
+
+  function applyTheme() {
+    syncThemeColours();
+    buildGradients();
+    // A pure repaint (dt 0). The animation loop cannot be relied on here: it
+    // returns early while paused, and under prefers-reduced-motion the canvas
+    // is a single static frame that would otherwise keep the old theme for the
+    // rest of the visit.
+    drawFrame(0);
+  }
+
   // The default field: one dot per 7px of width, capped so an ultrawide
   // monitor does not pay for a field nobody reads as denser. A 375px phone
   // lands at ~53, a 1440px laptop at 200.
@@ -225,7 +249,7 @@ if (canvas) {
       }
 
       ctx.beginPath();
-      ctx.fillStyle = `hsla(${particle.hue}, 90%, 75%, ${particle.alpha})`;
+      ctx.fillStyle = `hsla(${particle.hue}, 90%, ${particleLightness}%, ${particle.alpha})`;
       ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
       ctx.fill();
     });
@@ -257,6 +281,14 @@ if (canvas) {
     drawFrame(Math.min(elapsed / (1000 / 60), 3));
   }
 
+  // Watching the attribute rather than listening for a custom event from
+  // theme.js keeps the two files independent: boot.js also sets data-theme
+  // before first paint, and anything else that ever sets it is covered too.
+  new MutationObserver(applyTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+
   let resizeFrame = null;
   window.addEventListener('resize', () => {
     if (resizeFrame) {
@@ -285,6 +317,7 @@ if (canvas) {
     mouseActive = false;
   });
 
+  syncThemeColours();
   resizeCanvas();
   // First paint is immediate and static; the loop takes over from there.
   drawFrame(0);

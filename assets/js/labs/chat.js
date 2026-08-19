@@ -86,7 +86,11 @@
     send: $('#chat-send'), room: $('#chat-room'), status: $('#chat-status'),
     trace: $('#chat-trace'), cands: $('#chat-cands'),
     reset: $('#chat-reset'), nick: $('#chat-nick'),
-    invite: $('#chat-invite'), roster: $('#chat-roster')
+    invite: $('#chat-invite'), roster: $('#chat-roster'),
+    fileBtn: $('#chat-file-btn'), fileInput: $('#chat-file'),
+    xferWrap: $('#chat-xfer'), xferBar: $('#chat-xfer-bar'), xferText: $('#chat-xfer-text'),
+    avWrap: $('#chat-av'), localVid: $('#chat-local'), remoteVid: $('#chat-remote'),
+    avVoice: $('#chat-voice'), avVideo: $('#chat-video'), avStop: $('#chat-av-stop')
   };
 
   if (!el.pick) return;
@@ -370,6 +374,33 @@
       if (e.candidate) noteCandidate(e.candidate);
     };
 
+    pc.ontrack = function (e) {
+      // One remote stream; the far side sends audio and video on the same one.
+      if (el.remoteVid && e.streams && e.streams[0]) {
+        el.remoteVid.srcObject = e.streams[0];
+        if (el.avWrap) el.avWrap.hidden = false;
+        trace('receiving a ' + e.track.kind + ' track', 'good');
+      }
+    };
+
+    pc.onnegotiationneeded = function () {
+      // Adding a track after the channel is open means a second offer/answer.
+      // With no signalling server there is nobody to carry it, so it has to
+      // go down the data channel that is already open.
+      if (!peer.chan || peer.chan.readyState !== 'open') return;
+      if (peer.renegotiating) return;
+      peer.renegotiating = true;
+      pc.createOffer().then(function (o) {
+        return pc.setLocalDescription(o);
+      }).then(function () {
+        send(peer, { k: 're-offer', sdp: pc.localDescription.sdp });
+        trace('renegotiating over the open channel to add media');
+      }).catch(function (err) {
+        peer.renegotiating = false;
+        trace('renegotiation failed: ' + err.message, 'bad');
+      });
+    };
+
     pc.onicegatheringstatechange = function () {
       trace('ICE gathering: ' + pc.iceGatheringState);
     };
@@ -428,12 +459,17 @@
 
   function wireChannel(peer, dc) {
     peer.chan = dc;
+    dc.binaryType = 'arraybuffer';
+    dc.bufferedAmountLowThreshold = LOW_WATER;
 
     dc.onopen = function () {
       trace('data channel open — everything from here is peer to peer', 'good');
       setStatus('Connected', 'good');
       el.input.disabled = false;
       el.send.disabled = false;
+      if (el.fileBtn) el.fileBtn.disabled = false;
+      if (el.avVoice) el.avVoice.disabled = false;
+      if (el.avVideo) el.avVideo.disabled = false;
       // Names are exchanged over the channel itself; there is nowhere else to
       // put them, and it means a late joiner learns everyone's name too.
       send(peer, { k: 'hi', n: me() });
@@ -447,8 +483,37 @@
     dc.onclose = function () { dropPeer(peer); };
 
     dc.onmessage = function (e) {
+      if (typeof e.data !== 'string') { onChunk(peer, e.data); return; }
       var msg;
       try { msg = JSON.parse(e.data); } catch (err) { return; }
+
+      if (msg.k === 're-offer') {
+        peer.pc.setRemoteDescription({ type: 'offer', sdp: msg.sdp })
+          .then(function () { return peer.pc.createAnswer(); })
+          .then(function (a) { return peer.pc.setLocalDescription(a); })
+          .then(function () {
+            send(peer, { k: 're-answer', sdp: peer.pc.localDescription.sdp });
+            trace('accepted the media renegotiation');
+          }).catch(function (e2) { trace('re-offer failed: ' + e2.message, 'bad'); });
+        return;
+      }
+      if (msg.k === 're-answer') {
+        peer.pc.setRemoteDescription({ type: 'answer', sdp: msg.sdp })
+          .then(function () {
+            peer.renegotiating = false;
+            trace('media negotiated', 'good');
+          }).catch(function (e2) { trace('re-answer failed: ' + e2.message, 'bad'); });
+        return;
+      }
+      if (msg.k === 'av-stop') {
+        if (el.remoteVid) el.remoteVid.srcObject = null;
+        say('system', (peer.name || 'They') + ' stopped their camera.');
+        return;
+      }
+
+      if (msg.k === 'file-start') { fileStart(peer, msg); return; }
+      if (msg.k === 'file-end') { fileEnd(peer); return; }
+      if (msg.k === 'file-abort') { fileAbort(peer, msg.why); return; }
 
       if (msg.k === 'hi') {
         peer.name = String(msg.n || 'anonymous').slice(0, 24);
@@ -656,6 +721,291 @@
   }
 
   /* ---------------------------------------------------------------------
+     Voice and video
+     ---------------------------------------------------------------------
+     One to one only, and the page says so rather than letting people find
+     out. Relaying text costs the host nothing — it repeats a string. Relaying
+     video is a different job: a browser cannot forward someone else's stream
+     without decoding and re-encoding it, which is precisely what an SFU
+     server exists to do. Without one, group video needs a full mesh, so three
+     people is six code exchanges and four is twelve.
+
+     Adding a track to a live connection triggers renegotiation — a second
+     offer and answer. There is no signalling server to carry those, so they
+     go down the data channel that is already open. That is the neat part: the
+     channel bootstraps its own upgrade.
+     ------------------------------------------------------------------ */
+
+  var localStream = null;
+
+  function startMedia(withVideo) {
+    if (peers.length !== 1) {
+      say('system', 'Voice and video are one-to-one only. Relaying video needs a ' +
+                    'media server; relaying text does not.');
+      return;
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      say('system', 'This browser will not give a page access to the camera or microphone.');
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: withVideo ? { width: { ideal: 640 }, height: { ideal: 480 } } : false
+    }).then(function (stream) {
+      localStream = stream;
+      if (el.localVid) el.localVid.srcObject = stream;
+      if (el.avWrap) el.avWrap.hidden = false;
+      var pc = peers[0].pc;
+      stream.getTracks().forEach(function (t) { pc.addTrack(t, stream); });
+      trace('added ' + stream.getTracks().length + ' local track(s) — renegotiating', 'good');
+      if (el.avStop) el.avStop.hidden = false;
+      if (el.avVoice) el.avVoice.disabled = true;
+      if (el.avVideo) el.avVideo.disabled = true;
+      say('system', withVideo ? 'Camera and microphone on.' : 'Microphone on.');
+    }).catch(function (err) {
+      say('system', 'Could not open the ' + (withVideo ? 'camera' : 'microphone') +
+                    ': ' + (err.message || err.name));
+    });
+  }
+
+  function stopMedia() {
+    if (localStream) {
+      localStream.getTracks().forEach(function (t) { t.stop(); });
+      localStream = null;
+    }
+    if (el.localVid) el.localVid.srcObject = null;
+    for (var i = 0; i < peers.length; i++) send(peers[i], { k: 'av-stop' });
+    if (el.avStop) el.avStop.hidden = true;
+    if (el.avVoice) el.avVoice.disabled = false;
+    if (el.avVideo) el.avVideo.disabled = false;
+    say('system', 'Camera and microphone off.');
+  }
+
+  if (el.avVoice) el.avVoice.addEventListener('click', function () { startMedia(false); });
+  if (el.avVideo) el.avVideo.addEventListener('click', function () { startMedia(true); });
+  if (el.avStop) el.avStop.addEventListener('click', stopMedia);
+
+  // Tracks keep the camera light on; releasing them on unload matters.
+  window.addEventListener('pagehide', function () {
+    if (localStream) localStream.getTracks().forEach(function (t) { t.stop(); });
+  });
+
+  /* ---------------------------------------------------------------------
+     Files
+     ---------------------------------------------------------------------
+     A DataChannel message caps at 256 KB, so a file goes across as a run of
+     16 KB chunks between a JSON header and a JSON footer. 16 KB rather than
+     the maximum because smaller chunks keep the progress bar honest and stay
+     well inside every browser's SCTP limits.
+
+     Two things decide whether a gigabyte is possible.
+
+     Backpressure: the channel accepts writes far faster than it can send
+     them, and the excess is queued in memory. Pushing a 1 GB file in a loop
+     is a reliable way to kill the tab. So the sender pauses whenever the
+     buffer passes LOW_WATER and waits for bufferedamountlow.
+
+     Where it lands: assembling a gigabyte of chunks into a Blob needs a
+     gigabyte of RAM. Chrome and Edge can hand out a writable file handle up
+     front, and then each chunk goes straight to disk and memory never grows.
+     Without that API the transfer is capped at 512 MB and held in memory,
+     which is honest about what the browser can actually survive.
+     ------------------------------------------------------------------ */
+
+  var CHUNK = 16 * 1024;
+  var LOW_WATER = 256 * 1024;
+  var MAX_STREAMED = Infinity;                   // streaming to disk: no ceiling
+  var MAX_BUFFERED = 512 * 1024 * 1024;          // what a Blob can survive
+
+  function canStream() {
+    return typeof window.showSaveFilePicker === 'function';
+  }
+
+  function fmtBytes(n) {
+    var u = ['B', 'KB', 'MB', 'GB'];
+    var i = Math.min(u.length - 1, Math.floor(Math.log(n || 1) / Math.log(1024)));
+    return (n / Math.pow(1024, i)).toFixed(i ? 1 : 0) + ' ' + u[i];
+  }
+
+  function setProgress(label, done, total, started) {
+    if (!el.xferWrap) return;
+    el.xferWrap.hidden = false;
+    var pct = total ? Math.min(100, done / total * 100) : 0;
+    el.xferBar.style.width = pct.toFixed(1) + '%';
+    var secs = (performance.now() - started) / 1000;
+    var rate = secs > 0.4 ? done / secs : 0;
+    var eta = rate > 0 && total > done ? Math.round((total - done) / rate) : null;
+    el.xferText.textContent = label + ' — ' + fmtBytes(done) + ' of ' + fmtBytes(total) +
+      ' (' + pct.toFixed(0) + '%)' +
+      (rate ? ' · ' + fmtBytes(rate) + '/s' : '') +
+      (eta !== null ? ' · ' + eta + 's left' : '');
+  }
+
+  /* ---- sending ---- */
+
+  var sending = false;
+
+  function sendFile(file) {
+    if (sending) return;
+    var targets = [];
+    for (var i = 0; i < peers.length; i++) {
+      if (peers[i].chan && peers[i].chan.readyState === 'open') targets.push(peers[i]);
+    }
+    if (!targets.length) return;
+
+    var cap = canStream() ? MAX_STREAMED : MAX_BUFFERED;
+    if (file.size > cap) {
+      say('system', 'That file is ' + fmtBytes(file.size) + '. The limit here is ' +
+        fmtBytes(cap) + (canStream() ? '.' :
+        ' because this browser cannot stream to disk — Chrome or Edge can go far higher.'));
+      return;
+    }
+
+    sending = true;
+    var id = uid();
+    var started = performance.now();
+    trace('sending ' + file.name + ' (' + fmtBytes(file.size) + ') to ' +
+          targets.length + ' peer' + (targets.length > 1 ? 's' : ''), 'good');
+
+    for (i = 0; i < targets.length; i++) {
+      send(targets[i], { k: 'file-start', id: id, name: file.name.slice(0, 120), size: file.size });
+    }
+
+    var offset = 0;
+    var reader = new FileReader();
+
+    function pump() {
+      if (offset >= file.size) {
+        for (var j = 0; j < targets.length; j++) send(targets[j], { k: 'file-end', id: id });
+        setProgress('Sent ' + file.name, file.size, file.size, started);
+        say('system', 'Sent ' + file.name + ' (' + fmtBytes(file.size) + ').');
+        sending = false;
+        window.setTimeout(function () { if (el.xferWrap) el.xferWrap.hidden = true; }, 4000);
+        return;
+      }
+      // Wait for the queue to drain rather than piling a gigabyte into it.
+      var busy = false;
+      for (var t = 0; t < targets.length; t++) {
+        if (targets[t].chan.bufferedAmount > LOW_WATER) busy = true;
+      }
+      if (busy) {
+        targets[0].chan.addEventListener('bufferedamountlow', pump, { once: true });
+        return;
+      }
+      reader.readAsArrayBuffer(file.slice(offset, offset + CHUNK));
+    }
+
+    reader.onload = function (e) {
+      var buf = e.target.result;
+      for (var t = 0; t < targets.length; t++) {
+        try { targets[t].chan.send(buf); } catch (err) {
+          say('system', 'Transfer stopped: ' + (err.message || err));
+          sending = false;
+          return;
+        }
+      }
+      offset += buf.byteLength;
+      setProgress('Sending ' + file.name, offset, file.size, started);
+      pump();
+    };
+    reader.onerror = function () {
+      say('system', 'Could not read that file.');
+      sending = false;
+    };
+
+    pump();
+  }
+
+  /* ---- receiving ---- */
+
+  function fileStart(peer, msg) {
+    var cap = canStream() ? MAX_STREAMED : MAX_BUFFERED;
+    if (msg.size > cap) {
+      send(peer, { k: 'file-abort', why: 'too large for the receiving browser' });
+      say('system', 'Refused ' + msg.name + ': ' + fmtBytes(msg.size) + ' is over this browser\'s limit.');
+      return;
+    }
+    peer.rx = {
+      name: msg.name, size: msg.size, got: 0,
+      started: performance.now(), parts: [], writer: null
+    };
+    say('system', (peer.name || 'They') + ' is sending ' + msg.name +
+        ' (' + fmtBytes(msg.size) + ').');
+
+    if (canStream()) {
+      // Asking now means every chunk can go straight to disk.
+      window.showSaveFilePicker({ suggestedName: msg.name })
+        .then(function (handle) { return handle.createWritable(); })
+        .then(function (w) {
+          peer.rx.writer = w;
+          for (var i = 0; i < peer.rx.parts.length; i++) w.write(peer.rx.parts[i]);
+          peer.rx.parts = [];
+        })
+        .catch(function () {
+          // Declined the dialog: fall back to memory, within the safe cap.
+          if (msg.size > MAX_BUFFERED) {
+            send(peer, { k: 'file-abort', why: 'no destination chosen' });
+            fileAbort(peer, 'no destination chosen');
+          }
+        });
+    }
+  }
+
+  function onChunk(peer, buf) {
+    if (!peer.rx) return;
+    peer.rx.got += buf.byteLength;
+    if (peer.rx.writer) peer.rx.writer.write(buf);
+    else peer.rx.parts.push(buf);
+    setProgress('Receiving ' + peer.rx.name, peer.rx.got, peer.rx.size, peer.rx.started);
+  }
+
+  function fileEnd(peer) {
+    var rx = peer.rx;
+    if (!rx) return;
+    peer.rx = null;
+
+    var finish = function () {
+      say('system', 'Received ' + rx.name + ' (' + fmtBytes(rx.got) + ').');
+      window.setTimeout(function () { if (el.xferWrap) el.xferWrap.hidden = true; }, 4000);
+    };
+
+    if (rx.writer) {
+      rx.writer.close().then(finish);
+      return;
+    }
+    // Memory path: hand it over as a download link.
+    var blob = new Blob(rx.parts);
+    rx.parts = [];
+    var url = URL.createObjectURL(blob);
+    var row = document.createElement('div');
+    row.className = 'chat-msg is-system';
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = rx.name;
+    a.textContent = 'Download ' + rx.name + ' (' + fmtBytes(blob.size) + ')';
+    a.className = 'chat-file-link';
+    row.appendChild(a);
+    el.log.appendChild(row);
+    el.log.scrollTop = el.log.scrollHeight;
+    finish();
+  }
+
+  function fileAbort(peer, why) {
+    if (peer.rx && peer.rx.writer) { try { peer.rx.writer.abort(); } catch (e) {} }
+    peer.rx = null;
+    say('system', 'Transfer cancelled — ' + (why || 'the other side stopped'));
+    if (el.xferWrap) el.xferWrap.hidden = true;
+  }
+
+  if (el.fileBtn && el.fileInput) {
+    el.fileBtn.addEventListener('click', function () { el.fileInput.click(); });
+    el.fileInput.addEventListener('change', function () {
+      if (el.fileInput.files && el.fileInput.files[0]) sendFile(el.fileInput.files[0]);
+      el.fileInput.value = '';
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Sending
      ------------------------------------------------------------------ */
 
@@ -733,6 +1083,48 @@
     ta.readOnly = ro;
     return ok;
   }
+
+  /* ---------------------------------------------------------------------
+     QR
+     ---------------------------------------------------------------------
+     Offered next to Copy rather than instead of it: on a laptop the clipboard
+     is faster, and between two phones the camera is the only sane option.
+     A ~240 character code lands at QR version 10, which is a 57x57 grid and
+     scans comfortably from arm's length.
+     ------------------------------------------------------------------ */
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll('[data-qr-for]'),
+    function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-qr-for');
+        var ta = document.getElementById(id);
+        var holder = document.querySelector('[data-qr-holder="' + id + '"]');
+        if (!ta || !holder) return;
+        if (!ta.value) { flashBtn(btn, 'Nothing yet'); return; }
+
+        if (!holder.hidden) {
+          holder.hidden = true;
+          btn.textContent = 'Show QR';
+          return;
+        }
+        if (!window.LabQR) { flashBtn(btn, 'QR unavailable'); return; }
+        try {
+          var info = window.LabQR.draw(holder.querySelector('canvas'), ta.value, {
+            size: 300,
+            dark: '#0b1120',
+            light: '#f8fafc'
+          });
+          holder.hidden = false;
+          btn.textContent = 'Hide QR';
+          trace('QR drawn: version ' + info.version + ', ' +
+                info.size + 'x' + info.size + ' modules, mask ' + info.mask);
+        } catch (e) {
+          flashBtn(btn, 'Too long for a QR');
+        }
+      });
+    }
+  );
 
   if (!window.RTCPeerConnection) {
     setStatus('This browser has no WebRTC', 'bad');

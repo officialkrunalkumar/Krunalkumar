@@ -23,7 +23,7 @@ web server can host it, and any computer with a browser can develop it.
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `verify.html`         | Certificate verification — looks up completion-certificate IDs in `assets/data/certificates.json` (client-side, no backend). QR codes on certificates deep-link here as `/verify?id=…`. Offer letters are deliberately not verifiable online — institutions email instead. The generator lives in a private repo; `/generate` redirects to it (see `vercel.json`) |
-| `buddha.html`         | 🪷 A still place (`/buddha`) — a cross-legged Buddha drawn in inline SVG, a verse from the Pali Canon that changes on load and on every tap, and a 4s-in / 6s-out breathing guide. Every one of the 50 verses carries its citation: most "Buddha quotes" in circulation are modern fabrications, so anything added here must be checked against suttacentral.net or accesstoinsight.org first. He breathes on a 10s cycle, and every 9s opens his eyes and grins for 1.8s. Tapping him bounces him, bursts 14 sparkles and turns the verse over. A fullscreen button hands the whole screen to the scene. Styles in `assets/css/buddha.css`, behaviour in `assets/js/buddha.js`; all motion is transform/opacity only and stops dead under `prefers-reduced-motion` |
+| `buddha.html`         | 🪷 A still place (`/buddha`) — a cross-legged Buddha drawn in inline SVG, a verse from the Pali Canon that changes on load and on every tap, and a 4s-in / 6s-out breathing guide. Every one of the 405 verses carries its citation: most "Buddha quotes" in circulation are modern fabrications, so anything added here must be checked against suttacentral.net or accesstoinsight.org first. He breathes on a 10s cycle, and every 9s opens his eyes and grins for 1.8s. Tapping him bounces him, bursts 14 sparkles and turns the verse over. A fullscreen button hands the whole screen to the scene. Styles in `assets/css/buddha.css`, behaviour in `assets/js/buddha.js`; all motion is transform/opacity only and stops dead under `prefers-reduced-motion` |
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
@@ -187,7 +187,10 @@ on `/terminal` by `terminal.js` — plus `*_form_submit` / `*_form_confirmed` fr
 ### Visual layer
 
 `particle-bg.js` renders the interactive particle canvas (respects `prefers-reduced-motion`),
-scroll-reveal animations via IntersectionObserver, and the floating back-to-top button.
+scroll-reveal animations via IntersectionObserver, and the floating back-to-top button. It
+watches `data-theme` on `<html>` and repaints on change — its gradient and particle
+lightness are both theme-derived and baked into canvas paint, which CSS cannot restyle
+afterwards (see "The canvas has to be told the theme changed").
 `main.css` is a single file organized into 13 numbered sections with a table of contents at the top.
 
 The page background is a **single token**: `--bg-base` in section 1 (with `--bg-base-rgb`, the
@@ -289,6 +292,125 @@ sync with what is actually honored.
 the link on `index.html`). The PDF path is served with `X-Robots-Tag: noindex` (see `vercel.json`) so
 the file never outranks the homepage in search.
 
+### Theme toggle and site search
+
+Two icon buttons sit in the header, positioned in the flow at phone widths and
+absolutely in the corner from 641px up (above that the nav is a column, so a
+third flex child would add a whole row).
+
+**Theme.** `assets/js/theme.js` handles the press; `assets/js/boot.js` restores the
+choice. Light is **opt-in only** — an earlier version followed
+`prefers-color-scheme`, which handed a light site to anyone with a light desktop
+without their asking. The listener is delegated from `document`, because
+`include-partials.js` replaces the header after scripts run and would destroy a
+directly bound handler.
+
+The restore has to live in `boot.js`, not here: `theme.js` is `defer`red, so by
+the time it runs the page has already painted in the default dark and a returning
+visitor would see the wrong theme flash first. `boot.js` is synchronous and sits
+above the stylesheet link, so `data-theme` is on `<html>` before the CSS is even
+fetched. `particle-bg.js` reads that attribute when it builds its first canvas
+frame, which is a convenient way to prove the ordering: if the first painted frame
+comes out light, the attribute was set before paint.
+
+Three details that were each a bug:
+
+- **Only a press persists.** `apply()` takes a `persist` flag. The two calls on
+  load exist to sync the address-bar colour and the button label; when they also
+  wrote to storage, every page load rewrote the key with whatever the page started
+  as — always dark. Combined with nothing reading the key back, a choice of light
+  survived exactly until the next click on a link.
+- **The key is `site.theme`, not `lab.theme`.** The labs namespace their storage
+  under `lab.`, and `lab-app.js`'s "clear saved code and settings" button removes
+  every `lab.*` key — which took the theme with it. `boot.js` still reads the old
+  key as a fallback so an existing choice is not lost.
+- **It is written to both `localStorage` and `sessionStorage`.** localStorage
+  carries the choice to future visits; sessionStorage keeps the current tab
+  working even where localStorage is blocked or gets cleared, so the theme cannot
+  reset underneath someone mid-session.
+
+**Search.** `assets/js/site-search.js` with a prebuilt index at
+`assets/data/search-index.json` (88 pages, ~40 KB gzipped). It opens a full-screen
+overlay rather than a dropdown — roomier, and identical on a phone and a laptop.
+**The index is a committed artefact: regenerate it when page content changes.**
+
+#### How the light theme was checked
+
+Not by looking at pages one at a time — that is how the hero ended up invisible.
+Every visible element with text is walked, its painted colour and real ground are
+resolved, and anything under the WCAG AA floor is listed. Three things that pass
+of the audit had to get right, each of which produced a confident wrong answer
+first:
+
+- **Read after the transition finishes.** Flipping `data-theme` animates colour
+  through `transition: all 0.2s`. Reading mid-flight returns the *old* value, which
+  reported every nav link as near-white on white. Disable transitions before
+  measuring.
+- **Gradient-clipped text has no `color`.** The brand is painted by a gradient with
+  `background-clip: text` and a transparent fill, so `color` is `rgba(0,0,0,0)`.
+  Resolve the gradient stops instead, or the headline elements are skipped as
+  invisible-by-intent.
+- **Compare the two themes, not light alone.** Most "failures" in a light-only run
+  are dark-mode issues or by-design dimming (a disabled button at 0.45, a locked
+  HackLab row, a ghosted TCP segment). Only what is *worse* in light is a
+  regression worth fixing.
+- **The ground is the canvas, not `body`.** `#bg-canvas` is `position: fixed` with
+  `z-index: -1`, which paints it above `body`'s background and below every bit of
+  content — so the pixels behind any text are the canvas gradient, not
+  `getComputedStyle(body).backgroundColor`. An audit that models the background
+  from CSS alone is reading a surface the visitor never sees. Sample the canvas
+  with `getImageData` instead.
+
+#### The canvas has to be told the theme changed
+
+This one produced a completely invisible homepage headline and is worth stating
+plainly, because the same shape can recur anywhere JS paints.
+
+`particle-bg.js` builds its background gradient from CSS custom properties:
+
+```js
+backgroundGradient.addColorStop(1, cssColor('--bg-base', '#121b2c'));
+```
+
+`cssColor` reads the property **once**, and `buildGradients()` only ran at init and
+on resize. CSS restyles itself when `data-theme` flips; a `CanvasGradient` baked
+from those values does not. Toggling to light therefore repainted the entire
+viewport in dark navy while the text above it went near-black — measured at
+**1.01:1**. The fix is a `MutationObserver` on `data-theme` that rebuilds the
+gradient and forces `drawFrame(0)`, a pure repaint. The repaint cannot be left to
+the animation loop: it returns early while paused, and under
+`prefers-reduced-motion` the canvas is a single static frame that would otherwise
+keep the old theme for the rest of the visit.
+
+The rule this generalises to: **anything JS paints from a theme value — a canvas,
+an injected `<style>` string, an inline style, an SVG attribute — needs an explicit
+repaint on `data-theme`, because CSS cannot reach back into it.**
+
+Two corollaries, both found by auditing for that shape:
+
+- **An inline style cannot follow the theme at all.** `processor.js` painted its
+  build-failure notice with `msg.style.cssText = '...color:#fca5a5...'`. That
+  paragraph is appended to the viz root, not the mount, so its ground goes light —
+  and the pink that reads at 8.4:1 on the dark card is 1.68:1 on paper, hiding the
+  one message that explains why the visualiser is blank. It is a class now
+  (`.lab-viz-error`), styled in `labs.css` with a light counterpart.
+- **Scope injected widget CSS by root id, not by class.** The light-theme rule that
+  keeps the viz mounts dark ends in
+  `:is(span, div, …):not([class]) { color: inherit }`. The `:not([class])` is
+  load-bearing: without it the rule sits at (0,3,1) and outranks a widget's own
+  class-scoped rules, so every label, hint and status tag in the multi-shell labs
+  flattened to one ink — still readable, but the colour coding those labs teach
+  with was gone. `os-algo.js` scopes its rules as `#osalgoviz .oa-field-label`,
+  which outranks the site rule, and never flattened; `multi-shell.js` scopes by
+  class and did. Class-less elements are the ones that genuinely need the site's
+  ink, since they have no widget colour of their own.
+
+Widgets that are dark instruments by design — the terminals, the editor, the
+visualiser mounts, HackLab's fake corporate portal — re-pin the dark tokens rather
+than being re-inked, so they render the same either way. The viz treatment is
+scoped to the mounts, not `.lab-viz`: that root also holds ordinary site chrome
+which is meant to go light.
+
 ### Changing the page darkness
 
 Pick the new base, work out the **rgb delta** from the current `--bg-base` (`#121b2c` =
@@ -341,9 +463,16 @@ crowding the raised surfaces even when you do shift them.
 - Every indexed page needs a unique `<title>`, meta description, canonical, and OG tags; keep
   `sitemap.xml` lastmod fresh when content changes meaningfully.
 - One `<h1>` per page; sections use `<h2>`/`<h3>`.
-- The site is dark-theme only by design (`color-scheme: dark`). There is no light mode and no theme
-  toggle: the palette is still ~83% hardcoded literals (220 of them) against seven custom
-  properties, so a second theme would mean tokenizing every colour first, not adding a button.
+- The site is dark by default, with an **opt-in** light theme behind the header toggle. Light is
+  never applied automatically — `prefers-color-scheme` is deliberately ignored. Adding a colour
+  means adding its light counterpart too; see "Theme toggle and site search" above for how that
+  is verified.
+- **Escape `<` in prose.** `<algorithm>`, `<?php` and `</dev/null` were each written literally in
+  page copy, and the parser ate them: the C++ page read "so  and lambdas work", the PHP FAQ read
+  "Do I need the ", and the cert-decoder's `openssl` command was truncated mid-line so anyone
+  copying it got a broken command. Write `&lt;`. This does **not** apply inside
+  `<script type="application/ld+json">` — script content is not HTML-parsed, and escaping there
+  would put a literal `&lt;` into the structured data.
 - Changing the page darkness means editing four things together — see
   [Changing the page darkness](#changing-the-page-darkness). Editing `--bg-base` alone leaves the
   cards behind and flattens the site.
@@ -366,10 +495,10 @@ crowding the raised surfaces even when you do shift them.
 
 A quiet page, deliberately unlike the rest of the site.
 
-**The verses.** 50 of them, in `assets/js/buddha.js`, one picked at random on load
+**The verses.** 405 of them, in `assets/js/buddha.js`, one picked at random on load
 and again on every tap, never the same one twice running. Each carries its
-citation — 30 from the Dhammapada, the rest from the Samyutta, Anguttara and
-Majjhima Nikayas, the Itivuttaka, Udana, Sutta Nipata, Theragatha, Therigatha and
+citation — the largest share from the Dhammapada, the rest from the Samyutta,
+Anguttara and Majjhima Nikayas, the Itivuttaka, Udana, Sutta Nipata, Theragatha, Therigatha and
 the Karaniya Metta Sutta. That constraint is load-bearing: a large share of the
 "Buddha quotes" in circulation were never said by him. "Holding on to anger is
 like grasping a hot coal", "what you think, you become" and "peace comes from
@@ -433,6 +562,62 @@ which is both the privacy claim on the pages and the reason the section costs no
 | `/labs/perl` | Real Perl 5 on WebAssembly (WebPerl) | ~16 MB |
 | `/labs/typing` | Typing speed test — code and prose | 0 KB |
 | `/labs/api` | HTTP request tester — the browser's own fetch, no proxy | 0 KB |
+
+### Peer-to-peer chat (`/labs/chat`)
+
+The one lab that opens a network connection, and the only one not built on
+`tool-shell.js` — whose header promises that nothing built on it ever does.
+Keeping that promise true for the other 58 tools is why this has its own shell
+and its own warning at the top of the page.
+
+**What it teaches.** A browser cannot listen on a port. There is no API that
+binds a socket and accepts a connection — `fetch`, `WebSocket`, `EventSource`
+and `RTCPeerConnection` all dial out. That is deliberate: a page that could
+listen would make every open tab a reachable server. So `nc -l -p 1234` has no
+browser equivalent, both sides here are the dialling side, and the page shows
+the ICE handshake happening so the difference is visible rather than asserted.
+
+**Topology.** A star. Everyone connects to whoever opened the channel, and that
+browser repeats what it hears. Three people is two code exchanges, not three —
+a full mesh would need N(N-1)/2. Only the host relays, so a message cannot
+circle the room. Guests never forward.
+
+**The code.** `assets/js/labs/chat.js` does not send the SDP. Measured on a live
+offer: 988 characters, of which 14 of the 21 lines are byte-identical on every
+WebRTC connection ever made. Only the fields that vary go on the wire — ICE
+ufrag, ICE password, the 32-byte DTLS fingerprint, and each address and port —
+packed as raw bytes and rebuilt from a template on arrival. That took the
+invitation from 805 characters to 243 and the reply from 803 to 147.
+
+Gzip was tried first and only saved 19%: 56 of those bytes are cryptographic
+randomness, and random data does not compress. Going below ~96 characters would
+need deriving the ufrag and password from the fingerprint, which requires SDP
+munging — Chrome has stated it will reject that and has been instrumenting it
+since Chrome 82, so it is not worth building on.
+
+**QR.** `assets/js/labs/qr.js` is a from-scratch ISO/IEC 18004 encoder (byte
+mode, versions 1–20, EC level L) because the CSP is `script-src 'self'` and
+there is no build step. A 243-character code lands at version 10, a 57×57 grid.
+Offered next to Copy rather than instead of it: the clipboard is faster on a
+laptop, the camera is the only sane option between two phones.
+
+**Files.** 16 KB chunks with real backpressure — the sender stops whenever the
+channel's buffered amount passes 256 KB and waits for `bufferedamountlow`,
+because a DataChannel accepts writes far faster than it can send them and the
+excess queues in memory. Where `showSaveFilePicker` exists (Chrome, Edge) the
+receiver chooses a destination first and every chunk goes straight to disk, so
+there is **no size limit**. Elsewhere the chunks assemble into a Blob and the
+cap is 512 MB, because a phone asked for a gigabyte-sized Blob dies.
+
+**Voice and video are one-to-one only.** Relaying text is free; relaying video
+is not — a browser cannot forward someone else's stream without re-encoding it,
+which is what an SFU server is for. Group video would need a full mesh: three
+people is 6 pastes, four is 12.
+
+**STUN.** On one network it connects with nothing external. Across the internet
+each side asks a STUN server what public address it appears to come from; no
+message passes through it. Without TURN a minority of network pairs cannot be
+connected at all, and the page says so instead of spinning.
 
 ### HackLab — the vulnerable app sandbox (`/labs/hacklab`)
 
