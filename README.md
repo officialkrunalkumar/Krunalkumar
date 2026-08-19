@@ -177,12 +177,43 @@ list.
 
 ### Analytics events
 
-GA4 (gtag) is loaded by `boot.js`. Beyond page views, Google Analytics receives conversion
+GA4 (gtag) is loaded by `boot.js`. **Note the endpoint is `googletagmanager.com/gtag/js` but there
+is no GTM container** — one was published empty, cost ~314KB a view for nothing, and was removed.
+`privacy.html` claimed both were loaded until that was corrected.
+
+Beyond page views, Google Analytics receives conversion
 events: `book_call_click`, `email_click`, `whatsapp_link_click`, `resume_download` (and
 `pdf_download` for non-resume PDFs) via the global click listener in `particle-bg.js` — mirrored
 on `/terminal` by `terminal.js` — plus `*_form_submit` / `*_form_confirmed` from `wa-form.js`,
 `certificate_verified` from `verify.js`, and the easter-egg events `easter_egg_terminal`,
 `fork_bomb_triggered`, `easter_egg_dance`, `easter_egg_teapot`, `easter_egg_teapot_cmd`, and `easter_egg_teapot_pour`.
+
+| event | parameters | from | answers |
+| --- | --- | --- | --- |
+| `theme_change` | `theme: light \| dark` | `theme.js` | does anyone actually use light mode? |
+| `search_open` | — | `site-search.js` | is the search icon found at all? |
+| `site_search` | `results: <count>` | `site-search.js` | how often does a search return nothing? |
+| `search_result_click` | `destination: <path>` | `site-search.js` | does search lead anywhere useful? |
+| `chat_peer_connected` | — | `labs/chat.js` | do two people ever actually connect? |
+| `media_start` | `media: voice \| video` | `labs/chat.js` | is the call feature used? |
+| `media_blocked` | `reason: permissions_policy \| NotAllowedError \| …` | `labs/chat.js` | is something stopping it? |
+
+`theme_change` fires on the **press**, never on the theme a page loads in — otherwise every page
+view by a light-theme visitor would count as a change and the number would mean nothing.
+
+`site_search` is debounced 900ms so "pyth" and "pytho" do not each count, and it reports **only the
+result count, never the query**. `llms-full.txt` tells readers "no search query is ever sent
+anywhere" and that has to stay true; a zero-result count still flags a content gap without turning
+the search box into a log of what people typed. Sending `search_term` would make GA's built-in
+search reporting light up, and would make that published claim false — do not add it without
+changing the claim first.
+
+`media_blocked` exists because of a bug worth not repeating: `vercel.json` shipped
+`Permissions-Policy: camera=(), microphone=()`, and an **empty allowlist denies the feature to
+every origin including this one**. The browser refused `getUserMedia` in ~34ms without ever
+prompting, so the lab reported "permission denied" and no amount of granting permission helped.
+The value is now `camera=(self), microphone=(self)`. Had this event existed, GA would have shown
+`reason: permissions_policy` on every attempt.
 
 ### Visual layer
 
