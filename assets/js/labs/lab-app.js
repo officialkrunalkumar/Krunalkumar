@@ -488,14 +488,39 @@
      and it would hide the content these pages exist to rank for.
      ======================================================================== */
 
+  /* The gate is only a painted panel. .lab-gate is position:absolute with a
+     94%-opaque background, so everything underneath it stays in the tab order
+     and in the accessibility tree: a keyboard user could Tab straight past the
+     two gate buttons into the editor, the toolbar and the storage controls —
+     about ten controls they cannot see, with the focus ring drawn behind the
+     scrim, and a screen reader happily reading out a lab they have not agreed
+     to enter yet.
+
+     `inert` is the native one-property fix: it removes a subtree from focus,
+     from hit-testing and from assistive technology at once. It goes on .lab's
+     children rather than on .lab itself, because the gate lives inside .lab
+     and has to stay usable. Browsers without inert support (pre-2022) simply
+     ignore the property — the page behaves exactly as it does today, so this
+     cannot regress anything. */
+  function setLabInert(on) {
+    if (!el.gate) return;              // no gate on this page: never inert anything
+    var kids = lab.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i] === el.gate) continue;
+      kids[i].inert = on;
+    }
+  }
+
   function initGate() {
     if (store.get('consent') === 'yes') {
       lab.setAttribute('data-consent', 'granted');
       return;
     }
+    setLabInert(true);
     el.gateAgree.addEventListener('click', function () {
       store.set('consent', 'yes');
       lab.setAttribute('data-consent', 'granted');
+      setLabInert(false);
       el.editor.focus();
     });
     el.gateLeave.addEventListener('click', function () {
@@ -609,6 +634,7 @@
       });
       el.persist.setAttribute('aria-pressed', 'false');
       lab.setAttribute('data-consent', 'granted'); // don't re-gate mid-session
+      setLabInert(false);                          // ...and don't leave it inert either
       refreshMeter();
       write('\n[cleared this site’s saved code and settings]\n', 't-info');
     });

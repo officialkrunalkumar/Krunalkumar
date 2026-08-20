@@ -28,7 +28,7 @@
 ### Key Career Roles
 - **Independent Consultant (May 2025 – Present):** AI workflows, campaign automations (Instantly, SmartLead, Lemlist), custom AI SDR tools, and technical mentorship.
 - **Industry Mentor Expert — Coding Ninjas (June 2025 – April 2026):** MERN-stack mock interviews and problem-solving readiness.
-- **Revenue Operations Analyst — Zeni AI (July 2024 – May 2025):** HubSpot administration, n8n/Make automation, created ChurnGPT churn-analysis assistant.
+- **Revenue Operations Analyst — Zeni AI (July 2024 – May 2025):** HubSpot administration, n8n/Make automation, wrote the code for the ChurnGPT churn-analysis assistant running inside HubSpot on the OpenAI API — it cut churn-ticket review from 15 minutes to 2, an 87% efficiency gain.
 - **Assistant Professor — C U Shah University (Jan 2024 – June 2024):** Taught operating systems, databases, and information security.
 - **Teaching Assistant — Correlation One, USA (Jan 2023 – Jan 2024):** Supported Amazon Career Choice Program initiatives.
 - **Software Engineering Mentor — Springboard, USA (June 2022 – Feb 2024):** Mentored fellows through the Software Engineering Career Track.
@@ -41,7 +41,7 @@
 - **Community Manager:** Open Ethics (AI ethics framework contributor).
 - **Cybersecurity Volunteer:** Registered Cyber Expert Volunteer supporting law enforcement since 2020.
 - **Memberships:** Internet Society (ISOC) lifetime global member; International Association of Engineers (IAENG).
-- **Certifications:** Google IT Automation with Python, Cisco Security Analyst, IBM Security Specialist, IBM Communication Specialist, Linux Foundation Professional, IBM Remote Working Specialist, IBM Python for Data Science, IBM Enterprise Design Thinking, CertiProf Scrum Foundation.
+- **Certifications:** Google IT Automation with Python Professional Certificate, Cisco Introduction to Cybersecurity, IBM Security Analyst Fundamentals Specialization, IBM SkillsBuild Customer Engagement: Communication & Personality Dynamics, Linux Foundation Open Source Software Development, Linux and Git, IBM Working in a Digital World: Professional Skills, IBM Python for Data Science, IBM Enterprise Design Thinking Practitioner, CertiProf Scrum Foundation Professional.
 
 ---
 
@@ -71,7 +71,7 @@
 
 ## 5. Featured Projects & Open-Source Repositories
 
-- **ChurnGPT 2.0 (`011-ChurnGPT-2.0`):** Multi-stage AI pipeline digesting CRM records, tickets, and meeting transcripts to diagnose churn causes and propose retention actions.
+- **ChurnGPT 2.0 (`011-ChurnGPT-2.0`):** Multi-stage AI pipeline digesting CRM records, tickets, and meeting transcripts to summarise churn tickets, validate the churn reason given, and show the evidence behind each decision. Reported outcome: churn-ticket review fell from 15 minutes to 2 (an 87% efficiency gain) and 200+ tickets were processed in under 20 minutes; built in five days. Figures reported publicly by Zeni's RevOps lead, Brandon Dith-Berry.
 - **AI-Powered FNOL Claims Assistant (`FNOL-Claim-Processing-Agent`):** Autonomous insurance workflow extracting intake data, catching missing fields, and routing First Notice of Loss claims.
 - **Sheet-Driven Task Automation Hub (`Google-Sheet-ClickUp-Integration-Automation`):** Google Apps Script two-way sync between Google Sheets and ClickUp tasks.
 - **Social Publishing Studio (`Automated-Instagram-Poster`):** Flask and n8n pipeline automating scheduled Instagram content delivery.
@@ -142,7 +142,7 @@ A contemplative page, deliberately unlike the rest of the site: an illustrated
 Buddha sitting cross-legged on a lotus, a verse from the Pali Canon, and a guided
 breath.
 
-- **405 verses**, one chosen at random on load and again on every tap, never the
+- **695 verses**, one chosen at random on load and again on every tap, never the
   same twice in a row. Sources: Dhammapada (30), Samyutta Nikaya, Anguttara
   Nikaya, Majjhima Nikaya, Itivuttaka, Udana, Sutta Nipata, Theragatha,
   Therigatha, Karaniya Metta Sutta.

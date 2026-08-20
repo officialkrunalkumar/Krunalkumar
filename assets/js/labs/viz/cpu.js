@@ -668,7 +668,7 @@
     '#cpuviz .cpu-code{width:100%;box-sizing:border-box;min-height:300px;resize:vertical;border:0;background:#0b1220;color:#d7e2f4;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;padding:11px 12px;tab-size:4;outline:none;}' +
     '#cpuviz .cpu-listing{max-height:230px;overflow:auto;font-size:12px;}' +
     '#cpuviz .cpu-lrow{display:flex;gap:10px;padding:2px 11px;white-space:pre;}' +
-    '#cpuviz .cpu-lrow .a{color:#54688c;width:34px;text-align:right;flex:none;}' +
+    '#cpuviz .cpu-lrow .a{color:#77869f;width:34px;text-align:right;flex:none;}' +
     '#cpuviz .cpu-lrow .s{color:#aeb9cd;}' +
     '#cpuviz .cpu-lrow.cur{background:#123a2a;}' +
     '#cpuviz .cpu-lrow.cur .s{color:#8affc0;}' +
@@ -677,20 +677,20 @@
     '#cpuviz .cpu-reg{display:flex;justify-content:space-between;gap:8px;padding:5px 8px;background:#0b1526;border:1px solid #1e2c42;border-radius:6px;}' +
     '#cpuviz .cpu-reg .k{color:#7f93b3;}' +
     '#cpuviz .cpu-reg .v{color:#e6edf8;}' +
-    '#cpuviz .cpu-reg .d{color:#5f76a0;font-size:11px;}' +
+    '#cpuviz .cpu-reg .d{color:#8092b4;font-size:11px;}' +
     '#cpuviz .cpu-reg.chg{background:#173a26;border-color:#2f7d4e;animation:cpuflash .5s ease;}' +
     '#cpuviz .cpu-reg.pcx{border-color:#2f5b9e;}' +
     '#cpuviz .cpu-flags{display:flex;gap:8px;padding:0 11px 11px;}' +
-    '#cpuviz .cpu-flag{flex:1;text-align:center;padding:6px;border-radius:6px;background:#0b1526;border:1px solid #1e2c42;color:#54688c;}' +
+    '#cpuviz .cpu-flag{flex:1;text-align:center;padding:6px;border-radius:6px;background:#0b1526;border:1px solid #1e2c42;color:#77869f;}' +
     '#cpuviz .cpu-flag.on{background:#2a2410;border-color:#7a6320;color:#ffd558;}' +
     '#cpuviz .cpu-flag.chg{animation:cpuflash .5s ease;}' +
     '#cpuviz .cpu-flag b{display:block;font-size:16px;line-height:1.1;}' +
     '#cpuviz .cpu-flag span{font-size:10px;color:#6f82a2;}' +
     '#cpuviz .cpu-mem{padding:9px;overflow:auto;max-height:250px;}' +
     '#cpuviz .cpu-memrow{display:flex;gap:0;white-space:pre;font-size:11px;line-height:1.5;}' +
-    '#cpuviz .cpu-memrow .ra{color:#4d6088;padding-right:8px;flex:none;}' +
-    '#cpuviz .cpu-mc{padding:0 4px;color:#3f4b63;border-radius:3px;}' +
-    '#cpuviz .cpu-mc.nz{color:#c7d3e6;}' +
+    '#cpuviz .cpu-memrow .ra{color:#7683a3;padding-right:8px;flex:none;}' +
+    '#cpuviz .cpu-mc{padding:0 4px;color:#73819d;border-radius:3px;}' +
+    '#cpuviz .cpu-mc.nz{color:#eef4ff;}' +
     '#cpuviz .cpu-mc.stk{color:#c58bff;}' +
     '#cpuviz .cpu-mc.sp{outline:1px solid #7a5cff;color:#e2ccff;}' +
     '#cpuviz .cpu-mc.chg{background:#3a2d0e;color:#ffd558;animation:cpuflash .5s ease;}' +
@@ -700,7 +700,7 @@
     '#cpuviz .cpu-srow .v{color:#d7c4ff;}' +
     '#cpuviz .cpu-srow.top{background:#241a3a;}' +
     '#cpuviz .cpu-srow.top .k{color:#c58bff;}' +
-    '#cpuviz .cpu-empty{color:#54688c;padding:2px 6px;}' +
+    '#cpuviz .cpu-empty{color:#77869f;padding:2px 6px;}' +
     '#cpuviz .cpu-out{margin:0;padding:11px;min-height:70px;max-height:200px;overflow:auto;white-space:pre-wrap;word-break:break-word;color:#9fe8b6;background:#0b1220;font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;}' +
     '#cpuviz .cpu-out .sys{color:#7f93b3;}' +
     '#cpuviz .cpu-out .er{color:#ff9db0;}' +

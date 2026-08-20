@@ -192,7 +192,16 @@
             'verify-status-notfound',
             '✗',
             'No record found for "' + id + '"',
-            'Check the ID for typos — internship IDs look like KS-INT-2026-XXXXXX and mentorship IDs like KS-MEN-2026-XXXXXX. If the ID printed on a document is not found here, that document was not issued by me. You can report suspected fakes to krunalkumar@krunalkumar.dpdns.org.'
+            /* Deliberately does NOT assert that the document is fake.
+               A "not found" can mean several things — a typo, a certificate
+               issued before this register existed, or a record not yet added —
+               and the person reading this message is usually the holder of the
+               certificate, showing it to someone. Calling their document a
+               forgery to settle an ambiguity is the wrong default: it costs a
+               real student credibility for something that is more often an
+               administrative gap than a fraud. State the fact, then give both
+               parties a way to resolve it. */
+            'Check the ID for typos — internship IDs look like KS-INT-2026-XXXXXX and mentorship IDs like KS-MEN-2026-XXXXXX. If you are holding this certificate and the ID is correct, email krunalkumar@krunalkumar.dpdns.org and I will confirm it directly. A missing record does not by itself mean a certificate is not genuine.'
           );
         }
       })

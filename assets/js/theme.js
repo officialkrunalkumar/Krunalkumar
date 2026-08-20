@@ -31,7 +31,41 @@
   }
 
   function apply(theme, persist) {
-    document.documentElement.setAttribute('data-theme', theme);
+    // The attribute swap is wrapped in a transition freeze, and it has to be.
+    //
+    // Chromium keeps the OLD used value of a property that is listed in a
+    // `transition` when the custom property feeding it changes. So any rule
+    // shaped like `background: var(--sheet-80)` + `transition: ... background`
+    // simply never repaints on a theme switch — the token flips, the pixels
+    // do not. .lab-card was the visible casualty: all 57 cards on /labs stayed
+    // dark navy while their text flipped to near-black, 2.35:1, until reload.
+    //
+    // Measured, on a fresh dark load of /labs:
+    //   background: var(--sheet-80) + transition background        -> STUCK
+    //   background: var(--sheet-80) + transition background-color  -> STUCK
+    //   background: var(--sheet-80) + no background in transition  -> repaints
+    // Switching the shorthand to the longhand is NOT a fix. The only thing
+    // that works is for no transition to be running when the attribute moves.
+    //
+    // Doing it here rather than editing the 17 rules that transition a
+    // background means the hover fades all survive, and any rule added later
+    // is covered for free.
+    // Only freeze when the value is actually changing. The two calls at the
+    // bottom of this file re-run apply() on load purely to sync the button
+    // label and the address-bar colour, passing the theme already on <html> —
+    // freezing there would cancel any transition mid-flight, and the 400 ms one
+    // lands about 57% through the 0.7s scroll-reveal fade, snapping every
+    // above-the-fold card to its end state on every page load.
+    var root = document.documentElement;
+    var changing = root.getAttribute('data-theme') !== theme;
+
+    if (changing) root.classList.add('theme-switching');
+    root.setAttribute('data-theme', theme);
+    if (changing) {
+      // Force the new values to be computed while transitions are still off.
+      void root.offsetHeight;
+      root.classList.remove('theme-switching');
+    }
 
     // Only a real press writes to storage. The two calls at the bottom of this
     // file re-run apply() on load to sync the address-bar colour and the

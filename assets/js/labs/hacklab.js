@@ -2787,15 +2787,32 @@
 
   /* The consent/intro gate uses the offline key — nothing here is uploaded. */
   var PREFIX = 'lab.';
+  /* The gate only paints over the lab: .lab-gate is position:absolute with an
+     opaque background, so without this every control beneath it stays in the
+     tab order and in the accessibility tree while the visitor is still being
+     asked to agree. `inert` removes a subtree from focus, hit-testing and
+     assistive tech in one property. Browsers without support ignore it, so
+     this cannot regress anything. */
+  function setGateInert(on) {
+    var g = document.getElementById('lab-gate');
+    if (!g || !host) return;
+    var kids = host.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i] !== g) kids[i].inert = on;
+    }
+  }
+
   function gate() {
     var agreed;
     try { agreed = localStorage.getItem(PREFIX + 'consent'); } catch (e) { agreed = null; }
     if (agreed === 'yes') { host.setAttribute('data-consent', 'granted'); mountShell(); return; }
+    setGateInert(true);
     var yes = document.getElementById('lab-agree');
     var no = document.getElementById('lab-leave');
     yes && yes.addEventListener('click', function () {
       try { localStorage.setItem(PREFIX + 'consent', 'yes'); } catch (e) {}
       host.setAttribute('data-consent', 'granted');
+      setGateInert(false);
       mountShell();
     });
     no && no.addEventListener('click', function () { window.location.href = '/'; });

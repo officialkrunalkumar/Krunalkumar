@@ -192,14 +192,30 @@
     gate: function (rootId) {
       var el = document.getElementById(rootId);
       if (!el) return;
+      /* The gate only paints over the tool — it is position:absolute with an
+         opaque background, so without this every control underneath stays
+         tabbable and readable by a screen reader while the visitor is still
+         being asked to agree. `inert` removes them from focus, hit-testing and
+         assistive tech together. Browsers that do not support it ignore the
+         property, so this cannot regress older ones. */
+      var gateEl = document.getElementById('lab-gate');
+      var setInert = function (on) {
+        if (!gateEl) return;
+        var kids = el.children;
+        for (var i = 0; i < kids.length; i++) {
+          if (kids[i] !== gateEl) kids[i].inert = on;
+        }
+      };
       var agreed;
       try { agreed = localStorage.getItem(PREFIX + 'consent'); } catch (err) { agreed = null; }
       if (agreed === 'yes') { el.setAttribute('data-consent', 'granted'); return; }
+      setInert(true);
       var yes = document.getElementById('lab-agree');
       var no = document.getElementById('lab-leave');
       yes && yes.addEventListener('click', function () {
         try { localStorage.setItem(PREFIX + 'consent', 'yes'); } catch (err) {}
         el.setAttribute('data-consent', 'granted');
+        setInert(false);
       });
       no && no.addEventListener('click', function () { window.location.href = '/'; });
     },

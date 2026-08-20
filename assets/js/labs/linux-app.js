@@ -219,13 +219,30 @@
      Consent gate — same stored flag as the language playgrounds, so
      agreeing once covers the whole Labs section.
      ====================================================================== */
+  /* The gate only paints over the lab: .lab-gate is position:absolute with an
+     opaque background, so without this every control beneath it stays in the
+     tab order and in the accessibility tree while the visitor is still being
+     asked to agree. `inert` removes a subtree from focus, hit-testing and
+     assistive tech in one property. Browsers without support ignore it, so
+     this cannot regress anything. */
+  function setGateInert(on) {
+    var g = document.getElementById('lab-gate');
+    if (!g || !root) return;
+    var kids = root.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i] !== g) kids[i].inert = on;
+    }
+  }
+
   function initGate() {
     var agreed;
     try { agreed = localStorage.getItem(PREFIX + 'consent'); } catch (err) { agreed = null; }
     if (agreed === 'yes') { root.setAttribute('data-consent', 'granted'); return; }
+    setGateInert(true);
     el.agree.addEventListener('click', function () {
       try { localStorage.setItem(PREFIX + 'consent', 'yes'); } catch (err) {}
       root.setAttribute('data-consent', 'granted');
+      setGateInert(false);
     });
     el.leave.addEventListener('click', function () { window.location.href = '/'; });
   }
@@ -301,6 +318,7 @@
     el.storeClear.addEventListener('click', function () {
       ownKeys().forEach(function (k) { try { localStorage.removeItem(k); } catch (err) {} });
       root.setAttribute('data-consent', 'granted');
+      setGateInert(false);
       refreshMeter();
     });
     refreshMeter();

@@ -43,6 +43,18 @@
     var el = document.getElementById(rootId);
     if (!el) return;
 
+    /* See the note in tool-shell.js: the gate is a painted panel, so without
+       `inert` everything it covers stays tabbable and screen-reader visible
+       while consent is still pending. Unsupported browsers ignore it. */
+    var gateEl = document.getElementById('lab-gate');
+    var setInert = function (on) {
+      if (!gateEl) return;
+      var kids = el.children;
+      for (var i = 0; i < kids.length; i++) {
+        if (kids[i] !== gateEl) kids[i].inert = on;
+      }
+    };
+
     var agreed;
     try { agreed = localStorage.getItem(PREFIX + 'consent'); } catch (err) { agreed = null; }
     if (agreed === 'yes') {
@@ -51,11 +63,13 @@
       return;
     }
 
+    setInert(true);
     var yes = document.getElementById('lab-agree');
     var no = document.getElementById('lab-leave');
     if (yes) yes.addEventListener('click', function () {
       try { localStorage.setItem(PREFIX + 'consent', 'yes'); } catch (err) {}
       el.setAttribute('data-consent', 'granted');
+      setInert(false);
       if (onGranted) onGranted();
     });
     if (no) no.addEventListener('click', function () { window.location.href = '/'; });

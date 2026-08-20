@@ -190,13 +190,30 @@
      is the correct direction for that asymmetry. */
   var NET_CONSENT = PREFIX + 'consent.network';
 
+  /* The gate only paints over the lab: .lab-gate is position:absolute with an
+     opaque background, so without this every control beneath it stays in the
+     tab order and in the accessibility tree while the visitor is still being
+     asked to agree. `inert` removes a subtree from focus, hit-testing and
+     assistive tech in one property. Browsers without support ignore it, so
+     this cannot regress anything. */
+  function setGateInert(on) {
+    var g = document.getElementById('lab-gate');
+    if (!g || !root) return;
+    var kids = root.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i] !== g) kids[i].inert = on;
+    }
+  }
+
   function initGate() {
     var agreed;
     try { agreed = localStorage.getItem(NET_CONSENT); } catch (err) { agreed = null; }
     if (agreed === 'yes') { root.setAttribute('data-consent', 'granted'); return; }
+    setGateInert(true);
     el.agree.addEventListener('click', function () {
       try { localStorage.setItem(NET_CONSENT, 'yes'); } catch (err) {}
       root.setAttribute('data-consent', 'granted');
+      setGateInert(false);
       el.url.focus();
     });
     el.leave.addEventListener('click', function () { window.location.href = '/'; });

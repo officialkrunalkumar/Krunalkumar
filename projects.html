@@ -86,6 +86,7 @@
             <a class="nav-link" href="/about">About</a>
             <a class="nav-link" href="/services">Services</a>
             <a class="nav-link active" aria-current="page" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
@@ -140,7 +141,16 @@
             <div class="featured-project-content">
               <p class="project-meta">Featured project</p>
               <h3 class="project-name">ChurnGPT 2.0 — AI Churn Analysis</h3>
-              <p class="project-description">A multi-stage AI pipeline built at Zeni that digests company records, ticket and meeting notes, validates churn reasons, and recommends retention actions.</p>
+              <!--
+                Name, description and href are ALL rewritten at runtime by
+                projects.js, which rotates this card through the seven
+                data-spotlight entries below. So nothing project-specific may
+                be added here: a static line would stay put while the project
+                around it changed, and on six loads in seven it would describe
+                the wrong repo. The ChurnGPT figures and their attribution
+                therefore live on that project's own card in the gallery.
+              -->
+              <p class="project-description">A multi-stage AI pipeline built at Zeni that digests company records, ticket and meeting notes, validates churn reasons, and shows the evidence behind each decision.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -220,7 +230,12 @@
             <div>
               <p class="project-meta">AI / RevOps</p>
               <h3 class="project-name">ChurnGPT 2.0 — AI Churn Analysis</h3>
-              <p class="project-description">A multi-stage AI pipeline built at Zeni that digests company records, ticket and meeting notes, validates churn reasons, and recommends retention actions.</p>
+              <!-- Figures and their source stay in the SAME element. projects.js
+                   copies .project-description into the rotating featured card but
+                   not .project-outcome, so splitting them would let the featured
+                   card cite "figures" it does not show. -->
+              <p class="project-outcome">Churn-ticket review went from 15 minutes to 2 — an 87% efficiency gain. Separately, a backlog of 200+ tickets was processed in under 20 minutes. Built in five days. Reported by Zeni&rsquo;s RevOps lead, Brandon Dith-Berry, on LinkedIn.</p>
+              <p class="project-description">A multi-stage AI pipeline I wrote the code for at Zeni, running inside HubSpot on the OpenAI API: it digests company records, ticket and meeting notes, validates the churn reason a CSM gave, and shows which evidence it used. This repo is the successor I have since taken further.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>

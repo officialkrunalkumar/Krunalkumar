@@ -77,6 +77,15 @@
 
 html {
   scroll-behavior: smooth;
+
+  /* The header is sticky, so anything the browser scrolls to lands underneath
+     it unless the scroll port is told to stop short. `main [id]` already sets
+     scroll-margin-top for in-page anchor links, but that does not cover the
+     other way an element gets scrolled into view: keyboard focus. Tabbing
+     upwards through a page — or Shift+Tab back to a link just above the fold —
+     put the focus ring behind the header with no indication of where focus
+     had gone. Matches the 6rem used for anchors. */
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -782,6 +791,33 @@ footer p {
   overflow-wrap: anywhere;
 }
 
+/* A second heading inside a section that already has one — used where a card
+   grid is split into two labelled groups. Needs the top margin the first
+   heading does not, because it follows content rather than opening the card. */
+.section-heading-sub {
+  margin-top: 1.6rem;
+}
+
+/* The legal pages are otherwise all running paragraphs. This is for the one
+   place a list genuinely reads better than prose — the per-tool breakdown of
+   which labs send data where — so it is deliberately quiet: same ink and
+   measure as the surrounding text, just indented and marked. */
+.policy-list {
+  margin: 0.9rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--ink-2);
+  list-style: disc;
+}
+
+.policy-list li {
+  margin-bottom: 0.55rem;
+  line-height: 1.7;
+}
+
+.policy-list li:last-child {
+  margin-bottom: 0;
+}
+
 .text-link:hover {
   color: var(--accent-dark);
 }
@@ -971,7 +1007,10 @@ footer p {
    Applied unconditionally rather than via :target — on a fresh load with a hash,
    the fragment scroll runs before :target styles resolve, so the margin is ignored. */
 main [id] {
-  scroll-margin-top: 6rem;
+  /* Removed: html now sets scroll-padding-top: 6rem, and scroll-padding on
+     the scroller ADDS to scroll-margin on the target for fragment navigation —
+     the two together parked every anchor ~12rem down. scroll-padding alone
+     covers fragment jumps, scrollIntoView and keyboard focus. */
 }
 
 .section-heading {
@@ -1008,6 +1047,118 @@ main [id] {
   border-radius: 18px;
   padding: 1.2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Project outcome line
+   --------------------------------------------------------------------------
+   The one number a buyer actually weighs, so it leads the card rather than
+   sitting at the end of the description. Token-coloured, so both themes are
+   covered without a [data-theme] rule. The source line under it is
+   deliberately quiet — it is a citation, not a claim.
+   -------------------------------------------------------------------------- */
+/* Selector doubled with .info-card because `.hero-text, .section-heading p,
+   .info-card p, …` above is (0,1,1) and sets color + font-weight 600. A bare
+   .project-outcome / .project-source is (0,1,0) and loses on specificity
+   regardless of source order, so on the homepage card the outcome rendered at
+   --ink-2 and the "deliberately quiet" citation rendered at weight 600 — the
+   same ink and weight as the body copy it is meant to sit under. */
+.info-card .project-outcome,
+.project-outcome {
+  margin: 0 0 0.6rem;
+  padding-left: 0.7rem;
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.55);
+  color: var(--ink);
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.info-card .project-source,
+.project-source {
+  margin: 0.5rem 0 0.9rem;
+  color: var(--ink-3);
+  font-size: 0.8rem;
+  font-weight: 400;   /* not the 600 inherited from `.info-card p` */
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Homepage proof band
+   --------------------------------------------------------------------------
+   Nine cards ship in the markup; proof-band.js rewrites them from a
+   thirty-entry pool on every load. Every
+   colour here comes from a token, so both themes are covered without a
+   [data-theme] rule — see the note above the light-theme block.
+   -------------------------------------------------------------------------- */
+.proof-band {
+  display: grid;
+  /* min() so the track can shrink below 16rem rather than overflowing the
+     grid on a 320px phone. */
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 1rem;
+}
+
+.proof-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.16);
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.5);
+  border-radius: 12px;
+}
+
+.proof-card blockquote {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* The typographic quotes are decoration, so they are generated rather than
+   typed into the markup — a screen reader should not read "open quote". */
+.proof-card blockquote::before { content: '\201C'; }
+.proof-card blockquote::after  { content: '\201D'; }
+
+.proof-card figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: auto;
+}
+
+.proof-name {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.proof-role {
+  color: var(--ink-3);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.proof-more {
+  margin: 1.1rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Issuer line above the credential name on a certification card. The card
+   text is the badge's EXACT issued title — separating the issuer out keeps
+   the title verbatim (so it matches the Credly page it links to) without the
+   line reading as one run-on phrase. Token-coloured, so it follows the theme;
+   no [data-theme] rule needed. */
+.license-issuer {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--ink-3);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .info-card:hover,
@@ -1522,6 +1673,18 @@ main [id] {
   color: var(--ink-4);
 }
 
+/* These fields are a deliberately fixed sheet of near-white "paper" in BOTH
+   themes — that is the look, and the background below is a literal for that
+   reason. The ink has to be a literal for the same reason.
+
+   It used to be `color: var(--surf-0)`, which is the token for "ink that sits
+   on an accent-coloured fill" — correct in the four other places it is used,
+   all of which set `background: var(--accent)`. Here the background is not the
+   accent, so the token was only ever right by luck: --surf-0 is #0f172a in
+   dark (near-black on near-white, fine) and #e6edf5 in light. In light theme
+   that meant near-white text on a near-white field — measured 1.13:1, i.e.
+   invisible while typing, on every form on the site: contact, internships and
+   the certificate ID box. Pinned to the dark value, it is 16.1:1 in both. */
 .field input,
 .field select,
 .field textarea {
@@ -1530,8 +1693,16 @@ main [id] {
   border: 1px solid rgb(var(--accent-rgb) / 0.25);
   border-radius: 14px;
   background: rgba(248, 250, 252, 0.95);
-  color: var(--surf-0);
+  color: #0f172a;
   font: inherit;
+}
+
+/* Same reasoning: the field is always light, so the placeholder needs a fixed
+   mid-slate rather than a theme token that would invert with it. 4.8:1. */
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #5b6675;
+  opacity: 1;
 }
 
 .field textarea {
@@ -2776,6 +2947,55 @@ footer a:hover {
   --ink-5: #f1f5f9;
 }
 
+/* Held for the single frame in which theme.js swaps data-theme.
+
+   A property listed in a `transition` keeps its old used value when the custom
+   property behind it changes, so every `background: var(--token)` rule that
+   also transitions background would otherwise stay on the previous theme's
+   colour until the next reload. Freezing transitions across the swap lets the
+   new values land instantly; the class is gone before the next frame, so
+   hover and focus animations are untouched. See the note in theme.js. */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
+}
+
+/* The same problem, one step smaller.
+
+   The block above owns the ground AND the text for panes that are pure
+   terminal. These surfaces are different: each one hardcodes its own dark
+   fill (#0b1220 for the stdin and typing boxes, #020617 for the API panes) but
+   colours its text with a token — so in light theme the fill stayed dark
+   while the ink flipped to near-black and the text disappeared into it.
+   Measured before this block, in light theme:
+
+     .lab-stdin       1.81:1     (14 REPL labs — the box you type input into)
+     .typing-input    1.28:1
+     .api-url         1.38:1
+     .api-field       1.38:1
+
+   So this re-pins ONLY the tokens and deliberately does not set background
+   or color. Each surface keeps the exact fill and ink it has in dark mode,
+   which is the point — these panes are meant to look identical in both
+   themes, and pinning the ground here instead would quietly restyle
+   .lab-stdin from #0b1220 to #020617 in light only. */
+:root[data-theme="light"] .lab-stdin,
+:root[data-theme="light"] .typing-input,
+:root[data-theme="light"] .api-url,
+:root[data-theme="light"] .api-field {
+  --accent-1: #7dd3fc;
+  --accent-2: #38bdf8;
+  --accent-rgb: 125 211 252;
+  --accent2-rgb: 56 189 248;
+  --ink: #f8fafc;
+  --ink-2: #e2e8f0;
+  --ink-3: #cbd5e1;
+  --ink-4: #94a3b8;
+  --ink-5: #f1f5f9;
+}
+
 /* The toggle itself. */
 
 
@@ -2948,7 +3168,9 @@ footer a:hover {
 :root[data-theme="light"] .bg-settings-row button:hover { color: #212121; }
 :root[data-theme="light"] .footer-still:hover, :root[data-theme="light"] .footer-still:focus-visible { color: #8f6300; }
 :root[data-theme="light"] .footer-still-icon { color: #8f5600; }
-:root[data-theme="light"] .post-callout strong { color: #8f7200; }
+:root[data-theme="light"] .hl-progress { color: #03608f; } /* var(--accent) is 4.37:1 on the pale end of the .hl-list gradient */
+:root[data-theme="light"] .featured-recommendation-badge { color: #03608f; } /* var(--accent) is 4.36:1 at the dark end of the card gradient; this is 5.0:1 everywhere on it */
+:root[data-theme="light"] .post-callout strong { color: #806600; } /* #8f7200 measured 4.15:1 on the callout ground rgb(245,243,235); this is 4.95:1 */
 :root[data-theme="light"] .lab-btn-icon[aria-pressed='true'] { color: #008f4c; }
 :root[data-theme="light"] .lab-status.is-busy { color: #8f6700; }
 :root[data-theme="light"] .lab-status.is-ok { color: #058a35; }
@@ -2956,12 +3178,22 @@ footer a:hover {
 :root[data-theme="light"] .lab-gate-h.limits { color: #8f6700; }
 :root[data-theme="light"] .lab-gate-h.privacy { color: #05672a; }
 :root[data-theme="light"] .lab-warn-kill { color: #212121; }
-:root[data-theme="light"] .lab-cta-text strong { color: #008f34; }
+:root[data-theme="light"] .lab-cta-text strong { color: #05672a; } /* #008f34 measured 2.83:1 on the teal end of the .lab-cta gradient, where the <strong> actually sits; this is 4.73:1 and matches .lab-gate-h.privacy above */
 :root[data-theme="light"] .typing-stats .typing-best b { color: #04561f; }
 :root[data-theme="light"] .typing-result { color: #008f4c; }
 :root[data-theme="light"] .lab-report-context { color: #058a35; }
-:root[data-theme="light"] .lab-copy.is-ok { color: #058a35; }
-:root[data-theme="light"] .lab-copy.is-err { color: #8f6700; }
+/* The copy chip floats on pre.lab-example, which the pin block above keeps at
+   #020617 in light theme. Its ink comes from that pin (the dark-theme
+   --ink-3, #cbd5e1) but its fill is --sheet-95, which the pin does NOT cover
+   and which flips to white — so in light theme it was #cbd5e1 on white,
+   1.39:1, on every lab page carrying a code example. Pin the chip's own fill
+   so it matches the block it sits on. */
+/* The .lab-btn hover fill is var(--raise-85), which in light composites to
+   rgb(239,245,251) over a white button — 1.10:1, so hovering Reset/Copy/
+   Fullscreen produced no visible change and only the border moved. The token
+   is still right for the label (16.26:1); light just needs a fill you can see. */
+:root[data-theme="light"] .lab-btn:hover:not(:disabled) { background: #dde7f2; }
+:root[data-theme="light"] .lab-copy { background: rgba(31, 44, 63, 0.95); }
 :root[data-theme="light"] .lab-netnote strong { color: #7a5700; }
 :root[data-theme="light"] .lab-gate-foot { color: #745c00; }
 :root[data-theme="light"] .hl-list-cat { color: #00438f; }

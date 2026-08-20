@@ -42,7 +42,7 @@
 
 ## Labs — free online compilers that run in the browser
 
-- [Labs hub](https://krunalkumar.dpdns.org/labs): Five language playgrounds and a real Linux terminal, all executing locally in the visitor's browser. No server, no sign-up, nothing uploaded.
+- [Labs hub](https://krunalkumar.dpdns.org/labs): Eleven language playgrounds, three real machines and dozens more tools, all executing locally in the visitor's browser. No server, no sign-up, nothing uploaded.
 - [Online Python compiler](https://krunalkumar.dpdns.org/labs/python): Genuine CPython on WebAssembly with the standard library and input() support. No pip.
 - [Online JavaScript compiler](https://krunalkumar.dpdns.org/labs/javascript): Runs on the browser's own engine in an isolated Web Worker. Nothing to download.
 - [Online TypeScript compiler](https://krunalkumar.dpdns.org/labs/typescript): The official tsc, doing real type checking before anything runs.
@@ -127,7 +127,7 @@ These are deliberately separated from the fifteen offline security tools. They s
 
 ## A Still Place
 - [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page — an illustrated Buddha at dawn who
-  breathes, opens his eyes every nine seconds and smiles; one of 405 verses from the Pali Canon, re-picked on
+  breathes, opens his eyes every nine seconds and smiles; one of 695 verses from the Pali Canon, re-picked on
   load and on every tap; and a 4s-in / 6s-out breathing guide. Every verse carries its citation, because a
   great many sayings passed around as the Buddha's were never his. Has a fullscreen mode.
 

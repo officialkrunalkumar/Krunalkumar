@@ -259,6 +259,65 @@
         </div>
       </section>
 
+      <!--
+        Social proof, directly under the hero.
+
+        NINE cards ship here — a 3x3 grid — chosen as the strongest set for a
+        visitor with JavaScript off, and crawlable as ordinary page content.
+        proof-band.js carries all thirty recommendations as data and rewrites
+        these nine slots with a random nine on every load, so the page stays
+        small while a returning visitor still meets different faces.
+        /client-reviews holds the full set and remains the source of truth; the
+        pool in proof-band.js is generated from it.
+      -->
+      <section class="section-card" id="proof">
+        <div class="section-heading">
+          <p class="eyebrow">In their words</p>
+          <h2>What people who have worked with me say</h2>
+        </div>
+        <div class="proof-band" id="proof-band">
+          <figure class="proof-card">
+            <blockquote>Krunal is an exceptional developer but an even greater human with a positive, can-do attitude. He always sees the good in every situation and has an uncanny ability to find more efficient ways to get the job done.</blockquote>
+            <figcaption><span class="proof-name">Brandon Dith-Berry</span><span class="proof-role">RevOps Leader · AI Strategy &amp; Enablement</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>Krunalkumar is a valuable contributor to our initiative. He brings not only his expertise in cybersecurity, but also a vibrant, positive attitude that energizes the team.</blockquote>
+            <figcaption><span class="proof-name">Alice Pavaloiu</span><span class="proof-role">Co-founder at Open Ethics &amp; English Right</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>A very engaged, knowledgeable professional who provided excellent support as a teaching assistant.</blockquote>
+            <figcaption><span class="proof-name">Dr. Mary Dunphy</span><span class="proof-role">CISSP, CISA, PMP, SABSA SCP, PCI-QSA, GCP-PCA</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>A highly skilled cybersecurity expert whose dedication and expertise have significantly contributed to the success of our initiatives.</blockquote>
+            <figcaption><span class="proof-name">Reginald Osuji</span><span class="proof-role">Cybersecurity Trainer · Penetration Tester</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>A well-qualified senior engineer with solid cybersecurity expertise and excellent soft skills.</blockquote>
+            <figcaption><span class="proof-name">Geovani dos Santos</span><span class="proof-role">Consulting · AI · Data Science · Cybersecurity</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing—thoughtful, insightful, and highly engaging.</blockquote>
+            <figcaption><span class="proof-name">Anish Patel</span><span class="proof-role">Java Developer at Mphasis</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>A brilliant mind who combines genius with remarkable simplicity, making complex concepts accessible and engaging.</blockquote>
+            <figcaption><span class="proof-name">Nonye Nwogu</span><span class="proof-role">Linux · AWS · Nutanix · VMware · DevOps</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>An expert in his field with strong professional credibility and knowledge.</blockquote>
+            <figcaption><span class="proof-name">Kabir Mohammed Tukur</span><span class="proof-role">IT Leader · Consultant · Trainer</span></figcaption>
+          </figure>
+          <figure class="proof-card">
+            <blockquote>Being mentored by Krunalkumar was an incredible experience; his insights and encouragement greatly shaped my learning and career direction.</blockquote>
+            <figcaption><span class="proof-name">Md Intekhab Alam</span><span class="proof-role">Software Engineer · Frontend Developer · ReactJS</span></figcaption>
+          </figure>
+        </div>
+        <p class="proof-more">
+          <a class="text-link" href="/client-reviews">Read all 30 recommendations &rarr;</a>
+        </p>
+      </section>
+
       <section class="section-card" id="expertise">
         <div class="section-heading">
           <p class="eyebrow">What I bring</p>
@@ -293,7 +352,15 @@
           <article class="info-card compact-card">
             <p class="project-meta">AI · RevOps</p>
             <h3>ChurnGPT 2.0</h3>
-            <p>An AI churn-analysis pipeline I introduced at Zeni — it digests company records, ticket and meeting notes, then validates churn reasons and recommends retention actions.</p>
+            <p class="project-outcome">
+              Churn-ticket review went from 15 minutes to 2 — an 87% efficiency gain. Separately, a
+              backlog of 200+ tickets was processed in under 20 minutes. Built in five days.
+            </p>
+            <p>An AI churn-analysis pipeline I wrote the code for at Zeni, running inside HubSpot on the OpenAI API. It digests company records, ticket and meeting notes, validates the churn reason a CSM gave, and shows which evidence it used. This repo is the successor I have since taken further.</p>
+            <p class="project-source">
+              Figures reported by Zeni&rsquo;s RevOps lead,
+              <a class="text-link" href="https://www.linkedin.com/posts/brandondithberry_gpt-hubspot-revops-activity-7244766642377760769-fSKq" target="_blank" rel="noopener">Brandon Dith-Berry</a>.
+            </p>
             <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/011-ChurnGPT-2.0" target="_blank" rel="noopener">View the code</a>
           </article>
           <article class="info-card compact-card">
@@ -311,6 +378,42 @@
         </div>
         <div class="section-footer-link">
           <a class="btn btn-primary" href="/projects">Explore all 35 projects</a>
+        </div>
+      </section>
+
+      <!--
+        Labs got no promotion at all from this page: /labs and its 58 pages are
+        the site's clearest proof of shipped engineering, and the homepage
+        <main> did not link to any of them once. Uses .info-card rather than
+        .lab-card because that class lives in labs.css, which this page does
+        not load.
+      -->
+      <section class="section-card" id="labs-strip">
+        <div class="section-heading">
+          <p class="eyebrow">Labs</p>
+          <h2>Things I built that you can run right now</h2>
+          <p class="hero-text">
+            Eleven language playgrounds, three real machines and dozens of security tools — all executing
+            inside your own browser tab. No sign-up and no server; nothing you write or drop in is
+            uploaded, apart from the few network tools that must query a lookup service to work.
+          </p>
+        </div>
+        <div class="content-grid three-up">
+          <a class="info-card compact-card" href="/labs/python">
+            <h3>Python, actually running</h3>
+            <p>Genuine CPython with the standard library, compiled to WebAssembly and executing on your machine.</p>
+          </a>
+          <a class="info-card compact-card" href="/labs/linux">
+            <h3>A real Linux terminal</h3>
+            <p>A genuine kernel booting on an emulated x86 machine, in a browser tab.</p>
+          </a>
+          <a class="info-card compact-card" href="/labs/jwt">
+            <h3>Security tooling</h3>
+            <p>JWT, hashes, ciphers, CVSS, EXIF, PCAP and more — nothing you paste ever leaves the page.</p>
+          </a>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-secondary" href="/labs">Open the labs</a>
         </div>
       </section>
 
@@ -346,27 +449,27 @@
         <div class="license-grid">
           <a href="https://www.credly.com/badges/89e4751c-ae11-43d8-8447-c5eaabd4bb29" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/google_python.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>Google IT Automation Specialist</p>
+            <p><span class="license-issuer">Google</span>IT Automation with Python Professional Certificate</p>
           </a>
           <a href="https://www.credly.com/badges/1b282a78-c4ee-4a3a-8c96-f1df54db7c8c" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/cisco.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>Cisco Security Analyst</p>
+            <p><span class="license-issuer">Cisco</span>Introduction to Cybersecurity</p>
           </a>
           <a href="https://www.credly.com/badges/1b6202e4-f557-4b98-b4a8-c01f28ae11fc" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/security.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>IBM Security Specialist</p>
+            <p><span class="license-issuer">IBM</span>Security Analyst Fundamentals Specialization</p>
           </a>
           <a href="https://www.credly.com/badges/bf7d1cd5-6fc6-44df-94e7-97b0907fd381" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/linux.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>Linux Foundation Professional</p>
+            <p><span class="license-issuer">Linux Foundation</span>Open Source Software Development, Linux and Git Specialization</p>
           </a>
           <a href="https://www.credly.com/badges/3e0a78c8-50a3-4e40-b3af-3db1b86570dd" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/communication.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>IBM Communication Specialist</p>
+            <p><span class="license-issuer">IBM SkillsBuild</span>Customer Engagement: Communication &amp; Personality Dynamics</p>
           </a>
           <a href="https://www.credly.com/badges/6157c833-4cab-4f84-b612-101d64ac6f7b" target="_blank" rel="noopener" class="license-card">
             <img src="/assets/images/digital.png" alt="" width="340" height="340" loading="lazy" decoding="async" />
-            <p>IBM Remote Working Specialist</p>
+            <p><span class="license-issuer">IBM SkillsBuild</span>Working in a Digital World: Professional Skills</p>
           </a>
         </div>
       </section>
@@ -452,5 +555,6 @@
     </footer>
 
     <script src="/assets/js/particle-bg.js" defer></script>
+    <script src="/assets/js/proof-band.js" defer></script>
   </body>
 </html>
