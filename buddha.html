@@ -75,7 +75,7 @@
             <a class="nav-link" href="/services">Services</a>
             <a class="nav-link" href="/projects">Projects</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link active" aria-current="page" href="/research">Research</a>
+            <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/internships">Internships</a>
@@ -409,7 +409,19 @@
           <button class="b-another" type="button">Another verse</button>
 
           <div class="b-breath">
-            <p class="b-breath-label" aria-live="polite">Breathe in</p>
+            <!-- Described once, not announced forever. This label changes every
+                 four to six seconds for as long as the page is open; as an
+                 aria-live region it interrupted a screen reader with "Breathe
+                 in… Breathe out…" indefinitely, with no way to stop it — the
+                 opposite of what this page is for, and a WCAG 2.2.2 problem.
+                 The cycling word is a visual partner to the ring, so it is
+                 hidden from assistive tech and the instruction below carries
+                 the same guidance in one calm sentence. -->
+            <p class="sr-only">
+              A ring on this page expands and contracts to pace your breathing: breathe in for
+              four seconds as it grows, and out for six as it settles. It repeats until you leave.
+            </p>
+            <p class="b-breath-label" aria-hidden="true">Breathe in</p>
           </div>
         </div>
       </section>
@@ -443,6 +455,23 @@
             “Holding on to anger is like grasping a hot coal”, “what you think, you become”, “peace comes
             from within” — all modern inventions. If a line is worth sitting with, it is worth being
             honest about where it came from.
+          </p>
+          <p>
+            There are 695 verses here, drawn from ten collections — the Dhammapada, the Udāna and
+            Itivuttaka, the Sutta Nipāta, the verses of the senior monks and nuns, and the Saṁyutta
+            Nikāya. You are unlikely to meet the same one twice in a sitting.
+          </p>
+          <p class="b-credit">
+            About 290 of these translations are by
+            <a class="b-credit-link" href="https://suttacentral.net/" target="_blank" rel="noopener">Bhikkhu Sujato</a>,
+            published by SuttaCentral and dedicated to the public domain under
+            <a class="b-credit-link" href="https://creativecommons.org/public-domain/cc0/" target="_blank" rel="noopener">CC0</a>;
+            the verses of the senior monks and nuns were translated by Bhikkhu Sujato and Jessica Walton.
+            Thanks are owed to them, and to SuttaCentral for making the canon freely reusable. The
+            remaining 405, an older set, came from several translators whose names were not recorded at the time —
+            each is cited to chapter and verse and can be checked, but if you hold rights in any of them,
+            please <a class="b-credit-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">write to me</a>
+            and I will credit or replace it.
           </p>
           <p>
             There is nothing to sign up for and nothing being counted. Stay as long as you like.

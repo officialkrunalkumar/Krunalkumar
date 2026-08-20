@@ -1,5 +1,33 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* --------------------------------------------------------------------------
+   Site chrome first — this is a resilience ordering, not a stylistic one.
+
+   The hamburger, the mobile menu, the More dropdown and the copyright year all
+   live in initSiteChrome() at the bottom of this file, and its bootstrap used
+   to sit at the very bottom too. That made the entire site navigation depend on
+   ~830 lines of decorative canvas code executing without throwing first: one
+   unsupported call on an old device and a visitor would be left with a header
+   that has no working menu at all.
+
+   Splitting the chrome into its own file was measured and rejected — the whole
+   file compiles in 0.8 ms (the chrome part is 0.1 ms of that), so a separate
+   request would cost more than it saved. Running the bootstrap here costs
+   nothing and removes the dependency entirely: initSiteChrome is a hoisted
+   function declaration, and the only outer binding it touches is
+   prefersReducedMotion, declared immediately above.
+
+   Every page ships a static header (.noscript-header) that include-partials.js
+   swaps for the canonical partial — wiring the chrome against the static copy
+   would be thrown away in the swap. So initialize on the injected header, and
+   only run immediately when no swap is pending.
+   -------------------------------------------------------------------------- */
+if (document.querySelector('.site-header:not(.noscript-header)')) {
+  initSiteChrome();
+} else {
+  document.addEventListener('partials:loaded', initSiteChrome, { once: true });
+}
+
 // A hint for fellow console-openers. The terminal itself lives at /terminal.
 console.log('%c👀 curiosity opens consoles… it also opens /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 console.log('%c⌨️  press . for the background controls — or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
@@ -1052,14 +1080,4 @@ function initSiteChrome() {
       navToggle.focus();
     }
   });
-}
-
-// Every page ships a static header (.noscript-header) that include-partials.js
-// swaps for the canonical partial — wiring the chrome against the static copy
-// would be thrown away in the swap. Initialize on the injected header; only
-// when no swap is pending (partial already in place) run immediately.
-if (document.querySelector('.site-header:not(.noscript-header)')) {
-  initSiteChrome();
-} else {
-  document.addEventListener('partials:loaded', initSiteChrome, { once: true });
 }

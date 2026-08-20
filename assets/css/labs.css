@@ -127,7 +127,13 @@
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.lab-btn:hover:not(:disabled) { background: #2e3e50; border-color: rgb(var(--accent-rgb) / 0.55); }
+/* --raise-85 is rgb(46 62 80 / .85) in dark, which composites to rgb(42,56,75)
+   over the toolbar — near enough to the #2e3e50 this used to hardcode that the
+   change is invisible (label contrast 10.45:1 -> 11.37:1) — and a pale fill in light. The literal meant a light
+   visitor hovering Reset/Copy/Fullscreen watched the label (var(--ink), which
+   flips to near-black) drop to 1.68:1 against a dark navy fill, right as they
+   aimed at it. The token flips with the theme; the hex could not. */
+.lab-btn:hover:not(:disabled) { background: var(--raise-85); border-color: rgb(var(--accent-rgb) / 0.55); }
 .lab-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .lab-btn-run { background: #0f766e; border-color: #14b8a6; }
@@ -296,7 +302,7 @@
 }
 
 .lab-stdin:focus-visible { box-shadow: inset 0 0 0 2px rgb(var(--accent-rgb) / 0.45); }
-.lab-stdin::placeholder { color: #475569; }
+.lab-stdin::placeholder { color: var(--ink-4); }
 
 /* The Linux page is terminal-only: one full-width pane, taller by default.
    Definite height again — this is the scrolling viewport for the kernel's
@@ -625,7 +631,7 @@
   user-select: none;   /* selecting the target text helps nobody */
 }
 
-.typing-passage .ty-todo { color: #64748b; }
+.typing-passage .ty-todo { color: #6b7c94; } /* 4.24:1 was just under AA on #020617; this is 4.74:1 and still reads as "not yet typed" */
 .typing-passage .ty-ok   { color: #86efac; }
 
 /* A wrong character has to be unmissable, and it must still be legible when
@@ -661,7 +667,7 @@
 }
 
 .typing-input:focus-visible { box-shadow: inset 0 0 0 2px rgb(var(--accent-rgb) / 0.45); }
-.typing-input::placeholder { color: #475569; }
+.typing-input::placeholder { color: var(--ink-4); }
 
 .typing-stats {
   display: flex;
@@ -721,7 +727,7 @@
 }
 
 .api-url:focus-visible { border-color: rgb(var(--accent-rgb) / 0.7); }
-.api-url::placeholder { color: #475569; }
+.api-url::placeholder { color: var(--ink-4); }
 
 .api-field {
   display: block;
@@ -740,7 +746,7 @@
 }
 
 .api-field:focus-visible { box-shadow: inset 0 0 0 2px rgb(var(--accent-rgb) / 0.45); }
-.api-field::placeholder { color: #475569; }
+.api-field::placeholder { color: var(--ink-4); }
 
 #api-body-pane {
   display: flex;
@@ -1379,7 +1385,14 @@ pre.lab-example:hover .lab-copy,
   gap: 0.55rem;
   padding: 1.1rem;
   border-right: 1px solid rgb(var(--accent-rgb) / 0.16);
-  background: linear-gradient(180deg, rgb(var(--deep-rgb) / 0.75), rgba(11, 18, 32, 0.55));
+  /* Both stops must be token-driven. The second used to be a literal
+     rgba(11, 18, 32, 0.55) — close to --deep-rgb's dark value (15 23 42) but not
+     identical, so dark theme shifts by 3-6 RGB units — sub-perceptual; the
+     title's contrast goes 16.79:1 -> 16.21:1, but in light theme the first
+     stop went pale while the literal stayed navy. The result composited to a
+     mid-grey around rgb(112,119,130), and the dark text of the challenge list
+     dropped to between 1.31:1 and 3.75:1 on it. */
+  background: linear-gradient(180deg, rgb(var(--deep-rgb) / 0.75), rgb(var(--deep-rgb) / 0.55));
   /* The list of challenges scrolls on its own; the head and reset button ride
      with it. A direct max-height (not just the parent cap) guarantees the
      scroll even if the grid stretch behaves unexpectedly. */
@@ -1469,7 +1482,11 @@ pre.lab-example:hover .lab-copy,
 }
 .hl-list-level {
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.04em;
-  text-transform: uppercase; color: #64748b;
+  /* A literal cannot serve both themes here: the .hl-list ground flips with
+     the theme, so #64748b measured 2.74:1 in dark. --ink-4 is 5.07:1 in dark. In light this is
+     overridden by :root[data-theme="light"] .hl-list-level in main.css, which
+     is more specific and already correct. */
+  text-transform: uppercase; color: var(--ink-4);
   padding: 0.08rem 0.4rem; border-radius: 99px;
   border: 1px solid var(--line-28);
 }
@@ -2270,4 +2287,37 @@ pre.lab-example:hover .lab-copy,
   font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
   font-size: 0.85rem;
   color: #fca5a5;
+}
+
+/* --------------------------------------------------------------------------
+   iOS focus-zoom guard
+   --------------------------------------------------------------------------
+   Mobile Safari zooms the whole page when a form control smaller than 16px
+   takes focus, and it does NOT zoom back out afterwards — the toolbar and the
+   Run button end up off-screen and the page scrolls sideways for the rest of
+   the visit. The only fix is to hit 16px exactly; a viewport with
+   maximum-scale/user-scalable=no would also stop it but that breaks pinch-zoom
+   for everyone, which is a WCAG failure.
+
+   Already handled elsewhere and deliberately not repeated here: the REPL
+   surfaces (.lab-editor, .lab-stdin, .lab-terminal) at the 560px block further
+   up, and .api-url/.api-field at their own 560px block in the API section.
+   What was missing is the tool labs and the HackLab form. Kept as one block at
+   the end of the file so it lands after every base rule — .hl-field input is
+   (0,1,1), so this has to match that specificity and come later to win.
+
+   Every control you can FOCUS is listed, including read-only ones:
+   .lab-toolfield doubles as the result surface (.lab-toolresult), and iOS
+   zooms on focus of a read-only field just the same. That costs a slightly
+   taller result box on a phone, which is the right trade against a zoom the
+   visitor cannot undo. */
+@media (max-width: 560px) {
+  .lab-select,
+  .lab-toolinput,
+  .lab-toolfield,
+  .hl-field select,
+  .hl-field input,
+  .hl-field textarea {
+    font-size: 16px;
+  }
 }

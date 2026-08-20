@@ -119,7 +119,7 @@
           The short version: this site collects very little, stores nothing on its own servers, and never sells
           your data. Here is the full picture.
         </p>
-        <p class="hero-text">Effective date: 5 August 2026 · Applies to krunalkumar.dpdns.org</p>
+        <p class="hero-text">Effective date: 20 August 2026 · Applies to krunalkumar.dpdns.org</p>
       </section>
 
       <section class="section-card">
@@ -151,9 +151,30 @@
           <p><strong>What analytics never receives.</strong> Search terms are not sent. The site search
           runs entirely in your browser against a file it downloads, and only the <em>number</em> of
           results a search returned is reported, never what you typed. Nothing you type, paste, or drop
-          into any lab is sent either — the labs run on your own machine. In the chat lab, analytics
+          into any lab reaches analytics either. In the chat lab, analytics
           records only that a connection or a call happened: never who with, and never any message, file,
           or audio and video, all of which travel directly between the two browsers.</p>
+          <p><strong>The network tools are the exception — and they have to be.</strong> Most labs run
+          entirely on your own machine and send nothing anywhere. A handful cannot, because looking
+          something up on the internet is the whole point of the tool. In these, and only these, what you
+          type is sent to the service being queried — not to me, and not to analytics:</p>
+          <ul class="policy-list">
+            <li><strong>DNS lookup</strong> and <strong>email security check</strong> — the domain you
+            enter goes to Google Public DNS and, for the DNS tool, Cloudflare DNS.</li>
+            <li><strong>Domain / IP lookup (RDAP)</strong> — the domain or address you enter goes to
+            rdap.org.</li>
+            <li><strong>Certificate transparency log</strong> — the domain you enter goes to CertSpotter
+            (SSLMate).</li>
+            <li><strong>Password breach check</strong> — your password is <em>not</em> sent. It is hashed
+            in your browser and only the first five characters of that hash go to Have I Been Pwned, which
+            matches roughly two thousand hashes at once. The service cannot tell which one was yours.</li>
+            <li><strong>API tester</strong> — it sends a request to whatever URL you put in the box. That
+            is the tool. The sample presets point at httpbin.org and the GitHub public API.</li>
+            <li><strong>Peer-to-peer chat</strong> and <strong>browser leak test</strong> — these use
+            WebRTC, which contacts a STUN server (Google and Cloudflare) to discover your network address.
+            On the leak test this happens automatically when the page loads, because showing you what your
+            browser reveals is the purpose of that page.</li>
+          </ul>
           <p><strong>Direct contact.</strong> If you email me, message me on WhatsApp, or book a call through
           Google Calendar, I receive whatever you choose to share, and it lives in those services under their
           own privacy policies.</p>
@@ -165,8 +186,13 @@
           <h2>How your data is used</h2>
           <p>
             Only to reply to you, to deliver the work or program you asked about, and to understand how the
-            site is used so it can be improved. Your data is never sold or rented, there is no advertising on
-            this site, and it is shared with no one beyond the service providers listed below.
+            site is used so it can be improved. Your data is never sold or rented, no advertising is shown on
+            this site, and it is shared with no one beyond the service providers listed below. Note that
+            Google Analytics is itself part of Google's advertising infrastructure: alongside its analytics
+            cookies it sets an advertising cookie (<code>_gcl_au</code>) and contacts Google's conversion
+            measurement endpoint. That happens on Google's side, not because anything here is being
+            advertised or sold — but it is data going to an ad platform, and you should know that rather
+            than have to find it in a network log.
           </p>
         </div>
       </section>
@@ -194,16 +220,55 @@
             <p>Site hosting, which involves standard server request logs. See <a class="text-link" href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</p>
           </article>
         </div>
+        <div class="section-heading section-heading-sub">
+          <h3>Contacted only by the network tools</h3>
+          <p>
+            These are not used anywhere else on the site. They receive a query only when you run the
+            specific lab that calls them, and only what that lab sends — described in detail above.
+          </p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card compact-card">
+            <h3>Google Public DNS</h3>
+            <p>DNS lookup and email security check. See <a class="text-link" href="https://developers.google.com/speed/public-dns/privacy" target="_blank" rel="noopener">Google Public DNS privacy</a>.</p>
+          </article>
+          <article class="info-card compact-card">
+            <h3>Cloudflare DNS</h3>
+            <p>DNS lookup, as a second opinion alongside Google. See <a class="text-link" href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/" target="_blank" rel="noopener">Cloudflare's resolver privacy</a>.</p>
+          </article>
+          <article class="info-card compact-card">
+            <h3>rdap.org</h3>
+            <p>Domain and IP registration lookup.</p>
+          </article>
+          <article class="info-card compact-card">
+            <h3>Have I Been Pwned</h3>
+            <p>Password breach check, by hash prefix only. See <a class="text-link" href="https://haveibeenpwned.com/Privacy" target="_blank" rel="noopener">HIBP's privacy policy</a>.</p>
+          </article>
+          <article class="info-card compact-card">
+            <h3>CertSpotter (SSLMate)</h3>
+            <p>Certificate transparency log search.</p>
+          </article>
+          <article class="info-card compact-card">
+            <h3>Google &amp; Cloudflare STUN</h3>
+            <p>WebRTC network-address discovery for the chat and browser leak labs.</p>
+          </article>
+        </div>
       </section>
 
       <section class="section-card">
         <div class="section-heading">
           <h2>Cookies</h2>
           <p>
-            The only cookies on this site come from Google Analytics. You can block or delete them in your
-            browser settings, browse in private mode, or install
+            Every cookie on this site comes from Google Analytics. There are three:
+            <code>_ga</code> and <code>_ga_&lt;id&gt;</code>, which count visits, and <code>_gcl_au</code>,
+            an advertising cookie Google's tag sets on its own. Nothing here reads any of them.
+            You can block or delete them in your
+            browser settings, browse in private mode, use a content blocker, or install
             <a class="text-link" href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out add-on</a> —
-            the site works exactly the same without them.
+            the site works exactly the same without them, and nothing on it is gated behind accepting them.
+            Separately, the site stores a few preferences in your browser's local storage — your theme
+            choice, and in the labs your saved code and downloaded runtimes. Those never leave your
+            machine and are not cookies; the labs have a button that clears them.
           </p>
         </div>
       </section>

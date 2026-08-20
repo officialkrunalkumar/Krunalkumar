@@ -35,7 +35,12 @@
 
   --ink: #3a2110;
   --ink-soft: rgba(58, 33, 16, 0.82);
-  --ink-faint: rgba(58, 33, 16, 0.6);
+  /* Was 0.6, which composited to about 4.05:1 against the dawn-cream ground —
+     under the 4.5:1 needed for text this size (.b-cite is 0.82rem). The cite
+     sits on the dawn gradient, so its ground shifts with viewport height —
+     measured 4.4:1 at the dark end and 5.9:1 lower down. 0.92 clears 4.5:1
+     across the whole ramp and still reads as the quietest thing on screen. */
+  --ink-faint: rgba(58, 33, 16, 0.92);
 
   --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -401,7 +406,28 @@
   position: relative;
   z-index: 10;
   padding: clamp(3rem, 9vh, 6rem) 1.25rem clamp(4rem, 10vh, 7rem);
-  background: linear-gradient(to bottom, var(--dawn-gold) 0%, #8a6a52 26%, var(--bg-base) 100%);
+  /* The ramp has to be DARK for the whole stretch the text occupies, and the
+     old one was not. It ran gold -> #8a6a52 (26%) -> page background, which
+     put the heading at 17% and the intro at 25% on mid-tones around
+     rgb(177,147,118) and rgb(142,110,86). Cream type measured 2.67:1 and
+     3.47:1 there — in BOTH themes — and dark type is no better on a middle
+     tone: it only reaches 3.4:1 at 25%. No single ink works on that band, so
+     the band is what changes.
+
+     In light theme it was worse below the fold: --bg-base is near-white, so
+     the closing links faded to 1.9:1, 1.5:1 and 1.16:1 against it.
+
+     Now: a brief gold lip carrying the dawn over from the scene, dark by 12%,
+     held dark until 94% — past the last line of text even on a short viewport,
+     where the back link rides up to about 93% — then fading into
+     whichever page background the theme has, inside the bottom padding where
+     no text sits. Cream on #3f2718 is 12.8:1, and the back link at 91% lands
+     at 5.98:1 in light and darker still in dark. */
+  background: linear-gradient(to bottom,
+    var(--dawn-gold) 0%,
+    #3f2718 12%,
+    #3f2718 94%,
+    var(--bg-base) 100%);
 }
 
 .b-below-inner {
@@ -425,6 +451,21 @@
 }
 
 .b-below a { color: var(--dawn-cream); }
+
+/* The colophon: who translated these, and under what licence. Deliberately
+   smaller and quieter than the surrounding prose — it is a debt being
+   acknowledged, not a thing to read first. */
+.b-credit {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: rgba(253, 246, 232, 0.7);
+}
+
+.b-credit-link {
+  color: rgba(253, 246, 232, 0.92);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 .b-back {
   display: inline-block;
@@ -841,4 +882,34 @@
 @media (max-width: 560px) {
   .b-audio-vol { display: none; }
   .b-audio { right: calc(clamp(0.75rem, 2vw, 1.4rem) + 3.2rem); }
+}
+
+/* --------------------------------------------------------------------------
+   The shared chrome belongs to the site, not to this page
+   --------------------------------------------------------------------------
+   .buddha sits on <body>, so the dawn palette at the top of this file cascades
+   into everything — including the header and footer that include-partials.js
+   injects at runtime. --ink is a dark brown (#3a2110) chosen to read against a
+   pale dawn sky, but the chrome sits on the site's dark navy instead. Measured
+   in dark theme before this rule:
+
+     "Learn with me"  (.btn-secondary takes color: var(--ink))   1.06:1
+     the footer name                                             1.15:1
+
+   Both effectively invisible. Everything else in the footer was fine, because
+   it uses --ink-2 / --ink-3, which this file never overrides.
+
+   So --ink is restored for the chrome only; the scene keeps the brown, since
+   every consumer of it here is a .b-* class inside the scene. --ink-soft and
+   --ink-faint are deliberately not restored: main.css never reads them, they
+   are buddha-only tokens.
+   -------------------------------------------------------------------------- */
+.buddha .site-header,
+.buddha footer {
+  --ink: #f8fafc;
+}
+
+:root[data-theme="light"] .buddha .site-header,
+:root[data-theme="light"] .buddha footer {
+  --ink: #0f172a;
 }

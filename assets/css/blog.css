@@ -35,7 +35,8 @@
   font-size: 1.5rem;
   /* Keep anchored headings clear of the sticky navbar when jumped to
      from the "In this article" box. */
-  scroll-margin-top: 5.5rem;
+  /* Removed: see main.css — html scroll-padding-top now handles this, and the
+     two were adding to 11.5rem. */
 }
 
 .post-body h2:first-child {
@@ -507,4 +508,37 @@ a.post-card:hover {
   color: #0a1a28;
   /* The global body text-shadow smears dark glyphs on light fills. */
   text-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Reading measure
+   --------------------------------------------------------------------------
+   .post-body had no width cap, so on a 1440px screen the longest paragraphs
+   ran to 132 characters per line (measured: 1066px at 16.8px). Typographic
+   practice puts comfortable reading at 45-75 and the usable ceiling around 90
+   — past that the eye loses its place on the return sweep, which matters here
+   because these articles run to 4,000+ words.
+
+   Capped at 65ch, which measures out to about 75 real characters in this
+   face. Only the text flow is capped, and it is centred rather than left-aligned so
+   the card does not end up with one enormous right-hand gutter. Figures, code
+   blocks and tables are deliberately left out: they stay full width, which
+   gives the page a wide-media / narrow-text rhythm instead of a uniform
+   column. Below the cap this rule does nothing at all, so no small screen
+   changes.
+   -------------------------------------------------------------------------- */
+.post-body > p,
+.post-body > ul,
+.post-body > ol,
+.post-body > h2,
+.post-body > h3,
+.post-body > blockquote,
+/* These three are prose, not media: a callout, the "In this article" nav and
+   the lab call-to-action. Left out of the first pass, they kept the old full
+   width and jutted ~246px past the text column on both sides at 1440px. */
+.post-body > .post-callout,
+.post-body > .post-toc,
+.post-body > .lab-cta {
+  max-width: 65ch;
+  margin-inline: auto;
 }
