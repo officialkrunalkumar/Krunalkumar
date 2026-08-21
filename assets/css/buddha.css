@@ -1101,6 +1101,43 @@
   --ink: #f8fafc;
 }
 
+/* The name of the current setting, shown for a moment after T. Warm rather
+   than the loud page's magenta, because it belongs to this room. aria-hidden
+   because .b-track-announce beside it carries the same news to a screen
+   reader — a toast that is both visible and announced gets read twice.
+
+   It is deliberately NOT faded by .is-idle like the other controls: it only
+   appears in response to a keypress, which is itself proof somebody is there. */
+.b-toast {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 5vh, 3rem);
+  transform: translate(-50%, 8px);
+  z-index: 21;
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 206, 132, 0.5);
+  background: rgba(46, 30, 40, 0.82);
+  color: #ffeccb;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.b-toast.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b-toast { transition: opacity 320ms ease; transform: translate(-50%, 0); }
+}
+
 :root[data-theme="light"] .buddha .site-header,
 :root[data-theme="light"] .buddha footer {
   --ink: #0f172a;

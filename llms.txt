@@ -149,6 +149,9 @@ These are deliberately separated from the sixteen offline security tools. They s
   breathes, opens his eyes every nine seconds and smiles; one of 684 verses from the Pali Canon, re-picked on
   load and on every tap; and a 4s-in / 6s-out breathing guide. Every verse carries its citation, because a
   great many sayings passed around as the Buddha's were never his. Has a fullscreen mode.
+  The sound is synthesised rather than downloaded and has four settings, cycled with the T key:
+  Bhairavi at dawn, Yaman at dusk, Bhupali in the evening, and a sustained Om with no flute —
+  each a real raga with a time of day attached to it, the drone sliding to the new tonic.
 
 ## Peer-to-peer chat
 - [Peer-to-peer chat](https://krunalkumar.dpdns.org/labs/chat): two browsers connected directly over
