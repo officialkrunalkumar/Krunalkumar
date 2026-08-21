@@ -8,12 +8,19 @@
    Article pages
    -------------------------------------------------------------------------- */
 
-/* Article text deliberately runs the full card width: the owner prefers
-   long lines and shorter pages over a capped reading measure (a 72ch
-   column was tried and rejected — the leftover side space read as empty,
-   and shrinking the card was rejected too). The card's own padding is the
-   only inset. If a measure cap is ever revisited, it needs a design that
-   fills the card — not an island of text. */
+/* SUPERSEDED, kept for the reasoning. Article text used to run the full card
+   width: a 72ch column had been tried and rejected because the leftover side
+   space read as empty, and shrinking the card was rejected too. The note ended
+   "if a measure cap is ever revisited, it needs a design that fills the card —
+   not an island of text."
+
+   That is the brief the contents rail at the foot of this file answers. From
+   900px up the card holds a 72ch article column on the left and the "In this
+   article" nav on the right, so the measure is capped AND the width is used;
+   the space that used to be empty is now the thing that tells you where you
+   are in the piece. Below 900px there is no room for a rail, so the nav stacks
+   above the article and the reading measure block near the foot of this file
+   centres the text as it always did. */
 
 /* Breadcrumb trail: styled in main.css so blog, labs and the top-level pages
    all read as one site. */
@@ -105,6 +112,20 @@
   border: 1px solid rgb(var(--accent-rgb) / 0.2);
   border-radius: 6px;
   padding: 0.1em 0.4em;
+  /* A snippet is one token and has to move as one. The fork bomb article has
+     `:(){ :|:& };:` and `f(){ f|f& };f` in running prose, and the spaces inside
+     them are ordinary break opportunities — so the line broke mid-command and
+     each half was drawn with its own pill, which reads as two broken fragments
+     rather than one command. Every inline snippet on the site is 25 characters
+     or shorter (the longest is Strict-Transport-Security), so nothing here can
+     be too wide for a phone once it is kept whole. */
+  white-space: nowrap;
+}
+
+/* Restore normal preformatted behaviour inside a code block: the rule above
+   would collapse the newlines of any multi-line listing added later. */
+.post-body pre code {
+  white-space: pre;
 }
 
 .post-body pre {
@@ -234,13 +255,36 @@
   color: var(--ink-2);
 }
 
+/* Entries rest muted so the current one can simply be the accent colour. They
+   were all --accent before the rail existed, which was fine for a jump-box read
+   once at the top, but leaves a sticky list with no way to show position:
+   --accent and --accent-1 are the SAME value in both themes (#7dd3fc dark,
+   #0369a1 light), so colouring the current entry --accent-1 against --accent
+   siblings changed nothing at all and the state was carried by weight alone. */
 .post-toc a {
-  color: var(--accent);
+  color: var(--ink-3);
   font-weight: 600;
 }
 
 .post-toc a:hover {
+  color: var(--accent);
   text-decoration: underline;
+}
+
+/* The section currently under the reader, set by blog-toc.js. Deliberately
+   quiet: the entries stay muted and the current one simply comes up to the
+   accent colour and a heavier weight. An earlier version drew a vertical rule
+   beside it and turned the text white, which put a second, louder navigation
+   element next to the site's own. The weight change is what keeps this out of
+   SC 1.4.1 — the state is not carried by colour alone. */
+.post-toc a {
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.post-toc a.is-current {
+  color: var(--accent);
+  font-weight: 800;
 }
 
 @media (max-width: 640px) {
@@ -565,10 +609,124 @@ a.post-card:hover {
 .post-body > blockquote,
 /* These three are prose, not media: a callout, the "In this article" nav and
    the lab call-to-action. Left out of the first pass, they kept the old full
-   width and jutted ~246px past the text column on both sides at 1440px. */
+   width and jutted ~246px past the text column on both sides at 1440px.
+   The nav is matched on .post-layout now rather than .post-body — it is a
+   sibling of the article, not a child of it (see "Article + contents rail"),
+   and this cap is what keeps it the width of the prose while it is still
+   stacked above the article below 1120px. */
 .post-body > .post-callout,
-.post-body > .post-toc,
+.post-layout > .post-toc,
 .post-body > .lab-cta {
   max-width: 65ch;
   margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Article + contents rail
+   --------------------------------------------------------------------------
+   The reading measure at the foot of this file caps prose at 65ch and centres
+   it, which on a 1440px screen leaves ~220px of dead gutter down both sides of
+   every post. From 1120px up the contents nav moves into the right-hand one:
+   article left, "on this page" right, which is where technical publications
+   put it. The reading column is not narrowed to pay for it — the rail comes
+   out of gutter that was empty.
+
+   900px is the floor. An earlier 1120px was set by assuming a fixed 16rem
+   rail and a fixed 3rem gutter, which needs ~1090px of viewport before the
+   article column still clears its measure — so anyone reading in a window
+   narrower than that (a laptop at 1366 with the browser not maximised, a
+   half-screen split, a 1024 tablet in landscape) got the stacked nav and never
+   saw the rail at all. Both are fluid now: the rail runs 11-16rem and the
+   gutter 1.5-3rem, so at 900px the pair costs ~200px and the article still
+   holds ~66 characters, while a 1440px window gets the full 16rem. Under
+   900px no grid forms and the nav stacks above the article as it always did.
+
+   .post-toc is deliberately FIRST in the markup, and the grid moves it right
+   visually. That way the stacked view puts the section list above the article
+   instead of orphaning it at the bottom, and a screen reader meets it on the
+   way in. Do not "fix" the markup order to match the visual order.
+   -------------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  .post-layout {
+    display: grid;
+    /* The article column IS the reading measure, and space-between throws the
+       slack into the middle so the rail still lands flush with the right edge
+       of the card.
+
+       Two earlier attempts were worse and are worth recording. Centring the
+       pair left ~81px of dead gutter OUTSIDE both columns. Giving the article
+       1fr made the column 778px and the prose kept its own 68ch cap inside it,
+       so text stopped ~200px short of the rail and that gap read as a mistake
+       rather than as margin. Here every block in the article — prose, headings,
+       figures, tables, code — is exactly one column wide, so the layout has two
+       clean edges and one deliberate channel between them. */
+    grid-template-columns: minmax(0, 72ch) clamp(11rem, 17vw, 16rem);
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+    justify-content: space-between;
+    /* Without this the nav stretches to the full height of the article and has
+       nothing left to travel, so sticky never appears to do anything. */
+    align-items: start;
+  }
+
+  /* Keep the reading measure, drop the auto margins. Centring the text inside
+     its own column was right when the column was the whole card and the
+     alternative was one huge right-hand gutter; with the rail now closing off
+     the right, left-aligning gives prose, headings, figures, tables and code a
+     single shared left edge, and the ragged right becomes the wide-media /
+     narrow-text rhythm this file already aims for rather than a mistake.
+     72ch measures ~82 characters in this face — above the 45-75 comfort band
+     but inside the 90 ceiling the note at the foot of this file sets out, and
+     it buys back ~50px of the channel between the text and the rail. */
+  .post-body > p,
+  .post-body > ul,
+  .post-body > ol,
+  .post-body > h2,
+  .post-body > h3,
+  .post-body > blockquote,
+  .post-body > .post-callout,
+  .post-body > .lab-cta {
+    max-width: 72ch;
+    margin-inline: 0;
+  }
+
+  .post-layout > .post-body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .post-layout > .post-toc {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    /* Matches html { scroll-padding-top: 6rem } in main.css, so a heading the
+       reader jumps to lands level with the rail rather than tucked behind the
+       sticky site header. Change one and change the other. */
+    top: 6rem;
+    margin: 0;
+    /* The 65ch cap only makes sense while the nav sits in the text column. */
+    max-width: none;
+    /* A ten-item list is taller than a short laptop viewport, and a sticky box
+       taller than the screen can never be scrolled to its last item. */
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+
+  /* Two columns is for the stacked full-width nav; in a 15rem rail every entry
+     would wrap to three lines. Body size wraps them to three anyway, so the
+     rail drops to the size the rest of the site uses for secondary navigation
+     and tightens the leading to match. */
+  .post-layout > .post-toc {
+    padding: 1rem 1.1rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .post-layout > .post-toc ol {
+    columns: 1;
+    padding-left: 1.1rem;
+  }
+
+  .post-layout > .post-toc li {
+    margin: 0.5rem 0;
+  }
 }

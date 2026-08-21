@@ -2,7 +2,13 @@
 // reveal, sharing one visibility pass so they can never fight each other.
 // Without JS neither control appears and every card is simply visible.
 (function () {
-  var VISIBLE = 6;
+  // How many cards the unfiltered view starts with, and how many each press of
+  // the button adds. One press used to reveal the entire remaining catalogue at
+  // once, which roughly tripled the page height in a single click and left the
+  // reader wherever the scrollbar happened to land. Revealing one page at a
+  // time keeps every press the same size and keeps the button on screen to
+  // press again, which is what makes this scale as the archive grows.
+  var PAGE = 6;
   var grid = document.querySelector('.blog-grid');
   if (!grid) return;
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.post-card'));
@@ -12,8 +18,11 @@
   var button = document.getElementById('show-more-posts');
   var filterBar = document.querySelector('.blog-filters');
 
-  // Small sets never need the cap; the button also stays hidden for them.
-  var expanded = cards.length <= VISIBLE;
+  // How many cards the "All" view is currently willing to show. Small sets are
+  // never capped, so the button stays hidden for them. This deliberately
+  // survives a trip through the category chips: revealing twelve, filtering to
+  // Security and coming back to All should not snap the list back to six.
+  var revealed = Math.min(PAGE, cards.length);
   var activeFilter = 'all';
 
   // Filtering shows/hides cards purely via style.display, which is silent to
@@ -31,19 +40,31 @@
     cards.forEach(function (card) {
       var match = activeFilter === 'all' || card.getAttribute('data-category') === activeFilter;
       var visible = match;
-      // The six-card cap only applies to the unexpanded "All" view. A category
-      // view always shows every match — filtering and then having to click
-      // "show more" to see the rest would read as missing posts.
-      if (match && activeFilter === 'all' && !expanded) {
-        visible = matches < VISIBLE;
+      // The reveal cap only applies to the "All" view. A category view always
+      // shows every match — filtering and then having to click "show more" to
+      // see the rest would read as missing posts.
+      if (match && activeFilter === 'all') {
+        visible = matches < revealed;
       }
       if (match) matches += 1;
       if (visible) shown += 1;
       card.style.display = visible ? '' : 'none';
     });
 
+    // Only the unfiltered view keeps anything behind the button.
+    var remaining = activeFilter === 'all' ? cards.length - revealed : 0;
     if (wrap) {
-      wrap.style.display = activeFilter === 'all' && !expanded && cards.length > VISIBLE ? '' : 'none';
+      wrap.style.display = remaining > 0 ? '' : 'none';
+    }
+    // Say what the next press will actually do. A bare "show more" next to a
+    // list that is already twelve long gives no sense of how much is left, and
+    // a final press that reveals one card should not promise six.
+    if (button && remaining > 0) {
+      button.textContent = remaining > PAGE
+        ? 'Show ' + PAGE + ' more (' + remaining + ' remaining)'
+        : remaining === 1
+          ? 'Show the last article'
+          : 'Show the last ' + remaining;
     }
 
     // The featured card follows the filter too — pinning an off-topic post
@@ -104,13 +125,16 @@
 
   if (button && wrap) {
     button.addEventListener('click', function () {
-      expanded = true;
-      // Revealing eight more cards was completely silent before this: the
-      // wrapper vanished and nothing said why the page got longer.
+      var firstNew = revealed;
+      revealed = Math.min(revealed + PAGE, cards.length);
+      // Revealing more cards was completely silent before this: the page just
+      // got longer and nothing said why.
       announce(apply());
-      // Hiding the wrapper while its button is focused would drop keyboard
-      // focus to <body>, so hand focus to the first newly revealed card.
-      var target = cards[VISIBLE];
+      // On the final press the wrapper hides itself, and hiding it while its
+      // button holds focus would drop keyboard focus to <body>. Handing focus
+      // to the first newly revealed card fixes that, and is the right landing
+      // spot after every other press too.
+      var target = cards[firstNew];
       if (target) {
         if (!target.hasAttribute('href') && !target.hasAttribute('tabindex')) {
           target.setAttribute('tabindex', '-1');

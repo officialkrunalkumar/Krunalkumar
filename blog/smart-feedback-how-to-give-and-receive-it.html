@@ -158,7 +158,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -169,94 +169,97 @@
                 <li><a href="#build-the-loop-not-the-moment">Build the loop, not the moment</a></li>
               </ol>
             </nav>
-            <h2 id="why-most-feedback-does-nothing">Why most feedback does nothing</h2>
-            <p>
-              "Good job." "This could be better." "I didn't love it." These feel like feedback, but they change
-              nothing, because the person receiving them has no idea what to actually do differently. Vague praise is
-              pleasant and useless. Vague criticism is unpleasant and useless. Both fail for the same reason: they
-              describe a feeling instead of pointing at a specific, changeable thing.
-            </p>
-            <p>
-              Useful feedback is <em>specific, actionable, and kind</em> — and the order matters. Specific so the person knows
-              exactly what you mean. Actionable so they know what to do next. Kind so they can actually hear it instead
-              of bracing against it. Miss any one of those and the feedback simply gets ignored, no matter how right
-              you were.
-            </p>
 
-            <h2 id="a-simple-structure-i-keep-coming-back-to">A simple structure I keep coming back to</h2>
-            <p>
-              When I give feedback, I try to hit three beats in order. It stops me from being vague and keeps the
-              conversation forward-looking:
-            </p>
-            <ol>
-              <li><strong>Observation</strong> — the specific thing I noticed, stated as a fact, not a judgment. "This function does four different things" rather than "this is messy."</li>
-              <li><strong>Impact</strong> — why it matters. "That makes it hard to test, and harder for the next person to change safely."</li>
-              <li><strong>Path forward</strong> — a concrete next step, ideally as a question. "What if each responsibility became its own small function — how would you split it?"</li>
-            </ol>
-            <p>
-              The order matters. Lead with the observation so it's grounded, explain the impact so it's motivated, and
-              end on the path forward so the person leaves with momentum instead of a wound.
-            </p>
-
-            <figure class="post-figure">
-              <svg viewBox="0 0 760 200" role="img" aria-label="Three-step feedback structure: Observation, Impact, Path forward" xmlns="http://www.w3.org/2000/svg">
-                <rect width="760" height="200" rx="18" fill="#1b2735"/>
-                <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
-                  <circle cx="140" cy="100" r="46" fill="none" stroke="#7dd3fc" stroke-width="3"/>
-                  <text x="140" y="95" fill="#e2e8f0" font-size="14" font-weight="800">Observation</text>
-                  <text x="140" y="118" fill="#94a3b8" font-size="11" font-weight="600">what I saw</text>
-                  <circle cx="380" cy="100" r="46" fill="none" stroke="#7dd3fc" stroke-width="3"/>
-                  <text x="380" y="95" fill="#e2e8f0" font-size="14" font-weight="800">Impact</text>
-                  <text x="380" y="118" fill="#94a3b8" font-size="11" font-weight="600">why it matters</text>
-                  <circle cx="620" cy="100" r="46" fill="#7dd3fc"/>
-                  <text x="620" y="95" fill="#131f2d" font-size="14" font-weight="800">Path</text>
-                  <text x="620" y="118" fill="#131f2d" font-size="11" font-weight="700">what's next</text>
-                  <path d="M 192 100 L 328 100" stroke="#475569" stroke-width="3"/>
-                  <path d="M 320 93 L 334 100 L 320 107 Z" fill="#475569"/>
-                  <path d="M 432 100 L 568 100" stroke="#475569" stroke-width="3"/>
-                  <path d="M 560 93 L 574 100 L 560 107 Z" fill="#475569"/>
-                </g>
-              </svg>
-              <figcaption>Observation grounds it, impact motivates it, and the path forward turns criticism into a next step.</figcaption>
-            </figure>
-
-            <h2 id="praise-deserves-the-same-rigor">Praise deserves the same rigor</h2>
-            <p>
-              We obsess over how to deliver criticism and get lazy with praise — but "great work" is just as empty as
-              "needs work." If someone did something really well, tell them <em>exactly</em> what, so they can do it
-              again on purpose. "The way you named these variables made the whole thing readable in one pass" teaches a
-              repeatable skill. "Nice" teaches nothing. Specific praise is one of the most underused tools in
-              mentoring, and it costs you nothing but attention.
-            </p>
-
-            <h2 id="the-harder-half-receiving-feedback">The harder half: receiving feedback</h2>
-            <p>
-              Giving good feedback is a skill. Receiving it well is a superpower, and far rarer. The instinct when
-              criticized is to defend — to explain why you did it that way, why the critic is missing context, why it's
-              not really a problem. Every second spent defending is a second not spent learning. The people who grow
-              fastest do the opposite of what feels natural.
-            </p>
-            <blockquote>
+            <div class="post-body">
+              <h2 id="why-most-feedback-does-nothing">Why most feedback does nothing</h2>
               <p>
-                Treat every piece of feedback as information first and a verdict never. You don't have to agree with
-                all of it. You do have to actually hear it before you decide.
+                "Good job." "This could be better." "I didn't love it." These feel like feedback, but they change
+                nothing, because the person receiving them has no idea what to actually do differently. Vague praise is
+                pleasant and useless. Vague criticism is unpleasant and useless. Both fail for the same reason: they
+                describe a feeling instead of pointing at a specific, changeable thing.
               </p>
-            </blockquote>
-            <p>
-              Two habits make this easier. First, ask clarifying questions before reacting — "can you show me where you
-              saw that?" turns a defensive reflex into curiosity. Second, separate the feedback from your worth. A
-              critique of your code, your essay, or your presentation is not a critique of you. The moment you stop
-              taking it personally, feedback goes from something to survive to something to mine.
-            </p>
+              <p>
+                Useful feedback is <em>specific, actionable, and kind</em> — and the order matters. Specific so the person knows
+                exactly what you mean. Actionable so they know what to do next. Kind so they can actually hear it instead
+                of bracing against it. Miss any one of those and the feedback simply gets ignored, no matter how right
+                you were.
+              </p>
 
-            <h2 id="build-the-loop-not-the-moment">Build the loop, not the moment</h2>
-            <p>
-              The best mentoring relationships aren't a series of one-off verdicts; they're a loop. You give feedback,
-              the person acts on it, you both see what happened, and the next round of feedback is sharper because of
-              it. That loop is where the real growth happens. A single brilliant piece of feedback is nice. A trusted,
-              repeating feedback loop is transformative — and building that loop, on both sides, is most of what good
-              mentorship actually is.
-            </p>
+              <h2 id="a-simple-structure-i-keep-coming-back-to">A simple structure I keep coming back to</h2>
+              <p>
+                When I give feedback, I try to hit three beats in order. It stops me from being vague and keeps the
+                conversation forward-looking:
+              </p>
+              <ol>
+                <li><strong>Observation</strong> — the specific thing I noticed, stated as a fact, not a judgment. "This function does four different things" rather than "this is messy."</li>
+                <li><strong>Impact</strong> — why it matters. "That makes it hard to test, and harder for the next person to change safely."</li>
+                <li><strong>Path forward</strong> — a concrete next step, ideally as a question. "What if each responsibility became its own small function — how would you split it?"</li>
+              </ol>
+              <p>
+                The order matters. Lead with the observation so it's grounded, explain the impact so it's motivated, and
+                end on the path forward so the person leaves with momentum instead of a wound.
+              </p>
+
+              <figure class="post-figure">
+                <svg viewBox="0 0 760 200" role="img" aria-label="Three-step feedback structure: Observation, Impact, Path forward" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="760" height="200" rx="18" fill="#1b2735"/>
+                  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
+                    <circle cx="140" cy="100" r="46" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+                    <text x="140" y="95" fill="#e2e8f0" font-size="14" font-weight="800">Observation</text>
+                    <text x="140" y="118" fill="#94a3b8" font-size="11" font-weight="600">what I saw</text>
+                    <circle cx="380" cy="100" r="46" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+                    <text x="380" y="95" fill="#e2e8f0" font-size="14" font-weight="800">Impact</text>
+                    <text x="380" y="118" fill="#94a3b8" font-size="11" font-weight="600">why it matters</text>
+                    <circle cx="620" cy="100" r="46" fill="#7dd3fc"/>
+                    <text x="620" y="95" fill="#131f2d" font-size="14" font-weight="800">Path</text>
+                    <text x="620" y="118" fill="#131f2d" font-size="11" font-weight="700">what's next</text>
+                    <path d="M 192 100 L 328 100" stroke="#475569" stroke-width="3"/>
+                    <path d="M 320 93 L 334 100 L 320 107 Z" fill="#475569"/>
+                    <path d="M 432 100 L 568 100" stroke="#475569" stroke-width="3"/>
+                    <path d="M 560 93 L 574 100 L 560 107 Z" fill="#475569"/>
+                  </g>
+                </svg>
+                <figcaption>Observation grounds it, impact motivates it, and the path forward turns criticism into a next step.</figcaption>
+              </figure>
+
+              <h2 id="praise-deserves-the-same-rigor">Praise deserves the same rigor</h2>
+              <p>
+                We obsess over how to deliver criticism and get lazy with praise — but "great work" is just as empty as
+                "needs work." If someone did something really well, tell them <em>exactly</em> what, so they can do it
+                again on purpose. "The way you named these variables made the whole thing readable in one pass" teaches a
+                repeatable skill. "Nice" teaches nothing. Specific praise is one of the most underused tools in
+                mentoring, and it costs you nothing but attention.
+              </p>
+
+              <h2 id="the-harder-half-receiving-feedback">The harder half: receiving feedback</h2>
+              <p>
+                Giving good feedback is a skill. Receiving it well is a superpower, and far rarer. The instinct when
+                criticized is to defend — to explain why you did it that way, why the critic is missing context, why it's
+                not really a problem. Every second spent defending is a second not spent learning. The people who grow
+                fastest do the opposite of what feels natural.
+              </p>
+              <blockquote>
+                <p>
+                  Treat every piece of feedback as information first and a verdict never. You don't have to agree with
+                  all of it. You do have to actually hear it before you decide.
+                </p>
+              </blockquote>
+              <p>
+                Two habits make this easier. First, ask clarifying questions before reacting — "can you show me where you
+                saw that?" turns a defensive reflex into curiosity. Second, separate the feedback from your worth. A
+                critique of your code, your essay, or your presentation is not a critique of you. The moment you stop
+                taking it personally, feedback goes from something to survive to something to mine.
+              </p>
+
+              <h2 id="build-the-loop-not-the-moment">Build the loop, not the moment</h2>
+              <p>
+                The best mentoring relationships aren't a series of one-off verdicts; they're a loop. You give feedback,
+                the person acts on it, you both see what happened, and the next round of feedback is sharper because of
+                it. That loop is where the real growth happens. A single brilliant piece of feedback is nice. A trusted,
+                repeating feedback loop is transformative — and building that loop, on both sides, is most of what good
+                mentorship actually is.
+              </p>
+            </div>
           </div>
 
           <div class="post-share">
@@ -334,7 +337,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>

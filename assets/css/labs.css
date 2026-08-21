@@ -587,7 +587,13 @@
 }
 
 .lab-cta-text {
-  flex: 1 1 20rem;
+  /* 26rem, not 20rem. Blog posts now run the article in a 72ch column, and at
+     a 20rem basis the paragraph still shared the row with the button — leaving
+     the text ~360px wide, so it stacked into eight short ragged lines beside a
+     button with empty space above and below it. At 26rem the pair no longer
+     fits an article column and the button wraps to its own row, while the wider
+     lab pages still have room to keep them side by side. */
+  flex: 1 1 26rem;
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.65;

@@ -21,6 +21,7 @@
 
 ## Technical Articles
 
+- [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work — specification, verification, accountability, and where the approval gate belongs.
 - [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
 - [Security Compliance, Explained](https://krunalkumar.dpdns.org/blog/security-compliance-explained): Practical enterprise guide to GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2 frameworks.
 - [India's IT Law, Explained](https://krunalkumar.dpdns.org/blog/india-it-act-explained): Legal analysis of the IT Act 2000, intermediary guidelines, CERT-In directions, and DPDP Act 2023.

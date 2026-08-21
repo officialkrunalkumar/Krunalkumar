@@ -159,7 +159,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -171,105 +171,108 @@
                 <li><a href="#grab-the-workflows">Grab the workflows</a></li>
               </ol>
             </nav>
-            <h2 id="the-problem-replies-are-where-campaigns-go-to-die">The problem: replies are where campaigns go to die</h2>
-            <p>
-              Cold outreach tools are great at sending. The trouble starts when someone actually answers. Replies
-              arrive at all hours, in every shape — "interested, send more info", "book me a call", "not interested",
-              out-of-office bounces, and the occasional message that defies categorization. An SDR now has to read
-              each one, figure out what it is, write a response in the company's voice, and follow up if the prospect
-              goes quiet. Response speed matters enormously here, and it's precisely when the team is busiest that
-              replies sit unanswered the longest.
-            </p>
-            <p>
-              That grind is what CleverResponder removes. Not by letting an AI run wild in the inbox — by giving the
-              boring 80% of replies a fast, safe, supervised path, so humans only touch the messages that need them.
-            </p>
 
-            <h2 id="what-it-does-end-to-end">What it does, end to end</h2>
-            <ul>
-              <li><strong>Receives</strong> every campaign reply through a webhook, the moment it lands.</li>
-              <li><strong>Classifies</strong> it — interested, info requested, meeting requested, not interested, out of office, and more.</li>
-              <li><strong>Drafts</strong> a reply with AI, grounded in a knowledge document of FAQs and company details — so answers come from your facts, not the model's imagination.</li>
-              <li><strong>Asks a human</strong> — the draft lands in Slack with approve/disapprove buttons. Nothing sends without a click.</li>
-              <li><strong>Sends and follows up</strong> — approved replies go out; meeting requests get a calendar link, and if no booking happens within a few days, the workflow checks in and nudges.</li>
-            </ul>
-
-            <h2 id="the-smartlead-build">The SmartLead build</h2>
-            <p>
-              Here's the actual n8n canvas, redrawn for readability with every node and connection where it really
-              sits (the original export lives in the repo):
-            </p>
-            <figure class="post-figure">
-              <a href="/assets/images/blog/smartlead-workflow.svg" target="_blank" rel="noopener" aria-label="Open the SmartLead workflow diagram full-screen">
-                <img src="/assets/images/blog/smartlead-workflow.svg" alt="The SmartLead CleverResponder n8n canvas: Receive Replies and Set Email Body feed a rules-based Route Reply switch; meeting requests flow through Send Meeting Link, a 4-day wait, and Slack reminder checks; all other replies flow through AI-suggested replies grounded in a document, Slack approval, sending, and a reminder loop" width="1221" height="467" loading="lazy" decoding="async" />
-              </a>
-              <figcaption>The SmartLead workflow. Top path: meeting requests. Bottom path: AI-drafted replies with the Slack approval gate. Click the diagram to open it full-screen and zoom. <a class="text-link" href="https://github.com/officialkrunalkumar/SmartLead-AutoResponder" target="_blank" rel="noopener">Full JSON + original canvas export on GitHub →</a></figcaption>
-            </figure>
-            <p>
-              The first thing to notice: the AI is <em>not</em> the first stop. A rules-based router splits replies
-              before any model gets involved, because not every reply deserves AI. Someone asking for a meeting
-              doesn't need a clever paragraph — they need a calendar link, immediately. Someone saying "remove me"
-              needs exactly that, not persuasion. Only the replies that genuinely need a written answer flow to the
-              AI, which drafts grounded in a Google Doc of FAQs the client controls. Change the doc, change the
-              answers — no retraining, no redeploying.
-            </p>
-            <p>
-              My favorite part is the tail end. After a calendar link goes out, the workflow waits four days and
-              checks: did they book? If not, it asks the team in Slack whether to nudge — and once a meeting is
-              booked, it even sends a "good luck" message before the call. Small touch, but it's the difference
-              between automation that feels robotic and automation that feels like a colleague.
-            </p>
-
-            <h2 id="the-slack-approval-gate">The Slack approval gate</h2>
-            <p>
-              The load-bearing node in both workflows is n8n's <code>sendAndWait</code> Slack step. The AI's draft
-              posts to a channel with two buttons, and the workflow literally pauses until a human clicks. Approve,
-              and it sends. Disapprove, and the team gets a notification that this thread needs a manual reply —
-              the automation steps aside.
-            </p>
-            <blockquote>
+            <div class="post-body">
+              <h2 id="the-problem-replies-are-where-campaigns-go-to-die">The problem: replies are where campaigns go to die</h2>
               <p>
-                This is the pattern I'd recommend to anyone building AI into a business process: let the AI do the
-                writing, let a human keep the veto. You get 90% of the speed with none of the "the bot said
-                what?!" risk.
+                Cold outreach tools are great at sending. The trouble starts when someone actually answers. Replies
+                arrive at all hours, in every shape — "interested, send more info", "book me a call", "not interested",
+                out-of-office bounces, and the occasional message that defies categorization. An SDR now has to read
+                each one, figure out what it is, write a response in the company's voice, and follow up if the prospect
+                goes quiet. Response speed matters enormously here, and it's precisely when the team is busiest that
+                replies sit unanswered the longest.
               </p>
-            </blockquote>
+              <p>
+                That grind is what CleverResponder removes. Not by letting an AI run wild in the inbox — by giving the
+                boring 80% of replies a fast, safe, supervised path, so humans only touch the messages that need them.
+              </p>
 
-            <h2 id="the-instantly-build">The Instantly build</h2>
-            <figure class="post-figure">
-              <a href="/assets/images/blog/instantly-workflow.svg" target="_blank" rel="noopener" aria-label="Open the Instantly workflow diagram full-screen">
-                <img src="/assets/images/blog/instantly-workflow.svg" alt="The Instantly CleverResponder n8n canvas: a reply is matched to its lead through a UUID lookup with a retry loop, classified by an AI reply decision, drafted with a knowledge doc, redacted and polished, approved in Slack, sent, and followed up through a 3-day reminder loop" width="1217" height="384" loading="lazy" decoding="async" />
-              </a>
-              <figcaption>The Instantly workflow — same philosophy, different plumbing. Click to open full-screen and zoom. <a class="text-link" href="https://github.com/officialkrunalkumar/Instantly-AutoResponder" target="_blank" rel="noopener">Full JSON + original canvas export on GitHub →</a></figcaption>
-            </figure>
-            <p>
-              Porting the idea to Instantly forced some new engineering. Instantly's webhook doesn't hand you the
-              full lead context, so the workflow first reconciles the reply against the campaign by UUID — with a
-              wait-and-retry loop for when the lookup isn't ready yet. Real integrations are full of these small
-              timing quirks, and handling them is the difference between a demo and something that runs unattended.
-            </p>
-            <p>
-              This version also adds a redaction pass — a cleanup step between the AI draft and the approval
-              message that polishes tone and strips anything that shouldn't go out. And the follow-up logic became a
-              proper loop: three days after a meeting-related reply, it checks whether to remind, asks in Slack,
-              sends the reminder — and comes back around until the meeting books or the team says stop.
-            </p>
+              <h2 id="what-it-does-end-to-end">What it does, end to end</h2>
+              <ul>
+                <li><strong>Receives</strong> every campaign reply through a webhook, the moment it lands.</li>
+                <li><strong>Classifies</strong> it — interested, info requested, meeting requested, not interested, out of office, and more.</li>
+                <li><strong>Drafts</strong> a reply with AI, grounded in a knowledge document of FAQs and company details — so answers come from your facts, not the model's imagination.</li>
+                <li><strong>Asks a human</strong> — the draft lands in Slack with approve/disapprove buttons. Nothing sends without a click.</li>
+                <li><strong>Sends and follows up</strong> — approved replies go out; meeting requests get a calendar link, and if no booking happens within a few days, the workflow checks in and nudges.</li>
+              </ul>
 
-            <h2 id="grab-the-workflows">Grab the workflows</h2>
-            <p>
-              Both builds are open source — each repo has the complete n8n workflow JSON you can import directly,
-              plus the canvas export and a README:
-            </p>
-            <ul>
-              <li><a class="text-link" href="https://github.com/officialkrunalkumar/SmartLead-AutoResponder" target="_blank" rel="noopener">SmartLead-AutoResponder</a> — webhook → rules router → AI draft → Slack approval → send → meeting reminders.</li>
-              <li><a class="text-link" href="https://github.com/officialkrunalkumar/Instantly-AutoResponder" target="_blank" rel="noopener">Instantly-AutoResponder</a> — UUID reconciliation → AI classify &amp; draft → redaction → Slack approval → send → 3-day follow-up loop.</li>
-            </ul>
-            <p>
-              To run one: import the JSON into n8n, connect your SmartLead or Instantly account, Slack workspace, and
-              AI credentials, point the knowledge-doc node at your own FAQ document, and start with every reply
-              routed through the approval gate. Earn trust category by category before you loosen anything — I wrote
-              more about that discipline in my <a class="text-link" href="/blog/automating-email-replies-with-n8n">practical guide to email automation with n8n</a>.
-            </p>
+              <h2 id="the-smartlead-build">The SmartLead build</h2>
+              <p>
+                Here's the actual n8n canvas, redrawn for readability with every node and connection where it really
+                sits (the original export lives in the repo):
+              </p>
+              <figure class="post-figure">
+                <a href="/assets/images/blog/smartlead-workflow.svg" target="_blank" rel="noopener" aria-label="Open the SmartLead workflow diagram full-screen">
+                  <img src="/assets/images/blog/smartlead-workflow.svg" alt="The SmartLead CleverResponder n8n canvas: Receive Replies and Set Email Body feed a rules-based Route Reply switch; meeting requests flow through Send Meeting Link, a 4-day wait, and Slack reminder checks; all other replies flow through AI-suggested replies grounded in a document, Slack approval, sending, and a reminder loop" width="1221" height="467" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The SmartLead workflow. Top path: meeting requests. Bottom path: AI-drafted replies with the Slack approval gate. Click the diagram to open it full-screen and zoom. <a class="text-link" href="https://github.com/officialkrunalkumar/SmartLead-AutoResponder" target="_blank" rel="noopener">Full JSON + original canvas export on GitHub →</a></figcaption>
+              </figure>
+              <p>
+                The first thing to notice: the AI is <em>not</em> the first stop. A rules-based router splits replies
+                before any model gets involved, because not every reply deserves AI. Someone asking for a meeting
+                doesn't need a clever paragraph — they need a calendar link, immediately. Someone saying "remove me"
+                needs exactly that, not persuasion. Only the replies that genuinely need a written answer flow to the
+                AI, which drafts grounded in a Google Doc of FAQs the client controls. Change the doc, change the
+                answers — no retraining, no redeploying.
+              </p>
+              <p>
+                My favorite part is the tail end. After a calendar link goes out, the workflow waits four days and
+                checks: did they book? If not, it asks the team in Slack whether to nudge — and once a meeting is
+                booked, it even sends a "good luck" message before the call. Small touch, but it's the difference
+                between automation that feels robotic and automation that feels like a colleague.
+              </p>
+
+              <h2 id="the-slack-approval-gate">The Slack approval gate</h2>
+              <p>
+                The load-bearing node in both workflows is n8n's <code>sendAndWait</code> Slack step. The AI's draft
+                posts to a channel with two buttons, and the workflow literally pauses until a human clicks. Approve,
+                and it sends. Disapprove, and the team gets a notification that this thread needs a manual reply —
+                the automation steps aside.
+              </p>
+              <blockquote>
+                <p>
+                  This is the pattern I'd recommend to anyone building AI into a business process: let the AI do the
+                  writing, let a human keep the veto. You get 90% of the speed with none of the "the bot said
+                  what?!" risk.
+                </p>
+              </blockquote>
+
+              <h2 id="the-instantly-build">The Instantly build</h2>
+              <figure class="post-figure">
+                <a href="/assets/images/blog/instantly-workflow.svg" target="_blank" rel="noopener" aria-label="Open the Instantly workflow diagram full-screen">
+                  <img src="/assets/images/blog/instantly-workflow.svg" alt="The Instantly CleverResponder n8n canvas: a reply is matched to its lead through a UUID lookup with a retry loop, classified by an AI reply decision, drafted with a knowledge doc, redacted and polished, approved in Slack, sent, and followed up through a 3-day reminder loop" width="1217" height="384" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The Instantly workflow — same philosophy, different plumbing. Click to open full-screen and zoom. <a class="text-link" href="https://github.com/officialkrunalkumar/Instantly-AutoResponder" target="_blank" rel="noopener">Full JSON + original canvas export on GitHub →</a></figcaption>
+              </figure>
+              <p>
+                Porting the idea to Instantly forced some new engineering. Instantly's webhook doesn't hand you the
+                full lead context, so the workflow first reconciles the reply against the campaign by UUID — with a
+                wait-and-retry loop for when the lookup isn't ready yet. Real integrations are full of these small
+                timing quirks, and handling them is the difference between a demo and something that runs unattended.
+              </p>
+              <p>
+                This version also adds a redaction pass — a cleanup step between the AI draft and the approval
+                message that polishes tone and strips anything that shouldn't go out. And the follow-up logic became a
+                proper loop: three days after a meeting-related reply, it checks whether to remind, asks in Slack,
+                sends the reminder — and comes back around until the meeting books or the team says stop.
+              </p>
+
+              <h2 id="grab-the-workflows">Grab the workflows</h2>
+              <p>
+                Both builds are open source — each repo has the complete n8n workflow JSON you can import directly,
+                plus the canvas export and a README:
+              </p>
+              <ul>
+                <li><a class="text-link" href="https://github.com/officialkrunalkumar/SmartLead-AutoResponder" target="_blank" rel="noopener">SmartLead-AutoResponder</a> — webhook → rules router → AI draft → Slack approval → send → meeting reminders.</li>
+                <li><a class="text-link" href="https://github.com/officialkrunalkumar/Instantly-AutoResponder" target="_blank" rel="noopener">Instantly-AutoResponder</a> — UUID reconciliation → AI classify &amp; draft → redaction → Slack approval → send → 3-day follow-up loop.</li>
+              </ul>
+              <p>
+                To run one: import the JSON into n8n, connect your SmartLead or Instantly account, Slack workspace, and
+                AI credentials, point the knowledge-doc node at your own FAQ document, and start with every reply
+                routed through the approval gate. Earn trust category by category before you loosen anything — I wrote
+                more about that discipline in my <a class="text-link" href="/blog/automating-email-replies-with-n8n">practical guide to email automation with n8n</a>.
+              </p>
+            </div>
           </div>
 
           <div class="post-share">
@@ -350,7 +353,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>

@@ -158,7 +158,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -176,390 +176,392 @@
               </ol>
             </nav>
 
-            <h2 id="the-three-promises-every-attack-breaks">The three promises every attack breaks</h2>
-            <p>
-              Security has a reputation for being endless — new attack names every week, each sounding like its own
-              specialty. But underneath the naming noise, every attack is trying to break one of exactly three
-              promises. Security professionals call them the <strong>CIA triad</strong>:
-            </p>
-            <ul>
-              <li>
-                <strong>Confidentiality</strong> — only the right people can see the data. Broken when secrets leak:
-                stolen customer records, read email, exposed credentials.
-              </li>
-              <li>
-                <strong>Integrity</strong> — the data and the system are what they claim to be. Broken when something
-                is altered: a tampered invoice, a poisoned software update, a defaced site.
-              </li>
-              <li>
-                <strong>Availability</strong> — the system works when legitimate users need it. Broken when service
-                stops: a flooded server, an encrypted disk, a frozen machine.
-              </li>
-            </ul>
-            <p>
-              This lens is the whole trick. Ask "which promise does this attack break?" and an unfamiliar attack
-              stops being scary vocabulary and becomes a variation of something you already understand. Ransomware is
-              primarily an availability attack that uses malware. Phishing is usually a confidentiality attack that goes through
-              a person instead of a computer. My own research subject — the humble
-              <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb</a> — is a pure availability attack
-              made of nothing but permitted actions.
-            </p>
-            <blockquote>
+            <div class="post-body">
+              <h2 id="the-three-promises-every-attack-breaks">The three promises every attack breaks</h2>
               <p>
-                Attackers don't respect category boundaries, and real incidents chain several types together. The
-                categories aren't for the attacker's benefit — they're for yours, because each family falls to the
-                same kinds of defense.
+                Security has a reputation for being endless — new attack names every week, each sounding like its own
+                specialty. But underneath the naming noise, every attack is trying to break one of exactly three
+                promises. Security professionals call them the <strong>CIA triad</strong>:
               </p>
-            </blockquote>
+              <ul>
+                <li>
+                  <strong>Confidentiality</strong> — only the right people can see the data. Broken when secrets leak:
+                  stolen customer records, read email, exposed credentials.
+                </li>
+                <li>
+                  <strong>Integrity</strong> — the data and the system are what they claim to be. Broken when something
+                  is altered: a tampered invoice, a poisoned software update, a defaced site.
+                </li>
+                <li>
+                  <strong>Availability</strong> — the system works when legitimate users need it. Broken when service
+                  stops: a flooded server, an encrypted disk, a frozen machine.
+                </li>
+              </ul>
+              <p>
+                This lens is the whole trick. Ask "which promise does this attack break?" and an unfamiliar attack
+                stops being scary vocabulary and becomes a variation of something you already understand. Ransomware is
+                primarily an availability attack that uses malware. Phishing is usually a confidentiality attack that goes through
+                a person instead of a computer. My own research subject — the humble
+                <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb</a> — is a pure availability attack
+                made of nothing but permitted actions.
+              </p>
+              <blockquote>
+                <p>
+                  Attackers don't respect category boundaries, and real incidents chain several types together. The
+                  categories aren't for the attacker's benefit — they're for yours, because each family falls to the
+                  same kinds of defense.
+                </p>
+              </blockquote>
 
-            <h2 id="the-map-six-attack-families">The map: six attack families</h2>
-            <p>
-              Here is the landscape in one picture. Six families, grouped by <em>how</em> the attack works — through
-              people, code, networks, load, applications, or logins — with the promise each one usually breaks.
-            </p>
+              <h2 id="the-map-six-attack-families">The map: six attack families</h2>
+              <p>
+                Here is the landscape in one picture. Six families, grouped by <em>how</em> the attack works — through
+                people, code, networks, load, applications, or logins — with the promise each one usually breaks.
+              </p>
 
-            <figure class="post-figure">
-              <svg viewBox="0 0 1160 620" role="img" aria-label="Taxonomy of six cyberattack families: social engineering, malware, network attacks, denial of service, web and application attacks, and credential attacks, each marked with the CIA properties they break" xmlns="http://www.w3.org/2000/svg">
-                <rect width="1160" height="620" rx="18" fill="#1b2735"/>
-                <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">THE ATTACK LANDSCAPE</text>
-                <g font-family="'Segoe UI',sans-serif">
-                  <!-- Row 1 -->
-                  <g>
-                    <rect x="40" y="90" width="345" height="200" rx="14" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
-                    <text x="62" y="128" fill="#f8fafc" font-size="21" font-weight="800">Social engineering</text>
-                    <text x="62" y="153" fill="#94a3b8" font-size="15">through people</text>
-                    <text x="62" y="190" fill="#e2e8f0" font-size="16">Phishing · spear phishing</text>
-                    <text x="62" y="216" fill="#e2e8f0" font-size="16">Pretexting · baiting</text>
-                    <text x="62" y="242" fill="#e2e8f0" font-size="16">Vishing · smishing</text>
-                    <circle cx="330" cy="122" r="9" fill="#7dd3fc"/>
-                    <text x="330" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+              <figure class="post-figure">
+                <svg viewBox="0 0 1160 620" role="img" aria-label="Taxonomy of six cyberattack families: social engineering, malware, network attacks, denial of service, web and application attacks, and credential attacks, each marked with the CIA properties they break" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="1160" height="620" rx="18" fill="#1b2735"/>
+                  <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">THE ATTACK LANDSCAPE</text>
+                  <g font-family="'Segoe UI',sans-serif">
+                    <!-- Row 1 -->
+                    <g>
+                      <rect x="40" y="90" width="345" height="200" rx="14" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
+                      <text x="62" y="128" fill="#f8fafc" font-size="21" font-weight="800">Social engineering</text>
+                      <text x="62" y="153" fill="#94a3b8" font-size="15">through people</text>
+                      <text x="62" y="190" fill="#e2e8f0" font-size="16">Phishing · spear phishing</text>
+                      <text x="62" y="216" fill="#e2e8f0" font-size="16">Pretexting · baiting</text>
+                      <text x="62" y="242" fill="#e2e8f0" font-size="16">Vishing · smishing</text>
+                      <circle cx="330" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="330" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                    </g>
+                    <g>
+                      <rect x="407" y="90" width="345" height="200" rx="14" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1.5"/>
+                      <text x="429" y="128" fill="#f8fafc" font-size="21" font-weight="800">Malware</text>
+                      <text x="429" y="153" fill="#94a3b8" font-size="15">through code</text>
+                      <text x="429" y="190" fill="#e2e8f0" font-size="16">Ransomware · worms</text>
+                      <text x="429" y="216" fill="#e2e8f0" font-size="16">Trojans · spyware</text>
+                      <text x="429" y="242" fill="#e2e8f0" font-size="16">Botnets · rootkits</text>
+                      <circle cx="672" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="672" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="696" cy="122" r="9" fill="#a855f7"/>
+                      <text x="696" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                      <circle cx="720" cy="122" r="9" fill="#4ade80"/>
+                      <text x="720" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                    </g>
+                    <g>
+                      <rect x="774" y="90" width="345" height="200" rx="14" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
+                      <text x="796" y="128" fill="#f8fafc" font-size="21" font-weight="800">Network attacks</text>
+                      <text x="796" y="153" fill="#94a3b8" font-size="15">in transit</text>
+                      <text x="796" y="190" fill="#e2e8f0" font-size="16">Man-in-the-middle</text>
+                      <text x="796" y="216" fill="#e2e8f0" font-size="16">Spoofing · sniffing</text>
+                      <text x="796" y="242" fill="#e2e8f0" font-size="16">DNS poisoning</text>
+                      <circle cx="1039" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="1039" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="1063" cy="122" r="9" fill="#a855f7"/>
+                      <text x="1063" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                    </g>
+                    <!-- Row 2 -->
+                    <g>
+                      <rect x="40" y="312" width="345" height="200" rx="14" fill="rgba(248,113,113,0.10)" stroke="#f87171" stroke-width="1.5"/>
+                      <text x="62" y="350" fill="#f8fafc" font-size="21" font-weight="800">Denial of service</text>
+                      <text x="62" y="375" fill="#94a3b8" font-size="15">through load</text>
+                      <text x="62" y="412" fill="#e2e8f0" font-size="16">DDoS · amplification</text>
+                      <text x="62" y="438" fill="#e2e8f0" font-size="16">Resource exhaustion</text>
+                      <text x="62" y="464" fill="#e2e8f0" font-size="16">Fork bombs · slowloris</text>
+                      <circle cx="330" cy="344" r="9" fill="#4ade80"/>
+                      <text x="330" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                    </g>
+                    <g>
+                      <rect x="407" y="312" width="345" height="200" rx="14" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+                      <text x="429" y="350" fill="#f8fafc" font-size="21" font-weight="800">Web &amp; application</text>
+                      <text x="429" y="375" fill="#94a3b8" font-size="15">through software flaws</text>
+                      <text x="429" y="412" fill="#e2e8f0" font-size="16">SQL injection · XSS</text>
+                      <text x="429" y="438" fill="#e2e8f0" font-size="16">CSRF · zero-days</text>
+                      <text x="429" y="464" fill="#e2e8f0" font-size="16">Supply chain</text>
+                      <circle cx="672" cy="344" r="9" fill="#7dd3fc"/>
+                      <text x="672" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="696" cy="344" r="9" fill="#a855f7"/>
+                      <text x="696" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                    </g>
+                    <g>
+                      <rect x="774" y="312" width="345" height="200" rx="14" fill="rgba(226,232,240,0.08)" stroke="#cbd5e1" stroke-width="1.5"/>
+                      <text x="796" y="350" fill="#f8fafc" font-size="21" font-weight="800">Credential &amp; access</text>
+                      <text x="796" y="375" fill="#94a3b8" font-size="15">through logins</text>
+                      <text x="796" y="412" fill="#e2e8f0" font-size="16">Brute force · stuffing</text>
+                      <text x="796" y="438" fill="#e2e8f0" font-size="16">Password spraying</text>
+                      <text x="796" y="464" fill="#e2e8f0" font-size="16">Insider misuse</text>
+                      <circle cx="1039" cy="344" r="9" fill="#7dd3fc"/>
+                      <text x="1039" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                    </g>
+                    <!-- Legend -->
+                    <g font-size="15">
+                      <circle cx="52" cy="566" r="9" fill="#7dd3fc"/>
+                      <text x="52" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <text x="70" y="571" fill="#e2e8f0">Confidentiality</text>
+                      <circle cx="230" cy="566" r="9" fill="#a855f7"/>
+                      <text x="230" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                      <text x="248" y="571" fill="#e2e8f0">Integrity</text>
+                      <circle cx="360" cy="566" r="9" fill="#4ade80"/>
+                      <text x="360" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                      <text x="378" y="571" fill="#e2e8f0">Availability</text>
+                      <text x="530" y="571" fill="#94a3b8">Badges show the promise each family most often breaks</text>
+                    </g>
                   </g>
-                  <g>
-                    <rect x="407" y="90" width="345" height="200" rx="14" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="429" y="128" fill="#f8fafc" font-size="21" font-weight="800">Malware</text>
-                    <text x="429" y="153" fill="#94a3b8" font-size="15">through code</text>
-                    <text x="429" y="190" fill="#e2e8f0" font-size="16">Ransomware · worms</text>
-                    <text x="429" y="216" fill="#e2e8f0" font-size="16">Trojans · spyware</text>
-                    <text x="429" y="242" fill="#e2e8f0" font-size="16">Botnets · rootkits</text>
-                    <circle cx="672" cy="122" r="9" fill="#7dd3fc"/>
-                    <text x="672" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
-                    <circle cx="696" cy="122" r="9" fill="#a855f7"/>
-                    <text x="696" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
-                    <circle cx="720" cy="122" r="9" fill="#4ade80"/>
-                    <text x="720" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
-                  </g>
-                  <g>
-                    <rect x="774" y="90" width="345" height="200" rx="14" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
-                    <text x="796" y="128" fill="#f8fafc" font-size="21" font-weight="800">Network attacks</text>
-                    <text x="796" y="153" fill="#94a3b8" font-size="15">in transit</text>
-                    <text x="796" y="190" fill="#e2e8f0" font-size="16">Man-in-the-middle</text>
-                    <text x="796" y="216" fill="#e2e8f0" font-size="16">Spoofing · sniffing</text>
-                    <text x="796" y="242" fill="#e2e8f0" font-size="16">DNS poisoning</text>
-                    <circle cx="1039" cy="122" r="9" fill="#7dd3fc"/>
-                    <text x="1039" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
-                    <circle cx="1063" cy="122" r="9" fill="#a855f7"/>
-                    <text x="1063" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
-                  </g>
-                  <!-- Row 2 -->
-                  <g>
-                    <rect x="40" y="312" width="345" height="200" rx="14" fill="rgba(248,113,113,0.10)" stroke="#f87171" stroke-width="1.5"/>
-                    <text x="62" y="350" fill="#f8fafc" font-size="21" font-weight="800">Denial of service</text>
-                    <text x="62" y="375" fill="#94a3b8" font-size="15">through load</text>
-                    <text x="62" y="412" fill="#e2e8f0" font-size="16">DDoS · amplification</text>
-                    <text x="62" y="438" fill="#e2e8f0" font-size="16">Resource exhaustion</text>
-                    <text x="62" y="464" fill="#e2e8f0" font-size="16">Fork bombs · slowloris</text>
-                    <circle cx="330" cy="344" r="9" fill="#4ade80"/>
-                    <text x="330" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
-                  </g>
-                  <g>
-                    <rect x="407" y="312" width="345" height="200" rx="14" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
-                    <text x="429" y="350" fill="#f8fafc" font-size="21" font-weight="800">Web &amp; application</text>
-                    <text x="429" y="375" fill="#94a3b8" font-size="15">through software flaws</text>
-                    <text x="429" y="412" fill="#e2e8f0" font-size="16">SQL injection · XSS</text>
-                    <text x="429" y="438" fill="#e2e8f0" font-size="16">CSRF · zero-days</text>
-                    <text x="429" y="464" fill="#e2e8f0" font-size="16">Supply chain</text>
-                    <circle cx="672" cy="344" r="9" fill="#7dd3fc"/>
-                    <text x="672" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
-                    <circle cx="696" cy="344" r="9" fill="#a855f7"/>
-                    <text x="696" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
-                  </g>
-                  <g>
-                    <rect x="774" y="312" width="345" height="200" rx="14" fill="rgba(226,232,240,0.08)" stroke="#cbd5e1" stroke-width="1.5"/>
-                    <text x="796" y="350" fill="#f8fafc" font-size="21" font-weight="800">Credential &amp; access</text>
-                    <text x="796" y="375" fill="#94a3b8" font-size="15">through logins</text>
-                    <text x="796" y="412" fill="#e2e8f0" font-size="16">Brute force · stuffing</text>
-                    <text x="796" y="438" fill="#e2e8f0" font-size="16">Password spraying</text>
-                    <text x="796" y="464" fill="#e2e8f0" font-size="16">Insider misuse</text>
-                    <circle cx="1039" cy="344" r="9" fill="#7dd3fc"/>
-                    <text x="1039" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
-                  </g>
-                  <!-- Legend -->
-                  <g font-size="15">
-                    <circle cx="52" cy="566" r="9" fill="#7dd3fc"/>
-                    <text x="52" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
-                    <text x="70" y="571" fill="#e2e8f0">Confidentiality</text>
-                    <circle cx="230" cy="566" r="9" fill="#a855f7"/>
-                    <text x="230" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
-                    <text x="248" y="571" fill="#e2e8f0">Integrity</text>
-                    <circle cx="360" cy="566" r="9" fill="#4ade80"/>
-                    <text x="360" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
-                    <text x="378" y="571" fill="#e2e8f0">Availability</text>
-                    <text x="530" y="571" fill="#94a3b8">Badges show the promise each family most often breaks</text>
-                  </g>
-                </g>
-              </svg>
-              <figcaption>
-                Six families, organized by how the attack travels — and badged with the CIA promise each one most
-                often breaks. Real incidents chain families together.
-              </figcaption>
-            </figure>
+                </svg>
+                <figcaption>
+                  Six families, organized by how the attack travels — and badged with the CIA promise each one most
+                  often breaks. Real incidents chain families together.
+                </figcaption>
+              </figure>
 
-            <h2 id="social-engineering-attacks-on-people">Social engineering: attacks on people</h2>
-            <p>
-              The most reliable way into a system has never been code — it's a person with a plausible story.
-              <strong>Phishing</strong> casts a wide net with fake emails and login pages; <strong>spear
-              phishing</strong> aims at one person with details pulled from their real life;
-              <strong>pretexting</strong> builds a scenario ("IT here, we need your password to fix your mailbox");
-              <strong>vishing</strong> and <strong>smishing</strong> do the same over calls and texts.
-            </p>
-            <p>
-              <strong>Why it works:</strong> it exploits helpfulness, urgency, and authority — instincts that make
-              people good colleagues make them good targets. No software flaw is required, which is why patching
-              alone has never stopped it.
-            </p>
-            <p>
-              <strong>Prevention</strong> is about removing single points of human failure: multi-factor
-              authentication (a stolen password alone gets nowhere), password managers (which refuse to autofill a
-              look-alike domain), and training that treats mistakes as reports to encourage, not failures to hide.
-              Prefer <em>phishing-resistant</em> MFA — passkeys or hardware security keys — where you can:
-              one-time codes and push prompts can be relayed in real time by modern phishing proxies, while
-              origin-bound credentials cannot.
-              <strong>Mitigation</strong> is about assuming someone will eventually click: alert on unusual logins,
-              limit what any single account can reach, and make "I think I clicked something" a blameless
-              five-minute report instead of a shameful secret — the sooner you know, the smaller the damage.
-            </p>
+              <h2 id="social-engineering-attacks-on-people">Social engineering: attacks on people</h2>
+              <p>
+                The most reliable way into a system has never been code — it's a person with a plausible story.
+                <strong>Phishing</strong> casts a wide net with fake emails and login pages; <strong>spear
+                phishing</strong> aims at one person with details pulled from their real life;
+                <strong>pretexting</strong> builds a scenario ("IT here, we need your password to fix your mailbox");
+                <strong>vishing</strong> and <strong>smishing</strong> do the same over calls and texts.
+              </p>
+              <p>
+                <strong>Why it works:</strong> it exploits helpfulness, urgency, and authority — instincts that make
+                people good colleagues make them good targets. No software flaw is required, which is why patching
+                alone has never stopped it.
+              </p>
+              <p>
+                <strong>Prevention</strong> is about removing single points of human failure: multi-factor
+                authentication (a stolen password alone gets nowhere), password managers (which refuse to autofill a
+                look-alike domain), and training that treats mistakes as reports to encourage, not failures to hide.
+                Prefer <em>phishing-resistant</em> MFA — passkeys or hardware security keys — where you can:
+                one-time codes and push prompts can be relayed in real time by modern phishing proxies, while
+                origin-bound credentials cannot.
+                <strong>Mitigation</strong> is about assuming someone will eventually click: alert on unusual logins,
+                limit what any single account can reach, and make "I think I clicked something" a blameless
+                five-minute report instead of a shameful secret — the sooner you know, the smaller the damage.
+              </p>
 
-            <h2 id="malware-attacks-that-run-code">Malware: attacks that run code</h2>
-            <p>
-              Malware is any software built to do harm from inside: <strong>ransomware</strong> encrypts your data
-              and sells you back the key; <strong>worms</strong> spread machine-to-machine on their own;
-              <strong>trojans</strong> hide inside software you chose to install; <strong>spyware</strong> watches
-              quietly; <strong>botnets</strong> enroll your machines into someone else's army;
-              <strong>rootkits</strong> bury themselves below where you'd think to look.
-            </p>
-            <p>
-              <strong>Why it works:</strong> malware needs a door — an unpatched vulnerability, a user tricked into
-              running it, or a legitimate software update poisoned upstream. It is rarely the first step of an
-              incident; it's what arrives after a phish or an exploit succeeds, which is why it breaks all three CIA
-              promises depending on the payload.
-            </p>
-            <p>
-              <strong>Prevention:</strong> patch quickly (most malware exploits vulnerabilities that had fixes
-              available for months), restrict what users can install, and let modern endpoint protection watch
-              behavior rather than just signatures. <strong>Mitigation</strong> is where ransomware is actually
-              beaten: offline, tested backups — <em>tested</em> meaning you have rehearsed a restore, because backup
-              systems fail silently and attackers deliberately hunt for online backups first. One honest caveat: backups beat the
-              <em>encryption</em> half. Modern ransomware usually steals a copy of the data before encrypting it
-              and threatens publication — double extortion — and only keeping the intruder out beats that half.
-              Segmented networks turn "everything is encrypted" into "one department lost an afternoon."
-            </p>
+              <h2 id="malware-attacks-that-run-code">Malware: attacks that run code</h2>
+              <p>
+                Malware is any software built to do harm from inside: <strong>ransomware</strong> encrypts your data
+                and sells you back the key; <strong>worms</strong> spread machine-to-machine on their own;
+                <strong>trojans</strong> hide inside software you chose to install; <strong>spyware</strong> watches
+                quietly; <strong>botnets</strong> enroll your machines into someone else's army;
+                <strong>rootkits</strong> bury themselves below where you'd think to look.
+              </p>
+              <p>
+                <strong>Why it works:</strong> malware needs a door — an unpatched vulnerability, a user tricked into
+                running it, or a legitimate software update poisoned upstream. It is rarely the first step of an
+                incident; it's what arrives after a phish or an exploit succeeds, which is why it breaks all three CIA
+                promises depending on the payload.
+              </p>
+              <p>
+                <strong>Prevention:</strong> patch quickly (most malware exploits vulnerabilities that had fixes
+                available for months), restrict what users can install, and let modern endpoint protection watch
+                behavior rather than just signatures. <strong>Mitigation</strong> is where ransomware is actually
+                beaten: offline, tested backups — <em>tested</em> meaning you have rehearsed a restore, because backup
+                systems fail silently and attackers deliberately hunt for online backups first. One honest caveat: backups beat the
+                <em>encryption</em> half. Modern ransomware usually steals a copy of the data before encrypting it
+                and threatens publication — double extortion — and only keeping the intruder out beats that half.
+                Segmented networks turn "everything is encrypted" into "one department lost an afternoon."
+              </p>
 
-            <h2 id="network-attacks-attacks-in-transit">Network attacks: attacks in transit</h2>
-            <p>
-              Data is at its most exposed while moving. A <strong>man-in-the-middle</strong> attack quietly relays
-              traffic between you and a real service, reading or rewriting it as it passes. <strong>Spoofing</strong>
-              forges an identity — an IP address, an ARP reply, a Wi-Fi network with a trustworthy name.
-              <strong>Sniffing</strong> passively records whatever crosses the wire. <strong>DNS poisoning</strong>
-              corrupts the address book itself, so the right name delivers you to the wrong server.
-            </p>
-            <p>
-              <strong>Why it works:</strong> the internet's core protocols were designed for a network of trusted
-              peers, and identity was bolted on later. Anywhere trust is assumed instead of proven — open Wi-Fi,
-              plain HTTP, unauthenticated DNS — an impostor can stand in the middle.
-            </p>
-            <p>
-              <strong>Prevention:</strong> encrypt in transit, everywhere — TLS/HTTPS with HSTS so browsers refuse
-              to downgrade, VPNs or encrypted tunnels on untrusted networks, DNSSEC where you control zones. (This
-              site sends <code>Strict-Transport-Security</code> on every response for exactly this reason.)
-              <strong>Mitigation:</strong> treat certificate warnings as incidents rather than annoyances, and
-              monitor for the tell-tales — duplicate ARP replies, unexpected certificate changes, DNS answers that
-              differ by resolver.
-            </p>
+              <h2 id="network-attacks-attacks-in-transit">Network attacks: attacks in transit</h2>
+              <p>
+                Data is at its most exposed while moving. A <strong>man-in-the-middle</strong> attack quietly relays
+                traffic between you and a real service, reading or rewriting it as it passes. <strong>Spoofing</strong>
+                forges an identity — an IP address, an ARP reply, a Wi-Fi network with a trustworthy name.
+                <strong>Sniffing</strong> passively records whatever crosses the wire. <strong>DNS poisoning</strong>
+                corrupts the address book itself, so the right name delivers you to the wrong server.
+              </p>
+              <p>
+                <strong>Why it works:</strong> the internet's core protocols were designed for a network of trusted
+                peers, and identity was bolted on later. Anywhere trust is assumed instead of proven — open Wi-Fi,
+                plain HTTP, unauthenticated DNS — an impostor can stand in the middle.
+              </p>
+              <p>
+                <strong>Prevention:</strong> encrypt in transit, everywhere — TLS/HTTPS with HSTS so browsers refuse
+                to downgrade, VPNs or encrypted tunnels on untrusted networks, DNSSEC where you control zones. (This
+                site sends <code>Strict-Transport-Security</code> on every response for exactly this reason.)
+                <strong>Mitigation:</strong> treat certificate warnings as incidents rather than annoyances, and
+                monitor for the tell-tales — duplicate ARP replies, unexpected certificate changes, DNS answers that
+                differ by resolver.
+              </p>
 
-            <h2 id="denial-of-service-attacks-on-availability">Denial of service: attacks on availability</h2>
-            <p>
-              This family doesn't steal or corrupt anything — it makes systems unusable, and it's the one I know
-              most personally. A <strong>DDoS</strong> floods a service with traffic from thousands of machines.
-              <strong>Amplification</strong> attacks bounce small forged requests off public servers that reply with
-              large answers, multiplying the flood. <strong>Slowloris</strong> starves a web server by holding
-              connections open with agonizing slowness. And <strong>resource exhaustion</strong> attacks like the
-              <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb</a> need no network at all — one line
-              of Bash, made entirely of permitted actions, freezes a machine from the inside.
-            </p>
-            <p>
-              <strong>Why it works:</strong> every system has finite capacity — bandwidth, connections, memory,
-              process slots — and usually no distinction between heavy legitimate demand and hostile demand. The
-              attack is just "more" until the limit breaks.
-            </p>
-            <p>
-              <strong>Prevention:</strong> rate limits, quotas, and for anything public-facing, a CDN or DDoS
-              protection service that can absorb floods bigger than any single origin could. <strong>Mitigation</strong>
-              is where the interesting trade-off lives: crude limits punish legitimate users too — the exact problem
-              my <a class="text-link" href="/research">fork bomb research</a> tackled. Its answer: detect an offender
-              within tens of milliseconds, then quarantine repeat suspects instead of permanently banning them — so a
-              falsely accused process can prove itself and go free. The
-              principle generalizes to every rate limiter you will ever design: <em>protect the system without
-              becoming your own denial of service</em>.
-            </p>
+              <h2 id="denial-of-service-attacks-on-availability">Denial of service: attacks on availability</h2>
+              <p>
+                This family doesn't steal or corrupt anything — it makes systems unusable, and it's the one I know
+                most personally. A <strong>DDoS</strong> floods a service with traffic from thousands of machines.
+                <strong>Amplification</strong> attacks bounce small forged requests off public servers that reply with
+                large answers, multiplying the flood. <strong>Slowloris</strong> starves a web server by holding
+                connections open with agonizing slowness. And <strong>resource exhaustion</strong> attacks like the
+                <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb</a> need no network at all — one line
+                of Bash, made entirely of permitted actions, freezes a machine from the inside.
+              </p>
+              <p>
+                <strong>Why it works:</strong> every system has finite capacity — bandwidth, connections, memory,
+                process slots — and usually no distinction between heavy legitimate demand and hostile demand. The
+                attack is just "more" until the limit breaks.
+              </p>
+              <p>
+                <strong>Prevention:</strong> rate limits, quotas, and for anything public-facing, a CDN or DDoS
+                protection service that can absorb floods bigger than any single origin could. <strong>Mitigation</strong>
+                is where the interesting trade-off lives: crude limits punish legitimate users too — the exact problem
+                my <a class="text-link" href="/research">fork bomb research</a> tackled. Its answer: detect an offender
+                within tens of milliseconds, then quarantine repeat suspects instead of permanently banning them — so a
+                falsely accused process can prove itself and go free. The
+                principle generalizes to every rate limiter you will ever design: <em>protect the system without
+                becoming your own denial of service</em>.
+              </p>
 
-            <h2 id="web-and-application-attacks">Web and application attacks</h2>
-            <p>
-              These attacks exploit flaws in software you wrote or depend on. <strong>SQL injection</strong> smuggles
-              database commands through input fields — decades old and still breaching companies today.
-              <strong>Cross-site scripting (XSS)</strong> plants attacker JavaScript in pages other users trust.
-              <strong>CSRF</strong> rides a logged-in user's session to perform actions they never intended.
-              <strong>Zero-days</strong> are flaws the vendor doesn't know about yet, so no patch exists. And
-              <strong>supply chain attacks</strong> poison a dependency or update upstream, turning your own trust
-              in your tools against you.
-            </p>
-            <p>
-              <strong>Why it works:</strong> software trusts input more than it should. Nearly every attack in this
-              family is some form of data being treated as instructions — user input becoming SQL, becoming script,
-              becoming commands.
-            </p>
-            <p>
-              <strong>Prevention:</strong> parameterized queries (which make injection structurally impossible, not
-              just unlikely), output encoding and a strict Content-Security-Policy for XSS, anti-CSRF tokens and
-              <code>SameSite</code> cookies, dependency scanning and lockfiles for the supply chain. Frameworks do
-              most of this correctly by default — the vulnerabilities usually arrive when someone works around the
-              framework. <strong>Mitigation:</strong> least-privilege database accounts (an injected query that
-              can't <code>DROP</code> anything is an incident, not a catastrophe), a web application firewall to
-              buy patching time, and logs detailed enough to answer "what did they actually reach?"
-            </p>
+              <h2 id="web-and-application-attacks">Web and application attacks</h2>
+              <p>
+                These attacks exploit flaws in software you wrote or depend on. <strong>SQL injection</strong> smuggles
+                database commands through input fields — decades old and still breaching companies today.
+                <strong>Cross-site scripting (XSS)</strong> plants attacker JavaScript in pages other users trust.
+                <strong>CSRF</strong> rides a logged-in user's session to perform actions they never intended.
+                <strong>Zero-days</strong> are flaws the vendor doesn't know about yet, so no patch exists. And
+                <strong>supply chain attacks</strong> poison a dependency or update upstream, turning your own trust
+                in your tools against you.
+              </p>
+              <p>
+                <strong>Why it works:</strong> software trusts input more than it should. Nearly every attack in this
+                family is some form of data being treated as instructions — user input becoming SQL, becoming script,
+                becoming commands.
+              </p>
+              <p>
+                <strong>Prevention:</strong> parameterized queries (which make injection structurally impossible, not
+                just unlikely), output encoding and a strict Content-Security-Policy for XSS, anti-CSRF tokens and
+                <code>SameSite</code> cookies, dependency scanning and lockfiles for the supply chain. Frameworks do
+                most of this correctly by default — the vulnerabilities usually arrive when someone works around the
+                framework. <strong>Mitigation:</strong> least-privilege database accounts (an injected query that
+                can't <code>DROP</code> anything is an incident, not a catastrophe), a web application firewall to
+                buy patching time, and logs detailed enough to answer "what did they actually reach?"
+              </p>
 
-            <h2 id="credential-and-access-attacks">Credential and access attacks</h2>
-            <p>
-              Sometimes nobody breaks in — they log in. <strong>Brute force</strong> tries passwords until one
-              works. <strong>Credential stuffing</strong> replays username-password pairs leaked from one site
-              against every other site, betting on reuse — and the bet pays constantly. <strong>Password
-              spraying</strong> inverts brute force: one common password tried across thousands of accounts, slow
-              enough to dodge lockouts. And <strong>insider misuse</strong> needs no attack at all — just access
-              that outlived its purpose.
-            </p>
-            <p>
-              <strong>Why it works:</strong> passwords get reused, access accumulates, and login endpoints are
-              reachable from anywhere by design. One leaked database on the other side of the world becomes your
-              breach because someone used the same password twice.
-            </p>
-            <p>
-              <strong>Prevention:</strong> multi-factor authentication — the single highest-value control in this
-              entire article; it defeats all three password attacks at once. Add password managers (which make unique
-              passwords effortless), breached-password checks at signup, and rate limiting on login endpoints.
-              <strong>Mitigation:</strong> review access on a schedule and when roles change, alert on impossible
-              logins (new country, new device, odd hours), and make revoking access part of every offboarding —
-              the account nobody remembers is the account nobody watches.
-            </p>
+              <h2 id="credential-and-access-attacks">Credential and access attacks</h2>
+              <p>
+                Sometimes nobody breaks in — they log in. <strong>Brute force</strong> tries passwords until one
+                works. <strong>Credential stuffing</strong> replays username-password pairs leaked from one site
+                against every other site, betting on reuse — and the bet pays constantly. <strong>Password
+                spraying</strong> inverts brute force: one common password tried across thousands of accounts, slow
+                enough to dodge lockouts. And <strong>insider misuse</strong> needs no attack at all — just access
+                that outlived its purpose.
+              </p>
+              <p>
+                <strong>Why it works:</strong> passwords get reused, access accumulates, and login endpoints are
+                reachable from anywhere by design. One leaked database on the other side of the world becomes your
+                breach because someone used the same password twice.
+              </p>
+              <p>
+                <strong>Prevention:</strong> multi-factor authentication — the single highest-value control in this
+                entire article; it defeats all three password attacks at once. Add password managers (which make unique
+                passwords effortless), breached-password checks at signup, and rate limiting on login endpoints.
+                <strong>Mitigation:</strong> review access on a schedule and when roles change, alert on impossible
+                logins (new country, new device, odd hours), and make revoking access part of every offboarding —
+                the account nobody remembers is the account nobody watches.
+              </p>
 
-            <h2 id="why-attacks-actually-succeed">Why attacks actually succeed</h2>
-            <p>
-              Six families, but if you read the "why it works" lines again, the same handful of root causes repeats.
-              Incidents almost never require a genius adversary — they require one of these being true:
-            </p>
-            <ul>
-              <li><strong>Unpatched software</strong> — the fix existed; it just wasn't applied.</li>
-              <li><strong>Weak or reused credentials</strong> — one leak anywhere becomes access everywhere.</li>
-              <li><strong>Misconfiguration</strong> — the storage bucket was public, the default password stayed, the port was open.</li>
-              <li><strong>Misplaced trust</strong> — in a sender, a network, a dependency, or an input.</li>
-              <li><strong>Excessive access</strong> — accounts and services that could do far more than their job required.</li>
-              <li><strong>Nobody watching</strong> — the breach lasted months because no one was looking at the logs.</li>
-            </ul>
-            <p>
-              This list is quietly optimistic. Every cause on it is boring, known, and fixable — which means most
-              security wins come from discipline, not brilliance.
-            </p>
+              <h2 id="why-attacks-actually-succeed">Why attacks actually succeed</h2>
+              <p>
+                Six families, but if you read the "why it works" lines again, the same handful of root causes repeats.
+                Incidents almost never require a genius adversary — they require one of these being true:
+              </p>
+              <ul>
+                <li><strong>Unpatched software</strong> — the fix existed; it just wasn't applied.</li>
+                <li><strong>Weak or reused credentials</strong> — one leak anywhere becomes access everywhere.</li>
+                <li><strong>Misconfiguration</strong> — the storage bucket was public, the default password stayed, the port was open.</li>
+                <li><strong>Misplaced trust</strong> — in a sender, a network, a dependency, or an input.</li>
+                <li><strong>Excessive access</strong> — accounts and services that could do far more than their job required.</li>
+                <li><strong>Nobody watching</strong> — the breach lasted months because no one was looking at the logs.</li>
+              </ul>
+              <p>
+                This list is quietly optimistic. Every cause on it is boring, known, and fixable — which means most
+                security wins come from discipline, not brilliance.
+              </p>
 
-            <h2 id="prevention-vs-mitigation-before-and-after">Prevention vs. mitigation: before and after</h2>
-            <p>
-              The distinction I've used throughout deserves to be explicit, because budgets routinely get it wrong.
-              <strong>Prevention</strong> reduces the chance an attack succeeds. <strong>Mitigation</strong> reduces
-              the damage when one succeeds anyway — and some eventually will. Mature security spends deliberately on
-              both; that's what "defense in depth" actually means.
-            </p>
-            <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
-                 at 375px it hides ~105-240px of table. A scrollable region has to be
-                 reachable by keyboard and has to say what it is (WCAG 2.1.1). The
-                 caption already names it, so it is borrowed rather than duplicated. -->
-            <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-typesofcyberattack">
-              <table class="post-table">
-                <caption id="table-caption-typesofcyberattack">The highest-value prevention and mitigation for each family — starting points, not complete programs.</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Family</th>
-                    <th scope="col">Breaks</th>
-                    <th scope="col">Prevention (before)</th>
-                    <th scope="col">Mitigation (after)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Social engineering</td>
-                    <td>C</td>
-                    <td>Phishing-resistant MFA, password managers, blameless training</td>
-                    <td>Login alerts, least privilege, fast blameless reporting</td>
-                  </tr>
-                  <tr>
-                    <td>Malware</td>
-                    <td>C · I · A</td>
-                    <td>Prompt patching, install restrictions, endpoint protection</td>
-                    <td>Offline tested backups, network segmentation</td>
-                  </tr>
-                  <tr>
-                    <td>Network</td>
-                    <td>C · I</td>
-                    <td>TLS everywhere + HSTS, VPN on untrusted networks</td>
-                    <td>Certificate monitoring, treating TLS warnings as incidents</td>
-                  </tr>
-                  <tr>
-                    <td>Denial of service</td>
-                    <td>A</td>
-                    <td>Rate limits, quotas, CDN / DDoS absorption</td>
-                    <td>Graceful degradation, quarantine over permanent bans</td>
-                  </tr>
-                  <tr>
-                    <td>Web &amp; application</td>
-                    <td>C · I</td>
-                    <td>Parameterized queries, CSP, framework defaults, dependency scanning</td>
-                    <td>Least-privilege DB accounts, WAF, forensic-quality logs</td>
-                  </tr>
-                  <tr>
-                    <td>Credential &amp; access</td>
-                    <td>C</td>
-                    <td>MFA, unique passwords, login rate limits</td>
-                    <td>Access reviews, anomaly alerts, disciplined offboarding</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h2 id="prevention-vs-mitigation-before-and-after">Prevention vs. mitigation: before and after</h2>
+              <p>
+                The distinction I've used throughout deserves to be explicit, because budgets routinely get it wrong.
+                <strong>Prevention</strong> reduces the chance an attack succeeds. <strong>Mitigation</strong> reduces
+                the damage when one succeeds anyway — and some eventually will. Mature security spends deliberately on
+                both; that's what "defense in depth" actually means.
+              </p>
+              <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
+                   at 375px it hides ~105-240px of table. A scrollable region has to be
+                   reachable by keyboard and has to say what it is (WCAG 2.1.1). The
+                   caption already names it, so it is borrowed rather than duplicated. -->
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-typesofcyberattack">
+                <table class="post-table">
+                  <caption id="table-caption-typesofcyberattack">The highest-value prevention and mitigation for each family — starting points, not complete programs.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Family</th>
+                      <th scope="col">Breaks</th>
+                      <th scope="col">Prevention (before)</th>
+                      <th scope="col">Mitigation (after)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Social engineering</td>
+                      <td>C</td>
+                      <td>Phishing-resistant MFA, password managers, blameless training</td>
+                      <td>Login alerts, least privilege, fast blameless reporting</td>
+                    </tr>
+                    <tr>
+                      <td>Malware</td>
+                      <td>C · I · A</td>
+                      <td>Prompt patching, install restrictions, endpoint protection</td>
+                      <td>Offline tested backups, network segmentation</td>
+                    </tr>
+                    <tr>
+                      <td>Network</td>
+                      <td>C · I</td>
+                      <td>TLS everywhere + HSTS, VPN on untrusted networks</td>
+                      <td>Certificate monitoring, treating TLS warnings as incidents</td>
+                    </tr>
+                    <tr>
+                      <td>Denial of service</td>
+                      <td>A</td>
+                      <td>Rate limits, quotas, CDN / DDoS absorption</td>
+                      <td>Graceful degradation, quarantine over permanent bans</td>
+                    </tr>
+                    <tr>
+                      <td>Web &amp; application</td>
+                      <td>C · I</td>
+                      <td>Parameterized queries, CSP, framework defaults, dependency scanning</td>
+                      <td>Least-privilege DB accounts, WAF, forensic-quality logs</td>
+                    </tr>
+                    <tr>
+                      <td>Credential &amp; access</td>
+                      <td>C</td>
+                      <td>MFA, unique passwords, login rate limits</td>
+                      <td>Access reviews, anomaly alerts, disciplined offboarding</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 id="how-to-use-this-map">How to use this map</h2>
+              <p>
+                Three takeaways worth keeping after you close this tab. First, <strong>name the promise</strong>: when
+                you meet a new attack, ask whether it steals (confidentiality), alters (integrity), or stops
+                (availability) — you'll understand it faster than any glossary can teach you. Second, <strong>fix the
+                causes, not the headlines</strong>: patching, MFA, least privilege, backups, and monitoring quietly
+                defend against most of every family at once. Third, <strong>budget for "when," not just "if"</strong>
+                — the organizations that recover well are the ones that rehearsed recovery before they needed it.
+              </p>
+              <p>
+                This article is the trunk of a series, and the branches are already live. The defenses sketched above
+                get turned into <a class="text-link" href="/blog/security-compliance-explained">the compliance
+                frameworks that codify these defenses</a>; if you build or operate in India, the statutes behind them
+                are laid out in <a class="text-link" href="/blog/india-it-act-explained">India's IT Act and the DPDP
+                era</a>; and when prevention fails anyway, <a class="text-link" href="/blog/how-cybercrime-cases-are-solved">how
+                cybercrime cases are actually investigated</a> follows the evidence from first alert to the courtroom.
+                The <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb post</a> still goes deepest of all,
+                on resource exhaustion. The map is drawn; now we explore it.
+              </p>
             </div>
-
-            <h2 id="how-to-use-this-map">How to use this map</h2>
-            <p>
-              Three takeaways worth keeping after you close this tab. First, <strong>name the promise</strong>: when
-              you meet a new attack, ask whether it steals (confidentiality), alters (integrity), or stops
-              (availability) — you'll understand it faster than any glossary can teach you. Second, <strong>fix the
-              causes, not the headlines</strong>: patching, MFA, least privilege, backups, and monitoring quietly
-              defend against most of every family at once. Third, <strong>budget for "when," not just "if"</strong>
-              — the organizations that recover well are the ones that rehearsed recovery before they needed it.
-            </p>
-            <p>
-              This article is the trunk of a series, and the branches are already live. The defenses sketched above
-              get turned into <a class="text-link" href="/blog/security-compliance-explained">the compliance
-              frameworks that codify these defenses</a>; if you build or operate in India, the statutes behind them
-              are laid out in <a class="text-link" href="/blog/india-it-act-explained">India's IT Act and the DPDP
-              era</a>; and when prevention fails anyway, <a class="text-link" href="/blog/how-cybercrime-cases-are-solved">how
-              cybercrime cases are actually investigated</a> follows the evidence from first alert to the courtroom.
-              The <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bomb post</a> still goes deepest of all,
-              on resource exhaustion. The map is drawn; now we explore it.
-            </p>
           </div>
 
           <div class="post-share">
@@ -639,7 +641,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>
