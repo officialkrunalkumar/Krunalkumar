@@ -557,8 +557,25 @@
     main.appendChild(this.noteHost);
     var cw = E('div', 'wc-canvaswrap');
     this.canvas = E('canvas', 'wc-canvas');
-    this.canvas.width = this.opts.width;
-    this.canvas.height = this.opts.height;
+    /* The packer works in a fixed 960x600 logical space — every placement,
+       font size and mask test is in those units — so both HiDPI sharpness and
+       a usable export are the same one change: a bigger backing store with a
+       matching transform in render(), no second coordinate system.
+
+       The floor of 2 rather than plain devicePixelRatio is deliberate. The
+       canvas is laid out at CSS width:100% of the main column, which on a
+       desktop is already wider than 960, so even at DPR 1 a 960-wide buffer
+       was being stretched; and the Download PNG button was handing back a
+       960x600 image, too small to drop into a slide or print at any size.
+       At 2 that becomes 1920x1200, which is usable for both. The cap of 3
+       holds the buffer at 2880x1800 — around 20MB of pixels — past which
+       toBlob stalls noticeably on modest hardware for detail nobody sees.
+       Both attributes scale together, so the aspect ratio the CSS box derives
+       from them is unchanged. */
+    var dpr = window.devicePixelRatio || 1;
+    this.scale = Math.max(2, Math.min(3, Math.round(dpr)));
+    this.canvas.width = this.opts.width * this.scale;
+    this.canvas.height = this.opts.height * this.scale;
     cw.appendChild(this.canvas);
     main.appendChild(cw);
     this.statusHost = E('div', 'wc-status');
@@ -754,12 +771,19 @@
   };
 
   WordCloudApp.prototype.render = function () {
-    var ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+    /* No willReadFrequently here, unlike the two scratch canvases that really
+       do call getImageData: this one is only ever drawn to and handed to
+       toBlob. The hint forces a software backing store, and the buffer is now
+       four to nine times the pixels it used to be — exactly the case where
+       giving up the GPU path costs the most. */
+    var ctx = this.canvas.getContext('2d');
     var pal = PALETTES[this.opts.palette];
     var fontCss = FONTS[this.opts.font].css;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // one transform, so everything below stays in the packer's 960x600 units
+    var s = this.scale || 1;
+    ctx.setTransform(s, 0, 0, s, 0, 0);
     ctx.fillStyle = pal.bg;
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillRect(0, 0, this.opts.width, this.opts.height);
     if (!this.result) return;
 
     ctx.textAlign = 'center';

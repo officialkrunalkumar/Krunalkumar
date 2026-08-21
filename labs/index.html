@@ -268,57 +268,57 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/c">
-            <span class="lab-card-name">C <span class="lab-card-size">~58 MB</span></span>
+            <h3 class="lab-card-name">C <span class="lab-card-size">~58 MB</span></h3>
             <p class="lab-card-desc">A real clang and libc. structs, pointers, malloc and scanf all work.</p>
             <span class="lab-card-engine">1972 &middot; clang + lld on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/sql">
-            <span class="lab-card-name">SQL <span class="lab-card-size">~700 KB</span></span>
+            <h3 class="lab-card-name">SQL <span class="lab-card-size">~700 KB</span></h3>
             <p class="lab-card-desc">A real SQLite engine. Results come back as a formatted table.</p>
             <span class="lab-card-engine">1974 &middot; SQLite on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/cpp">
-            <span class="lab-card-name">C++ <span class="lab-card-size">~58 MB</span></span>
+            <h3 class="lab-card-name">C++ <span class="lab-card-size">~58 MB</span></h3>
             <p class="lab-card-desc">Real clang with libc++ &mdash; vector, string, map, algorithm, templates.</p>
             <span class="lab-card-engine">1985 &middot; clang + libc++ on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/perl">
-            <span class="lab-card-name">Perl <span class="lab-card-size">~16 MB</span></span>
+            <h3 class="lab-card-name">Perl <span class="lab-card-size">~16 MB</span></h3>
             <p class="lab-card-desc">Real Perl 5. Regular expressions doing what they do best.</p>
             <span class="lab-card-engine">1987 &middot; Perl 5 on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/python">
-            <span class="lab-card-name">Python <span class="lab-card-size">~6 MB</span></span>
+            <h3 class="lab-card-name">Python <span class="lab-card-size">~12 MB</span></h3>
             <p class="lab-card-desc">Genuine CPython with the full standard library and input() support.</p>
             <span class="lab-card-engine">1991 &middot; CPython on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/lua">
-            <span class="lab-card-name">Lua <span class="lab-card-size">~420 KB</span></span>
+            <h3 class="lab-card-name">Lua <span class="lab-card-size">~420 KB</span></h3>
             <p class="lab-card-desc">Lua 5.4 with metatables and coroutines. Starts almost instantly.</p>
             <span class="lab-card-engine">1993 &middot; Lua 5.4 on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/php">
-            <span class="lab-card-name">PHP <span class="lab-card-size">~14 MB</span></span>
+            <h3 class="lab-card-name">PHP <span class="lab-card-size">~14 MB</span></h3>
             <p class="lab-card-desc">Real PHP 8.4 &mdash; enums, match, readonly properties, the array library.</p>
             <span class="lab-card-engine">1994 &middot; PHP 8.4 on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/javascript">
-            <span class="lab-card-name">JavaScript <span class="lab-card-size">0 KB</span></span>
+            <h3 class="lab-card-name">JavaScript <span class="lab-card-size">0 KB</span></h3>
             <p class="lab-card-desc">Runs on your browser&rsquo;s own engine. Nothing to download at all.</p>
             <span class="lab-card-engine">1995 &middot; Your browser&rsquo;s JS engine</span>
           </a>
           <a class="lab-card" href="/labs/ruby">
-            <span class="lab-card-name">Ruby <span class="lab-card-size">~17 MB</span></span>
+            <h3 class="lab-card-name">Ruby <span class="lab-card-size">~17 MB</span></h3>
             <p class="lab-card-desc">Real CRuby from the core team. Blocks, mixins and enumerables.</p>
             <span class="lab-card-engine">1995 &middot; CRuby on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/postgres">
-            <span class="lab-card-name">PostgreSQL <span class="lab-card-size">~17 MB</span></span>
+            <h3 class="lab-card-name">PostgreSQL <span class="lab-card-size">~17 MB</span></h3>
             <p class="lab-card-desc">The actual Postgres server &mdash; window functions, CTEs, JSONB.</p>
             <span class="lab-card-engine">1996 &middot; PostgreSQL on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/typescript">
-            <span class="lab-card-name">TypeScript <span class="lab-card-size">~2 MB</span></span>
+            <h3 class="lab-card-name">TypeScript <span class="lab-card-size">~9 MB</span></h3>
             <p class="lab-card-desc">The official compiler, doing real type checking, then it runs.</p>
             <span class="lab-card-engine">2012 &middot; TypeScript compiler &rarr; JS engine</span>
           </a>
@@ -332,29 +332,27 @@
           <p>
             Beyond the language playgrounds, three entire operating systems boot inside your browser
             on an emulated x86 machine: <a href="/labs/linux">Linux</a>, running a genuine kernel
-            with a BusyBox userland, and a <a href="/labs/dos">FreeDOS prompt</a> with DIR, batch
-            files and a few games still on the disk. Not simulations of a shell &mdash; real
-            systems, with real process tables and real file systems, which is exactly why you can
-            safely do things to them you would never do to your own machine, including running a
-            <a href="/blog/what-is-a-fork-bomb">fork bomb</a> and watching what actually happens. Real BusyBox shell, real
-            filesystem, real pipes and redirection. It is a genuine machine, which is why you can
-            safely do things to it that you would never do to your own &mdash; including running a
+            with a BusyBox userland, <a href="/labs/bsd">OpenBSD</a>, booting its real install
+            floppy, and a <a href="/labs/dos">FreeDOS prompt</a> with DIR, batch files and a few
+            games still on the disk. Not simulations of a shell &mdash; real systems, with real
+            process tables and real file systems, which is exactly why you can safely do things to
+            them you would never do to your own machine, including running a
             <a href="/blog/what-is-a-fork-bomb">fork bomb</a> and watching what actually happens.
           </p>
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/linux">
-            <span class="lab-card-name">Linux terminal <span class="lab-card-size">~8 MB</span></span>
+            <h3 class="lab-card-name">Linux terminal <span class="lab-card-size">~8 MB</span></h3>
             <p class="lab-card-desc">A genuine kernel and a 227-command BusyBox shell, booted in your tab.</p>
             <span class="lab-card-engine">Linux on x86 emulation (v86)</span>
           </a>
           <a class="lab-card" href="/labs/bsd">
-            <span class="lab-card-name">BSD shell <span class="lab-card-size">~1.4 MB</span></span>
+            <h3 class="lab-card-name">BSD shell <span class="lab-card-size">~1.4 MB</span></h3>
             <p class="lab-card-desc">A real OpenBSD kernel and ksh &mdash; the family the macOS command line comes from. Deliberately minimal.</p>
             <span class="lab-card-engine">OpenBSD on x86 emulation (v86)</span>
           </a>
           <a class="lab-card" href="/labs/dos">
-            <span class="lab-card-name">DOS prompt <span class="lab-card-size">~720 KB</span></span>
+            <h3 class="lab-card-name">DOS prompt <span class="lab-card-size">~720 KB</span></h3>
             <p class="lab-card-desc">Real FreeDOS. DIR, COPY, batch files &mdash; plus VIM, NASM and a few games.</p>
             <span class="lab-card-engine">FreeDOS on x86 emulation (v86)</span>
           </a>
@@ -368,8 +366,9 @@
           <p>
             A deliberately vulnerable app you are meant to attack. The SQL injection runs against
             a real SQLite engine and genuinely executes; the cross-site scripting really fires,
-            inside a sealed frame that can harm nothing. Six challenges &mdash; SQL injection, XSS,
-            path traversal, command injection and IDOR &mdash; each with a live target, progressive
+            inside a sealed frame that can harm nothing. Forty-two challenges &mdash; SQL injection, XSS,
+            path traversal and IDOR, through SSRF, XXE, JWT forgery, prototype pollution, race
+            conditions and GraphQL introspection &mdash; each with a live target, progressive
             hints, and the real-world fix. Nothing is uploaded, and the only thing you attack is a
             throwaway running in your own tab.
           </p>
@@ -392,82 +391,82 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/hash">
-            <span class="lab-card-name">Hash generator</span>
+            <h3 class="lab-card-name">Hash generator</h3>
             <p class="lab-card-desc">MD5 through SHA-512 and HMAC, for text or a whole file. Verify a checksum, or identify a hash you cannot place.</p>
             <span class="lab-card-engine">A safe, sandboxed target</span>
           </a>
           <a class="lab-card" href="/labs/file-inspector">
-            <span class="lab-card-name">File inspector</span>
+            <h3 class="lab-card-name">File inspector</h3>
             <p class="lab-card-desc">What a file really is, read from its magic bytes rather than its extension &mdash; plus hex, strings and an entropy graph.</p>
             <span class="lab-card-engine">Magic bytes &amp; entropy</span>
           </a>
           <a class="lab-card" href="/labs/jwt">
-            <span class="lab-card-name">JWT decoder</span>
+            <h3 class="lab-card-name">JWT decoder</h3>
             <p class="lab-card-desc">Decode and verify a token without handing that bearer credential to whoever runs the website.</p>
             <span class="lab-card-engine">Decoded &amp; verified locally</span>
           </a>
           <a class="lab-card" href="/labs/exif">
-            <span class="lab-card-name">EXIF viewer</span>
+            <h3 class="lab-card-name">EXIF viewer</h3>
             <p class="lab-card-desc">The camera, the exact second and the GPS coordinates inside a photo. Then download a copy with all of it gone.</p>
             <span class="lab-card-engine">Reads the file&rsquo;s own metadata</span>
           </a>
           <a class="lab-card" href="/labs/email-headers">
-            <span class="lab-card-name">Email header analyzer</span>
+            <h3 class="lab-card-name">Email header analyzer</h3>
             <p class="lab-card-desc">Trace the real delivery path of a suspicious message, and read what SPF, DKIM and DMARC actually said.</p>
             <span class="lab-card-engine">Parses the raw headers</span>
           </a>
           <a class="lab-card" href="/labs/url-inspector">
-            <span class="lab-card-name">URL inspector</span>
+            <h3 class="lab-card-name">URL inspector</h3>
             <p class="lab-card-desc">Take a phishing link apart without opening it. Homograph characters, buried domains, nested encoding.</p>
             <span class="lab-card-engine">Unwraps redirects &amp; params</span>
           </a>
           <a class="lab-card" href="/labs/password">
-            <span class="lab-card-name">Password strength</span>
+            <h3 class="lab-card-name">Password strength</h3>
             <p class="lab-card-desc">Real entropy and offline crack times against four hash types &mdash; not a checklist of capitals and symbols.</p>
             <span class="lab-card-engine">Entropy maths, offline</span>
           </a>
           <a class="lab-card" href="/labs/cert-decoder">
-            <span class="lab-card-name">Certificate decoder</span>
+            <h3 class="lab-card-name">Certificate decoder</h3>
             <p class="lab-card-desc">Read an X.509 PEM without OpenSSL: subject, SANs, key size, expiry and fingerprints.</p>
             <span class="lab-card-engine">X.509 parsed in-page</span>
           </a>
           <a class="lab-card" href="/labs/certificate-forge">
-            <span class="lab-card-name">Certificate builder</span>
+            <h3 class="lab-card-name">Certificate builder</h3>
             <p class="lab-card-desc">The decoder in reverse: generate a real keypair, then build a self-signed X.509 certificate, a CSR and a chain of trust &mdash; the DER shown byte by byte. It parses in openssl.</p>
             <span class="lab-card-engine">WebCrypto keys, hand-built DER</span>
           </a>
           <a class="lab-card" href="/labs/encoding">
-            <span class="lab-card-name">Encoder / decoder</span>
+            <h3 class="lab-card-name">Encoder / decoder</h3>
             <p class="lab-card-desc">Base64, Base32, Base58, hex, URL, HTML, binary and Morse, with automatic detection of what you pasted.</p>
             <span class="lab-card-engine">A dozen codecs, auto-detected</span>
           </a>
           <a class="lab-card" href="/labs/cipher">
-            <span class="lab-card-name">Cipher playground</span>
+            <h3 class="lab-card-name">Cipher playground</h3>
             <p class="lab-card-desc">Caesar, Vigen&egrave;re, Atbash and XOR &mdash; and the buttons that break all of them without a key.</p>
             <span class="lab-card-engine">Classical ciphers, by hand</span>
           </a>
           <a class="lab-card" href="/labs/steganography">
-            <span class="lab-card-name">Steganography</span>
+            <h3 class="lab-card-name">Steganography</h3>
             <p class="lab-card-desc">Hide a message in the low bits of an image, extract one, or amplify those bits to see if anything is there.</p>
             <span class="lab-card-engine">Reads the pixels themselves</span>
           </a>
           <a class="lab-card" href="/labs/regex">
-            <span class="lab-card-name">Regex tester</span>
+            <h3 class="lab-card-name">Regex tester</h3>
             <p class="lab-card-desc">Live matching with capture groups, plus a ReDoS check that catches catastrophic backtracking before production does.</p>
             <span class="lab-card-engine">A real regex engine</span>
           </a>
           <a class="lab-card" href="/labs/cvss">
-            <span class="lab-card-name">CVSS calculator</span>
+            <h3 class="lab-card-name">CVSS calculator</h3>
             <p class="lab-card-desc">The official v3.1 base score, with every metric explained and its contribution shown.</p>
             <span class="lab-card-engine">The official CVSS formula</span>
           </a>
           <a class="lab-card" href="/labs/subnet">
-            <span class="lab-card-name">Subnet calculator</span>
+            <h3 class="lab-card-name">Subnet calculator</h3>
             <p class="lab-card-desc">CIDR ranges, masks in every notation, and the binary that makes a /24 finally make sense.</p>
             <span class="lab-card-engine">Bitwise IP arithmetic</span>
           </a>
           <a class="lab-card" href="/labs/timestamp">
-            <span class="lab-card-name">Timestamp converter</span>
+            <h3 class="lab-card-name">Timestamp converter</h3>
             <p class="lab-card-desc">One number read under Unix, Windows FILETIME, WebKit, Cocoa and HFS+ at once &mdash; so you can tell which wrote it.</p>
             <span class="lab-card-engine">Every epoch, converted</span>
           </a>
@@ -487,32 +486,32 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/har-analyzer">
-            <span class="lab-card-name">HAR analyzer</span>
+            <h3 class="lab-card-name">HAR analyzer</h3>
             <p class="lab-card-desc">Find the secrets in a browser network export &mdash; tokens, cookies, keys, PII &mdash; and download a redacted copy safe to share.</p>
             <span class="lab-card-engine">Parses a HAR capture</span>
           </a>
           <a class="lab-card" href="/labs/sqlite-browser">
-            <span class="lab-card-name">SQLite browser</span>
+            <h3 class="lab-card-name">SQLite browser</h3>
             <p class="lab-card-desc">Open any SQLite database &mdash; Chrome history, WhatsApp, app data &mdash; browse tables, run SQL, timestamps decoded.</p>
             <span class="lab-card-engine">A real SQLite engine (sql.js)</span>
           </a>
           <a class="lab-card" href="/labs/archive-inspector">
-            <span class="lab-card-name">Archive inspector</span>
+            <h3 class="lab-card-name">Archive inspector</h3>
             <p class="lab-card-desc">Inspect a ZIP without extracting it: zip-slip paths, zip bombs, encrypted entries and disguised executables.</p>
             <span class="lab-card-engine">Reads ZIP/TAR/GZIP structure</span>
           </a>
           <a class="lab-card" href="/labs/pcap-analyzer">
-            <span class="lab-card-name">PCAP analyzer</span>
+            <h3 class="lab-card-name">PCAP analyzer</h3>
             <p class="lab-card-desc">Read a packet capture: top talkers, protocols, DNS and HTTP, and plaintext credentials from unencrypted traffic.</p>
             <span class="lab-card-engine">Decodes packet captures</span>
           </a>
           <a class="lab-card" href="/labs/memory-strings">
-            <span class="lab-card-name">Memory dump extractor</span>
+            <h3 class="lab-card-name">Memory dump extractor</h3>
             <p class="lab-card-desc">Pull strings (ASCII and UTF-16), URLs, keys, crypto addresses and embedded files out of a memory dump.</p>
             <span class="lab-card-engine">Carves strings from a dump</span>
           </a>
           <a class="lab-card" href="/labs/registry-viewer">
-            <span class="lab-card-name">Registry hive parser</span>
+            <h3 class="lab-card-name">Registry hive parser</h3>
             <p class="lab-card-desc">Parse a Windows registry hive for autostart keys, USB history and recent activity. No Windows required.</p>
             <span class="lab-card-engine">Parses Windows hive files</span>
           </a>
@@ -534,27 +533,27 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/dns">
-            <span class="lab-card-name">DNS lookup</span>
+            <h3 class="lab-card-name">DNS lookup</h3>
             <p class="lab-card-desc">A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly &mdash; this is how it gets there.</p>
             <span class="lab-card-engine">Queries Google or Cloudflare</span>
           </a>
           <a class="lab-card" href="/labs/email-security">
-            <span class="lab-card-name">Email security audit</span>
+            <h3 class="lab-card-name">Email security audit</h3>
             <p class="lab-card-desc">Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone.</p>
             <span class="lab-card-engine">Queries Google Public DNS</span>
           </a>
           <a class="lab-card" href="/labs/ct-log">
-            <span class="lab-card-name">Certificate transparency</span>
+            <h3 class="lab-card-name">Certificate transparency</h3>
             <p class="lab-card-desc">Every certificate ever logged for a domain, and the subdomains printed on them &mdash; discovered without sending a single packet to the target.</p>
             <span class="lab-card-engine">Queries SSLMate Cert Spotter</span>
           </a>
           <a class="lab-card" href="/labs/rdap">
-            <span class="lab-card-name">Domain registration (RDAP)</span>
+            <h3 class="lab-card-name">Domain registration (RDAP)</h3>
             <p class="lab-card-desc">Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.</p>
             <span class="lab-card-engine">Queries the authoritative registry</span>
           </a>
           <a class="lab-card" href="/labs/breach-check">
-            <span class="lab-card-name">Password breach check</span>
+            <h3 class="lab-card-name">Password breach check</h3>
             <p class="lab-card-desc">Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.</p>
             <span class="lab-card-engine">Queries Have I Been Pwned</span>
           </a>
@@ -574,62 +573,62 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/os-algorithms">
-            <span class="lab-card-name">OS algorithms</span>
+            <h3 class="lab-card-name">OS algorithms</h3>
             <p class="lab-card-desc">Scheduling, paging, disk and deadlock &mdash; 26 algorithms you step through one time unit at a time, then score against each other on your own input.</p>
             <span class="lab-card-engine">26 algorithms, stepped</span>
           </a>
           <a class="lab-card" href="/labs/cryptography">
-            <span class="lab-card-name">Cryptography</span>
+            <h3 class="lab-card-name">Cryptography</h3>
             <p class="lab-card-desc">AES round by round, SHA-256 across all 64 rounds, and RSA, Diffie-Hellman and elliptic curves with numbers small enough to check by hand. Verified against the NIST vectors.</p>
             <span class="lab-card-engine">AES &amp; SHA, NIST-checked</span>
           </a>
           <a class="lab-card" href="/labs/regex-engine">
-            <span class="lab-card-name">Regex engine</span>
+            <h3 class="lab-card-name">Regex engine</h3>
             <p class="lab-card-desc">Parse a pattern into a tree, build the NFA, determinise it, then watch a backtracking engine go exponential on (a+)+ and nineteen characters. ReDoS, measured.</p>
             <span class="lab-card-engine">NFA, DFA &amp; backtracking</span>
           </a>
           <a class="lab-card" href="/labs/buffer-overflow">
-            <span class="lab-card-name">Buffer overflow</span>
+            <h3 class="lab-card-name">Buffer overflow</h3>
             <p class="lab-card-desc">Copy a string into a fixed buffer and watch it climb over the saved frame pointer into the return address, byte by byte. Then hijack control flow, and watch a stack canary catch it.</p>
             <span class="lab-card-engine">A byte-addressed stack model</span>
           </a>
           <a class="lab-card" href="/labs/tcp-congestion">
-            <span class="lab-card-name">TCP</span>
+            <h3 class="lab-card-name">TCP</h3>
             <p class="lab-card-desc">Step through the three-way handshake with real sequence numbers, walk both ends of the TCP state machine, and watch Reno congestion control draw its slow-start-and-back-off sawtooth.</p>
             <span class="lab-card-engine">A live TCP Reno simulation</span>
           </a>
           <a class="lab-card" href="/labs/word-cloud">
-            <span class="lab-card-name">Word cloud generator</span>
+            <h3 class="lab-card-name">Word cloud generator</h3>
             <p class="lab-card-desc">Paste any text and the most frequent words become the biggest, packed into a heart, star or cloud shape in colours you choose. Download the PNG — free, no watermark, nothing uploaded.</p>
             <span class="lab-card-engine">Canvas spiral-packing</span>
           </a>
           <a class="lab-card" href="/labs/processor-explorer">
-            <span class="lab-card-name">Inside a processor</span>
+            <h3 class="lab-card-name">Inside a processor</h3>
             <p class="lab-card-desc">Fly from the chip package down to a single transistor &mdash; six labelled levels, data pulsing through every one.</p>
             <span class="lab-card-engine">Semantic-zoom canvas</span>
           </a>
           <a class="lab-card" href="/labs/hash-cracker">
-            <span class="lab-card-name">Live hash cracking</span>
+            <h3 class="lab-card-name">Live hash cracking</h3>
             <p class="lab-card-desc">Watch a weak password hash fall in real time, with the guesses-per-second counter ticking. Off the main thread.</p>
             <span class="lab-card-engine">Cracks in a Web Worker</span>
           </a>
           <a class="lab-card" href="/labs/algorithm-visualizer">
-            <span class="lab-card-name">Algorithm visualizer</span>
+            <h3 class="lab-card-name">Algorithm visualizer</h3>
             <p class="lab-card-desc">Sorting and pathfinding, animated and steppable. See why O(n log n) beats O(n&sup2;) instead of being told.</p>
             <span class="lab-card-engine">13 sorts, 6 pathfinders</span>
           </a>
           <a class="lab-card" href="/labs/cpu-simulator">
-            <span class="lab-card-name">CPU simulator</span>
+            <h3 class="lab-card-name">CPU simulator</h3>
             <p class="lab-card-desc">Write assembly and step through it one instruction at a time, watching registers, flags, stack and memory change.</p>
             <span class="lab-card-engine">A two-pass assembler + CPU</span>
           </a>
           <a class="lab-card" href="/labs/shader-playground">
-            <span class="lab-card-name">Shader playground</span>
+            <h3 class="lab-card-name">Shader playground</h3>
             <p class="lab-card-desc">Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers.</p>
             <span class="lab-card-engine">Your GPU, live GLSL</span>
           </a>
           <a class="lab-card" href="/labs/fractal-explorer">
-            <span class="lab-card-name">Fractal explorer</span>
+            <h3 class="lab-card-name">Fractal explorer</h3>
             <p class="lab-card-desc">Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant.</p>
             <span class="lab-card-engine">WebGL, arbitrary zoom</span>
           </a>
@@ -647,24 +646,24 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/leak">
-            <span class="lab-card-name">What your browser leaks <span class="lab-card-size">0 KB</span></span>
+            <h3 class="lab-card-name">What your browser leaks <span class="lab-card-size">0 KB</span></h3>
             <p class="lab-card-desc">Your public IP, your GPU, your time zone and a fingerprint that survives clearing cookies &mdash; all read with no permission prompt.</p>
             <span class="lab-card-engine">Reads your own browser</span>
           </a>
 
           <a class="lab-card" href="/labs/chat">
-            <span class="lab-card-name">Peer-to-peer chat <span class="lab-card-size">0 KB</span></span>
+            <h3 class="lab-card-name">Peer-to-peer chat <span class="lab-card-size">0 KB</span></h3>
             <p class="lab-card-desc">Two browsers talking directly, no server in between &mdash; and why a web page can never listen on a port the way <code>netcat</code> does.</p>
             <span class="lab-card-engine">WebRTC &middot; the one lab that uses the network</span>
           </a>
 
           <a class="lab-card" href="/labs/typing">
-            <span class="lab-card-name">Typing speed test <span class="lab-card-size">0 KB</span></span>
+            <h3 class="lab-card-name">Typing speed test <span class="lab-card-size">0 KB</span></h3>
             <p class="lab-card-desc">Measured on real code as well as prose &mdash; the punctuation that actually slows programmers down.</p>
             <span class="lab-card-engine">Nothing to download</span>
           </a>
           <a class="lab-card" href="/labs/api">
-            <span class="lab-card-name">API tester <span class="lab-card-size">0 KB</span></span>
+            <h3 class="lab-card-name">API tester <span class="lab-card-size">0 KB</span></h3>
             <p class="lab-card-desc">HTTP requests straight from your browser. No proxy in the path, so nothing you send is relayed through anyone.</p>
             <span class="lab-card-engine">Your browser&rsquo;s own fetch</span>
           </a>
@@ -821,8 +820,8 @@ What is breaking / feedback:
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

@@ -9,7 +9,7 @@
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
-    <meta name="theme-color" content="#0a0f1d" />
+    <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/buddha" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="A Still Place | Krunalkumar Shah" />
@@ -404,9 +404,25 @@
 
         <!-- The words, and the breath ---------------------------------->
         <div class="b-words">
-          <blockquote class="b-quote"></blockquote>
-          <cite class="b-cite"></cite>
+          <!-- A real verse ships in the markup rather than an empty element.
+               buddha.js replaces it on load with a random one (render() writes
+               textContent, so this is simply overwritten), but with scripts
+               blocked the two elements were empty and the page's whole reason
+               for existing showed up as a blank gap. -->
+          <blockquote class="b-quote">As a deep lake is clear and still, so the wise grow calm on hearing the teaching.</blockquote>
+          <cite class="b-cite">Dhammapada 82</cite>
           <button class="b-another" type="button">Another verse</button>
+
+          <!-- Changing the verse rewrites textContent, which a screen reader
+               has no way to notice; the swap was completely silent. This
+               status region carries the new verse to one.
+
+               It is a SIBLING and not a wrapper on purpose: .b-words is a grid
+               (buddha.css §4), and wrapping the quote and the cite would drop
+               both into one cell and destroy the layout. buddha.js writes it
+               only from swap(), never from the initial render, so the verse
+               that is already on screen at load is not announced twice. -->
+          <p class="sr-only b-announce" role="status" aria-live="polite" aria-atomic="true"></p>
 
           <div class="b-breath">
             <!-- Described once, not announced forever. This label changes every
@@ -414,12 +430,21 @@
                  aria-live region it interrupted a screen reader with "Breathe
                  in… Breathe out…" indefinitely, with no way to stop it — the
                  opposite of what this page is for, and a WCAG 2.2.2 problem.
-                 The cycling word is a visual partner to the ring, so it is
-                 hidden from assistive tech and the instruction below carries
-                 the same guidance in one calm sentence. -->
+                 The cycling word is a visual partner to the scene's motion, so
+                 it is hidden from assistive tech and the instruction below
+                 carries the same guidance in one calm sentence.
+
+                 That copy used to describe a "ring" that expands and contracts.
+                 There is no ring anywhere on this page and there never was —
+                 the halo behind the head was deliberately built as a soft glow
+                 rather than an annulus (see the bHaloFill note above). What
+                 actually paces the breath is the figure, his aura and the halo
+                 all swelling and settling together on one 10s cycle, so that
+                 is what the sentence now describes. -->
             <p class="sr-only">
-              A ring on this page expands and contracts to pace your breathing: breathe in for
-              four seconds as it grows, and out for six as it settles. It repeats until you leave.
+              The figure and the light around him swell and settle to pace your breathing:
+              breathe in for four seconds as they grow, and out for six as they settle.
+              It repeats until you leave.
             </p>
             <p class="b-breath-label" aria-hidden="true">Breathe in</p>
           </div>
@@ -457,12 +482,12 @@
             honest about where it came from.
           </p>
           <p>
-            There are 695 verses here, drawn from ten collections — the Dhammapada, the Udāna and
-            Itivuttaka, the Sutta Nipāta, the verses of the senior monks and nuns, and the Saṁyutta
-            Nikāya. You are unlikely to meet the same one twice in a sitting.
+            There are 684 verses here, drawn from ten collections — among them the Dhammapada, the
+            Udāna and Itivuttaka, the Sutta Nipāta, the verses of the senior monks and nuns, and the
+            Saṁyutta Nikāya. You are unlikely to meet the same one twice in a sitting.
           </p>
           <p class="b-credit">
-            About 290 of these translations are by
+            About 279 of these translations are by
             <a class="b-credit-link" href="https://suttacentral.net/" target="_blank" rel="noopener">Bhikkhu Sujato</a>,
             published by SuttaCentral and dedicated to the public domain under
             <a class="b-credit-link" href="https://creativecommons.org/public-domain/cc0/" target="_blank" rel="noopener">CC0</a>;
@@ -489,8 +514,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

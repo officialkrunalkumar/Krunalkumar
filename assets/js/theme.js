@@ -50,7 +50,7 @@
     // Doing it here rather than editing the 17 rules that transition a
     // background means the hover fades all survive, and any rule added later
     // is covered for free.
-    // Only freeze when the value is actually changing. The two calls at the
+    // Only freeze when the value is actually changing. The sync calls at the
     // bottom of this file re-run apply() on load purely to sync the button
     // label and the address-bar colour, passing the theme already on <html> —
     // freezing there would cancel any transition mid-flight, and the 400 ms one
@@ -67,7 +67,7 @@
       root.classList.remove('theme-switching');
     }
 
-    // Only a real press writes to storage. The two calls at the bottom of this
+    // Only a real press writes to storage. The sync calls at the bottom of this
     // file re-run apply() on load to sync the address-bar colour and the
     // button's label — if those persisted too, every page load would write back
     // whatever the page happened to start as. Combined with nothing ever
@@ -108,8 +108,21 @@
     }
   });
 
-  // Reassert once the shared header has landed, so the label is right. Neither
-  // of these is a choice, so neither persists.
+  // Reassert once the shared header has landed, so the label is right. None of
+  // these is a choice, so none of them persists.
+  //
+  // The header is fetched, so the button does not exist yet when this file
+  // runs. This waited a flat 400 ms and hoped — on any connection where the
+  // partial takes longer, the button kept the generic aria-label from the
+  // static markup for the rest of the visit. include-partials.js already
+  // dispatches partials:loaded once the swap is done (particle-bg.js listens
+  // for the same event), so listen for it instead of guessing.
+  document.addEventListener('partials:loaded', function () { apply(current(), false); });
+  // Belt and braces, kept for two cases the event cannot cover: a page that
+  // does not load include-partials.js at all, and the race where the partial
+  // comes straight from cache — include-partials.js is the earlier deferred
+  // script, so its fetch can settle and dispatch before this one has run and
+  // subscribed. One late sync costs nothing; a wrong label costs the visit.
   window.setTimeout(function () { apply(current(), false); }, 400);
   apply(current(), false);
 }());

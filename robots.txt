@@ -5,13 +5,14 @@ User-agent: *
 Allow: /
 Disallow: /partials/
 Disallow: /assets/data/
+Disallow: /scripts/
 
 # ==============================================================================
 # AI Search, Real-Time Assistants & Answer Engines — explicitly welcome
 # ==============================================================================
 # One group, not one group per bot. A crawler obeys only the single most
 # specific group that matches it, so a per-bot group containing just "Allow: /"
-# would silently drop the two Disallow lines above for that bot. Keeping every
+# would silently drop the three Disallow lines above for that bot. Keeping every
 # named agent in ONE group (consecutive User-agent lines, no blank lines
 # between them) lets the rules below apply to all of them.
 User-agent: ChatGPT-User          # OpenAI — ChatGPT browsing & user queries
@@ -35,6 +36,7 @@ User-agent: DuckDuckBot           # DuckDuckGo search & DuckAssist
 Allow: /
 Disallow: /partials/
 Disallow: /assets/data/
+Disallow: /scripts/
 
 # ==============================================================================
 # Sitemaps & Context Feeds

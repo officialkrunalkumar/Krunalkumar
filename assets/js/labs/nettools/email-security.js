@@ -268,8 +268,22 @@
     out.heading('Transport and branding');
     var mta = mtaRecs.filter(function (r) { return /^v=STSv1/i.test(r); });
     if (mta.length) {
-      out.row('MTA-STS', 'published', 't-ok');
-      out.dim('    forces TLS for inbound mail, blocking downgrade attacks');
+      /* The TXT record is a pointer, not a policy: all it proves is that a
+         policy file is advertised at mta-sts.{domain}. Whether TLS is actually
+         enforced lives in that file, as mode: enforce or mode: testing, and
+         reading it needs a cross-origin fetch that the policy host serves
+         without CORS headers — so the browser refuses the response and this
+         page genuinely cannot tell the two apart. Said out loud rather than
+         glossed, because a testing-mode policy blocks nothing. */
+      out.row('MTA-STS', 'record published', 't-ok');
+      out.dim('    the record only advertises a policy at mta-sts.' + currentDomain);
+      out.dim('    — it does not itself enforce anything. The policy file is');
+      out.dim('    what says mode: enforce, and only enforce refuses to deliver');
+      out.dim('    over a stripped or untrusted TLS connection; mode: testing');
+      out.dim('    reports and delivers anyway.');
+      out.dim('    That file cannot be read from a browser: fetching it is a');
+      out.dim('    cross-origin request and the policy host sends no CORS');
+      out.dim('    header, so check the mode with curl before trusting it.');
     } else {
       out.row('MTA-STS', 'not published', 't-dim');
       out.dim('    without it, an attacker who can intercept SMTP can strip TLS');
@@ -286,6 +300,10 @@
     out.rule();
     var score = spf.score + dmarc.score;
     var max = spf.max + dmarc.max;
+    /* This point is for publishing the MTA-STS record, not for enforcing TLS:
+       the mode lives in the policy file, which no browser can fetch (no CORS
+       header on the policy host). Scoring it any higher would be claiming
+       something we did not check. */
     if (extras.mta) score += 1;
     max += 1;
 

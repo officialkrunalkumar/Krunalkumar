@@ -173,11 +173,20 @@
               <span>Your name</span>
               <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
             </label>
-            <label class="field">
-              <span>Contact number</span>
-              <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="contact-phone-hint" required />
+            <!-- The hint sits OUTSIDE the <label> on purpose. Inside it, a block <p> is
+                 invalid inside a label's phrasing content, and the label's accessible name
+                 became "Contact number Digits, spaces, and + only." — then aria-describedby
+                 made a screen reader read the hint a second time. The outer wrapper keeps
+                 the input inside a <label> (wa-form.js reads the caption via
+                 control.closest('label')) and, because .field is a flex column with the same
+                 0.45rem gap at both levels, the three lines render exactly as before. -->
+            <div class="field">
+              <label class="field">
+                <span>Contact number</span>
+                <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="contact-phone-hint" required />
+              </label>
               <p class="form-hint" id="contact-phone-hint">Digits, spaces, and + only.</p>
-            </label>
+            </div>
             <label class="field">
               <span>Email address</span>
               <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
@@ -213,8 +222,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

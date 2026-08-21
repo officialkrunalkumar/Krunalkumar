@@ -162,6 +162,30 @@
     'dataEncipherment', 'keyAgreement', 'keyCertSign', 'cRLSign',
     'encipherOnly', 'decipherOnly'];
 
+  /* Maximum TLS certificate lifetime, from the CA/Browser Forum Baseline
+     Requirements. Ballot SC-081 replaced the flat 398 days with a schedule
+     that steps down on fixed dates: 200 days from 2026-03-15, 100 from
+     2027-03-15, 47 from 2029-03-15. A single 398 constant here would be
+     wrong from 2026-03-15 onward, so the row is picked by the run date and
+     the tool stays correct as each step lands with no edit needed.
+     The limit binds at issuance, so an older certificate can legitimately be
+     longer than today's row — hence the wording below says what a CA may
+     issue today rather than calling the certificate invalid. */
+  var LIFETIME_LIMITS = [
+    ['2026-03-15T00:00:00Z', 398],
+    ['2027-03-15T00:00:00Z', 200],
+    ['2029-03-15T00:00:00Z', 100],
+    [null, 47]
+  ];
+
+  function maxLifetimeDays(now) {
+    for (var i = 0; i < LIFETIME_LIMITS.length; i++) {
+      var until = LIFETIME_LIMITS[i][0];
+      if (until === null || now < Date.parse(until)) return LIFETIME_LIMITS[i][1];
+    }
+    return LIFETIME_LIMITS[LIFETIME_LIMITS.length - 1][1];
+  }
+
   function run() {
     var input = document.getElementById('tool-text').value;
     out.clear();
@@ -242,10 +266,12 @@
               to && to.getTime() < now ? 't-err' : null);
       if (from && to) {
         var days = Math.round((to - from) / 86400000);
-        out.row('lifetime', days + ' days', days > 398 ? 't-warn' : null);
-        if (days > 398) {
-          out.line('    → longer than 398 days; public CAs are no longer allowed', 't-warn');
-          out.line('      to issue these and browsers reject them', 't-warn');
+        var maxDays = maxLifetimeDays(now);
+        out.row('lifetime', days + ' days', days > maxDays ? 't-warn' : null);
+        if (days > maxDays) {
+          out.line('    → longer than the ' + maxDays + ' days a public CA is allowed', 't-warn');
+          out.line('      to issue today; browsers reject anything over the limit', 't-warn');
+          out.line('      that was in force when it was issued', 't-warn');
         }
         if (to.getTime() < now) {
           out.line('');

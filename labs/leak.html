@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="See what any website can learn about you without asking: your public and local IP addresses via WebRTC, your GPU, time zone, and a canvas fingerprint that survives clearing cookies."
+      content="See what any site learns about you without asking: public and local IP via WebRTC, your GPU, time zone, and a canvas fingerprint that survives clearing cookies."
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
@@ -31,7 +31,7 @@
       content="Your IP addresses, GPU, time zone and a canvas fingerprint — no permission prompt required."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs-security.jpg" />
-    <title>What Your Browser Leaks — WebRTC IP &amp; Fingerprint Check | Krunalkumar Shah</title>
+    <title>What Your Browser Leaks — IP, GPU, Canvas | Krunalkumar Shah</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -45,6 +45,80 @@
         "isPartOf": { "@type": "WebSite", "url": "https://krunalkumar.dpdns.org/" },
         "author": { "@type": "Person", "@id": "https://krunalkumar.dpdns.org/#person", "name": "Krunalkumar Shah" }
       }
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "What your browser leaks",
+                        "item": "https://krunalkumar.dpdns.org/labs/leak"
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does any of this reach your server?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Every value in the table is computed in your tab and thrown away when you close it, and this page stores nothing of its own. Its one request is the WebRTC probe, which asks the Google and Cloudflare STUN servers what address you appear to come from — there is no way to learn a public address without showing it to somebody. Analytics loads here as on every page of this site, so Google does receive the ordinary pageview signals: browser, screen size, language, and a location derived from your address. Several of those are rows in the table above, which on this page of all pages is worth saying plainly."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is my public address missing?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Gathering finished without one, usually because a firewall is dropping UDP; the five-second timer is only the outer bound. If WebRTC is switched off in your browser altogether, the row reads unavailable rather than going blank. Extensions that merely restrict which addresses WebRTC may use often still let the public one through, so a blank here is the stronger signal."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "I use a VPN. Should the public address be the VPN one?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Compare the address above against whatever address your VPN provider says it is giving you. If they differ, the WebRTC request escaped the tunnel and every site you visit can read your real address the same way this page just did. That is what a VPN leak is."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is my local address a random name ending in .local?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Your browser replaced the real one. Chrome and Firefox hide the local address behind a random mDNS name unless the site already holds camera or microphone permission, so seeing that name means the defence is working. The public address gets no such protection, because it is how packets find their way back to you."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does clearing cookies change the canvas fingerprint?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. This page stores nothing of its own, so the number is recomputed from the same drawing on each visit, and it comes out identical because your GPU, driver and fonts have not changed. Private browsing often does not change it either. The value shown belongs to this page and its particular drawing; another site drawing something else gets a different number with the same staying power."
+                        }
+                }
+        ]
+}
     </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
@@ -116,15 +190,36 @@
           <li>Your address on your own network</li>
           <li>GPU, time zone, cores, screen</li>
           <li>A fingerprint that survives clearing cookies</li>
-          <li>Nothing is sent anywhere</li>
+          <!-- This used to read "Nothing is sent anywhere", which was not true.
+               leak.js:188 runs probe() on load, and probe() opens an
+               RTCPeerConnection against Google and Cloudflare STUN — asking them
+               your public address necessarily tells them your public address.
+               Nothing reaches THIS site, which is the honest version of the claim. -->
+          <li>None of it reaches this site &mdash; though finding your public IP means
+            asking a STUN server, so Google and Cloudflare see it</li>
         </ul>
       </section>
 
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
       <div class="lab lab-tool" id="leak">
         <h2 class="leak-h">Your addresses</h2>
         <p class="chat-note">A page can open a WebRTC connection to nobody, collect the addresses the
           browser offers, and read them straight out. No prompt, no warning. It is how VPN leak
-          checkers work.</p>
+          checkers work. The one thing it cannot do alone is learn your <em>public</em> address:
+          that answer comes from a STUN server, so this page asks Google’s and Cloudflare’s
+          the moment it loads, and they see your IP in the asking.</p>
         <table class="leak-table">
           <tbody id="leak-addr">
             <tr><th scope="row">Gathering</th><td class="leak-value">&hellip;</td><td class="leak-note">asking a STUN server what address you appear to come from</td></tr>
@@ -177,6 +272,32 @@
           precisely the thing being demonstrated.
         </p>
       </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does any of this reach your server?</summary>
+            <div>No. Every value in the table is computed in your tab and thrown away when you close it, and this page stores nothing of its own. Its one request is the WebRTC probe, which asks the Google and Cloudflare STUN servers what address you appear to come from — there is no way to learn a public address without showing it to somebody. Analytics loads here as on every page of this site, so Google does receive the ordinary pageview signals: browser, screen size, language, and a location derived from your address. Several of those are rows in the table above, which on this page of all pages is worth saying plainly.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is my public address missing?</summary>
+            <div>Gathering finished without one, usually because a firewall is dropping UDP; the five-second timer is only the outer bound. If WebRTC is switched off in your browser altogether, the row reads unavailable rather than going blank. Extensions that merely restrict which addresses WebRTC may use often still let the public one through, so a blank here is the stronger signal.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>I use a VPN. Should the public address be the VPN one?</summary>
+            <div>Yes. Compare the address above against whatever address your VPN provider says it is giving you. If they differ, the WebRTC request escaped the tunnel and every site you visit can read your real address the same way this page just did. That is what a VPN leak is.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is my local address a random name ending in .local?</summary>
+            <div>Your browser replaced the real one. Chrome and Firefox hide the local address behind a random mDNS name unless the site already holds camera or microphone permission, so seeing that name means the defence is working. The public address gets no such protection, because it is how packets find their way back to you.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does clearing cookies change the canvas fingerprint?</summary>
+            <div>No. This page stores nothing of its own, so the number is recomputed from the same drawing on each visit, and it comes out identical because your GPU, driver and fonts have not changed. Private browsing often does not change it either. The value shown belongs to this page and its particular drawing; another site drawing something else gets a different number with the same staying power.</div>
+          </details>
+      </section>
     </main>
 
         <footer id="contact">
@@ -187,8 +308,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

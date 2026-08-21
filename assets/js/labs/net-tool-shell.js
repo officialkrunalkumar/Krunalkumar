@@ -66,14 +66,74 @@
 
     out: function (paneId) {
       var pane = document.getElementById(paneId);
+
+      /* Same treatment as LabTool.out in tool-shell.js, and it has to be
+         repeated because these five labs (dns, rdap, breach-check, ct-log,
+         email-security) call LabNet.out rather than LabTool.out — fixing the
+         other shell alone left exactly these behind.
+
+         As there: the pane is named and given a role, but is deliberately NOT
+         itself a live region. These panes hold DNS answer sections and full
+         certificate chains, and making the pane live would read the whole thing
+         aloud on every lookup. A short summary in its own region says that an
+         answer arrived; reading it stays the user's choice. */
+      var status = null;
+      if (pane) {
+        if (!pane.getAttribute('aria-label')) {
+          pane.setAttribute('aria-label', 'Lookup results');
+        }
+        if (!pane.getAttribute('role')) pane.setAttribute('role', 'region');
+        status = document.getElementById(paneId + '-status');
+        if (!status) {
+          status = document.createElement('p');
+          status.id = paneId + '-status';
+          status.className = 'sr-only';
+          status.setAttribute('role', 'status');
+          status.setAttribute('aria-live', 'polite');
+          if (pane.parentNode) pane.parentNode.insertBefore(status, pane.nextSibling);
+        }
+      }
+
+      var lines = 0;
+      var announceTimer = null;
+      /* Silent until the first run.
+
+         Most tools print their help text from onReady at page load — 13 of them
+         do it without clearing first — and announcing that would fire a
+         role="status" region over the page title while a screen reader is still
+         reading the heading. It would also be a lie: nothing was updated, and
+         the lines are instructions, not results.
+
+         clear() is the reliable arming signal. Every tool calls it at the top of
+         its run path and none calls it at load, so the announcer wakes up on the
+         first thing the visitor actually asks for. */
+      var armed = false;
+      function announce() {
+        if (!status || !armed) return;
+        if (announceTimer) clearTimeout(announceTimer);
+        announceTimer = setTimeout(function () {
+          if (!lines) return;
+          status.textContent = 'Results updated, ' + lines +
+            (lines === 1 ? ' line.' : ' lines.');
+        }, 250);
+      }
+
       var api = {
-        clear: function () { pane.textContent = ''; return api; },
+        clear: function () {
+          pane.textContent = '';
+          lines = 0;
+          armed = true;
+          if (status) status.textContent = '';
+          return api;
+        },
         write: function (text, cls) {
           var span = document.createElement('span');
           if (cls) span.className = cls;
           span.textContent = text;
           pane.appendChild(span);
           pane.scrollTop = pane.scrollHeight;
+          var breaks = String(text).split('\n').length - 1;
+          if (breaks > 0) { lines += breaks; announce(); }
           return api;
         },
         line: function (text, cls) { return api.write((text || '') + '\n', cls); },
@@ -236,14 +296,39 @@
     gate: function (rootId) {
       var el = document.getElementById(rootId);
       if (!el) return;
+
+      /* .lab-gate is position:absolute over an opaque background, so it hides
+         the lab visually and does nothing else: every control underneath stays
+         focusable and stays in the accessibility tree. `inert` takes them out
+         of focus, hit-testing and assistive tech together, and browsers without
+         support ignore the property, so it cannot regress anything.
+
+         Every other lab shell already did this — tool-shell, viz-shell,
+         lab-app, hacklab, typing, api, linux, bsd, dos. This one, the shell in
+         front of the only labs that talk to a third party at all, was the one
+         that missed it: a keyboard user could tab straight past the consent
+         overlay and fire a DNS, RDAP, breach or CT-log lookup about a domain
+         they had typed, having never agreed to anything. Of the ten shells this
+         is the one where it actually sends data somewhere. */
+      var gateEl = document.getElementById('lab-gate');
+      var setInert = function (on) {
+        if (!gateEl) return;
+        var kids = el.children;
+        for (var i = 0; i < kids.length; i++) {
+          if (kids[i] !== gateEl) kids[i].inert = on;
+        }
+      };
+
       var agreed;
       try { agreed = localStorage.getItem(NET_CONSENT); } catch (err) { agreed = null; }
       if (agreed === 'yes') { el.setAttribute('data-consent', 'granted'); return; }
+      setInert(true);
       var yes = document.getElementById('lab-agree');
       var no = document.getElementById('lab-leave');
       yes && yes.addEventListener('click', function () {
         try { localStorage.setItem(NET_CONSENT, 'yes'); } catch (err) {}
         el.setAttribute('data-consent', 'granted');
+        setInert(false);
       });
       no && no.addEventListener('click', function () { window.location.href = '/'; });
     },

@@ -21,7 +21,19 @@
   var MAX = 256 * 1024 * 1024;   // beyond this the browser tab is the bottleneck
 
   /* ---- MD5, because forensics data still uses it ------------------------ */
-  function md5(bytes) {
+  /* WebCrypto hashes off the main thread; this one cannot. Pure-JS MD5 runs at
+     roughly 40 MB/s, so a file at the 256 MB ceiling above is ~6 s of solid
+     main-thread work — the tab stops painting and stops answering clicks for
+     that whole stretch. Handing control back every 4 MB caps one uninterrupted
+     block at about 100 ms, below the point where a page reads as frozen, and
+     costs only ~64 timer round-trips even on the largest accepted file. */
+  var MD5_SLICE = 4 * 1024 * 1024;
+
+  function breathe() {
+    return new Promise(function (resolve) { setTimeout(resolve, 0); });
+  }
+
+  async function md5(bytes) {
     function rl(n, c) { return (n << c) | (n >>> (32 - c)); }
     function add(a, b) { return (a + b) & 0xffffffff; }
     var S = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
@@ -41,7 +53,9 @@
     dv.setUint32(withPad.length - 4, Math.floor(bitLen / 4294967296), true);
 
     var a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+    var nextBreath = MD5_SLICE;
     for (var chunk = 0; chunk < withPad.length; chunk += 64) {
+      if (chunk >= nextBreath) { await breathe(); nextBreath = chunk + MD5_SLICE; }
       var M = new Uint32Array(16);
       for (var j = 0; j < 16; j++) M[j] = dv.getUint32(chunk + j * 4, true);
       var A = a0, B = b0, C = c0, D = d0;
@@ -108,12 +122,22 @@
     out.row('size', LabTool.humanBytes(bytes.length) + '  (' + bytes.length + ' bytes)');
     out.rule();
 
-    var md5hex = md5(bytes);
-    out.row('MD5', md5hex, 't-warn');
-    out.row('SHA-1', await webHash('SHA-1', bytes), 't-warn');
-    out.row('SHA-256', await webHash('SHA-256', bytes), 't-ok');
-    out.row('SHA-384', await webHash('SHA-384', bytes));
-    out.row('SHA-512', await webHash('SHA-512', bytes));
+    // Hashed once and held, not re-hashed for the verification block below.
+    // Recomputing all five doubled the work on every file with an expected
+    // digest pasted in — the exact case where the file tends to be large.
+    var digests = {
+      md5: await md5(bytes),
+      sha1: await webHash('SHA-1', bytes),
+      sha256: await webHash('SHA-256', bytes),
+      sha384: await webHash('SHA-384', bytes),
+      sha512: await webHash('SHA-512', bytes)
+    };
+
+    out.row('MD5', digests.md5, 't-warn');
+    out.row('SHA-1', digests.sha1, 't-warn');
+    out.row('SHA-256', digests.sha256, 't-ok');
+    out.row('SHA-384', digests.sha384);
+    out.row('SHA-512', digests.sha512);
     out.rule();
     out.dim('MD5 and SHA-1 are shown in amber: both have practical collision');
     out.dim('attacks and neither should back an integrity claim today. They');
@@ -123,13 +147,6 @@
     var expected = document.getElementById('tool-expect').value.trim().toLowerCase();
     if (!expected) return;
     out.rule();
-    var digests = {
-      md5: md5hex,
-      sha1: await webHash('SHA-1', bytes),
-      sha256: await webHash('SHA-256', bytes),
-      sha384: await webHash('SHA-384', bytes),
-      sha512: await webHash('SHA-512', bytes)
-    };
     var matched = Object.keys(digests).filter(function (k) { return digests[k] === expected; });
     if (matched.length) {
       out.ok('MATCH — the ' + matched.join('/').toUpperCase() + ' digest is identical.');

@@ -2,7 +2,7 @@
    buddha.js — the three moving parts of /buddha.
    --------------------------------------------------------------------------
    1. a verse, different on every load
-   2. the breathing label, in step with the ring
+   2. the breathing label, in step with the scene
    3. the leaves and the motes of light
 
    Every quote below is from the Pali Canon with its citation attached. That
@@ -158,7 +158,7 @@
       cite: 'Dhammapada 15' },
     { text: 'Here they rejoice, hereafter they rejoice, one who does good rejoices in both places. They rejoice and celebrate, seeing their own pure deeds.',
       cite: 'Dhammapada 16' },
-    { text: 'Here they’re tormented, <j>hereafter they’re tormented, an evildoer is tormented in both places. They’re tormented <j>thinking of bad things they’ve done; when gone to a bad place, <j>they’re tormented all the more.',
+    { text: 'Here they’re tormented, hereafter they’re tormented, an evildoer is tormented in both places. They’re tormented thinking of bad things they’ve done; when gone to a bad place, they’re tormented all the more.',
       cite: 'Dhammapada 17' },
     { text: 'Here they delight, hereafter they delight, one who does good delights in both places. They delight thinking of good things they’ve done; when gone to a good place, they delight all the more.',
       cite: 'Dhammapada 18' },
@@ -276,10 +276,8 @@
       cite: 'Dhammapada 85' },
     { text: 'When the teaching is well explained, the people who practice accordingly will cross over Death’s dominion so hard to pass.',
       cite: 'Dhammapada 86' },
-    { text: 'Rid of dark qualities, an astute person would develop the bright. Having left home for homelessness in seclusion, where joy is hard,',
-      cite: 'Dhammapada 87' },
-    { text: 'they’d long for satisfaction there. Forsaking sensual pleasures, owning nothing, an astute person would cleanse themselves of mental corruptions.',
-      cite: 'Dhammapada 88' },
+    { text: 'Rid of dark qualities, an astute person would develop the bright. Having left home for homelessness in seclusion, where joy is hard, they’d long for satisfaction there. Forsaking sensual pleasures, owning nothing, an astute person would cleanse themselves of mental corruptions.',
+      cite: 'Dhammapada 87–88' },
     { text: 'And those whose minds are rightly developed in the awakening factors; who, letting go of attachments, delight in not grasping: with defilements ended, brilliant, they are quenched in this world.',
       cite: 'Dhammapada 89' },
     { text: 'At journey’s end, rid of sorrow; everywhere free, all ties given up, no fever is found in them.',
@@ -302,10 +300,8 @@
       cite: 'Dhammapada 101' },
     { text: 'Better than reciting a hundred meaningless verses is a single saying of Dhamma, hearing which brings you peace.',
       cite: 'Dhammapada 102' },
-    { text: 'It is surely better to conquer oneself than all those other folk. When a person has tamed themselves, always living restrained,',
-      cite: 'Dhammapada 104' },
-    { text: 'no god nor centaur, nor Māra nor divinity, can undo the victory of such a personage.',
-      cite: 'Dhammapada 105' },
+    { text: 'It is surely better to conquer oneself than all those other folk. When a person has tamed themselves, always living restrained, no god nor centaur, nor Māra nor divinity, can undo the victory of such a personage.',
+      cite: 'Dhammapada 104–105' },
     { text: 'Rather than a thousandfold sacrifice, every month for a full century, it’s better to honor for a single hour one who has developed themselves. That offering is better than the hundred year sacrifice.',
       cite: 'Dhammapada 106' },
     { text: 'Whatever sacrifice or offering in the world a seeker of merit may make for a year, none of it is worth a quarter of bowing to the sincere.',
@@ -360,12 +356,8 @@
       cite: 'Dhammapada 135' },
     { text: 'The fool does not understand the evil that they do. But because of those deeds, that simpleton is tormented as if burnt by fire.',
       cite: 'Dhammapada 136' },
-    { text: 'One who violently attacks the peaceful and the innocent swiftly falls to one of ten bad states:',
-      cite: 'Dhammapada 137' },
-    { text: 'harsh pain; loss; the breakup of the body; serious illness; mental distress;',
-      cite: 'Dhammapada 138' },
-    { text: 'hazards from rulers; vicious slander; loss of kin; destruction of wealth;',
-      cite: 'Dhammapada 139' },
+    { text: 'One who violently attacks the peaceful and the innocent swiftly falls to one of ten bad states: harsh pain; loss; the breakup of the body; serious illness; mental distress; hazards from rulers; vicious slander; loss of kin; destruction of wealth;',
+      cite: 'Dhammapada 137–139' },
     { text: 'Not nudity, nor matted hair, nor mud, nor fasting, nor lying on bare ground, nor wearing dust and dirt, or squatting on the heels, will cleanse a mortal not free of doubt.',
       cite: 'Dhammapada 141' },
     { text: 'Dressed up they may be, but if they live well— peaceful, tamed, committed to the spiritual path, having laid aside violence toward all creatures— they are a brahmin, an ascetic, a mendicant.',
@@ -450,20 +442,16 @@
       cite: 'Dhammapada 188' },
     { text: 'But such refuge is no sanctuary, it is no supreme refuge. By going to that refuge, you’re not released from all suffering.',
       cite: 'Dhammapada 189' },
-    { text: 'One gone for refuge to the Buddha, to his teaching and to the Saṅgha, sees the four noble truths with right understanding:',
-      cite: 'Dhammapada 190' },
-    { text: 'suffering, suffering’s origin, suffering’s transcendence, and the noble eightfold path that leads to the stilling of suffering.',
-      cite: 'Dhammapada 191' },
+    { text: 'One gone for refuge to the Buddha, to his teaching and to the Saṅgha, sees the four noble truths with right understanding: suffering, suffering’s origin, suffering’s transcendence, and the noble eightfold path that leads to the stilling of suffering.',
+      cite: 'Dhammapada 190–191' },
     { text: 'Such refuge is a sanctuary, it is the supreme refuge. By going to that refuge, you’re released from all suffering.',
       cite: 'Dhammapada 192' },
     { text: 'It’s hard to find a thoroughbred man: they’re not born just anywhere. A family where that attentive one is born prospers in happiness.',
       cite: 'Dhammapada 193' },
     { text: 'Happy, the arising of Buddhas! Happy, the teaching of Dhamma! Happy is the harmony of the Saṅgha, and the striving of the harmonious is happy.',
       cite: 'Dhammapada 194' },
-    { text: 'When a person venerates the worthy— the Buddha or his disciple, who have transcended proliferation, and have left behind grief and lamentation,',
-      cite: 'Dhammapada 195' },
-    { text: 'quenched, fearing nothing from any quarter— the merit of one venerating such as these, cannot be calculated by anyone, saying it is just this much.',
-      cite: 'Dhammapada 196' },
+    { text: 'When a person venerates the worthy— the Buddha or his disciple, who have transcended proliferation, and have left behind grief and lamentation, quenched, fearing nothing from any quarter— the merit of one venerating such as these, cannot be calculated by anyone, saying it is just this much.',
+      cite: 'Dhammapada 195–196' },
     { text: 'Let us live so very happily, healthy among the ailing. Among ailing humans let us live healthily.',
       cite: 'Dhammapada 198' },
     { text: 'Let us live so very happily, content among the greedy. Among greedy humans, let us live content.',
@@ -514,10 +502,8 @@
       cite: 'Dhammapada 226' },
     { text: 'There never was, nor will be, nor is there today, someone who is wholly praised or wholly blamed.',
       cite: 'Dhammapada 228' },
-    { text: 'If, after watching them day in day out, discerning people praise that sage of impeccable conduct, endowed with ethics and wisdom;',
-      cite: 'Dhammapada 229' },
-    { text: 'like a pendant of Black Plum River gold, who is worthy to criticize them? Even the gods praise them, and by the Divinity, too, they’re praised.',
-      cite: 'Dhammapada 230' },
+    { text: 'If, after watching them day in day out, discerning people praise that sage of impeccable conduct, endowed with ethics and wisdom; like a pendant of Black Plum River gold, who is worthy to criticize them? Even the gods praise them, and by the Divinity, too, they’re praised.',
+      cite: 'Dhammapada 229–230' },
     { text: 'Guard against ill-tempered deeds, be restrained in body. Giving up bad bodily conduct, conduct yourself well in body.',
       cite: 'Dhammapada 231' },
     { text: 'Guard against ill-tempered words, be restrained in speech. Giving up bad verbal conduct, conduct yourself well in speech.',
@@ -546,10 +532,8 @@
       cite: 'Dhammapada 244' },
     { text: 'Life is hard for the conscientious, always seeking purity, neither clinging nor rude, pure of livelihood and discerning.',
       cite: 'Dhammapada 245' },
-    { text: 'Take anyone in this world who kills living creatures, speaks falsely, steals, commits adultery,',
-      cite: 'Dhammapada 246' },
-    { text: 'and indulges in drinking beer and wine. Right here they dig up the root of their own self.',
-      cite: 'Dhammapada 247' },
+    { text: 'Take anyone in this world who kills living creatures, speaks falsely, steals, commits adultery, and indulges in drinking beer and wine. Right here they dig up the root of their own self.',
+      cite: 'Dhammapada 246–247' },
     { text: 'Know this, my man: they are unrestrained and wicked. Don’t let that greed and unrighteousness inflict pain on you for long.',
       cite: 'Dhammapada 248' },
     { text: 'The people give according to their faith, according to their confidence. If you get upset over that, over others’ food and drink, you’ll not, by day or by night, become immersed in samādhi.',
@@ -584,19 +568,15 @@
       cite: 'Dhammapada 266' },
     { text: 'But one living a spiritual life, who has banished both merit and evil, who wanders having appraised the world, is said to be a mendicant.',
       cite: 'Dhammapada 267' },
-    { text: 'You don’t become a sage by being sagelike, while still confused and ignorant. The astute one who holds the scales, taking only the best,',
-      cite: 'Dhammapada 268' },
-    { text: 'and shunning the bad— that is a sage, <j>and that is how one becomes a sage. One who sagely weighs both in the world, is thereby said to be a sage.',
-      cite: 'Dhammapada 269' },
+    { text: 'You don’t become a sage by being sagelike, while still confused and ignorant. The astute one who holds the scales, taking only the best, and shunning the bad— that is a sage, and that is how one becomes a sage. One who sagely weighs both in the world, is thereby said to be a sage.',
+      cite: 'Dhammapada 268–269' },
     { text: 'You don’t become a noble one by harming living beings. One harmless toward all living beings is said to be a noble one.',
       cite: 'Dhammapada 270' },
-    { text: 'Not by precepts and observances, nor by much learning, nor by meditative immersion, nor by living in seclusion,',
-      cite: 'Dhammapada 271' },
-    { text: 'do I experience the bliss of renunciation not frequented by ordinary people. A mendicant cannot rest confident without attaining the end of defilements.',
-      cite: 'Dhammapada 272' },
+    { text: 'Not by precepts and observances, nor by much learning, nor by meditative immersion, nor by living in seclusion, do I experience the bliss of renunciation not frequented by ordinary people. A mendicant cannot rest confident without attaining the end of defilements.',
+      cite: 'Dhammapada 271–272' },
     { text: 'Of paths, the eightfold is the best; of truths, the four statements; dispassion is the best of things, and the Clear-eyed One is the best of humans.',
       cite: 'Dhammapada 273' },
-    { text: '<em>This</em> is the path, there is no other for the purification of vision. You all must practice this, it is the way to baffle Māra.',
+    { text: 'This is the path, there is no other for the purification of vision. You all must practice this, it is the way to baffle Māra.',
       cite: 'Dhammapada 274' },
     { text: 'When you all are practicing this, you’ll make an end of suffering. I have explained the path to you for extracting the thorn with wisdom.',
       cite: 'Dhammapada 275' },
@@ -632,7 +612,7 @@
       cite: 'Dhammapada 292' },
     { text: 'Those that have properly undertaken constant mindfulness of the body, don’t cultivate what should not be done, but always do what should be done. Mindful and aware, their defilements come to an end.',
       cite: 'Dhammapada 293' },
-    { text: 'Having slain mother and father, and two aristocratic kings, and having wiped out <j>the kingdom with its tax collector, the brahmin walks on untroubled.',
+    { text: 'Having slain mother and father, and two aristocratic kings, and having wiped out the kingdom with its tax collector, the brahmin walks on untroubled.',
       cite: 'Dhammapada 294' },
     { text: 'Having slain mother and father, and two prosperous kings, and a tiger as the fifth, the brahmin walks on untroubled.',
       cite: 'Dhammapada 295' },
@@ -672,7 +652,7 @@
       cite: 'Dhammapada 321' },
     { text: 'Those who have tamed themselves are better than fine tamed mules, thoroughbreds from Sindh, or giant tuskers.',
       cite: 'Dhammapada 322' },
-    { text: 'For not on those mounts would you go to the untrodden place, whereas, with the help of one <j>whose self is well tamed, you go there, tamed by the tamed.',
+    { text: 'For not on those mounts would you go to the untrodden place, whereas, with the help of one whose self is well tamed, you go there, tamed by the tamed.',
       cite: 'Dhammapada 323' },
     { text: 'The tusker named Dhanapāla is musky in rut, hard to control. Bound, he eats not a morsel, for he misses the elephant forest.',
       cite: 'Dhammapada 324' },
@@ -708,10 +688,8 @@
       cite: 'Dhammapada 343' },
     { text: 'Unsnarled, they set out for the jungle, then they run right back to the jungle they left behind. Just look at this individual! Freed, they run to bondage.',
       cite: 'Dhammapada 344' },
-    { text: 'The attentive say that shackle is not strong that’s made of iron, wood, or knots. But obsession with jeweled earrings, concern for your partners and children:',
-      cite: 'Dhammapada 345' },
-    { text: 'this, say the attentive, is a strong shackle dragging the indulgent down, hard to escape. Having cut this one too they go forth, unconcerned, having given up sensual pleasures.',
-      cite: 'Dhammapada 346' },
+    { text: 'The attentive say that shackle is not strong that’s made of iron, wood, or knots. But obsession with jeweled earrings, concern for your partners and children: this, say the attentive, is a strong shackle dragging the indulgent down, hard to escape. Having cut this one too they go forth, unconcerned, having given up sensual pleasures.',
+      cite: 'Dhammapada 345–346' },
     { text: 'Besotted by lust they fall into the stream, like a spider caught in the web she wove. The attentive proceed, having cut this one too, unconcerned, having given up all suffering.',
       cite: 'Dhammapada 347' },
     { text: 'For a personage churned by thoughts, very lustful, focusing on beauty, their craving grows and grows, tying them with a stout bond.',
@@ -778,7 +756,7 @@
       cite: 'Dhammapada 385' },
     { text: 'Absorbed, rid of hopes, their task completed, without defilements, arrived at the highest goal: that’s who I declare a brahmin.',
       cite: 'Dhammapada 386' },
-    { text: 'A brahmin’s so-called <j>since they’ve banished evil, an ascetic’s so-called <j>since they live a serene life. One who has renounced all stains is said to be a “renunciant”.',
+    { text: 'A brahmin’s so-called since they’ve banished evil, an ascetic’s so-called since they live a serene life. One who has renounced all stains is said to be a “renunciant”.',
       cite: 'Dhammapada 388' },
     { text: 'One should never strike a brahmin, nor should a brahmin retaliate. Woe to the one who hurts a brahmin, and woe for the one who retaliates.',
       cite: 'Dhammapada 389' },
@@ -1458,6 +1436,7 @@
 
   var quoteEl = $('.b-quote');
   var citeEl = $('.b-cite');
+  var announceEl = $('.b-announce');
   var lastIndex = -1;
 
   function pick() {
@@ -1476,13 +1455,34 @@
     citeEl.textContent = q.cite;
   }
 
+  /* Writing textContent tells a screen reader nothing, so tapping him used to
+     change the verse in complete silence for anyone not looking at it. The
+     status region in the markup fixes that. Called only from swap(): the
+     verse that render(pick()) puts up at load is already in the document the
+     reader is about to read, and announcing it as well read it out twice. */
+  function announce(index) {
+    if (!announceEl) return;
+    var q = QUOTES[index];
+    announceEl.textContent = q.text + ' — ' + q.cite;
+  }
+
   function swap() {
     if (!quoteEl || !citeEl) return;
-    if (reduced) { render(pick()); return; }
+    var next;
+    if (reduced) {
+      next = pick();
+      render(next);
+      announce(next);
+      return;
+    }
     quoteEl.classList.add('b-fading');
     citeEl.classList.add('b-fading');
     window.setTimeout(function () {
-      render(pick());
+      var i = pick();
+      render(i);
+      // Announced with the fade back in, not at the start of it, so the words
+      // reach the ear at the same moment they reach the eye.
+      announce(i);
       quoteEl.classList.remove('b-fading');
       citeEl.classList.remove('b-fading');
     }, 700);   // matches the transition in buddha.css
@@ -1546,8 +1546,10 @@
   /* ---------------------------------------------------------------------
      2. The breath
      ---------------------------------------------------------------------
-     The ring is animated in CSS on a 10s cycle: 4s expanding, 6s settling.
-     This only writes the words, off the same clock, so the two cannot drift.
+     The figure, his aura and the halo are animated in CSS on a 10s cycle:
+     4s expanding, 6s settling. There is no separate ring element — those
+     three are what a visitor watches. This only writes the words, off the
+     same clock, so the label and the motion cannot drift.
      A longer out-breath than in-breath is the part that does the work.
      ------------------------------------------------------------------ */
 

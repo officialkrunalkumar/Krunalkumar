@@ -39,8 +39,36 @@
       return out;
     },
 
-    fromHex: function (text) {
-      var clean = String(text).replace(/[^0-9a-f]/gi, '');
+    /* Parse hex, tolerating the ways hex is actually written down, and
+       refusing the ways it is not.
+
+       The old version stripped every non-hex character and carried on. That
+       silently mangled a completely legitimate paste: in "0x48, 0x65" only the
+       'x' is non-hex, so the leading '0' of each byte survived, every pair
+       shifted, and "Hello" decoded as garbage — with no error. Text that is not
+       hex at all fared no better: "hello world" kept e-l-l-d-a-d and printed one
+       replacement glyph under the heading "Result — 1 characters".
+
+       So: strip 0x prefixes and real separators first, then, in strict mode,
+       reject whatever is left rather than pretending. Non-strict stays lenient
+       for callers that want best-effort. */
+    fromHex: function (text, strict) {
+      var clean = String(text)
+        .replace(/0[xX]/g, '')          // 0x48 -> 48, before anything else
+        .replace(/[\s:,;\-_|]/g, '');   // spaces, colons, commas, dashes, pipes
+
+      if (strict) {
+        var bad = clean.replace(/[0-9a-f]/gi, '');
+        if (bad) {
+          throw new Error('"' + bad.charAt(0) + '" is not a hex digit. Hex uses 0-9 and a-f.');
+        }
+        if (clean.length % 2) {
+          throw new Error('That is ' + clean.length + ' hex digits — an odd number, so the last byte is incomplete.');
+        }
+      } else {
+        clean = clean.replace(/[^0-9a-f]/gi, '');
+      }
+
       if (clean.length % 2) clean = '0' + clean;
       var out = new Uint8Array(clean.length / 2);
       for (var i = 0; i < out.length; i++) {
@@ -77,13 +105,79 @@
        ------------------------------------------------------------------ */
     out: function (paneId) {
       var pane = document.getElementById(paneId);
+
+      /* Every tool renders into a <pre tabindex="0"> with no accessible name
+         and no announcement, so a screen reader user could tab into an unnamed
+         box and never learn that pressing Run had produced anything. Fixed here
+         rather than in 26 pages of markup, since every tool comes through this
+         function.
+
+         Deliberately NOT aria-live on the pane itself: these panes hold hex
+         dumps, certificate chains and packet listings, and making the whole
+         thing live would read the entire dump aloud on every run. A short
+         summary in its own region says that output arrived and how much, and
+         leaves reading it to the user, at the pace they choose. */
+      var status = null;
+      if (pane) {
+        if (!pane.getAttribute('aria-label')) {
+          pane.setAttribute('aria-label', 'Tool output');
+        }
+        if (!pane.getAttribute('role')) pane.setAttribute('role', 'region');
+        status = document.getElementById(paneId + '-status');
+        if (!status) {
+          status = document.createElement('p');
+          status.id = paneId + '-status';
+          status.className = 'sr-only';
+          status.setAttribute('role', 'status');
+          status.setAttribute('aria-live', 'polite');
+          if (pane.parentNode) pane.parentNode.insertBefore(status, pane.nextSibling);
+        }
+      }
+
+      /* One announcement per burst. Tools emit output a line at a time, so
+         announcing per write() would queue dozens of interruptions for a single
+         run; the timer collapses a burst into one message once it settles. */
+      var lines = 0;
+      var announceTimer = null;
+      /* Silent until the first run.
+
+         Most tools print their help text from onReady at page load — 13 of them
+         do it without clearing first — and announcing that would fire a
+         role="status" region over the page title while a screen reader is still
+         reading the heading. It would also be a lie: nothing was updated, and
+         the lines are instructions, not results.
+
+         clear() is the reliable arming signal. Every tool calls it at the top of
+         its run path and none calls it at load, so the announcer wakes up on the
+         first thing the visitor actually asks for. */
+      var armed = false;
+      function announce() {
+        if (!status || !armed) return;
+        if (announceTimer) clearTimeout(announceTimer);
+        announceTimer = setTimeout(function () {
+          if (!lines) return;
+          status.textContent = 'Output updated, ' + lines +
+            (lines === 1 ? ' line.' : ' lines.');
+        }, 250);
+      }
+
       var api = {
-        clear: function () { pane.textContent = ''; return api; },
+        clear: function () {
+          pane.textContent = '';
+          lines = 0;
+          armed = true;
+          // Emptied so the next run's message is heard as a change even when
+          // the line count happens to be identical.
+          if (status) status.textContent = '';
+          return api;
+        },
         write: function (text, cls) {
           var span = document.createElement('span');
           if (cls) span.className = cls;
           span.textContent = text;
           pane.appendChild(span);
+          var breaks = String(text).split('\n').length - 1;
+          if (breaks > 0) { lines += breaks; announce(); }
           return api;
         },
         line: function (text, cls) { return api.write((text || '') + '\n', cls); },

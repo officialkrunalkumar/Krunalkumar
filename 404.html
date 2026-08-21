@@ -25,9 +25,67 @@
         flex: 1 1 320px;
       }
 
+      /* The illustration is authored for a dark sky, and the fills are hard-coded:
+         on the light-theme surface the hull (#e2e8f0) measures 1.02:1, the stars
+         1.05:1 and the hull stroke 1.20:1, so all a light-theme visitor sees is the
+         nose cone, two fins and the flame. Pinning this one panel dark in both
+         themes fixes all nine fills at once without recolouring the artwork.
+         #0b1120 is already the cockpit fill inside the same SVG. */
+      /* No panel behind the rocket: it sits directly on the page ground in both
+         themes. The three fills that made it invisible in light mode are tokens
+         now, so the artwork follows the theme instead of being boxed away from
+         it. Measured against the light ground (#f5f8fc): the hull was #e2e8f0 at
+         1.16:1, the stars #e2f0ff at 1.09:1 and the accent #7dd3fc at 1.57:1 —
+         a visitor saw the nose cone, two fins and the flame. The light values
+         below are 9.72:1, 7.11:1 and 5.57:1. Everything else in the SVG is
+         already dark-on-light-safe (the cockpit #1e293b reads 13.73:1). */
+      /* The whole illustration is themed, not boxed.
+
+         Every fill was authored for a dark sky, so on the light ground the hull
+         (#e2e8f0) read 1.16:1, the stars 1.09:1 and the accent 1.57:1 — a
+         visitor saw a nose cone, two fins and a flame. Pinning a dark panel
+         behind it would have hidden the problem rather than fixed it, so each
+         fill is a token instead and the artwork follows the theme.
+
+         Note the planet is DELIBERATELY low contrast against the page: at
+         1.18:1 in dark it is a subtle disc read by its rim, not by its fill.
+         The light value mirrors that at 1.21:1 rather than turning it into a
+         solid blob. The "404" is what has to be legible, and it sits ON the
+         planet — 8.77:1 in dark, 4.62:1 in light. */
       .notfound-art {
         flex: 0 1 300px;
         margin: 0 auto;
+        --nf-hull: #e2e8f0;
+        --nf-hull-edge: rgba(125, 211, 252, 0.55);
+        --nf-star: #e2f0ff;
+        --nf-star-alt: #a855f7;
+        --nf-accent: #7dd3fc;
+        --nf-planet: #1e293b;
+        --nf-rim: rgba(125, 211, 252, 0.5);
+        --nf-crater: rgba(125, 211, 252, 0.18);
+        --nf-crater-soft: rgba(125, 211, 252, 0.14);
+        --nf-ring: rgba(168, 85, 247, 0.55);
+        --nf-fin: #38bdf8;
+        --nf-band: #94a3b8;
+        --nf-flame: #fb923c;
+        --nf-cockpit: #0b1120;
+      }
+
+      :root[data-theme="light"] .notfound-art {
+        --nf-hull: #eef2f7;
+        --nf-hull-edge: #334155;
+        --nf-star: #475569;
+        --nf-star-alt: #7e22ce;
+        --nf-accent: #0369a1;
+        --nf-planet: #dbe4ee;
+        --nf-rim: rgba(3, 105, 161, 0.5);
+        --nf-crater: rgba(3, 105, 161, 0.16);
+        --nf-crater-soft: rgba(3, 105, 161, 0.12);
+        --nf-ring: rgba(126, 34, 206, 0.5);
+        --nf-fin: #0284c7;
+        --nf-band: #64748b;
+        --nf-flame: #c2410c;
+        --nf-cockpit: #f5f8fc;
       }
 
       .notfound-art svg {
@@ -213,29 +271,29 @@
         </div>
         <div class="notfound-art" aria-hidden="true">
           <svg viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
-            <circle class="nf-star" cx="30" cy="40" r="2" fill="#e2f0ff" />
-            <circle class="nf-star" cx="300" cy="28" r="2.5" fill="#7dd3fc" />
-            <circle class="nf-star" cx="255" cy="240" r="2" fill="#e2f0ff" />
-            <circle class="nf-star" cx="60" cy="120" r="1.6" fill="#a855f7" />
-            <circle class="nf-star" cx="320" cy="150" r="1.8" fill="#e2f0ff" />
-            <circle class="nf-star" cx="150" cy="24" r="1.6" fill="#7dd3fc" />
-            <circle class="nf-star" cx="20" cy="250" r="2.2" fill="#7dd3fc" />
-            <circle class="nf-star" cx="200" cy="300" r="1.8" fill="#a855f7" />
+            <circle class="nf-star" cx="30" cy="40" r="2" fill="var(--nf-star)" />
+            <circle class="nf-star" cx="300" cy="28" r="2.5" fill="var(--nf-accent)" />
+            <circle class="nf-star" cx="255" cy="240" r="2" fill="var(--nf-star)" />
+            <circle class="nf-star" cx="60" cy="120" r="1.6" fill="var(--nf-star-alt)" />
+            <circle class="nf-star" cx="320" cy="150" r="1.8" fill="var(--nf-star)" />
+            <circle class="nf-star" cx="150" cy="24" r="1.6" fill="var(--nf-accent)" />
+            <circle class="nf-star" cx="20" cy="250" r="2.2" fill="var(--nf-accent)" />
+            <circle class="nf-star" cx="200" cy="300" r="1.8" fill="var(--nf-star-alt)" />
 
-            <circle cx="100" cy="215" r="62" fill="#1e293b" stroke="rgba(125, 211, 252, 0.5)" stroke-width="2" />
-            <circle cx="74" cy="192" r="9" fill="rgba(125, 211, 252, 0.18)" />
-            <circle cx="126" cy="244" r="6" fill="rgba(125, 211, 252, 0.14)" />
-            <text x="100" y="228" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="38" font-weight="800" fill="#7dd3fc">404</text>
-            <ellipse cx="100" cy="215" rx="98" ry="26" fill="none" stroke="rgba(168, 85, 247, 0.55)" stroke-width="5" transform="rotate(-16 100 215)" />
+            <circle cx="100" cy="215" r="62" fill="var(--nf-planet)" stroke="var(--nf-rim)" stroke-width="2" />
+            <circle cx="74" cy="192" r="9" fill="var(--nf-crater)" />
+            <circle cx="126" cy="244" r="6" fill="var(--nf-crater-soft)" />
+            <text x="100" y="228" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="38" font-weight="800" fill="var(--nf-accent)">404</text>
+            <ellipse cx="100" cy="215" rx="98" ry="26" fill="none" stroke="var(--nf-ring)" stroke-width="5" transform="rotate(-16 100 215)" />
 
             <g class="nf-rocket">
-              <path class="nf-flame" d="M245 152 C237 168 239 184 245 194 C251 184 253 168 245 152 Z" fill="#fb923c" />
-              <path d="M245 44 C266 66 270 98 263 128 L227 128 C220 98 224 66 245 44 Z" fill="#e2e8f0" stroke="rgba(125, 211, 252, 0.55)" stroke-width="2" />
-              <path d="M245 44 C252 52 257 62 259 72 L231 72 C233 62 238 52 245 44 Z" fill="#38bdf8" />
-              <circle cx="245" cy="96" r="11" fill="#0b1120" stroke="#7dd3fc" stroke-width="3" />
-              <path d="M227 116 L205 146 L229 138 Z" fill="#38bdf8" />
-              <path d="M263 116 L285 146 L261 138 Z" fill="#38bdf8" />
-              <rect x="233" y="128" width="24" height="8" rx="3" fill="#94a3b8" />
+              <path class="nf-flame" d="M245 152 C237 168 239 184 245 194 C251 184 253 168 245 152 Z" fill="var(--nf-flame)" />
+              <path d="M245 44 C266 66 270 98 263 128 L227 128 C220 98 224 66 245 44 Z" fill="var(--nf-hull)" stroke="var(--nf-hull-edge)" stroke-width="2" />
+              <path d="M245 44 C252 52 257 62 259 72 L231 72 C233 62 238 52 245 44 Z" fill="var(--nf-fin)" />
+              <circle cx="245" cy="96" r="11" fill="var(--nf-cockpit)" stroke="var(--nf-accent)" stroke-width="3" />
+              <path d="M227 116 L205 146 L229 138 Z" fill="var(--nf-fin)" />
+              <path d="M263 116 L285 146 L261 138 Z" fill="var(--nf-fin)" />
+              <rect x="233" y="128" width="24" height="8" rx="3" fill="var(--nf-band)" />
             </g>
           </svg>
         </div>
@@ -250,8 +308,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

@@ -28,6 +28,18 @@
   var PREFIX = 'lab.';
   var MAX_BODY = 512 * 1024;   // beyond this the pane is the bottleneck, not the API
 
+  /* fetch() has no timeout of its own. A host that completes the handshake and
+     then never finishes answering left this page stuck on "Sending…" with Send
+     disabled for the rest of the session — the promise simply never settled.
+     12 s, the same budget net-tool-shell.js uses for the network tools.
+
+     The timer is cleared in the `finally`, i.e. after `await res.text()`, not
+     when fetch() resolves. fetch() settles as soon as the response headers
+     arrive, so a body that streams forever would sail straight past a
+     header-only deadline — and that is the realistic hang, not a slow
+     handshake. Aborting the signal tears down the in-flight body read too. */
+  var TIMEOUT_MS = 12000;
+
   var $ = function (id) { return document.getElementById(id); };
   var el = {
     agree: $('lab-agree'), leave: $('lab-leave'),
@@ -126,6 +138,17 @@
     setStatus('Sending…', 'is-busy');
     write(method + ' ' + url + '\n\n', 't-info');
 
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    if (controller) options.signal = controller.signal;
+    var timedOut = false;
+    // No AbortController means no timer either: setting the flag without being
+    // able to abort would only relabel some later, genuine failure as a
+    // timeout. Pre-2017 browsers keep the old behaviour, nothing worse.
+    var timer = controller ? setTimeout(function () {
+      timedOut = true;
+      controller.abort();
+    }, TIMEOUT_MS) : null;
+
     var started = performance.now();
     try {
       var res = await fetch(url, options);
@@ -158,6 +181,20 @@
                 res.ok ? 'is-ok' : 'is-err');
     } catch (err) {
       var ms2 = Math.round(performance.now() - started);
+
+      /* An abort is our own doing and has nothing to do with CORS — a CORS
+         rejection fails at once, it does not hang for twelve seconds. Blaming
+         it here sent people to check Access-Control headers on a server whose
+         only fault was being slow. */
+      if (timedOut) {
+        write('No response within ' + (TIMEOUT_MS / 1000) + ' s — request aborted.\n\n', 't-err');
+        write('The connection was made but the answer never finished arriving.\n' +
+              'That is a host that is slow, hung, or streaming a body with no\n' +
+              'end. It is not CORS: a CORS rejection fails immediately.\n', 't-dim');
+        setStatus('No response in ' + (TIMEOUT_MS / 1000) + ' s — aborted', 'is-err');
+        return;
+      }
+
       // A network-level failure in fetch() is almost always CORS, and the
       // browser deliberately refuses to say so. Explaining that here saves
       // people from debugging an API that is working perfectly well.
@@ -174,6 +211,7 @@
             't-dim');
       setStatus('Request failed — see the response pane', 'is-err');
     } finally {
+      clearTimeout(timer);
       el.send.disabled = false;
     }
   }
@@ -235,6 +273,9 @@
   root.addEventListener('keydown', function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
       event.preventDefault();
+      // The click path is guarded by the disabled button; this one was not, so
+      // holding Ctrl+Enter fired a second request over the top of the first.
+      if (el.send.disabled) return;
       send();
     }
   });

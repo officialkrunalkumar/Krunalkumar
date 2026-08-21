@@ -930,13 +930,22 @@ pre.lab-example:hover .lab-copy,
   background: var(--raise-85);
 }
 
+/* This is an <h3> so a screen reader can skim the 57 labs by heading instead of
+   tabbing through 57 links that each read a twenty-word paragraph. Being a
+   heading means it now inherits `h1,h2,h3 { margin: 0 0 1rem }` from
+   main.css:800 — and .lab-card is display:flex/column, where margins do not
+   collapse, so every card gained 1rem (22.4px) between its name and its
+   description. font/margin are reset here so the element is a heading
+   semantically and unchanged visually. */
 .lab-card-name {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 0.6rem;
+  margin: 0;
   font-size: 1.02rem;
   font-weight: 700;
+  line-height: inherit;
   color: var(--ink);
 }
 
@@ -2205,6 +2214,41 @@ pre.lab-example:hover .lab-copy,
 }
 .chat-file-link { color: #4ade80; text-decoration: underline; }
 
+/* Accept / Decline on an incoming file offer.
+
+   The sender now offers and waits instead of pushing bytes unannounced, and
+   the Accept press is doing real work beyond consent: showSaveFilePicker()
+   requires transient user activation, so this click is the only moment the
+   browser will hand over a writable file handle. With it, chunks stream to
+   disk and any size goes through; without it every transfer was capped by
+   what a Blob could survive in memory. */
+.chat-file-accept,
+.chat-file-decline {
+  margin-left: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  font: inherit;
+  font-size: 0.85em;
+  border-radius: 0.4rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.4);
+  background: var(--raise-70);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+/* Green needs both halves. #4ade80 reads 6.27:1 on the dark --raise-70 but
+   1.60:1 on the light one, because a literal cannot flip with the theme — the
+   exact trap the .lab-btn note above records. #166534 is 6.56:1 in light. */
+.chat-file-accept { border-color: rgb(74 222 128 / 0.5); color: #4ade80; }
+:root[data-theme="light"] .chat-file-accept {
+  border-color: rgb(22 101 52 / 0.45);
+  color: #166534;
+}
+.chat-file-accept:hover:not(:disabled),
+.chat-file-decline:hover:not(:disabled) { background: var(--raise-85); }
+.chat-file-accept:disabled,
+.chat-file-decline:disabled { opacity: 0.45; cursor: not-allowed; }
+.chat-file-accept:focus-visible,
+.chat-file-decline:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 .chat-av-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
 .chat-av-note { margin: 0; flex: 1 1 14rem; }
 
@@ -2320,4 +2364,52 @@ pre.lab-example:hover .lab-copy,
   .hl-field textarea {
     font-size: 16px;
   }
+}
+
+/* ==========================================================================
+   No JavaScript
+   --------------------------------------------------------------------------
+   Every lab is a program that runs on the visitor's own machine — that is the
+   promise the whole section is built on, and it is also why none of them can
+   degrade into a static version. Without scripting there is no compiler, no
+   emulator, no hash, no animation.
+
+   What a no-JS visitor met before this was worse than nothing: a consent gate
+   they could not dismiss, an empty editor, and a Run button that did nothing,
+   with no indication why. The <noscript> block on each lab page explains what
+   the page would have done and how to get it; this hides the inert machinery
+   so that explanation is the only thing there.
+
+   Keyed on html.js, which boot.js sets synchronously before first paint, so
+   there is no flash of the tool before it disappears.
+   ========================================================================== */
+html:not(.js) .lab,
+html:not(.js) .lab-gate {
+  display: none;
+}
+
+.lab-noscript {
+  max-width: 48rem;
+  margin: 2rem auto;
+  padding: 1.6rem 1.8rem;
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.7rem;
+  color: var(--ink-2);
+}
+
+.lab-noscript h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+.lab-noscript p { margin: 0 0 0.7rem; line-height: 1.65; }
+.lab-noscript p:last-child { margin-bottom: 0; }
+
+.lab-noscript a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }

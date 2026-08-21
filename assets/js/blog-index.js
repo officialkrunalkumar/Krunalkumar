@@ -27,6 +27,7 @@
 
   function apply() {
     var matches = 0;
+    var shown = 0;
     cards.forEach(function (card) {
       var match = activeFilter === 'all' || card.getAttribute('data-category') === activeFilter;
       var visible = match;
@@ -37,9 +38,9 @@
         visible = matches < VISIBLE;
       }
       if (match) matches += 1;
+      if (visible) shown += 1;
       card.style.display = visible ? '' : 'none';
     });
-    var shownCount = matches;
 
     if (wrap) {
       wrap.style.display = activeFilter === 'all' && !expanded && cards.length > VISIBLE ? '' : 'none';
@@ -51,12 +52,28 @@
       var featuredMatch = activeFilter === 'all' ||
         featuredCard.getAttribute('data-category') === activeFilter;
       featuredSection.style.display = featuredMatch ? '' : 'none';
-      if (featuredMatch) shownCount += 1;
+      // The featured post is never capped, so it is both a match and shown.
+      if (featuredMatch) { matches += 1; shown += 1; }
     }
-    return shownCount;
+    return { shown: shown, total: matches };
   }
 
-  function setFilter(next, updateHash, announce) {
+  // The announcement used to read the whole catalogue ("15 articles") while the
+  // grid was showing six cards plus the featured one — so a screen-reader user
+  // was told about nine posts that are not on the page. Say what is actually
+  // rendered whenever the cap is hiding something.
+  var activeLabel = 'all';
+  function announce(counts) {
+    var noun = counts.total === 1 ? ' article' : ' articles';
+    announcer.textContent =
+      (counts.shown < counts.total
+        ? 'Showing ' + counts.shown + ' of ' + counts.total + noun
+        : counts.total + noun) +
+      (activeFilter === 'all' ? '' : ' in ' + activeLabel);
+  }
+
+  function setFilter(next, updateHash, shouldAnnounce) {
+    var previous = activeFilter;
     activeFilter = next;
     var label = 'all';
     if (filterBar) {
@@ -67,23 +84,30 @@
         if (on) label = chip.textContent.trim();
       });
     }
-    // replaceState rather than assigning location.hash: no scroll jump, no
-    // history spam from browsing between categories.
-    if (updateHash && history.replaceState) {
-      history.replaceState(null, '', next === 'all' ? location.pathname + location.search : '#' + next);
+    activeLabel = label;
+    // Never assign location.hash: that scrolls the page to the chip bar.
+    //
+    // This used replaceState to avoid history spam from browsing between
+    // categories, but the cost was worse than the spam: after filtering to
+    // "Security", Back left the blog entirely instead of undoing the filter,
+    // which is the one thing a filtered list makes people expect. pushState
+    // costs one entry per *change* of category — clicking the chip that is
+    // already active adds nothing — and popstate below restores the view.
+    if (updateHash && history.pushState && previous !== next) {
+      history.pushState({ blogFilter: next }, '',
+        next === 'all' ? location.pathname + location.search : '#' + next);
     }
-    var count = apply();
+    var counts = apply();
     // Only announce on an actual user click, not the initial/deep-link setup.
-    if (announce) {
-      announcer.textContent = count + (count === 1 ? ' article' : ' articles') +
-        (next === 'all' ? '' : ' in ' + label);
-    }
+    if (shouldAnnounce) announce(counts);
   }
 
   if (button && wrap) {
     button.addEventListener('click', function () {
       expanded = true;
-      apply();
+      // Revealing eight more cards was completely silent before this: the
+      // wrapper vanished and nothing said why the page got longer.
+      announce(apply());
       // Hiding the wrapper while its button is focused would drop keyboard
       // focus to <body>, so hand focus to the first newly revealed card.
       var target = cards[VISIBLE];
@@ -118,5 +142,9 @@
   }
 
   window.addEventListener('hashchange', applyHash);
+  // Back/forward across the entries pushState created. popstate and hashchange
+  // can both fire for one press, which is fine: applyHash reads the URL and is
+  // idempotent, and it passes updateHash=false so it can never push back.
+  window.addEventListener('popstate', applyHash);
   applyHash();
 })();

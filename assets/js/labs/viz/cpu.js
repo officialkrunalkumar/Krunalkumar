@@ -789,8 +789,19 @@
     code.id = 'viz-code'; code.className = 'cpu-code';
     code.spellcheck = false; code.setAttribute('autocapitalize', 'off');
     code.setAttribute('autocomplete', 'off'); code.setAttribute('wrap', 'off');
+    // The panel heading above is a plain div, so without this the editor is an
+    // unnamed text box to a screen reader.
+    code.setAttribute('aria-label', 'Assembly source code');
+    code.setAttribute('aria-describedby', 'viz-code-hint');
     code.value = EXAMPLES.fib;
     codePanel.appendChild(code);
+    // Tab indents here rather than moving on, which is what you want in a code
+    // editor and is also a keyboard trap unless there is a way out (WCAG 2.1.2).
+    // Escape is that way out, and it has to be discoverable or it does not
+    // count — hence a real hint rather than a comment in the source.
+    var codeHint = E('div', 'cpu-ph', 'Tab indents. Press Escape, then Tab, to move on.');
+    codeHint.id = 'viz-code-hint';
+    codePanel.appendChild(codeHint);
     left.appendChild(codePanel);
 
     var listPanel = E('div', 'cpu-panel');
@@ -860,14 +871,35 @@
       self.doAssemble(true);
       sel.selectedIndex = 0;
     });
+    /* Escape arms a single pass-through, so the very next Tab leaves the
+       editor the way Tab does everywhere else. Without it this textarea is a
+       one-way door: Tab indents and Shift+Tab reports key === 'Tab' as well, so
+       a keyboard user who reached the editor could not get out of it in either
+       direction without a mouse. Any other keystroke disarms it again, so
+       indentation keeps working normally the rest of the time. */
+    var tabWillEscape = false;
     code.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') {
+        tabWillEscape = true;
+        return;
+      }
       // tab inserts a tab instead of leaving the editor
       if (ev.key === 'Tab') {
+        if (tabWillEscape) { tabWillEscape = false; return; }   // browser moves focus
         ev.preventDefault();
         var s = code.selectionStart, e = code.selectionEnd;
         code.value = code.value.slice(0, s) + '    ' + code.value.slice(e);
         code.selectionStart = code.selectionEnd = s + 4;
-      } else if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
+        return;
+      }
+      // A bare modifier keydown must not disarm. Pressing Shift is the first
+      // half of Shift+Tab and fires its own keydown with key === 'Shift', so
+      // disarming here made Escape-then-Shift+Tab impossible: the backward
+      // escape looked like it should work and silently did not.
+      if (ev.key !== 'Shift' && ev.key !== 'Control' && ev.key !== 'Alt' && ev.key !== 'Meta') {
+        tabWillEscape = false;
+      }
+      if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
         ev.preventDefault();
         self.doAssemble(true);
       }

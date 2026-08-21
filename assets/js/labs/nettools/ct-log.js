@@ -28,6 +28,13 @@
   var ENDPOINT = 'https://api.certspotter.com/v1/issuances';
   var PAGE_LIMIT = 3;   // pages of results before we stop asking
 
+  /* Cert Spotter's key-less tier is roughly 9 queries per hour per IP, and a
+     busy domain spends up to PAGE_LIMIT of them in a single click — so three
+     searches can take this page out of service for the rest of the hour. That
+     is a budget the visitor is spending, so they get told the number before it
+     goes rather than discovering it from a 429. */
+  var HOURLY_BUDGET = 9;
+
   function cleanDomain(raw) {
     return String(raw).trim()
       .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '')
@@ -84,6 +91,8 @@
 
     out.heading('Certificate Transparency search — ' + domain);
     out.dim(includeSubs ? 'including subdomains' : 'exact domain only');
+    out.dim('costs up to ' + PAGE_LIMIT + ' of the ~' + HOURLY_BUDGET +
+            ' key-less queries ' + VENDOR + ' allows per hour');
     out.line('');
 
     var all = [];
@@ -107,9 +116,24 @@
       }).catch(function (err) {
         out.line('');
         if (err && err.rateLimited) {
-          out.err('Rate-limited by ' + VENDOR + '.');
-          out.dim('The unauthenticated endpoint allows a modest number of queries');
-          out.dim('per hour. Wait a while, or use an API key with your own tooling.');
+          out.err('Rate-limited by ' + VENDOR + ' — the hourly budget is spent.');
+          out.dim('The key-less endpoint allows roughly ' + HOURLY_BUDGET +
+                  ' queries an hour from one IP');
+          out.dim('address, and a search here can use ' + PAGE_LIMIT +
+                  ' of them. Nothing is wrong with');
+          out.dim('the domain you typed. The window is rolling, so a few minutes');
+          out.dim('often restores it and an hour certainly will; an API key with');
+          out.dim('your own tooling removes the limit entirely.');
+          // The pages that DID come back were paid for out of the same budget.
+          // Throwing them away meant the visitor spent requests and got an
+          // error, when a partial answer was already in hand.
+          if (all.length) {
+            out.line('');
+            out.warn('Showing the ' + all.length + ' certificate' +
+                     (all.length === 1 ? '' : 's') +
+                     ' that arrived before the limit — this list is incomplete.');
+            render(all, domain, includeSubs);
+          }
           return;
         }
         if (err && err.body !== undefined) {
@@ -228,6 +252,11 @@
     run: run,
     onReady: function () {
       out.dim('Enter a domain and press Search. Nothing is sent until you do.');
+      out.dim('');
+      out.dim('Search sparingly. ' + VENDOR + ' answers without an API key, but');
+      out.dim('only about ' + HOURLY_BUDGET + ' times an hour per IP address, and one search');
+      out.dim('fetches up to ' + PAGE_LIMIT + ' pages — each page is one of those. Three');
+      out.dim('searches of a busy domain can use the whole hour\'s allowance.');
       out.dim('');
       out.dim('Certificate Transparency is a public, append-only record of every');
       out.dim('certificate issued by a publicly-trusted CA since 2018. Searching');

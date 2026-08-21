@@ -1300,6 +1300,11 @@
   function syncMode() {
     cancelRaf(rafHandle); rafHandle = null;
     mode = (modeEl && modeEl.value === 'path') ? 'path' : 'sort';
+    // Only path mode swallows touch gestures. .lab-canvas is shared with the
+    // other labs, so this lives on the element and flips back to '' in sort
+    // mode — where the canvas is inert and the page must still scroll under
+    // a finger that happens to land on it.
+    if (canvas) canvas.style.touchAction = (mode === 'path') ? 'none' : '';
     populateAlgo();
     if (mode === 'sort') {
       sortN = sizeToN();
@@ -1329,49 +1334,60 @@
   }
 
   /* ---- stats panel ----------------------------------------------------- */
-  function chip(name, value, color) {
-    return '<span style="display:inline-block;margin:0 10px 6px 0;padding:2px 8px;' +
+  // tick() calls updateStats() on every animation frame, but the only things
+  // that actually change 60x a second are the numbers inside the chips. The
+  // panel used to be re-serialised whole — ~2KB of inline-styled markup, almost
+  // all of it constant — which measured 0.8ms a frame against 0.2ms for writing
+  // textContent into cached <b> nodes. So the chrome is built once per SHAPE
+  // (mode plus the set of algorithms on screen) and only the values move after
+  // that. Chips that come and go (writes, sorted, path) are always built and
+  // toggled with display, so their arrival is not a shape change either.
+  var statsShape = null;   // signature of the chrome currently in the DOM
+  var statsVal = {};       // key -> the <b> holding that chip's value
+  var statsChip = {};      // key -> the chip's outer <span>, for show/hide
+
+  function chip(key, name, value, color) {
+    return '<span data-k="' + key + '" style="display:inline-block;margin:0 10px 6px 0;padding:2px 8px;' +
       'border:1px solid rgba(125,211,252,0.18);border-radius:6px;background:#0b1220;' +
       'font:12px ' + FONT + ';color:#94a3b8">' + name +
       ' <b style="color:' + (color || COL.text) + '">' + value + '</b></span>';
   }
 
-  function updateStats() {
-    if (!statsEl) return;
-    var html = '';
-    html += chip('mode', mode, COL.accent);
+  function statsShapeOf(list) {
+    var sig = mode + '|' + list.length, i;
+    for (i = 0; i < list.length; i++) sig += '|' + list[i].algo;
+    return sig;
+  }
+
+  function buildStats(list, sig) {
+    var html = '', i, it;
+    html += chip('mode', 'mode', mode, COL.accent);
     if (mode === 'sort') {
-      html += chip('data', DISTS[distIndex], COL.amber);
-      html += chip('size', sortN + ' bars');
+      html += chip('dist', 'data', DISTS[distIndex], COL.amber);
+      html += chip('size', 'size', sortN + ' bars');
     } else {
-      html += chip('board', PATH_GENS[pathGenIndex], COL.amber);
-      html += chip('grid', gridCols + '×' + gridRows);
+      html += chip('board', 'board', PATH_GENS[pathGenIndex], COL.amber);
+      html += chip('grid', 'grid', gridCols + '×' + gridRows);
     }
-    html += chip('speed', speedPct());
-    html += chip('state', state, state === 'playing' ? COL.green : COL.dim);
+    html += chip('speed', 'speed', speedPct());
+    html += chip('state', 'state', state, state === 'playing' ? COL.green : COL.dim);
     html += '<div style="height:8px"></div>';
 
-    var list = activeList(), i, it;
     for (i = 0; i < list.length; i++) {
       it = list[i];
+      html += '<div style="margin:2px 0">';
+      html += '<b style="color:' + COL.accent + ';font:600 12px ' + FONT + '">' +
+        (ALGO_LABEL[it.algo] || it.algo) + '</b>  ';
       if (mode === 'sort') {
-        html += '<div style="margin:2px 0">';
-        html += '<b style="color:' + COL.accent + ';font:600 12px ' + FONT + '">' +
-          (ALGO_LABEL[it.algo] || it.algo) + '</b>  ';
-        html += chip('comparisons', window.LabViz && LabViz.humanNumber ? LabViz.humanNumber(it.comparisons) : it.comparisons, COL.amber);
-        html += chip('swaps', it.swaps, COL.red);
-        if (it.writes) html += chip('writes', it.writes, COL.barSet);
-        if (it.done) html += chip('status', 'sorted', COL.green);
-        html += '</div>';
+        html += chip('cmp' + i, 'comparisons', '0', COL.amber);
+        html += chip('swp' + i, 'swaps', '0', COL.red);
+        html += chip('wr' + i, 'writes', '0', COL.barSet);
+        html += chip('st' + i, 'status', 'sorted', COL.green);
       } else {
-        html += '<div style="margin:2px 0">';
-        html += '<b style="color:' + COL.accent + ';font:600 12px ' + FONT + '">' +
-          (ALGO_LABEL[it.algo] || it.algo) + '</b>  ';
-        html += chip('visited', it.vidx, COL.barSet);
-        if (it.done && it.found) html += chip('path', (it.path.length - 1) + ' steps', COL.gPath);
-        else if (it.done && !it.found) html += chip('path', 'unreachable', COL.red);
-        html += '</div>';
+        html += chip('vis' + i, 'visited', '0', COL.barSet);
+        html += chip('pt' + i, 'path', '0 steps', COL.gPath);
       }
+      html += '</div>';
     }
 
     html += '<div style="margin-top:8px;font:11px ' + FONT + ';color:#5d7086;line-height:1.6">';
@@ -1386,6 +1402,64 @@
     }
     html += '</div>';
     statsEl.innerHTML = html;
+
+    var nodes = statsEl.querySelectorAll('[data-k]'), k, el;
+    statsVal = {}; statsChip = {};
+    for (i = 0; i < nodes.length; i++) {
+      el = nodes[i];
+      k = el.getAttribute('data-k');
+      statsChip[k] = el;
+      statsVal[k] = el.getElementsByTagName('b')[0];
+    }
+    statsShape = sig;
+  }
+
+  function setStat(key, value, color) {
+    var b = statsVal[key];
+    if (!b) return;
+    value = String(value);
+    if (b.textContent !== value) b.textContent = value;
+    if (color) b.style.color = color;
+  }
+
+  function showStat(key, on) {
+    var el = statsChip[key], d = on ? 'inline-block' : 'none';
+    if (el && el.style.display !== d) el.style.display = d;
+  }
+
+  function updateStats() {
+    if (!statsEl) return;
+    var list = activeList(), sig = statsShapeOf(list), i, it;
+    if (sig !== statsShape) buildStats(list, sig);
+
+    setStat('mode', mode);
+    if (mode === 'sort') {
+      setStat('dist', DISTS[distIndex]);
+      setStat('size', sortN + ' bars');
+    } else {
+      setStat('board', PATH_GENS[pathGenIndex]);
+      setStat('grid', gridCols + '×' + gridRows);
+    }
+    setStat('speed', speedPct());
+    setStat('state', state, state === 'playing' ? COL.green : COL.dim);
+
+    for (i = 0; i < list.length; i++) {
+      it = list[i];
+      if (mode === 'sort') {
+        setStat('cmp' + i, window.LabViz && LabViz.humanNumber ? LabViz.humanNumber(it.comparisons) : it.comparisons);
+        setStat('swp' + i, it.swaps);
+        showStat('wr' + i, !!it.writes);
+        if (it.writes) setStat('wr' + i, it.writes);
+        showStat('st' + i, !!it.done);
+      } else {
+        setStat('vis' + i, it.vidx);
+        showStat('pt' + i, !!it.done);
+        if (it.done) {
+          setStat('pt' + i, it.found ? (it.path.length - 1) + ' steps' : 'unreachable',
+            it.found ? COL.gPath : COL.red);
+        }
+      }
+    }
   }
 
   /* ---- mouse: draw walls / drag endpoints (path mode only) ------------- */
@@ -1453,6 +1527,43 @@
 
   function onUp() { drag = null; }
 
+  /* ---- touch: the same two handlers, fed a one-finger stub -------------- */
+  // The panel text and the FAQ both promise "draw walls by dragging", so the
+  // grid has to work under a finger too. onDown/onMove only ever read
+  // clientX/clientY and call preventDefault, so a three-property stub is
+  // enough — no second copy of the hit-testing.
+  //
+  // These bind on the canvas, not on window like their mouse twins, for two
+  // reasons: touch events stay retargeted to the element the gesture started
+  // on, so a canvas listener still sees moves that wander off it; and
+  // touchstart/touchmove are passive BY DEFAULT on window/document but not on
+  // an ordinary element, so binding here is what lets preventDefault actually
+  // land. It has to land: without it the browser follows up with a synthesised
+  // mousedown, onDown runs a second time on the same cell, and the wall you
+  // just painted is toggled straight back off.
+  function touchStub(t, e) {
+    return {
+      clientX: t.clientX,
+      clientY: t.clientY,
+      preventDefault: function () { if (e.cancelable) e.preventDefault(); }
+    };
+  }
+
+  function onTouchStart(e) {
+    if (mode !== 'path' || !e.touches || e.touches.length !== 1) return;
+    onDown(touchStub(e.touches[0], e));
+  }
+
+  function onTouchMove(e) {
+    if (!drag || mode !== 'path' || !e.touches || e.touches.length !== 1) return;
+    onMove(touchStub(e.touches[0], e));
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function onTouchEnd(e) {
+    if (!e.touches || e.touches.length === 0) onUp();
+  }
+
   /* ---- keyboard: play/pause and single-step ---------------------------- */
   function onKey(e) {
     var tag = e.target && e.target.tagName;
@@ -1494,6 +1605,10 @@
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     canvas.addEventListener('mouseleave', function () { /* keep drag; window mouseup ends it */ });
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+    canvas.addEventListener('touchend', onTouchEnd);
+    canvas.addEventListener('touchcancel', onTouchEnd);
 
     // One keydown listener, on the root only. The canvas is focusable
     // (tabIndex 0) so a keypress while it is focused bubbles up to here —

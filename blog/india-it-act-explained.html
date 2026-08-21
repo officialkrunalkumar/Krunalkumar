@@ -151,7 +151,11 @@
             data-protection regime. Here is the whole structure in one pass: what each layer says, the folklore
             worth unlearning, and a reference index you can bookmark.
           </p>
-          <p class="post-meta">Published 10 August 2026 · 16 min read · by Krunalkumar Shah</p>
+          <!-- dateModified (2026-08-17) existed only in the BlogPosting JSON-LD above, so a
+               reader had no way to tell this piece had been revised a week after publication —
+               which matters on a page about live legislation. Both dates now carry a
+               machine-readable time element, matching the JSON-LD values exactly. -->
+          <p class="post-meta">Published <time datetime="2026-08-10">10 August 2026</time> · Updated <time datetime="2026-08-17">17 August 2026</time> · 16 min read · by Krunalkumar Shah</p>
         </section>
 
         <figure class="post-cover">
@@ -529,9 +533,13 @@
               Bookmark this table: the skimmable index of everything above, plus the criminal-procedure summons
               power most companies actually receive requests under.
             </p>
-            <div class="post-table-wrap">
+            <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
+                 at 375px it hides ~105-240px of table. A scrollable region has to be
+                 reachable by keyboard and has to say what it is (WCAG 2.1.1). The
+                 caption already names it, so it is borrowed rather than duplicated. -->
+            <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-indiaitact">
               <table class="post-table">
-                <caption>India's practitioner-relevant IT law provisions at a glance. Statuses verified August 2026.</caption>
+                <caption id="table-caption-indiaitact">India's practitioner-relevant IT law provisions at a glance. Statuses verified August 2026.</caption>
                 <thead>
                   <tr>
                     <th scope="col">Provision</th>
@@ -849,8 +857,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
           <div class="footer-cta-group">
             <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

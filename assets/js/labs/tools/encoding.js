@@ -70,6 +70,30 @@
     for (var m = digits.length - 1; m >= 0; m--) out += B58[digits[m]];
     return out;
   }
+  function fromBase58(text) {
+    var clean = String(text).replace(/\s+/g, '');
+    var bytes = [];
+    for (var i = 0; i < clean.length; i++) {
+      var val = B58.indexOf(clean[i]);
+      // 0, O, I and l are absent from the alphabet on purpose, so a character
+      // outside it means this is not Base58 rather than a typo worth guessing.
+      if (val === -1) throw new Error('"' + clean[i] + '" is not a Base58 character');
+      var carry = val;
+      // bytes[] is a little-endian accumulator: multiply by 58, add the digit.
+      // Peak carry is (255 * 58 + carry) >> 8, which settles at 57 — nowhere
+      // near the 32-bit limit, so plain arithmetic is safe here.
+      for (var j = 0; j < bytes.length; j++) {
+        carry += bytes[j] * 58;
+        bytes[j] = carry & 0xff;
+        carry >>= 8;
+      }
+      while (carry) { bytes.push(carry & 0xff); carry >>= 8; }
+    }
+    // A leading '1' encodes a leading zero byte — that is how the version byte
+    // at the front of a Bitcoin address survives the round trip.
+    for (var z = 0; z < clean.length && clean[z] === '1'; z++) bytes.push(0);
+    return new Uint8Array(bytes.reverse());
+  }
 
   var MORSE = { A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',
     I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',
@@ -107,10 +131,11 @@
         return dec.decode(b64ToBytes(s));
       }
       case 'hex-enc':  return LabTool.toHex(enc.encode(text));
-      case 'hex-dec':  return dec.decode(LabTool.fromHex(text));
+      case 'hex-dec':  return dec.decode(LabTool.fromHex(text, true));
       case 'b32-enc':  return toBase32(enc.encode(text));
       case 'b32-dec':  return dec.decode(fromBase32(text));
       case 'b58-enc':  return toBase58(enc.encode(text));
+      case 'b58-dec':  return dec.decode(fromBase58(text));
       case 'url-enc':  return encodeURIComponent(text);
       case 'url-dec':  return decodeURIComponent(text);
       case 'html-enc': return LabTool.escapeHtml(text);

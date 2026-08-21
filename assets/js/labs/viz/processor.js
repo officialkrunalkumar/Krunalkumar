@@ -107,6 +107,7 @@
   var reduced = false;
   var rafHandle = null;
   var lastTs = 0;
+  var onScreen = true;             // false while the canvas is scrolled out of view
   var lastLevelIdx = -1;
   var sliderActive = false;
   var built = false;
@@ -679,7 +680,7 @@
 
     syncHud();
     render();
-    rafHandle = raf(tick);
+    rafHandle = onScreen ? raf(tick) : null;
   }
 
   /* ---- HUD (kept in DOM so the text stays crisp) ------------------------- */
@@ -929,6 +930,33 @@
       } catch (e2) {}
     } else {
       window.addEventListener('resize', function () { fitCanvas(); render(); });
+    }
+
+    /* Nothing here stops the loop on its own: `playing` gates only `flow`,
+       because the zoom glide and armStallWatchdog() both still need frames
+       while the flow is paused. So an untouched page kept clearing and
+       refilling the whole canvas twice a frame — around 2560x1040 device
+       pixels at DPR 2, plus two fresh radial gradients — sixty times a second
+       for as long as the tab stayed open, including while the visualiser was
+       scrolled completely out of view. Frames you cannot see buy nothing, so
+       off-screen the loop stops and on the way back in lastTs is cleared:
+       without that reset the first frame after a long absence would carry the
+       entire gap as dt (clamped to 50ms, but still a visible jolt). */
+    if (window.IntersectionObserver) {
+      try {
+        new window.IntersectionObserver(function (entries) {
+          var on = !!entries[entries.length - 1].isIntersecting;
+          if (on === onScreen) return;
+          onScreen = on;
+          if (on) {
+            lastTs = 0;
+            if (rafHandle == null) rafHandle = raf(tick);
+          } else {
+            cancelRaf(rafHandle);
+            rafHandle = null;
+          }
+        }).observe(canvas);
+      } catch (e3) {}
     }
 
     /* Paint once, synchronously, before the loop starts.

@@ -485,9 +485,13 @@
               the damage when one succeeds anyway — and some eventually will. Mature security spends deliberately on
               both; that's what "defense in depth" actually means.
             </p>
-            <div class="post-table-wrap">
+            <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
+                 at 375px it hides ~105-240px of table. A scrollable region has to be
+                 reachable by keyboard and has to say what it is (WCAG 2.1.1). The
+                 caption already names it, so it is borrowed rather than duplicated. -->
+            <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-typesofcyberattack">
               <table class="post-table">
-                <caption>The highest-value prevention and mitigation for each family — starting points, not complete programs.</caption>
+                <caption id="table-caption-typesofcyberattack">The highest-value prevention and mitigation for each family — starting points, not complete programs.</caption>
                 <thead>
                   <tr>
                     <th scope="col">Family</th>
@@ -606,8 +610,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
           <div class="footer-cta-group">
             <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
