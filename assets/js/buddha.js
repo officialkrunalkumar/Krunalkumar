@@ -1704,6 +1704,41 @@
     wake();
   }
 
+  /* ---------------------------------------------------------------------
+     The breath words
+     ---------------------------------------------------------------------
+     "Breathe in / Breathe out" used to sit under the figure permanently. It
+     is an instruction, and a standing instruction on a page whose whole
+     subject is stillness is one more thing asking to be obeyed. So it is an
+     easter egg now: `m` brings the words out, `m` again puts them away, and
+     they are gone again on the next load. Nothing is stored — same rule as
+     the dance-mode egg on the home page.
+
+     What this hides is only the words. The breath itself never stops: the
+     figure, his aura and the halo go on swelling and settling on the same 10s
+     cycle (buddha.css §2 and §8), and the sr-only sentence in the markup
+     still describes it. Anyone who wants to follow the breath still can; they
+     are simply no longer being told to.
+
+     Pressing `m` deliberately does NOT call wake(). A keystroke meant for the
+     scene should not also summon the control panel the idle timer just spent
+     three seconds putting away.
+
+     Documented in the terminal's `magic` page, which is where the rest of
+     this site's key bindings live.
+     ------------------------------------------------------------------ */
+  if (scene) {
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'm' && e.key !== 'M') return;
+      // Let real shortcuts through, and never steal a keystroke from a field.
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.isContentEditable ||
+                /^(input|textarea|select)$/i.test(t.tagName || ''))) return;
+      scene.classList.toggle('is-breathing');
+    });
+  }
+
   var stage = $('.b-scene');
   if (stage && !reduced) {
     var LEAF = '<svg viewBox="0 0 24 30" aria-hidden="true" focusable="false">' +
