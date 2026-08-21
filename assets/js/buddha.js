@@ -1637,12 +1637,18 @@
     if (!(scene.requestFullscreen || scene.webkitRequestFullscreen)) {
       fsBtn.hidden = true;              // iPhone Safari has no element fullscreen
     } else {
-      fsBtn.addEventListener('click', function () {
+      fsBtn.addEventListener('click', function (e) {
         if (fsElement()) {
           (document.exitFullscreen || document.webkitExitFullscreen).call(document);
         } else {
           (scene.requestFullscreen || scene.webkitRequestFullscreen).call(scene);
         }
+        /* A clicked button keeps focus, and the idle rules deliberately never
+           hide a focused control — so without this the fullscreen button sat
+           there lit up over the very screen it had just cleared. detail > 0
+           means a real pointer press; a keyboard Enter/Space reports 0 and
+           keeps its focus, which is the whole point of that exception. */
+        if (e.detail > 0) fsBtn.blur();
       });
 
       var syncFs = function () {
@@ -1656,6 +1662,46 @@
       document.addEventListener('fullscreenchange', syncFs);
       document.addEventListener('webkitfullscreenchange', syncFs);
     }
+  }
+
+  /* ---------------------------------------------------------------------
+     Idle controls
+     ---------------------------------------------------------------------
+     The sound control and the fullscreen button withdraw when nothing has
+     happened for a few seconds, the way a video player's do, and any sign
+     that somebody is there brings them back. On a page built to be sat
+     with, a control panel parked in the corner is the one thing on screen
+     that keeps asking to be used.
+
+     They start visible and fade on a timer rather than starting hidden:
+     a control nobody ever sees is a control nobody knows exists.
+     ------------------------------------------------------------------ */
+  if (scene) {
+    var IDLE_MS = 3200;
+    var idleTimer = 0;
+
+    var wake = function () {
+      scene.classList.remove('is-idle');
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(function () {
+        // Never withdraw a control the keyboard is currently sitting on.
+        if (scene.querySelector(':focus-visible')) return;
+        scene.classList.add('is-idle');
+      }, IDLE_MS);
+    };
+
+    // pointermove/pointerdown cover mouse, pen and touch alike. focusin is on
+    // the document so Tabbing in from the header reveals them before the
+    // focus ring lands on something invisible.
+    scene.addEventListener('pointermove', wake, { passive: true });
+    scene.addEventListener('pointerdown', wake, { passive: true });
+    document.addEventListener('focusin', wake);
+
+    // Leaving the scene entirely: start the clock rather than hiding at once,
+    // so sweeping the pointer past the edge does not snatch them away.
+    scene.addEventListener('pointerleave', wake, { passive: true });
+
+    wake();
   }
 
   var stage = $('.b-scene');

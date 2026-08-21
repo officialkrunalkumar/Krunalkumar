@@ -2,10 +2,10 @@
    buddha-sound.js — the calm on /buddha, generated rather than downloaded.
    --------------------------------------------------------------------------
    There is no audio file behind this. Every sound is synthesised with the Web
-   Audio API: a low drone of three slightly detuned oscillators, and a singing
-   bowl, and a bansuri-like flute phrase that wanders through a Bhairavi
-   scale. That choice is not cleverness for its own sake — it settles three
-   problems at once.
+   Audio API: a tanpura cycling Pa-Sa-Sa-Sa under a generated hall reverb, a
+   sustained sub beneath it, a singing bowl, and a bansuri-like flute phrase
+   wandering through a Bhairavi scale. That choice is not cleverness for its
+   own sake — it settles three problems at once.
 
    Licensing. The obvious thing to reach for is a track you like, but recorded
    music is copyrighted twice over (the composition and the recording), and
@@ -42,6 +42,8 @@
 
   var ctx = null;
   var master = null;      // everything passes through this; the slider moves it
+  var warm = null;        // the shared low-pass every voice is mixed into
+  var send = null;        // reverb send, tapped off warm
   var drone = [];
   var bowlTimer = null;
   var suspendTimer = null;
@@ -76,41 +78,100 @@
        timidly enough that the sum is always safe — which is what made this
        inaudible in the first place — they are mixed properly and a limiter
        catches the peaks. */
+    /* A safety net, not a compressor. At -6/8:1 it was riding the gain on
+       every pluck, and steady gain-riding on a sustained drone is audible as
+       pumping — the exact opposite of what this page is for. At -3/6:1 with
+       the levels below, nothing touches it at the default volume and it only
+       catches the peaks at full. */
     var limiter = ctx.createDynamicsCompressor();
-    limiter.threshold.value = -6;
-    limiter.knee.value = 8;
-    limiter.ratio.value = 8;
-    limiter.attack.value = 0.004;
-    limiter.release.value = 0.3;
+    limiter.threshold.value = -3;
+    limiter.knee.value = 6;
+    limiter.ratio.value = 6;
+    limiter.attack.value = 0.005;
+    limiter.release.value = 0.25;
+
+    /* A true ceiling behind the limiter. The limiter is deliberately gentle,
+       and its 5ms attack lets the front of a transient through — a bowl
+       landing on top of the tanpura at full volume measured 1.03, which the
+       sound card would square off into an audible click.
+
+       This curve is exactly linear below 0.7, so nothing at ordinary listening
+       levels is coloured at all, and rounds off above it to a hard ceiling of
+       0.93. It is the difference between a peak being shaped and a peak being
+       clipped. */
+    var ceiling = ctx.createWaveShaper();
+    ceiling.curve = softClipCurve();
+    ceiling.oversample = '2x';
 
     master.connect(limiter);
-    limiter.connect(ctx.destination);
+    limiter.connect(ceiling);
+    ceiling.connect(ctx.destination);
 
     // Warmth, and nothing sharp: everything sits under a gentle low-pass.
-    var warm = ctx.createBiquadFilter();
+    // 2600 rather than the old 1600 — the tanpura's whole character lives in
+    // its upper partials, and at 1600 the buzz that makes it a tanpura instead
+    // of an organ was being filtered off.
+    warm = ctx.createBiquadFilter();
     warm.type = 'lowpass';
-    warm.frequency.value = 1600;
+    warm.frequency.value = 2600;
     warm.Q.value = 0.4;
     warm.connect(master);
 
-    // The drone. Three oscillators a few cents apart beat slowly against each
-    // other, which is what stops a sustained tone sounding like a test signal.
-    [110, 110.28, 164.8].forEach(function (f, i) {
+    /* Reverb, and it is the single thing this most needed. Everything before
+       was bone dry, which is why it read as oscillators in a box rather than
+       as a sound happening somewhere. Devotional music is inseparable from the
+       room it is played in — the stone hall IS part of the instrument.
+
+       The impulse response is generated, not downloaded: noise decaying
+       exponentially, run through a one-pole low-pass so the tail darkens as it
+       fades the way a real room does (high frequencies are absorbed first).
+       Left and right get independently generated noise, which is what makes it
+       open out into stereo instead of sitting in the middle of your head. */
+    var verb = ctx.createConvolver();
+    verb.buffer = makeIR(4.6, 2.4, 0.22);
+
+    var wet = ctx.createGain();
+    wet.gain.value = 0.45;
+    verb.connect(wet);
+    wet.connect(master);
+
+    // Pre-delay: a few milliseconds before the room answers. Without it the
+    // reverb smears the attack and every pluck loses its edge.
+    var pre = ctx.createDelay(0.5);
+    pre.delayTime.value = 0.035;
+    pre.connect(verb);
+
+    send = ctx.createGain();
+    send.gain.value = 0.75;
+    send.connect(pre);
+
+    // Everything dry also goes to the room.
+    warm.connect(send);
+
+    /* Under the tanpura, a sustained sub. Not a voice in its own right — at
+       55 Hz it is felt more than heard — but it gives the plucks a floor to
+       stand on, and its absence was a large part of why this sounded thin.
+
+       The two near-55Hz oscillators are 0.13 Hz apart, which beats once every
+       7.7 seconds. That slow swell is deliberate: it keeps the floor moving
+       without anything audibly modulating. */
+    [55, 55.13, 110].forEach(function (f, i) {
       var o = ctx.createOscillator();
-      o.type = i === 2 ? 'triangle' : 'sine';
+      o.type = 'sine';
       o.frequency.value = f;
       var g = ctx.createGain();
-      g.gain.value = i === 2 ? 0.14 : 0.22;
+      g.gain.value = i === 2 ? 0.08 : 0.14;
       o.connect(g); g.connect(warm);
       o.start();
       drone.push(o);
     });
 
-    // A very slow swell across the drone, on the page's own breathing period.
+    // A very slow swell across the whole bed, on the page's own breathing
+    // period, so the sound rises and falls with the halo above it.
     var lfo = ctx.createOscillator();
     lfo.frequency.value = 1 / 10;          // 10s, the same as the halo
     var lfoGain = ctx.createGain();
-    lfoGain.gain.value = 180;
+    lfoGain.gain.value = 420;
     lfo.connect(lfoGain); lfoGain.connect(warm.frequency);
     lfo.start();
     drone.push(lfo);
@@ -118,9 +179,117 @@
     return true;
   }
 
+  /* Linear to KNEE, then a tanh shoulder up to a fixed ceiling. Anything the
+     page plays at a sensible volume passes through untouched; only the peaks
+     that would have clipped are bent. */
+  function softClipCurve() {
+    var KNEE = 0.7;
+    var CEIL = 0.93;
+    var n = 4096;
+    var c = new Float32Array(n);
+    for (var i = 0; i < n; i++) {
+      var x = (i / (n - 1)) * 2 - 1;
+      var a = Math.abs(x);
+      var y = a <= KNEE
+        ? a
+        : KNEE + (CEIL - KNEE) * Math.tanh((a - KNEE) / (1 - KNEE));
+      c[i] = x < 0 ? -y : y;
+    }
+    return c;
+  }
+
+  /* An impulse response, computed rather than fetched. seconds sets the tail,
+     decay how fast it falls away, damp how quickly the room eats the top end
+     (higher = darker, more stone and cloth, less glass). */
+  function makeIR(seconds, decay, damp) {
+    var rate = ctx.sampleRate;
+    var len = Math.max(1, Math.floor(rate * seconds));
+    var buf = ctx.createBuffer(2, len, rate);
+    for (var ch = 0; ch < 2; ch++) {
+      var d = buf.getChannelData(ch);
+      var last = 0;
+      for (var i = 0; i < len; i++) {
+        var t = i / len;
+        var n = (Math.random() * 2 - 1) * Math.pow(1 - t, decay);
+        last += damp * (n - last);      // one-pole low-pass on the tail
+        d[i] = last;
+      }
+    }
+    return buf;
+  }
+
   /* One struck bowl. Partials are inharmonic and each fades at its own rate,
      with the high ones dying first, which is what makes it read as metal
      rather than as a synthesiser. */
+  /* ---------------------------------------------------------------------
+     The tanpura
+     ---------------------------------------------------------------------
+     This replaced three oscillators held at constant pitch, which is an
+     organ, not a drone. A tanpura is four plucked strings cycling endlessly,
+     and two things about it matter far more than the notes.
+
+     The first is jivari. The strings pass over a curved bridge with a thread
+     under them, so the string re-contacts the bridge as it vibrates and the
+     upper partials do not decay from the moment of the pluck — they SWELL,
+     peaking well after the attack, then fade. That late bloom is the shimmer
+     people recognise as a tanpura, and it is why each partial below gets its
+     own peak time rather than a shared envelope.
+
+     The second is overlap. The plucks come closer together than any one note
+     takes to die, so four strings become one continuous cloud that never
+     quite repeats. Nothing here loops; the cycle is rescheduled each time
+     with a little drift, so two minutes in it is still not a pattern.
+     ------------------------------------------------------------------ */
+
+  // Pa Sa Sa Sa: the standard tuning, tonic A. The low Sa last is what gives
+  // the cycle its rocking, settling feel rather than a flat pulse.
+  var TANPURA = [164.81, 220.0, 220.0, 110.0];
+  var tanpuraStep = 0;
+  var tanpuraTimer = null;
+
+  function pluck(freq, when, level) {
+    var PARTIALS = 14;
+    for (var n = 1; n <= PARTIALS; n++) {
+      var o = ctx.createOscillator();
+      o.type = 'sine';
+      o.frequency.value = freq * n;
+      // Real strings are never exactly harmonic, and exact ratios sound dead.
+      o.detune.value = (Math.random() - 0.5) * 7 + (n > 6 ? n * 0.6 : 0);
+
+      // The jivari bloom: the higher the partial, the later it peaks and the
+      // faster it then goes. The fundamental is the only one that speaks at
+      // the moment of the pluck.
+      var peak = when + (n === 1 ? 0.012 : 0.05 + n * 0.028);
+      var amp = level * Math.pow(n, -1.18) * (n === 1 ? 1 : 1.35);
+      var decay = 5.2 / Math.pow(n, 0.42);
+
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0, when);
+      g.gain.linearRampToValueAtTime(amp, peak);
+      g.gain.exponentialRampToValueAtTime(0.0001, peak + decay);
+
+      o.connect(g); g.connect(warm);
+      o.start(when);
+      o.stop(peak + decay + 0.1);
+    }
+  }
+
+  function scheduleTanpura() {
+    // 1.5s between plucks against a 5s decay, so four strings overlap into one
+    // continuous wash. The drift stops the cycle ever becoming a loop.
+    var wait = 1500 + Math.random() * 260;
+    tanpuraTimer = window.setTimeout(function () {
+      if (playing && ctx && ctx.state === 'running') {
+        var f = TANPURA[tanpuraStep % TANPURA.length];
+        // The low Sa is plucked a little harder, as a player would.
+        var level = (tanpuraStep % TANPURA.length === 3) ? 0.16 : 0.12;
+        pluck(f, ctx.currentTime + 0.02, level * (0.9 + Math.random() * 0.2));
+        tanpuraStep++;
+      }
+      scheduleTanpura();
+    }, wait);
+  }
+
   function strike(freq, when, level) {
     var partials = [
       { mult: 1,    gain: 1.0,  decay: 9 },
@@ -140,7 +309,10 @@
       g.gain.linearRampToValueAtTime(level * p.gain, when + 0.012);   // the tap
       g.gain.exponentialRampToValueAtTime(0.0001, when + p.decay);    // the ring
 
-      o.connect(g); g.connect(master);
+      // Into warm rather than master: the bowl was the one voice mixed dry
+      // and past the filter, so it sat in front of everything else instead of
+      // in the same room as it.
+      o.connect(g); g.connect(warm);
       o.start(when);
       o.stop(when + p.decay + 0.2);
     });
@@ -288,6 +460,11 @@
     fadeTo(gainFor(volume), 3);            // in slowly; nobody wants a jolt
     if (!bowlTimer) scheduleBowl();
     if (!fluteTimer) schedulePhrase();
+    if (!tanpuraTimer) scheduleTanpura();
+    // First pluck immediately, so the drone is present from the first second
+    // rather than arriving a beat and a half after the button.
+    pluck(TANPURA[3], ctx.currentTime + 0.03, 0.16);
+    tanpuraStep = 1;
     // one bowl now, so pressing the button clearly does something
     strike(BOWLS[2], ctx.currentTime + 0.15, 0.45);
     sync();
@@ -314,10 +491,11 @@
     playing = false;
     window.clearTimeout(bowlTimer); bowlTimer = null;
     window.clearTimeout(fluteTimer); fluteTimer = null;
+    window.clearTimeout(tanpuraTimer); tanpuraTimer = null;
     window.clearTimeout(suspendTimer);
     if (ctx) {
       try { ctx.close(); } catch (e) {}
-      ctx = null; master = null; drone = [];
+      ctx = null; master = null; warm = null; send = null; drone = [];
     }
     /* The controls have to be told, or a page restored from the bfcache comes
        back with a lit speaker and aria-pressed="true" over a context that was
@@ -351,14 +529,46 @@
     store(STORE_ON, playing ? '1' : '0');
   }
 
-  toggle.addEventListener('click', function () {
+  /* The volume slider hides itself the way a video player's does. CSS handles
+     hover and keyboard focus on its own; this covers what CSS cannot see — a
+     touch tap leaves no hover state behind, and switching the sound on should
+     show the slider before it folds away again.
+
+     Every call restarts the clock, so dragging the slider (which fires input
+     continuously) holds it open, and it only closes once you have finished. */
+  var REVEAL_MS = 2600;
+  var revealTimer = 0;
+  var audioWrap = document.querySelector('.b-audio');
+
+  function reveal() {
+    if (!audioWrap) return;
+    audioWrap.classList.add('is-reveal');
+    window.clearTimeout(revealTimer);
+    revealTimer = window.setTimeout(function () {
+      audioWrap.classList.remove('is-reveal');
+    }, REVEAL_MS);
+  }
+
+  /* pointerdown rather than click: it fires for touch, pen and mouse alike, and
+     it fires on the way down so the slider is already open by the time a finger
+     lands on it. */
+  if (audioWrap) audioWrap.addEventListener('pointerdown', reveal);
+
+  toggle.addEventListener('click', function (e) {
     if (playing) stop(); else start();
+    reveal();
+    /* Same reason as the fullscreen button: a clicked control keeps focus, and
+       the idle rules never hide a focused control, so the speaker would stay
+       lit over a scene it was supposed to leave alone. detail > 0 is a real
+       pointer press; keyboard activation reports 0 and keeps its focus. */
+    if (e.detail > 0) toggle.blur();
   });
 
   slider.addEventListener('input', function () {
     volume = parseInt(slider.value, 10) || 0;
     store(STORE_VOL, String(volume));
     if (playing) fadeTo(gainFor(volume), 0.25);
+    reveal();
   });
 
   /* Hidden tab: fade out, then suspend the context so it is not merely quiet

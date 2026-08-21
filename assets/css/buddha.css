@@ -29,6 +29,11 @@
   --dawn-gold: #ffe6bd;
   --dawn-cream: #fff6e4;
 
+  /* The ground beneath the dawn, and the flat colour of the closing panel.
+     Cream on it is 12.8:1, which is why the panel stays this dark in both
+     themes rather than lightening with the page around it. */
+  --b-earth: #3f2718;
+
   --leaf: #b8cf9a;
   --lotus: #ffd9e0;
   --lotus-deep: #e8a0b4;
@@ -410,29 +415,21 @@
 .b-below {
   position: relative;
   z-index: 10;
-  padding: clamp(3rem, 9vh, 6rem) 1.25rem clamp(4rem, 10vh, 7rem);
-  /* The ramp has to be DARK for the whole stretch the text occupies, and the
-     old one was not. It ran gold -> #8a6a52 (26%) -> page background, which
-     put the heading at 17% and the intro at 25% on mid-tones around
-     rgb(177,147,118) and rgb(142,110,86). Cream type measured 2.67:1 and
-     3.47:1 there — in BOTH themes — and dark type is no better on a middle
-     tone: it only reaches 3.4:1 at 25%. No single ink works on that band, so
-     the band is what changes.
+  padding: clamp(4.5rem, 11vh, 7rem) 1.25rem clamp(5rem, 12vh, 8rem);
+  /* A flat panel, not a fade. Every gradient tried here had the same problem:
+     the scene above ends on a bright cream horizon and this text needs a dark
+     ground (cream on --b-earth is 12.8:1; on any mid-tone nothing works — cream
+     measured 2.67:1 and dark ink only reached 3.4:1). Ramping between the two
+     inside the band meant a visible smear arriving and another one leaving,
+     and because gradient percentages resolve against the band's own height,
+     the smear moved as the text rewrapped.
 
-     In light theme it was worse below the fold: --bg-base is near-white, so
-     the closing links faded to 1.9:1, 1.5:1 and 1.16:1 against it.
-
-     Now: a brief gold lip carrying the dawn over from the scene, dark by 12%,
-     held dark until 94% — past the last line of text even on a short viewport,
-     where the back link rides up to about 93% — then fading into
-     whichever page background the theme has, inside the bottom padding where
-     no text sits. Cream on #3f2718 is 12.8:1, and the back link at 91% lands
-     at 5.98:1 in light and darker still in dark. */
-  background: linear-gradient(to bottom,
-    var(--dawn-gold) 0%,
-    #3f2718 12%,
-    #3f2718 94%,
-    var(--bg-base) 100%);
+     So the band does not try to blend at all. It is one colour, held away from
+     the scene above and the footer below by a margin, and the page background
+     shows through those gaps. The separation is what makes it read as a
+     deliberate block rather than a transition that went wrong. */
+  background: var(--b-earth);
+  margin-block: clamp(2.5rem, 7vh, 5rem);
 }
 
 .b-below-inner {
@@ -493,6 +490,8 @@
     animation: none;
   }
   .b-leaf, .b-mote, .b-ripple { display: none; }
+  /* The controls still fold away and withdraw, they just stop animating. */
+  .b-audio-vol, .b-audio, .b-fs { transition: none; }
   .b-halo { scale: 1; opacity: 0.9; }
   .b-quote, .b-cite, .b-breath-label { transition-duration: 1ms; }
 }
@@ -760,30 +759,139 @@
   gap: clamp(0.9rem, 3vw, 2rem);
   width: min(34rem, 82vw);
   margin: 0 auto clamp(2rem, 6vh, 3.5rem);
-  color: rgba(90, 52, 20, 0.55);
+  /* Sits on --b-earth now that the entry fade finishes above it, so the old
+     dark brown would have been invisible. Dawn gold at low alpha reads as a
+     faint glow on the earth and ties the mark back to the sky above. */
+  color: rgba(255, 230, 189, 0.38);
 }
 
+/* Two arrows growing inward. Each rule draws itself from its far end and
+   arrives at the wheel as its chevron lands, so the pair reads as converging on
+   the hub rather than sitting either side of it.
+
+   The line is a ::before and the chevron a separate ::after, which is the only
+   reason this works: the line is animated with scale, and anything nested
+   inside a scaled box is stretched with it — a chevron drawn on the same
+   element would flatten to a smear as the line grew. Keeping them siblings lets
+   the line scale while the arrowhead stays square.
+
+   An earlier version animated background-position instead, and the mirrored
+   rule silently stopped moving: it re-declared the background shorthand, which
+   resets background-size, so its travelling band stretched to the full width
+   and had nowhere left to travel. scale and opacity avoid that class of bug
+   entirely, and composite on the GPU without touching layout. */
 .b-breaker-rule {
+  position: relative;
   flex: 1 1 auto;
   height: 1px;
-  background: linear-gradient(to right, transparent, currentColor);
 }
-.b-breaker-rule:last-child {
+
+.b-breaker-rule::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent, currentColor);
+  transform-origin: left center;      /* grows from the outer edge, inward */
+  animation: b-rule-grow 3.4s var(--ease-calm) infinite;
+}
+
+/* The chevron. A square with two borders turned 45deg — cheaper than a border
+   triangle, and it keeps the hairline weight of the rule it caps. */
+.b-breaker-rule::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 5px;
+  height: 5px;
+  translate: 0 -50%;
+  rotate: 45deg;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform-origin: center;
+  animation: b-rule-tip 3.4s var(--ease-calm) infinite;
+}
+
+/* The far rule is the same thing mirrored, so both arrive at the hub. */
+.b-breaker-rule:last-child::before {
   background: linear-gradient(to left, transparent, currentColor);
+  transform-origin: right center;
+}
+.b-breaker-rule:last-child::after {
+  right: auto;
+  left: -1px;
+  rotate: -135deg;
+}
+
+@keyframes b-rule-grow {
+  0%       { scale: 0 1; opacity: 0; }
+  12%      { opacity: 1; }
+  62%, 88% { scale: 1 1; opacity: 1; }
+  100%     { scale: 1 1; opacity: 0; }
+}
+
+/* The arrowhead appears only once the line has nearly reached it, so the tip
+   reads as the arrow landing rather than a mark that was always there. */
+@keyframes b-rule-tip {
+  0%, 45%  { opacity: 0; scale: 0.3; }
+  62%, 88% { opacity: 1; scale: 1; }
+  100%     { opacity: 0; scale: 1; }
 }
 
 .b-breaker-mark {
   flex: 0 0 auto;
   width: clamp(1.6rem, 4vw, 2.3rem);
   height: clamp(1.6rem, 4vw, 2.3rem);
-  opacity: 0.75;
-  animation: b-breaker-turn 60s linear infinite;
+  /* Brighter than the rules either side of it, because the glow below needs
+     something solid to come off. The wheel is the one lit object on the panel. */
+  color: var(--dawn-gold);
+  opacity: 0.92;
+  /* 12s a turn. It began at 60s, which read as static unless you stared at
+     it — a dharmachakra that never visibly turns is a wheel not doing its job.
+     Fast enough now to read as turning at a glance, slow enough that it is
+     still the calmest moving thing on the page.
+
+     Two animations on one element: the turn is linear and constant, the glow
+     breathes on the page's own 10s cycle so the wheel pulses in time with the
+     halo above it rather than against it. */
+  animation:
+    b-breaker-turn 12s linear infinite,
+    b-breaker-glow 10s var(--ease-calm) infinite;
 }
 
 @keyframes b-breaker-turn { to { rotate: 360deg; } }
 
+/* Gold light coming off the metal. Layered drop-shadows rather than one big
+   blur: a tight bright core with a wider soft halo reads as something shining,
+   where a single large shadow just reads as fog. */
+@keyframes b-breaker-glow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 2px rgba(255, 226, 160, 0.55))
+      drop-shadow(0 0 9px rgba(255, 198, 108, 0.30));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 4px rgba(255, 236, 190, 0.85))
+      drop-shadow(0 0 18px rgba(255, 200, 110, 0.52))
+      drop-shadow(0 0 34px rgba(255, 176, 84, 0.24));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .b-breaker-mark { animation: none; }
+  /* The arrows stop growing and simply stand at full length, chevrons and
+     all — they are shape as much as motion, so removing them would remove
+     part of the design rather than part of the movement. */
+  .b-breaker-rule::before,
+  .b-breaker-rule::after { animation: none; scale: 1; opacity: 1; }
+  /* The wheel stops turning and stops pulsing, but keeps its light — the glow
+     is part of how it looks, not part of how it moves. */
+  .b-breaker-mark {
+    animation: none;
+    filter:
+      drop-shadow(0 0 3px rgba(255, 232, 176, 0.7))
+      drop-shadow(0 0 14px rgba(255, 200, 110, 0.4));
+  }
 }
 
 /* ==========================================================================
@@ -803,6 +911,38 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+/* Both controls withdraw when nothing has happened for a few seconds, the way
+   a video player's do. A page whose entire purpose is stillness should not sit
+   under a control panel; buddha.js adds .is-idle to the scene and any sign of a
+   person — a moved pointer, a tap, a Tab key — takes it off again.
+
+   They fade rather than disappear: opacity keeps them in the layout and in the
+   accessibility tree, so nothing shifts when they return. The :focus-within
+   rules below are the important half — a control the keyboard has landed on
+   must never be the invisible one. */
+.b-audio,
+.b-fs {
+  transition: opacity 520ms var(--ease-calm);
+}
+
+.b-scene.is-idle .b-audio,
+.b-scene.is-idle .b-fs {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.b-scene.is-idle .b-audio:focus-within,
+.b-scene.is-idle .b-fs:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* In fullscreen the pointer goes too. Somebody who has filled the screen with
+   this is looking at it or photographing it, and an arrow parked over the sky
+   is the same intrusion the controls were. Only in fullscreen: hiding the
+   cursor on an ordinary scrollable page would be hostile. */
+.b-scene.is-idle:fullscreen { cursor: none; }
 
 .b-audio-toggle {
   display: grid;
@@ -849,9 +989,27 @@
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  transition: opacity 300ms var(--ease-calm);
+  transition: width 280ms var(--ease-calm),
+              opacity 220ms var(--ease-calm),
+              margin-inline-start 280ms var(--ease-calm);
 }
-.b-audio-vol:disabled { opacity: 0.35; cursor: default; }
+.b-audio-vol:disabled { cursor: default; }
+
+/* The slider folds away when it is not wanted, the way a video player's does,
+   so the resting page carries one small speaker mark instead of a control
+   panel. Hover and focus-within do most of the work with no script at all —
+   and focus-within matters: a keyboard user tabbing to the slider opens it and
+   it stays open for as long as they are on it.
+
+   .is-reveal is what buddha-sound.js adds, for the two cases CSS cannot see: a
+   touch tap, which leaves no hover behind, and the moment the sound is switched
+   on, when the slider should show itself before getting out of the way. */
+.b-audio:not(.is-reveal):not(:hover):not(:focus-within) .b-audio-vol {
+  width: 0;
+  opacity: 0;
+  margin-inline-start: -0.5rem;   /* swallow the flex gap so nothing floats */
+  pointer-events: none;
+}
 
 .b-audio-vol::-webkit-slider-runnable-track {
   height: 4px;
