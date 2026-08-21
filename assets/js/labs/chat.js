@@ -1285,48 +1285,6 @@
     return ok;
   }
 
-  /* ---------------------------------------------------------------------
-     QR
-     ---------------------------------------------------------------------
-     Offered next to Copy rather than instead of it: on a laptop the clipboard
-     is faster, and between two phones the camera is the only sane option.
-     A ~240 character code lands at QR version 10, which is a 57x57 grid and
-     scans comfortably from arm's length.
-     ------------------------------------------------------------------ */
-
-  Array.prototype.forEach.call(
-    document.querySelectorAll('[data-qr-for]'),
-    function (btn) {
-      btn.addEventListener('click', function () {
-        var id = btn.getAttribute('data-qr-for');
-        var ta = document.getElementById(id);
-        var holder = document.querySelector('[data-qr-holder="' + id + '"]');
-        if (!ta || !holder) return;
-        if (!ta.value) { flashBtn(btn, 'Nothing yet'); return; }
-
-        if (!holder.hidden) {
-          holder.hidden = true;
-          btn.textContent = 'Show QR';
-          return;
-        }
-        if (!window.LabQR) { flashBtn(btn, 'QR unavailable'); return; }
-        try {
-          var info = window.LabQR.draw(holder.querySelector('canvas'), ta.value, {
-            size: 300,
-            dark: '#0b1120',
-            light: '#f8fafc'
-          });
-          holder.hidden = false;
-          btn.textContent = 'Hide QR';
-          trace('QR drawn: version ' + info.version + ', ' +
-                info.size + 'x' + info.size + ' modules, mask ' + info.mask);
-        } catch (e) {
-          flashBtn(btn, 'Too long for a QR');
-        }
-      });
-    }
-  );
-
   if (!window.RTCPeerConnection) {
     setStatus('This browser has no WebRTC', 'bad');
     el.pick.innerHTML = '<p class="chat-note">This browser does not support ' +
