@@ -2709,6 +2709,18 @@ footer a:hover {
   opacity: 0.72;
 }
 
+/* The loud half of the pair. Same pill, different room: /buddha is dawn amber,
+   /party is club magenta. Only the colours are overridden, so the two stay one
+   component with two moods rather than two components that drift apart. */
+.footer-still--loud {
+  color: #ffd9ec;
+  background: linear-gradient(135deg, rgba(255, 61, 154, 0.26), rgba(168, 85, 247, 0.12));
+  border-color: rgba(255, 61, 154, 0.45);
+  box-shadow: 0 0 0 0 rgba(255, 61, 154, 0.35);
+}
+
+.footer-still--loud .footer-still-icon { color: #ff9ecb; }
+
 /* A band of light crossing the pill, once every eight seconds. */
 .footer-still::after {
   content: "";
@@ -3235,6 +3247,8 @@ footer a:hover {
    clears the 3:1 floor for a graphic. Declared once, here with the rest of the
    doorway's colours; the duplicate is gone. */
 :root[data-theme="light"] .footer-still-icon { color: #8f5600; }
+:root[data-theme="light"] .footer-still--loud { color: #7a0044; }
+:root[data-theme="light"] .footer-still--loud .footer-still-icon { color: #a3005f; }
 :root[data-theme="light"] .footer-still::after {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.65), transparent);
 }

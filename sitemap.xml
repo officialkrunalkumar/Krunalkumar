@@ -535,6 +535,12 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/party</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/buddha</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>

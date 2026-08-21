@@ -597,6 +597,19 @@ crowding the raised surfaces even when you do shift them.
 - `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
   so fetched fragments and raw JSON never appear in search results.
 
+## A loud place (`/party`)
+
+The counterpart to `/buddha`, and built to the same rules: its own scene palette in both
+themes, controls that withdraw when idle, a fullscreen mode, and sound that is **synthesised,
+never a file** (`party-sound.js` — see the header comment there for why). The music is a
+thirty-two bar house arrangement rather than a loop, and it emits `party:beat` so `party.js`
+can move the lighting with it; `party.js` runs its own clock at the same tempo when the sound
+is off, so the room is never a still image.
+
+Photosensitivity is a hard constraint here: every pulse is locked to the beat at 124 BPM
+(2.07 flashes a second, under the WCAG 2.3.1 ceiling of three), no full-area flash swings a
+large luminance step, and `prefers-reduced-motion` stops the room entirely.
+
 ## A still place (`/buddha`)
 
 A quiet page, deliberately unlike the rest of the site.

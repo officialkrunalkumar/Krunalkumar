@@ -135,6 +135,15 @@ These are deliberately separated from the sixteen offline security tools. They s
 - [Refund Policy](https://krunalkumar.dpdns.org/refund): Mentorship 7-day refund guarantee, milestone-based consulting terms, and Wise international transfer guidelines.
 - [Security Contact](https://krunalkumar.dpdns.org/.well-known/security.txt): RFC 9116 security vulnerability reporting contact.
 
+## A Loud Place
+- [A Loud Place](https://krunalkumar.dpdns.org/party): the counterpart to the still place — a
+  dance floor with cartoon dancers, sweeping DJ beams, a mirror ball and a DJ working the decks.
+  The music is a 124 BPM house arrangement (intro, groove, breakdown, build, drop) synthesised
+  live in the Web Audio API rather than streamed from a file, so nothing is downloaded and
+  nothing is licensed. Nothing plays until the visitor presses the button; every light pulse is
+  locked to the beat, well under the WCAG flash threshold, and the room holds still under
+  prefers-reduced-motion. Has a fullscreen mode.
+
 ## A Still Place
 - [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page — an illustrated Buddha at dawn who
   breathes, opens his eyes every nine seconds and smiles; one of 684 verses from the Pali Canon, re-picked on
