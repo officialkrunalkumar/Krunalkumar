@@ -161,6 +161,11 @@
     print('     time with him. Press it again and they withdraw. Nothing is saved,');
     print('     and a reload puts them away.');
     print('');
+    print('     On <a href="/party">the loud page</a>, press <span class="cyan">t</span>. The record');
+    print('     changes &mdash; four of them, each with its own tempo, key and drum');
+    print('     pattern, all built in the browser rather than downloaded. Nothing');
+    print('     is saved, and the room re-times itself to whatever is playing.');
+    print('');
     print('     Also: the kitchen keeps a kettle. <span class="dim">(try: teapot)</span>');
     print('');
     print('<span class="white">NOTES</span>');

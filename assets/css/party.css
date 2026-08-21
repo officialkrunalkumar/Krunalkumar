@@ -1,0 +1,950 @@
+/* ==========================================================================
+   party.css — the room on /party.
+   Layered on top of main.css. Counterpart to buddha.css: that page is a place
+   to stop, this one is a place to move.
+
+   Like the buddha scene, the stage keeps its own palette in BOTH themes. A
+   nightclub that turns white when somebody prefers light mode is not a light
+   nightclub, it is a broken one, so only the site header and footer follow the
+   theme here (see the two [data-theme="light"] rules at the foot of the file).
+
+   PHOTOSENSITIVITY IS A HARD CONSTRAINT, NOT A PREFERENCE. Strobing is the
+   classic seizure trigger and WCAG 2.3.1 puts the ceiling at three flashes in
+   any one second. Every pulse on this page is locked to the beat at 124 BPM,
+   which is 2.07 flashes a second on the downbeat and never more — the lights
+   physically cannot strobe faster than the music, and the music is fixed. On
+   top of that, no full-area flash ever swings a large luminance step: the
+   bright moves are confined to beam and rim shapes over a dark room, and the
+   floor lifts by a few percent rather than blinking. Under
+   prefers-reduced-motion everything stops and nothing flashes at all.
+   ========================================================================== */
+
+.party {
+  /* Club palette. Saturated on purpose, but every one of these is used as
+     light over a near-black room rather than as a fill behind text — the only
+     text on the stage is screen-reader-only. */
+  --p-magenta: #ff3d9a;
+  --p-cyan: #22d3ee;
+  --p-amber: #fbbf24;
+  --p-violet: #a855f7;
+  --p-lime: #4ade80;
+
+  --p-room-top: #0a0714;
+  --p-room-mid: #150b26;
+  --p-room-low: #1d0f33;
+  --p-floor: #0b0818;
+
+  background: linear-gradient(180deg, var(--p-room-top) 0%, var(--p-room-mid) 52%, var(--p-room-low) 100%);
+  color: #f8fafc;
+}
+
+/* The particle field behind every other page would fight the lighting rig. */
+.party #bg-canvas { display: none; }
+
+/* --------------------------------------------------------------------------
+   Stage
+   -------------------------------------------------------------------------- */
+
+.p-scene {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(78vh, 640px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(168, 85, 247, 0.22), transparent 60%),
+    linear-gradient(180deg, #0a0714 0%, #140a24 60%, #0b0818 100%);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.p-scene:fullscreen {
+  border-radius: 0;
+  border: none;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Lighting rig
+   -------------------------------------------------------------------------- */
+
+/* There is no truss. A repeating-linear-gradient of alternating 14px blocks
+   was meant to read as a lighting rig seen end-on, but at this scale it just
+   read as a chessboard stripe pinned across the top of the scene — a band of
+   UI where the ceiling should be. The beams now come straight out of the dark,
+   which is what you actually see in a room: the light, not the lamp. */
+
+.p-lights {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* A beam is a cone: a wide soft gradient clipped to a triangle, blurred, and
+   screened over the room so overlapping beams add light instead of stacking
+   opaque shapes. transform-origin sits at the truss so the sweep pivots from
+   the lamp rather than from the middle of the cone. */
+.p-beam {
+  position: absolute;
+  /* Flush with the ceiling now the truss is gone; -2px keeps the cone's soft
+     top edge off the very first row of pixels. */
+  top: -2px;
+  left: 50%;
+  width: 26vmin;
+  height: 96%;
+  margin-left: -13vmin;
+  transform-origin: 50% 0%;
+  clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
+  mix-blend-mode: screen;
+  filter: blur(7px);
+  opacity: 0.5;
+  animation: p-sweep 7s ease-in-out infinite alternate;
+}
+
+.p-beam--1 { left: 16%; background: linear-gradient(180deg, rgb(255 61 154 / 0.75), transparent 78%); animation-duration: 6.4s; }
+.p-beam--2 { left: 34%; background: linear-gradient(180deg, rgb(34 211 238 / 0.7), transparent 78%); animation-duration: 8.1s; animation-delay: -2.2s; }
+.p-beam--3 { left: 52%; background: linear-gradient(180deg, rgb(168 85 247 / 0.7), transparent 78%); animation-duration: 7.3s; animation-delay: -4.1s; }
+.p-beam--4 { left: 70%; background: linear-gradient(180deg, rgb(251 191 36 / 0.62), transparent 78%); animation-duration: 9s;   animation-delay: -1.3s; }
+.p-beam--5 { left: 86%; background: linear-gradient(180deg, rgb(74 222 128 / 0.6), transparent 78%); animation-duration: 6.9s; animation-delay: -3.4s; }
+
+@keyframes p-sweep {
+  from { transform: rotate(-26deg); }
+  to   { transform: rotate(26deg); }
+}
+
+/* The beat flare. Six percent of opacity on an already-translucent shape is a
+   visible lift on the kick and nowhere near a flash — deliberately gentle,
+   because this is the element most likely to be mistaken for a strobe. */
+.p-scene.is-beat .p-beam { opacity: 0.62; }
+.p-beam { transition: opacity 90ms ease-out; }
+
+/* --------------------------------------------------------------------------
+   Disco ball
+   -------------------------------------------------------------------------- */
+
+.p-ball-wrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.p-ball-rod {
+  width: 2px;
+  height: 26px;
+  background: linear-gradient(180deg, #64748b, #334155);
+}
+
+/* A mirror ball has no colour of its own — every colour on it is a beam
+   bouncing off a tile, which is why a grey sphere under five coloured lamps
+   looked wrong. The conic gradient is the room reflected in it, screened over
+   the metal so the highlight still reads as chrome rather than as paint, and
+   the glow underneath is tinted to match. */
+.p-ball {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  position: relative;
+  background:
+    radial-gradient(circle at 32% 28%, #ffffff 0%, #cbd5e1 18%, #64748b 52%, #1e293b 100%);
+  box-shadow:
+    0 0 22px rgba(255, 61, 154, 0.35),
+    0 0 38px rgba(34, 211, 238, 0.28),
+    0 0 14px rgba(226, 232, 240, 0.3);
+  overflow: hidden;
+  animation: p-spin 11s linear infinite;
+}
+
+.p-ball::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 61, 154, 0.85), rgba(168, 85, 247, 0.7), rgba(34, 211, 238, 0.85),
+    rgba(74, 222, 128, 0.6), rgba(251, 191, 36, 0.8), rgba(255, 61, 154, 0.85));
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+
+/* Facets, drawn rather than modelled: two repeating gradients crossing give a
+   convincing mirror-tile grid for a fraction of the cost of real geometry. */
+/* z-index 2 so the tile grid sits ON TOP of the colour wash above — the
+   grout lines are what make it read as a ball of mirrors rather than a
+   painted marble, so they must be the last thing drawn. */
+.p-ball::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.55) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.55) 0 1px, transparent 1px 9px);
+  mix-blend-mode: multiply;
+}
+
+@keyframes p-spin { to { transform: rotate(360deg); } }
+
+/* The light the ball actually throws. The tinted sphere alone was not enough:
+   a mirror ball's whole point is the rotating field of coloured light it puts
+   ON THE ROOM, not the colour it happens to be. This is that field — a conic
+   gradient of hard-edged rays with gaps between them, centred on the ball,
+   blurred until the edges read as light rather than as pie slices, and turning
+   on exactly the ball's own eleven-second period so rays and facets agree.
+
+   screen blend means overlapping rays add rather than occlude, and the low
+   opacity keeps the whole thing under the flash budget: it rotates smoothly
+   and continuously, so it never contributes a flash at all. */
+.p-cast {
+  position: absolute;
+  /* The ball's centre: 0 (wrap) + 26 (rod) + 31 (radius). It was 71 while the
+     wrap sat 14px below the truss — leaving it there would have thrown the
+     rays from a point above the ball. */
+  top: 57px;
+  left: 50%;
+  width: 190vmax;
+  height: 190vmax;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(26px);
+  opacity: 0.3;
+  background: conic-gradient(
+    rgba(255, 61, 154, 0.85) 0deg 11deg, transparent 11deg 45deg,
+    rgba(251, 191, 36, 0.75) 45deg 56deg, transparent 56deg 90deg,
+    rgba(74, 222, 128, 0.7) 90deg 101deg, transparent 101deg 135deg,
+    rgba(34, 211, 238, 0.85) 135deg 146deg, transparent 146deg 180deg,
+    rgba(168, 85, 247, 0.85) 180deg 191deg, transparent 191deg 225deg,
+    rgba(255, 61, 154, 0.7) 225deg 236deg, transparent 236deg 270deg,
+    rgba(251, 191, 36, 0.6) 270deg 281deg, transparent 281deg 315deg,
+    rgba(34, 211, 238, 0.7) 315deg 326deg, transparent 326deg 360deg);
+  animation: p-cast-spin 11s linear infinite;
+}
+
+/* Same lesson as the deck platters: a keyframe that touches transform has to
+   restate the centring, or the rays drift off the ball as they turn. */
+@keyframes p-cast-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.p-scene.is-beat .p-cast { opacity: 0.38; }
+.p-cast { transition: opacity 110ms ease-out; }
+
+/* The dots the ball throws around the room. */
+.p-glints { position: absolute; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: screen; }
+.p-glint {
+  position: absolute;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(1px);
+  animation: p-drift 14s linear infinite;
+}
+@keyframes p-drift {
+  from { transform: translateX(-16vmin) scale(0.7); opacity: 0; }
+  12%  { opacity: 0.75; }
+  88%  { opacity: 0.75; }
+  to   { transform: translateX(16vmin) scale(1.15); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Floor
+   -------------------------------------------------------------------------- */
+
+.p-floor {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.16)),
+    var(--p-floor);
+  perspective: 320px;
+  overflow: hidden;
+}
+
+/* A grid laid flat with rotateX, scrolling toward the viewer. The tall height
+   plus the pull upward is what gives the horizon its vanishing point. */
+.p-grid {
+  position: absolute;
+  inset: -60% -50% -10% -50%;
+  transform: rotateX(74deg);
+  transform-origin: 50% 100%;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(34, 211, 238, 0.32) 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(0deg,  rgba(255, 61, 154, 0.26) 0 2px, transparent 2px 68px);
+  animation: p-scroll 2.4s linear infinite;
+}
+
+@keyframes p-scroll { to { background-position: 0 68px, 0 68px; } }
+
+.p-scene.is-beat .p-floor { background-color: #150c28; }
+.p-floor { transition: background-color 110ms ease-out; }
+
+/* --------------------------------------------------------------------------
+   Speakers
+   -------------------------------------------------------------------------- */
+
+/* Stacks belong beside the booth, not in the corners. Full-height cabinets at
+   the edges of the frame read as architectural columns rather than as PA, and
+   once the tables arrived they collided with the guests. Up here they flank
+   the DJ, they are smaller because they are further away, and the corners are
+   free for the bar. */
+.p-speaker {
+  position: absolute;
+  bottom: 31%;
+  width: clamp(24px, 4vmin, 44px);
+  height: clamp(44px, 7.4vmin, 82px);
+  z-index: 2;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #1f2937, #0f172a);
+  border: 1px solid #334155;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform-origin: 50% 100%;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.p-speaker--l { left: 33%; }
+.p-speaker--r { right: 33%; }
+
+.p-speaker::before,
+.p-speaker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #475569, #0b1220 70%);
+  border: 1px solid #1e293b;
+}
+.p-speaker::before { top: 12%; width: 62%; aspect-ratio: 1; }
+.p-speaker::after  { bottom: 10%; width: 40%; aspect-ratio: 1; }
+
+/* The cabinets jump on the kick. Scale, not brightness — movement reads as
+   bass and costs nothing in flash budget. */
+.p-scene.is-beat .p-speaker {
+  transform: scaleY(1.05) scaleX(1.02);
+  box-shadow: 0 0 26px rgba(255, 61, 154, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   DJ booth
+   -------------------------------------------------------------------------- */
+
+/* The booth sits at the back of the room, so it is both higher up the frame
+   and BEHIND the crowd — z-index 2 against the crowd's 3. At bottom:30% and a
+   matching z-index it landed on top of the middle dancer's chest, which read
+   as one person standing inside the decks rather than as depth. */
+.p-booth {
+  position: absolute;
+  left: 50%;
+  bottom: 38%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: clamp(150px, 25vmin, 235px);
+  text-align: center;
+}
+
+/* The DJ: head, headphones, and both hands down on the decks. Deliberately
+   smaller than the dancers — further away, and the size difference is most of
+   what sells depth on a flat stage.
+
+   She is working AND dancing, which is two separate motions on two separate
+   elements: the whole figure bobs on the beat, and each arm moves
+   independently over the record. One arm scratches on a half-beat while the
+   other rides the crossfader at half that rate — arms moving in lockstep read
+   as a puppet, not a person. */
+.p-dj {
+  display: block;
+  width: 64%;
+  margin: 0 auto -3px;
+  transform-origin: 50% 100%;
+  animation: p-dj-bob calc(var(--beat) * 2) ease-in-out infinite;
+}
+
+@keyframes p-dj-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-8%) rotate(1.5deg); }
+}
+
+.p-dj-arm-l,
+.p-dj-arm-r { transform-box: view-box; }
+
+/* Shoulders at (28,42) and (52,42) in the 80x62 canvas she is drawn in. */
+.p-dj-arm-l { transform-origin: 35% 68%; animation: p-scratch var(--beat) ease-in-out infinite; }
+.p-dj-arm-r { transform-origin: 65% 68%; animation: p-fader calc(var(--beat) * 2) ease-in-out infinite; }
+
+@keyframes p-scratch {
+  0%, 100% { transform: rotate(-13deg); }
+  50%      { transform: rotate(9deg); }
+}
+@keyframes p-fader {
+  0%, 100% { transform: rotate(7deg) translateX(0); }
+  50%      { transform: rotate(-5deg) translateX(-3%); }
+}
+
+.p-decks {
+  height: clamp(26px, 4.6vmin, 40px);
+  border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(180deg, #334155, #111827);
+  border: 1px solid #475569;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+/* The platters spin IN PLACE. They used to carry transform: translateY(-50%)
+   for centring and then run the shared p-spin keyframe, whose only frame is
+   `transform: rotate(360deg)` — that replaces the whole transform, so the
+   browser interpolated from "shifted up half its height" to "not shifted at
+   all" and the records slid up and down the booth instead of turning. Any
+   keyframe touching transform has to restate every part of it. */
+.p-decks::before,
+.p-decks::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #cbd5e1 0 8%, #0f172a 9% 16%, transparent 17%),
+    conic-gradient(#0b1220, #334155, #0b1220, #334155, #0b1220);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
+  animation: p-deck-spin calc(var(--beat) * 4) linear infinite;
+}
+.p-decks::before { left: 8%; }
+.p-decks::after  { right: 8%; }
+
+@keyframes p-deck-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   The crowd
+   -------------------------------------------------------------------------- */
+
+.p-crowd {
+  position: absolute;
+  inset: auto 0 8% 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(0.4rem, 3vw, 2.4rem);
+  /* Wide enough for the tables to own the corners. The padding is widened in
+     the media query below only while the tables are actually on screen —
+     below 900px they are hidden and the floor takes the whole width back. */
+  padding: 0 4%;
+}
+
+@media (min-width: 901px) {
+  .p-crowd { padding: 0 26%; gap: clamp(0.3rem, 1.4vw, 1.2rem); }
+}
+
+/* --beat is the length of one beat, set by party.js from whichever track is
+   playing. Every dance duration below is a multiple of it, so switching from
+   the 112 BPM track to the 138 BPM one re-times the entire crowd without a
+   single duration being written twice. */
+.p-scene { --beat: 483.87ms; }
+
+.p-dancer {
+  width: clamp(52px, 9.5vmin, 104px);
+  height: auto;
+  transform-origin: 50% 100%;
+  /* --flip mirrors a figure so pairs can turn toward each other. It lives in
+     the keyframes rather than on the element because a transform here would be
+     overwritten by the animation the moment it started. */
+  --flip: 1;
+  animation: p-bop calc(var(--beat) * 2) ease-in-out infinite;
+  /* Every figure is the same drawing on a different clock. The negative delay
+     starts each one mid-phase, so eight identical dancers never look like
+     eight copies of one dancer. */
+  animation-delay: calc(var(--i, 0) * -0.19s);
+}
+
+.p-dancer--flip { --flip: -1; }
+
+@keyframes p-bop {
+  0%, 100% { transform: scaleX(var(--flip)) translateY(0) scaleY(1); }
+  50%      { transform: scaleX(var(--flip)) translateY(-7%) scaleY(1.03); }
+}
+
+/* The origins are joints, not guesses: they map to the actual coordinates in
+   the 60x120 viewBox each figure is drawn in — shoulders at (22,40) and
+   (38,40), hips at (30,68), neck at (30,31). Rotating an arm about anything
+   other than its shoulder detaches it from the body mid-swing.
+   transform-box is set explicitly because percentage origins on an SVG group
+   are ambiguous otherwise: view-box resolves them against the 60x120 canvas,
+   which is the coordinate system these numbers were measured in. */
+.p-d-arm-l { transform-box: view-box; transform-origin: 37% 33%; animation: p-arm-l calc(var(--beat) * 4) ease-in-out infinite; animation-delay: inherit; }
+.p-d-arm-r { transform-box: view-box; transform-origin: 63% 33%; animation: p-arm-r calc(var(--beat) * 4) ease-in-out infinite; animation-delay: inherit; }
+.p-d-hips  { transform-box: view-box; transform-origin: 50% 57%; animation: p-hips calc(var(--beat) * 4) ease-in-out infinite; animation-delay: inherit; }
+.p-d-head  { transform-box: view-box; transform-origin: 50% 26%; animation: p-nod  calc(var(--beat) * 2) ease-in-out infinite; animation-delay: inherit; }
+
+@keyframes p-arm-l { 0%,100% { transform: rotate(-16deg); } 50% { transform: rotate(24deg); } }
+@keyframes p-arm-r { 0%,100% { transform: rotate(18deg); }  50% { transform: rotate(-22deg); } }
+@keyframes p-hips  { 0%,100% { transform: rotate(-4deg) translateX(-2%); } 50% { transform: rotate(4deg) translateX(2%); } }
+@keyframes p-nod   { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+/* Once the music is actually playing the room commits: bigger travel, faster
+   arms. With the sound off it stays a gentle sway, which is the honest state —
+   nobody dances hard in silence. */
+.p-scene.is-playing .p-dancer { animation-name: p-bop-hard; }
+@keyframes p-bop-hard {
+  0%, 100% { transform: scaleX(var(--flip)) translateY(0) scaleY(1); }
+  50%      { transform: scaleX(var(--flip)) translateY(-15%) scaleY(1.06); }
+}
+
+/* --------------------------------------------------------------------------
+   The bar: tables, the people at them, and the staff
+   --------------------------------------------------------------------------
+   A dance floor with nothing around it is a stage, not a venue. The tables sit
+   in the two front corners, nearer the viewer than the crowd, which is why
+   they take a higher z-index and a larger scale than the dancers behind them —
+   that size difference is the only depth cue a flat scene gets.
+
+   Everything here moves at a fraction of the crowd's energy on purpose. People
+   sitting down nod; they do not bounce. Getting that wrong makes a room look
+   like a cartoon rather than a bar.
+   -------------------------------------------------------------------------- */
+
+.p-tables {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 46%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.p-table {
+  position: absolute;
+  bottom: 4%;
+  width: clamp(150px, 27vmin, 300px);
+}
+
+.p-table--l { left: 1.5%; }
+.p-table--r { right: 1.5%; }
+
+/* Negative margin tucks the seated figures behind the table top, so the table
+   crops them at the chest. That crop is what makes them read as seated — a
+   whole body placed next to a table just looks like someone standing. */
+.p-sitters {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 7%;
+  /* -8%, not -13%. The negative margin is what tucks the guests behind the
+     table, but percentage margins resolve against the CONTAINER WIDTH, not the
+     figure height — at -13% of a 215px table that swallowed most of two 100px
+     people and left the faces under the tabletop. Now the table crops them at
+     the chest and every face clears it. */
+  margin-bottom: -8%;
+}
+
+.p-sitter {
+  width: 50%;
+  height: auto;
+  transform-origin: 50% 100%;
+  animation: p-sway calc(var(--beat) * 4) ease-in-out infinite;
+}
+
+.p-sitter:nth-child(2) { animation-delay: calc(var(--beat) * -1.7); }
+
+@keyframes p-sway {
+  0%, 100% { transform: rotate(-2.4deg); }
+  50%      { transform: rotate(2.4deg); }
+}
+
+/* A glass raised once every eight beats, not every beat. A table of people
+   toasting on the downbeat forever is a metronome, not a conversation. */
+.p-sit-arm {
+  transform-box: view-box;
+  transform-origin: 67% 78%;
+  animation: p-cheers calc(var(--beat) * 8) ease-in-out infinite;
+}
+
+@keyframes p-cheers {
+  0%, 78%, 100% { transform: rotate(0deg); }
+  88%           { transform: rotate(-18deg); }
+}
+
+.p-table-top {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3.2 / 1;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #33204d, #170d29);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.09);
+}
+
+.p-table-top::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 13%;
+  height: 105%;
+  transform: translateX(-50%);
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(180deg, #251739, #110a1e);
+}
+
+.p-drink {
+  position: absolute;
+  top: -46%;
+  width: 9%;
+  aspect-ratio: 1 / 2.1;
+  border-radius: 2px 2px 5px 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
+}
+
+.p-drink--a { left: 24%; background: linear-gradient(180deg, #a5e8ff, #0ea5e9); }
+.p-drink--b { right: 26%; background: linear-gradient(180deg, #ffe08a, #f59e0b); }
+
+/* The waiters stand between their table and the floor, facing inward. */
+.p-waiter {
+  position: absolute;
+  bottom: -2%;
+  width: 34%;
+  height: auto;
+  transform-origin: 50% 100%;
+  animation: p-serve calc(var(--beat) * 4) ease-in-out infinite;
+}
+
+/* Beside their own table, not out on the dance floor. At -40% the tray landed
+   between two dancers and the waiter read as a guest who had wandered in. The
+   crowd's side padding below is set so the floor starts just past this. */
+.p-table--l .p-waiter { right: -20%; }
+.p-table--r .p-waiter { left: -20%; }
+
+@keyframes p-serve {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-4%) rotate(1deg); }
+}
+
+/* The tray leads the body slightly — a tray perfectly rigid above a moving
+   person reads as glued on. */
+.p-tray {
+  transform-box: view-box;
+  transform-origin: 63% 36%;
+  animation: p-tray-tip calc(var(--beat) * 4) ease-in-out infinite;
+  animation-delay: calc(var(--beat) * -0.5);
+}
+
+@keyframes p-tray-tip {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50%      { transform: rotate(3.5deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Why this page exists
+   -------------------------------------------------------------------------- */
+
+.p-why {
+  margin: 1.6rem auto 0;
+  max-width: 68ch;
+  padding: 1.7rem 1.8rem;
+  border-radius: 20px;
+  background: rgb(var(--bg-base-rgb) / 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.p-why h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.35rem;
+}
+
+.p-why p {
+  margin: 0 0 0.9rem;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.p-why p:last-child { margin-bottom: 0; }
+
+.p-why-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  margin-top: 0.2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Confetti
+   -------------------------------------------------------------------------- */
+
+.p-confetti { position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+.p-bit {
+  position: absolute;
+  top: -6%;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  opacity: 0.85;
+  animation: p-fall linear infinite;
+}
+@keyframes p-fall {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(115vh) rotate(720deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Controls — same shapes and behaviour as the buddha page, so the two quiet
+   corners of the site work identically.
+   -------------------------------------------------------------------------- */
+
+.p-audio {
+  position: absolute;
+  top: 26px;
+  left: 16px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.p-audio-toggle,
+.p-fs {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 7, 20, 0.62);
+  color: #f8fafc;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.p-fs {
+  position: absolute;
+  top: 26px;
+  right: 16px;
+  z-index: 8;
+}
+
+.p-audio-toggle:hover,
+.p-fs:hover { background: rgba(255, 61, 154, 0.28); border-color: var(--p-magenta); }
+
+.p-audio-toggle:focus-visible,
+.p-fs:focus-visible,
+.p-audio-vol:focus-visible { outline: 2px solid var(--p-cyan); outline-offset: 2px; }
+
+.p-audio-toggle svg,
+.p-fs svg { width: 20px; height: 20px; }
+
+.p-audio-icon--on { display: none; }
+.p-audio-toggle.is-on .p-audio-icon--on { display: block; }
+.p-audio-toggle.is-on .p-audio-icon--off { display: none; }
+.p-audio-toggle.is-on { border-color: var(--p-magenta); color: var(--p-magenta); }
+
+.p-fs-out { display: none; }
+.p-scene:fullscreen .p-fs-in { display: none; }
+.p-scene:fullscreen .p-fs-out { display: block; }
+
+.p-audio-vol {
+  width: 92px;
+  accent-color: var(--p-magenta);
+  cursor: pointer;
+}
+.p-audio-vol:disabled { opacity: 0.4; cursor: default; }
+
+/* Both controls withdraw when nothing has happened for a few seconds, exactly
+   as they do on the buddha page — the two scenes are a pair and should behave
+   like one. A room you came to watch should not sit under a control panel.
+   party.js adds .is-idle to the scene; any sign of a person takes it off.
+
+   :focus-within is not optional. Fading a control to zero opacity leaves it
+   focusable, so without this a keyboard user Tabs to an invisible button and
+   has no idea where focus went. Anything faded out must either come back on
+   focus or leave the tab order, and coming back is the friendlier of the
+   two. */
+.p-audio,
+.p-fs { transition: opacity 520ms ease; }
+
+.p-scene.is-idle .p-audio,
+.p-scene.is-idle .p-fs {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.p-scene.is-idle .p-audio:focus-within,
+.p-scene.is-idle .p-fs:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Track name, shown for a couple of seconds after P. aria-hidden because the
+   sr-only live region beside it carries the same news properly — a toast that
+   is both visible and announced gets read twice. */
+.p-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  transform: translate(-50%, 8px);
+  z-index: 9;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 61, 154, 0.45);
+  background: rgba(10, 7, 20, 0.82);
+  color: #ffd9ec;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.p-toast.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* --------------------------------------------------------------------------
+   Copy below the stage
+   -------------------------------------------------------------------------- */
+
+.p-note {
+  margin: 1.6rem auto 0;
+  max-width: 60ch;
+  text-align: center;
+  color: var(--ink-3);
+}
+
+.p-note .p-hint + .p-hint { margin-left: 0.5rem; }
+
+/* The keyboard hint is the quieter of the two pills: the play button is the
+   thing to press first, and a second magenta badge beside it would compete. */
+.p-hint--key {
+  border-color: rgba(148, 163, 184, 0.4) !important;
+  background: rgba(148, 163, 184, 0.1) !important;
+  color: var(--ink-3) !important;
+}
+
+.p-hint--key kbd {
+  font: inherit;
+  font-weight: 800;
+  padding: 0.05rem 0.4rem;
+  margin: 0 0.15rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: rgba(2, 6, 23, 0.5);
+  color: #e2e8f0;
+}
+
+.p-note .p-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 61, 154, 0.4);
+  background: rgba(255, 61, 154, 0.1);
+  color: #ffb4d5;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — the room holds still.
+   Not a downgrade: every element keeps its shape and colour, so the scene
+   still reads as a lit dance floor. It simply stops moving, and with nothing
+   moving there is nothing that can flash.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .p-beam,
+  .p-ball,
+  .p-cast,
+  .p-glint,
+  .p-grid,
+  .p-decks::before,
+  .p-decks::after,
+  .p-dj,
+  .p-dj-arm-l,
+  .p-dj-arm-r,
+  .p-sitter,
+  .p-sit-arm,
+  .p-waiter,
+  .p-tray,
+  .p-dancer,
+  .p-d-arm-l,
+  .p-d-arm-r,
+  .p-d-hips,
+  .p-d-head {
+    animation: none;
+  }
+
+  /* Park the beams in a fan rather than stacked in a column, or they would all
+     point straight down and read as one wide smear. */
+  .p-beam--1 { transform: rotate(-22deg); }
+  .p-beam--2 { transform: rotate(-11deg); }
+  .p-beam--3 { transform: rotate(0deg); }
+  .p-beam--4 { transform: rotate(11deg); }
+  .p-beam--5 { transform: rotate(22deg); }
+
+  .p-confetti { display: none; }
+  /* The cast stays as a still fan of colour on the room rather than vanishing:
+     it is the light the ball is throwing, and a mirror ball with no light on
+     the walls looks broken rather than calm. */
+  .p-cast { opacity: 0.2; transition: none; }
+  .p-scene.is-beat .p-cast { opacity: 0.2; }
+
+  /* The beat classes are still applied by party.js — the transitions are what
+     made them visible, so removing those is what stops the pulsing. */
+  .p-beam, .p-floor, .p-speaker { transition: none; }
+  .p-scene.is-beat .p-beam { opacity: 0.5; }
+  .p-scene.is-beat .p-speaker { transform: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+  .p-scene.is-beat .p-floor { background-color: transparent; }
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+/* The floor thins out twice as the room narrows. Each dancer wants about 70px
+   to still read as a person; below that they become coloured smudges. The
+   tables go before the dancers do — they are scenery, and the dance floor is
+   the point of the page. */
+@media (max-width: 1100px) {
+  .p-dancer--6 { display: none; }
+}
+
+@media (max-width: 900px) {
+  .p-tables { display: none; }
+  .p-dancer--5 { display: none; }
+}
+
+@media (max-width: 640px) {
+  .p-scene { min-height: 70vh; border-radius: 18px; }
+  .p-crowd { gap: 0.25rem; padding: 0 2%; }
+  .p-dancer--4 { display: none; }
+  .p-booth { bottom: 34%; }
+  .p-audio { top: 14px; left: 10px; }
+  .p-fs { top: 14px; right: 10px; }
+  .p-audio-vol { width: 68px; }
+  .p-why { padding: 1.3rem 1.2rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Light theme — chrome only, exactly as the buddha page does it. The stage
+   itself never lightens.
+   -------------------------------------------------------------------------- */
+
+:root[data-theme="light"] .party .site-header,
+:root[data-theme="light"] .party footer {
+  background: rgb(255 255 255 / 0.9);
+}
