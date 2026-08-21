@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="I described what I wanted, an AI built it, and I kept the authority. The specification, review and gates that turned vibe coding into engineering."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="How I Vibe Coded This Website — And the Mechanism That Made It Hold" />
+    <meta
+      property="og:description"
+      content="I did not hand-write most of this site. What made it hold was not the prompting but the mechanism around it — writing the prompt as a specification, keeping the reasoning in the repository, reviewing with independent adversarial passes, and a build that refuses to publish damage."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/how-i-vibe-coded-my-website.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A specification fanning out to three review agents, converging on a gate before anything ships" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-21T14:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-21T14:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Engineering practice" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How I Vibe Coded This Website — And the Mechanism That Made It Hold" />
+    <meta
+      name="twitter:description"
+      content="I did not hand-write most of this site. What made it hold was not the prompting but the mechanism around it — writing the prompt as a specification, keeping the reasoning in the repository, reviewing with independent adversarial passes, and a build that refuses to publish damage."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/how-i-vibe-coded-my-website.jpg" />
+    <title>How I Vibe Coded This Website | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How I Vibe Coded This Website — And the Mechanism That Made It Hold",
+        "description": "I did not hand-write most of this site. What made it hold was not the prompting but the mechanism around it — writing the prompt as a specification, keeping the reasoning in the repository, reviewing with independent adversarial passes, and a build that refuses to publish damage.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/how-i-vibe-coded-my-website.jpg",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "articleSection": "Engineering practice",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website"
+        },
+        "keywords": "vibe coding, AI-assisted development, prompt as specification, code review, multi-agent verification, build gates, software engineering practice"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "How I Vibe Coded This Website", "item": "https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website" }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">How I Vibe Coded This Website</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Engineering practice</p>
+          <h1>How I vibe coded this website — and the mechanism that made it hold</h1>
+          <p class="hero-text">
+            I did not hand-write most of this site. I described what I wanted, an AI produced it, and I kept the
+            authority over every decision that mattered. That is the easy half to explain and the wrong half to copy.
+            What actually made it survive is the mechanism I built around the prompting — how I specify, how I verify,
+            and what happens when something breaks. This is that mechanism, with the receipts.
+          </p>
+          <p class="post-meta">Published 21 August 2026 · 11 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/vibe-coded-cover.svg" alt="A specification fanning out to three review agents, which converge on a gate before anything ships" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#what-vibe-coding-actually-got-me">What vibe coding actually got me</a></li>
+                <li><a href="#the-prompt-is-a-specification">The prompt is a specification</a></li>
+                <li><a href="#the-repo-remembers-the-chat-does-not">The repo remembers, the chat does not</a></li>
+                <li><a href="#one-pass-is-not-a-review">One pass is not a review</a></li>
+                <li><a href="#make-the-build-able-to-refuse">Make the build able to refuse</a></li>
+                <li><a href="#when-something-breaks-ask-for-the-diagnosis">When something breaks, ask for the diagnosis</a></li>
+                <li><a href="#this-is-just-engineering">This is just engineering</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="what-vibe-coding-actually-got-me">What vibe coding actually got me</h2>
+              <p>
+                Let me be honest about the starting point, because the honesty is the useful part. I described pages
+                in plain English and a model wrote them. The first version of this site existed in an afternoon. If
+                you have tried it, you know the feeling — it is genuinely fast, and the output is genuinely fine.
+              </p>
+              <p>
+                It is fine for about a week.
+              </p>
+              <p>
+                The trouble is not that the code is bad. The trouble is that <strong>you did not build a system, you
+                accumulated one.</strong> Nothing records why the header is structured the way it is. Nothing stops
+                the next change from quietly contradicting the last one. You cannot answer "is this still correct?"
+                because you never wrote down what correct meant. Ask for one more feature and you get one more layer
+                on a foundation nobody documented, including you.
+              </p>
+              <p>
+                This site is 96 pages now — 60 of them browser-based labs that run real language runtimes, 16 blog
+                posts, the rest ordinary pages — across 140 commits, with zero npm dependencies. Nothing that size
+                survives on vibes. What follows is the scaffolding that let it get there while I was still the one
+                deciding.
+              </p>
+
+              <h2 id="the-prompt-is-a-specification">The prompt is a specification</h2>
+              <p>
+                The single biggest change in my output quality had nothing to do with the model. It was realising
+                that a prompt is not a wish. It is a specification, and it should be written like one.
+              </p>
+              <p>
+                "Make the blog look nicer" is a wish. It produces something, you squint at it, you ask again. Three
+                rounds later you have drifted somewhere nobody chose. Compare that with what a real request looks
+                like — the constraints first, the ask second:
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>What a usable spec contains.</strong> The goal in one sentence. The constraints that must
+                  hold no matter what. The things that must <em>not</em> change. How I will know it worked. And the
+                  cases I already know are hard.
+                </p>
+              </div>
+              <p>
+                On this site those constraints are permanent and I restate them constantly, because a model will
+                cheerfully violate an unstated rule: the site must work with JavaScript switched off; no inline
+                scripts, ever, because the content security policy blocks them; every page needs one
+                <code>h1</code>, a canonical URL and a breadcrumb; the light theme is opt-in and every colour needs
+                its light counterpart. That last one is not decoration — a token that looked right in dark mode
+                once put near-white text on a near-white field in light mode, measured at <strong>1.13:1</strong>,
+                which is invisible while typing, on every form on the site.
+              </p>
+              <p>
+                State the invariants and you get work you can accept. Leave them implicit and you get work you have
+                to re-litigate. The specification is not overhead you do before the real work — with a capable model
+                on the other side, <em>it is</em> the work.
+              </p>
+
+              <h2 id="the-repo-remembers-the-chat-does-not">The repo remembers, the chat does not</h2>
+              <p>
+                Here is the failure I did not see coming. All the reasoning lived in the conversation. Why a value is
+                what it is, what broke last time, which two approaches were tried and rejected — every bit of it sat
+                in a chat log I would never open again. Six weeks later I would change something perfectly sensible
+                and break something I had already fixed once.
+              </p>
+              <p>
+                So I made a rule: <strong>the reasoning goes in the repository, next to the thing it explains.</strong>
+                The README is now 1,085 lines. The stylesheets carry roughly 1,650 lines of comments. Those comments
+                do not say what the code does — you can read that. They carry the measurement, the rejected
+                alternative, and what breaks if you change it back.
+              </p>
+              <p>
+                My favourite one is a note to myself about a tool I had written to regenerate the site's search
+                index. The index had drifted out of date for months, and the comment explains exactly why:
+              </p>
+              <blockquote>
+                <p>
+                  A manual step with no command behind it is a manual step that gets skipped.
+                </p>
+              </blockquote>
+              <p>
+                That single line has saved me more time than any prompt I have ever written. It is also the thing an
+                AI cannot supply, because it is not knowledge about code — it is knowledge about what actually
+                happened here, to me, on this project. The model is extraordinary at producing code. It has no memory
+                of your project's scar tissue. Writing that down is your job, and it compounds: every future request
+                you make can be grounded in it, and the next session starts informed instead of naive.
+              </p>
+
+              <h2 id="one-pass-is-not-a-review">One pass is not a review</h2>
+              <p>
+                Generated code has a specific and dangerous failure mode: it is <em>plausible</em>. It reads well, it
+                is confidently structured, and the bug is not a syntax error you would catch — it is a wrong
+                assumption three levels down, wearing a convincing comment.
+              </p>
+              <p>
+                Reading it once yourself does not catch that. You are reading with the same mental model that wrote
+                the request, so you see what you expected to see. What works is running several independent
+                reviewers over the same change, each looking through a different lens — one for correctness, one for
+                accessibility, one for what this breaks elsewhere, one whose only instruction is to try to prove the
+                change is wrong.
+              </p>
+              <p>
+                The adversarial one matters most. A reviewer asked "does this look right?" says yes. A reviewer told
+                "find the input that breaks this, and default to rejecting it if you are unsure" produces something
+                useful. When several independent passes disagree, that disagreement is the signal — it is pointing
+                at the part I had not actually thought through.
+              </p>
+              <p>
+                A real example from this repo. The deploy strips comments out of the stylesheets to make them
+                smaller, and it needs to be certain it has not corrupted anything in the process. My first check
+                counted braces before and after and compared them. Reasonable, obvious, and wrong — one stylesheet
+                contains a comment that quotes a CSS rule, braces and all, so the check flagged a perfectly healthy
+                file as corrupted. The fix was a scanner that understands comments properly, which also means a
+                string containing <code>/*</code> can no longer be mistaken for the start of one. That bug was found
+                by something actively trying to break the checker, not by me looking at it and nodding.
+              </p>
+
+              <h2 id="make-the-build-able-to-refuse">Make the build able to refuse</h2>
+              <p>
+                Review is a judgment, and judgment does not run at three in the morning when you are shipping a
+                one-line change on your phone. The only thing that reliably protects a project is a check that runs
+                every time and can say no.
+              </p>
+              <p>
+                So the deploy verifies its own output before it is allowed to succeed. It confirms 18 critical files
+                are present and above a size floor, nine of them matched against an expected marker. It counts the
+                HTML pages and refuses to continue below a floor of 80. It regenerates the search index from the
+                pages so a deploy can never serve a stale one. Before writing a single byte of stripped CSS it
+                checks that the ordered list of selectors is unchanged, that braces stay balanced, and that the
+                output did not somehow grow. Any of those failing throws instead of writing.
+              </p>
+              <p>
+                The reasoning behind that is written at the top of the script, and it is the sentence I would keep if
+                I could keep only one: <strong>failing the deploy is always safer than publishing the damage.</strong>
+                A build that exits non-zero leaves the previous version serving. A build that cheerfully publishes a
+                broken stylesheet does not.
+              </p>
+              <p>
+                This is the part people skip, and it is the part that makes AI-generated code safe to accept at
+                speed. I am not carefully reading every line the model writes. I am making sure that if it is wrong
+                in a way that matters, something mechanical catches it before a visitor does. I wrote about where to
+                put that gate, and where the whole approach is a bad idea, in
+                <a class="text-link" href="/blog/ai-driven-human-assisted">AI driven, human assisted</a> — the short
+                version is that you gate the irreversible effect, never the thinking.
+              </p>
+
+              <h2 id="when-something-breaks-ask-for-the-diagnosis">When something breaks, ask for the diagnosis</h2>
+              <p>
+                Bugs are where the discipline either exists or does not, and the reflex is almost always wrong. The
+                reflex is to paste the error, accept the patch, see the symptom disappear and move on. That works. It
+                also teaches you nothing and leaves the actual cause in place.
+              </p>
+              <figure class="post-figure">
+                <a href="/assets/images/blog/vibe-coded-loop.svg" target="_blank" rel="noopener" aria-label="Open the debugging loop comparison full-screen">
+                  <img src="/assets/images/blog/vibe-coded-loop.svg" alt="Two debugging loops side by side: the reflex ends in shipping a guess, while the longer loop asks for a diagnosis, has agents refute it, fixes the cause, measures the result and leaves a gate behind" width="1100" height="600" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The two loops. Both cost about the same attention; only one of them compounds. Click to open full-screen.</figcaption>
+              </figure>
+              <p>
+                What I do instead is refuse the patch on the first pass. I ask for the explanation: what is actually
+                happening, why does it produce this symptom, and what are the candidate causes ranked by likelihood.
+                Only when the account of the bug matches the behaviour I can actually observe does a fix get written.
+                Roughly a third of the time the first confident explanation is wrong, and it is much cheaper to
+                discover that in a paragraph than in a patch.
+              </p>
+              <p>
+                Then the same adversarial pass as before, pointed at the diagnosis rather than the code: try to
+                refute this explanation. If it survives that, fix the cause and <em>measure</em> the result — not
+                "looks better", but a number. Contrast ratios, byte counts, character-per-line measurements, the
+                width at which a table starts overflowing. Numbers are the only way to know whether the fix worked or
+                merely moved the symptom somewhere less visible.
+              </p>
+              <p>
+                And the last step, the one that turns a fix into an improvement: leave something behind so the bug
+                cannot return silently. Sometimes that is a check in the build. Usually it is three sentences in a
+                comment explaining what was tried and why it failed. A bug you fixed is worth a little. A bug that
+                can no longer happen without something shouting is worth a great deal more.
+              </p>
+
+              <h2 id="this-is-just-engineering">This is just engineering</h2>
+              <p>
+                Read back what I have actually described. Write the specification before the code. Keep the reasoning
+                next to what it explains. Have the work reviewed by people who did not write it, including someone
+                trying to break it. Automate the checks so they run whether anyone is paying attention or not.
+                Diagnose before you patch, and measure the fix. Leave the codebase safer than you found it.
+              </p>
+              <p>
+                None of that is new. It is the same discipline that has always separated software that lasts from
+                software that merely runs. The only thing that changed is the implement — the typing is delegated
+                now, and what is left is the specification, the judgment and the accountability, which was always the
+                senior half of the job anyway.
+              </p>
+              <p>
+                So when someone says they vibe coded something, the interesting question is not whether an AI wrote
+                it. Mine wrote most of this. The question is whether anything would have stopped it being wrong.
+                <strong>If the answer is nothing, that is not a workflow — it is a bet you have not priced.</strong>
+                Add the mechanism and vibe coding stops being a shortcut around engineering and becomes a
+                genuinely faster way to do it.
+              </p>
+              <p>
+                Every claim here is checkable, incidentally. The site is static, the reasoning is in the comments,
+                and if you want to see what the approach produces at the far end, the
+                <a class="text-link" href="/labs">labs</a> are 60 pages of real language runtimes and forensics
+                tools executing in your browser with no server behind them.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-i-vibe-coded-my-website" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=How%20I%20Vibe%20Coded%20This%20Website%20%E2%80%94%20And%20the%20Mechanism%20That%20Made%20It%20Hold&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-i-vibe-coded-my-website" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=How%20I%20Vibe%20Coded%20This%20Website%20%E2%80%94%20And%20the%20Mechanism%20That%20Made%20It%20Hold%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-i-vibe-coded-my-website" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/ai-driven-human-assisted">AI driven, human assisted: the default just inverted</a></li>
+              <li><a href="/blog/i-open-sourced-my-ai-sdr">I open-sourced my AI SDR</a></li>
+              <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
+              <li><a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want this discipline in your own build?</h2>
+            <p>
+              Most teams adopting AI tooling get the speed and skip the mechanism, then spend the saved time
+              debugging things nobody can explain. Setting up the specification habit, the review pass and the gates
+              that catch what review misses is most of what I do with clients — and it is exactly what I work through
+              with the people I mentor.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">See how I work</a>
+              <a class="btn btn-secondary" href="/internships">Mentorship &amp; internships</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://officialkrunalkumar.github.io/status" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

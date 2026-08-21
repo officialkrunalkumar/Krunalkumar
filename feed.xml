@@ -5,8 +5,15 @@
     <link>https://krunalkumar.dpdns.org/blog</link>
     <description>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Aug 2026 09:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 14:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How I Vibe Coded This Website — And the Mechanism That Made It Hold</title>
+      <link>https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website</link>
+      <guid>https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website</guid>
+      <description>I did not hand-write most of this site. What made it hold was the mechanism around the prompting — the prompt as a specification, the reasoning kept in the repository, adversarial review passes, and a build that refuses to publish damage.</description>
+      <pubDate>Fri, 21 Aug 2026 14:00:00 +0530</pubDate>
+    </item>
     <item>
       <title>AI Driven, Human Assisted: The Default Just Inverted</title>
       <link>https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted</link>
