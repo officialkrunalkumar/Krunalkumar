@@ -355,6 +355,12 @@ committed.
    `## Career, Mentorship & Practice`) and section 6 of `llms-full.txt` (title, date, one-line
    summary, and the post URL). The two files list the same posts — keep them in step.
 
+**Never hand-edit the colophon's numbers** — `colophon.html` carries them in
+`<span data-colophon="key">` placeholders and `scripts/build.js` rewrites every one at deploy.
+The prose is hand-written and stays that way; the committed figures are the last deploy's, so the
+page still reads correctly without a build. Add a fact by adding a placeholder and a key in
+`colophonFacts()`.
+
 **Add a project** — copy an existing `<a class="project-item">` card inside `#project-list` in
 `projects.html` and edit its category, title, description, and href. The gallery is static HTML
 (crawler-visible); `assets/js/projects.js` only paginates it. Add the `data-spotlight` attribute to

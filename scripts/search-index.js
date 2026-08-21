@@ -50,7 +50,8 @@ const FAQ_CAP = 1600;
 
 /* Pages that exist but are deliberately not searchable: the Search Console
    token, the sandboxed guestbook document, the two header/footer partials, the
-   error page, and the two <meta name="robots" content="noindex"> easter eggs. */
+   error page, and the noindex easter eggs (the teapot, the fake terminal and
+   Einstein's laboratory, all three reached deliberately rather than found). */
 const EXCLUDE = new Set([
   '404.html',
   'google46d0a7ad3f01b5a6.html',
@@ -59,6 +60,7 @@ const EXCLUDE = new Set([
   'partials/footer.html',
   'teapot.html',
   'terminal.html',
+  'einstein.html',
 ]);
 
 const ENTITIES = {

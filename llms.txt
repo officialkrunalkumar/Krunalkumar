@@ -59,6 +59,9 @@
 - [Online Perl compiler](https://krunalkumar.dpdns.org/labs/perl): Real Perl 5 on WebAssembly. Regular expressions doing what they do best.
 - [Online PostgreSQL compiler](https://krunalkumar.dpdns.org/labs/postgres): The actual Postgres server with window functions, CTEs and JSONB.
 - [Online DOS prompt](https://krunalkumar.dpdns.org/labs/dos): Real FreeDOS booted in the browser. DIR, COPY, batch files, VIM and NASM.
+- [Online synth & DJ desk](https://krunalkumar.dpdns.org/labs/synth): load a track from your own machine and play over it — a
+  sixteen-step drum machine, one-shot pads and a playable synth, mixed live in the browser.
+  Drums are synthesised rather than sampled; your file is never uploaded.
 - [Typing speed test for programmers](https://krunalkumar.dpdns.org/labs/typing): Measured on real code, not just prose. WPM and accuracy, nothing uploaded.
 
 
@@ -127,6 +130,12 @@ These are deliberately separated from the sixteen offline security tools. They s
   GET, POST, custom headers, pretty-printed JSON. It uses the browser's own fetch with no proxy in the
   path, so the request goes straight to whatever host you name and nothing is relayed through this site.
   CORS applies exactly as it would in any other page.
+
+## Colophon
+- [Colophon](https://krunalkumar.dpdns.org/colophon): how the site is built — hand-written static HTML,
+  zero npm dependencies, a deploy that strips CSS comments, rebuilds the search index and
+  refuses to publish if its own output checks fail. Every figure on the page is counted at
+  build time rather than typed.
 
 ## Optional
 

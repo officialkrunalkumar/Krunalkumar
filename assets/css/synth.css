@@ -1,0 +1,293 @@
+/* ==========================================================================
+   synth.css — the DJ desk on /labs/synth.
+   Layered on top of main.css and labs.css; loaded only by that one page.
+
+   REGISTERED IN scripts/build.js CSS_FILES. Every stylesheet must be, and not
+   only to have its comments stripped: a file missing from that list also skips
+   the build's selector-order and brace-balance check, which makes it the one
+   file a bad edit can corrupt without the deploy noticing. party.css and
+   einstein.css were both missing for a while, which is why this note is here.
+   ========================================================================== */
+
+/* particle-bg.js is deliberately not loaded on this page: it binds bare letters
+   site-wide for the starfield — a, s, w, k, l, p — and five of those are piano
+   keys here, so playing a note would also change the background. The canvas it
+   would have drawn into still ships in the shared header, so it is hidden.
+
+   An unqualified id selector is safe: this stylesheet is loaded by /labs/synth
+   and nothing else. */
+#bg-canvas { display: none; }
+
+.syn {
+  --syn-cell: rgb(var(--sheet-rgb) / 0.55);
+  --syn-on: var(--accent);
+  --syn-beat: rgb(var(--accent-rgb) / 0.14);
+  --scope: #7dd3fc;
+  display: grid;
+  gap: 1.1rem;
+}
+
+.syn-panel {
+  padding: 1.1rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.2);
+  background: rgb(var(--well-rgb) / 0.5);
+}
+
+.syn-panel > h2 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+
+.syn-hint {
+  margin: 0 0 0.9rem;
+  font-size: 0.87rem;
+  color: var(--ink-4);
+}
+
+/* --------------------------------------------------------------------------
+   Deck
+   -------------------------------------------------------------------------- */
+
+.syn-drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 2px dashed rgb(var(--accent-rgb) / 0.35);
+  background: rgb(var(--sheet-rgb) / 0.35);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.syn-drop.is-over {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.1);
+}
+
+.syn-deck-name {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-weight: 700;
+  color: var(--ink-2);
+  /* A long filename must not push the transport controls off the row. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.syn-transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.syn-seek {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+  accent-color: var(--accent);
+}
+
+.syn-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.86rem;
+  color: var(--ink-4);
+}
+
+/* --------------------------------------------------------------------------
+   Sequencer
+   --------------------------------------------------------------------------
+   Five named rows and sixteen steps. The row label is a real grid column
+   rather than a floated caption so the cells stay aligned when a name wraps.
+   -------------------------------------------------------------------------- */
+
+.syn-grid {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, auto) repeat(16, minmax(0, 1fr));
+  gap: 4px;
+  align-items: center;
+  /* Sixteen cells never fit a phone. Scrolling the grid keeps every cell a
+     usable tap target instead of shrinking them all to slivers. */
+  overflow-x: auto;
+  padding-bottom: 0.3rem;
+}
+
+.syn-rowname {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-3);
+  padding-right: 0.4rem;
+  white-space: nowrap;
+}
+
+.syn-cell {
+  aspect-ratio: 1;
+  min-width: 1.4rem;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  background: var(--syn-cell);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* Every fourth cell is tinted, so the beat is readable without counting. */
+.syn-cell.is-beat { background: var(--syn-beat); }
+.syn-cell.is-on { background: var(--syn-on); border-color: var(--syn-on); }
+.syn-cell:hover { transform: translateY(-1px); }
+.syn-cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The playhead. A ring rather than a colour change, so it stays visible on a
+   cell that is already lit. */
+.syn-cell.is-playing { box-shadow: 0 0 0 2px var(--ink), 0 0 10px rgb(var(--accent-rgb) / 0.7); }
+
+.syn-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+
+.syn-bpm { width: 9rem; accent-color: var(--accent); }
+.syn-bpm-out { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Pads
+   -------------------------------------------------------------------------- */
+
+.syn-pads {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: 0.6rem;
+}
+
+.syn-pad {
+  padding: 1rem 0.6rem;
+  border-radius: 14px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  background: rgb(var(--sheet-rgb) / 0.55);
+  color: var(--ink-2);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.1s ease, transform 0.1s ease;
+}
+
+.syn-pad kbd {
+  display: block;
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.syn-pad:hover { border-color: var(--accent); }
+.syn-pad:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.syn-pad.is-hit { background: var(--accent); color: #0a1a28; transform: scale(0.96); }
+
+/* --------------------------------------------------------------------------
+   Keyboard
+   --------------------------------------------------------------------------
+   The black keys are positioned rather than laid out, because a piano's
+   sharps sit BETWEEN the white keys and no flow layout expresses that.
+   -------------------------------------------------------------------------- */
+
+.syn-keys {
+  position: relative;
+  display: flex;
+  gap: 3px;
+  height: clamp(6rem, 16vw, 9rem);
+  user-select: none;
+  touch-action: none;
+}
+
+.syn-key {
+  position: relative;
+  flex: 1 1 0;
+  border: 1px solid #94a3b8;
+  border-radius: 0 0 7px 7px;
+  background: linear-gradient(180deg, #f8fafc, #dbe3ec);
+  color: #475569;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.syn-key--black {
+  position: absolute;
+  top: 0;
+  width: 8%;
+  height: 62%;
+  z-index: 2;
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(180deg, #334155, #0f172a);
+  border-color: #0f172a;
+  color: #cbd5e1;
+  flex: none;
+}
+
+.syn-key.is-down { background: var(--accent); color: #0a1a28; }
+.syn-key--black.is-down { background: var(--accent-dark); color: #0a1a28; }
+.syn-key:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 3; }
+
+.syn-synth-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.9rem;
+}
+
+.syn-field { display: grid; gap: 0.25rem; font-size: 0.82rem; color: var(--ink-3); }
+.syn-field input[type="range"] { accent-color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Scope and mixer
+   -------------------------------------------------------------------------- */
+
+.syn-scope {
+  display: block;
+  width: 100%;
+  height: clamp(4rem, 10vw, 6.5rem);
+  border-radius: 12px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.2);
+  background: rgb(var(--bg-base-rgb) / 0.7);
+}
+
+.syn-mixer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   --------------------------------------------------------------------------
+   The scope is not decoration — it is the readout that shows the deck and the
+   synth are actually mixing — so it stays, but synth.js does not start its
+   animation loop and the cells stop moving under the pointer.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .syn-cell,
+  .syn-pad,
+  .syn-drop { transition: none; }
+  .syn-cell:hover { transform: none; }
+  .syn-pad.is-hit { transform: none; }
+}
+
+@media (max-width: 640px) {
+  .syn-panel { padding: 0.9rem; }
+  .syn-cell { min-width: 1.6rem; }
+  .syn-keys { height: 5.5rem; }
+}

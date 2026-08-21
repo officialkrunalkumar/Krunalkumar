@@ -140,6 +140,48 @@ Complete index at https://krunalkumar.dpdns.org/blog
 - **Terms & Rules:** Work is performed strictly on authorized accounts/devices with proven ownership. No device bypassing or unauthorized surveillance.
 - **Refunds:** Mentorship includes a 100% money-back guarantee within the first 7 days of the first month. Consulting milestones not yet started are fully refundable.
 
+## Synth & DJ desk (/labs/synth)
+
+Three instruments sharing one mixer, all in the browser.
+
+- **A deck for your own file.** An audio file is read with an object URL and
+  routed through a MediaElementSource. It is never uploaded — the site is static
+  and has nowhere to upload it to.
+- **A sixteen-step drum machine** with kick, snare, clap, closed and open hat,
+  70-170 BPM, scheduled against the audio clock with a lookahead window rather
+  than a timer, so the pattern does not drift.
+- **Five one-shot pads** (keys 1-5) for playing over a track rather than
+  programming one.
+- **A playable synth**: sawtooth, square, triangle or sine through a resonant
+  low-pass, with attack and release, polyphonic, played with the mouse, a finger
+  or the QWERTY home row laid out like a piano.
+- **Every sound but your file is generated.** The drums are synthesised the same
+  way the ones on /party are — a pitch-dropping sine for the kick, filtered noise
+  for the hats, three noise bursts nine milliseconds apart for the clap. There
+  are no samples to download and nothing to licence.
+- One oscilloscope shows the summed output, so the deck and the synth are
+  visibly mixing rather than merely playing at the same time.
+
+## Colophon (/colophon)
+
+How the site is built, and the one page that maintains itself.
+
+- **No framework, no bundler, no CSS preprocessor and zero npm dependencies.**
+  Every page is a hand-written .html file, and the file in the repository is the
+  file the browser is served.
+- **The deploy is allowed to refuse.** One script strips CSS comments, rewrites
+  sitemap dates from git, rebuilds the search index, then verifies its own
+  output — critical files present and above a size floor, the ordered list of
+  CSS selectors unchanged, braces balanced, page count above a floor. Any of
+  those failing throws instead of writing, and the previous deployment keeps
+  serving.
+- **Comments are stripped at deploy, not deleted from the repository**, because
+  they carry the measurements and the rejected alternatives. Git keeps every
+  comment; visitors get the smaller file.
+- **Every figure on the page is counted at build time** from a data-colophon
+  attribute, so adding labs or posts corrects the numbers on the next push and
+  the page is never edited by hand.
+
 ## A still place (/buddha)
 
 A contemplative page, deliberately unlike the rest of the site: an illustrated
