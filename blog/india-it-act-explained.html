@@ -163,7 +163,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -183,629 +183,631 @@
               </ol>
             </nav>
 
-            <h2 id="the-law-stack-nobody-reads">The law stack nobody reads</h2>
-            <p>
-              If you build or run anything digital in India, you are already inside this stack: every UPI
-              payment, SaaS security clause, and police complaint quoting Section 66C traces back to a handful
-              of statutes and their rules. Yet most of us meet the law only in fragments, and fragments breed
-              folklore — misquoted sections, invented penalties, a provision struck down a decade ago still
-              cited in complaints.
-            </p>
-            <p>
-              I am not a lawyer — I am a security practitioner who kept meeting these laws in audits, vendor
-              contracts, and incident calls until I read the primary texts. This is the orientation I wish
-              someone had handed me — every claim checked against its primary source and date-stamped where the
-              ground is moving.
-            </p>
-            <div class="post-callout" role="note">
+            <div class="post-body">
+              <h2 id="the-law-stack-nobody-reads">The law stack nobody reads</h2>
               <p>
-                <strong>Not legal advice.</strong> This is practitioner orientation — a map of the terrain, not
-                counsel about your situation. For a notice, a summons, an investigation, or a compliance
-                decision, consult a lawyer qualified in Indian law. Verified against primary sources in August
-                2026; where the law is in flux, I say so.
+                If you build or run anything digital in India, you are already inside this stack: every UPI
+                payment, SaaS security clause, and police complaint quoting Section 66C traces back to a handful
+                of statutes and their rules. Yet most of us meet the law only in fragments, and fragments breed
+                folklore — misquoted sections, invented penalties, a provision struck down a decade ago still
+                cited in complaints.
+              </p>
+              <p>
+                I am not a lawyer — I am a security practitioner who kept meeting these laws in audits, vendor
+                contracts, and incident calls until I read the primary texts. This is the orientation I wish
+                someone had handed me — every claim checked against its primary source and date-stamped where the
+                ground is moving.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>Not legal advice.</strong> This is practitioner orientation — a map of the terrain, not
+                  counsel about your situation. For a notice, a summons, an investigation, or a compliance
+                  decision, consult a lawyer qualified in Indian law. Verified against primary sources in August
+                  2026; where the law is in flux, I say so.
+                </p>
+              </div>
+              <figure class="post-figure">
+                <svg viewBox="0 0 1160 460" role="img" aria-label="Timeline of Indian IT law: IT Act 2000, the 2008 Amendment, SPDI Rules 2011, the Shreya Singhal judgment of 2015, IT Rules 2021, CERT-In Directions 2022, the DPDP Act 2023, and the DPDP Rules 2025" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="1160" height="460" rx="18" fill="#1b2735"/>
+                  <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">TWENTY-FIVE YEARS OF INDIAN IT LAW</text>
+                  <line x1="60" y1="230" x2="1100" y2="230" stroke="#334155" stroke-width="3"/>
+                  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
+                    <!-- 2000: IT Act (above) -->
+                    <text x="105" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Act 2000</text>
+                    <text x="105" y="157" fill="#94a3b8" font-size="15">E-records and</text>
+                    <text x="105" y="179" fill="#94a3b8" font-size="15">e-signatures valid</text>
+                    <line x1="105" y1="190" x2="105" y2="210" stroke="#7dd3fc" stroke-width="2"/>
+                    <rect x="63" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
+                    <text x="105" y="235" fill="#131f2d" font-size="16" font-weight="800">2000</text>
+                    <!-- 2008: Amendment (below) -->
+                    <rect x="203" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
+                    <text x="245" y="235" fill="#131f2d" font-size="16" font-weight="800">2008</text>
+                    <line x1="245" y1="250" x2="245" y2="270" stroke="#a855f7" stroke-width="2"/>
+                    <text x="245" y="295" fill="#f8fafc" font-size="17" font-weight="800">Amendment Act</text>
+                    <text x="245" y="320" fill="#94a3b8" font-size="15">66-family, s. 69,</text>
+                    <text x="245" y="342" fill="#94a3b8" font-size="15">safe harbour</text>
+                    <!-- 2011: SPDI (above) -->
+                    <text x="385" y="132" fill="#f8fafc" font-size="17" font-weight="800">SPDI Rules</text>
+                    <text x="385" y="157" fill="#94a3b8" font-size="15">First data-</text>
+                    <text x="385" y="179" fill="#94a3b8" font-size="15">protection rules</text>
+                    <line x1="385" y1="190" x2="385" y2="210" stroke="#4ade80" stroke-width="2"/>
+                    <rect x="343" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
+                    <text x="385" y="235" fill="#131f2d" font-size="16" font-weight="800">2011</text>
+                    <!-- 2015: Shreya Singhal (below) -->
+                    <rect x="483" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
+                    <text x="525" y="235" fill="#131f2d" font-size="16" font-weight="800">2015</text>
+                    <line x1="525" y1="250" x2="525" y2="270" stroke="#fbbf24" stroke-width="2"/>
+                    <text x="525" y="295" fill="#f8fafc" font-size="17" font-weight="800">Shreya Singhal</text>
+                    <text x="525" y="320" fill="#94a3b8" font-size="15">SC strikes</text>
+                    <text x="525" y="342" fill="#94a3b8" font-size="15">down s. 66A</text>
+                    <!-- 2021: IT Rules (above) -->
+                    <text x="665" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Rules 2021</text>
+                    <text x="665" y="157" fill="#94a3b8" font-size="15">Intermediary</text>
+                    <text x="665" y="179" fill="#94a3b8" font-size="15">due diligence</text>
+                    <line x1="665" y1="190" x2="665" y2="210" stroke="#7dd3fc" stroke-width="2"/>
+                    <rect x="623" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
+                    <text x="665" y="235" fill="#131f2d" font-size="16" font-weight="800">2021</text>
+                    <!-- 2022: CERT-In (below) -->
+                    <rect x="763" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
+                    <text x="805" y="235" fill="#131f2d" font-size="16" font-weight="800">2022</text>
+                    <line x1="805" y1="250" x2="805" y2="270" stroke="#a855f7" stroke-width="2"/>
+                    <text x="805" y="295" fill="#f8fafc" font-size="17" font-weight="800">CERT-In Directions</text>
+                    <text x="805" y="320" fill="#94a3b8" font-size="15">6-hour reports,</text>
+                    <text x="805" y="342" fill="#94a3b8" font-size="15">180-day logs</text>
+                    <!-- 2023: DPDP Act (above) -->
+                    <text x="945" y="132" fill="#f8fafc" font-size="17" font-weight="800">DPDP Act</text>
+                    <text x="945" y="157" fill="#94a3b8" font-size="15">Consent, Board,</text>
+                    <text x="945" y="179" fill="#94a3b8" font-size="15">₹250 cr penalties</text>
+                    <line x1="945" y1="190" x2="945" y2="210" stroke="#4ade80" stroke-width="2"/>
+                    <rect x="903" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
+                    <text x="945" y="235" fill="#131f2d" font-size="16" font-weight="800">2023</text>
+                    <!-- 2025: DPDP Rules (below) -->
+                    <rect x="1043" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
+                    <text x="1085" y="235" fill="#131f2d" font-size="16" font-weight="800">2025</text>
+                    <line x1="1085" y1="250" x2="1085" y2="270" stroke="#fbbf24" stroke-width="2"/>
+                    <text x="1085" y="295" fill="#f8fafc" font-size="17" font-weight="800">DPDP Rules</text>
+                    <text x="1085" y="320" fill="#94a3b8" font-size="15">Phased rollout</text>
+                    <text x="1085" y="342" fill="#94a3b8" font-size="15">to mid-2027</text>
+                  </g>
+                  <text x="40" y="430" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="15">In-force dates differ: the 2008 Amendment took effect on 27 Oct 2009; DPDP obligations phase in until mid-2027.</text>
+                </svg>
+                <figcaption>
+                  Twenty-five years of Indian IT law in one line — the timeline this article walks.
+                </figcaption>
+              </figure>
+
+              <h2 id="the-it-act-2000-why-it-exists">The IT Act 2000: why it exists</h2>
+              <p>
+                In the late 1990s India had a practical problem: contract and evidence law assumed paper. A
+                "document" was something you could hold; a "signature" meant ink. So when the United Nations
+                adopted the <strong>UNCITRAL Model Law on Electronic Commerce (1996)</strong> and recommended that
+                member states legislate along its lines, India did. The <strong>Information Technology Act,
+                2000</strong> came into force on 17 October 2000 — the country's first comprehensive law for
+                electronic commerce and computer crime.
+              </p>
+              <p>
+                Its founding achievements sound mundane precisely because they worked: <strong>electronic records
+                and digital signatures gained legal validity</strong>, so a contract no longer fails merely for
+                being electronic; the <strong>Controller of Certifying Authorities (CCA)</strong> was created to
+                license the authorities issuing digital-signature certificates; and <strong>adjudicating
+                officers</strong> under Section 46 got power to decide compensation claims up to ₹5 crore, with
+                appeals originally to the Cyber Appellate Tribunal (merged into TDSAT in 2017).
+              </p>
+              <p>
+                Just as important is what the original Act was <em>not</em>: a commerce statute with a thin chapter
+                of offences and barely a word about privacy. Almost everything practitioners now call "the IT Act"
+                arrived eight years later.
+              </p>
+
+              <h2 id="the-sections-you-will-actually-meet">The sections you will actually meet</h2>
+              <p>
+                Here is the practitioner core of the Act, one concrete example each. Penalty figures are from the
+                current statute text.
+              </p>
+              <p>
+                <strong>Section 43 — unauthorised access and damage (civil).</strong> Unauthorised access, data
+                downloads, malware, or disruption create liability to <em>compensate</em> the person affected.
+                Civil, not criminal: the departing contractor who deletes a client's database answers here.
+              </p>
+              <p>
+                <strong>Section 43A — negligent handling of sensitive personal data.</strong> A company negligent
+                in implementing "reasonable security practices" for sensitive personal data, causing wrongful loss
+                or gain, must pay compensation — with no statutory cap. Note its trajectory: Section 44(2) of the
+                DPDP Act omits it with effect from May 2027; until then, 43A is still the law.
+              </p>
+              <p>
+                <strong>Section 65 — tampering with source documents.</strong> Knowingly concealing, destroying, or
+                altering computer source code the law requires to be kept — up to three years and/or ₹2 lakh.
+                Think doctoring billing-software source before an audit.
+              </p>
+              <p>
+                <strong>Section 66 — computer-related offences.</strong> The bridge from civil to criminal: any
+                Section 43 act done <em>dishonestly or fraudulently</em>, punishable with up to three years and/or
+                ₹5 lakh. The ex-employee who logs in with never-revoked credentials and copies the customer
+                database faces both a 43 claim and a 66 prosecution.
+              </p>
+              <p>The 66-family, added in 2008, covers the crimes you read about weekly:</p>
+              <ul>
+                <li><strong>66B</strong> — dishonestly receiving a stolen computer resource or communication device (up to three years or ₹1 lakh or both) — buying a phone you know is stolen.</li>
+                <li><strong>66C</strong> — identity theft: fraudulent use of another's password, electronic signature, or unique ID (up to three years plus fine up to ₹1 lakh). Most phishing prosecutions live here.</li>
+                <li><strong>66D</strong> — cheating by personation using a computer resource (same penalties) — the workhorse of India's online-fraud FIRs: fake bank calls, OTP scams, fraudulent "support" numbers.</li>
+                <li><strong>66E</strong> — privacy violation: capturing or publishing images of a person's private areas without consent (up to three years or ₹2 lakh or both).</li>
+                <li><strong>66F</strong> — cyberterrorism: attacks threatening India's sovereignty, integrity, or security, or unauthorised access likely to cause death, injury, or critical-infrastructure damage — up to life imprisonment.</li>
+              </ul>
+              <p>
+                <strong>Sections 67, 67A, 67B — content offences.</strong> Obscene material (67, up to three years
+                and ₹5 lakh on first conviction), sexually explicit material (67A, up to five years first time),
+                and child sexual abuse material (67B, the strictest — reaching creation, collection, and
+                browsing). The quieter <strong>67C</strong> obliges intermediaries to preserve specified records —
+                one hook behind log-retention duties.
+              </p>
+              <p>
+                <strong>Sections 69, 69A, 69B — the state's powers.</strong> Interception, monitoring, and
+                decryption (69); blocking public access (69A — the section behind the June 2020 TikTok ban and
+                most content-blocking orders); traffic-data monitoring for cybersecurity (69B). Refusing to assist
+                under 69, or defying a 69A order, carries up to seven years. Who may order what, and with what
+                safeguards, gets its own section below.
+              </p>
+              <p>
+                <strong>Section 70 — protected systems.</strong> Systems affecting Critical Information
+                Infrastructure can be declared "protected"; the NCIIPC (s. 70A, created 2014) guards them, and
+                unauthorised access carries up to ten years. Section 70B is CERT-In's statutory basis.
+              </p>
+              <p>
+                <strong>Sections 72 and 72A — confidentiality.</strong> Section 72 punishes officials who disclose
+                records they accessed under the Act (up to two years). Section 72A reaches anyone — including an
+                intermediary's staff — who discloses personal information obtained under a services contract,
+                without consent, knowing it will cause wrongful loss or gain (up to three years and/or ₹5 lakh):
+                the section for the support engineer who sells customer data.
+              </p>
+
+              <h2 id="section-66a-the-section-that-wont-stay-dead">Section 66A: the section that won't stay dead</h2>
+              <p>
+                One provision deserves its own chapter, because getting it wrong is the most common error in Indian
+                cyber-law writing. <strong>Section 66A</strong>, inserted in 2009, criminalised sending "grossly
+                offensive" or "menacing" information — or false information meant to cause "annoyance" or
+                "inconvenience" — through a computer or communication device. Words that elastic criminalise almost
+                anything, and they did: most notoriously, the November 2012 arrest of two young women over a
+                Facebook post questioning Mumbai's shutdown after Bal Thackeray's death — one of them arrested
+                merely for liking it.
+              </p>
+              <p>
+                A law student, Shreya Singhal, took it to the Supreme Court. In
+                <strong>Shreya Singhal v. Union of India</strong>, decided on 24 March 2015 in a judgment authored
+                by Justice Rohinton Nariman, the Court <strong>struck down Section 66A in its entirety</strong>:
+                vague, overbroad, chilling to speech, violative of Article 19(1)(a), and not saved by Article
+                19(2)'s reasonable restrictions. The same judgment upheld Section 69A's blocking power with its
+                safeguards, and read down Section 79 so that an intermediary's takedown duty arises only from a
+                court order or government notification — not from anyone's complaint.
+              </p>
+              <p>
+                Yet 66A refused to die. FIRs kept citing it for years, and as late as 2022 the Supreme Court was
+                still directing states to stop invoking it and to drop it from pending cases. Treat anything citing
+                66A as live law the way you would treat code calling a deleted API — a reliable sign the author
+                never checked the source.
+              </p>
+
+              <h2 id="the-2008-amendment-the-act-grows-teeth">The 2008 amendment: the Act grows teeth</h2>
+              <p>
+                The <strong>IT (Amendment) Act, 2008</strong> was passed in December 2008 — weeks after the 26/11
+                Mumbai attacks, with strikingly little debate — and came into force on 27 October 2009. In one bill
+                it added Section 43A and the entire 66- and 67-families; expanded Section 69 and created 69A and
+                69B; gave CERT-In its statutory role as the national incident-response agency under Section 70B;
+                made the law technology-neutral by recognising "electronic signatures" generally; and rebuilt
+                <strong>Section 79's safe harbour</strong> into its modern conditional form — intermediaries are
+                shielded from liability for user content <em>only if</em> they observe prescribed due diligence.
+                That conditionality is the hook on which the 2011 and 2021 intermediary rules hang.
+              </p>
+              <p>
+                In short: the 2000 Act built the marketplace; the 2008 amendment built the police station next
+                door.
+              </p>
+
+              <h2 id="the-rules-layer">The rules layer: where compliance actually lives</h2>
+              <p>
+                Statutes delegate; rules operationalise. Three sets of subordinate legislation carry most
+                day-to-day compliance.
+              </p>
+              <p>
+                <strong>SPDI Rules, 2011.</strong> Issued under Section 43A, they defined "sensitive personal
+                data" (passwords, financial, health, and biometric data) and required privacy policies, consent,
+                and "reasonable security practices", with ISO/IEC 27001 named as one acceptable standard. India's
+                <em>old</em> data-protection regime — in force until the DPDP Act repeals it along with 43A in
+                May 2027.
+              </p>
+              <p>
+                <strong>IT Rules, 2021.</strong> The Intermediary Guidelines and Digital Media Ethics Code Rules,
+                notified in February 2021 under Section 79's due-diligence hook. All intermediaries must publish
+                terms, take down specified content on legal order, and run a grievance mechanism — acknowledge
+                within 24 hours, dispose within 15 days. <strong>Significant social media intermediaries</strong>
+                (5 million or more registered Indian users) additionally need a Chief Compliance Officer, a nodal
+                contact, a resident grievance officer in India, and monthly compliance reports. The most contested
+                piece is Rule 4(2) <strong>traceability</strong>: messaging platforms must be able to identify a
+                message's "first originator" on a judicial or competent-authority order. WhatsApp challenged it in
+                the Delhi High Court in 2021, arguing it cannot comply without breaking end-to-end encryption for
+                everyone; as of August 2026 the case remains undecided, with other parts of the Rules under
+                challenge in various High Courts as well. Traceability is not settled law — in either direction.
+              </p>
+              <p>
+                <strong>CERT-In Directions, April 2022.</strong> Issued on 28 April 2022 under Section 70B(6),
+                binding service providers, intermediaries, data centres, body corporates, and government
+                organisations: <strong>report specified cyber incidents to CERT-In within six hours</strong> of
+                noticing them; <strong>keep logs of all ICT systems for 180 days, stored within India</strong>; and
+                synchronise clocks to official NTP sources. Data centres and VPS, cloud, and VPN providers must
+                also keep validated customer records — names, contact details, IP addresses — for five years after
+                a subscriber leaves. That requirement is why ExpressVPN, NordVPN, and Surfshark pulled their Indian
+                servers in 2022 rather than log their users.
+              </p>
+
+              <h2 id="the-dpdp-act-2023-a-new-data-protection-era">The DPDP Act 2023: a new data-protection era</h2>
+              <p>
+                The road to a real data-protection law began in the courtroom. In
+                <strong>Justice K.S. Puttaswamy v. Union of India</strong> (24 August 2017), a nine-judge bench of
+                the Supreme Court unanimously held that <strong>privacy is a fundamental right</strong> under
+                Article 21. Draft bills followed and fell; in August 2023 Parliament passed the
+                <strong>Digital Personal Data Protection Act, 2023</strong>.
+              </p>
+              <p>
+                The design is deliberately simpler than Europe's GDPR. It covers digital personal data — any data
+                about an identifiable individual, no separate "sensitive" tier. <strong>Data Fiduciaries</strong>
+                (who decide why and how data is processed) owe duties to <strong>Data Principals</strong> (the
+                individuals). Processing needs <strong>consent</strong> that is free, specific, informed,
+                unambiguous, and as easy to withdraw as to give — or must fit narrow "legitimate uses". Children
+                under 18 need verifiable parental consent, with tracking and
+                behavioural advertising aimed at children prohibited. A <strong>Data Protection Board of
+                India</strong> adjudicates breaches. The penalty schedule is the headline: <strong>up to ₹250
+                crore per instance</strong> for failing to take reasonable security safeguards, up to ₹200 crore
+                for breach-notification or children's-data failures, up to ₹50 crore for most else — per instance,
+                so one incident can stack.
+              </p>
+              <p>
+                Now the part that changes fastest, so date-stamp it: the Act sat largely un-operational until the
+                <strong>DPDP Rules were notified in November 2025</strong>, with a phased rollout — the Board
+                first, consent-manager registration around November 2026, and the full substantive obligations
+                (notice, consent artifacts, data-principal rights, breach notification, Significant Data Fiduciary
+                duties) binding from <strong>May 2027</strong>, when Section 43A and the SPDI Rules also stand
+                repealed. As of mid-2026, India is in the transition window: DPDP deadlines are on the
+                calendar, but SPDI is still the regime you are technically judged under. Plan for both; build for
+                DPDP.
+              </p>
+
+              <h2 id="the-wider-digital-law-stack">The wider digital-law stack</h2>
+              <p>
+                The IT Act is the spine of India's digital law, but not the whole skeleton. Here is the rest of
+                the stack: what each statute governs, and when you actually meet it.
+              </p>
+              <ul>
+                <li>
+                  <strong>Bharatiya Nyaya Sanhita, 2023</strong> (the IPC's successor, in force since 1 July 2024).
+                  IT Act charges rarely travel alone: fraud FIRs pair 66C/66D with BNS cheating (s. 318) and
+                  personation (s. 319); sextortion adds extortion (s. 308); stalking (s. 78) covers cyberstalking;
+                  defamation is s. 356; and BNS forgery expressly reaches electronic records (s. 336).
+                </li>
+                <li>
+                  <strong>Bharatiya Nagarik Suraksha Sanhita, 2023</strong> — the procedure side of the same
+                  reform; its Section 94 production summons, covered below, is how digital evidence is demanded
+                  from companies.
+                </li>
+                <li>
+                  <strong>Telecommunications Act, 2023</strong> — the Telegraph Act's replacement, in force in
+                  phases since June 2024: telecom networks, spectrum, and services, with its own interception
+                  power (s. 20) and 2024 rules replacing the colonial-era regime. Carriers answer here; online
+                  platforms to the IT Act.
+                </li>
+                <li>
+                  <strong>DPDP Act, 2023</strong> — covered in depth above; the data-protection pillar of the stack.
+                </li>
+                <li>
+                  <strong>Consumer Protection Act, 2019</strong> with the <strong>E-Commerce Rules, 2020</strong>
+                  and the Central Consumer Protection Authority's (CCPA) <strong>Dark Patterns Guidelines</strong> (30 November 2023). If you sell online:
+                  marketplace disclosure and grievance duties, plus a ban on 13 listed dark patterns — false
+                  urgency, basket sneaking, confirm shaming, subscription traps.
+                </li>
+                <li>
+                  <strong>Copyright Act, 1957</strong> (as amended in 2012). Software is a literary work, so piracy
+                  is infringement; ss. 65A–65B penalise circumventing technological protection measures and
+                  tampering with rights-management information.
+                </li>
+                <li>
+                  <strong>RBI's payments and lending rules.</strong> The April 2018 "Storage of Payment System
+                  Data" directive keeps end-to-end payment data only in India — every payments fintech lives with
+                  this daily — and the digital lending guidelines constrain what lending apps may collect.
+                </li>
+                <li>
+                  <strong>Aadhaar Act, 2016.</strong> Strict limits on Aadhaar identity data, sharply narrowed for
+                  private-sector use by the Supreme Court's 2018 Aadhaar judgment.
+                </li>
+                <li>
+                  <strong>POCSO Act, 2012.</strong> Overlaps IT Act s. 67B on child sexual abuse material —
+                  prosecutions routinely charge both.
+                </li>
+                <li>
+                  <strong>The Digital India Act</strong> — the announced IT Act successor, chronically
+                  over-announced: consultations began in 2023, but as of August 2026 no bill has been enacted;
+                  MeitY keeps amending rules under the existing Act instead. Until it passes, the 2000 Act remains
+                  the spine.
+                </li>
+              </ul>
+
+              <h2 id="the-quick-reference-index">The quick-reference index: which provision does what</h2>
+              <p>
+                Bookmark this table: the skimmable index of everything above, plus the criminal-procedure summons
+                power most companies actually receive requests under.
+              </p>
+              <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
+                   at 375px it hides ~105-240px of table. A scrollable region has to be
+                   reachable by keyboard and has to say what it is (WCAG 2.1.1). The
+                   caption already names it, so it is borrowed rather than duplicated. -->
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-indiaitact">
+                <table class="post-table">
+                  <caption id="table-caption-indiaitact">India's practitioner-relevant IT law provisions at a glance. Statuses verified August 2026.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Provision</th>
+                      <th scope="col">Instrument</th>
+                      <th scope="col">What it does</th>
+                      <th scope="col">Who invokes / who complies</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>S. 43</td>
+                      <td>IT Act 2000</td>
+                      <td>Civil compensation for unauthorised access, damage, disruption, data theft</td>
+                      <td>Affected person; adjudicating officer (s. 46) up to ₹5 crore</td>
+                    </tr>
+                    <tr>
+                      <td>S. 43A</td>
+                      <td>IT Act 2000</td>
+                      <td>Compensation for negligent handling of sensitive personal data (with SPDI Rules)</td>
+                      <td>Individuals vs. companies; stands repealed May 2027 (DPDP s. 44(2))</td>
+                    </tr>
+                    <tr>
+                      <td>S. 65</td>
+                      <td>IT Act 2000</td>
+                      <td>Tampering with computer source documents required to be kept by law</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66</td>
+                      <td>IT Act 2000</td>
+                      <td>s. 43 acts done dishonestly or fraudulently — criminal</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66A</td>
+                      <td>IT Act 2000</td>
+                      <td><strong>STRUCK DOWN</strong> — offensive-messages offence, void since <em>Shreya Singhal</em> (2015)</td>
+                      <td>Nobody, lawfully; report any current use of it</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66B</td>
+                      <td>IT Act 2000</td>
+                      <td>Dishonestly receiving a stolen computer resource or communication device</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66C</td>
+                      <td>IT Act 2000</td>
+                      <td>Identity theft — fraudulent use of passwords or unique IDs</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66D</td>
+                      <td>IT Act 2000</td>
+                      <td>Cheating by personation online — OTP scams</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66E</td>
+                      <td>IT Act 2000</td>
+                      <td>Capturing or publishing private-area images without consent</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 66F</td>
+                      <td>IT Act 2000</td>
+                      <td>Cyberterrorism — up to life imprisonment</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 67</td>
+                      <td>IT Act 2000</td>
+                      <td>Obscene material online</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 67A</td>
+                      <td>IT Act 2000</td>
+                      <td>Sexually explicit material online</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 67B</td>
+                      <td>IT Act 2000</td>
+                      <td>Child sexual abuse material, incl. collection and browsing</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 67C</td>
+                      <td>IT Act 2000</td>
+                      <td>Intermediary duty to preserve and retain specified records</td>
+                      <td>Intermediaries comply</td>
+                    </tr>
+                    <tr>
+                      <td>S. 69</td>
+                      <td>IT Act 2000</td>
+                      <td>Interception, monitoring, decryption</td>
+                      <td>Union / State Home Secretary orders (2009 Rules); intermediaries assist</td>
+                    </tr>
+                    <tr>
+                      <td>S. 69A</td>
+                      <td>IT Act 2000</td>
+                      <td>Blocking public access to online content — the app-ban section</td>
+                      <td>MeitY Designated Officer + committee; intermediaries comply</td>
+                    </tr>
+                    <tr>
+                      <td>S. 69B</td>
+                      <td>IT Act 2000</td>
+                      <td>Traffic-data (metadata) monitoring for cybersecurity</td>
+                      <td>CERT-In (authorised 2016); service providers assist</td>
+                    </tr>
+                    <tr>
+                      <td>S. 70</td>
+                      <td>IT Act 2000</td>
+                      <td>Protected systems / Critical Information Infrastructure; access up to 10 years</td>
+                      <td>Government declares; NCIIPC (s. 70A) guards</td>
+                    </tr>
+                    <tr>
+                      <td>S. 72</td>
+                      <td>IT Act 2000</td>
+                      <td>Breach of confidentiality by officials who gained access under the Act</td>
+                      <td>Police / courts; criminal</td>
+                    </tr>
+                    <tr>
+                      <td>S. 72A</td>
+                      <td>IT Act 2000</td>
+                      <td>Disclosure of personal information in breach of a lawful contract</td>
+                      <td>Police / courts; covers service-provider staff leaks</td>
+                    </tr>
+                    <tr>
+                      <td>S. 79</td>
+                      <td>IT Act 2000</td>
+                      <td>Intermediary safe harbour, conditional on due diligence; read down in <em>Shreya Singhal</em></td>
+                      <td>Platforms rely on it; lost if due diligence fails</td>
+                    </tr>
+                    <tr>
+                      <td>Rule 3</td>
+                      <td>IT Rules 2021</td>
+                      <td>Due diligence: terms, takedowns, grievance-officer timelines</td>
+                      <td>All intermediaries comply</td>
+                    </tr>
+                    <tr>
+                      <td>Rule 4(2)</td>
+                      <td>IT Rules 2021</td>
+                      <td>Traceability — identify a message's first originator on court/authority order</td>
+                      <td>Significant social media intermediaries; challenge pending, Delhi HC</td>
+                    </tr>
+                    <tr>
+                      <td>Direction (i)</td>
+                      <td>CERT-In 2022</td>
+                      <td>Report specified cyber incidents within 6 hours</td>
+                      <td>Service providers, intermediaries, body corporates, government</td>
+                    </tr>
+                    <tr>
+                      <td>Direction (iv–v)</td>
+                      <td>CERT-In 2022</td>
+                      <td>Keep 180 days of ICT logs in India; VPS/VPN/cloud keep customer records 5 years</td>
+                      <td>Same entities; VPN/VPS/cloud providers additionally</td>
+                    </tr>
+                    <tr>
+                      <td>Ss. 5–6</td>
+                      <td>DPDP Act 2023</td>
+                      <td>Notice and consent — specific, informed, easy to withdraw</td>
+                      <td>Data Fiduciaries; fully binding from May 2027</td>
+                    </tr>
+                    <tr>
+                      <td>S. 33 + Schedule</td>
+                      <td>DPDP Act 2023</td>
+                      <td>Penalties up to ₹250 crore per instance for security-safeguard failures</td>
+                      <td>Data Protection Board of India imposes</td>
+                    </tr>
+                    <tr>
+                      <td>S. 94</td>
+                      <td>BNSS 2023</td>
+                      <td>Production order for documents, electronic communication, devices — CrPC s. 91's successor</td>
+                      <td>Court or officer in charge of a police station; anyone in possession complies</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 id="when-law-enforcement-comes-asking">When law enforcement comes asking</h2>
+              <p>
+                Sooner or later, a company holding user data receives a legal request. These arrive through four
+                distinct doors, and the first skill — for the officer issuing and the company receiving alike — is
+                knowing which door is which:
+              </p>
+              <ul>
+                <li>
+                  <strong>BNSS Section 94</strong> (in force since 1 July 2024, replacing CrPC Section 91): a
+                  court, or the officer in charge of a police station, issues a summons or written order —
+                  physical or electronic — for production of documents, electronic communication, or devices
+                  likely to contain digital evidence. The routine instrument behind most log and record requests;
+                  you can comply by producing the material without appearing in person. If you want to see
+                  <a class="text-link" href="/blog/how-cybercrime-cases-are-solved">how these production orders play
+                  out in a real investigation</a>, that walk-through follows the evidence from first alert to the
+                  courtroom.
+                </li>
+                <li>
+                  <strong>IT Act Section 69</strong>: interception, monitoring, or decryption — only on the order
+                  of the competent authority under the 2009 Interception Rules: the Union Home Secretary, or a
+                  State's Home Secretary, with a review committee examining orders.
+                </li>
+                <li>
+                  <strong>IT Act Section 69A</strong>: blocking of public content, routed through MeitY's
+                  Designated Officer (Joint Secretary rank or above) and an inter-ministerial committee under the
+                  2009 Blocking Rules, with an emergency path. Orders are largely kept confidential — much
+                  criticised, but the law as it stands.
+                </li>
+                <li>
+                  <strong>IT Act Sections 69B and 70B(6)</strong>: traffic-data monitoring for cybersecurity
+                  (CERT-In is the notified agency) and CERT-In's power to demand incident information and logs
+                  under its 2022 Directions.
+                </li>
+              </ul>
+              <p>
+                If your company receives one of these, the handling pattern is consistent: <strong>verify</strong>
+                that the issuing authority actually holds the power cited (a police station cannot issue a Section
+                69 interception order); <strong>check the scope</strong> — specific accounts, identifiers, and time
+                ranges, not a fishing expedition; <strong>respond through counsel</strong>, especially where
+                content or encryption is involved; <strong>preserve</strong> the requested material immediately;
+                and <strong>document everything disclosed</strong> — what, when, to whom, under which provision.
+                Disclose what the order covers, and only that. None of this is obstruction; it is the diligence a
+                well-run investigation expects from the other side of the table.
+              </p>
+
+              <h2 id="if-you-build-software">If you build software</h2>
+              <p>
+                Three obligations should shape your architecture today. <strong>Logging</strong>: CERT-In means
+                180 days of ICT logs retained in India — centralise logs, set retention explicitly, pin the
+                storage region. <strong>Clocks</strong>: a six-hour reporting window is a detection-and-escalation
+                problem; alerting and an on-call path are compliance controls, not luxuries. <strong>Consent
+                UX</strong>: DPDP-grade consent is specific, itemised per purpose, unbundled, and as easy to
+                withdraw as to give — if your signup buries consent in the terms checkbox, you are building
+                technical debt with a ₹250 crore interest rate. And add real deletion paths now: erasure rights
+                arrive with the 2027 phase, and retrofitting deletion into a system that never planned for it is
+                miserable work.
+              </p>
+
+              <h2 id="if-you-run-a-business">If you run a business</h2>
+              <p>
+                If you decide why and how personal data is processed, you are almost certainly a Data Fiduciary.
+                Start with a <strong>data map</strong>: what you collect, why, where it lives, which vendors touch
+                it. Push obligations into <strong>vendor contracts</strong> — processors act for you, and liability
+                does not outsource. Remember the overlap years: until May 2027 you are also judged under 43A and
+                SPDI, so an ISO 27001-aligned security program pays twice. Stand up a grievance channel, and if you are
+                notified as a Significant Data Fiduciary, budget for an India-based Data Protection Officer and
+                independent audits. Above all, rehearse the incident play: one breach can simultaneously start
+                CERT-In's six-hour clock, a Board notification, and contractual duties.
+              </p>
+
+              <h2 id="if-you-are-an-individual">If you're an individual</h2>
+              <p>
+                The DPDP era gives you enforceable rights — to know what a fiduciary holds about you, to
+                correction and erasure, to grievance redressal — fully binding from May 2027. Today, your paths
+                are the national cybercrime portal (cybercrime.gov.in) and the 1930 financial-fraud helpline; the
+                platform's grievance officer, obliged to acknowledge you within 24 hours; and compensation claims
+                under Sections 43/43A before an adjudicating officer. One piece of folklore-resistance: if anyone
+                threatens you with Section 66A, it has been void since 2015.
+              </p>
+              <p>
+                The deeper habit this article advocates: read primary sources. The IT Act and its rules are on
+                India Code and MeitY's site; the DPDP Act is short; <em>Shreya Singhal</em> and
+                <em>Puttaswamy</em> are genuinely readable. India's IT law has a folklore problem because so few
+                practitioners go to the text. Be the person in the room who has.
               </p>
             </div>
-            <figure class="post-figure">
-              <svg viewBox="0 0 1160 460" role="img" aria-label="Timeline of Indian IT law: IT Act 2000, the 2008 Amendment, SPDI Rules 2011, the Shreya Singhal judgment of 2015, IT Rules 2021, CERT-In Directions 2022, the DPDP Act 2023, and the DPDP Rules 2025" xmlns="http://www.w3.org/2000/svg">
-                <rect width="1160" height="460" rx="18" fill="#1b2735"/>
-                <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">TWENTY-FIVE YEARS OF INDIAN IT LAW</text>
-                <line x1="60" y1="230" x2="1100" y2="230" stroke="#334155" stroke-width="3"/>
-                <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
-                  <!-- 2000: IT Act (above) -->
-                  <text x="105" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Act 2000</text>
-                  <text x="105" y="157" fill="#94a3b8" font-size="15">E-records and</text>
-                  <text x="105" y="179" fill="#94a3b8" font-size="15">e-signatures valid</text>
-                  <line x1="105" y1="190" x2="105" y2="210" stroke="#7dd3fc" stroke-width="2"/>
-                  <rect x="63" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
-                  <text x="105" y="235" fill="#131f2d" font-size="16" font-weight="800">2000</text>
-                  <!-- 2008: Amendment (below) -->
-                  <rect x="203" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
-                  <text x="245" y="235" fill="#131f2d" font-size="16" font-weight="800">2008</text>
-                  <line x1="245" y1="250" x2="245" y2="270" stroke="#a855f7" stroke-width="2"/>
-                  <text x="245" y="295" fill="#f8fafc" font-size="17" font-weight="800">Amendment Act</text>
-                  <text x="245" y="320" fill="#94a3b8" font-size="15">66-family, s. 69,</text>
-                  <text x="245" y="342" fill="#94a3b8" font-size="15">safe harbour</text>
-                  <!-- 2011: SPDI (above) -->
-                  <text x="385" y="132" fill="#f8fafc" font-size="17" font-weight="800">SPDI Rules</text>
-                  <text x="385" y="157" fill="#94a3b8" font-size="15">First data-</text>
-                  <text x="385" y="179" fill="#94a3b8" font-size="15">protection rules</text>
-                  <line x1="385" y1="190" x2="385" y2="210" stroke="#4ade80" stroke-width="2"/>
-                  <rect x="343" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
-                  <text x="385" y="235" fill="#131f2d" font-size="16" font-weight="800">2011</text>
-                  <!-- 2015: Shreya Singhal (below) -->
-                  <rect x="483" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
-                  <text x="525" y="235" fill="#131f2d" font-size="16" font-weight="800">2015</text>
-                  <line x1="525" y1="250" x2="525" y2="270" stroke="#fbbf24" stroke-width="2"/>
-                  <text x="525" y="295" fill="#f8fafc" font-size="17" font-weight="800">Shreya Singhal</text>
-                  <text x="525" y="320" fill="#94a3b8" font-size="15">SC strikes</text>
-                  <text x="525" y="342" fill="#94a3b8" font-size="15">down s. 66A</text>
-                  <!-- 2021: IT Rules (above) -->
-                  <text x="665" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Rules 2021</text>
-                  <text x="665" y="157" fill="#94a3b8" font-size="15">Intermediary</text>
-                  <text x="665" y="179" fill="#94a3b8" font-size="15">due diligence</text>
-                  <line x1="665" y1="190" x2="665" y2="210" stroke="#7dd3fc" stroke-width="2"/>
-                  <rect x="623" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
-                  <text x="665" y="235" fill="#131f2d" font-size="16" font-weight="800">2021</text>
-                  <!-- 2022: CERT-In (below) -->
-                  <rect x="763" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
-                  <text x="805" y="235" fill="#131f2d" font-size="16" font-weight="800">2022</text>
-                  <line x1="805" y1="250" x2="805" y2="270" stroke="#a855f7" stroke-width="2"/>
-                  <text x="805" y="295" fill="#f8fafc" font-size="17" font-weight="800">CERT-In Directions</text>
-                  <text x="805" y="320" fill="#94a3b8" font-size="15">6-hour reports,</text>
-                  <text x="805" y="342" fill="#94a3b8" font-size="15">180-day logs</text>
-                  <!-- 2023: DPDP Act (above) -->
-                  <text x="945" y="132" fill="#f8fafc" font-size="17" font-weight="800">DPDP Act</text>
-                  <text x="945" y="157" fill="#94a3b8" font-size="15">Consent, Board,</text>
-                  <text x="945" y="179" fill="#94a3b8" font-size="15">₹250 cr penalties</text>
-                  <line x1="945" y1="190" x2="945" y2="210" stroke="#4ade80" stroke-width="2"/>
-                  <rect x="903" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
-                  <text x="945" y="235" fill="#131f2d" font-size="16" font-weight="800">2023</text>
-                  <!-- 2025: DPDP Rules (below) -->
-                  <rect x="1043" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
-                  <text x="1085" y="235" fill="#131f2d" font-size="16" font-weight="800">2025</text>
-                  <line x1="1085" y1="250" x2="1085" y2="270" stroke="#fbbf24" stroke-width="2"/>
-                  <text x="1085" y="295" fill="#f8fafc" font-size="17" font-weight="800">DPDP Rules</text>
-                  <text x="1085" y="320" fill="#94a3b8" font-size="15">Phased rollout</text>
-                  <text x="1085" y="342" fill="#94a3b8" font-size="15">to mid-2027</text>
-                </g>
-                <text x="40" y="430" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="15">In-force dates differ: the 2008 Amendment took effect on 27 Oct 2009; DPDP obligations phase in until mid-2027.</text>
-              </svg>
-              <figcaption>
-                Twenty-five years of Indian IT law in one line — the timeline this article walks.
-              </figcaption>
-            </figure>
-
-            <h2 id="the-it-act-2000-why-it-exists">The IT Act 2000: why it exists</h2>
-            <p>
-              In the late 1990s India had a practical problem: contract and evidence law assumed paper. A
-              "document" was something you could hold; a "signature" meant ink. So when the United Nations
-              adopted the <strong>UNCITRAL Model Law on Electronic Commerce (1996)</strong> and recommended that
-              member states legislate along its lines, India did. The <strong>Information Technology Act,
-              2000</strong> came into force on 17 October 2000 — the country's first comprehensive law for
-              electronic commerce and computer crime.
-            </p>
-            <p>
-              Its founding achievements sound mundane precisely because they worked: <strong>electronic records
-              and digital signatures gained legal validity</strong>, so a contract no longer fails merely for
-              being electronic; the <strong>Controller of Certifying Authorities (CCA)</strong> was created to
-              license the authorities issuing digital-signature certificates; and <strong>adjudicating
-              officers</strong> under Section 46 got power to decide compensation claims up to ₹5 crore, with
-              appeals originally to the Cyber Appellate Tribunal (merged into TDSAT in 2017).
-            </p>
-            <p>
-              Just as important is what the original Act was <em>not</em>: a commerce statute with a thin chapter
-              of offences and barely a word about privacy. Almost everything practitioners now call "the IT Act"
-              arrived eight years later.
-            </p>
-
-            <h2 id="the-sections-you-will-actually-meet">The sections you will actually meet</h2>
-            <p>
-              Here is the practitioner core of the Act, one concrete example each. Penalty figures are from the
-              current statute text.
-            </p>
-            <p>
-              <strong>Section 43 — unauthorised access and damage (civil).</strong> Unauthorised access, data
-              downloads, malware, or disruption create liability to <em>compensate</em> the person affected.
-              Civil, not criminal: the departing contractor who deletes a client's database answers here.
-            </p>
-            <p>
-              <strong>Section 43A — negligent handling of sensitive personal data.</strong> A company negligent
-              in implementing "reasonable security practices" for sensitive personal data, causing wrongful loss
-              or gain, must pay compensation — with no statutory cap. Note its trajectory: Section 44(2) of the
-              DPDP Act omits it with effect from May 2027; until then, 43A is still the law.
-            </p>
-            <p>
-              <strong>Section 65 — tampering with source documents.</strong> Knowingly concealing, destroying, or
-              altering computer source code the law requires to be kept — up to three years and/or ₹2 lakh.
-              Think doctoring billing-software source before an audit.
-            </p>
-            <p>
-              <strong>Section 66 — computer-related offences.</strong> The bridge from civil to criminal: any
-              Section 43 act done <em>dishonestly or fraudulently</em>, punishable with up to three years and/or
-              ₹5 lakh. The ex-employee who logs in with never-revoked credentials and copies the customer
-              database faces both a 43 claim and a 66 prosecution.
-            </p>
-            <p>The 66-family, added in 2008, covers the crimes you read about weekly:</p>
-            <ul>
-              <li><strong>66B</strong> — dishonestly receiving a stolen computer resource or communication device (up to three years or ₹1 lakh or both) — buying a phone you know is stolen.</li>
-              <li><strong>66C</strong> — identity theft: fraudulent use of another's password, electronic signature, or unique ID (up to three years plus fine up to ₹1 lakh). Most phishing prosecutions live here.</li>
-              <li><strong>66D</strong> — cheating by personation using a computer resource (same penalties) — the workhorse of India's online-fraud FIRs: fake bank calls, OTP scams, fraudulent "support" numbers.</li>
-              <li><strong>66E</strong> — privacy violation: capturing or publishing images of a person's private areas without consent (up to three years or ₹2 lakh or both).</li>
-              <li><strong>66F</strong> — cyberterrorism: attacks threatening India's sovereignty, integrity, or security, or unauthorised access likely to cause death, injury, or critical-infrastructure damage — up to life imprisonment.</li>
-            </ul>
-            <p>
-              <strong>Sections 67, 67A, 67B — content offences.</strong> Obscene material (67, up to three years
-              and ₹5 lakh on first conviction), sexually explicit material (67A, up to five years first time),
-              and child sexual abuse material (67B, the strictest — reaching creation, collection, and
-              browsing). The quieter <strong>67C</strong> obliges intermediaries to preserve specified records —
-              one hook behind log-retention duties.
-            </p>
-            <p>
-              <strong>Sections 69, 69A, 69B — the state's powers.</strong> Interception, monitoring, and
-              decryption (69); blocking public access (69A — the section behind the June 2020 TikTok ban and
-              most content-blocking orders); traffic-data monitoring for cybersecurity (69B). Refusing to assist
-              under 69, or defying a 69A order, carries up to seven years. Who may order what, and with what
-              safeguards, gets its own section below.
-            </p>
-            <p>
-              <strong>Section 70 — protected systems.</strong> Systems affecting Critical Information
-              Infrastructure can be declared "protected"; the NCIIPC (s. 70A, created 2014) guards them, and
-              unauthorised access carries up to ten years. Section 70B is CERT-In's statutory basis.
-            </p>
-            <p>
-              <strong>Sections 72 and 72A — confidentiality.</strong> Section 72 punishes officials who disclose
-              records they accessed under the Act (up to two years). Section 72A reaches anyone — including an
-              intermediary's staff — who discloses personal information obtained under a services contract,
-              without consent, knowing it will cause wrongful loss or gain (up to three years and/or ₹5 lakh):
-              the section for the support engineer who sells customer data.
-            </p>
-
-            <h2 id="section-66a-the-section-that-wont-stay-dead">Section 66A: the section that won't stay dead</h2>
-            <p>
-              One provision deserves its own chapter, because getting it wrong is the most common error in Indian
-              cyber-law writing. <strong>Section 66A</strong>, inserted in 2009, criminalised sending "grossly
-              offensive" or "menacing" information — or false information meant to cause "annoyance" or
-              "inconvenience" — through a computer or communication device. Words that elastic criminalise almost
-              anything, and they did: most notoriously, the November 2012 arrest of two young women over a
-              Facebook post questioning Mumbai's shutdown after Bal Thackeray's death — one of them arrested
-              merely for liking it.
-            </p>
-            <p>
-              A law student, Shreya Singhal, took it to the Supreme Court. In
-              <strong>Shreya Singhal v. Union of India</strong>, decided on 24 March 2015 in a judgment authored
-              by Justice Rohinton Nariman, the Court <strong>struck down Section 66A in its entirety</strong>:
-              vague, overbroad, chilling to speech, violative of Article 19(1)(a), and not saved by Article
-              19(2)'s reasonable restrictions. The same judgment upheld Section 69A's blocking power with its
-              safeguards, and read down Section 79 so that an intermediary's takedown duty arises only from a
-              court order or government notification — not from anyone's complaint.
-            </p>
-            <p>
-              Yet 66A refused to die. FIRs kept citing it for years, and as late as 2022 the Supreme Court was
-              still directing states to stop invoking it and to drop it from pending cases. Treat anything citing
-              66A as live law the way you would treat code calling a deleted API — a reliable sign the author
-              never checked the source.
-            </p>
-
-            <h2 id="the-2008-amendment-the-act-grows-teeth">The 2008 amendment: the Act grows teeth</h2>
-            <p>
-              The <strong>IT (Amendment) Act, 2008</strong> was passed in December 2008 — weeks after the 26/11
-              Mumbai attacks, with strikingly little debate — and came into force on 27 October 2009. In one bill
-              it added Section 43A and the entire 66- and 67-families; expanded Section 69 and created 69A and
-              69B; gave CERT-In its statutory role as the national incident-response agency under Section 70B;
-              made the law technology-neutral by recognising "electronic signatures" generally; and rebuilt
-              <strong>Section 79's safe harbour</strong> into its modern conditional form — intermediaries are
-              shielded from liability for user content <em>only if</em> they observe prescribed due diligence.
-              That conditionality is the hook on which the 2011 and 2021 intermediary rules hang.
-            </p>
-            <p>
-              In short: the 2000 Act built the marketplace; the 2008 amendment built the police station next
-              door.
-            </p>
-
-            <h2 id="the-rules-layer">The rules layer: where compliance actually lives</h2>
-            <p>
-              Statutes delegate; rules operationalise. Three sets of subordinate legislation carry most
-              day-to-day compliance.
-            </p>
-            <p>
-              <strong>SPDI Rules, 2011.</strong> Issued under Section 43A, they defined "sensitive personal
-              data" (passwords, financial, health, and biometric data) and required privacy policies, consent,
-              and "reasonable security practices", with ISO/IEC 27001 named as one acceptable standard. India's
-              <em>old</em> data-protection regime — in force until the DPDP Act repeals it along with 43A in
-              May 2027.
-            </p>
-            <p>
-              <strong>IT Rules, 2021.</strong> The Intermediary Guidelines and Digital Media Ethics Code Rules,
-              notified in February 2021 under Section 79's due-diligence hook. All intermediaries must publish
-              terms, take down specified content on legal order, and run a grievance mechanism — acknowledge
-              within 24 hours, dispose within 15 days. <strong>Significant social media intermediaries</strong>
-              (5 million or more registered Indian users) additionally need a Chief Compliance Officer, a nodal
-              contact, a resident grievance officer in India, and monthly compliance reports. The most contested
-              piece is Rule 4(2) <strong>traceability</strong>: messaging platforms must be able to identify a
-              message's "first originator" on a judicial or competent-authority order. WhatsApp challenged it in
-              the Delhi High Court in 2021, arguing it cannot comply without breaking end-to-end encryption for
-              everyone; as of August 2026 the case remains undecided, with other parts of the Rules under
-              challenge in various High Courts as well. Traceability is not settled law — in either direction.
-            </p>
-            <p>
-              <strong>CERT-In Directions, April 2022.</strong> Issued on 28 April 2022 under Section 70B(6),
-              binding service providers, intermediaries, data centres, body corporates, and government
-              organisations: <strong>report specified cyber incidents to CERT-In within six hours</strong> of
-              noticing them; <strong>keep logs of all ICT systems for 180 days, stored within India</strong>; and
-              synchronise clocks to official NTP sources. Data centres and VPS, cloud, and VPN providers must
-              also keep validated customer records — names, contact details, IP addresses — for five years after
-              a subscriber leaves. That requirement is why ExpressVPN, NordVPN, and Surfshark pulled their Indian
-              servers in 2022 rather than log their users.
-            </p>
-
-            <h2 id="the-dpdp-act-2023-a-new-data-protection-era">The DPDP Act 2023: a new data-protection era</h2>
-            <p>
-              The road to a real data-protection law began in the courtroom. In
-              <strong>Justice K.S. Puttaswamy v. Union of India</strong> (24 August 2017), a nine-judge bench of
-              the Supreme Court unanimously held that <strong>privacy is a fundamental right</strong> under
-              Article 21. Draft bills followed and fell; in August 2023 Parliament passed the
-              <strong>Digital Personal Data Protection Act, 2023</strong>.
-            </p>
-            <p>
-              The design is deliberately simpler than Europe's GDPR. It covers digital personal data — any data
-              about an identifiable individual, no separate "sensitive" tier. <strong>Data Fiduciaries</strong>
-              (who decide why and how data is processed) owe duties to <strong>Data Principals</strong> (the
-              individuals). Processing needs <strong>consent</strong> that is free, specific, informed,
-              unambiguous, and as easy to withdraw as to give — or must fit narrow "legitimate uses". Children
-              under 18 need verifiable parental consent, with tracking and
-              behavioural advertising aimed at children prohibited. A <strong>Data Protection Board of
-              India</strong> adjudicates breaches. The penalty schedule is the headline: <strong>up to ₹250
-              crore per instance</strong> for failing to take reasonable security safeguards, up to ₹200 crore
-              for breach-notification or children's-data failures, up to ₹50 crore for most else — per instance,
-              so one incident can stack.
-            </p>
-            <p>
-              Now the part that changes fastest, so date-stamp it: the Act sat largely un-operational until the
-              <strong>DPDP Rules were notified in November 2025</strong>, with a phased rollout — the Board
-              first, consent-manager registration around November 2026, and the full substantive obligations
-              (notice, consent artifacts, data-principal rights, breach notification, Significant Data Fiduciary
-              duties) binding from <strong>May 2027</strong>, when Section 43A and the SPDI Rules also stand
-              repealed. As of mid-2026, India is in the transition window: DPDP deadlines are on the
-              calendar, but SPDI is still the regime you are technically judged under. Plan for both; build for
-              DPDP.
-            </p>
-
-            <h2 id="the-wider-digital-law-stack">The wider digital-law stack</h2>
-            <p>
-              The IT Act is the spine of India's digital law, but not the whole skeleton. Here is the rest of
-              the stack: what each statute governs, and when you actually meet it.
-            </p>
-            <ul>
-              <li>
-                <strong>Bharatiya Nyaya Sanhita, 2023</strong> (the IPC's successor, in force since 1 July 2024).
-                IT Act charges rarely travel alone: fraud FIRs pair 66C/66D with BNS cheating (s. 318) and
-                personation (s. 319); sextortion adds extortion (s. 308); stalking (s. 78) covers cyberstalking;
-                defamation is s. 356; and BNS forgery expressly reaches electronic records (s. 336).
-              </li>
-              <li>
-                <strong>Bharatiya Nagarik Suraksha Sanhita, 2023</strong> — the procedure side of the same
-                reform; its Section 94 production summons, covered below, is how digital evidence is demanded
-                from companies.
-              </li>
-              <li>
-                <strong>Telecommunications Act, 2023</strong> — the Telegraph Act's replacement, in force in
-                phases since June 2024: telecom networks, spectrum, and services, with its own interception
-                power (s. 20) and 2024 rules replacing the colonial-era regime. Carriers answer here; online
-                platforms to the IT Act.
-              </li>
-              <li>
-                <strong>DPDP Act, 2023</strong> — covered in depth above; the data-protection pillar of the stack.
-              </li>
-              <li>
-                <strong>Consumer Protection Act, 2019</strong> with the <strong>E-Commerce Rules, 2020</strong>
-                and the Central Consumer Protection Authority's (CCPA) <strong>Dark Patterns Guidelines</strong> (30 November 2023). If you sell online:
-                marketplace disclosure and grievance duties, plus a ban on 13 listed dark patterns — false
-                urgency, basket sneaking, confirm shaming, subscription traps.
-              </li>
-              <li>
-                <strong>Copyright Act, 1957</strong> (as amended in 2012). Software is a literary work, so piracy
-                is infringement; ss. 65A–65B penalise circumventing technological protection measures and
-                tampering with rights-management information.
-              </li>
-              <li>
-                <strong>RBI's payments and lending rules.</strong> The April 2018 "Storage of Payment System
-                Data" directive keeps end-to-end payment data only in India — every payments fintech lives with
-                this daily — and the digital lending guidelines constrain what lending apps may collect.
-              </li>
-              <li>
-                <strong>Aadhaar Act, 2016.</strong> Strict limits on Aadhaar identity data, sharply narrowed for
-                private-sector use by the Supreme Court's 2018 Aadhaar judgment.
-              </li>
-              <li>
-                <strong>POCSO Act, 2012.</strong> Overlaps IT Act s. 67B on child sexual abuse material —
-                prosecutions routinely charge both.
-              </li>
-              <li>
-                <strong>The Digital India Act</strong> — the announced IT Act successor, chronically
-                over-announced: consultations began in 2023, but as of August 2026 no bill has been enacted;
-                MeitY keeps amending rules under the existing Act instead. Until it passes, the 2000 Act remains
-                the spine.
-              </li>
-            </ul>
-
-            <h2 id="the-quick-reference-index">The quick-reference index: which provision does what</h2>
-            <p>
-              Bookmark this table: the skimmable index of everything above, plus the criminal-procedure summons
-              power most companies actually receive requests under.
-            </p>
-            <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
-                 at 375px it hides ~105-240px of table. A scrollable region has to be
-                 reachable by keyboard and has to say what it is (WCAG 2.1.1). The
-                 caption already names it, so it is borrowed rather than duplicated. -->
-            <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-indiaitact">
-              <table class="post-table">
-                <caption id="table-caption-indiaitact">India's practitioner-relevant IT law provisions at a glance. Statuses verified August 2026.</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Provision</th>
-                    <th scope="col">Instrument</th>
-                    <th scope="col">What it does</th>
-                    <th scope="col">Who invokes / who complies</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>S. 43</td>
-                    <td>IT Act 2000</td>
-                    <td>Civil compensation for unauthorised access, damage, disruption, data theft</td>
-                    <td>Affected person; adjudicating officer (s. 46) up to ₹5 crore</td>
-                  </tr>
-                  <tr>
-                    <td>S. 43A</td>
-                    <td>IT Act 2000</td>
-                    <td>Compensation for negligent handling of sensitive personal data (with SPDI Rules)</td>
-                    <td>Individuals vs. companies; stands repealed May 2027 (DPDP s. 44(2))</td>
-                  </tr>
-                  <tr>
-                    <td>S. 65</td>
-                    <td>IT Act 2000</td>
-                    <td>Tampering with computer source documents required to be kept by law</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66</td>
-                    <td>IT Act 2000</td>
-                    <td>s. 43 acts done dishonestly or fraudulently — criminal</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66A</td>
-                    <td>IT Act 2000</td>
-                    <td><strong>STRUCK DOWN</strong> — offensive-messages offence, void since <em>Shreya Singhal</em> (2015)</td>
-                    <td>Nobody, lawfully; report any current use of it</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66B</td>
-                    <td>IT Act 2000</td>
-                    <td>Dishonestly receiving a stolen computer resource or communication device</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66C</td>
-                    <td>IT Act 2000</td>
-                    <td>Identity theft — fraudulent use of passwords or unique IDs</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66D</td>
-                    <td>IT Act 2000</td>
-                    <td>Cheating by personation online — OTP scams</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66E</td>
-                    <td>IT Act 2000</td>
-                    <td>Capturing or publishing private-area images without consent</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 66F</td>
-                    <td>IT Act 2000</td>
-                    <td>Cyberterrorism — up to life imprisonment</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 67</td>
-                    <td>IT Act 2000</td>
-                    <td>Obscene material online</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 67A</td>
-                    <td>IT Act 2000</td>
-                    <td>Sexually explicit material online</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 67B</td>
-                    <td>IT Act 2000</td>
-                    <td>Child sexual abuse material, incl. collection and browsing</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 67C</td>
-                    <td>IT Act 2000</td>
-                    <td>Intermediary duty to preserve and retain specified records</td>
-                    <td>Intermediaries comply</td>
-                  </tr>
-                  <tr>
-                    <td>S. 69</td>
-                    <td>IT Act 2000</td>
-                    <td>Interception, monitoring, decryption</td>
-                    <td>Union / State Home Secretary orders (2009 Rules); intermediaries assist</td>
-                  </tr>
-                  <tr>
-                    <td>S. 69A</td>
-                    <td>IT Act 2000</td>
-                    <td>Blocking public access to online content — the app-ban section</td>
-                    <td>MeitY Designated Officer + committee; intermediaries comply</td>
-                  </tr>
-                  <tr>
-                    <td>S. 69B</td>
-                    <td>IT Act 2000</td>
-                    <td>Traffic-data (metadata) monitoring for cybersecurity</td>
-                    <td>CERT-In (authorised 2016); service providers assist</td>
-                  </tr>
-                  <tr>
-                    <td>S. 70</td>
-                    <td>IT Act 2000</td>
-                    <td>Protected systems / Critical Information Infrastructure; access up to 10 years</td>
-                    <td>Government declares; NCIIPC (s. 70A) guards</td>
-                  </tr>
-                  <tr>
-                    <td>S. 72</td>
-                    <td>IT Act 2000</td>
-                    <td>Breach of confidentiality by officials who gained access under the Act</td>
-                    <td>Police / courts; criminal</td>
-                  </tr>
-                  <tr>
-                    <td>S. 72A</td>
-                    <td>IT Act 2000</td>
-                    <td>Disclosure of personal information in breach of a lawful contract</td>
-                    <td>Police / courts; covers service-provider staff leaks</td>
-                  </tr>
-                  <tr>
-                    <td>S. 79</td>
-                    <td>IT Act 2000</td>
-                    <td>Intermediary safe harbour, conditional on due diligence; read down in <em>Shreya Singhal</em></td>
-                    <td>Platforms rely on it; lost if due diligence fails</td>
-                  </tr>
-                  <tr>
-                    <td>Rule 3</td>
-                    <td>IT Rules 2021</td>
-                    <td>Due diligence: terms, takedowns, grievance-officer timelines</td>
-                    <td>All intermediaries comply</td>
-                  </tr>
-                  <tr>
-                    <td>Rule 4(2)</td>
-                    <td>IT Rules 2021</td>
-                    <td>Traceability — identify a message's first originator on court/authority order</td>
-                    <td>Significant social media intermediaries; challenge pending, Delhi HC</td>
-                  </tr>
-                  <tr>
-                    <td>Direction (i)</td>
-                    <td>CERT-In 2022</td>
-                    <td>Report specified cyber incidents within 6 hours</td>
-                    <td>Service providers, intermediaries, body corporates, government</td>
-                  </tr>
-                  <tr>
-                    <td>Direction (iv–v)</td>
-                    <td>CERT-In 2022</td>
-                    <td>Keep 180 days of ICT logs in India; VPS/VPN/cloud keep customer records 5 years</td>
-                    <td>Same entities; VPN/VPS/cloud providers additionally</td>
-                  </tr>
-                  <tr>
-                    <td>Ss. 5–6</td>
-                    <td>DPDP Act 2023</td>
-                    <td>Notice and consent — specific, informed, easy to withdraw</td>
-                    <td>Data Fiduciaries; fully binding from May 2027</td>
-                  </tr>
-                  <tr>
-                    <td>S. 33 + Schedule</td>
-                    <td>DPDP Act 2023</td>
-                    <td>Penalties up to ₹250 crore per instance for security-safeguard failures</td>
-                    <td>Data Protection Board of India imposes</td>
-                  </tr>
-                  <tr>
-                    <td>S. 94</td>
-                    <td>BNSS 2023</td>
-                    <td>Production order for documents, electronic communication, devices — CrPC s. 91's successor</td>
-                    <td>Court or officer in charge of a police station; anyone in possession complies</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h2 id="when-law-enforcement-comes-asking">When law enforcement comes asking</h2>
-            <p>
-              Sooner or later, a company holding user data receives a legal request. These arrive through four
-              distinct doors, and the first skill — for the officer issuing and the company receiving alike — is
-              knowing which door is which:
-            </p>
-            <ul>
-              <li>
-                <strong>BNSS Section 94</strong> (in force since 1 July 2024, replacing CrPC Section 91): a
-                court, or the officer in charge of a police station, issues a summons or written order —
-                physical or electronic — for production of documents, electronic communication, or devices
-                likely to contain digital evidence. The routine instrument behind most log and record requests;
-                you can comply by producing the material without appearing in person. If you want to see
-                <a class="text-link" href="/blog/how-cybercrime-cases-are-solved">how these production orders play
-                out in a real investigation</a>, that walk-through follows the evidence from first alert to the
-                courtroom.
-              </li>
-              <li>
-                <strong>IT Act Section 69</strong>: interception, monitoring, or decryption — only on the order
-                of the competent authority under the 2009 Interception Rules: the Union Home Secretary, or a
-                State's Home Secretary, with a review committee examining orders.
-              </li>
-              <li>
-                <strong>IT Act Section 69A</strong>: blocking of public content, routed through MeitY's
-                Designated Officer (Joint Secretary rank or above) and an inter-ministerial committee under the
-                2009 Blocking Rules, with an emergency path. Orders are largely kept confidential — much
-                criticised, but the law as it stands.
-              </li>
-              <li>
-                <strong>IT Act Sections 69B and 70B(6)</strong>: traffic-data monitoring for cybersecurity
-                (CERT-In is the notified agency) and CERT-In's power to demand incident information and logs
-                under its 2022 Directions.
-              </li>
-            </ul>
-            <p>
-              If your company receives one of these, the handling pattern is consistent: <strong>verify</strong>
-              that the issuing authority actually holds the power cited (a police station cannot issue a Section
-              69 interception order); <strong>check the scope</strong> — specific accounts, identifiers, and time
-              ranges, not a fishing expedition; <strong>respond through counsel</strong>, especially where
-              content or encryption is involved; <strong>preserve</strong> the requested material immediately;
-              and <strong>document everything disclosed</strong> — what, when, to whom, under which provision.
-              Disclose what the order covers, and only that. None of this is obstruction; it is the diligence a
-              well-run investigation expects from the other side of the table.
-            </p>
-
-            <h2 id="if-you-build-software">If you build software</h2>
-            <p>
-              Three obligations should shape your architecture today. <strong>Logging</strong>: CERT-In means
-              180 days of ICT logs retained in India — centralise logs, set retention explicitly, pin the
-              storage region. <strong>Clocks</strong>: a six-hour reporting window is a detection-and-escalation
-              problem; alerting and an on-call path are compliance controls, not luxuries. <strong>Consent
-              UX</strong>: DPDP-grade consent is specific, itemised per purpose, unbundled, and as easy to
-              withdraw as to give — if your signup buries consent in the terms checkbox, you are building
-              technical debt with a ₹250 crore interest rate. And add real deletion paths now: erasure rights
-              arrive with the 2027 phase, and retrofitting deletion into a system that never planned for it is
-              miserable work.
-            </p>
-
-            <h2 id="if-you-run-a-business">If you run a business</h2>
-            <p>
-              If you decide why and how personal data is processed, you are almost certainly a Data Fiduciary.
-              Start with a <strong>data map</strong>: what you collect, why, where it lives, which vendors touch
-              it. Push obligations into <strong>vendor contracts</strong> — processors act for you, and liability
-              does not outsource. Remember the overlap years: until May 2027 you are also judged under 43A and
-              SPDI, so an ISO 27001-aligned security program pays twice. Stand up a grievance channel, and if you are
-              notified as a Significant Data Fiduciary, budget for an India-based Data Protection Officer and
-              independent audits. Above all, rehearse the incident play: one breach can simultaneously start
-              CERT-In's six-hour clock, a Board notification, and contractual duties.
-            </p>
-
-            <h2 id="if-you-are-an-individual">If you're an individual</h2>
-            <p>
-              The DPDP era gives you enforceable rights — to know what a fiduciary holds about you, to
-              correction and erasure, to grievance redressal — fully binding from May 2027. Today, your paths
-              are the national cybercrime portal (cybercrime.gov.in) and the 1930 financial-fraud helpline; the
-              platform's grievance officer, obliged to acknowledge you within 24 hours; and compensation claims
-              under Sections 43/43A before an adjudicating officer. One piece of folklore-resistance: if anyone
-              threatens you with Section 66A, it has been void since 2015.
-            </p>
-            <p>
-              The deeper habit this article advocates: read primary sources. The IT Act and its rules are on
-              India Code and MeitY's site; the DPDP Act is short; <em>Shreya Singhal</em> and
-              <em>Puttaswamy</em> are genuinely readable. India's IT law has a folklore problem because so few
-              practitioners go to the text. Be the person in the room who has.
-            </p>
           </div>
 
           <div class="post-share">
@@ -886,7 +888,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>

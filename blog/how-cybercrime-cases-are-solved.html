@@ -159,7 +159,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -175,413 +175,415 @@
               </ol>
             </nav>
 
-            <h2 id="two-clocks-start-when-something-breaks">Two clocks start when something breaks</h2>
-            <p>
-              The moment a ransomware note appears on a screen, or money leaves an account it shouldn't have, two
-              clocks start ticking. The first is the <strong>containment clock</strong>: stop the bleeding, get
-              systems back, keep the business alive. The second is the <strong>evidence clock</strong>: everything
-              you will ever be able to prove about what happened is decaying — logs are rotating, RAM is volatile,
-              and stolen money is hopping between mule accounts.
-            </p>
-            <p>
-              These clocks pull in opposite directions, and most of the damage to a cybercrime <em>case</em> — as
-              opposed to the damage from the crime itself — happens in the first few hours, before any forensic
-              examiner or investigating officer arrives. Not through malice; through reflex. The IT team wipes the
-              infected laptop. The embarrassed victim deletes the chat. The company "handles it quietly" and calls
-              the police three weeks later, when the trail is stone cold.
-            </p>
-            <blockquote>
+            <div class="post-body">
+              <h2 id="two-clocks-start-when-something-breaks">Two clocks start when something breaks</h2>
               <p>
-                By the time an expert shows up, the case has usually already been strengthened or crippled by
-                people who never realized they were handling evidence.
+                The moment a ransomware note appears on a screen, or money leaves an account it shouldn't have, two
+                clocks start ticking. The first is the <strong>containment clock</strong>: stop the bleeding, get
+                systems back, keep the business alive. The second is the <strong>evidence clock</strong>: everything
+                you will ever be able to prove about what happened is decaying — logs are rotating, RAM is volatile,
+                and stolen money is hopping between mule accounts.
               </p>
-            </blockquote>
-            <p>
-              This article walks the whole lifecycle: the victim's track (incident response), the law-enforcement
-              track (complaint to charge sheet), the digital forensics where the two converge, and the
-              admissibility rules that decide what survives in court. The legal specifics are Indian — the portal,
-              the helpline, the statutes — but the discipline underneath is the same everywhere.
-            </p>
-
-            <h2 id="track-one-the-victim-side-of-the-case">Track one: the victim side of the case</h2>
-            <p>
-              Incident response has a standard shape, and the one most teams borrow is the NIST lifecycle
-              (SP 800-61): <strong>preparation</strong>, <strong>detection and analysis</strong>,
-              <strong>containment, eradication and recovery</strong>, and <strong>post-incident activity</strong>.
-              Real incidents loop through these phases rather than marching through them. The phase where cases are
-              won or lost is containment — that is where the two clocks collide head-on.
-            </p>
-            <p>
-              The classic mistake has a name in every incident-response war story: <strong>wiping the compromised
-              box before imaging it</strong>. Reimaging feels like decisive action, but it destroys the attacker's
-              tools, persistence mechanisms, timestamps, and every artifact an examiner would have used to answer <em>how they got in</em> and
-              <em>what they took</em>. You have recovered a computer and lost a case. Containment means isolating
-              the threat, not incinerating the crime scene.
-            </p>
-            <p>
-              You do not need a forensics background to preserve evidence well in the first hours. You need
-              restraint and a notebook:
-            </p>
-            <ul>
-              <li>
-                <strong>Don't power off a live system as a reflex.</strong> RAM is volatile — encryption keys,
-                active network connections, running malware, and logged-in sessions all vanish at power-off.
-                Pulling the plug can still be the right call (say, files are visibly being encrypted), but it should
-                be a deliberate decision, not a reflex.
-              </li>
-              <li>
-                <strong>Isolate from the network instead.</strong> Unplug the cable, disable Wi-Fi, or shut the
-                switch port. The machine stays alive and full of evidence; the attacker loses their connection.
-              </li>
-              <li>
-                <strong>Start a written timeline immediately.</strong> Who noticed what, at what time, and every
-                action anyone takes from that moment — kept somewhere other than the compromised system. Months
-                later, this contemporaneous log is the difference between testimony and guesswork.
-              </li>
-              <li>
-                <strong>Preserve logs before they rotate.</strong> Firewalls, servers, proxies, and CCTV DVRs
-                overwrite themselves on fixed cycles — sometimes days. Export now, ask questions later.
-              </li>
-              <li>
-                <strong>Stop touching the machine.</strong> "Just checking what happened" opens files, updates
-                timestamps, and overwrites the deleted data an examiner might have recovered. Every click is an
-                edit to the crime scene.
-              </li>
-            </ul>
-            <p>
-              Eradication and recovery come after the evidence is secured — rebuild from clean sources, rotate
-              credentials, close the hole. The post-incident review feeds back into preparation, where an
-              <strong>evidence-aware runbook</strong> gets written for next time.
-            </p>
-
-            <h2 id="reporting-in-india-where-and-how-fast">Reporting in India: where, and how fast</h2>
-            <p>
-              Reporting is where the victim track hands the baton to the state, and in India the machinery is more
-              capable than most people assume — if you reach it fast.
-            </p>
-            <p>
-              For <strong>financial fraud</strong> — UPI scams, card fraud, account takeovers, "digital arrest"
-              extortion — call <strong>1930</strong>, the national cybercrime helpline, run 24x7 by the Indian
-              Cyber Crime Coordination Centre (I4C) under the Ministry of Home Affairs, or file on the
-              <strong>National Cybercrime Reporting Portal</strong> at <strong>cybercrime.gov.in</strong>. Behind
-              both sits the Citizen Financial Cyber Frauds Reporting and Management System, launched in 2021, which
-              pushes your complaint to the banks and payment intermediaries in the transaction chain so funds can
-              be frozen <em>while still in transit</em> between mule accounts. Government figures put the money
-              saved this way in the thousands of crores — but the freeze only works before the cash is layered
-              onward or withdrawn, a window measured in hours, sometimes minutes.
-            </p>
-            <p>
-              The portal takes <strong>every category of cybercrime</strong>, not just financial — with a
-              dedicated, anonymous-option track for crimes against women and children. You can also walk into your
-              local <strong>cyber cell</strong> or any police station: since the new criminal procedure code, FIRs
-              can be registered electronically, and the "Zero FIR" principle means no station can turn you away for
-              being in the wrong jurisdiction — the FIR is registered and transferred.
-            </p>
-            <p>
-              Companies have an extra, separate obligation: under CERT-In's directions of 28 April 2022 (issued
-              under Section 70B(6) of the IT Act), covered entities must report specified cyber incidents to
-              CERT-In <strong>within six hours of noticing them</strong>, and maintain ICT system logs for 180 days
-              within India. Note the distinction — CERT-In reporting is a regulatory duty, not a criminal
-              complaint; a company that wants an investigation still needs to file one.
-            </p>
-
-            <h2 id="track-two-the-law-enforcement-side">Track two: the law-enforcement side</h2>
-            <p>
-              Once a complaint lands, the police track follows a sequence that has not fundamentally changed since
-              long before computers — information, investigation, evidence, charge — with new tools bolted on at
-              each step.
-            </p>
-            <p>
-              <strong>Complaint to FIR.</strong> For cognizable offences — the serious ones, where police can
-              investigate without a magistrate's order, which covers most substantive cybercrime such as cheating
-              by personation, identity theft, and hacking — the information is registered as a First Information
-              Report under Section 173 of the BNSS (the successor to Section 154 CrPC). For non-cognizable matters,
-              a Non-Cognizable Report (NCR) is recorded instead under Section 174, and investigation needs a
-              magistrate's nod. The FIR is the formal ignition of the case; its timing and contents will be
-              scrutinized at trial.
-            </p>
-            <p>
-              <strong>Jurisdiction, and the foreign-server problem.</strong> Cybercrime smears itself across the
-              map — the victim in one state, the mule accounts in three others, the server in another country.
-              Domestically, Zero FIR and transfer procedures paper over the turf questions. Across borders it gets
-              genuinely hard: evidence held abroad is formally obtained through Mutual Legal Assistance Treaties or
-              a court-issued letter of request (letters rogatory) under Section 112 of the BNSS (formerly Section
-              166A CrPC) — a government-to-government channel that is thorough, slow, and often measured in months
-              to years. Practically, investigators send preservation requests to platforms early (so the data
-              survives the wait) and lean on the domestic footprint every scam needs anyway: Indian bank accounts,
-              Indian SIMs, delivery addresses, local money mules.
-            </p>
-            <p>
-              <strong>The investigating officer's toolkit.</strong> The workhorse is Section 94 of the BNSS, under
-              which a court — or the officer in charge of a police station — can order any person to produce
-              documents or electronic communications, explicitly including devices likely to contain digital
-              evidence. This is how bank KYC records, call detail records (CDRs), IP detail records (IPDRs), and
-              platform logs are pulled into a case. Higher-powered instruments exist under the IT Act — Section 69
-              (interception, monitoring, decryption) and Section 69A (blocking) — but these are government-level
-              powers requiring authorization at Home Secretary rank, not everyday police tools; in practice 69A is
-              what removes phishing sites and fraud apps from circulation. For financial fraud, the 1930/NCRP
-              ecosystem does the fast work: layered freezing of amounts as they hop through the mule chain, with
-              courts later ordering restitution from frozen balances.
-            </p>
-            <p>
-              <strong>Seizure, done properly.</strong> When devices are seized, procedure is everything, because
-              procedure is what the defence will attack. A seizure memo (panchnama) is drawn up on the spot with
-              independent witnesses; devices are photographed in place, described with make and serial numbers,
-              and sealed with numbered seals. Where the setup allows, a cryptographic hash of storage is computed
-              at or immediately after seizure. Phones go into airplane mode or Faraday bags so they cannot be
-              remotely wiped. Every one of these boring steps exists because its absence has sunk a real case
-              somewhere.
-            </p>
-            <p>
-              <strong>FSL, charge sheet, trial.</strong> Sealed exhibits travel to a Forensic Science Laboratory
-              with a forwarding memo; an examiner images and analyzes them and issues a report that enters the
-              case as expert evidence. If the investigation holds together, the officer files a charge sheet
-              before the court, and the trial begins — where the IO is cross-examined on the seizure, the examiner
-              on the method, and the paperwork on its gaps. Everything the next three sections describe is what
-              that cross-examination is really about.
-            </p>
-
-            <h2 id="where-the-tracks-meet-digital-forensics">Where the tracks meet: digital forensics</h2>
-            <p>
-              Whether evidence arrives from a company's incident responders or a police seizure, it flows into the
-              same discipline. Digital forensics is where the two tracks converge — and where a case's
-              provability is decided.
-            </p>
-
-            <figure class="post-figure">
-              <svg viewBox="0 0 1160 540" role="img" aria-label="Lifecycle of a cybercrime case as two tracks: the victim track (detect, contain and preserve, report) and the law-enforcement track (FIR or NCR, freezes and notices, seizure) converge at digital forensics, which leads to the charge sheet and then trial" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <marker id="case-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
-                  </marker>
-                </defs>
-                <rect width="1160" height="540" rx="18" fill="#1b2735"/>
-                <g font-family="'Segoe UI',sans-serif">
-                  <text x="40" y="52" fill="#7dd3fc" font-size="20" font-weight="800" letter-spacing="3">HOW A CYBERCRIME CASE MOVES</text>
-
-                  <!-- Victim track -->
-                  <text x="40" y="98" fill="#7dd3fc" font-size="15" font-weight="800" letter-spacing="2">VICTIM / COMPANY TRACK</text>
-                  <rect x="40" y="114" width="180" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
-                  <text x="60" y="150" fill="#f8fafc" font-size="18" font-weight="800">Detect</text>
-                  <text x="60" y="178" fill="#94a3b8" font-size="15">alert · fraud · tip-off</text>
-                  <rect x="252" y="114" width="200" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
-                  <text x="272" y="150" fill="#f8fafc" font-size="18" font-weight="800">Contain &amp; preserve</text>
-                  <text x="272" y="178" fill="#94a3b8" font-size="15">isolate — don't wipe</text>
-                  <rect x="484" y="114" width="200" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
-                  <text x="504" y="150" fill="#f8fafc" font-size="18" font-weight="800">Report fast</text>
-                  <text x="504" y="178" fill="#94a3b8" font-size="15">1930 · NCRP · cyber cell</text>
-                  <line x1="222" y1="158" x2="246" y2="158" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-                  <line x1="454" y1="158" x2="478" y2="158" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-
-                  <!-- Law-enforcement track -->
-                  <text x="40" y="280" fill="#fbbf24" font-size="15" font-weight="800" letter-spacing="2">LAW-ENFORCEMENT TRACK</text>
-                  <rect x="40" y="296" width="180" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
-                  <text x="60" y="332" fill="#f8fafc" font-size="18" font-weight="800">FIR / NCR</text>
-                  <text x="60" y="360" fill="#94a3b8" font-size="15">complaint registered</text>
-                  <rect x="252" y="296" width="200" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
-                  <text x="272" y="332" fill="#f8fafc" font-size="18" font-weight="800">Freeze &amp; notices</text>
-                  <text x="272" y="360" fill="#94a3b8" font-size="15">money trail · BNSS s94</text>
-                  <rect x="484" y="296" width="200" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
-                  <text x="504" y="332" fill="#f8fafc" font-size="18" font-weight="800">Seizure</text>
-                  <text x="504" y="360" fill="#94a3b8" font-size="15">hash · memo · witnesses</text>
-                  <line x1="222" y1="340" x2="246" y2="340" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-                  <line x1="454" y1="340" x2="478" y2="340" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-
-                  <!-- Convergence -->
-                  <path d="M684 158 L738 208" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#case-arr)"/>
-                  <path d="M684 340 L738 290" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#case-arr)"/>
-
-                  <!-- Forensics -->
-                  <rect x="744" y="150" width="200" height="198" rx="14" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="2"/>
-                  <text x="764" y="188" fill="#f8fafc" font-size="19" font-weight="800">Digital forensics</text>
-                  <text x="764" y="222" fill="#e2e8f0" font-size="15">image → hash</text>
-                  <text x="764" y="248" fill="#e2e8f0" font-size="15">examine → analyze</text>
-                  <text x="764" y="274" fill="#e2e8f0" font-size="15">report (FSL)</text>
-                  <text x="764" y="316" fill="#94a3b8" font-size="15">chain of custody intact</text>
-
-                  <!-- To court -->
-                  <line x1="944" y1="187" x2="978" y2="187" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-                  <rect x="984" y="150" width="140" height="74" rx="12" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
-                  <text x="1004" y="182" fill="#f8fafc" font-size="17" font-weight="800">Charge sheet</text>
-                  <text x="1004" y="208" fill="#94a3b8" font-size="15">before court</text>
-                  <line x1="1054" y1="224" x2="1054" y2="250" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
-                  <rect x="984" y="256" width="140" height="74" rx="12" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
-                  <text x="1004" y="288" fill="#f8fafc" font-size="17" font-weight="800">Trial</text>
-                  <text x="1004" y="314" fill="#94a3b8" font-size="15">evidence tested</text>
-
-                  <text x="40" y="470" fill="#94a3b8" font-size="15">Two tracks, one evidence stream. Every handoff along the way is recorded in the chain of custody —</text>
-                  <text x="40" y="496" fill="#94a3b8" font-size="15">and every gap in that record is a question the defence gets to ask at trial.</text>
-                </g>
-              </svg>
-              <figcaption>
-                The lifecycle of a cybercrime case: the victim's response and the police investigation run in
-                parallel, converge at digital forensics, and end at trial.
-              </figcaption>
-            </figure>
-
-            <p>
-              Forensics has four canonical phases, and every methodology you will meet is a variation on them:
-              <strong>identification</strong> (what could hold evidence — devices, accounts, logs, cloud),
-              <strong>preservation and acquisition</strong> (freeze it in a provable state),
-              <strong>examination and analysis</strong> (find and interpret what matters), and
-              <strong>reporting and presentation</strong> (explain it so a court can rely on it). The center of
-              gravity is acquisition, because everything downstream inherits its integrity.
-            </p>
-            <p>
-              <strong>Imaging is not copying.</strong> Copying grabs files. A forensic image is a
-              <strong>bit-for-bit duplicate of the entire medium</strong> — including deleted files, slack space,
-              and unallocated clusters where the interesting things live. The evidence drive is connected through a
-              <strong>write blocker</strong>, hardware that physically prevents the examiner's workstation from
-              modifying the source, because even mounting a disk normally writes to it. The image lands in a raw
-              format (<code>dd</code>) or a container like <strong>E01</strong> (the EnCase evidence format —
-              compression, embedded case metadata, and internal per-block checksums), both long accepted in courts.
-              The original is then sealed and stored; all analysis happens on copies.
-            </p>
-            <p>
-              <strong>Hashing is the integrity proof.</strong> At acquisition, the examiner computes a
-              cryptographic hash of the image — today preferably <strong>SHA-256</strong>, since MD5 and SHA-1 have
-              known collision attacks, though many labs still record MD5 alongside for continuity with older
-              tooling and case records. The property that matters in court is simple: recompute the hash at any
-              later date, and a match demonstrates mathematically that not one bit has changed since acquisition.
-              That single line — "hash values tallied" — is what turns a pile of copied data into evidence with
-              provable integrity. A mismatch is not automatically tampering (failing sectors on a dying drive can
-              cause it), but it is always an explanation the prosecution now owes.
-            </p>
-
-            <h2 id="what-gets-collected-first-and-why">What gets collected first, and why</h2>
-            <p>
-              Not all evidence decays at the same speed, so examiners collect in <strong>order of
-              volatility</strong> — a principle old enough to be codified in RFC 3227: CPU registers and caches
-              first (practically unobtainable), then <strong>RAM</strong>, then swap and temporary files, then
-              <strong>disk</strong>, then backups and archival media. The rule of thumb: capture what dies at
-              power-off before touching what survives it.
-            </p>
-            <p>
-              This is why <strong>live forensics</strong> exists. If a production server cannot be taken down, or —
-              increasingly common — the disk is fully encrypted so that powering off locks the evidence forever,
-              the examiner acquires memory from the running system first: encryption keys, running processes,
-              active network connections, and injected code that never touches disk all live only in RAM. Then, and
-              only then, is the power decision made.
-            </p>
-            <p>
-              <strong>Mobile devices</strong> are their own specialty. A <em>logical</em> extraction takes what the
-              operating system is willing to hand over — contacts, chats, media, app data; a <em>file-system</em>
-              extraction goes deeper; a <em>physical</em> extraction images the storage bit-for-bit, including
-              deleted data — increasingly difficult on modern encrypted handsets. Often the richest source is not
-              the handset at all but its <strong>cloud shadow</strong>: backups, synced photos, account tokens, and
-              app data on servers, reachable through legal process. Meanwhile the seized phone sits in a Faraday
-              bag precisely so no one can remote-wipe it while the paperwork moves.
-            </p>
-            <p>
-              <strong>Network forensics</strong> supplies the connective tissue: server and application logs,
-              firewall and proxy records, NetFlow summaries, and provider records — the CDRs and IPDRs that map an
-              IP address, port, and timestamp to a subscriber. The practitioner's caveat: with carrier-grade NAT,
-              one public IP is shared by thousands of users, so an IP alone identifies nobody — you need the source
-              port and the exact time. Unrecorded time zones and drifting
-              clocks have genuinely derailed investigations, which is why careful examiners normalize everything to
-              UTC and document the time source for every log they touch.
-            </p>
-
-            <h2 id="artifacts-anti-forensics-and-the-chain-of-custody">Artifacts, anti-forensics, and the chain of custody</h2>
-            <p>
-              Cases rarely crack on one dramatic file. They crack on small artifacts the user never knew existed:
-            </p>
-            <ul>
-              <li><strong>Browser history and downloads</strong> — the searches made before the act, and the tools fetched to commit it.</li>
-              <li><strong>USB registry traces</strong> — Windows records the make, model, and serial number of every USB storage device ever connected, with timestamps. Data-theft cases are routinely built on this alone.</li>
-              <li><strong>Prefetch and execution artifacts</strong> — proof that a particular program (say, a wiping tool) ran, and when.</li>
-              <li><strong>EXIF metadata</strong> — the camera model, timestamp, and sometimes GPS coordinates embedded in photos.</li>
-              <li><strong>Recycle-bin and shell metadata</strong> — what was deleted or browsed, and when.</li>
-              <li><strong>Email headers and provider IP logs</strong> — where a message really came from, as opposed to where it claims.</li>
-            </ul>
-            <p>
-              Attackers know this, so they attempt <strong>anti-forensics</strong> — and each technique has a
-              counter. Wiping tools destroy data but leave their own traces: installation records, execution
-              artifacts, and a suspiciously clean gap where activity should be. <strong>Timestomping</strong>
-              (faking file timestamps) trips over the fact that NTFS keeps duplicate timestamp sets internally, and
-              inconsistencies between them flag manipulation. Encryption is the strongest play, which is exactly
-              why examiners prioritize live acquisition and cloud copies. But the deepest counter is
-              <strong>corroboration</strong>: one device can be made to lie, but the device, the ISP's logs, the
-              bank's records, and the CCTV footage rarely all lie in the same direction. Examiners build timelines
-              across independent sources precisely so that no single manipulated artifact carries the case.
-            </p>
-            <p>
-              Binding all of it together is the <strong>chain of custody</strong> — worth describing concretely,
-              because it sounds abstract until you see one. It is a document trail
-              that rides with each exhibit: exhibit number, description and serial numbers, the hash, who collected
-              it, where and when; then every single handover — seizing officer to property room (the malkhana), to
-              the FSL courier, to the examiner, back to storage — signed and timestamped, with seal numbers
-              recorded at each step. The defence does not have to prove tampering; it only has to point at a gap
-              — an unlogged weekend, a broken seal, a hash nobody recorded — and ask the court to doubt everything
-              after it. Prosecutions have collapsed on exactly that. The paperwork is not bureaucracy around the
-              evidence; it is what makes it evidence.
-            </p>
-
-            <h2 id="will-it-stand-in-court-admissibility-in-india">Will it stand in court? Admissibility in India</h2>
-            <p>
-              Electronic records almost always reach a courtroom as copies — printouts, exported logs, forensic
-              images — and Indian law treats such copies as admissible only with a <strong>certificate</strong>
-              from someone responsible for the system that produced them, identifying the record and describing how
-              it was made. For decades that meant <strong>Section 65B of the Indian Evidence Act, 1872</strong>.
-              Since 1 July 2024, the Evidence Act has been replaced by the <strong>Bharatiya Sakshya Adhiniyam,
-              2023</strong>, and the electronic-records rule now lives in <strong>Section 63 of the BSA</strong> —
-              same core framework, with a prescribed certificate format in the Schedule (Part A filled by the party
-              producing the record, Part B by an expert) that expects a hash of the record to be stated.
-            </p>
-            <p>
-              The controlling judgment is <strong><em>Arjun Panditrao Khotkar v. Kailash Kushanrao Gorantyal</em>
-              (2020) 7 SCC 1</strong>, where the Supreme Court settled years of conflicting rulings: the
-              certificate is <em>mandatory</em> for secondary electronic evidence — oral testimony cannot
-              substitute for it — while an original device produced in court does not need one. The practical
-              lesson upstream is blunt: <strong>obtain the certificate when the record is
-              extracted</strong>, from the person operating the system at that time, rather than hunting for a
-              long-departed administrator on the eve of trial. As of this writing (August 2026), courts are still
-              building Section 63 jurisprudence and older cases continue under the 65B regime, so exact practice
-              varies between courts — but no version of it forgives a missing certificate.
-            </p>
-            <p>
-              The substantive offences themselves — what the accused is actually charged <em>with</em> — live in
-              the IT Act and the Bharatiya Nyaya Sanhita, which deserve their own article:
-              <a class="text-link" href="/blog/india-it-act-explained">India's IT law, explained</a>.
-            </p>
-
-            <h2 id="what-to-do-differently-whoever-you-are">What to do differently, whoever you are</h2>
-            <p>
-              <strong>If you run a company:</strong> write an evidence-aware IR runbook before you need it — image
-              before you reimage, name an evidence custodian, keep logs beyond the 180-day regulatory floor, and
-              decide in advance who calls counsel and when (early — privilege and notification duties both reward
-              it). And do not negotiate or settle the evidence away: quietly paying a fraudster or scrubbing
-              systems to avoid embarrassment doesn't just end your case, it can create fresh liability.
-            </p>
-            <p>
-              <strong>If you're an individual victim:</strong> preserve first, then report — full-screen
-              screenshots with the URL and timestamp visible, exported chats, saved SMS and emails, transaction
-              IDs. Do not delete anything, even the embarrassing parts; investigators have seen it all, and the
-              deleted message is always the one that mattered. Then report in hours, not days — call 1930 for
-              financial fraud, because the freeze mechanism only works while the money is still moving through the
-              chain. Shame is the scammer's best friend; speed is yours.
-            </p>
-            <p>
-              <strong>If you want to do this work:</strong> understand that the discipline <em>is</em> the job.
-              Document everything, contemporaneously — if it isn't written down, it didn't happen. Hash everything,
-              never work on originals, and assume from minute one that a hostile cross-examiner will one day read
-              your notes aloud. The technical skills are learnable; the habit of treating every action as testimony
-              is what makes findings survive court.
-            </p>
-            <p>
-              That is the honest shape of how cybercrime cases get solved. Not one genius move at a keyboard, but
-              two clocks managed well from the first hour: contain without destroying, report while the trail is
-              warm, image before you touch, hash what you image, and log every hand that touches the evidence. The
-              courtroom at the end of the lifecycle only ever sees what survived the beginning of it.
-            </p>
-
-            <div class="post-callout">
               <p>
-                <strong>A necessary disclaimer:</strong> this article is an educational orientation, not legal
-                advice. Procedures, section numbers, and timelines vary by jurisdiction, by agency, and by case —
-                and they change over time. If you are dealing with a live incident, speak to a lawyer and your
-                local cyber cell rather than relying on any article, including this one.
+                These clocks pull in opposite directions, and most of the damage to a cybercrime <em>case</em> — as
+                opposed to the damage from the crime itself — happens in the first few hours, before any forensic
+                examiner or investigating officer arrives. Not through malice; through reflex. The IT team wipes the
+                infected laptop. The embarrassed victim deletes the chat. The company "handles it quietly" and calls
+                the police three weeks later, when the trail is stone cold.
               </p>
+              <blockquote>
+                <p>
+                  By the time an expert shows up, the case has usually already been strengthened or crippled by
+                  people who never realized they were handling evidence.
+                </p>
+              </blockquote>
+              <p>
+                This article walks the whole lifecycle: the victim's track (incident response), the law-enforcement
+                track (complaint to charge sheet), the digital forensics where the two converge, and the
+                admissibility rules that decide what survives in court. The legal specifics are Indian — the portal,
+                the helpline, the statutes — but the discipline underneath is the same everywhere.
+              </p>
+
+              <h2 id="track-one-the-victim-side-of-the-case">Track one: the victim side of the case</h2>
+              <p>
+                Incident response has a standard shape, and the one most teams borrow is the NIST lifecycle
+                (SP 800-61): <strong>preparation</strong>, <strong>detection and analysis</strong>,
+                <strong>containment, eradication and recovery</strong>, and <strong>post-incident activity</strong>.
+                Real incidents loop through these phases rather than marching through them. The phase where cases are
+                won or lost is containment — that is where the two clocks collide head-on.
+              </p>
+              <p>
+                The classic mistake has a name in every incident-response war story: <strong>wiping the compromised
+                box before imaging it</strong>. Reimaging feels like decisive action, but it destroys the attacker's
+                tools, persistence mechanisms, timestamps, and every artifact an examiner would have used to answer <em>how they got in</em> and
+                <em>what they took</em>. You have recovered a computer and lost a case. Containment means isolating
+                the threat, not incinerating the crime scene.
+              </p>
+              <p>
+                You do not need a forensics background to preserve evidence well in the first hours. You need
+                restraint and a notebook:
+              </p>
+              <ul>
+                <li>
+                  <strong>Don't power off a live system as a reflex.</strong> RAM is volatile — encryption keys,
+                  active network connections, running malware, and logged-in sessions all vanish at power-off.
+                  Pulling the plug can still be the right call (say, files are visibly being encrypted), but it should
+                  be a deliberate decision, not a reflex.
+                </li>
+                <li>
+                  <strong>Isolate from the network instead.</strong> Unplug the cable, disable Wi-Fi, or shut the
+                  switch port. The machine stays alive and full of evidence; the attacker loses their connection.
+                </li>
+                <li>
+                  <strong>Start a written timeline immediately.</strong> Who noticed what, at what time, and every
+                  action anyone takes from that moment — kept somewhere other than the compromised system. Months
+                  later, this contemporaneous log is the difference between testimony and guesswork.
+                </li>
+                <li>
+                  <strong>Preserve logs before they rotate.</strong> Firewalls, servers, proxies, and CCTV DVRs
+                  overwrite themselves on fixed cycles — sometimes days. Export now, ask questions later.
+                </li>
+                <li>
+                  <strong>Stop touching the machine.</strong> "Just checking what happened" opens files, updates
+                  timestamps, and overwrites the deleted data an examiner might have recovered. Every click is an
+                  edit to the crime scene.
+                </li>
+              </ul>
+              <p>
+                Eradication and recovery come after the evidence is secured — rebuild from clean sources, rotate
+                credentials, close the hole. The post-incident review feeds back into preparation, where an
+                <strong>evidence-aware runbook</strong> gets written for next time.
+              </p>
+
+              <h2 id="reporting-in-india-where-and-how-fast">Reporting in India: where, and how fast</h2>
+              <p>
+                Reporting is where the victim track hands the baton to the state, and in India the machinery is more
+                capable than most people assume — if you reach it fast.
+              </p>
+              <p>
+                For <strong>financial fraud</strong> — UPI scams, card fraud, account takeovers, "digital arrest"
+                extortion — call <strong>1930</strong>, the national cybercrime helpline, run 24x7 by the Indian
+                Cyber Crime Coordination Centre (I4C) under the Ministry of Home Affairs, or file on the
+                <strong>National Cybercrime Reporting Portal</strong> at <strong>cybercrime.gov.in</strong>. Behind
+                both sits the Citizen Financial Cyber Frauds Reporting and Management System, launched in 2021, which
+                pushes your complaint to the banks and payment intermediaries in the transaction chain so funds can
+                be frozen <em>while still in transit</em> between mule accounts. Government figures put the money
+                saved this way in the thousands of crores — but the freeze only works before the cash is layered
+                onward or withdrawn, a window measured in hours, sometimes minutes.
+              </p>
+              <p>
+                The portal takes <strong>every category of cybercrime</strong>, not just financial — with a
+                dedicated, anonymous-option track for crimes against women and children. You can also walk into your
+                local <strong>cyber cell</strong> or any police station: since the new criminal procedure code, FIRs
+                can be registered electronically, and the "Zero FIR" principle means no station can turn you away for
+                being in the wrong jurisdiction — the FIR is registered and transferred.
+              </p>
+              <p>
+                Companies have an extra, separate obligation: under CERT-In's directions of 28 April 2022 (issued
+                under Section 70B(6) of the IT Act), covered entities must report specified cyber incidents to
+                CERT-In <strong>within six hours of noticing them</strong>, and maintain ICT system logs for 180 days
+                within India. Note the distinction — CERT-In reporting is a regulatory duty, not a criminal
+                complaint; a company that wants an investigation still needs to file one.
+              </p>
+
+              <h2 id="track-two-the-law-enforcement-side">Track two: the law-enforcement side</h2>
+              <p>
+                Once a complaint lands, the police track follows a sequence that has not fundamentally changed since
+                long before computers — information, investigation, evidence, charge — with new tools bolted on at
+                each step.
+              </p>
+              <p>
+                <strong>Complaint to FIR.</strong> For cognizable offences — the serious ones, where police can
+                investigate without a magistrate's order, which covers most substantive cybercrime such as cheating
+                by personation, identity theft, and hacking — the information is registered as a First Information
+                Report under Section 173 of the BNSS (the successor to Section 154 CrPC). For non-cognizable matters,
+                a Non-Cognizable Report (NCR) is recorded instead under Section 174, and investigation needs a
+                magistrate's nod. The FIR is the formal ignition of the case; its timing and contents will be
+                scrutinized at trial.
+              </p>
+              <p>
+                <strong>Jurisdiction, and the foreign-server problem.</strong> Cybercrime smears itself across the
+                map — the victim in one state, the mule accounts in three others, the server in another country.
+                Domestically, Zero FIR and transfer procedures paper over the turf questions. Across borders it gets
+                genuinely hard: evidence held abroad is formally obtained through Mutual Legal Assistance Treaties or
+                a court-issued letter of request (letters rogatory) under Section 112 of the BNSS (formerly Section
+                166A CrPC) — a government-to-government channel that is thorough, slow, and often measured in months
+                to years. Practically, investigators send preservation requests to platforms early (so the data
+                survives the wait) and lean on the domestic footprint every scam needs anyway: Indian bank accounts,
+                Indian SIMs, delivery addresses, local money mules.
+              </p>
+              <p>
+                <strong>The investigating officer's toolkit.</strong> The workhorse is Section 94 of the BNSS, under
+                which a court — or the officer in charge of a police station — can order any person to produce
+                documents or electronic communications, explicitly including devices likely to contain digital
+                evidence. This is how bank KYC records, call detail records (CDRs), IP detail records (IPDRs), and
+                platform logs are pulled into a case. Higher-powered instruments exist under the IT Act — Section 69
+                (interception, monitoring, decryption) and Section 69A (blocking) — but these are government-level
+                powers requiring authorization at Home Secretary rank, not everyday police tools; in practice 69A is
+                what removes phishing sites and fraud apps from circulation. For financial fraud, the 1930/NCRP
+                ecosystem does the fast work: layered freezing of amounts as they hop through the mule chain, with
+                courts later ordering restitution from frozen balances.
+              </p>
+              <p>
+                <strong>Seizure, done properly.</strong> When devices are seized, procedure is everything, because
+                procedure is what the defence will attack. A seizure memo (panchnama) is drawn up on the spot with
+                independent witnesses; devices are photographed in place, described with make and serial numbers,
+                and sealed with numbered seals. Where the setup allows, a cryptographic hash of storage is computed
+                at or immediately after seizure. Phones go into airplane mode or Faraday bags so they cannot be
+                remotely wiped. Every one of these boring steps exists because its absence has sunk a real case
+                somewhere.
+              </p>
+              <p>
+                <strong>FSL, charge sheet, trial.</strong> Sealed exhibits travel to a Forensic Science Laboratory
+                with a forwarding memo; an examiner images and analyzes them and issues a report that enters the
+                case as expert evidence. If the investigation holds together, the officer files a charge sheet
+                before the court, and the trial begins — where the IO is cross-examined on the seizure, the examiner
+                on the method, and the paperwork on its gaps. Everything the next three sections describe is what
+                that cross-examination is really about.
+              </p>
+
+              <h2 id="where-the-tracks-meet-digital-forensics">Where the tracks meet: digital forensics</h2>
+              <p>
+                Whether evidence arrives from a company's incident responders or a police seizure, it flows into the
+                same discipline. Digital forensics is where the two tracks converge — and where a case's
+                provability is decided.
+              </p>
+
+              <figure class="post-figure">
+                <svg viewBox="0 0 1160 540" role="img" aria-label="Lifecycle of a cybercrime case as two tracks: the victim track (detect, contain and preserve, report) and the law-enforcement track (FIR or NCR, freezes and notices, seizure) converge at digital forensics, which leads to the charge sheet and then trial" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <marker id="case-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+                    </marker>
+                  </defs>
+                  <rect width="1160" height="540" rx="18" fill="#1b2735"/>
+                  <g font-family="'Segoe UI',sans-serif">
+                    <text x="40" y="52" fill="#7dd3fc" font-size="20" font-weight="800" letter-spacing="3">HOW A CYBERCRIME CASE MOVES</text>
+
+                    <!-- Victim track -->
+                    <text x="40" y="98" fill="#7dd3fc" font-size="15" font-weight="800" letter-spacing="2">VICTIM / COMPANY TRACK</text>
+                    <rect x="40" y="114" width="180" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
+                    <text x="60" y="150" fill="#f8fafc" font-size="18" font-weight="800">Detect</text>
+                    <text x="60" y="178" fill="#94a3b8" font-size="15">alert · fraud · tip-off</text>
+                    <rect x="252" y="114" width="200" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
+                    <text x="272" y="150" fill="#f8fafc" font-size="18" font-weight="800">Contain &amp; preserve</text>
+                    <text x="272" y="178" fill="#94a3b8" font-size="15">isolate — don't wipe</text>
+                    <rect x="484" y="114" width="200" height="88" rx="12" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
+                    <text x="504" y="150" fill="#f8fafc" font-size="18" font-weight="800">Report fast</text>
+                    <text x="504" y="178" fill="#94a3b8" font-size="15">1930 · NCRP · cyber cell</text>
+                    <line x1="222" y1="158" x2="246" y2="158" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+                    <line x1="454" y1="158" x2="478" y2="158" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+
+                    <!-- Law-enforcement track -->
+                    <text x="40" y="280" fill="#fbbf24" font-size="15" font-weight="800" letter-spacing="2">LAW-ENFORCEMENT TRACK</text>
+                    <rect x="40" y="296" width="180" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+                    <text x="60" y="332" fill="#f8fafc" font-size="18" font-weight="800">FIR / NCR</text>
+                    <text x="60" y="360" fill="#94a3b8" font-size="15">complaint registered</text>
+                    <rect x="252" y="296" width="200" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+                    <text x="272" y="332" fill="#f8fafc" font-size="18" font-weight="800">Freeze &amp; notices</text>
+                    <text x="272" y="360" fill="#94a3b8" font-size="15">money trail · BNSS s94</text>
+                    <rect x="484" y="296" width="200" height="88" rx="12" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+                    <text x="504" y="332" fill="#f8fafc" font-size="18" font-weight="800">Seizure</text>
+                    <text x="504" y="360" fill="#94a3b8" font-size="15">hash · memo · witnesses</text>
+                    <line x1="222" y1="340" x2="246" y2="340" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+                    <line x1="454" y1="340" x2="478" y2="340" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+
+                    <!-- Convergence -->
+                    <path d="M684 158 L738 208" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#case-arr)"/>
+                    <path d="M684 340 L738 290" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#case-arr)"/>
+
+                    <!-- Forensics -->
+                    <rect x="744" y="150" width="200" height="198" rx="14" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="2"/>
+                    <text x="764" y="188" fill="#f8fafc" font-size="19" font-weight="800">Digital forensics</text>
+                    <text x="764" y="222" fill="#e2e8f0" font-size="15">image → hash</text>
+                    <text x="764" y="248" fill="#e2e8f0" font-size="15">examine → analyze</text>
+                    <text x="764" y="274" fill="#e2e8f0" font-size="15">report (FSL)</text>
+                    <text x="764" y="316" fill="#94a3b8" font-size="15">chain of custody intact</text>
+
+                    <!-- To court -->
+                    <line x1="944" y1="187" x2="978" y2="187" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+                    <rect x="984" y="150" width="140" height="74" rx="12" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
+                    <text x="1004" y="182" fill="#f8fafc" font-size="17" font-weight="800">Charge sheet</text>
+                    <text x="1004" y="208" fill="#94a3b8" font-size="15">before court</text>
+                    <line x1="1054" y1="224" x2="1054" y2="250" stroke="#64748b" stroke-width="2.5" marker-end="url(#case-arr)"/>
+                    <rect x="984" y="256" width="140" height="74" rx="12" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
+                    <text x="1004" y="288" fill="#f8fafc" font-size="17" font-weight="800">Trial</text>
+                    <text x="1004" y="314" fill="#94a3b8" font-size="15">evidence tested</text>
+
+                    <text x="40" y="470" fill="#94a3b8" font-size="15">Two tracks, one evidence stream. Every handoff along the way is recorded in the chain of custody —</text>
+                    <text x="40" y="496" fill="#94a3b8" font-size="15">and every gap in that record is a question the defence gets to ask at trial.</text>
+                  </g>
+                </svg>
+                <figcaption>
+                  The lifecycle of a cybercrime case: the victim's response and the police investigation run in
+                  parallel, converge at digital forensics, and end at trial.
+                </figcaption>
+              </figure>
+
+              <p>
+                Forensics has four canonical phases, and every methodology you will meet is a variation on them:
+                <strong>identification</strong> (what could hold evidence — devices, accounts, logs, cloud),
+                <strong>preservation and acquisition</strong> (freeze it in a provable state),
+                <strong>examination and analysis</strong> (find and interpret what matters), and
+                <strong>reporting and presentation</strong> (explain it so a court can rely on it). The center of
+                gravity is acquisition, because everything downstream inherits its integrity.
+              </p>
+              <p>
+                <strong>Imaging is not copying.</strong> Copying grabs files. A forensic image is a
+                <strong>bit-for-bit duplicate of the entire medium</strong> — including deleted files, slack space,
+                and unallocated clusters where the interesting things live. The evidence drive is connected through a
+                <strong>write blocker</strong>, hardware that physically prevents the examiner's workstation from
+                modifying the source, because even mounting a disk normally writes to it. The image lands in a raw
+                format (<code>dd</code>) or a container like <strong>E01</strong> (the EnCase evidence format —
+                compression, embedded case metadata, and internal per-block checksums), both long accepted in courts.
+                The original is then sealed and stored; all analysis happens on copies.
+              </p>
+              <p>
+                <strong>Hashing is the integrity proof.</strong> At acquisition, the examiner computes a
+                cryptographic hash of the image — today preferably <strong>SHA-256</strong>, since MD5 and SHA-1 have
+                known collision attacks, though many labs still record MD5 alongside for continuity with older
+                tooling and case records. The property that matters in court is simple: recompute the hash at any
+                later date, and a match demonstrates mathematically that not one bit has changed since acquisition.
+                That single line — "hash values tallied" — is what turns a pile of copied data into evidence with
+                provable integrity. A mismatch is not automatically tampering (failing sectors on a dying drive can
+                cause it), but it is always an explanation the prosecution now owes.
+              </p>
+
+              <h2 id="what-gets-collected-first-and-why">What gets collected first, and why</h2>
+              <p>
+                Not all evidence decays at the same speed, so examiners collect in <strong>order of
+                volatility</strong> — a principle old enough to be codified in RFC 3227: CPU registers and caches
+                first (practically unobtainable), then <strong>RAM</strong>, then swap and temporary files, then
+                <strong>disk</strong>, then backups and archival media. The rule of thumb: capture what dies at
+                power-off before touching what survives it.
+              </p>
+              <p>
+                This is why <strong>live forensics</strong> exists. If a production server cannot be taken down, or —
+                increasingly common — the disk is fully encrypted so that powering off locks the evidence forever,
+                the examiner acquires memory from the running system first: encryption keys, running processes,
+                active network connections, and injected code that never touches disk all live only in RAM. Then, and
+                only then, is the power decision made.
+              </p>
+              <p>
+                <strong>Mobile devices</strong> are their own specialty. A <em>logical</em> extraction takes what the
+                operating system is willing to hand over — contacts, chats, media, app data; a <em>file-system</em>
+                extraction goes deeper; a <em>physical</em> extraction images the storage bit-for-bit, including
+                deleted data — increasingly difficult on modern encrypted handsets. Often the richest source is not
+                the handset at all but its <strong>cloud shadow</strong>: backups, synced photos, account tokens, and
+                app data on servers, reachable through legal process. Meanwhile the seized phone sits in a Faraday
+                bag precisely so no one can remote-wipe it while the paperwork moves.
+              </p>
+              <p>
+                <strong>Network forensics</strong> supplies the connective tissue: server and application logs,
+                firewall and proxy records, NetFlow summaries, and provider records — the CDRs and IPDRs that map an
+                IP address, port, and timestamp to a subscriber. The practitioner's caveat: with carrier-grade NAT,
+                one public IP is shared by thousands of users, so an IP alone identifies nobody — you need the source
+                port and the exact time. Unrecorded time zones and drifting
+                clocks have genuinely derailed investigations, which is why careful examiners normalize everything to
+                UTC and document the time source for every log they touch.
+              </p>
+
+              <h2 id="artifacts-anti-forensics-and-the-chain-of-custody">Artifacts, anti-forensics, and the chain of custody</h2>
+              <p>
+                Cases rarely crack on one dramatic file. They crack on small artifacts the user never knew existed:
+              </p>
+              <ul>
+                <li><strong>Browser history and downloads</strong> — the searches made before the act, and the tools fetched to commit it.</li>
+                <li><strong>USB registry traces</strong> — Windows records the make, model, and serial number of every USB storage device ever connected, with timestamps. Data-theft cases are routinely built on this alone.</li>
+                <li><strong>Prefetch and execution artifacts</strong> — proof that a particular program (say, a wiping tool) ran, and when.</li>
+                <li><strong>EXIF metadata</strong> — the camera model, timestamp, and sometimes GPS coordinates embedded in photos.</li>
+                <li><strong>Recycle-bin and shell metadata</strong> — what was deleted or browsed, and when.</li>
+                <li><strong>Email headers and provider IP logs</strong> — where a message really came from, as opposed to where it claims.</li>
+              </ul>
+              <p>
+                Attackers know this, so they attempt <strong>anti-forensics</strong> — and each technique has a
+                counter. Wiping tools destroy data but leave their own traces: installation records, execution
+                artifacts, and a suspiciously clean gap where activity should be. <strong>Timestomping</strong>
+                (faking file timestamps) trips over the fact that NTFS keeps duplicate timestamp sets internally, and
+                inconsistencies between them flag manipulation. Encryption is the strongest play, which is exactly
+                why examiners prioritize live acquisition and cloud copies. But the deepest counter is
+                <strong>corroboration</strong>: one device can be made to lie, but the device, the ISP's logs, the
+                bank's records, and the CCTV footage rarely all lie in the same direction. Examiners build timelines
+                across independent sources precisely so that no single manipulated artifact carries the case.
+              </p>
+              <p>
+                Binding all of it together is the <strong>chain of custody</strong> — worth describing concretely,
+                because it sounds abstract until you see one. It is a document trail
+                that rides with each exhibit: exhibit number, description and serial numbers, the hash, who collected
+                it, where and when; then every single handover — seizing officer to property room (the malkhana), to
+                the FSL courier, to the examiner, back to storage — signed and timestamped, with seal numbers
+                recorded at each step. The defence does not have to prove tampering; it only has to point at a gap
+                — an unlogged weekend, a broken seal, a hash nobody recorded — and ask the court to doubt everything
+                after it. Prosecutions have collapsed on exactly that. The paperwork is not bureaucracy around the
+                evidence; it is what makes it evidence.
+              </p>
+
+              <h2 id="will-it-stand-in-court-admissibility-in-india">Will it stand in court? Admissibility in India</h2>
+              <p>
+                Electronic records almost always reach a courtroom as copies — printouts, exported logs, forensic
+                images — and Indian law treats such copies as admissible only with a <strong>certificate</strong>
+                from someone responsible for the system that produced them, identifying the record and describing how
+                it was made. For decades that meant <strong>Section 65B of the Indian Evidence Act, 1872</strong>.
+                Since 1 July 2024, the Evidence Act has been replaced by the <strong>Bharatiya Sakshya Adhiniyam,
+                2023</strong>, and the electronic-records rule now lives in <strong>Section 63 of the BSA</strong> —
+                same core framework, with a prescribed certificate format in the Schedule (Part A filled by the party
+                producing the record, Part B by an expert) that expects a hash of the record to be stated.
+              </p>
+              <p>
+                The controlling judgment is <strong><em>Arjun Panditrao Khotkar v. Kailash Kushanrao Gorantyal</em>
+                (2020) 7 SCC 1</strong>, where the Supreme Court settled years of conflicting rulings: the
+                certificate is <em>mandatory</em> for secondary electronic evidence — oral testimony cannot
+                substitute for it — while an original device produced in court does not need one. The practical
+                lesson upstream is blunt: <strong>obtain the certificate when the record is
+                extracted</strong>, from the person operating the system at that time, rather than hunting for a
+                long-departed administrator on the eve of trial. As of this writing (August 2026), courts are still
+                building Section 63 jurisprudence and older cases continue under the 65B regime, so exact practice
+                varies between courts — but no version of it forgives a missing certificate.
+              </p>
+              <p>
+                The substantive offences themselves — what the accused is actually charged <em>with</em> — live in
+                the IT Act and the Bharatiya Nyaya Sanhita, which deserve their own article:
+                <a class="text-link" href="/blog/india-it-act-explained">India's IT law, explained</a>.
+              </p>
+
+              <h2 id="what-to-do-differently-whoever-you-are">What to do differently, whoever you are</h2>
+              <p>
+                <strong>If you run a company:</strong> write an evidence-aware IR runbook before you need it — image
+                before you reimage, name an evidence custodian, keep logs beyond the 180-day regulatory floor, and
+                decide in advance who calls counsel and when (early — privilege and notification duties both reward
+                it). And do not negotiate or settle the evidence away: quietly paying a fraudster or scrubbing
+                systems to avoid embarrassment doesn't just end your case, it can create fresh liability.
+              </p>
+              <p>
+                <strong>If you're an individual victim:</strong> preserve first, then report — full-screen
+                screenshots with the URL and timestamp visible, exported chats, saved SMS and emails, transaction
+                IDs. Do not delete anything, even the embarrassing parts; investigators have seen it all, and the
+                deleted message is always the one that mattered. Then report in hours, not days — call 1930 for
+                financial fraud, because the freeze mechanism only works while the money is still moving through the
+                chain. Shame is the scammer's best friend; speed is yours.
+              </p>
+              <p>
+                <strong>If you want to do this work:</strong> understand that the discipline <em>is</em> the job.
+                Document everything, contemporaneously — if it isn't written down, it didn't happen. Hash everything,
+                never work on originals, and assume from minute one that a hostile cross-examiner will one day read
+                your notes aloud. The technical skills are learnable; the habit of treating every action as testimony
+                is what makes findings survive court.
+              </p>
+              <p>
+                That is the honest shape of how cybercrime cases get solved. Not one genius move at a keyboard, but
+                two clocks managed well from the first hour: contain without destroying, report while the trail is
+                warm, image before you touch, hash what you image, and log every hand that touches the evidence. The
+                courtroom at the end of the lifecycle only ever sees what survived the beginning of it.
+              </p>
+
+              <div class="post-callout">
+                <p>
+                  <strong>A necessary disclaimer:</strong> this article is an educational orientation, not legal
+                  advice. Procedures, section numbers, and timelines vary by jurisdiction, by agency, and by case —
+                  and they change over time. If you are dealing with a live incident, speak to a lawyer and your
+                  local cyber cell rather than relying on any article, including this one.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -662,7 +664,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>

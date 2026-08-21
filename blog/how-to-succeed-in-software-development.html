@@ -159,7 +159,7 @@
         </figure>
 
         <section class="section-card">
-          <div class="post-body">
+          <div class="post-layout">
             <nav class="post-toc" aria-label="In this article">
               <p class="eyebrow">In this article</p>
               <ol>
@@ -171,102 +171,105 @@
                 <li><a href="#the-same-order-works-everywhere">The same order works everywhere</a></li>
               </ol>
             </nav>
-            <h2 id="why-the-order-matters-more-than-the-steps">Why the order matters more than the steps</h2>
-            <p>
-              Most people fail at software not because they can't do these four things, but because they do them in the
-              wrong sequence. They optimize before it works. They polish readability on code they're about to throw
-              away. They chase a perfectly modular architecture for a problem they don't understand yet. Each of those
-              is effort spent in the wrong place at the wrong time. The four steps below are valuable precisely because
-              they tell you what to care about <em>now</em> and what to deliberately ignore until later.
-            </p>
 
-            <figure class="post-figure">
-              <svg viewBox="0 0 760 220" role="img" aria-label="Four ascending steps: make it work, make it modular, make it readable, make it optimized" xmlns="http://www.w3.org/2000/svg">
-                <rect width="760" height="220" rx="18" fill="#1b2735"/>
-                <g font-family="'Segoe UI',sans-serif" text-anchor="middle" font-weight="800">
-                  <rect x="60" y="150" width="150" height="40" rx="8" fill="#38bdf8" opacity="0.55"/>
-                  <text x="135" y="176" fill="#131f2d" font-size="13">1 · Work</text>
-                  <rect x="230" y="115" width="150" height="75" rx="8" fill="#38bdf8" opacity="0.7"/>
-                  <text x="305" y="158" fill="#131f2d" font-size="13">2 · Modular</text>
-                  <rect x="400" y="80" width="150" height="110" rx="8" fill="#38bdf8" opacity="0.85"/>
-                  <text x="475" y="140" fill="#131f2d" font-size="13">3 · Readable</text>
-                  <rect x="570" y="45" width="150" height="145" rx="8" fill="#7dd3fc"/>
-                  <text x="645" y="120" fill="#131f2d" font-size="13">4 · Optimized</text>
-                </g>
-              </svg>
-              <figcaption>Each step stands on the one before it. Skip a stair and the ones above it wobble.</figcaption>
-            </figure>
-
-            <h2 id="step-1-make-it-work">Step 1 — Make it work</h2>
-            <p>
-              The first and only job at the start is to get something running end to end, however ugly. One long
-              function, hard-coded values, no error handling worth mentioning — fine. The goal here is not quality; it
-              is <em>proof</em>. A working-but-messy version teaches you what the problem actually is, surfaces the
-              surprises hiding in the requirements, and gives you something real to improve. A beautiful design for the
-              wrong problem is worthless, and you can't know the right problem until something works.
-            </p>
-            <p>
-              The trap at this stage is perfectionism — polishing code you might delete once you understand the problem
-              better. Resist it. Get to working first, and give yourself explicit permission for it to be rough.
-            </p>
-
-            <h2 id="step-2-make-it-modular">Step 2 — Make it modular</h2>
-            <p>
-              Now that it works, you understand the problem well enough to see its natural seams. Modularity is the
-              step where you break that one big blob into pieces that each do a single job — a function that only
-              parses, a function that only validates, a function that only sends. Good modules have clear boundaries:
-              you can understand one without holding all the others in your head, and you can change one without
-              breaking its neighbors.
-            </p>
-            <p>
-              This matters far more in automation than people expect. A workflow built as one giant tangled step is
-              impossible to debug when it fails at 3 a.m.; the same workflow split into distinct, named stages tells
-              you exactly where it broke. Modularity is what turns "the whole thing is broken" into "step three is
-              broken" — and that difference is everything when something goes wrong in production.
-            </p>
-
-            <h2 id="step-3-make-it-readable">Step 3 — Make it readable</h2>
-            <p>
-              Code is read far more often than it is written, usually by a future version of you who has forgotten
-              every clever thing present-you was thinking. Readability is a gift to that person. It means honest names
-              that say what a thing is, functions short enough to grasp at a glance, and comments that explain the
-              <em>why</em> a line of code can't express — never a restating of the obvious.
-            </p>
-            <blockquote>
+            <div class="post-body">
+              <h2 id="why-the-order-matters-more-than-the-steps">Why the order matters more than the steps</h2>
               <p>
-                Clever code that only you can read is a liability, not a flex. The best code is boring: so clear that
-                the next person understands it without asking you a single question.
+                Most people fail at software not because they can't do these four things, but because they do them in the
+                wrong sequence. They optimize before it works. They polish readability on code they're about to throw
+                away. They chase a perfectly modular architecture for a problem they don't understand yet. Each of those
+                is effort spent in the wrong place at the wrong time. The four steps below are valuable precisely because
+                they tell you what to care about <em>now</em> and what to deliberately ignore until later.
               </p>
-            </blockquote>
-            <p>
-              Readability comes after modularity for a reason — it's much easier to write clear code for a small, well
-              bounded piece than for a sprawling one. Once each module does one job, naming and clarifying it becomes
-              almost easy.
-            </p>
 
-            <h2 id="step-4-make-it-optimized">Step 4 — Make it optimized</h2>
-            <p>
-              Only now, last, do you optimize — and only where it's actually needed. This is deliberately the final
-              step because premature optimization is one of the most reliable ways to waste time and wreck the three
-              things you just built. Optimizing before you have working, modular, readable code means you're speeding
-              up something that might be wrong, entangling clean modules, and obscuring readable logic — all to fix a
-              performance problem you haven't proven you have.
-            </p>
-            <p>
-              Do it properly: measure first, find the genuine bottleneck, and improve that one thing. Because your code
-              is already modular and readable, optimizing is low-risk — you can tune one isolated piece with
-              confidence, and the next reader can still follow what you did. The earlier steps are what make this one
-              safe.
-            </p>
+              <figure class="post-figure">
+                <svg viewBox="0 0 760 220" role="img" aria-label="Four ascending steps: make it work, make it modular, make it readable, make it optimized" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="760" height="220" rx="18" fill="#1b2735"/>
+                  <g font-family="'Segoe UI',sans-serif" text-anchor="middle" font-weight="800">
+                    <rect x="60" y="150" width="150" height="40" rx="8" fill="#38bdf8" opacity="0.55"/>
+                    <text x="135" y="176" fill="#131f2d" font-size="13">1 · Work</text>
+                    <rect x="230" y="115" width="150" height="75" rx="8" fill="#38bdf8" opacity="0.7"/>
+                    <text x="305" y="158" fill="#131f2d" font-size="13">2 · Modular</text>
+                    <rect x="400" y="80" width="150" height="110" rx="8" fill="#38bdf8" opacity="0.85"/>
+                    <text x="475" y="140" fill="#131f2d" font-size="13">3 · Readable</text>
+                    <rect x="570" y="45" width="150" height="145" rx="8" fill="#7dd3fc"/>
+                    <text x="645" y="120" fill="#131f2d" font-size="13">4 · Optimized</text>
+                  </g>
+                </svg>
+                <figcaption>Each step stands on the one before it. Skip a stair and the ones above it wobble.</figcaption>
+              </figure>
 
-            <h2 id="the-same-order-works-everywhere">The same order works everywhere</h2>
-            <p>
-              This isn't only for code. It's how I approach an n8n automation, a research prototype, even a piece of
-              writing: get a rough version working, break it into clean parts, make each part clear, then refine the
-              parts that need it. The order encodes a mindset — earn the right to polish by first making something
-              real, then make it easy to change, then make it fast. Rush to the end and you build something fragile.
-              Walk the four steps and you build something that lasts, and that other people can build on.
-            </p>
+              <h2 id="step-1-make-it-work">Step 1 — Make it work</h2>
+              <p>
+                The first and only job at the start is to get something running end to end, however ugly. One long
+                function, hard-coded values, no error handling worth mentioning — fine. The goal here is not quality; it
+                is <em>proof</em>. A working-but-messy version teaches you what the problem actually is, surfaces the
+                surprises hiding in the requirements, and gives you something real to improve. A beautiful design for the
+                wrong problem is worthless, and you can't know the right problem until something works.
+              </p>
+              <p>
+                The trap at this stage is perfectionism — polishing code you might delete once you understand the problem
+                better. Resist it. Get to working first, and give yourself explicit permission for it to be rough.
+              </p>
+
+              <h2 id="step-2-make-it-modular">Step 2 — Make it modular</h2>
+              <p>
+                Now that it works, you understand the problem well enough to see its natural seams. Modularity is the
+                step where you break that one big blob into pieces that each do a single job — a function that only
+                parses, a function that only validates, a function that only sends. Good modules have clear boundaries:
+                you can understand one without holding all the others in your head, and you can change one without
+                breaking its neighbors.
+              </p>
+              <p>
+                This matters far more in automation than people expect. A workflow built as one giant tangled step is
+                impossible to debug when it fails at 3 a.m.; the same workflow split into distinct, named stages tells
+                you exactly where it broke. Modularity is what turns "the whole thing is broken" into "step three is
+                broken" — and that difference is everything when something goes wrong in production.
+              </p>
+
+              <h2 id="step-3-make-it-readable">Step 3 — Make it readable</h2>
+              <p>
+                Code is read far more often than it is written, usually by a future version of you who has forgotten
+                every clever thing present-you was thinking. Readability is a gift to that person. It means honest names
+                that say what a thing is, functions short enough to grasp at a glance, and comments that explain the
+                <em>why</em> a line of code can't express — never a restating of the obvious.
+              </p>
+              <blockquote>
+                <p>
+                  Clever code that only you can read is a liability, not a flex. The best code is boring: so clear that
+                  the next person understands it without asking you a single question.
+                </p>
+              </blockquote>
+              <p>
+                Readability comes after modularity for a reason — it's much easier to write clear code for a small, well
+                bounded piece than for a sprawling one. Once each module does one job, naming and clarifying it becomes
+                almost easy.
+              </p>
+
+              <h2 id="step-4-make-it-optimized">Step 4 — Make it optimized</h2>
+              <p>
+                Only now, last, do you optimize — and only where it's actually needed. This is deliberately the final
+                step because premature optimization is one of the most reliable ways to waste time and wreck the three
+                things you just built. Optimizing before you have working, modular, readable code means you're speeding
+                up something that might be wrong, entangling clean modules, and obscuring readable logic — all to fix a
+                performance problem you haven't proven you have.
+              </p>
+              <p>
+                Do it properly: measure first, find the genuine bottleneck, and improve that one thing. Because your code
+                is already modular and readable, optimizing is low-risk — you can tune one isolated piece with
+                confidence, and the next reader can still follow what you did. The earlier steps are what make this one
+                safe.
+              </p>
+
+              <h2 id="the-same-order-works-everywhere">The same order works everywhere</h2>
+              <p>
+                This isn't only for code. It's how I approach an n8n automation, a research prototype, even a piece of
+                writing: get a rough version working, break it into clean parts, make each part clear, then refine the
+                parts that need it. The order encodes a mindset — earn the right to polish by first making something
+                real, then make it easy to change, then make it fast. Rush to the end and you build something fragile.
+                Walk the four steps and you build something that lasts, and that other people can build on.
+              </p>
+            </div>
           </div>
 
           <div class="post-share">
@@ -347,7 +350,7 @@
             <a href="/blog/india-it-act-explained">India's IT law, explained</a>
             <a href="/blog/security-compliance-explained">Security compliance, explained</a>
             <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
-            <a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
             <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
             <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
             <a href="/blog">All articles →</a>

@@ -20,7 +20,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 35 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `blog/`               | Blog — `/blog` index (15 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
+| `blog/`               | Blog — `/blog` index (16 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
@@ -42,7 +42,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── favicon.ico                   Favicon, served from the site root
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
-│   └── *.html                    One file per article (15 posts), static TOC in the markup
+│   └── *.html                    One file per article (16 posts), static TOC in the markup
 ├── sw.js                         Service worker — caches /assets/vendor only (see Labs)
 ├── labs/
 │   ├── index.html                Labs hub — language grid, OS grid, security tools, FAQ

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: AI driven, human assisted — the old order of a large human leading a small AI, inverted into a large AI leading a small human">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- ===== THEN: a big human leading a small machine (dimmed — this is the past) ===== -->
+  <g opacity="0.42">
+    <!-- person, large -->
+    <g stroke="#7dd3fc" stroke-width="4.5" fill="none">
+      <circle cx="790" cy="183" r="17"/>
+      <path d="M 762 236 a 28 26 0 0 1 56 0"/>
+    </g>
+    <!-- arrow -->
+    <line x1="838" y1="205" x2="932" y2="205" stroke="#38bdf8" stroke-width="4"/>
+    <path d="M 944 205 L 932 198 L 932 212 Z" fill="#38bdf8"/>
+    <!-- chip, small -->
+    <rect x="956" y="186" width="38" height="38" rx="9" fill="#7dd3fc"/>
+    <rect x="967" y="197" width="16" height="16" rx="4" fill="#131f2d"/>
+    <g stroke="#7dd3fc" stroke-width="3" stroke-linecap="round">
+      <line x1="967" y1="179" x2="967" y2="186"/>
+      <line x1="983" y1="179" x2="983" y2="186"/>
+      <line x1="967" y1="224" x2="967" y2="231"/>
+      <line x1="983" y1="224" x2="983" y2="231"/>
+      <line x1="949" y1="197" x2="956" y2="197"/>
+      <line x1="949" y1="213" x2="956" y2="213"/>
+      <line x1="994" y1="197" x2="1001" y2="197"/>
+      <line x1="994" y1="213" x2="1001" y2="213"/>
+    </g>
+    <text x="890" y="282" fill="#94a3b8" font-family="'Segoe UI',Tahoma,sans-serif" font-size="17" font-weight="700" text-anchor="middle">then &#183; human driven, AI assisted</text>
+  </g>
+
+  <!-- ===== the flip ===== -->
+  <line x1="740" y1="332" x2="852" y2="332" stroke="#334155" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="948" y1="332" x2="1060" y2="332" stroke="#334155" stroke-width="2" stroke-dasharray="6 6"/>
+  <circle cx="900" cy="332" r="31" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.65"/>
+  <g stroke="#7dd3fc" stroke-width="3.5" stroke-linecap="round">
+    <line x1="893" y1="324" x2="916" y2="324"/>
+    <line x1="884" y1="341" x2="907" y2="341"/>
+  </g>
+  <path d="M 884 324 L 894 318 L 894 330 Z" fill="#7dd3fc"/>
+  <path d="M 916 341 L 906 335 L 906 347 Z" fill="#7dd3fc"/>
+
+  <!-- ===== NOW: a big machine leading a small human ===== -->
+  <g>
+    <!-- chip, large -->
+    <rect x="758" y="383" width="64" height="64" rx="14" fill="#7dd3fc"/>
+    <rect x="777" y="402" width="26" height="26" rx="6" fill="#131f2d"/>
+    <g stroke="#7dd3fc" stroke-width="4" stroke-linecap="round">
+      <line x1="772" y1="371" x2="772" y2="383"/>
+      <line x1="790" y1="371" x2="790" y2="383"/>
+      <line x1="808" y1="371" x2="808" y2="383"/>
+      <line x1="772" y1="447" x2="772" y2="459"/>
+      <line x1="790" y1="447" x2="790" y2="459"/>
+      <line x1="808" y1="447" x2="808" y2="459"/>
+      <line x1="746" y1="397" x2="758" y2="397"/>
+      <line x1="746" y1="415" x2="758" y2="415"/>
+      <line x1="746" y1="433" x2="758" y2="433"/>
+      <line x1="822" y1="397" x2="834" y2="397"/>
+      <line x1="822" y1="415" x2="834" y2="415"/>
+      <line x1="822" y1="433" x2="834" y2="433"/>
+    </g>
+    <!-- arrow -->
+    <line x1="846" y1="415" x2="938" y2="415" stroke="#38bdf8" stroke-width="4"/>
+    <path d="M 950 415 L 938 408 L 938 422 Z" fill="#38bdf8"/>
+    <!-- person, small -->
+    <g stroke="#7dd3fc" stroke-width="3.5" fill="none">
+      <circle cx="975" cy="402" r="10"/>
+      <path d="M 959 433 a 16 15 0 0 1 32 0"/>
+    </g>
+    <text x="890" y="495" fill="#7dd3fc" font-family="'Segoe UI',Tahoma,sans-serif" font-size="18" font-weight="700" text-anchor="middle">now &#183; AI driven, human assisted</text>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="185" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AI PRACTICE</text>
+    <text x="80" y="262" fill="#f8fafc" font-size="56" font-weight="800">AI driven,</text>
+    <text x="80" y="328" fill="#f8fafc" font-size="56" font-weight="800">human assisted</text>
+    <text x="80" y="396" fill="#e2e8f0" font-size="29" font-weight="600">The default just inverted &#8212;</text>
+    <text x="80" y="437" fill="#e2e8f0" font-size="29" font-weight="600">and what a human still owns.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" role="img" aria-label="A two-by-two matrix. Columns: mistake is cheap, mistake is expensive. Rows: mistake is loud, mistake is silent. Cheap and loud, let it drive. Expensive and loud, drive it through a gate. Cheap and silent, drive it then sample. Expensive and silent, you drive.">
+  <defs>
+    <linearGradient id="mbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1b2739"/>
+    </linearGradient>
+  </defs>
+  <rect width="1100" height="620" rx="16" fill="url(#mbg)"/>
+
+  <!-- column headers -->
+  <g font-family="'Segoe UI',Tahoma,sans-serif" font-size="19" font-weight="800" letter-spacing="3" fill="#7dd3fc" text-anchor="middle">
+    <text x="395" y="58">MISTAKE IS CHEAP</text>
+    <text x="845" y="58">MISTAKE IS EXPENSIVE</text>
+  </g>
+
+  <!-- row headers -->
+  <g font-family="'Segoe UI',Tahoma,sans-serif" font-size="17" font-weight="800" letter-spacing="2" fill="#7dd3fc" text-anchor="middle">
+    <text transform="rotate(-90 82 180)" x="82" y="180">MISTAKE IS LOUD</text>
+    <text transform="rotate(-90 82 420)" x="82" y="420">MISTAKE IS SILENT</text>
+  </g>
+
+  <!-- axis rules -->
+  <g stroke="#334155" stroke-width="2">
+    <line x1="620" y1="80" x2="620" y2="520"/>
+    <line x1="170" y1="300" x2="1070" y2="300"/>
+  </g>
+
+  <g font-family="'Segoe UI',Tahoma,sans-serif">
+    <!-- cheap + loud -->
+    <rect x="178" y="88" width="434" height="204" rx="14" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.55"/>
+    <text x="206" y="146" fill="#4ade80" font-size="27" font-weight="800">Let it drive.</text>
+    <text x="206" y="192" fill="#cbd5e1" font-size="18" font-weight="500">Drafts, failing tests, prototypes &#8212;</text>
+    <text x="206" y="220" fill="#cbd5e1" font-size="18" font-weight="500">anything you can re-run for free.</text>
+    <text x="206" y="256" fill="#94a3b8" font-size="17" font-weight="600">Wrong is obvious in seconds.</text>
+
+    <!-- expensive + loud -->
+    <rect x="628" y="88" width="434" height="204" rx="14" fill="#16202f" stroke="#7dd3fc" stroke-width="2" stroke-opacity="0.55"/>
+    <text x="656" y="146" fill="#7dd3fc" font-size="27" font-weight="800">Drive it through a gate.</text>
+    <text x="656" y="192" fill="#cbd5e1" font-size="18" font-weight="500">Deploys, outbound email, migrations.</text>
+    <text x="656" y="220" fill="#cbd5e1" font-size="18" font-weight="500">A person clicks before it lands.</text>
+    <text x="656" y="256" fill="#94a3b8" font-size="17" font-weight="600">Gate the effect, not the drafting.</text>
+
+    <!-- cheap + silent -->
+    <rect x="178" y="308" width="434" height="204" rx="14" fill="#16202f" stroke="#facc15" stroke-width="2" stroke-opacity="0.55"/>
+    <text x="206" y="366" fill="#facc15" font-size="27" font-weight="800">Drive it, then sample.</text>
+    <text x="206" y="412" fill="#cbd5e1" font-size="18" font-weight="500">Bulk tagging, summaries, cleanup.</text>
+    <text x="206" y="440" fill="#cbd5e1" font-size="18" font-weight="500">Audit a slice, not every row.</text>
+    <text x="206" y="476" fill="#94a3b8" font-size="17" font-weight="600">Cheap once, expensive at volume.</text>
+
+    <!-- expensive + silent -->
+    <rect x="628" y="308" width="434" height="204" rx="14" fill="#16202f" stroke="#f87171" stroke-width="2" stroke-opacity="0.55"/>
+    <text x="656" y="366" fill="#f87171" font-size="27" font-weight="800">You drive.</text>
+    <text x="656" y="412" fill="#cbd5e1" font-size="18" font-weight="500">Security design, money, legal advice.</text>
+    <text x="656" y="440" fill="#cbd5e1" font-size="18" font-weight="500">Novel work with no prior art.</text>
+    <text x="656" y="476" fill="#94a3b8" font-size="17" font-weight="600">Wrong here looks fine for months.</text>
+  </g>
+
+  <text x="550" y="576" fill="#64748b" font-family="'Segoe UI',Tahoma,sans-serif" font-size="17" font-weight="600" text-anchor="middle">The question is never &#8220;can AI do this?&#8221; &#8212; it is &#8220;how expensive, and how quiet, is a mistake?&#8221;</text>
+</svg>
