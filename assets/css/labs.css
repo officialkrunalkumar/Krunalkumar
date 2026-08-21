@@ -2178,26 +2178,6 @@ pre.lab-example:hover .lab-copy,
 
 .chat-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
-.chat-qr {
-  margin-top: 0.9rem;
-  padding: 0.9rem;
-  background: rgba(248, 250, 252, 0.06);
-  border: 1px solid var(--line-25);
-  border-radius: 0.5rem;
-  text-align: center;
-}
-.chat-qr[hidden] { display: none; }
-.chat-qr-canvas {
-  display: block;
-  margin: 0 auto 0.6rem;
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.3rem;
-  /* nearest-neighbour: a QR blurred by smoothing is a QR that will not scan */
-  image-rendering: pixelated;
-}
-.chat-qr .chat-note { margin: 0; }
-
 .chat-xfer { display: grid; gap: 0.4rem; }
 .chat-xfer[hidden] { display: none; }
 .chat-xfer-track {

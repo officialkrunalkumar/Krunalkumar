@@ -166,7 +166,7 @@ These are deliberately separated from the sixteen offline security tools. They s
 - [Peer-to-peer chat](https://krunalkumar.dpdns.org/labs/chat): two browsers connected directly over
   WebRTC with no signalling server — the connection code is carried by the two people themselves.
   Text chat one-to-one or in a group (star topology, the host relays), file transfer with no size
-  limit where the browser can stream to disk, QR codes for the handshake, and a live view of the ICE
+  limit where the browser can stream to disk, and a live view of the ICE
   negotiation. Explains why a browser can never listen on a port the way netcat does. This is the one
   lab that opens a peer-to-peer connection; apart from it, the request-making tools listed above
   (DNS, email security, certificate transparency, RDAP, breach check and the API tester) and the

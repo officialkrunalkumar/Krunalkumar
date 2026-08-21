@@ -265,7 +265,7 @@ entirely inside the tab with no requests of any kind; this one connects two
 browsers directly to each other, and says so prominently before anything else.
 
 - **No server.** Two browsers exchange a short code by whatever channel the two
-  people already share — chat app, email, a QR scanned off the other screen —
+  people already share — a chat app, an email, a note —
   and after that the connection is direct. Nothing is stored, nothing passes
   through this site, and there is no account or database behind it.
 - **Why the code exists at all.** A browser cannot accept an incoming

@@ -262,14 +262,10 @@
               <div class="chat-actions">
                 <button class="btn btn-secondary" type="button"
                         data-copy-target="chat-offer-out">Copy code</button>
-                <button class="btn btn-secondary" type="button"
-                        data-qr-for="chat-offer-out">Show QR</button>
               </div>
-              <div class="chat-qr" data-qr-holder="chat-offer-out" hidden>
-                <canvas class="chat-qr-canvas"></canvas>
-                <p class="chat-note">Point the other phone's camera at this. The
-                  code is too long to read out, but nothing has to be typed.</p>
-              </div>
+              <p class="chat-note">Send this to the other person however you already
+                talk to them &mdash; a chat app, an email, a note. It is long, but
+                nothing has to be typed: copy it and paste it.</p>
             </li>
             <li>
               <h3>2. Paste what they send back</h3>
@@ -306,14 +302,9 @@
               <div class="chat-actions">
                 <button class="btn btn-secondary" type="button"
                         data-copy-target="chat-answer-out">Copy reply</button>
-                <button class="btn btn-secondary" type="button"
-                        data-qr-for="chat-answer-out">Show QR</button>
               </div>
-              <div class="chat-qr" data-qr-holder="chat-answer-out" hidden>
-                <canvas class="chat-qr-canvas"></canvas>
-                <p class="chat-note">Scan this back on their phone to finish the
-                  handshake.</p>
-              </div>
+              <p class="chat-note">Copy this and send it back the same way to finish
+                the handshake.</p>
             </li>
           </ol>
         </div>
@@ -519,7 +510,6 @@
 
     <script src="/assets/js/particle-bg.js" defer></script>
     <script defer src="/assets/js/labs/lab-copy.js"></script>
-    <script defer src="/assets/js/labs/qr.js"></script>
     <script defer src="/assets/js/labs/chat.js"></script>
     <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
   </body>
