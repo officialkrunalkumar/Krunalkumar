@@ -156,6 +156,11 @@
     print('     included. Six more taps end the party. Nothing is saved; the');
     print('     morning after is only ever a reload away.');
     print('');
+    print('     On <a href="/buddha">the still page</a>, press <span class="cyan">m</span>. The breath words —');
+    print('     breathe in, breathe out — come out from under the figure and keep');
+    print('     time with him. Press it again and they withdraw. Nothing is saved,');
+    print('     and a reload puts them away.');
+    print('');
     print('     Also: the kitchen keeps a kettle. <span class="dim">(try: teapot)</span>');
     print('');
     print('<span class="white">NOTES</span>');

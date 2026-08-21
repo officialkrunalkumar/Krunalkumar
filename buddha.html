@@ -446,6 +446,11 @@
               breathe in for four seconds as they grow, and out for six as they settle.
               It repeats until you leave.
             </p>
+            <!-- Hidden until somebody presses `m` — see buddha.css §5 and the
+                 "The breath words" note in buddha.js. The word still cycles on
+                 the 10s clock the whole time; only its visibility is gated, so
+                 revealing it drops straight into the breath already in
+                 progress rather than starting a new one. -->
             <p class="b-breath-label" aria-hidden="true">Breathe in</p>
           </div>
         </div>

@@ -361,8 +361,12 @@
   border: 1px solid rgba(90, 52, 20, 0.28);
   border-radius: 999px;
   cursor: pointer;
+  /* opacity rides on THIS declaration rather than a later one. .b-another now
+     withdraws with the sound and fullscreen controls (see "Idle controls" at
+     the foot of this file), but a second `transition` on the same selector
+     would replace this list wholesale and take the hover fade with it. */
   transition: background 400ms var(--ease-calm), color 400ms var(--ease-calm),
-              border-color 400ms var(--ease-calm);
+              border-color 400ms var(--ease-calm), opacity 520ms var(--ease-calm);
 }
 .b-another:hover {
   background: rgba(255, 252, 244, 0.7);
@@ -392,6 +396,22 @@
   gap: 0.9rem;
   padding-block-end: clamp(1.5rem, 5vh, 3rem);
 }
+
+/* The breath WORDS are an easter egg: hidden until somebody presses `m`.
+   (buddha.js, "The breath words"; documented in the terminal's `magic` page.)
+
+   Hidden with `visibility` and not `opacity`, for one specific reason: the
+   label cycle in buddha.js writes `style.opacity` on this element every few
+   seconds to cross-fade "Breathe in" into "Breathe out", and an inline style
+   beats anything declared here. visibility is a channel that cycle never
+   touches, so the two cannot fight.
+
+   Nothing moves when the words appear — .b-breath-label carries a min-height,
+   so the line's space is reserved whether it is showing or not. And nothing
+   changes for a screen reader: the label is already aria-hidden, and the
+   sr-only sentence above it describes the breath either way. */
+.b-breath-label { visibility: hidden; }
+.b-scene.is-breathing .b-breath-label { visibility: visible; }
 
 
 .b-breath-label {
@@ -491,7 +511,7 @@
   }
   .b-leaf, .b-mote, .b-ripple { display: none; }
   /* The controls still fold away and withdraw, they just stop animating. */
-  .b-audio-vol, .b-audio, .b-fs { transition: none; }
+  .b-audio-vol, .b-audio, .b-fs, .b-another { transition: none; }
   .b-halo { scale: 1; opacity: 0.9; }
   .b-quote, .b-cite, .b-breath-label { transition-duration: 1ms; }
 }
@@ -927,13 +947,15 @@
 }
 
 .b-scene.is-idle .b-audio,
-.b-scene.is-idle .b-fs {
+.b-scene.is-idle .b-fs,
+.b-scene.is-idle .b-another {
   opacity: 0;
   pointer-events: none;
 }
 
 .b-scene.is-idle .b-audio:focus-within,
-.b-scene.is-idle .b-fs:focus-within {
+.b-scene.is-idle .b-fs:focus-within,
+.b-scene.is-idle .b-another:focus-within {
   opacity: 1;
   pointer-events: auto;
 }
