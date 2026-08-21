@@ -52,6 +52,14 @@ const CSS_FILES = [
   'assets/css/labs.css',
   'assets/css/blog.css',
   'assets/css/buddha.css',
+  /* Added when /party and /einstein arrived. A stylesheet missing from this
+     list is not merely un-stripped — it also never goes through the selector-
+     order and brace-balance check below, so it is the one file a bad edit
+     could corrupt without the build noticing. Any new stylesheet belongs
+     here on the day it is created. */
+  'assets/css/party.css',
+  'assets/css/einstein.css',
+  'assets/css/synth.css',
 ];
 
 let totalBefore = 0;
@@ -354,7 +362,118 @@ const MUST_EXIST = [
   ['robots.txt', 200, null],
   ['vercel.json', 1000, 'cleanUrls'],
   ['assets/data/search-index.json', 50000, '"pages"'],
+  ['colophon.html', 6000, 'data-colophon'],
 ];
+
+/* --------------------------------------------------------------------------
+   colophon.html — the numbers, counted rather than typed
+   --------------------------------------------------------------------------
+   The prose on that page is hand-written and stays that way. Every FIGURE in
+   it is a <span data-colophon="key"> whose text this rewrites at deploy, for
+   the same reason the search index stopped being a manual step: a page that
+   has to be edited by hand every time a lab is added is a page that is wrong
+   within a week.
+
+   The values committed to the file are the last deploy's, so the page is still
+   correct when nobody has built it — opening the repo copy shows real numbers,
+   not empty placeholders. This is deliberately the last thing the build does
+   to the HTML, after the page count is known.
+   -------------------------------------------------------------------------- */
+
+function countLines(rel) {
+  try { return fs.readFileSync(path.join(ROOT, rel), 'utf8').split('\n').length; }
+  catch (e) { return null; }
+}
+
+function walkFiles(dir, test, acc) {
+  acc = acc || [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name === '.git' || e.name === 'node_modules' || e.name === 'vendor') continue;
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) walkFiles(full, test, acc);
+    else if (test(full)) acc.push(full);
+  }
+  return acc;
+}
+
+function colophonFacts(pages) {
+  const facts = {};
+  facts.pages = String(pages);
+  facts.labs = String(fs.readdirSync(path.join(ROOT, 'labs')).filter((f) => f.endsWith('.html') && f !== 'index.html').length);
+  facts.posts = String(fs.readdirSync(path.join(ROOT, 'blog')).filter((f) => f.endsWith('.html') && f !== 'index.html').length);
+
+  /* Scripts I wrote. assets/js/vendor is skipped by walkFiles, and so is
+     assets/vendor — counting somebody else's runtime as mine would make the
+     one number on this page that is a claim about effort into a lie. */
+  facts.js = String(walkFiles(path.join(ROOT, 'assets/js'), (f) => f.endsWith('.js')).length);
+
+  let deps = 0;
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    deps = Object.keys(pkg.dependencies || {}).length + Object.keys(pkg.devDependencies || {}).length;
+  } catch (e) { deps = 0; }
+  facts.deps = String(deps);
+
+  const kb = (n) => Math.round(n / 1024) + ' KB';
+  facts.cssbefore = kb(totalBefore);
+  facts.cssafter = kb(totalAfter);
+  facts.csspct = (totalBefore ? Math.round(((totalBefore - totalAfter) / totalBefore) * 100) : 0) + '%';
+
+  const readme = countLines('README.md');
+  if (readme) facts.readme = readme.toLocaleString('en-US');
+
+  /* Comment lines across the four stylesheets, counted on the REPOSITORY copy.
+     By the time this runs the files on disk have been stripped, so reading them
+     now would report zero — the count has to come from git's copy. */
+  try {
+    let commentLines = 0;
+    for (const f of CSS_FILES) {
+      const src = execFileSync('git', ['show', 'HEAD:' + f], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      const m = src.match(/\/\*[\s\S]*?\*\//g) || [];
+      commentLines += m.reduce((n, c) => n + c.split('\n').length, 0);
+    }
+    if (commentLines) facts.csscomments = commentLines.toLocaleString('en-US');
+  } catch (e) { /* no git, or the file is not committed yet: keep what is there */ }
+
+  /* A shallow clone only has the commits it fetched, so reporting its count
+     would understate the history badly. Better to leave the committed number
+     than to publish a smaller wrong one — the same call the sitemap makes. */
+  try {
+    const shallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (shallow === 'false') {
+      facts.commits = execFileSync('git', ['rev-list', '--count', 'HEAD'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    }
+  } catch (e) { /* keep the committed value */ }
+
+  facts.updated = new Date().toISOString().slice(0, 10);
+  return facts;
+}
+
+function writeColophon(pages) {
+  const rel = 'colophon.html';
+  const abs = path.join(ROOT, rel);
+  if (!fs.existsSync(abs)) return;
+
+  log('');
+  log('colophon');
+  const facts = colophonFacts(pages);
+  const before = fs.readFileSync(abs, 'utf8');
+  let changed = 0;
+
+  const after = before.replace(
+    /(<span([^>]*\sdata-colophon="([a-z]+)"[^>]*)>)([^<]*)(<\/span>)/g,
+    (all, open, attrs, key, value, close) => {
+      if (!(key in facts) || facts[key] === value) return all;
+      changed += 1;
+      return open + facts[key] + close;
+    }
+  );
+
+  if (!changed) { log('  already current, nothing to write'); return; }
+  if (CHECK) { log('  would update ' + changed + ' figure(s)'); return; }
+  fs.writeFileSync(abs, after);
+  log('  updated ' + changed + ' figure(s)');
+}
 
 function verifyOutput() {
   log('');
@@ -394,6 +513,7 @@ function verifyOutput() {
   }
 
   log('  ' + MUST_EXIST.length + ' critical files present and intact, ' + pages + ' HTML pages');
+  writeColophon(pages);
 }
 
 /* -------------------------------------------------------------------------- */

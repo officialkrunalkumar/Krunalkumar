@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A synth, a 16-step drum machine and a deck for your own track, all in the browser. Nothing is uploaded and every sound but your file is generated."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/synth" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Online Synth &amp; DJ Desk — Play Over Your Own Track" />
+    <meta
+      property="og:description"
+      content="Load a track from your own machine and play over it: a sixteen-step drum machine, one-shot pads and a playable synth, all mixed in the browser. Your file is never uploaded, and every sound but your file is generated rather than sampled."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/synth" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Online Synth &amp; DJ Desk" />
+    <meta
+      name="twitter:description"
+      content="A synth, a drum machine and a deck for your own track, all in the browser. Nothing uploaded."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
+    <title>Online Synth &amp; DJ Desk | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Online Synth & DJ Desk",
+        "url": "https://krunalkumar.dpdns.org/labs/synth",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any browser",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "A synth, a 16-step drum machine and a deck for your own track, all in the browser. Nothing is uploaded and every sound but your file is generated.",
+        "author": { "@type": "Person", "@id": "https://krunalkumar.dpdns.org/#person", "name": "Krunalkumar Shah" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Labs", "item": "https://krunalkumar.dpdns.org/labs" },
+          { "@type": "ListItem", "position": 3, "name": "Synth & DJ desk", "item": "https://krunalkumar.dpdns.org/labs/synth" }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/synth.css" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Synth &amp; DJ desk</li>
+          </ol>
+        </nav>
+        <h1>Synth &amp; DJ desk</h1>
+        <p class="hero-text">
+          Load a track from your own machine, then play over it. A sixteen-step drum machine, eight one-shot
+          pads and a playable synth all run through one mixer, so a pattern you build and a line you play land
+          on top of whatever is on the deck. Every sound but your file is generated here — there are no samples
+          to download and nothing to licence.
+        </p>
+        <ul class="lab-facts">
+          <li>Your file never leaves the browser</li>
+          <li>16-step drum sequencer</li>
+          <li>Playable synth, QWERTY or on-screen</li>
+          <li>Drums synthesised, not sampled</li>
+          <li>Live oscilloscope</li>
+        </ul>
+      </section>
+
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>Every sound here is built in your browser with the Web Audio API, and the track you load is read
+            straight off your own disk. All of that needs JavaScript.</p>
+          <p>Nothing you load is ever uploaded, which is exactly why the work has to happen here rather than on
+            a server.</p>
+          <p>Turn JavaScript on for this site and reload. In the meantime the <a href="/blog">writing</a> and the
+            rest of the <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+
+      <div class="lab lab-tool syn" id="synth">
+        <section class="syn-panel">
+          <h2>Deck</h2>
+          <p class="syn-hint">
+            Drop an audio file here, or choose one. It is read from your disk with an object URL and played
+            through the mixer &mdash; it is never uploaded, and there is nowhere on this site to upload it to.
+          </p>
+          <div class="syn-drop" id="syn-drop">
+            <label class="lab-btn" for="syn-file">Choose a track</label>
+            <input id="syn-file" type="file" accept="audio/*" class="sr-only" />
+            <span class="syn-deck-name" id="syn-deck-name">No track loaded &mdash; drop one here</span>
+          </div>
+          <div class="syn-transport">
+            <button class="lab-btn lab-btn-run" type="button" id="syn-deck-play" disabled>&#9654; Play</button>
+            <button class="lab-btn" type="button" id="syn-loop" aria-pressed="false">Loop</button>
+            <input class="syn-seek" type="range" id="syn-seek" min="0" max="100" step="0.1" value="0"
+                   aria-label="Seek through the track" disabled />
+            <span class="syn-time" id="syn-time">0:00 / 0:00</span>
+          </div>
+        </section>
+
+        <section class="syn-panel">
+          <h2>Drum machine</h2>
+          <p class="syn-hint">
+            Click a cell to switch a hit on. Every fourth column is tinted, so the beat is readable without
+            counting. Space starts and stops it.
+          </p>
+          <div class="syn-grid" id="syn-grid"></div>
+          <div class="syn-controls">
+            <button class="lab-btn lab-btn-run" type="button" id="syn-seq-play" aria-pressed="false">&#9654; Play</button>
+            <button class="lab-btn" type="button" id="syn-clear">Clear</button>
+            <label class="syn-field">
+              <span class="sr-only">Tempo</span>
+              <input class="syn-bpm" type="range" id="syn-bpm" min="70" max="170" step="1" value="120"
+                     aria-label="Tempo in beats per minute" />
+            </label>
+            <span class="syn-bpm-out" id="syn-bpm-out">120 BPM</span>
+          </div>
+        </section>
+
+        <section class="syn-panel">
+          <h2>Pads</h2>
+          <p class="syn-hint">One-shot hits for playing over a track, rather than programming one. Keys 1 to 5.</p>
+          <div class="syn-pads">
+            <button class="syn-pad" type="button" data-drum="kick">Kick<kbd>1</kbd></button>
+            <button class="syn-pad" type="button" data-drum="snare">Snare<kbd>2</kbd></button>
+            <button class="syn-pad" type="button" data-drum="clap">Clap<kbd>3</kbd></button>
+            <button class="syn-pad" type="button" data-drum="hat">Hat<kbd>4</kbd></button>
+            <button class="syn-pad" type="button" data-drum="open">Open hat<kbd>5</kbd></button>
+          </div>
+        </section>
+
+        <section class="syn-panel">
+          <h2>Keys</h2>
+          <p class="syn-hint">
+            Play with the mouse, a finger, or the keyboard: the home row is the white keys and the row above
+            holds the sharps, laid out the way they sit on a piano.
+          </p>
+          <div class="syn-keys">
+            <button class="syn-key" type="button" data-note="C4">A</button>
+            <button class="syn-key" type="button" data-note="D4">S</button>
+            <button class="syn-key" type="button" data-note="E4">D</button>
+            <button class="syn-key" type="button" data-note="F4">F</button>
+            <button class="syn-key" type="button" data-note="G4">G</button>
+            <button class="syn-key" type="button" data-note="A4">H</button>
+            <button class="syn-key" type="button" data-note="B4">J</button>
+            <button class="syn-key" type="button" data-note="C5">K</button>
+            <button class="syn-key" type="button" data-note="D5">L</button>
+            <button class="syn-key syn-key--black" type="button" data-note="C#4" style="left: 7.6%">W</button>
+            <button class="syn-key syn-key--black" type="button" data-note="D#4" style="left: 18.7%">E</button>
+            <button class="syn-key syn-key--black" type="button" data-note="F#4" style="left: 40.9%">T</button>
+            <button class="syn-key syn-key--black" type="button" data-note="G#4" style="left: 52%">Y</button>
+            <button class="syn-key syn-key--black" type="button" data-note="A#4" style="left: 63.1%">U</button>
+            <button class="syn-key syn-key--black" type="button" data-note="C#5" style="left: 85.3%">O</button>
+          </div>
+          <div class="syn-synth-row">
+            <label class="syn-field">
+              Waveform
+              <select class="lab-select" id="syn-wave">
+                <option value="sawtooth">Sawtooth</option>
+                <option value="square">Square</option>
+                <option value="triangle">Triangle</option>
+                <option value="sine">Sine</option>
+              </select>
+            </label>
+            <label class="syn-field">
+              Filter
+              <input type="range" id="syn-cutoff" min="200" max="8000" step="50" value="2600" />
+            </label>
+            <label class="syn-field">
+              Attack
+              <input type="range" id="syn-attack" min="0.005" max="0.6" step="0.005" value="0.02" />
+            </label>
+            <label class="syn-field">
+              Release
+              <input type="range" id="syn-release" min="0.05" max="1.5" step="0.05" value="0.35" />
+            </label>
+          </div>
+        </section>
+
+        <section class="syn-panel">
+          <h2>Mix</h2>
+          <p class="syn-hint">The trace is everything at once &mdash; deck and synth summed, after the compressor.</p>
+          <div class="syn-controls">
+            <button class="lab-btn lab-btn-run" type="button" id="syn-play-all" aria-pressed="false">&#9654; Play everything</button>
+          </div>
+          <canvas class="syn-scope" id="syn-scope" aria-hidden="true"></canvas>
+          <div class="syn-mixer">
+            <label class="syn-field">
+              Deck
+              <input type="range" id="syn-deck-vol" min="0" max="1" step="0.01" value="0.8" />
+            </label>
+            <label class="syn-field">
+              Drums &amp; keys
+              <input type="range" id="syn-synth-vol" min="0" max="1" step="0.01" value="0.9" />
+            </label>
+            <label class="syn-field">
+              Master
+              <input type="range" id="syn-master-vol" min="0" max="1" step="0.01" value="0.9" />
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">How it works</p>
+          <h2>One mixer, three instruments, no server</h2>
+        </div>
+        <p>
+          The deck, the drum machine and the synth all feed a single gain stage, through a compressor, into an
+          analyser and out. That is why the oscilloscope shows one trace rather than three, and why a pattern
+          you program sits underneath a track rather than beside it.
+        </p>
+        <p>
+          Your file is read with an object URL and routed through a <code>MediaElementSource</code>. It is never
+          sent anywhere &mdash; this site is static and has nowhere to send it. The drums are synthesised the
+          same way the ones on <a class="text-link" href="/party">the loud page</a> are: a sine that drops in
+          pitch for the kick, filtered noise for the hats, and three noise bursts nine milliseconds apart for
+          the clap, because one burst is a snare and the smear of repeats is what the ear hears as hands.
+        </p>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://officialkrunalkumar.github.io/status" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <!-- particle-bg.js is deliberately NOT loaded here. It binds bare letters
+         site-wide for the starfield - a, s, w, k, l, p - and five of those are
+         piano keys on this page, so pressing a note would also change the
+         background. The canvas is hidden in synth.css to match. -->
+    <script defer src="/assets/js/labs/synth.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

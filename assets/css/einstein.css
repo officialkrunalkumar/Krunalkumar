@@ -1,0 +1,319 @@
+/* ==========================================================================
+   einstein.css — the lab on /einstein.
+   The third of the scene pages, after buddha.css (still) and party.css (loud).
+   This one is neither: it is a room where somebody is working.
+
+   Like the other two it keeps its own palette in BOTH themes and only lets the
+   site header and footer follow the theme — a laboratory at night does not
+   become a laboratory at noon because a visitor prefers light mode.
+
+   The page is unlisted: noindex, absent from the nav, the footer and the
+   sitemap, and excluded from the search index. It is reached by typing
+   `einstein` in the terminal at /terminal. That is the whole point of it.
+   ========================================================================== */
+
+.einstein {
+  --e-room: #0d1320;
+  --e-room-2: #131c2e;
+  --e-board: #1b2a26;
+  --e-board-edge: #6b4a2a;
+  --e-chalk: #dfe9e4;
+  --e-lamp: #ffd48a;
+  --e-glass: #9fd8e8;
+  --e-liquid-a: #4ade80;
+  --e-liquid-b: #22d3ee;
+  --e-liquid-c: #c084fc;
+  --e-coat: #f1f5f9;
+  --e-skin: #f0c9a4;
+  --e-hair: #e8edf2;
+
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(255, 212, 138, 0.1), transparent 60%),
+    linear-gradient(180deg, var(--e-room) 0%, var(--e-room-2) 100%);
+  color: #e8eef7;
+}
+
+/* The starfield belongs to the rest of the site, not to a room with a ceiling. */
+.einstein #bg-canvas { display: none; }
+
+/* --------------------------------------------------------------------------
+   Layout: the lab on the left, the quote on the right
+   -------------------------------------------------------------------------- */
+
+.e-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  align-items: center;
+  padding: 1.2rem 0 0;
+}
+
+@media (min-width: 900px) {
+  .e-stage {
+    /* The scene is a fixed drawing and the quote is text that reflows, so the
+       scene gets the smaller, steadier share. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 2.4rem;
+    padding: 2rem 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The lab
+   -------------------------------------------------------------------------- */
+
+.e-lab {
+  position: relative;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(70% 50% at 50% 8%, rgba(255, 212, 138, 0.16), transparent 65%),
+    linear-gradient(180deg, #101827 0%, #0b111c 100%);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.e-lab svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The hanging lamp's pool of light. A room lit evenly reads as a diagram; one
+   bright spot and falloff reads as somewhere a person is standing. */
+.e-lamp-glow {
+  transform-origin: 50% 0;
+  animation: e-lamp 7s ease-in-out infinite;
+}
+
+@keyframes e-lamp {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.78; }
+}
+
+/* Chalk does not glow, but a blackboard under a warm lamp does catch it. */
+.e-chalk-glow { animation: e-chalk 9s ease-in-out infinite; }
+
+@keyframes e-chalk {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+/* Hair. Four clumps on slightly different clocks, because Einstein's hair is
+   the single most recognisable thing about him and stiff hair reads as a wig. */
+/* fill-box, not view-box: the origin has to be each clump's own centre. Against
+   the view-box, 50% 100% is the bottom of the whole drawing, and the hair would
+   swing around the bench instead of breathing where it sits. */
+.e-hair-tuft {
+  transform-box: fill-box;
+  transform-origin: 50% 70%;
+  animation: e-tuft 5.5s ease-in-out infinite;
+}
+.e-hair-tuft:nth-of-type(2) { animation-duration: 6.8s; animation-delay: -1.4s; }
+.e-hair-tuft:nth-of-type(3) { animation-duration: 6.1s; animation-delay: -3.2s; }
+.e-hair-tuft:nth-of-type(4) { animation-duration: 7.4s; animation-delay: -2.1s; }
+
+@keyframes e-tuft {
+  0%, 100% { transform: rotate(-1.6deg); }
+  50%      { transform: rotate(1.6deg); }
+}
+
+/* Blink, driven from einstein.js so the interval is never quite regular. */
+/* 59% is eye level in this 430-tall canvas (they sit at y=253). The old 42%
+   squashed the blink around a point up in the blackboard, which made the eyes
+   slide up the face instead of closing. */
+.e-eyes {
+  transform-box: view-box;
+  transform-origin: 50% 59%;
+  transition: transform 90ms ease;
+}
+
+.e-eyes.is-blinking { transform: scaleY(0.12); }
+
+/* Bubbles. Each one is on its own clock and its own path length; a column of
+   evenly spaced bubbles is a barcode, not a liquid. */
+.e-bubble {
+  transform-box: view-box;
+  animation: e-rise 2.6s ease-in infinite;
+  opacity: 0;
+}
+.e-bubble--2 { animation-duration: 3.4s; animation-delay: -0.9s; }
+.e-bubble--3 { animation-duration: 2.1s; animation-delay: -1.6s; }
+.e-bubble--4 { animation-duration: 3.9s; animation-delay: -2.4s; }
+.e-bubble--5 { animation-duration: 2.9s; animation-delay: -0.4s; }
+.e-bubble--6 { animation-duration: 3.2s; animation-delay: -2.9s; }
+
+@keyframes e-rise {
+  0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+  18%  { opacity: 0.9; }
+  85%  { opacity: 0.75; }
+  100% { transform: translateY(-26px) scale(1.15); opacity: 0; }
+}
+
+/* The flask he is holding: a slow swirl of light rather than a pulse, so it
+   reads as liquid moving rather than as an LED. */
+.e-flask-glow { animation: e-swirl 4.2s ease-in-out infinite; }
+
+@keyframes e-swirl {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.95; }
+}
+
+/* --------------------------------------------------------------------------
+   The figure is a button
+   -------------------------------------------------------------------------- */
+
+.e-figure {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.e-figure:focus-visible {
+  outline: 2px solid var(--e-lamp);
+  outline-offset: 4px;
+  border-radius: 22px;
+}
+
+/* The idea landing. One flash of the bulb, then it goes out — a bulb that
+   stayed lit would turn the drawing into a notification. */
+.e-bulb { opacity: 0; }
+.e-figure.is-eureka .e-bulb { animation: e-eureka 1.1s ease-out 1; }
+
+@keyframes e-eureka {
+  0%   { opacity: 0; transform: scale(0.7); }
+  22%  { opacity: 1; transform: scale(1.08); }
+  70%  { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   The quote
+   -------------------------------------------------------------------------- */
+
+.e-quote {
+  padding: 1.9rem 1.9rem 1.7rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 212, 138, 0.26);
+  background: linear-gradient(160deg, rgba(255, 212, 138, 0.08), rgba(19, 28, 46, 0.86));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+}
+
+.e-quote-mark {
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--e-lamp);
+  opacity: 0.55;
+}
+
+.e-quote-text {
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(1.15rem, 1.05rem + 0.7vw, 1.6rem);
+  line-height: 1.5;
+  font-weight: 600;
+  color: #f8fafc;
+  /* Long quotes and short quotes should not move the button up and down the
+     page every time somebody presses it. */
+  min-height: 7.5em;
+}
+
+@media (min-width: 900px) {
+  .e-quote-text { min-height: 6em; }
+}
+
+.e-quote-source {
+  display: block;
+  margin: 0 0 1.4rem;
+  font-size: 0.92rem;
+  color: #c8b48d;
+}
+
+.e-quote-source em { font-style: italic; }
+
+/* A quote arriving should be visible without being a performance. */
+.e-quote.is-fresh .e-quote-text,
+.e-quote.is-fresh .e-quote-source { animation: e-fade 460ms ease-out 1; }
+
+@keyframes e-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.e-another {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 212, 138, 0.5);
+  background: rgba(255, 212, 138, 0.12);
+  color: #ffe6b8;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.94rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.e-another:hover {
+  background: rgba(255, 212, 138, 0.22);
+  border-color: var(--e-lamp);
+  transform: translateY(-1px);
+}
+
+.e-another:focus-visible { outline: 2px solid var(--e-lamp); outline-offset: 3px; }
+
+/* --------------------------------------------------------------------------
+   The note about fakes — the reason this page is worth having
+   -------------------------------------------------------------------------- */
+
+.e-note {
+  margin: 1.8rem auto 0;
+  max-width: 68ch;
+  padding: 1.4rem 1.6rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(13, 19, 32, 0.72);
+  color: #c3cdda;
+  font-size: 0.96rem;
+}
+
+.e-note h2 { margin: 0 0 0.7rem; font-size: 1.15rem; color: #f1f5f9; }
+.e-note p { margin: 0 0 0.75rem; }
+.e-note p:last-child { margin-bottom: 0; }
+.e-note ul { margin: 0.5rem 0 0.9rem; padding-left: 1.2rem; }
+.e-note li { margin: 0.3rem 0; }
+.e-note .e-fake { color: #f0a4a4; font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   Reduced motion: the lab stops working, the room stays lit.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .e-lamp-glow,
+  .e-chalk-glow,
+  .e-hair-tuft,
+  .e-bubble,
+  .e-flask-glow,
+  .e-quote.is-fresh .e-quote-text,
+  .e-quote.is-fresh .e-quote-source {
+    animation: none;
+  }
+  /* Bubbles are drawn at rest rather than hidden — an empty flask on a lab
+     bench looks like a mistake, a still one looks like it is settling. */
+  .e-bubble { opacity: 0.6; }
+  .e-figure.is-eureka .e-bulb { animation: none; }
+  .e-another:hover { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Light theme: chrome only, exactly as the other two scenes do it.
+   -------------------------------------------------------------------------- */
+
+:root[data-theme="light"] .einstein .site-header,
+:root[data-theme="light"] .einstein footer {
+  background: rgb(255 255 255 / 0.9);
+}

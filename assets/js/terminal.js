@@ -137,6 +137,30 @@
   // Documents the background controls that live on every other page. Unlisted
   // in help, like forkbomb — the console hint on those pages points here, and
   // finding it is the point.
+  /* Unlisted, like forkbomb and magic. The page it points at is noindex and
+     appears in no menu, so this command is the only door to it. */
+  function cmdEinstein() {
+    print('EINSTEIN(1)                    Unlisted Pages                   EINSTEIN(1)', 'dim');
+    print('');
+    print('<span class="white">NAME</span>');
+    print('     a laboratory, a blackboard, and a man who did say some of it');
+    print('');
+    print('<span class="white">LOCATION</span>');
+    print('     <a href="/einstein">/einstein</a>');
+    print('');
+    print('<span class="white">DESCRIPTION</span>');
+    print('     Fourteen quotations, one at a time, each tied to the letter,');
+    print('     interview or essay it came from. Tap him for another.');
+    print('');
+    print('     The citations are the point. Einstein is the most misattributed');
+    print('     person on the internet, and the page names four famous lines he');
+    print('     never said &mdash; including the fish that cannot climb a tree.');
+    print('');
+    print('<span class="white">SEE ALSO</span>');
+    print('     <a href="/buddha">/buddha</a>, which cites every verse for the same reason.');
+    print('     <span class="cyan">magic</span>, for the rest of what is hiding.');
+  }
+
   function cmdMagic() {
     print('MAGIC(1)                    Background Controls                    MAGIC(1)', 'dim');
     print('');
@@ -260,6 +284,7 @@
       done();
     },
     magic: function (a, done) { cmdMagic(); done(); },
+    einstein: function (a, done) { cmdEinstein(); done(); },
     forkbomb: function (a, done) { forkBomb(done); },
     hack: function (a, done) { cmdHack(done); },
     sudo: function (a, done) {

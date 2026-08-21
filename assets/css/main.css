@@ -1127,6 +1127,54 @@ main [id] {
 }
 
 /* --------------------------------------------------------------------------
+   Colophon figures
+   --------------------------------------------------------------------------
+   Every number in these tiles is rewritten by scripts/build.js at deploy from
+   a data-colophon attribute, so the page counts itself rather than being kept
+   up to date by hand. auto-fit rather than a fixed column count: the tile set
+   grows whenever there is another fact worth counting, and a hard-coded grid
+   would need editing every time that happened — which is the exact habit this
+   page exists to avoid.
+   -------------------------------------------------------------------------- */
+
+.colo-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 1rem;
+  margin: 1.4rem 0 0;
+}
+
+.colo-stats--wide { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+
+.colo-stat {
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.2);
+  background: rgb(var(--sheet-rgb) / 0.5);
+}
+
+.colo-num {
+  display: block;
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+.colo-label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.86rem;
+  color: var(--ink-3);
+}
+
+.colo-updated {
+  margin: 1rem 0 0;
+  font-size: 0.86rem;
+  color: var(--ink-4);
+}
+
+/* --------------------------------------------------------------------------
    Homepage proof band
    --------------------------------------------------------------------------
    Nine cards ship in the markup; proof-band.js rewrites them from a
