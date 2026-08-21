@@ -45,6 +45,7 @@
   var warm = null;        // the shared low-pass every voice is mixed into
   var send = null;        // reverb send, tapped off warm
   var drone = [];
+  var droneTones = [];
   var bowlTimer = null;
   var suspendTimer = null;
   var playing = false;
@@ -155,7 +156,12 @@
        The two near-55Hz oscillators are 0.13 Hz apart, which beats once every
        7.7 seconds. That slow swell is deliberate: it keeps the floor moving
        without anything audibly modulating. */
-    [55, 55.13, 110].forEach(function (f, i) {
+    /* Kept in droneTones as well as drone so a track change can retune them.
+       They are started once and never replaced: sliding the tonic under a
+       listener is the calm way to change key, and stopping and restarting the
+       bed would put a hole in the sound exactly where the change happens. */
+    droneTones = [];
+    track.drone.forEach(function (f, i) {
       var o = ctx.createOscillator();
       o.type = 'sine';
       o.frequency.value = f;
@@ -164,6 +170,7 @@
       o.connect(g); g.connect(warm);
       o.start();
       drone.push(o);
+      droneTones.push(o);
     });
 
     // A very slow swell across the whole bed, on the page's own breathing
@@ -241,9 +248,73 @@
      with a little drift, so two minutes in it is still not a pattern.
      ------------------------------------------------------------------ */
 
-  // Pa Sa Sa Sa: the standard tuning, tonic A. The low Sa last is what gives
-  // the cycle its rocking, settling feel rather than a flat pulse.
-  var TANPURA = [164.81, 220.0, 220.0, 110.0];
+  /* ---------------------------------------------------------------------
+     Four settings, cycled with T
+     ---------------------------------------------------------------------
+     Every one of these is a real raga with a time of day attached to it, which
+     is not decoration: in Hindustani practice a raga belongs to an hour, and
+     the reason they sound the way they do is that they were shaped to suit it.
+     Bhairavi is a dawn raga, Yaman and Bhupali are evening ragas, and the last
+     setting is not a raga at all but a sustained Om over a lower tonic.
+
+     Pa Sa Sa Sa is the standard tanpura tuning. The low Sa last is what gives
+     the cycle its rocking, settling feel rather than a flat pulse, so every
+     setting keeps that shape and only moves the pitches.
+
+     What changes per track: the drone tuning, the tanpura, the scale the flute
+     draws from, the bowl set, and — the part that matters most for calm — the
+     pacing. A faster raga is not a louder one here; it is one where the
+     silences are shorter. --------------------------------------------- */
+  var TRACKS = [
+    {
+      name: 'Bhairavi at dawn',
+      drone: [55, 55.13, 110],
+      tanpura: [164.81, 220.0, 220.0, 110.0],
+      // S r g P d — the flat second is the whole character of the raga
+      raga: [220.0, 233.08, 261.63, 293.66, 329.63, 349.23, 392.0, 440.0],
+      bowls: [196.0, 220.0, 261.63, 293.66, 329.63],
+      flute: { wait: [7000, 11000], notes: [2, 3], dur: [1.6, 1.9] },
+      bowl: [26000, 34000]
+    },
+    {
+      name: 'Yaman at dusk',
+      drone: [55, 55.13, 110],
+      tanpura: [164.81, 220.0, 220.0, 110.0],
+      // S R G M# P D N — everything natural but the sharpened fourth, which is
+      // the note that makes Yaman sound like the light going
+      raga: [220.0, 246.94, 277.18, 311.13, 329.63, 369.99, 415.30, 440.0],
+      bowls: [220.0, 246.94, 277.18, 329.63, 369.99],
+      flute: { wait: [9000, 14000], notes: [2, 4], dur: [2.1, 2.2] },
+      bowl: [30000, 38000]
+    },
+    {
+      name: 'Bhupali, evening',
+      drone: [55, 55.13, 110],
+      tanpura: [164.81, 220.0, 220.0, 110.0],
+      // Five notes only, S R G P D. Nothing in a pentatonic can clash with
+      // anything else in it, which is why this is the most restful of the four.
+      raga: [220.0, 246.94, 277.18, 329.63, 369.99, 440.0, 493.88],
+      bowls: [220.0, 246.94, 277.18, 329.63, 369.99],
+      flute: { wait: [11000, 16000], notes: [2, 3], dur: [2.4, 2.4] },
+      bowl: [20000, 26000]
+    },
+    {
+      /* No flute at all. A melody, however sparse, is something to follow, and
+         this setting is for not following anything: a lower tonic, a voice on
+         the drone, and bowls closer together. */
+      name: 'Om, sustained',
+      drone: [49, 49.13, 98],
+      tanpura: [146.83, 196.0, 196.0, 98.0],
+      raga: null,
+      bowls: [196.0, 220.0, 246.94, 293.66, 329.63],
+      flute: null,
+      bowl: [14000, 19000],
+      chant: { wait: [15000, 21000], freq: 98.0, dur: [6.5, 3.5] }
+    }
+  ];
+
+  var trackIndex = 0;
+  var track = TRACKS[0];
   var tanpuraStep = 0;
   var tanpuraTimer = null;
 
@@ -280,9 +351,10 @@
     var wait = 1500 + Math.random() * 260;
     tanpuraTimer = window.setTimeout(function () {
       if (playing && ctx && ctx.state === 'running') {
-        var f = TANPURA[tanpuraStep % TANPURA.length];
+        var seq = track.tanpura;
+        var f = seq[tanpuraStep % seq.length];
         // The low Sa is plucked a little harder, as a player would.
-        var level = (tanpuraStep % TANPURA.length === 3) ? 0.16 : 0.12;
+        var level = (tanpuraStep % seq.length === 3) ? 0.16 : 0.12;
         pluck(f, ctx.currentTime + 0.02, level * (0.9 + Math.random() * 0.2));
         tanpuraStep++;
       }
@@ -318,8 +390,8 @@
     });
   }
 
-  // Notes from a pentatonic set, so any two strikes that overlap still agree.
-  var BOWLS = [196.0, 220.0, 261.63, 293.66, 329.63];
+  // Bowl sets live on the tracks above; each is a pentatonic subset of its own
+  // raga, so any two strikes that overlap still agree.
 
   /* ---------------------------------------------------------------------
      The flute
@@ -335,8 +407,6 @@
      sounds typed; a note slid into sounds played.
      ------------------------------------------------------------------ */
 
-  // Bhairavi-flavoured, over the A drone: S r g P d.
-  var RAGA = [220.0, 233.08, 261.63, 293.66, 329.63, 349.23, 392.0, 440.0];
   var lastNote = null;
   var noiseBuf = null;
 
@@ -411,20 +481,26 @@
   function schedulePhrase() {
     // long silences on purpose: this sits under a page for reading, not a
     // performance, and a flute that never stops becomes wallpaper
-    var wait = 7000 + Math.random() * 11000;
+    var f = track.flute;
+    var wait = f ? f.wait[0] + Math.random() * f.wait[1] : 8000;
     fluteTimer = window.setTimeout(function () {
-      if (playing && ctx && ctx.state === 'running') {
+      // A track with no scale has no flute. The timer keeps turning over so
+      // that switching back to one that does needs no restarting.
+      var cfg = track.flute, scale = track.raga;
+      if (cfg && scale && playing && ctx && ctx.state === 'running') {
         var t = ctx.currentTime + 0.1;
-        var notes = 2 + Math.floor(Math.random() * 3);      // short phrases
+        var notes = cfg.notes[0] + Math.floor(Math.random() * cfg.notes[1]);
         for (var i = 0; i < notes; i++) {
           // step mostly by neighbours, so the line wanders rather than leaps
           var idx = lastNote === null
             ? 2 + Math.floor(Math.random() * 3)
-            : Math.max(0, Math.min(RAGA.length - 1,
+            : Math.max(0, Math.min(scale.length - 1,
                 lastNote + (Math.random() < 0.5 ? -1 : 1) * (Math.random() < 0.75 ? 1 : 2)));
-          var dur = 1.6 + Math.random() * 1.9;
-          var slide = (lastNote !== null && Math.random() < 0.55) ? RAGA[lastNote] : null;
-          flute(RAGA[idx], t, dur, slide);
+          idx = Math.min(idx, scale.length - 1);
+          var dur = cfg.dur[0] + Math.random() * cfg.dur[1];
+          var slide = (lastNote !== null && scale[lastNote] !== undefined && Math.random() < 0.55)
+            ? scale[lastNote] : null;
+          flute(scale[idx], t, dur, slide);
           lastNote = idx;
           t += dur * (0.72 + Math.random() * 0.4);
         }
@@ -433,12 +509,65 @@
     }, wait);
   }
 
+  /* The voice on the Om setting. A sawtooth is a buzz; three bandpass filters
+     at the formants of an "O" are what make the ear hear a throat instead of
+     an oscillator. Slow in, held, slow out — the shape of a sung breath. */
+  function chant(freq, when, dur) {
+    var o = ctx.createOscillator();
+    o.type = 'sawtooth';
+    o.frequency.value = freq;
+
+    var mix = ctx.createGain();
+    [[430, 1.0, 7], [820, 0.5, 9], [2600, 0.12, 13]].forEach(function (fm) {
+      var bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = fm[0];
+      bp.Q.value = fm[2];
+      var g = ctx.createGain();
+      g.gain.value = fm[1];
+      o.connect(bp); bp.connect(g); g.connect(mix);
+    });
+
+    // A little movement, or it sits dead still and sounds synthetic.
+    var vib = ctx.createOscillator();
+    var vibDepth = ctx.createGain();
+    vib.frequency.value = 3.4;
+    vibDepth.gain.value = freq * 0.006;
+    vib.connect(vibDepth); vibDepth.connect(o.frequency);
+
+    var env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, when);
+    env.gain.exponentialRampToValueAtTime(0.15, when + dur * 0.38);
+    env.gain.setValueAtTime(0.15, when + dur * 0.62);
+    env.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+
+    mix.connect(env); env.connect(warm); env.connect(send);
+    o.start(when); o.stop(when + dur + 0.1);
+    vib.start(when); vib.stop(when + dur + 0.1);
+  }
+
+  var chantTimer = null;
+
+  function scheduleChant() {
+    var c = track.chant;
+    var wait = c ? c.wait[0] + Math.random() * c.wait[1] : 12000;
+    chantTimer = window.setTimeout(function () {
+      var cfg = track.chant;
+      if (cfg && playing && ctx && ctx.state === 'running') {
+        chant(cfg.freq, ctx.currentTime + 0.05, cfg.dur[0] + Math.random() * cfg.dur[1]);
+      }
+      scheduleChant();
+    }, wait);
+  }
+
 
   function scheduleBowl() {
-    var wait = 26000 + Math.random() * 34000;      // 26–60s: punctuation, not the tune
+    // punctuation, not the tune — the spacing comes from the track
+    var wait = track.bowl[0] + Math.random() * track.bowl[1];
     bowlTimer = window.setTimeout(function () {
       if (playing && ctx && ctx.state === 'running') {
-        strike(BOWLS[Math.floor(Math.random() * BOWLS.length)], ctx.currentTime + 0.05, 0.5);
+        var set = track.bowls;
+        strike(set[Math.floor(Math.random() * set.length)], ctx.currentTime + 0.05, 0.5);
       }
       scheduleBowl();
     }, wait);
@@ -461,12 +590,13 @@
     if (!bowlTimer) scheduleBowl();
     if (!fluteTimer) schedulePhrase();
     if (!tanpuraTimer) scheduleTanpura();
+    if (!chantTimer) scheduleChant();
     // First pluck immediately, so the drone is present from the first second
     // rather than arriving a beat and a half after the button.
-    pluck(TANPURA[3], ctx.currentTime + 0.03, 0.16);
+    pluck(track.tanpura[3], ctx.currentTime + 0.03, 0.16);
     tanpuraStep = 1;
     // one bowl now, so pressing the button clearly does something
-    strike(BOWLS[2], ctx.currentTime + 0.15, 0.45);
+    strike(track.bowls[2], ctx.currentTime + 0.15, 0.45);
     sync();
   }
 
@@ -482,6 +612,74 @@
     sync();
   }
 
+
+  /* ---------------------------------------------------------------------
+     Changing the setting
+     ------------------------------------------------------------------ */
+
+  function announceTrack(quiet) {
+    document.dispatchEvent(new CustomEvent('buddha:track', {
+      detail: { name: track.name, index: trackIndex, total: TRACKS.length, quiet: !!quiet }
+    }));
+  }
+
+  function setTrack(i) {
+    trackIndex = ((i % TRACKS.length) + TRACKS.length) % TRACKS.length;
+    track = TRACKS[trackIndex];
+    lastNote = null;
+    tanpuraStep = 0;
+
+    /* Slide the tonic rather than jumping it. Two seconds is long enough that
+       the ear follows the drone down instead of noticing a cut, which is the
+       whole point of changing anything on this page gently. */
+    if (ctx && droneTones.length === track.drone.length) {
+      droneTones.forEach(function (o, n) {
+        o.frequency.setTargetAtTime(track.drone[n], ctx.currentTime, 0.8);
+      });
+    }
+    /* One bowl from the new set, so the change is audible immediately even in
+       the long gap before the next phrase. */
+    if (playing && ctx && ctx.state === 'running') {
+      strike(track.bowls[Math.floor(Math.random() * track.bowls.length)], ctx.currentTime + 0.05, 0.4);
+    }
+    announceTrack();
+  }
+
+  /* T, the same key as the loud page, so the two scenes are learned once. Not
+     m — buddha.js already binds that to the breath words. WCAG 2.1.4 is why
+     this is guarded rather than a bare keydown: a single-character shortcut
+     must never fire while somebody is typing. */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 't' && e.key !== 'T') return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || ''))) return;
+    e.preventDefault();
+    setTrack(trackIndex + 1);
+  });
+
+  /* The toast and the live region. Kept here rather than in buddha.js because
+     the setting is this file's business, and because the page's existing
+     .b-announce belongs to the verses — writing tracks into it would interrupt
+     somebody mid-verse. */
+  var trackToast = document.querySelector('.b-toast');
+  var trackSay = document.querySelector('.b-track-announce');
+  var toastTimer = null;
+
+  document.addEventListener('buddha:track', function (ev) {
+    var d = ev.detail || {};
+    if (d.quiet) return;
+    if (trackToast) {
+      trackToast.textContent = d.name;
+      trackToast.classList.add('is-shown');
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(function () {
+        trackToast.classList.remove('is-shown');
+      }, 2800);
+    }
+    if (trackSay) trackSay.textContent = 'Setting ' + (d.index + 1) + ' of ' + d.total + ': ' + d.name;
+  });
+
   /* Nothing should outlive the page. pagehide covers closing the tab,
      navigating away, and being put into the back/forward cache — where a
      merely-muted context would still be sitting there, ready to be heard
@@ -492,10 +690,11 @@
     window.clearTimeout(bowlTimer); bowlTimer = null;
     window.clearTimeout(fluteTimer); fluteTimer = null;
     window.clearTimeout(tanpuraTimer); tanpuraTimer = null;
+    window.clearTimeout(chantTimer); chantTimer = null;
     window.clearTimeout(suspendTimer);
     if (ctx) {
       try { ctx.close(); } catch (e) {}
-      ctx = null; master = null; warm = null; send = null; drone = [];
+      ctx = null; master = null; warm = null; send = null; drone = []; droneTones = [];
     }
     /* The controls have to be told, or a page restored from the bfcache comes
        back with a lit speaker and aria-pressed="true" over a context that was

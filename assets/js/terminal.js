@@ -161,6 +161,11 @@
     print('     time with him. Press it again and they withdraw. Nothing is saved,');
     print('     and a reload puts them away.');
     print('');
+    print('     Press <span class="cyan">t</span> there too: the raga changes. Bhairavi at dawn,');
+    print('     Yaman at dusk, Bhupali, and a sustained Om with no flute at all —');
+    print('     four settings, each a real raga with an hour attached to it. The');
+    print('     drone slides to the new tonic rather than cutting.');
+    print('');
     print('     On <a href="/party">the loud page</a>, press <span class="cyan">t</span>. The record');
     print('     changes &mdash; four of them, each with its own tempo, key and drum');
     print('     pattern, all built in the browser rather than downloaded. Nothing');

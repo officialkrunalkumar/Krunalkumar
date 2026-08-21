@@ -612,6 +612,13 @@ large luminance step, and `prefers-reduced-motion` stops the room entirely.
 
 ## A still place (`/buddha`)
 
+The generated sound has **four settings, cycled with `T`** — the same key as `/party`, so the pair
+is learned once. Bhairavi at dawn, Yaman at dusk, Bhupali in the evening, and a sustained Om that
+drops the flute entirely for a lower tonic and a formant-synth voice. Each track carries its own
+drone tuning, tanpura, scale, bowl set and — the part that matters most for calm — its own pacing;
+a slower setting is one where the silences are longer, not one that is quieter. Changing setting
+slides the drone to the new tonic rather than cutting, and `m` still belongs to the breath words.
+
 A quiet page, deliberately unlike the rest of the site.
 
 **The verses.** 684 of them, in `assets/js/buddha.js`, one picked at random on load

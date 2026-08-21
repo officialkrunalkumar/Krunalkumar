@@ -164,8 +164,56 @@ breath.
   hands twinkles, and every nine seconds he opens his eyes and grins for a second
   and a half.
 - **Tapping him** changes the verse, with a bounce and a burst of sparkles.
+- **The sound is synthesised, never a file.** There is no audio behind this page
+  to download or licence: a tanpura cycling Pa-Sa-Sa-Sa, a sustained sub, an
+  inharmonic singing bowl and a bansuri-like flute are all computed in the
+  browser with the Web Audio API. Nothing plays until the speaker button is
+  pressed, and the choice is remembered.
+- **Four settings, cycled with the T key.** Bhairavi at dawn, Yaman at dusk,
+  Bhupali in the evening, and a sustained Om that drops the flute entirely for a
+  lower tonic and a formant-synthesised voice. Each is a real raga with a time of
+  day attached to it, and each carries its own drone tuning, tanpura, scale, bowl
+  set and pacing — a slower setting is one whose silences are longer, not one
+  that is quieter. Changing setting slides the drone to the new tonic rather than
+  cutting. Pressing `m` toggles the breath words, unchanged.
 - **Fullscreen mode** hands the entire screen to the scene.
 - Nothing is collected, counted or stored. There is no sign-up.
+
+## A loud place (/party)
+
+The counterpart to the still place, and built to the same rules: a dance bar
+that runs entirely in the browser.
+
+- **Nothing is downloaded.** The dancers, the waiters, the guests at the tables
+  and the DJ are inline SVG; the light beams, the mirror ball and its rotating
+  rainbow cast are CSS gradients; the music is computed with the Web Audio API.
+  There is no audio file to buffer and no track to licence.
+- **The room** is a floor with six dancers — two pairs drawn in profile so they
+  face each other — a DJ working both platters from behind the decks, PA stacks
+  flanking the booth, and two tables in the front corners with four seated guests
+  and two waiters carrying trays.
+- **Four tracks, cycled with the T key**, the same shortcut as the still page:
+  Midnight House (124 BPM), Neon Funk (112), Sunrise Trance (138) and Garage Skip
+  (130). Each has its own key, chord movement, drum pattern, bass rhythm, lead
+  motif and lead waveform.
+- **It is an arrangement, not a loop.** Each track runs a thirty-two bar
+  structure — intro, the bass entering, the full groove, a breakdown with the
+  drums pulled out, a riser and snare roll, then the drop — because a four-bar
+  loop is what makes generated music sound generated.
+- **The kit** is a sine kick that pitch-drops from 160 Hz to 47, a three-burst
+  noise clap, closed and open hats, a shaker, a resonant sawtooth bass with a
+  sine sub beneath it, three detuned sawtooths for the chord stab, a filtered
+  lead and a noise riser.
+- **Nothing plays until the visitor presses the button.** Browsers require a
+  gesture before audio, and the choice is remembered like the still page's.
+- **Photosensitivity is treated as a hard constraint.** Every light pulse is
+  locked to the beat, so at 124 BPM that is 2.07 flashes a second — below the
+  three-per-second ceiling in WCAG 2.3.1 — and the lights physically cannot
+  outrun the music. No full-area flash swings a large luminance step, and under
+  `prefers-reduced-motion` the room holds still and nothing flashes at all.
+- **The controls withdraw** when nothing has happened for a few seconds, and come
+  back on any pointer, touch or keyboard activity. There is a fullscreen mode.
+- Nothing is collected, counted or stored.
 
 ## Peer-to-peer chat (/labs/chat)
 
