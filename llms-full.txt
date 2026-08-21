@@ -142,7 +142,7 @@ A contemplative page, deliberately unlike the rest of the site: an illustrated
 Buddha sitting cross-legged on a lotus, a verse from the Pali Canon, and a guided
 breath.
 
-- **695 verses**, one chosen at random on load and again on every tap, never the
+- **684 verses**, one chosen at random on load and again on every tap, never the
   same twice in a row. Sources: Dhammapada (30), Samyutta Nikaya, Anguttara
   Nikaya, Majjhima Nikaya, Itivuttaka, Udana, Sutta Nipata, Theragatha,
   Therigatha, Karaniya Metta Sutta.
@@ -165,7 +165,8 @@ breath.
 
 ## Peer-to-peer chat (/labs/chat)
 
-The only lab on the site that opens a network connection. Every other tool runs
+One of only two labs that opens a network connection — the browser-leak page
+below makes a STUN request for the same WebRTC reason. Every other tool runs
 entirely inside the tab with no requests of any kind; this one connects two
 browsers directly to each other, and says so prominently before anything else.
 
@@ -248,7 +249,7 @@ They read real container and dump formats rather than guessing.
 
 ## Interactive visualisers
 
-Thirteen visualisers at /labs/<name>. Where the tools are request/response, these
+Twelve visualisers at /labs/<name>. Where the tools are request/response, these
 run live: a canvas, a simulation, an algorithm stepped one frame at a time. Many
 share a chassis (assets/js/labs/viz/multi-shell.js) giving tabs, a transport
 (reset/back/play/step/end), a speed control and a compare table. Every algorithmic
@@ -272,10 +273,24 @@ All run entirely client-side.
 
 The rest of Labs. Real language runtimes compiled to WebAssembly and vendored
 locally (no CDN), full operating systems under x86 emulation, and a deliberately
-vulnerable XSS playground.
+vulnerable XSS playground. Every playground below is a genuine compiler or
+interpreter, not a sandbox that fakes output; the size given is the first-run
+download, cached after that. They are listed by the year each language first
+appeared, which is the order the picker and the hub use.
 
-- Language playgrounds at /labs/<name>: c, cpp, python, javascript, typescript, php, ruby, perl, lua, sql (SQLite), postgres (PGlite). Each is a genuine compiler or interpreter running in the browser via WebAssembly, with stdin support where relevant — not a sandbox that fakes output.
+- /labs/c — C playground. Real clang compiled to WebAssembly and linked with lld, so structs, pointers, malloc and scanf behave as they do natively. The Input panel is wired to stdin. ~58 MB.
+- /labs/sql — SQL playground. A real SQLite engine compiled to WebAssembly (sql.js). CREATE, INSERT and SELECT against an in-memory database, with results rendered as a table. ~700 KB.
+- /labs/cpp — C++ playground. The same clang toolchain as the C lab, with libc++ — vector, string, map, algorithm and templates all compile, and stdin works. ~58 MB.
+- /labs/perl — Perl playground. Real Perl 5 compiled to WebAssembly (WebPerl), including the regular expression engine that made the language famous. ~16 MB.
+- /labs/python — Python playground. Genuine CPython compiled to WebAssembly (Pyodide), with the standard library and an input() that reads the Input panel. pip install is not available. ~12 MB.
+- /labs/lua — Lua playground. Real Lua 5.4 compiled to WebAssembly (Wasmoon) — tables, metatables, coroutines and io.read. At ~420 KB it starts almost instantly.
+- /labs/php — PHP playground. Real PHP 8.4 compiled to WebAssembly, with enums, match, readonly properties and the full array library. The opening <?php tag is added for you if you leave it out. ~14 MB.
+- /labs/javascript — JavaScript playground. The browser's own JS engine, in a Web Worker, so there is nothing at all to download; whatever is typed in the Input panel arrives as stdin. 0 KB.
+- /labs/ruby — Ruby playground. Real CRuby from the Ruby core team compiled to WebAssembly (ruby.wasm) — blocks, mixins and enumerables. ~17 MB.
+- /labs/postgres — PostgreSQL playground. The actual PostgreSQL server compiled to WebAssembly (PGlite), not a Postgres-compatible reimplementation, so the dialect, the types and the error messages match a real install. Window functions, CTEs and JSONB. ~17 MB.
+- /labs/typescript — TypeScript playground. The official tsc compiler doing real type checking, with type errors reported before anything executes; the emitted JavaScript then runs on the browser's own JS engine, reading the Input panel through stdin. ~9 MB.
 - OS terminals: /labs/linux, /labs/dos (FreeDOS) and /labs/bsd (OpenBSD), each a real operating system booted under x86 emulation (v86) in the tab.
+- /labs/leak — What your browser leaks. The public and local IP addresses any page can read out of WebRTC without a permission prompt, plus graphics card, time zone, CPU cores and a canvas fingerprint that survives clearing cookies, each with what it gives away and what can be done about it. Everything is computed in the tab with one exception the page states in print: reading the public IP means asking a public STUN server — Google's and Cloudflare's are both listed — which is a real request.
 - /labs/api — HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
 - /labs/typing — Typing speed test. WPM and accuracy over configurable text, entirely offline.
 - /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks (reflected and stored XSS against a deliberately vulnerable guestbook), with its own strict CSP isolating it from the rest of the site. For learning the offensive side in a place where breaking things is the point.

@@ -114,26 +114,64 @@
     return Math.round(value) + ' ' + units[i][0] + (Math.round(value) === 1 ? '' : 's');
   }
 
-  function analyse(pw) {
+  /* `generated` is supplied only by generate(), as { bits, how }.
+
+     It is the difference between knowing and guessing. For anything typed in,
+     entropy has to be inferred from the characters, because how the password
+     was chosen is unknowable — that is what charsetSize() and findPatterns()
+     are for, and they stay in charge of that case. For something this page just
+     generated, the entropy is known exactly: it is a property of the draw, not
+     of the spelling. Measuring the characters instead is what let six random
+     words read as 226 bits.
+
+     Nothing else calls analyse() with a second argument, so every other caller
+     keeps the behaviour it had. Editing a generated value fires the input
+     handler with one argument, which correctly drops back to inference. */
+  function analyse(pw, generated) {
     out.clear();
     if (!pw) { out.warn('Type a password to analyse. It is never sent anywhere.'); return; }
 
+    // Called with one argument by the Analyse button, by Ctrl+Enter and by the
+    // input listener. If the field still holds exactly what generate() made,
+    // the provenance is still known and must not be re-guessed from spelling.
+    if (!generated && lastGenerated && lastGenerated.value === pw) {
+      generated = lastGenerated;
+    }
+
     var size = charsetSize(pw);
-    var bits = pw.length * (Math.log(size) / Math.LN2);
-    var issues = findPatterns(pw);
-    // Each recognised pattern removes roughly the work a cracker skips, and a
-    // password that is a wordlist entry plus a suffix is capped outright.
-    var ceiling = structuralCeiling(pw);
-    var effective = Math.max(4, Math.min(bits - issues.length * 8, ceiling));
+    var issues = generated ? [] : findPatterns(pw);
+    var bits, effective, ceiling;
+
+    if (generated) {
+      bits = effective = generated.bits;
+      ceiling = Infinity;
+    } else {
+      bits = pw.length * (Math.log(size) / Math.LN2);
+      // Each recognised pattern removes roughly the work a cracker skips, and a
+      // password that is a wordlist entry plus a suffix is capped outright.
+      ceiling = structuralCeiling(pw);
+      effective = Math.max(4, Math.min(bits - issues.length * 8, ceiling));
+    }
 
     out.heading('Composition');
     out.row('length', pw.length + ' characters');
-    out.row('character set', size + ' possible symbols per position');
-    out.row('raw entropy', bits.toFixed(1) + ' bits');
-    if (issues.length) {
-      out.row('effective entropy', effective.toFixed(1) + ' bits', 't-warn');
+    if (generated) {
+      out.row('drawn as', generated.how);
+      out.row('entropy', bits.toFixed(1) + ' bits', 't-ok');
+      if (generated.kind === 'passphrase') {
+        out.dim('Measured from the draw, not from the spelling — the words being');
+        out.dim('dictionary words costs nothing when each one was chosen at random.');
+      } else {
+        // "the words being dictionary words" is meaningless for a random
+        // character string, and symbols is the default mode.
+        out.dim('Measured from the draw, not from the spelling — every position');
+        out.dim('was chosen independently, so length times alphabet size is exact.');
+      }
     } else {
-      out.row('effective entropy', effective.toFixed(1) + ' bits', 't-ok');
+      out.row('character set', size + ' possible symbols per position');
+      out.row('raw entropy', bits.toFixed(1) + ' bits');
+      out.row('effective entropy', effective.toFixed(1) + ' bits',
+              issues.length ? 't-warn' : 't-ok');
     }
 
     out.rule();
@@ -163,6 +201,22 @@
       out.dim('Raw entropy assumes an attacker guesses blindly. They do not —');
       out.dim('they run wordlists and rule sets first, and every pattern above');
       out.dim('is one those rules already cover.');
+    } else if (generated) {
+      out.ok('Chosen at random by this page, so there is no pattern to find.');
+      if (generated.kind === 'passphrase') {
+        // Saying "nothing matched a wordlist" would be false here — the words
+        // ARE wordlist entries. The point is that it does not matter.
+        out.dim('An attacker who knows the exact list and the exact method still');
+        out.dim('faces every combination of it, which is what the figure above');
+        out.dim('counts. Secrecy of the wordlist is not what makes this strong.');
+      } else {
+        // The character modes draw from an alphabet, not a wordlist, so the
+        // wordlist wording above would be nonsense. symbols is the default
+        // mode, so this is what most visitors see first.
+        out.dim('Every character was drawn independently from the full alphabet,');
+        out.dim('so there is no word, date or keyboard run for a rule set to');
+        out.dim('exploit — the figure above is the whole search space.');
+      }
     } else {
       out.ok('No common patterns detected.');
       out.dim('Nothing here matched a wordlist, keyboard run, date or the usual');
@@ -170,37 +224,91 @@
     }
 
     out.rule();
-    out.dim('Length beats complexity. Four random words are stronger and far');
+    out.dim('Length beats complexity. Six random words are stronger and far');
     out.dim('easier to type than a short string of symbols — and a password');
     out.dim('manager makes both arguments moot.');
+  }
+
+  /* Diceware, done to the actual standard: 7776 words, six of them.
+
+     The list this used to carry held 32 words, and five of those plus a
+     two-digit number is 5*log2(32) + log2(100) = 31.6 bits — about 3.4 billion
+     guesses, which is seconds of work. The page then measured the *spelling* of
+     the result (37 characters over a 69-symbol set) and printed 226 bits, so
+     the weakest thing the tool could produce was also the strongest thing it
+     claimed. Both halves are fixed here: the list is the real one, and the
+     entropy is carried out of the generator as a number rather than re-derived
+     from the characters. */
+  var lastGenerated = null;   // { value, bits, how, kind } from the last generate()
+  var PASSPHRASE_WORDS = 6;
+  var EFF_WORDLIST_SIZE = 7776;
+
+  /* Uniform in [0, n). `x % n` on its own is biased whenever n does not divide
+     2^32 — the low (2^32 mod n) values come up once more often than the rest.
+     The bias is around 1 part in 1.7 million for the wordlist and nothing a
+     visitor would ever observe, but a password generator is precisely the place
+     not to hand-wave a known-biased shortcut. Rejection sampling costs one
+     extra draw about six times in ten million. */
+  function randomIndex(n) {
+    var limit = Math.floor(4294967296 / n) * n;
+    var buf = new Uint32Array(1);
+    var x;
+    do {
+      crypto.getRandomValues(buf);
+      x = buf[0];
+    } while (x >= limit);
+    return x % n;
   }
 
   function generate() {
     var mode = document.getElementById('tool-genmode').value;
     var length = parseInt(document.getElementById('tool-genlen').value, 10) || 20;
-    var value;
+    var value, knownBits, provenance;
 
     if (mode === 'passphrase') {
-      var words = ['anchor','ballad','cactus','dagger','ember','falcon','granite','harbor',
-        'ivory','jungle','kernel','lantern','marble','nebula','orchid','pepper','quartz',
-        'ribbon','saffron','timber','umbra','velvet','walnut','xenon','yonder','zephyr',
-        'cobalt','driftwood','eclipse','fathom','glacier','hollow'];
+      var words = (typeof EFF_LONG_WORDLIST !== 'undefined') ? EFF_LONG_WORDLIST : null;
+      // Refuse rather than degrade. Falling back to a shorter list would hand
+      // out a weak passphrase under a strong-looking number, which is the exact
+      // failure this rewrite exists to remove.
+      if (!words || words.length !== EFF_WORDLIST_SIZE) {
+        out.clear();
+        out.err('The wordlist did not load, so nothing was generated.');
+        out.dim('A passphrase is only as strong as the list it is drawn from, so');
+        out.dim('this will not quietly fall back to a smaller one. Reload the page.');
+        return;
+      }
       var picked = [];
-      var rand = new Uint32Array(6);
-      crypto.getRandomValues(rand);
-      for (var i = 0; i < 5; i++) picked.push(words[rand[i] % words.length]);
-      value = picked.join('-') + '-' + (rand[5] % 100);
+      for (var i = 0; i < PASSPHRASE_WORDS; i++) {
+        picked.push(words[randomIndex(words.length)]);
+      }
+      value = picked.join('-');
+      knownBits = PASSPHRASE_WORDS * (Math.log(words.length) / Math.LN2);
+      provenance = PASSPHRASE_WORDS + ' words drawn uniformly from the EFF long ' +
+                   'wordlist (' + words.length + ' words, ' +
+                   (Math.log(words.length) / Math.LN2).toFixed(1) + ' bits each)';
     } else {
       var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       if (mode === 'symbols') alphabet += '!@#$%^&*()-_=+[]{};:,.<>?';
-      var bytes = new Uint32Array(length);
-      crypto.getRandomValues(bytes);
       value = '';
-      for (var j = 0; j < length; j++) value += alphabet[bytes[j] % alphabet.length];
+      for (var j = 0; j < length; j++) value += alphabet[randomIndex(alphabet.length)];
+      knownBits = length * (Math.log(alphabet.length) / Math.LN2);
+      provenance = length + ' characters drawn uniformly from a ' + alphabet.length +
+                   '-symbol alphabet';
     }
 
     document.getElementById('tool-text').value = value;
-    analyse(value);
+    // Remembered, not just passed. The "Analyse" button beside Generate calls
+    // analyse(field.value) with ONE argument, so without this it re-infers from
+    // the characters and reports a completely different number for the very
+    // string this function just produced — 294 bits against 77.5 for a
+    // passphrase. Two figures for one password is worse than one wrong figure.
+    //
+    // Keyed on the exact string, so it self-expires: the moment the visitor
+    // edits the field the values no longer match and inference takes over
+    // again, which is the correct behaviour for a password we no longer know
+    // the provenance of.
+    lastGenerated = { value: value, bits: knownBits, how: provenance, kind: mode };
+    analyse(value, lastGenerated);
     out.rule();
     out.ok('Generated with crypto.getRandomValues — the browser’s cryptographic');
     out.ok('random source, not Math.random, which must never pick a password.');

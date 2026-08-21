@@ -49,10 +49,12 @@
 - [Online SQL compiler](https://krunalkumar.dpdns.org/labs/sql): A real SQLite engine in memory, with results rendered as a table.
 - [Online Lua compiler](https://krunalkumar.dpdns.org/labs/lua): Lua 5.4 on WebAssembly, with metatables and coroutines.
 - [Online Linux terminal](https://krunalkumar.dpdns.org/labs/linux): A genuine Linux kernel and BusyBox shell booted in the browser via x86 emulation. No network, safe to break.
+- [Online BSD shell](https://krunalkumar.dpdns.org/labs/bsd): A real OpenBSD kernel and ksh booted the same way — the family the macOS command line comes from. Deliberately minimal.
 - [Online C compiler](https://krunalkumar.dpdns.org/labs/c): A real clang and lld toolchain in the browser. structs, pointers, malloc, scanf.
 - [Online C++ compiler](https://krunalkumar.dpdns.org/labs/cpp): Real clang with libc++ and the full STL: vector, string, map, algorithm, templates.
 - [Online PHP compiler](https://krunalkumar.dpdns.org/labs/php): Real PHP 8.4 with enums, match and the full array library.
 - [Online Ruby compiler](https://krunalkumar.dpdns.org/labs/ruby): Real CRuby from the Ruby core team. Blocks, mixins, enumerables.
+- [Online Perl compiler](https://krunalkumar.dpdns.org/labs/perl): Real Perl 5 on WebAssembly. Regular expressions doing what they do best.
 - [Online PostgreSQL compiler](https://krunalkumar.dpdns.org/labs/postgres): The actual Postgres server with window functions, CTEs and JSONB.
 - [Online DOS prompt](https://krunalkumar.dpdns.org/labs/dos): Real FreeDOS booted in the browser. DIR, COPY, batch files, VIM and NASM.
 - [Typing speed test for programmers](https://krunalkumar.dpdns.org/labs/typing): Measured on real code, not just prose. WPM and accuracy, nothing uploaded.
@@ -116,7 +118,13 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [Domain registration (RDAP)](https://krunalkumar.dpdns.org/labs/rdap): Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path. Queries the authoritative registry directly from the visitor's browser; no proxy.
 - [Password breach check](https://krunalkumar.dpdns.org/labs/breach-check): Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise. Queries Have I Been Pwned directly from the visitor's browser; no proxy.
 
-These are deliberately separated from the fifteen offline security tools. They still use no proxy — the visitor's browser contacts the vendor directly — but unlike the rest of Labs, a request genuinely leaves the machine, and each page says which vendor and what they learn before anything fires.
+These are deliberately separated from the sixteen offline security tools. They still use no proxy — the visitor's browser contacts the vendor directly — but unlike the rest of Labs, a request genuinely leaves the machine, and each page says which vendor and what they learn before anything fires.
+
+## API tester — also makes requests
+- [API tester](https://krunalkumar.dpdns.org/labs/api): Send HTTP requests and inspect the responses —
+  GET, POST, custom headers, pretty-printed JSON. It uses the browser's own fetch with no proxy in the
+  path, so the request goes straight to whatever host you name and nothing is relayed through this site.
+  CORS applies exactly as it would in any other page.
 
 ## Optional
 
@@ -127,7 +135,7 @@ These are deliberately separated from the fifteen offline security tools. They s
 
 ## A Still Place
 - [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page — an illustrated Buddha at dawn who
-  breathes, opens his eyes every nine seconds and smiles; one of 695 verses from the Pali Canon, re-picked on
+  breathes, opens his eyes every nine seconds and smiles; one of 684 verses from the Pali Canon, re-picked on
   load and on every tap; and a 4s-in / 6s-out breathing guide. Every verse carries its citation, because a
   great many sayings passed around as the Buddha's were never his. Has a fullscreen mode.
 
@@ -137,13 +145,16 @@ These are deliberately separated from the fifteen offline security tools. They s
   Text chat one-to-one or in a group (star topology, the host relays), file transfer with no size
   limit where the browser can stream to disk, QR codes for the handshake, and a live view of the ICE
   negotiation. Explains why a browser can never listen on a port the way netcat does. This is the one
-  lab that opens a network connection; every other tool in /labs runs entirely offline.
+  lab that opens a peer-to-peer connection; apart from it, the request-making tools listed above
+  (DNS, email security, certificate transparency, RDAP, breach check and the API tester) and the
+  STUN lookup on the browser-leak page below, every tool in /labs runs entirely offline.
 
 ## What your browser leaks
 - [What your browser leaks](https://krunalkumar.dpdns.org/labs/leak): shows the public and local IP
   addresses any page can read out of WebRTC without a permission prompt, plus GPU, time zone, cores
   and a canvas fingerprint that survives clearing cookies. Explains which values actually matter and
-  what can be done about each. Everything is computed in the tab.
+  what can be done about each. Everything is computed in the tab, with one exception the page states
+  in print: reading the public IP requires asking a public STUN server, which is a real request.
 
 ## Reading the site
 - Every page carries a search button and a light/dark toggle in the header. Search runs against a
@@ -151,4 +162,9 @@ These are deliberately separated from the fifteen offline security tools. They s
   query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in — the site stays dark unless the toggle
   is used, and the choice is remembered locally. Both themes are checked against the WCAG AA
   contrast floor across every page.
+- The 58 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
+  so there is nothing to run without it. Each hides its controls and shows a <noscript> note rather
+  than leaving dead buttons. Every other page is plain HTML and reads in full without JavaScript;
+  the four carrying a form (contact, internships, the labs hub's feedback box, and verify) point to
+  email instead — the first three drop the submit button, verify hides the whole lookup field.
 

@@ -1,0 +1,11 @@
+# The repo has no dependencies, but package.json now exists so `npm install`
+# will create these. Nothing here belongs in the repository.
+node_modules/
+package-lock.json
+
+# Vercel CLI local state
+.vercel/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db

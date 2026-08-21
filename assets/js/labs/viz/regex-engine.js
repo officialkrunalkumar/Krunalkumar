@@ -49,6 +49,16 @@
   var STEP_LIMIT = 2000000;    // the backtracker gives up rather than hang
   var MAX_STATES = 4000;
 
+  /* Steps were guarded; stack depth was not. The backtracker is written in
+     continuation-passing style, so one level of nesting costs about three real
+     JS frames — and a greedy star recurses once per character consumed. Around
+     3,000 characters of "a" against a* therefore reached V8's ~11,000-frame
+     ceiling and surfaced a raw "Maximum call stack size exceeded", on a lab
+     whose entire subject is engines meeting their limits and saying so. 1,000
+     levels is roughly 3,000 frames: clear of the ceiling in every engine, and
+     far beyond anything a demonstration here needs. */
+  var DEPTH_LIMIT = 1000;
+
   /* ======================================================================== */
   /*  CORE 1 — PARSER                                                         */
   /* ------------------------------------------------------------------------ */
@@ -525,6 +535,7 @@
     var steps = 0;
     var trace = [];
     var bailed = false;
+    var deepBail = false;
     var maxDepth = 0;
 
     function record(node, pos, depth, what) {
@@ -536,6 +547,7 @@
     function m(node, pos, depth, k) {
       steps++;
       if (steps > limit) { bailed = true; return false; }
+      if (depth > DEPTH_LIMIT) { deepBail = true; bailed = true; return false; }
       if (depth > maxDepth) maxDepth = depth;
 
       switch (node.type) {
@@ -554,10 +566,13 @@
         case 'group':
           return m(node.node, pos, depth + 1, k);
         case 'concat':
-          return (function step(i, p) {
+          // d, not a fixed depth+1: each part's continuation nests inside the
+          // previous one, so the real stack grows with the length of the
+          // concatenation and the guard has to see that.
+          return (function step(i, p, d) {
             if (i === node.parts.length) return k(p);
-            return m(node.parts[i], p, depth + 1, function (np) { return step(i + 1, np); });
-          })(0, pos);
+            return m(node.parts[i], p, d, function (np) { return step(i + 1, np, d + 1); });
+          })(0, pos, depth + 1);
         case 'alt':
           for (var a = 0; a < node.options.length; a++) {
             record(node, pos, depth, 'alternative ' + (a + 1));
@@ -572,25 +587,33 @@
           // Greedy star. The guard on `np > p` is what stops (a*)* looping
           // forever on an empty body; without it this recurses until the
           // stack dies rather than until the pattern fails.
-          return (function rep(p) {
+          // Each iteration nests inside the previous one's continuation, so d
+          // carries the true depth — the old code passed a constant, which is
+          // why "deepest recursion" read as a small number right up to the
+          // moment the real stack ran out.
+          return (function rep(p, d) {
             steps++;
             if (steps > limit) { bailed = true; return false; }
-            record(node, p, depth, 'star iteration at ' + p);
-            if (m(node.node, p, depth + 1, function (np) {
-              return np > p ? rep(np) : false;
+            if (d > DEPTH_LIMIT) { deepBail = true; bailed = true; return false; }
+            if (d > maxDepth) maxDepth = d;
+            record(node, p, d, 'star iteration at ' + p);
+            if (m(node.node, p, d + 1, function (np) {
+              return np > p ? rep(np, d + 1) : false;
             })) return true;
             return k(p);
-          })(pos);
+          })(pos, depth);
         case 'plus':
           return m(node.node, pos, depth + 1, function (np) {
-            return (function rep(p) {
+            return (function rep(p, d) {
               steps++;
               if (steps > limit) { bailed = true; return false; }
-              if (m(node.node, p, depth + 1, function (nnp) {
-                return nnp > p ? rep(nnp) : false;
+              if (d > DEPTH_LIMIT) { deepBail = true; bailed = true; return false; }
+              if (d > maxDepth) maxDepth = d;
+              if (m(node.node, p, d + 1, function (nnp) {
+                return nnp > p ? rep(nnp, d + 1) : false;
               })) return true;
               return k(p);
-            })(np);
+            })(np, depth + 1);
           });
         default:
           throw new Error('cannot match node type ' + node.type);
@@ -599,7 +622,8 @@
 
     var matched = m(ast, 0, 0, function (p) { return p === input.length; });
     return { matched: !!matched && !bailed, steps: steps, trace: trace,
-             bailed: bailed, maxDepth: maxDepth, engine: 'backtracking' };
+             bailed: bailed, deepBail: deepBail, depthLimit: DEPTH_LIMIT,
+             maxDepth: maxDepth, engine: 'backtracking' };
   }
 
   /* ======================================================================== */
@@ -711,6 +735,18 @@
         onChange();
       }, 'the string to match');
       sub.className = 'oa-text oa-text-mono';
+      // Nothing on this page needs more than a couple of thousand characters,
+      // and past that a greedy quantifier is recursing deeper than the guard
+      // in backtrack() allows anyway. Cap it at the field rather than let
+      // someone paste a novel in and get an error instead of a lesson.
+      // Measured, so the two numbers are not mistaken for each other: a bare
+      // a* or a+ crosses DEPTH_LIMIT at exactly 1,000 characters, so a subject
+      // between 1,000 and this 2,000 cap is accepted by the field and then
+      // answered with the depth-bail message instead of a match. That is the
+      // intended trade — before the guard existed the same input returned a
+      // correct match up to ~3,000 and then died on a raw stack overflow, and
+      // an explained refusal beats both a crash and a silently truncated paste.
+      sub.maxLength = 2000;
       g2.appendChild(sub);
       FIELDS.push({ el: sub, key: 'subject' });
       host.appendChild(g2);
@@ -1092,7 +1128,13 @@
     // The trace is capped inside the core; a run that bails still reports how
     // far it got, which is the finding rather than a failure.
     this.run = backtrack(r.parsed.ast, STATE.subject, 400000, true);
-    if (this.run.bailed) {
+    if (this.run.deepBail) {
+      this.error = 'The backtracker stopped at ' + this.run.depthLimit + ' levels of nested ' +
+        'recursion without deciding. A greedy quantifier recurses once per character it ' +
+        'consumes, so a long enough pattern or test string reaches the stack limit before the ' +
+        'step limit — the same wall a real engine hits, reported rather than crashed into. ' +
+        'Shorten the input, or open the ReDoS tab to watch the cost curve on strings that fit.';
+    } else if (this.run.bailed) {
       this.error = 'The backtracker gave up after 400,000 steps without deciding. That is not a ' +
         'bug in the engine — it is what ReDoS looks like from the inside. Open the ReDoS tab.';
     }

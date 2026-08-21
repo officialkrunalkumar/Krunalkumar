@@ -130,6 +130,14 @@
   border-radius: 14px;
 }
 
+/* The wrapper is now tabbable, because it scrolls and would otherwise hide
+   100-240px of table from anyone without a mouse. Anything focusable has to
+   show focus, so it gets a ring of its own rather than inheriting none. */
+.post-table-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .post-table {
   width: 100%;
   min-width: 34rem;
@@ -238,6 +246,28 @@
 @media (max-width: 640px) {
   .post-toc ol {
     columns: 1;
+  }
+
+  /* Measured at 375px: the wrapper is 291px but .post-table was pinned to
+     min-width 34rem (544px), so 253px of every comparison table sat behind a
+     scroller with no keyboard path to it (WCAG 2.1.1). Dropping the pin lets
+     the table fall back to its own min-content width, and the first column
+     has to give up the nowrap at line 168 for that to happen.
+
+     This SHRINKS the overflow, it does not remove it. Min-content on the four
+     posts that use .post-table-wrap measures ~395-530px: four cells at 1rem
+     side padding is 128px on its own, and the widest unbreakable word per
+     column ("Infrastructure;", "intermediaries;", "Phishing-") adds ~70-115px
+     each. So overflow-x on .post-table-wrap is still load-bearing at phone
+     widths, not a safety net — the scroller still needs tabindex="0" and an
+     accessible name on the wrapper in the four post files, which is HTML and
+     is deliberately not done here. */
+  .post-table {
+    min-width: 0;
+  }
+
+  .post-table tbody td:first-child {
+    white-space: normal;
   }
 }
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Chat directly between two browsers with no server in between, and see why a web page can never listen on a port the way netcat does. Live WebRTC handshake, ICE candidates and all."
+      content="Chat directly between two browsers with no server in between, and see why a web page can never listen on a port the way netcat does. Live WebRTC handshake."
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
@@ -45,6 +45,80 @@
         "isPartOf": { "@type": "WebSite", "url": "https://krunalkumar.dpdns.org/" },
         "author": { "@type": "Person", "@id": "https://krunalkumar.dpdns.org/#person", "name": "Krunalkumar Shah" }
       }
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Peer-to-peer chat",
+                        "item": "https://krunalkumar.dpdns.org/labs/chat"
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Do my messages go through your server?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server here to go through — the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is the code so long?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because it has to carry everything the other browser needs to reach you: the ICE credentials, the fingerprint of your certificate, and up to eight of the addresses you might be reachable at. The page already drops the boilerplate lines of the handshake that do not vary between connections, and sends only the parts that do. Most of what is left is cryptographic randomness, which no encoding compresses. A short code would have to be looked up somewhere, and there is nowhere to look it up."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it say “Could not connect”?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Both sides gathered addresses and no pair of them could reach the other, which usually means a strict NAT on one of the two networks. The fix is a TURN server that forwards the traffic on your behalf, and running one costs real money, so this lab does not have one. Put both machines on the same wifi, or try one of them on a different network. The page says so rather than spinning, because there is nothing else it can honestly do."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How big a file can I send?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "That is the receiver's decision, not yours. When they press Accept, Chrome and Edge open a save dialog and write each chunk straight to disk, so the ceiling is their free space rather than their memory. Firefox and Safari have no such dialog, so they hold the file in memory and decline anything over 512 MB the moment it is offered, instead of accepting it and dying halfway through. Accept is a button because the save dialog will only open from a real click."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can more than two people join?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, for text. Everyone connects to the host and the host repeats what it receives, so each extra person is one more code exchange with the host and none with anybody else. That also means the host sees every message, since it is the thing doing the repeating. Voice and video stay one to one, because a browser cannot forward someone else's stream without decoding and re-encoding it, and that is the job a media server exists to do."
+                        }
+                }
+        ]
+}
     </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
@@ -129,9 +203,29 @@
         a demonstration, not as a private messenger.
       </div>
 
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This chat connects two browsers directly and needs JavaScript to negotiate the connection.</p>
+          <p>There is no server in the middle, which is the entire subject of the page.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
       <div class="lab lab-chat" id="chattool">
+        <!-- The widget's own heading. Without it the h1 was followed straight
+             by the step h3s below, so the interactive half of the page had no
+             heading of its own and the outline skipped a level. .sr-only is
+             position:absolute, so it is not a grid item and adds no gap. -->
+        <h2 class="sr-only">Connect and chat</h2>
         <div class="chat-head">
-          <span class="chat-status" id="chat-status">Not connected</span>
+          <!-- role=status: connection state and the two failure messages are
+               otherwise conveyed only by swapped text and colour. -->
+          <span class="chat-status" id="chat-status" role="status">Not connected</span>
           <label class="chat-nick-wrap">
             <span class="sr-only">Your name</span>
             <input class="chat-nick" id="chat-nick" type="text" maxlength="24"
@@ -162,6 +256,7 @@
               <p class="chat-note">Any channel will do — chat app, email, read it out. It describes
                 how to reach you, so it is long. A short code would need a lookup server, and there
                 is no server behind this site.</p>
+              <label class="sr-only" for="chat-offer-out">Your channel code, to send to the other person</label>
               <textarea class="chat-blob" id="chat-offer-out" readonly rows="4"
                         placeholder="generating…"></textarea>
               <div class="chat-actions">
@@ -178,6 +273,7 @@
             </li>
             <li>
               <h3>2. Paste what they send back</h3>
+              <label class="sr-only" for="chat-answer-in">Their reply code</label>
               <textarea class="chat-blob" id="chat-answer-in" rows="4"
                         placeholder="paste their reply here"></textarea>
               <button class="btn btn-primary" id="chat-take-answer" type="button">Connect</button>
@@ -197,12 +293,14 @@
           <ol class="chat-steps">
             <li>
               <h3>1. Paste the code you were sent</h3>
+              <label class="sr-only" for="chat-offer-in">The channel code you were sent</label>
               <textarea class="chat-blob" id="chat-offer-in" rows="4"
                         placeholder="paste their code here"></textarea>
               <button class="btn btn-primary" id="chat-make-answer" type="button">Answer</button>
             </li>
             <li>
               <h3>2. Send this back to them</h3>
+              <label class="sr-only" for="chat-answer-out">Your reply code, to send back to them</label>
               <textarea class="chat-blob" id="chat-answer-out" readonly rows="4"
                         placeholder="appears once you answer"></textarea>
               <div class="chat-actions">
@@ -328,6 +426,32 @@
           works.
         </p>
       </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Do my messages go through your server?</summary>
+            <div>No. There is no server here to go through — the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is the code so long?</summary>
+            <div>Because it has to carry everything the other browser needs to reach you: the ICE credentials, the fingerprint of your certificate, and up to eight of the addresses you might be reachable at. The page already drops the boilerplate lines of the handshake that do not vary between connections, and sends only the parts that do. Most of what is left is cryptographic randomness, which no encoding compresses. A short code would have to be looked up somewhere, and there is nowhere to look it up.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it say “Could not connect”?</summary>
+            <div>Both sides gathered addresses and no pair of them could reach the other, which usually means a strict NAT on one of the two networks. The fix is a TURN server that forwards the traffic on your behalf, and running one costs real money, so this lab does not have one. Put both machines on the same wifi, or try one of them on a different network. The page says so rather than spinning, because there is nothing else it can honestly do.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How big a file can I send?</summary>
+            <div>That is the receiver's decision, not yours. When they press Accept, Chrome and Edge open a save dialog and write each chunk straight to disk, so the ceiling is their free space rather than their memory. Firefox and Safari have no such dialog, so they hold the file in memory and decline anything over 512 MB the moment it is offered, instead of accepting it and dying halfway through. Accept is a button because the save dialog will only open from a real click.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can more than two people join?</summary>
+            <div>Yes, for text. Everyone connects to the host and the host repeats what it receives, so each extra person is one more code exchange with the host and none with anybody else. That also means the host sees every message, since it is the thing doing the repeating. Voice and video stay one to one, because a browser cannot forward someone else's stream without decoding and re-encoding it, and that is the job a media server exists to do.</div>
+          </details>
+      </section>
     </main>
 
         <footer id="contact">
@@ -338,8 +462,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

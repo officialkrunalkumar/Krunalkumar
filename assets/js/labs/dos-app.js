@@ -291,7 +291,73 @@
       autostart: true
     });
 
+    /* A disk image that never arrives used to leave the busy spinner and
+       "Loading..." up forever: the only listeners registered were for a machine
+       that had already started, so there was no path at all for a fetch that
+       failed. v86 reports it, so say so and offer the retry.
+
+       download-error carries { file_index, file_count, file_name, request }. */
+    /* A stall watchdog, because download-error is not enough on its own.
+
+       v86 emits download-error only from its XHR *progress* callback, and only
+       when the response status is not 200 — so it catches a 404 or a 5xx. A
+       genuine network failure takes a different path: xhr.onerror, which v86
+       answers by retrying on a [1,1,2,3,5,8,13,21]s backoff, silently, forever.
+       Nothing is emitted and the status line sits on "Loading…" indefinitely.
+
+       So the only reliable signal is absence of forward motion. Any progress
+       event, any serial byte and the started event all count as motion and push
+       the deadline out; 90s with none of them means it is not coming. */
+    var STALL_MS = 90000;
+    var stallTimer = null;
+    function motion() {
+      if (stallTimer) clearTimeout(stallTimer);
+      stallTimer = setTimeout(function () {
+        stallTimer = null;
+        bootFailed('FreeDOS emulator stopped responding while loading');
+      }, STALL_MS);
+    }
+    function clearStall() {
+      if (stallTimer) { clearTimeout(stallTimer); stallTimer = null; }
+    }
+    function bootFailed(message) {
+      clearStall();
+      destroy();
+      setStatus(message, 'is-err');
+      if (window.LabFail) {
+        window.LabFail.show({
+          anchor: el.screen, what: 'FreeDOS emulator', kind: 'network',
+          retry: function () { boot(); }
+        });
+      }
+    }
+
+    // Arm it now. If the very first request dies on xhr.onerror there is
+    // never a progress event, so waiting for one to start the clock would
+    // leave exactly the failure this guards against unguarded.
+    motion();
+
+    emulator.add_listener('download-progress', function (info) {
+      motion();
+      if (info && info.lengthComputable && info.total) {
+        var pct = Math.min(100, Math.round((info.loaded / info.total) * 100));
+        setStatus('Downloading the FreeDOS disk — ' + pct + '%', 'is-busy');
+      }
+    });
+
+    emulator.add_listener('download-error', function (info) {
+      var name = (info && info.file_name) ? String(info.file_name).split('/').pop() : 'a machine file';
+      // destroy(), not hand-toggled buttons. boot() opens with `if (emulator)
+      // return;` and only destroy() sets emulator back to null, so re-enabling
+      // Start on its own produces a button that does nothing. Worse, disabling
+      // Stop by hand removes the Power-off recovery that DID work here before
+      // this listener existed. destroy() tears down the half-loaded machine and
+      // resets all three buttons to the state boot() expects.
+      bootFailed('Could not download ' + name);
+    });
+
     emulator.add_listener('emulator-started', function () {
+      clearStall();
       setStatus('Booting FreeDOS…', 'is-busy');
       // Do not let the machine eat keystrokes before the visitor asks it to.
       setKeyboard(false);

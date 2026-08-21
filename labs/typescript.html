@@ -195,12 +195,25 @@
         <p class="hero-text">This uses the genuine TypeScript compiler, the same one you would install with <code>npm i typescript</code>. Your code is type-checked, compiled to JavaScript, and then run in an isolated Worker. Nothing you type is uploaded. There is no server that compiles your code, no account to create and no execution quota, because the work happens on your own processor.</p>
         <ul class="lab-facts">
           <li>The real tsc compiler</li>
-          <li>~2 MB once, then cached</li>
+          <li>~9 MB once, then cached</li>
           <li>Type errors before running</li>
           <li>Nothing leaves your device</li>
         </ul>
       </section>
 
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This playground compiles and runs real code inside your browser and needs JavaScript.</p>
+          <p>The language runtime is downloaded to your machine and executed there — no server compiles anything.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
       <div class="lab" id="lab" data-lang="typescript" data-pane="editor">
         <div class="lab-gate" id="lab-gate">
           <div class="lab-gate-card">
@@ -439,7 +452,7 @@ console.log(area({ kind: "circle", r: 2 }).toFixed(2));</code></pre>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=typescript#lab-feedback">Report a problem or send feedback</a>
-          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Online TypeScript Compiler%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Online%20TypeScript%20Compiler%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>
 
@@ -465,8 +478,8 @@ console.log(area({ kind: "circle", r: 2 }).toFixed(2));</code></pre>
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

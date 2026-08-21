@@ -29,6 +29,11 @@
      in   { type: 'run', lang, code, stdin }
           { type: 'transpile', code }            (TypeScript -> JavaScript)
      out  { type: 'status',     text }           progress, shown in toolbar
+          { type: 'exec',       text }           the runtime is up and the
+                                             program is about to run: the page
+                                             restarts its watchdog clock here
+                                             so a slow first download is never
+                                             mistaken for an infinite loop
           { type: 'out',        cls, text }      cls -> .t-* class in the CSS
           { type: 'done',       ok, ms, failure }
                                              failure is null for a normal run,
@@ -94,6 +99,21 @@ var stdinCursor = 0;
    lose its output too. */
 function post(msg) { self.postMessage(msg); }
 function status(text) { post({ type: 'status', text: text }); }
+
+/* The load/run boundary, announced once per run.
+
+   Everything before this point is fetching and instantiating a runtime — up to
+   ~18 MB over the wire for the clang toolchain, which is slow on a phone and
+   entirely outside the visitor's control. Everything after it is their program.
+   The page runs a watchdog that kills a program still going after 60s and warns
+   at 8s that it is "probably an infinite loop"; timing that from the Run click
+   meant a cold start on a slow connection got killed mid-download and blamed on
+   the visitor's code. So each runtime calls this at the moment it is ready, and
+   the page restarts the clock here.
+
+   Compilation and type-checking count as run, not load: they are work the
+   program's own source is responsible for. */
+function execPhase(text) { post({ type: 'exec', text: text }); }
 function labOut(text, cls) { post({ type: 'out', text: String(text), cls: cls || 't-out' }); }
 
 /* Hand the next line of the Input panel to a runtime asking for stdin.
@@ -108,7 +128,7 @@ function readLine() {
    -------------------------------------------------------------------------- */
 async function pythonRuntime() {
   if (loaded.python) return loaded.python;
-  status('Downloading CPython (~6 MB, cached after this)…');
+  status('Downloading CPython (~12 MB, cached after this)…');
   importScripts(VENDOR + 'pyodide/pyodide.js');
   var py = await loadPyodide({
     indexURL: VENDOR + 'pyodide/',
@@ -140,7 +160,7 @@ function cleanTraceback(text) {
 
 async function runPython(code) {
   var py = await pythonRuntime();
-  status('Running…');
+  execPhase('Running…');
   try {
     // The worker is reused between runs so the interpreter stays loaded, but a
     // script must behave identically the second time it is run — so the user
@@ -199,7 +219,7 @@ function renderTable(columns, values) {
 
 async function runSql(code) {
   var SQL = await sqlRuntime();
-  status('Running…');
+  execPhase('Running…');
   var db = new SQL.Database();
   try {
     var results = db.exec(code);
@@ -224,7 +244,7 @@ async function runLua(code) {
     importScripts(VENDOR + 'wasmoon/index.js');
     loaded.luaFactory = new wasmoon.LuaFactory(VENDOR + 'wasmoon/glue.wasm');
   }
-  status('Running…');
+  execPhase('Running…');
   // A fresh engine per run: Lua globals must not leak between runs.
   var lua = await loaded.luaFactory.createEngine();
   // The factory constructor does not fetch glue.wasm — createEngine() does.
@@ -325,7 +345,7 @@ async function runClang(code, lang) {
   var api = await clangApi();
   // stdin is handed to the linked program, not to the compiler.
   api.memfs.setStdinStr(stdinLines.join('\n') + '\n');
-  status(lang === 'c' ? 'Compiling C…' : 'Compiling C++…');
+  execPhase(lang === 'c' ? 'Compiling C…' : 'Compiling C++…');
   await api.compileLinkRun(code, lang);
 }
 
@@ -359,7 +379,7 @@ async function runPostgres(code) {
   var db = new PGlite();
   try {
     await db.waitReady;
-    status('Running…');
+    execPhase('Running…');
     var results = await db.exec(code);
     var printed = 0;
     results.forEach(function (r) {
@@ -409,7 +429,7 @@ async function runRuby(code) {
   // rubyVm() only proves the 100 KB loader arrived. The 16.6 MB ruby.wasm is
   // fetched here, so this is the first point at which Ruby can actually run.
   loaded.rubyReady = true;
-  status('Running…');
+  execPhase('Running…');
 
   // Route Ruby's own stdout/stderr into the terminal a line at a time.
   vm.vm.eval([
@@ -483,7 +503,7 @@ async function runPerl(code) {
   }
 
   perlOut = [];
-  status('Running…');
+  execPhase('Running…');
   try {
     self.Module.callMain(['-e', code]);
   } catch (err) {
@@ -551,7 +571,7 @@ async function runPhp(code) {
     await instance.binary;
     loaded.php = instance;
   }
-  status('Running…');
+  execPhase('Running…');
   var php = loaded.php;
 
   var buffered = [];
@@ -626,7 +646,7 @@ async function loadTsLibs() {
 
 async function transpile(code) {
   if (!loaded.ts) {
-    status('Downloading the TypeScript compiler (~2 MB, cached after this)…');
+    status('Downloading the TypeScript compiler (~9 MB, cached after this)…');
     importScripts(VENDOR + 'typescript/typescript.js');
     loaded.ts = ts;
   }
@@ -634,7 +654,7 @@ async function transpile(code) {
   status('Loading type definitions…');
   var libs = await loadTsLibs();
 
-  status('Type-checking…');
+  execPhase('Type-checking…');
   var MAIN = '/main.ts';
   var GLOBALS = '/lab.globals.d.ts';
   var sources = {};

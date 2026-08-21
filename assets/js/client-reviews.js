@@ -34,13 +34,38 @@
   // Controls are hidden until JS runs, so no-JS visitors see every recommendation.
   controls.style.display = '';
 
+  /* An escape hatch out of the carousel.
+
+     All 30 cards ship in the HTML; the pager then hides 29 of them. That makes
+     the page strictly worse with JavaScript than without it: Ctrl+F finds no
+     name but the visible one, and the other 29 are gone from the accessibility
+     tree — on the page the homepage links to with "Read all 30 recommendations".
+
+     The carousel itself is fine and stays; it just needs a way out. The button
+     is built here rather than in the markup because a no-JS visitor is already
+     seeing all 30 and would only be confused by a control that does nothing. */
+  const showAllBtn = document.createElement('button');
+  showAllBtn.type = 'button';
+  showAllBtn.className = 'carousel-btn carousel-btn-wide';
+  showAllBtn.id = 'show-all-recommendations';
+  showAllBtn.setAttribute('aria-pressed', 'false');
+  showAllBtn.textContent = 'Show all ' + cards.length;
+  controls.appendChild(showAllBtn);
+
   let current = 0;
+  let showAll = false;
 
   function render() {
     cards.forEach((card, index) => {
-      card.style.display = index === current ? '' : 'none';
+      card.style.display = (showAll || index === current) ? '' : 'none';
     });
-    label.textContent = 'Recommendation ' + (current + 1) + ' of ' + cards.length;
+    prevBtn.disabled = showAll;
+    nextBtn.disabled = showAll;
+    showAllBtn.setAttribute('aria-pressed', showAll ? 'true' : 'false');
+    showAllBtn.textContent = showAll ? 'Show one at a time' : 'Show all ' + cards.length;
+    label.textContent = showAll
+      ? 'Showing all ' + cards.length + ' recommendations'
+      : 'Recommendation ' + (current + 1) + ' of ' + cards.length;
   }
 
   prevBtn.addEventListener('click', () => {
@@ -50,6 +75,11 @@
 
   nextBtn.addEventListener('click', () => {
     current = (current + 1) % cards.length;
+    render();
+  });
+
+  showAllBtn.addEventListener('click', () => {
+    showAll = !showAll;
     render();
   });
 

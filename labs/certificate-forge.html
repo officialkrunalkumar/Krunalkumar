@@ -202,6 +202,19 @@
         </ul>
       </section>
 
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This visualisation is drawn and animated in your browser and needs JavaScript to run.</p>
+          <p>The whole point is watching the algorithm step, so there is no static version to fall back to.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
       <div class="lab lab-viz" id="certforgeviz">
         <div class="lab-gate" id="lab-gate">
           <div class="lab-gate-card">
@@ -339,8 +352,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

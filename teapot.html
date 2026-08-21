@@ -39,7 +39,10 @@
       .scene { width: min(780px, 100%, calc((100svh - 230px) * 1.6)); }
       .scene svg { width: 100%; height: auto; display: block; }
       a.home { color: #7dd3fc; text-decoration: underline; text-underline-offset: 3px; }
-      .small { color: #64748b; font-size: 0.85rem; }
+      /* Was #64748b: 3.4-3.8:1 on this gradient at ~13.6px, under the 4.5:1 small-text
+         floor — and this line carries the only way back to the site. #94a3b8 is what
+         .sub already uses and measures ~6.7:1 on the same background. */
+      .small { color: #94a3b8; font-size: 0.85rem; }
       .hint { color: #fbbf24; font-size: 0.95rem; animation: hint-pulse 2s ease-in-out infinite; }
       .hint.gone { display: none; }
       @keyframes hint-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }

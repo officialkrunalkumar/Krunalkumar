@@ -4,8 +4,10 @@ Personal portfolio of **Krunalkumar Shah** — researcher, engineer, and cyberse
 
 **Live site:** <https://krunalkumar.dpdns.org>
 
-Built with plain HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies — any static
-web server can host it, and any computer with a browser can develop it.
+Built with plain HTML, CSS, and JavaScript. No frameworks, no dependencies — any static
+web server can host it, and any computer with a browser can develop it. There is one deploy-time
+pass (`scripts/build.js`), it runs only on Vercel, and it only strips CSS comments and freshens the
+sitemap dates — the pages in this repository are the pages that get served. See **Deployment**.
 
 ---
 
@@ -23,7 +25,7 @@ web server can host it, and any computer with a browser can develop it.
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
 | `verify.html`         | Certificate verification — looks up completion-certificate IDs in `assets/data/certificates.json` (client-side, no backend). QR codes on certificates deep-link here as `/verify?id=…`. Offer letters are deliberately not verifiable online — institutions email instead. The generator lives in a private repo; `/generate` redirects to it (see `vercel.json`) |
-| `buddha.html`         | 🪷 A still place (`/buddha`) — a cross-legged Buddha drawn in inline SVG, a verse from the Pali Canon that changes on load and on every tap, and a 4s-in / 6s-out breathing guide. Every one of the 405 verses carries its citation: most "Buddha quotes" in circulation are modern fabrications, so anything added here must be checked against suttacentral.net or accesstoinsight.org first. He breathes on a 10s cycle, and every 9s opens his eyes and grins for 1.8s. Tapping him bounces him, bursts 14 sparkles and turns the verse over. A fullscreen button hands the whole screen to the scene. Styles in `assets/css/buddha.css`, behaviour in `assets/js/buddha.js`; all motion is transform/opacity only and stops dead under `prefers-reduced-motion` |
+| `buddha.html`         | 🪷 A still place (`/buddha`) — a cross-legged Buddha drawn in inline SVG, a verse from the Pali Canon that changes on load and on every tap, and a 4s-in / 6s-out breathing guide. Every one of the 684 verses carries its citation: most "Buddha quotes" in circulation are modern fabrications, so anything added here must be checked against suttacentral.net or accesstoinsight.org first. He breathes on a 10s cycle, and every 9s opens his eyes and grins for 1.8s. Tapping him bounces him, bursts 14 sparkles and turns the verse over. A fullscreen button hands the whole screen to the scene. Styles in `assets/css/buddha.css`, behaviour in `assets/js/buddha.js`; all motion is transform/opacity only and stops dead under `prefers-reduced-motion` |
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
@@ -70,6 +72,7 @@ web server can host it, and any computer with a browser can develop it.
 │   ├── images/                   Portrait, logo, certification badges, OG share images, research flowchart (SVG)
 │   ├── images/blog/              Blog post cover art (SVG) + og/ share images
 │   └── pdf/                      Resume
+├── scripts/build.js              Deploy-time pass — strips CSS comments, dates sitemap <lastmod> from git, checks its own output. Runs on Vercel, never on the repo (see Deployment)
 ├── .well-known/security.txt      RFC 9116 security contact file
 ├── site.webmanifest              Web app manifest (install metadata + icons; theme tracks --bg-base)
 ├── sitemap.xml                   Search-engine sitemap — update when adding pages or posts
@@ -77,7 +80,9 @@ web server can host it, and any computer with a browser can develop it.
 ├── llms.txt                      Curated link index for AI crawlers/assistants — update when adding pages or posts
 ├── llms-full.txt                 Full plain-text knowledge base (bio, career, research, projects, policies) for AI crawlers
 ├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
-└── vercel.json                   Clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
+├── package.json                  Zero dependencies. Exists to name `npm run build` / `npm run check` (both are scripts/build.js) and an engines floor of Node 18
+├── .gitignore                    node_modules/, package-lock.json, .vercel/ — package.json makes these possible, none of them belong in the repo
+└── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
 ```
 
 ---
@@ -257,9 +262,58 @@ their `.html` paths, so every internal link would 404 on it — use `serve` inst
 
 ## Deployment
 
-Hosted on **Vercel**, deployed automatically on push to `main`. Everything in the repository is
-served as-is — there is no build step. `404.html` at the root is picked up automatically for
-unmatched URLs.
+Hosted on **Vercel**, deployed automatically on push to `main`. `vercel.json` sets
+`"framework": null` (there is no framework to detect), `"buildCommand": "node scripts/build.js"`
+and `"outputDirectory": "."` — the repository root *is* the deploy output, so every page is still
+served as the file you see here. `404.html` at the root is picked up automatically for unmatched
+URLs.
+
+### The deploy-time pass (`scripts/build.js`)
+
+Vercel clones the repo into a throwaway container, runs the script there, uploads the result and
+discards the container. Nothing is written back to git. It performs two transformations and deliberately
+nothing else, then checks its own output before letting the deploy succeed:
+
+1. **Strips CSS comments.** 244 KB of stylesheet across the four files becomes 146 KB — 40% off,
+   most of it from `main.css`, which is render-blocking on the 89 pages that load it. It does
+   **not** collapse whitespace: that would save a little more and make every deploy-preview diff
+   unreadable, which is a bad trade at this size.
+2. **Rewrites `sitemap.xml` `<lastmod>` per file from git**, instead of the single hardcoded date
+   every URL shares in the repo — which tells a crawler nothing and is wrong the day after it is
+   written. A shallow deploy clone can only date the files touched inside the fetched history; the
+   rest keep the date they already carry, and the script logs that that is what happened.
+
+**Why the stripping happens at deploy time and not in the repo.** The comments in `main.css` are
+the documentation — they carry the measurements ("`#008f34` measured 2.83:1 on the teal end of the
+`.lab-cta` gradient"), the reason a value is what it is, and what breaks if it changes. Several
+sections of this README are downstream of them. Deleting them by hand to save bytes would trade
+the most valuable prose in the codebase for a few KB. Doing it in a container keeps both: git keeps
+every comment, visitors get the smaller file.
+
+**It is safe to run locally.**
+
+```bash
+npm run check    # dry run — prints what would change, writes nothing
+npm run build    # the same work, in place
+```
+
+`build` is idempotent — a second run finds no comments left and writes identical bytes — so a stray
+local run is not a problem to clean up. Every write is gated on the stylesheet still describing the
+same rules: the ordered list of selectors must come out unchanged, braces must stay balanced, and
+the output must not grow. Any of those failing throws instead of writing. (Comparing raw brace
+counts is *not* a valid check and was the first attempt — `main.css` has a comment quoting a CSS
+rule, braces and all, and the check flagged it as corruption. The scanner is comment-aware
+throughout, which is also why a `content: "/*"` string cannot be mistaken for a comment.)
+
+It finishes by checking its own output: 17 critical files present and above a size floor, nine of
+them also matched against an expected marker, and at least 80 HTML pages on disk. Vercel keeps serving the
+previous deployment when a build exits non-zero, so **failing the deploy is always safer than
+publishing the damage** — that is what the throw at the end is for.
+
+`package.json` exists only to name those two scripts and an `engines` floor of Node 18. It has
+**zero dependencies**, and `.gitignore` (previously empty) now covers the things `npm install`
+would create anyway — `node_modules/`, `package-lock.json` — plus `.vercel/`. Nothing generated is
+committed.
 
 ---
 
@@ -361,9 +415,15 @@ Three details that were each a bug:
   reset underneath someone mid-session.
 
 **Search.** `assets/js/site-search.js` with a prebuilt index at
-`assets/data/search-index.json` (88 pages, ~40 KB gzipped). It opens a full-screen
+`assets/data/search-index.json` (88 pages, ~80 KB brotli on the wire, fetched only when the overlay opens). It opens a full-screen
 overlay rather than a dropdown — roomier, and identical on a phone and a laptop.
-**The index is a committed artefact: regenerate it when page content changes.**
+The index is generated from the pages by `scripts/search-index.js`, and `scripts/build.js` rebuilds
+it on every deploy, so it cannot describe content the site no longer has. Run
+`node scripts/search-index.js --check` to see what would change, or without the flag to rewrite the
+committed copy. This used to be a manual step documented here as "regenerate it when page content
+changes", which is precisely the kind of instruction that gets skipped: when the generator was first
+run, 75 of the 88 entries had drifted — three policy pages recorded as having no `<h1>`, the HackLab
+heading still spelled with a hyphen the page had long since replaced with an em dash.
 
 #### How the light theme was checked
 
@@ -467,11 +527,15 @@ Shift with it:
    `*-cover.svg` under `assets/images/blog/` (15 today — count them, don't trust this number), and the inline `<svg>` figure panels inside blog posts
    (`#1b2735`). `.post-cover` has no background of its own, so a cover left behind prints as a
    visibly darker rectangle against the page.
-4. The `theme-color` meta in all 29 chrome-bearing pages — it tracks `--bg-base`, since the mobile
-   address bar sits flush above the page-tinted sticky header. Leave `terminal.html` alone: it is
-   standalone, has its own inline `<style>`, and its palette is deliberately not the site palette.
-   `teapot.html` is standalone too but DOES track the site palette — shift its `theme-color`,
-   its body gradient, and the `#121b2c`/`#1b2735`-family hexes in its inline scene.
+4. The `theme-color` meta in all 89 chrome-bearing pages — it tracks `--bg-base`, since the mobile
+   address bar sits flush above the page-tinted sticky header. Grep for the current hex rather than
+   trusting that count. `terminal.html` is the one page that does not track it: it is standalone,
+   has its own inline `<style>`, and its `#020617` is deliberately not the site palette — leave it.
+   `teapot.html` is standalone too but DOES track the site palette — shift its
+   `theme-color`, its body gradient, and the `#121b2c`/`#1b2735`-family hexes in its inline scene.
+   `boot.js` rewrites this meta at load for a stored light theme, but only when it already holds
+   `#121b2c` or `#f5f8fc`, which is what keeps `terminal.html` out of it. Change those two hexes
+   there as well, or the address bar stops matching the page.
 5. The `theme_color` and `background_color` in `site.webmanifest` — both track `--bg-base`, and the
    app icons (`assets/images/icon-*.png`, `apple-touch-icon.png`) plus the root `og-*.jpg` cards
    bake the palette into pixels, so regenerate them after any sizable shift.
@@ -491,9 +555,20 @@ crowding the raised surfaces even when you do shift them.
 ## Conventions
 
 - Every image needs `alt`, `width`/`height`, and (below the fold) `loading="lazy" decoding="async"`.
-- Every indexed page needs a unique `<title>`, meta description, canonical, and OG tags; keep
-  `sitemap.xml` lastmod fresh when content changes meaningfully.
+- Every indexed page needs a unique `<title>`, meta description, canonical, and OG tags; add its
+  `<url>` to `sitemap.xml`. The `<lastmod>` on a new entry is a placeholder — `scripts/build.js`
+  overwrites it at deploy time with the file's own last commit date (see **Deployment**), so it is
+  the commit that has to be meaningful, not the date typed into the XML.
 - One `<h1>` per page; sections use `<h2>`/`<h3>`.
+- **The site works with JavaScript off.** Every page outside `/labs` is readable and navigable
+  without it: the header and footer ship static (see "Shared header & footer"), the blog cards,
+  post TOCs, projects gallery and recommendations are all static HTML that JS only filters or
+  paginates, the three network share links on a post are plain `<a>`s, and `#bg-canvas` carries the
+  same gradient in CSS that `particle-bg.js` would paint. Adding a feature means asking what it
+  degrades to. The labs are the honest exception — a WebAssembly runtime cannot run without a
+  script — so all 58 lab pages carry a `<noscript>` block (`.lab-noscript`, styled in `labs.css`)
+  that says so plainly, explains that the work happens on the visitor's own machine which is why it
+  cannot fall back to a server, and links to the blog, rather than presenting a dead editor.
 - The site is dark by default, with an **opt-in** light theme behind the header toggle. Light is
   never applied automatically — `prefers-color-scheme` is deliberately ignored. Adding a colour
   means adding its light counterpart too; see "Theme toggle and site search" above for how that
@@ -526,7 +601,7 @@ crowding the raised surfaces even when you do shift them.
 
 A quiet page, deliberately unlike the rest of the site.
 
-**The verses.** 405 of them, in `assets/js/buddha.js`, one picked at random on load
+**The verses.** 684 of them, in `assets/js/buddha.js`, one picked at random on load
 and again on every tap, never the same one twice running. Each carries its
 citation — the largest share from the Dhammapada, the rest from the Samyutta,
 Anguttara and Majjhima Nikayas, the Itivuttaka, Udana, Sutta Nipata, Theragatha, Therigatha and
@@ -628,7 +703,9 @@ since Chrome 82, so it is not worth building on.
 
 **QR.** `assets/js/labs/qr.js` is a from-scratch ISO/IEC 18004 encoder (byte
 mode, versions 1–20, EC level L) because the CSP is `script-src 'self'` and
-there is no build step. A 243-character code lands at version 10, a 57×57 grid.
+there is no bundler to vendor a library with — `scripts/build.js` only strips CSS
+comments, it does not resolve or package anything. A 243-character code lands at
+version 10, a 57×57 grid.
 Offered next to Copy rather than instead of it: the clipboard is faster on a
 laptop, the camera is the only sane option between two phones.
 
@@ -652,7 +729,7 @@ connected at all, and the page says so instead of spinning.
 
 ### HackLab — the vulnerable app sandbox (`/labs/hacklab`)
 
-The offensive counterpart to the defensive tools: a deliberately vulnerable app the visitor is meant to break. Six challenges, each a live target with an objective, progressive hints, the full solution, and the real-world fix.
+The offensive counterpart to the defensive tools: a deliberately vulnerable app the visitor is meant to break. Forty-two challenges (the original six, plus the batch `hacklab.js` appends after them), each a live target with an objective, progressive hints, the full solution, and the real-world fix.
 
 The two that matter for safety:
 
@@ -692,7 +769,7 @@ modules contains a `fetch`, an `XMLHttpRequest` or a `sendBeacon`. The only inpu
 | `/labs/subnet` | IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification. |
 | `/labs/timestamp` | Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it. |
 
-All fifteen are listed on the hub under **Cybersecurity & digital forensics tools** and share the
+All sixteen are listed on the hub under **Cybersecurity & digital forensics tools** and share the
 `SoftwareApplication` + `FAQPage` + `BreadcrumbList` schema emitted by the page generator. Their
 Open Graph card is `assets/images/og-labs-security.jpg`; the compilers and terminals use
 `assets/images/og-labs.jpg`.
@@ -767,7 +844,7 @@ Six file-drop analysis tools on `tool-shell.js`, each a from-scratch parser of a
 
 ### Interactive visualisers
 
-Seven canvas/WebGL toys on their own tiny shell, `viz-shell.js` (not `tool-shell.js` — these are live loops, not request/response). The hash cracker runs its loop in a Blob-URL Web Worker so the page stays responsive and Stop works; the CPU simulator assembles with a real two-pass parser rather than `eval` (which the CSP forbids anyway); the shader and fractal labs compile GLSL on the GPU; the OS algorithm visualiser precomputes every frame up front so you can step backwards through a simulation as freely as forwards.
+Twelve canvas/WebGL toys on their own tiny shell, `viz-shell.js` (not `tool-shell.js` — these are live loops, not request/response; `/labs/certificate-forge` is a thirteenth `viz-shell.js` page, listed with the security tools above because that is where it sits on the hub). The hash cracker runs its loop in a Blob-URL Web Worker so the page stays responsive and Stop works; the CPU simulator assembles with a real two-pass parser rather than `eval` (which the CSP forbids anyway); the shader and fractal labs compile GLSL on the GPU; the OS algorithm visualiser precomputes every frame up front so you can step backwards through a simulation as freely as forwards.
 
 | Route | What it does |
 |---|---|

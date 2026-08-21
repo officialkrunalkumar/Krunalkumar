@@ -77,11 +77,39 @@
     if (slash.length > 1) {
       // Accept both /24 and /255.255.255.0
       if (slash[1].indexOf('.') !== -1) {
-        var maskInt = toInt(slash[1].trim());
+        var maskText = slash[1].trim();
+        var maskInt = toInt(maskText);
         if (maskInt === null) { out.err('That subnet mask is not valid.'); return; }
         bits = 0;
         var probe = maskInt >>> 0;
         while (probe & 0x80000000) { bits++; probe = (probe << 1) >>> 0; }
+
+        /* Counting leading 1-bits is only a prefix length if the rest of the
+           mask is zeroes. Without this check the count is silently believed:
+           0.0.0.255 has no leading 1s, so it became /0 and the tool reported
+           network 0.0.0.0/0 with 4,294,967,294 usable hosts — confidently, and
+           with no error. 255.0.255.0 truncated to /8 the same way.
+
+           0.0.0.255 is not a typo, either: it is a wildcard mask, which this
+           page itself teaches further down, so it is exactly what someone will
+           paste in. Naming it beats rejecting it. */
+        var canon = bits === 0 ? 0 : ((0xffffffff << (32 - bits)) >>> 0);
+        if (canon !== (maskInt >>> 0)) {
+          var inverted = (~maskInt) >>> 0;
+          var invBits = 0, invProbe = inverted;
+          while (invProbe & 0x80000000) { invBits++; invProbe = (invProbe << 1) >>> 0; }
+          var invCanon = invBits === 0 ? 0 : ((0xffffffff << (32 - invBits)) >>> 0);
+          if (invCanon === inverted) {
+            out.err('"' + maskText + '" is a wildcard mask, not a subnet mask.');
+            out.dim('Wildcard masks are the bitwise inverse — Cisco ACLs use them.');
+            out.dim('You probably meant /' + invBits + ' (' + toIp(invCanon) + ').');
+          } else {
+            out.err('"' + maskText + '" is not a contiguous subnet mask.');
+            out.dim('A subnet mask has to be all 1s followed by all 0s, so the');
+            out.dim('network part is a single unbroken run. 255.0.255.0 is not.');
+          }
+          return;
+        }
       } else {
         bits = Number(slash[1].trim());
       }

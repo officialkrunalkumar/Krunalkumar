@@ -4,7 +4,7 @@
    59 labs is well past the point where browsing finds anything. The index
    lives at /assets/data/search-index.json, generated from the pages
    themselves, and is fetched once on first use — not on page load, because
-   most visits never search and 40 KB gzipped is not worth spending on them.
+   most visits never search and ~80 KB on the wire is not worth spending on them.
 
    Scoring, in descending weight: a hit in the title beats a hit in the
    description, which beats a hit in the body. Every word of the query has to
@@ -41,11 +41,23 @@
             '<path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
           '</svg>' +
           '<label class="sr-only" for="site-search-input">Search the site</label>' +
+          /* role="combobox" + aria-controls + aria-activedescendant is what
+             makes the arrow keys audible: without it the active row changed
+             colour and nothing was announced, because a bare <input> cannot
+             own a listbox and cannot point at an option. */
           '<input class="site-search-input" id="site-search-input" type="search" ' +
+                 'role="combobox" aria-autocomplete="list" aria-expanded="false" ' +
+                 'aria-controls="site-search-list" ' +
                  'placeholder="Search labs, posts and pages…" autocomplete="off" spellcheck="false" />' +
           '<button class="site-search-close" type="button" aria-label="Close search">Esc</button>' +
         '</div>' +
         '<div class="site-search-panel" id="site-search-panel"></div>' +
+        /* The panel is a listbox that is only ever LOOKED at: nothing about it
+           is announced, so a screen reader user typed a query and heard
+           nothing — no count, no "no results" — on the one page whose whole
+           reason for existing is that 59 labs is past the point where browsing
+           finds anything. This region carries the single fact that matters. */
+        '<p class="sr-only" id="site-search-status" role="status" aria-live="polite"></p>' +
       '</div>';
     document.body.appendChild(overlay);
 
@@ -55,9 +67,15 @@
     return overlay;
   }
 
+  /* Whatever had focus when the dialog opened, so it can be handed back.
+     Without this, closing drops focus to <body> and a keyboard user restarts
+     from the top of the document every time they dismiss a search. */
+  var lastFocused = null;
+
   function open() {
     build();
     if (typeof window.gtag === 'function') window.gtag('event', 'search_open');
+    lastFocused = document.activeElement;
     overlay.hidden = false;
     document.documentElement.style.overflow = 'hidden';
     load();
@@ -65,16 +83,69 @@
     if (i) { i.value = ''; i.focus(); }
     var p = $panel();
     if (p) p.innerHTML = '';
+    // The overlay is built once and reused, so a reopen inherits the previous
+    // session's aria state unless it is cleared with the panel.
+    active = -1;
+    setActiveDescendant(-1);
+    setExpanded(false);
+    // Same reuse problem as the aria state above: without this the region
+    // still holds the last session's count, which is read out on reopen.
+    announce('');
   }
 
   function close() {
     if (!overlay) return;
     overlay.hidden = true;
     document.documentElement.style.overflow = '';
+    // Return focus before the browser falls back to <body>. Guarded: the
+    // element can have been removed while the dialog was open.
+    if (lastFocused && document.contains(lastFocused) && lastFocused.focus) {
+      lastFocused.focus();
+    }
+    lastFocused = null;
+  }
+
+  /* The box declares role="dialog" aria-modal="true", which tells assistive
+     technology that everything behind it is inert. Nothing enforced that: the
+     page under the overlay is still in the tab order, just visually covered, so
+     Tab walked straight out of a dialog that claimed to be modal. This keeps
+     the cycle inside the box. */
+  function trapTab(e) {
+    if (e.key !== 'Tab' || !overlay || overlay.hidden) return;
+    var box = overlay.querySelector('.site-search-box');
+    if (!box) return;
+    var focusable = box.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    // Focus can sit outside the box if the dialog was opened programmatically
+    // or the focused node was replaced as results re-rendered.
+    if (!box.contains(document.activeElement)) {
+      e.preventDefault();
+      first.focus();
+      return;
+    }
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   function $in() { return document.getElementById('site-search-input'); }
   function $panel() { return document.getElementById('site-search-panel'); }
+  function $status() { return document.getElementById('site-search-status'); }
+
+  /* Kept terse on purpose: this is re-announced every time the typing settles,
+     so anything longer than the count is read over the next keystroke. */
+  function announce(text) {
+    var s = $status();
+    if (s) s.textContent = text;
+  }
 
   document.addEventListener('click', function (e) {
     if (e.target && e.target.closest && e.target.closest('#search-open')) { e.preventDefault(); open(); }
@@ -95,8 +166,13 @@
       })
       .then(function (d) { index = d.pages || []; return index; })
       .catch(function () {
-        index = [];
-        return index;
+        // Leave `index` null and drop the cached promise, so the NEXT attempt
+        // refetches. Assigning [] here looked harmless but [] is truthy, so the
+        // guard above turned one failed request — and the index is warmed on
+        // focusin, so a momentary blip is enough — into search being dead for
+        // the rest of the page's life.
+        loading = null;
+        return [];
       });
     return loading;
   }
@@ -153,11 +229,30 @@
     }, 900);
   }
 
+  var HIT_ID = 'site-search-hit-';
+
+  /* Points the combobox at the row the arrow keys are on. i < 0 means "no
+     row", and the attribute has to be REMOVED then, not set to '': an empty
+     aria-activedescendant is still an unresolvable reference in some ATs. */
+  function setActiveDescendant(i) {
+    var input = $in();
+    if (!input) return;
+    if (i >= 0) input.setAttribute('aria-activedescendant', HIT_ID + i);
+    else input.removeAttribute('aria-activedescendant');
+  }
+
+  function setExpanded(on) {
+    var input = $in();
+    if (input) input.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+
   function render(results, words) {
     var panel = $panel();
     if (!panel) return;
     reportSearch(results.length);
     panel.innerHTML = '';
+    setActiveDescendant(-1);
+    setExpanded(results.length > 0);
     if (!results.length) {
       var none = document.createElement('p');
       none.className = 'site-search-none';
@@ -165,16 +260,28 @@
         ? 'Nothing matched.'
         : 'Search index unavailable.';
       panel.appendChild(none);
+      // Echo the query back: "No results" alone leaves a screen reader user
+      // unsure whether the box even received what they typed.
+      var q = (words || []).join(' ');
+      announce(index && index.length
+        ? (q ? 'No results for ' + q : 'No results')
+        : 'Search index unavailable');
       return;
     }
     var list = document.createElement('ul');
     list.className = 'site-search-list';
+    list.id = 'site-search-list';
     list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-label', 'Search results');
 
     results.forEach(function (r, i) {
       var li = document.createElement('li');
+      // The <li> sits between the listbox and its options, so without this it
+      // is an unexpected child and the options are not owned by the listbox.
+      li.setAttribute('role', 'presentation');
       var a = document.createElement('a');
       a.href = r.page.u;
+      a.id = HIT_ID + i;
       a.addEventListener('click', function () {
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'search_result_click', { destination: r.page.u });
@@ -207,6 +314,7 @@
     });
 
     panel.appendChild(list);
+    announce(results.length === 1 ? '1 result' : results.length + ' results');
   }
 
   function run() {
@@ -214,7 +322,16 @@
     if (!input || !panel) return;
     var q = input.value.trim().toLowerCase();
     lastQuery = q;
-    if (q.length < 2) { panel.innerHTML = ''; return; }
+    if (q.length < 2) {
+      panel.innerHTML = '';
+      active = -1;
+      setActiveDescendant(-1);
+      setExpanded(false);
+      // Backspacing to nothing empties the panel, so the count must go too —
+      // otherwise the region still claims "7 results" with no list under it.
+      announce('');
+      return;
+    }
 
     load().then(function (pages) {
       if (lastQuery !== q) return;               // a newer keystroke won
@@ -242,6 +359,19 @@
     if (e.target && e.target.id === 'site-search-input') load();
   });
 
+  /* Dialog-level keys, bound to the document rather than to the box: build()
+     replaces the box's markup, so anything bound to it would be dropped.
+
+     The handler below this one only runs when the search input itself has
+     focus, which left the rest of the dialog with no key handling at all —
+     Escape did nothing once you tabbed to the close button, even though that
+     button is labelled "Esc". */
+  document.addEventListener('keydown', function (e) {
+    if (!overlay || overlay.hidden) return;
+    if (e.key === 'Escape') { close(); return; }
+    trapTab(e);
+  });
+
   document.addEventListener('keydown', function (e) {
     if (!e.target || e.target.id !== 'site-search-input') return;
     var panel = $panel(), input = $in();
@@ -258,6 +388,7 @@
         a.classList.toggle('is-active', i === active);
         a.setAttribute('aria-selected', i === active ? 'true' : 'false');
       });
+      setActiveDescendant(active);
       hits[active].scrollIntoView({ block: 'nearest' });
     } else if (e.key === 'Enter' && active >= 0) {
       e.preventDefault();

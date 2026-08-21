@@ -36,6 +36,23 @@
 
   if (savedTheme === 'light' || savedTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Bring the address-bar colour along with it. theme.js does this too, but
+    // it is deferred: until it runs, a returning light-theme visitor sees a
+    // dark browser chrome sitting above an already-light page. The meta tag is
+    // emitted above this script in every page's head, so it is parsed and
+    // queryable by the time we get here.
+    //
+    // Only the two site colours are overwritten, deliberately. /terminal ships
+    // a #020617 that matches its own darker background and it loads this file;
+    // replacing whatever we happen to find would quietly break that page.
+    var themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      var current = (themeMeta.getAttribute('content') || '').toLowerCase();
+      if (current === '#121b2c' || current === '#f5f8fc') {
+        themeMeta.setAttribute('content', savedTheme === 'light' ? '#f5f8fc' : '#121b2c');
+      }
+    }
   }
 
   document.documentElement.classList.add('js');

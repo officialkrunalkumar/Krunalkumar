@@ -310,6 +310,7 @@
      merely-muted context would still be sitting there, ready to be heard
      again when the page is restored. */
   function teardown() {
+    var wasPlaying = playing;
     playing = false;
     window.clearTimeout(bowlTimer); bowlTimer = null;
     window.clearTimeout(fluteTimer); fluteTimer = null;
@@ -318,17 +319,35 @@
       try { ctx.close(); } catch (e) {}
       ctx = null; master = null; drone = [];
     }
+    /* The controls have to be told, or a page restored from the bfcache comes
+       back with a lit speaker and aria-pressed="true" over a context that was
+       closed on the way out — the button claiming a sound nobody can hear.
+       paint(), not sync(): STORE_ON must keep the visitor's preference. */
+    paint();
+    if (wasPlaying) {
+      // They did leave it on. Pre-light it exactly as a remembered preference
+      // does, so one press picks up where they left off.
+      toggle.classList.add('is-remembered');
+      toggle.setAttribute('title', 'Sound off — press to resume');
+    }
   }
 
   window.addEventListener('pagehide', teardown);
   window.addEventListener('beforeunload', teardown);
 
-  function sync() {
+  /* The visible half of sync(), split out because teardown() needs it without
+     the storage write: a page going into the bfcache with the sound on must
+     still remember that preference for the next visit. */
+  function paint() {
     toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
     toggle.setAttribute('aria-label', playing ? 'Turn the sound off' : 'Turn the sound on');
     toggle.setAttribute('title', playing ? 'Sound on' : 'Sound off');
     toggle.classList.toggle('is-on', playing);
     slider.disabled = !playing;
+  }
+
+  function sync() {
+    paint();
     store(STORE_ON, playing ? '1' : '0');
   }
 
@@ -394,13 +413,19 @@
     });
   }
 
+  /* Read BEFORE sync(), never after. sync() writes STORE_ON on every call, so
+     once it has run the stored flag is always '0' — playing is false at this
+     point — and the test below could never be true. The remembered state and
+     the .is-remembered rule in buddha.css were unreachable because of it. */
+  var remembered = recall(STORE_ON, '0') === '1';
+
   sync();
 
   /* Deliberately NOT auto-started, even when the last visit left it on:
      browsers block it without a gesture, and a page that makes noise on load
      is a page people close. The remembered preference only pre-lights the
      button so one press picks up where they left off. */
-  if (recall(STORE_ON, '0') === '1') {
+  if (remembered) {
     toggle.classList.add('is-remembered');
     toggle.setAttribute('title', 'Sound off — press to resume');
   }

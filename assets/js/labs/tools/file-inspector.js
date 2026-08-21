@@ -135,7 +135,22 @@
 
   var out = LabTool.out('tool-out');
 
+  /* The bytes the report was built from, kept so it can be rebuilt.
+
+     Without this, the "Re-analyse" button (and its Ctrl+Enter binding) had
+     nothing to re-analyse: it cleared the pane and asked for a file that was
+     already loaded, with the filename still displayed beside it. Every sibling
+     tool — archive, exif, pcap, har — re-runs from cached bytes; this one was
+     the exception. It also fixes the "Minimum string length" control, which
+     re-dispatched a change event at the file input: that never fires for a
+     dropped file, because the drop handler reads dataTransfer.files and leaves
+     input.files empty. */
+  var lastBytes = null;
+  var lastFile = null;
+
   function analyse(bytes, file) {
+    lastBytes = bytes;
+    lastFile = file;
     out.clear();
     out.heading(file.name);
     out.row('size', LabTool.humanBytes(bytes.length) + '  (' + bytes.length + ' bytes)');
@@ -203,6 +218,7 @@
   LabTool.define({
     id: 'fileinspectortool',
     run: function () {
+      if (lastBytes && lastFile) { analyse(lastBytes, lastFile); return; }
       out.clear().warn('Choose or drop a file to inspect.');
     },
     onReady: function () {
@@ -215,10 +231,9 @@
         onError: function (msg) { out.clear().err(msg); }
       });
       document.getElementById('tool-minlen').addEventListener('change', function () {
-        var input = document.getElementById('tool-file');
-        if (input.files && input.files[0]) {
-          input.dispatchEvent(new Event('change'));
-        }
+        // Re-run from the cached bytes rather than poking the file input, so
+        // this works for a dropped file too.
+        if (lastBytes && lastFile) analyse(lastBytes, lastFile);
       });
       out.dim('Drop any file above. Nothing is uploaded — it is read and');
       out.dim('analysed inside this tab, which is what makes it safe to point');

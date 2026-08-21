@@ -7,7 +7,7 @@
    whole point — a cold shrine does not make anyone smile.
 
    Everything that moves here is slow. Nothing loops faster than four seconds,
-   most things take ten to ninety, and the breathing ring is deliberately
+   most things take ten to ninety, and the breathing cycle is deliberately
    4s in / 6s out because a longer exhale is what actually settles a nervous
    system. If you speed any of this up, the page stops working.
 
@@ -62,8 +62,11 @@
   /* The site header sits above this, so a plain 100svh hero would always hang
      its last ~140px below the fold. --b-header is measured in buddha.js after
      the shared header partial swaps in, and falls back to 0 without JS. */
-  min-height: calc(100svh - var(--b-header, 0px));
+  /* vh first as the fallback, svh second: the later declaration wins, so a
+     browser that understands svh takes it and one that does not keeps vh.
+     Written the other way round the svh line was dead everywhere. */
   min-height: calc(100vh - var(--b-header, 0px));
+  min-height: calc(100svh - var(--b-header, 0px));
   display: grid;
   grid-template-rows: 1fr auto;
   overflow: hidden;
@@ -164,8 +167,8 @@
   filter: drop-shadow(0 0 60px rgba(255, 198, 120, 0.28));
 }
 
-/* The halo breathes on the same 10s cycle as the guide ring, so the whole
-   scene inhales and exhales together. */
+/* The halo breathes on the same 10s cycle as the figure and his aura, so the
+   whole scene inhales and exhales together. */
 .b-halo {
   position: absolute;
   left: 50%;
@@ -370,8 +373,10 @@
    5. Breathing guide
    --------------------------------------------------------------------------
    The one interactive thing on the page, and the one most likely to actually
-   change how a visitor feels. Ring and label share the 10s cycle with the
-   halo; buddha.js only writes the label, so the two can never drift apart.
+   change how a visitor feels. There is no ring here — the label is the only
+   element this section owns. What the visitor watches expand and settle is the
+   figure, his aura and the halo, all on the same 10s cycle (§2 and §8), and
+   buddha.js runs the label off that same 10s clock so they cannot drift apart.
    -------------------------------------------------------------------------- */
 
 .b-breath {
@@ -503,7 +508,7 @@
    --------------------------------------------------------------------------
    Four idle motions, all slow, all on different periods so they never fall
    into lockstep and start looking mechanical: he breathes on 10s with the
-   guide ring, the aura pulses on 10s with him, the light in his hands
+   halo, the aura pulses on 10s with him, the light in his hands
    twinkles on 3.2s, and every 13s he opens his eyes for a moment and looks
    out. That last one is the whole trick — a face that is always closed is an
    ornament, and a face that opens now and then is a presence.
@@ -878,9 +883,16 @@
 }
 .b-audio-vol:focus-visible { outline: 2px solid #6b3f18; outline-offset: 4px; }
 
-/* On a phone the slider costs more room than it earns; the toggle stays. */
+/* On a phone the slider costs more room than it earns *while it is inert* —
+   but it was display:none unconditionally, which left phone visitors with no
+   way to change the volume at all, on the one device most likely to be
+   somewhere the sound needs turning down. So it is hidden only while there is
+   nothing to turn down, and appears with the sound it controls. Narrower than
+   the desktop 5.5rem: at a 320px viewport the cluster then still starts about
+   120px in from the left edge, well clear of anything else in that corner. */
 @media (max-width: 560px) {
-  .b-audio-vol { display: none; }
+  .b-audio-vol { display: none; width: 4.5rem; }
+  .b-audio-toggle.is-on ~ .b-audio-vol { display: block; }
   .b-audio { right: calc(clamp(0.75rem, 2vw, 1.4rem) + 3.2rem); }
 }
 

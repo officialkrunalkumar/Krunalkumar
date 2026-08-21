@@ -206,6 +206,16 @@
     ];
 
     var cwnd = 1;
+    /* The window the algorithm is asking for, before the link's ceiling is
+       applied; cwnd is min(wnd, capacity), i.e. what actually goes on the
+       wire. The two are only ever different while capacity binds, and keeping
+       them apart is what lets slow start end on time: cwnd used to be clamped
+       to capacity BEFORE being tested against ssthresh, so a capacity below
+       ssthresh (the control accepts 6 against a default ssthresh of 16) left
+       the test permanently unsatisfiable and the phase never flipped —
+       forty round trips captioned "it doubles each round trip" over a curve
+       that had been horizontal since round four. */
+    var wnd = 1;
     var ssthresh = initialSsthresh;
     var phase = 'slow start';
     var frames = [];
@@ -220,7 +230,9 @@
         event = 'Connection opens with cwnd = 1 MSS. TCP has no idea how fast the path is, so it ' +
           'starts slow and probes upward.';
       } else if (loss && loss.kind === 'triple') {
+        // halve what was actually in flight, not what the algorithm wished for
         ssthresh = Math.max(2, Math.floor(cwnd / 2));
+        wnd = ssthresh;
         cwnd = ssthresh;                    // fast recovery: halve, don't reset
         phase = 'congestion avoidance';
         event = 'Three duplicate ACKs — a single segment was lost but packets are still flowing. ' +
@@ -228,14 +240,17 @@
           ' rather than collapsing. This is the top of a sawtooth tooth.';
       } else if (loss && loss.kind === 'timeout') {
         ssthresh = Math.max(2, Math.floor(cwnd / 2));
+        wnd = 1;
         cwnd = 1;                           // timeout: back to square one
         phase = 'slow start';
         event = 'A retransmission timeout — the pipe may have emptied. This is the severe signal: ' +
           'ssthresh drops to ' + ssthresh + ' and cwnd resets all the way to 1. Slow start begins again.';
       } else if (phase === 'slow start') {
-        cwnd = Math.min(capacity, cwnd * 2);       // exponential per RTT
-        if (cwnd >= ssthresh) {
-          cwnd = ssthresh;
+        var flipped = false;
+        wnd = wnd * 2;                             // exponential per RTT
+        if (wnd >= ssthresh) {
+          wnd = ssthresh;
+          flipped = true;
           phase = 'congestion avoidance';
           event = 'cwnd has reached ssthresh (' + ssthresh + '). Slow start ends and congestion ' +
             'avoidance begins — from here cwnd grows by just one MSS per round trip.';
@@ -243,10 +258,30 @@
           event = 'Slow start: every ACK bumps cwnd, so it doubles each round trip. Exponential ' +
             'growth, but from a tiny base — this is TCP feeling for the ceiling.';
         }
+        /* The ceiling gets its own words. A flat line captioned "it doubles
+           each round trip" teaches the wrong thing, and the flatness is the
+           interesting part: this is the link, not the algorithm. */
+        if (wnd > capacity) {
+          event = (flipped
+            ? 'Slow start ends here — at the link ceiling rather than at ssthresh (' +
+              ssthresh + '). '
+            : '') +
+            'The window wants ' + wnd + ' MSS and the path carries only ' + capacity +
+            ', so cwnd is pinned at the ceiling and the curve goes flat. The extra segments ' +
+            'would only pile up in a queue, not arrive any sooner.';
+        }
+        cwnd = Math.min(capacity, wnd);
       } else {
-        cwnd = Math.min(capacity, cwnd + 1);       // additive increase
-        event = 'Congestion avoidance: cwnd creeps up by one MSS per round trip, probing gently ' +
-          'for more bandwidth without provoking loss.';
+        wnd = wnd + 1;                             // additive increase
+        if (wnd > capacity) {
+          event = 'Congestion avoidance would add one more MSS, but the path is already full at ' +
+            capacity + '. cwnd holds at the ceiling — this is what probing gently looks like once ' +
+            'the probe has found the edge, and it stays here until a loss knocks it back down.';
+        } else {
+          event = 'Congestion avoidance: cwnd creeps up by one MSS per round trip, probing gently ' +
+            'for more bandwidth without provoking loss.';
+        }
+        cwnd = Math.min(capacity, wnd);
       }
 
       delivered += cwnd;

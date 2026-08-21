@@ -107,6 +107,42 @@
   var SUSPICIOUS_TLD = ['zip','mov','xyz','top','click','link','gq','cf','tk','ml',
     'work','fit','review','country','stream','download'];
 
+  /* Multi-part public suffixes. Taking the last two labels blindly reported
+     the registrable domain of news.bbc.co.uk as "co.uk" — a suffix nobody can
+     register, and the wrong half of the name to be reading in a phishing
+     check. The full public suffix list is ~10,000 entries and changes weekly;
+     that is a bigger download than this entire page, so this is the subset
+     that actually turns up: the country second-level domains, and the hosting
+     suffixes where every customer gets a neighbour on the same parent name.
+     Anything not listed falls back to the previous last-two-labels rule. */
+  var MULTI_SUFFIX = [
+    'co.uk','org.uk','me.uk','ac.uk','gov.uk','net.uk','sch.uk','ltd.uk','plc.uk',
+    'co.jp','ne.jp','or.jp','ac.jp','go.jp','com.au','net.au','org.au','edu.au',
+    'gov.au','co.nz','net.nz','org.nz','govt.nz','ac.nz','co.za','org.za',
+    'co.in','net.in','org.in','gov.in','ac.in','edu.in','co.kr','or.kr',
+    'co.il','ac.il','org.il','co.th','ac.th','in.th','com.br','com.cn','net.cn',
+    'org.cn','gov.cn','com.mx','com.tr','gov.tr','com.ar','com.sg','com.hk',
+    'com.tw','com.pl','com.ua','com.my','com.ph','com.vn','com.pk','com.eg',
+    'com.sa','com.ng','com.co','com.pe','com.ec','com.uy','com.ve','com.es',
+    'ac.at','co.at','or.at','com.de','com.ru','net.ru','org.ru',
+    'github.io','gitlab.io','pages.dev','workers.dev','vercel.app','netlify.app',
+    'herokuapp.com','firebaseapp.com','web.app','glitch.me','repl.co',
+    'blogspot.com','wordpress.com','000webhostapp.com','azurewebsites.net',
+    'duckdns.org','dpdns.org','no-ip.org','ddns.net','hopto.org','serveo.net',
+    'ngrok.io','ngrok-free.app','trycloudflare.com','onion.to'
+  ];
+
+  /* The registrable domain: suffix plus the one label to its left — the part
+     somebody actually bought. Returns null when there is nothing registrable,
+     which is the honest answer for "localhost" and for an IP literal. */
+  function registrableDomain(labels) {
+    if (labels.length < 2) return null;
+    var lastTwo = labels.slice(-2).join('.').toLowerCase();
+    var take = MULTI_SUFFIX.indexOf(lastTwo) !== -1 ? 3 : 2;
+    if (labels.length < take) return null;
+    return labels.slice(-take).join('.');
+  }
+
   function analyse(raw) {
     out.clear();
     var text = String(raw).trim();
@@ -141,18 +177,34 @@
     out.heading('Host');
     var labels = url.hostname.split('.');
     var tld = labels[labels.length - 1].toLowerCase();
-    var registrable = labels.slice(-2).join('.');
-    out.row('registrable domain', registrable);
-    out.row('subdomain depth', (labels.length - 2) + ' level(s)',
-            labels.length > 4 ? 't-warn' : null);
-    if (labels.length > 4) {
-      out.dim('Deep subdomains are often used to bury a real domain far to the');
-      out.dim('right, where a phone browser truncates it out of view.');
+    var ipLiteral = /^\d{1,3}(\.\d{1,3}){3}$/.test(url.hostname) ||
+                    url.hostname.charAt(0) === '[';   // [::1] and friends
+    var registrable = ipLiteral ? null : registrableDomain(labels);
+    if (registrable) {
+      out.row('registrable domain', registrable);
+      // Depth is counted from the registrable domain, not from a fixed two
+      // labels. The old arithmetic gave news.bbc.co.uk a depth of 2 and gave
+      // a single-label host such as localhost a depth of -1.
+      var depth = labels.length - registrable.split('.').length;
+      out.row('subdomain depth', depth + ' level(s)', depth > 2 ? 't-warn' : null);
+      if (depth > 2) {
+        out.dim('Deep subdomains are often used to bury a real domain far to the');
+        out.dim('right, where a phone browser truncates it out of view.');
+      }
+    } else if (!ipLiteral) {
+      if (labels.length < 2) {
+        out.row('registrable domain', 'none — "' + url.hostname + '" is a single label');
+        out.dim('A bare name with no dot is not a public domain: it resolves through');
+        out.dim('the hosts file, or through local DNS suffix search on this network.');
+      } else {
+        out.row('registrable domain',
+                'none — "' + url.hostname + '" is a public suffix, not a registered name');
+      }
     }
-    if (SUSPICIOUS_TLD.indexOf(tld) !== -1) {
+    if (!ipLiteral && SUSPICIOUS_TLD.indexOf(tld) !== -1) {
       out.row('TLD', '.' + tld + ' — over-represented in abuse reports', 't-warn');
     }
-    if (SHORTENERS.indexOf(registrable.toLowerCase()) !== -1) {
+    if (registrable && SHORTENERS.indexOf(registrable.toLowerCase()) !== -1) {
       out.line('');
       out.warn('This is a link shortener. The real destination is hidden until it');
       out.warn('is followed — which this tool deliberately will not do.');

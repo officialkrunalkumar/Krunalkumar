@@ -288,8 +288,25 @@
 
   // Tab would leave the field, and in a code passage it is a character the
   // user genuinely needs.
+  //
+  // Holding it until the passage is finished still leaves a keyboard user
+  // stuck mid-run with no way out but the mouse, so Escape arms one
+  // pass-through and the next Tab moves focus normally (WCAG 2.1.2). Any other
+  // key disarms it, so typing a passage full of tabs is unaffected.
+  var tabWillEscape = false;
   el.input.addEventListener('keydown', function (event) {
-    if (event.key !== 'Tab' || finished) return;
+    if (event.key === 'Escape') { tabWillEscape = true; return; }
+    if (event.key !== 'Tab') {
+      // Same reason as cpu.js: a bare Shift keydown precedes Shift+Tab, so
+      // disarming on it would break the backward escape.
+      if (event.key !== 'Shift' && event.key !== 'Control' &&
+          event.key !== 'Alt' && event.key !== 'Meta') {
+        tabWillEscape = false;
+      }
+      return;
+    }
+    if (finished) return;
+    if (tabWillEscape) { tabWillEscape = false; return; }
     event.preventDefault();
     var start = el.input.selectionStart;
     el.input.value = el.input.value.slice(0, start) + '    ' + el.input.value.slice(el.input.selectionEnd);

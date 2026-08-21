@@ -285,7 +285,15 @@
       var cWrap = el('label', 'hl-field'); cWrap.appendChild(el('span', null, 'Leave a comment'));
       var c = el('textarea'); c.rows = 3; c.placeholder = 'Nice site!'; cWrap.appendChild(c);
       var go = el('button', 'hl-btn', 'Post comment');
-      var label = el('p', 'hl-label', 'The moderator\'s view of the guestbook (isolated, opaque-origin iframe):');
+      /* Says what the frame actually is. It used to read "isolated,
+         opaque-origin iframe", which allow-same-origin below makes untrue — and
+         on a page teaching people how sandboxing works, describing the sandbox
+         wrongly is worse than saying nothing. What contains the payload here is
+         the guestbook's own response CSP (connect-src 'none'), not the origin
+         it runs in. */
+      var label = el('p', 'hl-label',
+        'The moderator\'s view of the guestbook (sandboxed same-origin iframe, ' +
+        'served with connect-src \'none\' so nothing can be sent out):');
       var frame = el('iframe', 'hl-frame');
       /* The victim is loaded from a real URL, not srcdoc, and that is a fix
          for a genuine bug rather than a detail. A srcdoc or blob: frame — and,

@@ -32,6 +32,11 @@
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-research.jpg" />
     <title>Krunalkumar Shah Research | Publications & Ideas</title>
+    <!-- The paper's byline reads "Krunalkumar D. Shah" while the other 43 #person nodes that
+         assert a name (of 157 total across 82 pages) say "Krunalkumar Shah". Both used to be
+         asserted as `name` on the SAME @id, i.e. two competing names for one entity. The byline
+         is now an alternateName here, and the author list below references the node by @id
+         without restating a name. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -39,6 +44,7 @@
         "@id": "https://krunalkumar.dpdns.org/#person",
         "name": "Krunalkumar Shah",
         "url": "https://krunalkumar.dpdns.org/",
+        "alternateName": "Krunalkumar D. Shah",
         "jobTitle": "Researcher, Engineer, Cybersecurity Consultant",
         "description": "Research interests spanning cybersecurity, automation, and applied technology innovation."
       }
@@ -50,7 +56,7 @@
         "headline": "Security Against Fork Bomb Attack in Linux Based Systems",
         "image": "https://krunalkumar.dpdns.org/assets/images/og-research.jpg",
         "author": [
-          { "@type": "Person", "@id": "https://krunalkumar.dpdns.org/#person", "name": "Krunalkumar D. Shah" },
+          { "@type": "Person", "@id": "https://krunalkumar.dpdns.org/#person" },
           { "@type": "Person", "name": "Krunal V. Patel" }
         ],
         "datePublished": "2019-04",
@@ -182,37 +188,39 @@
 
         <div class="content-grid two-up">
           <article class="info-card">
-            <h3>The problem</h3>
+            <h3>The problem I set out to solve</h3>
             <p>
               A fork bomb is a denial-of-service attack in which a process endlessly replicates itself until the
-              process table and memory are exhausted, freezing the system. Because creating a process is a legitimate
-              operation that needs no special privileges, even hardened Linux systems are vulnerable — availability,
-              one of the three pillars of information security, breaks down.
+              process table and memory are exhausted, freezing the system. What drew me to it is that creating a
+              process is a legitimate operation needing no special privileges, so even hardened Linux systems are
+              vulnerable — availability, one of the three pillars of information security, breaks down.
             </p>
           </article>
           <article class="info-card">
-            <h3>Why existing defenses fall short</h3>
+            <h3>Why the existing defenses weren’t enough</h3>
             <p>
               Static process limits reject legitimate work once the cap is hit. Rate limits misfire on fork-heavy
               software such as CAD tools. Name-based blacklists never forgive: a legitimate process that shares a
-              name with a past offender is killed forever. Each approach trades one failure mode for another.
+              name with a past offender is killed forever. Each approach trades one failure mode for another, and
+              that is the gap I set out to close.
             </p>
           </article>
           <article class="info-card">
-            <h3>The proposed defense</h3>
+            <h3>The defense I proposed</h3>
             <p>
-              The paper combines name-based detection with process resource quarantine. New processes are monitored
-              for their fork rate; offenders are killed and their name recorded. When a recorded name reappears, it is
-              not killed outright — it runs inside a resource quarantine and is inspected. If it behaves, it is
-              released and removed from the list, eliminating permanent false positives.
+              I combined name-based detection with something I call process resource quarantine. New processes are
+              monitored for their fork rate; offenders are killed and their name recorded. When a recorded name
+              reappears, I do not kill it outright — it runs inside a resource quarantine and is inspected. If it
+              behaves, it is released and removed from the list, so a false positive corrects itself instead of
+              lasting forever.
             </p>
           </article>
           <article class="info-card">
-            <h3>Results</h3>
+            <h3>What my results showed</h3>
             <p>
-              Evaluated with a bash fork bomb on Xubuntu 18.04 (kernel 4.15), the system identified an attack in as
-              little as 44&nbsp;ms at a threshold of 500 forks, while known offenders were handled instantly by name.
-              The system stayed responsive and available throughout the attack.
+              I evaluated the system with a bash fork bomb on Xubuntu 18.04 (kernel 4.15). It identified an attack in
+              as little as 44&nbsp;ms at a threshold of 500 forks, while known offenders were handled instantly by
+              name — and the machine stayed responsive and available throughout, which was the whole point.
             </p>
           </article>
         </div>
@@ -231,7 +239,7 @@
 
         <div class="lab-cta">
           <p class="lab-cta-text">
-            <strong>See it happen.</strong> The behaviour this paper describes &mdash; a process
+            <strong>See it happen.</strong> The behavior this paper describes &mdash; a process
             table filling until the system stops responding &mdash; can be watched safely in a real
             Linux machine that boots inside your browser. It is capped at 64&nbsp;MB and sealed off
             from your computer, so setting off a fork bomb there costs you one click on Reboot.
@@ -274,8 +282,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

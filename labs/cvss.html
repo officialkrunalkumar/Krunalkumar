@@ -78,6 +78,14 @@
                 },
                 {
                         "@type": "Question",
+                        "name": "What about CVSS v4.0?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It exists. FIRST published v4.0 in 2023, and it is a restructuring rather than a tweak: it adds Attack Requirements alongside Attack Complexity, splits the single impact triad into Vulnerable System impact (VC, VI, VA) and Subsequent System impact (SC, SI, SA), and reorganises the optional metrics into a Threat group that replaces Temporal and a reworked Environmental group. This calculator implements v3.1, which is still the version most advisories and CVE records carry, so paste v3.1 vectors here. A v4.0 string shares only some of its metric names with v3.1 and will not score correctly."
+                        }
+                },
+                {
+                        "@type": "Question",
                         "name": "Should I patch everything above 7.0 first?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
@@ -201,6 +209,19 @@
         </ul>
       </section>
 
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
       <div class="lab lab-tool" id="cvsstool">
         <div class="lab-gate" id="lab-gate">
           <div class="lab-gate-card">
@@ -366,6 +387,10 @@
             <div>The metrics are identical. 3.1 clarified definitions and fixed the rounding function, which is where 3.0 implementations occasionally disagreed by 0.1.</div>
           </details>
           <details class="lab-faq">
+            <summary>What about CVSS v4.0?</summary>
+            <div>It exists. FIRST published v4.0 in 2023, and it is a restructuring rather than a tweak: it adds Attack Requirements alongside Attack Complexity, splits the single impact triad into Vulnerable System impact (VC, VI, VA) and Subsequent System impact (SC, SI, SA), and reorganises the optional metrics into a Threat group that replaces Temporal and a reworked Environmental group. This calculator implements v3.1, which is still the version most advisories and CVE records carry, so paste v3.1 vectors here. A v4.0 string shares only some of its metric names with v3.1 and will not score correctly.</div>
+          </details>
+          <details class="lab-faq">
             <summary>Should I patch everything above 7.0 first?</summary>
             <div>Not necessarily. CVSS does not know your environment. A high-scoring flaw in software you do not expose can wait behind a medium-scoring flaw on your perimeter. Use CVSS to compare, and exposure and exploitation data to prioritise.</div>
           </details>
@@ -429,8 +454,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

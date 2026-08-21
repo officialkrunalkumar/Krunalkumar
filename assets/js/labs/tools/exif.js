@@ -42,6 +42,7 @@
   function readExif(bytes) {
     if (bytes[0] !== 0xff || bytes[1] !== 0xd8) return { error: 'not-jpeg' };
     var offset = 2, dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    var sawOtherApp1 = false;
     while (offset < bytes.length - 4) {
       if (bytes[offset] !== 0xff) break;
       var marker = bytes[offset + 1];
@@ -50,13 +51,17 @@
         var start = offset + 4;
         var tag = String.fromCharCode.apply(null, bytes.subarray(start, start + 4));
         if (tag === 'Exif') return parseTiff(dv, start + 6);
-        // APP1 that is not EXIF is usually XMP.
-        return { xmpOnly: true };
+        // APP1 that is not EXIF is usually XMP — and a JPEG may carry several
+        // APP1 segments. Editors routinely write their XMP block ahead of the
+        // camera's Exif block, so returning on the first APP1 answered "no
+        // EXIF" for most phone photos that had ever been through an editor.
+        // Note it and keep walking until the Exif one turns up.
+        sawOtherApp1 = true;
       }
       if (marker === 0xd9 || marker === 0xda) break;
       offset += 2 + size;
     }
-    return { none: true };
+    return sawOtherApp1 ? { xmpOnly: true } : { none: true };
   }
 
   function parseTiff(dv, base) {

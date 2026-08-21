@@ -454,6 +454,18 @@
       setStatus('Nobody connected', 'bad');
       el.input.disabled = true;
       el.send.disabled = true;
+      // The call is over, so the capture has to end with it.
+      //
+      // stopMedia() used to be reachable only from the Stop button and from
+      // pagehide, which covered "I hung up" and "I left the page" but not
+      // "they hung up" — the far side closing its tab, or the connection
+      // failing, left this browser still holding the camera and microphone
+      // with nobody to send them to. The indicator light stays on, which is
+      // exactly the thing that makes people distrust a page.
+      //
+      // Guarded on the last peer, not on any peer: in a room of three, one
+      // person leaving is not the end of the call.
+      if (localStream) stopMedia();
     }
   }
 
@@ -514,6 +526,9 @@
         return;
       }
 
+      if (msg.k === 'file-offer')   { fileOffer(peer, msg); return; }
+      if (msg.k === 'file-accept')  { onFileReply(peer, msg, true); return; }
+      if (msg.k === 'file-decline') { onFileReply(peer, msg, false, msg.why); return; }
       if (msg.k === 'file-start') { fileStart(peer, msg); return; }
       if (msg.k === 'file-end') { fileEnd(peer); return; }
       if (msg.k === 'file-abort') { fileAbort(peer, msg.why); return; }
@@ -795,7 +810,13 @@
       var pc = peers[0].pc;
       stream.getTracks().forEach(function (t) { pc.addTrack(t, stream); });
       trace('added ' + stream.getTracks().length + ' local track(s) — renegotiating', 'good');
-      if (el.avStop) el.avStop.hidden = false;
+      // A voice call never opened the camera, so "Stop camera" was the only
+      // way to release the microphone and did not say so. The one control has
+      // to name whatever it is actually holding.
+      if (el.avStop) {
+        el.avStop.hidden = false;
+        el.avStop.textContent = withVideo ? 'Stop camera' : 'Stop microphone';
+      }
       if (el.avVoice) el.avVoice.disabled = true;
       if (el.avVideo) el.avVideo.disabled = true;
       say('system', withVideo ? 'Camera and microphone on.' : 'Microphone on.');
@@ -819,6 +840,9 @@
   }
 
   function stopMedia() {
+    // Read it off the stream rather than remembering it: stopMedia() is also
+    // reached from dropPeer(), which knows nothing about how the call started.
+    var hadVideo = !!(localStream && localStream.getVideoTracks().length);
     if (localStream) {
       localStream.getTracks().forEach(function (t) { t.stop(); });
       localStream = null;
@@ -828,7 +852,7 @@
     if (el.avStop) el.avStop.hidden = true;
     if (el.avVoice) el.avVoice.disabled = false;
     if (el.avVideo) el.avVideo.disabled = false;
-    say('system', 'Camera and microphone off.');
+    say('system', hadVideo ? 'Camera and microphone off.' : 'Microphone off.');
   }
 
   if (el.avVoice) el.avVoice.addEventListener('click', function () { startMedia(false); });
@@ -855,16 +879,31 @@
      is a reliable way to kill the tab. So the sender pauses whenever the
      buffer passes LOW_WATER and waits for bufferedamountlow.
 
-     Where it lands: assembling a gigabyte of chunks into a Blob needs a
-     gigabyte of RAM. Chrome and Edge can hand out a writable file handle up
-     front, and then each chunk goes straight to disk and memory never grows.
-     Without that API the transfer is capped at 512 MB and held in memory,
-     which is honest about what the browser can actually survive.
+     Where it lands, and why there is an Accept step. Assembling a gigabyte of
+     chunks into a Blob needs a gigabyte of RAM, so anything genuinely large has
+     to stream to disk. Chrome and Edge will hand out a writable file handle for
+     that — but showSaveFilePicker() demands transient user activation, and a
+     file-start arriving on the data channel is not one: the receiver clicked
+     nothing. Asking there threw SecurityError on every single incoming file, so
+     the streaming path never once ran and every transfer went through memory.
+
+     The fix is to make the receiver click. The sender now OFFERS a file and
+     waits; the receiver sees the name and size and presses Accept; that press
+     is the activation, the picker opens, and each chunk goes straight to disk
+     with memory flat. Size is then bounded by the disk, not the tab — which is
+     what "send any file" has to mean.
+
+     A browser without the picker (Firefox, Safari today) still takes the memory
+     path and still declines anything over MAX_BUFFERED, because a 700 MB Blob
+     really would kill the tab. It declines out loud, at offer time, instead of
+     accepting and dying mid-transfer.
+
+     The offer step is worth having on its own: nothing lands in memory, or on
+     disk, that the receiver did not agree to first.
      ------------------------------------------------------------------ */
 
   var CHUNK = 16 * 1024;
   var LOW_WATER = 256 * 1024;
-  var MAX_STREAMED = Infinity;                   // streaming to disk: no ceiling
   var MAX_BUFFERED = 512 * 1024 * 1024;          // what a Blob can survive
 
   function canStream() {
@@ -895,31 +934,53 @@
 
   var sending = false;
 
+  /* The offer currently awaiting replies, or null. One at a time, matching the
+     existing `sending` guard. */
+  var offer = null;
+
   function sendFile(file) {
-    if (sending) return;
+    if (sending || offer) return;
     var targets = [];
     for (var i = 0; i < peers.length; i++) {
       if (peers[i].chan && peers[i].chan.readyState === 'open') targets.push(peers[i]);
     }
     if (!targets.length) return;
 
-    var cap = canStream() ? MAX_STREAMED : MAX_BUFFERED;
-    if (file.size > cap) {
-      say('system', 'That file is ' + fmtBytes(file.size) + '. The limit here is ' +
-        fmtBytes(cap) + (canStream() ? '.' :
-        ' because this browser cannot stream to disk — Chrome or Edge can go far higher.'));
-      return;
-    }
-
-    sending = true;
+    // No size check here any more. The sender cannot know whether the far side
+    // can stream to disk, and guessing produced the old bug in both directions:
+    // it refused files a streaming receiver could have taken, and accepted ones
+    // a memory-only receiver could not. The receiver decides, and says so.
     var id = uid();
-    var started = performance.now();
-    trace('sending ' + file.name + ' (' + fmtBytes(file.size) + ') to ' +
+    offer = { id: id, file: file, targets: targets, accepted: [], pending: targets.length };
+    trace('offering ' + file.name + ' (' + fmtBytes(file.size) + ') to ' +
           targets.length + ' peer' + (targets.length > 1 ? 's' : ''), 'good');
-
+    say('system', 'Offered ' + file.name + ' (' + fmtBytes(file.size) + '). Waiting for ' +
+        (targets.length > 1 ? 'the others' : 'them') + ' to accept.');
     for (i = 0; i < targets.length; i++) {
-      send(targets[i], { k: 'file-start', id: id, name: file.name.slice(0, 120), size: file.size });
+      send(targets[i], { k: 'file-offer', id: id, name: file.name.slice(0, 120), size: file.size });
     }
+  }
+
+  /* A reply to our offer. Chunks start only once every peer has answered, so
+     one pump feeds all acceptors — the same shape the old code had. */
+  function onFileReply(peer, msg, ok, why) {
+    if (!offer || msg.id !== offer.id) return;
+    if (ok) offer.accepted.push(peer);
+    else say('system', (peer.name || 'They') + ' declined ' + offer.file.name +
+             (why ? ' — ' + why : '') + '.');
+    offer.pending -= 1;
+    if (offer.pending > 0) return;
+
+    var o = offer;
+    offer = null;
+    if (!o.accepted.length) { say('system', 'Nobody accepted, so nothing was sent.'); return; }
+    beginSend(o.file, o.id, o.accepted);
+  }
+
+  function beginSend(file, id, targets) {
+    if (sending) return;
+    sending = true;
+    var started = performance.now();
 
     var offset = 0;
     var reader = new FileReader();
@@ -968,41 +1029,131 @@
 
   /* ---- receiving ---- */
 
-  function fileStart(peer, msg) {
-    var cap = canStream() ? MAX_STREAMED : MAX_BUFFERED;
-    if (msg.size > cap) {
-      send(peer, { k: 'file-abort', why: 'too large for the receiving browser' });
-      say('system', 'Refused ' + msg.name + ': ' + fmtBytes(msg.size) + ' is over this browser\'s limit.');
+  /* An incoming offer. Nothing is allocated yet — this only draws a button.
+
+     The button IS the fix. showSaveFilePicker() needs transient user
+     activation, so it has to be called from inside a real click handler; called
+     from the data-channel message handler it threw SecurityError every time and
+     the streaming path never ran. Clicking Accept gives it the activation it
+     wants, so the writer opens and chunks go to disk instead of to RAM. */
+  function fileOffer(peer, msg) {
+    var name = String(msg.name || 'file').slice(0, 120);
+    var size = Number(msg.size);
+    var id = msg.id;
+
+    // A stranger's JSON. A missing or non-numeric size compares false against
+    // every limit, so it has to be pinned to a real number before it is used.
+    if (!(size >= 0)) {
+      send(peer, { k: 'file-decline', id: id, why: 'it did not say how big it is' });
+      say('system', 'Refused ' + name + ': it did not say how big it is.');
       return;
     }
-    peer.rx = {
-      name: msg.name, size: msg.size, got: 0,
-      started: performance.now(), parts: [], writer: null
-    };
-    say('system', (peer.name || 'They') + ' is sending ' + msg.name +
-        ' (' + fmtBytes(msg.size) + ').');
 
-    if (canStream()) {
-      // Asking now means every chunk can go straight to disk.
-      window.showSaveFilePicker({ suggestedName: msg.name })
+    // Only the memory path has a ceiling, and only because a Blob that large
+    // takes the tab down. Say so at offer time rather than dying mid-transfer.
+    if (!canStream() && size > MAX_BUFFERED) {
+      send(peer, { k: 'file-decline', id: id, why: 'this browser cannot stream to disk' });
+      say('system', 'Refused ' + name + ' (' + fmtBytes(size) + '): this browser has no ' +
+          'file-save API, so it would have to hold the whole thing in memory. ' +
+          'Chrome or Edge can take it at any size.');
+      return;
+    }
+
+    var row = document.createElement('div');
+    row.className = 'chat-msg is-system';
+    var label = document.createElement('span');
+    label.textContent = (peer.name || 'They') + ' want' + (peer.name ? 's' : '') +
+                        ' to send ' + name + ' (' + fmtBytes(size) + '). ';
+    row.appendChild(label);
+
+    var accept = document.createElement('button');
+    accept.type = 'button';
+    accept.className = 'chat-file-accept';
+    accept.textContent = canStream() ? 'Accept and save…' : 'Accept';
+
+    var decline = document.createElement('button');
+    decline.type = 'button';
+    decline.className = 'chat-file-decline';
+    decline.textContent = 'Decline';
+
+    var settle = function (text) {
+      label.textContent = text;
+      if (accept.parentNode) accept.parentNode.removeChild(accept);
+      if (decline.parentNode) decline.parentNode.removeChild(decline);
+    };
+
+    decline.addEventListener('click', function () {
+      send(peer, { k: 'file-decline', id: id, why: 'declined' });
+      settle('Declined ' + name + '.');
+    });
+
+    accept.addEventListener('click', function () {
+      accept.disabled = true;
+      decline.disabled = true;
+      peer.rx = { name: name, size: size, got: 0, started: performance.now(),
+                  parts: [], writer: null };
+
+      if (!canStream()) {
+        settle('Receiving ' + name + ' (' + fmtBytes(size) + ')…');
+        send(peer, { k: 'file-accept', id: id });
+        return;
+      }
+      // Inside the click, so the activation is live and the picker opens.
+      window.showSaveFilePicker({ suggestedName: name })
         .then(function (handle) { return handle.createWritable(); })
         .then(function (w) {
+          if (!peer.rx) { try { w.abort(); } catch (e) {} return; }
           peer.rx.writer = w;
-          for (var i = 0; i < peer.rx.parts.length; i++) w.write(peer.rx.parts[i]);
-          peer.rx.parts = [];
+          settle('Receiving ' + name + ' (' + fmtBytes(size) + ') straight to disk…');
+          send(peer, { k: 'file-accept', id: id });
         })
         .catch(function () {
-          // Declined the dialog: fall back to memory, within the safe cap.
-          if (msg.size > MAX_BUFFERED) {
-            send(peer, { k: 'file-abort', why: 'no destination chosen' });
-            fileAbort(peer, 'no destination chosen');
+          // The dialog was dismissed, or the picker is unavailable after all.
+          // Fall back to memory only if it will actually fit.
+          if (size <= MAX_BUFFERED) {
+            settle('Receiving ' + name + ' (' + fmtBytes(size) + ') into memory…');
+            send(peer, { k: 'file-accept', id: id });
+            return;
           }
+          peer.rx = null;
+          send(peer, { k: 'file-decline', id: id, why: 'no save location chosen' });
+          settle('Did not save ' + name + ' — no location was chosen, and it is too ' +
+                 'large to hold in memory.');
         });
+    });
+
+    row.appendChild(accept);
+    row.appendChild(decline);
+    el.log.appendChild(row);
+    el.log.scrollTop = el.log.scrollHeight;
+  }
+
+  /* Kept for a peer still running an older cached copy of this file, which
+     sends file-start and begins pumping immediately without waiting. */
+  function fileStart(peer, msg) {
+    var name = String(msg.name || 'file').slice(0, 120);
+    var size = Number(msg.size);
+    if (!(size >= 0 && size <= MAX_BUFFERED)) {
+      send(peer, { k: 'file-abort', why: 'too large without an accept step' });
+      say('system', 'Refused ' + name + ': the sender did not wait for an accept.');
+      return;
     }
+    peer.rx = { name: name, size: size, got: 0, started: performance.now(),
+                parts: [], writer: null };
+    say('system', (peer.name || 'They') + ' is sending ' + name + ' (' + fmtBytes(size) + ').');
   }
 
   function onChunk(peer, buf) {
     if (!peer.rx) return;
+    // The size in file-start is the sender's claim, not a promise. A peer that
+    // keeps pushing 16 KB chunks past it grows parts[] without any bound —
+    // 512 MB was checked once, at the header, and never again. Stop at the
+    // announced size instead of trusting the far side to.
+    if (peer.rx.got + buf.byteLength > peer.rx.size) {
+      send(peer, { k: 'file-abort', why: 'sent more than it announced' });
+      fileAbort(peer, 'the sender went past the size it announced');
+      return;
+    }
     peer.rx.got += buf.byteLength;
     if (peer.rx.writer) peer.rx.writer.write(buf);
     else peer.rx.parts.push(buf);

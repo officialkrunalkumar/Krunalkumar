@@ -18,7 +18,7 @@
     <meta property="og:title" content="Krunalkumar Shah | Cybersecurity & Automation Consultant" />
     <meta
       property="og:description"
-      content="Explore the portfolio of Krunalkumar Shah, featuring research, automation, cybersecurity, and practical digital solutions."
+      content="Cybersecurity professional and published Linux security researcher, building AI-driven automation."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/" />
@@ -31,7 +31,7 @@
     <meta name="twitter:title" content="Krunalkumar Shah | Cybersecurity & Automation Consultant" />
     <meta
       name="twitter:description"
-      content="Explore the portfolio of Krunalkumar Shah, featuring research, automation, cybersecurity, and practical digital solutions."
+      content="Cybersecurity professional and published Linux security researcher, building AI-driven automation."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-image.jpg" />
     <title>Krunalkumar Shah | Cybersecurity & Automation Consultant</title>
@@ -220,7 +220,7 @@
           </div>
         </nav>
       </header>
-    <main id="main-content">
+    <main id="main-content" class="page-shell">
       <section class="hero-section" id="about">
         <div class="hero-copy">
           <p class="eyebrow">Researcher • Engineer • Consultant • Cybersecurity Professional</p>
@@ -245,7 +245,15 @@
         </div>
 
         <div class="hero-card">
-          <img src="/assets/images/Krunal.jpg" alt="Portrait of Krunalkumar Shah" width="504" height="504" fetchpriority="high" decoding="async" />
+          <!--
+            No fetchpriority="high" here. The hero-card stacks under the copy on phones, so this
+            38.8 KB portrait sits below the fold on the narrow viewports most visitors arrive on —
+            marking it high told the browser to fetch it ahead of assets that are actually visible.
+            Still eager (no loading="lazy"): on desktop the portrait IS in the first viewport and
+            is the LCP candidate, and lazy-loading it there would delay LCP instead of helping.
+            width/height stay so the box is reserved either way and CLS is 0.
+          -->
+          <img src="/assets/images/Krunal.jpg" alt="Portrait of Krunalkumar Shah" width="504" height="504" decoding="async" />
           <div class="profile-highlights">
             <div>
               <strong>B.E.</strong>
@@ -499,8 +507,8 @@
             Krunalkumar Shah
           </p>
           <p class="footer-tagline">
-            Researcher, engineer, and cybersecurity-focused professional building practical solutions across
-            automation, AI workflows, and intelligent digital systems.
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
           </p>
       <div class="footer-cta-group">
         <a class="btn btn-primary footer-cta" href="/services">Hire me</a>

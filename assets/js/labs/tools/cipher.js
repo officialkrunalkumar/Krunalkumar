@@ -256,6 +256,37 @@
     out.clear();
     if (!text) { out.warn('Type or paste some text above.'); return; }
 
+    /* Validate the key before enciphering, because the failure is silent and
+       dangerous otherwise.
+
+       vigenere() strips non-letters and xorText() takes the raw string; both
+       return the input UNCHANGED when nothing usable is left. The key field is
+       shared across modes with the placeholder "Key (or shift number for
+       Caesar)", so typing 1234 for Caesar and then switching to Vigenere prints
+       the plaintext back under the heading "Result", followed by the usual
+       "none of these ciphers are secure" footer. Someone copies that out
+       believing it is ciphertext. */
+    if (mode === 'vig-enc' || mode === 'vig-dec') {
+      var letters = String(key).toUpperCase().replace(/[^A-Z]/g, '');
+      if (!letters) {
+        out.err('Vigenere needs a key made of letters.');
+        out.dim(key ? '"' + key + '" has none, so there is nothing to shift by.'
+                    : 'The key field is empty.');
+        out.dim('Try a word: LEMON, PALIMPSEST, anything alphabetic.');
+        return;
+      }
+      if (letters.length !== String(key).length) {
+        out.warn('Only the letters in the key are used: "' + letters + '".');
+        out.line('');
+      }
+    }
+    if (mode === 'xor' && !String(key).length) {
+      out.err('XOR needs a key.');
+      out.dim('With an empty key there is nothing to XOR against, so the text');
+      out.dim('would come back unchanged and look like it had been encrypted.');
+      return;
+    }
+
     var result = null;
 
     switch (mode) {
