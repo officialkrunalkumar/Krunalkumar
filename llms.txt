@@ -21,6 +21,7 @@
 
 ## Technical Articles
 
+- [How I Vibe Coded This Website](https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website): The engineering mechanism behind an AI-built static site — prompt written as a specification, reasoning kept in the repository, adversarial multi-pass review, and deploy-time gates that refuse to publish damage.
 - [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work — specification, verification, accountability, and where the approval gate belongs.
 - [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
 - [Security Compliance, Explained](https://krunalkumar.dpdns.org/blog/security-compliance-explained): Practical enterprise guide to GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2 frameworks.

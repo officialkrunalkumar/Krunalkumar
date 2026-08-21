@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" role="img" aria-label="Two debugging loops compared. The reflex: something looks wrong, paste the error and take the patch, looks fixed so ship it, which ships a guess. The loop that holds: something looks wrong, ask for the diagnosis rather than the patch, send agents to refute it, fix the cause and measure the result, then add a gate so the same bug cannot return.">
+  <defs>
+    <linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1b2739"/>
+    </linearGradient>
+  </defs>
+  <rect width="1100" height="600" rx="16" fill="url(#lbg)"/>
+  <line x1="550" y1="70" x2="550" y2="560" stroke="#334155" stroke-width="2" stroke-dasharray="6 8"/>
+
+  <g font-family="'Segoe UI',Tahoma,sans-serif" font-size="19" font-weight="800" letter-spacing="3" text-anchor="middle">
+    <text x="285" y="48" fill="#f87171">THE REFLEX</text>
+    <text x="815" y="48" fill="#4ade80">THE LOOP THAT HOLDS</text>
+  </g>
+
+  <!-- left: the reflex -->
+  <g font-family="'Segoe UI',Tahoma,sans-serif">
+    <rect x="60" y="80" width="450" height="58" rx="12" fill="#16202f" stroke="#f87171" stroke-width="2" stroke-opacity="0.4"/>
+    <text x="285" y="116" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Something looks wrong</text>
+
+    <rect x="60" y="176" width="450" height="58" rx="12" fill="#16202f" stroke="#f87171" stroke-width="2" stroke-opacity="0.4"/>
+    <text x="285" y="212" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Paste the error, take the patch</text>
+
+    <rect x="60" y="272" width="450" height="58" rx="12" fill="#16202f" stroke="#f87171" stroke-width="2" stroke-opacity="0.4"/>
+    <text x="285" y="308" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Looks fixed. Ship it.</text>
+
+    <g stroke="#f87171" stroke-width="3" opacity="0.65">
+      <line x1="285" y1="138" x2="285" y2="166"/>
+      <line x1="285" y1="234" x2="285" y2="262"/>
+      <line x1="285" y1="330" x2="285" y2="362"/>
+    </g>
+    <path d="M 285 172 L 279 160 L 291 160 Z" fill="#f87171"/>
+    <path d="M 285 268 L 279 256 L 291 256 Z" fill="#f87171"/>
+    <path d="M 285 368 L 279 356 L 291 356 Z" fill="#f87171"/>
+
+    <text x="285" y="404" fill="#f87171" font-size="21" font-weight="800" text-anchor="middle">You shipped a guess.</text>
+    <text x="285" y="436" fill="#94a3b8" font-size="17" font-weight="600" text-anchor="middle">It works until the day it doesn't,</text>
+    <text x="285" y="461" fill="#94a3b8" font-size="17" font-weight="600" text-anchor="middle">and nobody knows why it ever did.</text>
+  </g>
+
+  <!-- right: the loop that holds -->
+  <g font-family="'Segoe UI',Tahoma,sans-serif">
+    <rect x="590" y="80" width="450" height="58" rx="12" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.45"/>
+    <text x="815" y="116" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Something looks wrong</text>
+
+    <rect x="590" y="176" width="450" height="58" rx="12" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.45"/>
+    <text x="815" y="212" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Ask for the diagnosis, not the patch</text>
+
+    <rect x="590" y="272" width="450" height="58" rx="12" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.45"/>
+    <text x="815" y="308" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Send agents to refute it</text>
+
+    <rect x="590" y="368" width="450" height="58" rx="12" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.45"/>
+    <text x="815" y="404" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Fix the cause, then measure it</text>
+
+    <rect x="590" y="464" width="450" height="58" rx="12" fill="#16202f" stroke="#4ade80" stroke-width="2" stroke-opacity="0.45"/>
+    <text x="815" y="500" fill="#cbd5e1" font-size="18" font-weight="600" text-anchor="middle">Leave a gate so it cannot come back</text>
+
+    <g stroke="#4ade80" stroke-width="3" opacity="0.7">
+      <line x1="815" y1="138" x2="815" y2="166"/>
+      <line x1="815" y1="234" x2="815" y2="262"/>
+      <line x1="815" y1="330" x2="815" y2="358"/>
+      <line x1="815" y1="426" x2="815" y2="454"/>
+    </g>
+    <path d="M 815 172 L 809 160 L 821 160 Z" fill="#4ade80"/>
+    <path d="M 815 268 L 809 256 L 821 256 Z" fill="#4ade80"/>
+    <path d="M 815 364 L 809 352 L 821 352 Z" fill="#4ade80"/>
+    <path d="M 815 460 L 809 448 L 821 448 Z" fill="#4ade80"/>
+  </g>
+
+  <text x="550" y="570" fill="#64748b" font-family="'Segoe UI',Tahoma,sans-serif" font-size="17" font-weight="600" text-anchor="middle">Both take about the same amount of your attention. Only one of them compounds.</text>
+</svg>

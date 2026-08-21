@@ -5,10 +5,18 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-21T09:00:00+05:30</updated>
+  <updated>2026-08-21T14:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>How I Vibe Coded This Website — And the Mechanism That Made It Hold</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website" />
+    <id>https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website</id>
+    <published>2026-08-21T14:00:00+05:30</published>
+    <updated>2026-08-21T14:00:00+05:30</updated>
+    <summary>I did not hand-write most of this site. What made it hold was the mechanism around the prompting — the prompt as a specification, the reasoning kept in the repository, adversarial review passes, and a build that refuses to publish damage.</summary>
+  </entry>
   <entry>
     <title>AI Driven, Human Assisted: The Default Just Inverted</title>
     <link href="https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted" />
