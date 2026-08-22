@@ -126,4 +126,19 @@
     si.src = '/_vercel/speed-insights/script.js';
     document.head.appendChild(si);
   }
+
+  // Register the service worker on EVERY page, not only the lab pages that
+  // load lab-cache.js. Before this, the site was only installable as a PWA
+  // after a visit had passed through a lab page (Chrome wants a registered
+  // worker before it offers "Install app"), so the install prompt appeared
+  // and disappeared depending on browsing history — which reads as a bug to
+  // anyone on a phone. Registering the same URL and scope twice is a no-op,
+  // so the per-page registrations elsewhere stay harmless. After load, so it
+  // never competes with the critical path.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .catch(function () { /* private mode or unsupported: the site works identically */ });
+    });
+  }
 })();
