@@ -1,7 +1,8 @@
 // Shared head bootstrap, loaded synchronously (no defer) so the `js` class
 // lands before first paint — the CSS that hides the static mobile nav keys
 // off it. Consolidates what every page used to carry as inline blocks:
-// JS detection, the partials-failure fallback timer, and the GA4 loader.
+// JS detection, the partials-failure fallback timer, the GA4 loader, and the
+// Vercel Speed Insights beacon.
 // One file, one edit point, and no inline scripts, so the CSP can drop
 // 'unsafe-inline'. (A GTM container used to load here too; it was published
 // empty — zero tags — so it cost ~314KB per page view for nothing and was
@@ -104,4 +105,25 @@
   // Failsafe: a visitor who neither interacts nor finishes loading within
   // 3.5s must still produce a pageview.
   setTimeout(loadAnalytics, 3500);
+
+  // Vercel Speed Insights — real-user web vitals from actual visitors' devices,
+  // which no lab run can substitute for. Deliberately NOT the npm package: this
+  // site has zero dependencies and is keeping it that way, and Vercel serves
+  // the same collector from our own origin at /_vercel/speed-insights/script.js
+  // once the feature is enabled in the dashboard. Same-origin means the strict
+  // CSP needs no new entries — script-src 'self' covers the file and
+  // connect-src 'self' covers the beacon it posts to /_vercel/.../vitals.
+  //
+  // Loaded immediately rather than on-interaction like gtag above: it is a few
+  // KB, and the vitals it reads (LCP, CLS, INP) come from buffered
+  // PerformanceObserver entries, but the earlier it attaches the less it can
+  // miss. Skipped off-Vercel — on localhost the path would just 404 into the
+  // console every page view.
+  var host = location.hostname;
+  if (host !== 'localhost' && host !== '127.0.0.1' && host.indexOf('.local') === -1) {
+    var si = document.createElement('script');
+    si.defer = true;
+    si.src = '/_vercel/speed-insights/script.js';
+    document.head.appendChild(si);
+  }
 })();
