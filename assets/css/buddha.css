@@ -1142,3 +1142,34 @@
 :root[data-theme="light"] .buddha footer {
   --ink: #0f172a;
 }
+
+/* --------------------------------------------------------------------------
+   Light theme for the reading band. The scene above keeps its dawn in both
+   themes, but the closing panel used to stay --b-earth dark regardless — a
+   defensible contrast call (cream on earth is 12.8:1), overruled by a better
+   one: in light mode a page-wide dark slab reads as a leftover, not a choice.
+   The panel inverts instead — the same warm family, cream ground and earth
+   ink, so the section still belongs to the dawn rather than to the site's
+   cool blue. --ink here is the .buddha-scoped #3a2110, not the site token,
+   which is exactly the brown this panel wants. Ink on cream is 11.9:1;
+   --ink-faint (0.92 alpha) still clears 4.5:1 for the small print.
+   -------------------------------------------------------------------------- */
+
+:root[data-theme="light"] .buddha .b-below {
+  background: var(--dawn-cream);
+  /* Cream on the site's pale blue body is close in luminance; the hairline
+     keeps the band reading as a deliberate block, which the margin-and-flat-
+     colour design above depends on. */
+  border-block: 1px solid rgba(58, 33, 16, 0.14);
+}
+
+:root[data-theme="light"] .buddha .b-below h2 { color: var(--ink); }
+:root[data-theme="light"] .buddha .b-below p { color: var(--ink-faint); }
+:root[data-theme="light"] .buddha .b-below a { color: var(--ink); }
+:root[data-theme="light"] .buddha .b-credit { color: var(--ink-faint); }
+:root[data-theme="light"] .buddha .b-credit-link { color: var(--ink); }
+:root[data-theme="light"] .buddha .b-back { color: var(--ink-faint); }
+
+/* The dharma wheel and its converging rules: dawn gold at 0.38 alpha
+   disappears on cream. Same warmth, drawn in earth. */
+:root[data-theme="light"] .buddha .b-breaker { color: rgba(122, 63, 19, 0.55); }

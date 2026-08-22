@@ -1,0 +1,761 @@
+/* ==========================================================================
+   resume-maker.css — the resume maker on /labs/resume-maker.
+   Layered on top of main.css and labs.css; everything here is rm- prefixed.
+
+   Two very different surfaces live in this file and they follow different
+   rules. The tool chrome (toolbar, form, buttons) sits on the site and uses
+   the theme tokens, so it flips between dark and light like every other page.
+   The sheet — the A4 preview — is paper. It keeps a fixed white-and-ink
+   palette in BOTH themes, because a resume that turns dark in dark mode is
+   not a resume, it is a screenshot of one. Every colour inside .rm-sheet is
+   a deliberate literal for that reason.
+
+   The five templates are class modifiers on one sheet (.rm-t-classic and so
+   on). The JS writes the same data into template-specific structures; this
+   file decides what each structure looks like. One custom property,
+   --rm-accent, is set inline by the JS and threads the chosen accent colour
+   through headings, rules, bands and chips of whichever template is active.
+
+   Printing: the whole point of the tool is that the print dialog is the
+   export button, so the print block at the foot of this file hides the
+   entire site and leaves only the sheet, unscaled, on an A4 page with zero
+   printer margin — the sheet carries its own padding. The 794px design width
+   is 210mm at CSS's 96dpi, so with margin 0 the px measurements on screen
+   are the same physical sizes on paper. No unit conversion needed.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Toolbar: template pills, accent swatches, save status
+   -------------------------------------------------------------------------- */
+
+.rm-tpl-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Pills rather than a <select>: all five names visible at once is the point —
+   "one click apart" is only true if the click target is on screen. */
+.rm-tpl {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.34rem 0.85rem;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.rm-tpl:hover { border-color: rgb(var(--accent-rgb) / 0.6); color: var(--ink); }
+
+.rm-tpl[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b1220;
+}
+
+.rm-swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  /* Breathing room from the pills when the toolbar has not wrapped yet. */
+  margin-left: 0.4rem;
+}
+
+/* Each swatch paints itself via --rm-sw set inline in the HTML — the colour
+   list lives in one place (the markup) instead of six rules here. */
+.rm-swatch {
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--rm-sw);
+  border: 2px solid rgb(var(--line-rgb) / 0.4);
+  cursor: pointer;
+}
+
+.rm-swatch:hover { transform: scale(1.12); }
+
+/* Paper toggle: same pill language as the templates, prefixed by a tiny
+   caption so "A4 / US Letter" reads as a setting rather than two more
+   template names. */
+.rm-paper-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.4rem;
+}
+
+.rm-paper-caption {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.rm-paper {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.34rem 0.85rem;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.rm-paper:hover { border-color: rgb(var(--accent-rgb) / 0.6); color: var(--ink); }
+
+.rm-paper[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b1220;
+}
+
+/* The pressed ring uses the page background as a gap so the ring reads as a
+   ring on both themes rather than a thicker blob. */
+.rm-swatch[aria-pressed='true'] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px rgb(var(--bg-base-rgb) / 0.9) inset;
+}
+
+/* The status line ("Saved in your browser", import complaints) lives on its
+   own always-reserved full-width row at the foot of the toolbar. Inline it
+   used to appear next to the buttons, and its arrival pushed the primary
+   print button onto a second row — a CTA that hops the moment you start
+   typing. The min-height keeps the row's slot occupied while empty, so the
+   toolbar is pixel-identical with and without a message. */
+.rm-save-status {
+  flex: 1 1 100%;
+  min-height: 1.1em;
+  text-align: right;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+
+/* The primary button inherits .btn sizing built for hero sections; trim it
+   down to toolbar scale. */
+.rm-print-btn {
+  font-size: 0.86rem;
+  padding: 0.45rem 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   The two panes: form left, preview right; stacked under 1080px
+   -------------------------------------------------------------------------- */
+
+.rm-panes {
+  display: grid;
+  /* Preview slightly wider than the form: the sheet is the deliverable and
+     the bigger it renders the less the scale transform blurs small type. */
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+.rm-form {
+  padding: 1.1rem 1.2rem 1.6rem;
+  border-right: 1px solid rgb(var(--line-rgb) / 0.25);
+  min-width: 0;
+}
+
+.rm-preview-pane {
+  padding: 1.1rem 1.2rem 1.6rem;
+  min-width: 0;
+  /* The preview ground is slightly recessed so the white sheet reads as an
+     object lying on the tool, not a hole in it. */
+  background: rgb(var(--well-rgb) / 0.55);
+}
+
+/* The form is long; the preview is what you are steering. Sticky keeps the
+   sheet in view while scrolling the form on desktop. */
+.rm-preview-sticky {
+  position: sticky;
+  top: 1rem;
+}
+
+.rm-preview-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 1080px) {
+  .rm-panes { grid-template-columns: 1fr; }
+  .rm-form { border-right: 0; border-bottom: 1px solid rgb(var(--line-rgb) / 0.25); }
+  /* Sticky preview makes no sense once the panes stack — the form is above,
+     not beside, so pinning the sheet would just cover it. */
+  .rm-preview-sticky { position: static; }
+}
+
+/* --------------------------------------------------------------------------
+   Form internals
+   -------------------------------------------------------------------------- */
+
+.rm-form-section { margin-bottom: 1.5rem; }
+.rm-form-section:last-child { margin-bottom: 0; }
+
+.rm-form-section > h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  padding-left: 0.55rem;
+  border-left: 3px solid var(--accent);
+}
+
+/* main.css makes every .field textarea 150px tall — right for a contact
+   form, oversized for six of them in a column. */
+.rm-form .field textarea { min-height: 88px; }
+
+.rm-grid { gap: 0.75rem; }
+
+@media (max-width: 640px) {
+  .rm-grid { grid-template-columns: 1fr; }
+}
+
+.rm-opt {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+
+/* Repeatable entries (a job, a degree, a certificate) render as small cards
+   so their Remove button unambiguously belongs to them. */
+.rm-item {
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  background: rgb(var(--raise-rgb) / 0.5);
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  border-radius: 10px;
+}
+
+.rm-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.rm-item-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Move up, move down, remove — one small cluster on the card's head. */
+.rm-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.rm-remove {
+  font-size: 0.76rem;
+  padding: 0.28rem 0.6rem;
+}
+
+.rm-move {
+  font-size: 0.76rem;
+  line-height: 1;
+  padding: 0.28rem 0.45rem;
+}
+
+/* Disabled means "already at that end" — keep the button visible so the
+   cluster never changes shape, just clearly inert. */
+.rm-move:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.rm-add { margin-top: 0.1rem; }
+
+/* Photo picker: thumbnail plus its remove button appear only once a photo
+   exists (the box is [hidden] until then). */
+.rm-photo-row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.rm-photo-field { flex: 1 1 220px; }
+
+.rm-photo-thumb-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* display:flex above would beat the UA's [hidden] rule and show an empty
+   thumbnail before any photo exists. */
+.rm-photo-thumb-box[hidden] { display: none; }
+
+.rm-photo-thumb-box img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   The sheet — fixed paper palette, both themes
+   -------------------------------------------------------------------------- */
+
+.rm-sheet-wrap {
+  position: relative;
+  /* JS sets an explicit px height (sheet height times scale) so the page
+     does not reserve the full unscaled 1123px and leave a dead gap below. */
+  overflow: hidden;
+}
+
+.rm-sheet {
+  /* 210mm at 96dpi. The sheet is always laid out at full paper width and
+     scaled down with a transform to fit the pane — so the preview is the
+     print, shrunk, rather than a reflowed approximation of it. These two
+     are the A4 defaults; the JS appends a <style> after this file that
+     restates them per the chosen paper (816x1056px for US Letter), winning
+     on source order at equal specificity. */
+  width: 794px;
+  min-height: 1123px;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  transform-origin: top left;
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.4);
+  overflow-wrap: break-word;
+}
+
+/* Shown only while the form is entirely empty, and never printed. */
+.rm-empty-hint {
+  padding: 90px 60px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+/* ---- pieces shared by every template ------------------------------------ */
+
+.rm-s-name { font-size: 30px; font-weight: 700; line-height: 1.15; }
+.rm-s-headline { font-size: 15px; color: #5b6472; margin-top: 2px; }
+
+/* Contact renders two ways: a dotted single line under the name, or a
+   stacked list in a sidebar column. Separator dots are generated so the JS
+   never has to manage them. */
+.rm-s-contact {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #47505c;
+  margin-top: 8px;
+}
+
+.rm-s-contact span + span::before { content: '\00b7'; margin: 0 6px; color: #9aa3af; }
+
+.rm-s-contact--stack { display: block; margin-top: 0; }
+.rm-s-contact--stack span { display: block; margin-bottom: 4px; }
+.rm-s-contact--stack span + span::before { content: none; }
+
+.rm-s-section { margin-top: 18px; }
+
+.rm-s-h {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--rm-accent);
+  margin: 0 0 8px;
+}
+
+.rm-s-item { margin-bottom: 12px; break-inside: avoid; }
+.rm-s-item:last-child { margin-bottom: 0; }
+
+.rm-s-itemtop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.rm-s-title { font-weight: 700; }
+.rm-s-dates { font-size: 12px; color: #5b6472; white-space: nowrap; }
+.rm-s-sub { font-size: 12.5px; color: #5b6472; margin-top: 1px; }
+.rm-s-note { font-size: 12px; color: #5b6472; margin-top: 1px; }
+
+/* Real list, real bullets — a resume whose bullets are background images or
+   pseudo-elements pastes as one paragraph into an ATS. */
+.rm-s-bullets { margin: 5px 0 0; padding-left: 18px; }
+.rm-s-bullets li { margin-bottom: 3px; }
+.rm-s-bullets li:last-child { margin-bottom: 0; }
+
+.rm-s-p { margin: 0; }
+
+.rm-s-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.rm-s-chip {
+  padding: 2px 10px;
+  font-size: 11.5px;
+  border: 1px solid var(--rm-accent);
+  border-radius: 999px;
+  /* Faint accent wash; falls back to plain white paper where color-mix is
+     missing, which still reads fine. */
+  background: color-mix(in srgb, var(--rm-accent) 8%, #ffffff);
+}
+
+.rm-s-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   Template 1 — Classic. Single column, the ATS-safe one.
+   -------------------------------------------------------------------------- */
+
+.rm-t-classic { padding: 48px 56px; }
+
+.rm-t-classic .rm-c-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.rm-t-classic .rm-s-photo {
+  flex: 0 0 auto;
+  width: 84px;
+  height: 84px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* The classic signature: a thin accent rule under each section heading. */
+.rm-t-classic .rm-s-h {
+  border-bottom: 1.5px solid var(--rm-accent);
+  padding-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Template 2 — Sidebar. Dark charcoal left column, paper main column.
+   -------------------------------------------------------------------------- */
+
+.rm-t-sidebar {
+  display: grid;
+  grid-template-columns: 262px minmax(0, 1fr);
+}
+
+.rm-t-sidebar .rm-side {
+  background: #252c36;
+  color: #eef2f7;
+  padding: 44px 28px;
+}
+
+.rm-t-sidebar .rm-main { padding: 44px 40px 48px 36px; }
+
+.rm-t-sidebar .rm-s-photo {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 22px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Sidebar headings are the accent "tinted" — mixed up towards white so even
+   the charcoal accent stays legible on the charcoal ground. The plain
+   fallback colour underneath is for engines without color-mix. */
+.rm-t-sidebar .rm-side .rm-s-h {
+  color: #c7d2de;
+  color: color-mix(in srgb, var(--rm-accent) 45%, #ffffff);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  padding-bottom: 5px;
+}
+
+.rm-t-sidebar .rm-side .rm-s-contact--stack { font-size: 11.5px; color: #cbd5e1; }
+.rm-t-sidebar .rm-side .rm-s-p { font-size: 12px; color: #d7dee7; }
+
+.rm-t-sidebar .rm-side .rm-s-chip {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.08);
+  color: #eef2f7;
+}
+
+.rm-t-sidebar .rm-side .rm-s-section:first-child { margin-top: 0; }
+
+/* --------------------------------------------------------------------------
+   Template 3 — Banner. Accent band on top, 2fr / 1fr body.
+   -------------------------------------------------------------------------- */
+
+.rm-t-banner .rm-band {
+  background: var(--rm-accent);
+  color: #ffffff;
+  padding: 38px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.rm-t-banner .rm-band .rm-s-headline { color: rgba(255, 255, 255, 0.85); }
+
+.rm-t-banner .rm-band .rm-s-photo {
+  flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.55);
+}
+
+.rm-t-banner .rm-cols {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 36px;
+  padding: 30px 48px 48px;
+}
+
+/* The contact block moves into the meta column under the band, stacked. */
+.rm-t-banner .rm-s-contact--stack { font-size: 12px; }
+
+/* --------------------------------------------------------------------------
+   Template 4 — Elegant. Centered serif header, small-caps headings,
+   hairline double rules.
+   -------------------------------------------------------------------------- */
+
+.rm-t-elegant {
+  padding: 56px 64px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.rm-t-elegant .rm-e-head {
+  text-align: center;
+  padding-bottom: 18px;
+  border-bottom: 3px double #c8cdd5;
+}
+
+.rm-t-elegant .rm-s-name { font-size: 32px; font-weight: 400; letter-spacing: 0.04em; }
+.rm-t-elegant .rm-s-headline { font-style: italic; }
+.rm-t-elegant .rm-s-contact { justify-content: center; }
+
+.rm-t-elegant .rm-s-photo {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 14px;
+}
+
+.rm-t-elegant .rm-s-h {
+  text-align: center;
+  font-weight: 400;
+  font-variant: small-caps;
+  text-transform: none;
+  font-size: 16px;
+  letter-spacing: 0.28em;
+  border-bottom: 3px double #c8cdd5;
+  padding-bottom: 5px;
+}
+
+.rm-t-elegant .rm-s-section { margin-top: 22px; }
+
+/* --------------------------------------------------------------------------
+   Template 5 — Compact. 2fr / 1fr, small type, accent left border headings.
+   Built to fit a long career on one page.
+   -------------------------------------------------------------------------- */
+
+.rm-t-compact {
+  padding: 36px 40px;
+  font-size: 11.5px;
+  line-height: 1.42;
+}
+
+.rm-t-compact .rm-c2-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--rm-accent);
+}
+
+.rm-t-compact .rm-s-name { font-size: 23px; }
+.rm-t-compact .rm-s-headline { font-size: 13px; }
+.rm-t-compact .rm-s-contact { margin-top: 5px; font-size: 11px; }
+
+.rm-t-compact .rm-s-photo {
+  flex: 0 0 auto;
+  width: 66px;
+  height: 66px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rm-t-compact .rm-c2-cols {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 26px;
+}
+
+.rm-t-compact .rm-s-h {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #1f2937;
+  border-left: 3px solid var(--rm-accent);
+  padding-left: 8px;
+}
+
+.rm-t-compact .rm-s-section { margin-top: 14px; }
+.rm-t-compact .rm-s-item { margin-bottom: 9px; }
+.rm-t-compact .rm-s-dates { font-size: 10.5px; }
+.rm-t-compact .rm-s-sub { font-size: 11px; }
+.rm-t-compact .rm-s-bullets { margin-top: 3px; padding-left: 15px; }
+.rm-t-compact .rm-s-bullets li { margin-bottom: 2px; }
+
+/* --------------------------------------------------------------------------
+   Who-built-this aside — a quiet two-liner after the FAQ. Screen only: it
+   sits outside #rm-app, so the print block's blanket hide covers it.
+   -------------------------------------------------------------------------- */
+
+.rm-builder-note {
+  margin: 2rem auto 0;
+  max-width: 44rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.5);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-radius: 0 10px 10px 0;
+}
+
+.rm-builder-note p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-3);
+}
+
+.rm-builder-note p + p { margin-top: 0.45rem; }
+
+.rm-builder-note a { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Print: the sheet IS the page, everything else disappears
+   -------------------------------------------------------------------------- */
+
+@media print {
+  @page { size: A4; margin: 0; }
+
+  /* color-scheme must be forced with importance: the theme script sets the
+     dark scheme at the root, and Chrome paints the print canvas in the
+     scheme's base colour BEFORE any CSS background — which leaves a dark
+     sliver at the page edge where rounding lets the canvas peek through. */
+  html { color-scheme: light !important; }
+  html, body { background: #ffffff !important; }
+
+  /* Belt and braces: the include-partials header, the noscript header, the
+     canvas, the hero and every section-card all go. */
+  #bg-canvas,
+  .skip-link,
+  .site-header,
+  footer,
+  noscript,
+  .page-shell > :not(#rm-app) { display: none !important; }
+
+  main.page-shell {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  #rm-app {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .rm-toolbar,
+  .rm-form,
+  .rm-preview-title,
+  .rm-empty-hint { display: none !important; }
+
+  .rm-panes { display: block; }
+  .rm-preview-pane { padding: 0; background: none; }
+  .rm-preview-sticky { position: static; }
+
+  /* JS set an explicit scaled height on the wrap; the printed sheet is
+     unscaled, so both the height and the transform must be overridden. */
+  .rm-sheet-wrap { height: auto !important; overflow: visible; }
+
+  .rm-sheet {
+    transform: none !important;
+    width: 100% !important;
+    /* A hair under 297mm: exactly full-height content plus browser rounding
+       would spill a blank second page. Multi-page resumes still flow. This
+       and the @page size above are the A4 defaults; the JS-managed <style>
+       restates both for the chosen paper (278mm and size: letter for US
+       Letter) and wins on source order. Deliberately not !important here,
+       or the JS could never override it. */
+    min-height: 296mm;
+    box-shadow: none;
+  }
+
+  /* The sidebar's charcoal column and the banner's colour band are the
+     design; without this most browsers "save ink" and print them white. */
+  .rm-sheet,
+  .rm-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* main.css prints a site byline via body::before on every page. Correct
+     for an article; wrong on a resume, which is not about this site. */
+  body::before { display: none !important; content: none !important; }
+
+  /* main.css also declares `* { background: transparent; color: #000 }` with
+     !important for ink-friendly article printing. Important beats normal
+     regardless of specificity, so the whole sheet palette has to be
+     re-asserted with equal importance. This file loads after main.css, and
+     where importance ties, source order and specificity decide — hence the
+     base colours first and the muted/accent overrides after them. */
+
+  .rm-sheet { background: #ffffff !important; }
+  .rm-sheet, .rm-sheet * { color: #1f2937 !important; }
+
+  .rm-s-headline, .rm-s-sub, .rm-s-note, .rm-s-dates { color: #5b6472 !important; }
+  .rm-s-contact, .rm-s-contact span { color: #47505c !important; }
+  .rm-s-h { color: var(--rm-accent) !important; }
+  .rm-t-compact .rm-s-h { color: #1f2937 !important; }
+  .rm-s-chip { background: color-mix(in srgb, var(--rm-accent) 8%, #ffffff) !important; }
+
+  /* Sidebar: charcoal column, light ink, tinted headings. */
+  .rm-t-sidebar .rm-side { background: #252c36 !important; }
+  .rm-t-sidebar .rm-side, .rm-t-sidebar .rm-side * { color: #e8eef5 !important; }
+  .rm-t-sidebar .rm-side .rm-s-contact--stack span { color: #cbd5e1 !important; }
+  .rm-t-sidebar .rm-side .rm-s-h { color: #c7d2de !important; }
+  .rm-t-sidebar .rm-side .rm-s-h { color: color-mix(in srgb, var(--rm-accent) 45%, #ffffff) !important; }
+  .rm-t-sidebar .rm-side .rm-s-chip { background: rgba(255, 255, 255, 0.08) !important; }
+
+  /* Banner: accent band, white type. */
+  .rm-t-banner .rm-band { background: var(--rm-accent) !important; }
+  .rm-t-banner .rm-band, .rm-t-banner .rm-band * { color: #ffffff !important; }
+  .rm-t-banner .rm-band .rm-s-headline { color: rgba(255, 255, 255, 0.85) !important; }
+
+  /* Never split one job or one degree across a page break, and never leave
+     a heading orphaned at the foot of a page. */
+  .rm-s-item { break-inside: avoid; page-break-inside: avoid; }
+  .rm-s-h { break-after: avoid; page-break-after: avoid; }
+}

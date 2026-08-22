@@ -1043,6 +1043,16 @@ pre.lab-example:hover .lab-copy,
 .lab-example { max-width: 100%; min-width: 0; }
 .info-card, .lab-card { min-width: 0; }
 
+/* Example strings in prose are allowed to break anywhere. The url-inspector
+   quotes http://www.paypal.com@evil.example/login inline — no spaces, no
+   hyphens, no soft break opportunities — and that one unbreakable span was
+   widening the mobile layout viewport from 360 to 430px, shrinking the whole
+   page ~16% on phones. min-width: 0 above cannot help: the string still has
+   to render somewhere, so it must be allowed to wrap mid-token. This also
+   covers the other long example domains, which today only wrap because they
+   happen to contain a hyphen. */
+.info-card code { overflow-wrap: anywhere; }
+
 .lab-faq {
   border-bottom: 1px solid rgb(var(--accent-rgb) / 0.16);
 }
@@ -2095,6 +2105,15 @@ pre.lab-example:hover .lab-copy,
 .chat-form { display: flex; gap: 0.6rem; }
 .chat-input {
   flex: 1 1 auto;
+  /* width: 0 is load-bearing. A text input's minimum content width comes from
+     its size attribute (~226px), and flexbox refuses to shrink the row below
+     it — even with min-width: 0, which was tried and does nothing here. On a
+     360px phone that pinned the whole form at 384px inside a ~312px card,
+     and overflow: hidden on the card put the Send and File buttons past the
+     clip edge with no way to scroll to them. Zeroing the width makes flex
+     the only sizing authority: the input grows to fill whatever the row
+     actually has. Verified at 320 and 360px. */
+  width: 0;
   padding: 0.65rem 0.9rem;
   font: inherit;
   color: var(--text);
@@ -2398,4 +2417,171 @@ html:not(.js) .lab-gate {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* ==========================================================================
+   Hub filter (type-to-filter, lab-filter.js)
+   --------------------------------------------------------------------------
+   A single input under the hero that narrows the sixty-plus cards as you
+   type. Everything visual lives here; the behaviour — including which
+   sections fold away — is lab-filter.js's business. All colours come from
+   the theme tokens, so the light theme is covered with no [data-theme] rule.
+   ========================================================================== */
+
+.lab-filter {
+  max-width: 34rem;
+  margin: 1.4rem 0 0;
+}
+
+.lab-filter-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* The icon sits INSIDE the input's left padding. pointer-events off so a
+   click on it lands in the input, which is what that click meant. */
+.lab-filter-icon {
+  position: absolute;
+  left: 0.85rem;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ink-4);
+  pointer-events: none;
+}
+
+.lab-filter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.62rem 0.9rem 0.62rem 2.5rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: rgb(var(--deep-rgb) / 0.55);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  border-radius: 10px;
+}
+
+.lab-filter-input::placeholder {
+  color: var(--ink-4);
+  opacity: 1;
+}
+
+/* WebKit draws its own clear "x" on type=search; with the Clear button next
+   to it that is two clear affordances styled by two different authorities.
+   Ours stays, the native one goes. */
+.lab-filter-input::-webkit-search-cancel-button,
+.lab-filter-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Pointer focus gets the soft ring; keyboard focus falls through to the
+   global :focus-visible rule, same split the contact form makes. */
+.lab-filter-input:focus:not(:focus-visible) {
+  outline: 2px solid rgb(var(--accent-rgb) / 0.4);
+  border-color: var(--accent);
+}
+
+.lab-filter-clear {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.85rem;
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  background: rgb(var(--accent-rgb) / 0.12);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.lab-filter-clear:hover {
+  background: rgb(var(--accent-rgb) / 0.2);
+  border-color: rgb(var(--accent-rgb) / 0.45);
+}
+
+/* The [hidden] attribute alone cannot be trusted here: it loses to any
+   display value a stronger rule sets, and both the clear button and the
+   grid cards carry display rules of their own. */
+.lab-filter-clear[hidden] { display: none; }
+
+.lab-filter-count {
+  min-height: 1.3em; /* reserves the line, so appearing text does not shove the grid */
+  margin: 0.45rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+
+.lab-filter-empty {
+  margin: 0.8rem 0 0;
+  padding: 0.9rem 1.05rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.24);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+}
+
+.lab-filter-empty[hidden] { display: none; }
+
+.lab-filter-empty p { margin: 0 0 0.6rem; }
+
+.lab-filter-empty kbd {
+  padding: 0.05rem 0.4rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8em;
+  color: var(--ink-2);
+  background: rgb(var(--deep-rgb) / 0.7);
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+}
+
+/* What lab-filter.js toggles. !important on purpose: this must beat
+   .lab-card's display:flex and any display a section ever grows, or a
+   "hidden" card quietly stays on screen. */
+.lab-filter-hide { display: none !important; }
+
+/* Without JS the box would filter nothing — hide the promise, not break it.
+   Same html.js keying as the labs themselves, set by boot.js pre-paint. */
+html:not(.js) .lab-filter { display: none; }
+
+/* The same iOS focus-zoom rule every other focusable control in this file
+   gets: under 16px, mobile Safari zooms in on focus and never zooms out. */
+@media (max-width: 560px) {
+  .lab-filter-input { font-size: 16px; }
+}
+
+/* ==========================================================================
+   OS-algorithms process editor — edge hint when the table can scroll
+   --------------------------------------------------------------------------
+   .oa-proc-table is the overflow-x:auto container around the process input
+   table on /labs/os-algorithms (built and styled by viz/os-algo.js). On a
+   phone it clips, and a clipped table with no cue reads as a table with
+   fewer columns. This paints a soft shadow at whichever edge still has
+   content beyond it, in pure CSS:
+
+     - two "shadow" layers, background-attachment: scroll, pinned to the
+       container's left and right edges;
+     - two "cover" layers, background-attachment: local, which travel WITH
+       the content. At a scroll end the cover slides over its shadow and
+       hides it; mid-scroll both shadows show.
+
+   When nothing overflows, the covers sit exactly on the shadows, so a wide
+   screen shows nothing at all — no media query needed, the geometry is the
+   condition. Colours are hard-coded to the viz palette (bg1 in os-algo.js),
+   not tokens, because that panel stays dark in both site themes exactly
+   like the terminal panes do. */
+#osalgoviz .oa-proc-table {
+  background:
+    linear-gradient(90deg, #0b1220 40%, rgba(11, 18, 32, 0)) left center / 48px 100%,
+    linear-gradient(270deg, #0b1220 40%, rgba(11, 18, 32, 0)) right center / 48px 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.35) 55%, transparent) left center / 20px 100%,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.35) 55%, transparent) right center / 20px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
 }

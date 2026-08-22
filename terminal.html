@@ -14,6 +14,19 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html { color-scheme: dark; }
+      /* This page never loads main.css, so the screen-reader-only helper the
+         rest of the site gets from there has to live here too. */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
       body {
         min-height: 100vh;
         background: #020617;
@@ -72,6 +85,10 @@
     </noscript>
 
     <div id="screen">
+      <!-- The page deliberately has no visible chrome, but a screen reader
+           still needs one heading to orient by. Visually hidden, not
+           display:none — display:none would hide it from AT too. -->
+      <h1 class="sr-only">Terminal</h1>
       <div id="output" role="log" aria-live="polite"></div>
       <div class="prompt-row">
         <span class="ps1" id="ps1">visitor@krunalkumar:~$</span>

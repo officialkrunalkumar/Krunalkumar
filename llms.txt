@@ -21,6 +21,8 @@
 
 ## Technical Articles
 
+- [The resume-builder paywall trick](https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick): Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+- [What a marriage biodata leaks](https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks): The identity-theft surface of one A4 page, and how to make one that stays on your device.
 - [How I Vibe Coded This Website](https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website): The engineering mechanism behind an AI-built static site — prompt written as a specification, reasoning kept in the repository, adversarial multi-pass review, and deploy-time gates that refuse to publish damage.
 - [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work — specification, verification, accountability, and where the approval gate belongs.
 - [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
@@ -104,6 +106,8 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [Shader playground](https://krunalkumar.dpdns.org/labs/shader-playground): Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers.
 - [Inside a processor](https://krunalkumar.dpdns.org/labs/processor-explorer): Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D, entirely client-side.
 - [Word cloud generator](https://krunalkumar.dpdns.org/labs/word-cloud): A free word cloud generator: paste text and the most frequent words are sized biggest and spiral-packed into shape masks (heart, star, circle, diamond, cloud), with colour palettes and font choices, downloadable as a PNG. Filler words are removed automatically. Everything runs in the browser with no upload and no watermark; a wordart.com-style tool made free and private.
+- [Resume maker](https://krunalkumar.dpdns.org/labs/resume-maker): A free resume builder: fill a form, pick one of five templates (ATS-safe single column through designed sidebar and banner layouts), add an optional photo and accent colour, and print to A4 or save as PDF from the print dialog. Live preview as you type, autosaved to the browser's own storage, no sign-up, no watermark, no paywall at the download button — and no upload, because the whole tool runs client-side.
+- [Marriage biodata maker](https://krunalkumar.dpdns.org/labs/biodata-maker): A free marriage biodata (matrimonial CV) maker: personal, horoscope, education, family and contact details rendered into one of five templates from traditional maroon-and-gold to minimal ink-friendly, with an optional photo and a choice of invocation line. Every field optional, prints to A4, autosaves locally. Built client-side on purpose: birth details, income and a home address are exactly the data that should never be uploaded to a random website.
 - [TCP](https://krunalkumar.dpdns.org/labs/tcp-congestion): TCP made watchable in three families: the three-way handshake and four-way close with real sequence and acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery on triple-duplicate ACKs and collapse to one on a timeout, plotted as the classic sawtooth. A live simulation checked against RFC 793 examples, entirely client-side.
 - [Buffer overflow](https://krunalkumar.dpdns.org/labs/buffer-overflow): A stack buffer overflow drawn byte by byte on a real downward-growing stack: watch a string copy overwrite the saved frame pointer and the return address, hijack control flow to injected shellcode (as a diagram, never executed), then enable a stack canary and watch it catch the overflow. A defences panel shows what NX and ASLR each stop and how each is bypassed. Entirely client-side, a teaching diagram for defenders.
 - [Regex engine](https://krunalkumar.dpdns.org/labs/regex-engine): A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length and compares it with the linear-time state-machine engines. All three engines are differentially tested against JavaScript RegExp. Entirely client-side.
@@ -181,11 +185,11 @@ These are deliberately separated from the sixteen offline security tools. They s
 
 ## Reading the site
 - Every page carries a search button and a light/dark toggle in the header. Search runs against a
-  prebuilt index of all 88 pages and opens a full-screen panel; it is entirely client-side, so no
+  prebuilt index of all 97 pages and opens a full-screen panel; it is entirely client-side, so no
   query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in — the site stays dark unless the toggle
   is used, and the choice is remembered locally. Both themes are checked against the WCAG AA
   contrast floor across every page.
-- The 58 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
+- The 62 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
   so there is nothing to run without it. Each hides its controls and shows a <noscript> note rather
   than leaving dead buttons. Every other page is plain HTML and reads in full without JavaScript;
   the four carrying a form (contact, internships, the labs hub's feedback box, and verify) point to

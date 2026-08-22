@@ -1127,6 +1127,28 @@ main [id] {
 }
 
 /* --------------------------------------------------------------------------
+   Selected-work CTA alignment (homepage only)
+   --------------------------------------------------------------------------
+   Each of the three cards in #selected-work ends in a "View the code"
+   button, but .info-card is a plain block: the ChurnGPT card runs four
+   paragraphs and its neighbours run one, so the three buttons sat at three
+   different heights. Flex column + margin-top:auto pins each button to the
+   bottom edge of its card instead. Scoped to #selected-work because
+   .info-card appears on nearly every page, almost always without a trailing
+   button — turning them all into flex columns would reshuffle spacing those
+   pages never asked for. align-self keeps the button at its natural width;
+   a flex child would otherwise stretch across the whole card. */
+#selected-work .info-card {
+  display: flex;
+  flex-direction: column;
+}
+
+#selected-work .info-card .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* --------------------------------------------------------------------------
    Colophon figures
    --------------------------------------------------------------------------
    Every number in these tiles is rewritten by scripts/build.js at deploy from
@@ -1548,6 +1570,8 @@ main [id] {
   align-items: center;
   gap: 0.8rem;
   margin-top: 1rem;
+  /* See .recommendation-controls: same injected wide button, same phone. */
+  flex-wrap: wrap;
 }
 
 .carousel-btn {
@@ -1669,6 +1693,14 @@ main [id] {
   justify-content: space-between;
   align-items: center;
   gap: 0.8rem;
+  /* The JS-injected "Show all 30" / "Show one at a time" button is wider than
+     the space a 360px phone leaves beside the pager, and a non-wrapping row
+     shoved it past the card edge — truncated at the screen and stretching the
+     layout viewport to 424px in its widest state. Wrapping costs nothing on
+     desktop (one row still fits) and lets the button take its own row on
+     phones. Same fix on .carousel-controls below, which projects.js feeds the
+     same button class. */
+  flex-wrap: wrap;
 }
 
 .recommendation-card {
@@ -1977,6 +2009,20 @@ main [id] {
 
   .verify-fields dd {
     margin-bottom: 0.6rem;
+  }
+
+  /* The featured-project hero card kept its desktop side-by-side row on
+     phones, where the no-shrink "Open repo" pill plus gap left the text
+     column ~163px wide — titles wrapping one or two words per line down a
+     300px-tall ragged column. Stack it: content first, pill under it, and
+     the pill hugs its own width instead of stretching. */
+  .featured-project-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .featured-project-card .project-link-pill {
+    align-self: flex-start;
   }
 }
 

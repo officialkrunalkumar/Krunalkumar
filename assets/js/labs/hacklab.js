@@ -309,6 +309,10 @@
          fake, and the whole origin is a static site with no accounts and no
          secrets, so a working exploit steals a string that was never worth
          anything. That harmlessness is what makes this safe to host. */
+      /* The one iframe on the site built in JS rather than HTML, so the one
+         place a title has to be set by hand — without it a screen reader
+         announces an unnamed frame. */
+      frame.setAttribute('title', "The moderator's view of the vulnerable guestbook");
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
       frame.src = '/labs/hacklab-guestbook';
       var result = el('div', 'hl-result');
