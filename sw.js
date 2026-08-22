@@ -68,7 +68,7 @@ var PREFIX = '/assets/vendor/';
 // change, the build refuses to deploy until this is updated — and updating
 // it is the reminder to bump CACHE above so returning visitors get the new
 // runtimes. The build error message prints the new value.
-var VENDOR_FINGERPRINT = '3ae5dfad4c915d5b';
+var VENDOR_FINGERPRINT = '62cee07e74bdd978';
 
 // Bump this one when the doc-maker file list changes, or to force every
 // visitor onto fresh copies after a layout rework. Old versions are deleted

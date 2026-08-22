@@ -1,0 +1,6 @@
+# The vendor tree is hashed byte-for-byte by the fingerprint gate in
+# scripts/build.js. Git for Windows defaults to core.autocrlf=true, which would
+# check these files out with CRLF locally while the repo (and Vercel's Linux
+# builder) hold LF — two different hashes for the same commit, and a deploy that
+# fails only on Vercel. Pin the bytes so every checkout agrees.
+assets/vendor/** -text
