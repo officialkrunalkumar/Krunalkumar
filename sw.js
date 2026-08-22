@@ -51,24 +51,26 @@
 
 'use strict';
 
-// Bump the suffix to invalidate every cached runtime at once — e.g. after
-// upgrading Pyodide. Old caches are deleted on activate. The refill fetch
-// below uses {cache: 'reload'} so the bump genuinely reaches the server:
-// the vendor URLs carry no version in their path and are served with a
-// one-year immutable Cache-Control, so a plain fetch would be answered by
-// the browser's HTTP cache and quietly re-cache the OLD bytes under the new
-// name. scripts/build.js fails the deploy if files under /assets/vendor/
-// change without VENDOR_FINGERPRINT below being updated — the moment that
-// error fires is the moment to bump this constant too.
-var CACHE = 'lab-runtimes-v1';
-var PREFIX = '/assets/vendor/';
-
-// Paired with the vendor gate in scripts/build.js: a content hash of
-// everything under /assets/vendor/. Not read at runtime. If vendor files
-// change, the build refuses to deploy until this is updated — and updating
-// it is the reminder to bump CACHE above so returning visitors get the new
-// runtimes. The build error message prints the new value.
+// A content hash of every file under /assets/vendor/, rewritten in place by
+// scripts/build.js on each deploy. This is the single source of truth for
+// runtime cache invalidation: CACHE below is derived from it, so there is
+// nothing to bump by hand and no way to forget. The value committed here is
+// the last deploy's, so the repo copy still reads as a real hash rather than
+// a placeholder.
 var VENDOR_FINGERPRINT = '62cee07e74bdd978';
+
+// The runtime cache, named after the bytes it holds. A vendor change yields a
+// new name and returning visitors are refilled; an unchanged tree yields the
+// same name, so an ordinary deploy costs nobody a re-download. Old
+// lab-runtimes-* caches are deleted on activate.
+//
+// The miss path below fetches with {cache: 'reload'} so a new name genuinely
+// reaches the server: the vendor URLs carry no version in their path and are
+// served with a one-year immutable Cache-Control, so a plain fetch would be
+// answered by the browser's HTTP cache and quietly re-cache the OLD bytes
+// under the new name.
+var CACHE = 'lab-runtimes-' + VENDOR_FINGERPRINT;
+var PREFIX = '/assets/vendor/';
 
 // Bump this one when the doc-maker file list changes, or to force every
 // visitor onto fresh copies after a layout rework. Old versions are deleted

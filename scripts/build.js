@@ -977,23 +977,29 @@ function doSwPrecacheParity(root) {
 }
 
 /* --------------------------------------------------------------------------
-   7c. Vendor fingerprint gate
+   7c. Vendor fingerprint
    --------------------------------------------------------------------------
-   sw.js serves /assets/vendor/ cache-first and invalidates by a hand-bumped
-   cache name — while the vendor URLs carry no version and ship with a
-   one-year immutable Cache-Control. Nothing used to pair the two: replace a
-   runtime file in place, forget the bump, and every returning visitor kept
-   the old bytes with no expiry. So sw.js now carries a content fingerprint
-   of the vendor tree, and this gate recomputes it every deploy. When vendor
-   files change, the deploy fails until the fingerprint is updated — and the
-   error message says to bump CACHE in the same edit, at the exact moment it
-   matters. Hashing the ~150 MB tree costs a couple of seconds of build time,
-   which is what an unfalsifiable "version-pinned" promise turns out to cost.
+   sw.js serves /assets/vendor/ cache-first, while the vendor URLs carry no
+   version and ship with a one-year immutable Cache-Control. Nothing used to
+   pair the two: replace a runtime file in place, forget to bump the cache
+   name, and every returning visitor kept the old bytes with no expiry.
+
+   This was a gate that failed the deploy and told you to edit two constants by
+   hand. It now just does the edit: the digest is written into sw.js, and sw.js
+   derives CACHE from it, so the cache name changes exactly when the vendor
+   bytes change and never otherwise. A promise that cannot be forgotten beats a
+   reminder to keep it — and the hand-edit had already been got wrong once, by
+   being generated on a CRLF checkout where the hash meant nothing.
+
+   The one thing still worth refusing to publish over is sw.js quietly ceasing
+   to derive CACHE from the fingerprint: that would leave this function
+   rewriting a constant nobody reads, which is the original bug wearing a hash.
+   Hashing the ~150 MB tree costs a couple of seconds of build time.
    -------------------------------------------------------------------------- */
 function doVendorPairing(root) {
   root = root || ROOT;
   log('');
-  log('vendor fingerprint gate');
+  log('vendor fingerprint');
   const dir = path.join(root, 'assets/vendor');
   if (!fs.existsSync(dir)) { log('  SKIP  assets/vendor (not found)'); return; }
 
@@ -1009,17 +1015,28 @@ function doVendorPairing(root) {
   }
   const digest = h.digest('hex').slice(0, 16);
 
-  const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+  const abs = path.join(root, 'sw.js');
+  const sw = fs.readFileSync(abs, 'utf8');
   const m = sw.match(/var VENDOR_FINGERPRINT = '([^']*)'/);
-  if (!m) throw new Error('vendor fingerprint gate: sw.js has no VENDOR_FINGERPRINT — refusing to publish');
-  if (m[1] !== digest) {
-    log('  FAILED: files under assets/vendor/ changed.');
-    log('    In sw.js, set VENDOR_FINGERPRINT to \'' + digest + '\'');
-    log('    and bump CACHE (lab-runtimes-vN) in the same edit, so returning');
-    log('    visitors are refilled with the new runtime bytes.');
-    throw new Error('vendor fingerprint gate: sw.js says ' + m[1] + ', tree is ' + digest + ' — refusing to publish');
+  if (!m) throw new Error('vendor fingerprint: sw.js has no VENDOR_FINGERPRINT — refusing to publish');
+
+  /* The derivation is the entire mechanism. If CACHE is ever hard-coded again,
+     rewriting the fingerprint below would silently stop invalidating anything. */
+  if (sw.indexOf("var CACHE = 'lab-runtimes-' + VENDOR_FINGERPRINT;") === -1) {
+    throw new Error('vendor fingerprint: sw.js no longer derives CACHE from ' +
+                    'VENDOR_FINGERPRINT — the runtime cache would never ' +
+                    'invalidate. Refusing to publish.');
   }
-  log('  ' + files.length + ' files, fingerprint ' + digest + ' matches sw.js');
+
+  if (m[1] === digest) {
+    log('  ' + files.length + ' files, ' + digest + ' unchanged');
+    return;
+  }
+
+  if (!CHECK) fs.writeFileSync(abs, sw.replace(m[0], "var VENDOR_FINGERPRINT = '" + digest + "'"));
+  log('  ' + files.length + ' files, ' + m[1] + ' -> ' + digest);
+  log('  ' + (CHECK ? 'would name' : 'named') + ' the runtime cache lab-runtimes-' + digest);
+  log('  returning visitors refill on their next visit to a lab that uses it');
 }
 
 /* --------------------------------------------------------------------------
