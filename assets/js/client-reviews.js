@@ -36,21 +36,30 @@
 
   /* An escape hatch out of the carousel.
 
-     All 30 cards ship in the HTML; the pager then hides 29 of them. That makes
-     the page strictly worse with JavaScript than without it: Ctrl+F finds no
-     name but the visible one, and the other 29 are gone from the accessibility
-     tree — on the page the homepage links to with "Read all 30 recommendations".
+     Every card ships in the HTML; the pager then hides all but the current one.
+     That makes the page strictly worse with JavaScript than without it: Ctrl+F
+     finds no name but the visible one, and the rest are gone from the
+     accessibility tree — on the page the homepage links to with "Read all
+     recommendations".
 
      The carousel itself is fine and stays; it just needs a way out. The button
      is built here rather than in the markup because a no-JS visitor is already
-     seeing all 30 and would only be confused by a control that does nothing. */
+     seeing every card and would only be confused by a control that does nothing.
+
+     No count in the label, here or on the projects pager: a hardcoded total goes
+     stale silently the moment a card is added, which is exactly what happened to
+     the CSS that called this the "Show all 30" toggle. "Recommendation N of M"
+     below still counts, because it reads M off cards.length at render time. */
   const showAllBtn = document.createElement('button');
   showAllBtn.type = 'button';
   showAllBtn.className = 'carousel-btn carousel-btn-wide';
   showAllBtn.id = 'show-all-recommendations';
   showAllBtn.setAttribute('aria-pressed', 'false');
-  showAllBtn.textContent = 'Show all ' + cards.length;
-  controls.appendChild(showAllBtn);
+  showAllBtn.textContent = 'Show all';
+  // Before the trailing arrow, not after it, so the row reads
+  // [prev] [label] [show all] [next] and .recommendation-controls' auto margins
+  // can pin an arrow to each end. Matches how projects.js places its toggle.
+  controls.insertBefore(showAllBtn, controls.lastElementChild);
 
   let current = 0;
   let showAll = false;
@@ -59,12 +68,24 @@
     cards.forEach((card, index) => {
       card.style.display = (showAll || index === current) ? '' : 'none';
     });
+    // With every card on screen there is nothing to page to, so the arrows
+    // leave rather than sit there greyed out. Move focus off one first: a
+    // display:none element cannot hold focus, and losing it would drop a
+    // keyboard user back to the top of the page.
+    if (showAll && (document.activeElement === prevBtn || document.activeElement === nextBtn)) {
+      showAllBtn.focus();
+    }
+    prevBtn.hidden = showAll;
+    nextBtn.hidden = showAll;
+    // Left disabled as well as hidden: if a stylesheet ever defeats [hidden],
+    // this degrades to greyed-out arrows rather than live ones that would page
+    // a list already showing everything.
     prevBtn.disabled = showAll;
     nextBtn.disabled = showAll;
     showAllBtn.setAttribute('aria-pressed', showAll ? 'true' : 'false');
-    showAllBtn.textContent = showAll ? 'Show one at a time' : 'Show all ' + cards.length;
+    showAllBtn.textContent = showAll ? 'Show one at a time' : 'Show all';
     label.textContent = showAll
-      ? 'Showing all ' + cards.length + ' recommendations'
+      ? 'Showing all recommendations'
       : 'Recommendation ' + (current + 1) + ' of ' + cards.length;
   }
 

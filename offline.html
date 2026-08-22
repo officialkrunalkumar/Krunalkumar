@@ -69,14 +69,25 @@
     <h1>You are offline</h1>
     <p>This page needs a connection, and the network is not reachable right now.
        Once you are back online, following any link below loads the live site again.</p>
-    <p>Two tools on this site are built to work with no network at all —
-       if you have opened them before, they are already saved on this device:</p>
+    <!--
+      This used to read "if you have opened them before, they are already saved"
+      — which was never the condition. sw.js precaches both tools in its install
+      handler (DOC_URLS), and boot.js registers that worker on every page, so the
+      tools are saved by the first visit to ANY page here. Opening them has never
+      been required, and the old wording read as a false claim to anyone who hit
+      this page in a private window without having touched the labs.
+    -->
+    <p>Two tools on this site are built to work with no network at all. Both were
+       saved to this device on your first visit to any page here — opening them was
+       never required — so they still work now:</p>
     <div class="actions">
       <a class="btn primary" href="/">Try again</a>
       <a class="btn" href="/labs/resume-maker">Resume maker</a>
       <a class="btn" href="/labs/biodata-maker">Biodata maker</a>
     </div>
-    <p class="small">Nothing you type into those tools ever leaves your device — that is why they work here.</p>
+    <p class="small">Nothing you type into those tools ever leaves your device — that is why they work here.
+       The tools themselves sit in this browser's cache storage, and clearing site data removes them
+       until your next visit.</p>
   </main>
 </body>
 </html>

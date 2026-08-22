@@ -198,7 +198,7 @@
         <div class="project-carousel">
           <div class="carousel-controls" style="display: none">
             <button class="carousel-btn" id="prev-projects" aria-label="Show previous projects">←</button>
-            <span id="project-page-label" class="page-label" aria-live="polite">Page 1 of 9</span>
+            <span id="project-page-label" class="page-label" aria-live="polite">Page 1 of 13</span>
             <button class="carousel-btn" id="next-projects" aria-label="Show next projects">→</button>
           </div>
           <!-- data-spotlight marks the pool the featured card at the top rotates through.
@@ -242,6 +242,18 @@
                    card cite "figures" it does not show. -->
               <p class="project-outcome">Churn-ticket review went from 15 minutes to 2 — an 87% efficiency gain. Separately, a backlog of 200+ tickets was processed in under 20 minutes. Built in five days. Reported by Zeni&rsquo;s RevOps lead, Brandon Dith-Berry, on LinkedIn.</p>
               <p class="project-description">A multi-stage AI pipeline I wrote the code for at Zeni, running inside HubSpot on the OpenAI API: it digests company records, ticket and meeting notes, validates the churn reason a CSM gave, and shows which evidence it used. This repo is the successor I have since taken further.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <!-- status carries data-spotlight, so per the rule above it must stay off
+               page 1 (items 1-4). Position 5 is the first tile on page 2: prominent
+               without breaking the featured card's don't-show-what's-already-visible
+               constraint. -->
+          <a class="project-item" href="https://github.com/officialkrunalkumar/status" target="_blank" rel="noopener noreferrer" data-spotlight>
+            <div>
+              <p class="project-meta">Infrastructure</p>
+              <h3 class="project-name">Self-Hosted Status Page</h3>
+              <p class="project-description">An uptime monitor for this site that runs on nothing but GitHub Actions: a scheduled job probes the site every ten minutes and publishes the result as a static status page. No external monitoring vendor, no dependencies, no monthly bill.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -493,14 +505,140 @@
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/010-Churn-Ticket-Analysis-using-OpenAi" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">AI / RevOps</p>
+              <h3 class="project-name">Churn Ticket Summarizer — the first ChurnGPT</h3>
+              <p class="project-description">The original build that ChurnGPT 2.0 grew out of: it gathers every note and meeting note attached to a ticket, combines them into one record, and sends that to the OpenAI API for a summary.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/013-openai-fine-tuning" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">AI / Model Training</p>
+              <h3 class="project-name">Fine-Tuned Conversational Model</h3>
+              <p class="project-description">A fine-tuning pipeline that adapts an OpenAI base model for chat, covering dataset preparation through to the trained result.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/008-HuggingFace-AI-Application" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">AI / NLP</p>
+              <h3 class="project-name">Hugging Face Summarization Service</h3>
+              <p class="project-description">A summarization application built on the Hugging Face inference API, running Facebook&rsquo;s bart-large-cnn model over long-form input.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/009-ChatGPT-AI-Application" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">AI</p>
+              <h3 class="project-name">GPT-4 Application Prototype</h3>
+              <p class="project-description">A compact application built directly against the OpenAI API on GPT-4 — the smallest useful shape of a working LLM integration.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/Bulk-Email-Sender-from-CSV-using-Python" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Automation</p>
+              <h3 class="project-name">CSV-Driven Bulk Email Sender</h3>
+              <p class="project-description">A Python tool that reads names and addresses from a CSV file and sends personalised email at volume, without a mail-merge service in the middle.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/038-Daily-Chargebee-to-HubSpot-Invoice-Sync" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Integration</p>
+              <h3 class="project-name">Daily Chargebee Invoice Sync</h3>
+              <p class="project-description">A scheduled n8n workflow that pulls updated invoice data from Chargebee each day, updates the matching HubSpot records, and creates new ones for invoices HubSpot has never seen.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/019-Bulk-Company-Enrichment-Via-Amplemarket" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Data Enrichment</p>
+              <h3 class="project-name">Bulk Company Enrichment Pipeline</h3>
+              <p class="project-description">An n8n workflow that reads company domains out of HubSpot, enriches them through the Amplemarket API, and writes the returned data back via PATCH.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/022-Delete-the-company-record-when-domain-is-not-reachable-within-10-seconds" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Data Hygiene</p>
+              <h3 class="project-name">Domain Reachability Cleanup</h3>
+              <p class="project-description">A CRM hygiene routine that tests whether a company&rsquo;s domain still answers within ten seconds and clears out the records whose domains have gone dark.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/027-HubSpot-Metadata-using-Python-Data-Frame" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Data Analysis</p>
+              <h3 class="project-name">CRM Metadata Notebook</h3>
+              <p class="project-description">A Jupyter notebook that builds structured metadata about HubSpot CRM objects using pandas data frames — the analytical counterpart to the Apps Script metadata builder.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/006-QBR-Calculation-Automation" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Automation</p>
+              <h3 class="project-name">QBR Scheduling Calculator</h3>
+              <p class="project-description">Python that works out the next Quarterly Business Review date from an account&rsquo;s schedule, replacing a lookup table that had been read by hand.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/grs-drf-react" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Full Stack</p>
+              <h3 class="project-name">Grievance Redressal Portal</h3>
+              <p class="project-description">A complaint-management portal built and rebuilt across several stacks — Django, Django REST Framework, and a React front end against that API — as an exercise in carrying one domain model through different architectures.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/IPL-Data-Analysis" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Data Analysis</p>
+              <h3 class="project-name">IPL Match Data Analysis</h3>
+              <p class="project-description">Statistical analysis of Indian Premier League match data, implemented first in Python and then again in JavaScript to compare how each language handles the same dataset.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/einstein-education-static-site" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Web</p>
+              <h3 class="project-name">Einstein Education Static Site</h3>
+              <p class="project-description">A hand-built static site for an education provider, written in plain HTML and CSS with no framework or build step behind it.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/Software-Testing" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Quality Assurance</p>
+              <h3 class="project-name">Software Testing Practice</h3>
+              <p class="project-description">Test plans, cases, and methodology worked through in practice — the QA discipline that sits underneath everything else in this gallery.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
+          <a class="project-item" href="https://github.com/officialkrunalkumar/Codingbat.com-Solutions" target="_blank" rel="noopener noreferrer">
+            <div>
+              <p class="project-meta">Education</p>
+              <h3 class="project-name">CodingBat Python Solutions</h3>
+              <p class="project-description">Worked solutions to the CodingBat Python problem set, kept as a reference for the students I mentor through the fundamentals.</p>
+            </div>
+            <span class="project-link-pill">Open repo →</span>
+          </a>
         </div>
           <div class="carousel-controls bottom-controls" style="display: none">
             <button class="carousel-btn" id="prev-projects-bottom" aria-label="Show previous projects">←</button>
             <!-- No aria-live here: the top label already announces the page change once. -->
-            <span id="project-page-label-bottom" class="page-label">Page 1 of 9</span>
+            <span id="project-page-label-bottom" class="page-label">Page 1 of 13</span>
             <button class="carousel-btn" id="next-projects-bottom" aria-label="Show next projects">→</button>
           </div>
         </div>
+        <p class="gallery-footnote">
+          These are the builds worth writing up. The rest — 80+ public repositories, including the
+          smaller one-off workflows and experiments that did not need their own card — are all on
+          <a class="text-link" href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener">GitHub</a>,
+          linked from the footer of every page on this site.
+        </p>
       </section>
     </main>
 

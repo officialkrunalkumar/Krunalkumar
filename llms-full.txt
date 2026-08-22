@@ -73,6 +73,7 @@
 
 - **ChurnGPT 2.0 (`011-ChurnGPT-2.0`):** Multi-stage AI pipeline digesting CRM records, tickets, and meeting transcripts to summarise churn tickets, validate the churn reason given, and show the evidence behind each decision. Reported outcome: churn-ticket review fell from 15 minutes to 2 (an 87% efficiency gain) and 200+ tickets were processed in under 20 minutes; built in five days. Figures reported publicly by Zeni's RevOps lead, Brandon Dith-Berry.
 - **AI-Powered FNOL Claims Assistant (`FNOL-Claim-Processing-Agent`):** Autonomous insurance workflow extracting intake data, catching missing fields, and routing First Notice of Loss claims.
+- **Self-Hosted Status Page (`status`):** Uptime monitor for krunalkumar.dpdns.org running on GitHub Actions alone — a scheduled job probes the site every ten minutes and publishes the result as a static status page via GitHub Pages. No external monitoring vendor, no dependencies. Live at https://status.krunalkumar.dpdns.org.
 - **Sheet-Driven Task Automation Hub (`Google-Sheet-ClickUp-Integration-Automation`):** Google Apps Script two-way sync between Google Sheets and ClickUp tasks.
 - **Social Publishing Studio (`Automated-Instagram-Poster`):** Flask and n8n pipeline automating scheduled Instagram content delivery.
 - **CleverResponder / AI AutoResponders (`SmartLead-AutoResponder`, `Instantly-AutoResponder`, `GMail-Auto-Responder`):** Autonomous inbound reply classifiers and AI draft generators with Slack human-in-the-loop approvals.

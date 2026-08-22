@@ -146,15 +146,23 @@ img {
      ~3 L* and read too light for a full-width band. Being a literal, it
      must be shifted by hand with the other raised fills — see the token
      block at the top of this file. */
-  background: rgb(28 40 58 / 0.8);
+  /* 0.97, not the 0.8 this carried for a long time. That 0.8 was picked by
+     looking at the top of the page, where the only thing behind the bar is
+     #bg-canvas — a smooth radial gradient plus sparse particles, which barely
+     registers through a partial fill. But the bar is sticky: scroll, and real
+     content runs underneath it. Against a light card (~226/channel) a 0.8 fill
+     lands ~67/channel while the same bar over the page ground lands ~26, so the
+     band visibly mottled and smeared as cards passed beneath, and the nav read
+     as blurred. At 0.97 that same swing is ~6/channel — invisible — while the
+     bar still picks up a trace of the gradient underneath rather than sitting
+     on the page as a flat slab. */
+  background: rgb(28 40 58 / 0.97);
   /* No backdrop-filter here, deliberately. The bar spans #bg-canvas, which
      repaints ~30fps on all 89 pages, and a backdrop-filter forces the browser
      to re-rasterize the strip behind the bar on every one of those frames —
-     the header was recompositing 30x a second while the page sat still.
-     What it bought was nil: the backdrop is a smooth radial gradient plus
-     sparse particles, seen through a 0.8-alpha fill, so blurring it moves
-     almost no pixels. The 0.8 alpha stays, so the bar still picks up the page
-     gradient underneath exactly as before. */
+     the header was recompositing 30x a second while the page sat still. What
+     it bought was nil then and is less than nil now: at 0.97 there is almost
+     nothing showing through to blur. */
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -1566,12 +1574,38 @@ main [id] {
 
 .carousel-controls {
   display: flex;
-  justify-content: space-between;
+  /* center, not space-between: the page label and the injected "Show all"
+     button are a related pair and belong next to each other in the middle,
+     separated by nothing but the gap. The two arrows are pushed out to the
+     edges by the auto margins below instead, which space-between could not
+     do once a fourth child joined the row -- it spread all four evenly and
+     stranded the label away from the button it labels. */
+  justify-content: center;
   align-items: center;
   gap: 0.8rem;
   margin-top: 1rem;
   /* See .recommendation-controls: same injected wide button, same phone. */
   flex-wrap: wrap;
+}
+
+/* Pin the arrows to the ends. :first-child / :last-child rather than the
+   #prev-/#next- ids so this keeps working for both the top and the bottom
+   cluster without naming four selectors. projects.js inserts the "Show all"
+   toggle *before* the trailing arrow precisely so :last-child stays the arrow. */
+.carousel-controls > .carousel-btn:first-child { margin-right: auto; }
+.carousel-controls > .carousel-btn:last-child { margin-left: auto; }
+
+/* Phones cannot fit arrow + label + toggle + arrow on one line: the row wrapped
+   and left the trailing arrow marooned on a second line by itself, shoved right
+   by its own auto margin. Give the toggle its own full row instead and the first
+   line goes back to the familiar [<-] [Page x of y] [->]. order, not a DOM move,
+   so the toggle stays the third child and the trailing arrow stays :last-child --
+   which is what the margin rule above keys off. */
+@media (max-width: 640px) {
+  .carousel-controls > .carousel-btn-wide {
+    order: 1;
+    flex-basis: 100%;
+  }
 }
 
 .carousel-btn {
@@ -1596,7 +1630,7 @@ main [id] {
   cursor: not-allowed;
 }
 
-/* The "Show all 30" toggle. .carousel-btn is a 42px circle sized for a single
+/* The "Show all" toggle. .carousel-btn is a 42px circle sized for a single
    arrow glyph, so a text label needs the box back. Declared after it, same
    specificity, so these win without !important. */
 .carousel-btn-wide {
@@ -1612,6 +1646,15 @@ main [id] {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink-3);
+}
+
+/* At 0.95rem "Recommendation 1 of 30" measures 180px against the 168px a 360px
+   phone leaves between the two arrows, so the trailing arrow wrapped onto a row
+   of its own. 0.8rem brings it to 151px, which still clears the widest the label
+   ever gets ("Recommendation 10 of 30"). The projects pager reads "Page 1 of 13"
+   and always fit; it takes the smaller size too so the two pagers stay identical. */
+@media (max-width: 640px) {
+  .page-label { font-size: 0.8rem; }
 }
 
 .project-list {
@@ -1678,6 +1721,21 @@ main [id] {
   justify-content: center;
 }
 
+/* Wayfinding note under the project gallery, pointing at the GitHub account for
+   the repos that did not earn a card. Quiet like .project-source for the same
+   reason: it is a signpost, not a claim, and it must not compete with the
+   project names above it. No .info-card / .section-heading ancestor here, so
+   unlike those two this one never collides with the (0,1,1) weight-600 rule. */
+.gallery-footnote {
+  margin: 1.4rem auto 0;
+  max-width: 62ch;
+  color: var(--ink-3);
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: center;
+}
+
 /* ==========================================================================
    10. Recommendations
    ========================================================================== */
@@ -1688,12 +1746,16 @@ main [id] {
   gap: 0.9rem;
 }
 
+/* Kept in lockstep with .carousel-controls above: same three children plus the
+   same JS-injected toggle, so the two pagers on this site read identically —
+   arrow at each end, label and toggle paired in the middle. See that block for
+   why centre + auto margins rather than space-between. */
 .recommendation-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  /* The JS-injected "Show all 30" / "Show one at a time" button is wider than
+  /* The JS-injected "Show all" / "Show one at a time" button is wider than
      the space a 360px phone leaves beside the pager, and a non-wrapping row
      shoved it past the card edge — truncated at the screen and stretching the
      layout viewport to 424px in its widest state. Wrapping costs nothing on
@@ -1701,6 +1763,16 @@ main [id] {
      phones. Same fix on .carousel-controls below, which projects.js feeds the
      same button class. */
   flex-wrap: wrap;
+}
+
+.recommendation-controls > .carousel-btn:first-child { margin-right: auto; }
+.recommendation-controls > .carousel-btn:last-child { margin-left: auto; }
+
+@media (max-width: 640px) {
+  .recommendation-controls > .carousel-btn-wide {
+    order: 1;
+    flex-basis: 100%;
+  }
 }
 
 .recommendation-card {
@@ -3356,7 +3428,10 @@ footer a:hover {
    tinted with the page. In light mode that left two dark bars floating on
    white, which read as a rendering fault rather than a design. */
 :root[data-theme="light"] .site-header {
-  background: rgba(255, 255, 255, 0.92);
+  /* Raised from 0.92 with the dark bar above, and for the same reason: sticky
+     means real content slides under this, and at 0.92 a dark card showed through
+     as a grey smear across the nav. */
+  background: rgba(255, 255, 255, 0.97);
   border-bottom: 1px solid rgb(var(--line-rgb) / 0.24);
 }
 :root[data-theme="light"] footer#contact {
