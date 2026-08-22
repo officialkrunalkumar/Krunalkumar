@@ -104,4 +104,39 @@
   // Failsafe: a visitor who neither interacts nor finishes loading within
   // 3.5s must still produce a pageview.
   setTimeout(loadAnalytics, 3500);
+
+  // Vercel Speed Insights - tracks web vitals and performance metrics
+  // Uses the same deferred-loading pattern as Google Analytics for optimal performance
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+  
+  var siLoaded = false;
+  function loadSpeedInsights() {
+    if (siLoaded) return;
+    siLoaded = true;
+    var s = document.createElement('script');
+    s.defer = true;
+    s.src = '/_vercel/speed-insights/script.js';
+    document.head.appendChild(s);
+  }
+
+  // Load Speed Insights on first interaction or after page load
+  function onFirstInteractionSI() {
+    firstTouch.forEach(function (name) {
+      window.removeEventListener(name, onFirstInteractionSI, true);
+    });
+    loadSpeedInsights();
+  }
+  firstTouch.forEach(function (name) {
+    window.addEventListener(name, onFirstInteractionSI, { capture: true, passive: true, once: true });
+  });
+  window.addEventListener('load', function () {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadSpeedInsights, { timeout: 2000 });
+    } else {
+      setTimeout(loadSpeedInsights, 250);
+    }
+  });
+  setTimeout(loadSpeedInsights, 3500);
 })();
