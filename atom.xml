@@ -5,10 +5,26 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-21T14:00:00+05:30</updated>
+  <updated>2026-08-22T14:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>The Resume-Builder Paywall Trick</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick" />
+    <id>https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick</id>
+    <published>2026-08-22T14:00:00+05:30</published>
+    <updated>2026-08-22T14:00:00+05:30</updated>
+    <summary>The editor is free until your entire work history is typed in — then the price appears at the download button. What happens to that data server-side, and why the browser's print dialog is the download button nobody charges for.</summary>
+  </entry>
+  <entry>
+    <title>What a Marriage Biodata Leaks</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks" />
+    <id>https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks</id>
+    <published>2026-08-22T09:00:00+05:30</published>
+    <updated>2026-08-22T09:00:00+05:30</updated>
+    <summary>DOB, birthplace, mother's name, home address, income, and a photo that may carry GPS — one A4 page read the way an attacker reads it, and the sharing hygiene that costs nothing.</summary>
+  </entry>
   <entry>
     <title>How I Vibe Coded This Website — And the Mechanism That Made It Hold</title>
     <link href="https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website" />

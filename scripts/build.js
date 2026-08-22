@@ -10,7 +10,7 @@
    gradient") and deleting them by hand to save bytes would destroy the most
    valuable documentation in the codebase.
 
-   It does three transformations, then verifies what it produced:
+   It does four transformations, then verifies what it produced:
 
      1. Strips CSS comments.  main.css is 41.7% comments and render-blocking
         on all 89 pages. Saves roughly 44 KB raw / 12 KB brotli off the
@@ -20,12 +20,19 @@
      3. Rebuilds assets/data/search-index.json from the pages, so the search
         box can never describe content the site no longer has. See
         scripts/search-index.js for why that stopped being a manual step.
+     4. Rewrites the page counts quoted in llms.txt and llms-full.txt from the
+        index it just built, for the same reason every figure on the colophon
+        is counted rather than typed — the committed values had drifted to 88
+        pages in a repository that held 95.
 
    It then checks its own output — critical files present, above a size floor,
-   and enough HTML pages on disk — and throws if anything looks wrong. Vercel
-   keeps serving the previous deployment when a build exits non-zero, so failing
-   the deploy is always safer than publishing the damage. Every step reports
-   what it did, so a deploy log shows the numbers.
+   enough HTML pages on disk, every JSON-LD block parseable, the sitemap and
+   the pages agreeing about what exists, and the static header/footer each
+   page ships matching the partials they get swapped for — and throws if
+   anything looks wrong. Vercel keeps serving the previous deployment when a
+   build exits non-zero, so failing the deploy is always safer than publishing
+   the damage. Every step reports what it did, so a deploy log shows the
+   numbers.
 
    SAFE TO RUN LOCALLY. It is idempotent — a second run finds no comments left
    and writes the same bytes back — and `node scripts/build.js --check` makes
@@ -60,6 +67,11 @@ const CSS_FILES = [
   'assets/css/party.css',
   'assets/css/einstein.css',
   'assets/css/synth.css',
+  /* The document-maker labs. Each carries its own stylesheet because the two
+     tools are siblings, not twins — shared rules would couple five resume
+     templates to five biodata templates for the sake of a few bytes. */
+  'assets/css/resume-maker.css',
+  'assets/css/biodata-maker.css',
 ];
 
 let totalBefore = 0;
@@ -247,14 +259,15 @@ function doCss() {
    nothing and is wrong the day after it is written. The real answer is the
    last commit that touched the file backing each URL.
    -------------------------------------------------------------------------- */
-function urlToFile(loc) {
+function urlToFile(loc, root) {
+  root = root || ROOT;   // overridable so the parity gate can be tested on a scratch tree
   let p = loc.replace(/^https?:\/\/[^/]+/, '');
   p = p.split('?')[0].split('#')[0];
   if (p === '' || p === '/') return 'index.html';
   p = p.replace(/^\//, '').replace(/\/$/, '');
   const candidates = [p, p + '.html', path.join(p, 'index.html')];
   for (const c of candidates) {
-    if (fs.existsSync(path.join(ROOT, c))) return c;
+    if (fs.existsSync(path.join(root, c))) return c;
   }
   return null;
 }
@@ -329,11 +342,302 @@ function doSitemap() {
 function doSearchIndex() {
   log('');
   const { buildIndex } = require('./search-index.js');
-  buildIndex({ check: CHECK, log: log });
+  // The return value carries the freshly computed page count, which is the
+  // number the llms rewrite below wants — fresh in --check mode too, since
+  // buildIndex always regenerates in memory and only gates the write.
+  return buildIndex({ check: CHECK, log: log });
 }
 
 /* --------------------------------------------------------------------------
-   4. Output check
+   4. llms.txt / llms-full.txt page counts
+   --------------------------------------------------------------------------
+   Both files quote how many pages the search index covers and how many of
+   them are labs. Those numbers were hand-typed, and hand-typed numbers drift:
+   by the time this ran for the first time both files still said 88 pages and
+   58 labs against a repository holding 95 and 62. Same cure as the colophon —
+   the prose stays hand-written, the figures inside it get rewritten from what
+   the build just counted. The committed values are the last deploy's, so the
+   repo copy is right until the next page lands, at which point the next
+   deploy corrects it without anyone remembering to.
+
+   The patterns anchor on the surrounding words, not the number, so a future
+   rewording of either sentence simply stops matching — that is reported as a
+   NOTE rather than an error, because a sentence that no longer quotes a
+   count cannot be wrong about it.
+   -------------------------------------------------------------------------- */
+const LLMS_COUNT_RULES = [
+  ['llms.txt', [
+    [/(prebuilt index of all )\d+( pages)/, 'pages'],
+    [/(The )\d+( lab pages)/, 'labs'],
+  ]],
+  ['llms-full.txt', [
+    [/(index covering all )\d+( pages)/, 'pages'],
+  ]],
+];
+
+/* Labs entries in the search index, without re-parsing the index: every
+   labs/*.html maps to a /labs URL and the sandboxed guestbook document is the
+   only labs file the index excludes, so counting the files IS counting the
+   index's Labs section — checked against the generated JSON when this was
+   written (62 both ways). */
+function labPageCount(root) {
+  return walkFiles(path.join(root, 'labs'), (f) => f.endsWith('.html'))
+    .filter((f) => path.basename(f) !== 'hacklab-guestbook.html').length;
+}
+
+function doLlmsCounts(indexStats, root) {
+  root = root || ROOT;
+  log('');
+  log('llms page counts');
+  const facts = {
+    pages: String(indexStats.pages),
+    labs: String(labPageCount(root)),
+  };
+  for (const [rel, rules] of LLMS_COUNT_RULES) {
+    const abs = path.join(root, rel);
+    if (!fs.existsSync(abs)) { log('  SKIP  ' + rel + ' (not found)'); continue; }
+    const src = fs.readFileSync(abs, 'utf8');
+    let out = src;
+    let missing = 0;
+    for (const [re, key] of rules) {
+      if (!re.test(out)) { missing += 1; continue; }
+      out = out.replace(re, '$1' + facts[key] + '$2');
+    }
+    const state = out === src ? 'already current'
+      : (CHECK ? 'would update' : 'updated');
+    log('  ' + rel.padEnd(14) + state +
+        ' (' + facts.pages + ' pages, ' + facts.labs + ' labs)' +
+        (missing ? '   NOTE: ' + missing + ' count phrase(s) no longer present' : ''));
+    if (!CHECK && out !== src) fs.writeFileSync(abs, out);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. JSON-LD gate
+   --------------------------------------------------------------------------
+   The structured data blocks are the one place this site allows an inline
+   <script>, and nothing on the page exercises them — a JSON-LD block with a
+   stray trailing comma renders identically to a valid one, and the only
+   party that ever parses it is a crawler that silently drops it. So the
+   build parses every block on every page, exactly the way a crawler would,
+   and a block that does not parse fails the deploy with the file named.
+
+   HTML comments are stripped first, so a deliberately commented-out block is
+   dead text rather than a false alarm — the same reason the CSS scanner
+   tracks strings before believing it found a comment.
+   -------------------------------------------------------------------------- */
+function stripHtmlComments(html) {
+  return html.replace(/<!--[\s\S]*?-->/g, ' ');
+}
+
+function jsonLdErrors(html) {
+  const errors = [];
+  const re = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const src = stripHtmlComments(html);
+  let m;
+  let blocks = 0;
+  while ((m = re.exec(src)) !== null) {
+    blocks += 1;
+    try { JSON.parse(m[1]); }
+    catch (e) { errors.push('ld+json block ' + blocks + ' does not parse: ' + e.message); }
+  }
+  return { blocks: blocks, errors: errors };
+}
+
+function listHtmlPages(root) {
+  return walkFiles(root, (f) => f.endsWith('.html'))
+    .map((f) => path.relative(root, f).split(path.sep).join('/'))
+    .sort();
+}
+
+function doJsonLd(root) {
+  root = root || ROOT;   // overridable for the same testing reason as urlToFile
+  log('');
+  log('JSON-LD gate');
+  const problems = [];
+  let pages = 0;
+  let blocks = 0;
+  for (const rel of listHtmlPages(root)) {
+    if (rel.startsWith('partials/')) continue;   // fragments, not pages
+    pages += 1;
+    const res = jsonLdErrors(fs.readFileSync(path.join(root, rel), 'utf8'));
+    blocks += res.blocks;
+    for (const e of res.errors) problems.push(rel + ': ' + e);
+  }
+  if (problems.length) {
+    log('  FAILED:');
+    problems.forEach((p) => log('    - ' + p));
+    throw new Error('JSON-LD gate: ' + problems.length + ' invalid block(s) — refusing to publish');
+  }
+  log('  ' + blocks + ' blocks across ' + pages + ' pages, all parse');
+}
+
+/* --------------------------------------------------------------------------
+   6. Sitemap parity gate
+   --------------------------------------------------------------------------
+   Two failure modes, both silent in production: a new page that never made it
+   into sitemap.xml simply is not surfaced to crawlers, and a sitemap entry
+   whose page was deleted has crawlers requesting 404s under the site's name.
+   So the two lists are held equal — every indexable page must have a <loc>,
+   and every <loc> must resolve to a real file (the same resolver the
+   <lastmod> rewrite uses, which is also what lets the two llms .txt entries
+   through: they are in the sitemap on purpose and they exist on disk).
+
+   NOINDEX_PAGES is the documented exception list, and it should stay short:
+   the error page, the three easter eggs reached deliberately rather than
+   found, the sandboxed guestbook document, and the Search Console token.
+   partials/ are excluded wholesale because they are fragments, not pages.
+   -------------------------------------------------------------------------- */
+const NOINDEX_PAGES = new Set([
+  '404.html',
+  'teapot.html',
+  'terminal.html',
+  'einstein.html',
+  'labs/hacklab-guestbook.html',
+  'google46d0a7ad3f01b5a6.html',
+]);
+
+function fileToUrl(rel) {
+  if (rel === 'index.html') return '/';
+  return '/' + rel.replace(/\.html$/, '').replace(/\/index$/, '');
+}
+
+function doSitemapParity(root) {
+  root = root || ROOT;
+  log('');
+  log('sitemap parity gate');
+  const abs = path.join(root, 'sitemap.xml');
+  if (!fs.existsSync(abs)) throw new Error('sitemap parity: sitemap.xml is missing');
+  const src = fs.readFileSync(abs, 'utf8');
+
+  const locs = [];
+  const re = /<loc>([^<]+)<\/loc>/g;
+  let m;
+  while ((m = re.exec(src)) !== null) locs.push(m[1].trim());
+
+  // Normalise a <loc> to the URL path the pages map to, tolerating a
+  // trailing slash — /labs/ and /labs are the same entry, not a mismatch.
+  const locPaths = new Set(locs.map((l) => {
+    let p = l.replace(/^https?:\/\/[^/]+/, '');
+    if (p === '') p = '/';
+    if (p !== '/' && p.endsWith('/')) p = p.slice(0, -1);
+    return p;
+  }));
+
+  const problems = [];
+  const indexable = listHtmlPages(root)
+    .filter((rel) => !rel.startsWith('partials/') && !NOINDEX_PAGES.has(rel));
+  for (const rel of indexable) {
+    if (!locPaths.has(fileToUrl(rel))) {
+      problems.push('page not in sitemap.xml: ' + fileToUrl(rel) + '  (' + rel + ')');
+    }
+  }
+  for (const loc of locs) {
+    if (!urlToFile(loc, root)) {
+      problems.push('sitemap <loc> has no file behind it: ' + loc);
+    }
+  }
+
+  if (problems.length) {
+    log('  FAILED:');
+    problems.forEach((p) => log('    - ' + p));
+    throw new Error('sitemap parity gate: ' + problems.length + ' mismatch(es) — refusing to publish');
+  }
+  log('  ' + indexable.length + ' indexable pages all listed, ' + locs.length + ' sitemap URLs all resolve');
+}
+
+/* --------------------------------------------------------------------------
+   7. Static chrome gate
+   --------------------------------------------------------------------------
+   Every page ships a complete static copy of the header nav and footer so
+   there is something real at first paint, and include-partials.js swaps it
+   for the canonical version in partials/ once JavaScript arrives. The README
+   asks for the static copies to be kept in sync by hand, which is the same
+   promise the search index used to run on, and it will break the same way:
+   a link added to the partial but not to 97 static copies is invisible
+   exactly to the people browsing without JavaScript — the ones the static
+   copy exists for.
+
+   The comparison is the ordered href lists, not the markup: the static
+   header legitimately lacks the hamburger and the More dropdown (both are
+   JS-only, dead weight without it), and the active-link class differs per
+   page by design. What must agree is which links exist and in what order.
+   Pages outside CHROMELESS that carry no chrome at all fail the gate too —
+   a page that lost its static header is damage, not a new exclusion.
+   -------------------------------------------------------------------------- */
+const CHROMELESS = new Set([
+  'teapot.html',                  // full-screen easter egg, no navigation by design
+  'terminal.html',                // ditto
+  'labs/hacklab-guestbook.html',  // sandboxed document inside HackLab's iframe
+  'google46d0a7ad3f01b5a6.html',  // Search Console token, never rendered
+]);
+
+function navHrefs(html) {
+  const src = stripHtmlComments(html);
+  const m = src.match(/<header[^>]*class="[^"]*site-header[^"]*"[^>]*>[\s\S]*?<\/header>/);
+  if (!m) return null;
+  return Array.from(m[0].matchAll(/<a[^>]*class="[^"]*nav-link[^"]*"[^>]*>/g))
+    .map((a) => ((a[0].match(/href\s*=\s*"([^"]*)"/) || [])[1] || '').trim());
+}
+
+function footerColHrefs(html) {
+  const src = stripHtmlComments(html);
+  const m = src.match(/<footer[\s\S]*?<\/footer>/);
+  if (!m) return null;
+  const out = [];
+  // The three .footer-col columns hold only headings and links, so the first
+  // closing </nav> or </div> after each opener really is the column's end.
+  for (const col of m[0].matchAll(/class="footer-col"[^>]*>[\s\S]*?<\/(?:nav|div)>/g)) {
+    for (const a of col[0].matchAll(/<a\s[^>]*href\s*=\s*"([^"]*)"/g)) out.push(a[1].trim());
+  }
+  return out;
+}
+
+function doChromeParity(root) {
+  root = root || ROOT;
+  log('');
+  log('static chrome gate');
+  const readRel = (rel) => fs.readFileSync(path.join(root, rel), 'utf8');
+  const canonNav = navHrefs(readRel('partials/header.html'));
+  const canonFooter = footerColHrefs(readRel('partials/footer.html'));
+  if (!canonNav || !canonNav.length || !canonFooter || !canonFooter.length) {
+    throw new Error('static chrome gate: could not read link lists out of partials/ — refusing to publish');
+  }
+
+  const problems = [];
+  let matched = 0;
+  for (const rel of listHtmlPages(root)) {
+    if (rel.startsWith('partials/') || CHROMELESS.has(rel)) continue;
+    const html = readRel(rel);
+    const nav = navHrefs(html);
+    const foot = footerColHrefs(html);
+    if (!nav) { problems.push(rel + ': no static header nav found'); continue; }
+    if (!foot || !foot.length) { problems.push(rel + ': no static footer columns found'); continue; }
+    const navOk = nav.join('\n') === canonNav.join('\n');
+    const footOk = foot.join('\n') === canonFooter.join('\n');
+    if (navOk && footOk) { matched += 1; continue; }
+    if (!navOk) {
+      problems.push(rel + ': static header nav drifted from partials/header.html\n' +
+                    '        partial: ' + canonNav.join(' ') + '\n' +
+                    '        page:    ' + nav.join(' '));
+    }
+    if (!footOk) {
+      problems.push(rel + ': static footer links drifted from partials/footer.html' +
+                    ' (' + canonFooter.length + ' links expected, ' + foot.length + ' found)');
+    }
+  }
+
+  if (problems.length) {
+    log('  FAILED:');
+    problems.forEach((p) => log('    - ' + p));
+    throw new Error('static chrome gate: ' + problems.length + ' page(s) drifted — refusing to publish');
+  }
+  log('  ' + matched + ' pages match partials/ (' + canonNav.length + ' nav links, ' +
+      canonFooter.length + ' footer links)');
+}
+
+/* --------------------------------------------------------------------------
+   8. Output check
    --------------------------------------------------------------------------
    This runs against the deploy's outputDirectory, which is the repository root.
    The point is to turn any structural damage into a FAILED DEPLOY rather than a
@@ -522,7 +826,11 @@ function main() {
   log(CHECK ? '=== build --check (no files will be written) ===' : '=== build ===');
   doCss();
   doSitemap();
-  doSearchIndex();
+  const index = doSearchIndex();
+  doLlmsCounts(index);
+  doJsonLd();
+  doSitemapParity();
+  doChromeParity();
   verifyOutput();
   log('');
   const saved = totalBefore - totalAfter;
@@ -532,4 +840,16 @@ function main() {
   log(CHECK ? '=== check complete, nothing written ===' : '=== build complete ===');
 }
 
-main();
+/* Exported so the gates can be pointed at a deliberately broken scratch tree
+   and proven to throw — a gate nobody has ever seen fail is a gate nobody
+   knows works. `node scripts/build.js` behaves exactly as before. */
+module.exports = {
+  jsonLdErrors: jsonLdErrors,
+  navHrefs: navHrefs,
+  footerColHrefs: footerColHrefs,
+  doJsonLd: doJsonLd,
+  doSitemapParity: doSitemapParity,
+  doChromeParity: doChromeParity,
+};
+
+if (require.main === module) main();

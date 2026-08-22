@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What a marriage biodata leaks. An A4 biodata page with its most sensitive fields highlighted and a location pin over the photo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- the A4 page -->
+  <rect x="850" y="95" width="220" height="310" rx="12" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+  <text x="960" y="132" fill="#7dd3fc" font-family="'Segoe UI',Tahoma,sans-serif" font-size="16" font-weight="800" letter-spacing="3" text-anchor="middle">BIODATA</text>
+
+  <!-- photo with a GPS pin: the field nobody remembers is on the page -->
+  <rect x="874" y="148" width="58" height="70" rx="6" fill="none" stroke="#94a3b8" stroke-width="3"/>
+  <circle cx="903" cy="172" r="10" fill="#94a3b8" opacity="0.8"/>
+  <path d="M 884 210 Q 903 190 922 210" fill="#94a3b8" opacity="0.8"/>
+  <path d="M 928 138 Q 944 138 944 154 Q 944 166 928 182 Q 912 166 912 154 Q 912 138 928 138 Z" fill="#f87171"/>
+  <circle cx="928" cy="154" r="6" fill="#131f2d"/>
+
+  <!-- the fields, with the risky ones highlighted -->
+  <g font-family="'Segoe UI',Tahoma,sans-serif" font-size="13" font-weight="700">
+    <rect x="948" y="152" width="102" height="20" rx="5" fill="#f87171" opacity="0.9"/>
+    <text x="956" y="167" fill="#131f2d">Date of birth</text>
+    <rect x="948" y="180" width="102" height="20" rx="5" fill="#f87171" opacity="0.9"/>
+    <text x="956" y="195" fill="#131f2d">Birthplace</text>
+    <rect x="874" y="238" width="176" height="20" rx="5" fill="#f87171" opacity="0.9"/>
+    <text x="882" y="253" fill="#131f2d">Mother's name</text>
+    <rect x="874" y="266" width="176" height="20" rx="5" fill="#f87171" opacity="0.9"/>
+    <text x="882" y="281" fill="#131f2d">Home address</text>
+    <rect x="874" y="294" width="120" height="20" rx="5" fill="#f87171" opacity="0.9"/>
+    <text x="882" y="309" fill="#131f2d">Income</text>
+  </g>
+  <g stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round" opacity="0.85">
+    <line x1="874" y1="336" x2="1050" y2="336"/>
+    <line x1="874" y1="354" x2="1050" y2="354"/>
+    <line x1="874" y1="372" x2="1000" y2="372"/>
+  </g>
+  <text x="960" y="440" fill="#f87171" font-family="'Segoe UI',Tahoma,sans-serif" font-size="18" font-weight="800" text-anchor="middle">recovery answers, in print</text>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="185" fill="#7dd3fc" font-size="24" font-weight="800" letter-spacing="7">SECURITY</text>
+    <text x="80" y="262" fill="#f8fafc" font-size="56" font-weight="800">What a marriage</text>
+    <text x="80" y="328" fill="#f8fafc" font-size="56" font-weight="800">biodata leaks</text>
+    <text x="80" y="396" fill="#e2e8f0" font-size="29" font-weight="600">One A4 page. Half of it is</text>
+    <text x="80" y="437" fill="#e2e8f0" font-size="29" font-weight="600">account-recovery answers.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

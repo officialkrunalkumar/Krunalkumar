@@ -63,6 +63,14 @@
    -------------------------------------------------------------------------- */
 
 .e-lab {
+  /* display: block is load-bearing, not cosmetic. .e-lab is a <span> inside
+     the .e-figure button, and an inline box paints its background per line
+     box — with a block-level svg as its only child there are no line boxes,
+     so the dark room gradient, the border, the radius and the shadow below
+     silently never rendered. Nobody noticed on the dark theme because the
+     page background behind it was the same colour; the light theme made the
+     missing card visible the moment the page around it lightened. */
+  display: block;
   position: relative;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -310,10 +318,42 @@
 }
 
 /* --------------------------------------------------------------------------
-   Light theme: chrome only, exactly as the other two scenes do it.
+   Light theme. The lab and the quote card stay the night-time diptych they
+   are — a laboratory at night does not become one at noon — but the page
+   AROUND them follows the theme now. It used to keep the dark room gradient
+   under a white header and footer, which left the citation note as a dark
+   card floating on a dark void.
    -------------------------------------------------------------------------- */
 
 :root[data-theme="light"] .einstein .site-header,
 :root[data-theme="light"] .einstein footer {
   background: rgb(255 255 255 / 0.9);
+}
+
+:root[data-theme="light"] .einstein {
+  background: var(--bg-base);
+  color: var(--text);
+}
+
+:root[data-theme="light"] .einstein .e-note {
+  background: rgb(var(--sheet-rgb) / 0.92);
+  border-color: rgb(var(--line-rgb) / 0.24);
+  color: var(--ink-2);
+}
+
+:root[data-theme="light"] .einstein .e-note h2 { color: var(--ink); }
+
+/* The fake quotes were rose-tinted for a dark card; on paper that pink
+   measured under 3:1. A proper red keeps the "this one is wrong" signal. */
+:root[data-theme="light"] .einstein .e-note .e-fake { color: #b42318; }
+
+/* The quote card's base is rgba(19,28,46,0.86) — an alpha that composited to
+   solid night on the dark body and washes out to silver on a light one. The
+   same gradient over an opaque room colour reproduces the dark-theme look
+   exactly, which is the point: the lab and its quote stay a night diptych in
+   both themes. */
+:root[data-theme="light"] .einstein .e-quote {
+  background:
+    linear-gradient(160deg, rgba(255, 212, 138, 0.08), rgba(19, 28, 46, 0.86)),
+    #0d1320;
 }

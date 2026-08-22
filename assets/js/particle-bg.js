@@ -82,6 +82,17 @@
     let densityScale = 1;
     let speedScale = 1;
 
+    // Low-end gate: on a machine reporting 4 cores or 2 GB of RAM, decoration
+    // should not be the thing that eats them — start the field at half density.
+    // Both properties are feature-detected because Firefox and Safari ship
+    // neither; an absent value falls back high so it never triggers the gate.
+    // Only the *starting* value moves: k/s and the settings popover multiply
+    // densityScale from here, so a visitor who wants the full field is one
+    // keypress away from it.
+    if ((navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 2) {
+      densityScale = 0.5;
+    }
+
     // WCAG 2.2.2 pause state — read before the loop starts so a visitor who
     // paused the animation on a previous page keeps it paused here. Scoped to
     // the tab session, like every other choice this script remembers: nothing

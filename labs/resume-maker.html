@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fill a form, pick one of 5 templates, print to PDF. Free resume maker with no sign-up, no watermark, no upload - your data never leaves your browser." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/resume-maker" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Free resume maker — 5 templates, print to PDF, nothing uploaded" />
+    <meta property="og:description" content="Fill a form, pick one of 5 templates, print to PDF. Free resume maker with no sign-up, no watermark, no upload - your data never leaves your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/resume-maker" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-resume-maker.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A filled resume template in the free in-browser resume maker" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free resume maker — 5 templates, print to PDF, nothing uploaded" />
+    <meta name="twitter:description" content="Fill a form, pick one of 5 templates, print to PDF. Free resume maker with no sign-up, no watermark, no upload - your data never leaves your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-resume-maker.jpg" />
+    <title>Free Resume Maker — 5 Templates, Print to PDF | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Resume Maker",
+        "url": "https://krunalkumar.dpdns.org/labs/resume-maker",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any modern web browser",
+        "description": "Fill a form, pick one of 5 templates, print to PDF. Free resume maker with no sign-up, no watermark, no upload - your data never leaves your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "5 resume templates: Classic, Sidebar, Banner, Elegant, Compact",
+                "Live preview on A4 or US Letter",
+                "Print to PDF from the browser",
+                "6 accent colours",
+                "Optional photo, resized locally",
+                "Repeatable, reorderable experience, education and certification sections",
+                "Every field optional",
+                "Autosave in the browser, nothing uploaded",
+                "Export and re-import all your data as a JSON file",
+                "Works offline after the first visit"
+        ],
+        "author": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        },
+        "publisher": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is it really free, with no watermark?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. No account, no watermark, no paywall at the download step. The usual trick is to let you build the whole resume and then charge at the export button; this one cannot charge you there because the export button is your browser's print dialog."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is my data uploaded anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server behind this page, so there is nowhere to upload to. That matters for this particular form: name, phone, email, photo, and your entire work history are exactly the data resume sites collect and monetise. Here the form, the templates and the preview are all rendered in your own browser and nothing leaves it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How do I get a PDF?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Press \"Print / Save as PDF\", and in the print dialog choose \"Save as PDF\" as the destination. The page is set up so only the resume prints — no site header, no buttons — on A4 with proper margins. Every browser has shipped this for years; it is the same engine paid sites use behind their download button."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will my data still be here tomorrow?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, on the same browser and device. Everything you type is autosaved to your browser's localStorage — a small store on your machine, not on any server — and restored when you come back. \"Clear everything\" wipes it, and so does clearing this site's data in your browser settings."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I move my data to another computer?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Press \"Download data\" and you get a small resume-data.json file containing everything — every field, the photo, your chosen template, colour and paper size. Keep it as a backup, or copy it to another machine, open this page there and press \"Load data\". Your resume is a file you own, not a row in someone else's database."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I print on US Letter?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Flip the Paper toggle in the toolbar from A4 to US Letter and both the preview and the print dialog follow. A4 is the default because most of the world hires on it; switch to Letter if you are applying in the US or Canada, where it is the standard."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does it work offline?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. Your data was always stored locally anyway, so once the page has arrived, nothing about the tool needs the internet."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I use my own photo?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Pick an image file and it is resized down in your browser — never uploaded — and placed into the templates that use one. Every template is also designed to look right without a photo, and for many corporate applications leaving it off is the safer choice."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will it pass ATS scanners?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Use the Classic template for portals: it is a single-column layout with real selectable text and standard section names, which is exactly what parsers like. The fancier multi-column layouts — Sidebar, Banner, Compact — are for human readers, so send those as a PDF to a person, not to an upload portal."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Resume maker",
+                        "item": "https://krunalkumar.dpdns.org/labs/resume-maker"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/resume-maker.css" />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Resume maker</li>
+          </ol>
+        </nav>
+        <h1>Free resume maker</h1>
+        <p class="hero-text">Every resume builder online lets you type your whole career in for free, then charges you at the download button &mdash; after uploading your name, phone number and work history to their server to render it. This one is free the whole way through, because there is no server: the templates are CSS, the preview is your browser, and the download button is the print dialog you already own. Fill the form, pick a template, press print, save as PDF. Done.</p>
+        <ul class="lab-facts">
+          <li>Nothing is uploaded</li>
+          <li>No sign-up, no paywall at the end</li>
+          <li>5 templates, one click apart</li>
+          <li>Prints to A4 or US Letter</li>
+          <li>Autosaves in your browser</li>
+          <li>Your data exports to a file you own</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet a dead form and an empty sheet
+           with no explanation. boot.js adds html.js synchronously, so the CSS
+           hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>The live preview, the templates and the autosave are all rendered in your browser and need JavaScript to run.</p>
+          <p>That is also the privacy story: because everything happens locally, there is no server-rendered fallback to show you.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+
+      <div class="lab rm-lab" id="rm-app">
+        <div class="lab-toolbar rm-toolbar">
+          <div class="rm-tpl-row" role="group" aria-label="Choose a template">
+            <button class="rm-tpl" type="button" data-template="classic" aria-pressed="true">Classic</button>
+            <button class="rm-tpl" type="button" data-template="sidebar" aria-pressed="false">Sidebar</button>
+            <button class="rm-tpl" type="button" data-template="banner" aria-pressed="false">Banner</button>
+            <button class="rm-tpl" type="button" data-template="elegant" aria-pressed="false">Elegant</button>
+            <button class="rm-tpl" type="button" data-template="compact" aria-pressed="false">Compact</button>
+          </div>
+          <div class="rm-swatches" role="group" aria-label="Accent colour">
+            <button class="rm-swatch" type="button" data-accent="#2563eb" style="--rm-sw:#2563eb" aria-label="Slate blue accent" aria-pressed="true"></button>
+            <button class="rm-swatch" type="button" data-accent="#0d9488" style="--rm-sw:#0d9488" aria-label="Teal accent" aria-pressed="false"></button>
+            <button class="rm-swatch" type="button" data-accent="#9f1239" style="--rm-sw:#9f1239" aria-label="Maroon accent" aria-pressed="false"></button>
+            <button class="rm-swatch" type="button" data-accent="#15803d" style="--rm-sw:#15803d" aria-label="Forest green accent" aria-pressed="false"></button>
+            <button class="rm-swatch" type="button" data-accent="#334155" style="--rm-sw:#334155" aria-label="Charcoal accent" aria-pressed="false"></button>
+            <button class="rm-swatch" type="button" data-accent="#7c3aed" style="--rm-sw:#7c3aed" aria-label="Purple accent" aria-pressed="false"></button>
+          </div>
+          <div class="rm-paper-row" role="group" aria-label="Paper size">
+            <span class="rm-paper-caption" aria-hidden="true">Paper</span>
+            <button class="rm-paper" type="button" data-paper="a4" aria-pressed="true">A4</button>
+            <button class="rm-paper" type="button" data-paper="letter" aria-pressed="false">US Letter</button>
+          </div>
+          <span class="spacer"></span>
+          <button class="lab-btn" type="button" id="rm-load-sample">Load example</button>
+          <button class="lab-btn" type="button" id="rm-export">Download data (.json)</button>
+          <button class="lab-btn" type="button" id="rm-import">Load data</button>
+          <!-- The real file picker for "Load data". A button that opens a
+               picker is friendlier than a bare input, so the input hides. -->
+          <input type="file" id="rm-import-file" accept=".json,application/json" hidden />
+          <button class="lab-btn" type="button" id="rm-clear">Clear everything</button>
+          <button class="btn btn-primary rm-print-btn" type="button" id="rm-print">Print / Save as PDF</button>
+          <!-- Status gets its own always-present full-width line (see the CSS)
+               so its appearing text never reflows the buttons above it. -->
+          <span class="rm-save-status" id="rm-save-status" aria-live="polite"></span>
+        </div>
+
+        <div class="rm-panes">
+          <div class="rm-form" id="rm-form">
+            <!-- Screen-reader-only heading so the outline runs h1 > h2 > h3
+                 instead of jumping straight from the page title to "Basics". -->
+            <h2 class="sr-only">The form</h2>
+            <section class="rm-form-section">
+              <h3>Basics</h3>
+              <div class="rm-photo-row">
+                <label class="field rm-photo-field">
+                  <span>Photo <em class="rm-opt">optional</em></span>
+                  <input type="file" id="rm-f-photo" accept="image/*" />
+                </label>
+                <div class="rm-photo-thumb-box" id="rm-photo-box" hidden>
+                  <img id="rm-photo-thumb" alt="Your photo, as it will appear on the resume" />
+                  <button class="lab-btn" type="button" id="rm-photo-remove">Remove photo</button>
+                </div>
+              </div>
+              <div class="form-grid rm-grid">
+                <label class="field"><span>Full name</span>
+                  <input type="text" data-key="name" autocomplete="off" placeholder="Your name" /></label>
+                <label class="field"><span>Professional headline</span>
+                  <input type="text" data-key="headline" autocomplete="off" placeholder="e.g. Backend Engineer" /></label>
+                <label class="field"><span>Email</span>
+                  <input type="text" data-key="email" autocomplete="off" placeholder="you@example.com" /></label>
+                <label class="field"><span>Phone</span>
+                  <input type="text" data-key="phone" autocomplete="off" placeholder="+91 ..." /></label>
+                <label class="field"><span>Location</span>
+                  <input type="text" data-key="location" autocomplete="off" placeholder="City, Country" /></label>
+                <label class="field"><span>Website</span>
+                  <input type="text" data-key="website" autocomplete="off" placeholder="https://..." /></label>
+                <label class="field"><span>LinkedIn</span>
+                  <input type="text" data-key="linkedin" autocomplete="off" placeholder="https://linkedin.com/in/..." /></label>
+              </div>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Summary</h3>
+              <label class="field"><span>Professional summary</span>
+                <textarea data-key="summary" rows="4" placeholder="Two or three sentences. What you do, how long, what you are best at."></textarea></label>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Skills</h3>
+              <label class="field"><span>Skills</span>
+                <textarea data-key="skills" rows="3" placeholder="Comma- or newline-separated: Python, PostgreSQL, Docker ..."></textarea></label>
+              <p class="form-hint">Rendered as chips or a list depending on the template.</p>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Experience</h3>
+              <div id="rm-exp-list" class="rm-item-list"></div>
+              <button class="lab-btn rm-add" type="button" id="rm-exp-add">+ Add experience</button>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Education</h3>
+              <div id="rm-edu-list" class="rm-item-list"></div>
+              <button class="lab-btn rm-add" type="button" id="rm-edu-add">+ Add education</button>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Certifications</h3>
+              <div id="rm-cert-list" class="rm-item-list"></div>
+              <button class="lab-btn rm-add" type="button" id="rm-cert-add">+ Add certification</button>
+            </section>
+
+            <section class="rm-form-section">
+              <h3>Languages &amp; interests</h3>
+              <div class="form-grid rm-grid">
+                <label class="field"><span>Languages</span>
+                  <input type="text" data-key="languages" autocomplete="off" placeholder="English (fluent), Hindi (native)" /></label>
+                <label class="field"><span>Interests</span>
+                  <input type="text" data-key="interests" autocomplete="off" placeholder="Open source, chess, trekking" /></label>
+              </div>
+            </section>
+          </div>
+
+          <div class="rm-preview-pane">
+            <div class="rm-preview-sticky">
+              <h2 class="rm-preview-title" id="rm-preview-title">Live preview &mdash; A4</h2>
+              <div class="rm-sheet-wrap" id="rm-sheet-wrap">
+                <div class="rm-sheet" id="rm-sheet" aria-label="Resume preview"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How it works</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Everything is local, including the save</h3>
+            <p>There is no server behind this page, so nothing you type can be uploaded &mdash; the form, the preview and the autosave all live in your browser. Your draft is kept in localStorage on your own machine and restored when you come back, which is why there is no account: there is nothing for an account to unlock and nowhere for your work history to go. And because the data is yours, &ldquo;Download data&rdquo; hands you the whole thing as one small .json file &mdash; your resume as a file you own, ready to back up or load on any other machine.</p>
+          </article>
+          <article class="info-card">
+            <h3>The templates are CSS, not images</h3>
+            <p>Each of the five layouts is a stylesheet applied to the same document: your data is written into real HTML once, and switching template just swaps how it is arranged &mdash; single column, dark sidebar, banner band, serif centre, tight grid. That is why switching is instant and why the text in the final PDF is real, selectable text rather than a picture of text.</p>
+          </article>
+          <article class="info-card">
+            <h3>Printing is the export</h3>
+            <p>There is no PDF library here on purpose. Your browser already contains an excellent PDF engine &mdash; the print dialog &mdash; and the page is set up so that printing produces only the resume, on A4 or US Letter, with the colours intact. &ldquo;Save as PDF&rdquo; in that dialog is the download button, and nobody can put a paywall in front of your own print dialog. If you have ever wondered why the paid sites charge at exactly that moment, I wrote up <a href="/blog/the-resume-builder-paywall-trick">the resume-builder paywall trick</a> in detail.</p>
+          </article>
+          <article class="info-card">
+            <h3>Every field is optional</h3>
+            <p>The renderer only draws what you filled in. Skip the photo and the layouts close the gap; leave certifications empty and the heading never appears; give one job instead of three and nothing shows as missing. There are no placeholder boxes and no &ldquo;complete your profile&rdquo; nagging &mdash; an empty field simply does not exist on paper.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is it really free, with no watermark?</summary>
+            <div>Yes. No account, no watermark, no paywall at the download step. The usual trick is to let you build the whole resume and then charge at the export button; this one cannot charge you there because the export button is your browser's print dialog.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is my data uploaded anywhere?</summary>
+            <div>No. There is no server behind this page, so there is nowhere to upload to. That matters for this particular form: name, phone, email, photo, and your entire work history are exactly the data resume sites collect and monetise. Here the form, the templates and the preview are all rendered in your own browser and nothing leaves it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How do I get a PDF?</summary>
+            <div>Press "Print / Save as PDF", and in the print dialog choose "Save as PDF" as the destination. The page is set up so only the resume prints — no site header, no buttons — on A4 with proper margins. Every browser has shipped this for years; it is the same engine paid sites use behind their download button.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Will my data still be here tomorrow?</summary>
+            <div>Yes, on the same browser and device. Everything you type is autosaved to your browser's localStorage — a small store on your machine, not on any server — and restored when you come back. "Clear everything" wipes it, and so does clearing this site's data in your browser settings.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I move my data to another computer?</summary>
+            <div>Yes. Press "Download data" and you get a small resume-data.json file containing everything — every field, the photo, your chosen template, colour and paper size. Keep it as a backup, or copy it to another machine, open this page there and press "Load data". Your resume is a file you own, not a row in someone else's database.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I print on US Letter?</summary>
+            <div>Yes. Flip the Paper toggle in the toolbar from A4 to US Letter and both the preview and the print dialog follow. A4 is the default because most of the world hires on it; switch to Letter if you are applying in the US or Canada, where it is the standard.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does it work offline?</summary>
+            <div>Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. Your data was always stored locally anyway, so once the page has arrived, nothing about the tool needs the internet.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I use my own photo?</summary>
+            <div>Yes. Pick an image file and it is resized down in your browser — never uploaded — and placed into the templates that use one. Every template is also designed to look right without a photo, and for many corporate applications leaving it off is the safer choice.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Will it pass ATS scanners?</summary>
+            <div>Use the Classic template for portals: it is a single-column layout with real selectable text and standard section names, which is exactly what parsers like. The fancier multi-column layouts — Sidebar, Banner, Compact — are for human readers, so send those as a PDF to a person, not to an upload portal.</div>
+          </details>
+      </section>
+
+      <!-- Screen only; the print block hides everything outside #rm-app, so
+           this never lands on anyone's resume. -->
+      <aside class="rm-builder-note">
+        <p>This tool is one person's work &mdash; I designed it, wrote every line by hand, and I keep it running as a working sample of how I <a href="/services">build things for clients</a>.</p>
+        <p>If you are curious how the whole site is made, the <a href="/colophon">colophon</a> tells that story.</p>
+      </aside>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a template renders wrong or the print comes out odd, I would like to know your browser.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=resume-maker#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Resume%20maker%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More to play with</h2>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/biodata-maker">
+            <span class="lab-card-name">Marriage biodata maker</span>
+            <p class="lab-card-desc">Same idea, pointed at a different document &mdash; the one whose data you really should not hand to a random website.</p>
+            <span class="lab-card-engine">Fill, pick a template, print</span>
+          </a>
+          <a class="lab-card" href="/labs/word-cloud">
+            <span class="lab-card-name">Word cloud generator</span>
+            <p class="lab-card-desc">The most frequent words become the biggest, packed into a shape, downloadable as a PNG.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/typing">
+            <span class="lab-card-name">Typing speed test</span>
+            <p class="lab-card-desc">Measured on real code as well as prose &mdash; the punctuation that actually slows programmers down.</p>
+            <span class="lab-card-engine">Nothing to download</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-primary footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-secondary footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://officialkrunalkumar.github.io/status" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/tools/resume-maker.js"></script>
+  </body>
+</html>

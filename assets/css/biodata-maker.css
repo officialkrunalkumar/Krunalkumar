@@ -1,0 +1,684 @@
+/* ==========================================================================
+   biodata-maker.css — the marriage biodata maker on /labs/biodata-maker.
+   --------------------------------------------------------------------------
+   Layered on top of main.css and labs.css. Two very different worlds live in
+   this one file and must never bleed into each other:
+
+     1. The APP CHROME — toolbar, form, preview frame. This follows the site
+        theme like every other lab, so it is built from tokens and looks right
+        in dark and light.
+     2. The SHEET — the A4 document itself. This is paper. A biodata printed
+        at a wedding does not have a dark mode, so every sheet palette below
+        is a fixed literal in BOTH themes, on purpose, and the print rules
+        carry print-color-adjust so the fills survive the printer dialog.
+
+   The sheet is laid out at a fixed logical width of 794px, which is 210mm at
+   96dpi — the same pixel-per-millimetre maths the browser uses when it prints
+   to A4. On screen the sheet is scaled down with transform: scale() to fit
+   its pane (the JS computes the factor); in print the transform is dropped
+   and the sheet becomes the page.
+
+   All ornament is pure CSS or inline SVG built by the tool script from
+   constant strings. No image files, no fonts fetched, no anything external.
+
+   Contents:
+     1. App layout (toolbar, panes, template pills)
+     2. Form column
+     3. Preview column and scaling
+     4. Sheet — shared document structure
+     5. Sheet — the five templates
+     6. Print
+     7. Responsive
+   ========================================================================== */
+
+/* ==========================================================================
+   1. App layout
+   ========================================================================== */
+
+/* Own toolbar rather than .lab-toolbar so the template pills can wrap into
+   their own row on narrow screens without fighting the labs flex rules. */
+.bm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: rgb(var(--deep-rgb) / 0.78);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.bm-toolbar .spacer { flex: 1 1 auto; }
+
+/* The hidden attribute must win over .field's display:flex — author rules
+   beat the UA sheet's [hidden] regardless of specificity, so without this a
+   "hidden" custom-invocation field would sit there visibly empty. */
+#biodatamaker [hidden] { display: none !important; }
+
+.bm-tpl-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bm-tpl-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-right: 0.2rem;
+}
+
+/* Template pills. aria-pressed carries the state; the filled look mirrors the
+   site accent so the active template is obvious at a glance. */
+.bm-tpl {
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.36rem 0.9rem;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.bm-tpl:hover { border-color: rgb(var(--accent-rgb) / 0.6); }
+
+.bm-tpl[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  /* --surf-0 is main.css's "ink that sits on an accent fill" token — it
+     flips with the theme, a hex here would be dark-on-dark in light mode. */
+  color: var(--surf-0);
+}
+
+/* The autosave whisper. aria-live polite; visually just a quiet note that
+   fades in when the debounce fires and is never louder than the buttons. */
+.bm-status {
+  font-size: 0.78rem;
+  color: var(--ink-4);
+  min-height: 1em;
+  transition: opacity 0.3s ease;
+}
+
+/* Panes: form left, preview right. The preview column gets slightly more
+   room because an A4 sheet is tall and every extra pixel of width buys
+   legibility at the scaled-down size. Items align to the top — the form is
+   usually the taller of the two and the sheet should not stretch. */
+.bm-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 7fr);
+  align-items: start;
+}
+
+.bm-pane { min-width: 0; }
+
+.bm-pane + .bm-pane {
+  border-left: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.bm-pane-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.6);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+
+/* ==========================================================================
+   2. Form column
+   ========================================================================== */
+
+.bm-form {
+  padding: 1rem 1.1rem 1.4rem;
+  /* The form is long — some 40 fields. Capped and scrollable on desktop so
+     the preview stays in view while you type; the cap is released when the
+     panes stack (see §7), because a page-inside-a-page scroll on a phone is
+     misery. */
+  max-height: 78vh;
+  overflow-y: auto;
+}
+
+.bm-form h3 {
+  margin: 1.4rem 0 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+}
+
+.bm-form h3:first-of-type { margin-top: 0.2rem; }
+
+/* Reuses .form-grid and .field from main.css for the inputs themselves;
+   only the grid gap is tightened because these fields are denser than the
+   contact form they were designed for. */
+.bm-form .form-grid { gap: 0.7rem; }
+
+.bm-form .field span { font-size: 0.84rem; }
+
+.bm-form .field input,
+.bm-form .field select,
+.bm-form .field textarea {
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+}
+
+.bm-form .field textarea { min-height: 90px; }
+
+/* A field that should span both columns of the grid (textareas, mostly). */
+.bm-form .bm-wide { grid-column: 1 / -1; }
+
+/* Photo control: the input hides behind a styled button-ish label row, and a
+   thumbnail appears once a photo is chosen. */
+.bm-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.bm-photo-thumb {
+  width: 56px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  background: var(--surf-1);
+}
+
+.bm-photo-thumb[hidden] { display: none; }
+
+/* ==========================================================================
+   3. Preview column and scaling
+   ========================================================================== */
+
+.bm-preview {
+  padding: 1rem;
+  overflow: hidden;
+}
+
+/* The scale box: JS sets an explicit pixel height on this element equal to
+   sheetHeight x scale, because a transform: scale() does not shrink layout
+   space — without the height the pane would reserve the full 1123px-plus and
+   leave a giant dead gap under the shrunken sheet. */
+.bm-scale-box {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   4. Sheet — shared document structure
+   ==========================================================================
+   The sheet keeps its own palette in both themes: it is a piece of paper
+   being previewed, not a UI surface. Fixed width 794px = 210mm at 96dpi.
+   Padding ~13mm (49px) is the document's own margin, carried by the sheet
+   itself so @page can be margin: 0 and the fills can bleed to the paper edge
+   on the templates that want a full-bleed field (Royal). */
+
+.bm-sheet {
+  width: 794px;
+  min-height: 1123px;               /* 297mm at 96dpi */
+  padding: 49px 53px;
+  box-sizing: border-box;
+  position: relative;
+  background: #ffffff;
+  color: #1f2933;
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.5);
+  transform-origin: top left;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Ornament layers sit behind the content and never catch the mouse. */
+.bm-ornaments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bm-ornaments svg { position: absolute; }
+
+.bm-content { position: relative; }
+
+.bm-invocation {
+  text-align: center;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+
+/* Head block: photo plus name. Templates rearrange this with flex order and
+   alignment; the base is the top-centre stack most templates use. */
+.bm-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.bm-photo {
+  width: 132px;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.bm-name {
+  font-size: 27px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.bm-section { margin-top: 20px; }
+
+.bm-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+}
+
+/* The label:value grid. 38% label column — wide enough for "Father's
+   occupation" on one line, narrow enough that values still breathe. Each row
+   is its own grid so break-inside: avoid works per row in print. */
+.bm-row {
+  display: grid;
+  grid-template-columns: 38% minmax(0, 1fr);
+  gap: 0 14px;
+  padding: 3px 0;
+  break-inside: avoid;
+}
+
+.bm-row-label { font-weight: 600; }
+
+.bm-row-value { overflow-wrap: break-word; }
+
+.bm-para {
+  margin: 4px 0 0;
+  overflow-wrap: break-word;
+  white-space: pre-line;             /* respect blank lines typed in the textarea */
+}
+
+/* What you see before anything is typed. Screen only — an empty sheet prints
+   empty, but on screen a wordless white rectangle looks broken. */
+.bm-empty-hint {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 15px;
+  margin-top: 220px;
+}
+
+/* ==========================================================================
+   5. Sheet — the five templates
+   ========================================================================== */
+
+/* ---- Kumkum — the traditional one. Deep maroon on warm cream, a gold
+   double frame (border + outline, offset inward), serif type, gold-rimmed
+   photo top-centre. Corner ornament comes from the JS-injected SVG. -------- */
+
+.bm-sheet[data-tpl='kumkum'] {
+  background: #fdf6ec;
+  color: #4a1f1f;
+  font-family: Georgia, 'Times New Roman', 'Noto Serif', serif;
+  border: 3px solid #b9862e;
+  outline: 1px solid #b9862e;
+  outline-offset: -9px;
+}
+
+.bm-sheet[data-tpl='kumkum'] .bm-invocation { color: #8c2f1b; font-weight: 700; font-size: 16px; }
+.bm-sheet[data-tpl='kumkum'] .bm-name { color: #7f1d1d; }
+.bm-sheet[data-tpl='kumkum'] .bm-photo {
+  border: 3px double #b9862e;
+  padding: 3px;
+  background: #fffdf7;
+}
+.bm-sheet[data-tpl='kumkum'] .bm-section-title {
+  color: #8c2f1b;
+  border-bottom: 1px solid #d6b25e;
+}
+.bm-sheet[data-tpl='kumkum'] .bm-row-label { color: #6b2b20; }
+.bm-sheet[data-tpl='kumkum'] .bm-empty-hint { color: #b99c7a; }
+
+/* ---- Ivory — cream paper, antique gold thin double border, warm brown
+   serif. Photo is a plain rectangle at top-RIGHT; the head row goes
+   horizontal, name on the left. --------------------------------------- */
+
+.bm-sheet[data-tpl='ivory'] {
+  background: #fbf7ee;
+  color: #52422f;
+  font-family: Georgia, 'Palatino Linotype', 'Times New Roman', serif;
+  border: 1px solid #b08d3e;
+  outline: 1px solid #b08d3e;
+  outline-offset: -7px;
+}
+
+.bm-sheet[data-tpl='ivory'] .bm-invocation { color: #8a6d2f; font-style: italic; }
+.bm-sheet[data-tpl='ivory'] .bm-head {
+  flex-direction: row-reverse;       /* photo ends up on the right */
+  justify-content: space-between;
+  align-items: center;               /* the name sits mid-height of the photo */
+}
+.bm-sheet[data-tpl='ivory'] .bm-name {
+  text-align: left;
+  color: #4a3418;
+  padding-top: 8px;
+}
+.bm-sheet[data-tpl='ivory'] .bm-photo { border: 1px solid #b08d3e; }
+.bm-sheet[data-tpl='ivory'] .bm-section-title {
+  color: #8a6d2f;
+  border-bottom: 1px double #c9b06a;
+}
+.bm-sheet[data-tpl='ivory'] .bm-row-label { color: #6d5535; }
+.bm-sheet[data-tpl='ivory'] .bm-empty-hint { color: #bba97f; }
+
+/* ---- Lotus — blush pastels, floral flourish in two corners only (the SVG
+   pair the JS injects), rounded photo top-centre, soft rose headings. ---- */
+
+.bm-sheet[data-tpl='lotus'] {
+  background: #fdf3f5;
+  color: #5c3a44;
+  font-family: Georgia, 'Palatino Linotype', serif;
+  border: 1px solid #e5b8c4;
+}
+
+.bm-sheet[data-tpl='lotus'] .bm-invocation { color: #b25a72; }
+.bm-sheet[data-tpl='lotus'] .bm-name { color: #93415a; }
+.bm-sheet[data-tpl='lotus'] .bm-photo {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: 4px solid #f3cdd7;
+}
+.bm-sheet[data-tpl='lotus'] .bm-section-title {
+  color: #b25a72;
+  text-align: center;
+  border-bottom: none;
+  letter-spacing: 0.2em;
+}
+/* Little rose dashes flanking would need pseudo content; a soft underline
+   centered under the heading keeps it printable and simple. */
+.bm-sheet[data-tpl='lotus'] .bm-section-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 2px;
+  margin: 6px auto 0;
+  background: #e5b8c4;
+  border-radius: 2px;
+}
+.bm-sheet[data-tpl='lotus'] .bm-row-label { color: #8a5265; }
+.bm-sheet[data-tpl='lotus'] .bm-empty-hint { color: #d4a4b2; }
+
+/* ---- Royal — the one dark-paper template. Deep indigo field, gold ink,
+   circular gold-ringed photo. The background must survive printing, hence
+   the print-color-adjust pair on the sheet in §6. ------------------------ */
+
+.bm-sheet[data-tpl='royal'] {
+  background: linear-gradient(160deg, #182147 0%, #10173a 100%);
+  color: #e8d9a8;
+  font-family: Georgia, 'Times New Roman', serif;
+  border: 2px solid #caa64e;
+  outline: 1px solid #caa64e;
+  outline-offset: -8px;
+}
+
+.bm-sheet[data-tpl='royal'] .bm-invocation { color: #f0e3b6; letter-spacing: 0.08em; }
+.bm-sheet[data-tpl='royal'] .bm-name { color: #f5e9c4; }
+.bm-sheet[data-tpl='royal'] .bm-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid #caa64e;
+  box-shadow: 0 0 0 2px #10173a, 0 0 0 4px #8a6d2f;
+}
+.bm-sheet[data-tpl='royal'] .bm-section-title {
+  color: #d9be79;
+  border-bottom: 1px solid rgba(202, 166, 78, 0.55);
+}
+.bm-sheet[data-tpl='royal'] .bm-row-label { color: #cdb371; }
+.bm-sheet[data-tpl='royal'] .bm-row-value { color: #efe6c6; }
+.bm-sheet[data-tpl='royal'] .bm-para { color: #efe6c6; }
+.bm-sheet[data-tpl='royal'] .bm-empty-hint { color: #8a814f; }
+
+/* ---- Sada — plain. Black on white, one thin rule under the name, wide
+   margins, system serif-free stack. The ink-friendly one: no fills, no
+   borders, nothing the printer has to argue about. ----------------------- */
+
+.bm-sheet[data-tpl='sada'] {
+  background: #ffffff;
+  color: #111827;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  padding: 60px 64px;
+}
+
+.bm-sheet[data-tpl='sada'] .bm-invocation { color: #374151; }
+.bm-sheet[data-tpl='sada'] .bm-name {
+  border-bottom: 1px solid #111827;
+  padding-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  width: 100%;
+}
+.bm-sheet[data-tpl='sada'] .bm-photo { border: 1px solid #d1d5db; }
+.bm-sheet[data-tpl='sada'] .bm-section-title {
+  color: #111827;
+  border-bottom: none;
+  letter-spacing: 0.18em;
+  font-size: 12.5px;
+}
+.bm-sheet[data-tpl='sada'] .bm-row-label { color: #374151; font-weight: 500; }
+.bm-sheet[data-tpl='sada'] .bm-empty-hint { color: #9ca3af; }
+
+/* ==========================================================================
+   5b. Sheet — printed-label languages
+   ==========================================================================
+   When the labels switch to Hindi or Gujarati (data-lang on the sheet, set
+   by the JS), the template stacks above are useless for them — Georgia and
+   Segoe UI hold no Devanagari or Gujarati glyphs. The label spans get
+   Indic-capable fallbacks instead: Nirmala UI ships with Windows and covers
+   both scripts, the Noto faces cover Android, Linux and anyone who installed
+   them, Shruti is the older Windows Gujarati face. These rules sit AFTER the
+   template blocks on purpose — same specificity, later wins — so they also
+   beat Lotus's per-template heading styles below the fold of the cascade.
+   User-typed values keep the template font and fall through to the system
+   like any multilingual text would. */
+
+.bm-sheet[data-lang='hi'] .bm-section-title,
+.bm-sheet[data-lang='hi'] .bm-row-label,
+.bm-sheet[data-lang='gu'] .bm-section-title,
+.bm-sheet[data-lang='gu'] .bm-row-label {
+  font-family: 'Nirmala UI', 'Noto Sans Devanagari', 'Noto Serif Devanagari',
+    Shruti, 'Noto Sans Gujarati', serif;
+}
+
+/* The wide tracking that flatters Latin capitals shoves matras and conjunct
+   halves apart in Devanagari and Gujarati; ease right off. The uppercase
+   transform is a no-op for these scripts, so it can stay. */
+.bm-sheet[data-lang='hi'] .bm-section-title,
+.bm-sheet[data-lang='gu'] .bm-section-title {
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   6. Print
+   ==========================================================================
+   Printing IS the export. The page prints only the sheet: everything else —
+   site chrome, hero, form, cards, the preview frame itself — is display:none,
+   and the sheet drops its transform and becomes the A4 page. @page margin is
+   0 because the sheet carries its own ~13mm padding, which lets Royal's
+   indigo field and Kumkum's cream run to the paper edge. */
+
+@media print {
+  /* Hide the world... */
+  .site-header,
+  #site-header,
+  footer,
+  .page-hero,
+  .section-card,
+  .lab-noscript,
+  .bm-toolbar,
+  .bm-pane-form,
+  .bm-pane-label,
+  #bg-canvas,
+  .skip-link {
+    display: none !important;
+  }
+
+  /* ...and collapse every box between <body> and the sheet to nothing. */
+  .page-shell,
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  .lab {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .bm-panes { display: block !important; }
+  .bm-pane + .bm-pane { border-left: none !important; }
+  .bm-preview { padding: 0 !important; overflow: visible !important; }
+  .bm-scale-box { height: auto !important; overflow: visible !important; }
+
+  .bm-sheet {
+    transform: none !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    box-shadow: none !important;
+    /* Backgrounds are content here, not decoration — without this pair the
+       browser "helpfully" strips Royal's indigo and every gold border fill. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    /* When the sheet runs past one page, repeat its padding and frame on
+       every fragment. Without this, page 2 starts flush at the paper edge
+       and Kumkum's/Royal's inset gold outline slices through the first
+       heading there. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .bm-empty-hint { display: none !important; }
+
+  /* main.css prints a site byline via body::before on every page. Correct
+     for an article; wrong on a document that is not about this site. */
+  body::before { display: none !important; content: none !important; }
+
+  /* main.css also declares `* { background: transparent; color: #000 }` with
+     !important for ink-friendly article printing. Important beats normal
+     regardless of specificity, so every sheet palette must be re-asserted
+     with equal importance here — this file loads after main.css, and where
+     importance ties, higher specificity wins. Without this block Royal
+     prints black-on-white and the byline sits on top of the frame. */
+
+  .bm-sheet[data-tpl='kumkum'] { background: #fdf6ec !important; color: #4a1f1f !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-content * { color: #4a1f1f !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-invocation { color: #8c2f1b !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-name { color: #7f1d1d !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-section-title { color: #8c2f1b !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-row-label { color: #6b2b20 !important; }
+  .bm-sheet[data-tpl='kumkum'] .bm-photo { background: #fffdf7 !important; }
+
+  .bm-sheet[data-tpl='ivory'] { background: #fbf7ee !important; color: #52422f !important; }
+  .bm-sheet[data-tpl='ivory'] .bm-content * { color: #52422f !important; }
+  .bm-sheet[data-tpl='ivory'] .bm-invocation { color: #8a6d2f !important; }
+  .bm-sheet[data-tpl='ivory'] .bm-name { color: #4a3418 !important; }
+  .bm-sheet[data-tpl='ivory'] .bm-section-title { color: #8a6d2f !important; }
+  .bm-sheet[data-tpl='ivory'] .bm-row-label { color: #6d5535 !important; }
+
+  .bm-sheet[data-tpl='lotus'] { background: #fdf3f5 !important; color: #5c3a44 !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-content * { color: #5c3a44 !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-invocation { color: #b25a72 !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-name { color: #93415a !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-section-title { color: #b25a72 !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-section-title::after { background: #e5b8c4 !important; }
+  .bm-sheet[data-tpl='lotus'] .bm-row-label { color: #8a5265 !important; }
+
+  .bm-sheet[data-tpl='royal'] {
+    background: linear-gradient(160deg, #182147 0%, #10173a 100%) !important;
+    color: #e8d9a8 !important;
+  }
+  .bm-sheet[data-tpl='royal'] .bm-content * { color: #efe6c6 !important; }
+  .bm-sheet[data-tpl='royal'] .bm-invocation { color: #f0e3b6 !important; }
+  .bm-sheet[data-tpl='royal'] .bm-name { color: #f5e9c4 !important; }
+  .bm-sheet[data-tpl='royal'] .bm-section-title { color: #d9be79 !important; }
+  .bm-sheet[data-tpl='royal'] .bm-row-label { color: #cdb371 !important; }
+  /* main.css kills box-shadow in print; the outer ring of Royal's photo is
+     a box-shadow, so it needs restating too. */
+  .bm-sheet[data-tpl='royal'] .bm-photo {
+    box-shadow: 0 0 0 2px #10173a, 0 0 0 4px #8a6d2f !important;
+  }
+
+  .bm-sheet[data-tpl='sada'] { background: #ffffff !important; color: #111827 !important; }
+  .bm-sheet[data-tpl='sada'] .bm-content * { color: #111827 !important; }
+  .bm-sheet[data-tpl='sada'] .bm-invocation { color: #374151 !important; }
+  .bm-sheet[data-tpl='sada'] .bm-row-label { color: #374151 !important; }
+
+  .bm-section { break-inside: avoid-page; }
+  /* Long sections may legitimately span pages; rows never split mid-line. */
+  .bm-section:has(> .bm-row:nth-child(12)) { break-inside: auto; }
+  .bm-row { break-inside: avoid; }
+
+  @page { size: A4; margin: 0; }
+}
+
+/* The "who built this" aside under the FAQ. Screen furniture only — the
+   print rules hide every .section-card, this one included, so it can never
+   land on somebody's actual biodata. */
+.bm-builtby p { margin: 0.4rem 0; max-width: 70ch; }
+.bm-builtby p:first-child { margin-top: 0; }
+.bm-builtby p:last-child { margin-bottom: 0; }
+
+/* Body links here get no styling from main.css, and a link that looks like
+   plain prose is a link nobody finds. Same story for the blog link inside
+   the FAQ answer on this page. */
+.bm-builtby a,
+#biodatamaker ~ .section-card .lab-faq div a {
+  color: var(--accent-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ==========================================================================
+   7. Responsive
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  /* Panes stack, form first — you fill, then you scroll down to look. The
+     form scroll-cap goes away: one page, one scrollbar. */
+  .bm-panes { grid-template-columns: minmax(0, 1fr); }
+  .bm-pane + .bm-pane {
+    border-left: none;
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+  }
+  .bm-form { max-height: none; overflow-y: visible; }
+}
+
+@media (max-width: 640px) {
+  .bm-form .form-grid { grid-template-columns: minmax(0, 1fr); }
+  .bm-form .bm-wide { grid-column: auto; }
+}

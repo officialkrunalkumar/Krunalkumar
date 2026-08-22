@@ -438,9 +438,10 @@
   justify-content: center;
   align-items: flex-end;
   gap: clamp(0.4rem, 3vw, 2.4rem);
-  /* Wide enough for the tables to own the corners. The padding is widened in
-     the media query below only while the tables are actually on screen —
-     below 900px they are hidden and the floor takes the whole width back. */
+  /* Wide enough for the tables to own the corners. Every width keeps the
+     tables now, so every breakpoint below carries enough side padding for
+     the corners — the phone gets the same room, smaller, not a different
+     room with the furniture taken away. */
   padding: 0 4%;
 }
 
@@ -457,6 +458,12 @@
 .p-dancer {
   width: clamp(52px, 9.5vmin, 104px);
   height: auto;
+  /* Flex is allowed to shrink a dancer below the clamp when the row would
+     otherwise overflow — six slightly smaller people read as a crowd, six
+     clipped ones read as a bug. The viewBox keeps the aspect ratio while
+     the width gives, so nobody is squashed. */
+  flex: 0 1 auto;
+  min-width: 0;
   transform-origin: 50% 100%;
   /* --flip mirrors a figure so pairs can turn toward each other. It lives in
      the keyframes rather than on the element because a transform here would be
@@ -915,36 +922,105 @@
    Narrow screens
    -------------------------------------------------------------------------- */
 
-/* The floor thins out twice as the room narrows. Each dancer wants about 70px
-   to still read as a person; below that they become coloured smudges. The
-   tables go before the dancers do — they are scenery, and the dance floor is
-   the point of the page. */
+/* The room used to thin out as it narrowed — dancer six went at 1100px, the
+   tables and dancer five at 900px, dancer four at 640px — until a phone was
+   left with three people in an empty hall and the mobile page read as a
+   different, poorer venue than the desktop one. Now nothing leaves. Every
+   figure scales down with the room instead: the tables shrink into their
+   corners, the booth and the crowd tighten, and the phone gets the same
+   party smaller rather than a subset of it. Only the very narrowest tier
+   drops a single dancer, because six abreast under 480px is a crush rather
+   than a crowd. */
+
 @media (max-width: 1100px) {
-  .p-dancer--6 { display: none; }
+  .p-crowd { padding: 0 24%; gap: clamp(0.25rem, 1.1vw, 1rem); }
+  .p-dancer { width: clamp(44px, 8.5vmin, 92px); }
 }
 
 @media (max-width: 900px) {
-  .p-tables { display: none; }
-  .p-dancer--5 { display: none; }
+  /* The tables stay, smaller. 24vmin keeps them in proportion to the room
+     on a tablet; the 96px floor is the point below which the sitters' faces
+     stop reading as faces. */
+  .p-table { width: clamp(96px, 24vmin, 200px); }
+  .p-crowd { padding: 0 21%; gap: clamp(0.2rem, 0.9vw, 0.8rem); }
+  .p-dancer { width: clamp(34px, 7.5vmin, 72px); }
+  .p-booth { width: clamp(120px, 25vmin, 200px); }
 }
 
 @media (max-width: 640px) {
-  .p-scene { min-height: 70vh; border-radius: 18px; }
-  .p-crowd { gap: 0.25rem; padding: 0 2%; }
-  .p-dancer--4 { display: none; }
+  .p-scene { min-height: min(70vh, 560px); border-radius: 18px; }
+  .p-crowd { gap: 0.2rem; padding: 0 19%; }
   .p-booth { bottom: 34%; }
+  /* Just outside the booth's edges rather than a third of the way in — at
+     this width 33% lands the cabinets on top of the decks. */
+  .p-speaker--l { left: 26%; }
+  .p-speaker--r { right: 26%; }
+  .p-table { width: clamp(88px, 25vmin, 130px); }
+  .p-table--l { left: 1%; }
+  .p-table--r { right: 1%; }
+  /* The waiters tuck closer to their tables so they stay clear of the
+     smaller dance floor. */
+  .p-table--l .p-waiter { right: -14%; }
+  .p-table--r .p-waiter { left: -14%; }
   .p-audio { top: 14px; left: 10px; }
   .p-fs { top: 14px; right: 10px; }
   .p-audio-vol { width: 68px; }
   .p-why { padding: 1.3rem 1.2rem; }
 }
 
+@media (max-width: 480px) {
+  /* The one figure the phone gives up. Five dancers still read as a crowd;
+     six at this width shrink past the point of reading as people. */
+  .p-dancer--6 { display: none; }
+  .p-crowd { padding: 0 18%; }
+}
+
 /* --------------------------------------------------------------------------
-   Light theme — chrome only, exactly as the buddha page does it. The stage
-   itself never lightens.
+   Light theme. The STAGE never lightens — a nightclub in light mode is still
+   a dark room, and the scene card keeps its own palette in both themes. But
+   everything around the stage is ordinary page, and it used to stay club-dark
+   too: a white header and footer bracketing a purple void, with the "why"
+   card floating in it as a muddy translucent grey. Now the page around the
+   stage follows the theme exactly as the buddha page's does, and only the
+   room itself stays dark.
    -------------------------------------------------------------------------- */
 
 :root[data-theme="light"] .party .site-header,
 :root[data-theme="light"] .party footer {
   background: rgb(255 255 255 / 0.9);
+}
+
+:root[data-theme="light"] .party {
+  background: var(--bg-base);
+  color: var(--text);
+}
+
+/* The card's own tokens already follow the theme; the border was the one
+   fixed value — white at 14% is invisible on a white page. */
+:root[data-theme="light"] .party .p-why {
+  background: rgb(var(--sheet-rgb) / 0.85);
+  border-color: rgb(var(--line-rgb) / 0.22);
+}
+
+/* The play hint: #ffb4d5 on white measured under 1.6:1. Same magenta family,
+   dark enough to read on paper. */
+:root[data-theme="light"] .party .p-note .p-hint {
+  border-color: rgba(190, 24, 93, 0.42);
+  background: rgba(255, 61, 154, 0.08);
+  color: #9d174d;
+}
+
+/* The quieter keyboard pill and its kbd chips, re-inked for paper. The base
+   rules carry !important (they out-shout the magenta pill styling), so the
+   theme override has to as well. */
+:root[data-theme="light"] .party .p-hint--key {
+  border-color: rgba(71, 85, 105, 0.4) !important;
+  background: rgba(148, 163, 184, 0.14) !important;
+  color: var(--muted) !important;
+}
+
+:root[data-theme="light"] .party .p-hint--key kbd {
+  border-color: rgba(71, 85, 105, 0.45);
+  background: rgb(255 255 255 / 0.85);
+  color: #0f172a;
 }
