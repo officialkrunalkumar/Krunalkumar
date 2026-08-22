@@ -84,8 +84,19 @@
 
     // The address-bar colour on mobile should follow the page, or the two
     // disagree and it looks like a rendering bug.
+    //
+    // Same guard as boot.js, for the same reason: only the two site colours are
+    // ever overwritten. /party ships #0a0714 and /einstein ships #0d1320 to
+    // match their own backgrounds, and both load this file — an unguarded write
+    // here was quietly clobbering them on every load, which is exactly what
+    // boot.js's guard exists to prevent.
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f8fc' : '#121b2c');
+    if (meta) {
+      var metaCurrent = (meta.getAttribute('content') || '').toLowerCase();
+      if (metaCurrent === '#121b2c' || metaCurrent === '#f5f8fc') {
+        meta.setAttribute('content', theme === 'light' ? '#f5f8fc' : '#121b2c');
+      }
+    }
 
     var btn = document.getElementById('theme-toggle');
     if (btn) {

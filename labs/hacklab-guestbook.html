@@ -14,14 +14,20 @@
     in vercel.json. That permissive CSP is what lets the student's injected
     inline script actually run, which is the whole point of an XSS exercise.
 
-    It is loaded into an <iframe sandbox="allow-scripts"> with NO
-    allow-same-origin, so despite the loose CSP it runs in a unique opaque
-    origin: it cannot read the parent page, cannot touch cookies or storage,
-    and cannot make a credentialed request anywhere. It can only postMessage
-    back to the parent, which is how a solve is detected. The only content it
-    ever renders is a comment the parent forwards from the visitor's own
-    textarea, so the "attacker" is always the visitor attacking their own
-    sealed sandbox.
+    It is loaded into an <iframe sandbox="allow-scripts allow-same-origin">
+    (see hacklab.js for why allow-same-origin is needed), so it does NOT run
+    in an opaque origin — it runs in the site's real origin and an injected
+    script can reach window.parent. The containment is NOT origin isolation;
+    it is the response CSP this exact path gets from vercel.json:
+    connect-src 'none', form-action 'none' and base-uri 'none' mean the
+    payload has nowhere to send anything from this document, the page can
+    only be framed same-origin (X-Frame-Options: SAMEORIGIN), and the one
+    "credential" in scope — window.SESSION below — is a hardcoded fake on a
+    static site with no accounts, cookies or secrets. postMessage back to the
+    parent is how a solve is detected. The only content this page ever
+    renders is a comment the parent forwards from the visitor's own textarea,
+    so the "attacker" is always the visitor attacking a page that holds
+    nothing worth stealing.
   -->
   <style>
     body { font: 14px system-ui, sans-serif; margin: 12px; color: #e2e8f0; background: #0b1220; }

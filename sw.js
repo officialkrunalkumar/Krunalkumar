@@ -17,12 +17,19 @@
    exactly this cache and nothing else — the browser's origin model means it
    cannot reach another site's data even in principle.
 
-   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly two
+   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly three
    kinds of request and returns early for everything else, so the rest of the
    site — every page, its CSS, its JS, analytics — behaves exactly as if no
    worker existed. A service worker that quietly caches a whole site's HTML
    is a support nightmare (the "why does the old page keep coming back" kind),
    and this one still refuses to be that.
+
+   The third kind: navigations, added when the site became installable. They
+   are NETWORK-ONLY — never cached, never served stale — but when the fetch
+   itself fails (the installed app opened in airplane mode), a small precached
+   /offline page answers instead of the browser's raw error inside a
+   chromeless standalone window. Someone who could reach the network can never
+   see it, so the no-stale-pages rule above still holds in full.
 
    The one carve-out I have allowed since: the resume maker and the marriage
    biodata maker. Those two pages promise, in print, that they work offline —
@@ -45,14 +52,29 @@
 'use strict';
 
 // Bump the suffix to invalidate every cached runtime at once — e.g. after
-// upgrading Pyodide. Old caches are deleted on activate.
+// upgrading Pyodide. Old caches are deleted on activate. The refill fetch
+// below uses {cache: 'reload'} so the bump genuinely reaches the server:
+// the vendor URLs carry no version in their path and are served with a
+// one-year immutable Cache-Control, so a plain fetch would be answered by
+// the browser's HTTP cache and quietly re-cache the OLD bytes under the new
+// name. scripts/build.js fails the deploy if files under /assets/vendor/
+// change without VENDOR_FINGERPRINT below being updated — the moment that
+// error fires is the moment to bump this constant too.
 var CACHE = 'lab-runtimes-v1';
 var PREFIX = '/assets/vendor/';
+
+// Paired with the vendor gate in scripts/build.js: a content hash of
+// everything under /assets/vendor/. Not read at runtime. If vendor files
+// change, the build refuses to deploy until this is updated — and updating
+// it is the reminder to bump CACHE above so returning visitors get the new
+// runtimes. The build error message prints the new value.
+var VENDOR_FINGERPRINT = '3ae5dfad4c915d5b';
 
 // Bump this one when the doc-maker file list changes, or to force every
 // visitor onto fresh copies after a layout rework. Old versions are deleted
 // on activate, same as the runtimes cache.
-var DOC_CACHE = 'doc-makers-v1';
+// v2: /offline joined the list when the site became installable.
+var DOC_CACHE = 'doc-makers-v2';
 
 // The complete, hand-enumerated set of files the two document makers need to
 // render and function with no network at all. Read straight off the two page
@@ -86,7 +108,11 @@ var DOC_URLS = [
   '/favicon.svg',
   '/site.webmanifest',
   '/assets/images/apple-touch-icon.png',
-  '/assets/images/logo-64.jpg'
+  '/assets/images/logo-64.jpg',
+  // The navigation fallback for the installed app. Self-contained by design —
+  // precaching this one document is enough to keep an offline launch branded
+  // instead of showing the browser's network-error page.
+  '/offline'
 ];
 
 // O(1) membership test for the fetch handler; the array above is for install.
@@ -121,7 +147,13 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(DOC_CACHE).then(function (cache) {
       return Promise.all(DOC_URLS.map(function (u) {
-        return fetch(u).then(function (response) {
+        // {cache: 'no-cache'} forces a conditional request to the server.
+        // Without it, /assets/(js|css) and /partials/ answers could come
+        // silently from the browser's HTTP cache — fresh for an hour, usable
+        // for a day under stale-while-revalidate — and an install landing
+        // right after a deploy would freeze new HTML beside a stale tool
+        // script as the offline pair. ~20 conditional GETs, once per install.
+        return fetch(u, { cache: 'no-cache' }).then(function (response) {
           if (response && response.status === 200 && response.type === 'basic') {
             return stripRedirect(response).then(function (clean) {
               return cache.put(u, clean);
@@ -165,13 +197,23 @@ self.addEventListener('fetch', function (event) {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.indexOf(PREFIX) === 0) {
-    // Cache-first: these files are version-pinned and never change in place,
-    // so a hit is always correct and always the fastest answer.
+    // Cache-first: a hit is always the fastest answer, and this cache is the
+    // authoritative copy — which is exactly why the miss path fetches with
+    // {cache: 'reload'}. The vendor paths carry no version and are served
+    // with a one-year immutable Cache-Control, so a plain fetch after a CACHE
+    // bump would be answered by the browser's HTTP cache and re-freeze the
+    // old runtime bytes; 'reload' goes to the server every time this cache
+    // needs filling. First-ever downloads hit the network either way, so the
+    // only extra cost lands on a refill after a bump or a user purge — both
+    // moments where fresh bytes are the point.
     event.respondWith(
       caches.open(CACHE).then(function (cache) {
         return cache.match(request).then(function (hit) {
           if (hit) return hit;
-          return fetch(request).then(function (response) {
+          // request.url rather than the Request object: rebuilding a Request
+          // with an init dict is rejected for some request modes, and a fresh
+          // same-origin GET is all a static file needs.
+          return fetch(request.url, { cache: 'reload' }).then(function (response) {
             // Only store complete, successful responses. A 206 or an opaque
             // response would poison the cache with something unusable.
             if (response && response.status === 200 && response.type === 'basic') {
@@ -222,6 +264,29 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
+  if (request.mode === 'navigate') {
+    // NETWORK-ONLY with a fallback, never a cache. While the network works
+    // this is byte-identical to having no worker: the live response, straight
+    // through, nothing stored. Only when fetch itself rejects — the installed
+    // app opened in airplane mode, DNS gone — does the precached /offline
+    // document answer, so a standalone window shows a branded page with a
+    // way back instead of the browser's error screen. A cache miss here
+    // (offline before the first install finished) falls through to
+    // Response.error(), which reproduces the plain failure the page would
+    // have seen anyway. No init dict on this fetch: reconstructing a
+    // navigation-mode Request with one throws.
+    event.respondWith(
+      fetch(request).catch(function () {
+        return caches.open(DOC_CACHE).then(function (cache) {
+          return cache.match('/offline');
+        }).then(function (hit) {
+          return hit || Response.error();
+        });
+      })
+    );
+    return;
+  }
+
   // Everything else: untouched, exactly as before.
 });
 
@@ -239,10 +304,16 @@ self.addEventListener('message', function (event) {
         return Promise.all(keys.map(function (req) {
           return cache.match(req).then(function (res) {
             if (!res) return 0;
-            // content-length avoids buffering 31 MB just to measure it;
-            // fall back to reading the body only when the header is absent.
+            // content-length is the WIRE size. When the response arrived
+            // compressed, the cache stores — and storage.estimate() counts —
+            // the decompressed body, which can be twice the header's figure
+            // for the .js and .json payloads. So the header is only trusted
+            // for identity-encoded responses; compressed ones are measured
+            // for real. blob() does not double the memory cost: the body is
+            // already in cache storage and Blobs can stay disk-backed.
+            var enc = (res.headers.get('content-encoding') || '').toLowerCase();
             var len = res.headers.get('content-length');
-            if (len) return parseInt(len, 10) || 0;
+            if (len && (enc === '' || enc === 'identity')) return parseInt(len, 10) || 0;
             return res.clone().blob().then(function (b) { return b.size; });
           });
         })).then(function (sizes) {

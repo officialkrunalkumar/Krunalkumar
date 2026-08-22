@@ -61,6 +61,8 @@ const EXCLUDE = new Set([
   'teapot.html',
   'terminal.html',
   'einstein.html',
+  'offline.html',   // the SW's navigation fallback: only ever seen offline,
+                    // where search could not fetch this index anyway
 ]);
 
 const ENTITIES = {

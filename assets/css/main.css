@@ -2933,7 +2933,11 @@ footer a:hover {
   background: transparent;
   border: 0;
 }
-.site-search-input:focus { outline: none; }
+/* Suppress the ring for mouse focus only — :focus alone also swallowed the
+   keyboard ring (its 0,2,0 specificity beats the global input:focus-visible
+   rule), so Shift+Tab from the close button landed here with no indicator.
+   Same split as the contact-form fields and the labs filter input. */
+.site-search-input:focus:not(:focus-visible) { outline: none; }
 .site-search-input::placeholder { color: var(--muted); opacity: 0.75; }
 
 .site-search-close {

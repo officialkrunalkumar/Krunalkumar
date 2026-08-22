@@ -313,6 +313,37 @@
     key.addEventListener('pointerup', up);
     key.addEventListener('pointerleave', up);
     key.addEventListener('pointercancel', up);
+    /* Pointer events alone left these buttons dead to the keyboard: a Tab
+       stop with a focus ring that did nothing on Enter, while Space fell
+       through to the document handler below and toggled the sequencer —
+       exactly the opposite of what pressing a focused piano key should do.
+       Only Enter and Space are handled (and stopPropagation'd) here; every
+       other key returns early and still bubbles, so the letter hotkeys keep
+       working while a key is focused. The note-off on blur releases a note
+       still held when focus is tabbed away. */
+    key.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.repeat) return;
+      noteOn(note, freqOf(note));
+    });
+    key.addEventListener('keyup', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.stopPropagation();
+      up();
+    });
+    key.addEventListener('blur', up);
+    /* A screen reader's simulated activation arrives as a click with detail 0,
+       not as keydown/keyup — give it a short note. Real pointer clicks carry
+       detail >= 1 and already played via pointerdown, and the preventDefault
+       on Enter/Space above suppresses their synthesized click, so this cannot
+       double-fire. */
+    key.addEventListener('click', function (e) {
+      if (e.detail !== 0) return;
+      noteOn(note, freqOf(note));
+      window.setTimeout(up, 250);
+    });
   });
 
   /* Letters must never fire notes while somebody is filling in a field — but

@@ -192,14 +192,24 @@
     if (isBest) store(key, String(s.wpm));
     showBest();
 
-    el.resultText.textContent = isBest
+    var resultLine = isBest
       ? 'New best for this mode: ' + s.wpm + ' WPM at ' + s.accuracy + '% accuracy.'
       : s.wpm + ' WPM at ' + s.accuracy + '% accuracy. Your best here is ' +
         Math.max(previous, s.wpm) + ' WPM.';
+    // The result element is a live region that spends the whole test hidden.
+    // Unhide it first and write the text a beat later: the region has to be
+    // in the accessibility tree BEFORE the text change lands, or there is no
+    // "change" for a screen reader to announce and the page's entire output
+    // goes silently missing. A timer, not requestAnimationFrame — rAF stops
+    // firing in a backgrounded tab, and the result must land regardless.
     el.result.hidden = false;
+    window.setTimeout(function () { el.resultText.textContent = resultLine; }, 100);
     el.status.textContent = 'Finished — press Restart for a new passage';
     el.status.className = 'lab-status is-ok';
-    el.input.blur();
+    // Blurring here dropped keyboard focus to <body>, so the next Tab
+    // restarted from the top of the document. Restart is the obvious next
+    // action — put focus there instead.
+    el.restart.focus();
   }
 
   function showBest() {

@@ -203,22 +203,26 @@
             Play with the mouse, a finger, or the keyboard: the home row is the white keys and the row above
             holds the sharps, laid out the way they sit on a piano.
           </p>
+          <!-- Each key's visible content is its QWERTY hotkey letter, so the
+               aria-label names the note it plays — "A" alone told a screen
+               reader nothing about the instrument. synth.js pairs this with
+               Enter/Space handlers so a focused key actually plays. -->
           <div class="syn-keys">
-            <button class="syn-key" type="button" data-note="C4">A</button>
-            <button class="syn-key" type="button" data-note="D4">S</button>
-            <button class="syn-key" type="button" data-note="E4">D</button>
-            <button class="syn-key" type="button" data-note="F4">F</button>
-            <button class="syn-key" type="button" data-note="G4">G</button>
-            <button class="syn-key" type="button" data-note="A4">H</button>
-            <button class="syn-key" type="button" data-note="B4">J</button>
-            <button class="syn-key" type="button" data-note="C5">K</button>
-            <button class="syn-key" type="button" data-note="D5">L</button>
-            <button class="syn-key syn-key--black" type="button" data-note="C#4" style="left: 7.6%">W</button>
-            <button class="syn-key syn-key--black" type="button" data-note="D#4" style="left: 18.7%">E</button>
-            <button class="syn-key syn-key--black" type="button" data-note="F#4" style="left: 40.9%">T</button>
-            <button class="syn-key syn-key--black" type="button" data-note="G#4" style="left: 52%">Y</button>
-            <button class="syn-key syn-key--black" type="button" data-note="A#4" style="left: 63.1%">U</button>
-            <button class="syn-key syn-key--black" type="button" data-note="C#5" style="left: 85.3%">O</button>
+            <button class="syn-key" type="button" data-note="C4" aria-label="C4 — key A">A</button>
+            <button class="syn-key" type="button" data-note="D4" aria-label="D4 — key S">S</button>
+            <button class="syn-key" type="button" data-note="E4" aria-label="E4 — key D">D</button>
+            <button class="syn-key" type="button" data-note="F4" aria-label="F4 — key F">F</button>
+            <button class="syn-key" type="button" data-note="G4" aria-label="G4 — key G">G</button>
+            <button class="syn-key" type="button" data-note="A4" aria-label="A4 — key H">H</button>
+            <button class="syn-key" type="button" data-note="B4" aria-label="B4 — key J">J</button>
+            <button class="syn-key" type="button" data-note="C5" aria-label="C5 — key K">K</button>
+            <button class="syn-key" type="button" data-note="D5" aria-label="D5 — key L">L</button>
+            <button class="syn-key syn-key--black" type="button" data-note="C#4" aria-label="C sharp 4 — key W" style="left: 7.6%">W</button>
+            <button class="syn-key syn-key--black" type="button" data-note="D#4" aria-label="D sharp 4 — key E" style="left: 18.7%">E</button>
+            <button class="syn-key syn-key--black" type="button" data-note="F#4" aria-label="F sharp 4 — key T" style="left: 40.9%">T</button>
+            <button class="syn-key syn-key--black" type="button" data-note="G#4" aria-label="G sharp 4 — key Y" style="left: 52%">Y</button>
+            <button class="syn-key syn-key--black" type="button" data-note="A#4" aria-label="A sharp 4 — key U" style="left: 63.1%">U</button>
+            <button class="syn-key syn-key--black" type="button" data-note="C#5" aria-label="C sharp 5 — key O" style="left: 85.3%">O</button>
           </div>
           <div class="syn-synth-row">
             <label class="syn-field">

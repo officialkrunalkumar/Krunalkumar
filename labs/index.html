@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Labs — Free Online Compilers & Browser Tools" />
     <meta name="twitter:description" content="Free online compilers for 11 languages, plus security and forensics tools, interactive CS visualisers, and resume and biodata makers — all in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-labs.jpg" />
-    <title>Labs — Free Online Compilers &amp; Browser Tools | Krunalkumar Shah</title>
+    <title>Labs — Free Online Compilers &amp; Browser Tools</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -902,11 +902,16 @@ What is breaking / feedback:
               <span>Your name</span>
               <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
             </label>
-            <label class="field">
-              <span>Contact number</span>
-              <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="lab-phone-hint" required />
+            <!-- The hint sits OUTSIDE the <label> on purpose — same structure and
+                 reasoning as contact.html: nested, it polluted the label's
+                 accessible name and aria-describedby read it a second time. -->
+            <div class="field">
+              <label class="field">
+                <span>Contact number</span>
+                <input type="tel" name="phone" pattern="^\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="lab-phone-hint" required />
+              </label>
               <p class="form-hint" id="lab-phone-hint">Digits, spaces, and + only.</p>
-            </label>
+            </div>
             <label class="field">
               <span>Email address</span>
               <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />

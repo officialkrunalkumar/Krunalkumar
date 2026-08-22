@@ -591,15 +591,25 @@ crowding the raised surfaces even when you do shift them.
 - No inline scripts, ever: `boot.js` is the only `<head>` bootstrap; everything else is an external
   file loaded with `defer`, and no element carries an inline event handler (`onclick=` etc.). The
   CSP has no `'unsafe-inline'` for scripts, so violations are blocked, not just frowned upon.
+  `style-src` **does** keep `'unsafe-inline'`, deliberately: pages use inline `style=""` attributes
+  (the synth's black-key positions, for one) and hashes cannot cover attributes — a low-risk
+  residual since inline styles cannot execute script.
+- `connect-src` is scoped by path: site-wide it allows only same-origin and the GA beacon hosts,
+  while `/labs/(.*)` gets `https:` — the network labs follow RDAP referrals to arbitrary registry
+  hosts and the request tool fetches whatever URL the visitor types, so only the lab pages carry
+  that grant. A new lab that talks to the internet works as-is; a new ROOT page that needs an
+  external endpoint must add its host to the site-wide `connect-src` in `vercel.json`.
 - `vercel.json` sets Cache-Control on `/assets/` (1 day, with a week of stale-while-revalidate;
   images get 30 days; **JS and CSS get 1 hour with a day of stale-while-revalidate**) —
   cache-sensitive changes to an asset may warrant a new filename. Note that separate files expire
   independently, so a change spanning several of them can be seen half-applied by a returning
   visitor; prefer making one file the source of truth over keeping copies in sync.
-- **Exception:** `/assets/data/` is served `no-cache, must-revalidate`, and `verify.js` fetches
-  `certificates.json` with `cache: 'no-cache'`. A verification page must never answer from a stale
-  copy — a revoked certificate would keep reading "valid", and a newly issued ID would be called
-  fake. Keep both in place if that file's caching is ever revisited.
+- **Exception:** `/assets/data/` is served with a 1-hour max-age (plus a day of
+  stale-while-revalidate), but `verify.js` fetches `certificates.json` with `cache: 'no-cache'`,
+  which forces revalidation regardless of that header. A verification page must never answer from
+  a stale copy — a revoked certificate would keep reading "valid", and a newly issued ID would be
+  called fake. The request-side `no-cache` is what guarantees that; keep it if the data-directory
+  caching is ever revisited.
 - `/partials/` and `/assets/data/` are served with `X-Robots-Tag: noindex` (like the resume PDF)
   so fetched fragments and raw JSON never appear in search results.
 

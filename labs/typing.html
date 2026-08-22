@@ -270,7 +270,7 @@
             <option value="sql">SQL</option>
           </select>
           <button class="lab-btn" type="button" id="typing-restart">&#8635; Restart</button>
-          <span class="lab-status" id="typing-status">Click the passage and start typing</span>
+          <span class="lab-status" id="typing-status" role="status">Click the passage and start typing</span>
           <span class="spacer"></span>
           <div class="typing-stats">
             <span><b id="typing-wpm">0</b> wpm</span>
@@ -283,12 +283,16 @@
         <div class="lab-panes">
           <div class="lab-pane lab-terminal-wrap">
             <div class="lab-pane-label"><span>Type this</span><span>Tab inserts four spaces &middot; Escape then Tab moves on</span></div>
-            <div class="typing-passage" id="typing-passage" role="textbox" aria-label="Passage to type"></div>
+            <!-- role="group", not "textbox": this div only displays the target
+                 passage as colour-coded spans. Declaring it a textbox told a
+                 screen reader the page's core element was an editable field it
+                 could never focus — the real input is the textarea below. -->
+            <div class="typing-passage" id="typing-passage" role="group" aria-label="Passage to type"></div>
             <label class="sr-only" for="typing-input">Your typing</label>
             <textarea class="typing-input" id="typing-input" spellcheck="false"
                       autocomplete="off" autocorrect="off" autocapitalize="off"
                       placeholder="Start typing here — the passage above highlights as you go"></textarea>
-            <p class="typing-result" id="typing-result" hidden>
+            <p class="typing-result" id="typing-result" role="status" hidden>
               <span id="typing-result-text"></span>
             </p>
           </div>

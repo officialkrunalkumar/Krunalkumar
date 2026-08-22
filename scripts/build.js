@@ -10,13 +10,19 @@
    gradient") and deleting them by hand to save bytes would destroy the most
    valuable documentation in the codebase.
 
-   It does four transformations, then verifies what it produced:
+   It does five transformations, then verifies what it produced:
 
      1. Strips CSS comments.  main.css is 41.7% comments and render-blocking
         on all 89 pages. Saves roughly 44 KB raw / 12 KB brotli off the
         critical path.
+     1b. Strips JS comments from the two every-page scripts written in the
+        same house style: boot.js (synchronous in every <head>, ~59%
+        comments) and particle-bg.js (deferred on every page, ~41%). Same
+        rationale, same verify-then-write stance — see the JS scanner below
+        for why its lexer is longer than the CSS one.
      2. Rewrites sitemap.xml <lastmod> per file from git, instead of the one
-        hardcoded date every URL currently shares.
+        hardcoded date every URL currently shares — skipping site-wide sweep
+        commits, so a footer-link pass does not reset every page's date.
      3. Rebuilds assets/data/search-index.json from the pages, so the search
         box can never describe content the site no longer has. See
         scripts/search-index.js for why that stopped being a manual step.
@@ -27,18 +33,24 @@
 
    It then checks its own output — critical files present, above a size floor,
    enough HTML pages on disk, every JSON-LD block parseable, the sitemap and
-   the pages agreeing about what exists, and the static header/footer each
-   page ships matching the partials they get swapped for — and throws if
-   anything looks wrong. Vercel keeps serving the previous deployment when a
-   build exits non-zero, so failing the deploy is always safer than publishing
-   the damage. Every step reports what it did, so a deploy log shows the
-   numbers.
+   the pages agreeing about what exists, the static header/footer each page
+   ships matching the partials they get swapped for, sw.js's offline precache
+   list covering what the doc-maker pages actually load, and the vendor
+   fingerprint in sw.js matching the files on disk — and throws if anything
+   looks wrong. Vercel keeps serving the previous deployment when a build
+   exits non-zero, so failing the deploy is always safer than publishing the
+   damage. Every step reports what it did, so a deploy log shows the numbers.
 
-   SAFE TO RUN LOCALLY. It is idempotent — a second run finds no comments left
-   and writes the same bytes back — and `node scripts/build.js --check` makes
-   no changes at all, it only prints what would happen. Every write is gated on
-   the parsed rule list coming out unchanged, so a bug in the scanner throws
-   rather than shipping a broken stylesheet.
+   `node scripts/build.js --check` IS SAFE ANYWHERE: it writes nothing and
+   only prints what would happen. A bare `node scripts/build.js` is meant for
+   the Vercel container and REWRITES THE WORKING TREE — it strips the
+   comments out of the committed CSS/JS (the documentation this header calls
+   the most valuable in the codebase) and rewrites the sitemap, search index,
+   llms counts and colophon. After an accidental local run, `git checkout --`
+   the touched files; uncommitted edits to them are lost. It is idempotent —
+   a second run finds no comments left and writes the same bytes back — and
+   every write is gated on the parsed rule list coming out unchanged, so a
+   bug in a scanner throws rather than shipping a broken file.
 
    It deliberately does NOT minify beyond comment removal. Collapsing
    whitespace would save a little more and make every future diff unreadable
@@ -74,8 +86,20 @@ const CSS_FILES = [
   'assets/css/biodata-maker.css',
 ];
 
+/* The two scripts every page pays for, written in the same comment-heavy
+   house style as the CSS. boot.js loads synchronously in every <head> —
+   ahead of the stylesheet — and particle-bg.js is deferred on every page.
+   Other first-party JS is fetched per page and stays readable on the wire;
+   these two are the ones whose comment bytes are a sitewide tax. */
+const JS_FILES = [
+  'assets/js/boot.js',
+  'assets/js/particle-bg.js',
+];
+
 let totalBefore = 0;
 let totalAfter = 0;
+let totalJsBefore = 0;
+let totalJsAfter = 0;
 
 function log(line) {
   process.stdout.write(line + '\n');
@@ -253,6 +277,171 @@ function doCss() {
 }
 
 /* --------------------------------------------------------------------------
+   1b. JS comments
+   --------------------------------------------------------------------------
+   Same trade as the CSS pass — the comments are documentation for the repo
+   and dead weight on the wire — but JS needs a longer lexer than CSS before
+   a comment can be believed: 'https://example' must not open a line comment,
+   a / after `return` is a regex while a / after a value is division, and a
+   template literal can hold real code inside ${}. Regex-vs-division is
+   decided the way an engine's lexer does it, from the previous significant
+   token; the one ambiguity this scanner refuses to guess (a / straight after
+   `)` `]` `}` or an identifier) falls back to "division", and if that guess
+   is ever wrong the output stops parsing — which the guardrails below turn
+   into a refused write and a failed deploy, never a broken script. Vercel
+   answers a failed build by keeping the previous deployment live.
+   -------------------------------------------------------------------------- */
+function stripJsComments(src) {
+  const KEYWORD = /^(return|typeof|instanceof|in|of|new|delete|void|case|do|else|yield|await|throw)$/;
+  let out = '';
+  let i = 0;
+  let mode = 'code';          // code | squote | dquote | template | regex | regexclass
+  const tplDepth = [];        // one brace counter per ${ } we are inside
+  let lastSig = '';           // last significant char emitted in code mode
+  let lastWord = '';          // trailing identifier, so `return /re/` lexes as a regex
+
+  function regexCanStart() {
+    if (lastSig === '') return true;                      // start of file
+    if (/[A-Za-z0-9_$]/.test(lastSig)) return KEYWORD.test(lastWord);
+    return '(,=:[!&|?;{+-*%<>~^'.indexOf(lastSig) !== -1;
+  }
+
+  while (i < src.length) {
+    const c = src[i];
+    const n = src[i + 1];
+
+    if (mode === 'squote' || mode === 'dquote') {
+      out += c;
+      if (c === '\\') { out += n || ''; i += 2; continue; }
+      if ((mode === 'squote' && c === "'") || (mode === 'dquote' && c === '"')) {
+        mode = 'code'; lastSig = ')'; lastWord = '';      // a closed string is a value
+      }
+      i += 1;
+      continue;
+    }
+
+    if (mode === 'template') {
+      out += c;
+      if (c === '\\') { out += n || ''; i += 2; continue; }
+      if (c === '$' && n === '{') { out += '{'; i += 2; tplDepth.push(0); mode = 'code'; lastSig = '{'; lastWord = ''; continue; }
+      if (c === '`') { mode = 'code'; lastSig = ')'; lastWord = ''; }
+      i += 1;
+      continue;
+    }
+
+    if (mode === 'regex') {
+      out += c;
+      if (c === '\\') { out += n || ''; i += 2; continue; }
+      if (c === '[') { mode = 'regexclass'; i += 1; continue; }
+      if (c === '/') { mode = 'code'; lastSig = ')'; lastWord = ''; }
+      i += 1;
+      continue;
+    }
+    if (mode === 'regexclass') {
+      out += c;
+      if (c === '\\') { out += n || ''; i += 2; continue; }
+      if (c === ']') mode = 'regex';
+      i += 1;
+      continue;
+    }
+
+    /* code */
+    if (c === '/' && n === '/') {
+      let end = src.indexOf('\n', i + 2);
+      if (end === -1) end = src.length;
+      // Same line-tidying as the CSS pass: a comment alone on its line takes
+      // the line with it; a trailing comment leaves the code and its newline.
+      const lineStart = out.lastIndexOf('\n') + 1;
+      if (out.slice(lineStart).trim() === '') {
+        out = out.slice(0, lineStart);
+        i = end < src.length ? end + 1 : end;
+      } else {
+        i = end;
+      }
+      continue;
+    }
+    if (c === '/' && n === '*') {
+      const end = src.indexOf('*/', i + 2);
+      if (end === -1) break;            // unterminated: drop the remainder
+      i = end + 2;
+      const lineStart = out.lastIndexOf('\n') + 1;
+      if (out.slice(lineStart).trim() === '') {
+        out = out.slice(0, lineStart);
+        while (src[i] === ' ' || src[i] === '\t') i += 1;
+        if (src[i] === '\r') i += 1;
+        if (src[i] === '\n') i += 1;
+      }
+      continue;
+    }
+    if (c === '/' && regexCanStart()) { mode = 'regex'; out += c; i += 1; continue; }
+    if (c === "'") { mode = 'squote'; out += c; i += 1; continue; }
+    if (c === '"') { mode = 'dquote'; out += c; i += 1; continue; }
+    if (c === '`') { mode = 'template'; out += c; i += 1; continue; }
+    if (c === '}' && tplDepth.length) {
+      if (tplDepth[tplDepth.length - 1] === 0) { tplDepth.pop(); mode = 'template'; out += c; i += 1; continue; }
+      tplDepth[tplDepth.length - 1] -= 1;
+    } else if (c === '{' && tplDepth.length) {
+      tplDepth[tplDepth.length - 1] += 1;
+    }
+
+    out += c;
+    if (!/\s/.test(c)) {
+      lastSig = c;
+      lastWord = /[A-Za-z0-9_$]/.test(c) ? lastWord + c : '';
+    }
+    i += 1;
+  }
+
+  // No blank-line collapse here, unlike the CSS pass: a global regex could
+  // reach inside a template literal and change string content. The per-
+  // comment line tidying above already prevents stacked blanks.
+  return out;
+}
+
+function doJs() {
+  log('');
+  log('JS comment stripping');
+  const vm = require('vm');
+  for (const rel of JS_FILES) {
+    const abs = path.join(ROOT, rel);
+    if (!fs.existsSync(abs)) {
+      log('  SKIP  ' + rel + ' (not found)');
+      continue;
+    }
+    const src = fs.readFileSync(abs, 'utf8');
+
+    // A file the engine cannot parse is a file this scanner has no business
+    // rewriting — skip it loudly rather than guess.
+    try { new vm.Script(src, { filename: rel }); }
+    catch (e) { log('  SKIP  ' + rel + ' (does not parse: ' + e.message + ')'); continue; }
+
+    const out = stripJsComments(src);
+
+    // Guardrails, same stance as the CSS pass: any trip throws, the write is
+    // refused, and the deploy fails instead of shipping a broken script.
+    try { new vm.Script(out, { filename: rel }); }
+    catch (e) {
+      throw new Error(rel + ': stripped output no longer parses (' + e.message + ') — refusing to write');
+    }
+    if (stripJsComments(out) !== out) {
+      throw new Error(rel + ': strip is not idempotent — refusing to write');
+    }
+    if (out.length > src.length) {
+      throw new Error(rel + ': output grew — refusing to write');
+    }
+
+    totalJsBefore += src.length;
+    totalJsAfter += out.length;
+    const saved = src.length - out.length;
+    const pct = src.length ? ((saved / src.length) * 100).toFixed(1) : '0.0';
+    log('  ' + (CHECK ? 'would strip' : 'stripped  ') + '  ' + rel.padEnd(26) +
+        (src.length + '').padStart(7) + ' -> ' + (out.length + '').padStart(7) +
+        '  (-' + pct + '%)');
+    if (!CHECK) fs.writeFileSync(abs, out);
+  }
+}
+
+/* --------------------------------------------------------------------------
    2. sitemap lastmod
    --------------------------------------------------------------------------
    Every URL currently carries the same hardcoded date, which tells a crawler
@@ -272,14 +461,41 @@ function urlToFile(loc, root) {
   return null;
 }
 
+/* A commit that touches half the repository is chrome churn, not a content
+   update: one footer-link sweep used to reset <lastmod> on every legal page
+   and months-old blog posts alike, collapsing 99 URLs onto a single date —
+   and a lastmod that moves in blankets is a lastmod crawlers learn to
+   ignore. So a file is dated by the newest commit that touched it AND at
+   most SWEEP_LIMIT files in total; sweep commits are skipped. A file whose
+   visible history is only sweeps gets no date and keeps its committed
+   <lastmod>, the same fallback a shallow clone already relies on. */
+const SWEEP_LIMIT = 20;
+let fileDates = null;
+
 function lastCommitDate(file) {
-  try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', file],
-                             { cwd: ROOT, encoding: 'utf8' }).trim();
-    return /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : null;
-  } catch (e) {
-    return null;   // shallow clone, or git unavailable
+  if (fileDates === null) {
+    fileDates = {};
+    try {
+      // One `git log` for the whole history instead of one per file:
+      // \x01-separated blocks of "date, then the files the commit touched".
+      const raw = execFileSync('git', ['log', '--format=%x01%cs', '--name-only'],
+                               { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+      for (const block of raw.split('\x01')) {
+        const lines = block.split('\n').map((s) => s.trim()).filter(Boolean);
+        if (!lines.length) continue;
+        const date = lines.shift();
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+        if (lines.length > SWEEP_LIMIT) continue;          // sweep: says nothing per page
+        for (const f of lines) {
+          if (!(f in fileDates)) fileDates[f] = date;      // log is newest-first
+        }
+      }
+    } catch (e) {
+      /* shallow clone with no usable history, or git unavailable:
+         the map stays empty and every entry keeps its committed date */
+    }
   }
+  return fileDates[file.split(path.sep).join('/')] || null;
 }
 
 function doSitemap() {
@@ -495,6 +711,7 @@ const NOINDEX_PAGES = new Set([
   'einstein.html',
   'labs/hacklab-guestbook.html',
   'google46d0a7ad3f01b5a6.html',
+  'offline.html',   // the SW's navigation fallback — reachable only offline
 ]);
 
 function fileToUrl(rel) {
@@ -570,6 +787,7 @@ const CHROMELESS = new Set([
   'terminal.html',                // ditto
   'labs/hacklab-guestbook.html',  // sandboxed document inside HackLab's iframe
   'google46d0a7ad3f01b5a6.html',  // Search Console token, never rendered
+  'offline.html',                 // self-contained by design: it must render with zero network
 ]);
 
 function navHrefs(html) {
@@ -593,14 +811,50 @@ function footerColHrefs(html) {
   return out;
 }
 
+/* The three footer regions the column check above does not reach, plus the
+   header brand link. All of them are duplicated statically into every page,
+   so before these were gated a rename of /refund in the partial would have
+   left ~99 stale no-JS copies without failing the build — exactly the drift
+   this gate's own comment warns about. Neither .footer-cta-group nor
+   .footer-bottom contains a nested <div>, so the first </div> really closes
+   the region. */
+function footerCtaHrefs(html) {
+  const src = stripHtmlComments(html);
+  const m = src.match(/class="footer-cta-group"[^>]*>[\s\S]*?<\/div>/);
+  if (!m) return null;
+  return Array.from(m[0].matchAll(/<a\s[^>]*href\s*=\s*"([^"]*)"/g)).map((a) => a[1].trim());
+}
+
+function footerBottomHrefs(html) {
+  const src = stripHtmlComments(html);
+  const m = src.match(/class="footer-bottom"[^>]*>[\s\S]*?<\/div>/);
+  if (!m) return null;
+  return Array.from(m[0].matchAll(/<a\s[^>]*href\s*=\s*"([^"]*)"/g)).map((a) => a[1].trim());
+}
+
+function brandHref(html) {
+  const src = stripHtmlComments(html);
+  const m = src.match(/<header[^>]*class="[^"]*site-header[^"]*"[^>]*>[\s\S]*?<\/header>/);
+  if (!m) return null;
+  const a = m[0].match(/<a[^>]*class="[^"]*brand[^"]*"[^>]*href\s*=\s*"([^"]*)"/) ||
+            m[0].match(/<a[^>]*href\s*=\s*"([^"]*)"[^>]*class="[^"]*brand[^"]*"/);
+  return a ? a[1].trim() : null;
+}
+
 function doChromeParity(root) {
   root = root || ROOT;
   log('');
   log('static chrome gate');
   const readRel = (rel) => fs.readFileSync(path.join(root, rel), 'utf8');
-  const canonNav = navHrefs(readRel('partials/header.html'));
-  const canonFooter = footerColHrefs(readRel('partials/footer.html'));
-  if (!canonNav || !canonNav.length || !canonFooter || !canonFooter.length) {
+  const headerPartial = readRel('partials/header.html');
+  const footerPartial = readRel('partials/footer.html');
+  const canonNav = navHrefs(headerPartial);
+  const canonFooter = footerColHrefs(footerPartial);
+  const canonCta = footerCtaHrefs(footerPartial);
+  const canonBottom = footerBottomHrefs(footerPartial);
+  const canonBrand = brandHref(headerPartial);
+  if (!canonNav || !canonNav.length || !canonFooter || !canonFooter.length ||
+      !canonCta || !canonCta.length || !canonBottom || !canonBottom.length || !canonBrand) {
     throw new Error('static chrome gate: could not read link lists out of partials/ — refusing to publish');
   }
 
@@ -611,11 +865,19 @@ function doChromeParity(root) {
     const html = readRel(rel);
     const nav = navHrefs(html);
     const foot = footerColHrefs(html);
+    const cta = footerCtaHrefs(html);
+    const bottom = footerBottomHrefs(html);
+    const brand = brandHref(html);
     if (!nav) { problems.push(rel + ': no static header nav found'); continue; }
     if (!foot || !foot.length) { problems.push(rel + ': no static footer columns found'); continue; }
+    if (!cta || !cta.length) { problems.push(rel + ': no static footer CTA group found'); continue; }
+    if (!bottom || !bottom.length) { problems.push(rel + ': no static footer bottom row found'); continue; }
     const navOk = nav.join('\n') === canonNav.join('\n');
     const footOk = foot.join('\n') === canonFooter.join('\n');
-    if (navOk && footOk) { matched += 1; continue; }
+    const ctaOk = cta.join('\n') === canonCta.join('\n');
+    const bottomOk = bottom.join('\n') === canonBottom.join('\n');
+    const brandOk = brand === canonBrand;
+    if (navOk && footOk && ctaOk && bottomOk && brandOk) { matched += 1; continue; }
     if (!navOk) {
       problems.push(rel + ': static header nav drifted from partials/header.html\n' +
                     '        partial: ' + canonNav.join(' ') + '\n' +
@@ -625,6 +887,19 @@ function doChromeParity(root) {
       problems.push(rel + ': static footer links drifted from partials/footer.html' +
                     ' (' + canonFooter.length + ' links expected, ' + foot.length + ' found)');
     }
+    if (!ctaOk) {
+      problems.push(rel + ': static footer CTA links drifted from partials/footer.html\n' +
+                    '        partial: ' + canonCta.join(' ') + '\n' +
+                    '        page:    ' + cta.join(' '));
+    }
+    if (!bottomOk) {
+      problems.push(rel + ': static footer bottom links drifted from partials/footer.html\n' +
+                    '        partial: ' + canonBottom.join(' ') + '\n' +
+                    '        page:    ' + bottom.join(' '));
+    }
+    if (!brandOk) {
+      problems.push(rel + ': header brand link is "' + brand + '", partial says "' + canonBrand + '"');
+    }
   }
 
   if (problems.length) {
@@ -633,7 +908,118 @@ function doChromeParity(root) {
     throw new Error('static chrome gate: ' + problems.length + ' page(s) drifted — refusing to publish');
   }
   log('  ' + matched + ' pages match partials/ (' + canonNav.length + ' nav links, ' +
-      canonFooter.length + ' footer links)');
+      canonFooter.length + ' footer links, ' + canonCta.length + ' CTA links, ' +
+      canonBottom.length + ' bottom links, brand)');
+}
+
+/* --------------------------------------------------------------------------
+   7b. Service-worker precache gate
+   --------------------------------------------------------------------------
+   sw.js promises the resume maker and the biodata maker work offline, backed
+   by DOC_URLS — a hand-enumerated file list whose own comment admits the
+   failure mode: "if a page grows a new stylesheet or script, it must be
+   added here or offline quietly breaks." That is the identical hand-sync
+   promise the search index and the llms counts used to run on, and it broke
+   the identical way. So the list is now held to the pages: every stylesheet
+   and script the two documents load must appear in DOC_URLS (as the clean
+   URL the browser actually requests), and every DOC_URLS entry must resolve
+   to a real file. Extra precached entries (icons, partials, /offline) are
+   fine — the gate only refuses a page dependency the list is missing.
+   -------------------------------------------------------------------------- */
+const SW_PRECACHED_PAGES = ['labs/resume-maker.html', 'labs/biodata-maker.html'];
+
+function pageAssetUrls(html) {
+  const src = stripHtmlComments(html);
+  const urls = [];
+  for (const tag of src.matchAll(/<link\s[^>]*>/g)) {
+    if (!/rel\s*=\s*"stylesheet"/.test(tag[0])) continue;
+    const href = tag[0].match(/href\s*=\s*"([^"]*)"/);
+    if (href) urls.push(href[1]);
+  }
+  for (const tag of src.matchAll(/<script\s[^>]*src\s*=\s*"([^"]*)"[^>]*>/g)) {
+    urls.push(tag[1]);
+  }
+  return urls.map((u) => u.split('?')[0].split('#')[0]).filter((u) => u.startsWith('/'));
+}
+
+function doSwPrecacheParity(root) {
+  root = root || ROOT;
+  log('');
+  log('sw precache gate');
+  const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+  const arr = sw.match(/var DOC_URLS = \[([\s\S]*?)\];/);
+  if (!arr) throw new Error('sw precache gate: could not find DOC_URLS in sw.js — refusing to publish');
+  // Comments between the entries can contain apostrophes ("the browser's…"),
+  // which a bare quote-scan would read as string delimiters — so the array
+  // text goes through the JS comment stripper before the entries are read.
+  const listed = new Set(Array.from(stripJsComments(arr[1]).matchAll(/'([^']+)'/g)).map((m) => m[1]));
+
+  const problems = [];
+  let covered = 0;
+  for (const rel of SW_PRECACHED_PAGES) {
+    const pageUrl = fileToUrl(rel);
+    if (!listed.has(pageUrl)) problems.push('sw.js DOC_URLS is missing the page itself: ' + pageUrl);
+    for (const u of pageAssetUrls(fs.readFileSync(path.join(root, rel), 'utf8'))) {
+      if (listed.has(u)) { covered += 1; continue; }
+      problems.push(rel + ' loads ' + u + ' but sw.js DOC_URLS does not precache it — offline would quietly break');
+    }
+  }
+  for (const u of listed) {
+    if (!urlToFile(u, root)) problems.push('sw.js DOC_URLS entry has no file behind it: ' + u);
+  }
+
+  if (problems.length) {
+    log('  FAILED:');
+    problems.forEach((p) => log('    - ' + p));
+    throw new Error('sw precache gate: ' + problems.length + ' mismatch(es) — refusing to publish');
+  }
+  log('  ' + covered + ' page assets all precached, ' + listed.size + ' DOC_URLS entries all resolve');
+}
+
+/* --------------------------------------------------------------------------
+   7c. Vendor fingerprint gate
+   --------------------------------------------------------------------------
+   sw.js serves /assets/vendor/ cache-first and invalidates by a hand-bumped
+   cache name — while the vendor URLs carry no version and ship with a
+   one-year immutable Cache-Control. Nothing used to pair the two: replace a
+   runtime file in place, forget the bump, and every returning visitor kept
+   the old bytes with no expiry. So sw.js now carries a content fingerprint
+   of the vendor tree, and this gate recomputes it every deploy. When vendor
+   files change, the deploy fails until the fingerprint is updated — and the
+   error message says to bump CACHE in the same edit, at the exact moment it
+   matters. Hashing the ~150 MB tree costs a couple of seconds of build time,
+   which is what an unfalsifiable "version-pinned" promise turns out to cost.
+   -------------------------------------------------------------------------- */
+function doVendorPairing(root) {
+  root = root || ROOT;
+  log('');
+  log('vendor fingerprint gate');
+  const dir = path.join(root, 'assets/vendor');
+  if (!fs.existsSync(dir)) { log('  SKIP  assets/vendor (not found)'); return; }
+
+  const crypto = require('crypto');
+  const files = walkFiles(dir, () => true)
+    .map((f) => path.relative(root, f).split(path.sep).join('/'))
+    .sort();
+  const h = crypto.createHash('sha256');
+  for (const rel of files) {
+    h.update(rel);
+    h.update('\0');
+    h.update(fs.readFileSync(path.join(root, rel)));
+  }
+  const digest = h.digest('hex').slice(0, 16);
+
+  const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+  const m = sw.match(/var VENDOR_FINGERPRINT = '([^']*)'/);
+  if (!m) throw new Error('vendor fingerprint gate: sw.js has no VENDOR_FINGERPRINT — refusing to publish');
+  if (m[1] !== digest) {
+    log('  FAILED: files under assets/vendor/ changed.');
+    log('    In sw.js, set VENDOR_FINGERPRINT to \'' + digest + '\'');
+    log('    and bump CACHE (lab-runtimes-vN) in the same edit, so returning');
+    log('    visitors are refilled with the new runtime bytes.');
+    throw new Error('vendor fingerprint gate: sw.js says ' + m[1] + ', tree is ' + digest + ' — refusing to publish');
+  }
+  log('  ' + files.length + ' files, fingerprint ' + digest + ' matches sw.js');
 }
 
 /* --------------------------------------------------------------------------
@@ -662,6 +1048,7 @@ const MUST_EXIST = [
   ['assets/js/theme.js', 2000, null],
   ['assets/js/include-partials.js', 2000, null],
   ['sw.js', 1500, null],
+  ['offline.html', 800, '</html>'],
   ['sitemap.xml', 5000, '<urlset'],
   ['robots.txt', 200, null],
   ['vercel.json', 1000, 'cleanUrls'],
@@ -825,18 +1212,25 @@ function verifyOutput() {
 function main() {
   log(CHECK ? '=== build --check (no files will be written) ===' : '=== build ===');
   doCss();
+  doJs();
   doSitemap();
   const index = doSearchIndex();
   doLlmsCounts(index);
   doJsonLd();
   doSitemapParity();
   doChromeParity();
+  doSwPrecacheParity();
+  doVendorPairing();
   verifyOutput();
   log('');
   const saved = totalBefore - totalAfter;
   log('CSS total: ' + totalBefore + ' -> ' + totalAfter +
       '  (saved ' + saved + ' bytes, ' +
       (totalBefore ? ((saved / totalBefore) * 100).toFixed(1) : '0') + '%)');
+  const savedJs = totalJsBefore - totalJsAfter;
+  log('JS total:  ' + totalJsBefore + ' -> ' + totalJsAfter +
+      '  (saved ' + savedJs + ' bytes, ' +
+      (totalJsBefore ? ((savedJs / totalJsBefore) * 100).toFixed(1) : '0') + '%)');
   log(CHECK ? '=== check complete, nothing written ===' : '=== build complete ===');
 }
 
@@ -847,9 +1241,15 @@ module.exports = {
   jsonLdErrors: jsonLdErrors,
   navHrefs: navHrefs,
   footerColHrefs: footerColHrefs,
+  footerCtaHrefs: footerCtaHrefs,
+  footerBottomHrefs: footerBottomHrefs,
+  brandHref: brandHref,
+  stripJsComments: stripJsComments,
   doJsonLd: doJsonLd,
   doSitemapParity: doSitemapParity,
   doChromeParity: doChromeParity,
+  doSwPrecacheParity: doSwPrecacheParity,
+  doVendorPairing: doVendorPairing,
 };
 
 if (require.main === module) main();
