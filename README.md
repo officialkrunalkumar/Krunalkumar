@@ -709,6 +709,16 @@ cannot do that, and an inline `<script>` is unavailable — `vercel.json` sets `
 with no `'unsafe-inline'`, and a birthday page is not a reason to weaken a site-wide security
 header.
 
+**`/birthday` and `/festival` opt out of the site-wide framing ban, and only they do.** The
+generator's preview is the real card in a same-origin `<iframe>`, so the global
+`X-Frame-Options: DENY` and `frame-ancestors 'none'` in `vercel.json` — correct for every other page
+here — turn that panel into a *refused to connect* box. The fix is a `/(birthday|festival)` rule
+that re-sends both headers as `SAMEORIGIN` and `frame-ancestors 'self'`: framed by this origin,
+still not framed by anyone else, and nothing else on the site loosened. It is a **header** problem,
+not a markup one — the iframe tag is fine, and no amount of editing it will help. Vercel applies
+the last matching rule per header key, so the override must stay **below** the global `/(.*)` block;
+`/labs/hacklab-guestbook` does the same thing for the same reason.
+
 **The name is sanitised, and the threat is defacement, not XSS.** XSS is handled structurally —
 nothing ever assigns `innerHTML` from a URL value, `textContent` only, everywhere. The character
 whitelist exists for the other attack: `krunalkumar.dpdns.org/birthday?name=<something vile>` would

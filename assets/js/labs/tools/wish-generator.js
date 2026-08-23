@@ -17,6 +17,16 @@
    It costs a page load per change, which is why applyPreview is debounced and
    why the iframe is only pointed somewhere once there is a name to show.
 
+   THAT IFRAME NEEDS A HEADER EXCEPTION AND HAS ONE. vercel.json sends
+   X-Frame-Options: DENY and frame-ancestors 'none' to every page on the site,
+   which is right everywhere except here — with them, this panel is a browser
+   "refused to connect" box and nothing in this file can fix it. There is a
+   /(birthday|festival) rule below the global one that re-sends SAMEORIGIN and
+   frame-ancestors 'self' for exactly those two paths. If the preview ever goes
+   blank in production while working locally, that rule is the first thing to
+   check; the dev server does not apply vercel.json headers, so this failure
+   only ever shows up deployed.
+
    NO NETWORK. Nothing typed here leaves the browser: the whole tool is string
    building, and the only "request" is the same-origin iframe loading a page
    from this site. That matters because the Labs hub promises exactly this of
