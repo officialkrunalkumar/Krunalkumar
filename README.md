@@ -701,7 +701,7 @@ falls back rather than failing. `from` is optional on both.
 **Files.** `celebrate-guard.js` (synchronous, in `<head>`) · `celebrate.css` · `celebrate.js` ·
 `birthday.js` · `festival.js` · `festival-data.js` · `labs/tools/wish-generator.js`.
 
-### Six things here are decisions, not accidents
+### Ten things here are decisions, not accidents
 
 **The guard is a separate synchronous file.** A visitor with no `?name=` has to be redirected
 *before* anything paints, or the page flashes a nameless greeting and then jumps. A deferred script
@@ -1086,9 +1086,26 @@ Three site-wide additions in `vercel.json`, all needed by the runtimes and tools
   against a server that sends no CSP at all, which is exactly why `scratchpad/prodserve.js`
   exists.
 
-These are on the single site-wide rule on purpose. A browser receiving more than one CSP header
-enforces the **intersection**, so a second, looser rule scoped to `/labs` would be ignored in
-favour of the stricter global one and WebAssembly would still be blocked.
+These are on the single site-wide rule on purpose, and the reason is Vercel's header semantics rather
+than the browser's. **Vercel replaces per header key — the last matching `headers` rule wins — so a
+response carries exactly one `Content-Security-Policy`, never two.** The often-quoted rule that a
+browser receiving multiple CSP headers enforces their *intersection* is real, and simply never gets
+the chance to apply here.
+
+The trap that follows is the one worth remembering: **a scoped rule replaces the entire policy, not
+only the directives it names.** Whatever it does not restate is gone on those paths.
+`/labs/hacklab-guestbook` is the proof — it deliberately sends a short, tight policy, and the live
+response carries eight directives where every other page carries fourteen: no `worker-src`, no
+`object-src`, no `upgrade-insecure-requests`. Note that those do not all fail the same way: fetch
+directives fall back to `default-src`, so `object-src` quietly relaxes from `'none'` to `'self'`,
+while `upgrade-insecure-requests` has no fallback at all and is simply absent. Deliberate and
+contained on that one lab target; the same omission on an ordinary page is an unnoticed regression.
+
+So the site-wide rule is the canonical policy and every scoped rule is a **full copy of it with one
+deliberate change**: `/labs/(.*)` widens `connect-src` to `https:` for the API tester,
+`/(birthday|festival)` relaxes `frame-ancestors` to `'self'` so the wish generator can preview the
+real card in an iframe. Add a directive to the global rule and propagate it — never bolt a partial
+rule onto a path, because the thirteen directives you left out do not survive the override.
 
 `/assets/vendor/*` is served `immutable, max-age=31536000`. Those files are version-pinned and never
 change in place, so repeat visits cost zero bandwidth — which is what keeps the section inside a
