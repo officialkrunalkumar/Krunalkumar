@@ -108,6 +108,7 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [Word cloud generator](https://krunalkumar.dpdns.org/labs/word-cloud): A free word cloud generator: paste text and the most frequent words are sized biggest and spiral-packed into shape masks (heart, star, circle, diamond, cloud), with colour palettes and font choices, downloadable as a PNG. Filler words are removed automatically. Everything runs in the browser with no upload and no watermark; a wordart.com-style tool made free and private.
 - [Resume maker](https://krunalkumar.dpdns.org/labs/resume-maker): A free resume builder: fill a form, pick one of five templates (ATS-safe single column through designed sidebar and banner layouts), add an optional photo and accent colour, and print to A4 or save as PDF from the print dialog. Live preview as you type, autosaved to the browser's own storage, no sign-up, no watermark, no paywall at the download button — and no upload, because the whole tool runs client-side.
 - [Marriage biodata maker](https://krunalkumar.dpdns.org/labs/biodata-maker): A free marriage biodata (matrimonial CV) maker: personal, horoscope, education, family and contact details rendered into one of five templates from traditional maroon-and-gold to minimal ink-friendly, with an optional photo and a choice of invocation line. Every field optional, prints to A4, autosaves locally. Built client-side on purpose: birth details, income and a home address are exactly the data that should never be uploaded to a random website.
+- [Wish generator](https://krunalkumar.dpdns.org/labs/wish-generator): A free birthday and festival wish link generator: type a name, pick one of six looks, and copy a link that opens as a full-screen animated card addressed to that person. 92 festivals are recognised, each with its own greeting, palette, motif and decoration — Eid gets "Eid Mubarak" rather than "Happy Eid", Navratri gets "Shubh Navratri", Uttarayan gets "Kai Po Che!" — and days of mourning and atonement (Yom Kippur, Muharram, Qingming, Obon) are given a still, unlit treatment instead of confetti. Festival spelling is matched approximately, so "bestu varsh", "diwaly" and "gujarati new year" all resolve; anything unrecognised still produces a warm generic card. Entirely client-side: the name travels inside the link, and nothing is stored or uploaded.
 - [TCP](https://krunalkumar.dpdns.org/labs/tcp-congestion): TCP made watchable in three families: the three-way handshake and four-way close with real sequence and acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery on triple-duplicate ACKs and collapse to one on a timeout, plotted as the classic sawtooth. A live simulation checked against RFC 793 examples, entirely client-side.
 - [Buffer overflow](https://krunalkumar.dpdns.org/labs/buffer-overflow): A stack buffer overflow drawn byte by byte on a real downward-growing stack: watch a string copy overwrite the saved frame pointer and the return address, hijack control flow to injected shellcode (as a diagram, never executed), then enable a stack canary and watch it catch the overflow. A defences panel shows what NX and ASLR each stop and how each is bypassed. Entirely client-side, a teaching diagram for defenders.
 - [Regex engine](https://krunalkumar.dpdns.org/labs/regex-engine): A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length and compares it with the linear-time state-machine engines. All three engines are differentially tested against JavaScript RegExp. Entirely client-side.
@@ -147,6 +148,25 @@ These are deliberately separated from the sixteen offline security tools. They s
 - [Terms of Service](https://krunalkumar.dpdns.org/terms): Consulting agreements, authorized access restrictions, IP assignment, and liability terms.
 - [Refund Policy](https://krunalkumar.dpdns.org/refund): Mentorship 7-day refund guarantee, milestone-based consulting terms, and Wise international transfer guidelines.
 - [Security Contact](https://krunalkumar.dpdns.org/.well-known/security.txt): RFC 9116 security vulnerability reporting contact.
+
+## Wishes
+- [Wish generator](https://krunalkumar.dpdns.org/labs/wish-generator): the tool, and the only one of
+  the three pages that is indexed. It builds links to two cards that exist only when somebody is named
+  in them: `/birthday?name=…` and `/festival?name=…`. Without the query parameter there is nothing to
+  say, so both send the visitor to the generator rather than showing an empty greeting.
+  Birthday takes an optional `&theme=` — candlelight, confetti, balloons, starlit, blossom or neon,
+  each a different palette, decoration and particle behaviour rather than a recolour — and both take an
+  optional `&from=`. Once the card has rendered the query parameter is stripped from the address bar,
+  so it reads as a page made for that person; the card keeps a Copy link button holding the full URL.
+  Each card carries a Save image button that redraws it natively at 1080×1920 and downloads a PNG —
+better than the screenshot it replaces, since it has no status bar or address bar in it. The generator
+also works with no network at all: it is precached by the service worker alongside the resume and
+biodata makers, and it only ever builds a link out of the name typed into it.
+  The cards are designed to be screenshotted and put on a WhatsApp status: portrait-first, composed to
+  look finished when still rather than mid-animation, and signed with the KS_ wordmark so the image
+  carries an attribution the URL cannot. Both are noindex and out of the sitemap — they have no content
+  of their own, so an indexed copy would be a blank greeting. Everything stops under
+  prefers-reduced-motion, which draws the settled scene in a single frame rather than an empty one.
 
 ## A Loud Place
 - [A Loud Place](https://krunalkumar.dpdns.org/party): the counterpart to the still place — a

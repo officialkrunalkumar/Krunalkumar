@@ -29,6 +29,8 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | `privacy.html`        | Privacy policy — data collected, analytics, third parties, DPDP Act 2023 rights |
 | `terms.html`          | Terms of service — engagement ground rules, payments, IP, liability, governing law |
 | `refund.html`         | Refund policy — formalizes the mentorship first-week guarantee and consulting refund terms |
+| `birthday.html`       | 🎂 A birthday card, rendered from `/birthday?name=…` and built by `/labs/wish-generator`. Chromeless and `noindex`, not in the sitemap or search index — it has no content of its own, so a crawled copy shows no name. Optional `&theme=` (candlelight · confetti · balloons · starlit · blossom · neon) and `&from=`. A missing name redirects to the generator. See [Wishes](#wishes-labswish-generator-birthday-festival) |
+| `festival.html`       | 🎉 The same machine for festivals — `/festival?name=Diwali`. 92 festivals, each with the greeting people actually use and its own palette, motif and decoration. No theme picker by design: the festival **is** the theme, and a second dial would make it possible to send Yom Kippur in neon. Chromeless, `noindex`, same redirect rule |
 | `404.html`            | Animated space scene, random headlines & rocket flight paths (noindex)      |
 | `terminal.html`       | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
 | `teapot.html`         | 🫖 Hidden easter egg #3 — HTTP 418 as an animated cartoon tea party (`/teapot`). Unlisted everywhere except the terminal's `teapot` command and a hint in `magic`; `noindex`, not in the sitemap; animations stop under reduced motion |
@@ -677,6 +679,133 @@ is active. Hidden entirely where element fullscreen is unavailable (iOS Safari).
 All motion is transform/opacity only, and the whole thing goes still under
 `prefers-reduced-motion` — leaves and motes are removed rather than frozen,
 because a leaf stopped halfway down the screen looks broken rather than peaceful.
+
+## Wishes (`/labs/wish-generator`, `/birthday`, `/festival`)
+
+A link generator and the two cards it builds. **The generator is the indexed page; the cards are
+not** — everything on a card arrives in the query string, so a crawled copy would be a blank
+greeting and three pages would compete for one query. `birthday.html` and `festival.html` are in
+`NOINDEX_PAGES` **and** `CHROMELESS` in `scripts/build.js` and in `EXCLUDE` in
+`scripts/search-index.js`. All three, or a gate fails the deploy.
+
+```
+/birthday?name=Riya&theme=starlit&from=Krunal
+/festival?name=Diwali&from=Krunal
+```
+
+`name` is the only hard gate — without it there is nothing to say, so the page redirects to the
+generator (not the home page: someone who opened `/birthday` wants to send a birthday wish, and the
+generator completes that intent). `theme` is birthday-only and takes one of six; an unknown value
+falls back rather than failing. `from` is optional on both.
+
+**Files.** `celebrate-guard.js` (synchronous, in `<head>`) · `celebrate.css` · `celebrate.js` ·
+`birthday.js` · `festival.js` · `festival-data.js` · `labs/tools/wish-generator.js`.
+
+### Six things here are decisions, not accidents
+
+**The guard is a separate synchronous file.** A visitor with no `?name=` has to be redirected
+*before* anything paints, or the page flashes a nameless greeting and then jumps. A deferred script
+cannot do that, and an inline `<script>` is unavailable — `vercel.json` sets `script-src 'self'`
+with no `'unsafe-inline'`, and a birthday page is not a reason to weaken a site-wide security
+header.
+
+**The name is sanitised, and the threat is defacement, not XSS.** XSS is handled structurally —
+nothing ever assigns `innerHTML` from a URL value, `textContent` only, everywhere. The character
+whitelist exists for the other attack: `krunalkumar.dpdns.org/birthday?name=<something vile>` would
+render that in 4rem type under this site's wordmark, and the screenshot would be indistinguishable
+from something the site published. Names are letters, marks, digits and four joiners; no punctuation
+to build a sentence with. Bidi overrides (U+202E) and zero-width characters are stripped outright —
+this site publishes a Linux security paper and a lab that teaches that exact trick. Unicode is
+handled with `\p{L}\p{M}\p{N}`, because an ASCII whitelist would mangle a large share of the names
+this site's actual visitors have.
+
+**The query string is wiped, and the link is not lost.** `replaceState` after render, so the card
+reads as a page made for that person. That breaks the obvious re-share (copy the address bar,
+forward it), so the card carries a **Copy link** button that rebuilds the full URL from the values
+the guard parked on `window.KSWish`. That is why the guard keeps them instead of discarding them
+after the redirect check.
+
+**The cards are designed to be screenshotted.** Portrait-first for a 9:16 status; confetti settles
+rather than looping, so a screenshot never catches debris mid-air; the `KS_` wordmark is part of the
+composition rather than a watermark, because a screenshot travels without its URL. Under
+`prefers-reduced-motion` the physics is stepped silently to its resting state and painted **once** —
+the obvious "draw nothing" hands the people who asked for less motion a blank stage and a worse
+birthday.
+
+**Size the emoji motif with `font-size`, never `width`.** The festival glyph's span is
+`inline-block` so its box shrink-wraps the character; the aura is then positioned against that box.
+Any rule that puts a `width` back on it decouples the two and the emoji drifts off-centre from the
+text. That is not hypothetical — the `@media (max-height: 34rem)` block did exactly this, because
+`.c-motif { width: … }` is right for the birthday SVG and wrong for the glyph. It shipped to a
+screenshot because it only appears on a SHORT viewport: a desktop window with toolbars hits it,
+every phone is tall enough to miss it. **When testing this page, vary height as well as width** —
+sweeping widths at a fixed tall height finds nothing.
+
+**The festival's name is shown when the greeting does not contain it.** 39 of the 92 greetings are
+phrases that never name the festival — `G'mar Chatima Tova`, `Saal Mubarak`, `Kai Po Che!`,
+`Onashamsakal`, `Ganpati Bappa Morya`. Using the authentic greeting is right, but on its own it left
+the recipient with words they might not recognise and no way to tell what was being wished. So
+`scene()` returns a `label`, set only when the greeting does not already contain the name, rendered
+as a small tracked eyebrow above it. "Happy Diwali" and "Merry Christmas" get none. It is also read
+out first by the live region, and it is brighter on solemn observances — the muted palettes are
+exactly where knowing what day it is matters most.
+
+**Solemn observances are in the dataset, and dressed differently.** Yom Kippur, Muharram and Ashura,
+Qingming and Obon carry `solemn` and render with no festoon lights, no breathing motif and muted
+palettes. They are included rather than omitted *precisely so* typing "ashura" cannot fall through
+to the generic confetti card. If you add an observance of mourning or atonement, match that
+treatment.
+
+**Save as image redraws the card, it does not screenshot it.** html2canvas is impossible here
+(`script-src 'self'`, no bundler) and the `<foreignObject>` trick taints the canvas in Safari and
+Firefox, so `toBlob` throws exactly where it is needed most — on a phone. So `exportCard()` in
+`celebrate.js` draws the composition again natively at 1080×1920. That is a second implementation
+of the layout and a real maintenance tax, taken deliberately: the output beats the screenshot it
+replaces (exact dimensions, no status bar, no address bar, identical on every device). The two
+things most likely to drift are *not* duplicated — the motif is the page's own `<svg>` serialised
+with its CSS variables resolved, and the particles are the same `Scene` class run to rest on the
+export canvas. It measures the whole block before drawing so the composition stays centred whatever
+length the name and greeting run to.
+
+**Festival matching is fuzzy on purpose.** Transliterated names have no canonical spelling — the
+owner of this site writes "Bestu Varsh" where the dataset says "Bestu Varas" — so enumerating
+variants by hand is a losing game. Exact match, then substring, then Levenshtein with a tolerance
+that scales with length so short words cannot collide. `diwaly`, `crismas`, `navrati` and
+`gujarati new year` all land right; anything genuinely unknown gets a warm generic card.
+
+> **Editing `festival-data.js`:** it is generated, but the greetings were put through an adversarial
+> cultural-accuracy pass and the corrections are baked in. Do not regenerate it from a model without
+> repeating that pass. The failure mode is not a build error — it is greeting somebody incorrectly on
+> their own holy day. "Happy Eid" is wrong; it is "Eid Mubarak".
+
+## Lab preview images (`og:image`)
+
+Every lab has its **own** `og:image` — `assets/images/og-lab-<slug>.jpg`, 1200×630. They used to
+share four category images, so 22 security tools posted an identical preview card and a shared link
+said "Labs" rather than saying which tool it was.
+
+They are **generated**, not hand-made, because 62 hand-designed cards is not a thing anyone
+maintains. The generator reads each page's `<title>` (the tool's name, not the SEO headline) and
+`og:description` (its first sentence), and infers the category — and therefore the accent colour and
+the eyebrow label — from whichever category image the page pointed at before, since that
+categorisation was already made by hand once.
+
+Four cards are deliberately excluded and keep what they have: `resume-maker` and `biodata-maker`
+(hand-made, and they show the actual product, which no generator can), `wish-generator` (purpose-made
+for the same reason), and `labs/index.html` (the hub, where `og-labs.jpg` is the correct image).
+
+Regenerate with `scripts/make-lab-og.py`:
+
+```bash
+python scripts/make-lab-og.py --apply
+```
+
+Without `--apply` it writes the images but leaves the HTML alone; pass a slug to do just one lab.
+It is **not part of the build** — Vercel only runs `node scripts/build.js` — and it is the single
+thing in this repository that needs something outside Node (`pip install Pillow`). That exception is
+deliberate: the site keeps its zero runtime dependencies, and this runs by hand about twice a year
+when a lab is added. It reads Segoe UI and Consolas from `C:/Windows/Fonts`, so adjust `F` at the top
+to run it on another platform.
 
 ## Labs (`/labs`)
 

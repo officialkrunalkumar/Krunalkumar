@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!--
+      🎂 /birthday?name=… — a birthday wish, addressed to whoever the link
+      names. Built by /labs/wish-generator, which is the page that IS indexed;
+      this one is noindex and stays out of the sitemap on purpose.
+
+      WHY NOINDEX WHEN THE GENERATOR IS NOT. This page has no content of its
+      own — everything on it comes from the query string. Indexed, it would be
+      a thin page whose crawled version shows no name at all (Googlebot has no
+      ?name= to render), and every share would compete with the generator for
+      the same query. So: the tool is the page search engines get, and this is
+      the output. It is in NOINDEX_PAGES and CHROMELESS in scripts/build.js
+      and in EXCLUDE in scripts/search-index.js — all three, or the build's
+      own gates fail the deploy.
+
+      viewport-fit=cover, unusually, because the scene is painted edge to edge
+      and celebrate.css uses env(safe-area-inset-*) to keep the composition
+      clear of the notch and the gesture bar. Without it the insets are all 0
+      and the wish sits under the status bar in a screenshot.
+
+      No header, no footer, no nav. Somebody opened this because a friend sent
+      it to them; a navigation bar would turn a card into a website. The only
+      way back in is the wordmark in the composition and "Send your own"
+      below it, which is the whole growth loop and is deliberate.
+    -->
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="A birthday wish." />
+    <meta name="theme-color" content="#0a0714" />
+
+    <meta property="og:title" content="A birthday wish for you 🎂" />
+    <meta property="og:description" content="Someone sent you a birthday wish. Open it." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <!--
+      No og:image with the name burned into it, and it is worth recording why
+      so nobody tries to add one later: that needs an image rendered per
+      request, and this is a static site on a CDN with no server to render it.
+      The link preview is text. The page itself is the payoff.
+    -->
+
+    <title>A birthday wish</title>
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+
+    <!--
+      THE ORDER OF THESE THREE MATTERS.
+
+      celebrate-guard.js is first and is NOT deferred: a visitor with no
+      ?name= has to be sent to the generator before anything paints, and a
+      deferred script would flash a nameless page first. It cannot be an
+      inline block — vercel.json sets script-src 'self' with no
+      'unsafe-inline', and a birthday page is not a reason to weaken that.
+      See the file's header for the full threat model.
+    -->
+    <script src="/assets/js/celebrate-guard.js"></script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/celebrate.css" />
+
+    <!-- Without JavaScript there is no name to show, so go where a name can
+         be typed. Matches the guard's FALLBACK. -->
+    <noscript><meta http-equiv="refresh" content="0;url=/labs/wish-generator" /></noscript>
+  </head>
+
+  <body class="celebrate" data-scene="candlelight">
+    <canvas class="c-sky" aria-hidden="true"></canvas>
+
+    <!--
+      Bunting. Purely decorative, so aria-hidden and outside the stage — it
+      frames the composition rather than sitting in it, which is what keeps a
+      9:16 screenshot of the words clean while still reading as "party" at the
+      top edge.
+
+      Flags are elements rather than one SVG because an SVG spanning the full
+      width has to either stretch (distorting every triangle) or crop. Twelve
+      flex children with a per-child translateY fake the sag of a real string,
+      and each flutters on its own delay so the row never moves as one board.
+      The string itself IS an SVG, because stretching a thin curve is fine.
+    -->
+    <div class="bd-bunting" aria-hidden="true">
+      <svg class="bd-string" viewBox="0 0 100 12" preserveAspectRatio="none" focusable="false">
+        <path d="M0 1 Q 50 13 100 1" fill="none" stroke="currentColor" stroke-width="0.5" />
+      </svg>
+      <span class="bd-flag"></span><span class="bd-flag"></span><span class="bd-flag"></span>
+      <span class="bd-flag"></span><span class="bd-flag"></span><span class="bd-flag"></span>
+      <span class="bd-flag"></span><span class="bd-flag"></span><span class="bd-flag"></span>
+      <span class="bd-flag"></span><span class="bd-flag"></span><span class="bd-flag"></span>
+    </div>
+
+    <div class="c-wrap">
+      <div class="c-stage">
+        <!--
+          The cake. One drawing for all six themes rather than six drawings:
+          every fill below is a palette variable, so it recolours with the
+          scene instead of needing a variant per theme. The flames are the
+          only animated part and they stop dead under reduced motion (the
+          rule lives in celebrate.css so a new motif cannot forget it).
+        -->
+        <svg class="c-motif c-motif-breathe" data-c-rise viewBox="0 0 120 116" role="img"
+             aria-label="An illustrated birthday cake with lit candles" focusable="false">
+          <defs>
+            <radialGradient id="bd-flame" cx="50%" cy="62%" r="58%">
+              <stop offset="0%" stop-color="#fffbe8" />
+              <stop offset="45%" stop-color="var(--c-accent)" />
+              <stop offset="100%" stop-color="var(--c-primary)" stop-opacity="0.15" />
+            </radialGradient>
+            <linearGradient id="bd-tier" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--c-primary)" />
+              <stop offset="100%" stop-color="var(--c-secondary)" />
+            </linearGradient>
+          </defs>
+
+          <!-- The candles have to actually light the scene or they read as
+               drawn-on stickers. Three layers do that: a wide soft halo that
+               breathes, a tighter pool that pulses faster, and the light cast
+               down onto the top tier. All three are keyed to the flames. -->
+          <ellipse class="bd-halo" cx="60" cy="32" rx="40" ry="26" fill="var(--c-accent)" opacity="0.14" />
+          <ellipse class="bd-pool" cx="60" cy="36" rx="24" ry="15" fill="var(--c-accent)" opacity="0.22" />
+
+          <!-- three candles -->
+          <g>
+            <rect x="37" y="34" width="5" height="20" rx="2.5" fill="var(--c-accent)" opacity="0.92" />
+            <rect x="57.5" y="29" width="5" height="25" rx="2.5" fill="var(--c-accent)" opacity="0.92" />
+            <rect x="78" y="34" width="5" height="20" rx="2.5" fill="var(--c-accent)" opacity="0.92" />
+          </g>
+
+          <!-- flames. Each has its own duration so they never flicker in
+               unison, which is the thing that makes candles look drawn. -->
+          <g class="bd-flames">
+            <ellipse class="bd-flame" cx="39.5" cy="28" rx="4.2" ry="7" fill="url(#bd-flame)" style="animation-duration:1.7s" />
+            <ellipse class="bd-flame" cx="60" cy="23" rx="4.6" ry="7.6" fill="url(#bd-flame)" style="animation-duration:2.1s" />
+            <ellipse class="bd-flame" cx="80.5" cy="28" rx="4.2" ry="7" fill="url(#bd-flame)" style="animation-duration:1.45s" />
+          </g>
+
+          <!-- top tier. The lit band across it is the candles' light landing
+               on the icing — the detail that ties the flames to the cake. -->
+          <rect x="30" y="54" width="60" height="24" rx="5" fill="url(#bd-tier)" />
+          <ellipse class="bd-cast" cx="60" cy="56" rx="27" ry="4.5" fill="var(--c-accent)" opacity="0.3" />
+          <path d="M30 60c5 0 5 5 10 5s5-5 10-5 5 5 10 5 5-5 10-5 5 5 10 5 5-5 10-5v-6H30z"
+                fill="var(--c-accent)" opacity="0.85" />
+
+          <!-- bottom tier -->
+          <rect x="20" y="78" width="80" height="27" rx="6" fill="url(#bd-tier)" />
+          <path d="M20 84c6 0 6 5 12 5s6-5 12-5 6 5 12 5 6-5 12-5 6 5 12 5 6-5 12-5v-6H20z"
+                fill="var(--c-accent)" opacity="0.7" />
+
+          <!-- plate -->
+          <ellipse cx="60" cy="106" rx="46" ry="5.5" fill="var(--c-accent)" opacity="0.28" />
+        </svg>
+
+        <h1 class="c-head">
+          <span class="c-greet" data-c-greet data-c-rise>Happy Birthday</span>
+          <span class="c-name" data-c-name data-c-rise></span>
+        </h1>
+
+        <p class="c-blurb" data-c-blurb data-c-rise></p>
+        <p class="c-from" data-c-from data-c-rise hidden></p>
+
+        <p class="c-mark" data-c-rise>
+          <span class="c-mark-logo">KS_</span>
+          <span class="c-mark-url">krunalkumar.dpdns.org</span>
+        </p>
+      </div>
+
+      <!-- Outside .c-stage on purpose: UI in a screenshot is clutter. See the
+           note on .c-bar in celebrate.css. -->
+      <div class="c-bar" data-c-rise>
+        <button class="c-btn" type="button" data-c-copy>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="2" />
+            <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+          </svg>
+          <span data-c-copy-label>Copy link</span>
+        </button>
+
+        <!-- Revealed by celebrate.js only where navigator.share exists, which
+             in practice means a phone — where it opens the real share sheet. -->
+        <button class="c-btn" type="button" data-c-share hidden>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </svg>
+          <span>Share</span>
+        </button>
+
+        <button class="c-btn" type="button" data-c-save>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12M7 11l5 5 5-5" />
+            <path d="M4 20h16" />
+          </svg>
+          <span data-c-save-label>Save image</span>
+        </button>
+
+        <a class="c-btn" href="/labs/wish-generator">
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Send your own
+        </a>
+      </div>
+    </div>
+
+    <p class="c-sr" data-c-announce role="status" aria-live="polite"></p>
+
+    <script src="/assets/js/celebrate.js" defer></script>
+    <script src="/assets/js/birthday.js" defer></script>
+  </body>
+</html>

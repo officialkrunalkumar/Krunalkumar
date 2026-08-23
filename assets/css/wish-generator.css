@@ -1,0 +1,345 @@
+/* ==========================================================================
+   wish-generator.css — /labs/wish-generator
+   --------------------------------------------------------------------------
+   Layered on top of main.css + labs.css, which already carry the page shell,
+   the section cards, the buttons and both themes. Everything here is the
+   handful of things this tool needs that no other lab does: the mode toggle,
+   the swatch and glyph chips, and the phone-shaped preview frame.
+
+   Every colour below resolves through the site tokens rather than a literal,
+   so the light theme comes for free — with ONE deliberate exception, the six
+   theme swatches, which are the birthday palettes themselves and have to show
+   their real colours in both themes or they are not swatches.
+   ========================================================================== */
+
+.wish-layout {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: start;
+}
+
+/* The preview only earns a column of its own once there is room for it to be
+   a useful size. Below that it stacks under the form, which is also the right
+   order on a phone: fill the field, then look at the result. */
+@media (min-width: 60rem) {
+  .wish-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  }
+}
+
+.wish-field {
+  margin-bottom: 1.5rem;
+  border: 0;
+  padding: 0;
+}
+
+.wish-field:last-child { margin-bottom: 0; }
+
+.wish-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--ink);
+  padding: 0;
+}
+
+.wish-optional {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--ink-4);
+  margin-left: 0.35rem;
+}
+
+.wish-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+}
+
+.wish-hint code {
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--well-70);
+  color: var(--ink-3);
+}
+
+.wish-input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line-25);
+  border-radius: 10px;
+  background: var(--well-75);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.wish-input::placeholder { color: var(--ink-4); }
+
+.wish-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+/* The generated link. Monospace so a long URL is scannable, and readonly
+   rather than disabled — disabled would stop it being selected, and selecting
+   it is the whole fallback when the clipboard API is unavailable. */
+.wish-url {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+/* ---- mode toggle --------------------------------------------------------- */
+
+.wish-modes { margin-bottom: 1.5rem; }
+
+.wish-mode-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.wish-mode {
+  position: relative;
+  flex: 1 1 8rem;
+}
+
+/* The radio itself is hidden from sight but NOT from the accessibility tree
+   or the keyboard: opacity+absolute rather than display:none, so it still
+   takes focus, still announces as a radio, and arrow keys still move between
+   the two options. The visible pill is the <span>, styled off :checked. */
+.wish-mode input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.wish-mode span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line-25);
+  border-radius: 10px;
+  background: var(--well-70);
+  color: var(--ink-2);
+  font-weight: 600;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.wish-mode input:checked + span {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--ink);
+}
+
+.wish-mode input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- chips --------------------------------------------------------------- */
+
+.wish-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.wish-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line-25);
+  border-radius: 999px;
+  background: var(--well-70);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.wish-chip:hover {
+  border-color: var(--line-30);
+  color: var(--ink);
+}
+
+.wish-chip[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--ink);
+}
+
+.wish-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.wish-chip-glyph {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+/* THE ONE PLACE LITERAL COLOURS ARE CORRECT. These are the six birthday
+   palettes from celebrate.css, shown as the thing they are. They must not
+   follow the theme — a swatch that changes colour is not telling you
+   anything. Each is the scene's two brightest stops over its own ground, so
+   the chip is a miniature of the card.
+
+   If a palette changes in celebrate.css, change it here too. There is no way
+   to share them: celebrate.css is not loaded on this page, and loading a
+   whole scene stylesheet for six gradients would be a bad trade. */
+.wish-chip-swatch {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  flex: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.wish-chip-swatch[data-swatch="candlelight"] { background: linear-gradient(135deg, #fbbf24, #fb7185); }
+.wish-chip-swatch[data-swatch="confetti"]    { background: linear-gradient(135deg, #38bdf8, #f472b6); }
+.wish-chip-swatch[data-swatch="balloons"]    { background: linear-gradient(135deg, #f9a8d4, #93c5fd); }
+.wish-chip-swatch[data-swatch="starlit"]     { background: linear-gradient(135deg, #fcd34d, #a5b4fc); }
+.wish-chip-swatch[data-swatch="blossom"]     { background: linear-gradient(135deg, #fda4af, #f0abfc); }
+.wish-chip-swatch[data-swatch="neon"]        { background: linear-gradient(135deg, #22d3ee, #e879f9); }
+
+/* ---- the all-festivals dropdown ------------------------------------------
+   A native <select>, styled only as far as a select can be styled safely. The
+   appearance reset plus a background-image caret is the standard way to make
+   one match a text input; the padding-right keeps the text off that caret.
+
+   colour-scheme on the element is the part people miss: without it the
+   dropdown's POPUP is painted by the OS in the system theme, so a light-theme
+   visitor on a dark OS gets white-on-white options. It inherits the page's
+   theme from :root, and that is what makes the open list readable in both. */
+.wish-select-label {
+  display: block;
+  margin: 0.85rem 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.wish-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.05rem;
+  cursor: pointer;
+  colour-scheme: inherit;
+  color-scheme: inherit;
+}
+
+.wish-select optgroup {
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ---- the resolved-festival line ------------------------------------------
+   The reassurance that makes fuzzy matching trustworthy: type "bestu varsh"
+   and this says out loud that it found Bestu Varas and will greet with Saal
+   Mubarak. Green when it matched something real, amber when it fell through
+   to the generic card — the two outcomes have to be told apart at a glance,
+   because only one of them needs a second look. */
+.wish-resolved {
+  margin: 0.6rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  border-left: 3px solid #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.wish-resolved.is-generic {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+/* ---- actions ------------------------------------------------------------- */
+
+.wish-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.wish-actions .btn { min-height: 44px; }
+
+.wish-actions .btn.is-done { border-color: #22c55e; }
+
+/* A disabled anchor is not a real thing in HTML, so aria-disabled carries the
+   meaning and this carries the appearance. wish-generator.js also points the
+   href at "#" while there is nothing to open. */
+.wish-actions [aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ---- preview ------------------------------------------------------------- */
+
+/* 9:16, because that is the shape it will be screenshotted in and put on a
+   status. Showing the card in any other proportion here would preview a
+   composition nobody ever sees. */
+.wish-phone {
+  position: relative;
+  width: 100%;
+  max-width: 20rem;
+  aspect-ratio: 9 / 16;
+  margin: 0 auto;
+  border: 1px solid var(--line-25);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: var(--well-75);
+  display: grid;
+  place-items: center;
+}
+
+/* aspect-ratio is not in older Safari; without a fallback the box collapses
+   to zero height and the preview silently disappears. */
+@supports not (aspect-ratio: 9 / 16) {
+  .wish-phone { height: 32rem; }
+}
+
+.wish-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.wish-empty {
+  margin: 0;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wish-mode span,
+  .wish-chip {
+    transition: none;
+  }
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!--
+      🎉 /festival?name=… — a festival greeting, themed by the festival named
+      in the link. Built by /labs/wish-generator, which is the page that IS
+      indexed; this one is noindex and out of the sitemap for the same reason
+      /birthday is (see that file's header).
+
+      NO THEME PICKER HERE, unlike /birthday, and that is a decision rather
+      than an omission: the festival IS the theme. Diwali is lamplight and
+      fireworks, Christmas is pine and snow, Yom Kippur is muted silver and
+      still stars. A second dial on top would let somebody send Yom Kippur in
+      neon, which is exactly what this page must not be able to do.
+
+      The palettes, greetings and blurbs live in festival-data.js, shared with
+      the generator so its preview cannot disagree with the real page. Read
+      that file's header before touching a greeting — "Happy Eid" is wrong,
+      and the reasons are written down there.
+
+      It is in NOINDEX_PAGES and CHROMELESS in scripts/build.js and in EXCLUDE
+      in scripts/search-index.js — all three, or the build's gates fail.
+    -->
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="A festival greeting." />
+    <meta name="theme-color" content="#0b1020" />
+
+    <meta property="og:title" content="A festival wish for you 🎉" />
+    <meta property="og:description" content="Someone sent you a festival greeting. Open it." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+
+    <title>A festival wish</title>
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+
+    <!-- Guard first and undeferred — see birthday.html for why this cannot be
+         an inline script and must not be deferred. -->
+    <script src="/assets/js/celebrate-guard.js"></script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/celebrate.css" />
+
+    <noscript><meta http-equiv="refresh" content="0;url=/labs/wish-generator" /></noscript>
+  </head>
+
+  <body class="celebrate" data-mode="festival">
+    <canvas class="c-sky" aria-hidden="true"></canvas>
+
+    <!--
+      A festoon of lights across the top. Chosen because it is the one
+      decoration that is genuinely shared across most of this list — diyas at
+      Diwali, fairy lights at Christmas, fanous at Ramadan, lanterns at Lunar
+      New Year — rather than something borrowed from one tradition and hung
+      over all of them. The bulbs take the festival's own palette, so the
+      string is Diwali's amber or Christmas's red and green without any
+      per-festival markup.
+
+      festival.js sets data-solemn on <body> for days of mourning, atonement
+      and remembrance, and the CSS removes this entirely for those. Yom Kippur
+      does not get party lights. That gate is the reason the whole decoration
+      is safe to add at all.
+    -->
+    <div class="fs-lights" aria-hidden="true">
+      <svg class="fs-wire" viewBox="0 0 100 10" preserveAspectRatio="none" focusable="false">
+        <path d="M0 1 Q 50 11 100 1" fill="none" stroke="currentColor" stroke-width="0.4" />
+      </svg>
+      <span class="fs-bulb"></span><span class="fs-bulb"></span><span class="fs-bulb"></span>
+      <span class="fs-bulb"></span><span class="fs-bulb"></span><span class="fs-bulb"></span>
+      <span class="fs-bulb"></span><span class="fs-bulb"></span><span class="fs-bulb"></span>
+      <span class="fs-bulb"></span><span class="fs-bulb"></span><span class="fs-bulb"></span>
+      <span class="fs-bulb"></span><span class="fs-bulb"></span>
+    </div>
+
+    <div class="c-wrap">
+      <div class="c-stage">
+        <!--
+          The motif is the festival's emoji rather than an inline drawing.
+          Ninety hand-drawn SVGs is not a thing anyone would maintain, and the
+          emoji set already has a correct, recognisable symbol for every
+          festival in the table — rendered in the visitor's own font, so a
+          diya looks the way a diya looks on their device. festival.js sets
+          the character; celebrate.css sizes it.
+        -->
+        <span class="c-motif c-motif-glyph c-motif-breathe" data-c-glyph data-c-rise aria-hidden="true"></span>
+
+        <h1 class="c-head">
+          <!-- The festival's name, shown only when the greeting does not
+               already contain it — "Happy Diwali" needs no label, "G'mar
+               Chatima Tova" does. Inside the <h1> so a screen reader reads
+               "Yom Kippur, G'mar Chatima Tova" as one heading. -->
+          <span class="c-eyebrow" data-c-label data-c-rise hidden></span>
+          <span class="c-greet" data-c-greet data-c-rise></span>
+        </h1>
+
+        <p class="c-blurb" data-c-blurb data-c-rise></p>
+        <p class="c-from" data-c-from data-c-rise hidden></p>
+
+        <p class="c-mark" data-c-rise>
+          <span class="c-mark-logo">KS_</span>
+          <span class="c-mark-url">krunalkumar.dpdns.org</span>
+        </p>
+      </div>
+
+      <div class="c-bar" data-c-rise>
+        <button class="c-btn" type="button" data-c-copy>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="2" />
+            <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+          </svg>
+          <span data-c-copy-label>Copy link</span>
+        </button>
+
+        <button class="c-btn" type="button" data-c-share hidden>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </svg>
+          <span>Share</span>
+        </button>
+
+        <button class="c-btn" type="button" data-c-save>
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12M7 11l5 5 5-5" />
+            <path d="M4 20h16" />
+          </svg>
+          <span data-c-save-label>Save image</span>
+        </button>
+
+        <a class="c-btn" href="/labs/wish-generator">
+          <svg class="c-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Send your own
+        </a>
+      </div>
+    </div>
+
+    <p class="c-sr" data-c-announce role="status" aria-live="polite"></p>
+
+    <script src="/assets/js/festival-data.js" defer></script>
+    <script src="/assets/js/celebrate.js" defer></script>
+    <script src="/assets/js/festival.js" defer></script>
+  </body>
+</html>

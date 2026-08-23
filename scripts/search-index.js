@@ -61,6 +61,11 @@ const EXCLUDE = new Set([
   'teapot.html',
   'terminal.html',
   'einstein.html',
+  // The wish cards render from the query string, so an indexed copy would be
+  // a blank greeting. Searching "birthday" here should land on the tool that
+  // makes one — /labs/wish-generator, which IS in the index.
+  'birthday.html',
+  'festival.html',
   'offline.html',   // the SW's navigation fallback: only ever seen offline,
                     // where search could not fetch this index anyway
 ]);

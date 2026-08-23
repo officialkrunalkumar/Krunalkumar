@@ -1,0 +1,938 @@
+/* ==========================================================================
+   celebrate.css — the shared scene behind /birthday and /festival.
+   --------------------------------------------------------------------------
+   Both pages are the same machine wearing different clothes: a full-viewport
+   dark stage, one motif, one very large greeting, a name, and a quiet
+   signature. Everything that differs between a birthday and Diwali is carried
+   in the custom properties at the top of this file, so neither page needs a
+   stylesheet of its own.
+
+   WHO SEES THIS PAGE decided most of what follows. It is not a visitor
+   browsing the site — it is somebody who was sent a link, on a phone, who
+   will look at it for about four seconds and then screenshot it. Three
+   consequences, all of them load-bearing:
+
+     1. THE FROZEN FRAME IS THE DESIGN. Confetti caught mid-air screenshots as
+        noise, so the motion here decorates a composition that is already
+        finished when still. Open the page, stop the animation at any moment,
+        and what is left has to stand on its own. That is why the burst settles
+        rather than loops, and why nothing important ever moves.
+
+     2. PORTRAIT FIRST. WhatsApp Status and Instagram Stories are 9:16, and a
+        phone screenshot carries a status bar at the top and a gesture bar at
+        the bottom. .c-stage is therefore capped and centred inside the safe
+        area rather than filling the viewport — the composition sits in the
+        middle band that survives a crop.
+
+     3. THE MARK TRAVELS OR IT DOES NOT EXIST. A screenshot loses the URL. The
+        KS_ wordmark at the foot of the stage is the only thing that carries
+        this back to the site, so it is part of the composition rather than a
+        watermark laid over it.
+
+   DARK GROUND IN BOTH THEMES, on purpose, and this is not an oversight. The
+   site's light theme is opt-in and honoured everywhere else, but every palette
+   this file has to host — Diwali lamplight, a starlit birthday, neon, a
+   Christmas night, Eid's crescent — is designed as light emitted against dark.
+   Lifting the ground to the light theme's #f5f8fc turns all of them to mud.
+   A greeting is a scene, not a document; offline.html made the same kind of
+   call for its own reasons. The pages are chromeless, so there is no toggle on
+   them to contradict.
+
+   CONTRAST. Every palette that reaches --c-glow is checked against the display
+   text before it ships: the festival dataset's glow values are deep and
+   saturated for exactly this reason, and the two scrims below (--c-veil and
+   the .c-stage backdrop) exist so a bright motif can never end up behind the
+   greeting. White on the darkest palette here measures well past 7:1; the
+   thinnest case is .c-blurb on blossom at 5.9:1, still clear of AA.
+   ========================================================================== */
+
+/* The scene is painted edge to edge and the decorations hang off both sides,
+   so nothing here may ever produce a horizontal scrollbar. body already has
+   overflow:hidden, and that is NOT enough on its own — overflow from a
+   position:fixed child escapes past the body to the root, which is what put a
+   97px horizontal scroll on /festival on every phone size before this rule
+   existed. overflow-x:clip rather than hidden: hidden on the root creates a
+   scroll container, which breaks position:sticky and scroll-behaviour further
+   down; clip just clips. */
+html {
+  overflow-x: clip;
+}
+
+.celebrate {
+  /* ---- the variable contract ----------------------------------------------
+     Birthday themes set these from the [data-scene] blocks further down.
+     Festivals set them inline from the dataset in festival.js, because ~80
+     palettes as CSS blocks would be a stylesheet nobody could maintain. Same
+     six names either way, so celebrate.js never has to know which page it is
+     running on.
+
+     --c-primary    the dominant festive colour: motif, greeting gradient
+     --c-secondary  the second colour of that gradient, and the particles
+     --c-accent     the bright highlight — flames, sparks, the name
+     --c-glow       the deep radial behind everything. MUST be dark.
+     --c-ground     the flat fallback under the radial
+     --c-veil       the scrim that guarantees text contrast over the motif
+     -------------------------------------------------------------------- */
+  --c-primary: #fbbf24;
+  --c-secondary: #f472b6;
+  --c-accent: #fde68a;
+  --c-glow: #2a1a4a;
+  --c-ground: #0b1020;
+  --c-veil: rgba(6, 10, 22, 0.55);
+
+  --c-ink: #ffffff;
+  --c-ink-2: rgba(255, 255, 255, 0.82);
+  --c-ink-3: rgba(255, 255, 255, 0.58);
+
+  /* The stage is capped rather than stretched — see note 2 in the header. */
+  --c-stage-max: 34rem;
+
+  margin: 0;
+  min-height: 100svh;
+  /* 100svh alone leaves a gap on iOS Safari when the toolbar retracts, and
+     100vh alone puts content under it. Both, in this order, so the scene is
+     painted edge to edge either way. */
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--c-ground);
+  color: var(--c-ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The radial that gives the scene its depth. A pseudo-element rather than a
+   background on the body so the particle canvas can sit between it and the
+   text without a stacking-context fight. */
+.celebrate::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 120% 82% at 50% 8%, var(--c-glow) 0%, transparent 62%),
+    radial-gradient(ellipse 90% 60% at 50% 108%, var(--c-glow) 0%, transparent 58%),
+    var(--c-ground);
+  pointer-events: none;
+}
+
+/* ---- the particle canvas -------------------------------------------------
+   celebrate.js sizes this for devicePixelRatio and draws every particle style
+   into it. It is aria-hidden and pointer-events:none — it must never be able
+   to swallow a tap meant for the share button underneath. */
+.c-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---- the stage -----------------------------------------------------------
+   The composition, and the thing that gets screenshotted. Centred in the safe
+   area with the cap from --c-stage-max so a 9:16 crop keeps all of it. */
+.c-wrap {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-items: center;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 1.25rem)
+    1.25rem
+    calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+  box-sizing: border-box;
+}
+
+.c-stage {
+  width: 100%;
+  max-width: var(--c-stage-max);
+  text-align: center;
+  /* A whisper of a scrim. Not a card — a card would read as a UI panel in a
+     screenshot. This only lifts the text off a busy motif. */
+  padding: clamp(1.5rem, 5vw, 2.5rem) clamp(1rem, 4vw, 1.75rem);
+  border-radius: 1.75rem;
+  background: var(--c-veil);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ---- the motif -----------------------------------------------------------
+   The inline SVG each page supplies — a cake, a diya, a crescent. Sized in
+   viewport units with a cap so it is generous on a phone and does not become
+   a billboard on a desktop. */
+.c-motif {
+  width: clamp(7.5rem, 30vw, 11rem);
+  height: auto;
+  margin: 0 auto clamp(1rem, 3vw, 1.5rem);
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0.75rem 2rem rgba(0, 0, 0, 0.45));
+}
+
+/* The festival motif is a single emoji rather than an inline drawing, so it
+   needs a font-size instead of a width. The drop-shadow is what stops it
+   floating unattached to the scene — an emoji is flat, and every other motif
+   here casts. line-height:1 because emoji carry generous default leading that
+   would otherwise open a gap between the glyph and the greeting. */
+/* INLINE-BLOCK, NOT BLOCK, and this matters more than it looks.
+
+   .c-motif is display:block, which on a <span> with width:auto makes the box
+   fill the stage — 350px wide around a 70px emoji. The box centres fine, so
+   the glyph looked right, but the aura below is positioned with inset:-35%
+   and percentages resolve against that BOX: a 595px-wide ellipse sitting
+   behind a small emoji, which reads as a misaligned smear rather than a halo.
+
+   inline-block shrinks the box to the glyph, so the aura becomes a halo the
+   size of the thing it is lighting. Centring then comes from text-align on
+   .c-stage rather than from margin:auto, which does nothing here. */
+.c-motif-glyph {
+  display: inline-block;
+  position: relative;
+  width: auto;
+  font-size: clamp(4rem, 18vw, 6.5rem);
+  line-height: 1;
+  filter: drop-shadow(0 0.6rem 1.6rem rgba(0, 0, 0, 0.5));
+}
+
+/* ---- the words -----------------------------------------------------------
+   No webfont anywhere on this site: the CSP is font-src 'self' and nothing is
+   self-hosted, so "world class typography" here has to come out of weight,
+   size, tracking and a gradient rather than a typeface nobody has. Hence the
+   very large optical size and the tight negative tracking, which is what makes
+   a system stack read as display type instead of as UI. */
+/* The greeting and the name are ONE heading, not two. A screen reader should
+   announce "Happy Birthday, Riya" as a single h1 rather than as a stray line
+   followed by a heading — and there is only one thing on this page, so there
+   is only one heading. The two spans are blocks so each can still take its
+   own step in the reveal stagger. */
+.c-head {
+  margin: 0;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.c-greet,
+.c-name,
+.c-eyebrow {
+  display: block;
+}
+
+/* The festival's name, above the greeting, shown only when the greeting does
+   not already say it. Deliberately small and quiet: it is a caption, not the
+   message — the greeting stays the thing you read first, and this is what you
+   glance at to know what you are being wished. Tracked and uppercased so it
+   reads as a label rather than as a second, competing headline. */
+.c-eyebrow {
+  margin: 0 0 0.55em;
+  font-size: clamp(0.72rem, 2.8vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-ink-3);
+}
+
+/* Solemn observances get it a shade brighter. On Yom Kippur or Ashura the
+   palette is muted by design, and at --c-ink-3 the label was the faintest
+   thing on the page — exactly where knowing what day it is matters most. */
+.celebrate[data-solemn="true"] .c-eyebrow {
+  color: var(--c-ink-2);
+}
+
+.c-greet {
+  margin: 0;
+  font-size: clamp(2rem, 9.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* The gradient clip drops the text out entirely in a browser that supports
+     neither prefix. Painting the fallback colour first means the worst case is
+     a flat bright greeting rather than an empty page. */
+  -webkit-text-fill-color: transparent;
+  paint-order: stroke fill;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .c-greet {
+    color: var(--c-primary);
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* The name. The largest thing on the page, because it is the reason the page
+   exists. Solid --c-accent rather than the gradient: a long name in a gradient
+   loses its ends, and this is the one string that must never be hard to read.
+
+   overflow-wrap, not a truncation — a name is never elided here. The sanitiser
+   in celebrate-guard.js caps the length long before the layout has to cope. */
+.c-name {
+  margin: 0.35em 0 0;
+  font-size: clamp(2.4rem, 12vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--c-accent);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-shadow: 0 0.15em 0.9em rgba(0, 0, 0, 0.35);
+}
+
+/* Festival pages carry the greeting as the big line and no separate name, so
+   .c-name is absent there and .c-greet takes the display size instead. */
+.celebrate[data-mode="festival"] .c-greet {
+  font-size: clamp(2.4rem, 11vw, 4rem);
+}
+
+.c-blurb {
+  margin: clamp(0.85rem, 3vw, 1.15rem) 0 0;
+  font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+  line-height: 1.55;
+  color: var(--c-ink-2);
+  text-wrap: balance;
+}
+
+.c-from {
+  margin: clamp(1rem, 3.5vw, 1.4rem) 0 0;
+  font-size: clamp(0.9rem, 3.2vw, 1rem);
+  color: var(--c-ink-2);
+  font-style: italic;
+}
+
+/* ---- the signature -------------------------------------------------------
+   Part of the composition, not an overlay — see note 3 in the header. The
+   monospace KS_ is the same wordmark as the app icon and offline.html, so a
+   screenshot carries something recognisable even with the URL gone. */
+.c-mark {
+  margin: clamp(1.5rem, 5vw, 2.25rem) 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  opacity: 0.75;
+}
+
+.c-mark-logo {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: clamp(1rem, 3.6vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--c-ink);
+}
+
+.c-mark-url {
+  font-size: clamp(0.7rem, 2.6vw, 0.78rem);
+  letter-spacing: 0.04em;
+  color: var(--c-ink-3);
+}
+
+/* The live region that carries the greeting to a screen reader. The visual
+   text is built by JS after load, and an element that appears without warning
+   is not announced — so the same words go here with aria-live instead.
+   Visually hidden by the clip-rect method rather than display:none, which
+   would take it out of the accessibility tree along with everything else. */
+.c-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- the action bar ------------------------------------------------------
+   Deliberately outside .c-stage. It is UI, and UI in a screenshot is clutter —
+   keeping it in the grid's second row means a crop of the stage never picks it
+   up, while it stays reachable without scrolling. */
+.c-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: clamp(1.25rem, 4vw, 2rem);
+}
+
+.c-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  /* 44px min-height is the pointer-target floor (WCAG 2.5.5) and this page is
+     almost only ever touched with a thumb. */
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.c-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.c-btn:active { transform: translateY(1px); }
+
+/* Focus is drawn against the accent rather than the browser default, which
+   disappears on a dark saturated ground. Two rings so it survives whatever
+   colour the festival palette brings. */
+.c-btn:focus-visible,
+.c-stage a:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.45);
+}
+
+.c-btn-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The copy button's confirmation. aria-live on the button announces it too;
+   this is the visual half. */
+.c-btn.is-done {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--c-accent);
+}
+
+/* ==========================================================================
+   THE REVEAL
+   --------------------------------------------------------------------------
+   The page arrives assembled rather than animating in piece by piece: the
+   whole point is that it is finished four seconds after it opens. Each part
+   rises a short distance on a stagger, and every one of them is at its final
+   position by 900ms. Nothing here loops.
+
+   transform and opacity only — both composited, so this stays smooth on the
+   mid-range Android the link will mostly be opened on.
+   ========================================================================== */
+.c-rise {
+  animation: c-rise 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.c-motif.c-rise { animation-delay: 0.05s; }
+.c-greet.c-rise { animation-delay: 0.16s; }
+.c-name.c-rise { animation-delay: 0.26s; }
+.c-blurb.c-rise { animation-delay: 0.36s; }
+.c-from.c-rise { animation-delay: 0.44s; }
+.c-mark.c-rise { animation-delay: 0.54s; }
+.c-bar.c-rise { animation-delay: 0.62s; }
+
+@keyframes c-rise {
+  from { opacity: 0; transform: translate3d(0, 1.1rem, 0) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+.c-mark.c-rise { animation-name: c-rise-mark; }
+
+/* The mark settles to 0.75 rather than 1 — its resting opacity is part of the
+   design, and a plain c-rise would slam it to full and leave it there. */
+@keyframes c-rise-mark {
+  from { opacity: 0; transform: translate3d(0, 1.1rem, 0); }
+  to { opacity: 0.75; transform: none; }
+}
+
+/* A single slow breath on the motif. 7s, 1.5% of scale — far too slow to
+   register as animation, but it stops the scene reading as a static image,
+   and it is at its resting size for most of every cycle so a screenshot taken
+   at random almost always catches it composed. */
+.c-motif-breathe {
+  animation: c-breathe 7s ease-in-out 1.2s infinite;
+  transform-origin: 50% 85%;
+}
+
+@keyframes c-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+
+/* Candle flames. transform-box/transform-origin together are what make a
+   percentage origin resolve against the ellipse's own box rather than the
+   whole SVG viewport — without them every flame pivots around the cake.
+   Each element carries its own animation-duration inline so the three never
+   flicker in step, which is the tell that turns drawn candles into real ones. */
+.bd-flame {
+  animation-name: bd-flicker;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+@keyframes bd-flicker {
+  0%, 100% { transform: scale(1, 1); opacity: 1; }
+  30% { transform: scale(0.9, 1.12) translateX(0.35px); opacity: 0.9; }
+  55% { transform: scale(1.06, 0.94); opacity: 1; }
+  78% { transform: scale(0.95, 1.06) translateX(-0.3px); opacity: 0.94; }
+}
+
+/* The light the candles throw. Three layers on three different periods, none
+   of them a multiple of another — that is what stops the glow reading as a
+   mechanical pulse. Opacity only, so none of this costs a repaint of the
+   cake beneath it. */
+.bd-halo {
+  animation: bd-glow 3.4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.bd-pool {
+  animation: bd-glow 2.3s ease-in-out 0.4s infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.bd-cast {
+  animation: bd-cast 2.9s ease-in-out 0.2s infinite;
+}
+
+@keyframes bd-glow {
+  0%, 100% { opacity: 0.14; transform: scale(1); }
+  50% { opacity: 0.26; transform: scale(1.06); }
+}
+
+@keyframes bd-cast {
+  0%, 100% { opacity: 0.26; }
+  50% { opacity: 0.4; }
+}
+
+/* ---- bunting -------------------------------------------------------------
+   Fixed to the top edge and wider than the viewport, so the end flags run off
+   the sides rather than stopping short with a visible gap. Behind the stage
+   in z-order but above the particle canvas.
+
+   Each flag is a CSS triangle via clip-path — twelve elements rather than one
+   SVG, because a full-width SVG has to stretch or crop and a stretched
+   triangle is instantly wrong. The per-child translateY below is the sag of
+   the string, and it has to stay in step with the quadratic in .bd-string's
+   path: symmetric, deepest in the middle. */
+.bd-bunting {
+  position: fixed;
+  top: 0;
+  /* Inset rather than "-3% wide by 106%". A percentage width on a fixed
+     element resolves against the VIEWPORT, so 106% is 6% wider than the
+     screen by definition and overflows on every device. The end flags still
+     sit near the edges because of the negative margins below, which do not
+     affect scroll width. */
+  left: 0;
+  right: 0;
+  width: auto;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 1%;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.bd-string {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.6rem;
+}
+
+/* The first and last pieces are pulled outward so the string reads as
+   running off the screen rather than stopping short. Margins on an in-flow
+   child of a viewport-width fixed container do not extend the scrollable
+   area, which is why this is safe where a 106% width was not. */
+.bd-flag:first-of-type { margin-left: -0.6rem; }
+.bd-flag:last-of-type { margin-right: -0.6rem; }
+
+.bd-flag {
+  width: clamp(1.1rem, 3.4vw, 1.7rem);
+  height: clamp(1.5rem, 4.6vw, 2.3rem);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+  animation: bd-flutter 3.6s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+/* Colours cycle through the scene palette rather than being fixed, so the
+   bunting recolours with the theme like everything else. */
+.bd-flag:nth-child(3n + 2) { background: var(--c-primary); }
+.bd-flag:nth-child(3n + 3) { background: var(--c-secondary); }
+.bd-flag:nth-child(3n + 4) { background: var(--c-accent); }
+
+/* The sag. Child 1 is the <svg>, so the flags start at 2. */
+.bd-flag:nth-child(2),  .bd-flag:nth-child(13) { transform: translateY(0.1rem); }
+.bd-flag:nth-child(3),  .bd-flag:nth-child(12) { transform: translateY(0.5rem); }
+.bd-flag:nth-child(4),  .bd-flag:nth-child(11) { transform: translateY(0.85rem); }
+.bd-flag:nth-child(5),  .bd-flag:nth-child(10) { transform: translateY(1.1rem); }
+.bd-flag:nth-child(6),  .bd-flag:nth-child(9)  { transform: translateY(1.28rem); }
+.bd-flag:nth-child(7),  .bd-flag:nth-child(8)  { transform: translateY(1.36rem); }
+
+/* Staggered so the row ripples along the string instead of flapping as one
+   rigid board. Prime-ish delays keep them from resynchronising. */
+.bd-flag:nth-child(2)  { animation-delay: 0s; }
+.bd-flag:nth-child(3)  { animation-delay: 0.17s; }
+.bd-flag:nth-child(4)  { animation-delay: 0.31s; }
+.bd-flag:nth-child(5)  { animation-delay: 0.53s; }
+.bd-flag:nth-child(6)  { animation-delay: 0.68s; }
+.bd-flag:nth-child(7)  { animation-delay: 0.89s; }
+.bd-flag:nth-child(8)  { animation-delay: 1.03s; }
+.bd-flag:nth-child(9)  { animation-delay: 1.21s; }
+.bd-flag:nth-child(10) { animation-delay: 1.37s; }
+.bd-flag:nth-child(11) { animation-delay: 1.58s; }
+.bd-flag:nth-child(12) { animation-delay: 1.73s; }
+.bd-flag:nth-child(13) { animation-delay: 1.91s; }
+
+/* rotate only — a flag pivots at the string, it does not move along it. The
+   translateY from the sag rules is preserved because these animate `rotate`
+   rather than `transform`, which composes with it instead of replacing it. */
+@keyframes bd-flutter {
+  0%, 100% { rotate: -2.5deg; }
+  50% { rotate: 2.5deg; }
+}
+
+/* The sag is a fraction of the viewport, and on a short screen the bunting
+   would hang into the greeting. It is decoration; it goes first. */
+@media (max-height: 30rem) {
+  .bd-bunting { display: none; }
+}
+
+/* ---- festival lights -----------------------------------------------------
+   Same construction as the birthday bunting and for the same reason: elements
+   rather than one stretched SVG, a per-child translateY for the sag of the
+   string, and staggered delays so the row twinkles along rather than blinking
+   as one unit.
+
+   Each bulb is a dot with a large soft box-shadow of its own colour, which is
+   what reads as "glowing" rather than "coloured circle". The colours come from
+   the festival palette, so the same markup is amber at Diwali and red-green at
+   Christmas.
+
+   TWINKLING, NOT BLINKING. The opacity floor is 0.55, never 0, and the cycle
+   is over 2 seconds. A light that goes fully dark and back reads as a flash,
+   and a row of fourteen of them out of phase would be a photosensitivity
+   problem — the same constraint party.css documents for its beams. Nothing
+   here crosses a large luminance step. */
+.fs-lights {
+  position: fixed;
+  top: 0;
+  /* Same fix as .bd-bunting — see the note there. */
+  left: 0;
+  right: 0;
+  width: auto;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 1.5%;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.fs-wire {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.2rem;
+}
+
+.fs-bulb:first-of-type { margin-left: -0.35rem; }
+.fs-bulb:last-of-type { margin-right: -0.35rem; }
+
+.fs-bulb {
+  width: clamp(0.5rem, 1.7vw, 0.72rem);
+  height: clamp(0.5rem, 1.7vw, 0.72rem);
+  border-radius: 50%;
+  animation: fs-twinkle 2.4s ease-in-out infinite;
+}
+
+.fs-bulb:nth-child(3n + 2) { background: var(--c-primary); box-shadow: 0 0 0.6rem 0.12rem var(--c-primary); }
+.fs-bulb:nth-child(3n + 3) { background: var(--c-accent); box-shadow: 0 0 0.6rem 0.12rem var(--c-accent); }
+.fs-bulb:nth-child(3n + 4) { background: var(--c-secondary); box-shadow: 0 0 0.6rem 0.12rem var(--c-secondary); }
+
+/* The sag. Child 1 is the <svg>, so bulbs run 2..15. */
+.fs-bulb:nth-child(2),  .fs-bulb:nth-child(15) { margin-top: 0.15rem; }
+.fs-bulb:nth-child(3),  .fs-bulb:nth-child(14) { margin-top: 0.45rem; }
+.fs-bulb:nth-child(4),  .fs-bulb:nth-child(13) { margin-top: 0.72rem; }
+.fs-bulb:nth-child(5),  .fs-bulb:nth-child(12) { margin-top: 0.94rem; }
+.fs-bulb:nth-child(6),  .fs-bulb:nth-child(11) { margin-top: 1.1rem; }
+.fs-bulb:nth-child(7),  .fs-bulb:nth-child(10) { margin-top: 1.2rem; }
+.fs-bulb:nth-child(8),  .fs-bulb:nth-child(9)  { margin-top: 1.25rem; }
+
+.fs-bulb:nth-child(2)  { animation-delay: 0s; }
+.fs-bulb:nth-child(3)  { animation-delay: 0.19s; }
+.fs-bulb:nth-child(4)  { animation-delay: 0.41s; }
+.fs-bulb:nth-child(5)  { animation-delay: 0.58s; }
+.fs-bulb:nth-child(6)  { animation-delay: 0.83s; }
+.fs-bulb:nth-child(7)  { animation-delay: 1.02s; }
+.fs-bulb:nth-child(8)  { animation-delay: 1.24s; }
+.fs-bulb:nth-child(9)  { animation-delay: 1.43s; }
+.fs-bulb:nth-child(10) { animation-delay: 1.61s; }
+.fs-bulb:nth-child(11) { animation-delay: 1.79s; }
+.fs-bulb:nth-child(12) { animation-delay: 1.94s; }
+.fs-bulb:nth-child(13) { animation-delay: 2.13s; }
+.fs-bulb:nth-child(14) { animation-delay: 2.28s; }
+.fs-bulb:nth-child(15) { animation-delay: 2.44s; }
+
+@keyframes fs-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* An aura behind the festival glyph, so an emoji sitting on a dark ground
+   looks lit rather than pasted on. */
+/* The aura. Sized in em rather than percent so it tracks the GLYPH's size
+   directly and cannot be thrown off by whatever box the span ends up with —
+   which is the failure this replaced. Square by construction, so the radial
+   is a circle. */
+.celebrate[data-mode="festival"] .c-motif-glyph::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.9em;
+  height: 1.9em;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--c-primary) 0%, transparent 68%);
+  opacity: 0.3;
+  animation: c-aura 5.5s ease-in-out infinite;
+}
+
+@keyframes c-aura {
+  0%, 100% { opacity: 0.22; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.38; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* ==========================================================================
+   SOLEMN OBSERVANCES
+   --------------------------------------------------------------------------
+   Yom Kippur, Muharram and Ashura, Qingming, Obon. festival.js sets this from
+   the dataset's solemn flag.
+
+   A greeting page has to be able to be quiet. These are days of mourning,
+   atonement and remembrance, and lighting them up with a twinkling festoon
+   and a bouncing motif would be worse than having no page for them at all —
+   it would be actively insulting on the one day it mattered. The alternative
+   of simply leaving them out of the dataset is worse again: somebody types
+   "ashura", gets no match, and the generic fallback throws confetti.
+
+   So they are in, and they are dressed differently: no lights, no breathing,
+   a still aura. The words and the palette do the work.
+   ========================================================================== */
+.celebrate[data-solemn="true"] .fs-lights {
+  display: none;
+}
+
+.celebrate[data-solemn="true"] .c-motif-breathe {
+  animation: none;
+}
+
+.celebrate[data-solemn="true"] .c-motif-glyph::before {
+  animation: none;
+  opacity: 0.18;
+}
+
+/* ==========================================================================
+   BIRTHDAY SCENES
+   --------------------------------------------------------------------------
+   Six palettes, set by [data-scene] from ?theme= — see birthday.js for the
+   list and the default. Each is a real change of mood rather than a hue
+   rotation: the particle style and the motif treatment move with the colours,
+   which is why the generator previews them rather than just naming them.
+
+   Every --c-glow here was picked dark enough that white display text clears
+   7:1 against it, and the .c-stage veil sits on top of that as a second
+   guarantee for the busier ones.
+   ========================================================================== */
+
+/* Warm, and the one most people should send. Amber lamplight on a deep plum
+   night — the palette of candles actually burning in a dark room. */
+.celebrate[data-scene="candlelight"] {
+  --c-primary: #fbbf24;
+  --c-secondary: #fb7185;
+  --c-accent: #fde68a;
+  --c-glow: #2e1065;
+  --c-ground: #0a0714;
+}
+
+/* Loud and young. The default choice for a child's birthday. */
+.celebrate[data-scene="confetti"] {
+  --c-primary: #38bdf8;
+  --c-secondary: #f472b6;
+  --c-accent: #fef08a;
+  --c-glow: #10275c;
+  --c-ground: #060b1a;
+}
+
+/* Soft daylight sky at dusk, which is the only way pastels survive a dark
+   ground: the ground carries the blue, the balloons carry the pastel. */
+.celebrate[data-scene="balloons"] {
+  --c-primary: #f9a8d4;
+  --c-secondary: #93c5fd;
+  --c-accent: #fef3c7;
+  --c-glow: #17335c;
+  --c-ground: #071426;
+}
+
+/* Grown-up. Gold on midnight blue — the one to send to a parent or a boss
+   without it looking like a party invitation. */
+.celebrate[data-scene="starlit"] {
+  --c-primary: #fcd34d;
+  --c-secondary: #a5b4fc;
+  --c-accent: #fef9c3;
+  --c-glow: #131a3d;
+  --c-ground: #04060f;
+}
+
+/* Delicate. Cherry blossom drifting; reads as affectionate rather than
+   celebratory, which is what makes it the right one for some people. */
+.celebrate[data-scene="blossom"] {
+  --c-primary: #fda4af;
+  --c-secondary: #f0abfc;
+  --c-accent: #ffe4e6;
+  --c-glow: #3b1233;
+  --c-ground: #12060f;
+}
+
+/* On brand. The site's own accent cyan against near-black, with magenta doing
+   the work the pink does elsewhere — for the people who would find a cake
+   embarrassing. */
+.celebrate[data-scene="neon"] {
+  --c-primary: #22d3ee;
+  --c-secondary: #e879f9;
+  --c-accent: #7dd3fc;
+  --c-glow: #06283d;
+  --c-ground: #01060c;
+  --c-veil: rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   MOTION, WITHDRAWN
+   --------------------------------------------------------------------------
+   Under prefers-reduced-motion the scene does not degrade — it arrives at the
+   state the animation was heading for. Everything is already designed to look
+   finished when still (header, note 1), so this branch costs the page nothing.
+
+   celebrate.js reads the same query and draws the particles once, settled,
+   instead of running its loop — so a reduced-motion visitor still gets
+   confetti on the floor rather than an empty stage. The two halves must stay
+   in agreement; changing one without the other is how this ends up blank.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .c-rise,
+  .c-motif-breathe {
+    animation: none !important;
+  }
+
+  .c-mark { opacity: 0.75; }
+
+  .c-btn { transition: none; }
+
+  /* Flames, sparkles and anything else a page adds inside the motif. Declared
+     here rather than in the page files so a new motif cannot forget it. */
+  .c-motif * {
+    animation: none !important;
+  }
+
+  /* The bunting stays — it is decoration, and removing it would leave a bare
+     top edge. It simply stops moving, parked mid-flutter rather than at an
+     extreme, which is the same call party.css makes for its beams. The
+     candle glow parks at its brighter value so the cake still looks lit. */
+  .bd-flag,
+  .bd-halo,
+  .bd-pool,
+  .bd-cast,
+  .fs-bulb,
+  .celebrate[data-mode="festival"] .c-motif-glyph::before {
+    animation: none !important;
+  }
+
+  /* Bulbs park lit rather than mid-twinkle — a string of half-dim lights
+     frozen in place looks broken, where a string of lit ones looks like a
+     string of lit ones. */
+  .fs-bulb { opacity: 1; }
+
+  .bd-halo { opacity: 0.2; }
+  .bd-pool { opacity: 0.26; }
+  .bd-cast { opacity: 0.33; }
+}
+
+/* ==========================================================================
+   SMALL SCREENS AND SHORT ONES
+   ========================================================================== */
+
+/* A phone in landscape, and the split-screen case: height is the scarce axis,
+   so the motif goes first. It is the most expendable part of the composition —
+   the words are the message. */
+@media (max-height: 34rem) {
+  .c-motif { width: clamp(5rem, 16vh, 7rem); margin-bottom: 0.75rem; }
+
+  /* THE FESTIVAL GLYPH IS SIZED BY font-size, NEVER BY width.
+     The rule above shrinks the birthday SVG, which is what it is for. Applied
+     to the emoji it is actively wrong: that span is inline-block precisely so
+     its box shrink-wraps the glyph, and forcing a width back onto it makes the
+     box and the glyph two different sizes again — the emoji then sits off to
+     one side of the text below it. This is the bug that reached a screenshot:
+     it only appears on a SHORT viewport, so a desktop window with toolbars
+     hits it while every phone, being tall, does not. Test short, not just
+     narrow. */
+  .c-motif-glyph {
+    width: auto;
+    font-size: clamp(2.6rem, 11vh, 4rem);
+  }
+
+  .c-stage { padding-top: 1rem; padding-bottom: 1rem; }
+  .c-blurb { display: none; }
+}
+
+@media (max-height: 26rem) {
+  .c-motif { display: none; }
+  .c-mark { margin-top: 1rem; }
+}
+
+/* Very narrow phones (320px). The cap on the name's clamp is already generous;
+   this only buys back the horizontal padding. */
+@media (max-width: 22.5rem) {
+  .c-wrap { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .c-stage { padding-left: 0.85rem; padding-right: 0.85rem; }
+}
+
+/* Print — someone will do it, and a birthday card is a reasonable thing to
+   want on paper. Drop the scene to white and let the ink be the colour. */
+@media print {
+  .celebrate { background: #fff; color: #000; overflow: visible; }
+  .celebrate::before,
+  .c-sky,
+  .c-bar { display: none !important; }
+  .c-stage { background: none; backdrop-filter: none; }
+  .c-name, .c-greet { color: #000; -webkit-text-fill-color: #000; }
+  .c-blurb, .c-from, .c-mark-url { color: #333; }
+  .c-mark { opacity: 1; }
+}

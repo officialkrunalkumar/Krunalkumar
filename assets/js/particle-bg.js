@@ -46,7 +46,7 @@
   console.log('%c⌨️  press . for the background controls — or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 
   // Assigned when the WhatsApp bubble is built near the bottom of this file. The
-  // `w` shortcut belongs with the other background keys, which are wired up in
+  // `b` shortcut belongs with the other background keys, which are wired up in
   // the canvas block below — long before the bubble exists.
   let toggleWhatsappBubble = null;
 
@@ -559,8 +559,8 @@
       // Every key governed by the checkbox above has to be listed here, or
       // switching shortcuts off would silently disable something unlisted.
       '<p class="bg-settings-keys">' + (prefersReducedMotion
-        ? 'k / s dots · w chat bubble'
-        : 'k / s dots · l / a speed · p pause · w chat bubble') + '</p>';
+        ? 'k / s dots · b chat bubble · w / d theme'
+        : 'k / s dots · l / a speed · p pause · b chat bubble · w / d theme') + '</p>';
 
     const settingsToggle = document.createElement('button');
     settingsToggle.className = 'bg-settings-toggle';
@@ -767,12 +767,37 @@
           togglePause();
           showToast(animationPaused ? 'Paused' : 'Playing');
           break;
-        case 'w': {
+        // `b` for bubble. This WAS `w`, and moved here when `w` and `d` were
+        // given to the theme below — "w" was competing as the mnemonic for
+        // both WhatsApp and white, and "b" for bubble is the clearer of the
+        // two anyway. If you are looking for `w` because muscle memory or an
+        // old note says so: it is this key now, and `magic` says so too.
+        case 'b': {
           // Null only if the bubble was never built — it always is, but this
           // handler is wired before that code runs, so guard rather than assume.
           if (!toggleWhatsappBubble) return;
           const hidden = toggleWhatsappBubble();
           showToast(hidden ? 'WhatsApp hidden' : 'WhatsApp shown');
+          break;
+        }
+        // Theme, from anywhere on the site. The toggle lives in the header, so
+        // switching meant scrolling back up to it and then finding your place
+        // again — on a long article that is enough friction that people simply
+        // read on in the wrong theme. Two keys rather than one toggle because
+        // "make this light" is the actual intent; pressing `w` should never
+        // hand you dark because you misremembered what you were in.
+        //
+        // The work is done by theme.js, which owns persistence, the meta
+        // theme-color and the toggle's label — see window.KSTheme there.
+        case 'w':
+        case 'd': {
+          if (!window.KSTheme) return;
+          const want = event.key.toLowerCase() === 'w' ? 'light' : 'dark';
+          // Silent when it is already that theme: a toast saying "Light theme"
+          // on a page that was light tells you nothing and covers the words.
+          if (window.KSTheme.set(want)) {
+            showToast(want === 'light' ? 'Light theme · d for dark' : 'Dark theme · w for light');
+          }
           break;
         }
         default: return;

@@ -84,14 +84,25 @@ var DOC_CACHE = 'doc-makers-v2';
 // or offline quietly breaks. Clean URLs (no .html) because that is what the
 // browser actually requests on this host, and what include-partials.js fetches.
 var DOC_URLS = [
-  // The two pages themselves.
+  // The pages themselves.
   '/labs/resume-maker',
   '/labs/biodata-maker',
+  // The wish generator and the two cards it builds. The generator is pure
+  // string building, so it genuinely works with no network — and precaching
+  // the two cards as well means its live preview keeps working offline too,
+  // rather than showing an empty frame.
+  '/labs/wish-generator',
+  '/birthday',
+  '/festival',
   // Their stylesheets: sitewide, labs-shared, and one per tool.
   '/assets/css/main.css',
   '/assets/css/labs.css',
   '/assets/css/resume-maker.css',
   '/assets/css/biodata-maker.css',
+  '/assets/css/wish-generator.css',
+  // The cards load ONLY this one — no main.css, no labs.css. They are
+  // chromeless by design, which is also what makes them cheap to precache.
+  '/assets/css/celebrate.css',
   // Sitewide scripts both pages load in <head>/<body>.
   '/assets/js/boot.js',
   '/assets/js/theme.js',
@@ -101,6 +112,14 @@ var DOC_URLS = [
   // The tools themselves.
   '/assets/js/labs/tools/resume-maker.js',
   '/assets/js/labs/tools/biodata-maker.js',
+  '/assets/js/labs/tools/wish-generator.js',
+  // The wish machinery. festival-data.js is shared by the generator and the
+  // festival card, which is exactly why it is one file rather than two.
+  '/assets/js/festival-data.js',
+  '/assets/js/celebrate-guard.js',
+  '/assets/js/celebrate.js',
+  '/assets/js/birthday.js',
+  '/assets/js/festival.js',
   // include-partials.js swaps the static chrome for these at runtime.
   '/partials/header',
   '/partials/footer',

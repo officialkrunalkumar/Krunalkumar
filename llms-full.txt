@@ -187,6 +187,52 @@ How the site is built, and the one page that maintains itself.
   attribute, so adding labs or posts corrects the numbers on the next push and
   the page is never edited by hand.
 
+## Wishes (/labs/wish-generator, /birthday, /festival)
+
+A wish link generator and the two cards it builds. The generator is the indexed page; the cards are
+noindex and out of the sitemap, because everything on them arrives in the query string and a crawled
+copy would show no name at all.
+
+Type a name, pick a look, copy a link. `/birthday?name=Riya&theme=starlit&from=Krunal` opens a
+full-screen animated card addressed to Riya. `theme` is optional and takes one of six — candlelight,
+confetti, balloons, starlit, blossom, neon — each pairing its own palette with its own decoration and
+particle behaviour, so "starlit" is gold on midnight with no confetti anywhere and "neon" is electric
+cyan on near-black. `from` is optional on both and adds a small attribution line, so a forwarded card
+still says who sent it. A missing or empty `name` is the only hard gate: it redirects to the generator.
+
+`/festival?name=Diwali` works the same way, except the festival IS the theme — there is no second dial,
+deliberately, because a theme picker would make it possible to send Yom Kippur in neon. 92 festivals
+are recognised across India and the subcontinent, the Islamic and Jewish calendars, East and Southeast
+Asia, Persia and Africa, the Western and global calendar, and six life events. Each carries the
+greeting people actually use rather than a mechanical "Happy X": Eid Mubarak, Shubh Navratri, Ganpati
+Bappa Morya, Saal Mubarak, Kai Po Che!, Shana Tova, Nowruz Mubarak, Onashamsakal. Days of mourning,
+atonement and remembrance — Yom Kippur, Muharram and Ashura, Qingming, Obon — are marked solemn in the
+dataset and rendered without festoon lights, without a breathing motif and in muted palettes; they are
+included rather than omitted precisely so that typing "ashura" cannot fall through to generic confetti.
+
+Festival names are matched approximately, because transliterations have no canonical spelling: "bestu
+varsh" finds Bestu Varas, "diwaly" finds Diwali, "crismas" finds Christmas, and English names work as
+aliases throughout, so "gujarati new year", "tamil new year" and "persian new year" all resolve. The
+tolerance scales with length so short words cannot collide. Anything genuinely unrecognised still gets
+a warm generic card addressed to whatever was typed, never an error.
+
+Once a card has rendered, the query parameter is removed from the address bar via replaceState, so it
+reads as a page made for that person rather than a form somebody filled in. The card keeps a Copy link
+button holding the full URL, and a Share button where the Web Share API exists, because the address bar
+no longer holds the link worth forwarding.
+
+The cards are built to be screenshotted. The composition is portrait-first for a 9:16 status, the
+confetti settles rather than looping so a screenshot never catches debris mid-air, and the KS_ wordmark
+is part of the composition rather than a watermark, because a screenshot travels without its URL. Under
+prefers-reduced-motion the physics is stepped silently to its resting state and painted once, so a
+visitor who asked for less motion gets the same settled scene rather than a blank stage.
+
+The name is read from the URL and rendered with textContent only, never innerHTML. It is put through a
+sanitiser first that strips control characters, bidi overrides, zero-width characters and emoji, caps
+the length at 32 code points counted properly, and keeps only letters, marks, digits and the joiners
+that appear in real names — so Devanagari, Gujarati, Arabic and accented Latin names survive intact
+while the page cannot be used to display arbitrary text under this domain's name.
+
 ## A still place (/buddha)
 
 A contemplative page, deliberately unlike the rest of the site: an illustrated

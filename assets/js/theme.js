@@ -106,6 +106,32 @@
     }
   }
 
+  /* A small API, so the keyboard shortcuts in particle-bg.js can set the theme
+     without reimplementing any of the above.
+
+     The keys live THERE rather than here on purpose: that file already owns
+     the single-letter shortcut handler, and with it every guard that makes
+     bare letters safe — modifier combos left to the browser, IME composition
+     skipped, a caret inside any editable element ignored so typing "dark" in
+     the contact form does not strobe the site, and the visitor's own
+     shortcuts-off switch respected. Adding a second keydown listener here
+     would duplicate all of that and get one of them wrong.
+
+     `set` is idempotent and reports whether it changed anything, so the caller
+     can stay quiet when someone presses `d` on an already-dark page. */
+  window.KSTheme = {
+    current: current,
+    set: function (theme) {
+      if (theme !== 'light' && theme !== 'dark') return false;
+      if (current() === theme) return false;
+      apply(theme, true);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'theme_change', { theme: theme, source: 'keyboard' });
+      }
+      return true;
+    }
+  };
+
   document.addEventListener('click', function (e) {
     var btn = e.target && e.target.closest && e.target.closest('#theme-toggle');
     if (!btn) return;

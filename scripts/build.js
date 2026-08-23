@@ -709,6 +709,12 @@ const NOINDEX_PAGES = new Set([
   'teapot.html',
   'terminal.html',
   'einstein.html',
+  // The two wish cards. They have no content of their own — everything on
+  // them arrives in the query string — so a crawled copy shows no name at
+  // all, and indexing them would put three pages in front of the same query.
+  // The tool that BUILDS them, /labs/wish-generator, is indexed instead.
+  'birthday.html',
+  'festival.html',
   'labs/hacklab-guestbook.html',
   'google46d0a7ad3f01b5a6.html',
   'offline.html',   // the SW's navigation fallback — reachable only offline
@@ -785,6 +791,8 @@ function doSitemapParity(root) {
 const CHROMELESS = new Set([
   'teapot.html',                  // full-screen easter egg, no navigation by design
   'terminal.html',                // ditto
+  'birthday.html',                // a card somebody was sent; a nav bar would make it a website
+  'festival.html',                // ditto
   'labs/hacklab-guestbook.html',  // sandboxed document inside HackLab's iframe
   'google46d0a7ad3f01b5a6.html',  // Search Console token, never rendered
   'offline.html',                 // self-contained by design: it must render with zero network
@@ -926,7 +934,13 @@ function doChromeParity(root) {
    to a real file. Extra precached entries (icons, partials, /offline) are
    fine — the gate only refuses a page dependency the list is missing.
    -------------------------------------------------------------------------- */
-const SW_PRECACHED_PAGES = ['labs/resume-maker.html', 'labs/biodata-maker.html'];
+const SW_PRECACHED_PAGES = [
+  'labs/resume-maker.html',
+  'labs/biodata-maker.html',
+  'labs/wish-generator.html',
+  'birthday.html',
+  'festival.html',
+];
 
 function pageAssetUrls(html) {
   const src = stripHtmlComments(html);
