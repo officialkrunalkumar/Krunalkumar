@@ -1,51 +1,50 @@
-<svg width="1160" height="640" viewBox="0 0 1160 640" role="img" aria-labelledby="d-security-compliance-explained-diagram1" xmlns="http://www.w3.org/2000/svg">
+<svg width="1160" height="640" viewBox="0 0 1160 640" role="img" aria-labelledby="d-security-compliance-explained-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <title id="d-security-compliance-explained-diagram1">Map of compliance frameworks on two axes: law versus voluntary standard, and general-purpose versus sector-specific. GDPR, CCPA/CPRA, and India's DPDP Act sit in the general-purpose law quadrant; HIPAA and SOX in the sector-specific law quadrant; PCI DSS in the sector-specific standard quadrant; ISO/IEC 27001 and SOC 2 in the general-purpose standard quadrant</title>
-                  <rect width="1160" height="640" rx="18" fill="#1b2735"/>
-                  <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">WHERE EACH FRAMEWORK LIVES</text>
-                  <g font-family="'Segoe UI',sans-serif">
+                  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE EACH FRAMEWORK LIVES</text>
+                  <g>
                     <g font-size="15">
-                      <rect x="672" y="34" width="16" height="16" rx="4" fill="#7dd3fc"/>
-                      <text x="696" y="47" fill="#e2e8f0">Law</text>
-                      <rect x="748" y="34" width="16" height="16" rx="4" fill="#fbbf24"/>
-                      <text x="772" y="47" fill="#e2e8f0">Contractual</text>
-                      <rect x="880" y="34" width="16" height="16" rx="4" fill="#a855f7"/>
-                      <text x="904" y="47" fill="#e2e8f0">Certifiable</text>
-                      <rect x="1002" y="34" width="16" height="16" rx="4" fill="#4ade80"/>
-                      <text x="1026" y="47" fill="#e2e8f0">Attestation</text>
+                      <rect x="672" y="34" width="16" height="16" rx="4" fill="#1e77a4"/>
+                      <text x="696" y="47" fill="#6b7a90">Law</text>
+                      <rect x="748" y="34" width="16" height="16" rx="4" fill="#93671a"/>
+                      <text x="772" y="47" fill="#6b7a90">Contractual</text>
+                      <rect x="880" y="34" width="16" height="16" rx="4" fill="#8f49df"/>
+                      <text x="904" y="47" fill="#6b7a90">Certifiable</text>
+                      <rect x="1002" y="34" width="16" height="16" rx="4" fill="#157f41"/>
+                      <text x="1026" y="47" fill="#6b7a90">Attestation</text>
                     </g>
-                    <line x1="580" y1="96" x2="580" y2="556" stroke="rgba(226,232,240,0.25)" stroke-width="2"/>
-                    <line x1="60" y1="326" x2="1100" y2="326" stroke="rgba(226,232,240,0.25)" stroke-width="2"/>
-                    <text x="580" y="86" fill="#e2e8f0" font-size="17" font-weight="700" text-anchor="middle">LAW — regulators, fines, courts</text>
-                    <text x="580" y="590" fill="#e2e8f0" font-size="17" font-weight="700" text-anchor="middle">STANDARD — contracts, auditors, customers</text>
-                    <text x="66" y="316" fill="#94a3b8" font-size="15" font-weight="700">GENERAL-PURPOSE</text>
-                    <text x="1094" y="316" fill="#94a3b8" font-size="15" font-weight="700" text-anchor="end">SECTOR-SPECIFIC</text>
+                    <line x1="580" y1="96" x2="580" y2="556" stroke="#6b7a90" stroke-opacity="0.55" stroke-width="2"/>
+                    <line x1="60" y1="326" x2="1100" y2="326" stroke="#6b7a90" stroke-opacity="0.55" stroke-width="2"/>
+                    <text x="580" y="86" fill="#6b7a90" font-size="17" font-weight="700" text-anchor="middle">LAW — regulators, fines, courts</text>
+                    <text x="580" y="590" fill="#6b7a90" font-size="17" font-weight="700" text-anchor="middle">STANDARD — contracts, auditors, customers</text>
+                    <text x="66" y="316" fill="#64748b" font-size="15" font-weight="700">GENERAL-PURPOSE</text>
+                    <text x="1094" y="316" fill="#64748b" font-size="15" font-weight="700" text-anchor="end">SECTOR-SPECIFIC</text>
                     <!-- Laws, general-purpose -->
-                    <rect x="100" y="130" width="130" height="46" rx="10" fill="#7dd3fc"/>
-                    <text x="165" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">GDPR</text>
-                    <text x="165" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">Personal data · EU reach</text>
-                    <rect x="280" y="130" width="180" height="46" rx="10" fill="#7dd3fc"/>
-                    <text x="370" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">CCPA/CPRA</text>
-                    <text x="370" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">California residents</text>
-                    <rect x="170" y="228" width="180" height="46" rx="10" fill="#7dd3fc"/>
-                    <text x="260" y="258" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">DPDP Act</text>
-                    <text x="260" y="296" fill="#94a3b8" font-size="15" text-anchor="middle">India · phasing in</text>
+                    <rect x="100" y="130" width="130" height="46" rx="10" fill="#1e77a4"/>
+                    <text x="165" y="160" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">GDPR</text>
+                    <text x="165" y="198" fill="#64748b" font-size="15" text-anchor="middle">Personal data · EU reach</text>
+                    <rect x="280" y="130" width="180" height="46" rx="10" fill="#1e77a4"/>
+                    <text x="370" y="160" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">CCPA/CPRA</text>
+                    <text x="370" y="198" fill="#64748b" font-size="15" text-anchor="middle">California residents</text>
+                    <rect x="170" y="228" width="180" height="46" rx="10" fill="#1e77a4"/>
+                    <text x="260" y="258" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">DPDP Act</text>
+                    <text x="260" y="296" fill="#64748b" font-size="15" text-anchor="middle">India · phasing in</text>
                     <!-- Laws, sector-specific -->
-                    <rect x="650" y="130" width="140" height="46" rx="10" fill="#7dd3fc"/>
-                    <text x="720" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">HIPAA</text>
-                    <text x="720" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">US health data (PHI)</text>
-                    <rect x="860" y="130" width="120" height="46" rx="10" fill="#7dd3fc"/>
-                    <text x="920" y="160" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">SOX</text>
-                    <text x="920" y="198" fill="#94a3b8" font-size="15" text-anchor="middle">Public-company financials</text>
+                    <rect x="650" y="130" width="140" height="46" rx="10" fill="#1e77a4"/>
+                    <text x="720" y="160" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">HIPAA</text>
+                    <text x="720" y="198" fill="#64748b" font-size="15" text-anchor="middle">US health data (PHI)</text>
+                    <rect x="860" y="130" width="120" height="46" rx="10" fill="#1e77a4"/>
+                    <text x="920" y="160" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">SOX</text>
+                    <text x="920" y="198" fill="#64748b" font-size="15" text-anchor="middle">Public-company financials</text>
                     <!-- Standards, general-purpose -->
-                    <rect x="100" y="396" width="220" height="46" rx="10" fill="#a855f7"/>
-                    <text x="210" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">ISO/IEC 27001</text>
-                    <text x="210" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">Certifiable ISMS</text>
-                    <rect x="370" y="396" width="130" height="46" rx="10" fill="#4ade80"/>
-                    <text x="435" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">SOC 2</text>
-                    <text x="435" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">CPA attestation</text>
+                    <rect x="100" y="396" width="220" height="46" rx="10" fill="#8f49df"/>
+                    <text x="210" y="426" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">ISO/IEC 27001</text>
+                    <text x="210" y="464" fill="#64748b" font-size="15" text-anchor="middle">Certifiable ISMS</text>
+                    <rect x="370" y="396" width="130" height="46" rx="10" fill="#157f41"/>
+                    <text x="435" y="426" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">SOC 2</text>
+                    <text x="435" y="464" fill="#64748b" font-size="15" text-anchor="middle">CPA attestation</text>
                     <!-- Standards, sector-specific -->
-                    <rect x="760" y="396" width="160" height="46" rx="10" fill="#fbbf24"/>
-                    <text x="840" y="426" fill="#131f2d" font-size="19" font-weight="800" text-anchor="middle">PCI DSS</text>
-                    <text x="840" y="464" fill="#94a3b8" font-size="15" text-anchor="middle">Payment card data</text>
+                    <rect x="760" y="396" width="160" height="46" rx="10" fill="#93671a"/>
+                    <text x="840" y="426" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">PCI DSS</text>
+                    <text x="840" y="464" fill="#64748b" font-size="15" text-anchor="middle">Payment card data</text>
                   </g>
                 </svg>

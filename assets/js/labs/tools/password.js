@@ -240,7 +240,19 @@
      entropy is carried out of the generator as a number rather than re-derived
      from the characters. */
   var lastGenerated = null;   // { value, bits, how, kind } from the last generate()
-  var PASSPHRASE_WORDS = 6;
+
+  /* Six is the Diceware standard and the floor, not a default that the length
+     control may bargain down. The control is labelled in characters, and EFF
+     words are short — two of them clear "16 characters" — so honouring it as a
+     word count would hand out a 25-bit passphrase under a heading that says the
+     generator is cryptographically sound. That is the exact failure this file
+     already exists to have fixed once. The control raises the count; it never
+     lowers it. */
+  var PASSPHRASE_MIN_WORDS = 6;
+  /* Purely a runaway stop. Every added word contributes at least four
+     characters, so the loop below terminates on its own; this bounds it anyway
+     in case the option list ever grows a value nobody thought about. */
+  var PASSPHRASE_MAX_WORDS = 24;
   var EFF_WORDLIST_SIZE = 7776;
 
   /* Uniform in [0, n). `x % n` on its own is biased whenever n does not divide
@@ -277,13 +289,30 @@
         out.dim('this will not quietly fall back to a smaller one. Reload the page.');
         return;
       }
+      /* The length control used to be read for the character modes only, so in
+         passphrase mode the visitor changed it and nothing whatsoever happened
+         — a control that lies about having an effect. It is labelled in
+         characters, so that is what it means here: draw the standard six words,
+         then keep drawing until the joined result is at least as long as asked.
+
+         Which is not cosmetic. EFF long-list words run from three letters up,
+         so six of them plus separators can land at 23 characters — under the
+         24- and 32-character settings — and a seventh word is genuinely needed.
+         Adding words rather than truncating is also the only direction that is
+         safe: cutting a passphrase to fit a character count would throw away
+         exactly the entropy the figure above it claims. */
       var picked = [];
-      for (var i = 0; i < PASSPHRASE_WORDS; i++) {
+      while (picked.length < PASSPHRASE_MIN_WORDS ||
+             (picked.join('-').length < length && picked.length < PASSPHRASE_MAX_WORDS)) {
         picked.push(words[randomIndex(words.length)]);
       }
       value = picked.join('-');
-      knownBits = PASSPHRASE_WORDS * (Math.log(words.length) / Math.LN2);
-      provenance = PASSPHRASE_WORDS + ' words drawn uniformly from the EFF long ' +
+      // Counted from the draw that actually happened, not from the constant.
+      // The whole point of carrying bits out of the generator is that it is the
+      // real number; hardcoding six here would reintroduce the mismatch in
+      // miniature the moment a seventh word is drawn.
+      knownBits = picked.length * (Math.log(words.length) / Math.LN2);
+      provenance = picked.length + ' words drawn uniformly from the EFF long ' +
                    'wordlist (' + words.length + ' words, ' +
                    (Math.log(words.length) / Math.LN2).toFixed(1) + ' bits each)';
     } else {

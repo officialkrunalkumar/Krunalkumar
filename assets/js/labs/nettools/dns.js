@@ -234,18 +234,31 @@
     out.line('');
 
     var index = 0;
+    // Count requests as they are actually issued, not as they were planned. An
+    // NXDOMAIN early-exit (below) stops the sweep after a single query, so the
+    // plan length would over-report — the resolver only ever saw what we sent.
+    var requestsMade = 0;
     function next() {
       if (index >= SWEEP.length) {
         out.rule();
         out.row('resolver', resolver().name);
-        out.row('requests made', SWEEP.length);
+        out.row('requests made', requestsMade);
         out.line('');
-        out.dim(resolver().name + ' saw all ' + SWEEP.length + ' of those queries for');
-        out.dim('the same domain, moments apart. That pattern is recognisably an');
-        out.dim('audit rather than ordinary browsing.');
+        // The privacy point only lands when there really was a burst. After an
+        // early exit there was just the one query, so say that instead of
+        // claiming a pattern the resolver never saw.
+        if (requestsMade > 1) {
+          out.dim(resolver().name + ' saw all ' + requestsMade + ' of those queries for');
+          out.dim('the same domain, moments apart. That pattern is recognisably an');
+          out.dim('audit rather than ordinary browsing.');
+        } else {
+          out.dim(resolver().name + ' saw that single query. The sweep stopped early,');
+          out.dim('so there was no burst to recognise this time.');
+        }
         return;
       }
       var type = SWEEP[index++];
+      requestsMade++;   // the request goes out on the next line — count it here
       query(name, type).then(function (data) {
         out.line('');
         if (data.Status === 3) {

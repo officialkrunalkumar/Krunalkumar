@@ -39,13 +39,22 @@
      p  palette      [primary, secondary, accent, glow]
      a  aliases      pipe-separated, lowercase
 
-   MATCHING IS FUZZY ON PURPOSE. See resolve() at the foot of this file: an
-   exact match is tried first, then a Levenshtein pass with a tolerance that
-   scales with length. This is not a nicety. Transliterated festival names
-   have no canonical spelling — the owner of this site writes "Bestu Varsh"
-   where the dataset says "Bestu Varas" — and enumerating every variant by
-   hand is a losing game. Fuzzy matching turns an unbounded problem into a
-   bounded one.
+   MATCHING IS FUZZY ON PURPOSE. See resolve() at the foot of this file: the
+   whole query exactly, then the query with its filler words ("happy",
+   "festival", a year) taken off, then each remaining WORD as an exact match,
+   then a Levenshtein pass whose tolerance is a capped fraction of the length.
+   This is not a nicety. Transliterated festival names have no canonical
+   spelling — the owner of this site writes "Bestu Varsh" where the dataset
+   says "Bestu Varas" — and enumerating every variant by hand is a losing
+   game. Fuzzy matching turns an unbounded problem into a bounded one.
+
+   FUZZY IS NOT THE SAME AS LOOSE, and the difference is the point. Every
+   pass here is anchored: whole query, whole word, or a bounded edit distance.
+   Substring containment used to be in that list and is deliberately not any
+   more — because norm() strips the spaces, "lent" was found inside
+   "valentine" and a Christian fast resolved to Valentine's Day. A matcher
+   that reaches too far does not fail loudly, it fails politely and in front
+   of the person it was trying to please.
    ========================================================================== */
 
 (function () {
@@ -424,14 +433,38 @@
 
   /* The scene a festival gets when the name is not one we know. Not an error
      page: somebody typed a real festival that is simply not in the list —
-     there are thousands — and the right answer is a warm generic celebration
-     addressed to whatever they typed, not a shrug. The site's own accent
-     colours, so an unrecognised festival still looks like it belongs here. */
-  var GENERIC = {
-    k: '', n: '', g: '', e: '🎉',
-    b: 'Wishing you a bright and joyful celebration.',
+     there are thousands — and the right answer is a warm greeting addressed
+     to whatever they typed, not a shrug. The site's own accent colours, so an
+     unrecognised festival still looks like it belongs here.
+
+     WHAT IT MUST NOT DO is assume the day is a party. An unrecognised name is
+     either a festival we are missing OR an observance we failed to recognise
+     as somber, and there is no way from here to tell which. So the default is
+     the one that is safe as both: no fabricated "Happy", no confetti, rising
+     lanterns instead. A joyous day greeted a shade too gently costs nothing;
+     a day of grief greeted with confetti is the failure this file exists to
+     prevent. The greeting names the day the sender typed and wishes the
+     recipient well, which is true either way. */
+  var UNKNOWN = {
+    k: '', n: '', g: '', e: '✨',
+    b: 'Whatever this day means to you, may it be a good one.',
     p: ['#7dd3fc', '#f472b6', '#fde68a', '#10275c'],
-    s: 'confetti', a: ''
+    s: 'lanterns', a: ''
+  };
+
+  /* And the scene for a name that reads as mourning, atonement or
+     remembrance but matches no entry — see SOLEMN_TOKENS below. Yom Kippur's
+     muted palette and its still stars, a candle rather than a party popper,
+     and a greeting that does not name the day at all: "Thinking of you
+     today" is right whether the sender typed "funeral", "miscarriage" or
+     "Lent", where any sentence built around the typed word would not be. The
+     typed name goes in the eyebrow label instead, so the card still says what
+     it is about. Carries x so the page withdraws its festoon lights. */
+  var SOLEMN = {
+    k: '', n: '', g: 'Thinking of you today', e: '🕯️',
+    b: 'A day to keep quietly. However you are marking it, you are not marking it alone.',
+    p: ['#DCDCE0', '#2A3A5C', '#A9B6CB', '#0A1224'],
+    s: 'stars', a: '', x: 1
   };
 
   /* Strip to letters and digits before comparing. "Eid al-Fitr", "eid al
@@ -481,16 +514,74 @@
     return prev[n];
   }
 
-  /* Tolerance scales with length, and that is the whole trick. A fixed
-     tolerance of 2 would match "eid" to "holi" (both short, distance 4 — no)
-     but more importantly would match short real words to each other: at
-     length 3 even a distance of 1 is a different festival. Long names have
-     room to absorb a typo without becoming a different name. */
+  /* Tolerance is a RATIO of the query's length, and capped. Scaling with
+     length is the whole trick — at length 3 even a distance of 1 is a
+     different festival, while a fifteen-letter transliteration can absorb a
+     typo and still obviously be itself.
+
+     But it has to be capped, and the cap is not a nicety either. The old
+     ladder returned an absolute 3 for anything over ten characters, and
+     "miscarriage" is eleven: distance("miscarriage", "marriage") is 3, so
+     somebody typing the worst word of their year got Wedding and the word
+     "Congratulations". Two edits is as far as this is allowed to reach.
+     Beyond two, the strings are not a typo apart, they are different words —
+     and being wrong here is not a broken link, it is a person hurt. */
   function tolerance(len) {
-    if (len <= 4) return 0;
-    if (len <= 6) return 1;
-    if (len <= 10) return 2;
-    return 3;
+    return Math.min(Math.floor(len * 0.2), 2);
+  }
+
+  /* Words people wrap a festival name in. Dropped so that "happy diwali",
+     "diwali festival" and "diwali wishes" all come down to the one token that
+     carries meaning.
+
+     "day" is deliberately NOT in here: it is load-bearing in "earth day",
+     "mother's day" and "labour day". It is dropped only in the last pass
+     below, after the pass that keeps it has already had its go. */
+  var FILLER = {
+    happy: 1, festival: 1, festivals: 1, wishes: 1, wish: 1,
+    greetings: 1, greeting: 1, celebration: 1, celebrations: 1
+  };
+
+  /* Split the RAW query, BEFORE norm() gets to it. This ordering is the whole
+     point: norm() strips the spaces, and the spaces are the only thing that
+     tells the word "lent" from the four letters sitting inside "valentine".
+     Any word-level work has to happen while the word boundaries still exist.
+
+     Trailing digits belong to their token ("diwali2026" is one word, and the
+     year is not part of the name); a token that is nothing but a four-digit
+     year is dropped outright. */
+  function tokenise(query) {
+    var raw = String(query || '').toLowerCase().split(/[^a-z0-9]+/);
+    var out = [], i, t;
+    for (i = 0; i < raw.length; i++) {
+      t = raw[i];
+      if (!t) continue;
+      if (/^\d{4}$/.test(t)) continue;
+      t = t.replace(/\d+$/, '');
+      if (t) out.push(t);
+    }
+    return out;
+  }
+
+  function exact(s) {
+    if (!s) return null;
+    for (var k = 0; k < INDEX.length; k++) {
+      if (INDEX[k][0] === s) return INDEX[k][1];
+    }
+    return null;
+  }
+
+  /* Nearest index entry within tolerance, or null. Only reached on a miss. */
+  function nearest(s) {
+    var tol = tolerance(s.length);
+    if (!tol) return null;
+
+    var best = null, bestD = 99;
+    for (var k = 0; k < INDEX.length; k++) {
+      var d = distance(s, INDEX[k][0]);
+      if (d < bestD) { bestD = d; best = INDEX[k][1]; if (!d) break; }
+    }
+    return bestD <= tol ? best : null;
   }
 
   /* Returns a festival, or null. Never throws — a bad query is a miss. */
@@ -498,47 +589,133 @@
     var q = norm(query);
     if (!q) return null;
 
-    var k;
-    for (k = 0; k < INDEX.length; k++) {
-      if (INDEX[k][0] === q) return INDEX[k][1];
+    /* The whole query, exactly. Nearly every real hit lands here. */
+    var hit = exact(q);
+    if (hit) return hit;
+
+    /* THEN THE SAME THING, MINUS THE PACKAGING. This pass exists for "happy
+       diwali", "diwali festival" and "diwali2026", and for nothing else.
+
+       It used to be unanchored substring containment, and that was a bug with
+       teeth: norm() had already destroyed the word boundaries, so "lent" —
+       a Christian fast — was found inside "valentine" and ?name=Lent returned
+       Valentine's Day. "puja" landed inside "govardhanpuja" and "birthday"
+       inside "gurunanakbirthday". Substring matching cannot tell a word from
+       a coincidence of letters, so it is gone. Whole tokens only, and each
+       one still has to be an EXACT index entry to count. */
+    /* `=== 1`, not truthiness: these are plain object literals, so a query
+       token of "constructor" or "toString" finds something inherited from
+       Object.prototype and would otherwise read as a hit. */
+    var t = tokenise(query), kept = [], i;
+    for (i = 0; i < t.length; i++) if (FILLER[t[i]] !== 1) kept.push(t[i]);
+
+    var joined = kept.join('');
+    if (joined && joined !== q) {
+      hit = exact(joined);
+      if (hit) return hit;
     }
 
-    /* A query that CONTAINS a known name, or is contained by one: "happy
-       diwali", "diwali festival", "diwali2026". Checked before the edit
-       distance because it is both cheaper and more certain. Guarded at 4
-       characters so "eid" does not match everything with those letters in. */
-    if (q.length >= 4) {
-      for (k = 0; k < INDEX.length; k++) {
-        var key = INDEX[k][0];
-        if (key.length >= 4 && (q.indexOf(key) !== -1 || key.indexOf(q) !== -1)) return INDEX[k][1];
-      }
+    /* Last, each remaining token on its own — "diwali" out of "diwali 2026
+       wishes". "day" is dropped here and only here, so "happy earth day" has
+       already been tried whole (and matched) by the pass above. Three
+       characters minimum: "eid" is a real alias, anything shorter is not. */
+    for (i = 0; i < kept.length; i++) {
+      if (kept[i].length < 3 || kept[i] === 'day') continue;
+      hit = exact(kept[i]);
+      if (hit) return hit;
     }
 
-    var tol = tolerance(q.length);
-    if (!tol) return null;
-
-    var best = null, bestD = 99;
-    for (k = 0; k < INDEX.length; k++) {
-      var d = distance(q, INDEX[k][0]);
-      if (d < bestD) { bestD = d; best = INDEX[k][1]; if (!d) break; }
-    }
-    return bestD <= tol ? best : null;
+    /* Only now the edit distance, on the query and — if the packaging came
+       off — on what was left of it, so "happy diwaali" gets the same second
+       chance a bare "diwaali" would. */
+    hit = nearest(q);
+    if (hit) return hit;
+    if (joined && joined !== q) return nearest(joined);
+    return null;
   }
 
-  /* Shape a festival — or the generic fallback dressed in the typed name —
+  /* WORDS THAT MEAN THE DAY IS NOT A PARTY. Matched as whole tokens of the
+     raw query, never as substrings — "lent" is a fast, but it is also four
+     letters sitting inside "valentine", and substring matching here would
+     turn Valentine's Day into a day of mourning, which is the resolver's old
+     bug pointed the other way.
+
+     This list is a floor, not a census. It cannot enumerate every somber
+     observance in the world, which is exactly why the neutral fallback above
+     had to be made safe as well — this catches the ones we can name, and
+     UNKNOWN catches the rest without assuming joy. */
+  var SOLEMN_TOKENS = {
+    mourning: 1, mourn: 1, mourners: 1, memorial: 1, memoriam: 1,
+    remembrance: 1, funeral: 1, funerals: 1, condolence: 1, condolences: 1,
+    death: 1, died: 1, dead: 1, deceased: 1, passing: 1, loss: 1,
+    bereavement: 1, bereaved: 1, miscarriage: 1, stillbirth: 1,
+    lent: 1, ashura: 1, requiem: 1, martyr: 1, martyrs: 1, martyrdom: 1,
+    genocide: 1, holocaust: 1, shoah: 1, tragedy: 1, vigil: 1, rip: 1
+  };
+
+  /* Phrases whose words are innocent apart and somber together. Long enough
+     once normalised that a substring test cannot land inside anything else. */
+  var SOLEMN_PHRASES = [
+    'anniversaryofdeath', 'deathanniversary', 'goodfriday', 'ashwednesday',
+    'restinpeace', 'inmemoriam', 'inmemoryof', 'inlovingmemory',
+    'dayofmourning', 'yahrzeit'
+  ];
+
+  function isSomber(query) {
+    var t = tokenise(query), i;
+    /* `=== 1` for the same Object.prototype reason as in resolve(). */
+    for (i = 0; i < t.length; i++) if (SOLEMN_TOKENS[t[i]] === 1) return true;
+
+    var q = norm(query);
+    /* "R.I.P." tokenises to r/i/p, so catch it once the dots are gone. */
+    if (q === 'rip') return true;
+    for (i = 0; i < SOLEMN_PHRASES.length; i++) {
+      if (q.indexOf(SOLEMN_PHRASES[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  /* Shape a festival — or one of the two fallbacks dressed in the typed name —
      into what celebrate.js's mount() expects. Kept here rather than in
      festival.js so the generator's preview and the real page cannot disagree
      about what a festival looks like. */
   function scene(query) {
     var f = resolve(query);
     var known = !!f;
-    if (!f) f = GENERIC;
 
-    /* An unknown festival is greeted by the name the sender typed. Title-cased
+    /* THE SOLEMN GUARD, ahead of anything that would greet anybody. Two ways
+       to get here, and both used to end in confetti:
+
+       ?name=funeral matched nothing and fell through to a generic
+       celebration, which prefixed "Happy" to whatever was typed.
+
+       ?name=death%20anniversary DID match — on the token "anniversary" — and
+       came back "Happy Anniversary" over a wedding palette.
+
+       So the guard overrides a resolved festival too, unless that festival is
+       already marked solemn: ?name=ashura is Muharram, and Muharram's own
+       muted palette and "A Month of Remembrance" say more than anything
+       generic could. Leave the ones the table already handles alone. */
+    var somber = isSomber(query);
+    if (somber && !(known && f.x)) { known = false; f = SOLEMN; }
+    else if (!known) f = UNKNOWN;
+
+    /* An unknown festival is named by the name the sender typed. Title-cased
        only where they typed it all lower — somebody who wrote "MahaShivratri"
        or "Eid" meant that, and re-casing it would be presumptuous. */
     var display = known ? f.n : titleIfFlat(query);
-    var greeting = known ? f.g : 'Happy ' + display;
+
+    var greeting;
+    if (known) greeting = f.g;
+    else if (somber) greeting = SOLEMN.g;
+    /* Not "Happy " + display. See UNKNOWN: the day might be a festival we are
+       missing or a grief we failed to name, and "wishing you well" is the one
+       phrasing that is true of both. The nameless branch is unreachable from
+       /festival — celebrate-guard.js redirects a visitor with no usable
+       ?name= before this runs — but scene() is also the generator's live
+       preview, and "Wishing you well on " with nothing after it is not a
+       sentence to render even for a keystroke. */
+    else greeting = display ? 'Wishing you well on ' + display : 'Wishing you well';
 
     /* THE FESTIVAL'S NAME, WHEN THE GREETING DOES NOT ALREADY SAY IT.
        "Happy Diwali" needs no label. "G'mar Chatima Tova" does — and so do
@@ -551,10 +728,22 @@
     if (known) {
       var g = norm(f.g), n = norm(f.n);
       if (g.indexOf(n) === -1 && n.indexOf(g) === -1) label = f.n;
+    } else if (somber) {
+      /* The quiet greeting never names the day, so the eyebrow has to. */
+      label = display;
     }
 
     return {
-      known: known,
+      /* `known` is what the two callers use to decide how confident to be, and
+         on the quiet path we ARE confident — confident it must stay quiet. So
+         it reports true there even though nothing matched the table.
+         festival.js appends "!" to the document and share title when known is
+         false, and "Thinking of you today!" is precisely the wrong sentence;
+         the generator, likewise, would offer "a general festive look". Both
+         read correctly with true. The unrecognised-but-not-somber path keeps
+         false, because there the generator's "not one I know" warning is the
+         honest thing to show the sender before they send it. */
+      known: known || somber,
       key: f.k,
       label: label,
       /* Days of mourning, atonement and remembrance. festival.js passes this

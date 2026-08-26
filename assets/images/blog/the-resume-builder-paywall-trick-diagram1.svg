@@ -1,20 +1,19 @@
-<svg width="760" height="210" viewBox="0 0 760 210" role="img" aria-labelledby="d-the-resume-builder-paywall-trick-diagram1" xmlns="http://www.w3.org/2000/svg">
+<svg width="760" height="210" viewBox="0 0 760 210" role="img" aria-labelledby="d-the-resume-builder-paywall-trick-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <title id="d-the-resume-builder-paywall-trick-diagram1">The paywall funnel in four steps: looks free, you type everything, you click download, the price appears</title>
-  <rect width="760" height="210" rx="18" fill="#1b2735"/>
-  <text x="30" y="42" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="16" font-weight="800" letter-spacing="2">THE PAYWALL FUNNEL</text>
-  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
-    <rect x="40" y="80" width="150" height="80" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-    <text x="115" y="115" fill="#7dd3fc" font-size="15" font-weight="800">Looks free</text>
-    <text x="115" y="140" fill="#94a3b8" font-size="12" font-weight="600">no price shown</text>
-    <rect x="215" y="80" width="150" height="80" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-    <text x="290" y="115" fill="#7dd3fc" font-size="15" font-weight="800">You type</text>
-    <text x="290" y="140" fill="#94a3b8" font-size="12" font-weight="600">an hour of history</text>
-    <rect x="390" y="80" width="150" height="80" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-    <text x="465" y="115" fill="#7dd3fc" font-size="15" font-weight="800">Download</text>
-    <text x="465" y="140" fill="#94a3b8" font-size="12" font-weight="600">the sunk cost</text>
-    <rect x="565" y="80" width="150" height="80" rx="12" fill="#f87171"/>
-    <text x="640" y="115" fill="#131f2d" font-size="15" font-weight="800">Paywall</text>
-    <text x="640" y="140" fill="#131f2d" font-size="12" font-weight="700">or a watermark</text>
-    <path d="M 192 120 L 213 120 M 367 120 L 388 120 M 542 120 L 563 120" stroke="#475569" stroke-width="3"/>
+  <text x="30" y="42" fill="#1e77a4" font-size="16" font-weight="800" letter-spacing="2">THE PAYWALL FUNNEL</text>
+  <g text-anchor="middle">
+    <rect x="40" y="80" width="150" height="80" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="115" y="115" fill="#1e77a4" font-size="15" font-weight="800">Looks free</text>
+    <text x="115" y="140" fill="#64748b" font-size="12" font-weight="600">no price shown</text>
+    <rect x="215" y="80" width="150" height="80" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="290" y="115" fill="#1e77a4" font-size="15" font-weight="800">You type</text>
+    <text x="290" y="140" fill="#64748b" font-size="12" font-weight="600">an hour of history</text>
+    <rect x="390" y="80" width="150" height="80" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="465" y="115" fill="#1e77a4" font-size="15" font-weight="800">Download</text>
+    <text x="465" y="140" fill="#64748b" font-size="12" font-weight="600">the sunk cost</text>
+    <rect x="565" y="80" width="150" height="80" rx="12" fill="#d42b25"/>
+    <text x="640" y="115" fill="#ffffff" font-size="15" font-weight="800">Paywall</text>
+    <text x="640" y="140" fill="#ffffff" font-size="12" font-weight="700">or a watermark</text>
+    <path d="M 192 120 L 213 120 M 367 120 L 388 120 M 542 120 L 563 120" stroke="#6b7a90" stroke-width="3"/>
   </g>
 </svg>

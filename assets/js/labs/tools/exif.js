@@ -65,23 +65,61 @@
   }
 
   function parseTiff(dv, base) {
+    // The TIFF header is 8 bytes. A truncated APP1 segment can point `base`
+    // past the end of the file, and getUint16 throws rather than returning
+    // nothing, so check before reading instead of after.
+    if (base < 0 || base + 8 > dv.byteLength) return { error: 'bad-tiff' };
     var little = dv.getUint16(base, false) === 0x4949;
     if (dv.getUint16(base + 2, little) !== 42) return { error: 'bad-tiff' };
     var result = { fields: {}, gps: {} };
-    readIfd(dv, base, base + dv.getUint32(base + 4, little), little, result, TAGS);
+    readIfd(dv, base, base + dv.getUint32(base + 4, little), little, result, TAGS, 0, {});
     return result;
   }
 
-  function readIfd(dv, base, dirStart, little, result, table) {
+  /* Real EXIF nests one level: IFD0 holds the EXIF and GPS sub-IFD pointers,
+     and the EXIF one can hold Interop below that. Two is the honest depth;
+     eight leaves room for something unusual but valid. */
+  var MAX_IFD_DEPTH = 8;
+
+  /* A sub-IFD pointer is just a number out of the file, and nothing in the
+     format stops it pointing back at the directory that contains it. A JPEG
+     whose 0x8769 tag pointed at its own IFD recursed until the stack gave out,
+     and the RangeError had nowhere to go: report() runs bare from the drop
+     handler and out.clear() has already fired, so the analyst was left with a
+     permanently blank pane and no clue why. Two independent brakes, because
+     they stop different things — `depth` bounds legitimate-looking nesting that
+     simply goes too far, and `seen` catches a cycle of any length, including
+     A -> B -> A, which a depth cap alone would only stop after eight laps.
+
+     `seen` is keyed on the directory's absolute offset: two distinct IFDs
+     cannot share one, so an offset already on the stack means a cycle. */
+  function readIfd(dv, base, dirStart, little, result, table, depth, seen) {
+    if (depth > MAX_IFD_DEPTH) return;
+    // Same bounds reasoning as parseTiff: the entry count itself must be inside
+    // the file before it can be read.
+    if (dirStart < 0 || dirStart + 2 > dv.byteLength) return;
+    if (seen[dirStart]) return;
+    seen[dirStart] = true;
+
     var count = dv.getUint16(dirStart, little);
     for (var i = 0; i < count; i++) {
       var entry = dirStart + 2 + i * 12;
+      // count is a 16-bit field, so a corrupt one can claim 65535 entries in a
+      // directory that has three. Stop at the end of the file rather than throw.
+      if (entry + 12 > dv.byteLength) break;
       var tag = dv.getUint16(entry, little);
       var name = table[tag];
       if (!name) continue;
       var value = readValue(dv, base, entry, little);
-      if (name === '__EXIF') { readIfd(dv, base, base + value, little, result, TAGS); continue; }
-      if (name === '__GPS')  { readIfd(dv, base, base + value, little, result, GPS_TAGS); continue; }
+      // readValue returns null on a malformed entry and an array for multi-value
+      // rationals; neither is an offset, and `base + null` is silently `base`,
+      // which would send the reader back to the TIFF header.
+      if (name === '__EXIF' || name === '__GPS') {
+        if (typeof value !== 'number') continue;
+        readIfd(dv, base, base + value, little, result,
+                name === '__GPS' ? GPS_TAGS : TAGS, depth + 1, seen);
+        continue;
+      }
       if (table === GPS_TAGS) result.gps[name] = value;
       else result.fields[name] = value;
     }
@@ -123,7 +161,33 @@
   }
 
   /* --- reporting -------------------------------------------------------- */
+
+  /* Every caller goes through here rather than straight to renderReport.
+
+     report() is invoked bare from the drop handler and from run(), so anything
+     that escapes it lands in the console and nowhere the visitor can see. The
+     first thing renderReport does is out.clear(), which means a throw halfway
+     down leaves the pane wiped and silent — the tool looks broken with no error
+     to search for. The specific parser bug that used to do this is fixed above,
+     but a metadata reader is fed hostile and malformed files by definition, so
+     the guarantee worth having is that no future one can blank the pane either.
+
+     Whatever did get printed before the throw stays on screen; the message is
+     appended under it, which also says how far the read got. */
   function report(bytes, file) {
+    try {
+      renderReport(bytes, file);
+    } catch (err) {
+      out.rule();
+      out.err('Could not finish reading that file — its metadata is malformed');
+      out.err('in a way this reader could not follow.');
+      out.line('');
+      out.dim('Nothing was uploaded and nothing else on the page is affected.');
+      out.dim('Details: ' + ((err && err.message) || String(err)));
+    }
+  }
+
+  function renderReport(bytes, file) {
     out.clear();
     out.heading(file.name);
     out.row('size', LabTool.humanBytes(bytes.length));
@@ -178,9 +242,37 @@
     out.dim('metadata segment removed. The pixels are re-encoded here in the tab.');
   }
 
+  /* The stripped copy has to come back in the format it went in as.
+
+     canvas.toBlob was hardcoded to 'image/jpeg', so a PNG dropped here came
+     back as a JPEG: its alpha channel composited onto black, and every pixel
+     put through a lossy encoder — for a tool whose entire promise is "the same
+     picture, minus the metadata". A screenshot with a transparent background
+     was silently destroyed by the privacy fix.
+
+     File.type is a hint the OS supplies from the filename, so the magic bytes
+     decide instead — they are what the decoder actually saw. GIF and anything
+     unrecognised go out as PNG rather than JPEG: PNG is lossless, keeps
+     transparency, and is the one format a canvas is required to encode. A
+     bigger file is a much cheaper mistake here than lost pixels. */
+  var EXT = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' };
+
+  function encodeAs(bytes, file) {
+    if (bytes.length > 3 && bytes[0] === 0xff && bytes[1] === 0xd8) return 'image/jpeg';
+    if (bytes.length > 8 && bytes[0] === 0x89 && bytes[1] === 0x50 &&
+        bytes[2] === 0x4e && bytes[3] === 0x47) return 'image/png';
+    if (bytes.length > 12 && bytes[0] === 0x52 && bytes[1] === 0x49 &&
+        bytes[2] === 0x46 && bytes[3] === 0x46 && bytes[8] === 0x57 &&
+        bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return 'image/webp';
+    var declared = (file && file.type) || '';
+    if (EXT[declared]) return declared;
+    return 'image/png';
+  }
+
   function strip() {
     if (!lastBytes || !lastFile) { out.clear().warn('Load an image first.'); return; }
-    var blob = new Blob([lastBytes], { type: lastFile.type || 'image/jpeg' });
+    var type = encodeAs(lastBytes, lastFile);
+    var blob = new Blob([lastBytes], { type: type });
     var url = URL.createObjectURL(blob);
     var img = new Image();
     img.onload = function () {
@@ -191,16 +283,27 @@
       canvas.toBlob(function (clean) {
         URL.revokeObjectURL(url);
         if (!clean) { out.err('Could not re-encode that image.'); return; }
-        var name = lastFile.name.replace(/(\.[^.]+)?$/, '') + '-stripped.jpg';
+        // A browser that cannot encode the type it was asked for falls back to
+        // PNG rather than failing, so the extension follows what actually came
+        // out, not what was requested. A filename that lies about its contents
+        // is its own small bug.
+        var actual = clean.type || type;
+        var name = lastFile.name.replace(/(\.[^.]+)?$/, '') + '-stripped' +
+                   (EXT[actual] || '.png');
         clean.arrayBuffer().then(function (buf) {
-          LabTool.download(new Uint8Array(buf), name, 'image/jpeg');
+          LabTool.download(new Uint8Array(buf), name, actual);
           out.rule();
           out.ok('Stripped copy saved as ' + name);
           out.dim('Re-encoding through a canvas keeps the pixels and drops every');
-          out.dim('metadata segment. It is a re-compression, so the file size and');
-          out.dim('the last few bits of quality will differ from the original.');
+          if (actual === 'image/png') {
+            out.dim('metadata segment. PNG is lossless, so the pixels are identical');
+            out.dim('to the original — only the file size will differ.');
+          } else {
+            out.dim('metadata segment. It is a re-compression, so the file size and');
+            out.dim('the last few bits of quality will differ from the original.');
+          }
         });
-      }, 'image/jpeg', 0.92);
+      }, type, 0.92);
     };
     img.onerror = function () {
       URL.revokeObjectURL(url);

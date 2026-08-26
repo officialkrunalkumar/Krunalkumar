@@ -93,8 +93,38 @@
   var running = false;
 
   function setStatus(text, cls) {
-    el.status.textContent = text;
+    // #lab-status is a live region (see initStatusLive). Rewriting it with the
+    // text it already holds is still a mutation, and a screen reader would
+    // read the same sentence a second time — so only touch it when it moved.
+    if (el.status.textContent !== text) el.status.textContent = text;
     el.status.className = 'lab-status' + (cls ? ' ' + cls : '');
+  }
+
+  /* The status line carries the only running commentary this lab has —
+     "Running…", "Finished with errors", "Stopped", "gave up waiting for the
+     download" — and none of it reached anyone using a screen reader: it is a
+     plain <span> that JavaScript rewrites, which is silent by definition.
+     Sighted users were told; everyone else pressed Run and got nothing.
+
+     role="status" is the right role (a passive, advisory region), and the
+     explicit aria-live spells out the same thing for the combinations that
+     honour the attribute but not the implicit value. Polite, never assertive:
+     none of this is urgent, and an assertive region would interrupt the user
+     mid-sentence while they read their own output.
+
+     Two things keep it from becoming noise rather than help. setStatus above
+     ignores a write that does not change the text, so a repeated state cannot
+     announce twice. And download progress deliberately does NOT come through
+     here — it goes to the progress bar, which is a progressbar precisely
+     because those are not announced as they change. Four announcements a
+     second for a minute would be far worse than the silence it replaced.
+
+     Called after the first setStatus has already painted "Ready", so that
+     initial text is not announced as though something had just happened. */
+  function initStatusLive() {
+    if (!el.status) return;
+    el.status.setAttribute('role', 'status');
+    el.status.setAttribute('aria-live', 'polite');
   }
 
   /* ========================================================================
@@ -287,6 +317,118 @@
     if (window.LabFail) window.LabFail.hide();
   }
 
+  /* ------------------------------------------------------------------------
+     Download progress bar
+     ------------------------------------------------------------------------
+     The C and C++ lab fetches about 19 MB of clang and lld before the first
+     compile finishes — 30 to 65 seconds on a typical 4G connection. Until now
+     that was one static status string, and a slow download looked exactly
+     like a hung page. lab-worker.js counts the bytes; this draws them.
+
+     Built here rather than written into markup because eleven lab pages would
+     otherwise carry eleven copies of an element that only two of them ever
+     show, and they would drift. Styled inline for the same reason: labs.css
+     does not know this element exists, so no rule there can move it and no
+     rule here can disturb the toolbar — which, hidden, it does not occupy at
+     all. Colours go through the same custom properties the rest of the
+     toolbar uses, so it follows the theme rather than fighting it.
+
+     role="progressbar", NOT a live region. A progress bar is read when the
+     user asks for it, not announced every time it moves, which is exactly
+     right for a value that ticks four times a second. The coarse state is
+     what gets announced, and that belongs to #lab-status.
+     ---------------------------------------------------------------------- */
+
+  var progressEl = null;
+  var progressFill = null;
+  var progressText = null;
+
+  function buildProgress() {
+    if (!el.status || !el.status.parentNode) return;   // no toolbar: no bar
+
+    progressEl = document.createElement('span');
+    progressEl.id = 'lab-progress';
+    progressEl.className = 'lab-progress';
+    progressEl.setAttribute('role', 'progressbar');
+    progressEl.setAttribute('aria-label', 'Runtime download');
+    progressEl.setAttribute('aria-valuemin', '0');
+    progressEl.setAttribute('aria-valuemax', '100');
+    progressEl.style.alignItems = 'center';
+    progressEl.style.gap = '0.45rem';
+    progressEl.style.fontFamily = "'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace";
+    progressEl.style.fontSize = '0.72rem';
+    progressEl.style.color = 'var(--ink-4)';
+
+    var track = document.createElement('span');
+    track.style.display = 'inline-block';
+    track.style.width = '7rem';
+    track.style.maxWidth = '35vw';
+    track.style.height = '0.4rem';
+    track.style.borderRadius = '999px';
+    track.style.overflow = 'hidden';
+    track.style.background = 'rgb(var(--accent-rgb) / 0.18)';
+
+    // No width transition on purpose: the value already moves four times a
+    // second, so a tween would only make it lag behind the number beside it.
+    progressFill = document.createElement('i');
+    progressFill.style.display = 'block';
+    progressFill.style.height = '100%';
+    progressFill.style.width = '0%';
+    progressFill.style.background = '#14b8a6';   // the Run button's teal
+
+    // aria-hidden because the same figure is on the progressbar itself as
+    // aria-valuetext; without this it would be read out twice.
+    progressText = document.createElement('span');
+    progressText.setAttribute('aria-hidden', 'true');
+
+    track.appendChild(progressFill);
+    progressEl.appendChild(track);
+    progressEl.appendChild(progressText);
+    hideProgress();
+    el.status.parentNode.insertBefore(progressEl, el.status.nextSibling);
+  }
+
+  /* display is toggled as well as `hidden`, not instead of it. `hidden` works
+     by setting display:none in the UA stylesheet, and an inline display of
+     our own would outrank it — so the two have to be kept in step or the bar
+     would never go away. */
+  function hideProgress() {
+    if (!progressEl) return;
+    progressEl.hidden = true;
+    progressEl.style.display = 'none';
+  }
+
+  function updateProgress(msg) {
+    if (!progressEl) return;
+    if (msg.done) { hideProgress(); return; }
+
+    progressEl.hidden = false;
+    progressEl.style.display = 'inline-flex';
+    if (msg.label) progressEl.setAttribute('aria-label', 'Downloading ' + msg.label);
+
+    var loaded = msg.loaded || 0;
+    var total = msg.total || 0;
+
+    if (total > 0) {
+      var pct = Math.max(0, Math.min(100, (loaded / total) * 100));
+      var readout = humanBytes(loaded) + ' of ' + humanBytes(total);
+      progressFill.style.width = pct.toFixed(1) + '%';
+      progressText.textContent = readout;
+      progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
+      progressEl.setAttribute('aria-valuetext', readout + ' downloaded');
+    } else {
+      // The worker could not learn a size — no Content-Length, or a browser
+      // with no readable stream to count. A percentage would be invented, so
+      // show the one figure that is true: bytes so far. It keeps climbing,
+      // which is the entire question a stuck-looking page raises.
+      progressFill.style.width = '0%';
+      progressText.textContent = loaded ? humanBytes(loaded) + ' downloaded…' : 'Starting…';
+      progressEl.removeAttribute('aria-valuenow');   // absent = indeterminate
+      progressEl.setAttribute('aria-valuetext',
+        loaded ? humanBytes(loaded) + ' downloaded' : 'Starting');
+    }
+  }
+
   /* The watchdog runs in two phases.
 
      'load' covers fetching and instantiating the runtime — generous limits,
@@ -377,6 +519,10 @@
     watchdog.warned = false;
     watchdog.samples = [];
     hideWarning();
+    // Whatever was downloading has arrived, or this phase would not have
+    // started. A bar left on screen would sit at its last value for the whole
+    // run and read as a download that never finished.
+    hideProgress();
     if (text) setStatus(text, 'is-busy');
   }
 
@@ -423,6 +569,7 @@
     running = false;
     stopWatchdogTimer();
     hideWarning();
+    hideProgress();
     el.run.disabled = false;
     // "Finished" on the JS path means top-level code returned, not that the
     // program is over — timers keep printing. Leaving Stop greyed out there
@@ -448,6 +595,7 @@
     // Say what actually happened: the leftover timers were stopped.
     if (orphan) {
       el.stop.disabled = true;
+      hideProgress();
       setStatus('Timers stopped', 'is-ok');
       return;
     }
@@ -458,7 +606,7 @@
   // separate from the normal HTTP cache — a plain reload does not refresh
   // them, so without a version in the URL a deployed fix can keep running the
   // previous worker for as long as the entry survives.
-  var WORKER_VERSION = '2026-08-20-2';
+  var WORKER_VERSION = '2026-08-26-1';
 
   function newGenericWorker() {
     var w = new Worker('/assets/js/labs/lab-worker.js?v=' + WORKER_VERSION);
@@ -466,6 +614,9 @@
       var msg = event.data || {};
       if (msg.type === 'out') write(msg.text, msg.cls);
       else if (msg.type === 'status') setStatus(msg.text, 'is-busy');
+      // Byte counts for a large runtime. Kept out of setStatus deliberately:
+      // the status line is announced, and this fires four times a second.
+      else if (msg.type === 'progress') updateProgress(msg);
       // The runtime finished downloading: from here the clock times the
       // visitor's program, not their connection.
       else if (msg.type === 'exec') beginExecPhase(msg.text);
@@ -544,6 +695,7 @@
     el.stop.disabled = false;
     clearTerminal();
     hideWarning();
+    hideProgress();     // a bar left over from a previous run is a lie
     setStatus('Starting…', 'is-busy');
     startWatchdog();
 
@@ -771,7 +923,10 @@
 
     initEditor(store.get('code.' + id, meta.sample));
     clearTerminal();
-    setStatus('Ready — ' + meta.size + ' first run, then cached');
+    // "to download" rather than a bare size: meta.size is the over-the-wire
+    // figure, and "~19 MB first run" read to more than one person as the size
+    // of the page rather than of a one-time download.
+    setStatus('Ready — ' + meta.size + ' to download on the first run, then cached');
     // store.get returns its fallback when the key is absent, and the fallback
     // defaults to undefined — so comparing against null marked every language
     // as already pinned, and the first click then *deleted* instead of saving.
@@ -924,5 +1079,9 @@
   initGate();
   initToolbar();
   initStorage();
+  buildProgress();
   applyLanguage(current);
+  // Last, so applyLanguage's opening "Ready — …" is painted before the element
+  // becomes a live region and is therefore not announced on arrival.
+  initStatusLive();
 })();

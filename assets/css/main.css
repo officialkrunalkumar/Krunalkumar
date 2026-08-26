@@ -3611,6 +3611,12 @@ footer a:hover {
 :root[data-theme="light"] .lab-btn-icon[aria-pressed='true'] { color: #008f4c; }
 :root[data-theme="light"] .lab-status.is-busy { color: #8f6700; }
 :root[data-theme="light"] .lab-status.is-ok { color: #058a35; }
+/* is-err was the one state of the three that never got a light-theme colour,
+   so it kept the dark-theme #f87171 and measured 2.03:1 on the light lab
+   surface — the ERROR state, the one a visitor most needs to read, was the
+   unreadable one. #8f0000 is the same red .hl-result.is-err and
+   .lab-shader-errors already use, so the three error colours now agree. */
+:root[data-theme="light"] .lab-status.is-err { color: #8f0000; }
 :root[data-theme="light"] .lab-fail-link { color: #005e8f; }
 :root[data-theme="light"] .lab-gate-h.limits { color: #8f6700; }
 :root[data-theme="light"] .lab-gate-h.privacy { color: #05672a; }

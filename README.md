@@ -82,7 +82,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── llms.txt                      Curated link index for AI crawlers/assistants — update when adding pages or posts
 ├── llms-full.txt                 Full plain-text knowledge base (bio, career, research, projects, policies) for AI crawlers
 ├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
-├── package.json                  Zero dependencies. Exists to name `npm run build` / `npm run check` (both are scripts/build.js) and an engines floor of Node 18
+├── package.json                  Zero dependencies. Exists to name `npm run build` / `npm run check` (both are scripts/build.js) and an engines floor of Node 18. `build` rewrites the working tree in place and is Vercel's to run — locally, use `check`
 ├── .gitignore                    node_modules/, package-lock.json, .vercel/ — package.json makes these possible, none of them belong in the repo
 └── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
 ```
@@ -273,13 +273,15 @@ URLs.
 ### The deploy-time pass (`scripts/build.js`)
 
 Vercel clones the repo into a throwaway container, runs the script there, uploads the result and
-discards the container. Nothing is written back to git. It performs two transformations and deliberately
-nothing else, then checks its own output before letting the deploy succeed:
+discards the container. Nothing is written back to git. It performs two transformations — plus
+regenerating the derived files it keeps in step, `assets/data/search-index.json`, `llms.txt`,
+`llms-full.txt` and the colophon figures — and deliberately nothing else, then checks its own
+output before letting the deploy succeed:
 
-1. **Strips CSS comments.** 244 KB of stylesheet across the four files becomes 146 KB — 40% off,
-   most of it from `main.css`, which is render-blocking on the 89 pages that load it. It does
-   **not** collapse whitespace: that would save a little more and make every deploy-preview diff
-   unreadable, which is a bad trade at this size.
+1. **Strips CSS and JS comments.** 391 KB of stylesheet across nine files becomes 219 KB — 44% off,
+   most of it from `main.css`, which is render-blocking on the 100 pages that load it; `boot.js` and
+   `particle-bg.js` shed another 29 KB on top. It does **not** collapse whitespace: that would save
+   a little more and make every deploy-preview diff unreadable, which is a bad trade at this size.
 2. **Rewrites `sitemap.xml` `<lastmod>` per file from git**, instead of the single hardcoded date
    every URL shares in the repo — which tells a crawler nothing and is wrong the day after it is
    written. A shallow deploy clone can only date the files touched inside the fetched history; the
@@ -292,25 +294,34 @@ sections of this README are downstream of them. Deleting them by hand to save by
 the most valuable prose in the codebase for a few KB. Doing it in a container keeps both: git keeps
 every comment, visitors get the smaller file.
 
-**It is safe to run locally.**
+**Do not run `npm run build` locally — use `npm run check`.** `build` is the deploy step, and it
+rewrites the working tree *in place*. Run it on your machine and it deletes the comments out of
+`assets/css/*.css` and `assets/js/*.js` — the documentation several sections of this README are
+downstream of — and rewrites `sitemap.xml`, `assets/data/search-index.json`, `llms.txt`,
+`llms-full.txt` and the colophon figures. Commit that and the comment-stripped files become the
+canonical sources, with nothing left to restore them from but git history. On Vercel this is
+harmless because the container is thrown away; your checkout is not.
 
 ```bash
-npm run check    # dry run — prints what would change, writes nothing
-npm run build    # the same work, in place
+npm run check    # dry run — prints exactly what would change, writes nothing. Use this one.
+npm run build    # the deploy step. Rewrites files in place. Vercel's job, not yours.
 ```
 
-`build` is idempotent — a second run finds no comments left and writes identical bytes — so a stray
-local run is not a problem to clean up. Every write is gated on the stylesheet still describing the
-same rules: the ordered list of selectors must come out unchanged, braces must stay balanced, and
-the output must not grow. Any of those failing throws instead of writing. (Comparing raw brace
+`build` is idempotent — a second run finds no comments left and writes identical bytes — but that
+only means a stray run does no *further* damage. The first one already stripped the sources; the
+way back is `git restore .` (or `git checkout -- .`) before anything is committed, not a re-run.
+Every write is gated on the stylesheet still describing the same rules: the ordered list of
+selectors must come out unchanged, braces must stay balanced, and the output must not grow. Any of
+those failing throws instead of writing. (Comparing raw brace
 counts is *not* a valid check and was the first attempt — `main.css` has a comment quoting a CSS
 rule, braces and all, and the check flagged it as corruption. The scanner is comment-aware
 throughout, which is also why a `content: "/*"` string cannot be mistaken for a comment.)
 
-It finishes by checking its own output: 17 critical files present and above a size floor, nine of
-them also matched against an expected marker, and at least 80 HTML pages on disk. Vercel keeps serving the
-previous deployment when a build exits non-zero, so **failing the deploy is always safer than
-publishing the damage** — that is what the throw at the end is for.
+It finishes by checking its own output: 20 critical files present and above a size floor, twelve of
+them also matched against an expected marker, and at least 80 HTML pages on disk — the floor in
+`MIN_PAGES`, against 109 pages today. Vercel keeps serving the previous deployment when a build
+exits non-zero, so **failing the deploy is always safer than publishing the damage** — that is what
+the throw at the end is for.
 
 `package.json` exists only to name those two scripts and an `engines` floor of Node 18. It has
 **zero dependencies**, and `.gitignore` (previously empty) now covers the things `npm install`

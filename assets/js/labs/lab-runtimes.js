@@ -13,6 +13,15 @@
              here: people picking an online compiler care whether it is the
              real interpreter or a reimplementation.
      size    approximate first-run download, human readable. Cached after.
+             This is the OVER-THE-WIRE figure — what the visitor actually
+             waits for — not the size on disk. Everything under
+             /assets/vendor/ is served Brotli-compressed, and for the clang
+             toolchain the two differ by a factor of three: 58 MB unpacked,
+             about 19 MB downloaded. `bytes` is the other number, and the two
+             are not interchangeable.
+     bytes   unpacked size, in bytes — what the runtime occupies in the cache
+             once it is unpacked, which is what the storage meter reports and
+             why it is not the same number as `size`.
      prism   Prism grammar id used for highlighting
      mode    'worker' -> lab-worker.js | 'jsblob' -> blob Worker (see lab-app)
      stdin   whether the Input panel means anything for this language
@@ -120,7 +129,13 @@
       slug: 'c',
       pageTitle: 'Online C Compiler — Real clang, Free | Krunalkumar Shah',
       engine: 'Real clang compiled to WebAssembly, linked with lld',
-      size: '~58 MB',
+      // ~19 MB, not the ~58 MB this used to claim. 58 MB is what the
+      // toolchain unpacks to (and is what `bytes` records for the storage
+      // meter); the download is Brotli-compressed and measures about 19 MB on
+      // the wire — 10.2 for clang.wasm, 6.6 for lld.wasm, the rest sysroot.
+      // Quoting the unpacked figure as the download tripled the wait people
+      // were told to expect before they had even pressed Run.
+      size: '~19 MB',
       year: 1972,
       bytes: 60373055,
       prism: 'c',
@@ -163,7 +178,7 @@
       slug: 'cpp',
       pageTitle: 'Online C++ Compiler — Real clang & STL | Krunalkumar Shah',
       engine: 'Real clang and libc++ compiled to WebAssembly',
-      size: '~58 MB',
+      size: '~19 MB',   // the wire figure — see the note on the C entry above
       year: 1985,
       bytes: 60373055,
       prism: 'cpp',
@@ -427,10 +442,11 @@
   // Ordered by the year each language first appeared, so the picker and the
   // hub read as a timeline rather than an unexplained list. Every entry
   // carries its year and the cards show it.
-  // C and C++ run a real clang + lld toolchain (~58 MB, fetched on first Run
-  // only). An earlier attempt used the JSCPP interpreter and was pulled: it
-  // could not compile struct, enum, class, std::string or std::vector, which
-  // is too little to honestly call a C or C++ compiler.
+  // C and C++ run a real clang + lld toolchain (~19 MB over the wire, 58 MB
+  // unpacked, fetched on first Run only). An earlier attempt used the JSCPP
+  // interpreter and was pulled: it could not compile struct, enum, class,
+  // std::string or std::vector, which is too little to honestly call a C or
+  // C++ compiler.
   var ORDER = [
     'c',
     'sql',

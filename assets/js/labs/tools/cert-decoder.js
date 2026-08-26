@@ -197,6 +197,28 @@
     return LIFETIME_LIMITS[LIFETIME_LIMITS.length - 1][1];
   }
 
+  /* The "you have pasted a private key" trigger.
+
+     The old pattern was BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY — an enumeration
+     of three prefixes, which quietly excluded the two headers most likely to be
+     genuinely secret. ENCRYPTED PRIVATE KEY (PKCS#8 under a passphrase) reads as
+     "already protected", so it is the one people feel safest pasting; it is not
+     protected, because the passphrase is offline-crackable the moment the blob
+     leaves the machine. PGP PRIVATE KEY BLOCK is somebody's identity key. Both
+     used to sail straight past the warning and into the parser.
+
+     So: match the whole family rather than a list of prefixes. Any run of
+     uppercase words between BEGIN and PRIVATE KEY qualifies, which covers RSA,
+     DSA, EC, OPENSSH, ENCRYPTED, SSH2 ENCRYPTED, PGP (… PRIVATE KEY BLOCK) and
+     whatever else turns up next without another edit here. PuTTY's .ppk is not
+     a PEM block at all, but it is a private key in a paste box, so its header
+     line counts too.
+
+     Nothing in a public certificate contains the words PRIVATE KEY, so this
+     cannot fire on the input the tool is actually for. What the warning DOES is
+     unchanged — only what reaches it. */
+  var PRIVATE_KEY_INPUT = /BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY|PuTTY-User-Key-File-/;
+
   function run() {
     var input = document.getElementById('tool-text').value;
     out.clear();
@@ -206,7 +228,7 @@
       return;
     }
 
-    if (/BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY/.test(input)) {
+    if (PRIVATE_KEY_INPUT.test(input)) {
       out.err('That is a PRIVATE KEY, not a certificate.');
       out.err('It has not been parsed and nothing has been sent anywhere — this');
       out.err('page has no network code at all — but treat it as compromised the');

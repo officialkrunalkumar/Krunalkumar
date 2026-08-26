@@ -1,16 +1,15 @@
-<svg width="760" height="330" viewBox="0 0 760 330" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram4" xmlns="http://www.w3.org/2000/svg">
+<svg width="760" height="330" viewBox="0 0 760 330" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram4" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <title id="d-which-ai-tool-for-which-job-diagram4">Decision flow, stopping at the first match: a one-off thinking or writing job goes to your existing assistant; something that must be verifiably true goes to a research tool with citations; a designed artifact goes to a specialist; a job repeating more than weekly becomes a workflow; and anything touching money or client data gets a human approval gate</title>
-                  <rect width="760" height="330" rx="18" fill="#1b2735"/>
-                  <text x="30" y="42" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" letter-spacing="2">STOP AT THE FIRST LINE THAT MATCHES</text>
-                  <line x1="44" y1="72" x2="44" y2="316" stroke="#475569" stroke-width="2"/>
-                  <g font-family="'Segoe UI',sans-serif" font-size="14" font-weight="700">
-                    <g stroke="#475569" stroke-width="2" fill="none">
+                  <text x="30" y="42" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2">STOP AT THE FIRST LINE THAT MATCHES</text>
+                  <line x1="44" y1="72" x2="44" y2="316" stroke="#6b7a90" stroke-width="2"/>
+                  <g font-size="14" font-weight="700">
+                    <g stroke="#6b7a90" stroke-width="2" fill="none">
                       <path d="M 44 90 L 62 90"/><path d="M 44 142 L 62 142"/><path d="M 44 194 L 62 194"/>
                       <path d="M 44 246 L 62 246"/><path d="M 44 298 L 62 298"/>
                       <path d="M 392 90 L 412 90"/><path d="M 392 142 L 412 142"/><path d="M 392 194 L 412 194"/>
                       <path d="M 392 246 L 412 246"/><path d="M 392 298 L 412 298"/>
                     </g>
-                    <g fill="#e2e8f0">
+                    <g fill="#6b7a90">
                       <text x="74" y="95">One-off thinking or writing?</text>
                       <text x="74" y="147">Must it be verifiably true?</text>
                       <text x="74" y="199">Is the output a designed artifact?</text>
@@ -18,16 +17,16 @@
                       <text x="74" y="303">Money, client data, or irreversible?</text>
                     </g>
                     <g>
-                      <rect x="412" y="72" width="318" height="36" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-                      <text x="432" y="95" fill="#e2e8f0">Your existing assistant — buy nothing</text>
-                      <rect x="412" y="124" width="318" height="36" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-                      <text x="432" y="147" fill="#e2e8f0">A research tool, with citations</text>
-                      <rect x="412" y="176" width="318" height="36" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
-                      <text x="432" y="199" fill="#e2e8f0">A specialist, not a generalist</text>
-                      <rect x="412" y="228" width="318" height="36" rx="12" fill="#7dd3fc"/>
-                      <text x="432" y="251" fill="#131f2d" font-weight="800">Build a workflow</text>
-                      <rect x="412" y="280" width="318" height="36" rx="12" fill="none" stroke="#fbbf24" stroke-width="2"/>
-                      <text x="432" y="303" fill="#fde68a">Add a human approval gate</text>
+                      <rect x="412" y="72" width="318" height="36" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+                      <text x="432" y="95" fill="#6b7a90">Your existing assistant — buy nothing</text>
+                      <rect x="412" y="124" width="318" height="36" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+                      <text x="432" y="147" fill="#6b7a90">A research tool, with citations</text>
+                      <rect x="412" y="176" width="318" height="36" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+                      <text x="432" y="199" fill="#6b7a90">A specialist, not a generalist</text>
+                      <rect x="412" y="228" width="318" height="36" rx="12" fill="#1e77a4"/>
+                      <text x="432" y="251" fill="#ffffff" font-weight="800">Build a workflow</text>
+                      <rect x="412" y="280" width="318" height="36" rx="12" fill="none" stroke="#93671a" stroke-width="2"/>
+                      <text x="432" y="303" fill="#93671a">Add a human approval gate</text>
                     </g>
                   </g>
                 </svg>

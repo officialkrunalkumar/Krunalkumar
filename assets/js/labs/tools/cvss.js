@@ -149,19 +149,146 @@
     out.dim('not to set your priorities on its own.');
   }
 
-  function parseVector(text) {
-    var parts = String(text).trim().split('/');
-    var set = false;
-    parts.forEach(function (p) {
-      var kv = p.split(':');
-      if (kv.length !== 2) return;
-      var el = document.getElementById('cvss-' + kv[0]);
-      if (el) {
-        var match = Array.prototype.some.call(el.options, function (o) { return o.value === kv[1]; });
-        if (match) { el.value = kv[1]; set = true; }
-      }
+  /* --------------------------------------------------------------------------
+     Loading a pasted vector.
+
+     The rule here is that a vector is judged whole before a single dropdown
+     moves. An earlier version of this parser applied metrics as it walked the
+     string and ignored anything it did not recognise, which made it confidently
+     wrong in exactly the case people most need it to be right: a CVSS:4.0
+     string shares AV, AC, UI and PR with v3.1 but not S, C, I or A, so the four
+     it matched were applied, the four it did not were left at whatever the page
+     happened to be showing, and the tool printed a v3.1 number for a v4.0
+     vector. A CVSS v2 string, which carries no CVSS: prefix at all, came out
+     as 9.8 CRITICAL for the same reason. The FAQ on this page promises that a
+     v4.0 string "will not score correctly" — that promise is only kept if the
+     tool refuses the string instead of scoring it anyway.
+
+     So: the prefix must name a version this calculator implements, every base
+     metric must be present, and every value must be one this calculator knows.
+     Anything else is refused with a message that says which part was wrong.
+     -------------------------------------------------------------------------- */
+
+  var BASE_ORDER = ['AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A'];
+
+  /* Null-prototype maps throughout this section: the keys are read straight out
+     of pasted text, so a metric named 'constructor' or '__proto__' must miss
+     rather than collide with an Object.prototype member and test as valid. */
+  var BASE_VALUES = (function () {
+    var m = Object.create(null);
+    m.AV = 'NALP'; m.AC = 'LH'; m.PR = 'NLH'; m.UI = 'NR';
+    m.S = 'UC'; m.C = 'HLN'; m.I = 'HLN'; m.A = 'HLN';
+    return m;
+  })();
+
+  /* Temporal and environmental metrics are a legitimate part of a v3.1 vector,
+     they just do not affect the base score this tool computes. They are noted
+     and skipped rather than treated as an error — refusing a real advisory
+     string because it carries E:F/RL:O would be its own kind of wrong. */
+  var OPTIONAL_METRICS = (function () {
+    var m = Object.create(null);
+    ['E', 'RL', 'RC', 'CR', 'IR', 'AR',
+     'MAV', 'MAC', 'MPR', 'MUI', 'MS', 'MC', 'MI', 'MA'].forEach(function (k) {
+      m[k] = true;
     });
-    return set;
+    return m;
+  })();
+
+  // Pasted text ends up in the error message, so it is trimmed to something
+  // that cannot push the rest of the output off the pane.
+  function snippet(s) {
+    var t = String(s);
+    return t.length > 24 ? t.slice(0, 24) + '…' : t;
+  }
+
+  /* Returns { ok: true, ignored: [...] } or { ok: false, err: [lines] }.
+     Errors are an array because the interesting ones need a second line to say
+     what to do instead, and out.err() prints a line at a time. */
+  function parseVector(text) {
+    var raw = String(text).trim();
+    if (!raw) {
+      return { ok: false, err: ['Paste a CVSS v3.1 vector string into the field first.'] };
+    }
+
+    var parts = raw.split('/');
+    var head = parts[0].split(':');
+    if (head.length !== 2 || head[0].toUpperCase() !== 'CVSS') {
+      return { ok: false, err: [
+        'That does not look like a CVSS v3.1 vector string.',
+        'A v3.1 vector begins with the prefix CVSS:3.1/ — a string that starts',
+        'straight in at AV: is CVSS v2, which uses different metrics and is not',
+        'scored by this calculator.'
+      ] };
+    }
+
+    var version = head[1];
+    if (version !== '3.1' && version !== '3.0') {
+      return { ok: false, err: [
+        'That is a CVSS v' + snippet(version) + ' vector. This calculator scores v3.1.',
+        'The versions are not interchangeable: v4.0 splits the impact metrics into',
+        'vulnerable-system (VC/VI/VA) and subsequent-system (SC/SI/SA) sets and adds',
+        'Attack Requirements, so a v4.0 string shares only some of its metric names',
+        'with v3.1 and would score wrongly here. Paste a CVSS:3.1 vector instead.'
+      ] };
+    }
+
+    // Collected first, applied only once the whole string has passed.
+    var chosen = Object.create(null);
+    var ignored = [];
+    var i, kv, key, value, allowed;
+
+    for (i = 1; i < parts.length; i++) {
+      if (!parts[i]) continue;          // tolerate a trailing or doubled slash
+      kv = parts[i].split(':');
+      if (kv.length !== 2 || !kv[0] || !kv[1]) {
+        return { ok: false, err: [
+          '"' + snippet(parts[i]) + '" is not a metric. Each one is a name and a',
+          'value joined by a colon, like AV:N, separated by slashes.'
+        ] };
+      }
+      key = kv[0].toUpperCase();
+      value = kv[1].toUpperCase();
+
+      if (OPTIONAL_METRICS[key]) { ignored.push(key); continue; }
+
+      allowed = BASE_VALUES[key];
+      if (!allowed) {
+        return { ok: false, err: [
+          '"' + snippet(key) + '" is not a CVSS v3.1 metric.',
+          'The base metrics are AV, AC, PR, UI, S, C, I and A. Au, for instance,',
+          'is CVSS v2 — the v3 equivalent is PR.'
+        ] };
+      }
+      if (chosen[key]) {
+        return { ok: false, err: [
+          key + ' appears more than once. A vector names each metric exactly once,',
+          'so there is no way to tell which value was meant.'
+        ] };
+      }
+      if (allowed.indexOf(value) === -1) {
+        return { ok: false, err: [
+          '"' + snippet(value) + '" is not a valid value for ' + key + '.',
+          key + ' accepts ' + allowed.split('').join(', ') + '.'
+        ] };
+      }
+      chosen[key] = value;
+    }
+
+    var missing = BASE_ORDER.filter(function (m) { return !chosen[m]; });
+    if (missing.length) {
+      return { ok: false, err: [
+        'Incomplete vector — no value for ' + missing.join(', ') + '.',
+        'All eight base metrics are required. Loading a partial string would',
+        'silently score it against whatever the dropdowns already showed.'
+      ] };
+    }
+
+    // Every check passed, so the page can be moved now.
+    BASE_ORDER.forEach(function (m) {
+      var el = document.getElementById('cvss-' + m);
+      if (el) el.value = chosen[m];
+    });
+    return { ok: true, ignored: ignored };
   }
 
   LabTool.define({
@@ -175,8 +302,20 @@
       var load = document.getElementById('tool-load');
       if (load) load.addEventListener('click', function () {
         var text = document.getElementById('tool-text').value;
-        if (parseVector(text)) render();
-        else { out.clear(); out.err('That does not look like a CVSS v3.1 vector string.'); }
+        var res = parseVector(text);
+        if (!res.ok) {
+          out.clear();
+          res.err.forEach(function (msg) { out.err(msg); });
+          return;
+        }
+        render();
+        if (res.ignored.length) {
+          // Printed after render() because render() clears the pane first.
+          out.line('');
+          out.warn('Ignored ' + res.ignored.join(', ') + '. Those are temporal or');
+          out.warn('environmental metrics; this calculator scores the base metrics');
+          out.warn('only, so the number above is the base score of that vector.');
+        }
       });
       render();
     }

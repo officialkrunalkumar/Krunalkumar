@@ -29,6 +29,15 @@
      in   { type: 'run', lang, code, stdin }
           { type: 'transpile', code }            (TypeScript -> JavaScript)
      out  { type: 'status',     text }           progress, shown in toolbar
+          { type: 'progress',   label, loaded, total, done }
+                                             byte counts for a multi-megabyte
+                                             download, so the page can draw a
+                                             real bar. total 0 means "size
+                                             unknown, show it indeterminate";
+                                             done true means "hide the bar".
+                                             Deliberately NOT a status message:
+                                             it fires four times a second and
+                                             the status line is a live region.
           { type: 'exec',       text }           the runtime is up and the
                                              program is about to run: the page
                                              restarts its watchdog clock here
@@ -272,6 +281,180 @@ async function runLua(code) {
 
 
 /* --------------------------------------------------------------------------
+   Download progress
+   --------------------------------------------------------------------------
+   A status line that never changes is fine for 700 KB of SQLite. It is not
+   fine for the clang toolchain: clang.wasm and lld.wasm are ~17 MB over the
+   wire between them, which is 30-65 seconds on a typical Indian 4G
+   connection, and for all of that time a static string is indistinguishable
+   from a page that has hung. So those two are read through a tapped stream
+   and the byte counts posted to the page, which draws a real bar.
+
+   Two figures are tracked per file, because they are not the same figure.
+   response.body hands over DECODED bytes; Content-Length reports what
+   actually crossed the wire, and these are served Brotli-compressed —
+   clang.wasm is 31 MB unpacked but ~10 MB on the wire. Counting decoded
+   bytes against Content-Length would sail past 100% in the first few
+   seconds. So the fraction is measured in decoded bytes (the only ones that
+   can be counted from here) and reported in wire bytes (the only ones the
+   visitor is actually waiting for).
+
+   Every part of this is optional by construction. No Content-Length, no
+   ReadableStream, an engine that will not build a Response from a stream —
+   each falls back to the plain fetch this file has always used. The readout
+   can be lost; the download cannot.
+   -------------------------------------------------------------------------- */
+
+/* Unpacked size of each module, read off the files in the repo. Only used to
+   convert decoded bytes into wire bytes for display, so a stale number here
+   costs a slightly wrong percentage and nothing else. */
+var CLANG_UNPACKED = { 'clang.wasm': 31214472, 'lld.wasm': 19490094 };
+
+var dl = null;   // the download being reported right now, or null for none
+
+function dlBegin(label, names, unpacked) {
+  dl = { label: label, files: {}, seen: 0, last: 0 };
+  names.forEach(function (name) {
+    dl.files[name] = { got: 0, wire: 0, unpacked: (unpacked && unpacked[name]) || 0 };
+  });
+  // Nothing is known yet, so this only asks the page to show the bar.
+  post({ type: 'progress', label: label, loaded: 0, total: 0 });
+}
+
+function dlEnd() {
+  if (!dl) return;
+  dl = null;
+  post({ type: 'progress', done: true });
+}
+
+function dlPost(force) {
+  if (!dl) return;
+  var now = Date.now();
+  // Four messages a second at most. A 10 MB body arrives in thousands of
+  // chunks and one postMessage per chunk would cost more than the download.
+  if (!force && now - dl.last < 250) return;
+  dl.last = now;
+
+  var names = Object.keys(dl.files);
+  var raw = 0, wireTotal = 0, unpackedTotal = 0;
+  var allWire = true, allUnpacked = true;
+  names.forEach(function (name) {
+    var f = dl.files[name];
+    raw += f.got;
+    if (f.wire > 0) wireTotal += f.wire; else allWire = false;
+    if (f.unpacked > 0) unpackedTotal += f.unpacked; else allUnpacked = false;
+  });
+
+  // Indeterminate until proven otherwise: bytes-so-far and no total. That is
+  // what the page gets when a header is missing, and it is still enough to
+  // answer the only question being asked — is anything still arriving?
+  var loaded = raw;
+  var total = 0;
+
+  // Only once every response has actually been seen. Measuring against half
+  // the files would draw a bar that reaches the end and then keeps going.
+  if (dl.seen === names.length) {
+    if (allWire) {
+      total = wireTotal;
+      loaded = 0;
+      names.forEach(function (name) {
+        var f = dl.files[name];
+        var frac = f.unpacked > 0 ? f.got / f.unpacked : f.got / f.wire;
+        loaded += f.wire * Math.min(1, frac);
+      });
+    } else if (allUnpacked) {
+      // No Content-Length anywhere — chunked, or a proxy stripped it. The
+      // known unpacked sizes still give an honest bar, just counted in
+      // unpacked megabytes rather than wire ones.
+      total = unpackedTotal;
+      loaded = Math.min(total, raw);
+    }
+  }
+
+  post({
+    type: 'progress', label: dl.label,
+    loaded: Math.round(loaded), total: Math.round(total)
+  });
+}
+
+/* Count the bytes of a response as they arrive, changing nothing the caller
+   can observe: same status, same headers — so the application/wasm type
+   survives and WebAssembly.compileStreaming still compiles while the module
+   downloads, which is the only thing that makes 31 MB bearable — and the same
+   streaming behaviour. Hands back the response untouched whenever the wrapping
+   cannot be done. */
+function tapResponse(response, name) {
+  if (!dl || !dl.files[name]) return response;
+  var f = dl.files[name];
+
+  var len = parseInt(response.headers.get('Content-Length'), 10);
+  f.wire = (isFinite(len) && len > 0) ? len : 0;
+  dl.seen++;
+  dlPost(true);
+
+  if (typeof ReadableStream === 'undefined' || typeof Response !== 'function' ||
+      !response.body || typeof response.body.getReader !== 'function') {
+    return response;   // nothing to tap; the download itself is unaffected
+  }
+
+  var reader = null;
+  try {
+    var tapped = new ReadableStream({
+      pull: function (controller) {
+        // Acquired here rather than up front: getReader() locks the body, and
+        // if either constructor below throws the ORIGINAL response still has
+        // to be usable. highWaterMark 0 means pull does not run until
+        // something reads, so a throw happens while the body is still free.
+        if (!reader) reader = response.body.getReader();
+        return reader.read().then(function (chunk) {
+          if (chunk.done) {
+            // Forced, because the throttle below would otherwise swallow the
+            // last update: a file that arrives inside one 250ms window — a
+            // service-worker cache hit, or a fast connection — would leave the
+            // bar showing the zero it started at for its whole lifetime.
+            dlPost(true);
+            controller.close();
+            return;
+          }
+          f.got += chunk.value.byteLength;
+          dlPost(false);
+          controller.enqueue(chunk.value);
+        }, function (err) {
+          // The connection dropped mid-body. Pass it on rather than
+          // swallowing it: the caller's own fallback and the page's failure
+          // banner are what handle this, and a silent close here would leave
+          // compileStreaming holding a truncated module.
+          controller.error(err);
+        });
+      },
+      cancel: function (reason) {
+        if (reader) { try { reader.cancel(reason); } catch (err) {} }
+      }
+    }, { highWaterMark: 0 });
+    return new Response(tapped, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers
+    });
+  } catch (err) {
+    // Building a Response from a JS stream is not universal. The original has
+    // not been read (see above), so it is still perfectly good.
+    return response;
+  }
+}
+
+/* fetch() plus byte counting, where the counting is strictly a side effect:
+   anything that goes wrong with it yields the plain response and the caller
+   never knows the difference. */
+function fetchTapped(url, name) {
+  return fetch(url).then(function (response) {
+    if (!response.ok) return response;   // an error page: hand it straight on
+    try { return tapResponse(response, name); }
+    catch (err) { return response; }
+  });
+}
+
+/* --------------------------------------------------------------------------
    C and C++ — a real clang, not an interpreter.
    --------------------------------------------------------------------------
    clang and lld are compiled to WebAssembly (the wasm-clang project). The
@@ -281,8 +464,12 @@ async function runLua(code) {
    standard library works here — <vector>, <string>, <algorithm>, templates,
    classes — where an interpreter would fall over.
 
-   It is also 58 MB, which is why nothing is fetched until the first Run and
-   why the browser's immutable cache matters so much afterwards.
+   It is also 58 MB unpacked — but about 19 MB over the wire, because every
+   one of these files is served Brotli-compressed. The wire figure is the one
+   worth quoting to a visitor: it is what they wait for. Either way it is why
+   nothing is fetched until the first Run, why the browser's immutable cache
+   matters so much afterwards, and why this is the one runtime that reports
+   its download byte by byte.
 
    `-x c` versus `-x c++` is threaded through deliberately: compiling C as C++
    silently changes its meaning, so /labs/c really does compile as C.
@@ -309,7 +496,10 @@ function makeClangWriter() {
 
 async function clangApi() {
   if (loaded.clang) return loaded.clang;
-  status('Downloading the clang toolchain (~58 MB, cached after this)…');
+  // Said before anything starts, not after. ~19 MB is half a minute or more
+  // on a phone, and a visitor who was never told that is watching a page that
+  // looks broken rather than one that is working.
+  status('First compile downloads about 19 MB of clang and lld, then it is cached…');
   importScripts(CLANG_DIR + 'shared.js');
   var api = new API({
     readBuffer: function (f) {
@@ -318,8 +508,12 @@ async function clangApi() {
     // The binaries are served as .wasm so the MIME type is application/wasm
     // and streaming compilation works — it matters at 31 MB. The fallback
     // covers hosts that mislabel the type, where compileStreaming throws.
+    //
+    // fetchTapped is fetch with a byte counter attached; it degrades to a
+    // plain fetch on its own whenever it cannot count, so this stays exactly
+    // as reliable as it was, and the fallback below is still the last word.
     compileStreaming: function (f) {
-      return WebAssembly.compileStreaming(fetch(CLANG_DIR + f)).catch(function () {
+      return WebAssembly.compileStreaming(fetchTapped(CLANG_DIR + f, f)).catch(function () {
         return fetch(CLANG_DIR + f)
           .then(function (r) { return r.arrayBuffer(); })
           .then(function (b) { return WebAssembly.compile(b); });
@@ -334,8 +528,25 @@ async function clangApi() {
   // pull them now so a failed download is reported as a failed download rather
   // than as an error in whatever the user happened to be compiling.
   if (typeof api.getModule === 'function') {
-    await api.getModule('clang.wasm');
-    await api.getModule('lld.wasm');
+    dlBegin('clang and lld', ['clang.wasm', 'lld.wasm'], CLANG_UNPACKED);
+    // The toolchain narrates every fetch through hostWrite ("> Fetching and
+    // compiling clang.wasm..."). Two of those running at once interleave
+    // character by character into one unreadable line, and the progress bar
+    // says the same thing far better. Muted only for the length of the
+    // prefetch and put straight back, because compileLinkRun's diagnostics —
+    // the output that actually matters — go through the same function.
+    var narrate = api.hostWrite;
+    api.hostWrite = function () {};
+    try {
+      // Two independent files, so there is no reason to wait for the first
+      // before starting the second: serially this was ~10 MB and then ~6 MB
+      // back to back, which on a slow connection is twice the wait for no
+      // benefit at all.
+      await Promise.all([api.getModule('clang.wasm'), api.getModule('lld.wasm')]);
+    } finally {
+      api.hostWrite = narrate;
+      dlEnd();
+    }
   }
   loaded.clang = api;
   return api;

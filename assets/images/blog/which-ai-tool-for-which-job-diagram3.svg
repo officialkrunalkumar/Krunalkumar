@@ -1,9 +1,8 @@
-<svg width="760" height="415" viewBox="0 0 760 415" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram3" xmlns="http://www.w3.org/2000/svg">
+<svg width="760" height="415" viewBox="0 0 760 415" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram3" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <title id="d-which-ai-tool-for-which-job-diagram3">How far each category's free tier carries you, longest first: automation almost never stops because you can self-host; meeting notes stop at team features; general chat stops at long sessions; coding stops at agent mode; images stop at licensing; research stops at deep research runs; slides stop when credits run dry; voice stops at commercial use; video stops almost immediately</title>
-                  <rect width="760" height="415" rx="18" fill="#1b2735"/>
-                  <text x="30" y="42" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" letter-spacing="2">HOW FAR THE FREE TIER CARRIES YOU</text>
-                  <line x1="190" y1="66" x2="190" y2="392" stroke="#475569" stroke-width="2"/>
-                  <g font-family="'Segoe UI',sans-serif" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="end">
+                  <text x="30" y="42" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2">HOW FAR THE FREE TIER CARRIES YOU</text>
+                  <line x1="190" y1="66" x2="190" y2="392" stroke="#6b7a90" stroke-width="2"/>
+                  <g font-size="14" font-weight="700" fill="#6b7a90" text-anchor="end">
                     <text x="178" y="93">Automation</text>
                     <text x="178" y="129">Meeting notes</text>
                     <text x="178" y="165">General chat</text>
@@ -14,7 +13,7 @@
                     <text x="178" y="345">Voice</text>
                     <text x="178" y="381">Video</text>
                   </g>
-                  <g fill="#7dd3fc">
+                  <g fill="#1e77a4">
                     <rect x="190" y="80" width="361" height="16" rx="4"/>
                     <rect x="190" y="116" width="304" height="16" rx="4"/>
                     <rect x="190" y="152" width="247" height="16" rx="4"/>
@@ -25,7 +24,7 @@
                     <rect x="190" y="332" width="76" height="16" rx="4"/>
                     <rect x="190" y="368" width="38" height="16" rx="4"/>
                   </g>
-                  <g font-family="'Segoe UI',sans-serif" font-size="13" font-weight="600" fill="#94a3b8">
+                  <g font-size="13" font-weight="600" fill="#64748b">
                     <text x="563" y="93">barely stops — self-host</text>
                     <text x="506" y="129">team features</text>
                     <text x="449" y="165">long sessions</text>

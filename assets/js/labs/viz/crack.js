@@ -469,7 +469,22 @@
         row.appendChild(b);
       })(PRESETS[i]);
     }
-    targetEl.parentNode.insertBefore(row, targetEl.nextSibling);
+    // The target input is wrapped in a <label>, whose accessible name is
+    // computed from ALL of its text content. Inserting the chips as siblings of
+    // the input — but still inside that label — would fold every button caption
+    // into the field's accessible name, so a screen-reader user would hear
+    // "Target password try a weak one: password 123456 qwerty…" as one blur.
+    // Climb out of any wrapping label(s) and drop the row *after* the label, as
+    // a sibling of it, so the for/wrapping association stays intact and the row
+    // still sits directly beneath the field exactly as before.
+    var anchor = targetEl;
+    var parent = anchor.parentNode;
+    while (parent && parent.nodeType === 1 && parent.tagName === 'LABEL') {
+      anchor = parent;
+      parent = anchor.parentNode;
+    }
+    if (!parent) return;
+    parent.insertBefore(row, anchor.nextSibling);
   }
 
   /* ======================================================================= *
