@@ -233,6 +233,83 @@
   transform: scale(1.01);
 }
 
+/* ---- Wide diagrams on a phone -------------------------------------------
+   A 1160x620 diagram scaled into a ~330px column renders its 15px labels at
+   about 4 CSS pixels, and pinch-zoom does not help: the SVG is sized by the
+   layout, so zooming enlarges the whole page and the text keeps its ratio to
+   everything around it. Below the breakpoint the figure becomes its own
+   horizontal scroller and the diagram is pinned to a width that keeps its
+   smallest label legible, so the reader pans the diagram instead of squinting
+   at it. The page itself never scrolls sideways — the overflow is on the
+   figure. Above the breakpoint nothing changes.
+
+   The link to the standalone .svg stays the real escape hatch: opened on its
+   own, the browser treats it as an image and native pinch-zoom works properly.
+   ------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .post-figure-wide > a {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    border-radius: 18px;
+    /* Room for the scrollbar so it never sits on top of the diagram. */
+    padding-bottom: 0.35rem;
+  }
+
+  /* Each diagram renders at its own natural width, so every label is exactly
+     the size it was drawn at. The diagrams here run 760 to 1221 CSS px wide
+     with 11-15px labels; scaled down to fit a ~293px column those land between
+     3.4 and 6.5px, which is why letting them shrink was never reading.
+
+     Two details that look arbitrary and are not:
+
+     `width: 100%` stays, and the widening is done with min-width. The obvious
+     `width: auto` breaks the layout reservation: an <img> that has not loaded
+     has no intrinsic size, so auto resolves to zero, the aspect-ratio implied
+     by the width/height attributes has nothing to multiply, and the figure
+     reserves 6px instead of ~600px — the diagram then lands with a huge shift.
+     A definite width keeps the box correct before the bytes arrive.
+
+     The width is pinned per diagram, keyed off the `width` attribute, rather
+     than with `min-width: max-content`. max-content looks like the elegant
+     answer — for a replaced element it is the intrinsic width — but measured
+     on a phone it does neither job: before load it resolved to 162px on a
+     1160-wide diagram (a 464px shift when the image arrived) and on the
+     1217/1221 diagrams it never widened past the 293px column at all.
+
+     So: one line per width actually in use. ADDING A DIAGRAM AT A NEW WIDTH
+     NEEDS A LINE HERE — without one it silently keeps the old scale-to-fit
+     behaviour, which is unreadable rather than broken. The widths below cover
+     every value currently present across the 22 figures: 760, 1100, 1160,
+     1217 and 1221. (The research chart is 920 and lives in main.css, not
+     here — no blog figure uses that width.) */
+  .post-figure-wide img[width="760"] { min-width: 760px; }
+  .post-figure-wide img[width="1100"] { min-width: 1100px; }
+  .post-figure-wide img[width="1160"] { min-width: 1160px; }
+  .post-figure-wide img[width="1217"] { min-width: 1217px; }
+  .post-figure-wide img[width="1221"] { min-width: 1221px; }
+
+  .post-figure-wide img,
+  .post-figure-wide svg {
+    max-width: none;
+    border-radius: 18px;
+  }
+
+  /* The caption carries the affordance, so the pan is discoverable without
+     a decorative overlay that would sit on top of the diagram. */
+  .post-figure-wide figcaption::after {
+    content: " \2194\FE0E  Swipe the diagram to pan.";
+    color: var(--accent);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-figure a img {
+    transition: none;
+  }
+}
+
 /* "In this article" jump-box (built by assets/js/blog-toc.js) */
 .post-toc {
   margin: 0 0 1.8rem;

@@ -20,7 +20,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 51 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `blog/`               | Blog — `/blog` index (17 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
+| `blog/`               | Blog — `/blog` index (19 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
@@ -44,7 +44,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── favicon.ico                   Favicon, served from the site root
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
-│   └── *.html                    One file per article (17 posts), static TOC in the markup
+│   └── *.html                    One file per article (19 posts), static TOC in the markup
 ├── sw.js                         Service worker — caches /assets/vendor only (see Labs)
 ├── labs/
 │   ├── index.html                Labs hub — language grid, OS grid, security tools, FAQ
@@ -72,7 +72,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 │   ├── js/404.js                 404 rocket flight-path & headline randomizer
 │   ├── data/certificates.json    Public record backing the /verify certificate lookup — update when issuing or revoking
 │   ├── images/                   Portrait, logo, certification badges, OG share images, research flowchart (SVG)
-│   ├── images/blog/              Blog post cover art (SVG) + og/ share images
+│   ├── images/blog/              Blog post cover art (`*-cover.svg`), extracted figure diagrams (`<slug>-diagram<N>.svg`) + og/ share images
 │   └── pdf/                      Resume
 ├── scripts/build.js              Deploy-time pass — strips CSS comments, dates sitemap <lastmod> from git, checks its own output. Runs on Vercel, never on the repo (see Deployment)
 ├── .well-known/security.txt      RFC 9116 security contact file
@@ -532,8 +532,11 @@ Shift with it:
    `--accent-dark` and does not shift with the surfaces). Only `background` declarations —
    never a `box-shadow` that happens to use the same numbers.
 3. The artwork, which is anchored to the same palette: the gradient stops in every
-   `*-cover.svg` under `assets/images/blog/` (15 today — count them, don't trust this number), and the inline `<svg>` figure panels inside blog posts
-   (`#1b2735`). `.post-cover` has no background of its own, so a cover left behind prints as a
+   `*-cover.svg` under `assets/images/blog/` (19 today — count them, don't trust this number), and the
+   `*-diagram<N>.svg` figure panels beside them (`#1b2735`, 18 today). Those diagrams were inline
+   in the posts until they were pulled out into files, so grep the SVGs, not the HTML —
+   `grep -rl '#1b2735' assets/images/blog/` is the honest list. `assets/images/research-flowchart.svg`
+   is a nineteenth panel and uses `#131928`, not `#1b2735`. `.post-cover` has no background of its own, so a cover left behind prints as a
    visibly darker rectangle against the page.
 4. The `theme-color` meta in all 89 chrome-bearing pages — it tracks `--bg-base`, since the mobile
    address bar sits flush above the page-tinted sticky header. Grep for the current hex rather than
@@ -574,7 +577,7 @@ crowding the raised surfaces even when you do shift them.
   paginates, the three network share links on a post are plain `<a>`s, and `#bg-canvas` carries the
   same gradient in CSS that `particle-bg.js` would paint. Adding a feature means asking what it
   degrades to. The labs are the honest exception — a WebAssembly runtime cannot run without a
-  script — so all 58 lab pages carry a `<noscript>` block (`.lab-noscript`, styled in `labs.css`)
+  script — so all 61 lab pages carry a `<noscript>` block (`.lab-noscript`, styled in `labs.css`)
   that says so plainly, explains that the work happens on the visitor's own machine which is why it
   cannot fall back to a server, and links to the blog, rather than presenting a dead editor.
 - The site is dark by default, with an **opt-in** light theme behind the header toggle. Light is
@@ -804,18 +807,13 @@ Four cards are deliberately excluded and keep what they have: `resume-maker` and
 (hand-made, and they show the actual product, which no generator can), `wish-generator` (purpose-made
 for the same reason), and `labs/index.html` (the hub, where `og-labs.jpg` is the correct image).
 
-Regenerate with `scripts/make-lab-og.py`:
-
-```bash
-python scripts/make-lab-og.py --apply
-```
-
-Without `--apply` it writes the images but leaves the HTML alone; pass a slug to do just one lab.
-It is **not part of the build** — Vercel only runs `node scripts/build.js` — and it is the single
-thing in this repository that needs something outside Node (`pip install Pillow`). That exception is
-deliberate: the site keeps its zero runtime dependencies, and this runs by hand about twice a year
-when a lab is added. It reads Segoe UI and Consolas from `C:/Windows/Fonts`, so adjust `F` at the top
-to run it on another platform.
+These were generated once by a throwaway Pillow script, which has been deleted — it was the only
+thing in the repository that needed anything outside Node, it ran by hand about twice a year, and it
+carried hardcoded Windows font paths. The images it produced are committed and are the artefact that
+matters. A new lab needs one 1200x630 card built the same way as its neighbours: dark `#121b2c`
+ground, the lab name in Segoe UI Semibold, the one-line description under it. Copy the closest
+existing `og-lab-*.jpg` and edit the text, or regenerate the set from `git log` if the script is
+ever wanted back.
 
 ## Labs (`/labs`)
 
@@ -917,17 +915,53 @@ Traversal, command injection and IDOR run against in-memory fakes. `hacklab.js` 
 
 Fifteen tools sharing one shell (`assets/js/labs/tool-shell.js`), each implemented as a single
 module under `assets/js/labs/tools/`. They carry no runtime download at all — every one is
-plain JavaScript plus `crypto.subtle`, so the whole suite adds about 130 KB to the repo and
-nothing to first load.
+plain JavaScript plus `crypto.subtle` (and, for `/labs/hash`, its own hash engines), so the
+suite adds nothing to first load — each module is fetched only by the page that uses it.
 
 The privacy claim here is stronger than it is for the compilers, and load-bearing: these tools
 take evidence files, production tokens, passwords, photographs and raw mail headers. None of the
 modules contains a `fetch`, an `XMLHttpRequest` or a `sendBeacon`. The only input path is
 `FileReader` over a file the visitor picked, and the only output path is a blob URL download.
 
+**`/labs/hash` is the one exception to the `FileReader` rule, and the reason there is no size
+limit on it.** `crypto.subtle.digest()` is one-shot — it takes the whole message as a single
+`ArrayBuffer` and no browser exposes an incremental version — so reading a file in and hashing
+it whole is the only thing WebCrypto can do. That is what forced the old 256 MB ceiling: the
+file was read into memory and the pure-JS MD5 then allocated a second padded copy of it, so
+peak memory was roughly twice the file and a phone handed a gigabyte simply died.
+
+Hashes do not need the whole message in memory, though — each one is a block function over a
+small fixed state. So the tool now carries its own incremental implementations in
+`assets/js/labs/tools/hash-engines.js` (MD5, SHA-1, SHA-256, SHA-384, SHA-512) and
+`hash-worker.js` streams the file past them in 4 MB chunks, off the main thread. Memory stays
+flat whatever the size; a 40 GB disk image is a progress bar rather than a crash.
+
+Two paths, because the JS engines are much slower than the browser's own code — measured in
+the worker on 20 MB: WebCrypto SHA-256 181 MB/s, the JS SHA-256 11.4 MB/s, JS SHA-512 4.9 MB/s,
+all five together 1.5 MB/s. So a file up to 256 MB is read whole and the SHA family goes
+through WebCrypto (MD5 stays on the JS engine, since WebCrypto has none); past that it streams.
+The threshold is a performance switch, **not** a rejection — and even the fast path now costs
+one copy of the file rather than two, because the MD5 no longer allocates a padded duplicate.
+Keyed runs over a *file* always stream, because WebCrypto cannot do HMAC-MD5 and the two paths
+would otherwise disagree about what they produce; a text-keyed HMAC stays on WebCrypto. The page
+shows HMAC-SHA-1/256/512 only, and the worker is asked for exactly those three.
+
+Hand-written hash code is worth nothing unless it is checked. All five were verified before
+shipping over 285 assertions — the published vectors (the empty string, `"abc"`, the 56- and
+112-byte strings that straddle each padding boundary, a million `a` characters), every one of them
+replayed through awkward chunk boundaries (1, 63, 64, 65, 127, 128, 129 bytes), and several
+megabytes cross-checked against Node's own `crypto`. The throwaway runner has been deleted;
+`hash-engines.js` carries the canonical digests in its header comment and a two-line recipe for
+re-checking against the browser's own WebCrypto. **Do that after any edit to it** — a wrong digest
+on a page that invites evidence files is worse than no digest at all.
+
+`tool-shell.js`'s `LabTool.onFile` grew an opt-in `raw: true` for this: with it the `File` is
+handed over unread, instead of being buffered into a `Uint8Array` first. `/labs/hash` is the
+only caller that passes it; every other tool keeps the read-it-all behaviour.
+
 | Route | What it does |
 |---|---|
-| `/labs/hash` | MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification. |
+| `/labs/hash` | MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification. **No file size limit** — see below. |
 | `/labs/file-inspector` | Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph. |
 | `/labs/jwt` | Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted. |
 | `/labs/exif` | Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy. |
@@ -945,9 +979,11 @@ modules contains a `fetch`, an `XMLHttpRequest` or a `sendBeacon`. The only inpu
 | `/labs/timestamp` | Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it. |
 
 All sixteen are listed on the hub under **Cybersecurity & digital forensics tools** and share the
-`SoftwareApplication` + `FAQPage` + `BreadcrumbList` schema emitted by the page generator. Their
-Open Graph card is `assets/images/og-labs-security.jpg`; the compilers and terminals use
-`assets/images/og-labs.jpg`.
+`SoftwareApplication` + `FAQPage` + `BreadcrumbList` schema emitted by the page generator.
+Every lab carries its own Open Graph card, `assets/images/og-lab-<slug>.jpg`; only the hub itself
+uses `assets/images/og-labs.jpg`. (The four per-category cards this once described —
+`og-labs-security`, `-network`, `-viz`, `-hacklab` — were superseded by the per-lab set and have
+been deleted; nothing referenced them.)
 
 Languages are ordered by the year each first appeared, and every registry entry carries its
 `year`, which the hub cards show. `/krun` and `/lab` redirect to `/labs`; `/linux` 301s to
@@ -1171,7 +1207,10 @@ move to separate storage.
 
 `new Worker(url)` uses a store the normal HTTP cache and a page reload do not touch, so a deployed
 fix can keep running the previous worker indefinitely. `lab-app.js` appends `?v=WORKER_VERSION` —
-bump it whenever `lab-worker.js` changes.
+bump it whenever `lab-worker.js` changes. There is a second one: `hash.js` carries its own
+`WORKER_VERSION` for `hash-worker.js`, and passes it through to the `importScripts` of
+`hash-engines.js` so the worker and its engines can never come from different builds. Bump that
+one whenever either of those two files changes.
 
 ### Never name a worker helper `out`
 

@@ -194,7 +194,10 @@ biodata makers, and it only ever builds a link out of the name typed into it.
   negotiation. Explains why a browser can never listen on a port the way netcat does. This is the one
   lab that opens a peer-to-peer connection; apart from it, the request-making tools listed above
   (DNS, email security, certificate transparency, RDAP, breach check and the API tester) and the
-  STUN lookup on the browser-leak page below, every tool in /labs runs entirely offline.
+  STUN lookup on the browser-leak page below, every tool in /labs runs entirely offline. One
+  caveat on the compilers: the pages themselves make no request for your code, but in the
+  JavaScript and TypeScript playgrounds the runtime IS the browser, so a program you paste in
+  can call fetch itself.
 
 ## What your browser leaks
 - [What your browser leaks](https://krunalkumar.dpdns.org/labs/leak): shows the public and local IP

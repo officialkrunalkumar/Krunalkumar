@@ -89,7 +89,7 @@
                         "name": "Can I import types from npm?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no package registry and no network access, so only the built-in lib definitions are available."
+                                "text": "No. There is no package registry wired up here, and the page's script-src policy refuses code fetched from a CDN, so only the built-in lib definitions are available."
                         }
                 },
                 {
@@ -227,7 +227,7 @@
                 <p class="lab-gate-h limits">What is not supported</p>
                 <ul class="lab-gate-list">
                   <li>Installing libraries or packages of any kind</li>
-                  <li>Network access from your program</li>
+                  <li>The DOM, and anything else that needs a page</li>
                   <li>Reading or writing files on your computer</li>
                   <li>Long-running, timing-sensitive or benchmark work</li>
                   <li>Anything beyond the standard library</li>
@@ -360,7 +360,9 @@
             <li><code>import</code> from npm packages or <code>@types</code> definitions</li>
             <li>Multiple files, project references or a <code>tsconfig.json</code></li>
             <li>Ambient Node.js types — there is no <code>process</code> or <code>require</code></li>
-            <li>Network calls, the DOM and the file system</li>
+            <li>The DOM and the file system. <code>fetch</code> is not in the default <code>lib</code>
+                either, so calling it is a type error &mdash; but that is the type-checker talking, not a
+                sandbox: an <code>any</code> cast still reaches the network at runtime</li>
             </ul>
           </article>
         </div>
@@ -431,7 +433,7 @@ console.log(area({ kind: "circle", r: 2 }).toFixed(2));</code></pre>
           </details>
           <details class="lab-faq">
             <summary>Can I import types from npm?</summary>
-            <div>No. There is no package registry and no network access, so only the built-in lib definitions are available.</div>
+            <div>No. There is no package registry wired up here, and the page's script-src policy refuses code fetched from a CDN, so only the built-in lib definitions are available.</div>
           </details>
           <details class="lab-faq">
             <summary>Does my TypeScript get uploaded anywhere?</summary>

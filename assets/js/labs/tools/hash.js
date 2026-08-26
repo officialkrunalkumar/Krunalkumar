@@ -1,86 +1,47 @@
 /* ==========================================================================
    hash.js — hashing, HMAC, verification and hash identification.
    --------------------------------------------------------------------------
-   SHA-1/256/384/512 and HMAC come from WebCrypto, so they are the browser's
-   own audited implementations rather than something reimplemented here.
+   Text is hashed with WebCrypto — the browser's own audited implementations.
+   Files are streamed through hash-engines.js instead, because WebCrypto
+   cannot hash anything it is not handed whole. See the note on size below.
 
    MD5 is not in WebCrypto — deliberately, because it is broken for anything
    security-critical — but forensics still runs into it constantly in old
-   evidence manifests and malware feeds, so a compact implementation is
-   included and clearly labelled as unsafe for integrity claims.
+   evidence manifests and malware feeds, so it ships here, clearly labelled
+   as unsafe for integrity claims.
 
-   Nothing is uploaded: the file is read with FileReader and hashed in this
-   tab. That is the difference between this and every other online hash tool,
-   and it is the entire reason it is safe to drop evidence into.
+   Nothing is uploaded: the file is read and hashed in this tab. That is the
+   difference between this and every other online hash tool, and it is the
+   entire reason it is safe to drop evidence into.
+
+   THERE IS NO FILE SIZE LIMIT, and that took work. crypto.subtle.digest() is
+   one-shot — it wants the whole message as a single ArrayBuffer — so the old
+   version read the file into memory with FileReader and then let a pure-JS MD5
+   allocate a second padded copy of it. Peak memory ran to roughly twice the
+   file size, which is why there used to be a 256 MB ceiling here.
+
+   Files now stream: hash-worker.js pulls the file through in 4 MB chunks and
+   feeds each chunk to five incremental engines (hash-engines.js), so memory
+   stays flat whatever the size and the main thread keeps painting. A 40 GB
+   disk image is a progress bar, not a crash.
+
+   Text and text-keyed HMAC still use WebCrypto, which is the browser's own
+   audited code and the right choice when the input is small enough to hold.
    ========================================================================== */
 
-/* global LabTool */
+/* global LabTool, HashEngines */
 (function () {
   'use strict';
 
-  var MAX = 256 * 1024 * 1024;   // beyond this the browser tab is the bottleneck
-
-  /* ---- MD5, because forensics data still uses it ------------------------ */
-  /* WebCrypto hashes off the main thread; this one cannot. Pure-JS MD5 runs at
-     roughly 40 MB/s, so a file at the 256 MB ceiling above is ~6 s of solid
-     main-thread work — the tab stops painting and stops answering clicks for
-     that whole stretch. Handing control back every 4 MB caps one uninterrupted
-     block at about 100 ms, below the point where a page reads as frozen, and
-     costs only ~64 timer round-trips even on the largest accepted file. */
-  var MD5_SLICE = 4 * 1024 * 1024;
-
-  function breathe() {
-    return new Promise(function (resolve) { setTimeout(resolve, 0); });
-  }
-
-  async function md5(bytes) {
-    function rl(n, c) { return (n << c) | (n >>> (32 - c)); }
-    function add(a, b) { return (a + b) & 0xffffffff; }
-    var S = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
-             5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
-             4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
-             6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
-    var K = [];
-    for (var i = 0; i < 64; i++) K[i] = (Math.abs(Math.sin(i + 1)) * 4294967296) | 0;
-
-    var len = bytes.length;
-    var withPad = new Uint8Array((((len + 8) >> 6) + 1) << 6);
-    withPad.set(bytes);
-    withPad[len] = 0x80;
-    var bitLen = len * 8;
-    var dv = new DataView(withPad.buffer);
-    dv.setUint32(withPad.length - 8, bitLen & 0xffffffff, true);
-    dv.setUint32(withPad.length - 4, Math.floor(bitLen / 4294967296), true);
-
-    var a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
-    var nextBreath = MD5_SLICE;
-    for (var chunk = 0; chunk < withPad.length; chunk += 64) {
-      if (chunk >= nextBreath) { await breathe(); nextBreath = chunk + MD5_SLICE; }
-      var M = new Uint32Array(16);
-      for (var j = 0; j < 16; j++) M[j] = dv.getUint32(chunk + j * 4, true);
-      var A = a0, B = b0, C = c0, D = d0;
-      for (var k = 0; k < 64; k++) {
-        var F, g;
-        if (k < 16)      { F = (B & C) | (~B & D);          g = k; }
-        else if (k < 32) { F = (D & B) | (~D & C);          g = (5 * k + 1) % 16; }
-        else if (k < 48) { F = B ^ C ^ D;                   g = (3 * k + 5) % 16; }
-        else             { F = C ^ (B | ~D);                g = (7 * k) % 16; }
-        F = add(add(add(F, A), K[k]), M[g]);
-        A = D; D = C; C = B;
-        B = add(B, rl(F, S[k]));
-      }
-      a0 = add(a0, A); b0 = add(b0, B); c0 = add(c0, C); d0 = add(d0, D);
-    }
-    var outBytes = new Uint8Array(16);
-    var odv = new DataView(outBytes.buffer);
-    odv.setUint32(0, a0, true); odv.setUint32(4, b0, true);
-    odv.setUint32(8, c0, true); odv.setUint32(12, d0, true);
-    return LabTool.toHex(outBytes);
-  }
-
-  async function webHash(name, bytes) {
-    var digest = await crypto.subtle.digest(name, bytes);
-    return LabTool.toHex(new Uint8Array(digest));
+  /* ---- MD5 -------------------------------------------------------------
+     Not in WebCrypto — deliberately, because it is broken for anything
+     security-critical — but forensics runs into it constantly in old evidence
+     manifests, so it comes from hash-engines.js along with the streaming
+     implementations, rather than being written a second time here. */
+  function md5(bytes) {
+    var h = HashEngines.create('md5');
+    h.update(bytes);
+    return h.digest();
   }
 
   /* ---- hash identification --------------------------------------------- */
@@ -111,28 +72,123 @@
 
   /* ---------------------------------------------------------------------- */
   var out = LabTool.out('tool-out');
-  var lastBytes = null;
+  var lastFile = null;
   var lastName = '';
 
   function encoder(text) { return new TextEncoder().encode(text); }
 
-  async function hashAll(bytes, label) {
-    out.clear();
-    out.heading(label);
-    out.row('size', LabTool.humanBytes(bytes.length) + '  (' + bytes.length + ' bytes)');
-    out.rule();
+  async function webHash(algo, bytes) {
+    var digest = await crypto.subtle.digest(algo, bytes);
+    return LabTool.toHex(new Uint8Array(digest));
+  }
 
-    // Hashed once and held, not re-hashed for the verification block below.
-    // Recomputing all five doubled the work on every file with an expected
-    // digest pasted in — the exact case where the file tends to be large.
-    var digests = {
-      md5: await md5(bytes),
-      sha1: await webHash('SHA-1', bytes),
-      sha256: await webHash('SHA-256', bytes),
-      sha384: await webHash('SHA-384', bytes),
-      sha512: await webHash('SHA-512', bytes)
+  /* ---- the streaming worker ---------------------------------------------
+     Created on first use rather than at load, so a visitor who only ever
+     pastes text never pays for it. If a second file arrives while one is still
+     hashing, the worker is terminated outright rather than queued: the first
+     result is not wanted any more, and a multi-gigabyte hash left running in
+     the background would keep a core busy for minutes after the visitor moved
+     on. */
+  var worker = null;
+
+  /* Bumped whenever hash-worker.js or hash-engines.js changes. `new Worker(url)`
+     is fetched under its own URL, so without a version in the query a visitor
+     can keep running the previous build's worker for as long as the cached copy
+     lives. lab-app.js does the same thing for lab-worker.js, and README says to
+     — this file has to obey the same rule, more so than most, because what a
+     stale worker here produces is a wrong digest rather than a stale pixel.
+     The value rides along to the importScripts() inside the worker too. */
+  var WORKER_VERSION = '2026-08-26-1';
+
+  /* Every run gets a number. A worker that is torn down mid-hash can still have
+     a 'done' message in flight, and without this the digests from a file the
+     visitor already replaced would render over the top of the current run. */
+  var runToken = 0;
+
+  /* Thrown into a run that has been replaced. terminate() guarantees the
+     worker's onmessage and onerror never fire again, so without settling the
+     old promise here it would stay pending forever, holding its File and its
+     progress-line closure. run() swallows this one value and nothing else. */
+  var SUPERSEDED = { superseded: true };
+  var pendingAbort = null;
+
+  function stopWorker() {
+    if (pendingAbort) {
+      var abort = pendingAbort;
+      pendingAbort = null;
+      abort(SUPERSEDED);
+    }
+    if (worker) { worker.terminate(); worker = null; }
+  }
+
+  function streamFile(file, hmacKeyBytes, onProgress, algs) {
+    var token = ++runToken;
+    return new Promise(function (resolve, reject) {
+      stopWorker();
+      try {
+        worker = new Worker('/assets/js/labs/tools/hash-worker.js?v=' + WORKER_VERSION);
+      } catch (err) {
+        reject(new Error('This browser would not start the background worker, ' +
+          'so a file cannot be hashed here. Text mode still works.'));
+        return;
+      }
+      pendingAbort = reject;
+      function settle(fn, value) {
+        pendingAbort = null;   // cleared first: stopWorker() would fire it
+        stopWorker();
+        if (token !== runToken) return;   // superseded by a newer run
+        fn(value);
+      }
+      worker.onmessage = function (event) {
+        var data = event.data || {};
+        if (data.type === 'progress') {
+          if (token === runToken && onProgress) onProgress(data.loaded, data.total);
+        } else if (data.type === 'done') {
+          settle(resolve, data);
+        } else if (data.type === 'error') {
+          settle(reject, new Error(data.message));
+        } else if (data.type === 'cancelled') {
+          settle(reject, SUPERSEDED);
+        }
+      };
+      worker.onerror = function () {
+        settle(reject, new Error('The hashing worker stopped unexpectedly.'));
+      };
+      worker.postMessage({
+        op: 'file',
+        file: file,
+        algs: algs || HashEngines.names,
+        hmacKey: hmacKeyBytes || null,
+        version: WORKER_VERSION
+      });
+    });
+  }
+
+  /* A live progress line appended straight to the output node rather than
+     through out.line(), deliberately: out.line() feeds the aria-live announcer,
+     and a screen reader reciting a percentage several times a second is
+     unusable. The figure is rewritten inside one span, so assistive tech sees a
+     single quiet element and the announcer stays free for the result. */
+  function progressLine() {
+    var span = document.createElement('span');
+    span.className = 't-dim';
+    out.node.appendChild(span);
+    var lastPct = -1;
+    return {
+      update: function (loaded, total) {
+        var pct = total ? Math.floor((loaded / total) * 100) : 0;
+        if (pct === lastPct) return;
+        lastPct = pct;
+        span.textContent = 'hashing               ' + pct + '%  (' +
+          LabTool.humanBytes(loaded) + ' of ' + LabTool.humanBytes(total) + ')\n';
+      },
+      done: function () {
+        if (span.parentNode) span.parentNode.removeChild(span);
+      }
     };
+  }
 
+  function reportDigests(digests) {
     out.row('MD5', digests.md5, 't-warn');
     out.row('SHA-1', digests.sha1, 't-warn');
     out.row('SHA-256', digests.sha256, 't-ok');
@@ -149,15 +205,49 @@
     out.rule();
     var matched = Object.keys(digests).filter(function (k) { return digests[k] === expected; });
     if (matched.length) {
-      out.ok('MATCH — the ' + matched.join('/').toUpperCase() + ' digest is identical.');
+      out.ok('MATCH \u2014 the ' + matched.join('/').toUpperCase() + ' digest is identical.');
     } else {
-      out.err('NO MATCH — none of the digests above equal the expected value.');
+      out.err('NO MATCH \u2014 none of the digests above equal the expected value.');
       var guess = identify(expected);
       if (guess) out.dim('The value you pasted looks like: ' + guess);
     }
   }
 
-  async function hmac(bytes, keyText, algo) {
+  /* Text is small by definition, so it is hashed whole with WebCrypto. */
+  async function hashText(bytes, label) {
+    out.clear();
+    out.heading(label);
+    out.row('size', LabTool.humanBytes(bytes.length) + '  (' + bytes.length + ' bytes)');
+    out.rule();
+    var digests = {
+      md5: md5(bytes),
+      sha1: await webHash('SHA-1', bytes),
+      sha256: await webHash('SHA-256', bytes),
+      sha384: await webHash('SHA-384', bytes),
+      sha512: await webHash('SHA-512', bytes)
+    };
+    reportDigests(digests);
+  }
+
+  /* Files are streamed. There is no size limit. */
+  async function hashFile(file, label) {
+    out.clear();
+    out.heading(label);
+    out.row('size', LabTool.humanBytes(file.size) + '  (' + file.size + ' bytes)');
+    out.rule();
+    var progress = progressLine();
+    progress.update(0, file.size);
+    try {
+      var result = await streamFile(file, null, progress.update);
+      progress.done();
+      reportDigests(result.digests);
+    } catch (err) {
+      progress.done();
+      throw err;
+    }
+  }
+
+  async function hmacText(bytes, keyText, algo) {
     var key = await crypto.subtle.importKey(
       'raw', encoder(keyText), { name: 'HMAC', hash: algo }, false, ['sign']);
     var sig = await crypto.subtle.sign('HMAC', key, bytes);
@@ -168,26 +258,51 @@
     var mode = document.getElementById('tool-mode').value;
     var text = document.getElementById('tool-text').value;
 
+    /* Whatever is still hashing belongs to a request the visitor has moved on
+       from — switching to text mode, or picking another file. Drop it here so
+       a gigabyte-sized run does not keep a core busy for minutes behind a
+       result nobody is waiting for. */
+    stopWorker();
+
     try {
       if (mode === 'text') {
         if (!text) { out.clear().warn('Type or paste some text first.'); return; }
-        await hashAll(encoder(text), 'Text — ' + text.length + ' characters');
+        await hashText(encoder(text), 'Text \u2014 ' + text.length + ' characters');
       } else if (mode === 'file') {
-        if (!lastBytes) { out.clear().warn('Choose or drop a file first.'); return; }
-        await hashAll(lastBytes, lastName);
+        if (!lastFile) { out.clear().warn('Choose or drop a file first.'); return; }
+        await hashFile(lastFile, lastName);
       } else if (mode === 'hmac') {
         var key = document.getElementById('tool-key').value;
         if (!key) { out.clear().warn('An HMAC needs a key.'); return; }
-        var data = lastBytes || encoder(text);
         out.clear();
-        out.heading('HMAC — ' + (lastBytes ? lastName : 'text input'));
+        out.heading('HMAC \u2014 ' + (lastFile ? lastName : 'text input'));
         out.row('key length', key.length + ' characters');
         out.rule();
-        out.row('HMAC-SHA-1', await hmac(data, key, 'SHA-1'), 't-warn');
-        out.row('HMAC-SHA-256', await hmac(data, key, 'SHA-256'), 't-ok');
-        out.row('HMAC-SHA-512', await hmac(data, key, 'SHA-512'));
+        if (lastFile) {
+          /* Same streaming path: HMAC is H(opad || H(ipad || message)), and the
+             inner hash takes the message incrementally, so a keyed digest of a
+             40 GB file costs no more memory than an unkeyed one. */
+          var progress = progressLine();
+          progress.update(0, lastFile.size);
+          try {
+            var result = await streamFile(lastFile, encoder(key), progress.update,
+              ['sha1', 'sha256', 'sha512']);   // the three this page displays
+            progress.done();
+            out.row('HMAC-SHA-1', result.digests.sha1, 't-warn');
+            out.row('HMAC-SHA-256', result.digests.sha256, 't-ok');
+            out.row('HMAC-SHA-512', result.digests.sha512);
+          } catch (err) {
+            progress.done();
+            throw err;
+          }
+        } else {
+          var data = encoder(text);
+          out.row('HMAC-SHA-1', await hmacText(data, key, 'SHA-1'), 't-warn');
+          out.row('HMAC-SHA-256', await hmacText(data, key, 'SHA-256'), 't-ok');
+          out.row('HMAC-SHA-512', await hmacText(data, key, 'SHA-512'));
+        }
         out.rule();
-        out.dim('HMAC proves both integrity and that the sender held the key —');
+        out.dim('HMAC proves both integrity and that the sender held the key \u2014');
         out.dim('a plain hash proves only integrity.');
       } else if (mode === 'identify') {
         var guess = identify(text);
@@ -199,14 +314,16 @@
           out.row('likely', guess, 't-ok');
           out.rule();
           out.dim('Length alone cannot separate algorithms that share a digest');
-          out.dim('size — MD5 and NTLM are both 32 hex characters, and nothing');
+          out.dim('size \u2014 MD5 and NTLM are both 32 hex characters, and nothing');
           out.dim('in the value itself distinguishes them. Context does.');
         } else {
           out.err('No match. It may be truncated, salted, or an encoding rather');
-          out.err('than a hash — try the encoding tool if it looks like base64.');
+          out.err('than a hash \u2014 try the encoding tool if it looks like base64.');
         }
       }
     } catch (err) {
+      /* A newer run replaced this one and owns the output pane now. */
+      if (err === SUPERSEDED) return;
       out.clear().err('Failed: ' + (err && err.message ? err.message : err));
     }
   }
@@ -226,9 +343,12 @@
       document.getElementById('tool-mode').addEventListener('change', syncMode);
       syncMode();
       LabTool.onFile({
-        dropId: 'tool-drop', inputId: 'tool-file', maxBytes: MAX,
+        /* raw: the worker streams the file, so it must NOT be read into
+           memory here. maxBytes is deliberately absent — there is no
+           ceiling any more; see the note at the top of this file. */
+        dropId: 'tool-drop', inputId: 'tool-file', raw: true,
         onFile: function (bytes, file) {
-          lastBytes = bytes;
+          lastFile = file;
           lastName = file.name + '  (' + LabTool.humanBytes(file.size) + ')';
           document.getElementById('tool-dropname').textContent = file.name;
           run();

@@ -591,14 +591,23 @@ const LLMS_COUNT_RULES = [
   ]],
 ];
 
-/* Labs entries in the search index, without re-parsing the index: every
-   labs/*.html maps to a /labs URL and the sandboxed guestbook document is the
-   only labs file the index excludes, so counting the files IS counting the
-   index's Labs section — checked against the generated JSON when this was
-   written (62 both ways). */
+/* How many labs there actually are, i.e. how many cards the hub lists: 62.
+
+   TWO files under labs/ are not labs and both have to come off the count.
+   `index.html` is the hub itself — it lists the labs, it is not one of them —
+   and `hacklab-guestbook.html` is the sandboxed document loaded inside
+   HackLab's iframe, which is noindex and reachable from nowhere.
+
+   This used to drop only the guestbook and published 63, while colophonFacts()
+   below dropped only the hub and also published 63. Each had exactly half the
+   filter, so the two disagreed with the hub and agreed with each other, which
+   is the hardest kind of wrong number to notice. There is now one definition
+   and colophonFacts() calls it. */
+const NON_LAB_FILES = new Set(['index.html', 'hacklab-guestbook.html']);
+
 function labPageCount(root) {
   return walkFiles(path.join(root, 'labs'), (f) => f.endsWith('.html'))
-    .filter((f) => path.basename(f) !== 'hacklab-guestbook.html').length;
+    .filter((f) => !NON_LAB_FILES.has(path.basename(f))).length;
 }
 
 function doLlmsCounts(indexStats, root) {
@@ -1121,7 +1130,9 @@ function walkFiles(dir, test, acc) {
 function colophonFacts(pages) {
   const facts = {};
   facts.pages = String(pages);
-  facts.labs = String(fs.readdirSync(path.join(ROOT, 'labs')).filter((f) => f.endsWith('.html') && f !== 'index.html').length);
+  /* Same count the llms.txt facts use — one definition, so the colophon and
+     the AI-facing files can never quote different numbers again. */
+  facts.labs = String(labPageCount(ROOT));
   facts.posts = String(fs.readdirSync(path.join(ROOT, 'blog')).filter((f) => f.endsWith('.html') && f !== 'index.html').length);
 
   /* Scripts I wrote. assets/js/vendor is skipped by walkFiles, and so is

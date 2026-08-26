@@ -65,7 +65,7 @@
                         "name": "Is my file uploaded when I hash it?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. The file is read with the browser FileReader API and hashed in the page. There is no server in this tool, and no request carrying your data is ever made - open the Network tab and you will see nothing leave while you use it. (The page itself loads analytics, like every page on this site; that is a pageview, and it never contains your input.)"
+                                "text": "No. The file is read straight off your disk by the browser and hashed in a Web Worker in this tab. There is no server in this tool, and no request carrying your data is ever made - open the Network tab and you will see nothing leave while you use it. (The page itself loads analytics, like every page on this site; that is a pageview, and it never contains your input.)"
                         }
                 },
                 {
@@ -89,7 +89,7 @@
                         "name": "What is the largest file I can hash?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The limit here is 512 MB. Above that the browser tab starts to struggle, since the work happens on your processor rather than a server."
+                                "text": "There is no limit. Up to 256 MB the file is read in one piece and handed to the browser's own hash implementations, which are around sixteen times faster; past that it is streamed on a background thread in fixed-size pieces, so the memory used stays flat however big it gets. Nothing is uploaded either way, so a large file costs you time on your own processor rather than bandwidth."
                         }
                 },
                 {
@@ -97,7 +97,7 @@
                         "name": "Does this work offline?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. Once the page has loaded it needs no network at all, and it stays in your browser cache, so it works on a disconnected machine."
+                                "text": "Text mode does, as soon as the page has loaded. Hashing a file fetches one small background script the first time you do it, so do that once while you are connected; after that it is served from your browser cache and works disconnected."
                         }
                 }
         ]
@@ -196,7 +196,7 @@
           <li>MD5, SHA-1, SHA-256, SHA-384, SHA-512</li>
           <li>HMAC with any key</li>
           <li>Verify against an expected value</li>
-          <li>Files up to 512&nbsp;MB</li>
+          <li>Files of any size</li>
           <li>Nothing uploaded</li>
         </ul>
       </section>
@@ -229,7 +229,7 @@
                 <ul class="lab-gate-list">
                   <li>No uploads &mdash; there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>Large files are capped so the page stays responsive</li>
+                  <li>No server to borrow speed from &mdash; there is no size limit, but a multi-gigabyte file is minutes of work on your own processor</li>
                   <li>No lookups against any external database</li>
                 </ul>
               </div>
@@ -277,7 +277,7 @@
                  aria-label="Choose a file, or drag one here">
               <p class="lab-drop-icon" aria-hidden="true">&#8681;</p>
               <p class="lab-drop-main">Drop a file here, or click to choose</p>
-              <p class="lab-drop-hint">Up to 512 MB. Large files are read in chunks.</p>
+              <p class="lab-drop-hint">Any size. Large files are streamed in pieces, and nothing is uploaded.</p>
               <p class="lab-drop-name" id="tool-dropname"></p>
               <!-- tabindex="-1": .sr-only is a clip recipe, not display:none, so this
                    input stayed focusable INSIDE the role="button" drop
@@ -336,7 +336,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is my file uploaded when I hash it?</summary>
-            <div>No. The file is read with the browser FileReader API and hashed in the page. There is no server in this tool, and no request carrying your data is ever made - open the Network tab and you will see nothing leave while you use it. (The page itself loads analytics, like every page on this site; that is a pageview, and it never contains your input.)</div>
+            <div>No. The file is read straight off your disk by the browser and hashed in a Web Worker in this tab. There is no server in this tool, and no request carrying your data is ever made - open the Network tab and you will see nothing leave while you use it. (The page itself loads analytics, like every page on this site; that is a pageview, and it never contains your input.)</div>
           </details>
           <details class="lab-faq">
             <summary>Which hash should I use?</summary>
@@ -348,11 +348,11 @@
           </details>
           <details class="lab-faq">
             <summary>What is the largest file I can hash?</summary>
-            <div>The limit here is 512 MB. Above that the browser tab starts to struggle, since the work happens on your processor rather than a server.</div>
+            <div>There is no limit. Up to 256 MB the file is read in one piece and handed to the browser's own hash implementations, which are around sixteen times faster; past that it is streamed on a background thread in fixed-size pieces, so the memory used stays flat however big it gets. Nothing is uploaded either way, so a large file costs you time on your own processor rather than bandwidth.</div>
           </details>
           <details class="lab-faq">
             <summary>Does this work offline?</summary>
-            <div>Yes. Once the page has loaded it needs no network at all, and it stays in your browser cache, so it works on a disconnected machine.</div>
+            <div>Text mode does, as soon as the page has loaded. Hashing a file fetches one small background script the first time you do it, so do that once while you are connected; after that it is served from your browser cache and works disconnected.</div>
           </details>
       </section>
 
@@ -464,6 +464,9 @@
     <script src="/assets/js/particle-bg.js" defer></script>
     <script defer src="/assets/js/labs/lab-copy.js"></script>
     <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <!-- Before hash.js: it calls HashEngines for MD5, and the worker it starts
+         loads the same file with importScripts. Both are defer, so order holds. -->
+    <script defer src="/assets/js/labs/tools/hash-engines.js"></script>
     <script defer src="/assets/js/labs/tools/hash.js"></script>
     <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
   </body>

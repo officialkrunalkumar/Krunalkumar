@@ -16,7 +16,11 @@
     .allow { fill: rgba(74, 222, 128, 0.10); stroke: rgba(74, 222, 128, 0.7); stroke-width: 1.5; }
   </style>
 
-  <rect x="0" y="0" width="920" height="700" rx="18" fill="#131928" opacity="0.55" />
+  <!-- Opaque, not 0.55: the figure is now also opened on its own to be read at
+       full size, and a translucent ground over the browser's white page took
+       the #e2e8f0 label text down to about 3.2:1. Solid, it is ~14:1, and on
+       the dark page it sits within a shade of the colour it replaced. -->
+  <rect x="0" y="0" width="920" height="700" rx="18" fill="#131928" />
 
   <!-- Start -->
   <rect x="340" y="18" width="240" height="44" rx="22" class="process" />

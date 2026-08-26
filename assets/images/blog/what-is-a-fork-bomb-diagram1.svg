@@ -1,0 +1,13 @@
+<svg width="760" height="260" viewBox="0 0 760 260" role="img" aria-labelledby="d-what-is-a-fork-bomb-diagram1" xmlns="http://www.w3.org/2000/svg">
+  <title id="d-what-is-a-fork-bomb-diagram1">Chart showing exponential process growth: 1, 2, 4, 8, 16, 32 processes per generation</title>
+  <rect width="760" height="260" rx="18" fill="#1b2735"/>
+  <text x="30" y="40" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="16" font-weight="800" letter-spacing="2">EXPONENTIAL GROWTH PER GENERATION</text>
+  <g font-family="'Segoe UI',sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#e2e8f0">
+    <rect x="50" y="200" width="70" height="20" fill="#38bdf8"/><text x="85" y="240">1</text>
+    <rect x="160" y="185" width="70" height="35" fill="#38bdf8"/><text x="195" y="240">2</text>
+    <rect x="270" y="160" width="70" height="60" fill="#38bdf8"/><text x="305" y="240">4</text>
+    <rect x="380" y="120" width="70" height="100" fill="#38bdf8"/><text x="415" y="240">8</text>
+    <rect x="490" y="70" width="70" height="150" fill="#7dd3fc"/><text x="525" y="240">16</text>
+    <rect x="600" y="40" width="70" height="180" fill="#7dd3fc"/><text x="635" y="240">32…</text>
+  </g>
+</svg>

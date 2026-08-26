@@ -78,10 +78,10 @@
                 },
                 {
                         "@type": "Question",
-                        "name": "Why can I not use fetch or the DOM?",
+                        "name": "Can I use fetch or the DOM?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Your code runs inside a Web Worker, which has no access to the page and, by our design, no network access. That isolation is what makes it safe to run arbitrary code."
+                                "text": "The DOM, no — a Web Worker has no document or window, which is also why your code cannot reach this page. fetch and XMLHttpRequest do work: the Worker still runs inside your browser, so a program can reach the network just as one typed into the console could. This page never sends your code anywhere, but treat something you pasted from elsewhere the way you would treat running it in your own console."
                         }
                 },
                 {
@@ -89,7 +89,7 @@
                         "name": "Can I use npm packages?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Installing packages needs a registry and a network connection, neither of which exists here. Everything must be self-contained in the single file you write."
+                                "text": "No. There is no registry wired up, and the page's script-src policy refuses code fetched from a CDN, so there is nothing for an import to resolve against. Everything must be self-contained in the single file you write."
                         }
                 },
                 {
@@ -235,7 +235,7 @@
                 <p class="lab-gate-h limits">What is not supported</p>
                 <ul class="lab-gate-list">
                   <li>Installing libraries or packages of any kind</li>
-                  <li>Network access from your program</li>
+                  <li>The DOM, and anything else that needs a page</li>
                   <li>Reading or writing files on your computer</li>
                   <li>Long-running, timing-sensitive or benchmark work</li>
                   <li>Anything beyond the standard library</li>
@@ -360,13 +360,13 @@
             <li>Built-ins: <code>Map</code>, <code>Set</code>, <code>Promise</code>, <code>BigInt</code>, <code>Intl</code>, <code>JSON</code>, <code>RegExp</code></li>
             <li><code>setTimeout</code> and other timers — output keeps streaming after the main script ends</li>
             <li>Recursion, typed arrays and heavy numeric work</li>
+            <li><code>fetch</code> and <code>XMLHttpRequest</code> — a Worker can still reach the network</li>
             </ul>
           </article>
           <article class="info-card">
             <h3>Does not work here</h3>
             <ul class="lab-gate-list">
             <li><code>npm install</code> and <code>import</code> from a package registry</li>
-            <li><code>fetch</code>, <code>XMLHttpRequest</code> and WebSockets — there is no network access</li>
             <li>The DOM: there is no <code>document</code> or <code>window</code> inside a Worker</li>
             <li>Reading or writing files on your computer</li>
             <li>Node.js APIs such as <code>fs</code>, <code>path</code> or <code>process</code></li>
@@ -443,12 +443,12 @@ risky(); // uncaught</code></pre>
             <div>No. Your program is turned into a Blob and handed to a Web Worker inside the same tab. No request carrying your code is ever made — you can confirm it in the Network tab.</div>
           </details>
           <details class="lab-faq">
-            <summary>Why can I not use fetch or the DOM?</summary>
-            <div>Your code runs inside a Web Worker, which has no access to the page and, by our design, no network access. That isolation is what makes it safe to run arbitrary code.</div>
+            <summary>Can I use fetch or the DOM?</summary>
+            <div>The DOM, no — a Web Worker has no document or window, which is also why your code cannot reach this page. fetch and XMLHttpRequest do work: the Worker still runs inside your browser, so a program can reach the network just as one typed into the console could. This page never sends your code anywhere, but treat something you pasted from elsewhere the way you would treat running it in your own console.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use npm packages?</summary>
-            <div>No. Installing packages needs a registry and a network connection, neither of which exists here. Everything must be self-contained in the single file you write.</div>
+            <div>No. There is no registry wired up, and the page's script-src policy refuses code fetched from a CDN, so there is nothing for an import to resolve against. Everything must be self-contained in the single file you write.</div>
           </details>
           <details class="lab-faq">
             <summary>What happens if I write an infinite loop?</summary>

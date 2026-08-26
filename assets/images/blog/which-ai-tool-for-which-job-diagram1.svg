@@ -1,0 +1,19 @@
+<svg width="760" height="265" viewBox="0 0 760 265" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram1" xmlns="http://www.w3.org/2000/svg">
+  <title id="d-which-ai-tool-for-which-job-diagram1">How often a job repeats decides the tool: once means a free generalist, weekly means a paid specialist, daily or a hundred times a month means building a workflow</title>
+                  <rect width="760" height="265" rx="18" fill="#1b2735"/>
+                  <text x="30" y="42" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" letter-spacing="2">HOW OFTEN IT REPEATS DECIDES THE TOOL</text>
+                  <g font-family="'Segoe UI',sans-serif" font-size="15" font-weight="700">
+                    <rect x="30" y="75" width="190" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+                    <text x="125" y="100" fill="#e2e8f0" text-anchor="middle">Once</text>
+                    <rect x="30" y="135" width="190" height="40" rx="12" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+                    <text x="125" y="160" fill="#e2e8f0" text-anchor="middle">Weekly</text>
+                    <rect x="30" y="195" width="190" height="40" rx="12" fill="#7dd3fc"/>
+                    <text x="125" y="220" fill="#131f2d" text-anchor="middle">100× a month</text>
+                    <g stroke="#475569" stroke-width="3">
+                      <path d="M 228 95 L 268 95"/><path d="M 228 155 L 268 155"/><path d="M 228 215 L 268 215"/>
+                    </g>
+                    <text x="280" y="100" fill="#e2e8f0">A free generalist. Don't buy anything.</text>
+                    <text x="280" y="160" fill="#e2e8f0">Pay for the specialist that owns the job.</text>
+                    <text x="280" y="220" fill="#7dd3fc" font-weight="800">Stop shopping. Build a workflow.</text>
+                  </g>
+                </svg>

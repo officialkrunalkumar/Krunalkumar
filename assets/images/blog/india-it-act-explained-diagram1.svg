@@ -1,0 +1,65 @@
+<svg width="1160" height="460" viewBox="0 0 1160 460" role="img" aria-labelledby="d-india-it-act-explained-diagram1" xmlns="http://www.w3.org/2000/svg">
+  <title id="d-india-it-act-explained-diagram1">Timeline of Indian IT law: IT Act 2000, the 2008 Amendment, SPDI Rules 2011, the Shreya Singhal judgment of 2015, IT Rules 2021, CERT-In Directions 2022, the DPDP Act 2023, and the DPDP Rules 2025</title>
+  <rect width="1160" height="460" rx="18" fill="#1b2735"/>
+  <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">TWENTY-FIVE YEARS OF INDIAN IT LAW</text>
+  <line x1="60" y1="230" x2="1100" y2="230" stroke="#334155" stroke-width="3"/>
+  <g font-family="'Segoe UI',sans-serif" text-anchor="middle">
+    <!-- 2000: IT Act (above) -->
+    <text x="105" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Act 2000</text>
+    <text x="105" y="157" fill="#94a3b8" font-size="15">E-records and</text>
+    <text x="105" y="179" fill="#94a3b8" font-size="15">e-signatures valid</text>
+    <line x1="105" y1="190" x2="105" y2="210" stroke="#7dd3fc" stroke-width="2"/>
+    <rect x="63" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
+    <text x="105" y="235" fill="#131f2d" font-size="16" font-weight="800">2000</text>
+    <!-- 2008: Amendment (below) -->
+    <rect x="203" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
+    <text x="245" y="235" fill="#131f2d" font-size="16" font-weight="800">2008</text>
+    <line x1="245" y1="250" x2="245" y2="270" stroke="#a855f7" stroke-width="2"/>
+    <text x="245" y="295" fill="#f8fafc" font-size="17" font-weight="800">Amendment Act</text>
+    <text x="245" y="320" fill="#94a3b8" font-size="15">66-family, s. 69,</text>
+    <text x="245" y="342" fill="#94a3b8" font-size="15">safe harbour</text>
+    <!-- 2011: SPDI (above) -->
+    <text x="385" y="132" fill="#f8fafc" font-size="17" font-weight="800">SPDI Rules</text>
+    <text x="385" y="157" fill="#94a3b8" font-size="15">First data-</text>
+    <text x="385" y="179" fill="#94a3b8" font-size="15">protection rules</text>
+    <line x1="385" y1="190" x2="385" y2="210" stroke="#4ade80" stroke-width="2"/>
+    <rect x="343" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
+    <text x="385" y="235" fill="#131f2d" font-size="16" font-weight="800">2011</text>
+    <!-- 2015: Shreya Singhal (below) -->
+    <rect x="483" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
+    <text x="525" y="235" fill="#131f2d" font-size="16" font-weight="800">2015</text>
+    <line x1="525" y1="250" x2="525" y2="270" stroke="#fbbf24" stroke-width="2"/>
+    <text x="525" y="295" fill="#f8fafc" font-size="17" font-weight="800">Shreya Singhal</text>
+    <text x="525" y="320" fill="#94a3b8" font-size="15">SC strikes</text>
+    <text x="525" y="342" fill="#94a3b8" font-size="15">down s. 66A</text>
+    <!-- 2021: IT Rules (above) -->
+    <text x="665" y="132" fill="#f8fafc" font-size="17" font-weight="800">IT Rules 2021</text>
+    <text x="665" y="157" fill="#94a3b8" font-size="15">Intermediary</text>
+    <text x="665" y="179" fill="#94a3b8" font-size="15">due diligence</text>
+    <line x1="665" y1="190" x2="665" y2="210" stroke="#7dd3fc" stroke-width="2"/>
+    <rect x="623" y="213" width="84" height="34" rx="17" fill="#7dd3fc"/>
+    <text x="665" y="235" fill="#131f2d" font-size="16" font-weight="800">2021</text>
+    <!-- 2022: CERT-In (below) -->
+    <rect x="763" y="213" width="84" height="34" rx="17" fill="#a855f7"/>
+    <text x="805" y="235" fill="#131f2d" font-size="16" font-weight="800">2022</text>
+    <line x1="805" y1="250" x2="805" y2="270" stroke="#a855f7" stroke-width="2"/>
+    <text x="805" y="295" fill="#f8fafc" font-size="17" font-weight="800">CERT-In Directions</text>
+    <text x="805" y="320" fill="#94a3b8" font-size="15">6-hour reports,</text>
+    <text x="805" y="342" fill="#94a3b8" font-size="15">180-day logs</text>
+    <!-- 2023: DPDP Act (above) -->
+    <text x="945" y="132" fill="#f8fafc" font-size="17" font-weight="800">DPDP Act</text>
+    <text x="945" y="157" fill="#94a3b8" font-size="15">Consent, Board,</text>
+    <text x="945" y="179" fill="#94a3b8" font-size="15">₹250 cr penalties</text>
+    <line x1="945" y1="190" x2="945" y2="210" stroke="#4ade80" stroke-width="2"/>
+    <rect x="903" y="213" width="84" height="34" rx="17" fill="#4ade80"/>
+    <text x="945" y="235" fill="#131f2d" font-size="16" font-weight="800">2023</text>
+    <!-- 2025: DPDP Rules (below) -->
+    <rect x="1043" y="213" width="84" height="34" rx="17" fill="#fbbf24"/>
+    <text x="1085" y="235" fill="#131f2d" font-size="16" font-weight="800">2025</text>
+    <line x1="1085" y1="250" x2="1085" y2="270" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1085" y="295" fill="#f8fafc" font-size="17" font-weight="800">DPDP Rules</text>
+    <text x="1085" y="320" fill="#94a3b8" font-size="15">Phased rollout</text>
+    <text x="1085" y="342" fill="#94a3b8" font-size="15">to mid-2027</text>
+  </g>
+  <text x="40" y="430" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="15">In-force dates differ: the 2008 Amendment took effect on 27 Oct 2009; DPDP obligations phase in until mid-2027.</text>
+</svg>

@@ -1,0 +1,90 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-types-of-cyberattacks-diagram1" xmlns="http://www.w3.org/2000/svg">
+  <title id="d-types-of-cyberattacks-diagram1">Taxonomy of six cyberattack families: social engineering, malware, network attacks, denial of service, web and application attacks, and credential attacks, each marked with the CIA properties they break</title>
+                  <rect width="1160" height="620" rx="18" fill="#1b2735"/>
+                  <text x="40" y="52" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" letter-spacing="3">THE ATTACK LANDSCAPE</text>
+                  <g font-family="'Segoe UI',sans-serif">
+                    <!-- Row 1 -->
+                    <g>
+                      <rect x="40" y="90" width="345" height="200" rx="14" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="1.5"/>
+                      <text x="62" y="128" fill="#f8fafc" font-size="21" font-weight="800">Social engineering</text>
+                      <text x="62" y="153" fill="#94a3b8" font-size="15">through people</text>
+                      <text x="62" y="190" fill="#e2e8f0" font-size="16">Phishing · spear phishing</text>
+                      <text x="62" y="216" fill="#e2e8f0" font-size="16">Pretexting · baiting</text>
+                      <text x="62" y="242" fill="#e2e8f0" font-size="16">Vishing · smishing</text>
+                      <circle cx="330" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="330" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                    </g>
+                    <g>
+                      <rect x="407" y="90" width="345" height="200" rx="14" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1.5"/>
+                      <text x="429" y="128" fill="#f8fafc" font-size="21" font-weight="800">Malware</text>
+                      <text x="429" y="153" fill="#94a3b8" font-size="15">through code</text>
+                      <text x="429" y="190" fill="#e2e8f0" font-size="16">Ransomware · worms</text>
+                      <text x="429" y="216" fill="#e2e8f0" font-size="16">Trojans · spyware</text>
+                      <text x="429" y="242" fill="#e2e8f0" font-size="16">Botnets · rootkits</text>
+                      <circle cx="672" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="672" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="696" cy="122" r="9" fill="#a855f7"/>
+                      <text x="696" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                      <circle cx="720" cy="122" r="9" fill="#4ade80"/>
+                      <text x="720" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                    </g>
+                    <g>
+                      <rect x="774" y="90" width="345" height="200" rx="14" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="1.5"/>
+                      <text x="796" y="128" fill="#f8fafc" font-size="21" font-weight="800">Network attacks</text>
+                      <text x="796" y="153" fill="#94a3b8" font-size="15">in transit</text>
+                      <text x="796" y="190" fill="#e2e8f0" font-size="16">Man-in-the-middle</text>
+                      <text x="796" y="216" fill="#e2e8f0" font-size="16">Spoofing · sniffing</text>
+                      <text x="796" y="242" fill="#e2e8f0" font-size="16">DNS poisoning</text>
+                      <circle cx="1039" cy="122" r="9" fill="#7dd3fc"/>
+                      <text x="1039" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="1063" cy="122" r="9" fill="#a855f7"/>
+                      <text x="1063" y="127" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                    </g>
+                    <!-- Row 2 -->
+                    <g>
+                      <rect x="40" y="312" width="345" height="200" rx="14" fill="rgba(248,113,113,0.10)" stroke="#f87171" stroke-width="1.5"/>
+                      <text x="62" y="350" fill="#f8fafc" font-size="21" font-weight="800">Denial of service</text>
+                      <text x="62" y="375" fill="#94a3b8" font-size="15">through load</text>
+                      <text x="62" y="412" fill="#e2e8f0" font-size="16">DDoS · amplification</text>
+                      <text x="62" y="438" fill="#e2e8f0" font-size="16">Resource exhaustion</text>
+                      <text x="62" y="464" fill="#e2e8f0" font-size="16">Fork bombs · slowloris</text>
+                      <circle cx="330" cy="344" r="9" fill="#4ade80"/>
+                      <text x="330" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                    </g>
+                    <g>
+                      <rect x="407" y="312" width="345" height="200" rx="14" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+                      <text x="429" y="350" fill="#f8fafc" font-size="21" font-weight="800">Web &amp; application</text>
+                      <text x="429" y="375" fill="#94a3b8" font-size="15">through software flaws</text>
+                      <text x="429" y="412" fill="#e2e8f0" font-size="16">SQL injection · XSS</text>
+                      <text x="429" y="438" fill="#e2e8f0" font-size="16">CSRF · zero-days</text>
+                      <text x="429" y="464" fill="#e2e8f0" font-size="16">Supply chain</text>
+                      <circle cx="672" cy="344" r="9" fill="#7dd3fc"/>
+                      <text x="672" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <circle cx="696" cy="344" r="9" fill="#a855f7"/>
+                      <text x="696" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                    </g>
+                    <g>
+                      <rect x="774" y="312" width="345" height="200" rx="14" fill="rgba(226,232,240,0.08)" stroke="#cbd5e1" stroke-width="1.5"/>
+                      <text x="796" y="350" fill="#f8fafc" font-size="21" font-weight="800">Credential &amp; access</text>
+                      <text x="796" y="375" fill="#94a3b8" font-size="15">through logins</text>
+                      <text x="796" y="412" fill="#e2e8f0" font-size="16">Brute force · stuffing</text>
+                      <text x="796" y="438" fill="#e2e8f0" font-size="16">Password spraying</text>
+                      <text x="796" y="464" fill="#e2e8f0" font-size="16">Insider misuse</text>
+                      <circle cx="1039" cy="344" r="9" fill="#7dd3fc"/>
+                      <text x="1039" y="349" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                    </g>
+                    <!-- Legend -->
+                    <g font-size="15">
+                      <circle cx="52" cy="566" r="9" fill="#7dd3fc"/>
+                      <text x="52" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">C</text>
+                      <text x="70" y="571" fill="#e2e8f0">Confidentiality</text>
+                      <circle cx="230" cy="566" r="9" fill="#a855f7"/>
+                      <text x="230" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">I</text>
+                      <text x="248" y="571" fill="#e2e8f0">Integrity</text>
+                      <circle cx="360" cy="566" r="9" fill="#4ade80"/>
+                      <text x="360" y="571" fill="#131f2d" font-size="12" font-weight="800" text-anchor="middle">A</text>
+                      <text x="378" y="571" fill="#e2e8f0">Availability</text>
+                      <text x="530" y="571" fill="#94a3b8">Badges show the promise each family most often breaks</text>
+                    </g>
+                  </g>
+                </svg>

@@ -11,7 +11,8 @@
    exactly the things people paste into a random website without thinking, and
    every other online tool of this kind uploads them. Nothing in this file, or
    in any tool built on it, opens a network connection. There is no fetch(), no
-   XHR, no beacon: the only reads are FileReader over a file the visitor chose,
+   XHR, no beacon: the only reads are over a file the visitor chose (FileReader,
+   or the raw File itself where a tool opts into `raw: true` and streams it),
    and everything else is arithmetic in this tab.
    ========================================================================== */
 
@@ -216,6 +217,15 @@
             'That file is ' + LabTool.humanBytes(file.size) + '. This tool stops at ' +
             LabTool.humanBytes(opts.maxBytes) + ' so the page stays responsive — ' +
             'the work happens in this tab, on your processor.');
+          return;
+        }
+        /* Opt-in passthrough for tools that stream the file themselves rather
+           than wanting it as one Uint8Array. /labs/hash uses it: reading a
+           4 GB disk image into a buffer here is precisely the thing that used
+           to force a size ceiling on that tool. Everything else keeps the
+           read-it-all behaviour, so no other lab is affected. */
+        if (opts.raw) {
+          opts.onFile(null, file);
           return;
         }
         var reader = new FileReader();

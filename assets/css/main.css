@@ -998,7 +998,18 @@ footer p {
 .section-card {
   background: rgb(var(--bg-base-rgb) / 0.88);
   color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  /* --line-rgb, not a white alpha: white-on-white left this border at 1.01:1
+     in the light theme, so the card that holds nearly every page's content
+     lost its outline entirely. The token follows the theme.
+
+     0.27 rather than the old 0.16: the alpha had to rise to keep the DARK
+     theme looking as it did. White at 16% over the dark card measured 1.64:1;
+     slate at 16% would have been 1.31, a visibly fainter hairline than before.
+     0.27 puts dark back at 1.64 and brings light to 1.51 — visible, and the
+     same weight in both. Deliberately not pushed to the 3:1 of WCAG 1.4.11,
+     which would need alpha ~0.6 and turn a hairline into a drawn box on every
+     card; the card is identified by its fill and shadow as well as its edge. */
+  border: 1px solid rgb(var(--line-rgb) / 0.27);
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.24);
 }
@@ -1383,6 +1394,10 @@ main [id] {
   margin: 1.75rem 0 0;
 }
 
+.research-figure a {
+  display: block;
+}
+
 .research-figure img {
   display: block;
   width: 100%;
@@ -1390,6 +1405,50 @@ main [id] {
   height: auto;
   margin: 0 auto;
   border-radius: 18px;
+  cursor: zoom-in;
+}
+
+/* ---- The flow chart on a phone ------------------------------------------
+   The chart is 920 CSS px wide and its labels are set at 14px. Scaled into a
+   ~330px column that is 5px of text, which is not reading, it is guessing —
+   and pinch-zoom does not rescue it, because the image is sized by the layout,
+   so zooming magnifies the whole page and the label keeps its ratio to the
+   body copy beside it.
+
+   Below the breakpoint the figure becomes its own horizontal scroller and the
+   chart renders at its intrinsic 920px, which is the size its 13px labels were
+   drawn for. The reader pans the chart; the page itself never scrolls
+   sideways, because the overflow belongs to the figure. Above the breakpoint
+   nothing changes.
+
+   The link to the standalone SVG is still the real escape hatch — opened on
+   its own the browser treats it as an image and native pinch-zoom applies.
+   ------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .research-figure a {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    border-radius: 18px;
+    padding-bottom: 0.35rem;
+  }
+
+  /* min-width rather than width:auto, deliberately: an <img> that has not
+     loaded has no intrinsic size, so width:auto resolves to zero and the
+     aspect-ratio from the width/height attributes reserves nothing — the chart
+     would then land with a ~600px layout shift. Keeping width determined at
+     100% and widening with min-width holds the reservation. */
+  .research-figure img {
+    max-width: none;
+    min-width: 920px;
+    margin: 0;
+  }
+
+  .research-figure figcaption::after {
+    content: " \2194\FE0E  Swipe the chart to pan.";
+    color: var(--accent);
+    white-space: nowrap;
+  }
 }
 
 .research-figure figcaption {
@@ -2135,7 +2194,9 @@ footer {
   z-index: 1;
   background: rgb(var(--bg-base-rgb) / 0.55);
   color: var(--text);
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  /* Theme-following, so the footer stays separated from the page in light.
+     Same 0.27 as the section card, for the same reason — see the note there. */
+  border-top: 1px solid rgb(var(--line-rgb) / 0.27);
 }
 
 .footer-grid,
@@ -2495,7 +2556,9 @@ footer a:hover {
   gap: 2.5rem;
   text-align: left;
   padding-bottom: 1.3rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  /* Theme-following: the divider above the legal row vanished in light. Kept
+     lighter than the two borders above, as the white 0.12-vs-0.16 pair was. */
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.2);
 }
 
 .footer-links {
@@ -3300,6 +3363,7 @@ footer a:hover {
 :root[data-theme="light"] .post-body pre,
 :root[data-theme="light"] .lab-stdin,
 :root[data-theme="light"] .typing-input,
+:root[data-theme="light"] .hl-solution pre,
 :root[data-theme="light"] .api-url,
 :root[data-theme="light"] .api-field,
 :root[data-theme="light"] .bg-settings-panel,

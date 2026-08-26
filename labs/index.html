@@ -217,7 +217,7 @@
                         "name": "Does my code get uploaded?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests are for the runtime files themselves."
+                                "text": "No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests this page makes are for the runtime files themselves."
                         }
                 },
                 {
@@ -225,7 +225,7 @@
                         "name": "Can I install libraries or packages?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. pip, npm, LuaRocks and every other package manager need a network connection and a registry, neither of which exists here. Standard libraries only."
+                                "text": "No. pip, npm, LuaRocks and every other package manager need a registry to resolve against, and the page's script-src policy refuses code fetched from one. Standard libraries only."
                         }
                 },
                 {
@@ -856,9 +856,11 @@
             <h3>What that costs you</h3>
             <p>
               Honesty matters more than a feature list here: because there is no server, there is
-              also no package manager, no network access from your code, and no access to files on
-              your computer. If you need <code>pip install</code> or <code>npm i</code>, this is
-              not the right tool. If you want to run a program and see what it prints, it is.
+              also no package manager and no access to files on your computer. Most of the runtimes
+              cannot reach the network either &mdash; the exceptions are JavaScript and TypeScript,
+              where the runtime is the browser itself, so <code>fetch</code> works there exactly as
+              it would in the console. If you need <code>pip install</code> or <code>npm i</code>,
+              this is not the right tool. If you want to run a program and see what it prints, it is.
             </p>
           </article>
           <article class="info-card">
@@ -960,11 +962,11 @@ What is breaking / feedback:
           </details>
           <details class="lab-faq">
             <summary>Does my code get uploaded?</summary>
-            <div>No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests are for the runtime files themselves.</div>
+            <div>No. Every language here runs inside your own browser using your CPU and RAM. Your code is never transmitted, and there is no server that could receive it. You can open your browser's Network tab and watch: the only requests this page makes are for the runtime files themselves.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I install libraries or packages?</summary>
-            <div>No. pip, npm, LuaRocks and every other package manager need a network connection and a registry, neither of which exists here. Standard libraries only.</div>
+            <div>No. pip, npm, LuaRocks and every other package manager need a registry to resolve against, and the page's script-src policy refuses code fetched from one. Standard libraries only.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is the first run slower than the rest?</summary>
