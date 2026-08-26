@@ -70,6 +70,37 @@
     img.src = url;
   }
 
+  /* A PNG's dimensions live in its header, not in its file size, so the MAX
+     file-size gate above cannot stop a decompression bomb: a solid-colour
+     30000x30000 PNG compresses to a few hundred KB, sails through that gate,
+     and then asks getImageData for 4 * w * h bytes — about 3.6 GB — on the
+     main thread. The tab dies before the tool can say anything.
+     So cap the DECODED pixel count too. The ceiling has to clear real cameras
+     — a 48 MP phone and a 61 MP full-frame are ordinary, and the largest
+     medium-format back is 102 MP — while still refusing the bomb.
+     120 megapixels is that line, checked against real sensors:
+         Fujifilm GFX100  11648x8736 = 102 MP  480 MB   allowed
+         Sony A7R V        9504x6336 =  60 MP  240 MB   allowed
+         48 MP phone       8000x6000 =  48 MP  190 MB   allowed
+         200 MP phone mode 16384x12288 = 201 MP 810 MB  refused
+         the bomb         30000x30000 = 900 MP  3.6 GB  refused
+     Those figures are getImageData alone; extract() then builds an LSB view
+     and a data URL on top, so peak is roughly 3x. At 120 MP that is ~1.4 GB,
+     which a browser survives; at 900 MP it is not survivable.
+     A tighter 40 MP cap was tried first and rejected: it would have refused an
+     everyday 48 MP phone photo costing 190 MB, trading one bug for another. */
+  var MAX_PIXELS = 120 * 1000 * 1000;
+
+  function tooLarge() {
+    var w = image.naturalWidth, h = image.naturalHeight;
+    if (w * h <= MAX_PIXELS) return false;
+    out.clear().err('That image is ' + w.toLocaleString() + ' x ' + h.toLocaleString() +
+                    ' — ' + Math.round(w * h / 1e6).toLocaleString() + ' megapixels. This tool ' +
+                    'decodes up to ' + (MAX_PIXELS / 1e6) + ' megapixels; anything larger would ' +
+                    'need gigabytes of memory and freeze this tab. Try a smaller image.');
+    return true;
+  }
+
   function pixels() {
     var canvas = document.createElement('canvas');
     canvas.width = image.naturalWidth;
@@ -81,6 +112,7 @@
 
   function hide() {
     if (!image) { out.clear().warn('Load a PNG first.'); return; }
+    if (tooLarge()) return;
     var message = document.getElementById('tool-text').value;
     if (!message) { out.clear().warn('Type a message to hide.'); return; }
 
@@ -143,6 +175,7 @@
 
   function extract() {
     if (!image) { out.clear().warn('Load an image first.'); return; }
+    if (tooLarge()) return;
     var p = pixels();
     var data = p.data.data;
 

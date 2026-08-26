@@ -30,12 +30,23 @@
       if (len & 0x80) {
         var count = len & 0x7f;
         if (count === 0 || count > 4) break;   // indefinite length is not DER
+        // The length bytes themselves have to fit. Without this, bytes[pos++]
+        // runs off the end and returns undefined, which poisons len to NaN.
+        if (pos + count > end) break;
         len = 0;
-        for (var i = 0; i < count; i++) len = (len << 8) | bytes[pos++];
+        // Multiply rather than `len << 8`. The shift is a SIGNED 32-bit
+        // operation, so a four-byte length with the top bit set — 84 FF FF FF FF
+        // — comes out NEGATIVE. contentEnd then lands before pos, `pos =
+        // contentEnd` rewinds the cursor, and the while loop never terminates:
+        // six bytes of input freeze the tab. Multiplication keeps it unsigned,
+        // and four bytes max out at 2^32-1, well inside a safe integer.
+        for (var i = 0; i < count; i++) len = len * 256 + bytes[pos++];
       }
       var contentStart = pos;
-      var contentEnd = pos + len;
-      if (contentEnd > end) break;
+      var contentEnd = contentStart + len;
+      // Check BOTH ends. The upper bound alone let a malformed length move the
+      // cursor backwards; the cursor must only ever advance.
+      if (contentEnd > end || contentEnd < contentStart) break;
       var node = {
         tag: tag, cls: tag & 0xc0, constructed: !!(tag & 0x20), num: tag & 0x1f,
         start: contentStart, end: contentEnd, len: len,
