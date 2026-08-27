@@ -6,7 +6,10 @@
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/build.js --check",
-    "dev": "node scripts/dev-server.js"
+    "dev": "node scripts/dev-server.js",
+    "glossary": "node scripts/glossary.js",
+    "glossary:backlinks": "node scripts/glossary-backlinks.js",
+    "og-cards": "node scripts/og-cards.js"
   },
   "engines": {
     "node": "24.x"

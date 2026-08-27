@@ -20,7 +20,8 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 51 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
-| `blog/`               | Blog — `/blog` index (19 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
+| `blog/`               | Blog — `/blog` index (25 articles, first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business` / `life`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category`, entries in `sitemap.xml` + `feed.xml` + `atom.xml`, and the post URL plus any new art in `BLOG_URLS` in `sw.js` (the precache gate fails the build if you forget). Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
+| `glossary.html`      | Glossary (`/glossary`) — 144 terms in one A–Z page, each linked to the lab that demonstrates it and/or the article that explains it. Letter jump bar, category chips (deep-link as `/glossary#forensics`), live text filter, and 175 internal cross-references. `DefinedTermSet` + `DefinedTerm` JSON-LD. Authored from a data file and generated — see [Glossary](#glossary-glossary) |
 | `client-reviews.html` | LinkedIn recommendations — featured quote + browsable carousel. The nav and footer labels are **Recommendations** (renamed from "Client Reviews" — labels only; the URL stays `/client-reviews`) |
 | `internships.html`    | Two tracks — free selective internship + paid mentorship (₹4,999/mo, scholarships) — with application form and FAQ (FAQPage JSON-LD) |
 | `contact.html`        | Direct contact links (email, WhatsApp, call booking) and a contact form     |
@@ -45,7 +46,8 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
 │   └── *.html                    One file per article (19 posts), static TOC in the markup
-├── sw.js                         Service worker — caches /assets/vendor only (see Labs)
+├── glossary.html                 A–Z glossary — generated from a term list (see Glossary)
+├── sw.js                         Service worker — /assets/vendor, the doc makers, and the blog
 ├── labs/
 │   ├── index.html                Labs hub — language grid, OS grid, security tools, FAQ
 │   ├── javascript.html, typescript.html, python.html, c.html, cpp.html, sql.html, lua.html
@@ -57,6 +59,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── assets/
 │   ├── css/main.css              All styles — organized into 13 numbered sections (see its table of contents)
 │   ├── css/blog.css              Blog-only styles (index cards + post layout), loaded by blog pages
+│   ├── css/glossary.css          Glossary-only styles (A–Z bar, entry cards), loaded by /glossary
 │   ├── js/boot.js                Head bootstrap: js-detect, partials-failure timer, GA4 loader
 │   ├── js/include-partials.js    Loads header/footer into every page at runtime
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
@@ -1203,10 +1206,32 @@ HTTP cache is invisible and untouchable from JavaScript. Without this, `storage.
 reported `0 B` however much had been downloaded, and there was no way to offer a "remove the
 downloaded runtimes" button at all.
 
-The fetch handler returns early for anything that is not a same-origin `/assets/vendor/` request —
-no HTML, CSS or site JS is intercepted, so there is no stale-page class of bug. It has to be a
-service worker rather than a fetch wrapper because Pyodide fetches its own `.wasm` internally and
-`importScripts()` bypasses any shim; only a service worker sees those requests.
+The fetch handler touches four kinds of request and returns early for everything else, so most of
+the site behaves exactly as if no worker existed. It has to be a service worker rather than a fetch
+wrapper because Pyodide fetches its own `.wasm` internally and `importScripts()` bypasses any shim;
+only a service worker sees those requests.
+
+| request | strategy | why |
+| --- | --- | --- |
+| `/assets/vendor/*` | cache-first | this cache is the authoritative copy; misses fetch with `{cache: 'reload'}` |
+| `DOC_URLS` — resume maker, biodata maker, wish cards | network-first | those pages promise in print that they work with no server |
+| `BLOG_URLS` — `/blog`, 19 articles, their art, blog CSS/JS | network-first | the reason to install the PWA: an archive readable on a plane |
+| navigations | network-only, `/offline` fallback | never cached, never stale; only answers a fetch that actually failed |
+
+**Network-first is what keeps the two precached sets compatible with the no-stale-pages rule** —
+online you always get the live response and the cache is refreshed behind it; the stored copy only
+ever answers a fetch that genuinely failed. Cache-first HTML is the support nightmare ("why does
+the old page keep coming back"); a cache that is only ever a fallback is not.
+
+The blog is precached **on install, whole** — about 1 MB: 784 KB of HTML, 142 KB of art, ~52 KB of
+CSS and JS. That was measured before it was chosen, against the 58 MB `assets/vendor/clang` a
+single visit to `/labs/c` already downloads. The archive is 1.7% of one lab runtime, so metering it
+per-article would have cost more in machinery than it could ever save in bytes.
+
+Both lists are hand-enumerated and never wildcarded, so **a new post must be added to `BLOG_URLS`
+or it is simply not available offline**. That used to be the kind of promise this repo has been
+burned by twice; it is now held by the precache gate in `scripts/build.js`, which reads every file
+in `blog/` and refuses to publish if one is missing from the list.
 
 The storage panel then reports two genuinely separate figures, each with its own button: code and
 settings in `localStorage`, and runtimes in `caches`. Clearing one never touches the other.
@@ -1277,6 +1302,157 @@ which answers `S` automatically — the other two options would start partitioni
 - **Windows cmd** — Windows cannot be redistributed and is far too large; ReactOS boots under v86
   but is 500 MB+ and lands in a GUI. FreeDOS (~0.7 MB) is the honest equivalent and is the planned
   route for a real `C:\>` prompt.
+
+### Share cards (`og:image`)
+
+Every indexable page now posts its own 1200x630 card. A page without one falls back to the site's
+generic image, which means a link to `/privacy` and a link to `/glossary` look identical in a chat
+window — the same defect the lab cards were fixed for.
+
+```
+npm run og-cards                        render any card that is missing
+node scripts/og-cards.js --check        list pages with no card of their own (exit 1 if any)
+node scripts/og-cards.js --force        re-render all of them
+```
+
+`og-cards.js` prints a localhost URL. Open it in any browser; it draws each card, posts the JPEG
+back, and the server stops itself.
+
+**Why a browser is the rasteriser.** `og:image` has to be a raster — no social platform renders
+SVG — and this repo has no image library and wants none. Chromium already ships a JPEG encoder, so
+the card is built as SVG, painted onto a canvas, and read back with `canvas.toDataURL`. Nothing is
+added to `package.json`, and the committed JPEG is the artefact that matters. This is the same
+conclusion the lab cards reached, arrived at without needing Python.
+
+Three details that are each load-bearing:
+
+- **The SVG is served with `width` and `height`, not just a `viewBox`.** An SVG with only a viewBox
+  has no intrinsic size, and Chromium rasterises it at a default 300x150 before scaling it up —
+  which comes out visibly soft.
+- **The canvas is filled with `#121b2c` before the draw.** JPEG has no alpha channel, so any
+  transparent pixel would otherwise come out black.
+- **`document.fonts.ready` is awaited**, or the text rasterises in a fallback face.
+
+Blog posts are a separate set: each one's card is rendered from its own
+`assets/images/blog/*-cover.svg` into `assets/images/blog/og/<slug>.jpg`. Adding a post means adding
+a cover; the card is drawn from it the same way. `index.html` keeps `og-image.jpg` on purpose — that
+is the home card.
+
+### Pages generated from a data file
+
+Two things on this site are built from a data file rather than typed:
+
+| page | source | script |
+| --- | --- | --- |
+| `/glossary` | `scripts/glossary-terms.js` | `scripts/glossary.js` |
+| the vocabulary block on 48 lab pages | `scripts/glossary-terms.js` | `scripts/glossary-backlinks.js` |
+
+**Both run inside `scripts/build.js`, on every deploy.** That is the point: edit the data file,
+push, and the deployed page is rebuilt from it. Nobody has to remember a command first — the same
+reasoning that stopped the search index being a manual step, after 75 of its 88 entries were found
+to have drifted.
+
+They run *before* the sitemap and the search index, because both read page content and reading it
+first would index the previous copy. Each is a no-op when the output already matches, so an ordinary
+deploy rewrites nothing.
+
+Under `--check` they run in check mode too, so `npm run check` fails loudly if a data file has moved
+ahead of its page. That is informational rather than a problem: a real deploy would simply rewrite
+it. The npm scripts (`npm run glossary`, `npm run glossary:backlinks`) exist for
+previewing locally.
+
+If a generator refuses — a dangling cross-reference, or a lab slug with no page — the build stops rather than publishing the damage.
+
+### Glossary backlinks on lab pages
+
+`scripts/glossary-backlinks.js` walks the term list backwards and gives each lab page a short
+"the words this tool uses" block linking to the glossary entries that name it — 48 labs, 113 links,
+so the two halves of the site reference each other rather than only one way round.
+
+```
+npm run glossary:backlinks              write the blocks
+node scripts/glossary-backlinks.js --check    report drift
+node scripts/glossary-backlinks.js --remove   take every block out
+```
+
+**It is idempotent, and that is the entire point.** `labs/*.html` are produced by a generator
+outside this repo, and a hand edit across 48 of them would not survive a regeneration. A marked
+block does: present → replaced, absent → inserted before `</main>`. After the lab generator runs,
+one command restores all of them.
+
+Removal takes back the newline insertion added, which is not a detail worth skipping — without it
+every remove/apply cycle leaves another blank line behind and the files drift a line at a time.
+A lab that no longer has terms pointing at it has its block removed rather than left stale.
+
+## Glossary (`/glossary`)
+
+144 terms on one A–Z page, each linked to the lab that demonstrates it and, where one exists,
+the article that explains it. It is the connective tissue the site was missing: 62 labs and 19
+posts with nothing joining them, so a reader who arrived knowing the word *steganography* had no
+route to the tool, and a reader who found the tool had no route to the idea.
+
+**The page is half hand-written and half generated, and the split is marked in the HTML:**
+
+```
+<!-- glossary:ld:start -->  …DefinedTermSet JSON-LD…   <!-- glossary:ld:end -->
+<!-- glossary:start -->     …A–Z bar and every entry…  <!-- glossary:end -->
+```
+
+Everything outside those markers — head, hero copy, filter chips, static header and footer — is
+hand-written and never touched. Everything inside is overwritten wholesale by
+`scripts/glossary.js` from the term list in `scripts/glossary-terms.js`. **Do not hand-edit inside
+the markers**; 144 alphabetised entries with 175 cross-references is well past what anyone keeps
+correct by hand, which is the entire reason the generator exists.
+
+### Adding a term
+
+One entry in `scripts/glossary-terms.js`, then:
+
+```
+npm run glossary              rewrite the committed page
+npm run glossary -- --check   report drift, write nothing, exit 1
+```
+
+```js
+{t:"Rainbow table", c:"security",
+ d:"A precomputed lookup from hashes back to the passwords that made them…",
+ lab:"password",              // optional — /labs/<slug>, becomes "See it work"
+ post:"types-of-cyberattacks",// optional — /blog/<slug>, becomes "Read more"
+ see:["Salt","Hash function"]}// optional — cross-references, by exact term name
+```
+
+Four things are refused rather than published, because each one produces a page that looks fine
+and is wrong:
+
+- a `see` naming a term that does not exist — renders as a link to nowhere
+- two entries with the same name — one of the two `#term-` anchors becomes unreachable
+- a category with no chip on the page — those entries can never be filtered to
+- a `lab` or `post` slug with no file behind it — **the only one a reader meets as a 404**
+
+The slug check reads the filesystem rather than trusting the data file, because `/labs` and
+`/blog` are served as clean URLs: a typo'd slug is indistinguishable from a real one until
+somebody clicks it.
+
+### Conventions worth keeping
+
+- **Categories are the eight chips on the page and nothing else.** A ninth key is a generator
+  failure, not a new chip — add the button to `glossary.html` first.
+- **Sorting is `localeCompare` with `sensitivity: 'base'`**, which is what files `bcrypt` under B
+  and `Vigenère` under V. Do not "fix" it to a plain sort.
+- **Empty letters stay in the A–Z bar, dimmed** (`Y`, currently). A gap in the alphabet reads as a
+  rendering fault; a visibly unavailable letter reads as an answer.
+- **The JSON-LD carries `name` + `url` only, not the definitions.** They sit in the visible markup
+  a few lines below, and repeating all 144 doubled the page weight — 73 KB of JSON-LD against
+  25 KB — for no crawler that reads one and not the other.
+- **Filtering is display-based, never a re-render.** The markup is static, so a visitor without JS
+  gets every term and the chips never appear. The controls carry `style="display: none"` and
+  `glossary.js` removes it, exactly as `blog-index.js` does.
+- **`glossary_search` reports the result count and never the query**, mirroring `site_search`.
+  `llms-full.txt` promises no search query is ever sent anywhere; that has to stay true here too.
+
+The link lives in the **footer Explore column**, not the navbar. The nav already carries ten links,
+and an eleventh pushes Internships and Contact into the More dropdown at medium widths — trading a
+conversion path for a reference page. Site search indexes it automatically.
 
 ## SEO
 

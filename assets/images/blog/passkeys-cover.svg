@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Passwords, passkeys, and what actually protects you">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="716" y="200" width="250" height="60" rx="12" fill="none" stroke="#64748b" stroke-width="3"/>
+  <g fill="#64748b">
+    <circle cx="748" cy="230" r="7"/><circle cx="772" cy="230" r="7"/><circle cx="796" cy="230" r="7"/>
+    <circle cx="820" cy="230" r="7"/><circle cx="844" cy="230" r="7"/><circle cx="868" cy="230" r="7"/>
+  </g>
+  <g stroke="#f87171" stroke-width="5" stroke-linecap="round" opacity="0.9">
+    <path d="M990 204 L1042 256"/><path d="M1042 204 L990 256"/>
+  </g>
+  <g transform="translate(716,320)">
+    <rect width="250" height="150" rx="16" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+    <circle cx="80" cy="75" r="34" fill="none" stroke="#7dd3fc" stroke-width="6"/>
+    <path d="M80 45 v60 M62 62 h36 M62 88 h36" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+    <rect x="140" y="52" width="80" height="12" rx="6" fill="#38bdf8"/>
+    <rect x="140" y="80" width="60" height="12" rx="6" fill="#38bdf8" opacity="0.7"/>
+  </g>
+  <path d="M1010 330 q46 34 0 68" fill="none" stroke="#f87171" stroke-width="5" stroke-linecap="round" opacity="0.55"/>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="52" font-weight="800">Passwords, passkeys,</text>
+    <text x="80" y="345" fill="#f8fafc" font-size="52" font-weight="800">and what actually</text>
+    <text x="80" y="410" fill="#f8fafc" font-size="52" font-weight="800">protects you</text>
+    <text x="80" y="487" fill="#e2e8f0" font-size="26" font-weight="600">What actually takes accounts away</text>
+    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

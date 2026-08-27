@@ -2600,3 +2600,46 @@ html:not(.js) .lab-filter { display: none; }
   background-repeat: no-repeat;
   background-attachment: local, local, scroll, scroll;
 }
+
+/* ---- glossary backlinks -------------------------------------------------
+   The "words this tool uses" block, written into each lab page by
+   scripts/glossary-backlinks.js. Chips rather than a list: the names are
+   short, there are rarely more than eight, and a bulleted column of two-word
+   items wastes the width a lab page has spare below the tool. */
+
+.lab-glossary-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lab-glossary-terms a {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
+  border-radius: 999px;
+  background: rgb(var(--sheet-rgb) / 0.5);
+  color: var(--ink-2);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.lab-glossary-terms a:hover,
+.lab-glossary-terms a:focus-visible {
+  border-color: rgb(var(--accent-rgb) / 0.6);
+  background: rgb(var(--accent-rgb) / 0.12);
+  color: var(--accent);
+}
+.lab-glossary-all {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+}
+.lab-glossary-all a { color: var(--accent); text-decoration: none; }
+.lab-glossary-all a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-glossary-terms a { transition: none; }
+}

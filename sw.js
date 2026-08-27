@@ -1,6 +1,6 @@
 /* ==========================================================================
-   sw.js — a deliberately tiny service worker: Labs runtimes, plus an offline
-   copy of the two document makers. Nothing else.
+   sw.js — a deliberately small service worker: Labs runtimes, plus offline
+   copies of the two document makers and the blog. Nothing else.
    --------------------------------------------------------------------------
    Why this exists at all: without it, the ~90 MB of WebAssembly under
    /assets/vendor/ lands in the browser's HTTP cache, and the HTTP cache is
@@ -42,6 +42,16 @@
    is what keeps this compatible with the paragraph above — a stale page can
    never be shown to a visitor who could have fetched a fresh one. Cache-first
    HTML is the support nightmare; a cache that is only ever a fallback is not.
+
+   The second carve-out, on the same terms: the blog. Nineteen articles, their
+   art, and the blog stylesheet and scripts — about 1 MB precached on install,
+   served network-first exactly like the doc makers. The size question was
+   asked and measured rather than assumed: the whole archive is 1.7% of what
+   one visit to /labs/c downloads for its clang toolchain, so the metering a
+   cache-on-read scheme would need costs more complexity than the bytes are
+   worth. What it buys is the reason to install the app at all — an archive
+   that stays readable on a plane. Still enumerated, still never wildcarded:
+   a new post must join BLOG_URLS or it simply is not there offline.
 
    It also has to be a service worker rather than a fetch wrapper, because the
    requests needing interception are not ours to wrap: Pyodide fetches its own
@@ -140,6 +150,119 @@ var DOC_URLS = [
 var DOC_SET = {};
 DOC_URLS.forEach(function (u) { DOC_SET[u] = true; });
 
+// Bump this when the article list or the blog assets change; old versions are
+// deleted on activate, same as the two caches above.
+var BLOG_CACHE = 'blog-offline-v1';
+
+// The blog, precached whole and served NETWORK-FIRST — the same contract the
+// doc makers get, for the same reason: while you are online this is identical
+// to having no worker, and the copy below only ever answers a fetch that
+// actually failed. So the no-stale-pages rule at the top still holds.
+//
+// Precached on install rather than on read. The whole archive is about 1 MB —
+// 784 KB of HTML, 142 KB of art, ~52 KB of CSS and JS — against the 58 MB a
+// single visit to /labs/c already downloads, so metering it per article would
+// have cost more in machinery than it could ever save in bytes. Enumerated,
+// never wildcarded, exactly like DOC_URLS: a new post has to be added here or
+// it simply is not available offline, which is the failure everyone prefers.
+var BLOG_URLS = [
+  // The index and every article.
+  '/blog',
+  '/blog/ai-driven-human-assisted',
+  '/blog/automating-email-replies-with-n8n',
+  '/blog/character-over-career-the-choices-i-live-by',
+  '/blog/how-cybercrime-cases-are-solved',
+  '/blog/how-i-vibe-coded-my-website',
+  '/blog/how-to-stand-out-in-an-internship-interview',
+  '/blog/how-to-succeed-in-software-development',
+  '/blog/i-open-sourced-my-ai-sdr',
+  '/blog/india-it-act-explained',
+  '/blog/my-career-story-from-classroom-to-research-and-ai',
+  '/blog/security-compliance-explained',
+  '/blog/smart-feedback-how-to-give-and-receive-it',
+  '/blog/the-four-ms-every-business-needs',
+  '/blog/the-resume-builder-paywall-trick',
+  '/blog/types-of-cyberattacks',
+  '/blog/what-a-marriage-biodata-leaks',
+  '/blog/what-is-a-fork-bomb',
+  '/blog/what-running-internship-cohorts-taught-me-about-mentorship',
+  '/blog/which-ai-tool-for-which-job',
+  '/blog/scoping-work-before-you-quote-it',
+  '/blog/passwords-passkeys-and-what-actually-protects-you',
+  '/blog/finding-the-right-career',
+  '/blog/the-life-of-the-buddha',
+  '/blog/types-of-love-and-choosing-a-life-partner',
+  '/blog/what-happens-after-we-die',
+  // Blog-only stylesheet and scripts. main.css, labs.css, boot.js, theme.js,
+  // include-partials.js, site-search.js, particle-bg.js, the partials and the
+  // icons are already on DOC_URLS above, so they are deliberately not repeated
+  // here — the fetch handler routes each path to whichever cache holds it.
+  '/assets/css/blog.css',
+  '/assets/js/blog-index.js',
+  '/assets/js/blog-toc.js',
+  '/assets/js/blog-share.js',
+  // Cover art and in-article diagrams, read straight off the post sources.
+  '/assets/images/blog/scoping-work-cover.svg',
+  '/assets/images/blog/passkeys-cover.svg',
+  '/assets/images/blog/finding-career-cover.svg',
+  '/assets/images/blog/buddha-life-cover.svg',
+  '/assets/images/blog/love-partner-cover.svg',
+  '/assets/images/blog/after-death-cover.svg',
+  '/assets/images/blog/ai-driven-cover.svg',
+  '/assets/images/blog/ai-driven-matrix.svg',
+  '/assets/images/blog/ai-sdr-cover.svg',
+  '/assets/images/blog/ai-tools-cover.svg',
+  '/assets/images/blog/attack-types-cover.svg',
+  '/assets/images/blog/automating-email-replies-with-n8n-diagram1.svg',
+  '/assets/images/blog/biodata-leaks-cover.svg',
+  '/assets/images/blog/career-story-cover.svg',
+  '/assets/images/blog/character-over-career-the-choices-i-live-by-diagram1.svg',
+  '/assets/images/blog/compliance-cover.svg',
+  '/assets/images/blog/cybercrime-case-cover.svg',
+  '/assets/images/blog/fork-bomb-cover.svg',
+  '/assets/images/blog/four-ms-cover.svg',
+  '/assets/images/blog/four-steps-cover.svg',
+  '/assets/images/blog/how-cybercrime-cases-are-solved-diagram1.svg',
+  '/assets/images/blog/how-to-stand-out-in-an-internship-interview-diagram1.svg',
+  '/assets/images/blog/how-to-succeed-in-software-development-diagram1.svg',
+  '/assets/images/blog/india-it-act-explained-diagram1.svg',
+  '/assets/images/blog/india-it-cover.svg',
+  '/assets/images/blog/instantly-workflow.svg',
+  '/assets/images/blog/interview-cover.svg',
+  '/assets/images/blog/left-side-cover.svg',
+  '/assets/images/blog/mentorship-cover.svg',
+  '/assets/images/blog/my-career-story-from-classroom-to-research-and-ai-diagram1.svg',
+  '/assets/images/blog/n8n-automation-cover.svg',
+  '/assets/images/blog/resume-paywall-cover.svg',
+  '/assets/images/blog/security-compliance-explained-diagram1.svg',
+  '/assets/images/blog/smart-feedback-cover.svg',
+  '/assets/images/blog/smart-feedback-how-to-give-and-receive-it-diagram1.svg',
+  '/assets/images/blog/smartlead-workflow.svg',
+  '/assets/images/blog/the-four-ms-every-business-needs-diagram1.svg',
+  '/assets/images/blog/the-resume-builder-paywall-trick-diagram1.svg',
+  '/assets/images/blog/types-of-cyberattacks-diagram1.svg',
+  '/assets/images/blog/vibe-coded-cover.svg',
+  '/assets/images/blog/vibe-coded-loop.svg',
+  '/assets/images/blog/what-is-a-fork-bomb-diagram1.svg',
+  '/assets/images/blog/what-running-internship-cohorts-taught-me-about-mentorship-diagram1.svg',
+  '/assets/images/blog/which-ai-tool-for-which-job-diagram1.svg',
+  '/assets/images/blog/which-ai-tool-for-which-job-diagram2.svg',
+  '/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg',
+  '/assets/images/blog/which-ai-tool-for-which-job-diagram4.svg'
+];
+
+var BLOG_SET = {};
+BLOG_URLS.forEach(function (u) { BLOG_SET[u] = true; });
+
+// Which network-first cache owns a path, or null if the fetch handler should
+// leave the request alone. One lookup keeps the two lists from growing two
+// copies of the same fetch logic.
+function netFirstCacheFor(pathname) {
+  if (DOC_SET[pathname]) return DOC_CACHE;
+  if (BLOG_SET[pathname]) return BLOG_CACHE;
+  return null;
+}
+
 // A Response that arrived via a redirect cannot legally answer a navigation
 // request later (the browser throws), so rebuild it as a plain 200 before it
 // goes into the cache. Non-redirected responses pass through untouched.
@@ -157,36 +280,44 @@ function stripRedirect(response) {
 self.addEventListener('install', function (event) {
   // The runtimes are still NOT precached: they are fetched on demand, and
   // precaching 90 MB on first page view is exactly what the lazy loading is
-  // designed to avoid. Only the doc-maker files above go in now — a few
-  // hundred KB, the price of the "works offline" promise those pages make.
-  //
-  // Deliberately not cache.addAll(): addAll is all-or-nothing, so one 404
-  // (say, an icon missing on a local preview) would fail the entire install
-  // and take the vendor caching down with it. Each file is fetched on its
-  // own and a miss is simply skipped — that URL falls back to plain network
-  // behaviour until a later install catches it.
+  // designed to avoid. Only the two enumerated lists go in now — the doc-maker
+  // files, a few hundred KB, and the blog at about 1 MB. Both are the price of
+  // a "works offline" promise those pages make in print.
   event.waitUntil(
-    caches.open(DOC_CACHE).then(function (cache) {
-      return Promise.all(DOC_URLS.map(function (u) {
-        // {cache: 'no-cache'} forces a conditional request to the server.
-        // Without it, /assets/(js|css) and /partials/ answers could come
-        // silently from the browser's HTTP cache — fresh for an hour, usable
-        // for a day under stale-while-revalidate — and an install landing
-        // right after a deploy would freeze new HTML beside a stale tool
-        // script as the offline pair. ~20 conditional GETs, once per install.
-        return fetch(u, { cache: 'no-cache' }).then(function (response) {
-          if (response && response.status === 200 && response.type === 'basic') {
-            return stripRedirect(response).then(function (clean) {
-              return cache.put(u, clean);
-            });
-          }
-          return null;
-        }).catch(function () { return null; });
-      }));
-    })
+    Promise.all([
+      precache(DOC_CACHE, DOC_URLS),
+      precache(BLOG_CACHE, BLOG_URLS)
+    ])
   );
   self.skipWaiting();
 });
+
+// Shared by both precached sets. Deliberately not cache.addAll(): addAll is
+// all-or-nothing, so one 404 (say, an icon missing on a local preview) would
+// fail the entire install and take the vendor caching down with it. Each file
+// is fetched on its own and a miss is simply skipped — that URL falls back to
+// plain network behaviour until a later install catches it.
+function precache(name, urls) {
+  return caches.open(name).then(function (cache) {
+    return Promise.all(urls.map(function (u) {
+      // {cache: 'no-cache'} forces a conditional request to the server.
+      // Without it, /assets/(js|css) and /partials/ answers could come
+      // silently from the browser's HTTP cache — fresh for an hour, usable
+      // for a day under stale-while-revalidate — and an install landing
+      // right after a deploy would freeze new HTML beside a stale tool
+      // script as the offline pair. Roughly 85 conditional GETs across both
+      // lists, once per install.
+      return fetch(u, { cache: 'no-cache' }).then(function (response) {
+        if (response && response.status === 200 && response.type === 'basic') {
+          return stripRedirect(response).then(function (clean) {
+            return cache.put(u, clean);
+          });
+        }
+        return null;
+      }).catch(function () { return null; });
+    }));
+  });
+}
 
 self.addEventListener('activate', function (event) {
   event.waitUntil(
@@ -200,6 +331,9 @@ self.addEventListener('activate', function (event) {
             return caches.delete(name);
           }
           if (name.indexOf('doc-makers-') === 0 && name !== DOC_CACHE) {
+            return caches.delete(name);
+          }
+          if (name.indexOf('blog-offline-') === 0 && name !== BLOG_CACHE) {
             return caches.delete(name);
           }
           return null;
@@ -248,7 +382,8 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
-  if (DOC_SET[url.pathname]) {
+  var netFirst = netFirstCacheFor(url.pathname);
+  if (netFirst) {
     // NETWORK-FIRST, and only for the exact URLs on the doc-maker list.
     // The order matters: try the network, and on success refresh the cached
     // copy and hand the live response to the page — so while online this
@@ -263,7 +398,7 @@ self.addEventListener('fetch', function (event) {
           // Refresh in the background; a cache write failure must never
           // break the page, so it is swallowed.
           event.waitUntil(
-            caches.open(DOC_CACHE).then(function (cache) {
+            caches.open(netFirst).then(function (cache) {
               return stripRedirect(copy).then(function (clean) {
                 return cache.put(url.pathname, clean);
               });
@@ -272,7 +407,7 @@ self.addEventListener('fetch', function (event) {
         }
         return response;
       }).catch(function () {
-        return caches.open(DOC_CACHE).then(function (cache) {
+        return caches.open(netFirst).then(function (cache) {
           return cache.match(url.pathname);
         }).then(function (hit) {
           // A miss here means offline before the first successful install —

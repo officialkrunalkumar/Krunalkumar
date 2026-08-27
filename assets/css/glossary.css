@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Glossary (/glossary) — loaded only by glossary.html.
+
+   Everything here uses the tokens defined in main.css section 1, so both
+   themes follow automatically and nothing needs a second definition under
+   [data-theme="light"]. The one hard-coded colour is the active-chip text,
+   which copies .blog-filter.is-active in blog.css for the same reason it
+   does: the global body text-shadow smears dark glyphs on a light fill.
+   ========================================================================== */
+
+/* ---- A–Z jump bar ------------------------------------------------------ */
+
+/* Sticky under the site header. --glossary-stick is the header's own height
+   plus a little air; it is also what every jump target uses as
+   scroll-margin-top, so a letter never lands underneath the bar. Change the
+   two together or anchored letters hide behind it. */
+.glossary-az {
+  --glossary-stick: 4.6rem;
+  position: sticky;
+  top: var(--glossary-stick);
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0 0 1.6rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.16);
+  border-radius: 14px;
+  background: rgb(var(--sheet-rgb) / 0.92);
+  backdrop-filter: blur(6px);
+}
+.glossary-az-link {
+  min-width: 1.75rem;
+  padding: 0.25rem 0;
+  border-radius: 8px;
+  color: var(--ink-3);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.glossary-az-link:hover,
+.glossary-az-link:focus-visible {
+  background: rgb(var(--accent-rgb) / 0.16);
+  color: var(--accent);
+}
+/* Letters with no entries stay visible but inert — a gap in the alphabet
+   reads as a rendering fault, an unavailable letter reads as an answer. */
+.glossary-az-link.is-empty {
+  color: var(--ink-4);
+  opacity: 0.38;
+  cursor: default;
+}
+
+/* ---- filters + live search -------------------------------------------- */
+
+.glossary-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.4rem;
+}
+.glossary-search {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  background: rgb(var(--sheet-rgb) / 0.55);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.glossary-search::placeholder { color: var(--ink-4); }
+.glossary-filter {
+  padding: 0.4rem 0.95rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  background: rgb(var(--sheet-rgb) / 0.55);
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.glossary-filter:hover {
+  border-color: rgb(var(--accent-rgb) / 0.6);
+  color: var(--accent);
+}
+.glossary-filter.is-active {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #0a1a28;
+  text-shadow: none;
+}
+.glossary-count {
+  width: 100%;
+  margin: 0.2rem 0 0;
+  color: var(--ink-4);
+  font-size: 0.84rem;
+}
+
+/* ---- letter groups ----------------------------------------------------- */
+
+.glossary-group { scroll-margin-top: 7.6rem; }
+.glossary-letter {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 2rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.2);
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+.glossary-top {
+  color: var(--ink-4);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.glossary-top:hover { color: var(--accent); }
+
+/* ---- entries ----------------------------------------------------------- */
+
+.glossary-list { margin: 0; }
+.glossary-item {
+  margin: 0 0 0.7rem;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.14);
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--sheet-80), rgb(var(--raise-rgb) / 0.74));
+  /* Clears the sticky header AND the sticky A–Z bar above it, so a deep link
+     to a term does not arrive underneath both. */
+  scroll-margin-top: 7.6rem;
+}
+.glossary-term {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+.glossary-tag {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--ink-3);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+.glossary-def {
+  margin: 0.35rem 0 0;
+  color: var(--ink-2);
+}
+.glossary-def p {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+.glossary-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem !important;
+}
+.glossary-link {
+  padding: 0.22rem 0.7rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.32);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.glossary-link:hover { background: rgb(var(--accent-rgb) / 0.14); }
+.glossary-see {
+  margin-top: 0.5rem !important;
+  color: var(--ink-4);
+  font-size: 0.82rem !important;
+}
+.glossary-see a { color: var(--ink-3); }
+.glossary-see a:hover { color: var(--accent); }
+
+/* A term arrived at by deep link gets marked, or the reader lands in a wall
+   of near-identical cards with no idea which one they asked for. */
+.glossary-item:target {
+  border-color: rgb(var(--accent-rgb) / 0.55);
+  box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.14);
+}
+
+/* Set by glossary.js when a filter or the search box excludes something.
+   Filtering is display-based, not a re-render: the markup is static so a
+   visitor without JS keeps every term. */
+.glossary-item.is-hidden,
+.glossary-group.is-hidden { display: none; }
+
+.glossary-empty {
+  margin: 2rem 0;
+  padding: 1.4rem;
+  border: 1px dashed rgb(var(--line-rgb) / 0.3);
+  border-radius: 14px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .glossary-az { --glossary-stick: 3.9rem; gap: 0.15rem; }
+  .glossary-az-link { min-width: 1.5rem; font-size: 0.8rem; }
+  .glossary-item, .glossary-group { scroll-margin-top: 6.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glossary-az-link,
+  .glossary-filter,
+  .glossary-link { transition: none; }
+}
+
+@media print {
+  .glossary-az,
+  .glossary-controls,
+  .glossary-top { display: none; }
+  .glossary-item {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    padding: 0.4rem 0;
+    break-inside: avoid;
+  }
+}

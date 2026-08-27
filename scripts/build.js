@@ -1097,30 +1097,60 @@ function pageAssetUrls(html) {
   return urls.map((u) => u.split('?')[0].split('#')[0]).filter((u) => u.startsWith('/'));
 }
 
+// Reads one hand-enumerated URL array out of sw.js. Comments between the
+// entries can contain apostrophes ("the browser's…"), which a bare quote-scan
+// would read as string delimiters — so the array text goes through the JS
+// comment stripper before the entries are read.
+function swUrlList(sw, name) {
+  const arr = sw.match(new RegExp('var ' + name + ' = \\[([\\s\\S]*?)\\];'));
+  if (!arr) throw new Error('sw precache gate: could not find ' + name + ' in sw.js — refusing to publish');
+  return new Set(Array.from(stripJsComments(arr[1]).matchAll(/'([^']+)'/g)).map((m) => m[1]));
+}
+
 function doSwPrecacheParity(root) {
   root = root || ROOT;
   log('');
   log('sw precache gate');
   const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
-  const arr = sw.match(/var DOC_URLS = \[([\s\S]*?)\];/);
-  if (!arr) throw new Error('sw precache gate: could not find DOC_URLS in sw.js — refusing to publish');
-  // Comments between the entries can contain apostrophes ("the browser's…"),
-  // which a bare quote-scan would read as string delimiters — so the array
-  // text goes through the JS comment stripper before the entries are read.
-  const listed = new Set(Array.from(stripJsComments(arr[1]).matchAll(/'([^']+)'/g)).map((m) => m[1]));
+  const docListed = swUrlList(sw, 'DOC_URLS');
+  const blogListed = swUrlList(sw, 'BLOG_URLS');
+  // A blog page loads main.css, boot.js and the rest, which live on DOC_URLS.
+  // Coverage is therefore checked against the union — the worker routes each
+  // path to whichever cache holds it, so where an asset is listed is
+  // irrelevant as long as it is listed once.
+  const allListed = new Set([...docListed, ...blogListed]);
 
   const problems = [];
   let covered = 0;
-  for (const rel of SW_PRECACHED_PAGES) {
+
+  const checkPage = (rel, ownList, listName) => {
     const pageUrl = fileToUrl(rel);
-    if (!listed.has(pageUrl)) problems.push('sw.js DOC_URLS is missing the page itself: ' + pageUrl);
-    for (const u of pageAssetUrls(fs.readFileSync(path.join(root, rel), 'utf8'))) {
-      if (listed.has(u)) { covered += 1; continue; }
-      problems.push(rel + ' loads ' + u + ' but sw.js DOC_URLS does not precache it — offline would quietly break');
+    if (!ownList.has(pageUrl)) {
+      problems.push('sw.js ' + listName + ' is missing the page itself: ' + pageUrl);
     }
-  }
-  for (const u of listed) {
+    for (const u of pageAssetUrls(fs.readFileSync(path.join(root, rel), 'utf8'))) {
+      if (allListed.has(u)) { covered += 1; continue; }
+      problems.push(rel + ' loads ' + u + ' but sw.js does not precache it — offline would quietly break');
+    }
+  };
+
+  for (const rel of SW_PRECACHED_PAGES) checkPage(rel, docListed, 'DOC_URLS');
+
+  // The blog set is DERIVED, not enumerated here: every article on disk must
+  // be in BLOG_URLS. This is the check the doc-maker half cannot have — its
+  // pages are a fixed list, whereas a new post appears simply by being
+  // written, and sw.js says plainly that one missing from BLOG_URLS "simply
+  // is not there offline". That is the exact silent failure this gate exists
+  // to convert into a refusal to publish.
+  const blogDir = path.join(root, 'blog');
+  const posts = fs.readdirSync(blogDir).filter((f) => f.endsWith('.html'));
+  for (const f of posts) checkPage(path.join('blog', f).replace(/\\/g, '/'), blogListed, 'BLOG_URLS');
+
+  for (const u of docListed) {
     if (!urlToFile(u, root)) problems.push('sw.js DOC_URLS entry has no file behind it: ' + u);
+  }
+  for (const u of blogListed) {
+    if (!urlToFile(u, root)) problems.push('sw.js BLOG_URLS entry has no file behind it: ' + u);
   }
 
   if (problems.length) {
@@ -1128,7 +1158,8 @@ function doSwPrecacheParity(root) {
     problems.forEach((p) => log('    - ' + p));
     throw new Error('sw precache gate: ' + problems.length + ' mismatch(es) — refusing to publish');
   }
-  log('  ' + covered + ' page assets all precached, ' + listed.size + ' DOC_URLS entries all resolve');
+  log('  ' + covered + ' page assets all precached; ' + docListed.size + ' DOC_URLS and ' +
+      blogListed.size + ' BLOG_URLS entries all resolve (' + posts.length + ' blog pages checked)');
 }
 
 /* --------------------------------------------------------------------------
@@ -1412,11 +1443,56 @@ function verifyOutput() {
 
 /* -------------------------------------------------------------------------- */
 
+/* --------------------------------------------------------------------------
+   2c. Pages generated from a data file
+   --------------------------------------------------------------------------
+   /glossary is built from scripts/glossary-terms.js, and the vocabulary blocks
+   on the lab pages from that same term list. Running them HERE is what makes
+   the data file the only thing an author has to touch: edit it, push, and the
+   deployed page is rebuilt from it. Nobody has to remember to run a script
+   first, which is the same reason the search index stopped being a manual step.
+
+   The committed pages are still the real pages — each generator is a no-op
+   when the output already matches, so an ordinary deploy rewrites nothing.
+   They run before the sitemap and the search index deliberately: both read
+   page content, and reading it before the regeneration would index the old
+   copy.
+
+   Under --check they run in --check mode too, so drift is reported and
+   nothing is written.
+   -------------------------------------------------------------------------- */
+function doGeneratedPages() {
+  log('');
+  log('generated pages');
+  const scripts = [
+    ['glossary.js', 'glossary'],
+    ['glossary-backlinks.js', 'lab vocabulary blocks'],
+  ];
+  for (const [file, label] of scripts) {
+    const abs = path.join(__dirname, file);
+    if (!fs.existsSync(abs)) { log('  SKIP  ' + label + ' (' + file + ' not found)'); continue; }
+    try {
+      const out = execFileSync(process.execPath, CHECK ? [abs, '--check'] : [abs], {
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      const lines = out.trim().split('\n').filter(Boolean);
+      log('  ' + label + ': ' + (lines[lines.length - 1] || 'ok').trim());
+    } catch (err) {
+      const detail = ((err.stdout || '') + (err.stderr || '')).trim().split('\n').filter(Boolean);
+      log('  FAILED  ' + label + ':');
+      detail.forEach((l) => log('    ' + l));
+      throw new Error('generated pages: ' + label + ' refused — not publishing');
+    }
+  }
+}
+
 function main() {
   log(CHECK ? '=== build --check (no files will be written; git history may be deepened) ==='
             : '=== build ===');
   doCss();
   doJs();
+  doGeneratedPages();
   doSitemap();
   const index = doSearchIndex();
   doLlmsCounts(index);

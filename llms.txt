@@ -10,6 +10,7 @@
 - [Projects](https://krunalkumar.dpdns.org/projects): Curated selection of 50 production automation and AI repositories, drawn from 80+ public repos (ChurnGPT 2.0, FNOL Claims Assistant, CleverResponder, HubSpot integrations).
 - [Research](https://krunalkumar.dpdns.org/research): Academic paper "Security Against Fork Bomb Attack in Linux Based Systems" (IJRAT 2019, DOI: 10.32622/ijrat.74201911) detailing process resource quarantine mechanisms.
 - [Blog](https://krunalkumar.dpdns.org/blog): Index of all published articles on cybersecurity, AI automation, and engineering practice.
+- [Glossary](https://krunalkumar.dpdns.org/glossary): Plain-language definitions of 144 security, cryptography, networking, forensics, systems and programming terms, each linked to the in-browser lab that demonstrates it or the article that explains it.
 - [Internships & Mentorship](https://krunalkumar.dpdns.org/internships): Free selective 3-month project cohorts and structured 1:1 paid technical mentorship programs.
 - [Recommendations](https://krunalkumar.dpdns.org/client-reviews): 30 verified public LinkedIn testimonials covering software delivery, RevOps automation, and mentoring.
 - [Certificate Verification](https://krunalkumar.dpdns.org/verify): Public ID lookup system for verifying issued mentorship and internship completion credentials.

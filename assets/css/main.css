@@ -926,21 +926,24 @@ footer p {
   }
 }
 
+/* The chips are LABELS, not controls — nothing happens when you press one.
+   They used to be pill-shaped, 700-weight, accent-bordered and lifted 2px on
+   hover, which is also the exact description of the .btn row sitting directly
+   above them: four buttons and four chips read as one run of eight identical
+   things, and the hover lift promised a click that never arrived. They are now
+   quieter than a button in four ways at once — smaller text, lighter weight, a
+   neutral border rather than the accent one, and muted ink — and they no
+   longer animate. Used on index.html only. */
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.55rem 0.8rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: rgb(var(--accent-rgb) / 0.12);
-  color: var(--ink-tint);
-  border: 1px solid rgb(var(--accent-rgb) / 0.2);
-  font-weight: 700;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.chip:hover {
-  transform: translateY(-2px);
-  background: rgb(var(--accent-rgb) / 0.2);
+  background: rgb(var(--line-rgb) / 0.09);
+  color: var(--ink-3);
+  border: 1px solid rgb(var(--line-rgb) / 0.22);
+  font-size: 0.84rem;
+  font-weight: 600;
 }
 
 .btn {
@@ -2868,6 +2871,37 @@ footer a:hover {
     text-shadow: none !important;
   }
 
+  /* THE SCROLL REVEAL HAS TO BE UNDONE, or printing loses the page.
+     .reveal-animated starts at opacity:0 and only gains .is-visible when the
+     IntersectionObserver sees it scroll into view. Print before scrolling —
+     which is what Ctrl+P on a freshly opened page is — and every section below
+     the fold is still fully transparent, so it prints as blank paper. The
+     symptom is a document that comes out one page long and half empty, and it
+     applied to every page on this site, not just the printable ones. */
+  .reveal,
+  .reveal.reveal-animated,
+  .reveal.reveal-animated.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* body is a flex column with overflow-x hidden and min-height:100vh, and
+     .page-shell is a flex column too. A flex root with a clipped axis
+     paginates badly in Chromium — content past the first page can be dropped
+     outright. On paper this is a document, so it becomes ordinary block flow. */
+  body {
+    display: block !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+    isolation: auto !important;
+  }
+  .page-shell {
+    display: block !important;
+    gap: 0 !important;
+  }
+
   #bg-canvas,
   .site-header,
   footer,
@@ -4236,4 +4270,94 @@ footer a:hover {
    ink, which is what its background expects. */
 :root[data-theme="light"] .lab-proc-fallback {
   color: #94a3b8;
+}
+
+/* ==========================================================================
+   14. Home hero — the four coloured actions
+   --------------------------------------------------------------------------
+   These four are the only place on the site that leaves the single-accent
+   palette, and it is deliberate: they sat in one row with the four .chip
+   labels below them, all pill-shaped and all the same cyan, so nothing in the
+   hero looked more clickable than anything else. Each action now owns a hue
+   and carries a glow in that hue, so the row reads as four distinct offers
+   rather than one texture.
+
+   Every fill is dark enough for white text to clear WCAG AA (>= 4.5:1),
+   including the LIGHTEST stop of each gradient — that lightest stop is the
+   one to re-check if these are ever retuned, because it is the worst case.
+
+   The glow is two shadows: a tight ring that defines the edge, and a wide
+   soft drop in the same hue that reads as light coming off the button. On
+   hover both intensify and the button lifts; under reduced motion the lift
+   and the transition are dropped, but the colour change stays, so the hover
+   state is still legible without movement.
+   ========================================================================== */
+
+.btn-glow {
+  position: relative;
+  border: 0;
+  color: #fff !important;
+  background-image: linear-gradient(160deg, var(--glow-from), var(--glow-to));
+  box-shadow:
+    0 0 0 1px rgb(var(--glow-rgb) / 0.55),
+    0 6px 18px -6px rgb(var(--glow-rgb) / 0.65);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-glow:hover,
+.btn-glow:focus-visible {
+  color: #fff !important;
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow:
+    0 0 0 1px rgb(var(--glow-rgb) / 0.85),
+    0 10px 28px -6px rgb(var(--glow-rgb) / 0.85),
+    0 0 22px -2px rgb(var(--glow-rgb) / 0.5);
+}
+.btn-glow:active { transform: translateY(0); }
+
+/* ONE FAMILY, NOT A RAINBOW. The first version used emerald, violet and
+   amber — three unrelated hues sitting on a navy ground next to a cyan brand,
+   which read as decoration rather than design. These three are an analogous
+   sweep across the cool half of the wheel, teal -> blue -> indigo: adjacent
+   enough to look like one set, separated enough that nobody mistakes one
+   button for another. The warm end is gone entirely; orange on navy fights
+   the accent this whole site is built from.
+
+   Ordered by intent as well as hue. Teal is the most saturated against a navy
+   page, so it lands on the commercial action; indigo is the quietest, so it
+   takes the exploratory one.
+
+   White text clears AA on the LIGHTEST stop of each gradient — that stop is
+   the worst case and the number to re-check if these are ever retuned.
+
+   Indigo is the awkward one. Blue-violet has low luminance for its
+   saturation, so at the same nominal shade it READS darker than the teal and
+   the blue beside it; the first two attempts here both looked heavy next to
+   them. #5850ec is tuned by perceptual lightness (L* 44) rather than by
+   picking the next shade up, which puts all three within 2 L* of each other.
+   Going lighter than this with white text drops below 4.5:1 — a lighter
+   button would have to switch to dark text, which would make the quietest
+   action the loudest thing in the hero. */
+.btn-hire     { --glow-from: #0f766e; --glow-to: #115e59; --glow-rgb: 20 184 166; }
+.btn-download { --glow-from: #0369a1; --glow-to: #075985; --glow-rgb: 56 189 248; }
+/* Violet — "Learn with me", the footer pair to Hire me. It extends the sweep
+   to 262 degrees, taking the family to 87 degrees end to end, which is still
+   inside the analogous band. It sits close to the research indigo, and that is
+   fine: one is in the hero and the other in the footer, so they are never in
+   view together. Tuned to L* 44 like the rest. */
+.btn-learn    { --glow-from: #7c3aed; --glow-to: #6d28d9; --glow-rgb: 167 139 250; }
+.btn-research { --glow-from: #5850ec; --glow-to: #4b44d0; --glow-rgb: 129 140 248; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-glow { transition: none; }
+  .btn-glow:hover,
+  .btn-glow:focus-visible { transform: none; }
+}
+
+@media print {
+  .btn-glow {
+    background-image: none !important;
+    box-shadow: none !important;
+    color: #000 !important;
+  }
 }

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Types of love, and choosing someone to marry">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke-width="4">
+    <circle cx="852" cy="300" r="118" stroke="#7dd3fc" stroke-opacity="0.85"/>
+    <circle cx="962" cy="300" r="118" stroke="#38bdf8" stroke-opacity="0.75"/>
+  </g>
+  <path d="M907 196 a118 118 0 0 0 0 208 a118 118 0 0 0 0 -208z" fill="#7dd3fc" opacity="0.28"/>
+  <g fill="#7dd3fc" opacity="0.9">
+    <circle cx="852" cy="300" r="9"/><circle cx="962" cy="300" r="9"/>
+  </g>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">LIFE</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="52" font-weight="800">Types of love, and</text>
+    <text x="80" y="345" fill="#f8fafc" font-size="52" font-weight="800">choosing someone to</text>
+    <text x="80" y="410" fill="#f8fafc" font-size="52" font-weight="800">marry</text>
+    <text x="80" y="487" fill="#e2e8f0" font-size="26" font-weight="600">Six kinds of love, and one decision</text>
+    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>
