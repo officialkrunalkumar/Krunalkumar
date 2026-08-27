@@ -434,6 +434,11 @@
       }
       if (seen.indexOf('(S)hell') === -1) return;
       choseShell = true;
+      // The installer's own question is on the screen, so the kernel booted
+      // off the floppy and its ramdisk userland is running and prompting —
+      // the honest boot signal here, and one no failed download can reach:
+      // bootFailed() tears the machine down before it executes anything.
+      if (window.KSLab) window.KSLab.used('boot');
       clearInterval(promptWatch);
       promptWatch = null;
       // 's' then Enter, as make/break scancode pairs.

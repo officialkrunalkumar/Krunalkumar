@@ -35,8 +35,15 @@
     <!-- The paper's byline reads "Krunalkumar D. Shah" while the other 43 #person nodes that
          assert a name (of 157 total across 82 pages) say "Krunalkumar Shah". Both used to be
          asserted as `name` on the SAME @id, i.e. two competing names for one entity. The byline
-         is now an alternateName here, and the author list below references the node by @id
-         without restating a name. -->
+         is an alternateName, and the author list below references the node by @id without
+         restating a name.
+
+         That alternateName now lives on index.html with the handle, not here: the same fault
+         had simply moved down a level, with this page and the home page asserting a different
+         single alternateName for one @id. Every property that describes the person rather than
+         this page — description, knowsAbout, alternateName — is asserted once, on index.html.
+         A consumer merging by @id is supposed to get one entity, and it only does if the site
+         says one thing. See the note above the #person node there. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -44,9 +51,7 @@
         "@id": "https://krunalkumar.dpdns.org/#person",
         "name": "Krunalkumar Shah",
         "url": "https://krunalkumar.dpdns.org/",
-        "alternateName": "Krunalkumar D. Shah",
-        "jobTitle": "Researcher, Engineer, Cybersecurity Consultant",
-        "description": "Research interests spanning cybersecurity, automation, and applied technology innovation."
+        "jobTitle": "Researcher, Engineer, Cybersecurity Consultant"
       }
     </script>
     <script type="application/ld+json">

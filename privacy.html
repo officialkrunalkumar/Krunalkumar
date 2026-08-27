@@ -119,7 +119,7 @@
           The short version: this site collects very little, stores nothing on its own servers, and never sells
           your data. Here is the full picture.
         </p>
-        <p class="hero-text">Effective date: 20 August 2026 · Applies to krunalkumar.dpdns.org</p>
+        <p class="hero-text">Effective date: 27 August 2026 · Applies to krunalkumar.dpdns.org</p>
       </section>
 
       <section class="section-card">
@@ -146,8 +146,14 @@
           <p><strong>Analytics.</strong> The site uses Google Analytics 4 to understand how the site is
           used — pages visited, approximate location, device and browser type, and interaction events such
           as clicking the email, WhatsApp, resume, or booking links, submitting a form, verifying a
-          certificate, switching between the light and dark themes, opening the site search, or starting
-          voice or video in the peer-to-peer chat lab. Google Analytics sets cookies to do this.</p>
+          certificate, switching between the light and dark themes, opening the site search, starting
+          voice or video in the peer-to-peer chat lab, or a lab tool succeeding at the thing it exists to
+          do. That last one carries exactly two values and no others: which lab it was, read from the page
+          address you are already looking at, and one coarse verb for what it managed — that a program
+          <em>ran</em>, that a file <em>parsed</em>, that a document <em>exported</em>. Each pair is sent at
+          most once per page view, however many times you use the tool. The site records
+          <em>that</em> a tool worked. It never records <em>what</em> it worked on. Google Analytics sets
+          cookies to do this.</p>
           <p><strong>Speed Insights.</strong> Every page also loads Vercel Speed Insights, served from this
           site's own domain, which measures how fast a page rendered rather than what you did on it. It
           reports the Core Web Vitals timings — how soon the largest element painted, how much the
@@ -164,7 +170,11 @@
           <p><strong>What analytics never receives.</strong> Search terms are not sent. The site search
           runs entirely in your browser against a file it downloads, and only the <em>number</em> of
           results a search returned is reported, never what you typed. Nothing you type, paste, or drop
-          into any lab reaches analytics either. In the chat lab, analytics
+          into any lab reaches analytics either — and neither does anything a lab hands back: no filename,
+          no file contents, no decoded certificate, no generated document, no recovered password, no key,
+          no output of any kind. The success event above is the entire report a lab makes, and its verb is
+          a fixed word written into the page itself, not a description of your work: it reads the same
+          whether you parsed a one-line file or a hundred-megabyte one. In the chat lab, analytics
           records only that a connection or a call happened: never who with, and never any message, file,
           or audio and video, all of which travel directly between the two browsers.</p>
           <p><strong>The network tools are the exception — and they have to be.</strong> Most labs run

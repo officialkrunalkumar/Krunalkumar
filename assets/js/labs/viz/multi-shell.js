@@ -515,7 +515,15 @@
   };
 
   Shell.prototype.goto = function (i) {
+    var was = this.frame;
     this.frame = Math.max(0, Math.min(this.total - 1, i));
+    // Every caller of goto() is a deliberate transport gesture — a step button,
+    // the scrub, an arrow key — so a frame that actually moved is the visitor
+    // driving the simulation rather than looking at the still first frame the
+    // page paints for everyone. The clamp above is why this is a comparison and
+    // not an unconditional call: stepping past either end, or resetting while
+    // already at the start, leaves the frame where it was and shows nothing new.
+    if (this.frame !== was && window.KSLab) window.KSLab.used('run');
     this.draw();
   };
 
@@ -533,6 +541,11 @@
         if (self.frame >= self.total - 1) { self.pause(); return; }
         self.frame++;
         self.draw();
+        // Playback counts only from the first frame it genuinely advances, not
+        // from the press of ▶: a family whose compute() produced a single frame
+        // — an input it could not simulate, say — flips playing to true and then
+        // pauses on the check above without ever reaching this line.
+        if (window.KSLab) window.KSLab.used('run');
         tick();
       }, SPEEDS[Math.max(0, Math.min(9, self.speed - 1))]);
     })();

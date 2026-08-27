@@ -2702,6 +2702,12 @@
     function win() {
       if (won) return;
       won = true;
+      /* The single place every challenge converges on, and each mount() calls
+         it only on the actual effect — the admin row returned, the flag string
+         present in the output, the token arriving back from the frame — never
+         on a string match against what was typed. So opening a challenge,
+         reading a hint or a payload that did not land cannot get here. */
+      if (window.KSLab) window.KSLab.used('solve');
       var wasSolved = !!solved[c.id];
       solved[c.id] = true;
       saveSolved(solved);

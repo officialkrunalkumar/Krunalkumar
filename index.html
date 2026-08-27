@@ -35,6 +35,20 @@
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-image.jpg" />
     <title>Krunalkumar Shah | Cybersecurity & Automation Consultant</title>
+    <!-- This is the ONE place #person is described. 91 pages carry a node with this @id, and an
+         @id exists so a consumer can merge them into a single entity — which only works if they
+         agree. They did not: `description` had three different values, `knowsAbout` two, and
+         `alternateName` two, so anything merging by @id (which is what Google's entity
+         extraction does) received contradictory facts about one person and had to pick.
+
+         Now every property that describes the PERSON rather than a page — description,
+         knowsAbout, alternateName, hasCredential, sameAs — is asserted here and nowhere else.
+         Other pages restate only identity (@id, name, url) and their own page-local facts, such
+         as about.html's mainEntityOfPage. Properties still repeated elsewhere (jobTitle, image,
+         alumniOf) are byte-identical everywhere, so they merge to one value; if one of them ever
+         needs to differ per page, it belongs here instead, not in two versions.
+
+         Adding a describing property to another page reintroduces the fault. Add it here. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -48,12 +62,12 @@
           "@type": "Person",
           "@id": "https://krunalkumar.dpdns.org/#person",
           "name": "Krunalkumar Shah",
-          "alternateName": "officialkrunalkumar",
+          "alternateName": ["Krunalkumar D. Shah", "officialkrunalkumar"],
           "identifier": "https://krunalkumar.dpdns.org/#person",
           "url": "https://krunalkumar.dpdns.org/",
           "image": "https://krunalkumar.dpdns.org/assets/images/Krunal.jpg",
           "jobTitle": "Researcher, Engineer, Cybersecurity Consultant",
-          "description": "Researcher and engineer focused on cybersecurity, automation, and practical technology solutions.",
+          "description": "Cybersecurity professional and published Linux security researcher building AI-driven workflow automation. Independent consultant based in Gujarat, India, working remotely with clients worldwide.",
           "agentInteractionStatistic": {
             "@type": "InteractionCounter",
             "interactionType": "https://schema.org/WriteAction",

@@ -348,6 +348,31 @@ self.addEventListener('message', function (event) {
     return;
   }
 
+  /* Is ONE runtime already on this machine? The panel used to tell every
+     visitor a language was "N MB to download on the first run" whether or not
+     it had been downloaded months ago — the cache was doing its job and the
+     page denied it. lab-cache-stats cannot answer this: it totals the whole
+     cache, so it says yes for Python when only Ruby was ever fetched.
+     Matching on the directory prefix rather than a named file means a runtime
+     whose file list changes upstream still reports correctly. */
+  if (data.type === 'lab-cache-has') {
+    var dir = String(data.dir || '');
+    if (!dir) { reply({ cached: false }); return; }
+    caches.open(CACHE).then(function (cache) {
+      return cache.keys();
+    }).then(function (keys) {
+      var want = PREFIX + dir + '/';
+      var hit = keys.some(function (req) {
+        // Compare pathnames, not whole URLs: the cache holds absolute URLs and
+        // the origin differs between the deployed site and a local preview.
+        try { return new URL(req.url).pathname.indexOf(want) === 0; }
+        catch (e) { return false; }
+      });
+      reply({ cached: hit });
+    }).catch(function () { reply({ cached: false }); });
+    return;
+  }
+
   if (data.type === 'lab-cache-clear') {
     caches.delete(CACHE)
       .then(function (ok) { reply({ cleared: !!ok }); })

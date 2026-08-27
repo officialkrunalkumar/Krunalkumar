@@ -499,7 +499,17 @@ async function clangApi() {
   // Said before anything starts, not after. ~19 MB is half a minute or more
   // on a phone, and a visitor who was never told that is watching a page that
   // looks broken rather than one that is working.
-  status('First compile downloads about 19 MB of clang and lld, then it is cached…');
+  //
+  // But only when it is true. This said "First compile downloads…" on the
+  // tenth compile too, so the one lab with the largest download was also the
+  // one that most loudly denied ever having cached it. caches.match searches
+  // every cache this origin owns, which is what we want: the question is
+  // whether the bytes are on the machine, not which cache happens to hold them.
+  var clangCached = false;
+  try { clangCached = !!(await caches.match(CLANG_DIR + 'clang.wasm')); } catch (e) {}
+  status(clangCached
+    ? 'Loading clang and lld from this device’s cache…'
+    : 'First compile downloads about 19 MB of clang and lld, then it is cached…');
   importScripts(CLANG_DIR + 'shared.js');
   var api = new API({
     readBuffer: function (f) {

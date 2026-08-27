@@ -141,6 +141,44 @@
     document.head.appendChild(va);
   }
 
+  // Lab success events.
+  //
+  // A pageview already says a lab was opened. What it cannot say is whether the
+  // tool actually worked for the person who opened it — and for a site whose
+  // draw is 62 working tools, that is the half worth knowing. This fires at the
+  // moment a lab does its job: a program that ran, a file that parsed, a
+  // certificate that decoded. `chat_peer_connected` was already doing exactly
+  // this for one lab; this generalises it rather than adding a second idea.
+  //
+  // Once per lab per verb per page view. Someone who presses Run eleven times
+  // is still one person for whom the tool worked, and counting presses would
+  // let the noisiest labs bury the ones used once and deeply.
+  //
+  // The slug comes from the URL rather than the caller, so 50-odd call sites
+  // cannot mislabel themselves or drift when a lab is renamed.
+  //
+  // Only the slug and a coarse verb ever leave the page — never a filename,
+  // never input, never output, never a result. These labs exist precisely
+  // because that data stays on the visitor's machine, and an analytics call is
+  // not an exception to that.
+  var labUsedSeen = {};
+  window.KSLab = {
+    used: function (action) {
+      var m = location.pathname.match(/^\/labs\/([a-z0-9-]+)/);
+      if (!m) return;
+      var lab = m[1];
+      var verb = action || 'run';
+      var key = lab + ' ' + verb;
+      if (labUsedSeen[key]) return;
+      labUsedSeen[key] = true;
+      // gtag is a queueing stub from the moment this file runs, so an event
+      // fired before gtag.js downloads is held in the dataLayer, not dropped.
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'lab_used', { lab: lab, action: verb });
+      }
+    }
+  };
+
   // Register the service worker on EVERY page, not only the lab pages that
   // load lab-cache.js. Before this, the site was only installable as a PWA
   // after a visit had passed through a lab page (Chrome wants a registered

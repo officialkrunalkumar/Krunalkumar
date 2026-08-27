@@ -185,6 +185,12 @@
     if (ticker) { clearInterval(ticker); ticker = null; }
     var s = stats();
     paintStats();
+    // The only way into finish() is the branch in onInput() where the typed
+    // text has reached the length of the passage, and the `finished` flag
+    // above blocks a second pass. So a run that gets here was typed to its
+    // end and s.wpm is a real score. Starting to type, abandoning a passage
+    // and pressing Restart mid-run all leave without touching this.
+    if (window.KSLab) window.KSLab.used('run');
 
     var key = 'typing.best.' + el.mode.value;
     var previous = parseInt(store(key) || '0', 10);

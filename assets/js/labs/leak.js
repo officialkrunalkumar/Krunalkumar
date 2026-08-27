@@ -103,6 +103,14 @@
       if (found[bucket].indexOf(addr) < 0) {
         found[bucket].push(addr);
         renderAddresses(false);
+        /* Deliberately NO lab_used event here. This page probes on load and
+           needs nothing from the visitor, so "the tool worked" and "the page
+           was opened" are the same event for it — and because lab_used is one
+           metric shared across every lab, a lab that fires without being asked
+           would sit at the top of the table for a reason that says nothing.
+           The pageview already counts this page. If how often WebRTC actually
+           leaks an address is ever worth measuring, that is a different
+           question and deserves its own name. */
       }
     };
 

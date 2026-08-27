@@ -63,6 +63,17 @@
       return ask({ type: 'lab-cache-stats' }, { files: 0, bytes: 0, unavailable: true });
     },
 
+    /* -> { cached } for ONE runtime, named by its directory under
+       /assets/vendor/ (e.g. 'pyodide'). stats() cannot answer this — it totals
+       the cache, so it reports a hit for every language once any one of them
+       has been fetched. The fallback is `false` on purpose: with no service
+       worker there is no runtime cache either, so "not cached" is the truth,
+       and a panel that promises an instant start it cannot deliver is worse
+       than one that over-warns about a download. */
+    has: function (dir) {
+      return ask({ type: 'lab-cache-has', dir: dir }, { cached: false, unavailable: true });
+    },
+
     /* Removes exactly this site's runtime cache. The browser's origin model
        means it cannot reach any other site's storage, and the service worker
        only ever deletes caches whose name it owns. */

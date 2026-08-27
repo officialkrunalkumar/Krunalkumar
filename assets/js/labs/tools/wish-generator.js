@@ -183,6 +183,24 @@
     }, 420);
   }
 
+  /* The card is not drawn by this file — it is drawn by the real /birthday or
+     /festival page in the iframe, so the only honest moment to count is that
+     page reporting it finished loading. Which is also the strongest signal
+     available: a load here means a URL was built from a name that was actually
+     typed or picked, and that the page behind it rendered rather than being
+     refused by the frame-ancestors rule described at the top of this file.
+
+     The src guard is what keeps the empty state out of it. The iframe ships
+     with no src at all and applyPreview() removes the attribute again whenever
+     there is nothing to show, so the about:blank load that follows carries no
+     card and is ignored. */
+  if (elFrame) {
+    elFrame.addEventListener('load', function () {
+      if (!elFrame.getAttribute('src')) return;
+      if (window.KSLab) window.KSLab.used('generate');
+    });
+  }
+
   /* ---------------------------------------------------------------------- */
 
   function renderThemes() {

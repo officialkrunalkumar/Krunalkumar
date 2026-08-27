@@ -179,6 +179,12 @@
 
       setStatus(res.status + ' ' + res.statusText + ' in ' + ms + ' ms',
                 res.ok ? 'is-ok' : 'is-err');
+
+      /* The answer is on screen: status line, headers and body all rendered.
+         A 4xx that came back counts as the tool working — showing one is what
+         the "404" preset exists for — whereas everything the browser refused
+         to hand back at all lands in the catch below and never reaches here. */
+      if (window.KSLab) window.KSLab.used('run');
     } catch (err) {
       var ms2 = Math.round(performance.now() - started);
 

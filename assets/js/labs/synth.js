@@ -161,6 +161,12 @@
     g.gain.exponentialRampToValueAtTime(0.22, now + Math.max(0.005, atk));
     o.connect(lp); lp.connect(g); g.connect(synthGain);
     o.start(now);
+    /* Past the ensureAudio() guard at the top, so a context exists and an
+       oscillator is now running into synthGain — a note somebody can hear,
+       rather than the page opening or a context the browser refused to
+       unlock. Every path into noteOn is a real gesture, which is the same
+       thing that unlocks the context. */
+    if (window.KSLab) window.KSLab.used('run');
     live[name] = { o: o, g: g };
     var key = $('.syn-key[data-note="' + name + '"]');
     if (key) key.classList.add('is-down');
@@ -220,6 +226,11 @@
     step = 0;
     nextTime = ctx.currentTime + 0.06;
     timer = window.setInterval(schedule, TICK);
+    /* Both early returns are behind us — the audio graph exists and the
+       transport was not already running — so the scheduler is now feeding
+       drum voices into it. This is the pattern actually playing, not the
+       Play button being pressed. */
+    if (window.KSLab) window.KSLab.used('run');
     $('#syn-seq-play').setAttribute('aria-pressed', 'true');
     $('#syn-seq-play').textContent = '■ Stop';
     paintPlayAll();
@@ -278,6 +289,9 @@
     pad.addEventListener('click', function () {
       if (!ensureAudio()) return;
       DRUMS[pad.dataset.drum](ctx.currentTime + 0.01);
+      /* The ensureAudio() guard above already returned, so a one-shot has
+         been scheduled into a live graph — audible, not merely clicked. */
+      if (window.KSLab) window.KSLab.used('run');
       pad.classList.add('is-hit');
       window.setTimeout(function () { pad.classList.remove('is-hit'); }, 120);
     });

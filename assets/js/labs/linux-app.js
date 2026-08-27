@@ -521,6 +521,11 @@
       seen = (seen + ch).slice(-40);
       if (seen.indexOf('login:') !== -1) {
         autoLoginDone = true;
+        // A login prompt on the serial port is the one thing on this page that
+        // separates a machine that ran from one that merely downloaded: the
+        // kernel came up and getty is asking for a user. Every failure path
+        // above ends in bootFailed() and never reaches a serial byte at all.
+        if (window.KSLab) window.KSLab.used('boot');
         setTimeout(function () {
           if (!emulator) return;
           emulator.serial0_send('root\n');

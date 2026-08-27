@@ -10,10 +10,20 @@
    evidence file, a production JWT, a photograph with GPS in it — these are
    exactly the things people paste into a random website without thinking, and
    every other online tool of this kind uploads them. Nothing in this file, or
-   in any tool built on it, opens a network connection. There is no fetch(), no
-   XHR, no beacon: the only reads are over a file the visitor chose (FileReader,
-   or the raw File itself where a tool opts into `raw: true` and streams it),
-   and everything else is arithmetic in this tab.
+   in any tool built on it, sends your data anywhere. There is no fetch() and no
+   XHR over what you loaded: the only reads are over a file the visitor chose
+   (FileReader, or the raw File itself where a tool opts into `raw: true` and
+   streams it), and everything else is arithmetic in this tab.
+
+   One measurement call does leave, and it is named here so this paragraph stays
+   literally true: when a tool hands the visitor a produced file, download()
+   reports `lab_used` to analytics, carrying the lab's slug from the URL and the
+   fixed word "export". Only the four tools that build a file reach it — the
+   others emit nothing, because the shell learns a file's name before it knows
+   whether the bytes were readable, and counting there would count refused files
+   as understood ones. It never carries the filename, the bytes, or anything
+   computed from them: it records THAT a tool worked, never WHAT it worked on.
+   See /privacy.
    ========================================================================== */
 
 (function (root) {
@@ -271,6 +281,25 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
+      /* The one place in this shell where a tool has demonstrably finished its
+         job, which is why the success counter lives here and nowhere else.
+
+         The obvious candidate — the output pane — cannot carry it. Reports and
+         refusals go through the same write() calls, so the pane has no way to
+         tell them apart: har.js prints the same aligned rows for "your JSON
+         broke at line 400" as it does for a clean capture, and exif.js,
+         archive.js and sqlite-browser.js all echo the file name and its size
+         before they have decided whether the bytes are readable at all. A
+         counter sitting there would count refused files as understood ones.
+
+         A produced file has no such ambiguity. Every caller of this function
+         builds its bytes out of input it has already parsed — a stripped
+         photograph, a redacted HAR, a CSV of query results, a PNG carrying a
+         message — so reaching this line means the parse happened, the work
+         happened, and the visitor is holding the result. */
+      if (window.KSLab) window.KSLab.used('export');
+
       setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
     },
 

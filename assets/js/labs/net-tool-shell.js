@@ -200,8 +200,16 @@
        response that omits CORS headers all arrive as the same opaque
        TypeError. Reporting that as "the service is down" would be a guess.
        So the shell says exactly what it knows and what it cannot know.
+
+       `viaJson` is set only by LabNet.json below. It suppresses the success
+       event here because the JSON callers have a stricter idea of what a
+       working lookup is than a 2xx does: a 200 carrying a rate-limit page or
+       a registry's HTML error is a failure to them, and json() is the place
+       that can tell. The one caller that reads its own body — breach-check,
+       whose answer is plain text, not JSON — comes through without the flag
+       and is counted here.
        ------------------------------------------------------------------ */
-    request: function (opts) {
+    request: function (opts, viaJson) {
       var out = opts.out;
       var url = opts.url;
       var timeout = opts.timeoutMs || DEFAULT_TIMEOUT_MS;
@@ -240,6 +248,13 @@
           out.line(res.status + ' ' + (res.statusText || '') + '   ' + ms + ' ms',
                    res.ok ? 't-ok' : 't-warn');
         }
+        /* The point at which the third party has actually answered these
+           tools' question. Deliberately not the press and not the line above
+           that echoes the outgoing request: a lookup that is dispatched and
+           then times out, is refused, or comes back 404/429 never reaches
+           here with res.ok, and a lab nobody got an answer out of should not
+           read as a lab that worked. */
+        if (res.ok && !viaJson && window.KSLab) window.KSLab.used('lookup');
         return { res: res, ms: ms };
       }).catch(function (err) {
         clearTimeout(timer);
@@ -256,10 +271,24 @@
     },
 
     json: function (opts) {
-      return LabNet.request(opts).then(function (r) {
+      return LabNet.request(opts, true).then(function (r) {
         return r.res.text().then(function (text) {
           var data = null;
           try { data = JSON.parse(text); } catch (e) { /* leave null */ }
+          /* A 2xx whose body parsed into something is the earliest moment the
+             answer these tools render actually exists — everything after this
+             is formatting. The three excluded cases are the ones that reach
+             this line looking like a response and are not one: a non-2xx
+             (RDAP's 404 for an unregistered domain, Cert Spotter's 429 when
+             the hourly budget is spent), a 200 whose body is not JSON at all
+             (a captive portal or a proxy's error page, which every caller
+             rejects a moment later), and an empty array, which is the shape
+             "the log has nothing for this domain" arrives in. */
+          if (r.res.ok && data !== null &&
+              !(Array.isArray(data) && !data.length) &&
+              window.KSLab) {
+            window.KSLab.used('lookup');
+          }
           return { res: r.res, ms: r.ms, data: data, text: text };
         });
       });

@@ -579,7 +579,16 @@
     el.stop.disabled = !hasLiveBlobWorker();
     flush();
     if (note) setStatus(note, 'is-err');
-    else if (ok) setStatus('Finished in ' + ms + ' ms', 'is-ok');
+    else if (ok) {
+      setStatus('Finished in ' + ms + ' ms', 'is-ok');
+      // This is the only branch where the visitor's program ran to its own
+      // end: no note (so not Stopped, not the time limit, not a runtime that
+      // never arrived) and the runtime reported a clean finish. The other two
+      // branches are deliberately left out — a program that threw, or one the
+      // watchdog had to kill, never did the thing the visitor opened the lab
+      // to do, and counting it would make the number meaningless.
+      if (window.KSLab) window.KSLab.used('run');
+    }
     else setStatus('Finished with errors', 'is-err');
   }
 
@@ -926,7 +935,33 @@
     // "to download" rather than a bare size: meta.size is the over-the-wire
     // figure, and "~19 MB first run" read to more than one person as the size
     // of the page rather than of a one-time download.
-    setStatus('Ready — ' + meta.size + ' to download on the first run, then cached');
+    //
+    // This line used to say that to everyone, every time. A visitor who had
+    // downloaded Python last week reopened the page and was still told there
+    // was 12 MB to fetch — the cache was working perfectly and the panel called
+    // it a download. The worker-reuse comment further down fixed the same lie
+    // for the mid-run status; the idle status was never given the same
+    // treatment. So ask before claiming.
+    if (!meta.dir) {
+      // JavaScript: the engine is already in the browser. Quoting "0 KB to
+      // download" for it was never wrong, only strange.
+      setStatus('Ready — runs natively, nothing to download');
+    } else {
+      // Reaching the service worker is a round trip, so say the cautious thing
+      // meanwhile. Over-warning about a download is a far smaller lie than
+      // promising an instant start that then takes twenty seconds.
+      setStatus('Ready — ' + meta.size + ' to download on the first run, then cached');
+      // `has` is guarded rather than assumed: sw.js caches this site's own JS,
+      // so a returning visitor can be running a lab-cache.js from before this
+      // function existed until the new worker takes over.
+      if (LabCache && LabCache.has) {
+        LabCache.has(meta.dir).then(function (r) {
+          // The visitor may have changed language while the worker answered.
+          if (current !== id || !r || !r.cached) return;
+          setStatus('Ready — ' + meta.name + ' is cached on this device, so it starts straight away');
+        });
+      }
+    }
     // store.get returns its fallback when the key is absent, and the fallback
     // defaults to undefined — so comparing against null marked every language
     // as already pinned, and the first click then *deleted* instead of saving.

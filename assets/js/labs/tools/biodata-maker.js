@@ -711,7 +711,18 @@
     var clearBtn = $('bm-clear');
     if (clearBtn) clearBtn.addEventListener('click', clearAll);
     var printBtn = $('bm-print');
-    if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
+    if (printBtn) printBtn.addEventListener('click', function () {
+      window.print();
+      /* Same as resume-maker: the print dialog IS this tool's export, so the
+         handover to it is the success moment and the last one the page can
+         see. Filling the form reaches none of this, and "Download data"
+         deliberately does not either — that saves the draft, not the sheet.
+
+         Gated on a name for the same reason as resume-maker: the sheet opens
+         blank, so an unguarded Print counts curiosity as an export, and this
+         number is read against the other labs. */
+      if (window.KSLab && (state.name || '').trim()) window.KSLab.used('export');
+    });
 
     /* Export / import — the file input is hidden; "Load data" clicks it. */
     var exportBtn = $('bm-export');

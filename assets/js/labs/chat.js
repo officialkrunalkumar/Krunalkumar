@@ -480,6 +480,11 @@
       // That a connection succeeded, nothing about it. No names, no message
       // content, no addresses — none of that leaves the pair of browsers.
       if (typeof window.gtag === 'function') window.gtag('event', 'chat_peer_connected');
+      // The same fact again, in the shape the rest of /labs reports it, so this
+      // lab appears in the one breakdown that covers all of them. The line above
+      // is left exactly as it is rather than replaced: it is a series with
+      // history behind it, and continuity is the whole value of that history.
+      if (window.KSLab) window.KSLab.used('connect');
       el.input.disabled = false;
       el.send.disabled = false;
       if (el.fileBtn) el.fileBtn.disabled = false;

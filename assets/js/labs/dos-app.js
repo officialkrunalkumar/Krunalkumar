@@ -427,6 +427,12 @@
       queueRepaint();
       if (announced) return;
       announced = true;
+      // The emulated machine is writing to its own screen, which can only
+      // happen once every image arrived and the CPU started running. The two
+      // ways this lab fails — the emulator script never loading, and
+      // bootFailed() from a dead download or the stall watchdog — both end
+      // before a single character is ever put, so neither reaches this line.
+      if (window.KSLab) window.KSLab.used('boot');
       setStatus('Ready — click the screen, then type', 'is-ok');
     });
 

@@ -891,6 +891,18 @@
 
   document.getElementById('rm-print').addEventListener('click', function () {
     window.print();
+    /* This is the export. There is no PDF library here — the browser's print
+       dialog is the only way a resume leaves this page, so handing the sheet
+       to it is the moment the tool did its job. Nothing later is knowable: a
+       page is never told whether the dialog ended in a PDF, in paper or in
+       Cancel. Typing into the form reaches none of this, and neither does
+       "Download data", which saves the JSON draft rather than the document.
+
+       Gated on a name because the sheet opens blank and nothing is restored
+       from a previous visit: pressing Print to see what the button does would
+       otherwise count as an export, and lab_used is compared across labs, so
+       one tool inflated by curiosity clicks distorts the whole table. */
+    if (window.KSLab && (state.name || '').trim()) window.KSLab.used('export');
   });
 
   /* ------------------------------------------------------------------

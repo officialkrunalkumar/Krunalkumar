@@ -22,6 +22,12 @@
      bytes   unpacked size, in bytes — what the runtime occupies in the cache
              once it is unpacked, which is what the storage meter reports and
              why it is not the same number as `size`.
+     dir     the runtime's directory under /assets/vendor/, or absent when the
+             language needs no download. This is what lets the panel ask the
+             service worker whether THIS runtime is already on the machine, so
+             it can say "cached, starts straight away" instead of quoting a
+             download to someone who fetched it months ago. Prefix-matched, so
+             it survives the runtime's own file list changing upstream.
      prism   Prism grammar id used for highlighting
      mode    'worker' -> lab-worker.js | 'jsblob' -> blob Worker (see lab-app)
      stdin   whether the Input panel means anything for this language
@@ -70,6 +76,7 @@
       size: '~9 MB',
       year: 2012,
       bytes: 9558452,
+      dir: 'typescript',
       prism: 'typescript',
       mode: 'jsblob',
       stdin: true,
@@ -100,6 +107,7 @@
       size: '~12 MB',
       year: 1991,
       bytes: 12262929,
+      dir: 'pyodide',
       prism: 'python',
       mode: 'worker',
       stdin: true,
@@ -138,6 +146,7 @@
       size: '~19 MB',
       year: 1972,
       bytes: 60373055,
+      dir: 'clang',
       prism: 'c',
       mode: 'worker',
       stdin: true,
@@ -181,6 +190,7 @@
       size: '~19 MB',   // the wire figure — see the note on the C entry above
       year: 1985,
       bytes: 60373055,
+      dir: 'clang',
       prism: 'cpp',
       mode: 'worker',
       stdin: true,
@@ -228,6 +238,7 @@
       size: '~700 KB',
       year: 1974,
       bytes: 708594,
+      dir: 'sqljs',
       prism: 'sql',
       mode: 'worker',
       stdin: false,
@@ -266,6 +277,7 @@
       size: '~420 KB',
       year: 1993,
       bytes: 423233,
+      dir: 'wasmoon',
       prism: 'lua',
       mode: 'worker',
       stdin: true,
@@ -296,6 +308,7 @@
       engine: 'Real PostgreSQL compiled to WebAssembly (PGlite)',
       size: '~17 MB',
       bytes: 16844056,
+      dir: 'pglite',
       year: 1996,
       prism: 'sql',
       mode: 'worker',
@@ -337,6 +350,7 @@
       engine: 'Real CRuby compiled to WebAssembly (ruby.wasm)',
       size: '~17 MB',
       bytes: 16822206,
+      dir: 'ruby',
       year: 1995,
       prism: 'ruby',
       mode: 'worker',
@@ -376,6 +390,7 @@
       engine: 'Real Perl 5 compiled to WebAssembly (WebPerl)',
       size: '~16 MB',
       bytes: 16073263,
+      dir: 'perl',
       year: 1987,
       prism: 'perl',
       mode: 'worker',
@@ -411,6 +426,7 @@
       engine: 'Real PHP 8.4 compiled to WebAssembly',
       size: '~14 MB',
       bytes: 14210763,
+      dir: 'php',
       year: 1994,
       prism: 'php',
       mode: 'worker',
