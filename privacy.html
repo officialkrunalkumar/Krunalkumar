@@ -155,6 +155,12 @@
           the page path, the navigation type (a fresh load, a reload, or the back button), a coarse device
           and connection class, and a CSS selector naming the largest element it timed. It carries no
           identifier, sets no cookies, and never sees anything you type.</p>
+          <p><strong>Web Analytics.</strong> Every page also loads Vercel Web Analytics, served from this
+          site's own domain, which counts how many people visited a page and where they arrived from. It
+          reports the page path, the referring site, and a coarse country, browser, operating system, and
+          device class. It sets no cookies. To tell a returning visitor from a new one it uses a hash
+          Vercel derives from the request itself, rotated daily, so it cannot follow you across days or
+          on to any other site. Like Speed Insights, it never sees anything you type.</p>
           <p><strong>What analytics never receives.</strong> Search terms are not sent. The site search
           runs entirely in your browser against a file it downloads, and only the <em>number</em> of
           results a search returned is reported, never what you typed. Nothing you type, paste, or drop
@@ -224,8 +230,9 @@
           </article>
           <article class="info-card compact-card">
             <h3>Vercel</h3>
-            <p>Site hosting, which involves standard server request logs, and Vercel Speed Insights, which
-            measures how quickly pages render. See <a class="text-link" href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</p>
+            <p>Site hosting, which involves standard server request logs; Vercel Speed Insights, which
+            measures how quickly pages render; and Vercel Web Analytics, which counts pageviews and
+            referrers. Neither measurement script sets a cookie. See <a class="text-link" href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</p>
           </article>
         </div>
         <div class="section-heading section-heading-sub">

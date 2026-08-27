@@ -125,6 +125,20 @@
     si.defer = true;
     si.src = '/_vercel/speed-insights/script.js';
     document.head.appendChild(si);
+
+    // Vercel Web Analytics — pageviews and referrers. Everything said above
+    // about Speed Insights applies here for the same reasons: the collector is
+    // served from our own origin, so script-src 'self' and connect-src 'self'
+    // already cover it, and it is the plain script rather than @vercel/analytics
+    // because a site with no dependencies does not acquire one for two lines.
+    //
+    // Unlike gtag, this is not behind the interaction gate: it sets no cookie
+    // and carries no identifier, so there is nothing to defer for — and a
+    // pageview that only fires after an interaction is not a pageview count.
+    var va = document.createElement('script');
+    va.defer = true;
+    va.src = '/_vercel/insights/script.js';
+    document.head.appendChild(va);
   }
 
   // Register the service worker on EVERY page, not only the lab pages that
