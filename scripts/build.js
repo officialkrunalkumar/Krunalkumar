@@ -10,19 +10,35 @@
    gradient") and deleting them by hand to save bytes would destroy the most
    valuable documentation in the codebase.
 
-   It does five transformations, then verifies what it produced:
+   It does seven transformations, then verifies what it produced. They are
+   numbered for the section banners further down this file rather than counted
+   1..7, so 1b, 7c and 8 are labels and not gaps — 5 through 7b are the gates,
+   which write nothing:
 
      1. Strips CSS comments.  main.css is 41.7% comments and render-blocking
-        on all 89 pages. Saves roughly 44 KB raw / 12 KB brotli off the
-        critical path.
+        on every page that loads it — which is nearly all of them. Saves
+        roughly 44 KB raw / 12 KB brotli off the critical path. (It said
+        "all 89 pages" until the output check started reporting 109.)
      1b. Strips JS comments from the two every-page scripts written in the
         same house style: boot.js (synchronous in every <head>, ~59%
         comments) and particle-bg.js (deferred on every page, ~41%). Same
         rationale, same verify-then-write stance — see the JS scanner below
         for why its lexer is longer than the CSS one.
-     2. Rewrites sitemap.xml <lastmod> per file from git, instead of the one
-        hardcoded date every URL currently shares — skipping site-wide sweep
-        commits, so a footer-link pass does not reset every page's date.
+     2. Rewrites sitemap.xml <lastmod> per file from git — the date of the
+        newest commit that touched that file — instead of the one hardcoded
+        date every URL currently shares. There is NO size-based filter. One
+        lived here: it discarded any commit touching more than twenty files,
+        so that a footer-link sweep could not reset every page's date. This
+        repository's ordinary commits touch 48, 57 and 146 files, so that
+        filter threw away nearly the whole history and 94 of 100 URLs fell
+        back to the stale hardcoded date — the failure it was written to
+        prevent, only harder to see. It is gone and does not come back; the
+        measurements are recorded at lastCommitDate(). Exactly one commit is
+        still skipped, and by shape rather than by size: in a clone that is
+        STILL shallow after the unshallow fetch, the oldest fetched commit has
+        had its parent cut off, so git diffs it against the empty tree and
+        reports the entire repository as added by it. With a complete history
+        there is no such boundary and nothing is skipped at all.
      3. Rebuilds assets/data/search-index.json from the pages, so the search
         box can never describe content the site no longer has. See
         scripts/search-index.js for why that stopped being a manual step.
@@ -30,23 +46,40 @@
         index it just built, for the same reason every figure on the colophon
         is counted rather than typed — the committed values had drifted to 88
         pages in a repository that held 95.
+     7c. Rewrites VENDOR_FINGERPRINT in sw.js to a digest of everything under
+        assets/vendor that a browser actually fetches (attribution files are
+        excluded on purpose — the reason is at doVendorPairing), and sw.js
+        derives its runtime cache name from that constant. It carries the
+        number of the section that does it because it was born as one of the
+        gates and stopped being one: it used to fail the deploy and ask for
+        two constants to be edited by hand. It still throws, but only over
+        sw.js ceasing to derive CACHE from the fingerprint.
+     8. Rewrites the figures in colophon.html — every <span data-colophon>,
+        counted rather than typed — which is why it is numbered for the output
+        check: it runs from inside it, once the page count it publishes has
+        been established.
 
    It then checks its own output — critical files present, above a size floor,
    enough HTML pages on disk, every JSON-LD block parseable, the sitemap and
    the pages agreeing about what exists, the static header/footer each page
-   ships matching the partials they get swapped for, sw.js's offline precache
-   list covering what the doc-maker pages actually load, and the vendor
-   fingerprint in sw.js matching the files on disk — and throws if anything
-   looks wrong. Vercel keeps serving the previous deployment when a build
-   exits non-zero, so failing the deploy is always safer than publishing the
-   damage. Every step reports what it did, so a deploy log shows the numbers.
+   ships matching the partials they get swapped for, and sw.js's offline
+   precache list covering what the doc-maker pages actually load — and throws
+   if anything looks wrong. Vercel keeps serving the previous deployment when
+   a build exits non-zero, so failing the deploy is always safer than
+   publishing the damage. Every step reports what it did, so a deploy log
+   shows the numbers.
 
-   `node scripts/build.js --check` IS SAFE ANYWHERE: it writes nothing and
-   only prints what would happen. A bare `node scripts/build.js` is meant for
+   `node scripts/build.js --check` IS SAFE ANYWHERE: it writes no file and
+   only prints what would happen. One caveat, stated because a "no side
+   effects" promise with an asterisk is worse than no promise: on a shallow
+   clone it still runs the unshallow fetch described at deepenHistory(), which
+   writes to .git and can take up to two minutes. Nothing in the working tree
+   is touched and no commit you have is lost — the repository only gains the
+   history it was cloned without. A bare `node scripts/build.js` is meant for
    the Vercel container and REWRITES THE WORKING TREE — it strips the
    comments out of the committed CSS/JS (the documentation this header calls
    the most valuable in the codebase) and rewrites the sitemap, search index,
-   llms counts and colophon. After an accidental local run, `git checkout --`
+   llms counts, sw.js's vendor fingerprint and colophon. After an accidental local run, `git checkout --`
    the touched files; uncommitted edits to them are lost. It is idempotent —
    a second run finds no comments left and writes the same bytes back — and
    every write is gated on the parsed rule list coming out unchanged, so a
@@ -84,6 +117,14 @@ const CSS_FILES = [
      templates to five biodata templates for the sake of a few bytes. */
   'assets/css/resume-maker.css',
   'assets/css/biodata-maker.css',
+  /* The greeting pages, added late because they were written after this list
+     and nobody came back to it — which is exactly the drift the comment above
+     warns about. celebrate.css is the ONLY stylesheet /birthday and /festival
+     load, so until it landed here those two pages were the only ones on the
+     site whose entire render-blocking CSS shipped with every comment intact,
+     and the only ones no brace-balance check ever looked at. */
+  'assets/css/celebrate.css',
+  'assets/css/wish-generator.css',
 ];
 
 /* The two scripts every page pays for, written in the same comment-heavy
@@ -456,36 +497,126 @@ function urlToFile(loc, root) {
   p = p.replace(/^\//, '').replace(/\/$/, '');
   const candidates = [p, p + '.html', path.join(p, 'index.html')];
   for (const c of candidates) {
-    if (fs.existsSync(path.join(root, c))) return c;
+    /* isFile, not exists. /blog and /labs are real DIRECTORIES on disk, so the
+       first candidate satisfied a bare existence test and this returned "blog"
+       — a path no commit has ever touched, which is why those two URLs were
+       the last ones git could not date. The page behind them is the third
+       candidate. Every other caller only asks whether the URL resolves at all,
+       so they see no change. */
+    const abs = path.join(root, c);
+    if (fs.existsSync(abs) && fs.statSync(abs).isFile()) return c;
   }
   return null;
 }
 
-/* A commit that touches half the repository is chrome churn, not a content
-   update: one footer-link sweep used to reset <lastmod> on every legal page
-   and months-old blog posts alike, collapsing 99 URLs onto a single date —
-   and a lastmod that moves in blankets is a lastmod crawlers learn to
-   ignore. So a file is dated by the newest commit that touched it AND at
-   most SWEEP_LIMIT files in total; sweep commits are skipped. A file whose
-   visible history is only sweeps gets no date and keeps its committed
-   <lastmod>, the same fallback a shallow clone already relies on. */
-const SWEEP_LIMIT = 20;
+/* Vercel clones this repository shallow, so out of the box `git log` sees the
+   handful of commits it fetched and `rev-list --count HEAD` reports the fetch
+   depth rather than the history. Two things on this page want the real answer
+   — the sitemap's per-file dates and the colophon's commit count — so ask for
+   it once, here, and let both read the result.
+
+   A blobless unshallow is the cheap way to ask: it downloads every commit and
+   tree but no file contents, which is all either caller needs. It is allowed
+   to fail — a container with no network, no credentials, or a remote that
+   refuses partial clones is not a reason to fail a deploy — so callers get a
+   state back and degrade on their own terms rather than getting an exception.
+
+   THIS IS THE ONE THING --check DOES THAT IS NOT READ-ONLY, and it runs there
+   deliberately. The fetch writes to .git — never to the working tree — and can
+   spend up to two minutes doing it. Gating it behind !CHECK was the obvious
+   alternative and it is the wrong one: --check exists to print the numbers the
+   real build would publish, and a --check that skips the deepening prints a
+   commit count and a set of sitemap dates the real build would never produce,
+   which is a more expensive lie than a slow preflight. So the fetch stays and
+   the banner says so. */
+let historyState = null;
+
+function git(args, extra) {
+  return execFileSync('git', args,
+    Object.assign({ cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }, extra || {}));
+}
+
+function isShallow() {
+  return git(['rev-parse', '--is-shallow-repository']).trim() === 'true';
+}
+
+function deepenHistory() {
+  if (historyState) return historyState;
+  try {
+    if (!isShallow()) return (historyState = 'complete');
+  } catch (e) {
+    return (historyState = 'nogit');
+  }
+  /* --filter=blob:none first because it is a fraction of the bytes; not every
+     remote serves partial clones, so a plain --unshallow is the retry. The
+     timeout is the point of the whole guard — a build that hangs on a fetch
+     is worse than a build that publishes a coarser number. */
+  const attempts = [
+    ['fetch', '--unshallow', '--filter=blob:none', '--quiet'],
+    ['fetch', '--unshallow', '--quiet'],
+  ];
+  /* The probe is deliberately OUTSIDE the fetch's own try. `git fetch
+     --unshallow` can deepen the history and STILL exit non-zero — a tag it
+     could not update, a partial-clone capability the remote half-honours —
+     and while the two shared a try block that throw jumped straight past the
+     probe, so this reported 'shallow' for a repository it had just finished
+     unshallowing. Neither caller could tell: the colophon published the '+'
+     floor instead of the exact count git could now prove, and the sitemap
+     went on skipping a grafted boundary commit the fetch had already
+     repaired. Ask git what the repository looks like now rather than
+     inferring it from an exit status; it already knows. */
+  for (const args of attempts) {
+    try {
+      git(args, { timeout: 60000 });
+    } catch (e) { /* may still have deepened the history — the probe decides */ }
+    try {
+      if (!isShallow()) return (historyState = 'deepened');
+    } catch (e) { /* no answer from git: try the next form, then give up */ }
+  }
+  return (historyState = 'shallow');
+}
+
+/* A file is dated by the newest commit that touched it — the same answer
+   `git log -1 --format=%cs -- <file>` gives, computed in one pass because one
+   `git log` beats a hundred git invocations.
+
+   This used to also discard any commit touching more than twenty files, on the
+   theory that a footer-link sweep should not reset every page's <lastmod>. The
+   theory was right and the threshold was wrong: this repository's ordinary
+   commits touch 48, 57 and 146 files, so the filter threw away nearly every
+   commit in the history and 94 of 100 URLs fell back to one stale hardcoded
+   date — the exact "lastmod that moves in blankets" the filter was written to
+   prevent, only harder to see from the outside. A date that is coarser than
+   you would like still beats a date that is wrong, so the heuristic is gone;
+   the one commit that really does lie about what it touched is handled below,
+   by name rather than by size. */
 let fileDates = null;
 
 function lastCommitDate(file) {
   if (fileDates === null) {
     fileDates = {};
+    /* The one commit whose file list cannot be believed: in a clone that is
+       still shallow, the oldest fetched commit has had its parent cut off, so
+       git diffs it against the empty tree and --name-only reports the ENTIRE
+       repository as added by it. Taking that at face value dates every URL in
+       the sitemap to the same day — a lastmod that moves in blankets, which is
+       the one outcome worse than a stale one. A parentless commit is that
+       boundary, so skip it. With a complete history there is no boundary and
+       nothing is skipped, so the real root commit still dates the handful of
+       files nothing has touched since. */
+    const truncated = deepenHistory() === 'shallow';
     try {
       // One `git log` for the whole history instead of one per file:
-      // \x01-separated blocks of "date, then the files the commit touched".
-      const raw = execFileSync('git', ['log', '--format=%x01%cs', '--name-only'],
+      // \x01-separated blocks of "date and parents, then the files touched".
+      const raw = execFileSync('git', ['log', '--format=%x01%cs%x02%p', '--name-only'],
                                { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
       for (const block of raw.split('\x01')) {
         const lines = block.split('\n').map((s) => s.trim()).filter(Boolean);
         if (!lines.length) continue;
-        const date = lines.shift();
+        const head = lines.shift().split('\x02');
+        const date = head[0];
         if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
-        if (lines.length > SWEEP_LIMIT) continue;          // sweep: says nothing per page
+        if (truncated && !head[1]) continue;               // the grafted boundary
         for (const f of lines) {
           if (!(f in fileDates)) fileDates[f] = date;      // log is newest-first
         }
@@ -504,18 +635,19 @@ function doSitemap() {
   const abs = path.join(ROOT, 'sitemap.xml');
   if (!fs.existsSync(abs)) { log('  SKIP  sitemap.xml (not found)'); return; }
 
-  // A deploy clone usually has only the last handful of commits, so `git log`
-  // cannot see far enough back to date most files. Those entries keep the date
-  // they already carry, which is the correct fallback — but a partial result
-  // that looks like a complete one is worth one line of log.
-  let shallow = false;
-  try {
-    shallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'],
-                           { cwd: ROOT, encoding: 'utf8' }).trim() === 'true';
-  } catch (e) { /* no git at all: every lookup returns null, all dates stay */ }
-  if (shallow) {
-    log('  NOTE  shallow clone: only files touched in the fetched history can');
-    log('        be dated. The rest keep their existing <lastmod>.');
+  // A deploy clone starts with only the last handful of commits, so `git log`
+  // cannot see far enough back to date most files. deepenHistory() fixes that
+  // where it can; where it cannot, the undateable entries keep the date they
+  // already carry, which is the correct fallback — but a partial result that
+  // looks like a complete one is worth one line of log.
+  const history = deepenHistory();
+  if (history === 'deepened') {
+    log('  NOTE  shallow clone unshallowed, so every file can be dated from');
+    log('        its own history.');
+  } else if (history !== 'complete') {
+    log('  NOTE  ' + (history === 'nogit' ? 'no git here' : 'shallow clone and the unshallow fetch failed') +
+        ': only files touched in the');
+    log('        fetched history can be dated. The rest keep their <lastmod>.');
   }
 
   const src = fs.readFileSync(abs, 'utf8');
@@ -1027,7 +1159,15 @@ function doVendorPairing(root) {
   if (!fs.existsSync(dir)) { log('  SKIP  assets/vendor (not found)'); return; }
 
   const crypto = require('crypto');
-  const files = walkFiles(dir, () => true)
+  /* Attribution files are deliberately outside the fingerprint. The digest
+     exists to name the runtime cache, so it must move only when a byte the
+     browser actually fetches moves. LICENSE, NOTICE, COPYING and README files
+     ship for legal reasons and are never requested by a lab, so folding them
+     in would evict every visitor's 151 MB of cached WebAssembly to publish a
+     copyright notice — the precise cost this fingerprint exists to avoid. */
+  const isAttribution = (f) =>
+    /(^|[\\/])(LICENSE|NOTICE|COPYING|README)[^\\/]*$/i.test(f);
+  const files = walkFiles(dir, (f) => !isAttribution(f))
     .map((f) => path.relative(root, f).split(path.sep).join('/'))
     .sort();
   const h = crypto.createHash('sha256');
@@ -1127,7 +1267,9 @@ function walkFiles(dir, test, acc) {
   return acc;
 }
 
-function colophonFacts(pages) {
+/* `committed` is the current colophon.html source. Only the commit count reads
+   it, and only when git cannot be made to tell the truth — see below. */
+function colophonFacts(pages, committed) {
   const facts = {};
   facts.pages = String(pages);
   /* Same count the llms.txt facts use — one definition, so the colophon and
@@ -1155,9 +1297,11 @@ function colophonFacts(pages) {
   const readme = countLines('README.md');
   if (readme) facts.readme = readme.toLocaleString('en-US');
 
-  /* Comment lines across the four stylesheets, counted on the REPOSITORY copy.
-     By the time this runs the files on disk have been stripped, so reading them
-     now would report zero — the count has to come from git's copy. */
+  /* Comment lines across every stylesheet in CSS_FILES, counted on the
+     REPOSITORY copy. By the time this runs the files on disk have been
+     stripped, so reading them now would report zero — the count has to come
+     from git's copy. (Named by list rather than by number on purpose: this
+     said "the four stylesheets" while CSS_FILES held nine, and then eleven.) */
   try {
     let commentLines = 0;
     for (const f of CSS_FILES) {
@@ -1168,15 +1312,32 @@ function colophonFacts(pages) {
     if (commentLines) facts.csscomments = commentLines.toLocaleString('en-US');
   } catch (e) { /* no git, or the file is not committed yet: keep what is there */ }
 
-  /* A shallow clone only has the commits it fetched, so reporting its count
-     would understate the history badly. Better to leave the committed number
-     than to publish a smaller wrong one — the same call the sitemap makes. */
+  /* A shallow clone only has the commits it fetched, so its `rev-list --count`
+     is the fetch depth, not the history. This used to answer that by leaving
+     the committed number alone — but Vercel is ALWAYS shallow, so the branch
+     that recounts never ran there and the tile sat frozen at a hand-typed 143
+     while the repository passed 160, under a hero paragraph promising every
+     number on the page is counted at deploy. A figure that cannot self-correct
+     is exactly what this whole pass exists to abolish.
+     So: deepenHistory() first, and count for real whenever that works. When it
+     cannot (no network, no credentials), publish a FLOOR rather than either a
+     lie or the fetch depth — the larger of what git can see and what the page
+     already claims, marked with a + so it reads as "at least this many", which
+     is the one thing still provable. It never moves backwards and it corrects
+     itself upward on the first deploy that can reach the remote. */
   try {
-    const shallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-    if (shallow === 'false') {
-      facts.commits = execFileSync('git', ['rev-list', '--count', 'HEAD'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    const state = deepenHistory();                 // before the count, so it counts the deepened history
+    const reachable = Number(git(['rev-list', '--count', 'HEAD']).trim());
+    if (reachable && (state === 'complete' || state === 'deepened')) {
+      facts.commits = String(reachable);
+    } else if (reachable) {
+      const m = /data-colophon="commits"[^>]*>([^<]*)</.exec(committed || '');
+      const onPage = m ? Number(m[1].replace(/[^0-9]/g, '')) : 0;
+      facts.commits = String(Math.max(reachable, onPage || 0)) + '+';
+      log('  NOTE  history is still shallow after the unshallow fetch, so the');
+      log('        commit count publishes as a floor: ' + facts.commits);
     }
-  } catch (e) { /* keep the committed value */ }
+  } catch (e) { /* no git at all: keep the committed value, as before */ }
 
   facts.updated = new Date().toISOString().slice(0, 10);
   return facts;
@@ -1189,8 +1350,8 @@ function writeColophon(pages) {
 
   log('');
   log('colophon');
-  const facts = colophonFacts(pages);
   const before = fs.readFileSync(abs, 'utf8');
+  const facts = colophonFacts(pages, before);
   let changed = 0;
 
   const after = before.replace(
@@ -1252,7 +1413,8 @@ function verifyOutput() {
 /* -------------------------------------------------------------------------- */
 
 function main() {
-  log(CHECK ? '=== build --check (no files will be written) ===' : '=== build ===');
+  log(CHECK ? '=== build --check (no files will be written; git history may be deepened) ==='
+            : '=== build ===');
   doCss();
   doJs();
   doSitemap();
@@ -1273,7 +1435,12 @@ function main() {
   log('JS total:  ' + totalJsBefore + ' -> ' + totalJsAfter +
       '  (saved ' + savedJs + ' bytes, ' +
       (totalJsBefore ? ((savedJs / totalJsBefore) * 100).toFixed(1) : '0') + '%)');
-  log(CHECK ? '=== check complete, nothing written ===' : '=== build complete ===');
+  /* Same wording as the opening banner on purpose. This said "nothing
+     written" while the banner above already admitted the unshallow fetch, so
+     the run that had just spent two minutes writing to .git closed by denying
+     it — and the closing line is the one a reader scrolls back to. */
+  log(CHECK ? '=== check complete (no files written; git history may have been deepened) ==='
+            : '=== build complete ===');
 }
 
 /* Exported so the gates can be pointed at a deliberately broken scratch tree

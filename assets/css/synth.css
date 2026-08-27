@@ -140,6 +140,27 @@
 .syn-cell:hover { transform: translateY(-1px); }
 .syn-cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* The grid itself is a tab stop. synth.js gives #syn-grid tabIndex 0 because it
+   is the sequencer's stage and it owns the Space shortcut — Space had to stop
+   being a bare document-level binding, since on a page made of <button>s Space
+   is how the browser presses whichever one has focus. Owning the key means the
+   grid has to be focusable, and a focusable element that shows nothing when
+   focus lands on it is a dead end for a keyboard visitor: they can tell they
+   have left the Play button, but not where they are or that Space now does
+   something different here.
+
+   Same 2px var(--accent) ring as .syn-cell above, .syn-pad and .syn-key, so the
+   instrument answers focus in one voice. The offset stays at 2px rather than
+   going wider: .syn-grid sets overflow-x: auto for the sixteen steps, and while
+   an element's own outline is never clipped by its own overflow, the ring is
+   drawn outside the border box and only .syn-panel's 1.1rem padding is between
+   it and the panel edge. :focus-visible, not :focus, because the grid is now a
+   click target as well as a tab stop — a pointer landing on a row label or the
+   gap between cells focuses it, and that should not paint a ring nobody asked
+   for. Keyboard arrival always matches :focus-visible, which is the case this
+   rule exists for. */
+.syn-grid:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* The playhead. A ring rather than a colour change, so it stays visible on a
    cell that is already lit. */
 .syn-cell.is-playing { box-shadow: 0 0 0 2px var(--ink), 0 0 10px rgb(var(--accent-rgb) / 0.7); }
@@ -291,3 +312,46 @@
   .syn-cell { min-width: 1.6rem; }
   .syn-keys { height: 5.5rem; }
 }
+
+/* ==========================================================================
+   Fullscreen
+   --------------------------------------------------------------------------
+   labs.css's fullscreen block is written for the tool layout: .lab.is-fullscreen
+   pins the shell to height:100vh and makes it a column flex container, and then
+   every child rule under it names a .lab-panes / .lab-pane / .lab-terminal, on
+   the assumption that the one child that should absorb the leftover height is a
+   pane that scrolls internally. This lab has no panes. It is five stacked
+   <section class="syn-panel"> elements — deck, drum machine, pads, keys, mix —
+   whose natural height is what it is. Exactly one of those child rules matches
+   here, .lab.is-fullscreen .lab-toolbar, and all it does is pin the toolbar to
+   flex:0 0 auto; every rule that was supposed to hand the leftover height to
+   something that scrolls names a .lab-panes / .lab-pane / .lab-terminal and
+   matches nothing on this page. So nothing inside ever agrees to shrink.
+
+   That turned the fullscreen button destructive rather than merely useless.
+   .lab already sets overflow:hidden (so a long lab does not spill over the
+   section below it), .lab.is-fullscreen does not lift it, and the stack
+   measures about 1898px against a 1080px screen — so Pads, Keys and Mix were
+   clipped away with no scrollbar to reach them. Pressing Fullscreen on an
+   instrument hid most of the instrument.
+
+   One declaration fixes it: let the shell scroll. .syn.is-fullscreen matches the
+   same element as .lab.is-fullscreen at the same (0,2,0) specificity, and
+   synth.html loads synth.css after labs.css, so source order settles it. Only
+   overflow-y is restated; overflow-x stays hidden from .lab, which is what we
+   want — the sixteen sequencer steps scroll inside .syn-grid's own
+   overflow-x:auto, and a second horizontal scrollbar on the shell would just be
+   a way to lose the panels sideways as well.
+
+   .syn-panel is pinned to flex:0 0 auto for the same reason labs.css pins its
+   toolbar and metrics rows: in a column flex container these are flex items, and
+   leaving them at the default flex-shrink:1 invites the browser to compress the
+   five sections toward a viewport they do not fit, which is the failure this
+   block exists to stop. Nothing here touches the non-fullscreen layout, so
+   exiting restores the .syn grid exactly as it was.
+   ========================================================================== */
+
+.syn.is-fullscreen {
+  overflow-y: auto;
+}
+.syn.is-fullscreen .syn-panel { flex: 0 0 auto; }

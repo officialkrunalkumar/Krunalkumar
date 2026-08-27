@@ -415,7 +415,17 @@
         result.className = 'hl-result';
         var real = resolve(build());
         if (Object.prototype.hasOwnProperty.call(FS, real)) {
-          result.classList.add(real.indexOf('config/') === 0 ? 'is-ok' : '');
+          // Only a file the viewer was never meant to serve is "is-ok" — this
+          // is the attacker's console, so escaping public/ is the success
+          // state and a plain public/ read is the ordinary one, styled by
+          // .hl-result alone. That has to be an `if`, not a ternary with ''
+          // in the else arm: classList.add('') throws a SyntaxError ("the
+          // token provided must not be empty"), and because it threw on the
+          // very first line of the branch, opening welcome.txt — the value
+          // this box starts with — left the result panel completely blank.
+          // The viewer looked dead to anyone who tried it the honest way
+          // first, before the traversal that this challenge is teaching.
+          if (real.indexOf('config/') === 0) result.classList.add('is-ok');
           result.textContent = '── ' + real + ' ──\n' + FS[real];
           if (FS[real].indexOf('HL{') !== -1) {
             result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{traversal_left_the_folder}'));

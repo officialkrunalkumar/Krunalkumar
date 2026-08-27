@@ -137,7 +137,19 @@
       out.line('                      ' + epoch.note, 't-dim');
     });
 
-    var dos = dosDate(Number(value));
+    /* MS-DOS date/time is packed into exactly 32 bits, so a wider value cannot
+       be one. The guard has to live here rather than inside dosDate, because
+       `value >>> 16` is where the damage happens: ToUint32 wraps anything above
+       2^32 and the wrapped bits are perfectly capable of passing dosDate's own
+       month/day/hour sanity check. The tool's own worked example — the FILETIME
+       133447296000000000 offered on this page — printed a confident
+       "2085-02-17 00:00:00" that way. Dropping the row is the honest outcome,
+       and it is what already happens for a 32-bit value whose fields are out of
+       range. */
+    var dosCandidate = (typeof value === 'bigint')
+      ? (value >= BigInt(0) && value <= BigInt(0xffffffff))
+      : (isFinite(value) && Math.floor(value) === value && value >= 0 && value <= 0xffffffff);
+    var dos = dosCandidate ? dosDate(Number(value)) : null;
     if (dos) {
       out.write('MS-DOS (ZIP)'.padEnd(22, ' '), 't-dim');
       out.line(dos, 't-dim');

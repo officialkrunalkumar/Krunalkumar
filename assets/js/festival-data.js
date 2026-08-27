@@ -92,7 +92,7 @@
   { k: "christmas", n: "Christmas", g: "Merry Christmas", e: "🎄",
     b: "A celebration of the Nativity, shared through carols, evergreen trees, feasting and gifts.",
     p: ["#0F5132", "#C8102E", "#F5C542", "#0B2E1E"],
-    s: "snow", r: "Western & global", a: "christmas|xmas|x-mas|merry christmas|christmas day|noel|navidad|weihnachten|natal|christmas eve" },
+    s: "snow", r: "Western & global", a: "christmas|xmas|x-mas|merry christmas|christmas day|noel|navidad|weihnachten|natal|christmas eve|crismas|chrismas|krismas" },
   { k: "chuseok", n: "Chuseok", g: "Jeulgeoun Chuseok Bonaeseyo", e: "🌕",
     b: "Korean harvest thanksgiving: songpyeon rice cakes, ancestral rites and a full moon shared with family.",
     p: ["#D98A22", "#8C3B1E", "#F7E3B0", "#2A1408"],

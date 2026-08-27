@@ -434,7 +434,7 @@ Three details that were each a bug:
   reset underneath someone mid-session.
 
 **Search.** `assets/js/site-search.js` with a prebuilt index at
-`assets/data/search-index.json` (88 pages, ~80 KB brotli on the wire, fetched only when the overlay opens). It opens a full-screen
+`assets/data/search-index.json` (98 pages, ~107 KB brotli on the wire, fetched only when the overlay opens). It opens a full-screen
 overlay rather than a dropdown — roomier, and identical on a phone and a laptop.
 The index is generated from the pages by `scripts/search-index.js`, and `scripts/build.js` rebuilds
 it on every deploy, so it cannot describe content the site no longer has. Run
@@ -588,7 +588,7 @@ crowding the raised surfaces even when you do shift them.
   paginates, the three network share links on a post are plain `<a>`s, and `#bg-canvas` carries the
   same gradient in CSS that `particle-bg.js` would paint. Adding a feature means asking what it
   degrades to. The labs are the honest exception — a WebAssembly runtime cannot run without a
-  script — so all 61 lab pages carry a `<noscript>` block (`.lab-noscript`, styled in `labs.css`)
+  script — so all 62 public lab pages carry a `<noscript>` block (`.lab-noscript`, styled in `labs.css`)
   that says so plainly, explains that the work happens on the visitor's own machine which is why it
   cannot fall back to a server, and links to the blog, rather than presenting a dead editor.
 - The site is dark by default, with an **opt-in** light theme behind the header toggle. Light is
@@ -834,7 +834,7 @@ There is no compile server: every runtime is a WebAssembly build of the real int
 from `/assets/vendor/` and run inside a Web Worker. No user code is ever transmitted anywhere,
 which is both the privacy claim on the pages and the reason the section costs nothing to operate.
 
-| Route | Engine | First-load |
+| Route | Engine | Runtime, on disk |
 |---|---|---|
 | `/labs/c` | Real clang + lld on WebAssembly | ~58 MB |
 | `/labs/sql` | SQLite on WebAssembly (sql.js) | ~700 KB |
@@ -852,6 +852,12 @@ which is both the privacy claim on the pages and the reason the section costs no
 | `/labs/perl` | Real Perl 5 on WebAssembly (WebPerl) | ~16 MB |
 | `/labs/typing` | Typing speed test — code and prose | 0 KB |
 | `/labs/api` | HTTP request tester — the browser's own fetch, no proxy | 0 KB |
+
+Those are the uncompressed bytes sitting in `assets/vendor/`, which is the number worth knowing when
+you are deciding what to vendor. It is not what a visitor downloads: everything under `/assets/vendor/`
+is served brotli-compressed, so the first load is roughly a third of the column. The clang toolchain
+behind `/labs/c` and `/labs/cpp` is the widest gap — ~58 MB on disk, ~19 MB over the wire — and ~19 MB
+is the figure those two pages quote, because that is the one the visitor actually waits for.
 
 ### Peer-to-peer chat (`/labs/chat`)
 

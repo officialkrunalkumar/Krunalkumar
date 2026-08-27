@@ -14,12 +14,11 @@
    The only innerHTML in this file writes constant ornament SVG strings that
    no user input can touch.
 
-   State lives in one object, mirrored to localStorage (debounced) under
-   lab.biodata-maker.v1 so a half-finished draft survives a closed tab —
-   in this browser, on this machine, and nowhere else. The same object can
-   be downloaded as biodata-data.json and loaded back on another device;
-   the import goes through the identical validation as the restore, so a
-   hand-edited file gets no special trust.
+   State lives in one object and nowhere else — nothing is written to
+   localStorage, and purgeLegacyDraft() below deletes what older builds of
+   this file left behind. That object can be downloaded as
+   biodata-data.json and loaded back on another device; the import runs
+   through applySaved(), so a hand-edited file gets no special trust.
 
    The labels printed on the sheet can switch between English, Hindi and
    Gujarati (see the SECTIONS table); the form itself stays English, and
@@ -29,7 +28,9 @@
 (function () {
   'use strict';
 
-  var STORE_KEY = 'lab.biodata-maker.v1';
+  /* The key an older build autosaved the draft under. Nothing writes it any
+     more; it survives only so purgeLegacyDraft() can delete it. */
+  var LEGACY_KEY = 'lab.biodata-maker.v1';
   var SHEET_W = 794; /* 210mm at 96dpi — must match the CSS width */
 
   /* ------------------------------------------------------------------
@@ -207,21 +208,28 @@
     syncPhotoUi();
   }
 
-  function save() {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(state));
-      setStatus('Saved in your browser');
-    } catch (err) {
-      /* Quota or private mode — the tool still works, it just forgets. */
-      setStatus('Could not save (storage is full or blocked)');
-    }
+  /* There is deliberately NO autosave and no restore here, and a future edit
+     should not helpfully add one back. This one form holds a date and time
+     of birth, a home address, a family's income and a photograph of a young
+     woman — the single most sensitive page a family produces — and biodatas
+     get typed on shared machines: the family desktop, the cousin's laptop,
+     the cyber-café next to the marriage bureau. A draft left in localStorage
+     for convenience is that page waiting for whoever sits down next. The
+     state lives in memory for this session only; "Download data" is how a
+     draft survives, because that is a choice the visitor makes on purpose.
+
+     Older builds did autosave, so this runs once at boot and deletes what
+     they left on the device. Wrapped because merely touching localStorage
+     throws outright in some privacy modes. */
+  function purgeLegacyDraft() {
+    try { localStorage.removeItem(LEGACY_KEY); } catch (err) { /* nothing to clean up, then */ }
   }
 
-  /* Copies a saved object onto the current state, field by field, taking
-     only what passes the same checks the localStorage restore has always
-     applied. Shared by restore() and the JSON import, so a downloaded file
-     gets exactly the scrutiny a stored draft does — no key smuggled into
-     state, no non-image data URI smuggled into the photo slot. */
+  /* Copies a stored object onto the current state, field by field, taking
+     only the keys and shapes this tool actually recognises: no key smuggled
+     into state, no non-image data URI smuggled into the photo slot. The JSON
+     import is its only caller, and a file someone hand-edited gets no more
+     trust than that. */
   function applySaved(saved) {
     KEYS.forEach(function (key) {
       if (typeof saved[key] === 'string') state[key] = saved[key];
@@ -231,23 +239,9 @@
       state.photo = saved.photo;
     }
     if (TEMPLATES.indexOf(saved.tpl) !== -1) state.tpl = saved.tpl;
-    /* Drafts saved before the label-language toggle existed have no
+    /* Files written before the label-language toggle existed have no
        labelLang; state's default 'en' already covers them. */
     if (LABEL_LANGS.indexOf(saved.labelLang) !== -1) state.labelLang = saved.labelLang;
-  }
-
-  function restore() {
-    var raw = null;
-    try { raw = localStorage.getItem(STORE_KEY); } catch (err) { raw = null; }
-    if (!raw) return false;
-    try {
-      var saved = JSON.parse(raw);
-      if (!saved || typeof saved !== 'object') return false;
-      applySaved(saved);
-      return true;
-    } catch (err) {
-      return false;
-    }
   }
 
   /* Resets every stateful thing to a blank slate; import builds on this so
@@ -428,26 +422,52 @@
   }
 
   /* ------------------------------------------------------------------
-     Photo — chosen locally, downscaled locally, stored locally.
-     512px on the long side is plenty for a printed 35x42mm frame and
-     keeps the localStorage copy small.
+     Photo — chosen locally, downscaled locally, and kept in memory only.
+     512px on the long side is plenty for a printed 35x42mm frame and keeps
+     the data URL small enough to travel inside a downloaded .json.
      ------------------------------------------------------------------ */
   function handlePhoto(file) {
-    if (!file || file.type.indexOf('image/') !== 0) return;
+    if (!file) return;
+
+    /* A file the browser will not decode used to do nothing whatsoever — the
+       wrong type returned in silence, and an undecodable image fired an
+       error nobody was listening for, so the visitor sat watching a sheet
+       that never changed. HEIC gets named because it is nearly always the
+       reason: an iPhone shoots HEIC out of the box, no desktop browser
+       opens one, and depending on the OS it arrives here either as
+       image/heic or with no type at all — which is why both routes end in
+       the same message. The input is reset so the same photo can be
+       re-picked once it has been converted. */
+    function photoFailed() {
+      var input = $('bm-f-photo');
+      if (input) input.value = '';
+      setStatus('That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open — re-save it as JPEG or PNG and try again.');
+    }
+
+    if (file.type.indexOf('image/') !== 0) {
+      photoFailed();
+      return;
+    }
     var reader = new FileReader();
+    reader.onerror = photoFailed;
     reader.onload = function () {
       var img = new Image();
+      img.onerror = photoFailed;
       img.onload = function () {
         var long = Math.max(img.width, img.height) || 1;
         var k = Math.min(1, 512 / long);
         var canvas = document.createElement('canvas');
         canvas.width = Math.max(1, Math.round(img.width * k));
         canvas.height = Math.max(1, Math.round(img.height * k));
-        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        var ctx = canvas.getContext('2d');
+        /* JPEG has no alpha; a transparent PNG would otherwise composite
+           onto black and print as a dark square. */
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         state.photo = canvas.toDataURL('image/jpeg', 0.85);
         syncPhotoUi();
         render();
-        saveSoon();
       };
       img.src = reader.result;
     };
@@ -538,29 +558,30 @@
     state.photo = samplePortrait();
     writeForm();
     render();
-    saveSoon();
     setStatus('Example loaded — every detail is fictional');
   }
 
   function clearAll() {
-    if (!window.confirm('Clear every field and delete the copy saved in this browser?')) return;
+    /* Nothing is stored anywhere, so there is nothing to delete — but this
+       is still the one irreversible button on the page, and what it clears
+       can be half an hour of careful typing. */
+    if (!window.confirm('Clear every field and start again? This cannot be undone.')) return;
     KEYS.forEach(function (key) { state[key] = ''; });
     state.photo = null;
-    try { localStorage.removeItem(STORE_KEY); } catch (err) { /* nothing to do */ }
     writeForm();
     var fileInput = $('bm-f-photo');
     if (fileInput) fileInput.value = '';
     render();
-    setStatus('Cleared — nothing is saved any more');
+    setStatus('Cleared');
   }
 
   /* ------------------------------------------------------------------
-     JSON export / import. The autosave already keeps a draft in this
-     browser; the file pair moves it between browsers and devices — the
-     way everything else here moves: as a file the user carries, not a
-     record a server holds. Export is a Blob download of the whole state
-     (photo included, it is just a data URI); import runs the file
-     through applySaved, the same gate the localStorage restore uses.
+     JSON export / import. Nothing is kept between visits, so this pair is
+     how a draft survives at all — and how it moves between browsers and
+     devices — the way everything else here moves: as a file the user
+     carries, not a record a server holds. Export is a Blob download of
+     the whole state (photo included, it is just a data URI); import runs
+     the file through applySaved before any of it reaches the sheet.
      ------------------------------------------------------------------ */
   function exportJson() {
     readForm();
@@ -605,9 +626,8 @@
       applySaved(parsed.data);
       writeForm();
       render();
-      save();
       if (onApplied) onApplied();
-      setStatus('Loaded from your file — and saved in this browser');
+      setStatus('Loaded from your file');
     };
     reader.readAsText(file);
   }
@@ -616,7 +636,6 @@
      Wiring
      ------------------------------------------------------------------ */
   var renderSoon = debounce(function () { readForm(); syncCustomInvocation(); render(); }, 150);
-  var saveSoon = debounce(save, 400);
 
   function init() {
     sheet = $('bm-sheet');
@@ -625,7 +644,7 @@
     var form = $('bm-form');
     if (!sheet || !form) return;
 
-    var restored = restore();
+    purgeLegacyDraft();
     writeForm();
 
     /* Template pills. The language pills share .bm-tpl for the look but
@@ -644,7 +663,6 @@
         state.tpl = pill.getAttribute('data-tpl');
         paintPills();
         render();
-        saveSoon();
       });
     });
     paintPills();
@@ -663,14 +681,14 @@
         state.labelLang = pill.getAttribute('data-lang');
         paintLangPills();
         render();
-        saveSoon();
       });
     });
     paintLangPills();
 
-    /* Live update + autosave on anything typed or picked. */
-    form.addEventListener('input', function () { renderSoon(); saveSoon(); });
-    form.addEventListener('change', function () { renderSoon(); saveSoon(); });
+    /* Live update on anything typed or picked. Nothing is persisted — the
+       sheet IS the feedback. */
+    form.addEventListener('input', renderSoon);
+    form.addEventListener('change', renderSoon);
 
     var fileInput = $('bm-f-photo');
     if (fileInput) {
@@ -685,7 +703,6 @@
         if (fileInput) fileInput.value = '';
         syncPhotoUi();
         render();
-        saveSoon();
       });
     }
 
@@ -718,7 +735,6 @@
     window.addEventListener('resize', debounce(fitPreview, 120));
 
     render();
-    if (restored) setStatus('Restored your saved draft');
 
     /* Register the site service worker so the page and its assets can be
        served from the browser's cache on a later, offline visit. Guarded

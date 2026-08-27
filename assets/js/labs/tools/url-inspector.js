@@ -25,7 +25,17 @@
     'х': 'x (Cyrillic)', 'ѕ': 's (Cyrillic)', 'і': 'i (Cyrillic)',
     'ј': 'j (Cyrillic)', 'ԁ': 'd (Cyrillic)', 'ɡ': 'g (Latin script)',
     'α': 'a (Greek)', 'ο': 'o (Greek)', 'ρ': 'p (Greek)', 'ν': 'v (Greek)',
-    'ｅ': 'e (fullwidth)', 'ａ': 'a (fullwidth)', '': 'zero-width character'
+    'ｅ': 'e (fullwidth)', 'ａ': 'a (fullwidth)',
+    /* Written as escapes rather than as the characters themselves. The entry
+       that used to be here WAS a literal U+200B, and it did not survive being
+       stored invisibly: the key ended up an empty string, which Array.from can
+       never produce, so the one check in this table aimed at invisible
+       characters was dead. Something you cannot see cannot be reviewed in a
+       diff either — hence the escapes, which can never silently go missing.
+       Zero-width characters do not render, so a hostname carrying one looks
+       exactly like the domain it is impersonating. */
+    '\u200B': 'zero-width space', '\u200C': 'zero-width non-joiner',
+    '\u200D': 'zero-width joiner', '\uFEFF': 'zero-width no-break space (BOM)'
   };
 
   var SHORTENERS = ['bit.ly','tinyurl.com','t.co','goo.gl','ow.ly','is.gd','buff.ly',

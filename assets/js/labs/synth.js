@@ -371,6 +371,51 @@
     return false;
   }
 
+  /* Space is not ours to take the way a letter is. The browser has already
+     given it two jobs — scroll the page when nothing focusable owns it, and
+     activate the focused button, link or checkbox — and this listener is on
+     `document`, so an unconditional preventDefault() here cancelled both on
+     every element of the page: /labs/synth could not be scrolled with the
+     keyboard at all, and Space on the Clear button started the sequencer
+     instead of clearing the grid.
+
+     Scoping it by exclusion — "anywhere inside #synth that is not a button or
+     a field" — looked right and was empty. All 116 focusable elements this
+     instrument had are a <button> (106 of them: the keys, the pads, the drum
+     cells and the transport), an <input> (9: eight ranges and the file picker)
+     or the one waveform <select> — there is no <a> anywhere inside #synth. So
+     the exclusion matched nothing that can hold focus, and a real keydown
+     targets either one of those or <body>. The shortcut was not scoped, it was
+     unreachable.
+
+     So ownership is stated positively instead, the way sortviz.js does it: the
+     drum grid is the sequencer's stage, it is given tabIndex 0 so a keyboard
+     visitor can Tab to it, and Space toggles transport only while that stage
+     itself holds focus. A focusable element must show focus, so .syn-grid has
+     a focus ring of its own in synth.css.
+
+     Everywhere else Space keeps both of its native jobs untouched: it scrolls
+     the page when nothing here is focused, and it presses the focused button —
+     including the sequencer's own #syn-seq-play, which remains the other way
+     to start and stop the pattern. */
+  grid.tabIndex = 0;
+  grid.setAttribute('role', 'group');
+  grid.setAttribute('aria-label', 'Drum sequencer grid — press Space to start and stop the pattern');
+
+  /* #synth deliberately gets no tabindex at all — not even -1. sortviz.js sets
+     tabindex="-1" on its root because its keydown listener is bound to that
+     root; this listener is on `document`, so the root never needs to be a
+     programmatic focus target and nothing here reads document.activeElement or
+     calls root.focus(). Setting -1 anyway is not free: in Chrome and Safari a
+     mousedown on an element with tabindex="-1" focuses it, so clicking the
+     panel background silently moved focus to #synth — an invisible move, since
+     a -1 root has no ring — and the visitor's next Tab restarted from there
+     instead of from wherever they actually were. */
+
+  function spaceBelongsToSequencer(t) {
+    return !!t && t === grid;
+  }
+
   document.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
     if (typingInAField(e.target)) return;
@@ -380,7 +425,10 @@
       var pad = $$('.syn-pad')[+k - 1];
       if (pad) { e.preventDefault(); pad.click(); }
     }
-    if (k === ' ') { e.preventDefault(); seqOn ? seqStop() : seqStart(); }
+    if (k === ' ' && spaceBelongsToSequencer(e.target)) {
+      e.preventDefault();
+      seqOn ? seqStop() : seqStart();
+    }
   });
 
   document.addEventListener('keyup', function (e) {

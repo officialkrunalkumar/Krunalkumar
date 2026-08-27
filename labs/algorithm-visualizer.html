@@ -3,26 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Watch 13 sorting and 6 pathfinding algorithms — quicksort, merge, BFS, Dijkstra, A* — run animated with live comparison counts. Free, in your browser." />
+    <meta name="description" content="Watch 21 algorithms — 13 sorts, linear vs binary search, 6 pathfinders — run animated with live comparison counts. Compare any two side by side. Free, in your browser." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/algorithm-visualizer" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Watch sorting and pathfinding algorithms, animated" />
-    <meta property="og:description" content="Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more) and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Steppable and speed-controlled. Runs in your browser." />
+    <meta property="og:title" content="Watch sorting, searching and pathfinding algorithms, animated" />
+    <meta property="og:description" content="Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more), linear and binary search on a sorted array, and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Any two of them race side by side on identical data. Steppable and speed-controlled. Runs in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/algorithm-visualizer" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-algorithm-visualizer.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Sorting &amp; Pathfinding Visualizer" />
+    <meta property="og:image:alt" content="Sorting, Searching &amp; Pathfinding Visualizer" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Watch sorting and pathfinding algorithms, animated" />
-    <meta name="twitter:description" content="Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more) and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Steppable and speed-controlled. Runs in your browser." />
+    <meta name="twitter:title" content="Watch sorting, searching and pathfinding algorithms, animated" />
+    <meta name="twitter:description" content="Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more), linear and binary search on a sorted array, and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Any two of them race side by side on identical data. Steppable and speed-controlled. Runs in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-algorithm-visualizer.jpg" />
-    <title>Sorting & Pathfinding Visualizer | Krunalkumar Shah</title>
+    <title>Sorting, Searching &amp; Pathfinding Visualizer | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -31,7 +31,7 @@
         "url": "https://krunalkumar.dpdns.org/labs/algorithm-visualizer",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Any modern web browser",
-        "description": "Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more) and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Steppable and speed-controlled. Runs in your browser.",
+        "description": "Watch 13 sorting algorithms (quicksort, merge, heap, shell, comb, radix, counting and more), linear and binary search on a sorted array, and 6 pathfinding algorithms (BFS, DFS, Dijkstra, A*, greedy best-first, bidirectional BFS) run animated on a canvas, with live comparison counts. Any two of them race side by side on identical data. Steppable and speed-controlled. Runs in your browser.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -40,8 +40,9 @@
         },
         "featureList": [
                 "Sorting animation (13 algorithms)",
+                "Array search animation (linear and binary)",
                 "Pathfinding visualisation (6 algorithms)",
-                "Comparison mode (side-by-side)",
+                "Compare any two algorithms side by side on identical data",
                 "Wall drawing and maze generation",
                 "Live operation counts",
                 "Single-step control",
@@ -65,7 +66,23 @@
                         "name": "Which algorithms are included?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Thirteen sorts: quicksort, merge sort, heap sort, shell sort, comb sort, cocktail shaker sort, gnome sort, odd-even sort, insertion sort, selection sort, bubble sort, counting sort and radix sort (LSD). Six pathfinders: breadth-first search, depth-first search, Dijkstra, A*, greedy best-first and bidirectional BFS. There are also side-by-side comparison modes (bubble vs quicksort, Dijkstra vs A*)."
+                                "text": "Twenty-one in total. Thirteen sorts: quicksort, merge sort, heap sort, shell sort, comb sort, cocktail shaker sort, gnome sort, odd-even sort, insertion sort, selection sort, bubble sort, counting sort and radix sort (LSD). Two array searches: linear and binary. Six pathfinders: breadth-first search, depth-first search, Dijkstra, A*, greedy best-first and bidirectional BFS."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How do I run two algorithms side by side?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Set Compare to two. Two more dropdowns appear, one for each side, and Play then runs both in their own panel on exactly the same input - the same array, the same search target, the same board - stepping in lockstep, so the counters are the only thing that differs. Leave Compare on none and it visualises the single chosen algorithm across the full width. All three modes have the control, and picking the same algorithm on both sides is allowed: two identical panels finishing together is the cheapest demonstration there is that these runs are deterministic."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is the array in searching mode always sorted?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because binary search needs it to be. Halving the range you still have to consider is only sound if the values are in order; on unsorted data binary search is not slow, it is wrong. Linear search does not care, and that is the trade the side-by-side puts on screen: on 300 sorted values with the target in the last slot, linear needs all 300 probes and binary needs 9 - but binary only gets to do that because someone sorted the array first."
                         }
                 },
                 {
@@ -140,6 +157,8 @@
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -199,12 +218,13 @@
           </ol>
         </nav>
         <h1>Algorithm visualizer</h1>
-        <p class="hero-text">The difference between O(n&sup2;) and O(n&nbsp;log&nbsp;n) is a shrug on paper and obvious the moment you watch quicksort lock in a sorted block while bubble sort is still shuffling. Thirteen sorts and six pathfinders, animated, steppable, with the counts ticking.</p>
+        <p class="hero-text">The difference between O(n&sup2;) and O(n&nbsp;log&nbsp;n) is a shrug on paper and obvious the moment you watch quicksort lock in a sorted block while bubble sort is still shuffling. Twenty-one algorithms &mdash; thirteen sorts, two array searches, six pathfinders &mdash; animated, steppable, with the counts ticking. Set Compare to two and any pair of them races on identical data, side by side.</p>
         <ul class="lab-facts">
           <li>13 sorting algorithms</li>
+          <li>Linear vs binary search</li>
           <li>6 pathfinding algorithms</li>
+          <li>Compare any two, side by side</li>
           <li>Draw your own walls and maze</li>
-          <li>Live comparison and swap counts</li>
           <li>Step forwards and back, any speed</li>
         </ul>
       </section>
@@ -259,9 +279,10 @@
           <label class="sr-only" for="viz-mode">Mode</label>
           <select class="lab-select" id="viz-mode">
             <option value="sort" selected>Sorting</option>
+            <option value="search">Searching</option>
             <option value="path">Pathfinding</option>
           </select>
-          <label class="sr-only" for="viz-algo">Algorithm</label>
+          <label class="sr-only" for="viz-algo" id="viz-algo-label">Algorithm</label>
           <select class="lab-select" id="viz-algo">
             <option value="quick" selected>Quicksort</option>
             <option value="merge">Merge sort</option>
@@ -269,6 +290,24 @@
             <option value="bubble">Bubble sort</option>
             <option value="insertion">Insertion sort</option>
             <option value="selection">Selection sort</option>
+          </select>
+          <label class="sr-only" for="viz-compare">Compare two algorithms</label>
+          <select class="lab-select" id="viz-compare">
+            <option value="none" selected>Compare: none</option>
+            <option value="two">Compare: two</option>
+          </select>
+          <!-- The A/B pair is hidden until Compare says "two"; sortviz.js
+               repopulates both from the per-mode table and flips the `hidden`
+               attribute, which is what takes them out of the tab order. -->
+          <label class="sr-only" for="viz-algo-a" id="viz-algo-a-label" hidden>First algorithm to compare</label>
+          <select class="lab-select" id="viz-algo-a" hidden>
+            <option value="bubble" selected>Bubble sort</option>
+            <option value="quick">Quicksort</option>
+          </select>
+          <label class="sr-only" for="viz-algo-b" id="viz-algo-b-label" hidden>Second algorithm to compare</label>
+          <select class="lab-select" id="viz-algo-b" hidden>
+            <option value="quick" selected>Quicksort</option>
+            <option value="bubble">Bubble sort</option>
           </select>
           <label class="lab-range"><span>Size</span><input type="range" id="viz-size" min="10" max="200" value="60" step="1" /></label>
           <label class="lab-range"><span>Speed</span><input type="range" id="viz-speed" min="1" max="100" value="50" step="1" /></label>
@@ -294,12 +333,20 @@
             <p>Everyone learns that quicksort is faster than bubble sort, and almost nobody feels it until they watch them side by side on the same data. The comparison counts make the asymptotic difference concrete: the same array, an order of magnitude fewer operations.</p>
           </article>
           <article class="info-card">
+            <h3>Searching, halved</h3>
+            <p>Linear search crawls left to right; binary search throws away half of what is left on every probe. The dimmed bars are the values each one has already ruled out, so on the same sorted array with the same target you can watch one window collapse while the other never moves.</p>
+          </article>
+          <article class="info-card">
+            <h3>Any two, side by side</h3>
+            <p>Compare is a control, not a fixed pairing. Switch it to two and pick both sides yourself &mdash; heap against radix, greedy against A*, or an algorithm against itself. Both panels get exactly the same array, target or board, and step in lockstep, so the counters are the only thing that can differ.</p>
+          </article>
+          <article class="info-card">
             <h3>Pathfinding is even more visual</h3>
             <p>On a grid, Dijkstra floods outward in every direction while A* leans toward the goal, and both find the same shortest path. Draw a wall between start and end and watch the frontier bend around it &mdash; that is the algorithm thinking, made visible.</p>
           </article>
           <article class="info-card">
             <h3>Made to poke at</h3>
-            <p>Change the array shape (nearly sorted, reversed, few unique) and see which algorithms cope and which fall apart. Draw your own maze. Step one operation at a time, forwards or back, to see exactly what each move does.</p>
+            <p>Change the array shape (nearly sorted, reversed, few unique) and see which algorithms cope and which fall apart. Move the search target to the front, to the back, or out of the array entirely. Draw your own maze. Step one operation at a time, forwards or back, to see exactly what each move does.</p>
           </article>
           <article class="info-card">
             <h3>Smooth by design</h3>
@@ -314,7 +361,15 @@
         </div>
           <details class="lab-faq">
             <summary>Which algorithms are included?</summary>
-            <div>Thirteen sorts: quicksort, merge sort, heap sort, shell sort, comb sort, cocktail shaker sort, gnome sort, odd-even sort, insertion sort, selection sort, bubble sort, counting sort and radix sort (LSD). Six pathfinders: breadth-first search, depth-first search, Dijkstra, A*, greedy best-first and bidirectional BFS. There are also side-by-side comparison modes (bubble vs quicksort, Dijkstra vs A*).</div>
+            <div>Twenty-one in total. Thirteen sorts: quicksort, merge sort, heap sort, shell sort, comb sort, cocktail shaker sort, gnome sort, odd-even sort, insertion sort, selection sort, bubble sort, counting sort and radix sort (LSD). Two array searches: linear and binary. Six pathfinders: breadth-first search, depth-first search, Dijkstra, A*, greedy best-first and bidirectional BFS.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How do I run two algorithms side by side?</summary>
+            <div>Set Compare to two. Two more dropdowns appear, one for each side, and Play then runs both in their own panel on exactly the same input - the same array, the same search target, the same board - stepping in lockstep, so the counters are the only thing that differs. Leave Compare on none and it visualises the single chosen algorithm across the full width. All three modes have the control, and picking the same algorithm on both sides is allowed: two identical panels finishing together is the cheapest demonstration there is that these runs are deterministic.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is the array in searching mode always sorted?</summary>
+            <div>Because binary search needs it to be. Halving the range you still have to consider is only sound if the values are in order; on unsorted data binary search is not slow, it is wrong. Linear search does not care, and that is the trade the side-by-side puts on screen: on 300 sorted values with the target in the last slot, linear needs all 300 probes and binary needs 9 - but binary only gets to do that because someone sorted the array first.</div>
           </details>
           <details class="lab-faq">
             <summary>Why are counting sort and radix sort so much faster to watch?</summary>

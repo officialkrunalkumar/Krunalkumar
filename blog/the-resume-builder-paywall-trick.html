@@ -27,6 +27,7 @@
     <meta property="og:image:alt" content="A download button with a price tag hidden behind it" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta property="article:published_time" content="2026-08-22T14:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-27T18:00:00+05:30" />
     <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
     <meta property="article:section" content="Security" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -45,7 +46,7 @@
         "description": "How free-looking resume editors reveal the price only after your entire work history is typed in, what happens to that data server-side, and why the browser's print dialog is the download button nobody charges for.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/the-resume-builder-paywall-trick.jpg",
         "datePublished": "2026-08-22",
-        "dateModified": "2026-08-22",
+        "dateModified": "2026-08-27",
         "articleSection": "Security",
         "author": {
           "@type": "Person",
@@ -151,7 +152,12 @@
             inside, what actually happens to the data you typed, and why the export button has been sitting in your
             browser, free, the whole time.
           </p>
-          <p class="post-meta">Published 22 August 2026 · 6 min read · by Krunalkumar Shah</p>
+          <!-- The section on what the tool does with your draft was rewritten after the
+               maker stopped keeping anything on the device, so the body no longer says what
+               it said on 22 August. A reader who bookmarked the old advice deserves to see
+               that it changed; both dates carry a machine-readable time element matching the
+               JSON-LD dateModified and article:modified_time exactly. -->
+          <p class="post-meta">Published <time datetime="2026-08-22">22 August 2026</time> · Updated <time datetime="2026-08-27">27 August 2026</time> · 6 min read · by Krunalkumar Shah</p>
         </section>
 
         <figure class="post-cover">
@@ -258,16 +264,18 @@
                 live A4 preview on the other, with five templates. The export button opens your browser's print
                 dialog, because that genuinely is the best free PDF exporter you own — the page is set up so only the
                 resume prints, and "Save as PDF" gives you the file. There is no account and no server on the other
-                end: what you type stays in your browser's localStorage, which is also why there is no paywall — there
+                end: what you type never leaves the tab you typed it in, which is also why there is no paywall — there
                 is nothing for a paywall to unlock.
               </p>
               <p>
-                The honest caveats, so you can decide with open eyes: localStorage means your draft lives in that one
-                browser on that one machine — clear the site's data and it is gone, so export the PDF and keep it.
-                There is no sync, no DOCX export (the print dialog produces PDF, so if a recruiter demands a Word
-                file this will not make one), and five templates is five, not five hundred. On a shared computer, use
-                the clear button when you're done. That is the entire trade: fewer features, and your work history
-                never leaves your machine.
+                The honest caveats, so you can decide with open eyes: nothing is written to your machine at all, not even
+                to the browser's own storage, so closing or reloading the tab clears the draft. That is the right
+                default for a page holding your phone number and every employer you have ever had — the library PC
+                keeps nothing after you walk away — but it does put the saving on you: press "Download data" before
+                you leave and you get a .json file you can load straight back, and export the PDF and keep it. There
+                is no sync, no DOCX export (the print dialog produces PDF, so if a recruiter demands a Word file this
+                will not make one), and five templates is five, not five hundred. That is the entire trade: fewer
+                features, and your work history never leaves your machine.
               </p>
               <p>
                 One last thing worth saying: a resume is not even the densest document people hand to strangers'

@@ -1,5 +1,6 @@
 /* ==========================================================================
-   sortviz.js — an algorithm visualiser: sorting bars and grid pathfinding.
+   sortviz.js — an algorithm visualiser: sorting bars, array search, and grid
+   pathfinding.
    --------------------------------------------------------------------------
    The point of this toy is a thing a Big-O table cannot show you: WHY O(n^2)
    and O(n log n) are different sizes of slow. Put bubble sort next to
@@ -10,6 +11,20 @@
    it. You can read that in a textbook or you can watch it happen in a second.
 
    Non-obvious decisions, because they shape the whole file:
+
+   0. COMPARE IS A CONTROL, NOT AN ALGORITHM. The side-by-side used to be two
+      hardcoded entries in the algorithm dropdowns — "Compare: Bubble vs
+      Quicksort" and "Compare: Dijkstra vs A*" — so two pairings existed out of
+      the 209 the three modes can express (13*13 sorts, 2*2 searches, 6*6
+      pathfinders), and the algorithm dropdown could not say which of its own
+      entries a "Compare:" row was actually running. It is now a separate
+      "Compare" select plus an A and a B picker, so every mode gets every
+      pairing, including an algorithm against itself (two identical panels,
+      which is the cheapest possible demonstration that a recorded run is
+      deterministic). The engine never needed teaching: panelsFor() has always
+      split the canvas at two items and advanceAll() has always stepped every
+      item once per tick, so compare is a UI concern and a buildX() concern and
+      nothing else.
 
    1. RECORD-AND-REPLAY, not resumable coroutines. House rules are ES5 — no
       generators — so a sort cannot be paused mid-recursion and resumed. So
@@ -54,6 +69,16 @@
   var SET = 2;      // wrote value b into index a (merge sort, shifts)
   var SORTED = 3;   // index a is now in its final place (green)
 
+  /* ---- op codes for the recorded array-search trace -------------------- */
+  // Continues the numbering above rather than starting a second scale: the two
+  // traces never mix in one item, but a shared range means a stray op from the
+  // wrong recorder shows up as an unhandled case instead of quietly meaning
+  // something else.
+  var PROBE = 4;    // examined index a — this is the comparison being counted
+  var RANGE = 5;    // the live window narrowed to [a, b] (binary only)
+  var FOUND = 6;    // target is at index a
+  var MISS = 7;     // the strategy is exhausted and the target is not present
+
   /* ---- palette, lifted from labs.css so the canvas matches the chrome --- */
   var COL = {
     bg: '#020617',
@@ -83,6 +108,13 @@
 
   var DISTS = ['random', 'nearly-sorted', 'reversed', 'few-unique'];
   var PATH_GENS = ['clear board', 'random walls', 'maze'];
+  /* The three target placements "New data" cycles through in search mode. They
+     are chosen so the two algorithms disagree in a different way each time:
+     near-end is linear's worst case and costs binary its usual ~log2(n) probes;
+     near-start is linear's best case and is the one shape where it can WIN;
+     absent forces both to run their strategy to exhaustion, which is where the
+     n versus log2(n) gap is widest and neither gets to stop early. */
+  var TARGETS = ['near-end', 'near-start', 'absent'];
 
   var SORT_ALGOS = [
     ['bubble', 'Bubble sort'],
@@ -97,8 +129,11 @@
     ['quick', 'Quicksort'],
     ['heap', 'Heap sort'],
     ['counting', 'Counting sort'],
-    ['radix', 'Radix sort (LSD)'],
-    ['cmp-bubble-quick', 'Compare: Bubble vs Quicksort']
+    ['radix', 'Radix sort (LSD)']
+  ];
+  var SEARCH_ALGOS = [
+    ['linear', 'Linear search'],
+    ['binary', 'Binary search']
   ];
   var PATH_ALGOS = [
     ['bfs', 'BFS (breadth-first)'],
@@ -106,8 +141,7 @@
     ['dijkstra', 'Dijkstra'],
     ['astar', 'A* (A-star)'],
     ['greedy', 'Greedy best-first'],
-    ['bidirectional', 'Bidirectional BFS'],
-    ['cmp-dij-astar', 'Compare: Dijkstra vs A*']
+    ['bidirectional', 'Bidirectional BFS']
   ];
   var ALGO_LABEL = {
     bubble: 'Bubble sort', insertion: 'Insertion sort', selection: 'Selection sort',
@@ -115,18 +149,27 @@
     gnome: 'Gnome sort', oddeven: 'Odd-even sort',
     merge: 'Merge sort', quick: 'Quicksort', heap: 'Heap sort',
     counting: 'Counting sort', radix: 'Radix sort (LSD)',
+    linear: 'Linear search', binary: 'Binary search',
     bfs: 'BFS', dfs: 'DFS', dijkstra: 'Dijkstra', astar: 'A*',
     greedy: 'Greedy best-first', bidirectional: 'Bidirectional BFS'
   };
 
   /* ---- module state ---------------------------------------------------- */
   var canvas, ctx, statsEl, algoEl, modeEl, sizeEl, speedEl, genBtn, runBtn, stopBtn;
+  var compareEl, algoAEl, algoBEl, algoLab, algoALab, algoBLab;
   var W = 0, H = 0, dpr = 1;
-  var mode = 'sort';
+  var mode = 'sort';           // sort | search | path
   var algo = 'bubble';
   var state = 'idle';          // idle | playing | paused | done
   var rafHandle = null;
   var acc = 0;                 // fractional op accumulator
+
+  /* compare state. `algo` is the single-panel pick; cmpA/cmpB are the two
+     side-by-side picks, kept PER MODE so a trip through Searching and back
+     does not forget that you had bubble against quicksort set up. */
+  var compare = 'none';        // none | two
+  var cmpA = { sort: 'bubble', search: 'linear', path: 'dijkstra' };
+  var cmpB = { sort: 'quick', search: 'binary', path: 'astar' };
 
   // sort state
   var sortN = 64;
@@ -134,6 +177,14 @@
   var distIndex = 0;
   var initialArr = [];
   var runs = [];               // one or two run objects
+
+  // array-search state
+  var srchN = 64;
+  var srchMax = 64;            // largest value in srchArr, for bar heights
+  var targetIndex = 0;
+  var srchArr = [];
+  var srchTarget = 0;
+  var scans = [];              // one or two scan objects
 
   // path state
   var gridCols = 30, gridRows = 16;
@@ -602,6 +653,106 @@
   }
 
   /* ====================================================================== */
+  /*  ARRAY SEARCH — linear vs binary, recorded the same way the sorts are. */
+  /* ====================================================================== */
+
+  /* Both recorders take the array and the target and push ops; like the sorts
+     they run to completion up front so the replay is steppable in both
+     directions. Neither writes to `a` — a search does not disturb its input —
+     which is why the two scan objects can share one array reference and be
+     provably fed identical data. */
+
+  function recLinear(a, target, ops) {
+    var n = a.length, i;
+    for (i = 0; i < n; i++) {
+      ops.push([PROBE, i]);
+      if (a[i] === target) { ops.push([FOUND, i]); return; }
+    }
+    ops.push([MISS]);
+  }
+
+  /* Textbook half-open-free binary search on an ascending array. Two details
+     that are bugs in most hand-written versions and are deliberate here:
+     the midpoint is lo + ((hi - lo) >> 1) rather than (lo + hi) >> 1, which
+     cannot overflow on a large lo+hi; and the loop condition is lo <= hi with
+     hi moving to mid - 1, so a one-element window is still probed instead of
+     being skipped. An empty array enters with hi = -1 and falls straight to
+     MISS without touching a[]. */
+  function recBinary(a, target, ops) {
+    var lo = 0, hi = a.length - 1, mid;
+    while (lo <= hi) {
+      ops.push([RANGE, lo, hi]);
+      mid = lo + ((hi - lo) >> 1);
+      ops.push([PROBE, mid]);
+      if (a[mid] === target) { ops.push([FOUND, mid]); return; }
+      if (a[mid] < target) lo = mid + 1;
+      else hi = mid - 1;
+    }
+    ops.push([MISS]);
+  }
+
+  function recordScan(name, values, target) {
+    var ops = [];
+    if (name === 'binary') recBinary(values, target, ops);
+    else recLinear(values, target, ops);
+    return ops;
+  }
+
+  function makeScan(name, values, target) {
+    return {
+      algo: name,
+      arr: values,
+      target: target,
+      ops: recordScan(name, values, target),
+      idx: 0,
+      comparisons: 0,
+      probe: -1,
+      // The live window. Linear never emits RANGE, so its window stays the
+      // whole array for the whole run — which is the honest picture, and the
+      // reason the two panels look so different without any per-algorithm
+      // branching in the drawing code.
+      lo: 0, hi: values.length - 1,
+      foundAt: -1, miss: false, done: false
+    };
+  }
+
+  function stepScan(s) {
+    if (s.idx >= s.ops.length) { s.done = true; return false; }
+    var op = s.ops[s.idx++];
+    switch (op[0]) {
+      case RANGE: s.lo = op[1]; s.hi = op[2]; break;
+      case PROBE: s.comparisons++; s.probe = op[1]; break;
+      case FOUND: s.foundAt = op[1]; break;
+      case MISS: s.miss = true; break;
+    }
+    if (s.idx >= s.ops.length) s.done = true;
+    return true;
+  }
+
+  function resetScanProgress(s) {
+    s.idx = 0; s.comparisons = 0; s.probe = -1;
+    s.lo = 0; s.hi = s.arr.length - 1;
+    s.foundAt = -1; s.miss = false; s.done = false;
+  }
+
+  /* Ascending values with a gap of 2 or 3 between neighbours. The jitter is
+     not decoration: a run of consecutive integers has no absent value below
+     the maximum, so the "absent" case would have to hunt above the top of the
+     chart and the target guide line would fall off the panel. With every gap
+     at least 2 wide, a[k] + 1 is guaranteed to be missing and still inside the
+     drawn value range. */
+  function generateSortedArray() {
+    var n = srchN, a = [], i;
+    for (i = 0; i < n; i++) a[i] = (i === 0 ? 0 : a[i - 1]) + randInt(2, 3);
+    srchArr = a;
+    srchMax = n > 0 ? a[n - 1] : 1;
+    var tcase = TARGETS[targetIndex], span = Math.min(3, n);
+    if (tcase === 'near-start') srchTarget = a[randInt(0, span - 1)];
+    else if (tcase === 'absent') srchTarget = a[randInt(0, Math.max(0, n - 2))] + 1;
+    else srchTarget = a[n - randInt(1, span)];   // near-end
+  }
+
+  /* ====================================================================== */
   /*  PATHFINDING — grid, min-heap, and the four searches.                  */
   /* ====================================================================== */
 
@@ -1055,6 +1206,66 @@
     }
   }
 
+  /* Search mode's panel. Deliberately the same picture as a sort panel — index
+     across, value as height — because the whole payoff depends on the two
+     panels being read as one comparison rather than two diagrams.
+
+     What separates them is the shading. Every bar outside the live [lo, hi]
+     window is drawn in the wall colour, so binary blacks out half of what is
+     left on every probe while linear's window never moves an inch. The rail
+     under the bars restates that same window as one solid stroke, which is
+     what carries the meaning at 300 values where a bar is one pixel wide.
+
+     Every colour here is already in COL: eliminated reuses the wall grey,
+     the probe reuses the compare amber, a hit reuses the sorted green and an
+     exhausted search reuses the red. Nothing new to check against the ground. */
+  function drawArraySearch(s, p) {
+    var line2 = 'cmp ' + s.comparisons + '   target ' + s.target;
+    if (s.foundAt >= 0) line2 += '   at ' + s.foundAt;
+    else if (s.miss) line2 += '   absent';
+    var badge = s.done ? (s.foundAt >= 0 ? 'DONE' : 'NOT FOUND')
+                       : (state === 'playing' ? '' : 'ready');
+    label(p, ALGO_LABEL[s.algo] || s.algo, line2, badge,
+      s.done ? (s.foundAt >= 0 ? COL.green : COL.red) : COL.dim);
+
+    var a = s.arr, n = a.length;
+    if (!n) return;
+    var railH = 4, railGap = 3;
+    var areaX = p.x, areaTop = p.y + LH, areaW = p.w;
+    var areaH = p.h - LH - 4 - railH - railGap;
+    if (areaH < 1) areaH = 1;
+    var bw = areaW / n, i, bh, col;
+
+    for (i = 0; i < n; i++) {
+      bh = (a[i] / srchMax) * areaH;
+      col = (i < s.lo || i > s.hi) ? COL.gWall : COL.bar;
+      if (i === s.foundAt) col = COL.barSorted;
+      else if (i === s.probe) col = s.miss ? COL.barSwap : COL.barCmp;
+      ctx.fillStyle = col;
+      ctx.fillRect(areaX + i * bw, areaTop + areaH - bh,
+        Math.max(1, bw - (bw > 4 ? 1 : 0.3)), bh);
+    }
+
+    // The target as a height, drawn over the bars: where this line crosses the
+    // staircase is the bar being hunted, without having to read the numbers.
+    var tt = s.target / srchMax;
+    if (tt > 1) tt = 1;
+    ctx.fillStyle = COL.dim;
+    ctx.fillRect(areaX, areaTop + areaH - tt * areaH, areaW, 1);
+
+    var ry = areaTop + areaH + railGap;
+    if (s.foundAt >= 0) {
+      ctx.fillStyle = COL.green;
+      ctx.fillRect(areaX + s.foundAt * bw, ry, Math.max(2, bw), railH);
+    } else if (s.miss) {
+      ctx.fillStyle = COL.red;
+      ctx.fillRect(areaX, ry, areaW, railH);
+    } else if (s.hi >= s.lo) {
+      ctx.fillStyle = COL.accent;
+      ctx.fillRect(areaX + s.lo * bw, ry, Math.max(2, (s.hi - s.lo + 1) * bw), railH);
+    }
+  }
+
   function visitColor(reveal, total) {
     var t = total > 0 ? reveal / total : 0;
     if (t < 0) t = 0; if (t > 1) t = 1;
@@ -1103,6 +1314,9 @@
     if (mode === 'sort') {
       ps = panelsFor(runs.length);
       for (i = 0; i < runs.length && i < ps.length; i++) drawRun(runs[i], ps[i]);
+    } else if (mode === 'search') {
+      ps = panelsFor(scans.length);
+      for (i = 0; i < scans.length && i < ps.length; i++) drawArraySearch(scans[i], ps[i]);
     } else {
       ps = panelsFor(searches.length);
       for (i = 0; i < searches.length && i < ps.length; i++) drawSearch(searches[i], ps[i]);
@@ -1113,8 +1327,12 @@
   /*  ANIMATION LOOP                                                        */
   /* ====================================================================== */
 
-  function activeList() { return mode === 'sort' ? runs : searches; }
-  function stepOne(item) { return mode === 'sort' ? stepRun(item) : stepSearch(item); }
+  function activeList() { return mode === 'sort' ? runs : (mode === 'search' ? scans : searches); }
+  function stepOne(item) {
+    if (mode === 'sort') return stepRun(item);
+    if (mode === 'search') return stepScan(item);
+    return stepSearch(item);
+  }
 
   function everythingDone() {
     var list = activeList(), i;
@@ -1158,22 +1376,40 @@
 
   function setRunLabel(txt) { if (runBtn) runBtn.textContent = txt; }
 
+  /* Every builder feeds the SAME source to both panels — one initialArr, one
+     srchArr/srchTarget, one walls/gridStart/gridEnd — so a side-by-side is
+     always a fair fight. makeRun() takes its own copy of the array because a
+     sort mutates; makeScan() and makeSearch() do not need one because neither
+     an array search nor a grid search writes to its input. */
   function buildRuns() {
-    if (algo === 'cmp-bubble-quick') runs = [makeRun('bubble', initialArr), makeRun('quick', initialArr)];
-    else runs = [makeRun(algo, initialArr)];
+    runs = (compare === 'two')
+      ? [makeRun(cmpA.sort, initialArr), makeRun(cmpB.sort, initialArr)]
+      : [makeRun(algo, initialArr)];
+  }
+
+  function buildScans() {
+    scans = (compare === 'two')
+      ? [makeScan(cmpA.search, srchArr, srchTarget), makeScan(cmpB.search, srchArr, srchTarget)]
+      : [makeScan(algo, srchArr, srchTarget)];
   }
 
   function buildSearches() {
-    if (algo === 'cmp-dij-astar') searches = [makeSearch('dijkstra'), makeSearch('astar')];
-    else searches = [makeSearch(algo)];
+    searches = (compare === 'two')
+      ? [makeSearch(cmpA.path), makeSearch(cmpB.path)]
+      : [makeSearch(algo)];
     pathDirty = false;
   }
 
-  function buildForMode() { if (mode === 'sort') buildRuns(); else buildSearches(); }
+  function buildForMode() {
+    if (mode === 'sort') buildRuns();
+    else if (mode === 'search') buildScans();
+    else buildSearches();
+  }
 
   function resetProgress() {
     var i;
     if (mode === 'sort') for (i = 0; i < runs.length; i++) resetRunProgress(runs[i]);
+    else if (mode === 'search') for (i = 0; i < scans.length; i++) resetScanProgress(scans[i]);
     else for (i = 0; i < searches.length; i++) resetSearchProgress(searches[i]);
     acc = 0;
   }
@@ -1224,8 +1460,11 @@
       // rebuild from the start up to one op earlier per active item
       var targets = [], list = activeList(), i;
       for (i = 0; i < list.length; i++) {
-        targets.push(mode === 'sort' ? Math.max(0, list[i].idx - 1)
-                                     : Math.max(0, list[i].vidx + (list[i].phase === 'path' ? list[i].pathIdx : 0) - 1));
+        // sort and search runs both count progress as a plain op index; a grid
+        // search counts it as visits plus, once the flood is over, path cells.
+        targets.push(mode === 'path'
+          ? Math.max(0, list[i].vidx + (list[i].phase === 'path' ? list[i].pathIdx : 0) - 1)
+          : Math.max(0, list[i].idx - 1));
       }
       resetProgress();
       for (i = 0; i < list.length; i++) {
@@ -1248,6 +1487,11 @@
       sortN = sizeToN();
       generateArray();
       buildRuns();
+    } else if (mode === 'search') {
+      targetIndex = (targetIndex + 1) % TARGETS.length;
+      srchN = sizeToN();
+      generateSortedArray();
+      buildScans();
     } else {
       pathGenIndex = (pathGenIndex + 1) % PATH_GENS.length;
       gridCols = sizeToCols();
@@ -1268,6 +1512,10 @@
       sortN = sizeToN();
       generateArray();
       buildRuns();
+    } else if (mode === 'search') {
+      srchN = sizeToN();
+      generateSortedArray();
+      buildScans();
     } else {
       gridCols = sizeToCols();
       gridRows = computeRows(gridCols);
@@ -1281,35 +1529,90 @@
     updateStats();
   }
 
-  function populateAlgo() {
-    if (!algoEl) return;
-    var list = mode === 'sort' ? SORT_ALGOS : PATH_ALGOS, i, opt;
-    var keep = algo, found = false;
-    while (algoEl.firstChild) algoEl.removeChild(algoEl.firstChild);
+  function algoTable() {
+    if (mode === 'sort') return SORT_ALGOS;
+    if (mode === 'search') return SEARCH_ALGOS;
+    return PATH_ALGOS;
+  }
+
+  /* Refill one select from the per-mode table, keeping `want` selected if that
+     mode still offers it and falling back to the head of the list if not.
+     Returns whatever ended up selected, which is what the caller stores. */
+  function fillSelect(el, list, want) {
+    var i, opt, found = false;
+    if (!el) return want;
+    while (el.firstChild) el.removeChild(el.firstChild);
     for (i = 0; i < list.length; i++) {
       opt = document.createElement('option');
       opt.value = list[i][0];
       opt.textContent = list[i][1];
-      algoEl.appendChild(opt);
-      if (list[i][0] === keep) found = true;
+      el.appendChild(opt);
+      if (list[i][0] === want) found = true;
     }
-    algo = found ? keep : list[0][0];
-    algoEl.value = algo;
+    el.value = found ? want : list[0][0];
+    return el.value;
+  }
+
+  function populateAlgo() {
+    var list = algoTable();
+    if (algoEl) algo = fillSelect(algoEl, list, algo);
+    cmpA[mode] = fillSelect(algoAEl, list, cmpA[mode]);
+    cmpB[mode] = fillSelect(algoBEl, list, cmpB[mode]);
+  }
+
+  /* Which pickers are live. The single picker and the A/B pair are mutually
+     exclusive, and hiding uses the `hidden` ATTRIBUTE rather than CSS on
+     purpose: a select that is only visually gone is still in the tab order and
+     still announced, so a keyboard or screen-reader user would land on a
+     control that changes nothing. The sr-only labels go with them, since a
+     label pointing at a hidden control is just noise in the a11y tree.
+
+     Focus is moved off first. In practice the change event that gets us here
+     came FROM the compare select so focus is already safe, but hiding the
+     element that holds focus drops it on <body> and strands the tab order back
+     at the top of the document, and that is cheap to rule out. */
+  function syncCompareUI() {
+    var two = compare === 'two', ae = document.activeElement;
+    if (compareEl && ((two && ae === algoEl) || (!two && (ae === algoAEl || ae === algoBEl)))) {
+      compareEl.focus();
+    }
+    if (algoEl) algoEl.hidden = two;
+    if (algoLab) algoLab.hidden = two;
+    if (algoAEl) algoAEl.hidden = !two;
+    if (algoALab) algoALab.hidden = !two;
+    if (algoBEl) algoBEl.hidden = !two;
+    if (algoBLab) algoBLab.hidden = !two;
+  }
+
+  /* Any picker change invalidates the recorded traces, so all three land here:
+     rebuild for the current mode and go back to op 0 on the new choice. */
+  function repick() {
+    cancelRaf(rafHandle); rafHandle = null;
+    buildForMode();
+    state = 'idle';
+    setRunLabel('Play');
+    render();
+    updateStats();
   }
 
   function syncMode() {
     cancelRaf(rafHandle); rafHandle = null;
-    mode = (modeEl && modeEl.value === 'path') ? 'path' : 'sort';
+    var want = modeEl ? modeEl.value : 'sort';
+    mode = (want === 'path' || want === 'search') ? want : 'sort';
     // Only path mode swallows touch gestures. .lab-canvas is shared with the
     // other labs, so this lives on the element and flips back to '' in sort
-    // mode — where the canvas is inert and the page must still scroll under
-    // a finger that happens to land on it.
+    // and search modes — where the canvas is inert and the page must still
+    // scroll under a finger that happens to land on it.
     if (canvas) canvas.style.touchAction = (mode === 'path') ? 'none' : '';
     populateAlgo();
     if (mode === 'sort') {
       sortN = sizeToN();
       generateArray();
       buildRuns();
+    } else if (mode === 'search') {
+      srchN = sizeToN();
+      generateSortedArray();
+      buildScans();
     } else {
       gridCols = sizeToCols();
       gridRows = computeRows(gridCols);
@@ -1324,13 +1627,23 @@
   }
 
   function changeAlgo() {
-    cancelRaf(rafHandle); rafHandle = null;
     algo = algoEl ? algoEl.value : algo;
-    buildForMode();
-    state = 'idle';
-    setRunLabel('Play');
-    render();
-    updateStats();
+    repick();
+  }
+
+  function changeCompare() {
+    compare = (compareEl && compareEl.value === 'two') ? 'two' : 'none';
+    syncCompareUI();
+    repick();
+  }
+
+  /* A and B are allowed to be the same algorithm on purpose — two identical
+     panels finishing in lockstep is the shortest proof that these runs are
+     deterministic, so nothing here "helpfully" pushes the other select away. */
+  function changePair() {
+    if (algoAEl) cmpA[mode] = algoAEl.value;
+    if (algoBEl) cmpB[mode] = algoBEl.value;
+    repick();
   }
 
   /* ---- stats panel ----------------------------------------------------- */
@@ -1365,6 +1678,10 @@
     if (mode === 'sort') {
       html += chip('dist', 'data', DISTS[distIndex], COL.amber);
       html += chip('size', 'size', sortN + ' bars');
+    } else if (mode === 'search') {
+      html += chip('case', 'target', TARGETS[targetIndex], COL.amber);
+      html += chip('tval', 'value', srchTarget, COL.accent);
+      html += chip('size', 'size', srchN + ' sorted values');
     } else {
       html += chip('board', 'board', PATH_GENS[pathGenIndex], COL.amber);
       html += chip('grid', 'grid', gridCols + '×' + gridRows);
@@ -1383,6 +1700,9 @@
         html += chip('swp' + i, 'swaps', '0', COL.red);
         html += chip('wr' + i, 'writes', '0', COL.barSet);
         html += chip('st' + i, 'status', 'sorted', COL.green);
+      } else if (mode === 'search') {
+        html += chip('cmp' + i, 'comparisons', '0', COL.amber);
+        html += chip('res' + i, 'result', 'found', COL.green);
       } else {
         html += chip('vis' + i, 'visited', '0', COL.barSet);
         html += chip('pt' + i, 'path', '0 steps', COL.gPath);
@@ -1393,9 +1713,15 @@
     html += '<div style="margin-top:8px;font:11px ' + FONT + ';color:#5d7086;line-height:1.6">';
     html += 'Play / Pause, Reset, New data.  Space = play/pause, ' +
       '→ / ← = step one op.';
+    html += '<br>Compare: two runs both pickers on the same input, side by side.';
     if (mode === 'path') {
       html += '<br>Draw walls by dragging on the grid; drag the green start or ' +
         'pink end cell to move it.';
+    } else if (mode === 'search') {
+      html += '<br>The array is sorted, which is what binary search needs. ' +
+        'New data cycles the target through: near-end → near-start → absent.' +
+        '<br>Dim bars are the ones the algorithm has ruled out; the bar under ' +
+        'them is its live window.';
     } else {
       html += '<br>New data cycles through: random → nearly-sorted → ' +
         'reversed → few-unique.';
@@ -1436,6 +1762,10 @@
     if (mode === 'sort') {
       setStat('dist', DISTS[distIndex]);
       setStat('size', sortN + ' bars');
+    } else if (mode === 'search') {
+      setStat('case', TARGETS[targetIndex]);
+      setStat('tval', srchTarget);
+      setStat('size', srchN + ' sorted values');
     } else {
       setStat('board', PATH_GENS[pathGenIndex]);
       setStat('grid', gridCols + '×' + gridRows);
@@ -1451,6 +1781,13 @@
         showStat('wr' + i, !!it.writes);
         if (it.writes) setStat('wr' + i, it.writes);
         showStat('st' + i, !!it.done);
+      } else if (mode === 'search') {
+        setStat('cmp' + i, it.comparisons);
+        showStat('res' + i, !!it.done);
+        if (it.done) {
+          setStat('res' + i, it.foundAt >= 0 ? 'index ' + it.foundAt : 'not found',
+            it.foundAt >= 0 ? COL.green : COL.red);
+        }
       } else {
         setStat('vis' + i, it.vidx);
         showStat('pt' + i, !!it.done);
@@ -1582,6 +1919,12 @@
     ctx = canvas.getContext('2d');
     statsEl = $('viz-stats');
     algoEl = $('viz-algo');
+    compareEl = $('viz-compare');
+    algoAEl = $('viz-algo-a');
+    algoBEl = $('viz-algo-b');
+    algoLab = $('viz-algo-label');
+    algoALab = $('viz-algo-a-label');
+    algoBLab = $('viz-algo-b-label');
     modeEl = $('viz-mode');
     sizeEl = $('viz-size');
     speedEl = $('viz-speed');
@@ -1590,10 +1933,18 @@
     stopBtn = $('viz-stop');
 
     fit();
+    // Read the compare select before the first syncMode(), so a browser that
+    // restored "Compare: two" across a reload builds two panels immediately
+    // rather than one that jumps to two on the first unrelated interaction.
+    compare = (compareEl && compareEl.value === 'two') ? 'two' : 'none';
+    syncCompareUI();
     syncMode();
 
     if (modeEl) modeEl.addEventListener('change', syncMode);
     if (algoEl) algoEl.addEventListener('change', changeAlgo);
+    if (compareEl) compareEl.addEventListener('change', changeCompare);
+    if (algoAEl) algoAEl.addEventListener('change', changePair);
+    if (algoBEl) algoBEl.addEventListener('change', changePair);
     if (sizeEl) sizeEl.addEventListener('input', resizeData);
     if (speedEl) speedEl.addEventListener('input', updateStats);
     if (genBtn) genBtn.addEventListener('click', newData);

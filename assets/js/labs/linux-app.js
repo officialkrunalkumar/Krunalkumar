@@ -49,6 +49,7 @@
   };
 
   var emulator = null;
+  var booting = false;    // Boot pressed, emulator still on its way down
   var autoLoginDone = false;
 
   function setStatus(text, cls) {
@@ -334,24 +335,82 @@
          : (typeof V86Starter !== 'undefined') ? V86Starter : null;
   }
 
+  /* libv86.js is not loaded with the page. It is 356 KB of parsed JavaScript,
+     98 KB of it over the wire, and nothing here can reach it until Boot is
+     pressed — so it is fetched at that moment instead of by a <script> tag in
+     the markup. Most visitors read the page and never start a machine, and
+     they should not pay for the emulator on the way past.
+
+     An ordinary same-origin <script>, which is all script-src 'self' permits:
+     no eval, no new Function. The promise is kept so a second Boot, or a
+     Reboot, reuses the one element rather than injecting another, and a
+     rejection drops it so the retry gets a fresh attempt instead of the same
+     stale failure — the shape getSql() in hacklab.js already uses for sql.js. */
+  var V86_SRC = '/assets/vendor/v86/libv86.js';
+  var v86Ready = null;
+
+  function loadV86() {
+    if (!v86Ready) {
+      v86Ready = new Promise(function (resolve, reject) {
+        var already = Machine();
+        if (already) { resolve(already); return; }
+        var tag = document.createElement('script');
+        tag.src = V86_SRC;
+        tag.onload = function () {
+          // Arrived but exported nothing. To the visitor that is the same
+          // outcome as a download that never finished, so it takes the same
+          // path rather than throwing out of `new Ctor` a moment later.
+          var Ctor = Machine();
+          if (Ctor) resolve(Ctor);
+          else reject(new Error('libv86.js loaded without a V86 constructor'));
+        };
+        tag.onerror = function () {
+          tag.remove();               // a dead tag; the retry appends its own
+          reject(new Error('libv86.js failed to load'));
+        };
+        document.head.appendChild(tag);
+      }).catch(function (err) {
+        v86Ready = null;              // clear it so a retry gets a fresh attempt
+        throw err;
+      });
+    }
+    return v86Ready;
+  }
+
   function boot() {
-    if (emulator) return;
-    var Ctor = Machine();
-    if (!Ctor) {
-      // libv86.js is a plain <script> tag, so a missing global here means that
-      // file never arrived — not that the emulator misbehaved. Nothing has
-      // booted, so a reload is the only retry that means anything.
+    if (emulator || booting) return;
+    booting = true;
+
+    // Boot goes inert before the emulator has even arrived, so the download
+    // window cannot be clicked into a second machine. Power off and Reboot are
+    // already disabled and stay that way until there is something to act on.
+    el.start.disabled = true;
+
+    // Only narrate the emulator download when there is one to narrate: after
+    // the first boot of the visit the file is here and this resolves at once.
+    if (!Machine()) {
+      setStatus('Downloading the emulator (~100 KB, cached after this)…', 'is-busy');
+    }
+
+    loadV86().then(startMachine, function (err) {
+      booting = false;
+      // No machine was built, so there is nothing for destroy() to tear down —
+      // but Boot was switched off above and has to come back, or a failed
+      // download leaves a dead button and no way forward.
+      el.start.disabled = false;
       setStatus('Emulator failed to load', 'is-err');
       if (window.LabFail) {
         window.LabFail.show({
-          anchor: el.term, what: 'Linux emulator', kind: 'network',
-          retry: function () { location.reload(); }
+          anchor: el.term, what: 'Linux emulator',
+          kind: window.LabFail.classify(err),
+          retry: function () { boot(); }
         });
       }
-      return;
-    }
+    });
+  }
 
-    el.start.disabled = true;
+  function startMachine(Ctor) {
+    booting = false;
     el.stop.disabled = false;
     el.reset.disabled = false;
     if (el.hint) el.hint.hidden = true;

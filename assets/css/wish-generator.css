@@ -248,6 +248,16 @@
   color-scheme: inherit;
 }
 
+/* The chevron above is a data-URI, so its stroke is a literal colour and cannot
+   follow a token. #94a3b8 was picked against the dark well and measures 2.27:1
+   on the light one — a shape you can only find by knowing it is there. Restated
+   here in the light accent (5.26:1 on the same ground) because appearance:none
+   has already taken the native arrow away, and a <select> that does not look
+   like one is a control people do not try. */
+:root[data-theme="light"] .wish-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230369a1' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
 .wish-select optgroup {
   font-weight: 700;
   font-style: normal;

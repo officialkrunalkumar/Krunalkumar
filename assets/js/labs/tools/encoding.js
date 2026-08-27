@@ -42,11 +42,19 @@
     return output;
   }
   function fromBase32(text) {
-    var clean = String(text).toUpperCase().replace(/=+$/, '').replace(/\s+/g, '');
+    // Whitespace first, THEN padding: a pasted block ends "===\n", and stripping
+    // the padding before the newline leaves the '=' in place for the loop below,
+    // which now refuses it instead of quietly skipping it.
+    var clean = String(text).toUpperCase().replace(/\s+/g, '').replace(/=+$/, '');
     var bits = 0, value = 0, out = [], idx;
     for (var i = 0; i < clean.length; i++) {
       idx = B32.indexOf(clean[i]);
-      if (idx === -1) continue;
+      // This used to `continue`, which is how "hello!!!" came back as three
+      // bytes of garbage under a confident "Result — 3 characters" heading.
+      // Base32's alphabet excludes 0, 1, 8 and 9 on purpose, so a character
+      // outside it means the input is not Base32 — the same reasoning, and the
+      // same wording, as fromBase58 below.
+      if (idx === -1) throw new Error('"' + clean[i] + '" is not a Base32 character');
       value = (value << 5) | idx; bits += 5;
       if (bits >= 8) { out.push((value >>> (bits - 8)) & 255); bits -= 8; }
     }
@@ -93,6 +101,53 @@
     // at the front of a Bitcoin address survives the round trip.
     for (var z = 0; z < clean.length && clean[z] === '1'; z++) bytes.push(0);
     return new Uint8Array(bytes.reverse());
+  }
+
+  /* Binary and decimal decode to BYTES, not to a string.
+
+     The encoders produce UTF-8 (`enc.encode(text)`), but the decoders used to
+     reassemble with String.fromCharCode, which reads each byte as a UTF-16 code
+     unit. That is not the inverse of UTF-8: "café" round-tripped to "cafÃ©",
+     "નમસ્તે" and "😀" came back as mojibake, and nothing said so. Returning
+     bytes lets convert() put them through the same TextDecoder every other
+     decode mode already uses, which makes the round trip exact — and drops the
+     String.fromCharCode.apply spread, which throws RangeError on a long input.
+
+     They also refuse a token that is not a byte. parseInt('abc', 2) is NaN and
+     String.fromCharCode(NaN) is U+0000, so "hello world" in Decimal → text used
+     to produce two NUL characters and call them a result. */
+  function binToBytes(text) {
+    var clean = String(text).trim();
+    if (!clean) return new Uint8Array(0);
+    var tokens = clean.split(/\s+/);
+    // One unbroken run of bits is exactly what detect() calls "binary", so cut
+    // it into bytes rather than rejecting the shape this page has just told the
+    // visitor it is looking at.
+    if (tokens.length === 1 && /^[01]+$/.test(tokens[0]) && tokens[0].length % 8 === 0) {
+      tokens = tokens[0].match(/.{8}/g);
+    }
+    var bytes = new Uint8Array(tokens.length);
+    for (var i = 0; i < tokens.length; i++) {
+      if (!/^[01]{1,8}$/.test(tokens[i])) {
+        throw new Error('"' + tokens[i] + '" is not a binary byte — expected up to eight 0s and 1s');
+      }
+      bytes[i] = parseInt(tokens[i], 2);
+    }
+    return bytes;
+  }
+
+  function decToBytes(text) {
+    var clean = String(text).trim();
+    if (!clean) return new Uint8Array(0);
+    var tokens = clean.split(/\s+/);
+    var bytes = new Uint8Array(tokens.length);
+    for (var i = 0; i < tokens.length; i++) {
+      if (!/^\d{1,3}$/.test(tokens[i]) || Number(tokens[i]) > 255) {
+        throw new Error('"' + tokens[i] + '" is not a byte value — expected 0 to 255');
+      }
+      bytes[i] = Number(tokens[i]);
+    }
+    return bytes;
   }
 
   var MORSE = { A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',
@@ -149,14 +204,10 @@
         return Array.from(bytes).map(function (b) {
           return ('0000000' + b.toString(2)).slice(-8);
         }).join(' ');
-      case 'bin-dec':
-        return String.fromCharCode.apply(null,
-          text.trim().split(/\s+/).map(function (b) { return parseInt(b, 2); }));
+      case 'bin-dec':  return dec.decode(binToBytes(text));
       case 'dec-enc':
         return Array.from(enc.encode(text)).join(' ');
-      case 'dec-dec':
-        return String.fromCharCode.apply(null,
-          text.trim().split(/\s+/).map(Number));
+      case 'dec-dec':  return dec.decode(decToBytes(text));
       case 'morse-enc':
         return text.toUpperCase().split('').map(function (c) {
           if (c === ' ') return '/';

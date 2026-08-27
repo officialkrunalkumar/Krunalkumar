@@ -11,9 +11,9 @@
    The privacy claim is the whole product. A resume is name + phone + email +
    photo + complete work history — exactly the bundle people hand to a random
    resume site without thinking, and exactly what those sites monetise. There
-   is no fetch(), no XHR, no beacon anywhere in this file: the only reads are
-   FileReader over a photo the visitor chose, and the only storage is
-   localStorage on their own machine.
+   is no fetch(), no XHR, no beacon anywhere in this file: the only read is a
+   FileReader over a photo the visitor chose, and nothing is stored anywhere
+   at all — see the note above purgeLegacyDraft() before adding an autosave.
 
    Rendering rule: user text goes through document.createElement and
    textContent ONLY. Nothing a visitor types is ever concatenated into
@@ -24,7 +24,10 @@
 (function () {
   'use strict';
 
-  var KEY = 'lab.resume-maker.v1';
+  /* The key an older build of this tool autosaved the draft under. Nothing
+     writes it any more — it survives only so purgeLegacyDraft() can delete
+     what those builds left on people's machines. */
+  var LEGACY_KEY = 'lab.resume-maker.v1';
 
   /* The two paper sizes the world actually hires on. w/h are the CSS-px
      equivalents at 96dpi (A4 is 210x297mm, Letter is 8.5x11in); printMin is
@@ -72,11 +75,11 @@
 
   var state = blankState();
 
-  /* Merge a saved object onto a fresh blank so a state saved by an older
-     version of this file never leaves a field undefined — states from before
-     the paper toggle existed simply get 'a4'. The same funnel takes imports
-     from a .json file, so a file someone edited by hand cannot smuggle in an
-     unknown template or a list of non-objects. */
+  /* Merge an imported object onto a fresh blank so a file written by an older
+     version of this tool never leaves a field undefined — files from before
+     the paper toggle existed simply get 'a4'. Every .json import comes through
+     here, so a file someone edited by hand cannot smuggle in an unknown
+     template or a list of non-objects. */
   function normalizeState(saved) {
     var base = blankState();
     if (!saved || typeof saved !== 'object') return base;
@@ -96,33 +99,21 @@
     return base;
   }
 
-  function loadState() {
-    var raw = null;
-    try { raw = localStorage.getItem(KEY); } catch (e) { /* private mode */ }
-    if (!raw) return;
-    var saved = null;
-    try { saved = JSON.parse(raw); } catch (e) { return; }
-    if (!saved || typeof saved !== 'object') return;
-    state = normalizeState(saved);
-  }
+  /* There is deliberately NO autosave and no restore here, and please do not
+     helpfully add one back. A resume is a full identity file — name, phone,
+     email, photo, every employer — and this page gets opened on the library
+     PC, the cyber-café machine and the friend's laptop far more often than
+     on a private one. A convenient draft left behind in localStorage is a
+     stranger's next visit reading somebody's phone number. The state lives
+     in memory for the length of the session; "Download data" is how a draft
+     survives, because that is a choice the visitor makes on purpose.
 
-  var saveTimer = null;
-  /* The optional message lets an action that IS a save say something more
-     specific ("Loaded from your file") without the timer stamping the
-     generic text over it 400ms later. */
-  function scheduleSave(message) {
-    if (saveTimer) clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () {
-      saveTimer = null;
-      try {
-        localStorage.setItem(KEY, JSON.stringify(state));
-        saveStatus.textContent = message || 'Saved in your browser';
-      } catch (e) {
-        /* Quota or private mode: the tool still works, it just will not
-           survive a reload — worth saying rather than lying. */
-        saveStatus.textContent = 'Could not save (private mode?)';
-      }
-    }, 400);
+     Older builds did autosave, so this runs once at boot to delete what they
+     left behind: a visitor who used the tool last year should not still be
+     carrying their work history around. Wrapped because merely touching
+     localStorage throws outright in some privacy modes. */
+  function purgeLegacyDraft() {
+    try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* nothing to clean up, then */ }
   }
 
   /* ------------------------------------------------------------------
@@ -538,7 +529,6 @@
     } else {
       return;
     }
-    scheduleSave();
     scheduleRender();
   });
 
@@ -653,7 +643,6 @@
       var mount = document.getElementById(LISTS[listName].mount);
       var last = mount.lastChild && mount.lastChild.querySelector('input, textarea');
       if (last) last.focus();
-      scheduleSave();
     });
   });
 
@@ -683,7 +672,6 @@
         }
         if (next && !next.disabled) next.focus();
       }
-      scheduleSave();
       scheduleRender();
       return;
     }
@@ -694,14 +682,14 @@
     var idx = parseInt(card.dataset.index, 10);
     state[listName].splice(idx, 1);
     renderList(listName);
-    scheduleSave();
     scheduleRender();
   });
 
   /* ------------------------------------------------------------------
      Photo: FileReader, downscale on a canvas, keep as a JPEG data URL.
      512px on the long side is generous for the largest render (a 128px
-     circle) and keeps the localStorage entry well under quota.
+     circle) and keeps the data URL small enough to travel comfortably
+     inside a downloaded resume-data.json.
      ------------------------------------------------------------------ */
 
   var photoInput = document.getElementById('rm-f-photo');
@@ -723,8 +711,23 @@
     var file = photoInput.files && photoInput.files[0];
     if (!file) return;
     var reader = new FileReader();
+
+    /* A file the browser cannot decode fails silently by default: the <img>
+       fires error, nothing is listening, and the visitor is left staring at
+       a preview that never changed. HEIC gets named because it is nearly
+       always the reason — an iPhone shoots HEIC out of the box and no
+       desktop browser will open one. The input is reset so the same file
+       can be re-picked once they have converted it. Same wording as the
+       biodata maker's, which hits the identical wall. */
+    function photoFailed() {
+      photoInput.value = '';
+      saveStatus.textContent = 'That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open — re-save it as JPEG or PNG and try again.';
+    }
+
+    reader.onerror = photoFailed;
     reader.onload = function () {
       var img = new Image();
+      img.onerror = photoFailed;
       img.onload = function () {
         var max = 512;
         var scale = Math.min(1, max / Math.max(img.width, img.height));
@@ -739,7 +742,6 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         state.photo = canvas.toDataURL('image/jpeg', 0.85);
         syncPhotoUI();
-        scheduleSave();
         renderSheet();
       };
       img.src = reader.result;
@@ -751,7 +753,6 @@
     state.photo = '';
     photoInput.value = '';
     syncPhotoUI();
-    scheduleSave();
     renderSheet();
   });
 
@@ -780,7 +781,6 @@
     b.addEventListener('click', function () {
       state.template = b.dataset.template;
       syncToolbar();
-      scheduleSave();
       renderSheet();
     });
   });
@@ -789,7 +789,6 @@
     b.addEventListener('click', function () {
       state.accent = b.dataset.accent;
       syncToolbar();
-      scheduleSave();
       renderSheet();
     });
   });
@@ -799,7 +798,6 @@
       state.paper = b.dataset.paper;
       syncToolbar();
       syncPaper();
-      scheduleSave();
       renderSheet();
     });
   });
@@ -878,12 +876,13 @@
   document.getElementById('rm-load-sample').addEventListener('click', function () {
     state = sampleState();
     syncEverything();
-    scheduleSave();
   });
 
   document.getElementById('rm-clear').addEventListener('click', function () {
-    if (!confirm('Clear the whole form and delete the saved copy from this browser?')) return;
-    try { localStorage.removeItem(KEY); } catch (e) { /* nothing to do */ }
+    /* Nothing is stored, so there is nothing to delete — but this is still
+       the one irreversible button on the page, and what it clears can be
+       twenty minutes of typing. */
+    if (!confirm('Clear the whole form and start again? This cannot be undone.')) return;
     state = blankState();
     photoInput.value = '';
     syncEverything();
@@ -945,13 +944,12 @@
         saveStatus.textContent = 'That does not look like a resume-maker data file — nothing was changed.';
         return;
       }
-      /* Same funnel as the localStorage restore: merged onto a blank so
-         missing fields default instead of lingering from the old state. */
+      /* Merged onto a blank so missing fields default instead of lingering
+         from the old state. */
       state = normalizeState(parsed.data);
       photoInput.value = '';
       syncEverything();
       saveStatus.textContent = 'Loaded from your file';
-      scheduleSave('Loaded from your file — saved in this browser');
     };
     reader.onerror = function () {
       importInput.value = '';
@@ -964,7 +962,7 @@
      Boot
      ------------------------------------------------------------------ */
 
-  loadState();
+  purgeLegacyDraft();
   syncEverything();
 
   /* Fonts finishing after first paint change the sheet height slightly;

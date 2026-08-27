@@ -111,6 +111,14 @@
   cursor: pointer;
 }
 
+/* The algorithm visualiser's A/B pickers and their labels are toggled with the
+   `hidden` attribute so they leave the tab order, not just the layout. That
+   relies on the UA sheet's [hidden] rule, which any author `display` on the
+   same element would silently outrank — including the `.lab-toolbar { display:
+   flex }` reflex of adding `display` to a flex child. Stated here so a hidden
+   select cannot come back as a dead control in the tab order. */
+.lab-toolbar [hidden] { display: none; }
+
 .lab-btn {
   display: inline-flex;
   align-items: center;
@@ -2293,7 +2301,14 @@ pre.lab-example:hover .lab-copy,
    ========================================================================== */
 
 .leak-h { margin: 1.6rem 0 0.5rem; font-size: 1.05rem; }
-.leak-h:first-child { margin-top: 0; }
+/* :first-child stopped matching the moment /labs/leak gained a .lab-toolbar —
+   the fullscreen button now sits ahead of "Your addresses", so the first
+   heading was no longer the first child and picked up the 1.6rem it is only
+   supposed to have between sections (measured 25.6px where it used to be 0).
+   The adjacent-sibling half restores that without loosening :first-child,
+   which still covers any .lab that has no toolbar. */
+.leak-h:first-child,
+.lab-toolbar + .leak-h { margin-top: 0; }
 
 .leak-table {
   width: 100%;

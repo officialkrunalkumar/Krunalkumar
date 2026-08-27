@@ -139,19 +139,99 @@
     } catch (e) { return null; }
   }
 
-  function findExtensions(tbs) {
-    // Extensions are [3] EXPLICIT in the TBSCertificate.
-    var ext = (tbs.children || []).filter(function (c) {
-      return c.cls === 0x80 && c.num === 3;
-    })[0];
-    if (!ext || !ext.children || !ext.children[0]) return [];
-    return (ext.children[0].children || []).map(function (e) {
+  function pemLabel(input) {
+    var m = String(input).match(/-----BEGIN ([A-Z0-9 ]+?)-----/);
+    return m ? m[1].trim() : '';
+  }
+
+  /* Telling a CSR from a certificate.
+
+     Both are a SEQUENCE of exactly three things, so counting children cannot
+     separate them — which is how a pasted CSR used to be walked with the
+     certificate's field offsets and reported as a certificate with an invented
+     issuer, serial and validity period. The two structures differ inside the
+     first child:
+
+       TBSCertificate           ::= [0] version?, serial INTEGER,
+                                    signature AlgorithmIdentifier, issuer Name,
+                                    validity SEQUENCE OF two times, subject Name,
+                                    subjectPublicKeyInfo, extensions…
+       CertificationRequestInfo ::= version INTEGER, subject Name,
+                                    subjectPKInfo, [0] attributes
+
+     A CSR has no serial, no issuer and no validity, because none of those exist
+     until a CA signs it. Checking for the validity pair is the cheapest test
+     that no CSR can accidentally pass. */
+  function looksLikeRequest(root) {
+    var kids = (root.children[0] && root.children[0].children) || [];
+    return kids.length === 4 && kids[0].tag === 0x02 && kids[1].tag === 0x30
+           && kids[2].tag === 0x30 && kids[3].cls === 0x80 && kids[3].num === 0;
+  }
+
+  function looksLikeCertificate(tbs) {
+    var kids = (tbs && tbs.children) || [];
+    var offset = (kids[0] && kids[0].cls === 0x80) ? 1 : 0;
+    if (kids.length < offset + 6) return false;
+    if (kids[offset].tag !== 0x02) return false;            // serial INTEGER
+    if (kids[offset + 1].tag !== 0x30) return false;        // AlgorithmIdentifier
+    var validity = kids[offset + 3];
+    if (!validity || validity.tag !== 0x30) return false;   // Validity SEQUENCE
+    var when = validity.children || [];
+    // Deliberately a TAG test, not derTime(). A certificate whose times are
+    // written in some non-canonical GeneralizedTime shape still IS a
+    // certificate, and it used to render with a '?' beside the date; refusing
+    // it outright to catch a CSR would be trading one wrong answer for another.
+    return when.length === 2 && isTimeTag(when[0]) && isTimeTag(when[1]);
+  }
+
+  function isTimeTag(node) {
+    return !!node && (node.tag === 0x17 || node.tag === 0x18);   // UTCTime, GeneralizedTime
+  }
+
+  /* One Extensions ::= SEQUENCE OF Extension, turned into something printable.
+     Split out of findExtensions because a CSR carries the same SEQUENCE in a
+     PKCS#9 extensionRequest attribute rather than behind a [3] tag. Sharing the
+     mapping means the two reports cannot end up describing identical bytes in
+     two different ways. */
+  function mapExtensions(seq) {
+    return ((seq && seq.children) || []).map(function (e) {
       var kids = e.children || [];
       var oid = oidToString(kids[0].bytes);
       var critical = kids.length > 2 || (kids[1] && kids[1].tag === 0x01);
       var valueNode = kids[kids.length - 1];
       return { oid: oid, name: OID[oid] || oid, critical: !!critical, node: valueNode };
     });
+  }
+
+  function findExtensions(tbs) {
+    // Extensions are [3] EXPLICIT in the TBSCertificate.
+    var ext = ((tbs && tbs.children) || []).filter(function (c) {
+      return c.cls === 0x80 && c.num === 3;
+    })[0];
+    if (!ext || !ext.children) return [];
+    return mapExtensions(ext.children[0]);
+  }
+
+  /* PKCS#9 extensionRequest: the attribute through which a CSR asks the CA for
+     the extensions it wants — in practice, almost always the SAN list, which is
+     the part of a CSR worth reading. */
+  var OID_EXTENSION_REQUEST = '1.2.840.113549.1.9.14';
+
+  function requestExtensions(cri) {
+    // Attributes are [0] IMPLICIT SET OF Attribute in the CertificationRequestInfo.
+    var attrs = ((cri && cri.children) || []).filter(function (c) {
+      return c.cls === 0x80 && c.num === 0;
+    })[0];
+    var found = [];
+    ((attrs && attrs.children) || []).forEach(function (attr) {
+      var kids = attr.children || [];
+      if (kids.length < 2) return;
+      if (oidToString(kids[0].bytes) !== OID_EXTENSION_REQUEST) return;
+      (kids[1].children || []).forEach(function (seq) {
+        found = found.concat(mapExtensions(seq));
+      });
+    });
+    return found;
   }
 
   function sans(node) {
@@ -219,12 +299,156 @@
      unchanged — only what reaches it. */
   var PRIVATE_KEY_INPUT = /BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY|PuTTY-User-Key-File-/;
 
+  /* The three blocks below read identically in a certificate and in a CSR — a
+     SubjectPublicKeyInfo, a set of extensions and a digest over the DER are the
+     same bytes in the same shape either way — so they render from one place
+     rather than being written twice and drifting apart. */
+  function showSignatureAlgorithm(algNode) {
+    if (!algNode || !algNode.children || !algNode.children[0]) return;
+    var sigOid = oidToString(algNode.children[0].bytes);
+    var sigName = OID[sigOid] || sigOid;
+    out.row('signature algorithm', sigName,
+            /SHA-1|MD5/.test(sigName) ? 't-err' : 't-ok');
+    if (/SHA-1|MD5/.test(sigName)) {
+      out.line('    → both are broken for signatures and rejected by every', 't-err');
+      out.line('      current browser', 't-err');
+    }
+  }
+
+  function showPublicKey(spki) {
+    if (!spki || !spki.children) return;
+    out.rule();
+    out.heading('Public key');
+    var algNode = spki.children[0];
+    var algOid = algNode && algNode.children && algNode.children[0]
+      ? oidToString(algNode.children[0].bytes) : '';
+    out.row('algorithm', OID[algOid] || algOid || 'unknown');
+    if (algNode && algNode.children && algNode.children[1]) {
+      var curve = oidToString(algNode.children[1].bytes);
+      if (OID[curve]) out.row('curve', OID[curve]);
+    }
+    var bitstring = spki.children[1];
+    if (bitstring && OID[algOid] === 'RSA') {
+      var inner = parseDer(bitstring.bytes, 1, bitstring.bytes.length)[0];
+      if (inner && inner.children && inner.children[0]) {
+        var modulus = inner.children[0].bytes;
+        var bits = (modulus[0] === 0 ? modulus.length - 1 : modulus.length) * 8;
+        out.row('key size', bits + ' bits', bits < 2048 ? 't-err' : 't-ok');
+        if (bits < 2048) {
+          out.line('    → below 2048 bits; considered inadequate since 2013', 't-err');
+        }
+      }
+    }
+  }
+
+  function showExtensions(exts, heading) {
+    if (!exts.length) return;
+    out.rule();
+    out.heading(heading + ' (' + exts.length + ')');
+    exts.forEach(function (e) {
+      out.row(e.name, e.critical ? 'critical' : '', e.critical ? 't-info' : 't-dim');
+      if (e.oid === '2.5.29.17') {
+        sans(e.node).forEach(function (s) { out.line('    ' + s); });
+      }
+      if (e.oid === '2.5.29.19') {
+        var bc = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
+        var isCa = bc && bc.children && bc.children[0] && bc.children[0].tag === 0x01
+                   && bc.children[0].bytes[0] !== 0;
+        out.line('    CA: ' + (isCa ? 'TRUE — this can sign other certificates' : 'FALSE'),
+                 isCa ? 't-warn' : 't-dim');
+      }
+      if (e.oid === '2.5.29.15') {
+        var ku = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
+        if (ku && ku.bytes.length > 1) {
+          var unused = ku.bytes[0];
+          var used = [];
+          for (var bit = 0; bit < (ku.bytes.length - 1) * 8 - unused; bit++) {
+            var byte = ku.bytes[1 + (bit >> 3)];
+            if (byte & (0x80 >> (bit % 8))) used.push(KEY_USAGE[bit] || ('bit' + bit));
+          }
+          out.line('    ' + used.join(', '));
+        }
+      }
+      if (e.oid === '2.5.29.37') {
+        var eku = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
+        if (eku && eku.children) {
+          out.line('    ' + eku.children.map(function (c) {
+            var o = oidToString(c.bytes);
+            return OID[o] || o;
+          }).join(', '));
+        }
+      }
+    });
+  }
+
+  function showFingerprints(der, isRequest) {
+    out.rule();
+    out.heading('Fingerprints');
+    crypto.subtle.digest('SHA-256', der).then(function (h) {
+      out.row('SHA-256', LabTool.toHex(new Uint8Array(h)).replace(/(..)(?=.)/g, '$1:'));
+    });
+    crypto.subtle.digest('SHA-1', der).then(function (h) {
+      out.row('SHA-1', LabTool.toHex(new Uint8Array(h)).replace(/(..)(?=.)/g, '$1:'));
+      out.line('');
+      if (isRequest) {
+        out.dim('Fingerprints identify this exact request. They are what you read');
+        out.dim('back to the CA to confirm that the bytes they received are the');
+        out.dim('bytes you sent.');
+        out.line('');
+        out.dim('Nothing here verified the self-signature on the request, which is');
+        out.dim('what proves the sender holds the matching private key. That check');
+        out.dim('is the CA\'s job and it needs the whole request, not just what is');
+        out.dim('printed above.');
+      } else {
+        out.dim('Fingerprints identify this exact certificate. They are what you');
+        out.dim('compare when pinning, or when checking that the certificate your');
+        out.dim('browser was served is the one you expected.');
+        out.line('');
+        out.dim('Nothing here checked the chain or revocation — both need network');
+        out.dim('lookups, which this page does not do. This reads what is inside');
+        out.dim('the certificate, not whether anyone still trusts it.');
+      }
+    });
+  }
+
+  /* A CSR is what people paste when they want a second pair of eyes on it
+     before it goes to a CA, and it is the input this page's own note about
+     leaked internal hostnames is really about. So it gets read properly rather
+     than refused — but labelled for what it is, because the fields a
+     certificate has and a request does not (issuer, serial, validity) are
+     exactly the ones somebody checking a CSR must not be shown a guess at. */
+  function showRequest(root, der) {
+    var cri = root.children[0];
+    if (!looksLikeRequest(root)) {
+      out.err('That is labelled a certificate signing request, but it does not');
+      out.err('parse as PKCS#10. Paste the whole block, unedited.');
+      return;
+    }
+    var kids = cri.children;
+
+    out.heading('Certificate signing request');
+    out.row('version', 'v' + ((kids[0].bytes[0] || 0) + 1));
+    showSignatureAlgorithm(root.children[1]);
+    out.line('');
+    out.dim('This is a request, not a certificate. It has no issuer, no serial');
+    out.dim('and no validity period — a CA fills those in when it signs.');
+
+    out.rule();
+    out.heading('Subject');
+    name(kids[1]).forEach(function (p) { out.line('  ' + p); });
+
+    showPublicKey(kids[2]);
+    showExtensions(requestExtensions(cri), 'Requested extensions');
+    showFingerprints(der, true);
+  }
+
   function run() {
     var input = document.getElementById('tool-text').value;
     out.clear();
     if (!input.trim()) {
       out.warn('Paste a PEM certificate — the block that starts');
-      out.warn('-----BEGIN CERTIFICATE-----');
+      out.warn('-----BEGIN CERTIFICATE----- — or a signing request, which');
+      out.warn('starts -----BEGIN CERTIFICATE REQUEST-----.');
       return;
     }
 
@@ -246,7 +470,29 @@
       return;
     }
 
+    var label = pemLabel(input);
+
+    // Decide WHICH structure this is before walking either one. The PEM label
+    // is the honest answer whenever it is there; the shape check catches a bare
+    // base64 paste that arrived without one.
+    if (/CERTIFICATE REQUEST/.test(label) || (!label && looksLikeRequest(root))) {
+      showRequest(root, der);
+      return;
+    }
+
     var tbs = root.children[0];
+    if (!looksLikeCertificate(tbs)) {
+      out.err('That decodes as ASN.1, but it is not an X.509 certificate — there');
+      out.err('is no serial number, algorithm and validity period where a');
+      out.err('certificate keeps them.');
+      if (label) out.err('The PEM header says ' + label + '.');
+      out.line('');
+      out.dim('This tool reads certificates (-----BEGIN CERTIFICATE-----) and');
+      out.dim('signing requests (-----BEGIN CERTIFICATE REQUEST-----). A CRL, a');
+      out.dim('PKCS#7 bundle or a bare public key needs openssl.');
+      return;
+    }
+
     var kids = tbs.children || [];
     var offset = (kids[0] && kids[0].cls === 0x80) ? 1 : 0;   // optional version
 
@@ -258,17 +504,7 @@
     var serial = kids[offset];
     if (serial) out.row('serial', LabTool.toHex(serial.bytes).replace(/^00/, ''));
 
-    var sigAlgNode = kids[offset + 1];
-    if (sigAlgNode && sigAlgNode.children && sigAlgNode.children[0]) {
-      var sigOid = oidToString(sigAlgNode.children[0].bytes);
-      var sigName = OID[sigOid] || sigOid;
-      out.row('signature algorithm', sigName,
-              /SHA-1|MD5/.test(sigName) ? 't-err' : 't-ok');
-      if (/SHA-1|MD5/.test(sigName)) {
-        out.line('    → both are broken for signatures and rejected by every', 't-err');
-        out.line('      current browser', 't-err');
-      }
-    }
+    showSignatureAlgorithm(kids[offset + 1]);
 
     out.rule();
     out.heading('Issuer');
@@ -321,90 +557,9 @@
       }
     }
 
-    // ---- public key ----
-    var spki = kids[offset + 5];
-    if (spki && spki.children) {
-      out.rule();
-      out.heading('Public key');
-      var algNode = spki.children[0];
-      var algOid = algNode && algNode.children && algNode.children[0]
-        ? oidToString(algNode.children[0].bytes) : '';
-      out.row('algorithm', OID[algOid] || algOid || 'unknown');
-      if (algNode && algNode.children && algNode.children[1]) {
-        var curve = oidToString(algNode.children[1].bytes);
-        if (OID[curve]) out.row('curve', OID[curve]);
-      }
-      var bitstring = spki.children[1];
-      if (bitstring && OID[algOid] === 'RSA') {
-        var inner = parseDer(bitstring.bytes, 1, bitstring.bytes.length)[0];
-        if (inner && inner.children && inner.children[0]) {
-          var modulus = inner.children[0].bytes;
-          var bits = (modulus[0] === 0 ? modulus.length - 1 : modulus.length) * 8;
-          out.row('key size', bits + ' bits', bits < 2048 ? 't-err' : 't-ok');
-          if (bits < 2048) {
-            out.line('    → below 2048 bits; considered inadequate since 2013', 't-err');
-          }
-        }
-      }
-    }
-
-    // ---- extensions ----
-    var exts = findExtensions(tbs);
-    if (exts.length) {
-      out.rule();
-      out.heading('Extensions (' + exts.length + ')');
-      exts.forEach(function (e) {
-        out.row(e.name, e.critical ? 'critical' : '', e.critical ? 't-info' : 't-dim');
-        if (e.oid === '2.5.29.17') {
-          sans(e.node).forEach(function (s) { out.line('    ' + s); });
-        }
-        if (e.oid === '2.5.29.19') {
-          var bc = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
-          var isCa = bc && bc.children && bc.children[0] && bc.children[0].tag === 0x01
-                     && bc.children[0].bytes[0] !== 0;
-          out.line('    CA: ' + (isCa ? 'TRUE — this can sign other certificates' : 'FALSE'),
-                   isCa ? 't-warn' : 't-dim');
-        }
-        if (e.oid === '2.5.29.15') {
-          var ku = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
-          if (ku && ku.bytes.length > 1) {
-            var unused = ku.bytes[0];
-            var used = [];
-            for (var bit = 0; bit < (ku.bytes.length - 1) * 8 - unused; bit++) {
-              var byte = ku.bytes[1 + (bit >> 3)];
-              if (byte & (0x80 >> (bit % 8))) used.push(KEY_USAGE[bit] || ('bit' + bit));
-            }
-            out.line('    ' + used.join(', '));
-          }
-        }
-        if (e.oid === '2.5.29.37') {
-          var eku = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
-          if (eku && eku.children) {
-            out.line('    ' + eku.children.map(function (c) {
-              var o = oidToString(c.bytes);
-              return OID[o] || o;
-            }).join(', '));
-          }
-        }
-      });
-    }
-
-    out.rule();
-    out.heading('Fingerprints');
-    crypto.subtle.digest('SHA-256', der).then(function (h) {
-      out.row('SHA-256', LabTool.toHex(new Uint8Array(h)).replace(/(..)(?=.)/g, '$1:'));
-    });
-    crypto.subtle.digest('SHA-1', der).then(function (h) {
-      out.row('SHA-1', LabTool.toHex(new Uint8Array(h)).replace(/(..)(?=.)/g, '$1:'));
-      out.line('');
-      out.dim('Fingerprints identify this exact certificate. They are what you');
-      out.dim('compare when pinning, or when checking that the certificate your');
-      out.dim('browser was served is the one you expected.');
-      out.line('');
-      out.dim('Nothing here checked the chain or revocation — both need network');
-      out.dim('lookups, which this page does not do. This reads what is inside');
-      out.dim('the certificate, not whether anyone still trusts it.');
-    });
+    showPublicKey(kids[offset + 5]);
+    showExtensions(findExtensions(tbs), 'Extensions');
+    showFingerprints(der, false);
   }
 
   LabTool.define({
@@ -417,6 +572,9 @@
       out.dim('  openssl s_client -connect example.com:443 </dev/null \\');
       out.dim('    | openssl x509 -outform PEM');
       out.dim('or export it from the padlock icon in your browser.');
+      out.dim('');
+      out.dim('A signing request (-----BEGIN CERTIFICATE REQUEST-----) is read');
+      out.dim('too, and labelled as one — it has no issuer or expiry to show.');
     }
   });
 })();

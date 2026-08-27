@@ -219,7 +219,12 @@
     print('     <span class="dim">/birthday?name=Riya&amp;theme=starlit&amp;from=Krunal</span>');
     print('     <span class="dim">/festival?name=Diwali&amp;from=Krunal</span>');
     print('');
-    print('     The festival name does not have to be spelled correctly. 91 of them');
+    // Read the count off the dataset when the page has it, so this line can
+    // never drift from festival-data.js the way "91" did. /terminal does not
+    // load that file today — it is a text page with no cards to draw — hence
+    // the literal, which is the same number the data holds.
+    var known = (window.KSFestivals && window.KSFestivals.all.length) || 92;
+    print('     The festival name does not have to be spelled correctly. ' + known + ' of them');
     print('     are known, English names work as well as the real ones, and anything');
     print('     unrecognised still gets a warm generic card rather than an error.');
     print('     <span class="dim">bestu varsh, diwaly, crismas and gujarati new year all land right.</span>');

@@ -46,7 +46,7 @@
                 "Optional photo, resized locally",
                 "Repeatable, reorderable experience, education and certification sections",
                 "Every field optional",
-                "Autosave in the browser, nothing uploaded",
+                "Nothing uploaded and nothing stored - the draft lives in the tab for one session",
                 "Export and re-import all your data as a JSON file",
                 "Works offline after the first visit"
         ],
@@ -92,7 +92,7 @@
                         "name": "Will my data still be here tomorrow?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes, on the same browser and device. Everything you type is autosaved to your browser's localStorage — a small store on your machine, not on any server — and restored when you come back. \"Clear everything\" wipes it, and so does clearing this site's data in your browser settings."
+                                "text": "No — and that is deliberate. Nothing you type is written to this device: the draft lives in the page's memory for that one session, so closing or reloading the tab clears it, and the next person to open this page on the same computer finds an empty form. Nothing to leave behind on a library PC, nothing for anyone to read later. The trade is that you have to keep a copy on purpose — press \"Download data\" before you leave and you get a resume-data.json file you own, and \"Load data\" brings it straight back. \"Clear everything\" empties the form on the spot."
                         }
                 },
                 {
@@ -116,7 +116,7 @@
                         "name": "Does it work offline?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. Your data was always stored locally anyway, so once the page has arrived, nothing about the tool needs the internet."
+                                "text": "Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. The tool never talked to a server in the first place, so once the page has arrived, nothing about it needs the internet."
                         }
                 },
                 {
@@ -168,6 +168,8 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="stylesheet" href="/assets/css/resume-maker.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -233,7 +235,7 @@
           <li>No sign-up, no paywall at the end</li>
           <li>5 templates, one click apart</li>
           <li>Prints to A4 or US Letter</li>
-          <li>Autosaves in your browser</li>
+          <li>Nothing is stored on your device</li>
           <li>Your data exports to a file you own</li>
         </ul>
       </section>
@@ -244,7 +246,7 @@
       <noscript>
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
-          <p>The live preview, the templates and the autosave are all rendered in your browser and need JavaScript to run.</p>
+          <p>The live preview and the templates are rendered in your browser and need JavaScript to run.</p>
           <p>That is also the privacy story: because everything happens locally, there is no server-rendered fallback to show you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
@@ -382,8 +384,8 @@
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
-            <h3>Everything is local, including the save</h3>
-            <p>There is no server behind this page, so nothing you type can be uploaded &mdash; the form, the preview and the autosave all live in your browser. Your draft is kept in localStorage on your own machine and restored when you come back, which is why there is no account: there is nothing for an account to unlock and nowhere for your work history to go. And because the data is yours, &ldquo;Download data&rdquo; hands you the whole thing as one small .json file &mdash; your resume as a file you own, ready to back up or load on any other machine.</p>
+            <h3>Everything is local, and nothing is left behind</h3>
+            <p>There is no server behind this page, so nothing you type can be uploaded &mdash; the form, the templates and the preview all run in your browser. It is not written to this device either: the draft lives in the page&rsquo;s memory for that one session, and closing or reloading the tab clears it. That is why there is no account &mdash; nothing for an account to unlock, nowhere for your work history to go, and nothing left on the library PC for the next person. It also means <strong>the draft is gone the moment you leave</strong>, so keep a copy on purpose: &ldquo;Download data&rdquo; hands you the whole thing as one small .json file &mdash; your resume as a file you own, ready to back up, reload here, or load on any other machine.</p>
           </article>
           <article class="info-card">
             <h3>The templates are CSS, not images</h3>
@@ -418,7 +420,7 @@
           </details>
           <details class="lab-faq">
             <summary>Will my data still be here tomorrow?</summary>
-            <div>Yes, on the same browser and device. Everything you type is autosaved to your browser's localStorage — a small store on your machine, not on any server — and restored when you come back. "Clear everything" wipes it, and so does clearing this site's data in your browser settings.</div>
+            <div>No — and that is deliberate. Nothing you type is written to this device: the draft lives in the page's memory for that one session, so closing or reloading the tab clears it, and the next person to open this page on the same computer finds an empty form. Nothing to leave behind on a library PC, nothing for anyone to read later. The trade is that you have to keep a copy on purpose — press "Download data" before you leave and you get a resume-data.json file you own, and "Load data" brings it straight back. "Clear everything" empties the form on the spot.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I move my data to another computer?</summary>
@@ -430,7 +432,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does it work offline?</summary>
-            <div>Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. Your data was always stored locally anyway, so once the page has arrived, nothing about the tool needs the internet.</div>
+            <div>Yes. After your first visit the site's service worker keeps a copy of this page and its files in your browser, so it loads and prints with no connection at all. The tool never talked to a server in the first place, so once the page has arrived, nothing about it needs the internet.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use my own photo?</summary>

@@ -99,12 +99,38 @@
     return lines.join('\n');
   }
 
+  /* The longest single string kept intact. memdump.js uses the same figure for
+     the same reason (MIN_RUN_CAP). */
+  var MAX_STRING = 4096;
+
+  /* Both caps used to be tested only where a run ENDED — inside the
+     non-printable branch — so a file that contains no non-printable byte never
+     reached either test. `current` grew to the whole file, the 200-entry limit
+     was never consulted, and a 64 MB text file arrived in the DOM as one text
+     node: the tab locked. Growth is where a bound has to be enforced, so the
+     length check now lives beside the append, and a run that hits the cap is
+     split rather than dropped, the way memdump's scanner does it. Neither the
+     number of strings nor the length of any one of them depends on the shape
+     of the input any more. */
   function strings(bytes, minLen, limit) {
     var found = [], current = '';
     for (var i = 0; i < bytes.length; i++) {
       var b = bytes[i];
       if (b >= 0x20 && b < 0x7f) {
         current += String.fromCharCode(b);
+        if (current.length >= MAX_STRING) {
+          /* Say that it was cut — a silently shortened string is a wrong
+             answer. But so is the mirror of it: a run of exactly MAX_STRING
+             printable bytes had nothing removed, and labelling it "cut" tells
+             the reader a byte exists that does not. The cap fires on the
+             append, before the loop has seen what follows, so the marker has
+             to look one byte ahead: it belongs only where the run really does
+             carry on past the cap. */
+          var more = i + 1 < bytes.length && bytes[i + 1] >= 0x20 && bytes[i + 1] < 0x7f;
+          found.push(more ? current + ' … (cut at ' + MAX_STRING + ' characters)' : current);
+          if (found.length >= limit) return found;
+          current = '';
+        }
       } else {
         if (current.length >= minLen) {
           found.push(current);

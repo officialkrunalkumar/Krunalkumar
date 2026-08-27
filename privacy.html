@@ -148,6 +148,13 @@
           as clicking the email, WhatsApp, resume, or booking links, submitting a form, verifying a
           certificate, switching between the light and dark themes, opening the site search, or starting
           voice or video in the peer-to-peer chat lab. Google Analytics sets cookies to do this.</p>
+          <p><strong>Speed Insights.</strong> Every page also loads Vercel Speed Insights, served from this
+          site's own domain, which measures how fast a page rendered rather than what you did on it. It
+          reports the Core Web Vitals timings — how soon the largest element painted, how much the
+          layout moved while it did, and how quickly the page answered your first interaction — along with
+          the page path, the navigation type (a fresh load, a reload, or the back button), a coarse device
+          and connection class, and a CSS selector naming the largest element it timed. It carries no
+          identifier, sets no cookies, and never sees anything you type.</p>
           <p><strong>What analytics never receives.</strong> Search terms are not sent. The site search
           runs entirely in your browser against a file it downloads, and only the <em>number</em> of
           results a search returned is reported, never what you typed. Nothing you type, paste, or drop
@@ -217,7 +224,8 @@
           </article>
           <article class="info-card compact-card">
             <h3>Vercel</h3>
-            <p>Site hosting, which involves standard server request logs. See <a class="text-link" href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</p>
+            <p>Site hosting, which involves standard server request logs, and Vercel Speed Insights, which
+            measures how quickly pages render. See <a class="text-link" href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</p>
           </article>
         </div>
         <div class="section-heading section-heading-sub">
@@ -266,9 +274,12 @@
             browser settings, browse in private mode, use a content blocker, or install
             <a class="text-link" href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out add-on</a> —
             the site works exactly the same without them, and nothing on it is gated behind accepting them.
-            Separately, the site stores a few preferences in your browser's local storage — your theme
+            Separately, the site stores a few things in your browser's local storage — your theme
             choice, and in the labs your saved code and downloaded runtimes. Those never leave your
-            machine and are not cookies; the labs have a button that clears them.
+            machine and are not cookies; the labs have a button that clears them. The two document makers
+            are deliberately not on that list: the resume or biodata you type stays in the page's memory
+            for that one session and is never written to this device, so closing or reloading the tab
+            clears it. Download data (.json) is how you keep a copy, and you choose when.
           </p>
         </div>
       </section>

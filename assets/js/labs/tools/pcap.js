@@ -1536,7 +1536,8 @@
     }
     if (ctx.truncatedPackets) {
       out.line('');
-      out.warn(num(ctx.truncatedPackets) + ' packets were cut short by the capture snaplen. Payload');
+      out.warn(plural(ctx.truncatedPackets, 'packet') +
+        (ctx.truncatedPackets === 1 ? ' was' : ' were') + ' cut short by the capture snaplen. Payload');
       out.warn('analysis on those is incomplete by definition — a password past the');
       out.warn('cut is simply not in this file.');
     }
@@ -1589,7 +1590,7 @@
     if (pairKeys.length) {
       pairKeys.sort(function (a, b) { return ctx.pairs[b].bytes - ctx.pairs[a].bytes; });
       out.rule();
-      out.heading('Top talkers by IP pair  (' + num(pairKeys.length) + ' pairs seen)');
+      out.heading('Top talkers by IP pair  (' + plural(pairKeys.length, 'pair') + ' seen)');
       for (i = 0; i < pairKeys.length && i < 15; i++) {
         var pr = ctx.pairs[pairKeys[i]];
         out.write(pad(pr.a + '  ⇄  ' + pr.b, 46));
@@ -1703,7 +1704,7 @@
     // ---- DNS ------------------------------------------------------------
     if (ctx.dnsKeys.length) {
       out.rule();
-      out.heading('DNS queries  (' + num(ctx.dnsQueries) + ' questions, ' + num(ctx.dnsKeys.length) + ' distinct)');
+      out.heading('DNS queries  (' + plural(ctx.dnsQueries, 'question') + ', ' + num(ctx.dnsKeys.length) + ' distinct)');
       var dnsSorted = ctx.dnsKeys.slice(0);
       dnsSorted.sort(function (a, b) { return ctx.dns[b].count - ctx.dns[a].count; });
       for (i = 0; i < dnsSorted.length && i < 40; i++) {

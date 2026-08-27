@@ -245,6 +245,12 @@
     '.oa-compare-title{margin:0 0 6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:' + C.faint + ';}',
     '.oa-row-cur .oa-td{background:rgba(125,211,252,.09);color:' + C.ink + ';}',
     '.oa-cell-best{color:' + C.green + ';font-weight:700;}',
+    /* The stage is a real tab stop — build() gives it tabIndex 0 so Space can
+       toggle playback while it is focused — and a tab stop that shows nothing
+       when it lands is exactly the dead-end a keyboard visitor cannot navigate
+       out of confidently. :focus-visible rather than :focus so clicking the
+       stage does not paint a ring nobody asked for. */
+    '.oa-stage:focus-visible{outline:2px solid ' + C.blue + ';outline-offset:3px;border-radius:10px;}',
     '.oa-hidden{display:none;}'
   ].join('');
 
@@ -317,6 +323,16 @@
 
     this.stages = this.families.map(function (fam) {
       var host = E('div', 'oa-stage oa-hidden');
+      // The stage is this widget's keyboard surface: Space toggles playback
+      // while it holds focus (see the keydown listener at the end of build()),
+      // so it has to be reachable by Tab and has to name itself when it gets
+      // there — a bare focusable <div> announces nothing at all. Only the
+      // visible stage is ever a tab stop: every other one carries .oa-hidden,
+      // which is display:none, and a display:none element cannot be focused.
+      host.tabIndex = 0;
+      host.setAttribute('role', 'group');
+      host.setAttribute('aria-label',
+        fam.label + ' stage — press Space to play and pause, arrow keys to step');
       fam.buildStage(host);
       main.appendChild(host);
       return host;
@@ -394,12 +410,43 @@
 
     // Arrow keys step, space plays — but never while a control has focus, or
     // typing a value would scrub the timeline out from under you.
+    //
+    // Space is not this shell's to take on sight. The browser has already given
+    // it two jobs — scroll the page when nothing focusable owns it, and press
+    // the focused button — so tabbing to ⏭ and pressing Space used to start
+    // playback instead of jumping to the end.
+    //
+    // Scoping it by exclusion — "anywhere in .oa-wrap that is not a button, a
+    // link or a field" — looked right and was empty. Everything focusable
+    // inside this widget is a <button> (the family tabs and the five transport
+    // controls), an <input> (the scrub, the speed slider and every panel field)
+    // or a <select> (the algorithm picker, and whatever pickers a family puts
+    // in its own panel), so the guard below and that button/link exclusion
+    // covered the whole widget between them and togglePlay() could never be
+    // reached.
+    // The shortcut was not scoped, it was dead — and three of the roles the
+    // exclusion listed ([role=checkbox], [role=switch], [role=radio]) match
+    // nothing anywhere on this site in the first place.
+    //
+    // Ownership is stated positively instead, the way sortviz.js and synth.js
+    // do it: the visible family stage is this widget's picture, it is given
+    // tabIndex 0 where it is built above so a keyboard visitor can Tab to it,
+    // and Space toggles playback only while that stage itself holds focus.
+    // Everywhere else Space keeps both of its native jobs — including on the
+    // ▶ Play button, which stays the other way to start and stop a run.
+    //
+    // The arrows keep the wider reach they always had: they have no native job
+    // on a button, so stepping from wherever focus sits costs nothing.
     wrap.addEventListener('keydown', function (ev) {
       var tag = (ev.target.tagName || '').toLowerCase();
       if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
       if (ev.key === 'ArrowRight') { ev.preventDefault(); self.pause(); self.goto(self.frame + 1); }
       else if (ev.key === 'ArrowLeft') { ev.preventDefault(); self.pause(); self.goto(self.frame - 1); }
-      else if (ev.key === ' ') { ev.preventDefault(); self.togglePlay(); }
+      else if (ev.key === ' ') {
+        if (ev.target !== self.stages[self.active]) return;
+        ev.preventDefault();
+        self.togglePlay();
+      }
     });
   };
 

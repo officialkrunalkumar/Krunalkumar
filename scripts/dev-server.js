@@ -15,12 +15,27 @@
    It also serves /partials/header and /partials/footer without the .html,
    because include-partials.js fetches them that way.
 
-   NOT A PRODUCTION SERVER, and not trying to be: no compression, no caching
-   headers, no HTTP/2. It binds to localhost only. The one thing it does take
-   seriously is path traversal — every resolved path is checked to be inside
-   the repository root before it is read, because a dev server that will
-   happily serve C:\Users\...\.ssh\id_rsa to anything that can reach the port
-   is a real problem even on a laptop.
+   For the same reason it now READS vercel.json rather than approximating it.
+   Hardcoding "the resolution order Vercel applies" was already the right
+   instinct applied to one field; the rest of that file — seven security
+   headers, four Content-Security-Policies, eight redirects — was simply not
+   here, so a lab could violate the production CSP all afternoon locally and
+   only fail once it was live. Headers, redirects, cleanUrls and trailingSlash
+   are all taken from the config now, and anything in it this server cannot
+   faithfully reproduce is named at startup instead of silently skipped.
+
+   NOT A PRODUCTION SERVER, and not trying to be: no compression, no HTTP/2,
+   and Cache-Control is deliberately NOT the one vercel.json asks for — a dev
+   server whose whole purpose is that a reload shows the edit you just made
+   cannot also honour `max-age=31536000, immutable`. That one divergence is
+   printed at startup so it is a decision rather than a surprise. It binds to
+   localhost only. The two things it does take seriously are path traversal —
+   every resolved path is checked to be inside the repository root before it
+   is read, because a dev server that will happily serve
+   C:\Users\...\.ssh\id_rsa to anything that can reach the port is a real
+   problem even on a laptop — and the shape of the Location it sends, which is
+   forced back on-origin at redirectFor() for the same "cheap to fix, awkward
+   to explain" reason.
    ========================================================================== */
 
 'use strict';
@@ -51,10 +66,150 @@ const TYPES = {
   '.wasm': 'application/wasm',
   '.map': 'application/json; charset=utf-8',
   '.pdf': 'application/pdf',
+  /* An ES module is served as JavaScript or it does not run: a browser refuses
+     to execute `import`ed code that arrives as application/octet-stream. The
+     PHP lab is nine .mjs files deep, so without this line /labs/php works in
+     production and is dead locally — the single most confusing shape a dev
+     server bug can take. */
+  '.mjs': 'text/javascript; charset=utf-8',
+  /* Yes, really. The TypeScript lab ships assets/vendor/typescript/lib/*.d.ts,
+     and mime-db — which is what Vercel resolves extensions through — has owned
+     .ts for MPEG transport streams since long before TypeScript existed.
+     Measured rather than assumed: a HEAD of
+     /assets/vendor/typescript/lib/lib.es5.d.ts on the live site comes back
+     `Content-Type: video/mp2t`. Nothing in the lab reads the header, so this
+     buys no behaviour — it buys the guarantee that when something eventually
+     does, it breaks here first instead of only in production.
+
+     .data and .bin (perl, pglite, the v86 BIOS blobs) get no rows on purpose:
+     both measure as application/octet-stream on the live site, which is
+     already exactly what the fallback below produces. A row that restates the
+     default is one more thing to keep true for no gain. */
+  '.ts': 'video/mp2t',
 };
 
 function isFile(p) {
   try { return fs.statSync(p).isFile(); } catch (e) { return false; }
+}
+
+/* --------------------------------------------------------------------------
+   vercel.json, applied rather than paraphrased
+   --------------------------------------------------------------------------
+   Vercel matches `source` with path-to-regexp. Every pattern this repo uses —
+   /(.*), /(birthday|festival), /assets/(js|css)/(.*), /(site.webmanifest|
+   favicon.ico) — is written with plain regex groups, and on those two engines
+   agree exactly, so anchoring the source as a JS RegExp is faithful, not an
+   approximation. Where they would NOT agree — a :param, a bare * wildcard, an
+   {optional} segment, or a `has`/`missing` condition — this refuses to guess:
+   the rule is skipped and named at startup. Same stance as build.js, for the
+   same reason: a confidently wrong local answer costs more than a missing one.
+
+   The policies go out verbatim, `upgrade-insecure-requests` included, even
+   though this server speaks http. That directive is defined to leave a
+   potentially-trustworthy URL alone, and http://localhost is potentially
+   trustworthy, so it is a no-op here rather than a hazard — and editing
+   directives out of a CSP is precisely how a dev server stops telling you
+   about the violation you are about to ship.
+   -------------------------------------------------------------------------- */
+const UNSUPPORTED = /[:{]|(^|[^.])\*/;
+const notes = [];
+
+let config = {};
+try {
+  config = JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf8'));
+} catch (e) {
+  notes.push('vercel.json could not be read (' + e.message + '), so NO headers or redirects are applied');
+}
+
+function compile(rules, kind) {
+  const out = [];
+  for (const rule of rules || []) {
+    const src = String(rule.source || '');
+    if (UNSUPPORTED.test(src) || rule.has || rule.missing) {
+      notes.push(kind + ' "' + src + '" uses a matcher this server does not reproduce — not applied');
+      continue;
+    }
+    try {
+      out.push(Object.assign({ re: new RegExp('^' + src + '$') }, rule));
+    } catch (e) {
+      notes.push(kind + ' "' + src + '" will not compile here (' + e.message + ') — not applied');
+    }
+  }
+  return out;
+}
+
+const REDIRECTS = compile(config.redirects, 'redirect');
+const HEADERS = compile(config.headers, 'header');
+const CLEAN_URLS = config.cleanUrls === true;
+const TRAILING_SLASH = config.trailingSlash === true;
+if (config.rewrites) notes.push('vercel.json declares rewrites, which this server does not apply');
+notes.push('Cache-Control comes out as no-store, not the value in vercel.json — see the header of this file');
+
+/* Every matching rule is applied in file order and a later one overwrites an
+   earlier one key by key. That ordering is load-bearing, not incidental: the
+   labs get their looser connect-src precisely because /labs/(.*) sits below
+   the site-wide /(.*) policy it shares a prefix with. */
+function headersFor(pathname) {
+  const out = {};
+  for (const rule of HEADERS) {
+    if (!rule.re.test(pathname)) continue;
+    for (const h of rule.headers || []) out[h.key] = h.value;
+  }
+  return out;
+}
+
+/* Every Location this server derives FROM THE REQUEST PATH is forced back to
+   a single-slash, same-origin, absolute path before it goes out.
+
+   The cleanUrls and trailingSlash branches build their target by editing the
+   requested path, and a request line may legally begin with two slashes: GET
+   //evil.example/foo.html gave `Location: //evil.example/foo`, which is
+   protocol-relative, so the browser left the site. That is an open redirect —
+   textbook shape, and pointless to leave standing even on a localhost-bound
+   dev server, because the cost of not having it is one regex. A backslash run
+   is collapsed too: the URL parser folds \ into / for http(s), so /\evil is
+   the same trick wearing a different slash.
+
+   Config redirects are the deliberate exception. Their destination is written
+   by hand in vercel.json, and one of them (/generate) is MEANT to leave for
+   another origin; rewriting that into a local path would invent a divergence
+   from production in the one file whose whole job is not having any. So an
+   authored destination that is already absolute or protocol-relative goes out
+   untouched, and only a path-shaped one — which is the only kind a request
+   path can have flowed into, via a capture group — gets normalised. */
+const AUTHORED_OFFSITE = /^(?:[a-z][a-z0-9+.\-]*:)?\/\//i;
+
+function sameOriginPath(to) {
+  const cut = to.search(/[?#]/);
+  const p = cut === -1 ? to : to.slice(0, cut);
+  const rest = cut === -1 ? '' : to.slice(cut);
+  return '/' + p.replace(/^[/\\]+/, '') + rest;
+}
+
+/* Config redirects first, then the two the config asks for implicitly.
+   cleanUrls does not merely let /about serve about.html — it also stops
+   /about.html being a URL at all, and trailingSlash:false does the same to
+   /about/. Both answer 308 in production, and a local 200 for a URL that
+   redirects live is exactly the divergence this file exists to remove. */
+function redirectFor(pathname, search) {
+  for (const rule of REDIRECTS) {
+    if (!rule.re.test(pathname)) continue;
+    let to = pathname.replace(rule.re, rule.destination);
+    if (search && to.indexOf('?') === -1) to += search;
+    if (!AUTHORED_OFFSITE.test(String(rule.destination || ''))) to = sameOriginPath(to);
+    return { to: to, status: rule.statusCode || (rule.permanent ? 308 : 307) };
+  }
+
+  let to = null;
+  if (CLEAN_URLS && /\.html$/i.test(pathname)) {
+    to = pathname.replace(/\.html$/i, '').replace(/(^|\/)index$/, '$1');
+    if (to.length > 1 && to.endsWith('/')) to = to.slice(0, -1);
+    if (to === '') to = '/';
+  } else if (!TRAILING_SLASH && pathname.length > 1 && pathname.endsWith('/')) {
+    to = pathname.slice(0, -1);
+  }
+  if (to && to !== pathname) return { to: sameOriginPath(to + (search || '')), status: 308 };
+  return null;
 }
 
 /* Vercel's resolution order for cleanUrls + trailingSlash:false. The partials
@@ -76,7 +231,31 @@ function resolveFile(pathname) {
 }
 
 const server = http.createServer((req, res) => {
-  const pathname = url.parse(req.url).pathname || '/';
+  const parsed = url.parse(req.url);
+  const pathname = parsed.pathname || '/';
+
+  /* Computed for the 404 as well as the 200: measured against the live site,
+     https://krunalkumar.dpdns.org/nope-does-not-exist comes back 404 carrying
+     the full set, so the security headers are not conditional on a hit. */
+  const sent = headersFor(pathname);
+
+  /* Redirects are the exception, and it is a measured one rather than a guess:
+     both /linux and /about.html answer on the live site with a Location and
+     nothing else from this config — Vercel stops routing when a redirect wins,
+     so the headers rules never run. Sending them here would be the same class
+     of local-only difference this file exists to remove, pointed the other way. */
+  const redirect = redirectFor(pathname, parsed.search);
+  if (redirect) {
+    res.writeHead(redirect.status, {
+      Location: redirect.to,
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-store',
+    });
+    res.end(redirect.status + ' -> ' + redirect.to);
+    console.log(redirect.status + '  ' + pathname + '  ->  ' + redirect.to);
+    return;
+  }
+
   const file = resolveFile(pathname);
 
   /* Traversal guard. resolveFile joins user input onto ROOT, and path.join
@@ -86,7 +265,14 @@ const server = http.createServer((req, res) => {
   if (file) {
     const real = path.resolve(file);
     if (real !== ROOT && !real.startsWith(ROOT + path.sep)) {
-      res.writeHead(403, { 'Content-Type': 'text/plain' });
+      /* Same header shape as the 404 below, and for the same measured reason:
+         production answers a refusal with the full config header set, so a
+         403 that arrives here bare would be a local-only difference in the
+         one file whose whole job is not having any. */
+      res.writeHead(403, Object.assign({}, sent, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+      }));
       res.end('403 Forbidden');
       console.log('403  ' + pathname);
       return;
@@ -96,7 +282,10 @@ const server = http.createServer((req, res) => {
   if (!file) {
     const notFound = path.join(ROOT, '404.html');
     const body = isFile(notFound) ? fs.readFileSync(notFound) : Buffer.from('404 Not Found');
-    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.writeHead(404, Object.assign({}, sent, {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+    }));
     res.end(body);
     console.log('404  ' + pathname);
     return;
@@ -105,8 +294,12 @@ const server = http.createServer((req, res) => {
   const type = TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream';
 
   /* no-store, deliberately: the whole point of a dev server is that a reload
-     shows the edit you just made. */
-  res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store' });
+     shows the edit you just made. It goes on last so it wins over whatever
+     Cache-Control vercel.json had for this path. */
+  res.writeHead(200, Object.assign({}, sent, {
+    'Content-Type': type,
+    'Cache-Control': 'no-store',
+  }));
   fs.createReadStream(file).pipe(res);
   console.log('200  ' + pathname + '  ->  ' + path.relative(ROOT, file).split(path.sep).join('/'));
 });
@@ -115,6 +308,11 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log('');
   console.log('  Serving ' + ROOT);
   console.log('  http://localhost:' + PORT);
+  console.log('');
+  console.log('  From vercel.json: ' + HEADERS.length + ' header rules, ' + REDIRECTS.length +
+              ' redirects, cleanUrls ' + (CLEAN_URLS ? 'on' : 'off') +
+              ', trailingSlash ' + (TRAILING_SLASH ? 'on' : 'off') + '.');
+  notes.forEach((n) => console.log('  NOTE  ' + n));
   console.log('');
   console.log('  cleanUrls is emulated, so these work the way they will in production:');
   console.log('    http://localhost:' + PORT + '/birthday?name=Krunal&theme=candlelight&from=Riya');

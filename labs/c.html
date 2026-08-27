@@ -74,7 +74,7 @@
                         "name": "Why is the first run so much slower?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The toolchain is about 58 MB and is downloaded once. Your browser caches it, so later runs compile in roughly a second and a half, and it then works with no connection."
+                                "text": "The download is about 19 MB compressed, once. It unpacks to roughly 58 MB in the browser cache, so later runs compile in about a second and a half, and it then works with no connection."
                         }
                 },
                 {
@@ -142,6 +142,8 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="stylesheet" href="/assets/vendor/editor/prism.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -204,7 +206,7 @@
         <p class="hero-text">This is genuine clang — the same compiler front end you would install locally — compiled to WebAssembly. Your source is compiled to an object file, linked against a real libc by lld, and executed. It is a compiler, not an interpreter, which is why structs, <code>malloc</code> and pointer arithmetic all behave exactly as they should. Nothing you type is uploaded; the whole toolchain runs on your own processor.</p>
         <ul class="lab-facts">
           <li>Real clang + lld</li>
-          <li>~58 MB once, then cached</li>
+          <li>~19 MB once, then cached</li>
           <li>Full C standard library</li>
           <li>scanf reads the Input panel</li>
         </ul>
@@ -343,7 +345,7 @@
           <li>Accept the short notice, then replace the starter program with your own C.</li>
           <li>If your program calls <code>scanf</code>, put each value on its own line in the <strong>Input (stdin)</strong> panel before running.</li>
           <li>Press <strong>Run</strong>, or <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</li>
-          <li>The first run downloads the toolchain (~58 MB) and takes a few seconds; every run after that compiles in about a second and a half.</li>
+          <li>The first run downloads the toolchain (~19 MB compressed) and takes a few seconds; every run after that compiles in about a second and a half.</li>
           <li>Compiler output, warnings and your program&rsquo;s own output all appear in the terminal pane, with the toolchain&rsquo;s progress dimmed.</li>
         </ol>
       </section>
@@ -479,7 +481,7 @@ int main(void) {
           </details>
           <details class="lab-faq">
             <summary>Why is the first run so much slower?</summary>
-            <div>The toolchain is about 58 MB and is downloaded once. Your browser caches it, so later runs compile in roughly a second and a half, and it then works with no connection.</div>
+            <div>The download is about 19 MB compressed, once. It unpacks to roughly 58 MB in the browser cache, so later runs compile in about a second and a half, and it then works with no connection.</div>
           </details>
           <details class="lab-faq">
             <summary>Do structs, malloc and pointers work?</summary>

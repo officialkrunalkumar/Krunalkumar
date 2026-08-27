@@ -36,6 +36,13 @@
   var MAGIC = 'STG1';   // so the extractor can tell a real payload from noise
 
   function loadImage(bytes, file) {
+    // The drop zone's own filename line, set the moment the file arrives rather
+    // than after the decode: a file that turns out not to be an image is
+    // exactly when the visitor needs to see which one they dropped. Every other
+    // file-drop tool on the site fills this element the same way.
+    var nameEl = document.getElementById('tool-dropname');
+    if (nameEl) nameEl.textContent = file.name;
+
     var blob = new Blob([bytes], { type: file.type || 'image/png' });
     releasePreview();
     var url = URL.createObjectURL(blob);
@@ -277,8 +284,12 @@
         onFile: loadImage,
         onError: function (msg) { out.clear().err(msg); }
       });
+      /* Only "Hide message" is wired by hand. Extract is `run` above, and
+         LabTool.define already binds that to #tool-run and to Ctrl+Enter — so
+         the toolbar's second plain "Extract" button, wired here to the same
+         function, was one action wearing two buttons: two things to keep in
+         step, and a visitor left guessing which of the two did more. */
       document.getElementById('tool-hide').addEventListener('click', hide);
-      document.getElementById('tool-extract').addEventListener('click', extract);
       out.dim('Drop a PNG. Then either hide a message in it, or extract one.');
       out.dim('');
       out.dim('Nothing is uploaded — the pixels are read and rewritten in this');

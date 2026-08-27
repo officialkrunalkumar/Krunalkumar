@@ -141,6 +141,19 @@
                                 ranges: [[' ', ' '], ['\t', '\t'], ['\n', '\n']] };
         return { type: 'char', c: e };
       }
+      /* Bounded repetition is not in this engine's grammar — neither the block
+         comment above parse() nor the page's own "which syntax is supported"
+         answer lists it. Saying so is the fix; the alternative, silence, was
+         worse than an unsupported feature. With no branch here, '{', the
+         digits, the comma and '}' each fell through to the literal-character
+         case at the bottom of this function, so /a{2,3}/ quietly became the
+         six-character literal a{2,3} and reported "no match" against "aaa" — a
+         wrong answer, on a page whose whole subject is what engines do and do
+         not do. A brace that does not open a well-formed quantifier stays a
+         literal, which is what JavaScript does with /a{/ too. */
+      if (c === '{' && /^\{\d+(?:,\d*)?\}/.test(pattern.slice(pos))) {
+        fail('bounded repetition {n,m} is not supported by this engine — write it out, so a{2,3} becomes aaa?');
+      }
       if (c === ')' || c === '*' || c === '+' || c === '?' || c === '|') {
         fail('unexpected ' + c);
       }

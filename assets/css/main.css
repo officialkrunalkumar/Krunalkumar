@@ -2715,6 +2715,43 @@ footer a:hover {
     animation: nav-fade-in 0.25s ease;
   }
 
+  /* The four fixed floats sit on <body> at z-index 40. .site-header is
+     position:sticky with z-index:10, which makes it a stacking context, so the
+     panel above cannot rise past them however high it is raised — measured at
+     375x650, elementFromPoint on the last nav row returned the pause button
+     rather than the link. Raising the header instead would put the sticky bar
+     over the background-settings popover at z-index 41, so the floats stand
+     down for as long as the menu is open.
+
+     The popover itself stands down with its toggle. It is body-level and
+     fixed at z-index 41, one above the floats, so listing the gear but not the
+     panel it opens left the worst of the two on screen: the panel is the only
+     one of these that is interactive AND overlaps the nav rows, so it kept
+     stealing the taps this rule exists to protect — while its own toggle was
+     display:none'd out from under it, leaving a popover with no visible way to
+     dismiss it. .bg-hint-toast is here for paint alone; it is
+     pointer-events:none, but at z-index 39 it still draws over the open menu.
+
+     Keyed off .nav-list.open rather than a class of its own: that is the state
+     the nav toggle in particle-bg.js already maintains, so there is nothing
+     extra to unset and no way for a float to get stuck hidden. Closing the
+     menu brings them back, and so does crossing the breakpoint, because the
+     rule only exists inside this media query. That is what keeps the popover
+     from being orphaned: display:none here does not touch panel.hidden, so
+     whatever state particle-bg.js has it in is what comes back — and in
+     practice it comes back closed, because the document click listener that
+     dismisses the popover on an outside tap fires on the same tap that opens
+     the menu. Escape still reaches it either way. Browsers without :has() keep
+     today's behaviour rather than gaining a new one. */
+  body:has(.nav-list.open) .back-to-top,
+  body:has(.nav-list.open) .whatsapp-float-wrap,
+  body:has(.nav-list.open) .bg-pause-toggle,
+  body:has(.nav-list.open) .bg-settings-toggle,
+  body:has(.nav-list.open) .bg-settings-panel,
+  body:has(.nav-list.open) .bg-hint-toast {
+    display: none;
+  }
+
   .nav-list a {
     padding: 0.7rem 0.9rem;
     border-radius: 12px;
@@ -3609,22 +3646,61 @@ footer a:hover {
 :root[data-theme="light"] .featured-recommendation-badge { color: #03608f; } /* var(--accent) is 4.36:1 at the dark end of the card gradient; this is 5.0:1 everywhere on it */
 :root[data-theme="light"] .post-callout strong { color: #806600; } /* #8f7200 measured 4.15:1 on the callout ground rgb(245,243,235); this is 4.95:1 */
 :root[data-theme="light"] .lab-btn-icon[aria-pressed='true'] { color: #008f4c; }
-:root[data-theme="light"] .lab-status.is-busy { color: #8f6700; }
-:root[data-theme="light"] .lab-status.is-ok { color: #058a35; }
+/* The other two thirds of the same chip, and the audit that fixed is-err below
+   was supposed to have fixed these at the same time. The ground is the light
+   .lab-toolbar — rgb(var(--deep-rgb)/0.78) composited over .lab's
+   rgb(var(--well-rgb)/0.82) over the page, which lands on #d2deec — and on it
+   #8f6700 measured 3.74:1 and #058a35 measured 3.27:1, on all 16 code labs.
+   These two lines are the only signal that a Run started and the only signal
+   that it finished, so failing AA here means a visitor cannot tell a stuck
+   runtime from a finished one. The replacements add no new colour: #7a5a00 and
+   #0a6b28 are the pair .chat-status.is-busy / .chat-status.is-good already use
+   near the end of this file, and here they measure 4.67:1 and 4.88:1. */
+:root[data-theme="light"] .lab-status.is-busy { color: #7a5a00; }
+:root[data-theme="light"] .lab-status.is-ok { color: #0a6b28; }
 /* is-err was the one state of the three that never got a light-theme colour,
    so it kept the dark-theme #f87171 and measured 2.03:1 on the light lab
    surface — the ERROR state, the one a visitor most needs to read, was the
    unreadable one. #8f0000 is the same red .hl-result.is-err and
    .lab-shader-errors already use, so the three error colours now agree. */
 :root[data-theme="light"] .lab-status.is-err { color: #8f0000; }
+/* The load-failure banner keeps its dark-navy fill in both themes, so only its
+   link was ever re-inked — and that made the link worse: #bae6fd read 2.39:1
+   on the composited ground and #005e8f read 2.21:1, under the value it
+   replaced, while the sentence around it sat at 2.77:1. Ink cannot move on its
+   own when the ground under it is translucent. At 0.12 the same navy
+   composites to rgb(208,221,233) over the light .lab surface, where #0c3f5c is
+   8.1:1 and the link's existing #005e8f is 5.09:1 and still reads as a link
+   beside it. This is the one message a visitor gets when a WASM runtime fails
+   to load, so it is the one that has to survive the theme. */
+:root[data-theme="light"] .lab-fail {
+  color: #0c3f5c;
+  background: rgba(12, 74, 110, 0.12);
+}
 :root[data-theme="light"] .lab-fail-link { color: #005e8f; }
 :root[data-theme="light"] .lab-gate-h.limits { color: #8f6700; }
 :root[data-theme="light"] .lab-gate-h.privacy { color: #05672a; }
-:root[data-theme="light"] .lab-warn-kill { color: #212121; }
 :root[data-theme="light"] .lab-cta-text strong { color: #05672a; } /* #008f34 measured 2.83:1 on the teal end of the .lab-cta gradient, where the <strong> actually sits; this is 4.73:1 and matches .lab-gate-h.privacy above */
 :root[data-theme="light"] .typing-stats .typing-best b { color: #04561f; }
-:root[data-theme="light"] .typing-result { color: #008f4c; }
-:root[data-theme="light"] .lab-report-context { color: #058a35; }
+/* Both of these are green ink on a translucent teal panel, and both had only
+   the ink re-inked — the teal stayed, composited to a mid-teal over the light
+   surface, and the pair measured 2.26:1 and 3.09:1. Same lesson as .lab-fail
+   above: the ground has to move with the ink. At 0.12 the teal lands on
+   rgb(209,227,233) inside the typing lab's pane and rgb(217,232,235) on the
+   labs-index card, where #04561f — the green .typing-stats .typing-best b
+   already uses on the line above — is 6.72:1 and 7.11:1. The borders go teal
+   with the fill: rgba(74,222,128,0.4) was drawn to glow against a dark panel
+   and only muddies a pale one. */
+:root[data-theme="light"] .typing-result {
+  color: #04561f;
+  background: rgba(15, 118, 110, 0.12);
+  border-top-color: rgba(15, 118, 110, 0.35);
+}
+:root[data-theme="light"] .lab-report-context {
+  color: #04561f;
+  background: rgba(15, 118, 110, 0.12);
+  border-color: rgba(15, 118, 110, 0.35);
+}
 /* The copy chip floats on pre.lab-example, which the pin block above keeps at
    #020617 in light theme. Its ink comes from that pin (the dark-theme
    --ink-3, #cbd5e1) but its fill is --sheet-95, which the pin does NOT cover
@@ -3636,26 +3712,146 @@ footer a:hover {
    Fullscreen produced no visible change and only the border moved. The token
    is still right for the label (16.26:1); light just needs a fill you can see. */
 :root[data-theme="light"] .lab-btn:hover:not(:disabled) { background: #dde7f2; }
+/* The chevron on every lab <select> is a data-URI, so its fill is a literal
+   colour and cannot follow a token. #7dd3fc is the dark-theme --accent-1 and
+   measures 1.67:1 on the white --surf-1 the control keeps in this theme —
+   under even the 3:1 floor for a non-text indicator, and appearance:none has
+   already taken the native arrow away, so it is the only thing left saying
+   this is a dropdown. Restated in the light --accent-1 at 5.93:1, exactly as
+   wish-generator.css already does for .wish-select. */
+:root[data-theme="light"] .lab-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%230369a1' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+}
 :root[data-theme="light"] .lab-copy { background: rgba(31, 44, 63, 0.95); }
 :root[data-theme="light"] .lab-netnote strong { color: #7a5700; }
 :root[data-theme="light"] .lab-gate-foot { color: #745c00; }
 :root[data-theme="light"] .hl-list-cat { color: #00438f; }
-:root[data-theme="light"] .hl-list-check { color: #058a35; }
-:root[data-theme="light"] .hl-alldone { color: #008f32; }
-:root[data-theme="light"] .hl-solved-banner { color: #058a35; }
-:root[data-theme="light"] .hl-result.is-ok { color: #008f34; }
+/* The greens below are HackLab's success path — solved, flag captured, here is
+   the fix — and the generator gave the whole batch one of two hexes without
+   asking what each one actually sits on. On their real light grounds #058a35
+   and #008f34 came out between 2.82:1 and 4.15:1, so the half of the page that
+   says you got it was the half that failed AA. Same #0a6b28 the rest of this
+   file settled on, measured per ground:
+
+     .hl-list-check     #058a35 4.10:1 -> #0a6b28 6.11:1  (a --sheet-60 row on
+                                                           the .hl-list rail)
+     .hl-solved-banner  #058a35 3.76:1 -> #0a6b28 5.61:1
+     .hl-win strong     #058a35 3.69:1 -> #0a6b28 5.50:1
+     .hl-fix h3         #008f34 3.62:1 -> #0a6b28 5.72:1
+
+   The first sweep read that table as finished and it was not: it had fixed the
+   loud half of three banners and left the quiet half behind, on the SAME ground
+   it had just measured. Each of these is the sentence a visitor actually reads
+   after the word that caught their eye, so the effect was a banner you can spot
+   and cannot use:
+
+     .hl-win            #008f32 3.48:1 -> #0a6b28 5.50:1  (hacklab.js builds the
+                        banner as a <strong> plus a bare text node; only the
+                        <strong> was moved, so the explanation beside it stayed
+                        at 3.48:1 on the identical rgb(213,239,233))
+     .hl-fix p          #008f46 3.59:1 -> #0a6b28 5.72:1  (the paragraph that
+                        explains the remediation, on the same rgb(225,240,242)
+                        as the .hl-fix h3 above it — heading readable,
+                        explanation not)
+     .hl-alldone        #008f32 3.01:1 -> #0a6b28 4.75:1 at the top of the
+                        .hl-list rail gradient and 3.15:1 -> 4.97:1 at the
+                        bottom; it is the completion message for the whole lab
+                        and it is set at 0.82rem, so 4.5:1 is the floor it has
+                        to clear and 3.01:1 was not close
+
+   The one row the first sweep left honest is now closed too. .hl-list-check on
+   .hl-list-item.is-active does not sit on a --sheet-60 row — the active row
+   swaps that fill for rgb(var(--accent-rgb) / 0.12), which over the rail
+   composites to rgb(186,208,227) and held the tick at 4.21:1, short of the
+   floor at 0.7rem. Ink cannot move: #0a6b28 is already the darkest green this
+   file uses and the note above pins the whole success path to it. So the fill
+   moves instead, and ONLY in this theme — rgb(var(--accent-rgb) / 0.06) over
+   the rail is rgb(199,215,232) at the top stop and rgb(205,220,235) at the
+   bottom, where the tick is 4.55:1 and 4.78:1. The dark theme keeps labs.css's
+   0.12 untouched, where the accent tint is doing the opposite job against a
+   dark rail. Selected-ness does not depend on the fill either way: the row also
+   carries a solid var(--accent-1) border (4.05:1 against the lightened fill,
+   unchanged by this) and a 3px var(--accent-1) bar down its left edge, and the
+   fill alone only ever separated the active row from its neighbours by 1.45:1.
+
+   .hl-hint strong follows .chat-status.is-busy to #7a5a00 for the same reason
+   the two .lab-status lines above did: 4.36:1 -> 5.44:1 on the amber card. */
+:root[data-theme="light"] .hl-list-item.is-active { background: rgb(var(--accent-rgb) / 0.06); }
+:root[data-theme="light"] .hl-list-check { color: #0a6b28; }
+:root[data-theme="light"] .hl-alldone { color: #0a6b28; }
+:root[data-theme="light"] .hl-solved-banner { color: #0a6b28; }
+/* .hl-result.is-ok and .hl-flag were in that batch and are NOT here, because
+   neither of them is the simple light-ground case the rest of this block is.
+   Both render inside .hl-app, whose rgba(9,15,28,0.92) is a literal that does
+   not follow the theme — the mock portal is meant to look dark in both, which
+   is why the block further down pins its inks to #e2e8f0. Composited,
+   .hl-result.is-ok lands on #1d2b32, and darkening the ink there ran the wrong
+   way: #008f34 measured 3.46:1 and #0a6b28 would have been 2.19:1. Without the
+   override it is labs.css's own #86efac again, at 10.40:1, the actual fix.
+
+   .hl-flag is not that tidy. Its colour override really was dead — hacklab.js
+   builds all 40 flags as <p> inside .hl-app, so the `.hl-app p` rule further
+   down carries one more element in its selector than a bare `.hl-flag` and
+   outranks it, and the flag reads #e2e8f0 either way — but the reason that
+   deletion was called harmless did not
+   hold, and .hl-app is not the ground the flag actually sits on. The flag is a
+   child of .hl-result, and .hl-result's own fill is var(--surf-0), which DOES
+   flip with the theme. 39 of the 40 escape that only by accident: their
+   .hl-result has picked up .is-ok by the time the flag is appended, and
+   .is-ok's rgba(74,222,128,0.05) replaces the opaque fill and lets .hl-app's
+   dark through. Those composite to rgb(35.7, 67.7, 60.8) — #24443d to the
+   nearest whole channel — where #e2e8f0 measures 8.69:1. The fortieth does
+   not. The UNION-select flag in the SQL injection challenge is appended to a
+   plain .hl-result — that challenge marks the box .is-err on a bad query and
+   otherwise leaves it alone — so in light theme it landed on
+   #d0ebe5, and #e2e8f0 on that is 1.02:1. Invisible: the one flag the hardest
+   challenge pays out, unreadable for anyone not in dark theme.
+
+   Putting a colour override back could not have fixed it, for exactly the
+   reason the original never painted: it loses to `.hl-app p`. So the fill is
+   pinned instead, to the very colour those 39 already composite to. On them it
+   moves each channel by under half a unit (8.69:1 -> 8.65:1, invisible); on the
+   fortieth it replaces #d0ebe5 with the same #24443d, so all 40 flags now read
+   at 8.65:1 whichever box they land in. Dark theme is deliberately untouched —
+   there the flag keeps labs.css's #4ade80 on its own translucent green, 7.72:1
+   over a plain .hl-result and 7.50:1 over an .is-ok one, both already past AA.
+
+   .is-err stays: it keeps .hl-result's own var(--surf-0) fill, which does flip
+   with the theme. */
+:root[data-theme="light"] .hl-flag { background: #24443d; }
 :root[data-theme="light"] .hl-result.is-err { color: #8f0000; }
-:root[data-theme="light"] .hl-flag { color: #058a35; }
-:root[data-theme="light"] .hl-win { color: #008f32; }
-:root[data-theme="light"] .hl-win strong { color: #058a35; }
-:root[data-theme="light"] .hl-hint strong { color: #8f6700; }
-:root[data-theme="light"] .hl-fix h3 { color: #008f34; }
-:root[data-theme="light"] .hl-fix p { color: #008f46; }
+:root[data-theme="light"] .hl-win { color: #0a6b28; }
+:root[data-theme="light"] .hl-win strong { color: #0a6b28; }
+:root[data-theme="light"] .hl-hint strong { color: #7a5a00; }
+:root[data-theme="light"] .hl-fix h3 { color: #0a6b28; }
+:root[data-theme="light"] .hl-fix p { color: #0a6b28; }
 :root[data-theme="light"] .lab-shader-errors { color: #8f0000; }
-:root[data-theme="light"] .chat-warn strong { color: #8f6500; }
-:root[data-theme="light"] .chat-status.is-busy { color: #8f6d00; }
-:root[data-theme="light"] .chat-status.is-good { color: #058a35; }
-:root[data-theme="light"] .chat-file-link { color: #058a35; }
+/* .chat-status.is-busy (#8f6d00) and .chat-status.is-good (#058a35) were here
+   and are gone: the "last of the contrast failures" block near the end of this
+   file declares the same two selectors at #7a5a00 and #0a6b28, same
+   specificity, later in the file, so these two never won anything. Two live
+   declarations per selector with nothing saying which one paints is the exact
+   trap the .availability-pill note above records; the hand-tuned pair is the
+   one to edit.
+
+   .chat-warn strong (#8f6500) has now left from the same spot for exactly the
+   same reason, and it was missed the first time because it is the one line
+   between the two blocks that is not a .chat-status: the .chat-warn block near
+   the end of this file re-declares it at #3d2108, same (0,3,1) specificity and
+   later, so #8f6500 has never painted a pixel. Which is as well — measured on
+   the light .chat-warn ground, rgba(251,191,36,0.16) over .lab over the page =
+   rgb(238,233,215), #8f6500 is 4.30:1 and under the floor, while the live
+   #3d2108 is 12.19:1. Deleting the dead one is a zero-pixel change in both
+   themes and stops the next reader tuning a value that cannot reach the screen.
+   The three live .chat-status colours themselves were re-measured at the same
+   time and left alone: their pill is --sheet-80 over .lab = rgb(252,253,254),
+   where #7a5a00 is 6.27:1, #0a6b28 is 6.56:1 and #a11212 is 7.91:1.
+
+   .chat-file-link left with them for a different reason — it is
+   built into #chat-log, and .chat-log is pinned to #020617 in BOTH themes, so
+   the light override was darkening ink on a near-black ground: #058a35 was
+   4.51:1 and #0a6b28 would have been 3.02:1. Without the override it is the
+   dark-theme #4ade80 again, at 11.58:1. */
 
 /* Controls that carry their own filled background keep light text: the
    generator darkened everything that looked pale, which is right on the page
@@ -3754,6 +3950,16 @@ footer a:hover {
 :root[data-theme="light"] .chat-status.is-good { color: #0a6b28; }
 :root[data-theme="light"] .chat-status.is-bad { color: #a11212; }
 :root[data-theme="light"] .chat-status.is-busy { color: #7a5a00; }
+
+/* The trace below those status lines was left behind by the same pass. Colour
+   is the only thing separating a successful ICE negotiation from a failed one
+   here, and on the .chat-inspect ground the two states read 1.52:1 and 2.41:1
+   — the good one all but gone. Same two colours as .chat-status above, so the
+   panel says success and failure in one voice: 5.82:1 and 7.02:1. The
+   timestamp column follows .lab-card-engine to #475569 (4.15:1 -> 6.61:1). */
+:root[data-theme="light"] .chat-trace-line.is-good { color: #0a6b28; }
+:root[data-theme="light"] .chat-trace-line.is-bad { color: #a11212; }
+:root[data-theme="light"] .chat-trace-t { color: #475569; }
 
 /* Pre-existing, and caught by the same audit: the back-to-top arrow was
    near-white on a light sky blue, 2.05:1. Darkening the fill fixes it in the
@@ -3863,9 +4069,19 @@ footer a:hover {
 }
 
 /* Run and Stop are filled with #0f766e and #7f1d1d in both themes; only the
-   label was re-inked, which left dark-on-dark at 3.26:1 and 1.41:1. */
+   label was re-inked, which left dark-on-dark at 3.26:1 and 1.41:1.
+
+   The runaway-program Kill button belongs in the same group. Its fill is a
+   hardcoded #dc2626 with no light counterpart, so the override it used to
+   carry further up (#212121) made this theme WORSE than the dark one — 3.33:1
+   against the 4.83:1 the base #fff already gave. Pinned here rather than just
+   deleted, because that base declaration is a plain class and the next
+   light-theme rule to reach it would outrank it again; #f8fafc is 4.62:1 on
+   that red. This is the control you press to stop a program that will not
+   stop, so it is not one to leave depending on nothing else being added. */
 :root[data-theme="light"] .lab-btn-run,
-:root[data-theme="light"] .lab-btn-stop {
+:root[data-theme="light"] .lab-btn-stop,
+:root[data-theme="light"] .lab-warn-kill {
   color: #f8fafc;
 }
 
@@ -3939,6 +4155,20 @@ footer a:hover {
    in the markup and invisible on the screen. */
 :root[data-theme="light"] .lab-netnote {
   color: #713f12;
+}
+
+/* The counter chip beside it — the running total of outbound requests the page
+   has caused, which net-tool-shell.js unhides after the first one. It is the
+   readout that note is promising, and it kept the dark-theme amber on a 12%
+   amber wash: 1.18:1 on the light toolbar, a number present in the markup and
+   absent from the screen. Same #713f12 as the note above (5.98:1 here), and
+   the wash comes up to 22% so the chip still reads as a chip rather than as
+   loose text. Border ink from .chat-warn, which solved the same amber-on-paper
+   problem. */
+:root[data-theme="light"] .lab-netcount {
+  color: #713f12;
+  background: rgba(251, 191, 36, 0.22);
+  border-color: rgba(180, 105, 20, 0.45);
 }
 
 /* The typing lab's readouts sit on a panel a shade darker than paper

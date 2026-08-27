@@ -90,6 +90,8 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="stylesheet" href="/assets/css/wish-generator.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -151,6 +153,19 @@
           costs nothing, and there is no sign-up.
         </p>
       </div>
+
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>The card is built in your browser and packed into the link itself, so there is nothing to
+            assemble until JavaScript runs.</p>
+          <p>That is also why no name ever reaches a server: the wish travels inside the URL you send,
+            not through anything of mine.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
 
       <section class="section-card" data-wish-tool>
         <div class="wish-layout">
@@ -225,8 +240,15 @@
                 <button class="btn btn-primary" type="button" data-wish-copy disabled>
                   <span data-wish-copy-label>Copy link</span>
                 </button>
-                <a class="btn" data-wish-open href="#" target="_blank" rel="noopener">Open it</a>
-                <a class="btn" data-wish-whatsapp href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
+                <!-- Shipped disabled, the same way the Copy button above is: there is
+                     nothing to open until a name has been typed. aria-disabled is in
+                     the markup rather than only added by JS so the greyed-out look is
+                     right on first paint, and tabindex="-1" keeps the pair out of the
+                     tab order until wish-generator.js has a real link to put in them. -->
+                <a class="btn" data-wish-open href="#" target="_blank" rel="noopener"
+                   aria-disabled="true" tabindex="-1">Open it</a>
+                <a class="btn" data-wish-whatsapp href="#" target="_blank" rel="noopener"
+                   aria-disabled="true" tabindex="-1">Send on WhatsApp</a>
               </div>
             </div>
           </div>

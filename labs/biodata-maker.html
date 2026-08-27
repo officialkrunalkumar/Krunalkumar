@@ -47,7 +47,7 @@
                 "Every field optional - empty rows simply do not print",
                 "Live A4 preview",
                 "Print to A4 or save as PDF from the print dialog",
-                "Autosave in the browser, no account",
+                "No account and nothing stored - the draft lives in the tab for one session",
                 "Download and load your data as a JSON file",
                 "Works offline after the first visit",
                 "No upload - runs entirely on your device"
@@ -78,7 +78,7 @@
                         "name": "Is my data uploaded anywhere?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no server behind this page, so there is nothing to upload to. That matters more here than on most tools: a biodata carries a date and time of birth, a home address, an income figure and a photograph on one sheet - exactly the set of details used for identity theft and fake matrimonial profiles. Here they stay on the device they were typed on."
+                                "text": "No. There is no server behind this page, so there is nothing to upload to. That matters more here than on most tools: a biodata carries a date and time of birth, a home address, an income figure and a photograph on one sheet - exactly the set of details used for identity theft and fake matrimonial profiles. Here they go from the form to the sheet inside your own browser, and nothing leaves it."
                         }
                 },
                 {
@@ -94,7 +94,7 @@
                         "name": "Will my data still be here tomorrow?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. The form autosaves to your browser's localStorage a moment after you stop typing, so closing the tab loses nothing. It is saved in that browser on that device only - not on any server - and the \"Clear everything\" button deletes it completely."
+                                "text": "No - and on this form that is exactly the point. A biodata carries a date and time of birth, an income figure, a home address and a photograph on one sheet, and none of it is written to this device. The draft lives in the page's memory for that one session, so closing or reloading the tab clears it, and the shared computer at the print shop keeps nothing after you walk away. The trade is that you have to keep a copy on purpose: press \"Download data\" before you leave and you get a biodata-data.json file you own, and \"Load data\" brings it back here or on any other device. \"Clear everything\" empties the form and the sheet on the spot."
                         }
                 },
                 {
@@ -170,6 +170,8 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
     <link rel="stylesheet" href="/assets/css/biodata-maker.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -229,13 +231,13 @@
           </ol>
         </nav>
         <h1>Marriage biodata maker</h1>
-        <p class="hero-text">A marriage biodata carries the most personal data a family ever puts on one page &mdash; birth details, horoscope, income, home address &mdash; and most &ldquo;free biodata maker&rdquo; sites upload every word of it before showing a watermarked preview. This one renders everything in the browser, prints to A4, and keeps the data on the device it was typed on.</p>
+        <p class="hero-text">A marriage biodata carries the most personal data a family ever puts on one page &mdash; birth details, horoscope, income, home address &mdash; and most &ldquo;free biodata maker&rdquo; sites upload every word of it before showing a watermarked preview. This one renders everything in the browser, prints to A4, and never sends a word of it anywhere.</p>
         <ul class="lab-facts">
           <li>Nothing is uploaded &mdash; no server exists</li>
           <li>No sign-up, no watermark</li>
           <li>5 templates, traditional to minimal</li>
           <li>Prints to A4 &mdash; save as PDF</li>
-          <li>Autosaves in your browser</li>
+          <li>Nothing is stored &mdash; download to keep a copy</li>
         </ul>
       </section>
 
@@ -528,8 +530,8 @@
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
-            <h3>Everything is local, including the save</h3>
-            <p>The form never submits anywhere &mdash; there is no server to submit to. What you type is laid onto the sheet by the page itself, and a moment after you stop typing the draft is saved to your browser&rsquo;s localStorage, on your device. Close the tab, come back tomorrow, and it is still there; press &ldquo;Clear everything&rdquo; and it is gone from the only place it ever existed.</p>
+            <h3>Everything is local, and nothing is left behind</h3>
+            <p>The form never submits anywhere &mdash; there is no server to submit to. What you type is laid onto the sheet by the page itself, and it stops there: nothing is written to your browser&rsquo;s storage or anywhere else on the machine. For a sheet carrying a date of birth, an income figure, a home address and a photograph, that is the right default &mdash; the biodata cannot be found later on a computer you were only borrowing. The other half of it is that <strong>closing or reloading the tab clears the draft</strong>, so keep a copy on purpose: &ldquo;Download data&rdquo; hands you the whole thing as one small .json file, and &ldquo;Load data&rdquo; brings it back. &ldquo;Clear everything&rdquo; empties the form and the sheet the moment you press it.</p>
           </article>
           <article class="info-card">
             <h3>The templates are CSS, not images</h3>
@@ -556,7 +558,7 @@
           </details>
           <details class="lab-faq">
             <summary>Is my data uploaded anywhere?</summary>
-            <div>No. There is no server behind this page, so there is nothing to upload to. That matters more here than on most tools: a biodata carries a date and time of birth, a home address, an income figure and a photograph on one sheet - exactly the set of details used for identity theft and fake matrimonial profiles. Here they stay on the device they were typed on.</div>
+            <div>No. There is no server behind this page, so there is nothing to upload to. That matters more here than on most tools: a biodata carries a date and time of birth, a home address, an income figure and a photograph on one sheet - exactly the set of details used for identity theft and fake matrimonial profiles. Here they go from the form to the sheet inside your own browser, and nothing leaves it.</div>
           </details>
           <details class="lab-faq">
             <summary>How do I get a PDF?</summary>
@@ -564,7 +566,7 @@
           </details>
           <details class="lab-faq">
             <summary>Will my data still be here tomorrow?</summary>
-            <div>Yes. The form autosaves to your browser's localStorage a moment after you stop typing, so closing the tab loses nothing. It is saved in that browser on that device only - not on any server - and the "Clear everything" button deletes it completely.</div>
+            <div>No - and on this form that is exactly the point. A biodata carries a date and time of birth, an income figure, a home address and a photograph on one sheet, and none of it is written to this device. The draft lives in the page's memory for that one session, so closing or reloading the tab clears it, and the shared computer at the print shop keeps nothing after you walk away. The trade is that you have to keep a copy on purpose: press "Download data" before you leave and you get a biodata-data.json file you own, and "Load data" brings it back here or on any other device. "Clear everything" empties the form and the sheet on the spot.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use my own photo?</summary>

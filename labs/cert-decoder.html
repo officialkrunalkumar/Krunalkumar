@@ -132,6 +132,8 @@
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
@@ -260,10 +262,10 @@
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
-            <p class="lab-pane-label">Certificate</p>
-            <label class="sr-only" for="tool-text">PEM certificate</label>
+            <p class="lab-pane-label">Certificate or signing request</p>
+            <label class="sr-only" for="tool-text">PEM certificate or signing request</label>
             <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
-                      autocorrect="off" placeholder="Paste a PEM certificate…
+                      autocorrect="off" placeholder="Paste a PEM certificate — or a signing request…
 
 -----BEGIN CERTIFICATE-----
 MIIF…

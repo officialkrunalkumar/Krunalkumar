@@ -684,10 +684,23 @@
     if (n['software'] && (n['environment'] || n['volatile environment'] || n['console'] || n['keyboard layout'])) return 'NTUSER';
     if (n['activatableclasses'] || n['localsettings']) return 'USRCLASS';
     if (n['root'] && hint.indexOf('amcache') !== -1) return 'AMCACHE';
-    if (hint.indexOf('system') !== -1) return 'SYSTEM';
-    if (hint.indexOf('software') !== -1) return 'SOFTWARE';
-    if (hint.indexOf('ntuser') !== -1) return 'NTUSER';
-    if (hint.indexOf('sam') !== -1) return 'SAM';
+
+    // Only the last path segment names the hive. The embedded name is a full
+    // path, and every hive in C:\Windows\System32\config carries one that reads
+    // "\SystemRoot\System32\Config\<NAME>" — so a substring test for "system"
+    // over the whole string matches SOFTWARE, SAM and SECURITY too. It was also
+    // the first test, which meant anything the structural rules above could not
+    // place came back SYSTEM regardless of what it actually was. Matching the
+    // leaf fixes that; the bare "system" test still goes last, because that is
+    // the name every other one would otherwise be mistaken for.
+    var leaf = hint.split('\\').pop();
+    if (leaf.indexOf('software') !== -1) return 'SOFTWARE';
+    if (leaf.indexOf('ntuser') !== -1) return 'NTUSER';
+    if (leaf.indexOf('usrclass') !== -1) return 'USRCLASS';
+    if (leaf.indexOf('security') !== -1) return 'SECURITY';
+    if (leaf.indexOf('amcache') !== -1) return 'AMCACHE';
+    if (leaf.indexOf('sam') !== -1) return 'SAM';
+    if (leaf.indexOf('system') !== -1) return 'SYSTEM';
     return 'UNKNOWN';
   }
 

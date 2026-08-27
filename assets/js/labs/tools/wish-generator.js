@@ -108,6 +108,30 @@
 
   /* ---------------------------------------------------------------------- */
 
+  /* An <a> has no disabled attribute, so a disabled one has to be assembled out
+     of three separate things or it is only half disabled. Greying it out with
+     pointer-events stops the mouse and nothing else: the link stays focusable,
+     stays announced as a link, and Enter on it still opens a blank tab. So the
+     href goes to "#", aria-disabled says so out loud, tabindex="-1" takes it
+     out of the tab order, and the click guard below catches the Enter that a
+     browser turns into a click on an anchor somebody focused another way. */
+  function setLinkReady(a, ready, href) {
+    if (!a) return;
+    a.href = ready ? href : '#';
+    a.setAttribute('aria-disabled', ready ? 'false' : 'true');
+    if (ready) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1');
+  }
+
+  function guardDisabled(a) {
+    if (!a) return;
+    a.addEventListener('click', function (ev) {
+      if (a.getAttribute('aria-disabled') === 'true') ev.preventDefault();
+    });
+  }
+
+  guardDisabled(elOpen);
+  guardDisabled(elWhatsapp);
+
   var frameTimer = null;
   function applyPreview() {
     var rel = buildUrl(false);
@@ -117,17 +141,13 @@
 
     var ready = !!rel;
     if (elCopy) elCopy.disabled = !ready;
-    if (elOpen) {
-      elOpen.href = ready ? rel : '#';
-      elOpen.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    }
+    setLinkReady(elOpen, ready, rel);
     if (elWhatsapp) {
       /* wa.me takes the whole message as one encoded blob. Built here rather
          than in the markup because the URL changes on every keystroke. */
       var msg = (state.mode === 'birthday'
         ? 'Happy Birthday! ' : 'Wishing you a very happy ') + abs;
-      elWhatsapp.href = ready ? 'https://wa.me/?text=' + encodeURIComponent(msg) : '#';
-      elWhatsapp.setAttribute('aria-disabled', ready ? 'false' : 'true');
+      setLinkReady(elWhatsapp, ready, 'https://wa.me/?text=' + encodeURIComponent(msg));
     }
 
     if (elEmpty) elEmpty.hidden = ready;
@@ -223,6 +243,13 @@
       b.type = 'button';
       b.className = 'wish-chip';
       b.title = f.b;
+      /* The name lives on the element, not in its text, for the same reason the
+         theme chips carry data-theme: the chip renders as a glyph span plus a
+         label span, so reading it back out of textContent gets "🪔Diwali" and
+         never matches. Storing the value means changing how a chip looks can
+         never break which one shows as picked. */
+      b.setAttribute('data-festival', f.n);
+      b.setAttribute('aria-pressed', String(f.n === state.festival));
 
       var g = document.createElement('span');
       g.className = 'wish-chip-glyph';
@@ -289,8 +316,8 @@
     var chips = elFestivalRow.querySelectorAll('.wish-chip');
     var current = (state.festival || '').toLowerCase();
     for (var i = 0; i < chips.length; i++) {
-      var txt = chips[i].textContent.trim().toLowerCase();
-      chips[i].setAttribute('aria-pressed', String(txt === current));
+      var val = (chips[i].getAttribute('data-festival') || '').toLowerCase();
+      chips[i].setAttribute('aria-pressed', String(!!current && val === current));
     }
   }
 

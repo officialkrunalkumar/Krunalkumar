@@ -166,8 +166,19 @@
   /* ---- charset resolution ----------------------------------------------- *
      The select's option values live in HTML this module does not own, so it
      cannot assume the exact strings. It honours an explicit data-charset
-     attribute first (the clean contract), then a broad keyword map, then treats
-     the raw value as a literal charset, and finally falls back to a-z. */
+     attribute first (the clean contract, and what every option on the page now
+     carries), then a broad keyword map for markup written without it.
+
+     There is deliberately no "if the value looks alphanumeric, use it as a
+     literal alphabet" step any more. That escape hatch is what made the
+     default option ship broken for so long: value="lowerdigit" is not in the
+     map, so it passed the looks-alphanumeric test and the brute force spent
+     its whole run enumerating the ten letters of the word "lowerdigit" while
+     the label above it promised a-z 0-9. A wrong alphabet produces no
+     error and no hit — it just never finds anything, which reads as "brute
+     force is slow" rather than "this is broken". An unrecognised value is a
+     markup bug, so say so in the console and search a-z, which is at least the
+     alphabet the readout will then honestly report. */
   function resolveCharset() {
     if (!charsetSel) return LOWER;
     var raw = charsetSel.value || '';
@@ -186,13 +197,16 @@
       'upper': UPPER, 'uppercase': UPPER,
       'loweralnum': LOWER + DIGITS, 'lower+digits': LOWER + DIGITS,
       'lower-digits': LOWER + DIGITS, 'lalnum': LOWER + DIGITS, 'lowernum': LOWER + DIGITS,
+      'lowerdigit': LOWER + DIGITS, 'lowerdigits': LOWER + DIGITS,
       'alnum': LOWER + UPPER + DIGITS, 'alphanumeric': LOWER + UPPER + DIGITS,
       'mixed': LOWER + UPPER + DIGITS, 'mixedalnum': LOWER + UPPER + DIGITS,
       'full': FULL, 'all': FULL, 'ascii': FULL, 'printable': FULL,
       'symbols': FULL, 'everything': FULL, 'complex': FULL
     };
     if (map[val]) return map[val];
-    if (raw.length >= 2 && raw.indexOf(' ') === -1 && /[a-z0-9]/i.test(raw)) return raw;
+    console.warn('crack.js: charset option "' + raw + '" is not a known keyword and carries no '
+      + 'data-charset attribute. Falling back to a-z. Give the option a data-charset '
+      + 'attribute spelling out its alphabet.');
     return LOWER;
   }
 

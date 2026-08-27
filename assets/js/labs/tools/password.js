@@ -348,8 +348,16 @@
     run: function () { analyse(document.getElementById('tool-text').value); },
     onReady: function () {
       document.getElementById('tool-generate').addEventListener('click', generate);
+      // One or two characters is not worth a verdict, but doing nothing at all
+      // left the PREVIOUS verdict standing — clear the box after typing
+      // "password123" and the pane still read "length 11 characters, effective
+      // entropy 30.0 bits" about a string that was no longer there. A stale
+      // number the visitor believes is about what they are looking at is worse
+      // than no number. analyse('') already prints exactly the "type a
+      // password" line the tool opens with, so the short case reuses it rather
+      // than spelling the same sentence out a second time.
       document.getElementById('tool-text').addEventListener('input', function (e) {
-        if (e.target.value.length > 2) analyse(e.target.value);
+        analyse(e.target.value.length > 2 ? e.target.value : '');
       });
       out.dim('Type a password above. It is analysed as you type, in this tab,');
       out.dim('and never transmitted — check the Network tab if you like.');

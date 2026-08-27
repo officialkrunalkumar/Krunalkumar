@@ -27,6 +27,7 @@
     <meta property="og:image:alt" content="An A4 biodata page with its personal data fields highlighted" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta property="article:published_time" content="2026-08-22T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-27T18:00:00+05:30" />
     <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
     <meta property="article:section" content="Security" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -45,7 +46,7 @@
         "description": "A marriage biodata compresses date and place of birth, mother's name, home address, income, and a photo with possible GPS metadata onto one shareable A4 page. What that enables, factually, and the sharing hygiene that costs nothing.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-a-marriage-biodata-leaks.jpg",
         "datePublished": "2026-08-22",
-        "dateModified": "2026-08-22",
+        "dateModified": "2026-08-27",
         "articleSection": "Security",
         "author": {
           "@type": "Person",
@@ -151,7 +152,12 @@
             to people you have never met. This is that page read the way an attacker reads it, and the sharing
             hygiene that costs nothing.
           </p>
-          <p class="post-meta">Published 22 August 2026 · 5 min read · by Krunalkumar Shah</p>
+          <!-- The closing hygiene advice was rewritten after the biodata maker stopped keeping
+               anything on the device, so the body no longer says what it said on 22 August. A
+               reader who bookmarked the old advice deserves to see that it changed; both dates
+               carry a machine-readable time element matching the JSON-LD dateModified and
+               article:modified_time exactly. -->
+          <p class="post-meta">Published <time datetime="2026-08-22">22 August 2026</time> · Updated <time datetime="2026-08-27">27 August 2026</time> · 5 min read · by Krunalkumar Shah</p>
         </section>
 
         <figure class="post-cover">
@@ -262,8 +268,11 @@
                 <a class="text-link" href="/labs/biodata-maker">marriage biodata maker</a> that runs entirely in your
                 browser: five templates from traditional to minimal, an optional photo, a live A4 preview, and the
                 print dialog as the export — nothing you type is uploaded, because there is no server to upload it to.
-                The usual caveats apply: your draft lives in that browser's localStorage, so save the PDF you print,
-                and strip the photo's metadata yourself before adding it. Making the two-version hygiene above takes
+                The usual caveats apply: nothing is written to the device either, not even to the browser's own storage,
+                so the draft is gone the moment you close or reload the tab — which is what you want on a sheet
+                carrying a birth date and a home address, but it does mean keeping the copy is your job. Press
+                "Download data" for a .json you can load back, save the PDF you print, and strip the photo's
+                metadata yourself before adding it. Making the two-version hygiene above takes
                 about three extra minutes when the tool is free and the form is already filled.
               </p>
             </div>

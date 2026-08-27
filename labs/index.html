@@ -233,7 +233,7 @@
                         "name": "Why is the first run slower than the rest?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Most languages need a runtime downloaded once — between 420 KB and 58 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all."
+                                "text": "Most languages need a runtime downloaded once — between 420 KB and 19 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all."
                         }
                 },
                 {
@@ -286,6 +286,8 @@
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
     <script defer src="/assets/js/include-partials.js"></script>
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/labs/lab-filter.js"></script>
@@ -393,7 +395,7 @@
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/c">
-            <h3 class="lab-card-name">C <span class="lab-card-size">~58 MB</span></h3>
+            <h3 class="lab-card-name">C <span class="lab-card-size">~19 MB</span></h3>
             <p class="lab-card-desc">A real clang and libc. structs, pointers, malloc and scanf all work.</p>
             <span class="lab-card-engine">1972 &middot; clang + lld on WebAssembly</span>
           </a>
@@ -403,7 +405,7 @@
             <span class="lab-card-engine">1974 &middot; SQLite on WebAssembly</span>
           </a>
           <a class="lab-card" href="/labs/cpp">
-            <h3 class="lab-card-name">C++ <span class="lab-card-size">~58 MB</span></h3>
+            <h3 class="lab-card-name">C++ <span class="lab-card-size">~19 MB</span></h3>
             <p class="lab-card-desc">Real clang with libc++ &mdash; vector, string, map, algorithm, templates.</p>
             <span class="lab-card-engine">1985 &middot; clang + libc++ on WebAssembly</span>
           </a>
@@ -521,7 +523,7 @@
           <a class="lab-card" href="/labs/hash">
             <h3 class="lab-card-name">Hash generator</h3>
             <p class="lab-card-desc">MD5 through SHA-512 and HMAC, for text or a whole file. Verify a checksum, or identify a hash you cannot place.</p>
-            <span class="lab-card-engine">A safe, sandboxed target</span>
+            <span class="lab-card-engine">WebCrypto, streamed for files</span>
           </a>
           <a class="lab-card" href="/labs/file-inspector">
             <h3 class="lab-card-name">File inspector</h3>
@@ -636,7 +638,7 @@
           <a class="lab-card" href="/labs/archive-inspector">
             <h3 class="lab-card-name">Archive inspector</h3>
             <p class="lab-card-desc">Inspect a ZIP without extracting it: zip-slip paths, zip bombs, encrypted entries and disguised executables.</p>
-            <span class="lab-card-engine">Reads ZIP/TAR/GZIP structure</span>
+            <span class="lab-card-engine">Reads ZIP structure (.docx, .jar too)</span>
           </a>
           <a class="lab-card" href="/labs/pcap-analyzer">
             <h3 class="lab-card-name">PCAP analyzer</h3>
@@ -712,8 +714,8 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/os-algorithms">
             <h3 class="lab-card-name">OS algorithms</h3>
-            <p class="lab-card-desc">Scheduling, paging, disk and deadlock &mdash; 26 algorithms you step through one time unit at a time, then score against each other on your own input.</p>
-            <span class="lab-card-engine">26 algorithms, stepped</span>
+            <p class="lab-card-desc">Scheduling, paging, disk and deadlock &mdash; 22 algorithms you step through one time unit at a time, then score against each other on your own input.</p>
+            <span class="lab-card-engine">22 algorithms, stepped</span>
           </a>
           <a class="lab-card" href="/labs/cryptography">
             <h3 class="lab-card-name">Cryptography</h3>
@@ -752,8 +754,8 @@
           </a>
           <a class="lab-card" href="/labs/algorithm-visualizer">
             <h3 class="lab-card-name">Algorithm visualizer</h3>
-            <p class="lab-card-desc">Sorting and pathfinding, animated and steppable. See why O(n log n) beats O(n&sup2;) instead of being told.</p>
-            <span class="lab-card-engine">13 sorts, 6 pathfinders</span>
+            <p class="lab-card-desc">Sorting, searching and pathfinding, animated and steppable. Race any two on identical data and see why O(n log n) beats O(n&sup2;) instead of being told.</p>
+            <span class="lab-card-engine">13 sorts, 2 searches, 6 pathfinders</span>
           </a>
           <a class="lab-card" href="/labs/cpu-simulator">
             <h3 class="lab-card-name">CPU simulator</h3>
@@ -767,8 +769,8 @@
           </a>
           <a class="lab-card" href="/labs/fractal-explorer">
             <h3 class="lab-card-name">Fractal explorer</h3>
-            <p class="lab-card-desc">Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant.</p>
-            <span class="lab-card-engine">WebGL, arbitrary zoom</span>
+            <p class="lab-card-desc">Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on your GPU. Hover to pick a Julia constant.</p>
+            <span class="lab-card-engine">WebGL, float32-deep zoom</span>
           </a>
         </div>
       </section>
@@ -973,7 +975,7 @@ What is breaking / feedback:
           </details>
           <details class="lab-faq">
             <summary>Why is the first run slower than the rest?</summary>
-            <div>Most languages need a runtime downloaded once — between 420 KB and 58 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all.</div>
+            <div>Most languages need a runtime downloaded once — between 420 KB and 19 MB depending on the language. Your browser caches it, so every run after that starts immediately, and the playground then works with no internet connection at all.</div>
           </details>
           <details class="lab-faq">
             <summary>What happens if I write an infinite loop?</summary>

@@ -64,6 +64,15 @@
               ['burningship', 'Burning Ship'], ['tricorn', 'Tricorn']];
   var SET_CODE = { mandelbrot: 0, julia: 1, burningship: 2, tricorn: 3 };
 
+  /* The display name comes out of SETS — the one table that already pairs the
+     internal key with the label the dropdown shows. The readout used to name
+     the set with a two-way ternary over this four-valued key, so Burning Ship
+     and Tricorn both announced themselves as "Mandelbrot" while the line two
+     rows below correctly called them something else. Reading the name from the
+     table means a fifth set cannot disagree with its own label. */
+  var SET_NAME = {};
+  for (var si = 0; si < SETS.length; si++) SET_NAME[SETS[si][0]] = SETS[si][1];
+
   // Reference framing per set. Zoom level is measured against the set's own
   // default half-height, so "x1" always means "the whole set in view".
   var DEFAULTS = {
@@ -287,7 +296,7 @@
     // what a float64 could ever hold), so the readout never claims false depth.
     var dec = Math.min(16, Math.max(4, Math.round(log10(z)) + 4));
 
-    elSet.textContent = (set === 'julia' ? 'Julia' : 'Mandelbrot') + '   ·   ' + maxIter + ' iterations   ·   ' + PALETTES[paletteIdx];
+    elSet.textContent = SET_NAME[set] + '   ·   ' + maxIter + ' iterations   ·   ' + PALETTES[paletteIdx];
     elCenter.textContent = 'center   ' + fmtComplex(center.x, center.y, dec);
     elZoom.textContent = 'zoom   ×' + fmtZoom(z);
 
@@ -298,7 +307,7 @@
       elC.textContent = 'julia c   ' + fmtComplex(juliaC.x, juliaC.y, 6) + '   (hover the Mandelbrot, then switch, to change it)';
       elC.style.color = '#7dd3fc';
     } else {
-      elC.textContent = (set === 'burningship' ? 'Burning Ship' : 'Tricorn') +
+      elC.textContent = SET_NAME[set] +
                         '   ·   a different iteration rule, same idea — scroll to zoom, drag to pan';
       elC.style.color = '#94a3b8';
     }
