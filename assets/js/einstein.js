@@ -129,6 +129,14 @@
     });
   }
 
+  /* On a phone, a double tap anywhere pulls up another quote — the same
+     thing the button and the portrait do. There is no keyboard there and the
+     button is easy to miss on a small screen. */
+  if (window.TapCycle) {
+    window.TapCycle.on(function () { show(); },
+      { key: 'einstein', hint: 'Double-tap anywhere for another quote' });
+  }
+
   /* Blink. Not on a timer alone — a perfectly regular blink is unsettling in a
      way people notice without being able to say why, so each one schedules the
      next at its own interval. */

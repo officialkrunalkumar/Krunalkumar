@@ -38,6 +38,100 @@ const PORT = Number(process.env.OG_PORT) || 4399;
 // Motifs. Drawn to the right of the text, inside roughly x 690-1130, y 130-480.
 // ---------------------------------------------------------------------------
 const MOTIFS = {
+  /* ---- The arcade ----------------------------------------------------
+     Seven motifs rather than sixty-seven. A bespoke drawing per game would
+     be the nicer thing and is not the sustainable thing: the next game
+     added would ship with a blank right-hand side and nobody would notice
+     until it was posted somewhere. One per CATEGORY means a new game
+     inherits a correct card the moment it joins the manifest, and the card
+     still says something true about what kind of game it is — an arcade
+     card does not look like a quiz card.
+
+     Drawn to the same box as the motifs above, roughly x 690-1130,
+     y 130-480. */
+  gameArcade: `
+  <g fill="#7dd3fc" opacity="0.9">
+    <rect x="716" y="180" width="46" height="46" rx="8"/>
+    <rect x="778" y="180" width="46" height="46" rx="8" opacity="0.75"/>
+    <rect x="840" y="180" width="46" height="46" rx="8" opacity="0.5"/>
+    <rect x="716" y="242" width="46" height="46" rx="8" opacity="0.75"/>
+    <rect x="778" y="242" width="46" height="46" rx="8" opacity="0.5"/>
+  </g>
+  <g fill="none" stroke="#38bdf8" stroke-width="6" opacity="0.9">
+    <rect x="716" y="330" width="300" height="130" rx="18"/>
+    <path d="M756 372 v46 M733 395 h46" stroke-linecap="round"/>
+  </g>
+  <g fill="#7dd3fc"><circle cx="946" cy="382" r="16"/><circle cx="986" cy="412" r="16" opacity="0.7"/></g>`,
+  gamePuzzle: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="5" opacity="0.85">
+    <rect x="716" y="170" width="132" height="132" rx="12"/>
+    <rect x="868" y="170" width="132" height="132" rx="12" opacity="0.7"/>
+    <rect x="716" y="322" width="132" height="132" rx="12" opacity="0.7"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.9">
+    <rect x="884" y="338" width="100" height="100" rx="10"/>
+    <text x="900" y="404" font-family="'Segoe UI',sans-serif" font-size="52" font-weight="800" fill="#0b1220">?</text>
+  </g>`,
+  gameTerminal: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="5" opacity="0.85">
+    <rect x="716" y="170" width="330" height="290" rx="14"/>
+  </g>
+  <g font-family="'Consolas','Segoe UI',monospace" font-size="24" fill="#38bdf8">
+    <text x="748" y="234">$ play</text>
+    <text x="748" y="278" opacity="0.75">&gt; loading…</text>
+    <text x="748" y="322" opacity="0.55">&gt; ready</text>
+  </g>
+  <rect x="748" y="348" width="20" height="30" fill="#7dd3fc" opacity="0.95"/>`,
+  gameBoard: `
+  <g opacity="0.9">
+    <rect x="716" y="170" width="290" height="290" rx="12" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+    <g fill="#38bdf8" opacity="0.55">
+      <rect x="716" y="170" width="72" height="72"/><rect x="861" y="170" width="72" height="72"/>
+      <rect x="788" y="242" width="73" height="73"/><rect x="933" y="242" width="73" height="73"/>
+      <rect x="716" y="315" width="72" height="72"/><rect x="861" y="315" width="72" height="72"/>
+      <rect x="788" y="388" width="73" height="72"/><rect x="933" y="388" width="73" height="72"/>
+    </g>
+  </g>
+  <circle cx="1046" cy="420" r="26" fill="#7dd3fc" opacity="0.9"/>`,
+  gameCs: `
+  <g font-family="'Consolas','Segoe UI',monospace" font-weight="800" fill="#7dd3fc" opacity="0.9">
+    <text x="716" y="270" font-size="120">{</text>
+    <text x="978" y="270" font-size="120">}</text>
+  </g>
+  <g fill="#38bdf8" opacity="0.85">
+    <rect x="772" y="196" width="190" height="12" rx="6"/>
+    <rect x="772" y="228" width="150" height="12" rx="6" opacity="0.75"/>
+    <rect x="772" y="260" width="176" height="12" rx="6" opacity="0.6"/>
+  </g>
+  <g font-family="'Consolas','Segoe UI',monospace" font-size="26" fill="#7dd3fc" opacity="0.7">
+    <text x="716" y="380">01001000</text>
+    <text x="716" y="420" opacity="0.6">01101001</text>
+  </g>`,
+  gameToy: `
+  <g fill="#7dd3fc">
+    <circle cx="760" cy="220" r="18" opacity="0.9"/><circle cx="846" cy="188" r="13" opacity="0.7"/>
+    <circle cx="930" cy="242" r="22" opacity="0.85"/><circle cx="1012" cy="196" r="11" opacity="0.55"/>
+    <circle cx="792" cy="316" r="14" opacity="0.7"/><circle cx="884" cy="352" r="19" opacity="0.8"/>
+    <circle cx="982" cy="316" r="12" opacity="0.6"/><circle cx="1046" cy="382" r="16" opacity="0.7"/>
+    <circle cx="742" cy="402" r="10" opacity="0.5"/><circle cx="916" cy="438" r="12" opacity="0.55"/>
+  </g>
+  <g stroke="#38bdf8" stroke-width="3" opacity="0.4" fill="none">
+    <path d="M760 220 L846 188 L930 242 L1012 196"/>
+    <path d="M792 316 L884 352 L982 316 L1046 382"/>
+  </g>`,
+  gameFun: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="6" opacity="0.9">
+    <circle cx="866" cy="300" r="130"/>
+    <path d="M806 350 q60 56 120 0" stroke-linecap="round"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.9">
+    <circle cx="822" cy="262" r="15"/><circle cx="910" cy="262" r="15"/>
+  </g>
+  <g fill="#7dd3fc" opacity="0.6">
+    <rect x="1024" y="196" width="16" height="16" rx="3" transform="rotate(20 1032 204)"/>
+    <rect x="1058" y="256" width="14" height="14" rx="3" transform="rotate(-15 1065 263)"/>
+    <rect x="1016" y="326" width="18" height="18" rx="4" transform="rotate(35 1025 335)"/>
+  </g>`,
   glossary: `
   <g font-family="'Segoe UI',sans-serif" font-weight="800" fill="#7dd3fc" opacity="0.9">
     <text x="716" y="230" font-size="86">A</text><text x="806" y="230" font-size="62" opacity="0.7">B</text>
@@ -111,6 +205,95 @@ const MOTIFS = {
 // ---------------------------------------------------------------------------
 // The cards. `dest` is relative to the repo root and is what gets committed.
 // ---------------------------------------------------------------------------
+/* --------------------------------------------------------------------------
+   The game cards, derived rather than typed.
+
+   66 games and a hub is far too many entries to keep by hand, and a card list
+   maintained separately from the manifest is a list that goes stale silently:
+   every game page already ships <meta property="og:image"> pointing at
+   og-game-<slug>.jpg, so a game missing from here does not degrade to the
+   generic card — it points at a 404, and the link posts with no image at all.
+   That is exactly what had happened: all 66 were referenced and none existed.
+
+   Reading scripts/games-data.js makes the two impossible to disagree. A new
+   game gets a correct card by existing.
+   -------------------------------------------------------------------------- */
+const CATEGORY_MOTIF = {
+  arcade: 'gameArcade',
+  puzzle: 'gamePuzzle',
+  terminal: 'gameTerminal',
+  board: 'gameBoard',
+  cs: 'gameCs',
+  toy: 'gameToy',
+  fun: 'gameFun',
+};
+
+const CATEGORY_EYEBROW = {
+  arcade: 'Arcade',
+  puzzle: 'Puzzle',
+  terminal: 'Terminal',
+  board: 'Board game',
+  cs: 'For programmers',
+  toy: 'Toy',
+  fun: 'Just for fun',
+};
+
+/* Titles are set at 56px in a 1200px card with the motif taking the right
+   half, so a line longer than this overruns the artwork. Broken on spaces,
+   never mid-word. */
+function wrapTitle(title, max) {
+  const words = String(title).split(/\s+/);
+  const out = [];
+  let line = '';
+  words.forEach((w) => {
+    const next = line ? line + ' ' + w : w;
+    if (next.length > max && line) { out.push(line); line = w; }
+    else { line = next; }
+  });
+  if (line) out.push(line);
+  return out.slice(0, 2);          // two lines is all the card has room for
+}
+
+function gameCards() {
+  let GAMES = [];
+  try {
+    GAMES = require(path.join(ROOT, 'scripts/games-data.js')).GAMES || [];
+  } catch (err) {
+    return [];                     // no manifest, no game cards; the six above still work
+  }
+
+  const cards = GAMES.map((g) => ({
+    id: 'game-' + g.slug,
+    /* `cat`, not `category`. Guessing the latter silently handed every one
+       of the sixty-six the arcade motif, because an undefined key falls
+       through the lookup to the default and nothing complains. */
+    motif: CATEGORY_MOTIF[g.cat] || 'gameArcade',
+    dest: 'assets/images/og-game-' + g.slug + '.jpg',
+    eyebrow: CATEGORY_EYEBROW[g.cat] || 'Game',
+    /* `name` is "Snake". `title` is the whole page title, ending in
+       "| Krunalkumar Shah", which is right for a <title> and absurd set at
+       56px across a share card. */
+    lines: wrapTitle(g.name || g.slug, 22),
+    /* The card carries the tagline, not the meta description: the
+       description is written for search results and runs to two sentences,
+       which at 25px is a wall. */
+    sub: String(g.short || 'Free in your browser, no ads, no sign-up')
+      .replace(/\s+/g, ' ')
+      .slice(0, 76),
+  }));
+
+  cards.push({
+    id: 'games-hub',
+    motif: 'gameArcade',
+    dest: 'assets/images/og-games.jpg',
+    eyebrow: 'Games',
+    lines: ['Sixty-six games,', 'nothing to install'],
+    sub: 'No ads, no sign-up, and they keep working offline',
+  });
+
+  return cards;
+}
+
 const CARDS = [
   { id: 'glossary', dest: 'assets/images/og-glossary.jpg', eyebrow: 'Glossary',
     lines: ['Security, systems', 'and code terms'], sub: 'Every word, linked to the lab that shows it' },
@@ -124,10 +307,31 @@ const CARDS = [
     lines: ['Refund policy'], sub: 'The mentorship guarantee, in writing' },
   { id: 'verify',   dest: 'assets/images/og-verify.jpg',   eyebrow: 'Verify',
     lines: ['Certificate', 'verification'], sub: 'Check any certificate ID issued here' },
-];
+
+  /* Every game and the arcade hub, derived from the manifest by gameCards()
+     below rather than listed by hand. A function declaration is hoisted, so
+     it is callable from this initialiser. */
+].concat(gameCards());
+
+
+/* HTML entities decoded BEFORE escaping. The manifest is written for HTML
+   and uses &mdash;, &middot; and friends; an SVG is XML, which defines only
+   amp, lt, gt, quot and apos, so anything else makes the document
+   unparseable. Chromium then fails the image load silently and the card is
+   simply skipped — which is how four games came out with no card at all
+   while the run reported success. */
+const ENTITIES = {
+  mdash: '—', ndash: '–', middot: '·', hellip: '…',
+  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“',
+  nbsp: ' ', times: '×', amp: '&', lt: '<', gt: '>', quot: '"',
+};
+const deEntity = (s) =>
+  String(s)
+    .replace(/&#(d+);/g, (m, d) => String.fromCharCode(Number(d)))
+    .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in ENTITIES ? ENTITIES[k.toLowerCase()] : m));
 
 const esc = (s) =>
-  String(s).replace(/&(?![a-z]+;|#\d+;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  deEntity(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function svg(card) {
   const lines = card.lines;
@@ -146,7 +350,7 @@ function svg(card) {
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>${MOTIFS[card.id] || ''}
+  <rect width="1200" height="630" fill="url(#glow)"/>${MOTIFS[card.motif || card.id] || ''}
   <g font-family="'Segoe UI', Tahoma, sans-serif">
     <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">${esc(card.eyebrow.toUpperCase())}</text>
 ${lines.map((l, i) => `    <text x="80" y="${280 + i * 66}" fill="#f8fafc" font-size="56" font-weight="800">${esc(l)}</text>`).join('\n')}

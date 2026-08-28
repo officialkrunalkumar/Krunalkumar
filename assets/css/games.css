@@ -1,0 +1,2354 @@
+/* ==========================================================================
+   games.css — the /games arcade
+   --------------------------------------------------------------------------
+   Sits on top of main.css, which owns the page chrome (header, footer,
+   section cards, buttons). This file styles two things and nothing else:
+   the hub grid, and the frame a game runs inside.
+
+   Why this is not just labs.css again
+   ----------------------------------
+   A lab is a tool: a toolbar, an editor, an output pane, and the answer is
+   text you read. A game is a fixed-aspect picture you look at and a set of
+   controls you hold down. Three differences fall out of that, and they are
+   the whole reason for a separate file:
+
+     1. The stage is aspect-locked and centred, never stretched. A Tetris
+        well that reflows with the viewport is a different game at every
+        width. `aspect-ratio` on the stage plus `object-fit`-style letter-
+        boxing keeps the playfield honest; the canvas backing store is sized
+        in JS (see game-shell.js) so it stays crisp on high-DPI screens.
+
+     2. Games need on-screen controls. Roughly half this site's traffic is on
+        a phone, and a keyboard-only Snake is a broken page, not a hard one.
+        `.game-pad` is real markup on every page, revealed by a
+        `(pointer: coarse)` query rather than by user-agent sniffing, so a
+        touchscreen laptop gets it too and a mouse user never sees it.
+
+     3. The cards carry art. Labs cards are text because tools are text, and
+        that works. Twenty text cards in an arcade read as a spreadsheet, so
+        every game card gets a small canvas the hub paints from the game's
+        own palette — see hub.js. The card still renders correctly if that
+        canvas never paints (no JS, or a failed context): the tile falls back
+        to a monospace glyph, which is why the glyph is in the markup rather
+        than drawn.
+
+   Contents:
+     1. Hub: grid, cards, thumbnails, category tint
+     2. Game shell & HUD
+     3. Stage & canvas
+     4. Overlays (start, pause, game over)
+     5. Touch pad & keyboard legend
+     6. Scoreboard, badges and small parts
+     7. Responsive, reduced motion, print
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Hub: grid, cards, thumbnails
+   --------------------------------------------------------------------------
+   The grid is deliberately a slightly wider minmax than .lab-grid's 15rem:
+   a card here carries a 16:9 thumbnail above the text, and at 15rem that
+   image is 240x135 — small enough that the pixel art in it stops reading.
+   ========================================================================== */
+
+/* ==========================================================================
+   [hidden] must actually hide.
+   ==========================================================================
+   The HTML `hidden` attribute is only a UA-stylesheet `display: none`, which
+   means ANY author rule that sets `display` beats it — no specificity contest
+   required, an author declaration simply outranks the UA one. Every component
+   in this file that sets a display value therefore silently un-hid itself the
+   moment JavaScript set `hidden` on it, and three separate bugs shipped from
+   that one cause:
+
+     .game-card       display:flex        the hub filter hid nothing; typing
+                                          "snake" said "1 game of 30" while
+                                          all 30 cards stayed on screen
+     #game-again      .btn display:block  every game showed BOTH "Play" and
+                                          "Play again" side by side, before a
+                                          single game had been played
+     .game-overlay-best  inline-block     a green "NEW BEST" pill sat on the
+                                          start overlay of a game nobody had
+                                          ever played, and never left
+
+   Fixing them one at a time invites the fourth. This is the base rule that
+   should have been here from the start; `!important` is the correct tool
+   precisely because `hidden` is not a style choice but a statement that the
+   element is not part of the page right now, and nothing in a component
+   stylesheet should be able to argue with it.
+
+   The one legitimate exception is an element that must stay in the layout
+   while invisible, and that is what `visibility` and `aria-hidden` are for —
+   neither of which this rule touches.
+   ========================================================================== */
+[hidden] { display: none !important; }
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.1rem;
+  margin: 1.6rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0;
+  overflow: hidden;
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgb(var(--accent-rgb) / 0.5);
+  background: var(--raise-85);
+}
+
+/* The thumbnail well. A fixed 16:9 box so the grid rows line up whether or
+   not the canvas inside has painted yet — without this the cards jump as
+   each thumbnail resolves, which on a 26-card hub is a visible cascade. */
+.game-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgb(var(--deep-rgb) / 0.85);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+  overflow: hidden;
+}
+
+.game-thumb canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Pixel art, scaled up. Smoothing turns a 64px sprite into porridge. */
+  image-rendering: pixelated;
+}
+
+/* The fallback under the canvas: a big monospace glyph on the game's own
+   tint. Visible when JS is off, when the canvas context fails, and for the
+   split second before the thumbnail paints — which is why it is positioned
+   behind rather than swapped in, so there is never an empty frame. */
+.game-thumb-glyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: rgb(var(--accent-rgb) / 0.55);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgb(var(--accent-rgb) / 0.16), transparent 70%),
+    rgb(var(--deep-rgb) / 0.9);
+  user-select: none;
+}
+
+.game-thumb canvas + .game-thumb-glyph { display: none; }
+
+.game-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.95rem 1.1rem 1.1rem;
+}
+
+/* An <h3> for the same reason .lab-card-name is: a screen reader user skims
+   the arcade by heading instead of tabbing twenty links that each read a
+   twenty-word paragraph. Margin and font reset because main.css gives every
+   heading `margin: 0 0 1rem` and .game-card-body is a flex column, where
+   margins do not collapse. */
+.game-card-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: inherit;
+  color: var(--ink);
+}
+
+.game-card-desc {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.game-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  color: var(--ink-4);
+}
+
+/* The visitor's own best, written in by hub.js from localStorage. Hidden
+   until there is one — an empty "Best: —" on every card is noise. */
+.game-card-best {
+  margin-left: auto;
+  color: var(--accent-1);
+  white-space: nowrap;
+}
+
+.game-card-best:empty { display: none; }
+
+/* Category tint. Four families, each a different hue on the thumbnail glow
+   and the card's top edge, so the hub is skimmable by colour before it is
+   readable by text. Values are fixed hues rather than tokens because they
+   must stay distinguishable from each other in BOTH themes, and the accent
+   tokens flip. Contrast is carried by the text on --sheet-80, never by
+   these — they are decoration on a border and a glow. */
+.game-card[data-cat='arcade']   { --game-tint: 129 199 132; }
+.game-card[data-cat='puzzle']   { --game-tint: 125 211 252; }
+.game-card[data-cat='cs']       { --game-tint: 244 162 97; }
+.game-card[data-cat='terminal'] { --game-tint: 134 239 172; }
+.game-card[data-cat='board']    { --game-tint: 250 204 21; }
+.game-card[data-cat='fun']      { --game-tint: 244 114 182; }
+.game-card[data-cat='toy']      { --game-tint: 196 149 248; }
+
+.game-card[data-cat] .game-thumb-glyph {
+  color: rgb(var(--game-tint) / 0.7);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgb(var(--game-tint) / 0.18), transparent 70%),
+    rgb(var(--deep-rgb) / 0.9);
+}
+
+.game-card[data-cat]::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgb(var(--game-tint) / 0.9), rgb(var(--game-tint) / 0.15));
+  z-index: 1;
+}
+
+.game-card[data-cat]:hover,
+.game-card[data-cat]:focus-visible {
+  border-color: rgb(var(--game-tint) / 0.55);
+}
+
+/* A small pill on the card corner for the handful of games that need a word
+   of warning or a boast — "2 players", "no server", "daily". */
+.game-tag {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  padding: 0.15rem 0.5rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgb(var(--deep-rgb) / 0.85);
+  border: 1px solid rgb(var(--game-tint, var(--accent-rgb)) / 0.5);
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   2. Game shell & HUD
+   --------------------------------------------------------------------------
+   Mirrors .lab deliberately — same border, radius and shadow — so a game and
+   a lab read as the same machine. What differs is inside.
+   ========================================================================== */
+
+.game {
+  position: relative;
+  margin: 2rem 0 2.5rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 14px;
+  background: rgb(var(--well-rgb) / 0.82);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+  overflow: hidden;
+}
+
+/* THE BAR: two rows, numbers above controls.
+   See the note in scripts/games.js. Stats and controls are different kinds
+   of thing and a single wrapping row let a difficulty dropdown shove the
+   score onto a second line mid-game. */
+.game-bar {
+  background: rgb(var(--deep-rgb) / 0.78);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+/* Numbers first. Dividers rather than gaps alone, so five stats still read
+   as five separate readings at a glance. */
+.game-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0 1px;
+  padding: 0.55rem 0.9rem 0.5rem;
+}
+
+.game-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 3.9rem;
+  padding: 0.1rem 0.95rem 0.1rem 0;
+  margin-right: 0.95rem;
+  border-right: 1px solid rgb(var(--line-rgb) / 0.16);
+}
+
+.game-stat:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+
+/* Controls second, on their own line, free to wrap without moving a number. */
+.game-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem 0.7rem;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.1);
+}
+
+.game-stat-label {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+.game-stat-value {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+  /* Tabular figures so a ticking score does not wobble its own width. */
+  font-variant-numeric: tabular-nums;
+}
+
+.game-stat-value.is-accent { color: var(--accent-1); }
+
+.game-toolbar .spacer { flex: 1 1 auto; }
+
+/* Buttons reuse .lab-btn's shape from labs.css? No — games.css must stand
+   alone, because a game page does not load labs.css. Same measurements on
+   purpose, so the two sections match. */
+.game-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.42rem 0.85rem;
+  color: var(--ink);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.game-btn:hover:not(:disabled) {
+  background: var(--raise-85);
+  border-color: rgb(var(--accent-rgb) / 0.55);
+}
+
+.game-btn:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* A disabled control here usually means it is not your turn rather than
+   that something is broken, so it stays legible instead of fading almost
+   out of existence. */
+.game-btn:disabled {
+  opacity: 1;
+  color: var(--ink-4);
+  background: rgb(var(--well-rgb) / 0.6);
+  border-color: rgb(var(--line-rgb) / 0.22);
+  cursor: not-allowed;
+}
+
+.game-btn-primary { background: #0f766e; border-color: #14b8a6; }
+.game-btn-primary:hover:not(:disabled) { background: #115e59; }
+
+.game-btn-icon {
+  padding: 0.42rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  justify-content: center;
+}
+
+.game-btn-icon[aria-pressed='true'] {
+  background: var(--raise-85);
+  border-color: rgb(var(--accent-rgb) / 0.6);
+}
+
+/* ---- the sound toggle ----
+   aria-pressed alone is invisible to someone looking at the screen: the
+   button read identically whether sound was on or off, so the only way to
+   find out was to play and listen. Two icons, swapped by state, the same
+   way the header's theme toggle swaps a sun for a moon — struck-through
+   and dimmed when off, a clean note when on. The state is carried by
+   aria-pressed for assistive tech and by the glyph for everyone else, and
+   the title says which way clicking will take you. */
+.game-sound svg { width: 1.1rem; height: 1.1rem; display: block; }
+.game-sound .game-sound-on { display: none; }
+.game-sound .game-sound-off { display: block; color: var(--ink-4); }
+.game-sound[aria-pressed='true'] .game-sound-on { display: block; color: var(--accent-1); }
+.game-sound[aria-pressed='true'] .game-sound-off { display: none; }
+
+.game-select {
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 0.38rem 1.9rem 0.38rem 0.65rem;
+  color: var(--ink);
+  background-color: var(--surf-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%237dd3fc' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0.7rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.game-select:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+/* A labelled slider, for the toys that expose their own constants (boids'
+   three rule weights). The label sits inline rather than above so a row of
+   three sliders stays one line high on a laptop. */
+.game-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.game-range input[type='range'] {
+  width: 6.5rem;
+  accent-color: var(--accent-2);
+  cursor: pointer;
+}
+
+.game-range input[type='range']:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+
+@media (max-width: 640px) {
+  .game-range input[type='range'] { width: 4.5rem; }
+}
+
+/* ==========================================================================
+   3. Stage & canvas
+   --------------------------------------------------------------------------
+   The stage centres a fixed-aspect canvas on a dark ground. It does NOT
+   stretch: `aspect-ratio` on .game-canvas plus max-width/max-height keeps
+   the playfield's proportions whatever the container does, which is the
+   difference between "the window is bigger" and "the game is different".
+   ========================================================================== */
+
+.game-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  /* Same phosphor ground as terminal.html and the lab terminals: this is a
+     screen, and a screen does not follow the page when the light theme is
+     switched on. Hard-coded for exactly the reason labs.css states. */
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(56, 189, 248, 0.07), transparent 70%),
+    #020617;
+  /* A soft inner vignette. Two lines, and the playfield stops looking like
+     a black rectangle pasted into the page and starts looking like a screen
+     set into a cabinet. */
+  box-shadow: inset 0 0 60px rgba(2, 6, 23, 0.9), inset 0 1px 0 rgba(148, 163, 184, 0.06);
+}
+
+/* A CANVAS STAGE HAS A HEIGHT OF ITS OWN, AND THAT IS THE POINT.
+   game-shell.js measures this box and fits the canvas inside it. So the
+   height here must NOT come from the canvas, or the two size each other in
+   a loop and the game never learns how much room it actually has. A
+   viewport-relative height is the honest input: it depends on the window
+   and on nothing the script writes. */
+.game-stage--canvas {
+  height: min(68vh, 34rem);
+  min-height: 15rem;
+}
+
+/* A board stage is the opposite: its content is DOM with a real height —
+   a grid of tiles, a paragraph of text — so it grows to fit rather than
+   being fitted into. */
+.game-stage--board {
+  padding: 1.25rem;
+  min-height: 12rem;
+}
+
+.game-canvas {
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 6px 26px rgba(2, 6, 23, 0.55);
+  background: #020617;
+  /* No width, height, max-height or aspect-ratio here on purpose. The
+     shell writes the pixel size directly — see the note on fit() in
+     game-shell.js for why CSS must stay out of it. */
+
+  /* A game canvas is a picture, not a document: never let a drag on it
+     select surrounding text or trigger the iOS callout. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+/* Pixel games opt in. Vector games (Asteroids, boids) must not. */
+.game-canvas.is-pixel { image-rendering: pixelated; }
+
+/* The canvas is focusable so keyboard input reaches the game without the
+   page scrolling first. That means it gets a focus ring, and the ring has
+   to be visible against #020617. */
+.game-canvas:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* Games that are a DOM board rather than a canvas — Minesweeper, 2048,
+   Sudoku, Wordle — render into this instead. Same stage, same centring. */
+.game-board {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* ==========================================================================
+   3b. Board games
+   --------------------------------------------------------------------------
+   Four games render DOM rather than a canvas, because their content is
+   genuinely text: numbered tiles, a grid of buttons, a paragraph being
+   typed, a form. Canvas would cost them selectable text, real focus rings,
+   and legible numbers at any zoom, and buy nothing back.
+   ========================================================================== */
+
+/* ---- 2048 ---- */
+.board-2048 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  background: rgba(148, 163, 184, 0.12);
+  border-radius: 10px;
+}
+
+.tile-2048 {
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-weight: 700;
+  /* Scales with the tile, so 2 and 65536 both fit their box. */
+  font-size: clamp(0.85rem, 3.6vw, 1.6rem);
+  color: #f8fafc;
+  background: rgba(148, 163, 184, 0.1);
+  transition: background 0.1s ease;
+}
+
+/* The classic ramp, darkened to sit on this site's ground rather than the
+   original's cream. The two smallest keep light text on a dark tile; from
+   8 upward the tile is bright enough to need dark text. */
+.tile-2048[data-v='0']    { background: rgba(148, 163, 184, 0.08); }
+.tile-2048[data-v='2']    { background: #33415580; }
+.tile-2048[data-v='4']    { background: #475569a0; }
+.tile-2048[data-v='8']    { background: #f59e0b; color: #1c1917; }
+.tile-2048[data-v='16']   { background: #f97316; color: #1c1917; }
+.tile-2048[data-v='32']   { background: #ef4444; color: #fff; }
+.tile-2048[data-v='64']   { background: #dc2626; color: #fff; }
+.tile-2048[data-v='128']  { background: #14b8a6; color: #042f2e; font-size: clamp(0.75rem, 3.1vw, 1.4rem); }
+.tile-2048[data-v='256']  { background: #0ea5e9; color: #042f2e; font-size: clamp(0.75rem, 3.1vw, 1.4rem); }
+.tile-2048[data-v='512']  { background: #6366f1; color: #fff; font-size: clamp(0.75rem, 3.1vw, 1.4rem); }
+.tile-2048[data-v='1024'] { background: #a855f7; color: #fff; font-size: clamp(0.65rem, 2.7vw, 1.2rem); }
+.tile-2048[data-v='2048'] { background: #facc15; color: #1c1917; font-size: clamp(0.65rem, 2.7vw, 1.2rem); }
+.tile-2048[data-v='4096'] { background: #f8fafc; color: #0f172a; font-size: clamp(0.65rem, 2.7vw, 1.2rem); }
+
+.board-note {
+  margin: 0.75rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  color: #86efac;
+  text-align: center;
+  min-height: 1.2em;
+}
+
+/* ---- Minesweeper ---- */
+.board-mines {
+  gap: 2px;
+  /* Expert is 30 columns; a fixed cell size would need a 900px viewport, so
+     the cells shrink with the board and the aspect is held by the grid. */
+  width: min(100%, 34rem);
+}
+
+.board-mines[data-size='expert'] { width: min(100%, 44rem); }
+
+.cell-mine {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: clamp(0.5rem, 1.9vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #e2e8f0;
+  background: #334155;
+  border: 1px solid #1e293b;
+  border-top-color: #475569;
+  border-left-color: #475569;
+  border-radius: 2px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.cell-mine:hover { background: #3f4d63; }
+.cell-mine.is-open { background: #16233b; border-color: #0f172a; cursor: default; }
+.cell-mine.is-flag { color: #f87171; }
+.cell-mine.is-mine { background: #7f1d1d; color: #fecaca; }
+.cell-mine:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
+
+/* ---- Typing trainer ---- */
+.board-typing {
+  display: block;
+  width: 100%;
+  max-width: 46rem;
+}
+
+/* The real input that captures keystrokes and raises the phone keyboard.
+   Moved off-screen rather than display:none — a hidden input cannot be
+   focused, and an unfocusable input catches nothing. */
+.typing-catch {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.typing-text {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: clamp(0.9rem, 2.4vw, 1.15rem);
+  line-height: 2;
+  color: #64748b;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+}
+
+.typing-text .ch { border-radius: 2px; }
+.typing-text .is-ok { color: #86efac; }
+.typing-text .is-bad { color: #fca5a5; background: rgba(248, 113, 113, 0.18); }
+.typing-text .is-at {
+  background: rgba(125, 211, 252, 0.28);
+  box-shadow: inset 2px 0 0 #7dd3fc;
+}
+
+.typing-hint {
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.typing-results { margin-top: 1.4rem; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 1.1rem; }
+.typing-results h3 { margin: 0 0 0.5rem; font-size: 1rem; color: #f8fafc; }
+.typing-summary { margin: 0 0 0.9rem; font-size: 0.88rem; color: #cbd5e1; }
+.typing-note { margin: 0.8rem 0 0; font-size: 0.82rem; color: #94a3b8; }
+
+.typing-keys { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+.typing-keys li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(148, 163, 184, 0.12);
+  border-radius: 7px;
+}
+.typing-keys kbd {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  color: #fca5a5;
+}
+.typing-keys span { font-size: 0.75rem; color: #94a3b8; }
+
+/* ---- Quizzes (quiz-kit.js) ----
+   The options are real <button>s in a radiogroup rather than styled divs,
+   so they arrive with focus, keyboard activation and an announced state
+   already working. Everything here is presentation on top of that. */
+.board-quiz { display: block; width: 100%; max-width: 40rem; }
+
+.quiz-progress {
+  height: 4px;
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.quiz-progress-bar {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent-2);
+  transition: width 0.25s ease;
+}
+
+.quiz-count {
+  margin: 0.7rem 0 0.2rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.quiz-question {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.quiz-option {
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  color: var(--ink-2);
+  background: rgb(var(--sheet-rgb) / 0.55);
+  border: 1px solid rgb(var(--line-rgb) / 0.28);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.quiz-option:hover { background: rgb(var(--raise-rgb) / 0.7); border-color: rgb(var(--accent-rgb) / 0.45); }
+.quiz-option:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.quiz-option.is-picked { border-color: var(--accent-2); background: rgb(var(--accent-rgb) / 0.16); color: var(--ink); }
+
+.quiz-nav { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+.quiz-result { text-align: left; }
+.quiz-result-title { margin: 0 0 0.6rem; font-size: 1.3rem; color: var(--ink); }
+.quiz-result-body { margin: 0 0 1.2rem; font-size: 0.95rem; line-height: 1.7; color: var(--ink-3); }
+.quiz-result-body strong { color: var(--ink); }
+.quiz-result-body em { color: var(--accent-1); font-style: normal; }
+
+.quiz-fixes { margin: 0.8rem 0 0; padding-left: 1.2rem; }
+.quiz-fixes li { margin-bottom: 0.55rem; line-height: 1.6; }
+.quiz-more { margin: 0.6rem 0 0; font-size: 0.85rem; color: var(--ink-4); }
+
+.quiz-bars { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.2rem; }
+
+.quiz-bar-row {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr 3rem;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.quiz-bar-label { font-size: 0.86rem; color: var(--ink-2); }
+
+.quiz-bar-track {
+  height: 10px;
+  background: rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.quiz-bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-2), #a78bfa);
+  border-radius: 999px;
+}
+
+.quiz-bar-value {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  text-align: right;
+  color: var(--accent-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz-bar-note {
+  grid-column: 1 / -1;
+  margin-top: -0.35rem;
+  font-size: 0.76rem;
+  color: var(--ink-4);
+}
+
+.quiz-disclaimer {
+  margin: 1rem 0 1.2rem;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+  background: rgb(var(--well-rgb) / 0.6);
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.4);
+  border-radius: 0 8px 8px 0;
+}
+
+@media (max-width: 560px) {
+  .quiz-bar-row { grid-template-columns: 7rem 1fr 2.6rem; gap: 0.45rem; }
+  .quiz-bar-label { font-size: 0.78rem; }
+}
+
+/* ---- Love calculator ---- */
+.board-love { display: block; width: 100%; max-width: 40rem; }
+
+.love-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.love-field { display: flex; flex-direction: column; gap: 0.3rem; flex: 1 1 12rem; min-width: 0; }
+.love-field span { font-size: 0.78rem; color: #94a3b8; }
+.love-field input {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.55rem 0.7rem;
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+}
+.love-field input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+
+.love-amp { color: #f472b6; font-size: 1.4rem; padding-bottom: 0.5rem; }
+.love-go { margin: 1.1rem auto 0; display: block; }
+
+.love-out { margin-top: 1.6rem; text-align: center; }
+.love-score {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #f472b6;
+}
+.love-score small { font-size: 1.4rem; opacity: 0.7; }
+.love-line { margin: 0.6rem 0 1.2rem; font-size: 0.95rem; color: #e2e8f0; }
+
+.love-working {
+  text-align: left;
+  padding: 1rem 1.1rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 10px;
+}
+.love-working-h { margin: 0 0 0.6rem; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.love-steps { margin: 0; padding-left: 1.2rem; font-size: 0.86rem; line-height: 1.9; color: #cbd5e1; }
+.love-steps code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  color: #7dd3fc;
+  word-break: break-all;
+}
+.love-working-note { margin: 0.8rem 0 0; font-size: 0.82rem; line-height: 1.65; color: #94a3b8; }
+.love-real { margin: 1.1rem 0 0; font-size: 0.88rem; line-height: 1.6; color: #cbd5e1; }
+.love-real a { color: #7dd3fc; }
+
+/* ==========================================================================
+   4. Overlays
+   --------------------------------------------------------------------------
+   One element does start, pause and game-over. It is `hidden` when the game
+   is running, so it leaves the tab order entirely rather than sitting
+   invisible over a live playfield collecting focus.
+   ========================================================================== */
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  text-align: center;
+  background: rgba(2, 6, 23, 0.82);
+  backdrop-filter: blur(2px);
+}
+
+.game-overlay[hidden] { display: none; }
+
+.game-overlay-card {
+  max-width: 26rem;
+  padding: 1.5rem 1.6rem;
+  background: rgb(var(--sheet-rgb) / 0.95);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.6);
+}
+
+.game-overlay-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  color: var(--ink);
+}
+
+.game-overlay-card p {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.game-overlay-card p:last-of-type { margin-bottom: 1.1rem; }
+
+.game-overlay-score {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.game-overlay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+/* "New best!" — the one moment worth a flourish. Animation is behind the
+   reduced-motion query at the foot of this file. */
+.game-overlay-best {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #052e16;
+  background: #86efac;
+  border-radius: 999px;
+  animation: game-pop 0.45s ease-out;
+}
+
+@keyframes game-pop {
+  0%   { transform: scale(0.7); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   5. Touch pad & keyboard legend
+   --------------------------------------------------------------------------
+   The pad ships in the markup on every game page and is revealed only where
+   the primary pointer is coarse. Two reasons it is not JS-injected: a
+   control that appears after hydration makes the page jump under the
+   visitor's thumb, and `(pointer: coarse)` is a better answer than any
+   user-agent test — a touchscreen laptop gets both the pad and the keys.
+   ========================================================================== */
+
+.game-pad {
+  display: none;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 0.95rem 1rem;
+  background: rgb(var(--deep-rgb) / 0.6);
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+
+@media (pointer: coarse) {
+  .game-pad { display: flex; }
+}
+
+/* A game with no directional input (Wordle, the quizzes) sets this and the
+   pad stays gone even on a phone. */
+.game-pad[data-pad='none'] { display: none !important; }
+
+.game-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 3rem);
+  grid-template-rows: repeat(3, 3rem);
+  gap: 0.25rem;
+}
+
+.game-dpad button {
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  color: var(--ink);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  /* Without this a fast double tap on a D-pad zooms the page. */
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.game-dpad button:active { background: var(--raise-85); }
+
+.game-dpad .pad-up    { grid-area: 1 / 2; }
+.game-dpad .pad-left  { grid-area: 2 / 1; }
+.game-dpad .pad-right { grid-area: 2 / 3; }
+.game-dpad .pad-down  { grid-area: 3 / 2; }
+
+.game-pad-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.game-pad-actions button {
+  min-width: 4.5rem;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.game-pad-actions button:active { background: var(--raise-85); }
+
+/* Two-verb pad (moon-buggy: Jump and Fire). The life-saving one is bigger
+   and sits on top, where the thumb already is. */
+.game-pad-two .pad-primary {
+  padding: 1rem 0.9rem;
+  font-size: 1.05rem;
+  background: #0f766e;
+  border-color: #14b8a6;
+}
+
+/* The keyboard legend. Hidden on coarse pointers, where it is a list of
+   keys the visitor does not have. */
+.game-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  list-style: none;
+  font-size: 0.76rem;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.35);
+  border-top: 1px solid rgb(var(--line-rgb) / 0.1);
+}
+
+@media (pointer: coarse) {
+  .game-keys { display: none; }
+}
+
+/* The touch legend: the mirror image of .game-keys. Hidden wherever there is
+   a real pointer, shown wherever there is not, so exactly one of the two is
+   on screen and neither describes controls the visitor does not have. */
+.game-touch {
+  display: none;
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+  background: rgb(var(--deep-rgb) / 0.45);
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.12);
+}
+
+@media (pointer: coarse) {
+  .game-touch { display: block; }
+}
+
+/* WIDE GAMES ON A PORTRAIT PHONE.
+   A terminal game is 80 columns. Fitted into a portrait phone that is about
+   4 pixels per column — the characters stop being characters. The stage
+   cannot fix this by scrolling (a game you have to pan is not playable), so
+   the page says the useful thing instead and lets the player decide. Shown
+   only when the viewport is genuinely narrow AND portrait AND touch, so a
+   landscape phone and every desktop never see it. */
+.game-rotate {
+  display: none;
+  margin: 0;
+  padding: 0.6rem 0.95rem;
+  font-size: 0.8rem;
+  color: #fde047;
+  background: rgba(250, 204, 21, 0.08);
+  border-top: 1px solid rgba(250, 204, 21, 0.25);
+}
+
+@media (pointer: coarse) and (orientation: portrait) and (max-width: 680px) {
+  .game[data-wide='1'] .game-rotate { display: block; }
+}
+
+.game-keys kbd {
+  display: inline-block;
+  min-width: 1.4rem;
+  padding: 0.1rem 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+}
+
+/* ==========================================================================
+   6. Scoreboard, badges and small parts
+   ========================================================================== */
+
+/* Local high scores. Explicitly labelled local, because a "leaderboard" on a
+   site with no server would otherwise imply a comparison that does not
+   exist — see the copy in game-shell.js. */
+.game-scores {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.game-scores th,
+.game-scores td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.18);
+}
+
+.game-scores th {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.game-scores td:last-child,
+.game-scores th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* The strip under the H1 on a game page — same shape as .lab-facts. */
+.game-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-facts li {
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  background: rgb(var(--accent-rgb) / 0.1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 999px;
+}
+
+/* The no-JS block. Same role and styling as .lab-noscript: a game cannot
+   degrade to anything, so the page says so plainly instead of showing a
+   dead canvas. html.js is added synchronously by boot.js, so the rule below
+   hides the inert shell and this takes its place. */
+.game-noscript {
+  margin: 2rem 0;
+  padding: 1.4rem 1.5rem;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  border-left-width: 4px;
+  border-radius: 12px;
+}
+
+.game-noscript h2 { margin: 0 0 0.6rem; font-size: 1.1rem; }
+.game-noscript p { margin: 0 0 0.7rem; font-size: 0.9rem; line-height: 1.65; color: var(--ink-3); }
+.game-noscript p:last-child { margin-bottom: 0; }
+
+html.js .game-noscript { display: none; }
+html:not(.js) .game { display: none; }
+
+/* The hub filter, identical in behaviour to .lab-filter. Hidden without JS,
+   because a box that filters nothing is a broken promise. */
+.game-filter { margin: 1.5rem 0 0; }
+html:not(.js) .game-filter { display: none; }
+
+.game-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgb(var(--well-rgb) / 0.7);
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 10px;
+}
+
+.game-filter-icon { width: 1.1rem; height: 1.1rem; flex: none; color: var(--ink-4); }
+
+.game-filter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.game-filter-input::placeholder { color: var(--ink-4); }
+
+.game-filter-clear {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.game-filter-count { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--ink-4); }
+
+.game-filter-empty {
+  margin-top: 0.8rem;
+  padding: 1rem 1.1rem;
+  background: rgb(var(--well-rgb) / 0.75);
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 10px;
+}
+
+.game-filter-empty p { margin: 0 0 0.7rem; font-size: 0.88rem; color: var(--ink-3); }
+
+/* Category chips above the grid — a second way in for people who would
+   rather browse than type. */
+.game-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-cats button {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  color: var(--ink-2);
+  background: rgb(var(--well-rgb) / 0.7);
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.game-cats button[aria-pressed='true'] {
+  color: var(--ink);
+  background: rgb(var(--accent-rgb) / 0.18);
+  border-color: rgb(var(--accent-rgb) / 0.55);
+}
+
+/* ==========================================================================
+   7. Responsive, reduced motion, print
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .game-stage { padding: 0.6rem; min-height: 14rem; }
+  .game-canvas { max-height: min(58vh, 30rem); }
+  .game-stats { padding: 0.5rem 0.7rem 0.45rem; }
+  .game-toolbar { padding: 0.45rem 0.7rem 0.6rem; }
+  .game-stat { min-width: 3.2rem; padding-right: 0.65rem; margin-right: 0.65rem; }
+  .game-stat-value { font-size: 1.05rem; }
+  .game-dpad { grid-template-columns: repeat(3, 2.7rem); grid-template-rows: repeat(3, 2.7rem); }
+}
+
+/* ==========================================================================
+   Fullscreen
+   --------------------------------------------------------------------------
+   The shell owns the Fullscreen API call (game-shell.js) and makes the .game
+   element itself the fullscreen target, so everything the player needs —
+   HUD, playfield, pad — goes fullscreen together rather than the canvas
+   going alone and the score being left behind on a page nobody can see.
+
+   The layout becomes a flex column: HUD and pad at their natural heights,
+   the stage taking whatever is left.
+
+     min-height: 0   is doing real work. A flex item's default min-height is
+                     `auto`, meaning "never shrink below your content". The
+                     stage's content is a canvas, so without this the stage
+                     refuses to shrink, the column overflows, and the pad is
+                     pushed off the bottom of the screen — on a phone, the
+                     exact controls you just went fullscreen to use.
+
+     max-height      not `height`. An earlier version set height: 100% here,
+                     which is correct for a tall game (Tetris at 200x400) and
+                     wrong for a wide one (Breakout at 400x300): forcing the
+                     full height makes aspect-ratio derive a width larger
+                     than the screen, and the sides get cut off. Two max
+                     constraints plus aspect-ratio let the browser fit the
+                     box inside the stage on whichever axis binds first,
+                     which is what "properly visible" means at any shape of
+                     screen.
+
+   :fullscreen and :-webkit-full-screen are written as SEPARATE rules on
+   purpose. Grouped into one selector list, a browser that does not
+   recognise one of them discards the entire rule — including the half it
+   did understand.
+   ========================================================================== */
+
+.game:fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  border: 0;
+  border-radius: 0;
+  background: #020617;
+}
+
+.game:-webkit-full-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  border: 0;
+  border-radius: 0;
+  background: #020617;
+}
+
+/* In fullscreen the stage stops being `min(68vh, 34rem)` and becomes
+   "whatever the HUD and pad left over". height: auto is essential — without
+   it the 34rem cap survives into fullscreen and the game stays a small box
+   on a big black screen. min-height: 0 lets it shrink below its content, so
+   the pad is never pushed off the bottom edge on a phone.
+
+   The canvas needs no fullscreen rule at all. fit() reads this box and
+   fills it, exactly as it does at any other size. */
+.game:fullscreen .game-stage,
+.game:-webkit-full-screen .game-stage {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The DOM-board games scale by font size rather than by pixels, so they get
+   a bigger board in fullscreen instead of a stretched one. */
+.game:fullscreen .game-board,
+.game:-webkit-full-screen .game-board {
+  max-height: 100%;
+}
+
+/* The HUD and pad must not grow into the space the stage needs. */
+.game:fullscreen .game-bar,
+.game:fullscreen .game-pad,
+.game:fullscreen .game-keys,
+.game:-webkit-full-screen .game-bar,
+.game:-webkit-full-screen .game-pad,
+.game:-webkit-full-screen .game-keys {
+  flex: 0 0 auto;
+}
+
+/* The touch legend is for the page, not for fullscreen.
+
+   "Swipe anywhere on the board to turn, or use the pad" is worth saying once,
+   while somebody is deciding how to play. By the time they have gone
+   fullscreen they have decided, and on a phone that line was costing about
+   sixty pixels of a screen they had just asked to be made bigger — pressed
+   right up against the bottom of the board, reading as though it were part of
+   it.
+
+   Hidden rather than shrunk. Every other element here earns its space in
+   fullscreen: the bar carries the score, the pad is how the game is played.
+   A sentence the player has already read does not, and half a sentence in a
+   smaller font would be the worst of both.
+
+   It comes back the moment they leave fullscreen, so nothing is lost. */
+.game:fullscreen .game-touch,
+.game:-webkit-full-screen .game-touch {
+  display: none;
+}
+
+/* Belt and braces for the other elements' sizing: the legend was the one
+   flex child in this column with no flex declared, so on a short screen it
+   could take space from the stage rather than the other way round. */
+.game:fullscreen .game-touch,
+.game:fullscreen .game-noscript,
+.game:-webkit-full-screen .game-touch,
+.game:-webkit-full-screen .game-noscript {
+  flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-card,
+  .game-card:hover,
+  .game-card:focus-visible { transition: none; transform: none; }
+  .game-overlay-best { animation: none; }
+}
+
+/* A game is the one thing on this site with nothing to print. Rather than
+   spilling a black canvas across a page, say so. */
+@media print {
+  .game-stage,
+  .game-pad,
+  .game-bar,
+  .game-keys { display: none !important; }
+
+  .game::after {
+    content: 'This page is a game — it does not print.';
+    display: block;
+    padding: 1rem;
+    font-style: italic;
+  }
+}
+
+
+/* ---- Phishing or not ---- */
+.board-phish { display: block; width: 100%; max-width: 40rem; }
+.phish-card { padding: 1rem 1.1rem; background: rgb(var(--sheet-rgb) / 0.6); border: 1px solid rgb(var(--line-rgb) / 0.28); border-radius: 10px; }
+.phish-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem; margin-bottom: 0.6rem; }
+.phish-kind { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); padding: 0.15rem 0.5rem; border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 999px; }
+.phish-from { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.82rem; color: var(--accent-1); word-break: break-all; }
+.phish-subject { margin: 0 0 0.5rem; font-weight: 700; color: var(--ink); }
+.phish-body { margin: 0 0 0.7rem; font-size: 0.92rem; line-height: 1.6; color: var(--ink-3); }
+.phish-link { margin: 0; font-size: 0.8rem; color: var(--ink-4); }
+.phish-link code { font-size: 0.8rem; color: var(--ink-2); word-break: break-all; }
+.phish-nolink { font-style: italic; }
+.phish-actions { display: flex; gap: 0.6rem; margin-top: 1rem; }
+.phish-actions button { flex: 1 1 0; padding: 0.75rem; font-size: 0.95rem; }
+.phish-legit { border-color: rgba(74,222,128,0.5); }
+.phish-bad { border-color: rgba(248,113,113,0.5); }
+.phish-verdict { margin-top: 1.1rem; padding: 0.9rem 1rem; border-radius: 10px; border-left: 3px solid; }
+.phish-verdict.is-right { background: rgba(74,222,128,0.1); border-left-color: #4ade80; }
+.phish-verdict.is-wrong { background: rgba(248,113,113,0.1); border-left-color: #f87171; }
+.phish-call { margin: 0 0 0.5rem; font-weight: 700; color: var(--ink); }
+.phish-why { margin: 0 0 0.9rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-3); }
+.phish-why code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.84rem; color: var(--accent-1); word-break: break-all; }
+
+/* ---- Subnet sprint ---- */
+.board-subnet { display: block; width: 100%; max-width: 34rem; text-align: center; }
+.subnet-timer { margin: 0; font-family: 'Cascadia Code', Consolas, monospace; font-size: 1.6rem; color: var(--accent-1); font-variant-numeric: tabular-nums; }
+.subnet-q { margin: 1.2rem 0 0.8rem; font-size: 1.15rem; line-height: 1.5; color: var(--ink); }
+.subnet-answer { margin: 0; font-family: 'Cascadia Code', Consolas, monospace; font-size: 1.9rem; font-weight: 700; color: #86efac; min-height: 2.2rem; word-break: break-all; }
+.subnet-feedback { margin: 0.6rem 0 0; font-size: 0.9rem; min-height: 1.4rem; }
+.subnet-feedback.is-right { color: #86efac; }
+.subnet-feedback.is-wrong { color: #fca5a5; }
+.subnet-hint { margin: 0.4rem 0 0; font-size: 0.78rem; color: var(--ink-4); }
+
+/* ---- Password duel ---- */
+.board-duel { display: block; width: 100%; max-width: 40rem; }
+.duel-form { display: flex; flex-direction: column; gap: 0.6rem; }
+.duel-label { font-size: 0.85rem; color: var(--ink-3); }
+.duel-form input { font: inherit; font-size: 1rem; padding: 0.6rem 0.75rem; color: var(--ink); background: rgb(var(--well-rgb) / 0.85); border: 1px solid rgb(var(--line-rgb) / 0.35); border-radius: 8px; }
+.duel-form input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.duel-live { margin-top: 1.4rem; text-align: center; }
+.duel-phase { margin: 0; font-size: 0.85rem; color: var(--ink-4); }
+.duel-count { margin: 0.3rem 0; font-family: 'Cascadia Code', Consolas, monospace; font-size: 2.2rem; font-weight: 700; color: #fca5a5; font-variant-numeric: tabular-nums; }
+.duel-rate { margin: 0; font-size: 0.8rem; color: var(--ink-4); }
+.duel-out { margin-top: 1.4rem; padding: 1rem 1.1rem; border-radius: 10px; border-left: 3px solid; }
+.duel-out.is-cracked { background: rgba(248,113,113,0.1); border-left-color: #f87171; }
+.duel-out.is-held { background: rgba(74,222,128,0.1); border-left-color: #4ade80; }
+.duel-verdict { margin: 0 0 0.4rem; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+.duel-note { margin: 0 0 0.9rem; font-size: 0.88rem; line-height: 1.6; color: var(--ink-3); }
+.duel-maths { padding-top: 0.8rem; border-top: 1px solid rgb(var(--line-rgb) / 0.2); }
+.duel-maths p { margin: 0 0 0.8rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-3); }
+.duel-caveat { color: var(--ink-4) !important; }
+.duel-maths code { font-family: 'Cascadia Code', Consolas, monospace; color: var(--accent-1); }
+.duel-privacy { margin: 0.6rem 0 0; font-size: 0.8rem; color: var(--ink-4); }
+
+/* ---- Sudoku number pad ----
+   Shown on every device, not just touch: a pad is quicker than the number
+   row for most people, and hiding it behind a media query means a laptop
+   with a trackpad gets no way in either. */
+.sudoku-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  padding: 0.75rem 0.95rem;
+  background: rgb(var(--deep-rgb) / 0.45);
+  border-top: 1px solid rgb(var(--line-rgb) / 0.12);
+}
+
+.sudoku-pad button {
+  font: inherit;
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 0.6rem 0;
+  color: var(--ink);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 9px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.sudoku-pad button:hover { background: var(--raise-85); border-color: rgb(var(--accent-rgb) / 0.55); }
+.sudoku-pad button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.sudoku-pad .sudoku-erase { grid-column: span 5; font-size: 0.9rem; font-family: inherit; color: var(--ink-3); }
+
+/* ---- guess-the-algorithm ---- */
+/* ---- Guess the algorithm ---- */
+.algo-panel {
+  padding: 0.85rem 0.95rem 1rem;
+  background: rgb(var(--well-rgb) / 0.8);
+}
+
+.algo-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.algo-opt {
+  width: 100%;
+  padding: 0.7rem 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+/* Set on the answer buttons after a guess: the right one is always marked,
+   so a wrong call still shows you what you should have said. */
+.algo-opt.is-right { border-color: rgba(74, 222, 128, 0.65); color: #86efac; }
+.algo-opt.is-wrong { border-color: rgba(248, 113, 113, 0.6); color: #fca5a5; }
+
+.algo-verdict {
+  margin: 0.85rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 9px;
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.3);
+  background: var(--surf-1);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+
+.algo-verdict.is-right { border-left-color: #4ade80; }
+.algo-verdict.is-wrong { border-left-color: #f87171; }
+
+.algo-call { display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--ink); }
+.algo-why { display: block; }
+.algo-next { margin-top: 0.85rem; }
+
+/* Four algorithm names will not sit in one row on a phone without becoming
+   two-line stubs, so they go two by two instead. */
+@media (max-width: 34rem) {
+  .algo-options { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- ctf-arcade ---- */
+/* ---- CTF arcade ---- */
+.board-ctf { display: block; width: 100%; max-width: 44rem; }
+.ctf-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.78rem; color: var(--ink-4); }
+.ctf-pts { color: var(--accent-1); }
+.ctf-title { margin: 0.35rem 0 0.4rem; font-size: 1.1rem; color: var(--ink); }
+.ctf-brief { margin: 0 0 0.85rem; font-size: 0.9rem; line-height: 1.6; color: var(--ink-3); }
+
+/* The artefact is meant to be selected and pasted into one of the labs, so it
+   keeps a text cursor and takes its own scrollbar rather than stretching the
+   board when a dump runs to twenty lines. */
+.ctf-artefact {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  max-height: 16rem;
+  overflow: auto;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 10px;
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: #cbd5e1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+.ctf-artefact:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+.ctf-entry { display: flex; align-items: stretch; gap: 0.6rem; margin-top: 0.9rem; }
+.ctf-typed {
+  flex: 1;
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 1rem;
+  color: #86efac;
+  overflow-wrap: anywhere;
+}
+.ctf-typed.is-empty { color: var(--ink-4); }
+.ctf-check { flex: 0 0 auto; }
+
+.ctf-fb { margin: 0.5rem 0 0; min-height: 1.25rem; font-size: 0.86rem; }
+.ctf-fb.is-wrong { color: #fca5a5; }
+
+.ctf-hint {
+  margin: 0.55rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--accent-2);
+  border-radius: 0 8px 8px 0;
+  background: var(--surf-1);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.ctf-explain { margin-top: 1rem; padding: 0.95rem 1.05rem; border-radius: 10px; border-left: 3px solid; }
+.ctf-explain.is-solved { background: rgba(74,222,128,0.1); border-left-color: #4ade80; }
+.ctf-explain.is-given { background: rgba(248,113,113,0.1); border-left-color: #f87171; }
+.ctf-verdict { margin: 0 0 0.5rem; font-weight: 700; color: var(--ink); word-break: break-all; }
+.ctf-why { margin: 0 0 0.7rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-3); }
+.ctf-why code, .ctf-lab code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.84rem; color: var(--accent-1); word-break: break-all; }
+.ctf-lab { margin: 0 0 0.9rem; font-size: 0.85rem; line-height: 1.6; color: var(--ink-4); }
+.ctf-lab a { color: var(--accent-2); }
+
+@media (max-width: 30rem) {
+  .ctf-entry { flex-direction: column; align-items: stretch; }
+}
+
+/* ---- guess-the-output ---- */
+/* ---- Guess the output ---- */
+.board-guess { display: block; width: 100%; max-width: 42rem; }
+.gto-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem; margin-bottom: 0.55rem; }
+.gto-lang { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); padding: 0.15rem 0.5rem; border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 999px; }
+.gto-ask { font-size: 0.85rem; color: var(--ink-3); }
+/* The snippet keeps its own line breaks and scrolls inside itself rather
+   than wrapping: a line of C rewrapped mid-expression is a different
+   question from the one that was set. */
+.gto-code { margin: 0; padding: 0.85rem 1rem; background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 10px; overflow-x: auto; }
+.gto-code code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85rem; line-height: 1.65; color: var(--ink-2); white-space: pre; }
+.gto-options { display: grid; gap: 0.5rem; margin-top: 1rem; }
+/* One option is a sentence about undefined behaviour, so options are full
+   width blocks that wrap. Monospace because most of them are literal
+   output, and `1,NaN,NaN` has to read as output rather than as prose. */
+.gto-option { display: block; width: 100%; text-align: left; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.88rem; line-height: 1.5; padding: 0.6rem 0.8rem; white-space: pre-line; }
+/* Answered options stay disabled, and .game-btn:disabled would otherwise
+   repaint them, so these are scoped one level deeper to outrank it. */
+.board-guess .gto-option.is-right { color: var(--ink); background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.6); }
+.board-guess .gto-option.is-wrong { color: var(--ink); background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.6); }
+.gto-verdict { margin-top: 1.1rem; padding: 0.9rem 1rem; border-radius: 10px; border-left: 3px solid; }
+.gto-verdict.is-right { background: rgba(74,222,128,0.1); border-left-color: #4ade80; }
+.gto-verdict.is-wrong { background: rgba(248,113,113,0.1); border-left-color: #f87171; }
+.gto-call { margin: 0 0 0.5rem; font-weight: 700; color: var(--ink); }
+.gto-call code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85rem; color: var(--accent-1); }
+.gto-why { margin: 0 0 0.9rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-3); }
+.gto-why code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.84rem; color: var(--accent-1); word-break: break-word; }
+
+/* ---- assembly-puzzles ---- */
+/* ---- Assembly puzzles ---- */
+.board-asm { display: block; width: 100%; max-width: 62rem; text-align: left; }
+.asm-head { margin-bottom: 0.9rem; }
+.asm-title { margin: 0 0 0.4rem; font-size: 1.05rem; color: var(--ink); }
+.asm-brief { margin: 0 0 0.35rem; font-size: 0.88rem; line-height: 1.6; color: var(--ink-3); }
+.asm-io { margin: 0; font-size: 0.8rem; color: var(--ink-4); }
+.asm-main { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.asm-pane { min-width: 0; }
+.asm-label { display: block; margin-bottom: 0.35rem; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.asm-src { display: block; width: 100%; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85rem; line-height: 1.55; padding: 0.7rem 0.8rem; color: var(--ink); background: rgb(var(--well-rgb) / 0.85); border: 1px solid rgb(var(--line-rgb) / 0.35); border-radius: 8px; resize: vertical; }
+.asm-src:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.asm-msg { margin: 0.5rem 0 0; min-height: 2.6em; font-size: 0.82rem; line-height: 1.55; color: var(--ink-3); }
+.asm-msg.is-bad { color: #fca5a5; }
+.asm-msg.is-good { color: #86efac; }
+.asm-machine { padding: 0.8rem 0.85rem; background: rgb(var(--well-rgb) / 0.55); border: 1px solid rgb(var(--line-rgb) / 0.24); border-radius: 10px; }
+.asm-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+.asm-row .asm-label { margin: 0; }
+.asm-pick { max-width: 100%; }
+.asm-regs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+.asm-reg { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.35rem 0.45rem; background: rgb(var(--sheet-rgb) / 0.55); border: 1px solid rgb(var(--line-rgb) / 0.2); border-radius: 6px; }
+.asm-reg b { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); }
+.asm-reg i { font-family: 'Cascadia Code', Consolas, monospace; font-style: normal; font-size: 0.92rem; color: #86efac; font-variant-numeric: tabular-nums; word-break: break-all; }
+.asm-flag i { color: var(--accent-1); }
+.asm-next { margin: 0.75rem 0 0.55rem; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.78rem; line-height: 1.5; min-height: 2.4em; color: var(--ink-2); }
+.asm-next.is-bad { color: #fca5a5; }
+.asm-queue { margin: 0 0 0.3rem; font-size: 0.8rem; color: var(--ink-3); }
+.asm-queue b { display: inline-block; min-width: 5.2rem; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); }
+.asm-queue span { font-family: 'Cascadia Code', Consolas, monospace; color: var(--ink); word-break: break-all; }
+.asm-mem { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 2px; margin-top: 0.8rem; }
+.asm-cell { display: flex; flex-direction: column; align-items: center; padding: 0.2rem 0.1rem; border-radius: 4px; background: rgb(var(--sheet-rgb) / 0.4); border: 1px solid transparent; overflow: hidden; }
+.asm-cell b { font-size: 0.54rem; font-weight: 400; color: var(--ink-4); }
+.asm-cell i { font-family: 'Cascadia Code', Consolas, monospace; font-style: normal; font-size: 0.68rem; color: var(--ink-4); }
+.asm-cell.is-set i { color: #86efac; }
+.asm-cell.is-touched { border-color: var(--accent-2); background: rgb(var(--accent-rgb) / 0.18); }
+.asm-tests { margin-top: 1.1rem; }
+.asm-tests-head { margin: 0 0 0.5rem; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.asm-test-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.asm-test { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; padding: 0.35rem 0.55rem; border-radius: 6px; border-left: 3px solid rgb(var(--line-rgb) / 0.3); background: rgb(var(--well-rgb) / 0.45); }
+.asm-test code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.78rem; color: var(--ink-2); word-break: break-all; }
+.asm-test.is-pass { border-left-color: #4ade80; }
+.asm-test.is-fail { border-left-color: #f87171; }
+.asm-mark { font-size: 0.76rem; color: var(--ink-4); }
+.asm-test.is-pass .asm-mark { color: #86efac; }
+.asm-test.is-fail .asm-mark { color: #fca5a5; }
+.asm-solved { margin-top: 0.9rem; padding: 0.75rem 0.9rem; border-radius: 8px; border-left: 3px solid #4ade80; background: rgba(74, 222, 128, 0.1); }
+.asm-solved-line { margin: 0 0 0.6rem; font-size: 0.86rem; line-height: 1.55; color: var(--ink-3); }
+.asm-worked { margin: 0.6rem 0 0; padding: 0.6rem 0.7rem; overflow-x: auto; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.8rem; line-height: 1.5; color: var(--ink-2); background: rgb(var(--well-rgb) / 0.8); border-radius: 6px; }
+.asm-ref { margin-top: 1.1rem; }
+.asm-ref summary { cursor: pointer; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.asm-ref summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.asm-ref-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.25rem 0.8rem; margin: 0.8rem 0 0; }
+.asm-ref-list dt { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.78rem; color: var(--accent-1); }
+.asm-ref-list dd { margin: 0; font-size: 0.84rem; line-height: 1.5; color: var(--ink-3); }
+.asm-ref-note { margin: 0.8rem 0 0; font-size: 0.84rem; line-height: 1.6; color: var(--ink-3); }
+.asm-ref-note code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.8rem; color: var(--accent-1); }
+@media (max-width: 46rem) {
+  .asm-main { grid-template-columns: 1fr; }
+}
+@media (max-width: 30rem) {
+  .asm-regs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .asm-mem { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .asm-ref-list { grid-template-columns: 1fr; }
+  .asm-ref-list dd { margin-bottom: 0.4rem; }
+}
+
+/* ---- career-quiz ---- */
+/* ---- Career quiz result (career-quiz.js) ----
+   QuizKit drops the result body into a <p>, so every block here is a span
+   promoted with display:block rather than a real block element — nesting a
+   <div> inside that paragraph would be invalid markup. */
+.career-pair {
+  display: block;
+  margin-top: 0.9rem;
+  color: var(--ink-2);
+}
+
+.career-track {
+  display: block;
+  margin-top: 0.9rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 10px;
+  background: rgb(var(--well-rgb) / 0.8);
+}
+
+.career-track-name {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.career-line { display: block; }
+
+.career-grind {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--ink-4);
+}
+
+.career-honest {
+  display: block;
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.2);
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+.career-honest a { color: var(--accent-1); }
+
+/* ---- regex-golf ---- */
+/* ---- Regex golf ---- */
+.board-golf { display: block; width: 100%; max-width: 42rem; }
+.rg-level { margin: 0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.rg-name { margin: 0.2rem 0 0.35rem; font-size: 1.1rem; color: var(--ink); }
+.rg-brief { margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.6; color: var(--ink-3); }
+.rg-brief code, .rg-hint code, .rg-warn code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.84rem; color: var(--accent-1); }
+.rg-lists { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.rg-col { flex: 1 1 12rem; min-width: 0; padding: 0.7rem 0.8rem; background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--line-rgb) / 0.28); border-radius: 10px; }
+.rg-col-head { margin: 0 0 0.5rem; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; }
+.rg-col-head.is-match { color: #86efac; }
+.rg-col-head.is-reject { color: #fca5a5; }
+.rg-list { list-style: none; margin: 0; padding: 0; }
+.rg-item { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.14rem 0; }
+.rg-item code { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85rem; color: var(--ink-2); word-break: break-all; }
+.rg-mark { flex: 0 0 0.9rem; text-align: center; font-size: 0.85rem; color: var(--ink-4); }
+.rg-item.is-ok .rg-mark { color: #86efac; }
+.rg-item.is-bad .rg-mark { color: #fca5a5; }
+.rg-item.is-bad code { color: #fca5a5; }
+.rg-field { display: flex; align-items: center; gap: 0.4rem; margin-top: 1rem; padding: 0.5rem 0.7rem; background: rgb(var(--well-rgb) / 0.85); border: 1px solid rgb(var(--line-rgb) / 0.35); border-radius: 8px; }
+.rg-field:focus-within { border-color: var(--accent-2); }
+.rg-slash { font-family: 'Cascadia Code', Consolas, monospace; font-size: 1.05rem; color: var(--ink-4); }
+/* 1rem, not smaller: iOS zooms the whole page into any field under 16px. */
+.rg-input { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0; font-family: 'Cascadia Code', Consolas, monospace; font-size: 1rem; color: var(--ink); background: none; border: 0; }
+.rg-input:focus { outline: none; }
+.rg-status { margin: 0.6rem 0 0; min-height: 1.4rem; font-size: 0.86rem; line-height: 1.5; color: var(--ink-3); }
+.rg-status.is-good { color: #86efac; }
+.rg-status.is-bad { color: #fca5a5; }
+.rg-status.is-wait { color: var(--ink-4); }
+.rg-warn { margin-top: 0.8rem; padding: 0.8rem 0.9rem; border-radius: 10px; border-left: 3px solid #f87171; background: rgba(248,113,113,0.1); }
+.rg-warn-lead { margin: 0 0 0.5rem; font-size: 0.88rem; line-height: 1.6; color: var(--ink); }
+.rg-warn-body { margin: 0; font-size: 0.84rem; line-height: 1.65; color: var(--ink-3); }
+.rg-hint { margin: 0.8rem 0 0; padding: 0.7rem 0.8rem; font-size: 0.86rem; line-height: 1.6; color: var(--ink-3); background: rgb(var(--accent-rgb) / 0.08); border-radius: 8px; }
+.rg-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.7rem; margin-top: 1rem; }
+.rg-par { margin: 0; font-size: 0.78rem; color: var(--ink-4); }
+.rg-next[disabled] { opacity: 0.45; cursor: not-allowed; }
+/* The per-item verdict for a screen reader; the tick itself is aria-hidden. */
+.rg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 34rem) { .rg-col { flex: 1 1 100%; } }
+
+/* ---- dev-personality ---- */
+/* ---- What kind of developer are you (dev-personality.js) ----
+   The result is four short blocks rather than one paragraph, and the failure
+   mode is pulled out with a rule down its left edge — buried mid-paragraph it
+   reads as a caveat, and it is meant to be half the result. */
+.quiz-result-body .dev-line,
+.quiz-result-body .dev-flaw { display: block; margin-top: 0.85rem; }
+.quiz-result-body .dev-line:first-child,
+.quiz-result-body .dev-flaw:first-child { margin-top: 0; }
+
+.quiz-result-body .dev-flaw {
+  padding-left: 0.75rem;
+  border-left: 2px solid rgb(var(--accent-rgb) / 0.3);
+  color: var(--ink-2);
+}
+.quiz-result-body .dev-flaw strong { color: var(--accent-1); }
+
+/* ---- shell-quest ---- */
+/* ---- Shell quest ---- */
+.board-shell-quest { display: block; width: 100%; max-width: 52rem; }
+
+/* The brief is repeated above the terminal because on a phone the quest text
+   scrolls out of the screen after two or three commands, and a puzzle you
+   cannot re-read is a puzzle you give up on. */
+.shq-brief { margin: 0 0 0.7rem; padding-left: 0.7rem; border-left: 3px solid var(--accent-2); font-size: 0.85rem; line-height: 1.55; color: var(--ink-3); }
+
+.shq-term { padding: 0.75rem 0.85rem; background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 10px; cursor: text; }
+.shq-screen, .shq-entry { font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace; font-size: 0.78rem; line-height: 1.55; }
+.shq-screen { height: clamp(16rem, 50vh, 28rem); overflow-y: auto; overflow-x: auto; }
+
+.shq-line { -webkit-user-select: text; user-select: text; margin: 0; white-space: pre-wrap; word-break: break-word; color: var(--ink-3); }
+.shq-line.is-echo { color: var(--ink); }
+.shq-line.is-err { color: #fca5a5; }
+.shq-line.is-ok { color: #86efac; }
+.shq-line.is-hit { color: #fcd34d; }
+.shq-line.is-note { color: var(--ink-4); }
+.shq-line.is-quest { color: var(--ink); }
+.shq-prompt { color: var(--accent-1); }
+
+.shq-entry { margin-top: 0.4rem; padding-top: 0.45rem; border-top: 1px solid rgb(var(--line-rgb) / 0.2); white-space: pre-wrap; word-break: break-word; color: var(--ink); }
+.shq-caret { display: inline-block; width: 0.55em; height: 1em; vertical-align: -0.15em; background: var(--accent-2); animation: shq-blink 1.05s step-end infinite; }
+@keyframes shq-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .shq-caret { animation: none; } }
+
+@media (max-width: 30rem) {
+  .shq-screen, .shq-entry { font-size: 0.72rem; }
+  .shq-term { padding: 0.6rem 0.65rem; }
+}
+
+/* ---- name-in-binary ---- */
+/* ---- Your name in binary ---- */
+.board-name-binary { display: block; width: 100%; max-width: 44rem; }
+.nib-warn { margin: 0 0 1.1rem; padding: 0.75rem 0.9rem; font-size: 0.86rem; line-height: 1.65; color: var(--ink-2); background: rgb(var(--well-rgb) / 0.8); border-left: 3px solid var(--accent-2); border-radius: 8px; }
+.nib-warn strong { color: var(--ink); }
+.nib-warn a { color: var(--accent-1); }
+.nib-field { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--ink-3); }
+.nib-input { display: block; width: 100%; font: inherit; font-size: 1.05rem; line-height: 1.5; padding: 0.6rem 0.75rem; color: var(--ink); background: rgb(var(--well-rgb) / 0.85); border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 8px; resize: vertical; }
+.nib-input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.nib-limit { margin: 0.4rem 0 0.6rem; font-size: 0.78rem; line-height: 1.55; color: var(--ink-4); }
+.nib-row { padding: 0.85rem 0; border-top: 1px solid rgb(var(--accent-rgb) / 0.18); }
+.nib-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.nib-name { margin: 0; font-size: 0.95rem; color: var(--ink); }
+.nib-copy { flex: 0 0 auto; padding: 0.3rem 0.7rem; font-size: 0.76rem; }
+.nib-note { margin: 0.35rem 0 0.55rem; font-size: 0.82rem; line-height: 1.6; color: var(--ink-4); }
+/* Text the reader is meant to COPY has to opt back into selection.
+   .game-board sets user-select: none, which is right for the boards you drag
+   across -- Minesweeper, 2048, Wordle -- where a drag must move the game and
+   not highlight it. It inherits, so it also silenced two places whose whole
+   purpose is to be copied: name-in-binary prints seven rows and tells you,
+   when the copy button fails, to "select the text and press Ctrl+C"; and
+   shell quest prints a generated IP in its terminal that quest 4 asks you to
+   type back. Both instructions were impossible to follow. The narrow opt-in
+   below is the same shape .ctf-artefact already uses, for the same reason. */
+.nib-out { -webkit-user-select: text; user-select: text; cursor: text; margin: 0; padding: 0.55rem 0.7rem; font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.85rem; line-height: 1.75; color: var(--accent-1); background: rgb(var(--well-rgb) / 0.8); border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.nib-out:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.nib-out.is-empty { color: var(--ink-4); }
+.nib-flag { margin: 0.4rem 0 0; font-size: 0.78rem; line-height: 1.55; color: var(--ink-4); }
+.nib-live { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---- birthday-facts ---- */
+/* ---- Birthday facts ---- */
+.board-birthday { display: block; width: 100%; max-width: 44rem; }
+.bf-form { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 0.8rem; }
+.bf-field { display: flex; flex-direction: column; gap: 0.3rem; flex: 0 1 15rem; min-width: 0; }
+.bf-field span { font-size: 0.78rem; color: var(--ink-4); }
+.bf-field input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: var(--ink);
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 8px;
+}
+.bf-field input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 1px; }
+.bf-go { flex: 0 0 auto; }
+
+.bf-error { margin: 0.8rem 0 0; text-align: center; font-size: 0.88rem; line-height: 1.55; color: #fca5a5; }
+.bf-error:empty { display: none; }
+
+.bf-out { margin-top: 1.3rem; }
+.bf-lede { margin: 0 0 1rem; text-align: center; font-size: 1.15rem; color: var(--ink-3); }
+.bf-lede strong { color: var(--accent-1); }
+
+.bf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.7rem; }
+.bf-card {
+  padding: 0.8rem 0.9rem;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 10px;
+}
+.bf-card-label { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.bf-card-value { margin: 0.3rem 0 0.35rem; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.bf-card-note { margin: 0; font-size: 0.78rem; line-height: 1.55; color: var(--ink-4); }
+
+.bf-planets { width: 100%; margin-top: 1.3rem; border-collapse: collapse; font-size: 0.85rem; }
+.bf-planets caption {
+  caption-side: top;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+}
+.bf-planets th,
+.bf-planets td { padding: 0.4rem 0.5rem; text-align: right; border-bottom: 1px solid rgb(var(--accent-rgb) / 0.3); }
+.bf-planets thead th { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; color: var(--ink-4); }
+.bf-planets tbody th { text-align: left; font-weight: 600; color: var(--ink-2); }
+.bf-planets td { font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.bf-planet-age { color: var(--accent-1); font-weight: 700; }
+
+.bf-method { margin-top: 1.4rem; }
+.bf-method-h { margin: 0 0 0.4rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.bf-method-list { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; line-height: 1.65; color: var(--ink-3); }
+.bf-method-list li { margin-bottom: 0.35rem; }
+.bf-privacy { margin: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.6; color: var(--ink-4); }
+
+@media (max-width: 30rem) {
+  .bf-grid { grid-template-columns: 1fr; }
+  .bf-field { flex: 1 1 100%; }
+  .bf-go { width: 100%; }
+}
+
+/* ---- memory ---- */
+/* ---- Memory ---- */
+.board-memory {
+  gap: 0.45rem;
+  width: min(100%, 26rem);
+}
+
+.board-memory[data-size='large'] { width: min(100%, 38rem); }
+
+/* The card faces are a fixed dark, in both themes, for the same reason the
+   stage under them is: the shape palette is chosen for contrast against this
+   ground, and a face that followed the light theme would take the colours
+   with it. The back is the same panel with a lattice over it, so face-up and
+   face-down are told apart by pattern and border as well as by tone. */
+.mem-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 15%;
+  background-color: #16233b;
+  background-image: repeating-linear-gradient(45deg, rgb(var(--accent-rgb) / 0.14) 0 3px, transparent 3px 8px);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 7px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.mem-card:not(:disabled):hover { border-color: var(--accent-2); }
+.mem-card:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+.mem-card.is-up,
+.mem-card.is-done {
+  background-color: #0b1424;
+  background-image: none;
+  cursor: default;
+}
+
+.mem-card.is-up { border-color: var(--accent-2); }
+
+.mem-card.is-done {
+  border-color: rgb(var(--accent-rgb) / 0.22);
+  opacity: 0.5;
+}
+
+.mem-face,
+.mem-face svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mem-card { transition: none; }
+}
+
+/* ---- are-you-a-robot ---- */
+/* ---- Are you a robot ---- */
+.board-robot { display: block; width: 100%; max-width: 34rem; }
+
+.robot-card {
+  padding: 1rem 1.1rem 1.2rem;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 12px;
+}
+/* The card takes focus on every screen change so a screen reader hears the
+   prompt before the buttons; that focus must not draw a ring for everyone
+   else, hence :focus-visible for the real keyboard case. */
+.robot-card:focus { outline: none; }
+.robot-card:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+.robot-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 0.6rem; padding-bottom: 0.65rem; margin-bottom: 0.85rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.3);
+}
+.robot-brand { font-family: 'Cascadia Code', Consolas, monospace; font-size: 0.8rem; color: var(--accent-1); }
+.robot-step { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.robot-pass { color: #4ade80; }
+
+.robot-note {
+  margin: 0 0 0.9rem; padding: 0.55rem 0.7rem;
+  font-size: 0.85rem; line-height: 1.55; color: var(--ink-2);
+  background: rgb(var(--accent-rgb) / 0.12);
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.55);
+  border-radius: 0 8px 8px 0;
+}
+.robot-prompt { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 700; line-height: 1.45; color: var(--ink); }
+.robot-sub { margin: 0 0 1rem; font-size: 0.82rem; color: var(--ink-4); }
+
+.robot-check {
+  display: flex; align-items: center; gap: 0.85rem;
+  padding: 0.9rem 1rem; background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 10px;
+}
+.robot-box {
+  width: 2rem; height: 2rem; flex: 0 0 auto; padding: 0;
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 2px solid rgb(var(--accent-rgb) / 0.4);
+  border-radius: 6px; cursor: pointer; touch-action: manipulation;
+}
+.robot-box:hover { border-color: var(--accent-2); }
+.robot-box:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.robot-tick { display: block; font-size: 1.1rem; line-height: 1; color: var(--accent-1); opacity: 0; }
+.robot-box.is-on .robot-tick { opacity: 1; }
+.robot-box-label { font-size: 0.95rem; color: var(--ink-2); cursor: pointer; }
+
+.robot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; }
+.robot-tile {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 1 / 1; min-height: 4.4rem; padding: 0.4rem;
+  font: inherit; font-size: 0.76rem; line-height: 1.35; text-align: center;
+  color: var(--ink-3); background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 8px;
+  cursor: pointer; touch-action: manipulation;
+}
+.robot-tile:hover { border-color: var(--accent-2); }
+.robot-tile:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.robot-tile.is-picked {
+  color: var(--ink); border-color: var(--accent-2);
+  box-shadow: inset 0 0 0 3px rgb(var(--accent-rgb) / 0.3);
+}
+.robot-tile.is-dead { color: var(--ink-4); font-style: italic; border-style: dashed; }
+
+.robot-field { display: flex; flex-direction: column; gap: 0.45rem; }
+.robot-field-label { font-size: 0.8rem; color: var(--ink-4); }
+.robot-input {
+  font: inherit; font-size: 1rem; padding: 0.6rem 0.75rem; color: var(--ink);
+  background: rgb(var(--well-rgb) / 0.8);
+  border: 1px solid rgb(var(--accent-rgb) / 0.35); border-radius: 8px;
+}
+.robot-input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.robot-range { width: 100%; accent-color: var(--accent-2); }
+.robot-range-read {
+  margin: 0; font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85rem; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+
+.robot-choices { display: flex; flex-direction: column; gap: 0.45rem; }
+.robot-choice {
+  font: inherit; font-size: 0.9rem; text-align: left; padding: 0.65rem 0.8rem;
+  color: var(--ink-2); background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 8px;
+  cursor: pointer; touch-action: manipulation;
+}
+.robot-choice:hover { border-color: var(--accent-2); }
+.robot-choice:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.robot-choice.is-picked { color: var(--ink); border-color: var(--accent-2); background: rgb(var(--accent-rgb) / 0.14); }
+
+.robot-actions { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.1rem; min-height: 2.4rem; }
+.robot-verify { margin-left: auto; padding: 0.55rem 1.4rem; }
+.robot-wait-hint { margin: 0; font-size: 0.78rem; color: var(--ink-4); }
+.robot-waiting { font-size: 0.85rem; color: var(--ink-3); }
+.robot-spin {
+  display: inline-block; width: 0.95rem; height: 0.95rem; border-radius: 50%;
+  border: 2px solid rgb(var(--accent-rgb) / 0.3); border-top-color: var(--accent-2);
+  animation: robot-spin 0.75s linear infinite;
+}
+@keyframes robot-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .robot-spin { animation: none; } }
+
+.robot-final-title { margin: 0 0 0.6rem; font-size: 1.2rem; color: var(--ink); }
+.robot-final-lead { margin: 0 0 1rem; font-size: 0.92rem; line-height: 1.65; color: var(--ink-2); }
+.robot-final-list { margin: 0 0 1.1rem; padding-left: 1.1rem; }
+.robot-final-list li { margin-bottom: 0.7rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-3); }
+.robot-final-list strong { color: var(--ink); }
+.robot-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.robot-statcell {
+  flex: 1 1 6rem; padding: 0.6rem 0.7rem; text-align: center;
+  background: var(--surf-1); border: 1px solid rgb(var(--accent-rgb) / 0.3); border-radius: 8px;
+}
+.robot-statnum {
+  display: block; font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 1.4rem; font-weight: 700; color: var(--accent-1); font-variant-numeric: tabular-nums;
+}
+.robot-statlab { display: block; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-4); }
+.robot-final-note { margin: 0.9rem 0 1.1rem; font-size: 0.82rem; line-height: 1.6; color: var(--ink-4); }
+.robot-again { width: 100%; }
+
+@media (max-width: 30rem) {
+  .robot-tile { min-height: 3.6rem; font-size: 0.7rem; }
+  .robot-card { padding: 0.85rem 0.85rem 1rem; }
+}
+
+/* ---- word-of-the-day ---- */
+/* ---- Word of the day ----
+   The board itself is the focus target (the shell gives it tabindex), so it
+   needs a visible focus ring of its own — without one, a keyboard player has
+   no idea the grid is listening. */
+.board-wotd { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; width: 100%; max-width: 30rem; padding: 0.2rem 0; }
+.board-wotd:focus { outline: none; }
+.board-wotd:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 6px; border-radius: 10px; }
+
+.wotd-grid { display: grid; gap: 0.35rem; }
+.wotd-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; }
+.wotd-tile { display: flex; align-items: center; justify-content: center; width: 2.9rem; height: 2.9rem; font-family: 'Cascadia Code', Consolas, monospace; font-size: 1.4rem; font-weight: 700; color: var(--ink); background: rgb(var(--well-rgb) / 0.55); border: 2px solid rgb(var(--line-rgb) / 0.25); border-radius: 6px; }
+.wotd-tile.is-filled { border-color: rgb(var(--line-rgb) / 0.6); }
+.wotd-tile.is-absent { background: rgb(var(--deep-rgb) / 0.85); border-color: transparent; color: var(--ink-4); }
+/* The stripe is not decoration: green and amber are the two colours the
+   commonest form of colour blindness confuses, so amber carries a texture as
+   well so the two states differ without any colour at all. */
+.wotd-tile.is-present { background: #b45309; border-color: #b45309; color: #fff7ed; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.17) 0 4px, rgba(255,255,255,0) 4px 8px); }
+.wotd-tile.is-correct { background: #15803d; border-color: #15803d; color: #f0fdf4; }
+
+.wotd-grid.is-wrong { animation: wotd-shake 0.3s ease-in-out; }
+@keyframes wotd-shake { 20% { transform: translateX(-7px); } 60% { transform: translateX(7px); } }
+@media (prefers-reduced-motion: reduce) { .wotd-grid.is-wrong { animation: none; } }
+
+.wotd-msg { margin: 0; min-height: 1.3rem; font-size: 0.86rem; color: var(--ink-3); text-align: center; }
+
+.wotd-keys { display: flex; flex-direction: column; gap: 0.35rem; width: 100%; }
+.wotd-keyrow { display: flex; justify-content: center; gap: 0.3rem; }
+.wotd-key { flex: 1 1 auto; min-width: 0; max-width: 2.5rem; padding: 0.7rem 0; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--ink); background: var(--surf-1); border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 6px; cursor: pointer; }
+.wotd-key:hover:not([disabled]) { border-color: rgb(var(--accent-rgb) / 0.6); }
+.wotd-key:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.wotd-key[disabled] { opacity: 0.55; cursor: default; }
+.wotd-key-wide { flex: 1 1 4.4rem; max-width: 4.4rem; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.wotd-key.is-absent { background: rgb(var(--deep-rgb) / 0.85); border-color: transparent; color: var(--ink-4); }
+.wotd-key.is-present { background: #b45309; border-color: #b45309; color: #fff7ed; }
+.wotd-key.is-correct { background: #15803d; border-color: #15803d; color: #f0fdf4; }
+
+.wotd-panel { width: 100%; max-width: 26rem; padding: 0.9rem 1.05rem; border-radius: 10px; border-left: 3px solid; text-align: center; }
+.wotd-panel.is-won { background: rgba(74, 222, 128, 0.1); border-left-color: #4ade80; }
+.wotd-panel.is-lost { background: rgba(248, 113, 113, 0.1); border-left-color: #f87171; }
+.wotd-panel-title { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.wotd-panel-word { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--ink-2); }
+.wotd-panel-word strong { font-family: 'Cascadia Code', Consolas, monospace; letter-spacing: 0.08em; color: var(--accent-1); }
+.wotd-panel-note { margin: 0 0 0.9rem; font-size: 0.82rem; line-height: 1.6; color: var(--ink-4); }
+
+@media (max-width: 30rem) {
+  .wotd-tile { width: 2.4rem; height: 2.4rem; font-size: 1.15rem; }
+  .wotd-key { padding: 0.6rem 0; font-size: 0.78rem; }
+  .wotd-key-wide { flex-basis: 3.6rem; max-width: 3.6rem; font-size: 0.62rem; }
+}
+
+/* ==========================================================================
+   Storage, and the controls for it
+   ==========================================================================
+   Two surfaces for the same thing. Every game page carries the strip: what
+   this one game is holding, and a button to delete it. The hub carries the
+   panel: everything the section is holding, in a table, plus the switch that
+   turns storage off entirely.
+
+   The strip exists on the game page rather than only on the hub because that
+   is where the number is earned and where someone is annoyed enough by it to
+   want it gone. Making them navigate to a settings page to delete a high
+   score is how a "you're in control" claim becomes false in practice while
+   staying technically true.
+   ========================================================================== */
+
+.game-data {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px dashed rgb(var(--line-rgb) / 0.6);
+  border-radius: 10px;
+  background: rgb(var(--well-rgb) / 0.35);
+}
+
+.game-data-line {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.game-data-line strong { font-weight: 600; color: var(--ink-2); }
+
+/* Reserves its line so the row does not jump when the confirmation lands.
+   The message is short and transient; the layout shifting under a click the
+   reader just made is not. */
+.game-data-note {
+  display: block;
+  min-height: 1.2em;
+  font-size: 0.8rem;
+  color: var(--ink-4);
+}
+
+/* Quiet, not disabled-looking. This button deletes something, so it should
+   not be the brightest thing on the page competing with Play -- but a
+   destructive control that reads as inert is its own kind of trap, so it
+   keeps a full-contrast label and a real border. */
+.game-btn-quiet {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.34rem 0.7rem;
+  color: var(--ink-3);
+  background: transparent;
+  border-color: rgb(var(--line-rgb) / 0.7);
+}
+
+.game-btn-quiet:hover:not(:disabled) {
+  color: var(--ink);
+  background: rgb(var(--raise-rgb) / 0.5);
+  border-color: rgb(var(--accent-rgb) / 0.5);
+}
+
+/* ---- the hub panel ---- */
+
+.data-panel { display: grid; gap: 1rem; }
+
+.data-empty {
+  margin: 0;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.88rem;
+  color: var(--ink-3);
+  background: rgb(var(--well-rgb) / 0.35);
+  border-radius: 10px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.45);
+}
+
+.data-table th {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.data-table td { color: var(--ink-2); }
+.data-table tr:last-child td { border-bottom: 0; }
+
+/* Tabular figures so a column of scores lines up on the digit rather than
+   drifting with the font's proportional widths. */
+.data-value {
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-1);
+}
+
+.data-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.8rem;
+}
+
+.data-said {
+  margin: 0;
+  flex: 1 1 12rem;
+  font-size: 0.83rem;
+  color: var(--ink-3);
+}
+
+/* aria-pressed carries the state for a screen reader; this carries it for
+   everyone else. Without it the only signal that storage is off is the
+   button's label, which the reader has just stopped looking at. */
+#data-optout[aria-pressed='true'] {
+  color: var(--ink);
+  background: rgb(var(--accent-rgb) / 0.16);
+  border-color: rgb(var(--accent-rgb) / 0.55);
+}
+
+.data-note {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--ink-4);
+}
+
+.data-note code {
+  padding: 0.05rem 0.3rem;
+  font-family: 'Cascadia Code', Consolas, monospace;
+  font-size: 0.95em;
+  background: rgb(var(--raise-rgb) / 0.55);
+  border-radius: 4px;
+}
+
+/* The table is three short columns and survives a narrow screen intact; only
+   the padding needs to give. Turning it into stacked cards would cost the
+   column alignment that makes it scannable in the first place. */
+@media (max-width: 30rem) {
+  .data-table th,
+  .data-table td { padding: 0.45rem 0.4rem; }
+  .game-data { flex-direction: column; align-items: flex-start; }
+}

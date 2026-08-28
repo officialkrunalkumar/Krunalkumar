@@ -532,6 +532,14 @@
     setTrack(trackIndex + 1);
   });
 
+  /* The same thing, for a phone. There is no T key there, and the controls
+     withdraw when the scene is idle, so without this a touchscreen visitor
+     has no way to reach the other three tracks at all. */
+  if (window.TapCycle) {
+    window.TapCycle.on(function () { setTrack(trackIndex + 1); },
+      { key: 'party', hint: 'Double-tap anywhere to change the track' });
+  }
+
   announceTrack();
 
   /* A remembered "on" cannot start the audio by itself — the browser wants a

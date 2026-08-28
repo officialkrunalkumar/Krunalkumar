@@ -143,6 +143,10 @@ var DOC_URLS = [
   // The navigation fallback for the installed app. Self-contained by design —
   // precaching this one document is enough to keep an offline launch branded
   // instead of showing the browser's network-error page.
+  // The offline page's own script. It builds that page's lists from what is
+  // really in these caches, so it has to be here or the page can only fall
+  // back to claiming nothing.
+  '/assets/js/offline.js',
   '/offline'
 ];
 
@@ -254,12 +258,39 @@ var BLOG_URLS = [
 var BLOG_SET = {};
 BLOG_URLS.forEach(function (u) { BLOG_SET[u] = true; });
 
+// The arcade. Unlike the two lists above this is matched by PREFIX, and the
+// difference is deliberate.
+//
+// DOC_URLS and BLOG_URLS are enumerated because both are precached on
+// install: the promise there is "it works even if you have never opened it",
+// and a promise like that has to name what it covers. /games cannot make that
+// promise honestly. There are dozens of game pages and the number only grows,
+// so precaching them would mean every visitor to any page on this site paying
+// a multi-megabyte download for an arcade they may never open — on mobile
+// data, uninvited. That is exactly the behaviour the labs section refuses to
+// have, and it would be worse here because a game is not why most people came.
+//
+// So games are cached on USE instead. Open one and it stays: the page, the
+// shared stylesheet, the shell and that game's own module all match the rules
+// below, so they are kept the moment they are first fetched, and the game
+// works with no network from then on. Nothing is downloaded for a game
+// nobody has played. /offline says exactly this rather than implying more.
+var GAME_CACHE = 'games-v1';
+
+function isGamePath(pathname) {
+  if (pathname === '/games' || pathname.indexOf('/games/') === 0) return true;
+  if (pathname.indexOf('/assets/js/games/') === 0) return true;
+  if (pathname === '/assets/css/games.css') return true;
+  return false;
+}
+
 // Which network-first cache owns a path, or null if the fetch handler should
-// leave the request alone. One lookup keeps the two lists from growing two
+// leave the request alone. One lookup keeps the lists from growing separate
 // copies of the same fetch logic.
 function netFirstCacheFor(pathname) {
   if (DOC_SET[pathname]) return DOC_CACHE;
   if (BLOG_SET[pathname]) return BLOG_CACHE;
+  if (isGamePath(pathname)) return GAME_CACHE;
   return null;
 }
 
@@ -336,6 +367,9 @@ self.addEventListener('activate', function (event) {
           if (name.indexOf('blog-offline-') === 0 && name !== BLOG_CACHE) {
             return caches.delete(name);
           }
+          if (name.indexOf('games-') === 0 && name !== GAME_CACHE) {
+            return caches.delete(name);
+          }
           return null;
         }));
       })
@@ -410,10 +444,24 @@ self.addEventListener('fetch', function (event) {
         return caches.open(netFirst).then(function (cache) {
           return cache.match(url.pathname);
         }).then(function (hit) {
-          // A miss here means offline before the first successful install —
-          // Response.error() reproduces the plain network failure the page
-          // would have seen anyway.
-          return hit || Response.error();
+          if (hit) return hit;
+          // A miss here means offline for a page this device never stored —
+          // a game nobody opened, a post written since the last visit. That
+          // request is handled up here rather than by the navigate branch
+          // below, because these paths match a net-first list first, so
+          // without this line they produced the browser's own "site cannot be
+          // reached" screen while /offline sat precached and unused two
+          // branches away. Only navigations get the document: an uncached
+          // SCRIPT must still fail as a script, since answering it with HTML
+          // would turn a missing file into a syntax error.
+          if (request.mode === 'navigate') {
+            return caches.open(DOC_CACHE).then(function (docs) {
+              return docs.match('/offline');
+            }).then(function (page) {
+              return page || Response.error();
+            });
+          }
+          return Response.error();
         });
       })
     );

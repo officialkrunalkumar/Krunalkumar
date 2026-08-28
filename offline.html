@@ -37,7 +37,7 @@
       padding: 24px;
       box-sizing: border-box;
     }
-    main { max-width: 34rem; text-align: center; }
+    main { max-width: 36rem; text-align: center; }
     .mark {
       font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
       font-size: 2rem;
@@ -61,6 +61,38 @@
     a.btn:hover, a.btn:focus-visible { border-color: #7fb1ff; outline: none; }
     a.btn.primary { background: #23406e; border-color: #3a5f9e; }
     .small { font-size: 0.85rem; margin-top: 1.6rem; color: #7b8aa6; }
+
+    /* The offline-capable pages are a LIST, not a row of buttons. There were
+       three of them when this page was written and a button each was fine;
+       with the arcade there are far more, and a wall of identical pills
+       stops being a set of choices and becomes a texture. A list also lets
+       each entry carry a word about what it is, which a button cannot. */
+    .group { margin-top: 1.5rem; text-align: left; }
+    .group h2 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #7fb1ff;
+      margin: 0 0 0.5rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #26365a;
+    }
+    ul.links { list-style: none; margin: 0; padding: 0; }
+    ul.links li { border-bottom: 1px solid #1e2c48; }
+    ul.links li:last-child { border-bottom: 0; }
+    ul.links a {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.55rem 0.2rem;
+      color: #dbe6f5;
+      text-decoration: none;
+    }
+    ul.links a:hover, ul.links a:focus-visible { color: #7fb1ff; outline: none; }
+    ul.links a span { font-size: 0.82rem; color: #7b8aa6; }
+    ul.links a:hover span { color: #a9b8d0; }
   </style>
 </head>
 <body>
@@ -68,28 +100,61 @@
     <p class="mark">KS_</p>
     <h1>You are offline</h1>
     <p>This page needs a connection, and the network is not reachable right now.
-       Once you are back online, following any link below loads the live site again.</p>
-    <!--
-      This used to read "if you have opened them before, they are already saved"
-      — which was never the condition. sw.js precaches both tools in its install
-      handler (DOC_URLS), and boot.js registers that worker on every page, so the
-      tools are saved by the first visit to ANY page here. Opening them has never
-      been required, and the old wording read as a false claim to anyone who hit
-      this page in a private window without having touched the labs.
-    -->
-    <p>Three tools on this site are built to work with no network at all. All were
-       saved to this device on your first visit to any page here — opening them was
-       never required — so they still work now:</p>
+       Everything listed below is stored on this device and opens without one.</p>
+
     <div class="actions">
       <a class="btn primary" href="/">Try again</a>
-      <a class="btn" href="/labs/resume-maker">Resume maker</a>
-      <a class="btn" href="/labs/biodata-maker">Biodata maker</a>
-      <a class="btn" href="/labs/wish-generator">Wish generator</a>
     </div>
-    <p class="small">Nothing you type into those tools ever leaves your device — that is why they work here.
-       The wish generator only ever builds a link out of the name you type, so it has nothing to send even when there is a network.
-       The tools themselves sit in this browser's cache storage, and clearing site data removes them
-       until your next visit.</p>
+
+    <div class="group">
+      <h2>Always available</h2>
+      <!--
+        These five are precached by sw.js on install (DOC_URLS), so they are on
+        the device whether or not they have ever been opened. Nothing belongs
+        in this list that is only cached on use — that is what the second list
+        is for, and the difference between the two headings is the whole
+        honesty of this page. scripts/build.js enforces it: every internal link
+        below must appear in DOC_URLS or the deploy fails.
+
+        offline.js re-checks each one against the real cache at load and drops
+        any it cannot find, so a partial install cannot leave a dead link here.
+      -->
+      <ul class="links" id="tool-list">
+        <li><a href="/labs/resume-maker">Resume maker <span>five templates, printing is the download</span></a></li>
+        <li><a href="/labs/biodata-maker">Biodata maker <span>the document you should never upload</span></a></li>
+        <li><a href="/labs/wish-generator">Wish generator <span>92 festivals, builds a link from a name</span></a></li>
+        <li><a href="/birthday">Birthday card <span>what the generator builds</span></a></li>
+        <li><a href="/festival">Festival card <span>the same, for the other 91</span></a></li>
+        <li><a href="/blog">The blog <span id="blog-count">every post, saved for reading offline</span></a></li>
+      </ul>
+      <p class="small" style="margin-top:0.7rem">Saved on your first visit to any page here &mdash; opening them
+         was never required. Nothing you type into them ever leaves your device, which is why they work with
+         no network.</p>
+    </div>
+
+    <div class="group">
+      <h2>Games you have played</h2>
+      <!--
+        DELIBERATELY EMPTY IN THE MARKUP. This list is built by offline.js from
+        what is actually in Cache Storage, and must never be hand-written.
+
+        It used to be a fixed list of six games under this same heading, which
+        meant it named games the visitor had never opened and every one of
+        those links produced the browser's "site cannot be reached" page. A
+        list of promises that a page cannot keep is worse than no list, and
+        worst of all on this page.
+
+        With no JavaScript nothing is claimed at all, which is the correct
+        answer to a question that can only be answered by reading the cache.
+      -->
+      <ul class="links" id="game-list"></ul>
+      <p class="small" id="games-note" style="margin-top:0.7rem">Games are saved only once you have opened them.
+         Turn on JavaScript to see which ones are on this device.</p>
+    </div>
+
+    <p class="small">Everything listed sits in this browser&rsquo;s cache storage, and clearing site data removes
+       it until your next visit.</p>
   </main>
+  <script defer src="/assets/js/offline.js"></script>
 </body>
 </html>

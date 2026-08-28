@@ -658,6 +658,12 @@
     setTrack(trackIndex + 1);
   });
 
+  /* The same thing, for a phone — see the note in party-sound.js. */
+  if (window.TapCycle) {
+    window.TapCycle.on(function () { setTrack(trackIndex + 1); },
+      { key: 'buddha', hint: 'Double-tap anywhere for another setting' });
+  }
+
   /* The toast and the live region. Kept here rather than in buddha.js because
      the setting is this file's business, and because the page's existing
      .b-announce belongs to the verses — writing tracks into it would interrupt

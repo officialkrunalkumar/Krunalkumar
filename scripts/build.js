@@ -97,7 +97,53 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const CHECK = process.argv.includes('--check');
+/* --------------------------------------------------------------------------
+   Who is allowed to rewrite the working tree.
+
+   The header above says a bare `node scripts/build.js` rewrites your files and
+   tells you to run it with --check instead. That was documentation, and
+   documentation does not survive muscle memory: `npm run build` is what every
+   other repository on earth trains you to type, and here it strips the
+   comments out of the CSS and JS -- the part of this codebase worth the most.
+   A warning in a comment is read once, by someone who is not about to make
+   the mistake; the person who makes it is in a hurry and typing from habit.
+   That is not a safeguard, it is a note left at the scene.
+
+   (It is also not hypothetical. This guard was written immediately after an
+   accidental bare run did exactly this to eleven stylesheets and two scripts.
+   They were recoverable only because the stripper is a pure function of the
+   committed file, so re-stripping HEAD and diffing proved which files held
+   real edits and which could simply be checked out. Recovery took ten
+   minutes and would have been impossible had the edits been uncommitted.)
+
+   So the default is inverted. Writing now requires PROVING you are the build
+   container, by one of two independent signals:
+
+     --write        passed explicitly by vercel.json's buildCommand
+     VERCEL / CI    set by the build environment itself
+
+   Either is enough; neither exists locally, where the run demotes itself to
+   --check and says so loudly. Both are checked because each fails in the
+   opposite direction: an env check breaks if a deploy ever runs somewhere
+   that does not set those, and a flag check breaks if a deploy is triggered
+   without going through vercel.json.
+
+   The failure direction is the whole point. If BOTH signals are somehow
+   missing on a real deploy, the build demotes to --check: every gate still
+   runs, a genuine problem still exits non-zero, Vercel still holds the
+   previous deployment, and the only cost is that the published CSS and JS
+   keep their comments -- tens of kilobytes, gzipped away to almost nothing,
+   noticed by nobody. The opposite default fails by destroying source. Given
+   a choice of which way to be wrong, ship comments, not damage.
+
+   `--write` on your own machine still exists and still does exactly what it
+   says. It is just no longer something you can type by accident.
+   -------------------------------------------------------------------------- */
+const ASKED_CHECK = process.argv.includes('--check');
+const FORCED = process.argv.includes('--write');
+const ON_BUILDER = !!(process.env.VERCEL || process.env.CI);
+const CHECK = ASKED_CHECK || !(FORCED || ON_BUILDER);
+const DEMOTED = CHECK && !ASKED_CHECK;
 
 const CSS_FILES = [
   'assets/css/main.css',
@@ -125,7 +171,49 @@ const CSS_FILES = [
      and the only ones no brace-balance check ever looked at. */
   'assets/css/celebrate.css',
   'assets/css/wish-generator.css',
+  /* Found by cssCoverage() on its very first run, which is the whole
+     argument for the gate in one line: this stylesheet had been live and
+     unchecked since the glossary shipped, and nobody -- including the person
+     writing the gate -- knew it was missing. */
+  'assets/css/glossary.css',
+  /* The arcade. Added the day /games was built, but only because the drift
+     this list keeps suffering was noticed while writing an unrelated guard --
+     which makes three for three: party/einstein, celebrate/wish-generator,
+     and now this one. A rule that has been broken every single time it
+     applied is not a rule, so it is enforced below by cssCoverage() rather
+     than asked for here. This comment stays as the reason that gate exists. */
+  'assets/css/games.css',
 ];
+
+/* --------------------------------------------------------------------------
+   The gate the comment above should have been all along.
+
+   Every stylesheet under assets/css must appear in CSS_FILES. Being absent is
+   not a missed optimisation -- an unlisted file also skips the brace-balance
+   and selector-order checks, so it is precisely the file where a bad edit
+   ships unnoticed. Three stylesheets reached production that way.
+
+   It runs in --check mode too, and throws rather than warns, because a
+   warning in a deploy log is read exactly as often as the comment was.
+   -------------------------------------------------------------------------- */
+function cssCoverage() {
+  const dir = path.join(ROOT, 'assets/css');
+  const onDisk = fs.readdirSync(dir).filter((f) => f.endsWith('.css')).sort();
+  const listed = CSS_FILES.map((f) => path.basename(f));
+  const missing = onDisk.filter((f) => listed.indexOf(f) === -1);
+  const ghosts = listed.filter((f) => onDisk.indexOf(f) === -1);
+  if (ghosts.length) {
+    throw new Error('CSS_FILES lists ' + ghosts.join(', ') + ' but the file is not on disk');
+  }
+  if (missing.length) {
+    throw new Error(
+      'stylesheet not in CSS_FILES: ' + missing.join(', ') +
+      '\n  An unlisted stylesheet ships its comments AND skips the brace-balance' +
+      '\n  check, which is the actual danger. Add it to CSS_FILES in scripts/build.js.'
+    );
+  }
+  log('  ' + onDisk.length + ' stylesheets on disk, all listed');
+}
 
 /* The two scripts every page pays for, written in the same comment-heavy
    house style as the CSS. boot.js loads synchronously in every <head> —
@@ -266,6 +354,7 @@ function balance(src) {
 }
 
 function doCss() {
+  cssCoverage();
   log('CSS comment stripping');
   for (const rel of CSS_FILES) {
     const abs = path.join(ROOT, rel);
@@ -1081,6 +1170,11 @@ const SW_PRECACHED_PAGES = [
   'labs/wish-generator.html',
   'birthday.html',
   'festival.html',
+  /* Added when /offline stopped being a JS-free page. It now loads
+     offline.js to build its lists from the real cache, and a precached page
+     whose script is NOT precached is the worst version of this bug: the page
+     appears, and the part that makes its promises true silently does not. */
+  'offline.html',
 ];
 
 function pageAssetUrls(html) {
@@ -1151,6 +1245,46 @@ function doSwPrecacheParity(root) {
   }
   for (const u of blogListed) {
     if (!urlToFile(u, root)) problems.push('sw.js BLOG_URLS entry has no file behind it: ' + u);
+  }
+
+  /* --------------------------------------------------------------------
+     /offline may not link to anything it cannot actually serve.
+
+     This is the gate that turns that page's promise into something
+     mechanical. /offline is the page a visitor reaches precisely BECAUSE
+     the network is gone, so a link there that is not in the precache does
+     not degrade — it produces the browser's own "site cannot be reached"
+     error, which is the single most useless thing that page could do.
+
+     It had exactly that bug: a hand-written list of six games under the
+     heading "Games you have played", fixed at build time, naming games the
+     visitor had never opened. Every one was a dead end. The list is now
+     built at runtime from Cache Storage by assets/js/offline.js, and what
+     little remains hard-coded in the markup is checked here.
+
+     Anchors only, and same-origin only: "/" is allowed as the retry link
+     because a failed retry is the honest answer to "try again", not a
+     broken promise.
+     -------------------------------------------------------------------- */
+  const offlineRel = 'offline.html';
+  const offlineAbs = path.join(root, offlineRel);
+  if (fs.existsSync(offlineAbs)) {
+    const src = stripHtmlComments(fs.readFileSync(offlineAbs, 'utf8'));
+    const hrefs = [];
+    for (const tag of src.matchAll(/<a\s[^>]*href\s*=\s*"([^"]*)"/g)) hrefs.push(tag[1]);
+    const linked = new Set(
+      hrefs
+        .map((h) => h.split('?')[0].split('#')[0])
+        .filter((h) => h.startsWith('/') && h !== '/')
+    );
+    for (const href of linked) {
+      if (docListed.has(href) || blogListed.has(href)) continue;
+      problems.push(
+        'offline.html links to ' + href + ' but sw.js precaches neither it nor a redirect to it' +
+        ' — that link is dead in the one situation the page exists for'
+      );
+    }
+    log('  offline.html links to ' + linked.size + ' page(s), all precached');
   }
 
   if (problems.length) {
@@ -1306,6 +1440,14 @@ function colophonFacts(pages, committed) {
   /* Same count the llms.txt facts use — one definition, so the colophon and
      the AI-facing files can never quote different numbers again. */
   facts.labs = String(labPageCount(ROOT));
+  /* Counted from the manifest rather than from files on disk, because the
+     manifest is what the section is generated FROM: a page that existed
+     without an entry would be unreachable, and an entry without a page fails
+     the games gate above long before this runs. */
+  facts.games = String((function () {
+    try { return (require(path.join(ROOT, 'scripts/games-data.js')).GAMES || []).length; }
+    catch (e) { return 0; }
+  })());
   facts.posts = String(fs.readdirSync(path.join(ROOT, 'blog')).filter((f) => f.endsWith('.html') && f !== 'index.html').length);
 
   /* Scripts I wrote. assets/js/vendor is skipped by walkFiles, and so is
@@ -1487,9 +1629,145 @@ function doGeneratedPages() {
   }
 }
 
+function doGamesManifestParity() {
+  const root = ROOT;
+  const { GAMES } = require(path.join(ROOT, 'scripts/games-data.js'));
+  log('');
+  log('games manifest gate');
+
+  /* The manifest is BUILD-TIME data. Nothing hands it to the runtime, so a
+     behavioural field set only there is a comment that reads like code — and
+     three separate bugs shipped exactly that way:
+
+       minesweeper  bestKey: null in the manifest, absent from the spec, so
+                    the shell turned the slot back on with "higher is better"
+                    against a completion time and recorded the slowest clear.
+       hangman      tapAction: false in the manifest, absent from the spec,
+                    while the page printed "a tap on the screen does nothing,
+                    so a stray thumb cannot cost you a guess". A tap spent a
+                    guess.
+       adventure    the same, executing the highlighted menu entry.
+
+     Each looked correct in whichever file you happened to open. This gate
+     compares the two and refuses the deploy when they disagree, for the
+     fields where the difference is behaviour rather than presentation. */
+  /* bestOrder joined this list after tux-racer was found keeping the SLOWEST
+     run as its record: the module set bestKey but not bestOrder, so the
+     shell's default of 'higher is better' was applied to a lap time in
+     seconds. The manifest had said 'low' all along, where nothing read it. */
+  const RUNTIME_FIELDS = ['bestKey', 'bestOrder', 'tapAction', 'tapKey'];
+  const drift = [];
+  for (const g of GAMES) {
+    const modPath = path.join(root, 'assets/js/games', g.script);
+    if (!fs.existsSync(modPath)) continue;
+    const src = fs.readFileSync(modPath, 'utf8');
+    for (const field of RUNTIME_FIELDS) {
+      if (!(field in g)) continue;
+      /* Only values that DIFFER from what the shell would do on its own can
+         cause the silent divergence. bestKey: 'snake' on the game whose slug
+         is snake is what the shell already defaults to, so a module omitting
+         it behaves identically and flagging it would be noise — and a gate
+         that cries wolf 78 times is one nobody reads. What matters is
+         bestKey: null (the slot OFF, default is ON), tapAction: false (taps
+         IGNORED, default is on), and any tapKey (default is 'action'). */
+      if (field === 'bestKey' && g[field] === g.slug) continue;
+      if (field === 'tapAction' && g[field] !== false) continue;
+      /* Regex LITERALS, not RegExp built from a string. The first version of
+         this line was new RegExp('\b' + field + '\s*:'), where '\b' is not a
+         word boundary but a literal backspace character and '\s' is just an
+         "s" — so it matched nothing, the gate reported all 52 games as
+         broken, and the 52 it named were the ones that were already correct.
+         A gate whose own pattern is wrong is worse than no gate: it sends you
+         to fix code that was never broken. */
+      const FIELD_RE = {
+        bestKey: /[^A-Za-z0-9_$]bestKey\s*:/,
+        bestOrder: /[^A-Za-z0-9_$]bestOrders*:/,
+        tapAction: /[^A-Za-z0-9_$]tapAction\s*:/,
+        tapKey: /[^A-Za-z0-9_$]tapKey\s*:/,
+      };
+      const re = FIELD_RE[field];
+      if (!re.test(src)) {
+        drift.push(g.slug + ': manifest sets ' + field + '=' + JSON.stringify(g[field]) +
+                   ' but ' + g.script + ' never does — the manifest value is never read at runtime');
+      }
+    }
+  }
+  if (drift.length) {
+    log('  FAILED:');
+    drift.forEach((d) => log('    - ' + d));
+    throw new Error('games manifest gate: ' + drift.length + ' field(s) set only in the manifest');
+  }
+  log('  ' + GAMES.length + ' games: runtime fields agree between manifest and module');
+}
+
+/* --------------------------------------------------------------------------
+   7e. Share images
+   --------------------------------------------------------------------------
+   Every og:image and twitter:image a page declares must exist on disk.
+
+   A page pointing at a missing card does not fall back to the site's generic
+   one — the crawler fetches the URL, gets a 404, and the link posts with no
+   image at all. It is invisible locally, invisible in the deploy log, and only
+   shows up when somebody shares the page, which is the one moment the image
+   was for.
+
+   All sixty-six game pages shipped exactly that way: scripts/games.js emitted
+   og-game-<slug>.jpg for each of them and not one of the files had been
+   rendered. This gate is why that cannot recur — and it checks the whole site,
+   not just the games, because the same mistake is available to every generator
+   here.
+   -------------------------------------------------------------------------- */
+function doShareImages() {
+  log('');
+  log('share image gate');
+  const problems = [];
+  const seen = new Set();
+  let checked = 0;
+
+  for (const rel of listHtmlPages(ROOT)) {
+    const html = stripHtmlComments(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
+    const urls = [];
+    for (const m of html.matchAll(/<meta[^>]+(?:property="og:image"|name="twitter:image")[^>]*content="([^"]+)"/g)) {
+      urls.push(m[1]);
+    }
+    for (const u of urls) {
+      checked++;
+      /* Absolute URLs on our own host are the house style, so they are
+         reduced to a path. Anything pointing at another host is somebody
+         else's file and not ours to verify. */
+      const p = u.replace(/^https?:\/\/krunalkumar\.dpdns\.org/, '');
+      if (!p.startsWith('/')) continue;
+      const file = path.join(ROOT, p.slice(1));
+      const key = rel + ' -> ' + p;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (!fs.existsSync(file)) {
+        problems.push(rel + ' declares ' + p + ' but no such file exists — the link posts with no image');
+      }
+    }
+  }
+
+  if (problems.length) {
+    log('  FAILED:');
+    problems.slice(0, 12).forEach((p) => log('    - ' + p));
+    if (problems.length > 12) log('    … and ' + (problems.length - 12) + ' more');
+    throw new Error('share image gate: ' + problems.length + ' missing card(s) — refusing to publish');
+  }
+  log('  ' + checked + ' og:image/twitter:image references, all present');
+}
+
 function main() {
-  log(CHECK ? '=== build --check (no files will be written; git history may be deepened) ==='
-            : '=== build ===');
+  if (DEMOTED) {
+    log('=== build: DEMOTED TO --check ===');
+    log('  This is not the build container (no --write, no VERCEL/CI), so nothing');
+    log('  will be written. Your CSS and JS comments are safe. This is the');
+    log('  intended result of running the build locally -- see the note above');
+    log('  CHECK in this file. Pass --write if you genuinely meant it.');
+    log('');
+  } else {
+    log(CHECK ? '=== build --check (no files will be written; git history may be deepened) ==='
+              : '=== build ===');
+  }
   doCss();
   doJs();
   doGeneratedPages();
@@ -1500,6 +1778,8 @@ function main() {
   doSitemapParity();
   doChromeParity();
   doSwPrecacheParity();
+  doGamesManifestParity();
+  doShareImages();
   doVendorPairing();
   verifyOutput();
   log('');

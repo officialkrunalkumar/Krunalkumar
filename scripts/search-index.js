@@ -110,6 +110,7 @@ function urlFor(rel) {
 
 function sectionFor(url) {
   if (url.startsWith('/labs')) return 'Labs';
+  if (url.startsWith('/games')) return 'Games';
   if (url.startsWith('/blog')) return 'Blog';
   return 'Site';
 }

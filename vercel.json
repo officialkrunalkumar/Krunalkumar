@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "node scripts/build.js",
+  "buildCommand": "node scripts/build.js --write",
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,

@@ -4361,3 +4361,41 @@ footer a:hover {
     color: #000 !important;
   }
 }
+
+/* The one-off hint for double-tap track changing (/party, /buddha, /einstein).
+   Fixed rather than absolute because the pages it appears on scroll their own
+   content underneath it, and a hint that scrolls away before it is read is
+   just a layout bug with good intentions. pointer-events: none matters more
+   than it looks: it sits over the middle of the screen on a phone, which is
+   exactly where the next tap lands, and a hint that swallows the tap it is
+   describing would be a small masterpiece of the wrong thing.
+
+   It is deliberately not theme-tokenised. These three pages run their own
+   full-bleed backgrounds that ignore the site palette, so a token here would
+   read correctly on the site and vanish on the page it is for. */
+.tap-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 5.5rem;
+  z-index: 60;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  color: #f8fafc;
+  background: rgba(2, 6, 23, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.tap-hint.is-shown { opacity: 1; transform: translate(-50%, 0); }
+
+/* The transform is dropped rather than shortened: for a reader who asked for
+   less motion, a hint that slides up is the motion they asked to not have. */
+@media (prefers-reduced-motion: reduce) {
+  .tap-hint { transition: opacity 0.2s ease; transform: translate(-50%, 0); }
+}

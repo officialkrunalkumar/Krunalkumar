@@ -167,6 +167,62 @@ Three instruments sharing one mixer, all in the browser.
 - One oscilloscope shows the summed output, so the deck and the synth are
   visibly mixing rather than merely playing at the same time.
 
+## Games (/games)
+
+Sixty-six games, in seven categories, all of them running entirely in the
+visitor's browser. There are no ads, no sign-up, no accounts and no network
+traffic once a game has been opened once. The categories are arcade, puzzle,
+terminal (seventeen ports of Linux terminal games), board, cs (games aimed at
+programmers), toy (things to fiddle with rather than win) and fun.
+
+WHAT IS ACTUALLY THERE. Arcade: snake, breakout, tetris, asteroids, flappy, a
+platformer, air hockey, moon buggy and a downhill racer. Puzzle: 2048,
+minesweeper, sudoku, connect four, gomoku, a daily five-letter word game,
+snakes and ladders, hangman and a memory grid. Terminal: cmatrix, pipes,
+cbonsai, rain, aafire, rogue, adventure, star trek, ninvaders, tty solitaire,
+asciijump, greed, robots, wumpus, typespeed, arithmetic and bastet. Board:
+chess against a real negamax engine with alpha-beta pruning and quiescence
+search, plus ludo and carrom. For programmers: shell quest (eight puzzles in a
+simulated Unix shell), guess the output, assembly puzzles, regex golf, a CTF
+arcade, phishing-or-not, a password strength duel, subnet sprint and a sorting
+race. Toys: boids, falling sand, game of life. Fun: a typing trainer on real
+paragraphs, a five-factor personality inventory, a love calculator that shows
+its own arithmetic, reaction time, aim trainer, memory span and several
+quizzes.
+
+HOW IT IS BUILT. Every game runs on one shared engine (assets/js/games/
+game-shell.js): a fixed-timestep loop at 1/120s with a clamped accumulator,
+canvas sizing that accounts for device pixel ratio, pause, mute, fullscreen,
+overlays and an on-screen pad. The seventeen terminal games add a character-
+grid layer on top of that, so they are drawn as text cells rather than as
+sprites. Because there is one engine, a fix to focus handling or canvas
+scaling applies to all sixty-six at once.
+
+The shell binds only the arrow keys, Space, Enter and Escape. No game binds a
+letter key, which is the constraint that lets the typing games and the shell
+simulator exist inside the same engine as the arcade ones.
+
+MOBILE. Every game has a working touch path: a directional pad, swipes, taps
+on the board, real buttons, or its own on-screen keyboard. The pad is revealed
+by a (pointer: coarse) media query rather than by sniffing the user agent, so
+a touchscreen laptop gets it and a mouse user never sees it.
+
+DATA. Best scores and a few settings are kept in the browser's own
+localStorage under a "game." prefix. Nothing is sent anywhere and nothing
+identifies the visitor. The hub at /games lists every key that is stored with
+its value, clears all of it on one button, and can switch storage off
+entirely — which also deletes what is already there, on the grounds that a
+switch which only stops future writes is a pause rather than an opt-out. One
+key survives, holding the word "off", because a preference to store nothing
+has to be remembered somewhere; the page says so rather than pretending
+otherwise.
+
+OFFLINE. Games are cached by the service worker when they are opened rather
+than precached on install, so a first visit to any page on the site does not
+pay to download an arcade the visitor may never open. A game that has been
+played once works with no network from then on, and /offline lists exactly
+which ones are on the device by reading the cache rather than by guessing.
+
 ## Colophon (/colophon)
 
 How the site is built, and the one page that maintains itself.
@@ -445,7 +501,7 @@ appeared, which is the order the picker and the hub use.
 ## Reading the site: search and themes
 
 **Search.** Every page has a search button in the header. It runs against a prebuilt
-index covering all 97 pages and opens a full-screen panel, on a phone and a laptop
+index covering all 172 pages and opens a full-screen panel, on a phone and a laptop
 alike. The index ships with the site and the matching happens in the tab, so no
 search query is ever sent anywhere. Analytics is told only that a search ran and how
 many results it returned — a zero-result count shows where the site is missing
