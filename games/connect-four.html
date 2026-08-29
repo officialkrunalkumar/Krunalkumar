@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours — both of which fall out of the search rather than being special-cased." />
+    <meta name="description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours, straight out of the search." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/connect-four" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Connect Four that never misses a block" />
-    <meta property="og:description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours — both of which fall out of the search rather than being special-cased." />
+    <meta property="og:description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours, straight out of the search." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/connect-four" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-connect-four.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Connect Four that never misses a block" />
-    <meta name="twitter:description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours — both of which fall out of the search rather than being special-cased." />
+    <meta name="twitter:description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours, straight out of the search." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-connect-four.jpg" />
     <title>Connect Four — Play The Computer Free, No Sign-Up</title>
     <script type="application/ld+json">
@@ -32,16 +32,22 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours — both of which fall out of the search rather than being special-cased.",
+        "description": "Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours, straight out of the search.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD"
         },
-        "playMode": "SinglePlayer",
+        "playMode": [
+                "SinglePlayer",
+                "MultiPlayer"
+        ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -134,7 +140,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -227,7 +233,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Connect Four playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -307,7 +313,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=connect-four#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=connect-four&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Connect%20Four%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

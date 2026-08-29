@@ -436,6 +436,11 @@
       charset: curCharset, wordlist: COMMON, maxLen: 16
     });
     startRaf();
+    // Counted only once the worker is live and fed. startCrack is only ever
+    // reached from the Start button or Ctrl+Enter, and if LabViz.worker()
+    // threw — a browser refusing blob workers — the throw skips this line: a
+    // crack that never started should not read as the lab being used.
+    if (window.KSLab) window.KSLab.used('run');
   }
 
   function stopCrack() {

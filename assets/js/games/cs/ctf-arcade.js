@@ -156,8 +156,10 @@
       hint: 'Three cookies are set. One of them is not doing a job any site needs, and its value still has percent-encoding on it.',
       why: 'A cookie is not a special kind of storage &mdash; it is a header the server sends and the browser sends back ' +
         'on every subsequent request to that host. Anything a developer puts in one is visible in the response, ' +
-        'in the browser\'s own tools, and to anything sitting on the path that can read the traffic. Braces are ' +
-        'not valid characters in a cookie value, so they arrive percent-encoded, exactly as in the URL level. ' +
+        'in the browser\'s own tools, and to anything sitting on the path that can read the traffic. The braces ' +
+        'arrive percent-encoded not because they are illegal &mdash; RFC 6265 actually allows them in a cookie value ' +
+        '&mdash; but because most frameworks encode everything outside a safe subset rather than track which characters ' +
+        'are reserved (semicolons, commas, quotes and whitespace are). So decode it exactly as in the URL level. ' +
         'Note which cookies here carry <code>HttpOnly</code> and <code>Secure</code>, and which one does not.',
       lab: 'The <a href="/labs/url-inspector">URL inspector</a> decodes values like this one without you having to visit the site.'
     },

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Free birthday and festival wish link generator. Type a name, pick a look, and send a full-screen animated card. 92 festivals, each with its correct greeting. Runs entirely in your browser." />
+    <meta name="description" content="Free birthday and festival wish link generator. Type a name, pick a look, send a full-screen animated card. 92 festivals, each with its correct greeting." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
@@ -115,7 +115,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -145,7 +145,13 @@
 
         <main id="main-content" class="page-shell">
       <div class="page-hero">
-        <p class="eyebrow">Labs · Wish generator</p>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Wish generator</li>
+          </ol>
+        </nav>
         <h1>Make a birthday or festival wish someone will actually screenshot</h1>
         <p class="page-hero-sub">
           Type a name, pick a look, and you get a link. Whoever opens it lands on a
@@ -188,8 +194,12 @@
 
             <div class="wish-field">
               <label class="wish-label" for="wish-name" data-wish-name-label>Whose birthday is it?</label>
+              <!-- maxlength matches the 32-code-point cap celebrate-guard.js
+                   enforces on the receiving page (24 for the From field below).
+                   Allowing more here would only let characters be typed that the
+                   card then silently cuts off. -->
               <input class="wish-input" id="wish-name" type="text" autocomplete="off"
-                     spellcheck="false" maxlength="40" placeholder="Riya" data-wish-name />
+                     spellcheck="false" maxlength="32" placeholder="Riya" data-wish-name />
               <p class="wish-hint" data-wish-name-hint>Their name, as you&rsquo;d say it out loud.</p>
               <p class="wish-resolved" data-wish-resolved hidden></p>
             </div>
@@ -229,7 +239,7 @@
             <div class="wish-field">
               <label class="wish-label" for="wish-from">From <span class="wish-optional">optional</span></label>
               <input class="wish-input" id="wish-from" type="text" autocomplete="off"
-                     maxlength="30" placeholder="Krunal" data-wish-from />
+                     maxlength="24" placeholder="Krunal" data-wish-from />
               <p class="wish-hint">Adds a small &ldquo;&mdash; from you&rdquo; line, so a forwarded card still says who sent it.</p>
             </div>
 
@@ -358,6 +368,18 @@
             <summary>Is it free?</summary>
             <p>Entirely. No sign-up, no watermark, no paywall, no limit.</p>
           </details>
+        </div>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a festival resolves to the wrong greeting, or a card renders oddly on some phone, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=wish-generator#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20wish%20generator%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>
     </main>

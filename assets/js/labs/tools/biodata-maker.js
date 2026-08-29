@@ -553,7 +553,25 @@
     partner: 'A well-educated, kind-natured match aged 26–31, settled in India, vegetarian preferred. Someone who respects family and has interests of their own.'
   };
 
+  /* True when an overwrite would lose nothing the visitor typed or picked:
+     every form field blank and no photo chosen. Template and label language
+     are styling, not typing, so they do not count. Reads the form first
+     because state trails the inputs by a debounce tick. */
+  function formIsBlank() {
+    readForm();
+    if (state.photo) return false;
+    return !KEYS.some(function (key) {
+      return (state[key] || '').trim() !== '';
+    });
+  }
+
   function loadSample() {
+    /* Loading the example overwrites every field, which makes it exactly as
+       destructive as Clear whenever the form already holds real typing — so
+       it earns the same confirm. A blank form has nothing to lose and loads
+       straight away. */
+    if (!formIsBlank() &&
+        !window.confirm('Replace every field with the example? This cannot be undone.')) return;
     KEYS.forEach(function (key) { state[key] = SAMPLE[key] || ''; });
     state.photo = samplePortrait();
     writeForm();
@@ -618,6 +636,15 @@
           parsed.tool !== 'biodata-maker' || parsed.version !== 1 ||
           !parsed.data || typeof parsed.data !== 'object') {
         setStatus('That file is not a biodata-maker export — nothing was changed');
+        return;
+      }
+      /* The same guard as Clear and Load example — asked only now, after the
+         file has parsed and passed the checks above, so a broken file still
+         just reports its error without nagging about an overwrite that was
+         never going to happen. */
+      if (!formIsBlank() &&
+          !window.confirm('Load this file and replace every field? This cannot be undone.')) {
+        setStatus('Load cancelled — nothing was changed');
         return;
       }
       /* Blank first, then apply: a field absent from the file must come

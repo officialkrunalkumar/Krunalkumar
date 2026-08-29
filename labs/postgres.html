@@ -48,10 +48,16 @@
                 "Offline capable once cached"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -73,7 +79,7 @@
                         "name": "How is this different from the SQL playground?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The other one runs SQLite, which is a different database with a different dialect. SQLite is 700 KB and starts instantly; Postgres is 17 MB and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour."
+                                "text": "The other one runs SQLite, which is a different database with a different dialect. SQLite is a 350 KB download and starts instantly; Postgres is a 5.5 MB download and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour."
                         }
                 },
                 {
@@ -157,7 +163,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -195,10 +201,10 @@
           </ol>
         </nav>
         <h1>Online PostgreSQL compiler</h1>
-        <p class="hero-text">This is the real PostgreSQL server — not a Postgres-compatible engine, not a translation layer — compiled to WebAssembly and running single-user inside your tab. The dialect, the data types, the error messages and the planner are all genuinely Postgres, which is what makes it worth 17 MB when SQLite is 700 KB.</p>
+        <p class="hero-text">This is the real PostgreSQL server — not a Postgres-compatible engine, not a translation layer — compiled to WebAssembly and running single-user inside your tab. The dialect, the data types, the error messages and the planner are all genuinely Postgres, which is what makes it worth a 5.5 MB download when SQLite is 350 KB.</p>
         <ul class="lab-facts">
           <li>The actual Postgres server</li>
-          <li>~17 MB once, then cached</li>
+          <li>~5.5 MB once, then cached</li>
           <li>Window functions, CTEs, JSONB</li>
           <li>Fresh database every run</li>
         </ul>
@@ -337,7 +343,7 @@
           <li>Accept the short notice, then replace the starter script with your own SQL.</li>
           <li>The database is created fresh on every run, so keep your <code>CREATE TABLE</code> and <code>INSERT</code> statements in the script.</li>
           <li>Press <strong>Run</strong>, or <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</li>
-          <li>The first run downloads the server (~17 MB) and takes a few seconds; after that a query runs in well under a second.</li>
+          <li>The first run downloads the server (~5.5 MB compressed) and takes a few seconds; after that a query runs in well under a second.</li>
           <li>Every statement returning rows is rendered as its own table.</li>
         </ol>
       </section>
@@ -437,7 +443,7 @@ SELECT n, REPEAT('*', n) AS bar FROM countdown;</code></pre>
           </details>
           <details class="lab-faq">
             <summary>How is this different from the SQL playground?</summary>
-            <div>The other one runs SQLite, which is a different database with a different dialect. SQLite is 700 KB and starts instantly; Postgres is 17 MB and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour.</div>
+            <div>The other one runs SQLite, which is a different database with a different dialect. SQLite is a 350 KB download and starts instantly; Postgres is a 5.5 MB download and gives you the full feature set. Use SQLite to practise general SQL, and this when you specifically need Postgres behaviour.</div>
           </details>
           <details class="lab-faq">
             <summary>Does my data persist?</summary>

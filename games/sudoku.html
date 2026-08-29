@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Sudoku generated fresh every time, with the solution count checked after every clue removed — so every puzzle has exactly one answer. Four difficulties, pencil marks, no sign-up." />
+    <meta name="description" content="Sudoku generated fresh every time, the solution count checked after every clue removed — every puzzle has exactly one answer. Four difficulties, pencil marks." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/sudoku" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Sudoku that is provably not ambiguous" />
-    <meta property="og:description" content="Sudoku generated fresh every time, with the solution count checked after every clue removed — so every puzzle has exactly one answer. Four difficulties, pencil marks, no sign-up." />
+    <meta property="og:description" content="Sudoku generated fresh every time, the solution count checked after every clue removed — every puzzle has exactly one answer. Four difficulties, pencil marks." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/sudoku" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-sudoku.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sudoku that is provably not ambiguous" />
-    <meta name="twitter:description" content="Sudoku generated fresh every time, with the solution count checked after every clue removed — so every puzzle has exactly one answer. Four difficulties, pencil marks, no sign-up." />
+    <meta name="twitter:description" content="Sudoku generated fresh every time, the solution count checked after every clue removed — every puzzle has exactly one answer. Four difficulties, pencil marks." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-sudoku.jpg" />
     <title>Sudoku — Free Online, Generated With One Solution</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Sudoku generated fresh every time, with the solution count checked after every clue removed — so every puzzle has exactly one answer. Four difficulties, pencil marks, no sign-up.",
+        "description": "Sudoku generated fresh every time, the solution count checked after every clue removed — every puzzle has exactly one answer. Four difficulties, pencil marks.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -41,7 +41,10 @@
         },
         "playMode": "SinglePlayer",
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -142,7 +145,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -239,7 +242,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Sudoku playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -322,7 +325,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=sudoku#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=sudoku&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Sudoku%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

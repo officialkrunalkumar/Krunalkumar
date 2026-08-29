@@ -160,6 +160,7 @@
           pen: pen,
           inHouse: penned,
           eaten: false,
+          spent: false,          // eaten once this fright window; revives dangerous
           bob: 1,
           away: false,
           timer: 0,
@@ -243,8 +244,12 @@
           chain = 0;
           /* Every ghost turns round the instant a pellet goes. Without the
              reversal a ghost already on top of you simply eats you during
-             the frightened window, which reads as a bug. */
-          for (var k = 0; k < ghosts.length; k++) turnRound(ghosts[k]);
+             the frightened window, which reads as a bug. A fresh pellet
+             also re-arms any ghost spent during the previous window. */
+          for (var k = 0; k < ghosts.length; k++) {
+            ghosts[k].spent = false;
+            turnRound(ghosts[k]);
+          }
           g.beep(180, 0.22, 'sawtooth', 0.055);
         }
 
@@ -274,7 +279,7 @@
       function targetFor(gh) {
         if (gh.eaten) return HOME;
         if (gh.inHouse) return EXIT;
-        if (fright > 0) return null;
+        if (fright > 0 && !gh.spent) return null;
         if (gh.kind === 'chase') return pac;
         if (gh.kind === 'ahead') {
           return { x: pac.x + pac.dir.x * 4, y: pac.y + pac.dir.y * 4 };
@@ -350,7 +355,7 @@
       function ghostStep(gh) {
         if (gh.eaten) return 1 / (base * 2.6);
         if (gh.pen > 0) return 1 / 3.5;
-        if (fright > 0) return 1 / (base * 0.6);
+        if (fright > 0 && !gh.spent) return 1 / (base * 0.6);
         return 1 / base;
       }
 
@@ -362,6 +367,10 @@
          can swap tiles in one step and never share one. The second clause is
          that swap. */
       function contact() {
+        /* eat() can end the run one line above this call — the last dot
+           goes down inside stepPac. Once the win has fired, lives and the
+           score are final; a finished run must not be touched. */
+        if (g.state !== 'playing') return;
         for (var i = 0; i < ghosts.length; i++) {
           var gh = ghosts[i];
           if (gh.eaten || gh.pen > 0) continue;
@@ -369,11 +378,16 @@
           var swap = gh.x === pac.px && gh.y === pac.py &&
                      gh.px === pac.x && gh.py === pac.y;
           if (!same && !swap) continue;
-          if (fright > 0) {
+          /* A ghost eaten and revived inside the same window comes back
+             dangerous — the classic rule. Without it the same ghost can be
+             run down again and again off one pellet and the chain never
+             has to end. Only the next pellet makes it edible once more. */
+          if (fright > 0 && !gh.spent) {
             chain++;
             var pts = chain >= 4 ? 1600 : 200 * Math.pow(2, chain - 1);
             g.addScore(pts);
             gh.eaten = true;
+            gh.spent = true;
             g.beep(760 + chain * 120, 0.13, 'sine', 0.05);
           } else {
             die();
@@ -434,7 +448,9 @@
 
       function ghostColour(gh, flash) {
         if (gh.eaten) return 'dark';
-        if (fright > 0 && gh.pen <= 0) {
+        /* A revived ghost must not read as edible — blue on a ghost that
+           kills you is worse than the chain bug it would advertise. */
+        if (fright > 0 && !gh.spent && gh.pen <= 0) {
           return (fright < 1.8 && flash) ? 'white' : 'blue';
         }
         return gh.colour;

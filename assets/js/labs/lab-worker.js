@@ -576,7 +576,8 @@ async function runClang(code, lang) {
    Not a Postgres-compatible reimplementation: this is the actual server,
    built to WASM and running single-user in this tab. That is why the dialect,
    the error messages and the type system all match a real installation, and
-   why it is worth ~17 MB when SQLite is 700 KB.
+   why it is worth a ~5.5 MB compressed download when SQLite is ~350 KB
+   (17 MB against 700 KB unpacked in the cache).
 
    PGlite ships as an ES module, so it is loaded with a dynamic import()
    rather than importScripts(). That is allowed inside a classic worker and

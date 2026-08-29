@@ -93,9 +93,17 @@
   if (!form) return;
 
   var from = '';
+  var area = '';
   try {
-    from = new URLSearchParams(window.location.search).get('from') || '';
-  } catch (err) { from = ''; }
+    var params = new URLSearchParams(window.location.search);
+    from = params.get('from') || '';
+    /* The games section reuses this one form. Its links say &area=games,
+       because a slug alone cannot: /labs/<slug> and /games/<slug> are
+       different pages, and every game report used to arrive pointing at a
+       /labs/ URL that does not exist. Compared against the literal, so an
+       attacker-chosen area can only ever be one of two known strings. */
+    area = params.get('area') === 'games' ? 'games' : '';
+  } catch (err) { from = ''; area = ''; }
 
   var name = displayName(from);
 
@@ -108,7 +116,9 @@
        it here, so the two cannot drift apart if the domain ever changes. */
     var found = /^Lab: .*\((https?:\/\/[^)\/]+)\/labs\)\s*$/m.exec(template);
     var origin = found ? found[1] : 'https://krunalkumar.dpdns.org';
-    var url = from === 'hub' ? origin + '/labs' : origin + '/labs/' + from;
+    var url = from === 'hub'
+      ? origin + '/labs'
+      : origin + (area === 'games' ? '/games/' : '/labs/') + from;
 
     /* Replace the whole line, not just the name. Patching "Labs hub" alone
        left the hub's URL in place, so a report about /labs/ct-log still
@@ -119,7 +129,8 @@
 
     var note = document.getElementById('lab-feedback-context');
     if (note) {
-      note.textContent = 'Reporting from the ' + name + ' playground.';
+      note.textContent = 'Reporting from the ' + name +
+        (area === 'games' ? ' game.' : ' playground.');
       note.hidden = false;
     }
   }

@@ -1211,7 +1211,9 @@
       ctx.font = '9px "Cascadia Code", Consolas, monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      var DIM = '#3f6b52';
+      /* Mirrors term-shell.js's COLORS.dim — the two must change together
+         or the thumbnail stops looking like the game it advertises. */
+      var DIM = '#508a60';
       var RED = '#f87171';
       var PALE = '#f8fafc';
       function tok(x, y, s, c) { ctx.fillStyle = c; ctx.fillText(s, x, y); }
@@ -1612,6 +1614,26 @@
      A card with no stored best is left empty, and games.css hides an empty
      one — "Best: 0" on twenty cards is noise, not information.
      ------------------------------------------------------------------ */
+  /* How each stored best reads as a sentence. These MIRROR the
+     spec.formatBest functions inside the game modules, which do not load
+     on this page — so without them the card printed the raw stored value:
+     a 953-second sudoku solve showed 'Best 953' instead of '15:53', and a
+     reaction time lost its 'ms'. A slug missing here prints the raw
+     number, which is correct for every game whose own page does the same.
+     If a game's formatBest changes, its line here changes with it. */
+  var BEST_FORMATS = {
+    sudoku: function (n) {
+      var m = Math.floor(n / 60), s = Math.floor(n % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    },
+    'reaction-time': function (n) { return n + ' ms'; },
+    'aim-trainer': function (n) { return n + ' ms'; },
+    asciijump: function (n) { return Number(n).toFixed(1); },
+    'regex-golf': function (n) { return n + ' chars'; },
+    'shell-quest': function (n) { return n + ' commands'; },
+    'guess-the-algorithm': function (n) { return n + ' pts'; }
+  };
+
   function fillBests() {
     var cells = document.querySelectorAll('[data-best]');
     for (var i = 0; i < cells.length; i++) {
@@ -1626,7 +1648,9 @@
          under a line reading 'Cleared 2 entries.' On the one feature whose
          entire purpose is that the claim can be checked on screen rather
          than believed, that is the only bug that really matters. */
-      cells[i].textContent = (v && Number(v) > 0) ? 'Best ' + v : '';
+      var n = Number(v);
+      var shown = BEST_FORMATS[slug] ? BEST_FORMATS[slug](n) : v;
+      cells[i].textContent = (v && n > 0) ? 'Best ' + shown : '';
     }
   }
 

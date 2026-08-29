@@ -71,7 +71,10 @@
       if (patSel) patSel.addEventListener('change', function () { stamp(patSel.value); });
       if (runBtn) runBtn.addEventListener('click', function () {
         running = !running;
-        runBtn.textContent = running ? 'Pause' : 'Run';
+        /* 'Stop', not 'Pause': the shell's own Pause button sits two
+           controls away, and two adjacent buttons both reading "Pause" —
+           one freezing the loop, one the simulation — was a coin toss. */
+        runBtn.textContent = running ? 'Stop' : 'Run';
       });
       if (clearBtn) clearBtn.addEventListener('click', function () { cur = new Uint8Array(W * H); gen = 0; });
       if (randBtn) randBtn.addEventListener('click', randomise);
@@ -140,14 +143,14 @@
         reset: function () {
           stamp('gun');
           running = true;
-          if (runBtn) runBtn.textContent = 'Pause';
+          if (runBtn) runBtn.textContent = 'Stop';
           g.stat('gen', 0);
         },
 
         key: function (name) {
           if (name === 'action') {
             running = !running;
-            if (runBtn) runBtn.textContent = running ? 'Pause' : 'Run';
+            if (runBtn) runBtn.textContent = running ? 'Stop' : 'Run';
           }
         },
 

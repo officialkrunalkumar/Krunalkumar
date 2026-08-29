@@ -115,6 +115,17 @@
       return node;
     }
 
+    /* The \d \w \s range sets, defined once because two places need them: a
+       bare \d at the atom level, and a \d inside [...]. They used to live
+       only in parseAtom, and parseClass grew its own idea of what an escape
+       meant — see the comment there for what that cost. */
+    function shorthand(e) {
+      if (e === 'd') return [['0', '9']];
+      if (e === 'w') return [['a', 'z'], ['A', 'Z'], ['0', '9'], ['_', '_']];
+      if (e === 's') return [[' ', ' '], ['\t', '\t'], ['\n', '\n']];
+      return null;
+    }
+
     function parseAtom() {
       var c = peek();
       if (c === null) fail('unexpected end of pattern');
@@ -134,11 +145,8 @@
         var e = peek();
         if (e === null) fail('trailing backslash');
         pos++;
-        if (e === 'd') return { type: 'class', ranges: [['0', '9']], neg: false, src: '\\d' };
-        if (e === 'w') return { type: 'class', neg: false, src: '\\w',
-                                ranges: [['a', 'z'], ['A', 'Z'], ['0', '9'], ['_', '_']] };
-        if (e === 's') return { type: 'class', neg: false, src: '\\s',
-                                ranges: [[' ', ' '], ['\t', '\t'], ['\n', '\n']] };
+        var sh = shorthand(e);
+        if (sh) return { type: 'class', ranges: sh, neg: false, src: '\\' + e };
         return { type: 'char', c: e };
       }
       /* Bounded repetition is not in this engine's grammar — neither the block
@@ -167,20 +175,45 @@
       if (peek() === '^') { pos++; neg = true; }
       var ranges = [];
       var first = true;
+
+      /* A backslash in here used to mean only "take the next character
+         literally". That is right for [\]] and [\\], and quietly wrong for
+         [\d]: the class matched the letter d, while the same \d one character
+         to the left of the bracket expanded to 0-9 — so every family on the
+         page returned a confident wrong verdict for syntax the pattern hint
+         advertises without qualification. An escape is now read as one item:
+         \d \w \s contribute the same range sets the atom level uses, and any
+         other escape stays a literal. A shorthand is a set, not a character,
+         so it never serves as a range endpoint — [\d-x] is digits, a literal
+         hyphen and a literal x, which is how real engines read it too. */
+      function item() {
+        var c = peek();
+        if (c === null) fail('unclosed character class');
+        pos++;
+        if (c !== '\\') return { c: c };
+        var e = peek();
+        if (e === null) fail('unclosed character class');
+        pos++;
+        var sh = shorthand(e);
+        return sh ? { set: sh } : { c: e };
+      }
+
       while (pos < pattern.length && (peek() !== ']' || first)) {
         first = false;
-        var lo = peek();
-        if (lo === '\\') { pos++; lo = peek(); }
-        if (lo === null) fail('unclosed character class');
-        pos++;
+        var lo = item();
+        if (lo.set) { ranges = ranges.concat(lo.set); continue; }
         if (peek() === '-' && pos + 1 < pattern.length && pattern.charAt(pos + 1) !== ']') {
           pos++;
-          var hi = peek();
-          if (hi === '\\') { pos++; hi = peek(); }
-          pos++;
-          ranges.push([lo, hi]);
+          var hi = item();
+          if (hi.set) {
+            ranges.push([lo.c, lo.c]);
+            ranges.push(['-', '-']);
+            ranges = ranges.concat(hi.set);
+          } else {
+            ranges.push([lo.c, hi.c]);
+          }
         } else {
-          ranges.push([lo, lo]);
+          ranges.push([lo.c, lo.c]);
         }
       }
       if (peek() !== ']') fail('unclosed character class');

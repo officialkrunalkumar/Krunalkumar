@@ -47,10 +47,16 @@
                 "GPU acceleration"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -155,7 +161,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -271,7 +277,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-vizstage lab-vizstage-overlay">
-          <canvas id="viz-canvas" class="lab-canvas lab-canvas-grab"></canvas>
+          <canvas id="viz-canvas" class="lab-canvas lab-canvas-grab" role="img" aria-label="Interactive fractal view, drawn on the GPU. Scroll or click to zoom and drag to pan; with the canvas focused, the arrow keys pan, plus and minus zoom, and R resets the view.">Your browser cannot draw the canvas element, so the fractal cannot be shown here.</canvas>
           <div class="lab-vizstats" id="viz-info"></div>
         </div>
       </div>

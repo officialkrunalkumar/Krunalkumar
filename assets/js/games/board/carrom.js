@@ -1,7 +1,8 @@
 /* ==========================================================================
    carrom.js — carrom board, against the computer or pass and play.
    --------------------------------------------------------------------------
-   Drag back from the striker and let go: an elastic-collision simulation
+   Press anywhere open, pull back behind the striker and let go — a
+   slingshot anchored at the striker: an elastic-collision simulation
    with friction. Coins are equal-mass discs, the striker is heavier, and
    every impact is resolved along the line joining the two centres, which is
    the whole of two-dimensional elastic collision and the reason a thin cut
@@ -61,6 +62,8 @@
       var turn = 0;             // 0 = you, 1 = opponent
       var mode = 'computer';
       var scores = [0, 0];
+      var pocketed = [[], []];  // each player's own sunk coins, the only lawful source of penalty coins
+      var owed = [0, 0];        // penalties owed while a pile is empty, paid from the next coins sunk
       var message = '';
       var settleT = 0;
       var shotTaken = false;
@@ -102,9 +105,39 @@
         placeStriker();
       }
 
+      function baselineClear(x, y) {
+        for (var i = 0; i < discs.length; i++) {
+          var c = discs[i];
+          if (!c.alive) continue;
+          var dx = c.x - x, dy = c.y - y;
+          if (dx * dx + dy * dy < (c.r + STRIKER_R) * (c.r + STRIKER_R)) return false;
+        }
+        return true;
+      }
+
+      /* Placing the striker is a rules action, not a physics one. Setting
+         it down on top of a coin resting near the baseline would leave the
+         overlap for collide() to undo, and collide() undoes it by moving
+         BOTH discs — the coin gets shoved aside by a shot nobody played.
+         So an occupied spot is refused and the search walks outward along
+         the baseline for the nearest clear one. Should the entire baseline
+         somehow be walled off, the asked-for spot stands and the physics
+         untangles it, which is the least bad answer to a board that full. */
+      function findBaselineX(prefX, y) {
+        var lo = EDGE + 60, hi = SIZE - EDGE - 60;
+        var x = Math.max(lo, Math.min(hi, prefX));
+        if (baselineClear(x, y)) return x;
+        for (var step = 4; step <= hi - lo; step += 4) {
+          if (x - step >= lo && baselineClear(x - step, y)) return x - step;
+          if (x + step <= hi && baselineClear(x + step, y)) return x + step;
+        }
+        return x;
+      }
+
       function placeStriker() {
         /* The striker sits on the baseline nearest whoever is to play. */
         var y = turn === 0 ? SIZE - EDGE - 46 : EDGE + 46;
+        strikerX = findBaselineX(strikerX, y);
         striker = { x: strikerX, y: y, vx: 0, vy: 0, r: STRIKER_R, type: 'striker', alive: true };
       }
 
@@ -181,8 +214,10 @@
               if (pdx * pdx + pdy * pdy < POCKET_R * POCKET_R) {
                 body.alive = false;
                 body.vx = 0; body.vy = 0;
-                if (body.type !== 'striker') pocketedThisShot.push(body.type);
-                else pocketedThisShot.push('striker');
+                /* The body itself is recorded, not just its type: a coin
+                   that has to come back — after a foul, or as a penalty —
+                   must be THIS disc, not the first dead one of its colour. */
+                pocketedThisShot.push(body);
                 g.beep(700, 0.1, 'sine');
                 break;
               }
@@ -194,23 +229,53 @@
       function endShot() {
         var gained = 0;
         var foul = false;
-        for (var i = 0; i < pocketedThisShot.length; i++) {
-          var t = pocketedThisShot[i];
+        var i;
+        for (i = 0; i < pocketedThisShot.length; i++) {
+          var t = pocketedThisShot[i].type;
           if (t === 'striker') foul = true;
           else if (t === 'queen') gained += 3;
           else gained += 1;
         }
 
         if (foul) {
-          /* Pocketing the striker is a foul: no points, and one of your
-             coins comes back to the middle if you have any. */
-          scores[turn] = Math.max(0, scores[turn] - 1);
-          message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker — one point back';
-          returnACoin();
+          /* Pocketing the striker is a foul and nothing on the stroke
+             counts. Everything that went down with the striker — the queen
+             included — comes back to the centre, because a foul must not
+             shrink the game: destroy the queen here and her three points
+             vanish for BOTH players. The penalty coin on top comes from
+             the fouler's OWN pile; reviving just any sunk coin would put
+             an opponent's scored coin back on the board with its point
+             already banked, there to be won a second time. A fouler with
+             nothing in the pile owes the coin instead and pays it out of
+             the first ones they sink. */
+          for (i = 0; i < pocketedThisShot.length; i++) {
+            if (pocketedThisShot[i].type !== 'striker') returnToCentre(pocketedThisShot[i]);
+          }
+          if (pocketed[turn].length) {
+            returnToCentre(pocketed[turn].pop());
+            scores[turn] -= 1;
+            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker — a coin comes back';
+          } else {
+            owed[turn] += 1;
+            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker — a coin is owed';
+          }
           gained = 0;
         } else if (gained) {
           scores[turn] += gained;
           message = (turn === 0 ? 'You' : 'They') + ' scored ' + gained;
+          /* The queen is never a penalty coin, so she stays out of the
+             pile; a foul returns her directly, which keeps her safe. */
+          for (i = 0; i < pocketedThisShot.length; i++) {
+            if (pocketedThisShot[i].type !== 'queen') pocketed[turn].push(pocketedThisShot[i]);
+          }
+          var paid = 0;
+          while (owed[turn] > 0 && pocketed[turn].length) {
+            returnToCentre(pocketed[turn].pop());
+            scores[turn] -= 1;
+            owed[turn] -= 1;
+            paid++;
+          }
+          if (paid) message += ' — ' + (paid > 1 ? paid + ' dues paid' : 'a due paid');
         } else {
           message = 'Nothing sunk';
         }
@@ -238,16 +303,44 @@
         if (mode === 'computer' && turn === 1) aiPending = 0.7;
       }
 
-      function returnACoin() {
-        for (var i = 0; i < discs.length; i++) {
-          if (!discs[i].alive && discs[i].type !== 'queen') {
-            discs[i].alive = true;
-            discs[i].x = SIZE / 2 + (Math.random() - 0.5) * 20;
-            discs[i].y = SIZE / 2 + (Math.random() - 0.5) * 20;
-            discs[i].vx = 0; discs[i].vy = 0;
-            return;
+      /* The clearance is a whisker, not a comfortable margin: the opening
+         rack packs ring one just 2.05 radii from the centre, so anything
+         stricter than half a pixel would refuse the queen her own seat
+         back and exile her to an outer ring of an otherwise untouched
+         board. */
+      function freeSpot(x, y, r) {
+        if (x - r < EDGE || x + r > SIZE - EDGE || y - r < EDGE || y + r > SIZE - EDGE) return false;
+        var b = allBodies();
+        for (var i = 0; i < b.length; i++) {
+          var dx = b[i].x - x, dy = b[i].y - y;
+          var min = b[i].r + r + 0.5;
+          if (dx * dx + dy * dy < min * min) return false;
+        }
+        return true;
+      }
+
+      /* A coin going back on the board lands at the centre, or as near to
+         it as the coins already there allow. Dropping it into an overlap
+         would hand the separation step a shove to deliver — both discs
+         thrown apart by a shot nobody played — so the rings are walked
+         outward until a genuinely empty seat turns up. A disc placed here
+         is alive before the next call, so several returns in one stroke
+         seat themselves without stacking. If every ring is somehow full,
+         centre-and-let-the-physics-sort-it is the honest fallback. */
+      function returnToCentre(disc) {
+        var cx = SIZE / 2, cy = SIZE / 2;
+        disc.vx = 0; disc.vy = 0;
+        if (freeSpot(cx, cy, disc.r)) { disc.x = cx; disc.y = cy; disc.alive = true; return; }
+        for (var ring = 1; ring <= 9; ring++) {
+          var n = ring * 6;
+          for (var i = 0; i < n; i++) {
+            var a = (i / n) * Math.PI * 2;
+            var x = cx + Math.cos(a) * ring * COIN_R * 2.2;
+            var y = cy + Math.sin(a) * ring * COIN_R * 2.2;
+            if (freeSpot(x, y, disc.r)) { disc.x = x; disc.y = y; disc.alive = true; return; }
           }
         }
+        disc.x = cx; disc.y = cy; disc.alive = true;
       }
 
       function fire(dx, dy) {
@@ -354,9 +447,12 @@
           var p = g.pointAt(event);
           var baseY = turn === 0 ? SIZE - EDGE - 46 : EDGE + 46;
           /* Clicking on the baseline slides the striker; clicking anywhere
-             else starts an aim. */
+             else starts an aim. The slide goes through the same clear-spot
+             search as placement after a shot, so tapping on a coin resting
+             on the baseline seats the striker beside it instead of on top
+             of it, where the overlap separation would nudge the coin. */
           if (Math.abs(p.y - baseY) < 34) {
-            strikerX = Math.max(EDGE + 60, Math.min(SIZE - EDGE - 60, p.x));
+            strikerX = findBaselineX(p.x, baseY);
             striker.x = strikerX;
             return;
           }
@@ -507,12 +603,17 @@
              ever outlives the rack it was taken against. */
           endAim(false);
           scores = [0, 0];
+          pocketed = [[], []];
+          owed = [0, 0];
           turn = 0;
           strikerX = SIZE / 2;
           shotTaken = false;
           pocketedThisShot = [];
           aiPending = 0;
-          message = 'Drag back from the striker and let go';
+          /* Worded the way the gesture actually works: the striker lives
+             on the baseline, where a press slides it, so an aim can only
+             start elsewhere — press, pull behind the striker, let go. */
+          message = 'Press anywhere, pull back behind the striker, let go';
           g.stat('you', 0);
           g.stat('them', 0);
           newRack();

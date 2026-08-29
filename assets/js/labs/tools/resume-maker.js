@@ -874,6 +874,12 @@
   }
 
   document.getElementById('rm-load-sample').addEventListener('click', function () {
+    /* Loading the example replaces every field, which makes it exactly as
+       destructive as Clear whenever the form already holds real typing — so
+       it earns the same confirm. A blank form has nothing to lose and loads
+       straight away. */
+    if (!stateIsEmpty() &&
+        !confirm('Replace everything in the form with the example? This cannot be undone.')) return;
     state = sampleState();
     syncEverything();
   });
@@ -954,6 +960,15 @@
           parsed.tool !== 'resume-maker' || parsed.version !== 1 ||
           !parsed.data || typeof parsed.data !== 'object') {
         saveStatus.textContent = 'That does not look like a resume-maker data file — nothing was changed.';
+        return;
+      }
+      /* The same guard as Clear and Load example — asked only now, after the
+         file has parsed and passed the checks above, so a broken file still
+         just reports its error without nagging about an overwrite that was
+         never going to happen. */
+      if (!stateIsEmpty() &&
+          !confirm('Load this file and replace everything in the form? This cannot be undone.')) {
+        saveStatus.textContent = 'Load cancelled — nothing was changed.';
         return;
       }
       /* Merged onto a blank so missing fields default instead of lingering

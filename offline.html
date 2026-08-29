@@ -14,9 +14,11 @@
     sees it, which is what keeps this compatible with the worker's
     "never show a stale page to someone online" rule.
 
-    Deliberately self-contained: no partials, no external CSS, no JS at all
-    (the CSP allows no inline scripts, and a page whose job is to work with
-    zero network should not depend on anything else arriving). It is precached
+    Deliberately self-contained: no partials, no external CSS, no inline JS
+    (the CSP allows none, and a page whose job is to work with zero network
+    should not depend on anything else arriving). The one script it loads,
+    offline.js, is itself precached, and the page reads fine without it — it
+    only prunes the lists below against the real cache. It is precached
     by sw.js via DOC_URLS, excluded from the sitemap/search index/chrome gates
     in scripts/build.js and scripts/search-index.js, and floor-checked in
     build.js MUST_EXIST so a deploy cannot silently lose it.
@@ -103,18 +105,25 @@
        Everything listed below is stored on this device and opens without one.</p>
 
     <div class="actions">
-      <a class="btn primary" href="/">Try again</a>
+      <!-- href="" resolves to the CURRENT url — which, because sw.js answers
+           the failed navigation in place, is still the page the visitor was
+           trying to reach. So "Try again" genuinely retries it, with no
+           script needed. It used to point at "/", which retried the wrong
+           page and called it trying again. -->
+      <a class="btn primary" href="">Try again</a>
+      <a class="btn" href="/">Home</a>
     </div>
 
     <div class="group">
       <h2>Always available</h2>
       <!--
-        These five are precached by sw.js on install (DOC_URLS), so they are on
-        the device whether or not they have ever been opened. Nothing belongs
-        in this list that is only cached on use — that is what the second list
-        is for, and the difference between the two headings is the whole
-        honesty of this page. scripts/build.js enforces it: every internal link
-        below must appear in DOC_URLS or the deploy fails.
+        These six are precached by sw.js on install — the first five via
+        DOC_URLS, /blog via BLOG_URLS — so they are on the device whether or
+        not they have ever been opened. Nothing belongs in this list that is
+        only cached on use — that is what the second list is for, and the
+        difference between the two headings is the whole honesty of this
+        page. scripts/build.js enforces it: every internal link below must
+        appear in one of those precache lists or the deploy fails.
 
         offline.js re-checks each one against the real cache at load and drops
         any it cannot find, so a partial install cannot leave a dead link here.

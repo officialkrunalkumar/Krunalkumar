@@ -55,7 +55,6 @@
     { hex: '000001ba',         type: 'MPEG program stream' },
     { hex: '1a45dfa3',         type: 'Matroska / WebM' },
     { hex: '38425053',         type: 'Photoshop document' },
-    { hex: '4344303031',       type: 'ISO 9660 disc image' },
     { hex: 'edabeedb',         type: 'RPM package' },
     { hex: '213c617263683e',   type: 'Debian package / ar archive' }
   ];
@@ -70,6 +69,24 @@
     'db': 'SQLite database', 'iso': 'ISO 9660 disc image', 'wasm': 'WebAssembly module'
   };
 
+  /* ISO 9660 is the odd one out: its magic is not at the start of the file.
+     The specification reserves the first 32 KB as a system area, so 'CD001'
+     sits at byte 1 of the volume descriptor at sector 16 (offset 0x8001) —
+     or one of the next 2048-byte descriptor sectors when a boot record comes
+     first. Anchored at byte 0 like the rest of the table it could never
+     match a real image, and every genuine .iso fell through to the extension
+     hint — the exact failure the table exists to prevent. memdump.js keeps
+     its head-anchored copy of this signature on purpose: carving hunts for
+     the descriptor wherever it lies. */
+  function isoAt(bytes, off) {
+    var tag = 'CD001';
+    if (off + tag.length > bytes.length) return false;
+    for (var i = 0; i < tag.length; i++) {
+      if (bytes[off + i] !== tag.charCodeAt(i)) return false;
+    }
+    return true;
+  }
+
   function detect(bytes) {
     var head = LabTool.toHex(bytes.subarray(0, 16));
     var best = null;
@@ -78,6 +95,9 @@
         best = sig;
       }
     });
+    if (!best && (isoAt(bytes, 0x8001) || isoAt(bytes, 0x8801) || isoAt(bytes, 0x9001))) {
+      best = { hex: '4344303031', type: 'ISO 9660 disc image' };
+    }
     return best;
   }
 

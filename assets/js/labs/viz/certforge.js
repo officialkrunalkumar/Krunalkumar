@@ -41,7 +41,7 @@
    a service.
    ========================================================================== */
 
-/* global LabVizMulti */
+/* global LabViz */
 (function (root) {
   'use strict';
 
@@ -744,6 +744,12 @@
         issuer: subject, subject: subject, notBefore: now, notAfter: later,
         isCA: false, dnsNames: sans
       }).then(function (res) {
+        // Counted on the resolved promise, not the button press: a keypair
+        // that would not generate or a signature WebCrypto refused lands in
+        // the catch and counts nothing. Each of the four tabs reports its own
+        // success like this — used() de-dupes per page view, so the lab still
+        // counts once however many tabs a visitor works through.
+        if (window.KSLab) window.KSLab.used('generate');
         self.show(res, subject);
       }).catch(function (err) {
         status(self.statusHost, 'bad', 'Signing failed: ' + err.message);
@@ -837,6 +843,9 @@
         alg: STATE.alg, signingKey: STATE.keypair.privateKey, spki: STATE.spki,
         subject: { CN: self.cn.input.value, O: self.o.input.value, C: self.c.input.value }
       }).then(function (res) {
+        // Success only, as on the certificate tab — a request that failed to
+        // sign takes the catch below instead.
+        if (window.KSLab) window.KSLab.used('generate');
         status(self.statusHost, 'ok', 'CSR generated and self-signed. ' + res.der.length +
           ' bytes. Paste it into openssl req -text -noout -verify to check it.');
         clear(self.outHost);
@@ -906,6 +915,9 @@
       F.signBytes(STATE.alg, STATE.keypair.privateKey, bytes).then(function (sig) {
         self.sig = sig;
         self.signedText = self.msg.input.value;
+        // The message really was signed — a refusal takes the catch instead —
+        // and the tamper demo the visitor came for can now happen.
+        if (window.KSLab) window.KSLab.used('generate');
         status(self.statusHost, 'ok', 'Signed. ' + sig.length + ' bytes of signature.');
         self.refresh();
       }).catch(function (err) { status(self.statusHost, 'bad', err.message); });
@@ -1011,6 +1023,9 @@
         });
       });
     }).then(function (leafCert) {
+      // Two keypairs generated and two certificates signed — the chain
+      // exists. A failure at any stage lands in the catch and never gets here.
+      if (window.KSLab) window.KSLab.used('generate');
       self.render(self.caCert, leafCert, caKp, caName, leafName);
     }).catch(function (err) {
       status(self.statusHost, 'bad', 'Failed: ' + err.message);

@@ -47,10 +47,16 @@
                 "Offline capable once cached"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -80,7 +86,7 @@
                         "name": "Why is the first run slow?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The interpreter and its standard library are about 17 MB, downloaded once and then cached by your browser."
+                                "text": "The interpreter and its standard library are about 5 MB compressed, downloaded once and then cached by your browser; they unpack to roughly 17 MB in the cache."
                         }
                 },
                 {
@@ -156,7 +162,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -197,7 +203,7 @@
         <p class="hero-text">Genuine CRuby — the reference implementation, built to WebAssembly by the Ruby core team themselves. Blocks, mixins, metaprogramming and the whole Enumerable module behave exactly as the documentation says, because this is the same interpreter the documentation describes.</p>
         <ul class="lab-facts">
           <li>Real CRuby, official build</li>
-          <li>~17 MB once, then cached</li>
+          <li>~5 MB once, then cached</li>
           <li>Blocks, mixins, enumerables</li>
           <li>Nothing leaves your device</li>
         </ul>
@@ -336,7 +342,7 @@
           <li>Accept the short notice, then replace the starter program with your own Ruby.</li>
           <li>Use <code>puts</code> or <code>print</code> for output — both go to the terminal pane.</li>
           <li>Press <strong>Run</strong>, or <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</li>
-          <li>The first run downloads the interpreter (~17 MB); after that it starts in a moment.</li>
+          <li>The first run downloads the interpreter (~5 MB compressed); after that it starts in a moment.</li>
           <li>Each run gets a fresh interpreter, so nothing leaks between runs.</li>
         </ol>
       </section>
@@ -442,7 +448,7 @@ counts.select { |_, n| n &gt; 1 }
           </details>
           <details class="lab-faq">
             <summary>Why is the first run slow?</summary>
-            <div>The interpreter and its standard library are about 17 MB, downloaded once and then cached by your browser.</div>
+            <div>The interpreter and its standard library are about 5 MB compressed, downloaded once and then cached by your browser; they unpack to roughly 17 MB in the cache.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I read input with gets?</summary>

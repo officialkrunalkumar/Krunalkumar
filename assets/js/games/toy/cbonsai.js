@@ -30,7 +30,11 @@
     bestKey: null,
     autoStart: true,
     pauseOnBlur: false,
-    tapAction: false,
+    /* Taps are ON: the page copy promises "tap the tree" grows another,
+       and the key hook below already maps 'action' to plant(). This was
+       tapAction: false, which made that promise a lie — the shell's tap
+       detector already rejects swipes and long presses, so a stray scroll
+       cannot plant one by accident. */
 
     setup: function (g, t) {
       var cells = [];             // { ch, tint } or null

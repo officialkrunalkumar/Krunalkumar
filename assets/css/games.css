@@ -84,7 +84,10 @@
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  /* min(17rem, 100%): on a 320px phone the container is under 17rem, and a
+     bare 17rem floor made every track wider than its parent — cards clipped
+     at the right edge on exactly the screens the pad exists for. */
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
   gap: 1.1rem;
   margin: 1.6rem 0 2rem;
   padding: 0;
@@ -552,6 +555,12 @@
   padding: 0.5rem;
   background: rgba(148, 163, 184, 0.12);
   border-radius: 10px;
+  /* The base .game-board rule says `manipulation`, which still lets the
+     browser claim vertical pans for scrolling — so on a phone, swiping
+     DOWN on the one game whose input is swiping scrolled the page instead
+     of moving the tiles. This board's gestures are all four directions;
+     the page can be scrolled from anywhere that is not the board. */
+  touch-action: none;
 }
 
 .tile-2048 {
@@ -602,6 +611,16 @@
 }
 
 .board-mines[data-size='expert'] { width: min(100%, 44rem); }
+
+/* Expert is 30 columns. Shrunk to a phone's width that is ~8px a cell —
+   unreadable and untappable — so on small screens the board keeps a real
+   cell size and the STAGE scrolls sideways instead. Scrolling to the far
+   corner of an expert board is the honest cost of choosing expert on a
+   phone; guessing at 8px targets is not a game. */
+@media (max-width: 640px) {
+  .game-stage--board { overflow-x: auto; }
+  .board-mines[data-size='expert'] { width: 44rem; max-width: none; }
+}
 
 .cell-mine {
   aspect-ratio: 1;
@@ -1002,8 +1021,14 @@
   border: 1px solid rgb(var(--accent-rgb) / 0.3);
   border-radius: 10px;
   cursor: pointer;
-  /* Without this a fast double tap on a D-pad zooms the page. */
-  touch-action: manipulation;
+  /* `none`, not `manipulation`: a HELD direction is this control's whole
+     job, and manipulation still lets the browser claim a drifting thumb
+     as a page scroll — which fired pointercancel and released the held
+     key mid-run. (The shell used to suppress that from its touchstart
+     handler; on Pointer Events engines that handler no longer binds, so
+     the suppression has to live here.) Double-tap zoom stays off too —
+     none is a superset of manipulation. */
+  touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -1031,7 +1056,8 @@
   border: 1px solid rgb(var(--accent-rgb) / 0.3);
   border-radius: 10px;
   cursor: pointer;
-  touch-action: manipulation;
+  /* Same rule as the D-pad buttons, same reason. */
+  touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -2351,4 +2377,81 @@ html:not(.js) .game-filter { display: none; }
   .data-table th,
   .data-table td { padding: 0.45rem 0.4rem; }
   .game-data { flex-direction: column; align-items: flex-start; }
+}
+
+/* ==========================================================================
+   FAQ and report blocks — MIRRORED FROM labs.css.
+   --------------------------------------------------------------------------
+   The generator reuses the labs' markup for the per-game FAQ (.lab-faq)
+   and the report strip (.lab-report-actions) so the two sections read the
+   same site-wide — but game pages load games.css, never labs.css, and for
+   a while every game page shipped those blocks unstyled: bare <details>
+   with the default triangle, buttons in a broken row. These rules are a
+   copy of labs.css's, and the two must move together; loading all of
+   labs.css here for two components would put ~50 KB of tool styling on
+   the critical path of every game instead.
+   ========================================================================== */
+.lab-faq {
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.16);
+}
+
+.lab-faq:first-of-type { border-top: 1px solid rgb(var(--accent-rgb) / 0.16); }
+
+.lab-faq > summary {
+  padding: 0.9rem 2rem 0.9rem 0;
+  position: relative;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Safari still paints the default triangle without this. */
+.lab-faq > summary::-webkit-details-marker { display: none; }
+
+.lab-faq > summary::after {
+  content: '+';
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--accent-1);
+}
+
+.lab-faq[open] > summary::after { content: '\002212'; }  /* U+2212 minus */
+.lab-faq > summary:hover { color: var(--accent-1); }
+.lab-faq > summary:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; border-radius: 4px; }
+
+.lab-faq > div {
+  padding: 0 2rem 1rem 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.lab-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* ==========================================================================
+   iOS zoom guard.
+   --------------------------------------------------------------------------
+   Mobile Safari zooms the page onto any focused field whose font is under
+   16px — and never zooms back out on blur, leaving the game half off
+   screen. These are the section's focusable text-entry fields and selects;
+   at 1rem on a coarse pointer the zoom never triggers. Desktop keeps the
+   tighter type, which is the only reason this is a media query and not a
+   bigger font. (.love-field input is already 1rem and needs no help.)
+   ========================================================================== */
+@media (pointer: coarse) {
+  .game-select,
+  .game-filter-input,
+  .asm-src { font-size: 1rem; }
 }

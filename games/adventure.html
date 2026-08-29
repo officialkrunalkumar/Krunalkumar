@@ -41,7 +41,10 @@
         },
         "playMode": "SinglePlayer",
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -150,7 +153,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -247,7 +250,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Adventure playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -268,7 +271,7 @@
             </div>
           </div>
         </div>
-        <p class="game-rotate">This one is eighty columns wide — turn your phone sideways and it gets a great deal easier to read.</p>
+        <p class="game-rotate">This one is 72 columns wide — turn your phone sideways and it gets a great deal easier to read.</p>
         <ul class="game-keys">
           <li><kbd>↑</kbd> <kbd>↓</kbd> Move through the list</li>
           <li><kbd>←</kbd> <kbd>→</kbd> The same, if your thumb is already there</li>
@@ -348,7 +351,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=adventure#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=adventure&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Adventure%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

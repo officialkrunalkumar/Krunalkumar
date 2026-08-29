@@ -2636,6 +2636,8 @@
     var head = el('div', 'hl-list-head');
     head.appendChild(el('h2', null, 'Challenges'));
     head.appendChild(el('p', 'hl-progress', solvedCount + ' of ' + CHALLENGES.length + ' solved'));
+    /* The persistent element survives the wipe above by being re-seated. */
+    if (fsBtn) head.appendChild(fsBtn);
     listNode.appendChild(head);
 
     CHALLENGES.forEach(function (c, idx) {
@@ -2783,9 +2785,54 @@
     detailNode.appendChild(fixWrap);
   }
 
+  /* ---- fullscreen -------------------------------------------------------
+     Every other lab gets its control from static markup plus
+     lab-fullscreen.js. This one cannot: mountShell() wipes the host, so a
+     static button would not survive to be wired. The button is created
+     once, re-seated into the list head on every rebuild (buildList wipes
+     the sidebar), and wired with the same real-Fullscreen-API logic
+     lab-fullscreen.js uses — Esc stays the browser's own, so nothing here
+     can trap a visitor in fullscreen. */
+  var fsBtn = null;
+  function makeFullscreenBtn() {
+    var target = (host.closest ? host.closest('.lab') : null) || host;
+    var request = target.requestFullscreen || target.webkitRequestFullscreen ||
+                  target.msRequestFullscreen;
+    if (!request) return null;
+    var btn = el('button', 'hl-btn hl-btn-ghost hl-fullscreen', 'Fullscreen');
+    btn.type = 'button';
+    btn.title = 'Fullscreen (Esc to exit)';
+    btn.setAttribute('aria-pressed', 'false');
+    function fsCurrent() {
+      return document.fullscreenElement || document.webkitFullscreenElement ||
+             document.msFullscreenElement || null;
+    }
+    btn.addEventListener('click', function () {
+      if (fsCurrent()) {
+        var exit = document.exitFullscreen || document.webkitExitFullscreen ||
+                   document.msExitFullscreen;
+        if (exit) exit.call(document);
+      } else {
+        /* A stale-gesture rejection must not surface as an error. */
+        var p = request.call(target);
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      }
+    });
+    function sync() {
+      var on = fsCurrent() === target;
+      btn.setAttribute('aria-pressed', String(on));
+      btn.title = on ? 'Exit fullscreen (Esc)' : 'Fullscreen (Esc to exit)';
+    }
+    document.addEventListener('fullscreenchange', sync);
+    document.addEventListener('webkitfullscreenchange', sync);
+    document.addEventListener('MSFullscreenChange', sync);
+    return btn;
+  }
+
   /* ---- reset progress --------------------------------------------------- */
   function mountShell() {
     host.textContent = '';
+    if (!fsBtn) fsBtn = makeFullscreenBtn();
     var layout = el('div', 'hl-layout');
     layoutNode = layout;
     listNode = el('aside', 'hl-list');

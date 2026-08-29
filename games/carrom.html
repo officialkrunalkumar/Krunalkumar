@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="The carrom board in your browser. Drag back from the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
+    <meta name="description" content="The carrom board in your browser. Pull back behind the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/carrom" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Carrom, with the physics done properly" />
-    <meta property="og:description" content="The carrom board in your browser. Drag back from the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
+    <meta property="og:description" content="The carrom board in your browser. Pull back behind the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/carrom" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-carrom.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Carrom, with the physics done properly" />
-    <meta name="twitter:description" content="The carrom board in your browser. Drag back from the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
+    <meta name="twitter:description" content="The carrom board in your browser. Pull back behind the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-carrom.jpg" />
     <title>Carrom — Play Free Online Against The Computer, No Sign-Up</title>
     <script type="application/ld+json">
@@ -32,16 +32,22 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "The carrom board in your browser. Drag back from the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker.",
+        "description": "The carrom board in your browser. Pull back behind the striker and let go — real elastic collisions, pockets, the queen, and fouls for sinking the striker.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD"
         },
-        "playMode": "SinglePlayer",
+        "playMode": [
+                "SinglePlayer",
+                "MultiPlayer"
+        ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -58,7 +64,7 @@
                         "name": "How do I aim?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Tap along your baseline to slide the striker sideways, then drag backwards from it — like pulling back a catapult — and let go. The dashed line shows where the shot is actually going, not where your finger is."
+                                "text": "Tap along your baseline to slide the striker sideways, then put your finger down anywhere clear of the baseline and pull back behind the striker — the catapult is anchored at the striker, not at your finger. The dashed line shows where the shot is actually going."
                         }
                 },
                 {
@@ -74,7 +80,7 @@
                         "name": "What happens if I pocket the striker?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A foul: you lose a point and one of your pocketed coins goes back to the centre, which is roughly how it is played at home."
+                                "text": "A foul: everything you sank on that stroke comes back to the centre — the queen included — plus one of your own pocketed coins. If you have none pocketed yet, you owe one, and it is paid out of the first coin you do sink."
                         }
                 },
                 {
@@ -142,7 +148,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -179,7 +185,7 @@
           </ol>
         </nav>
         <h1>Carrom</h1>
-        <p class="hero-text">Drag back from the striker and let go. The coins behave: every impact is resolved along the line between the two centres, so a thin cut sends a coin sideways exactly the way it does on a real board, and a full-face hit drives it straight.</p>
+        <p class="hero-text">Press anywhere open, pull back behind the striker &mdash; a slingshot anchored at it &mdash; and let go. The coins behave: every impact is resolved along the line between the two centres, so a thin cut sends a coin sideways exactly the way it does on a real board, and a full-face hit drives it straight.</p>
         <ul class="game-facts">
           <li>Against the computer or pass and play</li>
           <li>The queen is worth three</li>
@@ -233,7 +239,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Carrom playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -256,9 +262,9 @@
         </div>
         <ul class="game-keys">
           <li><kbd>Click</kbd> Tap the baseline to slide the striker</li>
-          <li><kbd>Drag</kbd> Pull back from the striker and release</li>
+          <li><kbd>Drag</kbd> Press off the baseline, pull back behind the striker, release</li>
         </ul>
-        <p class="game-touch">Tap the baseline to slide the striker along it, then drag back from it and let go to shoot.</p>
+        <p class="game-touch">Tap the baseline to slide the striker along it, then press anywhere clear of it, pull back behind the striker, and let go to shoot.</p>
         <div class="game-pad" data-pad="none"></div>
         <div class="game-data">
           <p class="game-data-line">
@@ -291,7 +297,7 @@
         </div>
           <details class="lab-faq">
             <summary>How do I aim?</summary>
-            <div>Tap along your baseline to slide the striker sideways, then drag backwards from it — like pulling back a catapult — and let go. The dashed line shows where the shot is actually going, not where your finger is.</div>
+            <div>Tap along your baseline to slide the striker sideways, then put your finger down anywhere clear of the baseline and pull back behind the striker — the catapult is anchored at the striker, not at your finger. The dashed line shows where the shot is actually going.</div>
           </details>
           <details class="lab-faq">
             <summary>What is the queen worth?</summary>
@@ -299,7 +305,7 @@
           </details>
           <details class="lab-faq">
             <summary>What happens if I pocket the striker?</summary>
-            <div>A foul: you lose a point and one of your pocketed coins goes back to the centre, which is roughly how it is played at home.</div>
+            <div>A foul: everything you sank on that stroke comes back to the centre — the queen included — plus one of your own pocketed coins. If you have none pocketed yet, you owe one, and it is paid out of the first coin you do sink.</div>
           </details>
           <details class="lab-faq">
             <summary>Do I keep the board if I score?</summary>
@@ -314,7 +320,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=carrom#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=carrom&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Carrom%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

@@ -49,10 +49,16 @@
                 "Offline capable"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -90,7 +96,7 @@
                         "name": "Why is the first run slower?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "CPython plus the standard library is roughly 12 MB, downloaded once. Your browser caches it, so subsequent runs start almost instantly — and it then works offline."
+                                "text": "CPython plus the standard library is about 5.5 MB compressed, downloaded once. It unpacks to roughly 12 MB in the browser cache, so subsequent runs start almost instantly — and it then works offline."
                         }
                 },
                 {
@@ -166,7 +172,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -207,7 +213,7 @@
         <p class="hero-text">This is genuine CPython — the same interpreter you would download from python.org — compiled to WebAssembly and running inside your browser tab. It is not a reimplementation or a subset. Nothing you type is uploaded. There is no server that compiles your code, no account to create and no execution quota, because the work happens on your own processor.</p>
         <ul class="lab-facts">
           <li>Real CPython 3</li>
-          <li>~12 MB once, then cached</li>
+          <li>~5.5 MB once, then cached</li>
           <li>Full standard library</li>
           <li>input() and stdin supported</li>
         </ul>
@@ -455,7 +461,7 @@ print(divide(1, 0))</code></pre>
           </details>
           <details class="lab-faq">
             <summary>Why is the first run slower?</summary>
-            <div>CPython plus the standard library is roughly 12 MB, downloaded once. Your browser caches it, so subsequent runs start almost instantly — and it then works offline.</div>
+            <div>CPython plus the standard library is about 5.5 MB compressed, downloaded once. It unpacks to roughly 12 MB in the browser cache, so subsequent runs start almost instantly — and it then works offline.</div>
           </details>
           <details class="lab-faq">
             <summary>Is my Python code private?</summary>

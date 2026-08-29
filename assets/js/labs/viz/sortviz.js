@@ -1419,6 +1419,11 @@
     if (mode === 'path' && pathDirty) buildSearches();
     if (state === 'done' || state === 'idle') resetProgress();
     state = 'playing';
+    // Nothing autoplays: every path into play() is the Run button, the space
+    // bar or the Ctrl+Enter restart, so reaching this line is the visitor
+    // setting the animation going themselves. The already-playing return above
+    // keeps a held space bar from counting as more than the gesture it is.
+    if (window.KSLab) window.KSLab.used('run');
     setRunLabel('Pause');
     cancelRaf(rafHandle);
     rafHandle = raf(tick);
@@ -1474,6 +1479,10 @@
     } else {
       advanceAll();
     }
+    // Single-stepping is as deliberate a way of driving the visualisation as
+    // pressing Play, and only the arrow keys reach here; the done-and-forward
+    // return above has already dropped the presses that could show nothing.
+    if (window.KSLab) window.KSLab.used('run');
     state = everythingDone() ? 'done' : 'paused';
     setRunLabel(state === 'done' ? 'Replay' : 'Resume');
     render();

@@ -755,6 +755,15 @@
       if (typeof event.key !== 'string') return;
       if (event.target && event.target.closest && event.target.closest(EDITABLE)) return;
 
+      // A game owns its keyboard. Two guards because the failure modes
+      // differ: a key aimed inside the shell (focus on the canvas, the pad,
+      // a toolbar button), and a key that fell through to <body> while a
+      // run is live — game-shell.js stamps data-state on its root for
+      // exactly this check. Without these, guessing "w" in Hangman both
+      // registered the miss AND flipped the site to the light theme.
+      if (event.target && event.target.closest && event.target.closest('.game')) return;
+      if (document.querySelector('.game[data-state="playing"]')) return;
+
       switch (event.key.toLowerCase()) {
         case 'k': adjustDensity(1); break;
         case 's': adjustDensity(-1); break;

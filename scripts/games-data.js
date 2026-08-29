@@ -120,7 +120,7 @@ const HUB = {
   ogTitle: 'Games that run on your machine, not mine',
   h1: 'Games that run on your machine, not mine',
   description: 'Free browser games — arcade classics, puzzles, a typing trainer and a few quizzes. No ads, ' +
-    'no account, no tracking, and nothing uploaded. Everything runs in your own tab.',
+    'no account, no tracking — everything runs in your own tab.',
   hero: 'The same rule as the labs next door: it all happens inside your browser tab. No account, no ads, no ' +
     'timer counting down to a paywall, and no server anywhere that knows you played. Your best scores live in ' +
     'your own browser storage, which means clearing your site data clears them &mdash; and that is the honest ' +
@@ -462,6 +462,8 @@ const GAMES = [
     touch: "Pad to move and rotate, Drop to slam the piece down. Tap the board to hard-drop.",
     cat: 'arcade',
     name: 'Tetris',
+    /* See pacman: structured data names the fan remake, not the mark. */
+    jsonldName: 'Tetris (fan remake)',
     glyph: '⬛',
     script: 'arcade/tetris.js',
     /* 320 wide, not 200: the well is 10 cells of 20 units, and the strip to
@@ -516,7 +518,7 @@ const GAMES = [
     faq: [
       { q: 'How does scoring work?', a: 'One line is 100 points times the level, two is 300, three is 500, and four at once is 800. Soft dropping adds one point a row and hard dropping adds two, so pushing pieces down quickly is worth a little on its own.' },
       { q: 'What does hold do?', a: 'It parks the current piece and gives you the one you held before, or the next one if the hold is empty. You can only do it once per piece, which is what stops it being an undo button.' },
-      { q: 'Does it get faster?', a: 'Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred lines, at which point the pieces are falling faster than you can read them.' },
+      { q: 'Does it get faster?', a: 'Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred and forty lines, at which point the pieces are falling faster than you can read them.' },
       { q: 'Can I play it on my phone?', a: 'Yes. The pad gives you left, right, rotate, soft drop and a hard-drop button.' },
     ],
     related: ['snake', '2048', 'breakout'],
@@ -589,8 +591,8 @@ const GAMES = [
     engine: 'Mallet velocity &middot; swept goals',
     title: 'Air Hockey — Play Free Online Against The Computer',
     ogTitle: 'Air hockey where a flick actually flicks',
-    description: 'Shufflepuck-style air hockey against the computer. Your mallet carries its own speed into the ' +
-      'puck, so a flick hits far harder than standing in the way. First to seven.',
+    description: 'Shufflepuck-style air hockey against the computer. Your mallet carries its speed into the ' +
+      'puck — a flick hits far harder than standing still. First to seven.',
     short: 'Flick the puck past them. First to seven.',
     h1: 'Air hockey',
     hero: 'Drag your mallet around your own half. The puck picks up the speed you were moving at, not just the ' +
@@ -769,10 +771,15 @@ const GAMES = [
 
   {
     slug: 'snakes-ladders',
-    cat: 'puzzle',
+    /* A board game, not a puzzle — its own hero says "not one decision to
+       make", and it sits with chess, ludo and carrom on the shelf. */
+    cat: 'board',
     name: 'Snakes and Ladders',
     glyph: '🐍',
     script: 'puzzle/snakes-ladders.js',
+    /* Seats up to four, and one of them can be the computer. */
+    players: 4,
+    soloAI: true,
     width: 560, height: 620, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Fixed classic layout &middot; nine ladders, ten snakes',
@@ -861,10 +868,10 @@ const GAMES = [
     bestKey: null,
     tapAction: false,
     engine: 'DOM grid &middot; word index from the local date',
-    title: 'Word of the Day — Free Five-Letter Word Puzzle, No Sign-Up | Krunalkumar Shah',
+    title: 'Word of the Day — Free Five-Letter Word Puzzle, No Sign-Up',
     ogTitle: 'Five letters, six guesses, and a dictionary of shop talk',
     description: 'A five-letter word puzzle built from developer and security vocabulary. One word a day, ' +
-      'six guesses, and an unlimited practice mode. No ads, no sign-up, nothing uploaded.',
+      'six guesses, and an unlimited practice mode. No ads, no sign-up.',
     short: 'Five letters of developer shop talk.',
     h1: 'Word of the day',
     hero: 'The five-letter guessing game, with a dictionary that only holds words you would meet in a code ' +
@@ -1058,13 +1065,15 @@ const GAMES = [
     name: 'Connect Four',
     glyph: '●',
     script: 'puzzle/connect-four.js',
+    players: 2,
+    soloAI: true,
     width: 518, height: 498, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Minimax with alpha-beta &middot; six ply',
     title: 'Connect Four — Play The Computer Free, No Sign-Up',
     ogTitle: 'Connect Four that never misses a block',
     description: 'Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it ' +
-      'can see and always blocks yours — both of which fall out of the search rather than being special-cased.',
+      'can see and always blocks yours, straight out of the search.',
     short: 'Four in a row, against a real search.',
     h1: 'Connect Four',
     hero: 'Drop a disc, get four in a row. The opponent searches six moves ahead with alpha-beta pruning, which ' +
@@ -1124,8 +1133,8 @@ const GAMES = [
     engine: 'Generated &middot; exactly one solution, checked',
     title: 'Sudoku — Free Online, Generated With One Solution',
     ogTitle: 'Sudoku that is provably not ambiguous',
-    description: 'Sudoku generated fresh every time, with the solution count checked after every clue removed — ' +
-      'so every puzzle has exactly one answer. Four difficulties, pencil marks, no sign-up.',
+    description: 'Sudoku generated fresh every time, the solution count checked after every clue removed — ' +
+      'every puzzle has exactly one answer. Four difficulties, pencil marks.',
     short: 'Generated fresh, one answer guaranteed.',
     h1: 'Sudoku',
     hero: 'Every puzzle here is generated when you press play, and every clue removed is checked to make sure the ' +
@@ -1180,6 +1189,7 @@ const GAMES = [
     slug: 'arithmetic',
     touch: 'Tap the panel to bring up the number pad, then type the answer and press enter.',
     wide: true,
+    cols: 60,
     cat: 'terminal',
     name: 'Arithmetic',
     glyph: '×',
@@ -1320,6 +1330,8 @@ const GAMES = [
     name: 'Gomoku',
     glyph: 'XO',
     term: true,
+    players: 2,
+    soloAI: true,
     script: 'terminal/gomoku.js',
     pad: 'dpad',
     bestKey: null,
@@ -1392,9 +1404,15 @@ const GAMES = [
     slug: 'pacman',
     cat: 'terminal',
     name: 'Pac-Man',
+    /* Structured data presents this as what it is — an original fan
+       remake — rather than claiming authorship of somebody's registered
+       mark. The page keeps its plain name. */
+    jsonldName: 'Pac-Man (fan remake)',
     glyph: 'C',
     term: true,
-    wide: true,
+    /* Not wide: the maze is 30 columns and taller than it is broad, so
+       the turn-your-phone-sideways hint (which claimed eighty columns)
+       was advice for a different game. */
     script: 'terminal/pacman.js',
     pad: 'dpad',
     bestKey: 'pacman',
@@ -1470,6 +1488,7 @@ const GAMES = [
     slug: 'tty-solitaire',
     touch: 'Tap a card to pick it up, then tap where it should go. The pad moves the cursor if you would rather aim with a thumb.',
     wide: true,
+    cols: 72,
     cat: 'terminal',
     name: 'TTY Solitaire',
     glyph: '♠',
@@ -1531,6 +1550,7 @@ const GAMES = [
     glyph: '✈',
     term: true,
     wide: true,
+    cols: 66,
     script: 'terminal/atc.js',
     pad: 'dpad',
     bestKey: 'atc',
@@ -1603,6 +1623,7 @@ const GAMES = [
     glyph: '🖖',
     term: true,
     wide: true,
+    cols: 70,
     script: 'terminal/trek.js',
     pad: 'dpad',
     bestKey: 'trek',
@@ -1679,6 +1700,7 @@ const GAMES = [
     glyph: '⛷',
     term: true,
     wide: true,
+    cols: 72,
     script: 'terminal/asciijump.js',
     pad: 'lr',
     bestKey: 'asciijump',
@@ -1739,6 +1761,7 @@ const GAMES = [
     glyph: '>',
     term: true,
     wide: true,
+    cols: 72,
     script: 'terminal/adventure.js',
     pad: 'dpad',
     bestKey: 'adventure',
@@ -1809,6 +1832,7 @@ const GAMES = [
     glyph: '@',
     term: true,
     wide: true,
+    cols: 70,
     script: 'terminal/rogue.js',
     pad: 'dpad',
     bestKey: 'rogue',
@@ -1935,7 +1959,6 @@ const GAMES = [
   {
     slug: 'bastet',
     touch: "Pad to move and rotate. Tap the board to hard-drop.",
-    wide: true,
     cat: 'terminal',
     name: 'Bastet',
     glyph: '☠',
@@ -1947,7 +1970,7 @@ const GAMES = [
     title: 'Bastet — Bastard Tetris, The Evil Tetris | Krunalkumar Shah',
     ogTitle: 'Tetris, if the game were actively against you',
     description: 'Bastet — "bastard Tetris" — replaces the random piece bag with a solver that hands you the ' +
-      'worst possible piece every single time. Free, in your browser, no sign-up.',
+      'worst piece every single time. Free, in your browser.',
     short: 'Tetris where the game picks your worst piece.',
     h1: 'Bastet',
     hero: 'Federico Poloni&rsquo;s bastet does one thing differently from Tetris, and it is enough to change the ' +
@@ -1996,6 +2019,7 @@ const GAMES = [
     slug: 'greed',
     touch: "Pad to move. Each direction shows how far it would take you.",
     wide: true,
+    cols: 62,
     cat: 'terminal',
     name: 'Greed',
     glyph: '9',
@@ -2005,8 +2029,8 @@ const GAMES = [
     engine: 'Character grid &middot; pure strategy',
     title: 'Greed — The Terminal Puzzle Almost Nobody Has Played',
     ogTitle: 'Greed: one rule, and it is enough',
-    description: 'A grid of digits. Move in a direction and you travel that many squares, eating everything you ' +
-      'cross. No clock, no randomness after the deal, and every dead end is one you built.',
+    description: 'A grid of digits. Move in a direction and you travel that many squares, eating everything ' +
+      'you cross. No clock, no randomness after the deal.',
     short: 'Eat digits, and try not to box yourself in.',
     h1: 'Greed',
     hero: 'A board full of the digits one to nine. You stand on one. Pick a direction and you move that many ' +
@@ -2049,6 +2073,7 @@ const GAMES = [
     slug: 'robots',
     touch: "Pad to move one square. Tap the board to teleport.",
     wide: true,
+    cols: 60,
     cat: 'terminal',
     name: 'Robots',
     glyph: '+',
@@ -2059,7 +2084,7 @@ const GAMES = [
     title: 'Robots — The BSD Terminal Game, Free In Your Browser',
     ogTitle: 'Robots: they chase you, and they cannot steer',
     description: 'The BSD games classic. Robots move one square towards you every turn and cannot avoid ' +
-      'anything, so the game is about arranging collisions rather than running away.',
+      'anything — the game is arranging collisions, not running away.',
     short: 'Make them crash into each other.',
     h1: 'Robots',
     hero: 'You move one square; every robot moves one square straight at you. They have no pathfinding at all, ' +
@@ -2108,6 +2133,7 @@ const GAMES = [
     slug: 'typespeed',
     touch: "Tap the board to bring up your keyboard, then type the words.",
     wide: true,
+    cols: 76,
     cat: 'terminal',
     name: 'Typespeed',
     glyph: '»',
@@ -2117,8 +2143,8 @@ const GAMES = [
     engine: 'Character grid &middot; prefix matching',
     title: 'Typespeed — Type The Flying Words Before They Land',
     ogTitle: 'Typespeed: words fly, you type, they die',
-    description: 'The Linux terminal typing game. Words fly across the screen and you type them before they ' +
-      'reach the wall. Shell commands and security vocabulary, free and in your browser.',
+    description: 'The Linux terminal typing game. Words fly across the screen; type them before they reach ' +
+      'the wall. Shell commands and security vocabulary, in your browser.',
     short: 'Type the flying words before they land.',
     h1: 'Typespeed',
     hero: 'The opposite of a typing test. Words fly in from the left and you kill them by typing them &mdash; no ' +
@@ -2168,11 +2194,12 @@ const GAMES = [
     glyph: 'W',
     term: true,
     wide: true,
+    cols: 60,
     script: 'terminal/ninvaders.js',
     pad: 'lr',
     engine: 'Character grid &middot; they speed up',
     title: 'nInvaders — Terminal Space Invaders, Free In Your Browser',
-    ogTitle: 'Space Invaders, in eighty columns',
+    ogTitle: 'Space Invaders, in sixty columns',
     description: 'The terminal Space Invaders. The swarm moves as one body, drops a row at each edge, and gets ' +
       'faster the fewer of them are left. No ads, no sign-up.',
     short: 'The swarm gets faster as you thin it.',
@@ -2222,12 +2249,13 @@ const GAMES = [
     glyph: '?',
     term: true,
     wide: true,
+    cols: 64,
     script: 'terminal/wumpus.js',
     pad: 'dpad',
     engine: 'The 1973 cave, unchanged',
     title: 'Hunt the Wumpus — The 1973 Cave Game, In Your Browser',
     ogTitle: 'Hunt the Wumpus: deduce, then shoot',
-    description: 'Gregory Yob\'s 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, and warnings ' +
+    description: 'Gregory Yob\'s 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings ' +
       'from next door. Work out where it sleeps, then shoot a crooked arrow.',
     short: 'Twenty rooms, three tunnels, one wumpus.',
     h1: 'Hunt the Wumpus',
@@ -2280,13 +2308,15 @@ const GAMES = [
     name: 'Ludo',
     glyph: '⚄',
     script: 'board/ludo.js',
+    players: 4,
+    soloAI: true,
     width: 600, height: 600, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Against the computer, or pass and play',
     title: 'Ludo — Play Free Online Against The Computer, No Sign-Up',
     ogTitle: 'Ludo, on your own or around one phone',
     description: 'Ludo for one to four players. Play the computer on your own, or pass one device around the ' +
-      'table. Two, three or four seats, no ads, no account, nothing uploaded.',
+      'table. Two, three or four seats — no ads, nothing uploaded.',
     short: 'Play the computer, or pass the phone round.',
     h1: 'Ludo',
     hero: 'Four tokens each, a six to get out, and the long-running argument about whose turn it was. Play it ' +
@@ -2310,7 +2340,8 @@ const GAMES = [
       '<button class="game-btn game-btn-primary" type="button" id="game-roll">Roll</button>',
     ],
     keys: [
-      { k: 'Space', d: 'Roll the dice' },
+      { k: 'Space', d: 'Roll the dice, or move the ringed token' },
+      { k: 'Arrows', d: 'Cycle which legal token is ringed' },
       { k: 'Click', d: 'Tap a highlighted token to move it' },
     ],
     touch: 'Tap Roll, then tap the token you want to move &mdash; the ones you may legally move are ringed in white.',
@@ -2346,13 +2377,18 @@ const GAMES = [
     name: 'Chess',
     glyph: '♞',
     script: 'board/chess.js',
-    width: 560, height: 560, bestKey: null, pad: 'none',
+    players: 2,
+    soloAI: true,
+    /* 592, not 560: the bottom 32px is the status strip. Drawn INSIDE the
+       board's height it covered the bottom rank exactly when a message was
+       explaining what had just happened there. */
+    width: 560, height: 592, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Full rules &middot; minimax with alpha-beta',
     title: 'Chess — Play The Computer Free In Your Browser, No Sign-Up',
     ogTitle: 'Chess with all the awkward rules in it',
-    description: 'Chess against a real engine: castling, en passant, promotion, stalemate, the fifty-move rule ' +
-      'and insufficient material all implemented. Four strengths, take-backs, no account.',
+    description: 'Chess against a real engine: castling, en passant, promotion, stalemate, threefold ' +
+      'repetition and the fifty-move rule. Three strengths, take-backs, no account.',
     short: 'A real engine, and all the awkward rules.',
     h1: 'Chess',
     hero: 'Not a chessboard with a random-move generator behind it. This searches, prunes, and looks past the ' +
@@ -2361,8 +2397,8 @@ const GAMES = [
     facts: [
       'Against the computer, or pass and play',
       'Castling, en passant, promotion',
-      'Stalemate, fifty-move, insufficient material',
-      'Four strengths',
+      'Stalemate, fifty-move, repetition, insufficient material',
+      'Three strengths',
       'Take back a move',
       'Legal moves shown as you pick a piece',
     ],
@@ -2427,18 +2463,25 @@ const GAMES = [
     name: 'Carrom',
     glyph: '⊙',
     script: 'board/carrom.js',
+    players: 2,
+    soloAI: true,
     width: 560, height: 560, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Elastic collisions &middot; sub-stepped',
     title: 'Carrom — Play Free Online Against The Computer, No Sign-Up',
     ogTitle: 'Carrom, with the physics done properly',
-    description: 'The carrom board in your browser. Drag back from the striker and let go — real elastic ' +
+    /* "Drag back FROM the striker" was geometrically impossible — pressing
+       on the striker slides it, since it sits on the baseline. The shot is
+       a slingshot ANCHORED at the striker: press anywhere clear of it,
+       pull back behind it, release. The copy now describes the game that
+       ships. */
+    description: 'The carrom board in your browser. Pull back behind the striker and let go — real elastic ' +
       'collisions, pockets, the queen, and fouls for sinking the striker.',
     short: 'Flick the striker, sink the coins.',
     h1: 'Carrom',
-    hero: 'Drag back from the striker and let go. The coins behave: every impact is resolved along the line ' +
-      'between the two centres, so a thin cut sends a coin sideways exactly the way it does on a real board, and ' +
-      'a full-face hit drives it straight.',
+    hero: 'Press anywhere open, pull back behind the striker &mdash; a slingshot anchored at it &mdash; and let ' +
+      'go. The coins behave: every impact is resolved along the line between the two centres, so a thin cut ' +
+      'sends a coin sideways exactly the way it does on a real board, and a full-face hit drives it straight.',
     facts: ['Against the computer or pass and play', 'The queen is worth three', 'Fouls for sinking the striker', 'Real collision physics'],
     hud: [
       { key: 'you', label: 'You', accent: true, init: '0' },
@@ -2450,9 +2493,9 @@ const GAMES = [
     ],
     keys: [
       { k: 'Click', d: 'Tap the baseline to slide the striker' },
-      { k: 'Drag', d: 'Pull back from the striker and release' },
+      { k: 'Drag', d: 'Press off the baseline, pull back behind the striker, release' },
     ],
-    touch: 'Tap the baseline to slide the striker along it, then drag back from it and let go to shoot.',
+    touch: 'Tap the baseline to slide the striker along it, then press anywhere clear of it, pull back behind the striker, and let go to shoot.',
     infoHeading: 'The two things that make it feel right',
     info: [
       {
@@ -2469,9 +2512,9 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'How do I aim?', a: 'Tap along your baseline to slide the striker sideways, then drag backwards from it — like pulling back a catapult — and let go. The dashed line shows where the shot is actually going, not where your finger is.' },
+      { q: 'How do I aim?', a: 'Tap along your baseline to slide the striker sideways, then put your finger down anywhere clear of the baseline and pull back behind the striker — the catapult is anchored at the striker, not at your finger. The dashed line shows where the shot is actually going.' },
       { q: 'What is the queen worth?', a: 'Three points, against one for an ordinary coin. The computer will go for it when the line is there.' },
-      { q: 'What happens if I pocket the striker?', a: 'A foul: you lose a point and one of your pocketed coins goes back to the centre, which is roughly how it is played at home.' },
+      { q: 'What happens if I pocket the striker?', a: 'A foul: everything you sank on that stroke comes back to the centre — the queen included — plus one of your own pocketed coins. If you have none pocketed yet, you owe one, and it is paid out of the first coin you do sink.' },
       { q: 'Do I keep the board if I score?', a: 'Yes. Sink a coin cleanly and you shoot again. Miss, or foul, and it passes over.' },
     ],
     related: ['chess', 'ludo', 'air-hockey'],
@@ -3030,7 +3073,7 @@ const GAMES = [
     title: 'Password Duel — Watch Your Password Get Cracked, Live',
     ogTitle: 'Type a password. Watch it fall.',
     description: 'Type a password and watch a real cracking run go after it — wordlist, then mangling rules, ' +
-      'then brute force. Nothing is uploaded; it all happens in a worker in your tab.',
+      'then brute force. Nothing uploaded; it runs in a worker in your tab.',
     short: 'Type one. Watch it fall.',
     h1: 'Password duel',
     hero: 'Type a password &mdash; ideally one you have actually used &mdash; and watch a genuine cracking run ' +
@@ -3088,8 +3131,8 @@ const GAMES = [
     engine: 'Generated and solved, never stored',
     title: 'Subnet Sprint — Timed CIDR Practice, Free In Your Browser',
     ogTitle: 'Two minutes of subnetting',
-    description: 'Timed CIDR questions: usable hosts, network and broadcast addresses, masks, and which prefix ' +
-      'fits a host count. Generated fresh every time, so the bank never runs out.',
+    description: 'Timed CIDR questions: usable hosts, network and broadcast addresses, masks, which prefix ' +
+      'fits a host count. Generated fresh, so the bank never runs out.',
     short: 'Two minutes of CIDR, generated fresh.',
     h1: 'Subnet sprint',
     hero: 'Two minutes, as many CIDR questions as you can get through. Every question is generated from a random ' +
@@ -3135,6 +3178,7 @@ const GAMES = [
     glyph: '◌',
     term: true,
     wide: true,
+    cols: 78,
     script: 'toy/rain.js',
     pad: 'none', bestKey: null,
     tapAction: false,
@@ -3209,6 +3253,7 @@ const GAMES = [
     glyph: '*',
     term: true,
     wide: true,
+    cols: 78,
     script: 'toy/aafire.js',
     pad: 'none', bestKey: null,
     tapAction: false,
@@ -3432,8 +3477,8 @@ const GAMES = [
     engine: 'Conway &middot; a wrapping torus',
     title: "Conway's Game of Life — Draw On It, Free In Your Browser",
     ogTitle: 'Four rules, and nobody can predict them',
-    description: "Conway's Game of Life with a glider gun, a pulsar and the R-pentomino built in. Draw your own " +
-      'cells, change the speed, watch it go. No sign-up, nothing uploaded.',
+    description: "Conway's Game of Life with a glider gun, a pulsar and the R-pentomino built in. Draw your " +
+      'own cells, change the speed, watch it go. Nothing uploaded.',
     short: 'Four rules, endlessly unpredictable.',
     h1: 'Game of Life',
     hero: 'A live cell with two or three neighbours survives; a dead one with exactly three comes alive. That is ' +
@@ -3445,7 +3490,7 @@ const GAMES = [
       { key: 'alive', label: 'Alive', init: '0' },
     ],
     controls: [
-      '<button class="game-btn" type="button" id="game-run">Pause</button>',
+      '<button class="game-btn" type="button" id="game-run">Stop</button>',
       '<label class="sr-only" for="game-pattern">Pattern</label>',
       '<select class="game-select" autocomplete="off" id="game-pattern"><option value="gun" selected>Glider gun</option><option value="pulsar">Pulsar</option><option value="glider">Glider</option><option value="rpentomino">R-pentomino</option></select>',
       '<label class="sr-only" for="game-speed">Speed</label>',
@@ -3654,7 +3699,7 @@ const GAMES = [
     title: 'What Kind Of Developer Are You — A 16-Question Quiz',
     ogTitle: 'Archaeologist, firefighter, gardener, architect, shipper or toolmaker',
     description: 'Sixteen questions about how you actually work, and one of six developer archetypes at the ' +
-      'end — including the failure mode that comes with it. No sign-up, nothing uploaded.',
+      'end — with the failure mode that comes with it. Nothing uploaded.',
     short: 'Sixteen questions about how you work.',
     h1: 'What kind of developer are you',
     hero: 'Not what language you like &mdash; what you do when you meet code you did not write, how you feel ' +
@@ -4060,7 +4105,7 @@ const GAMES = [
     title: 'How Hackable Are You — A 15-Question Security Check',
     ogTitle: 'How hackable are you, honestly',
     description: 'Fifteen questions about what you actually do, weighted by what actually protects people — ' +
-      'and a prioritised list of what to fix first. No sign-up, nothing uploaded.',
+      'and a prioritised list of what to fix first. Nothing uploaded.',
     short: 'Fifteen questions, then what to fix first.',
     h1: 'How hackable are you',
     hero: 'Not a scan and not a lecture. Fifteen questions about habits, weighted the way the incident data ' +
@@ -4152,8 +4197,8 @@ const GAMES = [
     engine: 'It learns your last two throws',
     title: 'Rock Paper Scissors — Against An Opponent That Learns You',
     ogTitle: 'You cannot be random, and this proves it',
-    description: 'Rock paper scissors against a frequency model of your own habits. After twenty rounds it is ' +
-      'usually beating you, because people cannot generate random sequences.',
+    description: 'Rock paper scissors against a frequency model of your habits. After twenty rounds it is ' +
+      'usually beating you — people cannot generate random sequences.',
     short: 'It learns your habits. You will lose.',
     h1: 'Rock paper scissors',
     hero: 'The game is not the point. The point is that you cannot be random &mdash; and after twenty rounds a ' +
@@ -4308,8 +4353,8 @@ const GAMES = [
     engine: 'Real paragraphs &middot; per-key accuracy',
     title: 'Typing Speed Trainer — Long Paragraphs, Free, No Sign-Up',
     ogTitle: 'A typing trainer that uses real paragraphs',
-    description: 'Improve your typing speed on real paragraphs, not three-word snippets. Live WPM and accuracy, ' +
-      'a per-key error breakdown so you know which fingers to blame, and progress kept on your own device.',
+    description: 'Improve your typing speed on real paragraphs, not three-word snippets. Live WPM and ' +
+      'accuracy, a per-key error breakdown, and progress kept on your own device.',
     short: 'Real paragraphs, live WPM, per-key accuracy.',
     h1: 'Typing trainer',
     hero: 'Most typing tests hand you a sentence and a stopwatch. That measures your sprint, not your typing. ' +
@@ -4392,8 +4437,8 @@ const GAMES = [
     engine: 'A hash function wearing a disguise',
     title: 'Love Calculator — Two Names, One Number, Zero Science',
     ogTitle: 'A love calculator that admits what it is',
-    description: 'Type two names, get a percentage. It is a hash function, not a compatibility model, and this ' +
-      'page says so — then points you at what actually predicts whether two people last.',
+    description: 'Type two names, get a percentage. It is a hash function, not a compatibility model — and ' +
+      'then this page shows what actually predicts whether couples last.',
     short: 'Two names, one number, no science whatsoever.',
     h1: 'Love calculator',
     hero: 'Type two names and get a number. Every love calculator on the internet does this, and every single one ' +

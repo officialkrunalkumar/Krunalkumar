@@ -41,7 +41,13 @@
      here rather than thirty. */
   var COLORS = {
     green: '#86efac',     // the default phosphor
-    dim: '#3f6b52',
+    /* Dim is still readable on the #020617 ground: the old #3f6b52
+       measured 3.30:1 and the games put real content in dim — help
+       lines, menus, inventory — so it has to clear WCAG's 4.5:1 for
+       body text. #508a60 measures 4.94:1 and still reads as the quiet
+       register next to the phosphor. Mirrored by hub.js's thumbnail
+       painter (its local DIM), which must change with this. */
+    dim: '#508a60',
     white: '#f8fafc',
     grey: '#94a3b8',
     dark: '#475569',

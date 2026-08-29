@@ -54,7 +54,7 @@ module.exports = [
 {t:"Frequency analysis",c:"crypto",d:"Breaking a substitution cipher by counting letters: in English, e and t dominate, and that shape survives the substitution.",lab:"cipher",see:["Caesar cipher","Vigenère cipher"]},
 {t:"Hash function",c:"crypto",d:"A one-way function turning any input into a fixed-length digest. The same input always gives the same digest; the digest reveals nothing about the input.",lab:"hash",see:["SHA-256","MD5"]},
 {t:"HMAC",c:"crypto",d:"A hash combined with a secret key, so the digest proves not only that data is unaltered but that it came from someone holding the key.",lab:"hash",see:["Hash function","JWT"]},
-{t:"JWT",c:"crypto",d:"JSON Web Token — a signed, base64url-encoded set of claims. Signed, not encrypted: anyone holding the token can read every claim in it.",lab:"jwt",see:["Base64","HMAC","Session hijacking"]},
+{t:"JWT",c:"crypto",d:"JSON Web Token — a signed, base64url-encoded set of claims. The common signed form (JWS) is not encrypted, so anyone holding the token can read every claim in it; an encrypted form (JWE) exists but is much rarer.",lab:"jwt",see:["Base64","HMAC","Session hijacking"]},
 {t:"MD5",c:"crypto",d:"A 128-bit hash, comprehensively broken for security. Collisions can be produced on demand, so it survives only as a non-security checksum.",lab:"hash",see:["Hash function"]},
 {t:"Nonce",c:"crypto",d:"A number used once. It stops a captured message from being replayed later, and stops identical plaintexts from producing identical ciphertexts."},
 {t:"PEM",c:"crypto",d:"The text wrapper you see around keys and certificates — base64 between BEGIN and END lines. A container format, not a cryptographic one.",lab:"cert-decoder",see:["X.509","Base64"]},
@@ -152,6 +152,6 @@ module.exports = [
 {t:"AI SDR",c:"career",d:"An automated sales development representative — software that researches prospects and drafts outreach, leaving a human to judge and send.",post:"i-open-sourced-my-ai-sdr",see:["n8n"]},
 {t:"ATS",c:"career",d:"Applicant Tracking System — the software that reads a resume before a person does. It is why layout choices can cost you an interview.",lab:"resume-maker",post:"the-resume-builder-paywall-trick"},
 {t:"Four M's",c:"career",d:"Man, Machine, Material, Method — the four inputs every operation runs on, and a quick frame for locating where a process is actually failing.",post:"the-four-ms-every-business-needs"},
-{t:"n8n",c:"career",d:"An open-source workflow automation tool. Nodes for triggers, logic, and services, wired into pipelines you can self-host.",post:"automating-email-replies-with-n8n",see:["AI SDR"]},
+{t:"n8n",c:"career",d:"A fair-code workflow automation tool — source-available under the Sustainable Use License, not OSI open source. Nodes for triggers, logic, and services, wired into pipelines you can self-host.",post:"automating-email-replies-with-n8n",see:["AI SDR"]},
 {t:"Scope creep",c:"career",d:"Work expanding past what was agreed without the timeline or price moving with it. Prevented by writing the scope down, not by working harder."},
 ]

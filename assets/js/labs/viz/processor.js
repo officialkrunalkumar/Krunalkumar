@@ -727,7 +727,14 @@
     }, 250);
   }
   function setTarget(v) {
+    var was = zTarget;
     zTarget = clamp(v, 0, MAXZ);
+    // Every caller of setTarget is a deliberate gesture — wheel, drag, keys,
+    // slider, the level list, a reset. As in multi-shell's goto(), the clamp
+    // above is why this is a comparison and not an unconditional call: a
+    // reset on an untouched view, or zooming past either end, leaves the
+    // target where it was and shows nothing new, so it must not count as use.
+    if (zTarget !== was && window.KSLab) window.KSLab.used('run');
     armStallWatchdog();
   }
   function zoomBy(d) { setTarget(zTarget + d); }
@@ -735,6 +742,10 @@
   function resetView() { setTarget(0); }
   function togglePlay() {
     playing = !playing;
+    // Pausing and resuming the flow are both the visitor driving the scene —
+    // this is only ever reached from the button or the Space key. used()
+    // de-dupes per page view, so this and the zoom site cannot double-count.
+    if (window.KSLab) window.KSLab.used('run');
     if (elPlay) {
       elPlay.textContent = playing ? '❚❚ Pause flow' : '▶ Play flow';
       elPlay.className = 'pv-btn' + (playing ? '' : ' off');

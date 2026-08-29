@@ -46,7 +46,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── favicon.ico                   Favicon, served from the site root
 ├── blog/
 │   ├── index.html                Blog index — static card grid of every post
-│   └── *.html                    One file per article (19 posts), static TOC in the markup
+│   └── *.html                    One file per article (25 posts), static TOC in the markup
 ├── glossary.html                 A–Z glossary — generated from a term list (see Glossary)
 ├── sw.js                         Service worker — /assets/vendor, the doc makers, and the blog
 ├── labs/
@@ -287,9 +287,10 @@ regenerating the derived files it keeps in step, `assets/data/search-index.json`
 `llms-full.txt` and the colophon figures — and deliberately nothing else, then checks its own
 output before letting the deploy succeed:
 
-1. **Strips CSS and JS comments.** 391 KB of stylesheet across nine files becomes 219 KB — 44% off,
-   most of it from `main.css`, which is render-blocking on the 100 pages that load it; `boot.js` and
-   `particle-bg.js` shed another 29 KB on top. It does **not** collapse whitespace: that would save
+1. **Strips CSS and JS comments.** ~570 KB of stylesheet across thirteen files loses roughly forty
+   per cent, most of it from `main.css`, which is render-blocking on the 174 pages that load it;
+   `boot.js` and `particle-bg.js` shed more on top. (Measure, don't trust: the deploy log prints the
+   real before/after figures on every build.) It does **not** collapse whitespace: that would save
    a little more and make every deploy-preview diff unreadable, which is a bad trade at this size.
 2. **Rewrites `sitemap.xml` `<lastmod>` per file from git**, instead of the single hardcoded date
    every URL shares in the repo — which tells a crawler nothing and is wrong the day after it is
@@ -328,7 +329,7 @@ throughout, which is also why a `content: "/*"` string cannot be mistaken for a 
 
 It finishes by checking its own output: 20 critical files present and above a size floor, twelve of
 them also matched against an expected marker, and at least 80 HTML pages on disk — the floor in
-`MIN_PAGES`, against 109 pages today. Vercel keeps serving the previous deployment when a build
+`MIN_PAGES`, against 183 pages today. Vercel keeps serving the previous deployment when a build
 exits non-zero, so **failing the deploy is always safer than publishing the damage** — that is what
 the throw at the end is for.
 
@@ -443,7 +444,7 @@ Three details that were each a bug:
   reset underneath someone mid-session.
 
 **Search.** `assets/js/site-search.js` with a prebuilt index at
-`assets/data/search-index.json` (98 pages, ~107 KB brotli on the wire, fetched only when the overlay opens). It opens a full-screen
+`assets/data/search-index.json` (172 pages, ~587 KB raw / ~145 KB brotli on the wire, fetched only when the overlay opens). It opens a full-screen
 overlay rather than a dropdown — roomier, and identical on a phone and a laptop.
 The index is generated from the pages by `scripts/search-index.js`, and `scripts/build.js` rebuilds
 it on every deploy, so it cannot describe content the site no longer has. Run
@@ -552,13 +553,13 @@ Shift with it:
    `--accent-dark` and does not shift with the surfaces). Only `background` declarations —
    never a `box-shadow` that happens to use the same numbers.
 3. The artwork, which is anchored to the same palette: the gradient stops in every
-   `*-cover.svg` under `assets/images/blog/` (19 today — count them, don't trust this number), and the
-   `*-diagram<N>.svg` figure panels beside them (`#1b2735`, 18 today). Those diagrams were inline
-   in the posts until they were pulled out into files, so grep the SVGs, not the HTML —
-   `grep -rl '#1b2735' assets/images/blog/` is the honest list. `assets/images/research-flowchart.svg`
-   is a nineteenth panel and uses `#131928`, not `#1b2735`. `.post-cover` has no background of its own, so a cover left behind prints as a
+   `*-cover.svg` under `assets/images/blog/` (25 today — count them, don't trust this number), and the
+   `*-diagram<N>.svg` figure panels beside them (18 today). The diagrams no longer carry a shared
+   `#1b2735` panel — `grep -rl '#1b2735' assets/images/blog/` today finds only the two workflow
+   SVGs (instantly/smartlead) — so grep for the hex you are changing rather than trusting any list
+   here. `assets/images/research-flowchart.svg` uses `#131928`, not `#1b2735`. `.post-cover` has no background of its own, so a cover left behind prints as a
    visibly darker rectangle against the page.
-4. The `theme-color` meta in all 89 chrome-bearing pages — it tracks `--bg-base`, since the mobile
+4. The `theme-color` meta in all 179 chrome-bearing pages — it tracks `--bg-base`, since the mobile
    address bar sits flush above the page-tinted sticky header. Grep for the current hex rather than
    trusting that count. `terminal.html` is the one page that does not track it: it is standalone,
    has its own inline `<style>`, and its `#020617` is deliberately not the site palette — leave it.
@@ -1221,7 +1222,7 @@ only a service worker sees those requests.
 | --- | --- | --- |
 | `/assets/vendor/*` | cache-first | this cache is the authoritative copy; misses fetch with `{cache: 'reload'}` |
 | `DOC_URLS` — resume maker, biodata maker, wish cards | network-first | those pages promise in print that they work with no server |
-| `BLOG_URLS` — `/blog`, 19 articles, their art, blog CSS/JS | network-first | the reason to install the PWA: an archive readable on a plane |
+| `BLOG_URLS` — `/blog`, 25 articles, their art, blog CSS/JS | network-first | the reason to install the PWA: an archive readable on a plane |
 | navigations | network-only, `/offline` fallback | never cached, never stale; only answers a fetch that actually failed |
 
 **Network-first is what keeps the two precached sets compatible with the no-stale-pages rule** —
@@ -1229,7 +1230,7 @@ online you always get the live response and the cache is refreshed behind it; th
 ever answers a fetch that genuinely failed. Cache-first HTML is the support nightmare ("why does
 the old page keep coming back"); a cache that is only ever a fallback is not.
 
-The blog is precached **on install, whole** — about 1 MB: 784 KB of HTML, 142 KB of art, ~52 KB of
+The blog is precached **on install, whole** — about 1.2 MB: ~952 KB of HTML, ~151 KB of art, ~42 KB of
 CSS and JS. That was measured before it was chosen, against the 58 MB `assets/vendor/clang` a
 single visit to `/labs/c` already downloads. The archive is 1.7% of one lab runtime, so metering it
 per-article would have cost more in machinery than it could ever save in bytes.
@@ -1393,7 +1394,7 @@ A lab that no longer has terms pointing at it has its block removed rather than 
 ## Glossary (`/glossary`)
 
 144 terms on one A–Z page, each linked to the lab that demonstrates it and, where one exists,
-the article that explains it. It is the connective tissue the site was missing: 62 labs and 19
+the article that explains it. It is the connective tissue the site was missing: 62 labs and 25
 posts with nothing joining them, so a reader who arrived knowing the word *steganography* had no
 route to the tool, and a reader who found the tool had no route to the idea.
 

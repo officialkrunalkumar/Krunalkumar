@@ -242,6 +242,13 @@
     this.W = spec.width || 320;
     this.H = spec.height || 320;
     this.state = 'idle';        // idle | playing | paused | over
+    /* Mirrored onto the root as data-state at every transition, so code
+       OUTSIDE the shell can tell a running game from a page that merely
+       contains one. particle-bg.js reads it: the site's single-letter
+       shortcuts (w/d for theme, p, k, s, l, a, b) must go dead while a
+       run is live — guessing "w" in Hangman was registering the miss AND
+       flipping the whole site to the light theme. */
+    this.el.setAttribute('data-state', this.state);
     this.score = 0;
     this.audio = new Audio();
     this.rng = Math.random;
@@ -257,6 +264,21 @@
     this.board = this.el.querySelector('.game-board');
     this.stage = this.el.querySelector('.game-stage');
     this.overlay = this.el.querySelector('.game-overlay');
+
+    /* What a screen reader hears. The canvas is a role="img" snapshot and
+       the HUD cells swap their text without announcing it, so without this
+       region an entire run — the pause, the game over, the final score —
+       is silent to assistive tech. One polite live region for the whole
+       shell, created here rather than in the generated markup because
+       without JavaScript there is no game, and an empty live region in
+       dead markup would be announcing nothing on behalf of nothing. */
+    this.live = document.createElement('div');
+    this.live.className = 'sr-only';
+    this.live.setAttribute('role', 'status');
+    this.live.setAttribute('aria-live', 'polite');
+    this.el.appendChild(this.live);
+    this._liveTick = 0;
+    this._scoreTimer = null;
 
     if (this.canvas) {
       this.ctx = this.canvas.getContext('2d');
@@ -292,7 +314,10 @@
     this.bestKey = spec.bestKey === null ? null : (spec.bestKey || this.slug);
     this.bestOrder = spec.bestOrder || 'high';
     this.best = this.bestKey ? Number(read(this.bestKey + '.best', 0)) || 0 : 0;
-    if (this.bestKey) this.stat('best', this.formatBest(this.best));
+    /* No record yet is a dash, not formatBest(0). The formatter turns a
+       number into a reading — 0 becomes "0:00" on the timed games — and a
+       best of 0:00 is a claim about a run that never happened. */
+    if (this.bestKey) this.stat('best', this.best ? this.formatBest(this.best) : '—');
 
     this.bindControls();
     this.bindLifecycle();
@@ -315,8 +340,12 @@
        ones that are really a form — the love calculator, the quizzes —
        where "Ready? / Play" is a door in front of a door. Those set
        autoStart and go straight to the thing. */
+    /* noFocus: this overlay appears on PAGE LOAD, not because the player
+       did anything. Yanking the keyboard onto the Play button here took
+       focus from wherever the visitor actually was — the address bar, a
+       skip link, the heading a screen reader had just started reading. */
     if (this.spec.autoStart) this.start();
-    else this.showOverlay('start');
+    else this.showOverlay('start', { noFocus: true });
 
     if (this.hooks.ready) this.hooks.ready();
   }
@@ -531,16 +560,42 @@
 
     /* The pad. pointerdown/up rather than click so holding a direction
        works, and pointercancel so a finger dragged off the button does not
-       leave it stuck down — the commonest way a touch D-pad goes wrong. */
+       leave it stuck down — the commonest way a touch D-pad goes wrong.
+
+       Direction buttons auto-repeat while held, to match what the keyboard
+       already gives: the keydown handler above deliberately lets the OS
+       key-repeat through for the four arrows and nothing else. Without the
+       same here, walking a Tetris piece six columns took six separate taps
+       while an arrow key just held. Action stays single-shot on purpose —
+       auto-firing the one do-it button is a different game. */
+    var PAD_REPEAT = { up: 1, down: 1, left: 1, right: 1 };
     var pads = this.el.querySelectorAll('[data-key]');
     for (var i = 0; i < pads.length; i++) {
       (function (btn) {
         var key = btn.getAttribute('data-key');
+        var repeat = null;
+        var stopRepeat = function () {
+          if (repeat) { clearTimeout(repeat); repeat = null; }
+        };
         var down = function (event) {
           event.preventDefault();
           self.press(key, event);
+          stopRepeat();
+          if (PAD_REPEAT[key]) {
+            repeat = setTimeout(function again() {
+              if (self.state !== 'playing') { repeat = null; return; }
+              /* Repeats carry repeat: true, the same flag the OS stamps on
+                 held keyboard keys — so a game that filters event.repeat
+                 (platformer's one-jump-per-press rule) treats a held pad
+                 button exactly like a held arrow key instead of auto-firing
+                 through a filter it could not see. */
+              self.press(key, { repeat: true });
+              repeat = setTimeout(again, 110);
+            }, 280);
+          }
         };
         var up = function () {
+          stopRepeat();
           self.held[key] = false;
           if (self.hooks.release) self.hooks.release(key);
         };
@@ -548,9 +603,16 @@
         btn.addEventListener('pointerup', up);
         btn.addEventListener('pointercancel', up);
         btn.addEventListener('pointerleave', up);
-        /* Belt and braces on engines that fire touch but not pointer. */
-        btn.addEventListener('touchstart', down, { passive: false });
-        btn.addEventListener('touchend', up);
+        /* Touch fallback ONLY where Pointer Events do not exist. On any
+           modern phone a single tap fires BOTH pointerdown and touchstart,
+           so binding the two unconditionally made every pad press land
+           twice — two rotations per tap in Tetris, two draws in solitaire.
+           The engines this fallback exists for are exactly the ones with
+           no PointerEvent constructor to detect. */
+        if (!root.PointerEvent) {
+          btn.addEventListener('touchstart', down, { passive: false });
+          btn.addEventListener('touchend', up);
+        }
       })(pads[i]);
     }
 
@@ -667,7 +729,9 @@
       btn.addEventListener('click', function () {
         var n = Storage.clearGame(self.slug);
         self.best = 0;
-        if (self.bestKey) self.stat('best', self.formatBest(0));
+        /* A dash, not formatBest(0) — same reason as at boot: "0:00" right
+           beside "Cleared 2 entries" is a best for a run that never was. */
+        if (self.bestKey) self.stat('best', '—');
         if (note) {
           note.textContent = n
             ? 'Cleared ' + n + ' ' + (n === 1 ? 'entry' : 'entries') + ' for this game.'
@@ -827,9 +891,16 @@
     if (name === 'restart') { this.start(); return; }
 
     /* Action on an overlay means "get on with it" — start, or start again.
-       This is why Space and Enter both map to 'action'. */
+       This is why Space and Enter both map to 'action'. EXCEPT while
+       paused, where the run still exists and must be carried on rather
+       than thrown away: before this branch, tapping the board mid-pause
+       (or Space/Enter landing on the shell) silently restarted a run the
+       player was in the middle of. */
     if (this.state !== 'playing') {
-      if (name === 'action') { this.start(); }
+      if (name === 'action') {
+        if (this.state === 'paused') this.resume();
+        else this.start();
+      }
       return;
     }
 
@@ -852,6 +923,7 @@
     this.held = {};
     this.dir = { x: 0, y: 0 };
     this.state = 'playing';
+    this.el.setAttribute('data-state', this.state);
     this._acc = 0;
     this._last = 0;
     if (this.hooks.reset) this.hooks.reset();
@@ -953,6 +1025,7 @@
   Game.prototype.pause = function (silent) {
     if (this.state !== 'playing') return;
     this.state = 'paused';
+    this.el.setAttribute('data-state', this.state);
     this.stop();
     if (this.pauseBtn) this.pauseBtn.textContent = 'Resume';
     this.showOverlay('paused');
@@ -963,9 +1036,11 @@
     if (this.state !== 'paused') return;
     this.hideOverlay();
     this.state = 'playing';
+    this.el.setAttribute('data-state', this.state);
     this._last = 0;
     this._acc = 0;
     if (this.pauseBtn) this.pauseBtn.textContent = 'Pause';
+    this.announce('Resumed');
     this.takeFocus();
     this.run();
   };
@@ -983,8 +1058,13 @@
     if (this.state === 'over') return;
     opts = opts || {};
     this.state = 'over';
+    this.el.setAttribute('data-state', this.state);
     this.stop();
     if (this.pauseBtn) { this.pauseBtn.disabled = true; this.pauseBtn.textContent = 'Pause'; }
+
+    /* A score announcement still waiting on its debounce would now speak
+       over the game-over announcement below, and say less. */
+    if (this._scoreTimer) { clearTimeout(this._scoreTimer); this._scoreTimer = null; }
 
     var final = opts.score == null ? this.score : opts.score;
     var isBest = false;
@@ -1008,7 +1088,12 @@
       score: final,
       best: isBest,
       title: opts.title,
-      message: opts.message
+      message: opts.message,
+      /* hideScore is for the games that do not keep one — chess, ludo.
+         `final` above defaults to this.score, which for them is a zero
+         nobody set, and the overlay was printing that zero as if it were
+         a result. */
+      hideScore: opts.hideScore
     });
     if (this.hooks.ended) this.hooks.ended(final, isBest);
   };
@@ -1065,9 +1150,29 @@
     if (cell) cell.textContent = String(value);
   };
 
+  /* Speak through the live region. The same string twice in a row is not
+     re-announced by most screen readers, so a zero-width character is
+     alternated on and off the end — "Score 40 … Score 40" stays audible
+     the second time without a visible change. */
+  Game.prototype.announce = function (msg) {
+    if (!this.live) return;
+    this._liveTick = 1 - this._liveTick;
+    this.live.textContent = msg + (this._liveTick ? '​' : '');
+  };
+
   Game.prototype.setScore = function (n) {
     this.score = n;
     this.stat('score', n);
+    /* The score is announced at quiet moments rather than on every change.
+       A live region fed each pellet would spend the whole run talking over
+       itself; a short debounce turns the stream into "the score settled at
+       N", which is the sentence a sighted player reads off the HUD. */
+    var self = this;
+    if (this._scoreTimer) clearTimeout(this._scoreTimer);
+    this._scoreTimer = setTimeout(function () {
+      self._scoreTimer = null;
+      if (self.state === 'playing') self.announce('Score ' + self.formatBest(n));
+    }, 1500);
   };
 
   Game.prototype.addScore = function (n) {
@@ -1104,7 +1209,7 @@
       textEl.hidden = !texts[kind];
     }
     if (scoreEl) {
-      var show = (kind === 'over' || kind === 'won') && data.score != null;
+      var show = (kind === 'over' || kind === 'won') && data.score != null && !data.hideScore;
       scoreEl.hidden = !show;
       if (show) scoreEl.textContent = this.formatBest(data.score);
     }
@@ -1122,11 +1227,26 @@
     if (resumeEl) resumeEl.hidden = kind !== 'paused';
 
     this.overlay.hidden = false;
+
+    /* Tell assistive tech what just happened. The start overlay is skipped:
+       it appears on page load, not because the player did anything, and
+       announcing it would talk over the page title being read. */
+    if (kind !== 'start') {
+      var said = titles[kind] || '';
+      if ((kind === 'over' || kind === 'won') && data.score != null && !data.hideScore) {
+        said += '. Score ' + this.formatBest(data.score);
+        if (data.best) said += '. New best';
+      }
+      this.announce(said);
+    }
+
     /* Move focus to whichever button is now the obvious next action, so a
        keyboard visitor is not left focused on a canvas that ignores them.
        While paused that is the toolbar's Resume button — the overlay itself
-       deliberately offers nothing to press. */
+       deliberately offers nothing to press. noFocus is the boot-time start
+       overlay declining to steal focus from a page that just loaded. */
     var focusTarget = kind === 'start' ? startEl : (kind === 'paused' ? resumeEl : againEl);
+    if (data.noFocus) focusTarget = null;
     if (focusTarget && !focusTarget.hidden) {
       try { focusTarget.focus({ preventScroll: true }); } catch (err) { focusTarget.focus(); }
     }
@@ -1151,6 +1271,7 @@
      score — a saved board, a streak, a difficulty preference. */
   Game.prototype.save = function (key, value) { return write(this.slug + '.' + key, value); };
   Game.prototype.load = function (key, fallback) { return read(this.slug + '.' + key, fallback); };
+  Game.prototype.unsave = function (key) { return Storage.remove(this.slug + '.' + key); };
 
   Game.prototype.seed = function (n) { this.rng = seeded(n); return this.rng; };
   Game.prototype.rnd = function (n) { return Math.floor(this.rng() * n); };

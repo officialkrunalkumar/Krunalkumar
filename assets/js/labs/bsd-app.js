@@ -104,8 +104,28 @@
   }
 
   function setStatus(text, cls) {
-    el.status.textContent = text;
+    // #bsd-status is a live region (see initStatusLive). Rewriting it with the
+    // text it already holds is still a mutation, and a screen reader would
+    // read the same sentence a second time — so only touch it when it moved.
+    if (el.status.textContent !== text) el.status.textContent = text;
     el.status.className = 'lab-status' + (cls ? ' ' + cls : '');
+  }
+
+  /* The status line carries the only running commentary this lab has —
+     "Booting OpenBSD…", "Shell ready", "Machine powered off" — and none of it
+     reached anyone using a screen reader: a plain <span> that JavaScript
+     rewrites is silent by definition. role="status" is the right role (a
+     passive, advisory region), and the explicit aria-live spells out the same
+     thing for the combinations that honour the attribute but not the implicit
+     value. Polite, never assertive: none of this is urgent. setStatus above
+     ignores a write that does not change the text, so a repeated state cannot
+     announce twice. Called after the first setStatus has already painted
+     "Ready", so that initial text is not announced as though something had
+     just happened — the same shape as initStatusLive in lab-app.js. */
+  function initStatusLive() {
+    if (!el.status) return;
+    el.status.setAttribute('role', 'status');
+    el.status.setAttribute('aria-live', 'polite');
   }
 
   function humanBytes(n) {
@@ -676,4 +696,7 @@
   initControls();
   initFullscreen();
   setStatus('Ready — press Boot');
+  // Last, so the opening "Ready — …" is painted before the element becomes a
+  // live region and is therefore not announced on arrival.
+  initStatusLive();
 })();

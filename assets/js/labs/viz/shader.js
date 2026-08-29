@@ -388,7 +388,15 @@
     if (debTimer) clearTimeout(debTimer);
     debTimer = setTimeout(function () {
       debTimer = null;
-      compile(codeEl.value);
+      /* This callback is only ever reached from the input listener — boot,
+         the example dropdown and Ctrl+Enter all call compile() directly and
+         cancel any pending timer — so a compile that succeeds here is the
+         visitor's own edit running on the canvas, not the Plasma default the
+         page starts everyone on. A failed compile is not counted: a typo
+         midway through an edit is on the way to use, not use itself. */
+      if (compile(codeEl.value)) {
+        if (window.KSLab) window.KSLab.used('run');
+      }
     }, DEBOUNCE);
   }
 
@@ -420,7 +428,7 @@
     if (playBtn) playBtn.addEventListener('click', function () {
       playing = !playing;
       playBtn.textContent = playing ? 'Pause' : 'Play';
-      playBtn.setAttribute('aria-pressed', playing ? 'false' : 'true');
+      playBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
     });
 
     if (resetBtn) resetBtn.addEventListener('click', function () {
@@ -512,7 +520,13 @@
       if (selEl) selEl.value = '0';
     }
 
-    if (playBtn) playBtn.textContent = playing ? 'Pause' : 'Play';
+    /* Seed the pressed state alongside the label, so a screen reader hears
+       the toggle as playing from the first render rather than only after the
+       first click has put the attribute there. */
+    if (playBtn) {
+      playBtn.textContent = playing ? 'Pause' : 'Play';
+      playBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    }
     start();
   }
 

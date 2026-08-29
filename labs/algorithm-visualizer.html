@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Watch 21 algorithms — 13 sorts, linear vs binary search, 6 pathfinders — run animated with live comparison counts. Compare any two side by side. Free, in your browser." />
+    <meta name="description" content="Watch 21 algorithms — 13 sorts, linear vs binary search, 6 pathfinders — animated with live comparison counts. Compare any two side by side. Free." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
@@ -49,10 +49,16 @@
                 "Adjustable speed"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -181,7 +187,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -319,7 +325,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-vizstage">
-          <canvas id="viz-canvas" class="lab-canvas"></canvas>
+          <canvas id="viz-canvas" class="lab-canvas" role="img" aria-label="Algorithm animation: bars being sorted, a search narrowing over a sorted array, or a pathfinding grid, depending on the mode chosen in the controls above">Your browser cannot draw this canvas, so the animation is unavailable. The write-up below still describes what each algorithm does.</canvas>
           <div class="lab-vizstats" id="viz-stats"></div>
         </div>
       </div>

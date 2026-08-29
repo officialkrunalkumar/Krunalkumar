@@ -46,7 +46,7 @@
     height: ROWS * CELL,
     pixel: true,
     startTitle: 'Snake',
-    startText: 'Arrow keys, WASD, or the pad on a touchscreen. Your best score stays on this device.',
+    startText: 'Arrow keys, or the pad on a touchscreen. Your best score stays on this device.',
 
     setup: function (g) {
       var snake = [];

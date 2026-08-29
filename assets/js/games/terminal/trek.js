@@ -235,7 +235,12 @@
         }
         g.beep(120, 0.1, 'sawtooth', 0.05);
         sync();
-        if (energy <= 0) {
+        /* Destroyed means the hit went through the HULL — shields count.
+           A captain who banks everything in the shields runs at energy 0
+           on purpose, and a volley the shields fully absorbed was ending
+           the game on that bookkeeping. Zero on both is the real verdict;
+           energy 0 with shields up is strandCheck's business, not this. */
+        if (energy <= 0 && shields <= 0) {
           g.over({ score: g.score, title: 'Enterprise destroyed', message: 'The last hit went through the hull.' });
         }
       }

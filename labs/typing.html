@@ -47,10 +47,16 @@
                 "Nothing uploaded"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -163,7 +169,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -233,8 +239,8 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              A short, honest note about what this does &mdash; and what it does not measure,
-              every playground here.
+              A short, honest note about what this does and does not measure &mdash; the
+              same note every playground here opens with.
             </p>
             <div class="lab-gate-cols">
               <div>
@@ -281,6 +287,8 @@
             <span><b id="typing-time">0.0s</b></span>
             <span class="typing-best">best <b id="typing-best">&mdash;</b></span>
           </div>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
 
         <div class="lab-panes">
@@ -475,6 +483,7 @@
     </footer>
 
     <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
     <script defer src="/assets/js/labs/typing-app.js"></script>
   </body>
 </html>

@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, and warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
+    <meta name="description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/wumpus" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Hunt the Wumpus: deduce, then shoot" />
-    <meta property="og:description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, and warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
+    <meta property="og:description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/wumpus" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-wumpus.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hunt the Wumpus: deduce, then shoot" />
-    <meta name="twitter:description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, and warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
+    <meta name="twitter:description" content="Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings from next door. Work out where it sleeps, then shoot a crooked arrow." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-wumpus.jpg" />
     <title>Hunt the Wumpus — The 1973 Cave Game, In Your Browser</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, and warnings from next door. Work out where it sleeps, then shoot a crooked arrow.",
+        "description": "Gregory Yob's 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings from next door. Work out where it sleeps, then shoot a crooked arrow.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -41,7 +41,10 @@
         },
         "playMode": "SinglePlayer",
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -134,7 +137,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -232,7 +235,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Hunt the Wumpus playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -253,7 +256,7 @@
             </div>
           </div>
         </div>
-        <p class="game-rotate">This one is eighty columns wide — turn your phone sideways and it gets a great deal easier to read.</p>
+        <p class="game-rotate">This one is 64 columns wide — turn your phone sideways and it gets a great deal easier to read.</p>
         <ul class="game-keys">
           <li><kbd>←</kbd> <kbd>→</kbd> Choose a tunnel</li>
           <li><kbd>↑</kbd> Ready an arrow, or put it away</li>
@@ -321,7 +324,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=wumpus#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=wumpus&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Hunt%20the%20Wumpus%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

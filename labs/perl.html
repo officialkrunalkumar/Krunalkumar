@@ -47,10 +47,16 @@
                 "Offline capable once cached"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -80,7 +86,7 @@
                         "name": "Why is the first run slow?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Perl and its library come to about 16 MB, downloaded once and then cached by your browser."
+                                "text": "Perl and its library come to about 3.8 MB compressed, downloaded once and then cached by your browser; they unpack to roughly 16 MB in the cache."
                         }
                 },
                 {
@@ -156,7 +162,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -197,7 +203,7 @@
         <p class="hero-text">Real Perl 5, compiled to WebAssembly. The regular expression engine, the hash and list idioms, references and the standard library all behave exactly as they do locally, because this is the genuine interpreter rather than a subset of it.</p>
         <ul class="lab-facts">
           <li>Real Perl 5</li>
-          <li>~16 MB once, then cached</li>
+          <li>~3.8 MB once, then cached</li>
           <li>Full regex engine</li>
           <li>Nothing leaves your device</li>
         </ul>
@@ -336,7 +342,7 @@
           <li>Accept the short notice, then replace the starter program with your own Perl.</li>
           <li><code>print</code>, <code>printf</code> and <code>say</code> all go to the terminal pane.</li>
           <li>Press <strong>Run</strong>, or <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</li>
-          <li>The first run downloads the interpreter (~16 MB); after that it starts in a moment.</li>
+          <li>The first run downloads the interpreter (~3.8 MB compressed); after that it starts in a moment.</li>
           <li><code>use strict; use warnings;</code> is a good habit and works here as normal.</li>
         </ol>
       </section>
@@ -448,7 +454,7 @@ for my $p (@people) {
           </details>
           <details class="lab-faq">
             <summary>Why is the first run slow?</summary>
-            <div>Perl and its library come to about 16 MB, downloaded once and then cached by your browser.</div>
+            <div>Perl and its library come to about 3.8 MB compressed, downloaded once and then cached by your browser; they unpack to roughly 16 MB in the cache.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I read from STDIN?</summary>

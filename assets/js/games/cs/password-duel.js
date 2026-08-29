@@ -53,6 +53,9 @@
       var startedAt = 0;
       var elapsed = 0;
       var result = null;
+      /* The phase the worker last reported, so the per-frame repaint in
+         update() can tell the truth between worker ticks. */
+      var livePhase = 'wordlist';
 
       function esc(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -172,6 +175,7 @@
         running = true;
         guesses = 0;
         elapsed = 0;
+        livePhase = 'wordlist';
         result = null;
         host.querySelector('#duel-live').hidden = false;
         host.querySelector('#duel-out').hidden = true;
@@ -196,6 +200,7 @@
           var d = e.data;
           if (d.type === 'tick') {
             guesses = d.n;
+            livePhase = d.phase;
             paintLive(d.phase);
           } else if (d.type === 'done') {
             guesses = d.n;
@@ -274,7 +279,12 @@
         update: function (dt) {
           if (!running) return;
           elapsed += dt;
-          paintLive('brute');
+          /* The worker reports its real phase every ~120ms; this repaint
+             runs every frame and used to hard-code 'brute', so the label
+             read "brute forcing every combination" from the first guess —
+             through the whole wordlist and rules phases. Repaint with the
+             last phase the worker actually reported. */
+          paintLive(livePhase);
         }
       };
     }

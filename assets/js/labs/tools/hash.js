@@ -195,7 +195,7 @@
     out.row('SHA-384', digests.sha384);
     out.row('SHA-512', digests.sha512);
     out.rule();
-    out.dim('MD5 and SHA-1 are shown in amber: both have practical collision');
+    out.dim('MD5 and SHA-1 above are weak: both have practical collision');
     out.dim('attacks and neither should back an integrity claim today. They');
     out.dim('remain here because old evidence manifests are full of them.');
 
@@ -302,6 +302,10 @@
           out.row('HMAC-SHA-512', await hmacText(data, key, 'SHA-512'));
         }
         out.rule();
+        out.dim('HMAC-SHA-1 above rests on SHA-1, a hash with practical collision');
+        out.dim('attacks. The HMAC construction is not itself known to fall with');
+        out.dim('them, but no new design should rest on a broken hash \u2014 prefer');
+        out.dim('SHA-256 or better.');
         out.dim('HMAC proves both integrity and that the sender held the key \u2014');
         out.dim('a plain hash proves only integrity.');
       } else if (mode === 'identify') {

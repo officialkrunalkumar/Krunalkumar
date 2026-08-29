@@ -251,10 +251,15 @@
 
       function click(i) {
         if (g.state !== 'playing') return;
+        /* The flag is checked BEFORE the mines are laid. It used to sit
+           below layMines, which made the very first click of a run the one
+           place a flag failed at its job: opening a cell flagged in advance
+           opened nothing, as it should, but quietly scattered the mines and
+           started the clock. A flagged cell is inert to an open-click, and
+           inert has to include click one. */
+        if (flag[i]) return;
         var before = openCount();
         if (!laid) layMines(i);
-
-        if (flag[i]) return;
 
         /* Chording: an already-open number with its full complement of
            flags opens everything else around it. */
@@ -306,6 +311,14 @@
         updateMineCount();
 
         var secs = Math.floor(elapsed);
+        /* Under one second the floor above is 0, and 0 is not a time: these
+           records treat 0 as "no best yet", so a genuine sub-second clear
+           would vanish and any slower run would then overwrite it. Tenths
+           are kept for that case alone — rounded UP, because a record where
+           lower is better must never claim to be faster than it was — and
+           the integer bests already stored compare and print exactly as
+           before, since Number() reads both alike. */
+        if (!secs) secs = Math.max(0.1, Math.ceil(elapsed * 10) / 10);
         var key = 'best.' + level;
         var prev = Number(g.load(key, 0)) || 0;
         var isBest = !prev || secs < prev;
@@ -401,6 +414,7 @@
       if (boardEl) {
         var pressTimer = null;
         var longPressed = false;
+        var chorded = false;    // this press became a both-buttons chord; its release is spent
 
         boardEl.addEventListener('contextmenu', function (e) { e.preventDefault(); });
 
@@ -409,6 +423,7 @@
           if (!btn) return;
           var i = Number(btn.getAttribute('data-i'));
           longPressed = false;
+          chorded = false;
           /* Arm the guard on the click listener below, and take the cursor to
              the cell being pressed so that a player who reaches for the mouse
              mid-game and then goes back to the arrows carries on from where
@@ -423,15 +438,44 @@
           if (e.button === 2) { toggleFlag(i); longPressed = true; return; }
           clickSpentAt = Date.now();
           /* Long-press flags on a touchscreen. 420 ms is long enough not to
-             fire on a normal tap and short enough not to feel stuck. */
-          pressTimer = setTimeout(function () { longPressed = true; toggleFlag(i); }, 420);
+             fire on a normal tap and short enough not to feel stuck. Touch
+             and pen ONLY: a mouse already has a whole button for flagging,
+             and arming this timer for it turned a deliberate press-and-hold
+             into a flag when the release meant "open". A held mouse button
+             is just a slow click and must stay one. */
+          if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+            pressTimer = setTimeout(function () { longPressed = true; toggleFlag(i); }, 420);
+          }
+        });
+
+        /* The advertised both-buttons chord, made order-independent. Only
+           the FIRST button of a mouse gesture fires pointerdown; the second
+           arrives as a pointermove with the buttons bitmask updated, so the
+           handler above can never see the pair. Left-first used to chord by
+           accident — falling through to the ordinary click on release, and
+           only when the left button was released last — and right-first
+           never chorded at all, because the right-click path raised
+           longPressed and the release was thrown away. Watching for both
+           bits here fires the chord the moment the second button lands,
+           whichever it was. Only an open cell is acted on: a sloppy
+           both-buttons press on a covered cell must not open it, so the
+           press is merely marked spent and its release does nothing. */
+        boardEl.addEventListener('pointermove', function (e) {
+          if (chorded || e.buttons !== 3) return;
+          var btn = e.target && e.target.closest ? e.target.closest('.cell-mine') : null;
+          if (!btn) return;
+          chorded = true;
+          if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+          var i = Number(btn.getAttribute('data-i'));
+          setCursor(i, false);
+          if (open[i]) click(i);
         });
 
         var cancel = function () { if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; } };
         boardEl.addEventListener('pointerup', function (e) {
           cancel();
           var btn = e.target.closest ? e.target.closest('.cell-mine') : null;
-          if (!btn || longPressed || e.button === 2) return;
+          if (!btn || longPressed || chorded || e.button === 2) return;
           var i = Number(btn.getAttribute('data-i'));
           if (flagMode) toggleFlag(i);
           else click(i);

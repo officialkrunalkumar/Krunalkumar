@@ -33,7 +33,7 @@
    Nothing here opens a network connection. Your text never leaves the tab.
    ========================================================================== */
 
-/* global LabVizMulti */
+/* global LabViz */
 (function (root) {
   'use strict';
 
@@ -544,8 +544,19 @@
 
     // --- actions ---
     var actions = E('div', 'wc-btnrow');
-    actions.appendChild(this.btn('Generate', function () { self.opts.seed = 1; self.generate(); }, true));
-    actions.appendChild(this.btn('Shuffle', function () { self.opts.seed = (self.opts.seed + 1) % 100000 + 1; self.generate(); }));
+    /* The usage ping sits on these two buttons rather than inside generate()
+       itself: build() calls generate() once on mount to draw the sample text,
+       and every tuning control re-runs it as a redraw, so hooking the function
+       would count the page painting its own default as a visitor using the
+       lab. A press of Generate or Shuffle is unambiguous. */
+    actions.appendChild(this.btn('Generate', function () {
+      self.opts.seed = 1; self.generate();
+      if (window.KSLab) window.KSLab.used('run');
+    }, true));
+    actions.appendChild(this.btn('Shuffle', function () {
+      self.opts.seed = (self.opts.seed + 1) % 100000 + 1; self.generate();
+      if (window.KSLab) window.KSLab.used('run');
+    }));
     this.dlBtn = this.btn('Download PNG', function () { self.download(); });
     actions.appendChild(this.dlBtn);
     side.appendChild(actions);
@@ -809,6 +820,11 @@
     var self = this;
     this.canvas.toBlob(function (blob) {
       if (!blob) { self.statusHost.textContent = 'Could not create the image on this browser.'; return; }
+      /* Counted here and not on the button press: a browser whose toBlob
+         hands back nothing takes the early return above, so reaching this
+         line means the visitor is actually holding a PNG — the same rule
+         tool-shell.js applies to its produced files. */
+      if (window.KSLab) window.KSLab.used('export');
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;

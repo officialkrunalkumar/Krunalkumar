@@ -27,7 +27,7 @@
 {
         "@context": "https://schema.org",
         "@type": "VideoGame",
-        "name": "Tetris",
+        "name": "Tetris (fan remake)",
         "url": "https://krunalkumar.dpdns.org/games/tetris",
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
@@ -41,7 +41,10 @@
         },
         "playMode": "SinglePlayer",
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -74,7 +77,7 @@
                         "name": "Does it get faster?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred lines, at which point the pieces are falling faster than you can read them."
+                                "text": "Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred and forty lines, at which point the pieces are falling faster than you can read them."
                         }
                 },
                 {
@@ -142,7 +145,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -240,7 +243,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Tetris playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -319,7 +322,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does it get faster?</summary>
-            <div>Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred lines, at which point the pieces are falling faster than you can read them.</div>
+            <div>Yes. Every ten lines raises the level and shortens the drop interval. The top level is reached at a hundred and forty lines, at which point the pieces are falling faster than you can read them.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I play it on my phone?</summary>
@@ -334,7 +337,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=tetris#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=tetris&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Tetris%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

@@ -48,10 +48,16 @@
                 "Offline capable once cached"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -73,7 +79,7 @@
                         "name": "Why does the first run take a moment?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The compiler is about 9 MB and is downloaded the first time you run TypeScript. Your browser caches it afterwards, so later runs start immediately."
+                                "text": "The compiler is about 1.7 MB compressed and is downloaded the first time you run TypeScript. It unpacks to roughly 9 MB in the browser cache, so later runs start immediately."
                         }
                 },
                 {
@@ -157,7 +163,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -198,7 +204,7 @@
         <p class="hero-text">This uses the genuine TypeScript compiler, the same one you would install with <code>npm i typescript</code>. Your code is type-checked, compiled to JavaScript, and then run in an isolated Worker. Nothing you type is uploaded. There is no server that compiles your code, no account to create and no execution quota, because the work happens on your own processor.</p>
         <ul class="lab-facts">
           <li>The real tsc compiler</li>
-          <li>~9 MB once, then cached</li>
+          <li>~1.7 MB once, then cached</li>
           <li>Type errors before running</li>
           <li>Nothing leaves your device</li>
         </ul>
@@ -428,7 +434,7 @@ console.log(area({ kind: "circle", r: 2 }).toFixed(2));</code></pre>
           </details>
           <details class="lab-faq">
             <summary>Why does the first run take a moment?</summary>
-            <div>The compiler is about 9 MB and is downloaded the first time you run TypeScript. Your browser caches it afterwards, so later runs start immediately.</div>
+            <div>The compiler is about 1.7 MB compressed and is downloaded the first time you run TypeScript. It unpacks to roughly 9 MB in the browser cache, so later runs start immediately.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use a tsconfig.json?</summary>

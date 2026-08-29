@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst possible piece every single time. Free, in your browser, no sign-up." />
+    <meta name="description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst piece every single time. Free, in your browser." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/bastet" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Tetris, if the game were actively against you" />
-    <meta property="og:description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst possible piece every single time. Free, in your browser, no sign-up." />
+    <meta property="og:description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst piece every single time. Free, in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/bastet" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-bastet.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Tetris, if the game were actively against you" />
-    <meta name="twitter:description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst possible piece every single time. Free, in your browser, no sign-up." />
+    <meta name="twitter:description" content="Bastet — &quot;bastard Tetris&quot; — replaces the random piece bag with a solver that hands you the worst piece every single time. Free, in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-bastet.jpg" />
     <title>Bastet — Bastard Tetris, The Evil Tetris | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Bastet — \"bastard Tetris\" — replaces the random piece bag with a solver that hands you the worst possible piece every single time. Free, in your browser, no sign-up.",
+        "description": "Bastet — \"bastard Tetris\" — replaces the random piece bag with a solver that hands you the worst piece every single time. Free, in your browser.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -41,7 +41,10 @@
         },
         "playMode": "SinglePlayer",
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
                 "@id": "https://krunalkumar.dpdns.org/#person"
@@ -142,7 +145,7 @@
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
             <a class="nav-link" href="/labs">Labs</a>
-            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
           </div>
@@ -202,7 +205,7 @@
         </div>
       </noscript>
 
-      <div class="game" id="game-bastet" data-wide="1">
+      <div class="game" id="game-bastet">
         <div class="game-bar">
           <div class="game-stats">
             <div class="game-stat">
@@ -239,7 +242,7 @@
           </div>
         </div>
         <div class="game-stage game-stage--canvas">
-          <canvas class="game-canvas" id="game-canvas"></canvas>
+          <canvas class="game-canvas" id="game-canvas">The Bastet playfield. The game draws here once it starts.</canvas>
           <div class="game-overlay" id="game-overlay">
             <div class="game-overlay-card">
               <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
@@ -260,7 +263,6 @@
             </div>
           </div>
         </div>
-        <p class="game-rotate">This one is eighty columns wide — turn your phone sideways and it gets a great deal easier to read.</p>
         <ul class="game-keys">
           <li><kbd>←</kbd> <kbd>→</kbd> Move</li>
           <li><kbd>↑</kbd> Rotate</li>
@@ -333,7 +335,7 @@
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=bastet#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=bastet&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Bastet%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>

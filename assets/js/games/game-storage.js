@@ -148,6 +148,11 @@
       return keys.length;
     },
 
+    /* Remove one namespaced key. The saved-board games use this when a
+       run ends: a board with no moves left is not worth offering back
+       tomorrow, and clearing just the board must not touch the best. */
+    remove: function (key) { return drop(PREFIX + key); },
+
     /* Everything one game owns: its best, and any preference or saved
        board it keeps. */
     clearGame: function (slug) {

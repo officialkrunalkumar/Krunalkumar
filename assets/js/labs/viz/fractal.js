@@ -350,11 +350,19 @@
     var sp = spanNow();
     var cx = center.x + uv.x * sp.x;
     var cy = center.y + uv.y * sp.y;
+    var was = halfHeight;
     halfHeight *= f;
     clampHH();
     var sp2 = spanNow();
     center.x = cx - uv.x * sp2.x;
     center.y = cy - uv.y * sp2.y;
+    /* Every caller of this function is a deliberate zoom gesture — a click, a
+       wheel notch, a right-click, a pinch — never the first frame the page
+       paints for everyone, so this is where use is counted. The comparison is
+       why the call is not unconditional: a zoom pressed against the clamp
+       leaves halfHeight, and therefore the view, exactly where it was and
+       shows nothing new. */
+    if (halfHeight !== was && window.KSLab) window.KSLab.used('run');
     requestRender();
   }
 
@@ -377,6 +385,10 @@
     set = name;
     if (name === 'julia') { juliaC = { x: hoverC.x, y: hoverC.y }; }   // adopt the point last hovered
     loadSet(name);
+    /* Only the set dropdown reaches here, and the guard at the top has already
+       dropped a reselect of the current set — so this line means the visitor
+       chose a different fractal and is about to see it drawn. */
+    if (window.KSLab) window.KSLab.used('run');
     syncControls();
     requestRender();
   }

@@ -907,6 +907,10 @@
 
     // assemble the initial example so the panels are populated on first paint
     this.doAssemble(true);
+    // Only assembles after this point count as use. The call above runs for
+    // every visitor at page load, and used() de-dupes per page view, so a lab
+    // that counted its own first paint would read as used on every view.
+    this.firstPaintDone = true;
     this.updateButtons();
   };
 
@@ -1074,6 +1078,11 @@
 
     this.cpu.load(asm);
     this.assembled = true;
+    // A program that actually assembled is the visitor driving the lab — the
+    // error branch above returned before reaching here — except for the
+    // first-paint assemble the builder issues for everyone, which the flag
+    // keeps out of the count.
+    if (this.firstPaintDone && window.KSLab) window.KSLab.used('run');
     this.renderListing();
     this.render();
     if (announce) {
@@ -1207,6 +1216,9 @@
     if (!this.assembled || !this.cpu.program.length) { this.sys('Assemble a program first.'); return; }
     if (this.cpu.halted) { this.sys('Halted. Press Reset to run it again.'); return; }
     this.cpu.step();
+    // An instruction genuinely executed: the guards above have already turned
+    // away the presses with nothing to run.
+    if (window.KSLab) window.KSLab.used('run');
     this.render();
     this.afterStep();
   };
@@ -1242,6 +1254,9 @@
     if (this.cpu.halted) { this.sys('Halted. Press Reset to run it again.'); return; }
     if (this.running) return;
     this.running = true;
+    // Running for real from here — the guards above rejected the presses with
+    // nothing to execute, and Run is only ever a click.
+    if (window.KSLab) window.KSLab.used('run');
     this.updateButtons();
     var self = this;
     var tick = function () {

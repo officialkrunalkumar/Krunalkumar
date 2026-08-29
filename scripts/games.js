@@ -108,8 +108,15 @@ function readPartial(rel) {
 function staticHeader() {
   const src = readPartial('header.html');
 
+  /* The Games link is pre-marked active, the way blog pages and the root
+     pages already mark their own. The gate compares href lists, not markup
+     ("the active-link class differs per page by design" — build.js), and
+     without this a no-JS visitor — the person the static header exists
+     for — got a header with no current-page mark at all. */
   const links = Array.from(src.matchAll(/<a class="nav-link" href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g))
-    .map((m) => `            <a class="nav-link" href="${m[1]}">${m[2].trim()}</a>`)
+    .map((m) => m[1] === '/games'
+      ? `            <a class="nav-link active" aria-current="page" href="${m[1]}">${m[2].trim()}</a>`
+      : `            <a class="nav-link" href="${m[1]}">${m[2].trim()}</a>`)
     .join('\n');
   if (!links) throw new Error('games.js: no nav links found in partials/header.html');
 
@@ -208,10 +215,27 @@ function gameJsonLd(g) {
   const url = ORIGIN + '/games/' + g.slug;
   const blocks = [];
 
+  /* Embedded, not referenced. These pages used to say author/publisher =
+     {"@id": ".../#person"} with no Person node anywhere on the page — the
+     node lives on the homepage, and Google parses each page on its own, so
+     the reference resolved to nothing. A small Person carried in full costs
+     a hundred bytes and always resolves. */
+  const PERSON = {
+    '@type': 'Person',
+    '@id': ORIGIN + '/#person',
+    name: 'Krunalkumar Shah',
+    url: ORIGIN + '/',
+  };
+
   blocks.push({
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
-    name: plain(g.name),
+    /* jsonldName lets the trademark-encumbered classics present as what
+       they are in structured data — "Tetris (fan remake)" — without
+       renaming the page. Claiming authorship of a VideoGame named plainly
+       "Tetris" is a claim about the wrong work: the implementation here is
+       original, the title is somebody's registered mark. */
+    name: plain(g.jsonldName || g.name),
     url: url,
     /* Genuinely a browser game: no download, no install, no account. */
     gamePlatform: 'Web browser',
@@ -220,8 +244,14 @@ function gameJsonLd(g) {
     description: plain(g.description),
     isAccessibleForFree: true,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    playMode: g.players === 2 ? 'MultiPlayer' : 'SinglePlayer',
-    author: { '@id': ORIGIN + '/#person' },
+    /* players is the seat count from the manifest; soloAI marks the games
+       that can also be played alone against the computer, which schema.org
+       expresses as both modes at once. No field means what it always
+       meant: a single-player game. */
+    playMode: g.players >= 2
+      ? (g.soloAI ? ['SinglePlayer', 'MultiPlayer'] : 'MultiPlayer')
+      : 'SinglePlayer',
+    author: PERSON,
     publisher: { '@id': ORIGIN + '/#person' },
   });
 
@@ -410,9 +440,13 @@ function stage(g) {
   /* A DOM-board game (Minesweeper, 2048, Wordle) gets a .game-board it can
      fill; a canvas game gets a canvas. Never both: the shell picks up
      whichever is present. */
+  /* The canvas carries fallback text: a browser that renders the page but
+     not the canvas (and a screen reader before game-shell.js has stamped
+     role and label on it) should meet a sentence, not a void. The no-JS
+     case is the <noscript> block's job; this is for everything between. */
   const surface = g.board
     ? `          <div class="game-board" id="game-board"></div>`
-    : `          <canvas class="game-canvas${g.pixel ? ' is-pixel' : ''}" id="game-canvas"></canvas>`;
+    : `          <canvas class="game-canvas${g.pixel ? ' is-pixel' : ''}" id="game-canvas">The ${esc(plain(g.name))} playfield. The game draws here once it starts.</canvas>`;
 
   /* The two stage kinds want opposite height rules and cannot share one.
      A canvas stage needs a height CSS decides, so game-shell.js has a
@@ -513,7 +547,7 @@ function reportSection(g) {
           <p>If a control does nothing or it will not start, I would like to know your browser.</p>
         </div>
         <div class="lab-report-actions">
-          <a class="btn btn-primary" href="/labs?from=${esc(g.slug)}#lab-feedback">Report a problem or send feedback</a>
+          <a class="btn btn-primary" href="/labs?from=${esc(g.slug)}&amp;area=games#lab-feedback">Report a problem or send feedback</a>
           <a class="game-btn" href="https://wa.me/918200713617?text=${wa}" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
       </section>
@@ -602,7 +636,7 @@ ${facts(g.facts)}      </section>
       <div class="game" id="game-${esc(g.slug)}"${g.wide ? ' data-wide="1"' : ''}>
 ${hud(g)}
 ${stage(g)}
-${g.wide ? '        <p class="game-rotate">This one is eighty columns wide — turn your phone sideways and it gets a great deal easier to read.</p>\n' : ''}${g.extra ? '        ' + g.extra.trim() + '\n' : ''}${keys(g)}${pad(g)}
+${g.wide ? `        <p class="game-rotate">This one is ${g.cols || 80} columns wide — turn your phone sideways and it gets a great deal easier to read.</p>\n` : ''}${g.extra ? '        ' + g.extra.trim() + '\n' : ''}${keys(g)}${pad(g)}
 ${dataStrip(g)}
       </div>
 ${infoCards(g)}${faqSection(g)}${reportSection(g)}${relatedSection(g)}    </main>

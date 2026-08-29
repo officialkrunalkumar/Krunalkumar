@@ -169,6 +169,13 @@
       }
 
       function place(v) {
+        /* Digits, the number pad and Check all arrive through listeners of
+           this game's own, which the shell's state machine never sees — so
+           the guard has to live here. Without it, pausing froze only the
+           clock: you could keep solving behind the overlay and bank a best
+           time the run never earned, and a finished board still accepted
+           entries. */
+        if (g.state !== 'playing') return;
         if (sel < 0 || puzzle[sel]) return;
         if (noteMode && v) {
           notes[sel][v - 1] = !notes[sel][v - 1];
@@ -204,6 +211,7 @@
       }
 
       function check() {
+        if (g.state !== 'playing') return;
         var wrongCount = 0;
         for (var i = 0; i < 81; i++) if (grid[i] && grid[i] !== solution[i]) wrongCount++;
         g.beep(wrongCount ? 220 : 700, 0.08, wrongCount ? 'square' : 'sine');
@@ -214,6 +222,7 @@
 
       if (g.canvas) {
         g.canvas.addEventListener('pointerdown', function (e) {
+          if (g.state !== 'playing') return;
           var p = g.pointAt(e);
           var c = Math.floor(p.x / CELL), r = Math.floor(p.y / CELL);
           if (c < 0 || c >= N || r < 0 || r >= N) return;

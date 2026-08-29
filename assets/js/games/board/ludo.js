@@ -93,6 +93,7 @@
       var dice = 0;             // 0 = not yet rolled this turn
       var tok = [];             // [seat][token] = pos (-1 yard, 0..56)
       var movable = [];
+      var sel = 0;              // index into movable while the human chooses
       var message = '';
       var active = [0, 1, 2, 3];
       var pendingAI = 0;
@@ -173,9 +174,26 @@
 
       function rollDice() {
         dice = 1 + Math.floor(Math.random() * 6);
-        movable = listMovable(dice);
+        if (dice === 6) sixes++; else sixes = 0;
         g.beep(300 + dice * 60, 0.06, 'sine');
         message = NAMES[turn] + ' rolled ' + dice;
+
+        /* Three sixes in a row forfeit the WHOLE turn — the third six moves
+           nothing, which is the rule as the box prints it. The check lives
+           here at the roll, before any move is offered, because an earlier
+           version ran it after the move and the third six still pushed a
+           token, only costing the extra throw. The message spells out what
+           happened, since a die showing 6 that then passes play along reads
+           as a swallowed input rather than as a rule. */
+        if (sixes >= 3) {
+          movable = [];
+          message = NAMES[turn] + ' rolled three sixes — turn forfeited';
+          after(0.9, endTurn);
+          return;
+        }
+
+        movable = listMovable(dice);
+        sel = 0;
 
         if (!movable.length) {
           message = NAMES[turn] + ' rolled ' + dice + ' — no legal move';
@@ -216,18 +234,17 @@
           movable = [];
           g.over({
             won: (mode === 'pass') || p === active[0],
+            hideScore: true,    // Ludo keeps no score; "Score 0" is noise
             title: NAMES[p] + ' wins',
             message: 'All four tokens home.'
           });
           return;
         }
 
-        /* A six, a capture, or getting a token home earns another roll, and
-           three sixes in a row forfeits the turn so a streak cannot run on
-           forever. */
+        /* A six, a capture, or getting a token home earns another roll. The
+           three-sixes forfeit is not handled here: it lives in rollDice(),
+           where the third six can be stopped before it moves anything. */
         var again = (dice === 6 || captured || to === HOME_POS);
-        if (dice === 6) sixes++; else sixes = 0;
-        if (sixes >= 3) { again = false; sixes = 0; message = 'Three sixes — turn forfeited'; }
 
         dice = 0;
         movable = [];
@@ -444,6 +461,16 @@
             ctx.lineWidth = isMovable ? 3 : 1.5;
             ctx.strokeStyle = isMovable ? '#f8fafc' : '#0b1220';
             ctx.stroke();
+            /* The keyboard's current candidate wears a second, wider ring in
+               the same white as the movable highlight, so the arrow keys are
+               visibly walking the same tokens a pointer could tap. */
+            if (isMovable && movable.length > 1 && movable[sel] === tt) {
+              ctx.beginPath();
+              ctx.arc(x, y, CELL * 0.44, 0, Math.PI * 2);
+              ctx.lineWidth = 2;
+              ctx.strokeStyle = '#f8fafc';
+              ctx.stroke();
+            }
           }
         }
 
@@ -477,7 +504,16 @@
         reset: newGame,
 
         key: function (name) {
-          if (name === 'action') doRoll();
+          if (!dice) { if (name === 'action') doRoll(); return; }
+          /* Choosing a token used to be pointer-only, which stranded
+             keyboard players the moment more than one move was legal. While
+             the human is choosing, the arrows walk the legal tokens and
+             action commits the highlighted one; a single legal move still
+             plays itself, so there is nothing to steer in that case. */
+          if (!myTurn() || movable.length < 2) return;
+          if (name === 'left' || name === 'up') sel = (sel + movable.length - 1) % movable.length;
+          else if (name === 'right' || name === 'down') sel = (sel + 1) % movable.length;
+          else if (name === 'action') play(movable[sel]);
         },
 
         update: function (dt) {

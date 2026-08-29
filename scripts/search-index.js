@@ -163,7 +163,12 @@ function entryFor(rel) {
   const heading = h1Match ? decode(h1Match[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim() : '';
 
   const url = urlFor(rel);
-  const prose = (title + ' ' + visibleText(main)).replace(/\s+/g, ' ').trim();
+  /* The body gets the DISPLAY title, with the " | Krunalkumar Shah" suffix
+     already stripped — the same trim the t field below applies. Fed the raw
+     <title>, every search snippet led with the site's own name as noise
+     before a single word of content. */
+  const shownTitle = title.endsWith(ORIGIN_SUFFIX) ? title.slice(0, -ORIGIN_SUFFIX.length) : title;
+  const prose = (shownTitle + ' ' + visibleText(main)).replace(/\s+/g, ' ').trim();
   let body = prose.slice(0, BODY_CAP);
 
   /* The FAQ sits at the foot of every lab page, which puts it past any cap
@@ -182,7 +187,7 @@ function entryFor(rel) {
   // is a pointless diff even though it parses the same.
   return {
     u: url,
-    t: title.endsWith(ORIGIN_SUFFIX) ? title.slice(0, -ORIGIN_SUFFIX.length) : title,
+    t: shownTitle,
     h: heading,
     d: desc,
     s: sectionFor(url),

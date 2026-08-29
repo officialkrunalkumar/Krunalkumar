@@ -48,10 +48,16 @@
                 "Offline capable once cached"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -97,7 +103,7 @@
                         "name": "Why is Lua so much faster to start than Python?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Lua is a famously small language — the whole interpreter is around 420 KB here, against roughly 6 MB for CPython and its standard library."
+                                "text": "Lua is a famously small language — the whole interpreter is about a 150 KB download here (420 KB unpacked), against roughly 5.5 MB compressed for CPython and its standard library."
                         }
                 }
         ]
@@ -157,7 +163,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -198,7 +204,7 @@
         <p class="hero-text">Genuine Lua 5.4, compiled to WebAssembly. It starts in well under a second, which makes it a pleasant place to try out table tricks, metatables or a coroutine without installing an interpreter. Nothing you type is uploaded. There is no server that compiles your code, no account to create and no execution quota, because the work happens on your own processor.</p>
         <ul class="lab-facts">
           <li>Real Lua 5.4</li>
-          <li>~420 KB once, then cached</li>
+          <li>~150 KB once, then cached</li>
           <li>Metatables and coroutines</li>
           <li>Starts in under a second</li>
         </ul>
@@ -453,7 +459,7 @@ print()</code></pre>
           </details>
           <details class="lab-faq">
             <summary>Why is Lua so much faster to start than Python?</summary>
-            <div>Lua is a famously small language — the whole interpreter is around 420 KB here, against roughly 6 MB for CPython and its standard library.</div>
+            <div>Lua is a famously small language — the whole interpreter is about a 150 KB download here (420 KB unpacked), against roughly 5.5 MB compressed for CPython and its standard library.</div>
           </details>
       </section>
 

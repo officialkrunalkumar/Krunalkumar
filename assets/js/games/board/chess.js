@@ -14,7 +14,8 @@
    Everything the rules actually require is here: castling both sides with
    the right-to-castle tracked per rook, en passant with the capture square,
    promotion (to a queen — under-promotion is a UI nobody wants on a phone),
-   stalemate, insufficient material, and the fifty-move counter.
+   stalemate, insufficient material, threefold repetition, and the
+   fifty-move counter.
 
    THE ENGINE is negamax with alpha-beta and a quiescence search on captures.
    Without quiescence it plays a bishop en prise on the last ply of the
@@ -116,7 +117,9 @@
     slug: 'chess',
     title: 'Chess',
     width: 560,
-    height: 560,
+    /* 32px taller than the board: the strip below the eighth rank is where
+       the status message paints, so it can never cover the bottom rank. */
+    height: 592,
     bestKey: null,
     autoStart: true,
     pauseOnBlur: false,
@@ -129,6 +132,7 @@
       var ep = -1;                 // en-passant target square
       var halfmove = 0;
       var history = [];
+      var keys = [];               // position keys for the repetition rule
       var selected = -1;
       var legalForSel = [];
       var lastMove = null;
@@ -186,6 +190,9 @@
         ep = -1;
         halfmove = 0;
         history = [];
+        /* The start position is a repetition candidate too — knights out
+           and straight back is the classic three-and-draw. */
+        keys = [positionKey()];
         selected = -1;
         legalForSel = [];
         lastMove = null;
@@ -497,6 +504,37 @@
       /* --------------------------------------------------------------
          Game flow
          -------------------------------------------------------------- */
+      /* One cheap string per position, for the repetition rule: placement,
+         side to move, castling rights, and the en-passant square — the
+         last only when a pawn is actually beside it to use it. A double
+         push nobody can capture leaves the position the same for
+         repetition purposes, and keying on the bare ep square would make
+         those positions look different and hide a real threefold. */
+      function positionKey() {
+        var s = '';
+        for (var i = 0; i < 128; i++) {
+          if (i & 0x88) continue;
+          s += board[i].toString(32);
+        }
+        s += turn === WHITE ? 'w' : 'b';
+        if (castle.wk) s += 'K';
+        if (castle.wq) s += 'Q';
+        if (castle.bk) s += 'k';
+        if (castle.bq) s += 'q';
+        if (ep >= 0) {
+          /* The capturing pawn stands beside the pawn that just jumped,
+             one rank past the target from the mover's point of view. A
+             ±1 that wraps the file lands on an 0x88 square, so onBoard
+             is the only guard needed. */
+          var beside = ep + (turn === WHITE ? 16 : -16);
+          if ((onBoard(beside - 1) && board[beside - 1] === (turn | P)) ||
+              (onBoard(beside + 1) && board[beside + 1] === (turn | P))) {
+            s += '.' + ep;
+          }
+        }
+        return s;
+      }
+
       function insufficient() {
         var pieces = [];
         for (var i = 0; i < 128; i++) {
@@ -509,6 +547,8 @@
       }
 
       function checkEnd() {
+        /* hideScore on every ending: chess keeps no score, and without it
+           the overlay prints the shell's default zero as if it were one. */
         var moves = legalMoves(turn);
         if (!moves.length) {
           over = true;
@@ -516,22 +556,54 @@
             var winner = turn === WHITE ? 'Black' : 'White';
             g.over({
               won: mode === 'pass' ? true : turn === BLACK,
+              hideScore: true,
               title: 'Checkmate',
               message: winner + ' wins in ' + Math.ceil(history.length / 2) + ' moves.'
             });
           } else {
-            g.over({ title: 'Stalemate', message: 'No legal move, and not in check. A draw.' });
+            g.over({
+              hideScore: true,
+              title: 'Stalemate',
+              message: 'No legal move, and not in check. A draw.'
+            });
           }
           return true;
         }
         if (halfmove >= 100) {
           over = true;
-          g.over({ title: 'Draw', message: 'Fifty moves without a capture or a pawn move.' });
+          g.over({
+            hideScore: true,
+            title: 'Draw',
+            message: 'Fifty moves without a capture or a pawn move.'
+          });
+          return true;
+        }
+        /* Threefold repetition. Only the tail of the game since the last
+           capture or pawn move can hold an earlier copy of this position —
+           a taken piece never comes back and a pawn never retreats — so
+           the scan is bounded by the same counter the fifty-move rule
+           uses. */
+        var key = keys[keys.length - 1];
+        var seen = 0;
+        for (var i = keys.length - 1; i >= 0 && i >= keys.length - 1 - halfmove; i--) {
+          if (keys[i] === key) seen++;
+        }
+        if (seen >= 3) {
+          over = true;
+          g.over({
+            hideScore: true,
+            title: 'Draw',
+            message: 'The same position has occurred three times.'
+          });
           return true;
         }
         if (insufficient()) {
           over = true;
-          g.over({ title: 'Draw', message: 'Neither side has enough material to mate.' });
+          g.over({
+            hideScore: true,
+            title: 'Draw',
+            message: 'Neither side has enough material to mate.'
+          });
           return true;
         }
         return false;
@@ -543,6 +615,10 @@
            playing the capture note. */
         var wasCapture = !!board[m.to] || !!m.ep;
         history.push(make(m));
+        /* Only moves that reach the board are counted — the search calls
+           make() thousands of times a turn and none of those positions
+           ever happened. */
+        keys.push(positionKey());
         lastMove = m;
         selected = -1;
         legalForSel = [];
@@ -563,10 +639,14 @@
         if (thinking > 0 || !history.length) return;
         /* Take back the pair, so it is always your move again. */
         unmake(history.pop());
+        keys.pop();
         /* Against the computer, taking back one ply just hands the move
            straight back to the engine, so the pair comes off. In
            pass-and-play a single ply IS the take-back somebody wants. */
-        if (mode === 'computer' && history.length && turn === BLACK) unmake(history.pop());
+        if (mode === 'computer' && history.length && turn === BLACK) {
+          unmake(history.pop());
+          keys.pop();
+        }
         over = false;
         lastMove = null;
         selected = -1;
@@ -579,7 +659,24 @@
            there: your piece moved, the clock did not run, and the engine
            never replied. run() is a no-op if a frame is already scheduled,
            so calling it on a take-back mid-game costs nothing. */
-        if (g.state !== 'playing') { g.state = 'playing'; g.run(); }
+        if (g.state !== 'playing') {
+          g.state = 'playing';
+          /* The shell mirrors state onto the root as data-state at every
+             transition it owns; a revive that bypasses start() has to keep
+             the mirror honest too, or the site's letter-shortcut guard
+             reads a live game as finished. */
+          if (g.el) g.el.setAttribute('data-state', 'playing');
+          /* over() also disabled the pause button — start() is what
+             normally hands it back, but a take-back revives the game
+             without going through start(), and Pause would stay dead for
+             the whole revived game. Resetting the label covers the other
+             way in: a take-back while paused left it reading Resume. */
+          if (g.pauseBtn) {
+            g.pauseBtn.disabled = false;
+            g.pauseBtn.textContent = 'Pause';
+          }
+          g.run();
+        }
         syncHud();
       }
 
@@ -709,12 +806,17 @@
           }
         }
 
+        /* The status strip lives BELOW the board, in the 32px the canvas
+           carries past the eighth rank (see the height note in the
+           manifest). Drawn at y 528 it sat on top of the bottom rank —
+           covering the very pieces a "Check." or "Illegal: king in check"
+           message was usually about. */
+        ctx.fillStyle = 'rgba(2,6,23,0.72)';
+        ctx.fillRect(0, 560, 560, 32);
         if (message) {
-          ctx.fillStyle = 'rgba(2,6,23,0.72)';
-          ctx.fillRect(0, 528, 560, 32);
           ctx.fillStyle = '#e2e8f0';
           ctx.font = '15px "Segoe UI", sans-serif';
-          ctx.fillText(message, 280, 545);
+          ctx.fillText(message, 280, 577);
         }
       }
 

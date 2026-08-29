@@ -50,12 +50,12 @@
     },
     {
       kind: 'email',
-      from: 'accounts@hdfcbank.net',
+      from: 'accounts@hdfcbank-kyc-update.net',
       subject: 'KYC update required',
       body: 'As per RBI guidelines your KYC is pending. Update today to avoid account suspension.',
-      link: 'https://hdfcbank.net/kyc',
+      link: 'https://hdfcbank-kyc-update.net/kyc',
       phish: true,
-      tell: 'HDFC Bank is <code>hdfcbank.com</code>. The <code>.net</code> is a different registration entirely and belongs to whoever bought it. Invoking a regulator is a standard pressure tactic &mdash; banks do not suspend accounts by email link.'
+      tell: 'HDFC Bank is <code>hdfcbank.com</code>. <code>hdfcbank-kyc-update.net</code> is a different registration entirely &mdash; anyone can register a name with a brand inside it. Invoking a regulator is a standard pressure tactic &mdash; banks do not suspend accounts by email link.'
     },
     {
       kind: 'email',

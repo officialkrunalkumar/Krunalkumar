@@ -47,10 +47,16 @@
                 "No proxy — requests go direct"
         ],
         "author": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         },
         "publisher": {
-                "@id": "https://krunalkumar.dpdns.org/#person"
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
         }
 }
     </script>
@@ -163,7 +169,7 @@
             <a class="nav-link" href="/research">Research</a>
             <a class="nav-link" href="/internships">Internships</a>
             <a class="nav-link" href="/client-reviews">Recommendations</a>
-            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
             <a class="nav-link" href="/games">Games</a>
             <a class="nav-link" href="/blog">Blog</a>
             <a class="nav-link" href="/contact">Contact</a>
@@ -233,8 +239,8 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This is the one lab that uses the network, so the notice is different from the
-              others. Please read it, then choose whether to continue.
+              This lab talks to the network, so the notice is different from the offline
+              tools. Please read it, then choose whether to continue.
             </p>
             <div class="lab-gate-cols">
               <div>
@@ -283,6 +289,8 @@
             <option value="status">A 404 response</option>
             <option value="headers">Custom request header</option>
           </select>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
 
         <div class="api-url-row">
@@ -494,6 +502,7 @@
     </footer>
 
     <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
     <script defer src="/assets/js/labs/api-app.js"></script>
   </body>
 </html>

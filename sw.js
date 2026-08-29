@@ -17,8 +17,9 @@
    exactly this cache and nothing else — the browser's origin model means it
    cannot reach another site's data even in principle.
 
-   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly three
-   kinds of request and returns early for everything else, so the rest of the
+   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly four
+   kinds of request — the vendor runtimes, the doc makers, navigations, and
+   the blog — and returns early for everything else, so the rest of the
    site — every page, its CSS, its JS, analytics — behaves exactly as if no
    worker existed. A service worker that quietly caches a whole site's HTML
    is a support nightmare (the "why does the old page keep coming back" kind),
@@ -43,8 +44,8 @@
    never be shown to a visitor who could have fetched a fresh one. Cache-first
    HTML is the support nightmare; a cache that is only ever a fallback is not.
 
-   The second carve-out, on the same terms: the blog. Nineteen articles, their
-   art, and the blog stylesheet and scripts — about 1 MB precached on install,
+   The second carve-out, on the same terms: the blog. Twenty-five articles,
+   their art, and the blog stylesheet and scripts — about 1.2 MB precached on install,
    served network-first exactly like the doc makers. The size question was
    asked and measured rather than assumed: the whole archive is 1.7% of what
    one visit to /labs/c downloads for its clang toolchain, so the metering a

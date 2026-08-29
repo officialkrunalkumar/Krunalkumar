@@ -41,9 +41,10 @@
          this page -- had never once restored anything. setup() is the last
          moment the previous run still exists. */
       var pendingSave = g.load('board', null);
-      /* Set by the New board button. Without it, holding pendingSave across
-         the Play click would also make New board hand back the very board
-         the player just asked to be rid of. */
+      /* Set by New board AND by the toolbar Restart, both via the capture
+         listener below. Without it, holding pendingSave across the Play
+         click would also make either button hand back the very board the
+         player just asked to be rid of. */
       var forceFresh = false;
       var cells = [];         // N*N of 0 or a power of two
       var moves = 0;
@@ -54,7 +55,19 @@
       var undoBtn = document.getElementById('game-undo');
       var newBtn = document.getElementById('game-new');
       if (undoBtn) undoBtn.addEventListener('click', undo);
-      if (newBtn) newBtn.addEventListener('click', function () { g.start(); });
+      if (newBtn) newBtn.addEventListener('click', function () { forceFresh = true; g.start(); });
+
+      /* Restart must deal FRESH — but the shell bound its own click
+         listener on #game-restart before this code ran, so a plain second
+         listener here fires after start() has already consulted the flag.
+         A capture-phase listener on the shell root is the one hook that
+         runs first: capture visits the ancestors before the button itself.
+         It also covers #game-new, so the flag is armed however either
+         button is activated. */
+      g.el.addEventListener('click', function (e) {
+        var t = e.target && e.target.closest ? e.target.closest('#game-restart, #game-new') : null;
+        if (t) forceFresh = true;
+      }, true);
 
       /* --------------------------------------------------------------
          Board state
@@ -132,12 +145,15 @@
         return { moved: cells.join(',') !== before, gained: gained };
       }
 
-      function canMove() {
-        for (var i = 0; i < cells.length; i++) {
-          if (!cells[i]) return true;
+      /* Takes an optional board so restore() can ask the question about a
+         SAVED board before adopting it, not just about the live one. */
+      function canMove(board) {
+        var b = board || cells;
+        for (var i = 0; i < b.length; i++) {
+          if (!b[i]) return true;
           var r = Math.floor(i / N), c = i % N;
-          if (c + 1 < N && cells[i] === cells[i + 1]) return true;
-          if (r + 1 < N && cells[i] === cells[i + N]) return true;
+          if (c + 1 < N && b[i] === b[i + 1]) return true;
+          if (r + 1 < N && b[i] === b[i + N]) return true;
         }
         return false;
       }
@@ -160,7 +176,6 @@
         g.stat('moves', moves);
         addTile();
         render();
-        save();
 
         if (!won) {
           for (var i = 0; i < cells.length; i++) {
@@ -175,8 +190,17 @@
           }
         }
 
+        /* The death check comes BEFORE the save, and a dead board clears
+           the save instead of becoming one. Saved after the check used to
+           run, the final board was restored tomorrow as a "playing" run in
+           which every move is a no-op — and since a no-op returns before
+           this line, game over could never fire again. A finished run is a
+           score, not a board worth returning to. */
         if (!canMove()) {
+          g.unsave('board');
           g.over({ message: 'No moves left after ' + moves + ' ' + (moves === 1 ? 'move' : 'moves') + '.' });
+        } else {
+          save();
         }
       }
 
@@ -204,6 +228,11 @@
         try {
           var data = JSON.parse(raw);
           if (!data || !data.c || data.c.length !== N * N) return false;
+          /* A board with no legal move is refused, not restored. The save
+             path above no longer produces one, but boards saved before it
+             was fixed are still sitting in visitors' localStorage, and
+             adopting one revives the exact bug: a run that can never end. */
+          if (!canMove(data.c)) return false;
           cells = data.c;
           g.setScore(data.s || 0);
           moves = data.m || 0;
@@ -259,8 +288,6 @@
          -------------------------------------------------------------- */
       if (boardEl) {
         var start = null;
-        var restartBtn = document.getElementById('game-restart');
-        if (restartBtn) restartBtn.addEventListener('click', function () { forceFresh = true; });
 
         boardEl.addEventListener('pointerdown', function (e) { start = { x: e.clientX, y: e.clientY }; });
         boardEl.addEventListener('pointerup', function (e) {
