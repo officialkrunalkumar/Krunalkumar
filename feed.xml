@@ -5,8 +5,15 @@
     <link>https://krunalkumar.dpdns.org/blog</link>
     <description>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 27 Aug 2026 09:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 14:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What Sixty-Six Tiny Games Taught Me About Serious Software</title>
+      <link>https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software</link>
+      <guid>https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software</guid>
+      <description>The games page looks like a break from the serious work. It was the serious work in miniature: state machines, shared keyboards, saved dead ends and copy the code could not honour — every production bug class, caught small, with receipts.</description>
+      <pubDate>Sat, 29 Aug 2026 14:00:00 +0530</pubDate>
+    </item>
     <item>
       <title>Scope the Work Before You Quote It</title>
       <link>https://krunalkumar.dpdns.org/blog/scoping-work-before-you-quote-it</link>

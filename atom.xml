@@ -5,10 +5,18 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-27T09:00:00+05:30</updated>
+  <updated>2026-08-29T14:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>What Sixty-Six Tiny Games Taught Me About Serious Software</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software" />
+    <id>https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software</id>
+    <published>2026-08-29T14:00:00+05:30</published>
+    <updated>2026-08-29T14:00:00+05:30</updated>
+    <summary>The games page looks like a break from the serious work. It was the serious work in miniature: state machines, shared keyboards, saved dead ends and copy the code could not honour — every production bug class, caught small, with receipts.</summary>
+  </entry>
   <entry>
     <title>Scope the Work Before You Quote It</title>
     <link href="https://krunalkumar.dpdns.org/blog/scoping-work-before-you-quote-it" />

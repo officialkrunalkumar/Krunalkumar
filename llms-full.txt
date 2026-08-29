@@ -85,43 +85,45 @@
 
 Complete index at https://krunalkumar.dpdns.org/blog
 
-1. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+1. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
+   https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software
+2. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
    https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick
-2. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
+3. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
    https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks
-3. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
+4. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
    https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website
-4. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
+5. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
    https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted
-5. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
+6. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
    https://krunalkumar.dpdns.org/blog/types-of-cyberattacks
-6. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
+7. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
    https://krunalkumar.dpdns.org/blog/security-compliance-explained
-7. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
+8. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
    https://krunalkumar.dpdns.org/blog/india-it-act-explained
-8. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
+9. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
    https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved
-9. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
+10. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
    https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job
-10. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
+11. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
    https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr
-11. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
+12. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
    https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by
-12. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
+13. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
    https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai
-13. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
+14. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
    https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs
-14. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
+15. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
    https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship
-15. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
+16. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
    https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview
-16. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
+17. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
    https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it
-17. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
+18. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
    https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development
-18. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
+19. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
    https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb
-19. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+20. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
    https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n
 
 ---

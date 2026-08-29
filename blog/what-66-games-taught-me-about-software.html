@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sixty-six browser games held every production bug class in miniature — state machines, shared keyboards, saved dead ends, dishonest copy. What each one taught."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What Sixty-Six Tiny Games Taught Me About Serious Software" />
+    <meta
+      property="og:description"
+      content="The games page on this site looks like a break from the serious work. It turned out to be the serious work in miniature: every class of bug that matters in production showed up across sixty-six small games — inputs, state, persistence, promises — small enough to see whole and cheap enough to learn from."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-66-games-taught-me-about-software.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Four game states — ready, playing, paused, game over — with the broken transition from paused to a new game crossed out and the resume transition highlighted" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-29T14:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-29T14:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Engineering practice" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What Sixty-Six Tiny Games Taught Me About Serious Software" />
+    <meta
+      name="twitter:description"
+      content="The games page on this site looks like a break from the serious work. It turned out to be the serious work in miniature: every class of bug that matters in production showed up across sixty-six small games — inputs, state, persistence, promises — small enough to see whole and cheap enough to learn from."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-66-games-taught-me-about-software.jpg" />
+    <title>What 66 Games Taught Me About Software | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What Sixty-Six Tiny Games Taught Me About Serious Software",
+        "description": "The games page on this site looks like a break from the serious work. It turned out to be the serious work in miniature: every class of bug that matters in production showed up across sixty-six small games — inputs, state, persistence, promises — small enough to see whole and cheap enough to learn from.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-66-games-taught-me-about-software.jpg",
+        "datePublished": "2026-08-29",
+        "dateModified": "2026-08-29",
+        "articleSection": "Engineering practice",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software"
+        },
+        "keywords": "browser games, state machines, input handling, canvas accessibility, saved state, software engineering practice, web development lessons"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "What Sixty-Six Games Taught Me About Software", "item": "https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software" }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+<body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+        <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">What Sixty-Six Games Taught Me About Software</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Engineering practice</p>
+          <h1>What sixty-six tiny games taught me about serious software</h1>
+          <p class="hero-text">
+            The games page on this site looks like a break from the serious work. It turned out to be the serious
+            work in miniature. Across sixty-six small games, every class of bug that matters in production showed
+            up somewhere — inputs, state, persistence, promises — each one small enough to see whole and cheap
+            enough to learn from. This is what they taught, with the receipts.
+          </p>
+          <p class="post-meta">Published 29 August 2026 · 10 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/games-lessons-cover.svg" alt="Four game states — ready, playing, paused, game over — with the broken transition from paused to a new game crossed out and the resume transition highlighted" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#why-a-security-site-ships-pac-man">Why a security site ships Pac-Man</a></li>
+                <li><a href="#a-game-is-a-state-machine-wearing-a-costume">A game is a state machine wearing a costume</a></li>
+                <li><a href="#the-keyboard-is-shared-territory">The keyboard is shared territory</a></li>
+                <li><a href="#never-save-a-state-you-would-refuse-to-load">Never save a state you would refuse to load</a></li>
+                <li><a href="#the-copy-is-part-of-the-specification">The copy is part of the specification</a></li>
+                <li><a href="#a-canvas-is-a-locked-door">A canvas is a locked door</a></li>
+                <li><a href="#the-cheapest-place-to-learn-expensive-lessons">The cheapest place to learn expensive lessons</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="why-a-security-site-ships-pac-man">Why a security site ships Pac-Man</h2>
+              <p>
+                There are sixty-six games on this site now — Pac-Man and Tetris remakes, chess against three
+                strengths of engine, seventeen terminal toys including one that does nothing but grow a bonsai
+                tree. No ads, no accounts, nothing to install. A fair question is what any of that is doing on a
+                consultant's website.
+              </p>
+              <p>
+                Part of the answer is that nine of them are security games. One deals you twenty emails and texts,
+                half of them genuine, and makes you call each one —
+                <a href="/glossary#term-phishing">phishing</a> practice with the reason given the moment you
+                answer. Another lets you type a password and watch a real cracking run go after it: wordlist
+                first, then mangling rules, then <a href="/glossary#term-brute-force-attack">brute force</a>.
+                People who will not read a paragraph about password hygiene will happily lose to that game three
+                times in a row, and the lesson survives in a way the paragraph never does. Play is the oldest
+                teaching technology there is.
+              </p>
+              <p>
+                But the honest answer is the other one: building the games taught me more than building the
+                serious pages did. A game is ordinary software with the difficulty turned up — real-time input,
+                persistent state, an impatient user — and none of the forgiveness. Nobody files a bug report
+                against a marketing page. Everyone notices when Pac-Man eats a ghost he has no right to eat.
+              </p>
+              <p>
+                Every bug in this article is real. Each one shipped, was caught by the adversarial review this
+                site's build depends on, and is fixed now. What makes them worth writing about is that none of
+                them is really a game bug. <strong>Each is a production bug class, caught small.</strong>
+              </p>
+
+              <h2 id="a-game-is-a-state-machine-wearing-a-costume">A game is a state machine wearing a costume</h2>
+              <p>
+                Strip the pixels off any of the sixty-six and the same skeleton is underneath: ready, playing,
+                paused, game over. Four states, a handful of legal transitions, and every input the player can
+                produce has to mean something sensible in all four.
+              </p>
+              <p>
+                The bug that taught me this had a nasty shape. Pause a run, then tap the board — the natural
+                gesture for "carry on". The shell heard the tap, decided a tap means "go", and started a
+                brand-new game. Your run — the score, the board, the twenty minutes — was gone. Not through a
+                crash; through an input being routed by what it was instead of by when it arrived.
+              </p>
+              <p>
+                <strong>An input does not have a meaning. An input in a state has a meaning.</strong> A tap
+                during play is a move, on a paused board it is "resume", on a dead one it is "again". The fix was
+                to make the machine explicit — the shell now stamps its state on the page and every handler names
+                the states it accepts — and the moment the state machine existed in code instead of in my head,
+                the whole class of bug went with it.
+              </p>
+              <p>
+                If that sounds like a toy problem, it is the same defect as a checkout that submits twice because
+                the button did not know the order was already placed, or a retry job that re-runs a payment
+                because "clicked" was treated as "valid to execute". The costume is the only difference.
+              </p>
+
+              <h2 id="the-keyboard-is-shared-territory">The keyboard is shared territory</h2>
+              <p>
+                This site has single-letter shortcuts — <code>w</code> and <code>d</code> switch the theme from
+                anywhere, <code>p</code> pauses the background animation. They are useful, discoverable, and they
+                were live while you played Hangman. Guess the letter <code>w</code> and two things happened: the
+                game registered your miss, and the entire site switched to the light theme.
+              </p>
+              <p>
+                It is a comic bug in a game. It is also the same bug as a global hotkey swallowing what someone
+                types into a search field, or two libraries both convinced they own Escape.
+                <strong>A document-level listener is shared territory, and code that binds one is obliged to know
+                what else lives there.</strong> The fix is two guards: if the key was aimed inside a game, or any
+                run is live, the shortcut stands down. There is a reason accessibility guidance requires
+                single-character shortcuts to be disableable — people using speech recognition trigger them with
+                every word they dictate.
+              </p>
+              <p>
+                I would like to say the fix was complete on the first pass. It was not. The letters were guarded,
+                and the one non-letter shortcut was missed — the full stop, which opens a controls panel, kept
+                firing inside the typing trainer, whose passages are ordinary prose. The category of the bug was
+                never "the w key". It was "a listener that did not know where it was", and a category has to be
+                fixed as a category.
+              </p>
+              <p>
+                The input layer had one more lesson in stock. On phones, a tap on the on-screen controls arrived
+                as <code>pointerdown</code> and then again as <code>touchstart</code> — two events describing one
+                press, both bound, so every game with a pad played itself twice per tap. The repair is old wisdom
+                wearing new event names: detect which model the browser speaks, subscribe to exactly one, and
+                never bind both and hope.
+              </p>
+
+              <h2 id="never-save-a-state-you-would-refuse-to-load">Never save a state you would refuse to load</h2>
+              <p>
+                The 2048 board saves itself, so the run you abandon at breakfast is still there in the evening.
+                That promise hid the most instructive pair of bugs in the whole section.
+              </p>
+              <p>
+                First: when a board was finished — no moves left — the game saved that too, and on your return
+                restored it as a live game. Game over is checked after a move, no move was possible, so the
+                restored board sat there immortal: not lost, not winnable, just stuck. Second: the New board
+                button consulted the same saved state and politely dealt your old board straight back. The reset
+                path and the restore path had quietly become the same path.
+              </p>
+              <blockquote>
+                <p>Never save a state you would refuse to load.</p>
+              </blockquote>
+              <p>
+                The durable fix was not at the save site but at the restore site. A snapshot is input, and it
+                deserves the same suspicion as anything else that crosses a boundary. The restore now proves a
+                board is actually playable before accepting it; a dead one is cleared and re-dealt. Anyone who
+                has restored a session, opened a stale draft, or run a schema migration has met this bug in a
+                bigger costume — old saved state is an input format, and you support it forever.
+              </p>
+
+              <h2 id="the-copy-is-part-of-the-specification">The copy is part of the specification</h2>
+              <p>
+                The chess page makes a specific claim: it plays every rule the game actually has. For a while
+                that sentence was ahead of the code — threefold repetition was missing, so a perpetual check
+                dragged on until the fifty-move rule ended it. The games hub advertised four strengths of engine;
+                the page offered three. Snake's start screen promised WASD keys the shell never bound.
+              </p>
+              <p>
+                None of these breaks anything. There is no stack trace, no console error, nothing for a monitor
+                to alarm on. The page simply makes a promise the code does not keep, and the visitor is the only
+                test runner who will ever notice. <strong>A sentence on the page is a test the code has to
+                pass.</strong>
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>Where a claim can be checked mechanically, check it mechanically.</strong> This site's
+                  build now cross-checks every game's advertised behaviour against its module the same way it
+                  checks that every share image exists — because a claim with no check behind it drifts, and
+                  prose drifts silently.
+                </p>
+              </div>
+              <p>
+                The fixes went in both directions, which is the point. Chess learnt threefold repetition, because
+                the sentence was worth keeping. The hub's four strengths became three, because the code was right
+                and the copy was boasting. Which side moves is a judgement — that there must be no daylight
+                between them is not.
+              </p>
+
+              <h2 id="a-canvas-is-a-locked-door">A canvas is a locked door</h2>
+              <p>
+                Every one of the sixty-six games draws into a canvas, and to a screen reader a canvas is a name
+                and then silence. Score changes, the pause overlay, the game ending — none of it existed unless
+                you could see it. Sixty-six games, and for a blind visitor not one of them could so much as say
+                "game over".
+              </p>
+              <p>
+                The fix cost about a dozen lines, which is the embarrassing part. One polite live region in the
+                shared shell announces what matters — paused, resumed, game over with the score, a new best —
+                debounced so a score counter does not narrate every frame. Because it lives in the shell, all
+                sixty-six games inherited it at once.
+              </p>
+              <p>
+                That is the lesson worth exporting: <strong>put the fix in the layer everything shares, or you
+                will be making it sixty-six times</strong> — slightly differently, forever. It is the same
+                reasoning as design tokens instead of scattered hex codes, or one auth middleware instead of
+                per-route checks. Accessibility work in particular repays it: retrofitting one game is an
+                afternoon, retrofitting a platform is a quarter.
+              </p>
+
+              <h2 id="the-cheapest-place-to-learn-expensive-lessons">The cheapest place to learn expensive lessons</h2>
+              <p>
+                A game that breaks costs a restart. That is precisely what makes the games section the right
+                place to meet these bugs for the first time — the feedback is instant, the failure is visible to
+                anyone who plays, and the cost of being wrong rounds to zero.
+              </p>
+              <p>
+                The bug classes do not stay in the games. Inputs routed without state, listeners that do not know
+                their neighbours, saved state trusted on the way back in, prose making claims the code cannot
+                honour, whole interfaces invisible to assistive technology — that list is what production
+                incidents are made of, at ten thousand times the stakes. I met every one of them in miniature
+                first, and the serious pages on this site are sturdier for it.
+              </p>
+              <p>
+                So the games page stays, and not as a break from the work. If you want the review mechanism that
+                caught everything above, it is written up in
+                <a class="text-link" href="/blog/how-i-vibe-coded-my-website">how this site was built</a>. If you
+                would rather just lose to a password cracker for a while, the
+                <a class="text-link" href="/games">games are here</a> — no ads, no accounts, and every rule the
+                pages claim.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-66-games-taught-me-about-software" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=What%20Sixty-Six%20Tiny%20Games%20Taught%20Me%20About%20Serious%20Software&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-66-games-taught-me-about-software" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=What%20Sixty-Six%20Tiny%20Games%20Taught%20Me%20About%20Serious%20Software%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-66-games-taught-me-about-software" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/ai-driven-human-assisted">AI driven, human assisted: the default just inverted</a></li>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want this level of scrutiny on your own product?</h2>
+            <p>
+              Finding the bug before the user does — the state that was never named, the promise the code does
+              not keep, the interface a screen reader cannot enter — is most of what I do with clients, and it is
+              exactly what I work through with the people I mentor.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">See how I work</a>
+              <a class="btn btn-secondary" href="/internships">Mentorship &amp; internships</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/assets/images/logo-64.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/research">Research</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/internships">Internships</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

@@ -44,7 +44,7 @@
    never be shown to a visitor who could have fetched a fresh one. Cache-first
    HTML is the support nightmare; a cache that is only ever a fallback is not.
 
-   The second carve-out, on the same terms: the blog. Twenty-five articles,
+   The second carve-out, on the same terms: the blog. Twenty-six articles,
    their art, and the blog stylesheet and scripts — about 1.2 MB precached on install,
    served network-first exactly like the doc makers. The size question was
    asked and measured rather than assumed: the whole archive is 2% of what
@@ -198,6 +198,7 @@ var BLOG_URLS = [
   '/blog/the-life-of-the-buddha',
   '/blog/types-of-love-and-choosing-a-life-partner',
   '/blog/what-happens-after-we-die',
+  '/blog/what-66-games-taught-me-about-software',
   // Blog-only stylesheet and scripts. main.css, labs.css, boot.js, theme.js,
   // include-partials.js, site-search.js, particle-bg.js, the partials and the
   // icons are already on DOC_URLS above, so they are deliberately not repeated
@@ -207,6 +208,7 @@ var BLOG_URLS = [
   '/assets/js/blog-toc.js',
   '/assets/js/blog-share.js',
   // Cover art and in-article diagrams, read straight off the post sources.
+  '/assets/images/blog/games-lessons-cover.svg',
   '/assets/images/blog/scoping-work-cover.svg',
   '/assets/images/blog/passkeys-cover.svg',
   '/assets/images/blog/finding-career-cover.svg',
