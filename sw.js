@@ -17,9 +17,9 @@
    exactly this cache and nothing else — the browser's origin model means it
    cannot reach another site's data even in principle.
 
-   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly four
-   kinds of request — the vendor runtimes, the doc makers, navigations, and
-   the blog — and returns early for everything else, so the rest of the
+   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly five
+   kinds of request — the vendor runtimes, the doc makers, navigations, the
+   blog, and the games — and returns early for everything else, so the rest of the
    site — every page, its CSS, its JS, analytics — behaves exactly as if no
    worker existed. A service worker that quietly caches a whole site's HTML
    is a support nightmare (the "why does the old page keep coming back" kind),
@@ -47,7 +47,7 @@
    The second carve-out, on the same terms: the blog. Twenty-five articles,
    their art, and the blog stylesheet and scripts — about 1.2 MB precached on install,
    served network-first exactly like the doc makers. The size question was
-   asked and measured rather than assumed: the whole archive is 1.7% of what
+   asked and measured rather than assumed: the whole archive is 2% of what
    one visit to /labs/c downloads for its clang toolchain, so the metering a
    cache-on-read scheme would need costs more complexity than the bytes are
    worth. What it buys is the reason to install the app at all — an archive
@@ -164,8 +164,8 @@ var BLOG_CACHE = 'blog-offline-v1';
 // to having no worker, and the copy below only ever answers a fetch that
 // actually failed. So the no-stale-pages rule at the top still holds.
 //
-// Precached on install rather than on read. The whole archive is about 1 MB —
-// 784 KB of HTML, 142 KB of art, ~52 KB of CSS and JS — against the 58 MB a
+// Precached on install rather than on read. The whole archive is about 1.2 MB —
+// ~952 KB of HTML, ~151 KB of art, ~42 KB of CSS and JS — against the 58 MB a
 // single visit to /labs/c already downloads, so metering it per article would
 // have cost more in machinery than it could ever save in bytes. Enumerated,
 // never wildcarded, exactly like DOC_URLS: a new post has to be added here or
@@ -313,7 +313,7 @@ self.addEventListener('install', function (event) {
   // The runtimes are still NOT precached: they are fetched on demand, and
   // precaching 90 MB on first page view is exactly what the lazy loading is
   // designed to avoid. Only the two enumerated lists go in now — the doc-maker
-  // files, a few hundred KB, and the blog at about 1 MB. Both are the price of
+  // files, a few hundred KB, and the blog at about 1.2 MB. Both are the price of
   // a "works offline" promise those pages make in print.
   event.waitUntil(
     Promise.all([

@@ -736,6 +736,12 @@
       if (event.key !== '.') return;
       if (event.ctrlKey || event.altKey || event.metaKey || event.isComposing) return;
       if (event.target && event.target.closest && event.target.closest(EDITABLE)) return;
+      // The same two game guards as the letter keys below. A period is real
+      // input mid-run — the typing passages are ordinary prose — and the
+      // off-switch argument above does not apply: a run always ends, so the
+      // panel is never more than one game-over away.
+      if (event.target && event.target.closest && event.target.closest('.game')) return;
+      if (document.querySelector('.game[data-state="playing"]')) return;
       setControlsShown(!controlsShown);
       if (controlsShown) showToast('Controls shown · . to hide');
       event.preventDefault();
