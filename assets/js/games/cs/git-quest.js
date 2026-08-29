@@ -23,6 +23,20 @@
    concurrent branch, merges joining lanes); it is not gitk, and does not
    need to be.
 
+   THE ONLY SOUNDS ARE THE ONES A TERMINAL MAKES. A run through the whole
+   quest is a long time to hear nothing, and this file used to be silent
+   from the first keystroke until the shell’s end-of-run sweep. What it has
+   now is not a soundtrack: a click under the keys, a two-note rise on the
+   green line, a low square on the red one, and a small rising triad when a
+   mission falls. The rise and the buzz hang off good() and err() rather
+   than off a list of commands, and that is the part worth keeping — every
+   command that changed the repository already prints green and every
+   refusal already prints red, so wiring the sound to the colour means the
+   two cannot drift apart as commands are added. Looking around stays
+   silent, because looking around changes nothing. There is no ambient
+   layer at all: a terminal between keystrokes makes no noise, and
+   inventing a hum for one would be a lie about the instrument.
+
    Same input contract as shell-quest: rawInput, an off-screen .typing-catch
    input, Tab completing only when there is a word to complete, and the
    click-vs-drag focus rule so printed hashes can be selected and copied —
@@ -209,6 +223,93 @@
       function dirtyWork() { return !sameMap(files, index); }
       function dirtyIndex() { return !sameMap(index, headTree()); }
 
+      /* ---------------- sound ---------------- */
+
+      /* A figure needs its second note offset from its first, and every
+         one-shot the shell offers starts at the context’s current time and
+         takes no offset, so the offset has to live here. This is that and
+         nothing else: no callback below reads game state, so a note still in
+         flight when a scene is rebuilt can only ever make a sound. */
+      function after(ms, fn) { setTimeout(fn, ms); }
+
+      /* One key going down. This fires more often than everything else in
+         the file put together, so it is the quietest thing on the page:
+         0.02, which is what the typing trainer spends on a keystroke, over a
+         burst too short to be heard as a pitch.
+
+         Noise rather than a tone, and that is the whole character of it. A
+         key is a click; a pitched blip played four hundred times in a run
+         stops being feedback and starts being a note the ear tries to make a
+         tune out of. The shell reads the shared noise buffer from a random
+         point every time, so no two clicks are the same twenty milliseconds,
+         and the filter centre wanders a little on top of that because the
+         keys of a real keyboard do not all sound alike.
+
+         That wander uses Math.random on purpose. rnd is the seeded stream
+         that names commits, and drawing from it here would change every hash
+         the player sees for the sake of a click.
+
+         Gated at 50 ms, which is a shorter gap than even a 240 wpm typist
+         leaves between keys, so nothing anybody actually types is thinned.
+         What the gate catches is the operating system repeating a held
+         backspace at thirty a second into a fourteen-voice budget. */
+      function tick() {
+        if (!g.gate('key', 0.05)) return;
+        g.noise(0.022, {
+          type: 'bandpass',
+          freq: 1700 + Math.random() * 700,
+          q: 1.6,
+          level: 0.02
+        });
+      }
+
+      /* Accepted — two notes a fifth apart, rising. Two rather than one
+         because a single blip says only “heard you” and this has to say that
+         something moved; a fifth rather than a third because it fires several
+         times a minute for a whole run and has to stay tellable apart from
+         the mission triad, which is built of thirds.
+
+         The upper note is the quieter of the two: at equal amplitude the ear
+         hears the higher of a pair as the louder, and the figure is meant to
+         read as one gesture rather than as a note and then a brighter one. */
+      function accept() {
+        g.beep(523, 0.05, 'triangle', 0.04);
+        after(60, function () { g.beep(784, 0.07, 'triangle', 0.035); });
+      }
+
+      /* Refused — one low square, the oldest “no” a terminal has, and the
+         same instrument shell-quest answers a wrong answer with; two
+         terminals on the same site should not disagree about what no sounds
+         like. Short and low so it cannot be mistaken for the rise, and no
+         louder than it either: two of the missions teach their lesson BY
+         being refused — the switch that will not switch until the work is
+         parked, and the merge that stops rather than guess — and a refusal
+         that felt like a punishment would be teaching the wrong thing. */
+      function reject() {
+        g.beep(150, 0.13, 'square', 0.05);
+      }
+
+      /* A mission fell. A rising major triad that STARTS on the note the
+         accept rise ended on and keeps climbing: the command that finished
+         the mission has usually just played that rise, and continuing from
+         its top note is heard as one gesture carrying on rather than as a
+         second sound landing on the first. That is also why it waits 130 ms
+         — the rise owns the first eighth of a second.
+
+         Plucked, and the only long tail in the file. Eighteen of these in a
+         full run is rare enough to be the loudest thing here, and the levels
+         fall as the pitch climbs so the figure keeps one loudness on the way
+         up.
+
+         The nineteenth mission does not get one. Finishing the last one ends
+         the run, and the shell answers that with its own rising sweep; both
+         at once is two endings played over each other. */
+      function missionChord() {
+        after(130, function () { g.pluck(784, 0.16, 0.05, 'triangle'); });
+        after(215, function () { g.pluck(988, 0.16, 0.045, 'triangle'); });
+        after(300, function () { g.pluck(1175, 0.3, 0.04, 'triangle'); });
+      }
+
       /* ---------------- output ---------------- */
       function newLine(cls) {
         var d = document.createElement('div');
@@ -229,8 +330,12 @@
         for (var i = 0; i < lines.length; i++) out(lines[i], cls);
       }
 
-      function err(text) { out(text, 'is-err'); }
-      function good(text) { out(text, 'is-ok'); }
+      /* The two lines that carry a verdict also carry the sound for it. See
+         the header: every command that changed the repository prints a green
+         line, every refusal prints a red one, and note() — which is the game
+         explaining rather than git answering — stays silent. */
+      function err(text) { out(text, 'is-err'); reject(); }
+      function good(text) { out(text, 'is-ok'); accept(); }
       function note(text) { out(text, 'is-note'); }
 
       function promptText() { return 'you@repo:~/project' + (repo && conflict ? ' (merging)' : '') + '$'; }
@@ -1392,6 +1497,7 @@
         buildScene();
         showMission();
         sayNote('Done: ' + doneTitle + ' — ' + doneWhy, 'is-done');
+        missionChord();
       }
 
       /* ---------------- parsing and the line ---------------- */
@@ -1517,6 +1623,15 @@
           if (event.key === 'Enter') { event.preventDefault(); g.start(); }
           return;
         }
+        /* One test, up here, because every branch below returns: spread
+           across the bottom of the function the click would have to be
+           repeated in the printable path and the backspace path and would
+           still catch ArrowDown, which falls out of the end. Enter, Tab,
+           Escape and the arrows are all longer than one character and so drop
+           out of the test on their own — Enter has the rise or the buzz to
+           announce it a moment later, and recalling history is not typing. */
+        if (event.key === 'Backspace' || event.key === 'Delete' ||
+            (event.key && event.key.length === 1)) tick();
         if (event.key === 'Enter') {
           event.preventDefault();
           var value = input.value;

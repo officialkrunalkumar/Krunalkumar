@@ -197,7 +197,19 @@ quizzes.
 HOW IT IS BUILT. Every game runs on one shared engine (assets/js/games/
 game-shell.js): a fixed-timestep loop at 1/120s with a clamped accumulator,
 canvas sizing that accounts for device pixel ratio, pause, mute, fullscreen,
-overlays and an on-screen pad. The seventeen terminal games add a character-
+overlays and an on-screen pad.
+
+SOUND IS SYNTHESISED, NEVER A FILE, so the whole arcade adds zero media bytes
+to the repository and there is no track to licence. It comes in two forms. A
+one-shot is struck and forgotten and is the right instrument for an event: a
+brick, a captured piece, a wrong answer. A BED is held, and is the right
+instrument for a condition: rain falling, a fire burning, a flock in the air,
+sand pouring. The shell fades the beds in while a run is live and out the
+moment it is paused, finished, muted, or in a tab nobody is looking at, and
+suspends the audio context outright once they have been silent for a second.
+The toys needed the second form: rain is not forty plinks a second, it is a
+hiss that thickens, and until beds existed their mute button was wired to
+nothing a visitor could hear. The seventeen terminal games add a character-
 grid layer on top of that, so they are drawn as text cells rather than as
 sprites. Because there is one engine, a fix to focus handling or canvas
 scaling applies to all sixty-seven at once.

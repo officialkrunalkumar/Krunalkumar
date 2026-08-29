@@ -1,7 +1,7 @@
 /* ==========================================================================
    regex-golf.js — twelve pairs of word lists, shortest pattern wins.
    --------------------------------------------------------------------------
-   Two decisions worth the words.
+   Three decisions worth the words.
 
    1. THE PATTERN FIELD IS A REAL, VISIBLE <input>, not the off-screen catcher
       subnet-sprint and the typing trainer use. Those two only ever append a
@@ -23,6 +23,23 @@
       not a fix and is not presented as one — by the time it fires, the work
       has already happened. That is exactly the position a server is in
       during a ReDoS: the only choice left is whether to start it again.
+
+   3. THE SOUND IS TIED TO THE LIST, NOT TO THE KEYBOARD. This is a typing
+      game whose real subject is the pass/fail column changing its mind, so
+      the keystroke itself is the quietest thing in the file — under the
+      typing trainer's wrong-key beep, because that beep reports a mistake
+      and this only reports that the field is live. Everything that carries
+      meaning is EDGE TRIGGERED off the evaluation instead: a tick when a
+      column newly goes all-green, a lower and quieter one when it falls
+      back off, a buzz the first time a pattern stops parsing, and a heavier
+      one when the guard in decision 2 refuses to run it at all. That guard
+      used to warn in silence, which was the wrong place to be quiet.
+
+      Edge triggering is the whole trick, and the reason is the 90 ms
+      settle. The lists re-evaluate after every character, so a sound tied
+      to the STATE rather than to the MOVE would re-announce the same open
+      bracket on every key pressed after it. Two of those and nobody is
+      listening for the rest of the level.
    ========================================================================== */
 
 (function () {
@@ -213,10 +230,18 @@
       var at = 0;
       var used = 0;
       var solved = false;
-      /* One note per level, however much the answer is fiddled with
-         afterwards — a chime on every keystroke of a working pattern is
+      /* One arpeggio per level, however much the answer is fiddled with
+         afterwards — a fanfare on every keystroke of a working pattern is
          noise, and people do keep editing after they have passed. */
       var chimed = false;
+
+      /* Where the evaluation stood the last time it ran, so that a sound
+         marks the MOVE and not the position — see decision 3. The kind is
+         one of empty, long, bad, redos, ok; the two flags are whether each
+         column was entirely correct. */
+      var wasKind = 'empty';
+      var wasMatch = false;
+      var wasReject = false;
       var input = null;
       var nextBtn = null;
       var hintBtn = null;
@@ -275,6 +300,7 @@
              live for the length of the debounce. */
           solved = false;
           nextBtn.disabled = true;
+          keyTick();
           schedule();
         });
         input.addEventListener('keydown', function (event) {
@@ -378,6 +404,140 @@
         return true;
       }
 
+      /* ---------------------------------------------------------------
+         Sound. All of this is decision 3: the keyboard is company, the
+         list is the news, and the sound you hear most often is therefore
+         the one carrying the least.
+         --------------------------------------------------------------- */
+
+      /* The keyboard, heard. This fires on every character, which is what
+         makes it the quietest sound here by a wide margin: 0.012 against
+         the 0.02 the typing trainer spends on a WRONG key.
+
+         Filtered noise rather than a tone, because a key is a click and not
+         a note. The centre frequency moves a little each time — the shell
+         already reads the shared buffer from a random offset, but hold the
+         filter still on top of that and a fast run of keys starts drifting
+         towards the sound of one sample being retriggered.
+
+         Gated at 50 ms. Even 200 wpm leaves 60 ms between characters, so
+         every keystroke a person actually makes gets through and only a
+         held key, repeating around thirty times a second, is thinned.
+         Enter never arrives here at all: keydown takes it and calls
+         preventDefault, so it produces no input event and gets the solve
+         or the immediate retest instead of a tick. */
+      function keyTick() {
+        /* The same condition evaluate() uses to decide there is nothing to
+           test. Past the last level the field is behind the game-over
+           overlay and anything typed into it means nothing. */
+        if (!LEVELS[at]) return;
+        if (!g.gate('rg-key', 0.05)) return;
+        g.noise(0.018, {
+          type: 'bandpass',
+          freq: 2100 + Math.random() * 700,
+          q: 1.4,
+          level: 0.012
+        });
+      }
+
+      /* One column crossing into or out of "entirely correct". Up is a
+         struck note; down is the same voice a major third lower and at two
+         thirds the level, because coming off green happens mid-edit and is
+         worth knowing about without being scolded for.
+
+         Gated at one per settle, which is already the fastest the debounce
+         can produce an edge. The gate is there so that a pathological run
+         of alternating keystrokes cannot turn the two columns into a
+         trill; each column gets its own name so that both flipping in the
+         same pass still costs two notes rather than one. */
+      function edge(good, freq, name) {
+        if (!g.gate(name, SETTLE_MS / 1000)) return;
+        if (good) g.pluck(freq, 0.22, 0.035, 'triangle');
+        else g.pluck(freq * 0.8, 0.14, 0.022, 'triangle');
+      }
+
+      /* The level going in. A rising 4:5:6 — a plain major triad — where
+         there used to be a single note, and the bottom of it IS that note,
+         unchanged. It simply has somewhere to go now.
+
+         Scheduled with setTimeout because the shell's one-shots all start
+         at the context's current time and take no offset, and a game has
+         no business reaching into the AudioContext clock to lay out three
+         notes. The level falls as the pitch rises so the figure keeps one
+         loudness: at equal amplitude the ear hears the top note as the
+         loudest of the three. */
+      function solveChord() {
+        g.beep(720, 0.05, 'sine');
+        setTimeout(function () { g.beep(900, 0.06, 'sine', 0.05); }, 70);
+        setTimeout(function () { g.beep(1080, 0.14, 'sine', 0.045); }, 140);
+      }
+
+      /* Called from the good path with whether each column is now entirely
+         correct. The two columns move independently and hearing WHICH one
+         just went green is most of the value — you can chase "all rejects"
+         without looking up from the field you are typing in — so they get
+         pitches a fourth apart, both clear of the arpeggio, and three
+         sounds that can land inside a second stay tellable apart. */
+      function verdict(nowMatch, nowReject) {
+        wasKind = 'ok';
+        if (nowMatch && nowReject && !chimed) {
+          /* The arpeggio stands in for the column tick that would fire in
+             the same instant: the last column going green and the level
+             being solved are one event, not two. */
+          chimed = true;
+          solveChord();
+        } else {
+          /* Once the arpeggio is spent the ticks take over reporting an
+             answer broken and put back together, which is what most of the
+             time on a level actually goes on. */
+          if (nowMatch !== wasMatch) edge(nowMatch, 588, 'rg-match');
+          if (nowReject !== wasReject) edge(nowReject, 784, 'rg-reject');
+        }
+        wasMatch = nowMatch;
+        wasReject = nowReject;
+      }
+
+      /* Every exit from evaluate() that leaves the two lists blank comes
+         through here, and only a CHANGE of kind makes a sound. Type an open
+         bracket and hear it once; keep typing behind it and the buzz does
+         not follow you, because the news was the bracket and not the six
+         characters after it.
+
+         The column flags are cleared without their own ticks. The lists are
+         showing nothing at this point, so following the buzz with two "you
+         lost that column" notes would report one keystroke three times. */
+      function refuse(kind) {
+        var was = wasKind;
+        wasKind = kind;
+        wasMatch = false;
+        wasReject = false;
+        if (kind === was) return;
+        if (kind === 'bad') {
+          /* A pattern that does not parse yet is a state you go THROUGH on
+             the way to a good one, so this is the softest thing here after
+             the key tick. Square rather than sawtooth — fewer harmonics, so
+             it reads as "not yet" instead of as "no". It is also low, and a
+             low tone needs more amplitude than a high one to sound equally
+             loud, which is why 0.022 here sits under a column tick's
+             0.035 and is still the fainter of the two. */
+          if (g.gate('rg-bad', 0.12)) g.beep(130, 0.055, 'square', 0.022);
+        } else if (kind === 'redos') {
+          /* Both halves of the guard in decision 2 — the shape scan that
+             refuses in advance and the stopwatch that refuses in arrears —
+             share one sound, because from where the player sits they are
+             the same refusal and the box below already says which of them
+             fired. Sawtooth, and lower again: every harmonic present, so it
+             grinds where the parse buzz merely hums. It is the loudest
+             thing in the file, which it can afford to be because it is by
+             far the rarest. */
+          if (g.gate('rg-redos', 0.12)) g.beep(90, 0.14, 'sawtooth', 0.05);
+        }
+        /* "empty" and "long" stay silent on purpose. An empty field is
+           where every level starts, and a pattern past MAX_LEN was stopped
+           by a rule about length rather than by the engine getting into
+           trouble, so neither is something the ear needs told. */
+      }
+
       function evaluate() {
         if (timer) { clearTimeout(timer); timer = null; }
         var lvl = LEVELS[at];
@@ -390,19 +550,21 @@
         if (!src) {
           clearMarks();
           status('Type a pattern between the slashes.');
+          refuse('empty');
           return;
         }
 
-        if (src.length > MAX_LEN) { clearMarks(); status('Too long.', 'is-bad'); warn('long'); return; }
+        if (src.length > MAX_LEN) { clearMarks(); status('Too long.', 'is-bad'); warn('long'); refuse('long'); return; }
 
         var seen = known(refused, src);
-        if (seen) { clearMarks(); status('Refused — see the note below.', 'is-bad'); warn(seen.why, seen.ms); return; }
+        if (seen) { clearMarks(); status('Refused — see the note below.', 'is-bad'); warn(seen.why, seen.ms); refuse('redos'); return; }
 
         if (nestedQuantifier(src)) {
           refused[src] = { why: 'shape', ms: 0 };
           clearMarks();
           status('Refused — see the note below.', 'is-bad');
           warn('shape', 0);
+          refuse('redos');
           return;
         }
 
@@ -414,6 +576,7 @@
              backslash — so this is a neutral state, not a wrong answer. */
           clearMarks();
           status('Not a pattern yet: ' + String((err && err.message) || err), 'is-wait');
+          refuse('bad');
           return;
         }
 
@@ -430,17 +593,26 @@
           clearMarks();
           status('Refused — see the note below.', 'is-bad');
           warn('slow', Math.round(spent));
+          refuse('redos');
           return;
         }
 
         paint(q('#rg-match'), hits, true);
         paint(q('#rg-reject'), misses, false);
 
-        var wrong = 0;
+        /* Counted per column rather than straight into one total, because
+           the sound follows the two columns separately — see decision 3.
+           The total is still the sum of them and the line below is the
+           same line it always was. */
+        var matchWrong = 0;
+        var rejectWrong = 0;
         var i;
-        for (i = 0; i < hits.length; i++) if (hits[i] !== true) wrong++;
-        for (i = 0; i < misses.length; i++) if (misses[i] !== false) wrong++;
+        for (i = 0; i < hits.length; i++) if (hits[i] !== true) matchWrong++;
+        for (i = 0; i < misses.length; i++) if (misses[i] !== false) rejectWrong++;
+        var wrong = matchWrong + rejectWrong;
         var total = lvl.match.length + lvl.reject.length;
+
+        verdict(matchWrong === 0, rejectWrong === 0);
 
         if (wrong) {
           status((total - wrong) + ' of ' + total + ' right, at ' + src.length + ' characters.');
@@ -456,7 +628,6 @@
             ? 'Solved in ' + src.length + '. That is par.'
             : 'Solved in ' + src.length + '. Par is ' + lvl.par + ' — worth another look.',
           'is-good');
-        if (!chimed) { chimed = true; g.beep(720, 0.05, 'sine'); }
       }
 
       function loadLevel() {

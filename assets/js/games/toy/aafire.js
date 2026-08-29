@@ -7,7 +7,7 @@
    per pass, spreading sideways as it goes and running out before the top.
    Everything that looks like flame is that one line of arithmetic.
 
-   Two decisions worth writing down:
+   Three decisions worth writing down:
 
    1. WIND IS A WEIGHT, NOT A SHIFT. The obvious way to lean the flame is to
       sample from an offset column, which quantises to whole cells and makes
@@ -23,6 +23,21 @@
       into uniform noise, the averaging smooths that into a flat orange band,
       and the fire loses its separate tongues. Persistence is what gives it
       hot cores that survive long enough to climb.
+
+   3. THE SOUND READS THE SETTING, NOT THE GRID. A fire is a roar with
+      cracks on top and it needs both, so the body of it is a bed rather
+      than a stream of events: a lowpassed rumble with a very slow
+      oscillator on its cutoff, so the fire surges and settles instead of
+      sitting at one level, and a wide bandpassed hiss over the top of it.
+      Both are scaled by the intensity setting and leaned by the wind one,
+      which is why Embers is a warm simmer somewhere to the left and
+      Inferno is a real roar. The cracks are gated one-shots, and the gap
+      between them NARROWS as the fire grows — the opposite of the rain
+      toy, where the plinks thin out as the storm thickens, because a
+      bigger fire genuinely does pop more often. What none of it does is
+      sound a cell: a couple of thousand of them cross into visible every
+      second here, and a pop for each is not a fire, it is a Geiger
+      counter.
    ========================================================================== */
 
 (function () {
@@ -51,6 +66,14 @@
     high: { decay: 0.027, churn: 0.42, hot: 1.00 }
   };
 
+  /* How much fire the sound hears at each setting, 0..1, keyed the same as
+     LEVELS but deliberately kept out of it. Reusing level.hot would have
+     saved a table and been wrong twice over: it is a physics number that
+     gets retuned when the ramp looks off, and it says Embers is a fire at
+     sixty-two per cent when Embers is meant to be a different sound
+     entirely rather than a quieter one. */
+  var FUEL = { low: 0, normal: 0.55, high: 1 };
+
   /* The flame rises exactly one row per pass, so this is the speed of the
      fire and not a frame rate. Above about forty it stops reading as flame
      and starts reading as static. */
@@ -75,6 +98,7 @@
       var level = LEVELS.normal;
       var lastFlame = -1;
       var lastAlight = -1;
+      var power = FUEL.normal;    // what the sound makes of level; see FUEL
 
       var windSel = document.getElementById('game-wind');
       var powerSel = document.getElementById('game-intensity');
@@ -93,14 +117,187 @@
         return LEVELS[powerSel.value] || LEVELS.normal;
       }
 
+      /* Deliberately not derived from readLevel(), for the reason FUEL is a
+         separate table. */
+      function readPower() {
+        if (!powerSel) return FUEL.normal;
+        var v = FUEL[powerSel.value];
+        return v == null ? FUEL.normal : v;
+      }
+
+      /* ---------------------------------------------------------------
+         The fire. See decision 3 in the header.
+
+         Two noise layers, because a fire is two sounds and neither is the
+         fire on its own. The ROAR is the low body, which is really the
+         sound of air being pulled into the base, and it is what makes an
+         Inferno feel large rather than merely bright. The HISS is the mid
+         band above it, the fuel itself going, and it is the layer that says
+         something is burning rather than that a fan is running. Ship the
+         roar alone and it is a motorway two streets away; ship the hiss
+         alone and it is a tap left running.
+         --------------------------------------------------------------- */
+      var fire = g.bed(function (a) {
+        var ctx = a.ctx;
+
+        function layer(type, freq, q, gain) {
+          var src = ctx.createBufferSource();
+          src.buffer = a.noise();
+          src.loop = true;
+          var filt = ctx.createBiquadFilter();
+          filt.type = type;
+          filt.frequency.value = freq;
+          filt.Q.value = q;
+          var amp = ctx.createGain();
+          amp.gain.value = gain;
+          src.connect(filt);
+          filt.connect(amp);
+          src.start();
+          return { filt: filt, amp: amp };
+        }
+
+        var roar = layer('lowpass', 240, 0.8, 0.055);
+        var hiss = layer('bandpass', 1150, 0.7, 0.007);
+
+        /* The wind setting leans the fire across the stereo field. A panner
+           is the one node in this graph that is not everywhere Web Audio
+           is — Safari was late to createStereoPanner and some embedded
+           WebViews still lack it — so it is asked for rather than
+           assumed, and both layers connect to whatever came back. Losing
+           the lean costs the stereo image and nothing else. Constructing it
+           blind would cost the whole bed: the shell catches a throw out of
+           build() and carries on in silence, so the failure would be a toy
+           that is simply mute for no visible reason.
+
+           Both layers pan together on purpose. Splitting them — roar centre,
+           hiss leaning — sounds like two separate fires rather than one
+           being blown sideways. */
+        var panner = null;
+        if (ctx.createStereoPanner) {
+          try { panner = ctx.createStereoPanner(); } catch (err) { panner = null; }
+        }
+        if (panner) panner.connect(a.out);
+        var tail = panner || a.out;
+        roar.amp.connect(tail);
+        hiss.amp.connect(tail);
+
+        /* Surges. A fire held at one cutoff is a rumble, and the ear files a
+           rumble under machinery inside a few seconds. One very slow
+           oscillator on the roar's cutoff — a swell every eight seconds or
+           so, about the rate at which a real fire finds fresh air — is the
+           whole difference between a fire and an extractor fan. Its depth
+           rides the intensity too, because embers do not surge. */
+        var lfo = ctx.createOscillator();
+        var depth = ctx.createGain();
+        lfo.frequency.value = 0.13;
+        depth.gain.value = 45;
+        lfo.connect(depth);
+        depth.connect(roar.filt.frequency);
+        lfo.start();
+
+        function ramp(param, value) {
+          var now = ctx.currentTime;
+          param.cancelScheduledValues(now);
+          param.setValueAtTime(param.value, now);
+          /* Three quarters of a second, a little longer than the rain toy
+             uses. Rain changing density is weather arriving and can be
+             quick about it; a fire changing size is fuel catching, and it
+             should be heard taking hold. */
+          param.linearRampToValueAtTime(value, now + 0.75);
+        }
+
+        /* Named apart from the outer `heat` grid on purpose: that is a
+           couple of thousand cell temperatures, this is one number saying
+           how big the fire is meant to sound. */
+        var fuel = FUEL.normal;
+        var lean = 0;
+
+        function apply() {
+          var w = Math.abs(lean);
+          /* The roar carries most of the level because almost all of it
+             sits below 300 Hz, where the ear wants considerably more
+             amplitude for the same loudness. These are mix numbers, not
+             meter readings: the two layers together land around rms 0.004
+             at Embers and 0.018 at Inferno. */
+          ramp(roar.amp.gain, 0.055 + fuel * 0.100);
+          ramp(hiss.amp.gain, 0.007 + fuel * 0.026);
+          /* A bigger fire is not only louder, it is wider, so the roar's
+             lowpass opens upward and the hiss climbs with it. Wind adds a
+             little top to the hiss on its own account, which is what being
+             fanned does to a flame — hotter, thinner, brighter — and it is
+             what keeps the wind setting audible even on a mono device that
+             never got a panner. */
+          ramp(roar.filt.frequency, 240 + fuel * 320);
+          ramp(hiss.filt.frequency, 1150 + fuel * 700 + w * 450);
+          ramp(depth.gain, 45 + fuel * 115);
+          /* Just over half the available width. Panned hard, the fire stops
+             being in the room and starts being in one ear. */
+          if (panner) ramp(panner.pan, lean * 0.55);
+        }
+
+        return {
+          set: function (key, value) {
+            if (key === 'heat') fuel = Math.max(0, Math.min(1, value));
+            else if (key === 'wind') lean = Math.max(-1, Math.min(1, value));
+            else return;
+            apply();
+          }
+        };
+      });
+
+      /* One crack. Very short and very tight, at a centre frequency rolled
+         per pop, because that is a pocket of sap or water letting go rather
+         than anything tonal — hold the centre still and a run of them reads
+         as a click track rather than as burning wood.
+
+         The GAP NARROWS AS THE FIRE GROWS, which is the exact reverse of the
+         rain toy and correct in both places: a downpour stops you picking
+         out one drop from the next, while a bigger fire really does pop more
+         often. Roughly one crack every third of a second at Embers, one
+         every ninth at Inferno.
+
+         The rate comes from the setting rather than from the grid, for the
+         reason in decision 3 — there is no shortage of hot cells to hang a
+         pop on, which is precisely the problem. */
+      function crackle() {
+        if (!g.gate('crack', 0.35 - power * 0.26)) return;
+        g.noise(0.02 + Math.random() * 0.04, {
+          type: 'bandpass',
+          freq: 1500 + Math.random() * 3500,
+          q: 9,
+          /* Quiet, and only a little louder at Inferno. Up there these fire
+             nearly four times as often, and a rate that climbs alongside a
+             level that also climbs stops sounding like a fire and starts
+             sounding like applause. */
+          level: 0.026 + power * 0.014
+        });
+      }
+
       if (windSel) {
         wind = readWind();
-        windSel.addEventListener('change', function () { wind = readWind(); });
+        windSel.addEventListener('change', function () {
+          wind = readWind();
+          fire.set('wind', wind);
+        });
       }
       if (powerSel) {
         level = readLevel();
-        powerSel.addEventListener('change', function () { level = readLevel(); });
+        power = readPower();
+        powerSel.addEventListener('change', function () {
+          level = readLevel();
+          power = readPower();
+          fire.set('heat', power);
+        });
       }
+
+      /* Once, here, rather than inside the two blocks above: a page that
+         somehow rendered without the selects still gets a fire at the
+         default setting rather than a bed sitting at whatever its own
+         initial values happened to be. Setting a bed before anyone has
+         unmuted is safe — the value is held and applied when the nodes are
+         built. */
+      fire.set('wind', wind);
+      fire.set('heat', power);
 
       /* Outside the grid is cold rather than mirrored, which is why the fire
          tapers at the left and right edges instead of sticking to them. */
@@ -210,6 +407,9 @@
             pass();
           }
           if (acc > interval) acc = interval;
+          /* Once a frame rather than once a pass. A long frame that owed
+             the fire four passes should not crack four times over. */
+          crackle();
         },
 
         draw: function (term) {

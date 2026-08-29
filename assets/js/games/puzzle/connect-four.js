@@ -16,6 +16,18 @@
    Centre columns are worth more, and that is not a heuristic anybody
    invented — a disc in the middle column participates in far more possible
    fours than one on the edge, so the bonus is really just counting.
+
+   SOUND SAYS WHERE THE DISC WENT, not merely that one was played. A drop is
+   two sounds struck together: a fixed note that says whose disc it was, and
+   a resonant rattle under it that slides DOWN in pitch and runs longer the
+   further the disc had to fall, so a column filling up can be heard without
+   being looked at. Four in a row gets its own short rising figure, struck at
+   the moment the line exists rather than left to the shell's game-over sweep
+   a beat later — the sweep says how it ended, the figure says what ended it.
+   A tap on a full column buzzes, because a click answered by nothing at all
+   is indistinguishable from a click the page never received, and the top of
+   a full column looks like the top of any other one. There is no held layer:
+   between moves this game is meant to be silent.
    ========================================================================== */
 
 (function () {
@@ -202,11 +214,100 @@
         return best;
       }
 
+      /* --------------------------------------------------------------
+         Sound. Three events and no bed, for the reason in the header:
+         nothing here is a condition, everything is a thing that happened,
+         and between two moves this game is supposed to be quiet.
+         -------------------------------------------------------------- */
+
+      /* A figure needs its notes offset from one another, and every one-shot
+         the shell offers fires the instant it is called, so the offset has
+         to live here. This is that offset and nothing else: no state the
+         game reads is touched from inside the callback, so a note still in
+         flight when the board is reset can only ever make a sound. */
+      function after(ms, fn) { setTimeout(fn, ms); }
+
+      /* The disc going in. Two facts have to land at once — whose disc it
+         was, and how far it fell — and they are deliberately carried by two
+         different sounds so that neither can blur the other.
+
+         WHO is the note, and it is the note that was always here: a sine at
+         420 for you, 320 for the engine. It does not move with the column or
+         with the depth, because the moment it does, "my disc" and "a shallow
+         drop" start to sound like each other.
+
+         HOW FAR is the rattle underneath it. A bandpass slid DOWN across the
+         burst is a thing falling, where the same noise held at one frequency
+         is only a thing hissing, and the burst runs longer the further the
+         disc has to go: into an empty column it falls six cells and takes
+         well over twice as long about it as one landing on a stack of five.
+         That difference is the whole point of the layer — a column filling
+         up is audible without being looked at, which on a seven-column board
+         is exactly the thing your eye is not on.
+
+         The filter is narrow enough (q 7) to keep a definite pitch, so the
+         fall stays in the same voice as the note above it instead of turning
+         into a hiss, and it sits below that note in level because it is on
+         every single move while everything else here is rare.
+
+         r is the row the disc settles in, counted from the top, so r + 1 is
+         the number of cells it fell through. */
+      function dropNote(who, r) {
+        var base = who === YOU ? 420 : 320;
+        var fall = (r + 1) / ROWS;
+        g.beep(base, 0.05, 'sine');
+        g.noise(0.07 + fall * 0.15, {
+          type: 'bandpass',
+          freq: base * 2.6,
+          to: base * (0.95 - fall * 0.45),
+          q: 7,
+          level: 0.04
+        });
+      }
+
+      /* A tap on a column with no room left. It is the only click in the
+         game that is answered by nothing at all, and silence made it
+         indistinguishable from a click the page never received — worse here
+         than in most games, because the disc waiting at the top of a full
+         column is drawn exactly like the disc waiting at the top of any
+         other one. Low, short and soft, so it reads as the board declining
+         rather than as a penalty for asking.
+
+         Gated because a full column stays full: this is the one sound in the
+         file a player can retrigger as fast as they can tap, and four
+         overlapping sawtooths at one pitch are far louder and nastier than
+         one of them. */
+      function fullNote() {
+        if (!g.gate('full', 0.14)) return;
+        g.beep(98, 0.12, 'sawtooth', 0.04);
+      }
+
+      /* Four in a row, struck the instant the line exists and ahead of the
+         shell's game-over sweep. Left to the sweep alone the win arrives a
+         beat late and in a sound every game on the site shares; this way the
+         line landing has a noise of its own, at the moment it lands, and the
+         sweep that follows is left saying only how the game ended.
+
+         Root, fifth, octave on plucked triangles. Those intervals are doing
+         two jobs: an open fifth and an octave read as "arrived" rather than
+         as a fanfare, which matters because against the computer this fires
+         when the ENGINE completes a four as well — and a triangle stays
+         clear of the sawtooth the shell is about to sweep underneath it,
+         where a third rising sawtooth would simply have been swallowed. The
+         engine's figure sits a third lower, the same distance its disc note
+         sits below yours. */
+      function fourNote(who) {
+        var base = who === YOU ? 523 : 415;
+        g.pluck(base, 0.14, 0.05, 'triangle');
+        after(85, function () { g.pluck(base * 1.5, 0.14, 0.05, 'triangle'); });
+        after(170, function () { g.pluck(base * 2, 0.3, 0.055, 'triangle'); });
+      }
+
       function drop(c, who) {
         var r = dropRow(c);
         if (r < 0) return false;
         set(c, r, who);
-        g.beep(who === YOU ? 420 : 320, 0.05, 'sine');
+        dropNote(who, r);
 
         var line = winnerLine();
         if (line) {
@@ -215,6 +316,7 @@
           wins[line.who === YOU ? 0 : 1]++;
           g.stat('you', wins[0]);
           g.stat('them', wins[1]);
+          fourNote(line.who);
           g.over({
             won: mode === 'pass' ? true : line.who === YOU,
             title: mode === 'pass' ? (line.who === YOU ? 'Red wins' : 'Yellow wins')
@@ -248,7 +350,10 @@
           var p = g.pointAt(e);
           var c = Math.floor(p.x / CELL);
           if (c < 0 || c >= COLS) return;
-          drop(c, turn);
+          /* drop() is false for exactly one reason — the column has no room
+             left — so the refusal hangs off its return value rather than
+             asking dropRow the same question a second time here. */
+          if (!drop(c, turn)) fullNote();
         });
       }
 

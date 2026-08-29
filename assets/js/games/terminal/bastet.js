@@ -22,6 +22,18 @@
    Scoring a board rewards low stacks, punishes holes hardest, and punishes
    bumpiness — the standard heuristic set, because the point is to model a
    decent player rather than a perfect one.
+
+   THE SOUND. A line clear used to be the only thing this game made a noise
+   about, which left the two hundred keypresses in between it silent — and a
+   falling-block game with silent movement is the likeliest place on the
+   whole site for a visitor to decide the sound button is broken. Every
+   input now answers, and each answer owns a register so that four of them
+   landing inside one second can still be told apart: slides and rotations
+   are quiet ticks at the top, a lock is low and wooden, a clear is the only
+   pitched figure, and the stack nearing the ceiling is the only thing that
+   glides. There is no held layer. A Tetris board between locks really is
+   silent, and giving it an atmosphere would be giving it a mood it does not
+   have.
    ========================================================================== */
 
 (function () {
@@ -201,6 +213,7 @@
             grid[gy][piece.x + x] = piece.name;
           }
         }
+        thunk();
         var cleared = 0;
         for (var r = ROWS - 1; r >= 0; r--) {
           var full = true;
@@ -218,7 +231,9 @@
           level = Math.min(15, Math.floor(lines / 10) + 1);
           g.stat('level', level);
           g.beep(cleared === 4 ? 700 : 460, 0.09, 'square');
+          if (cleared === 4) tetrisFigure();
         }
+        warnIfHigh();
         take();
       }
 
@@ -229,13 +244,142 @@
         return true;
       }
 
+      /* Reports whether the piece actually turned. Nothing in the rules
+         cares, but the sound does: a rotation that no kick could fit is a
+         keypress that changed nothing, and a game that clicks at you for it
+         is telling you the move worked. */
       function turn() {
-        if (!piece || piece.name === 'O') return;
+        if (!piece || piece.name === 'O') return false;
         var turned = rot(piece.cells);
         var kicks = [0, -1, 1, -2, 2];
         for (var i = 0; i < kicks.length; i++) {
           if (!collides(turned, piece.x + kicks[i], piece.y, grid)) {
-            piece.x += kicks[i]; piece.cells = turned; return;
+            piece.x += kicks[i]; piece.cells = turned; return true;
+          }
+        }
+        return false;
+      }
+
+      /* ---------------------------------------------------------------
+         The sound. See the header for what each register is for.
+         --------------------------------------------------------------- */
+
+      /* A column of movement. Noise rather than a tone, because this is the
+         sound that fires most often by a wide margin: a fixed-pitch beep
+         arriving thirteen times a second stops being a tick and becomes a
+         note being held, and the ear then follows the pitch instead of the
+         movement. Unpitched clicks stack into a rhythm and nothing else.
+
+         The gate is what turns a held arrow from a buzz into a pulse. OS
+         key repeat can arrive every 30 ms, and nobody taps an arrow twice
+         inside 75 ms deliberately — so a deliberate move is never swallowed
+         and only the repeat is thinned, to roughly half. Half of 33 a
+         second is still countable as separate ticks; 33 is a tone.
+
+         Soft drop is pointedly not in here. It is the one key held for a
+         second at a time on purpose, a tick per row would be exactly the
+         buzz this gate exists to prevent, and the lock at the end of it
+         says the same thing better. */
+      function tick() {
+        if (!g.gate('move', 0.075)) return;
+        g.noise(0.016, { type: 'highpass', freq: 2800, q: 0.7, level: 0.015 });
+      }
+
+      /* Rotation gets a pitched tick where a slide gets an unpitched one.
+         Same length and the same quietness — they are siblings, not a
+         hierarchy — but a rotation is much rarer than a slide, so it can
+         afford to be the one carrying a pitch without becoming the sound
+         the game makes. */
+      function turnTick() {
+        if (!g.gate('turn', 0.09)) return;
+        g.beep(620, 0.028, 'sine', 0.028);
+      }
+
+      /* The landing. Two voices, because a knock is two things at once: the
+         low sine carries the weight, and the noise burst with its lowpass
+         falling through it carries the edge — the part that says wood
+         rather than tone. Either alone is wrong. The sine on its own is a
+         drum machine kick; the noise on its own is a puff of air.
+
+         Deliberately the loudest of the routine sounds, and deliberately an
+         octave and a half below the move tick, because a lock is the only
+         thing here you cannot take back. No gate: a piece can lock at most
+         once, and hard drop is the one key the shell refuses to auto-repeat
+         for, so even a fast masher cannot get near the tick rate. */
+      function thunk() {
+        g.beep(98, 0.075, 'sine', 0.05);
+        g.noise(0.07, { type: 'lowpass', freq: 480, to: 140, q: 0.9, level: 0.05 });
+      }
+
+      /* The hard drop, scaled by how far the piece actually fell. Dropping
+         onto a stack one row below and dropping from the ceiling are the
+         same keypress and should not be the same sound; the distance is
+         already counted for the score, so reading it costs nothing.
+
+         The bandpass falls through the burst, which is what makes it a
+         descent rather than a hiss, and it lands in the register the thunk
+         occupies in the same frame — the two overlap on purpose, because a
+         hard drop is instantaneous and there is no gap to fill. A drop that
+         moved nothing gets no whoosh at all: the piece was already resting,
+         and the thunk is the whole truth of it. */
+      function whoosh(n) {
+        if (n <= 0) return;
+        var k = Math.min(1, n / 16);
+        g.noise(0.07 + k * 0.06, {
+          type: 'bandpass',
+          freq: 900 + k * 1200,
+          to: 180,
+          q: 1.2,
+          level: 0.028 + k * 0.026
+        });
+      }
+
+      /* Four lines at once was already the one event this game singled out,
+         with a higher beep than the other clears get. That note is kept
+         exactly as it was and is still the first thing you hear; it simply
+         has somewhere to go now. 700, 1050, 1400 is a rising 2:3:4 — a
+         fifth, then a fourth, an octave in all — and three notes is the
+         shortest figure that reads as a phrase rather than as a beep that
+         went on too long. Square throughout, because the note it grows out
+         of is square and a change of instrument mid-figure would sound like
+         two separate events.
+
+         Scheduled with setTimeout because the shell's one-shots all start
+         at the context's current time and take no offset, and a game has no
+         business reaching into the AudioContext clock to lay out notes. The
+         level falls as the pitch climbs so the figure keeps one loudness;
+         at equal amplitude the ear hears the top note as the loudest. */
+      function tetrisFigure() {
+        setTimeout(function () { g.beep(1050, 0.08, 'square', 0.05); }, 80);
+        setTimeout(function () { g.beep(1400, 0.16, 'square', 0.042); }, 165);
+      }
+
+      /* Rows from the ceiling that count as trouble. Five is about three
+         pieces' worth of room, which against a generator that is choosing
+         your worst piece is roughly the last moment the board is still
+         recoverable. */
+      var DANGER_ROWS = 5;
+
+      /* The stack getting away from you — the only sound here that is about
+         a condition rather than an event, and the only one that glides. It
+         rises, where the shell's own game-over sound falls, so that the
+         warning and the thing it is warning about can never be confused for
+         each other when they land seconds apart.
+
+         Five seconds between warnings. It is tested once per lock, so in
+         practice that is every second or third piece: often enough that a
+         board sitting in the danger zone keeps saying so, rare enough that
+         it stays a warning instead of becoming the noise the game makes.
+         The test also runs AFTER the rows have been cleared, never before —
+         a clear that just bought back three rows has un-made the danger,
+         and warning about a board that no longer exists is how a warning
+         stops being believed. */
+      function warnIfHigh() {
+        for (var y = 0; y < DANGER_ROWS; y++) {
+          for (var x = 0; x < COLS; x++) {
+            if (!grid[y][x]) continue;
+            if (g.gate('danger', 5)) g.sweep(130, 320, 0.5);
+            return;
           }
         }
       }
@@ -252,14 +396,15 @@
 
         key: function (name) {
           if (!piece) return;
-          if (name === 'left') move(-1, 0);
-          else if (name === 'right') move(1, 0);
-          else if (name === 'up') turn();
+          if (name === 'left') { if (move(-1, 0)) tick(); }
+          else if (name === 'right') { if (move(1, 0)) tick(); }
+          else if (name === 'up') { if (turn()) turnTick(); }
           else if (name === 'down') { if (move(0, 1)) { g.addScore(1); fallAcc = 0; } }
           else if (name === 'action') {
             var n = 0;
             while (move(0, 1)) n++;
             g.addScore(n * 2);
+            whoosh(n);
             lock();
           }
         },

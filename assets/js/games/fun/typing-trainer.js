@@ -23,6 +23,23 @@
      Every keystroke is judged against the target at the instant it is
      typed. Backspacing a mistake removes it from the net score but it stays
      in the per-key tally, because it is still a key you struggled with.
+
+   SOUND
+     Three registers, and nothing held. A typing test is minutes of
+     sustained attention at speed, so anything continuous underneath it is
+     an obstruction rather than atmosphere: there is no bed here at all.
+     What there is — a click on a correct key, a low buzz on a wrong one, a
+     soft note when eight words have gone by clean, and a three-note summary
+     at the end.
+
+     The click and the buzz are deliberately not two pitches of the same
+     instrument. At 100 wpm a keystroke lasts about a tenth of a second,
+     which is nowhere near long enough to compare two tones but is ample to
+     tell an unpitched click from a pitched one, so the two events that can
+     land back to back are separated by KIND and not by interval. The click
+     is gated, because eight of them a second is a rattle rather than a
+     typewriter, and it is the quietest thing in the file, because it is the
+     only one that happens constantly.
    ========================================================================== */
 
 (function () {
@@ -83,6 +100,7 @@
       var elapsed = 0;
       var correct = 0, wrong = 0, keystrokes = 0;
       var missed = {};        // char -> times mistyped
+      var cleanWords = 0;     // word-ends since the last mistyped character
       var spans = [];
       var input = null;
 
@@ -244,6 +262,85 @@
         }
       }
 
+      /* ----------------------------------------------------------------
+         The sound. See the SOUND note in the header for why the palette is
+         split the way it is; what follows is why each piece is the size it
+         is.
+         ---------------------------------------------------------------- */
+
+      /* A figure needs its later notes offset from its first, and every
+         one-shot the shell offers fires the instant it is called, so the
+         offset has to live here. This is that offset and nothing else: no
+         state the game reads is touched from inside the callback, so a note
+         still in flight when the run ends or the passage is rebuilt can
+         only ever make a sound. */
+      function after(ms, fn) { setTimeout(fn, ms); }
+
+      /* One correct character. A fourteen-millisecond band of noise sliding
+         downward — a key bottoming out, not a note. Nothing about it is
+         pitched, which is the whole point: it has to be separable from the
+         error buzz by an ear that is reading ahead and not listening.
+
+         The 0.16 s gate is not a guess. Five characters is a word, so a
+         sixteenth of a second is exactly one character at 75 wpm: below
+         that the tick follows every keystroke, and above it the gate starts
+         dropping every other one, so a 120 wpm burst arrives as a soft
+         pulse instead of a rattle. Ungated it was eight clicks a second,
+         which is not a typewriter, it is a Geiger counter.
+
+         It is also the quietest sound in the file. It fires on nearly every
+         key while the mistake fires on few, and the rare event is the one
+         that has to be able to interrupt. */
+      function tick() {
+        if (!g.gate('key', 0.16)) return;
+        g.noise(0.014, { type: 'bandpass', freq: 1500, to: 800, q: 1, level: 0.01 });
+      }
+
+      /* A clean stretch, marked.
+
+         There is no line here to count — the passage is one wrapped block,
+         and the prose and punctuation drills contain no newline at all — so
+         the unit has to be the word. But finishing A word is not worth
+         hearing about: at 90 wpm that is a note twice a second under the
+         ticks, and practice turns into a tune. Finishing EIGHT in a row
+         without a mistake is worth hearing about, because it is about five
+         seconds of everything going right, and it is the only thing this
+         trainer is really asking for.
+
+         The note steps up each time the streak survives another eight words
+         and drops back to the bottom on the next mistake, so a good run
+         audibly climbs and a scrappy one sits on one pitch. It stops at
+         four steps: past that it is no longer a marker, it is a melody, and
+         a melody is something the typist starts listening to instead of the
+         text. */
+      var CLEAN = [587.33, 659.25, 783.99, 880];
+
+      function wordNote() {
+        cleanWords++;
+        if (cleanWords % 8) return;
+        var step = Math.min(3, cleanWords / 8 - 1);
+        g.pluck(CLEAN[step], 0.2, 0.016, 'sine');
+      }
+
+      /* The summary, played OVER the shell's end sweep rather than instead
+         of it: the sweep says the run is finished, this says how it went.
+         Three notes, and the third one is the whole message — it lands
+         above the second on a clean run, level with it on a middling one,
+         and below it when accuracy fell apart. The results panel says the
+         same thing far more precisely, but it says it to someone who is
+         already looking at the screen, and at the end of a five-minute run
+         most people are looking at their hands.
+
+         Held back 180 ms so it starts as the sweep is thinning out. Struck
+         together the two simply blur, and the accuracy note is the half
+         worth hearing. */
+      function finishFigure(acc) {
+        var top = acc >= 97 ? 987.77 : acc >= 92 ? 783.99 : 587.33;
+        after(180, function () { g.pluck(587.33, 0.22, 0.03, 'triangle'); });
+        after(320, function () { g.pluck(783.99, 0.22, 0.03, 'triangle'); });
+        after(460, function () { g.pluck(top, 0.5, 0.034, 'triangle'); });
+      }
+
       function handleChar(ch) {
         if (g.state !== 'playing') return;
         if (!started) { started = true; setHint(''); }
@@ -251,11 +348,28 @@
 
         keystrokes++;
         var want = target.charAt(pos);
-        if (ch === want) { typed[pos] = 1; correct++; }
+        if (ch === want) {
+          typed[pos] = 1; correct++;
+          tick();
+          /* A space or a newline behind you is a word behind you. The test
+             is on the TARGET character, not on what was pressed: a space
+             typed where a letter belonged is a mistake and cannot also be
+             the end of a word. */
+          if (want === ' ' || want === '\n') wordNote();
+        }
         else {
           typed[pos] = 2; wrong++;
           missed[want] = (missed[want] || 0) + 1;
-          g.beep(180, 0.03, 'square', 0.02);
+          cleanWords = 0;
+          /* The mistake, and the one sound here that has to arrive on its
+             own terms: low, pitched and buzzy, where the tick is none of
+             those. It carries three times the tick's gain, which is more
+             headroom than the numbers look like they need — the ear is
+             roughly a dozen decibels less sensitive at 180 Hz than up at
+             the tick's 1.5 kHz, so matching the two on amplitude would have
+             left the sound that fires constantly louder than the one that
+             fires rarely, which is backwards. */
+          g.beep(180, 0.03, 'square', 0.03);
         }
         pos++;
         renderText();
@@ -354,6 +468,7 @@
           title: net + ' wpm',
           message: s.acc + '% accuracy · ' + correct + ' correct, ' + wrong + ' wrong · gross ' + s.gross + ' wpm.'
         });
+        finishFigure(s.acc);
       }
 
       /* The per-key breakdown: the part that actually tells you what to
@@ -430,6 +545,7 @@
           elapsed = 0;
           correct = 0; wrong = 0; keystrokes = 0;
           missed = {};
+          cleanWords = 0;
           var host = boardEl.querySelector('.typing-results');
           if (host) { host.hidden = true; host.innerHTML = ''; }
           g.stat('wpm', 0);

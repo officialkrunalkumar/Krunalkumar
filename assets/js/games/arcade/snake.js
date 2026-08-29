@@ -4,7 +4,7 @@
    Twenty by twenty on a 320-unit board, so every cell is 16 logical units and
    nothing ever lands on a half pixel.
 
-   Three things here are not the naive version, and each fixes a specific way
+   Four things here are not the naive version, and each fixes a specific way
    the naive version feels wrong:
 
    1. TURNS ARE QUEUED, NOT APPLIED. A keypress does not steer the snake; it
@@ -27,6 +27,17 @@
       cell board that is a loop making hundreds of attempts for one placement,
       on the frame the player is least able to afford it. Collecting the free
       cells and indexing once is O(cells) every time, with no tail behaviour.
+
+   4. THE SOUND CARRIES THE TEMPO, NOT ONLY THE REWARD. A snake is a sequence
+      of discrete steps rather than a condition, so there is no held bed in
+      here and there should not be one: every cell of movement gets its own
+      tick, quiet enough to sit underneath everything else and rate-limited
+      against the speed setting so that Fast is a pulse rather than a rattle.
+      The apple climbs a semitone per body segment, which puts the length in
+      the ear instead of only in the corner of the HUD — the one channel that
+      can report progress while the eyes stay on the board. Death gets a low
+      impact of its own ahead of the shell's game-over sweep, so that the
+      crash and the verdict read as two events rather than one long noise.
 
    ES5, as everything under assets/js is.
    ========================================================================== */
@@ -120,6 +131,68 @@
         placeFood();
       }
 
+      /* -------------------------------------------------------------
+         Sound. See decision 4 in the header.
+         ------------------------------------------------------------- */
+
+      /* The pulse of the board: one cell of travel, one tap. Everything else
+         in here is an event that happens a few times a minute, so without
+         this the game has no tempo at all and a player who is not eating
+         hears nothing.
+
+         220 Hz, exactly two octaves under the apple's starting 880, and a
+         triangle rather than a square — down at thirty milliseconds a square
+         at this pitch is a buzz where a triangle is a tap. Because the
+         apple's pitch only ever climbs from 880, the gap between the two
+         widens across a run rather than closing, so the step never ends up
+         competing with the thing it is supposed to sit under.
+
+         The gate interval comes from the speed select rather than being a
+         constant. One tap per cell for as long as that stays under ten a
+         second; one per two cells above it, which is where Fast lands. The
+         nine tenths matters: set the gate to exactly two step-intervals and
+         ordinary frame jitter swallows a beat every few seconds, turning a
+         steady pulse into a limp. */
+      function tick() {
+        var every = Math.ceil(speed / 10);
+        if (!g.gate('step', (every / speed) * 0.9)) return;
+        g.beep(220, 0.03, 'triangle', 0.018);
+      }
+
+      /* The apple, pitched by how long the snake has become. The first one is
+         the 880 Hz square this game has always answered with; each one after
+         it is a semitone higher, so the twentieth sits a little over an
+         octave and a half above the first and a good run is audibly a good
+         run. Length rather than score drives it — the two move together here,
+         but length is the thing on screen that is visibly growing, so it is
+         the honest input.
+
+         The climb stops after two octaves. A cap rather than an endless ramp
+         because a square wave much above three and a half kilohertz has
+         stopped being a note and become a smoke alarm, and because the only
+         thing this ramp has to say — the snake is long now — has been said
+         well before then. */
+      function eat() {
+        /* snake.length is already the post-swallow length and a run opens at
+           three segments, so this is zero on the very first apple. */
+        var up = Math.min(24, snake.length - 4);
+        g.beep(880 * Math.pow(2, up / 12), 0.06, 'square');
+      }
+
+      /* The crash, struck immediately before g.over() so that it lands ahead
+         of the shell's own falling sweep. The sweep is the verdict; without
+         something in front of it a run ends with a summary and no accident.
+
+         Noise and not a tone, deliberately. A low tone here would be the head
+         of the shell's sweep played twice over, and the two would fuse into
+         one longer glide instead of separating into an impact and its
+         consequence — a lowpass falling from 380 Hz to 90 across a tenth of a
+         second is a body hitting something. It is also the loudest thing this
+         game does, which is allowed precisely because it happens once. */
+      function thud() {
+        g.noise(0.11, { type: 'lowpass', freq: 380, to: 90, q: 1.1, level: 0.07 });
+      }
+
       /* One cell of movement. Split out of update() because update() is
          called at 120 Hz and this at `speed` Hz — keeping them separate is
          what makes the snake's pace independent of the frame rate. */
@@ -139,6 +212,7 @@
           if (head.y < 0) head.y = ROWS - 1;
           else if (head.y >= ROWS) head.y = 0;
         } else if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+          thud();
           g.over({ message: 'Into the wall at length ' + snake.length + '.' });
           return;
         }
@@ -149,6 +223,7 @@
         var ignoreTail = grew === 0;
         for (var i = 0; i < snake.length - (ignoreTail ? 1 : 0); i++) {
           if (snake[i].x === head.x && snake[i].y === head.y) {
+            thud();
             g.over({ message: 'You bit yourself at length ' + snake.length + '.' });
             return;
           }
@@ -156,11 +231,18 @@
 
         snake.unshift(head);
 
+        /* Sounded here rather than at the top of step(), because this is the
+           line at which the move is real. A step into a wall or into the
+           snake's own flank has already returned above, and a crash that
+           arrived with a tick in front of it would be three sounds where the
+           moment only has two. */
+        tick();
+
         if (head.x === food.x && head.y === food.y) {
           grew += 1;
           g.addScore(10);
           g.stat('length', snake.length);
-          g.beep(880, 0.06, 'square');
+          eat();
           if (!placeFood()) {
             g.over({ won: true, title: 'Board full', message: 'You filled all four hundred cells. That is the actual end of Snake.' });
             return;

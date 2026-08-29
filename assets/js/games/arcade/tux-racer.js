@@ -12,6 +12,18 @@
    to steer out of. Hitting a tree costs you speed rather than ending the
    run, because a downhill you can lose in the first four seconds is not a
    downhill anybody plays twice.
+
+   Sound follows the same idea. A hill is not a sequence of events, it is a
+   condition, so the rush of snow under the board is a held layer rather
+   than anything triggered: one band of noise whose loudness and centre
+   frequency both ride SPEED, so the opening second of a run is nearly
+   silent and the bottom of the course is a wall of it. That makes the bed
+   a second speedometer, and the duck when a tree takes half your momentum
+   away is heard before the number in the corner has been read. Steering
+   leans it across the stereo image where the browser has a panner, and
+   brightens it either way, because a carve throws spray that a straight
+   line does not. Fish and crashes keep their own one-shots on top — they
+   are events, and an event is the one thing a bed cannot say.
    ========================================================================== */
 
 (function () {
@@ -55,6 +67,122 @@
       var nextItemZ = 20;
       var time = 0;
       var flash = 0;
+
+      /* ---------------------------------------------------------------
+         The hill. See the note on sound in the header.
+
+         The whole bed is one band of noise, and the band MOVES. A lowpass
+         opening upward with speed was the obvious first shape and it is a
+         fan: white noise with the top cut off has no centre, so louder is
+         the only thing it can become. A band that rides upward as the run
+         gets faster is something being scraped harder, which is what snow
+         under a board actually is. Q stays low, because a resonant band
+         whistles and a whistle is a kettle rather than a hill.
+         --------------------------------------------------------------- */
+      var rush = g.bed(function (a) {
+        var ctx = a.ctx;
+
+        var src = ctx.createBufferSource();
+        src.buffer = a.noise();
+        src.loop = true;
+
+        var filt = ctx.createBiquadFilter();
+        filt.type = 'bandpass';
+        filt.frequency.value = 300;
+        filt.Q.value = 0.8;
+
+        var gain = ctx.createGain();
+        gain.gain.value = 0.008;
+
+        /* Steering is heard as position, where the browser will give it to
+           us. createStereoPanner is missing on the older WebKit builds and
+           there is no shim worth writing — a PannerNode in HRTF mode costs
+           far more than a stereo nudge is worth — so there the graph is
+           simply built without it and the run is heard down the middle.
+           The brightening below happens either way, which is why that path
+           is not silent about turning, only flat. */
+        var pan = null;
+        if (ctx.createStereoPanner) {
+          try { pan = ctx.createStereoPanner(); } catch (err) { pan = null; }
+        }
+
+        src.connect(filt);
+        if (pan) {
+          filt.connect(pan);
+          pan.connect(gain);
+        } else {
+          filt.connect(gain);
+        }
+        gain.connect(a.out);
+        src.start();
+
+        function ramp(param, value) {
+          var now = ctx.currentTime;
+          param.cancelScheduledValues(now);
+          param.setValueAtTime(param.value, now);
+          /* A fifth of a second, against a recompute every 0.15 — the ramps
+             overlap on purpose, so each is taken over before it lands and
+             the parameter is never heard sitting still at a stepped value. */
+          param.linearRampToValueAtTime(value, now + 0.2);
+        }
+
+        var k = 0;         // speed, normalised to 0..1
+        var carve = 0;     // lean, normalised to -1..1
+
+        function apply() {
+          /* Squared rather than linear. Terminal speed on this course is
+             reached inside about two seconds and then held, so the part of
+             the range that carries information is the top of it: the duck
+             when a tree takes half the momentum away is the most useful
+             thing this bed says, and on a linear map it is barely a change
+             in level at all.
+
+             The gain numbers look loud for a bed and are not. A bandpass
+             this narrow throws most of the noise fed into it away: about
+             two fifths of the amplitude survives at the top of the range,
+             and not much over half of that at a standing start, where the
+             band is both lower and narrower. So this has to ask for
+             several times what a wide layer would in order to arrive at
+             the same loudness. Measured out it lands near rms 0.02 flat
+             out, which is where the rest of the site's beds sit, and
+             under a tenth of that at the gate. */
+          ramp(gain.gain, 0.008 + k * k * 0.075);
+          /* Centre frequency rides speed, and a hard turn lifts it further,
+             because a carve throws spray that a straight line does not and
+             spray is the bright end of this sound. */
+          ramp(filt.frequency, 300 + k * 1250 + Math.abs(carve) * 300);
+          /* Well short of hard left and right. A rush pinned to one speaker
+             stops being the hill under you and becomes something happening
+             beside you. */
+          if (pan) ramp(pan.pan, carve * 0.55);
+        }
+
+        return {
+          set: function (key, value) {
+            if (key === 'speed') {
+              /* 4..26, which is the clamp the simulation itself uses. */
+              k = Math.max(0, Math.min(1, (value - 4) / 22));
+            } else if (key === 'carve') {
+              /* Normalised against the lean the game can actually REACH,
+                 which is not its clamp. Lean is a decaying accumulator:
+                 hold a direction forever and it settles around 0.55, and
+                 the ±1.6 clamp is only ever a rail against a frame-rate
+                 spike. Dividing by 1.6, as the clamp invites you to,
+                 moved a full-lock turn a fifth of the way across the pan
+                 and lifted the filter by a hundred hertz, neither of
+                 which is audible. */
+              carve = Math.max(-1, Math.min(1, value / 0.55));
+            } else {
+              return;
+            }
+            apply();
+          }
+        };
+      });
+
+      /* Seconds since the bed's targets were last recomputed. See update(),
+         where the reason for not doing it every frame is written down. */
+      var sndAcc = 0;
 
       /* Deterministic-ish scenery, generated ahead and culled behind. */
       function spawnAhead() {
@@ -101,6 +229,11 @@
           fish = 0; time = 0; flash = 0;
           items = [];
           nextItemZ = 20;
+          /* Back to a standing start in the mix as well, or a second run
+             opens at the terminal speed the first one finished at. */
+          sndAcc = 0;
+          rush.set('speed', speed);
+          rush.set('carve', 0);
           g.stat('fish', 0);
           g.stat('speed', 0);
           g.stat('togo', COURSE);
@@ -156,6 +289,49 @@
           }
 
           if (flash > 0) flash -= dt;
+
+          /* The bed's targets are recomputed six or seven times a second
+             rather than once a frame. Speed takes whole seconds to cross
+             its range, so sixty scheduled ramps a second would each cancel
+             the one before it in order to describe a curve nobody could
+             tell from this one. Reading speed AFTER the collision pass is
+             what lets a crash duck the hill inside the same frame it
+             sounds the sweep. */
+          sndAcc += dt;
+          if (sndAcc >= 0.15) {
+            sndAcc = 0;
+            rush.set('speed', speed);
+            rush.set('carve', lean);
+          }
+
+          /* An edge being set, heard. The test needs BOTH a steering key
+             down and real lean: lean decays for about half a second after
+             the key comes up, so on the lean alone the scrape fires a
+             second time on the way back to straight, when the racer has
+             stopped doing anything.
+
+             0.34 is about two thirds of the lean a sustained turn settles
+             at, so a tap does not scrape and a turn does — but it also
+             sits above the 0.29 a TUCKED turn can reach, because tuck
+             halves steering authority. A tucked racer therefore never
+             gets an edge in and never scrapes, which is the correct thing
+             to hear: it is exactly the trade the tuck is making.
+
+             The gate then holds it to four a second, which turns a held
+             key into a rhythm of edge-sets rather than a burst of gravel,
+             and it is quieter than either the fish or the crash because
+             it happens far more often than either. */
+          if ((g.held.left || g.held.right) && Math.abs(lean) > 0.34 &&
+              speed > 7 && g.gate('carve', 0.26)) {
+            g.noise(0.09, {
+              type: 'bandpass',
+              freq: 1350 + Math.abs(lean) * 900,
+              to: 620,
+              q: 1.5,
+              level: 0.02 + Math.min(0.012, speed * 0.0005)
+            });
+          }
+
           g.stat('speed', Math.round(speed * 3.1));
           g.stat('time', time.toFixed(1));
           g.stat('togo', Math.max(0, Math.ceil(COURSE - z)));

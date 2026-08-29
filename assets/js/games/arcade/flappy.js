@@ -1,8 +1,9 @@
 /* ==========================================================================
    flappy.js — one button, gravity, and a gap.
    --------------------------------------------------------------------------
-   Two decisions here are worth writing down, because both are the difference
-   between a game that is hard and a game that is unfair.
+   Three decisions here are worth writing down. The first two are the
+   difference between a game that is hard and a game that is unfair; the
+   third is what the falling sounds like.
 
    1. THE FOUR NUMBERS ARE ONE NUMBER. Gravity, the flap impulse, the scroll
       speed and the pipe spacing cannot be tuned separately — pick any three
@@ -35,6 +36,21 @@
       and a lethal ceiling turns the correct move into a death — you would be
       punished for playing it right. There is nothing above the roof to be
       punished for.
+
+   3. THE WIND IS THE FALL. The flap and the score were already beeps, and a
+      third beep would only have made a busier keypad. What was missing was
+      the falling itself, and falling is a condition rather than an event, so
+      it is a bed: one band of noise whose centre frequency and loudness both
+      follow vy, and nothing else. Climb and it is very nearly silence; hold a
+      long drop and it opens into a rush. The mapping is squared so an
+      ordinary hop stays quiet and only a real plummet gets loud, and the band
+      climbs as it swells so that it moves away from the 620 Hz flap tone
+      rather than sitting on it — the one sound that must never be masked here
+      is the one that says the button worked.
+
+      Hitting something gets a thud of its own, struck at the collision rather
+      than left to the shell's game-over sweep, so that the impact and the
+      verdict are two sounds and not one.
 
    Collision is a plain circle-against-rectangle test with no sweeping, which
    is safe only because the shell steps at a fixed 120 Hz: the bird moves at
@@ -97,6 +113,78 @@
       var clock = 0;
       var wing = 0;                 // seconds since the last flap, for the wing
 
+      /* ---------------------------------------------------------------
+         The wind. See decision 3 in the header.
+
+         One layer, steered by one number. A second band was tried and cut:
+         this plays continuously underneath a game whose loudest and most
+         important sound is a 0.05 sine, so every decibel spent thickening
+         the bed is a decibel taken off the flap. What it has to do is
+         narrow — say how fast the bird is going down — and one moving
+         bandpass says that on its own.
+         --------------------------------------------------------------- */
+      var wind = g.bed(function (a) {
+        var ctx = a.ctx;
+
+        var src = ctx.createBufferSource();
+        src.buffer = a.noise();
+        src.loop = true;
+
+        var filt = ctx.createBiquadFilter();
+        filt.type = 'bandpass';
+        filt.frequency.value = 520;
+        /* Broad rather than resonant. Past about Q 2 this stops being air
+           going past a bird and starts being a kettle, and a resonant peak
+           sweeping up through 620 Hz would collide with the flap tone in
+           the one way the whole design is trying to avoid. */
+        filt.Q.value = 0.8;
+
+        var gain = ctx.createGain();
+        gain.gain.value = 0.010;
+
+        src.connect(filt);
+        filt.connect(gain);
+        gain.connect(a.out);
+        src.start();
+
+        function ramp(param, value) {
+          var now = ctx.currentTime;
+          param.cancelScheduledValues(now);
+          param.setValueAtTime(param.value, now);
+          /* Deliberately longer than the gap between recomputes, so a
+             parameter is always still travelling when its next target
+             arrives. Ramp shorter than the update interval instead and the
+             wind lands, waits, and jumps — audible as a stair even though
+             every individual move was ramped. */
+          param.linearRampToValueAtTime(value, now + 0.16);
+        }
+
+        return {
+          set: function (key, value) {
+            if (key !== 'fall') return;
+            /* Downward speed only. Climbing is zero and stays zero: a bird
+               on the way up is not pushing through anything, and mapping
+               the full -380..470 range would put the wind at half strength
+               at precisely the moment the flap tone needs the room. */
+            var k = value / VMAX;
+            if (k < 0) k = 0;
+            if (k > 1) k = 1;
+            /* Squared, because only the back half of a fall is worth
+               hearing. On a straight line the wind is already a third of
+               the way up by the time an ordinary hop has peaked, which
+               makes every routine flap sound like a plummet and leaves
+               nothing in reserve for an actual one. */
+            k = k * k;
+            ramp(gain.gain, 0.010 + k * 0.045);
+            /* The band climbs as well as swells. Loudness alone reads as
+               somebody turning a knob; moving the centre up with it is what
+               makes it read as air moving faster, and it carries the noise
+               up and away from the flap tone as it gets loud. */
+            ramp(filt.frequency, 520 + k * 1480);
+          }
+        };
+      });
+
       function currentGap() {
         var gap = GAP0 - g.score * GAP_STEP;
         return gap < GAP_MIN ? GAP_MIN : gap;
@@ -125,6 +213,11 @@
         launched = false;
         clock = 0;
         wing = 1;
+        /* The bed survives the run that built it, so a new run has to be
+           told the bird is no longer falling. Skip this and the first
+           second of every run after a crash arrives at terminal-velocity
+           roar. */
+        wind.set('fall', 0);
         g.stat('gap', Math.round(GAP0));
         spawn();
       }
@@ -135,6 +228,22 @@
         vy = -FLAP;
         wing = 0;
         g.beep(620, 0.05, 'sine', 0.05);
+        /* The tone is the flap; this is the air it shifts. A short band of
+           noise falling from 1400 to 480 under the beep is the difference
+           between a button being acknowledged and a wing being pulled down,
+           and at 0.03 against the tone's 0.05 it colours the beep rather
+           than competing with it.
+
+           Gated, because 'up' is one of the four keys the shell lets
+           auto-repeat through, so a held arrow can ask for thirty flaps a
+           second. The tone is cheap enough to take that; a buffer source
+           and a filter each time is not, and past about ten a second the
+           ear has stopped hearing separate wingbeats anyway. The beep
+           deliberately stays outside the gate — every flap must still be
+           confirmed, even the ones too fast to hear the air on. */
+        if (g.gate('wingbeat', 0.09)) {
+          g.noise(0.06, { type: 'bandpass', freq: 1400, to: 480, q: 0.9, level: 0.03 });
+        }
       }
 
       /* Closest point on the rectangle to the bird's centre. Cheaper and
@@ -157,7 +266,24 @@
         return rectHit(p.x, below, PW, GROUND_Y - below);
       }
 
+      /* The impact, struck where the collision is detected instead of being
+         left to the game-over sweep the shell fires a moment later. The two
+         overlap on purpose and therefore have to stay separable: the sweep
+         is a bright sawtooth starting at 320 Hz, so the thud goes underneath
+         it and stops before it does.
+
+         Two voices for one event, and both are load-bearing. The sine is the
+         weight, low enough to be nowhere near the sweep; the lowpassed burst
+         closing from 340 to 90 is the knock. On its own the sine is a
+         doorbell and the noise vanishes under the sawtooth — together they
+         are something hitting something. */
+      function thud() {
+        g.beep(96, 0.13, 'sine', 0.07);
+        g.noise(0.13, { type: 'lowpass', freq: 340, to: 90, q: 0.7, level: 0.06 });
+      }
+
       function die(what) {
+        thud();
         g.over({
           score: g.score,
           title: g.score >= 20 ? 'A proper run' : (g.score >= 10 ? 'Past ten' : 'Down'),
@@ -176,6 +302,15 @@
 
         /* Decision 2: the roof takes your climb, not your run. */
         if (y < R) { y = R; if (vy < 0) vy = 0; }
+
+        /* Decision 3. Eight recomputes a second, not a hundred and twenty:
+           the ramp inside the bed runs longer than the gap between them, so
+           the wind is always still moving toward a target and the steps are
+           inaudible. Placed after the roof clamp because that is where vy
+           has settled for the step: the clamp can still rewrite it, and a
+           bed steered from a number the simulation has not finished with is
+           the kind of bug that only ever shows up against the ceiling. */
+        if (g.gate('wind', 0.12)) wind.set('fall', vy);
 
         var move = SPEED * dt;
         groundX = (groundX + move) % TILE;

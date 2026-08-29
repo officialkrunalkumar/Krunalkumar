@@ -4,3 +4,20 @@
 # builder) hold LF — two different hashes for the same commit, and a deploy that
 # fails only on Vercel. Pin the bytes so every checkout agrees.
 assets/vendor/** -text
+
+# The two glossary generators have the same problem from the other direction,
+# and it bit locally rather than on deploy. scripts/glossary.js and
+# scripts/glossary-backlinks.js each rebuild a marked region, write it with LF,
+# and in --check mode compare the result to what is on disk BYTE FOR BYTE. With
+# autocrlf converting these files to CRLF on checkout, that comparison comes
+# back different on every Windows machine and identical on the Linux builder —
+# so `npm run check` refused to publish over a difference that is not in the
+# commit at all, and the suggested fix ("run npm run glossary") could not help,
+# because rewriting the file changes bytes git normalises straight back.
+#
+# Pinning is the fix rather than teaching each checker to ignore carriage
+# returns: a generator that claims a file is byte-for-byte reproducible should
+# be checked byte for byte, and the thing that was actually wrong is that one
+# commit had two different working copies.
+glossary.html -text
+labs/*.html -text

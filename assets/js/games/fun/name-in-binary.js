@@ -1,7 +1,7 @@
 /* ==========================================================================
    name-in-binary.js — one piece of text, seven encodings, live.
    --------------------------------------------------------------------------
-   Two decisions worth writing down.
+   Three decisions worth writing down.
 
    EVERYTHING IS DERIVED FROM CODE POINTS AND A HAND-ROLLED UTF-8 ENCODER,
    not from btoa() or String.fromCharCode. Both of those read a JavaScript
@@ -18,6 +18,24 @@
    help it looks like. Each output is instead labelled by its own heading, so
    it can be read on demand, and the only thing that announces itself is the
    result of pressing Copy, which is a deliberate action with a short answer.
+
+   THE TYPING SOUND IS THE ENCODING, NOT A CLICK. Every character entered
+   plays one short note, and the note is picked by the low half of that
+   character's last UTF-8 byte — the second of the two digits sitting in
+   the Hexadecimal row. So the tune is not decoration laid over the data,
+   it is the data read out loud: the same name always gives the same
+   melody, and a name in Devanagari gives a different one for the same
+   reason its rows above are longer. Sixteen notes of a major pentatonic
+   scale rather than sixteen raw frequencies, because a byte read straight
+   as hertz makes anything longer than a word unlistenable, while a
+   five-note scale has no interval in it that can clash however far the
+   bytes jump. Space is 0x20, so its low nibble is zero and every word
+   break lands back on the root. A paste is one gesture rather than forty
+   keystrokes and gets a five-note phrase off the front instead of a note
+   per character; both paths go through the same gate, so holding a key
+   down thins out rather than machine-guns. None of this is announced to a
+   screen reader — it is a texture under the typing, not a reading of it,
+   and the live region above still says only what Copy did.
    ========================================================================== */
 
 (function () {
@@ -197,6 +215,44 @@
   }
 
   /* ------------------------------------------------------------------
+     Numbers to notes. See decision 3 in the header.
+     ------------------------------------------------------------------ */
+
+  /* Major pentatonic, in semitones above the root. The melody here is
+     chosen by somebody's name rather than by anyone's taste, so the scale
+     has to be one where no two notes can sound wrong together: this one
+     contains no semitone step at all, which means even the widest jump
+     from one byte to the next arrives as an interval rather than a clash. */
+  var PENTA = [0, 2, 4, 7, 9];
+
+  /* Sixteen notes, A3 up to A6: one per value a hex digit can take. Built
+     once, because a lookup is cheaper than Math.pow on every keystroke and
+     the table is sixteen numbers. */
+  var NOTES = [];
+  for (var ni = 0; ni < 16; ni++) {
+    NOTES.push(220 * Math.pow(2, (PENTA[ni % 5] + 12 * Math.floor(ni / 5)) / 12));
+  }
+
+  /* Which of those sixteen a character plays.
+
+     The LAST of its UTF-8 bytes, not the first. For anything in ASCII
+     there is only one byte and the question does not arise, but above that
+     the first byte is a header: every three-byte character begins 0xE0 to
+     0xEF, so choosing on it would give every Devanagari letter in a name
+     the same note. The last byte carries the low six bits of the code
+     point, which is what separates क from ख — exactly the distinction this
+     page exists to show.
+
+     Then the low nibble of that byte, which is the second of the two
+     digits sitting in the Hexadecimal row. Characters that are neighbours
+     in the encoding get neighbouring scale degrees, so a word rises and
+     falls the way its bytes do rather than at random. */
+  function noteIndex(cp) {
+    var bytes = utf8Bytes([cp]);
+    return bytes[bytes.length - 1] & 15;
+  }
+
+  /* ------------------------------------------------------------------
      Clipboard. Same two-path approach as lab-copy.js: the async API where
      it exists and the page is secure, the old selection trick otherwise,
      because Safari on http:// still has nothing else.
@@ -245,6 +301,13 @@
       var flags = {};
       var values = {};
       var timers = {};
+
+      /* What the box held last time render() ran, and the handle on a
+         phrase still playing. Both are sound and nothing else: they are
+         how a keystroke is told apart from a paste and from a backspace,
+         and no row on the page is derived from either. */
+      var heard = '';
+      var runTimer = 0;
 
       function build() {
         host.className = 'game-board board-name-binary';
@@ -343,7 +406,14 @@
         copy(text, function (ok) {
           btn.textContent = ok ? 'Copied' : 'Press Ctrl+C';
           if (live) live.textContent = ok ? row.name + ' copied to the clipboard' : 'Copying failed — select the text and press Ctrl+C';
+          /* The two outcomes have always read differently and looked
+             differently; they may as well sound different too. A clean
+             sine up top for the copy that worked, a low square for the one
+             that did not — far enough apart in pitch and in timbre to be
+             told apart while you are still looking at the output rather
+             than at the button, which is the only reason to sound either. */
           if (ok) g.beep(720, 0.05, 'sine');
+          else g.beep(140, 0.18, 'square', 0.05);
           clearTimeout(timers[row.key]);
           timers[row.key] = setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
         });
@@ -360,6 +430,62 @@
         flag.hidden = !flagText;
       }
 
+      /* One character, struck. High notes are shorter and quieter than low
+         ones, which is both what a plucked string actually does — the
+         brightness dies before the note does — and what the ear needs,
+         since an A6 at the level an A3 wants is a spike rather than a
+         tick. Nothing here goes above 0.024: this fires on every single
+         keystroke, so it has to sit well under the Copy beep, which fires
+         once and is meant to be noticed. */
+      function tick(cp, level) {
+        var i = noteIndex(cp);
+        g.pluck(NOTES[i], 0.30 - i * 0.009, level - i * 0.0005, 'triangle');
+      }
+
+      /* A paste, or the Sample button, heard as a phrase. It is one
+         gesture rather than forty keystrokes, so it gets five notes off
+         the front and the rest of a pasted paragraph is never played at
+         all — the point is to hear what arrived, not to sit through it.
+         The spacing is wider than the gate below on purpose, so every note
+         of the phrase gets through it, and the whole thing is quieter than
+         typing because nobody pressed five keys to ask for it. */
+      function phrase(points) {
+        var n = points.length < 5 ? points.length : 5;
+        var i = 0;
+        function step() {
+          if (g.gate('key', 0.08)) tick(points[i], 0.018);
+          i++;
+          if (i < n) runTimer = setTimeout(step, 110);
+        }
+        clearTimeout(runTimer);
+        step();
+      }
+
+      /* Turn the change in the box into sound.
+
+         The gate sits at 0.08 s because the two rates that matter are far
+         apart: real typing tops out around eight characters a second and
+         should be heard in full, while a key held down repeats at three or
+         four times that and would otherwise be a machine gun on one note.
+
+         A deletion is silent. Backspace takes a note away; it does not add
+         one, and sounding it would make holding backspace the loudest
+         thing on the page. */
+      function sound(text) {
+        var was = heard;
+        heard = text;
+        if (text.length <= was.length) return;
+
+        var at = 0;
+        while (at < was.length && text.charAt(at) === was.charAt(at)) at++;
+        /* Code points rather than UTF-16 units, so an emoji is one
+           keystroke and one note instead of a two-character paste. */
+        var added = codePoints(text.slice(at, at + (text.length - was.length)));
+        if (!added.length) return;
+        if (added.length > 1) { phrase(added); return; }
+        if (g.gate('key', 0.08)) tick(added[0], 0.024);
+      }
+
       function render() {
         var text = input.value;
         /* maxlength does not apply to a programmatic value or to every
@@ -368,6 +494,10 @@
           text = text.slice(0, MAX);
           input.value = text;
         }
+
+        /* Ahead of the seven encodings rather than after them, so the note
+           lands with the keystroke that caused it. */
+        sound(text);
 
         var points = codePoints(text);
         var bytes = utf8Bytes(points);

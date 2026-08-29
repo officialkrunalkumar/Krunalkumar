@@ -18,6 +18,20 @@
    hundred thousand guesses a second; a rented eight-GPU box does tens of
    billions against a fast hash. Quoting the browser's number would make
    every password look safe, which would be a lie told with a straight face.
+
+   WHAT YOU HEAR is a machine, not a scoreboard. The attack is a condition
+   rather than a sequence of events — a browser gets through hundreds of
+   thousands of guesses a second and the ear tops out somewhere around ten,
+   so there is no honest way to sound one — and a condition wants a bed. The
+   bed is a low rush with a ticking grind over it, and the grind's tick rate
+   IS the guess rate the page is already displaying. What lands on top of it
+   is one quiet click per worker report, which is a bulletin from the
+   machine rather than a count of anything.
+
+   The lesson is in what does not get heard. A password on the wordlist
+   falls before the grind has finished fading in, so all you get is the
+   drop; a password that survives has to be listened to for nine seconds
+   first.
    ========================================================================== */
 
 (function () {
@@ -56,6 +70,141 @@
       /* The phase the worker last reported, so the per-frame repaint in
          update() can tell the truth between worker ticks. */
       var livePhase = 'wordlist';
+
+      /* ---------------------------------------------------------------
+         The machine. See "what you hear" in the header.
+
+         Two layers, because a cracker is a load and a load is two sounds.
+         The RUSH is the low wash of something working flat out, and on its
+         own it is a desk fan. The GRIND is what makes it a cracker:
+         bandpassed noise chopped by an LFO, so the texture is
+         discontinuous — it is getting through things — and the chop rate
+         is the machine's rate.
+
+         The chopping LFO is a sawtooth with a NEGATIVE depth, and the sign
+         is the whole trick. Web Audio's sawtooth ramps up and snaps down,
+         which envelopes as a slow swell into a cut: a tick played
+         backwards. Negated, it snaps to full and decays, which is a strike.
+         A square wave was the obvious first attempt and it clicked at both
+         edges, which is a switch being thrown rather than a rotor turning.
+         --------------------------------------------------------------- */
+      var machine = g.bed(function (a) {
+        var ctx = a.ctx;
+
+        function source() {
+          var src = ctx.createBufferSource();
+          src.buffer = a.noise();
+          src.loop = true;
+          src.start();
+          return src;
+        }
+
+        var rushFilt = ctx.createBiquadFilter();
+        rushFilt.type = 'lowpass';
+        rushFilt.frequency.value = 220;
+        rushFilt.Q.value = 0.7;
+        var rushGain = ctx.createGain();
+        rushGain.gain.value = 0.05;
+        source().connect(rushFilt);
+        rushFilt.connect(rushGain);
+        rushGain.connect(a.out);
+
+        var grindFilt = ctx.createBiquadFilter();
+        grindFilt.type = 'bandpass';
+        grindFilt.frequency.value = 1200;
+        grindFilt.Q.value = 2.4;
+        /* Base and depth are equal and opposite, so the chop swings the
+           whole way between full and silent. Anything shallower is tremolo
+           on a hiss, and tremolo says "wobbling", not "working". */
+        var chop = ctx.createGain();
+        chop.gain.value = 0.5;
+        var grindGain = ctx.createGain();
+        grindGain.gain.value = 0.07;
+        source().connect(grindFilt);
+        grindFilt.connect(chop);
+        chop.connect(grindGain);
+        grindGain.connect(a.out);
+
+        var lfo = ctx.createOscillator();
+        var depth = ctx.createGain();
+        lfo.type = 'sawtooth';
+        lfo.frequency.value = 7;
+        depth.gain.value = -0.5;
+        lfo.connect(depth);
+        depth.connect(chop.gain);
+        lfo.start();
+
+        function ramp(param, value, secs) {
+          var now = ctx.currentTime;
+          param.cancelScheduledValues(now);
+          param.setValueAtTime(param.value, now);
+          param.linearRampToValueAtTime(value, now + (secs == null ? 0.3 : secs));
+        }
+
+        return {
+          set: function (key, value) {
+            if (key !== 'rate') return;
+            /* Guesses a second onto 0..1. A browser manages somewhere
+               between twenty thousand and half a million depending on what
+               it is running on, and the whole of that spread is
+               interesting, so the map is logarithmic. Linear and every
+               desktop pins the top of the range while every phone sits on
+               the floor of it, which would make the sound a report on the
+               visitor's hardware instead of on the attack. */
+            var k = Math.log((value || 1) / 2e4) / Math.log(5e5 / 2e4);
+            k = Math.max(0, Math.min(1, k));
+            /* The tick rate carries nearly all of the effect. Past about
+               twenty a second the ear gives up counting and starts hearing
+               a pitch, which is what a rack of hardware sounds like from
+               the doorway — so the top of the range deliberately crosses
+               that line rather than stopping short of it. */
+            ramp(lfo.frequency, 7 + k * 15, 0.4);
+            /* Working harder is not only faster, it is brighter and
+               heavier: the grind's band climbs and the rush opens. */
+            ramp(grindFilt.frequency, 1200 + k * 1100, 0.4);
+            ramp(rushFilt.frequency, 220 + k * 200, 0.4);
+            ramp(grindGain.gain, 0.07 + k * 0.05, 0.4);
+            ramp(rushGain.gain, 0.05 + k * 0.035, 0.4);
+          }
+        };
+      });
+
+      /* Silent until an attack is live. The shell holds a bed up for as
+         long as the game is in the playing state, and this game is playing
+         from the moment the page loads — there is no Play button here, only
+         a form — so the running/not-running distinction has to be drawn
+         from this side. It is drawn with the bed's own level rather than by
+         stopping nodes, which is what the shell asks for and also the only
+         thing that survives being started and stopped a dozen times by
+         somebody trying passwords.
+
+         Setting the level before the nodes exist is the load-bearing part:
+         the bed remembers it and builds at zero, so switching sound on for
+         a page nobody has typed into does not start a machine that is not
+         running. */
+      machine.gain(0);
+
+      /* The worker is the one sound source in this section that does not
+         stop when the tab does. Everywhere else the noise comes out of a
+         requestAnimationFrame loop and a hidden tab stops delivering
+         frames; a Worker keeps posting straight through, so the guard the
+         other games get for free has to be written out here. */
+      function heard() {
+        return !document.hidden;
+      }
+
+      /* One bulletin from the machine, heard. The worker posts about eight
+         of these a second and each stands for tens of thousands of guesses,
+         so this is already a compression of thousands to one; a fifth of a
+         second on the gate takes it down to five a second, which is roughly
+         where a run of clicks stops being a rattle. It sits well above the
+         grind's band on purpose, so it reads as something landing on top of
+         the machine rather than as part of it. */
+      function batch() {
+        if (!heard()) return;
+        if (!g.gate('batch', 0.2)) return;
+        g.noise(0.03, { type: 'bandpass', freq: 3100, q: 6, level: 0.026 });
+      }
 
       function esc(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -165,6 +314,26 @@
 
         var form = host.querySelector('.duel-form');
         form.addEventListener('submit', function (e) { e.preventDefault(); attack(); });
+
+        /* A key tick, and deliberately the dullest sound in the file. It is
+           IDENTICAL for every character — no pitch from the key, no timbre
+           for the class of character, nothing that separates a digit from a
+           symbol — because on the one page here whose whole promise is that
+           what you type stays in this tab, a per-key sound that varied with
+           the key would be an acoustic side channel handed out through the
+           speakers. The gate thins fast typing to eleven a second, which
+           costs the length of a password its last bit of legibility too.
+
+           Bound here rather than through the shell because this game sets
+           rawInput: the shell is deliberately not listening to this field,
+           and it should stay that way. */
+        var field = host.querySelector('#duel-pw');
+        if (field) {
+          field.addEventListener('input', function () {
+            if (!g.gate('key', 0.09)) return;
+            g.noise(0.012, { type: 'bandpass', freq: 2400, q: 9, level: 0.014 });
+          });
+        }
       }
 
       function attack() {
@@ -180,6 +349,13 @@
         host.querySelector('#duel-live').hidden = false;
         host.querySelector('#duel-out').hidden = true;
         g.stat('state', 'attacking');
+
+        /* Back to idle before it is audible, so the machine never opens at
+           the speed the last attack happened to reach. Nearly half a second
+           to come up, because a cracker spins up; anything shorter is a
+           switch. */
+        machine.set('rate', 0);
+        machine.gain(1, 0.45);
 
         var charset = '';
         if (/[a-z]/.test(pw)) charset += 'abcdefghijklmnopqrstuvwxyz';
@@ -202,6 +378,7 @@
             guesses = d.n;
             livePhase = d.phase;
             paintLive(d.phase);
+            batch();
           } else if (d.type === 'done') {
             guesses = d.n;
             finish(pw, d.found, d.n, d.phase, d.ms);
@@ -226,6 +403,37 @@
         if (worker) { worker.terminate(); worker = null; }
         host.querySelector('#duel-live').hidden = true;
         g.stat('state', found ? 'cracked' : 'held');
+
+        /* The machine stops. Slower than it started: it is winding down,
+           not being switched off, and the fade sits underneath whichever
+           verdict follows instead of cutting out from under it. */
+        machine.gain(0, 0.45);
+
+        /* A crack is a fall — one sawtooth sweep down through two and a
+           half octaves and it is over, which is about how long the password
+           lasted. Holding is not a fanfare, because surviving nine seconds
+           of a browser is not the same as being a good password and the
+           text underneath is about to say so: two struck notes a fifth
+           apart, steady, higher and quieter than the machine that failed to
+           reach them.
+
+           Spaced with setTimeout because the shell's one-shots all start at
+           the context's current time and take no offset, and a game has no
+           business reaching into the AudioContext clock to lay out two
+           notes.
+
+           'unavailable' gets neither. The worker never ran, so nothing
+           attacked and nothing held it off, and the one page on this site
+           that exists to avoid overstating a password's safety is not going
+           to sound a win for a Blob URL that failed to be created. */
+        if (heard()) {
+          if (found) {
+            g.sweep(560, 95, 0.5);
+          } else if (phase !== 'unavailable') {
+            g.pluck(587.33, 0.3, 0.045, 'triangle');
+            setTimeout(function () { g.pluck(880, 0.42, 0.038, 'triangle'); }, 150);
+          }
+        }
 
         var pool = poolFor(pw);
         var combos = Math.pow(pool, pw.length);
@@ -269,6 +477,7 @@
         reset: function () {
           if (worker) { worker.terminate(); worker = null; }
           running = false;
+          machine.gain(0);
           g.stat('state', 'waiting');
           var out = host.querySelector('#duel-out');
           if (out) out.hidden = true;
@@ -285,6 +494,16 @@
              through the whole wordlist and rules phases. Repaint with the
              last phase the worker actually reported. */
           paintLive(livePhase);
+
+          /* Steer the machine from the same guesses-a-second the panel is
+             showing, so what you hear and what you read cannot disagree.
+             Gated at an eighth of a second because the worker only reports
+             a new count every 120ms: pushing this every frame would be
+             sixty cancellations a second of a ramp that had not finished,
+             all of them carrying the same number. */
+          if (elapsed > 0.2 && g.gate('load', 0.12)) {
+            machine.set('rate', guesses / elapsed);
+          }
         }
       };
     }

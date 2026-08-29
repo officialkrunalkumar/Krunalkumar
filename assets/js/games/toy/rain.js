@@ -26,8 +26,19 @@
       therefore halved, which is why a ripple here reads as round on screen
       rather than as an egg.
 
-   ES5 throughout, like everything else under assets/js. No sound: at the
-   heavier densities a plink per landing would be forty a second.
+   3. THE SOUND IS A BED, NOT A PLINK PER DROP. This file used to say, right
+      here, that it had no sound, because at Downpour a plink per landing
+      would be forty a second. That was the correct objection to the wrong
+      instrument. Rain is not a sequence of events, it is a condition — two
+      loops of filtered noise, a bright patter over a low body, both opened
+      up as the density rises, with a slow LFO on the body's cutoff so the
+      storm breathes instead of hissing. Individual landings still get a
+      plink on top, but the gap between them WIDENS with density, which is
+      what really happens: in a downpour you stop being able to pick out one
+      drop from the next. Drizzle is a handful of separate plinks over near
+      silence; Downpour is a wall with two or three coming through it.
+
+   ES5 throughout, like everything else under assets/js.
    ========================================================================== */
 
 (function () {
@@ -83,17 +94,116 @@
       var densitySel = document.getElementById('game-density');
       var speedSel = document.getElementById('game-speed');
 
+      /* ---------------------------------------------------------------
+         The storm. See decision 3 in the header.
+
+         Rain is two sounds at once and both are needed. The PATTER is the
+         thousands of drops you cannot individually pick out: highpassed
+         noise, and it is the layer that makes this read as rain rather than
+         as wind. The BODY is the low wash underneath it, which is what makes
+         a downpour feel heavy rather than merely loud. Ship one without the
+         other and you get a hiss or a rumble; you do not get weather.
+         --------------------------------------------------------------- */
+      var storm = g.bed(function (a) {
+        var ctx = a.ctx;
+
+        function layer(type, freq, q, level) {
+          var src = ctx.createBufferSource();
+          src.buffer = a.noise();
+          src.loop = true;
+          var filt = ctx.createBiquadFilter();
+          filt.type = type;
+          filt.frequency.value = freq;
+          filt.Q.value = q;
+          var gain = ctx.createGain();
+          gain.gain.value = level;
+          src.connect(filt);
+          filt.connect(gain);
+          gain.connect(a.out);
+          src.start();
+          return { filt: filt, gain: gain };
+        }
+
+        var patter = layer('highpass', 2600, 0.7, 0.012);
+        var body = layer('lowpass', 320, 0.9, 0.015);
+
+        /* Gusts. A storm held at one level is a hiss, and the ear writes it
+           off as noise inside about ten seconds. One very slow oscillator on
+           the body's cutoff — a breath every sixteen seconds or so — is the
+           entire difference between weather and a fan. */
+        var lfo = ctx.createOscillator();
+        var depth = ctx.createGain();
+        lfo.frequency.value = 0.062;
+        depth.gain.value = 120;
+        lfo.connect(depth);
+        depth.connect(body.filt.frequency);
+        lfo.start();
+
+        function ramp(param, value) {
+          var now = ctx.currentTime;
+          param.cancelScheduledValues(now);
+          param.setValueAtTime(param.value, now);
+          /* Half a second. A density change is a deliberate act, so it
+             should be heard happening rather than appear between frames. */
+          param.linearRampToValueAtTime(value, now + 0.5);
+        }
+
+        return {
+          set: function (key, value) {
+            if (key !== 'density') return;
+            /* 2..40 drops a second onto 0..1, on a log curve rather than a
+               straight line. Loudness is heard logarithmically: map it
+               linearly and Drizzle is inaudible while Downpour is a wall,
+               with the two useful settings squeezed into the last third. */
+            var span = Math.log(40 / 2);
+            var k = Math.max(0, Math.min(1, Math.log(value / 2) / span));
+            ramp(patter.gain.gain, 0.012 + k * 0.048);
+            ramp(body.gain.gain, 0.015 + k * 0.075);
+            /* Heavier rain is not just louder, it is lower: the patter's
+               highpass opens downward to let more of the mid through. */
+            ramp(patter.filt.frequency, 2600 - k * 900);
+            ramp(body.filt.frequency, 320 + k * 360);
+          }
+        };
+      });
+
       if (densitySel) {
         density = Number(densitySel.value) || 6;
         densitySel.addEventListener('change', function () {
           density = Number(densitySel.value) || 6;
+          storm.set('density', density);
         });
       }
+      storm.set('density', density);
 
       if (speedSel) {
         speedMul = Number(speedSel.value) || 1;
         speedSel.addEventListener('change', function () {
           speedMul = Number(speedSel.value) || 1;
+        });
+      }
+
+      /* One landing, heard. The GAP GROWS WITH DENSITY, which is the part
+         that makes this work: at Drizzle every one of the two drops a second
+         gets its own plink, and at Downpour barely one landing in fifteen
+         does. That is not a performance dodge, it is what a downpour sounds
+         like — the individual drops stop being separable and become the bed
+         that is already playing underneath. The plink also gets quieter as
+         the storm thickens, because a real one would be masked by it.
+
+         The pitch is random per drop over a wide range and the filter falls
+         across the burst, which is a drop hitting water rather than a stone
+         hitting glass. */
+      function plink() {
+        var span = Math.log(40 / 2);
+        var k = Math.max(0, Math.min(1, Math.log(density / 2) / span));
+        if (!g.gate('drop', 0.05 + k * 0.35)) return;
+        g.noise(0.05 + Math.random() * 0.05, {
+          type: 'bandpass',
+          freq: 900 + Math.random() * 1500,
+          to: 320,
+          q: 3.2,
+          level: 0.038 - k * 0.016
         });
       }
 
@@ -164,6 +274,7 @@
             if (d.y >= d.land) {
               drops.splice(i, 1);
               ripples.push({ x: d.x, y: d.land, r: 0, max: d.max });
+              plink();
             }
           }
 

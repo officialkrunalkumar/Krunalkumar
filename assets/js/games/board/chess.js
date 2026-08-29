@@ -22,6 +22,20 @@
    search and calls it winning, because the recapture is one move past the
    horizon; that single addition is the difference between an opponent that
    blunders constantly and one that does not.
+
+   SOUND CARRIES THE MOVE, NOT AN ATMOSPHERE. There is no held layer here: a
+   board game between moves is silent, and a hum under a game people take
+   their time over would be an imposition rather than an atmosphere. What
+   there is instead is one short sound per thing that actually happened, and
+   they are chosen to be told apart rather than to be pretty — a capture from
+   a quiet move, a castle from both, a promotion from all three, and the
+   engine's move from yours. Check gets the only square wave and the only
+   rising tritone in the file, because it is the one thing a player must not
+   miss while reading the far corner of the board. A refused move buzzes,
+   because a click that does nothing is indistinguishable from a click the
+   page never received, and a pinned piece does not look pinned. Mate,
+   stalemate and the draws stay silent here: they end the game, and the
+   shell's game-over already sounds.
    ========================================================================== */
 
 (function () {
@@ -502,6 +516,126 @@
       }
 
       /* --------------------------------------------------------------
+         Sound
+
+         Every sound below is a one-shot, for the reason given in the
+         header: nothing here is a condition, everything is an event, and
+         between two events this game is meant to be quiet.
+
+         The design goal is not prettiness, it is DISTINGUISHABILITY. A
+         player watching one corner of the board should be able to tell,
+         without moving their eyes, that what just landed was a capture
+         rather than a quiet move, a castle rather than either, a promotion,
+         a check, or a refusal — and whether it was theirs or the engine's.
+         That is why the palette is spread across four waveforms and two
+         kinds of noise instead of being a set of pleasant thirds.
+         -------------------------------------------------------------- */
+
+      /* A figure needs its second note offset from its first, and every
+         one-shot the shell offers fires the instant it is called, so the
+         offset has to live here. This is that offset and nothing else: no
+         state the game reads is touched from inside the callback, so a note
+         still in flight when the board is reset or a move is taken back can
+         only ever make a sound. */
+      function after(ms, fn) { setTimeout(fn, ms); }
+
+      /* The move that just landed. A capture and a quiet move are a fifth
+         apart — far enough to hear across a noisy room, close enough that
+         forty moves do not accumulate into a tune.
+
+         The ENGINE plays the same two notes on a triangle and about a
+         semitone flat. Sine against triangle is a small difference written
+         down and an obvious one in the ear, and it is the cheapest way to
+         know whose move just landed while you are still working out what to
+         do about the last one. Pitch alone would not have done it: the two
+         sides already differ by capture-or-not, and a third pitch pair
+         starts to sound like a fourth kind of move.
+
+         In pass-and-play both sides get the sine, because there is no engine
+         and the two voices would then be saying something the board and the
+         status line have both already said. */
+      function moveNote(capture, byEngine) {
+        if (byEngine) g.beep(capture ? 300 : 450, 0.06, 'triangle');
+        else g.beep(capture ? 320 : 480, 0.05, 'sine');
+      }
+
+      /* Two pieces moved, so two thunks: the king set down, then the rook
+         arriving beside it a tenth of a second later. Filtered noise falling
+         in pitch rather than a tone, because a castle on a real board is
+         wood on wood and not a note — and because the one move that is
+         audibly not a note is the one move the ear can never confuse with
+         anything else. The second thunk is brighter and quieter, a rook
+         slid along a rank being a lighter sound than a king lifted over it.
+         The engine's pair sits a notch lower, the same offset its move note
+         carries. */
+      function castleNote(byEngine) {
+        var drop = byEngine ? 0.88 : 1;
+        g.noise(0.09, { type: 'lowpass', freq: 260 * drop, to: 90, q: 0.7, level: 0.06 });
+        after(105, function () {
+          g.noise(0.08, { type: 'lowpass', freq: 330 * drop, to: 120, q: 0.7, level: 0.05 });
+        });
+      }
+
+      /* A pawn became a queen. Three plucked notes climbing a major triad,
+         which is the shortest figure that reads as "went up" rather than as
+         "two notes happened" — two notes alone are heard as an interval, and
+         an interval is what check already is. It plays OVER the move note
+         instead of replacing it, because a promotion is still a move and can
+         still be a capture, and both of those are worth keeping. */
+      function promoNote(byEngine) {
+        var base = byEngine ? 494 : 523;
+        g.pluck(base, 0.16, 0.05, 'triangle');
+        after(80, function () { g.pluck(base * 1.26, 0.16, 0.05, 'triangle'); });
+        after(160, function () { g.pluck(base * 1.5, 0.26, 0.055, 'triangle'); });
+      }
+
+      /* Check. The one sound in the file that has to cut through, so it gets
+         the only square wave and the only rising tritone — the interval that
+         has been read as an alarm for centuries, and unmistakably not the
+         sine the moves are made of.
+
+         It is HELD BACK a beat rather than struck on top of the move note.
+         Played together the square simply masks the sine and the
+         capture-or-not information is lost; a tenth of a second later and
+         the two read as one thing and then another, which is also the order
+         they happened in. A promotion pushes it further out still, because
+         the rising triad is using that tenth of a second.
+
+         It does not change with who gave the check. The move note said whose
+         move it was a fraction of a second earlier, and two alarms would
+         make a player identify which one they were hearing at exactly the
+         moment they should be reacting to it. */
+      function checkNote(delay) {
+        after(delay, function () { g.beep(622, 0.075, 'square', 0.055); });
+        after(delay + 95, function () { g.beep(880, 0.13, 'square', 0.055); });
+      }
+
+      /* The refusal, and the reason this section exists at all. Every path
+         that answers a tap by doing nothing ends up here. Silence was the
+         worst thing in the build that had none: a rejected move and a tap
+         the page never received are the same event to a player, and the
+         reason a move is illegal — a pin, a king still in check — is
+         invisible on the board. Low, short and soft, so it reads as the
+         board declining rather than as a penalty for asking.
+
+         Gated because it is the only sound here that a person can trigger as
+         fast as they can tap, and four overlapping sawtooths at one pitch
+         are far louder and nastier than one of them. */
+      function reject() {
+        if (!g.gate('reject', 0.12)) return;
+        g.beep(96, 0.13, 'sawtooth', 0.045);
+      }
+
+      /* Picking a piece up. Deliberately almost inaudible: its whole job is
+         to be the thing the refusal is not, so that a piece with nowhere to
+         go is heard as a different answer to the same tap rather than as the
+         only answer the board ever gives. */
+      function pickupNote() {
+        if (!g.gate('pickup', 0.05)) return;
+        g.noise(0.03, { type: 'highpass', freq: 2200, q: 0.8, level: 0.022 });
+      }
+
+      /* --------------------------------------------------------------
          Game flow
          -------------------------------------------------------------- */
       /* One cheap string per position, for the repetition rule: placement,
@@ -614,6 +748,10 @@
            square holds the piece that just arrived, so this was always
            playing the capture note. */
         var wasCapture = !!board[m.to] || !!m.ep;
+        /* And who is moving, for exactly the same reason: make() flips the
+           side to move, so asked afterwards this question always answers
+           about the reply rather than about the move being played. */
+        var byEngine = engineTurn();
         history.push(make(m));
         /* Only moves that reach the board are counted — the search calls
            make() thousands of times a turn and none of those positions
@@ -622,21 +760,39 @@
         lastMove = m;
         selected = -1;
         legalForSel = [];
-        g.beep(wasCapture ? 320 : 480, 0.05, 'sine');
+        /* A castle replaces the move note rather than layering over it: the
+           double thunk IS what that move sounds like, and a beep in front of
+           it would only say "a move happened" a beat before the pair said
+           which one. A promotion layers, because it is still an ordinary
+           move underneath. */
+        if (m.castle) castleNote(byEngine);
+        else moveNote(wasCapture, byEngine);
+        if (m.promo) promoNote(byEngine);
         syncHud();
         if (checkEnd()) return;
+        /* Check and only check — checkEnd() has already returned for mate,
+           stalemate and every draw, and those are the shell's game-over
+           sound rather than this file's. Asked once and shared with the
+           status line below, which was putting the same question to the same
+           unchanged board. The sound is worth more than the line, too: when
+           the engine is about to move the strip reads "Black is thinking"
+           and never mentions the check you just gave. */
+        var check = inCheck(turn);
+        if (check) checkNote(m.promo ? 300 : 110);
         var name = turn === WHITE ? 'White' : 'Black';
         if (engineTurn()) {
           message = 'Black is thinking';
           thinking = 0.25;
         } else {
-          message = (inCheck(turn) ? 'Check — ' : '') +
+          message = (check ? 'Check — ' : '') +
                     (mode === 'pass' ? name + ' to move' : 'Your move');
         }
       }
 
       function undoPair() {
-        if (thinking > 0 || !history.length) return;
+        /* Undo with nothing to undo, or while the engine is mid-search, is
+           another button that answers with nothing at all. */
+        if (thinking > 0 || !history.length) { reject(); return; }
         /* Take back the pair, so it is always your move again. */
         unmake(history.pop());
         keys.pop();
@@ -711,11 +867,20 @@
 
       if (g.canvas) {
         g.canvas.addEventListener('pointerdown', function (event) {
-          if (over || thinking > 0) return;
-          if (engineTurn()) return;
+          /* The square is resolved ahead of the guards so that a tap on the
+             status strip below the eighth rank stays silent. A refusal has
+             to mean "not that move"; if it also meant "not on the board" it
+             would stop meaning anything. pointAt and squareAt are both pure
+             reads, so nothing is decided by asking early. */
           var p = g.pointAt(event);
           var sq = squareAt(p.x, p.y);
           if (sq < 0) return;
+          /* A finished game has the overlay in front of the canvas saying so,
+             which is answer enough. A tap during the engine's turn is
+             answered by nothing whatsoever, and is precisely the
+             click-that-does-nothing the refusal exists for. */
+          if (over) return;
+          if (thinking > 0 || engineTurn()) { reject(); return; }
 
           for (var i = 0; i < legalForSel.length; i++) {
             if (legalForSel[i].to === sq) { applyMove(legalForSel[i]); return; }
@@ -725,7 +890,15 @@
             var all = legalMoves(turn);
             legalForSel = [];
             for (var m = 0; m < all.length; m++) if (all[m].from === sq) legalForSel.push(all[m]);
+            /* A piece with nowhere to go looks exactly like a piece with the
+               whole board in front of it until you have picked it up and
+               watched no dots appear — and on a phone your thumb is over the
+               square you just tapped. */
+            if (legalForSel.length) pickupNote(); else reject();
           } else {
+            /* A piece was up and this square is not one of its dots: the
+               illegal move. Usually a pin, and a pin is invisible. */
+            if (selected >= 0) reject();
             selected = -1;
             legalForSel = [];
           }

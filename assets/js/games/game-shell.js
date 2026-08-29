@@ -52,6 +52,15 @@
       toggle defaults to OFF — a page that makes noise unasked is a page
       people close.
 
+      It comes in two forms, because for a long while it only came in one
+      and that was the bug. One-shots — beep, sweep, pluck, noise — are
+      struck and forgotten, and they are the right instrument for an event:
+      a brick, a captured piece, a wrong answer. BEDS are held, and they are
+      the right instrument for a condition: rain falling, a fire burning, a
+      flock in the air. Seven of the toys here are conditions with no events
+      in them at all, so they shipped with a sound button that was wired to
+      nothing a visitor could ever hear. See the Audio section for both.
+
    6. BESTS ARE LOCAL AND SAID TO BE LOCAL. `localStorage`, namespaced
       `game.<slug>.best`. There is no server, so there is no leaderboard, so
       nothing here is ever labelled one — the pages say "your best on this
@@ -147,10 +156,46 @@
 
   /* ------------------------------------------------------------------
      Audio. One shared context per page, built lazily on the first gesture.
+
+     There are two kinds of sound in here, and the difference decides the
+     shape of everything below.
+
+     A ONE-SHOT is struck and forgotten: a beep, a sweep, a burst of
+     filtered noise, a plucked note. It builds its own nodes, plays, and
+     lets them fall out of scope. Everything a game does on an event is one
+     of these.
+
+     A BED is held. Rain is not forty plinks a second, it is a hiss that
+     thickens; a fire is not a sequence of pops, it is a roar with pops on
+     top. A bed is built once, runs as long as the run does, and is steered
+     by moving a filter or a gain rather than by starting anything new.
+     Seven of the toys in this section are ambient by nature and had a sound
+     button that did nothing at all, because a one-shot is the wrong
+     instrument for a thing that does not happen — it continues.
+
+     Both obey decision 5 in the header: synthesised, never a file. A
+     rainstorm here is two seconds of noise through a moving filter, which
+     is a few hundred bytes of code against the megabyte an honest field
+     recording would cost, and it belongs to nobody.
      ------------------------------------------------------------------ */
+
+  /* Ceiling on one-shots alive at once. Without it, Asteroids splitting a
+     rock into four while the thrust is going can ask for two dozen
+     oscillators inside one frame, which on a phone is heard as a crackle
+     and felt as a dropped frame. Fourteen is more voices than any game here
+     can meaningfully use, and the ones past it were never going to be
+     individually audible anyway. */
+  var MAX_VOICES = 14;
+
   function Audio() {
     this.ctx = null;
     this.on = read('sound', 'off') === 'on';
+    this.beds = [];
+    this._bus = null;
+    this._noise = null;
+    this._voices = 0;
+    this._held = false;
+    this._sleep = null;
   }
 
   Audio.prototype.ensure = function () {
@@ -161,13 +206,37 @@
     return this.ctx;
   };
 
+  /* Every sound goes through here first. A context created before a gesture
+     starts life suspended and stays that way until something asks it not to
+     be — and a toy that auto-starts has had no gesture, so the ask has to
+     happen at the moment of the sound rather than once at construction. */
+  Audio.prototype.wake = function () {
+    var ctx = this.ensure();
+    if (!ctx) return null;
+    if (this._sleep) { root.clearTimeout(this._sleep); this._sleep = null; }
+    if (ctx.state === 'suspended' && ctx.resume) {
+      try { ctx.resume(); } catch (err) { /* refused until a gesture */ }
+    }
+    return ctx;
+  };
+
+  /* Book a slot against MAX_VOICES, released when the sound is over. */
+  Audio.prototype.claim = function (dur) {
+    if (this._voices >= MAX_VOICES) return false;
+    var self = this;
+    this._voices++;
+    root.setTimeout(function () { self._voices--; }, (dur + 0.05) * 1000);
+    return true;
+  };
+
   /* A short shaped tone. The envelope matters more than the waveform: a bare
      gain switch clicks audibly at both ends, so both edges are ramped. */
   Audio.prototype.beep = function (freq, dur, type, level) {
     if (!this.on) return;
-    var ctx = this.ensure();
+    var ctx = this.wake();
     if (!ctx) return;
-    if (ctx.state === 'suspended' && ctx.resume) ctx.resume();
+    dur = dur || 0.09;
+    if (!this.claim(dur)) return;
     var now = ctx.currentTime;
     var osc = ctx.createOscillator();
     var gain = ctx.createGain();
@@ -176,20 +245,21 @@
     var peak = level == null ? 0.06 : level;
     gain.gain.setValueAtTime(0.0001, now);
     gain.gain.exponentialRampToValueAtTime(peak, now + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + (dur || 0.09));
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.start(now);
-    osc.stop(now + (dur || 0.09) + 0.02);
+    osc.stop(now + dur + 0.02);
   };
 
   /* A downward sweep for a lost run, an upward one for a won level. Both are
      the same three lines; only the direction differs. */
   Audio.prototype.sweep = function (from, to, dur) {
     if (!this.on) return;
-    var ctx = this.ensure();
+    var ctx = this.wake();
     if (!ctx) return;
-    if (ctx.state === 'suspended' && ctx.resume) ctx.resume();
+    dur = dur || 0.3;
+    if (!this.claim(dur)) return;
     var now = ctx.currentTime;
     var osc = ctx.createOscillator();
     var gain = ctx.createGain();
@@ -202,6 +272,239 @@
     gain.connect(ctx.destination);
     osc.start(now);
     osc.stop(now + dur + 0.02);
+  };
+
+  /* A struck note rather than a beeped one. Same pitch, a completely
+     different character: instant attack, long decay, and a lowpass closing
+     over the tail so the brightness dies before the note does. The pitch
+     also drifts down a few cents on the way in, and that is the detail that
+     matters — hold it dead flat and a triangle wave reads as a cheap organ
+     no matter what the envelope does. For the toys that play notes rather
+     than make noises. */
+  Audio.prototype.pluck = function (freq, dur, level, type) {
+    if (!this.on) return;
+    var ctx = this.wake();
+    if (!ctx) return;
+    dur = dur || 0.5;
+    if (!this.claim(dur)) return;
+    var now = ctx.currentTime;
+    var osc = ctx.createOscillator();
+    var filt = ctx.createBiquadFilter();
+    var gain = ctx.createGain();
+    osc.type = type || 'triangle';
+    osc.frequency.setValueAtTime(freq * 1.006, now);
+    osc.frequency.exponentialRampToValueAtTime(freq, now + Math.min(0.12, dur));
+    filt.type = 'lowpass';
+    filt.frequency.setValueAtTime(Math.min(12000, freq * 8), now);
+    filt.frequency.exponentialRampToValueAtTime(Math.max(200, freq * 1.6), now + dur);
+    var peak = level == null ? 0.06 : level;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(peak, now + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+    osc.connect(filt);
+    filt.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + dur + 0.02);
+  };
+
+  /* Two seconds of white noise, generated once and shared by everything
+     that hisses. A splash, a crackle, a grain of sand and a shuffled deck
+     are all this one buffer through a different filter with a different
+     envelope, which is why a rainstorm costs the same memory as a click. */
+  Audio.prototype.noiseBuffer = function () {
+    if (this._noise) return this._noise;
+    var ctx = this.ensure();
+    if (!ctx) return null;
+    var len = Math.floor(ctx.sampleRate * 2);
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    this._noise = buf;
+    return buf;
+  };
+
+  /* A shaped burst of filtered noise: a splash, a crackle, a footstep, a
+     card sliding over another card.
+
+     opts: { type, freq, to, q, level } — the filter kind, its starting
+     frequency, an optional frequency to glide to across the burst (a splash
+     falls, a whoosh rises), the resonance, and the peak gain.
+
+     The read starts at a RANDOM point in the shared buffer. Play the same
+     two hundred milliseconds of noise for every raindrop and the ear stops
+     hearing rain and starts hearing a sample being retriggered. */
+  Audio.prototype.noise = function (dur, opts) {
+    if (!this.on) return;
+    var ctx = this.wake();
+    if (!ctx) return;
+    var buf = this.noiseBuffer();
+    if (!buf) return;
+    dur = dur || 0.12;
+    if (!this.claim(dur)) return;
+    opts = opts || {};
+    var now = ctx.currentTime;
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var filt = ctx.createBiquadFilter();
+    filt.type = opts.type || 'bandpass';
+    filt.frequency.setValueAtTime(opts.freq || 1200, now);
+    if (opts.to) {
+      filt.frequency.exponentialRampToValueAtTime(Math.max(40, opts.to), now + dur);
+    }
+    filt.Q.value = opts.q == null ? 1 : opts.q;
+    var gain = ctx.createGain();
+    var peak = opts.level == null ? 0.06 : opts.level;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(peak, now + Math.min(0.008, dur * 0.25));
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+    src.connect(filt);
+    filt.connect(gain);
+    gain.connect(ctx.destination);
+    var span = buf.duration - dur - 0.02;
+    src.start(now, span > 0 ? Math.random() * span : 0, dur + 0.02);
+    src.stop(now + dur + 0.04);
+  };
+
+  /* ------------------------------------------------------------------
+     Beds — the held sound.
+
+     Every bed hangs off one bus, and the bus is the only thing the shell
+     touches: it fades to 1 while a run is live and audible, and to 0 the
+     moment it is paused, finished, muted, or in a tab nobody is looking at.
+     A bed therefore never has to know what state the game is in.
+
+     Nodes are built on first use and then left running. Stopping and
+     rebuilding an oscillator bank on every pause sounds worse — a rebuilt
+     noise loop restarts at a different point in the buffer, which is
+     audible as a jump — and invites the classic leak of a buffer source
+     nobody stopped. A silent oscillator costs a rounding error of CPU, and
+     when the bus has been at zero for most of a second the whole context is
+     suspended, which costs nothing at all.
+     ------------------------------------------------------------------ */
+  function Bed(audio, build) {
+    this.audio = audio;
+    this.build = build;
+    this.api = null;
+    this.out = null;
+    this.level = 1;
+    /* Values set before the nodes exist. A toy calls bed.set('density', 6)
+       from its reset(), which runs long before anyone unmutes. */
+    this.pending = {};
+  }
+
+  Bed.prototype.ensure = function () {
+    if (this.api) return this.api;
+    var ctx = this.audio.ensure();
+    var bus = this.audio.bus();
+    if (!ctx || !bus) return null;
+    var out = ctx.createGain();
+    out.gain.value = this.level;
+    out.connect(bus);
+    this.out = out;
+    var self = this;
+    var api = null;
+    try {
+      api = this.build({
+        ctx: ctx,
+        out: out,
+        noise: function () { return self.audio.noiseBuffer(); }
+      });
+    } catch (err) {
+      /* A bed that cannot be built must not take the game down with it. The
+         run carries on in silence, which is the same outcome a browser with
+         no AudioContext at all would have given. */
+      api = null;
+    }
+    this.api = api || {};
+    for (var key in this.pending) {
+      if (!Object.prototype.hasOwnProperty.call(this.pending, key)) continue;
+      if (this.api.set) this.api.set(key, this.pending[key]);
+    }
+    return this.api;
+  };
+
+  /* Steer the bed. What a key means is entirely the bed's own business —
+     rain has 'density', fire has 'heat' — and the value is remembered, so
+     it survives being set before the nodes exist. */
+  Bed.prototype.set = function (key, value) {
+    this.pending[key] = value;
+    if (this.api && this.api.set) this.api.set(key, value);
+    return this;
+  };
+
+  /* This bed's own loudness within the mix, 0..1, ramped rather than
+     stepped so a fading layer does not click. */
+  Bed.prototype.gain = function (value, ramp) {
+    this.level = value;
+    if (!this.out || !this.audio.ctx) return this;
+    var now = this.audio.ctx.currentTime;
+    var g = this.out.gain;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(value, now + (ramp == null ? 0.08 : ramp));
+    return this;
+  };
+
+  Audio.prototype.bus = function () {
+    if (this._bus) return this._bus;
+    var ctx = this.ensure();
+    if (!ctx) return null;
+    var g = ctx.createGain();
+    /* Silent until the shell says a run is live, so a bed built by a reset()
+       that ran before the first gesture cannot leak a frame of sound into a
+       page nobody has pressed play on. */
+    g.gain.value = 0;
+    g.connect(ctx.destination);
+    this._bus = g;
+    return g;
+  };
+
+  Audio.prototype.bed = function (build) {
+    var bed = new Bed(this, build);
+    this.beds.push(bed);
+    return bed;
+  };
+
+  /* Fade the whole bed bus in or out. Called by the shell on every state
+     change, on the mute button, and on a tab becoming hidden. */
+  Audio.prototype.hold = function (on) {
+    if (!this.beds.length) return;
+    if (!this.on) on = false;
+    if (on === this._held) return;
+    this._held = on;
+
+    if (on) {
+      var ctx = this.wake();
+      var bus = this.bus();
+      if (!ctx || !bus) return;
+      for (var i = 0; i < this.beds.length; i++) this.beds[i].ensure();
+      var now = ctx.currentTime;
+      bus.gain.cancelScheduledValues(now);
+      bus.gain.setValueAtTime(bus.gain.value, now);
+      /* A third of a second in. Faster reads as a switch being thrown; much
+         slower and unmuting feels like it did not work. */
+      bus.gain.linearRampToValueAtTime(1, now + 0.35);
+      return;
+    }
+
+    if (!this._bus || !this.ctx) return;
+    var t = this.ctx.currentTime;
+    this._bus.gain.cancelScheduledValues(t);
+    this._bus.gain.setValueAtTime(this._bus.gain.value, t);
+    this._bus.gain.linearRampToValueAtTime(0, t + 0.25);
+
+    /* An oscillator bank running behind a muted tab is a laptop fan nobody
+       asked for. Once the fade has finished, put the context to sleep;
+       wake() brings it back for the next sound of any kind. */
+    var self = this;
+    if (this._sleep) root.clearTimeout(this._sleep);
+    this._sleep = root.setTimeout(function () {
+      self._sleep = null;
+      if (self._held || !self.ctx || !self.ctx.suspend) return;
+      if (self.ctx.state !== 'running') return;
+      try { self.ctx.suspend(); } catch (err) { /* nothing to do */ }
+    }, 700);
   };
 
   /* ------------------------------------------------------------------
@@ -259,6 +562,8 @@
     this._last = 0;
     this._stats = {};
     this._hooks = {};
+    /* Last time each named sound was allowed through — see gate(). */
+    this._gates = {};
 
     this.canvas = this.el.querySelector('.game-canvas');
     this.board = this.el.querySelector('.game-board');
@@ -682,6 +987,9 @@
         self.audio.on = !self.audio.on;
         write('sound', self.audio.on ? 'on' : 'off');
         syncSound();
+        /* The held layers follow the switch too, and a bed built while
+           muted has to be brought up rather than merely unblocked. */
+        self.syncBeds();
         /* Turning it on plays one note, so the button proves itself
            immediately instead of promising sound you have to earn. */
         if (self.audio.on) self.audio.beep(660, 0.07, 'sine');
@@ -875,10 +1183,49 @@
        exempted here. */
     document.addEventListener('visibilitychange', function () {
       if (document.hidden && self.state === 'playing' && self.spec.pauseOnBlur !== false) self.pause(true);
+      /* THE THIRTY-THREE GAMES THAT OPT OUT OF AUTO-PAUSE STILL GO QUIET.
+         A toy with pauseOnBlur: false keeps its state and its score across a
+         tab switch, which is right — but a held bed is not state, it is
+         noise, and rain coming out of a tab the visitor left ten minutes ago
+         is the single most obnoxious thing this section could do. The loop
+         has stopped getting frames either way, so there is nothing left for
+         the sound to accompany. Coming back fires this again and fades it
+         straight back in. */
+      self.syncBeds();
     });
     root.addEventListener('blur', function () {
       if (self.state === 'playing' && self.spec.pauseOnBlur !== false) self.pause(true);
     });
+
+    /* THE FIRST GESTURE ANYWHERE ON THE PAGE.
+
+       A context built before the visitor has interacted starts suspended and
+       stays suspended until something asks it to resume from inside a real
+       gesture. Every game that waits on a Play button gets that ask for free,
+       because pressing Play is the gesture. The eight toys do not: they set
+       autoStart, so start() runs from the parser and the bed is built into a
+       context that will never make a sound on its own.
+
+       So the first pointerdown or keydown the document sees re-asks. It is
+       cheap, it is idempotent, and once the sound is actually on it stops
+       being needed at all. */
+    var unlocked = false;
+    var unlock = function () {
+      if (unlocked || !self.audio.on) return;
+      unlocked = true;
+      self.audio.wake();
+      self.syncBeds();
+    };
+    document.addEventListener('pointerdown', unlock, { passive: true });
+    document.addEventListener('keydown', unlock);
+  };
+
+  /* Whether the held layers should be sounding at this instant. Beds follow
+     the RUN, not the page: a paused, finished, muted or hidden game has
+     nothing to hold. Audio.hold() adds the mute check itself, so this stays
+     the one place the state machine is consulted. */
+  Game.prototype.syncBeds = function () {
+    this.audio.hold(this.state === 'playing' && !document.hidden);
   };
 
   /* ------------------------------------------------------------------
@@ -930,6 +1277,7 @@
     if (this.pauseBtn) { this.pauseBtn.disabled = false; this.pauseBtn.textContent = 'Pause'; }
     this.takeFocus();
     this.run();
+    this.syncBeds();
   };
 
   /* ------------------------------------------------------------------
@@ -1029,6 +1377,7 @@
     this.stop();
     if (this.pauseBtn) this.pauseBtn.textContent = 'Resume';
     this.showOverlay('paused');
+    this.syncBeds();
     if (!silent) this.audio.beep(330, 0.06, 'sine');
   };
 
@@ -1043,6 +1392,7 @@
     this.announce('Resumed');
     this.takeFocus();
     this.run();
+    this.syncBeds();
   };
 
   Game.prototype.togglePause = function () {
@@ -1081,6 +1431,7 @@
       }
     }
 
+    this.syncBeds();
     if (opts.won) this.audio.sweep(440, 880, 0.35);
     else this.audio.sweep(320, 90, 0.5);
 
@@ -1265,6 +1616,38 @@
 
   Game.prototype.sweep = function (from, to, dur) {
     this.audio.sweep(from, to, dur);
+  };
+
+  Game.prototype.pluck = function (freq, dur, level, type) {
+    this.audio.pluck(freq, dur, level, type);
+  };
+
+  Game.prototype.noise = function (dur, opts) {
+    this.audio.noise(dur, opts);
+  };
+
+  /* Declare a held layer. Returns a handle the game keeps and steers with
+     .set(key, value) and .gain(v); the shell decides when it is audible.
+     Call it once, from setup() — a bed created per run would stack. */
+  Game.prototype.bed = function (build) {
+    return this.audio.bed(build);
+  };
+
+  /* True at most once every `seconds` for a given name, false in between.
+
+     This exists because the honest event rate and the bearable sound rate
+     are different numbers. Rain at Downpour lands forty drops a second and a
+     plink for each is a machine gun; falling sand settles thousands of
+     grains. A game should still be able to say "make a sound when this
+     happens" at the place where it happens, and have the thinning handled
+     somewhere it does not have to think about. */
+  Game.prototype.gate = function (key, seconds) {
+    var now = (root.performance && root.performance.now
+      ? root.performance.now() : +new Date()) / 1000;
+    var last = this._gates[key];
+    if (last != null && now - last < seconds) return false;
+    this._gates[key] = now;
+    return true;
   };
 
   /* Namespaced per-game persistence for anything that is not the best
