@@ -25,6 +25,7 @@
 - [The resume-builder paywall trick](https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick): Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
 - [What a marriage biodata leaks](https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks): The identity-theft surface of one A4 page, and how to make one that stays on your device.
 - [How I Vibe Coded This Website](https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website): The engineering mechanism behind an AI-built static site — prompt written as a specification, reasoning kept in the repository, adversarial multi-pass review, and deploy-time gates that refuse to publish damage.
+- [Git, Explained From the Object Up](https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up): The git object model, branching, rebase, the undo toolbox and the reflog — explained from the bottom; companion to the Git Quest game.
 - [What Sixty-Six Tiny Games Taught Me About Serious Software](https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software): How the site's 66 browser games held every production bug class in miniature — state machines, shared keyboards, saved dead ends, copy drift, and canvas accessibility.
 - [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work — specification, verification, accountability, and where the approval gate belongs.
 - [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
@@ -138,8 +139,8 @@ These are deliberately separated from the sixteen offline security tools. They s
   path, so the request goes straight to whatever host you name and nothing is relayed through this site.
   CORS applies exactly as it would in any other page.
 
-## Games — 66 of them, all offline-capable, none of them asking for anything
-- [Games hub](https://krunalkumar.dpdns.org/games): The 66 games, in seven categories, filterable. Every one runs entirely in the browser with no ads, no sign-up and no network after the first visit. Best scores are kept in this browser's own storage and the hub lists exactly what is stored, clears it, or switches storage off altogether.
+## Games — 67 of them, all offline-capable, none of them asking for anything
+- [Games hub](https://krunalkumar.dpdns.org/games): The 67 games, in seven categories, filterable. Every one runs entirely in the browser with no ads, no sign-up and no network after the first visit. Best scores are kept in this browser's own storage and the hub lists exactly what is stored, clears it, or switches storage off altogether.
 - [Snake](https://krunalkumar.dpdns.org/games/snake): The Nokia one. Three speeds, optional wrap-around walls, arrow keys or a thumb pad.
 - [Tetris](https://krunalkumar.dpdns.org/games/tetris): Seven-bag randomiser, hold, hard drop, ghost piece.
 - [2048](https://krunalkumar.dpdns.org/games/2048): Slide and merge. The board is saved, so a half-finished game survives a reload.

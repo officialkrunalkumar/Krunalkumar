@@ -5,16 +5,24 @@
   <link href="https://krunalkumar.dpdns.org/blog" />
   <link rel="self" href="https://krunalkumar.dpdns.org/atom.xml" type="application/atom+xml" />
   <id>https://krunalkumar.dpdns.org/blog</id>
-  <updated>2026-08-29T14:00:00+05:30</updated>
+  <updated>2026-08-29T18:00:00+05:30</updated>
   <author>
     <name>Krunalkumar Shah</name>
   </author>
+  <entry>
+    <title>Git, Explained From the Object Up</title>
+    <link href="https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up" />
+    <id>https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up</id>
+    <published>2026-08-29T18:00:00+05:30</published>
+    <updated>2026-08-29T18:00:00+05:30</updated>
+    <summary>Git stops being spells the moment you know the three things any command can move. The object store, branching and rebase, the undo toolbox, and the reflog safety net — explained from the bottom, with receipts from rewriting 169 commits without changing a byte of content.</summary>
+  </entry>
   <entry>
     <title>What Sixty-Six Tiny Games Taught Me About Serious Software</title>
     <link href="https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software" />
     <id>https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software</id>
     <published>2026-08-29T14:00:00+05:30</published>
-    <updated>2026-08-29T14:00:00+05:30</updated>
+    <updated>2026-08-29T18:00:00+05:30</updated>
     <summary>The games page looks like a break from the serious work. It was the serious work in miniature: state machines, shared keyboards, saved dead ends and copy the code could not honour — every production bug class, caught small, with receipts.</summary>
   </entry>
   <entry>

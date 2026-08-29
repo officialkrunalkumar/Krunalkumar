@@ -287,7 +287,7 @@ function gameCards() {
     motif: 'gameArcade',
     dest: 'assets/images/og-games.jpg',
     eyebrow: 'Games',
-    lines: ['Sixty-six games,', 'nothing to install'],
+    lines: ['Sixty-seven games,', 'nothing to install'],
     sub: 'No ads, no sign-up, and they keep working offline',
   });
 

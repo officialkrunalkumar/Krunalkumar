@@ -5,8 +5,15 @@
     <link>https://krunalkumar.dpdns.org/blog</link>
     <description>Articles by Krunalkumar Shah on mentorship, careers, cybersecurity research, and automation — practical writing drawn from real work.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 29 Aug 2026 14:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 18:00:00 +0530</lastBuildDate>
     <atom:link href="https://krunalkumar.dpdns.org/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git, Explained From the Object Up</title>
+      <link>https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up</link>
+      <guid>https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up</guid>
+      <description>Git stops being spells the moment you know the three things any command can move. The object store, branching and rebase, the undo toolbox, and the reflog safety net — explained from the bottom, with receipts from rewriting 169 commits without changing a byte of content.</description>
+      <pubDate>Sat, 29 Aug 2026 18:00:00 +0530</pubDate>
+    </item>
     <item>
       <title>What Sixty-Six Tiny Games Taught Me About Serious Software</title>
       <link>https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software</link>

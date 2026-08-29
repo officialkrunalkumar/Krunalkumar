@@ -1888,6 +1888,45 @@ html:not(.js) .game-filter { display: none; }
   .shq-term { padding: 0.6rem 0.65rem; }
 }
 
+/* ---- git-quest ---- */
+/* ---- Git quest ---- */
+.board-git-quest { display: block; width: 100%; max-width: 62rem; }
+
+/* Same standing brief as shell-quest, same reason: a mission you cannot
+   re-read after three commands is a mission you abandon. */
+.gq-brief { margin: 0 0 0.7rem; padding-left: 0.7rem; border-left: 3px solid var(--accent-2); font-size: 0.85rem; line-height: 1.55; color: var(--ink-3); }
+
+/* Terminal and graph side by side: the whole point of the panel is seeing
+   the labels move WHILE typing, so it must not live below the fold. On a
+   narrow screen it wraps underneath instead. */
+.gq-split { display: flex; gap: 0.8rem; align-items: stretch; flex-wrap: wrap; }
+.gq-term { flex: 1 1 26rem; min-width: 0; padding: 0.75rem 0.85rem; background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 10px; cursor: text; }
+.gq-side { flex: 1 1 15rem; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+
+.gq-screen, .gq-entry { font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace; font-size: 0.78rem; line-height: 1.55; }
+.gq-screen { height: clamp(16rem, 48vh, 27rem); overflow-y: auto; overflow-x: auto; }
+
+.gq-line { -webkit-user-select: text; user-select: text; margin: 0; white-space: pre-wrap; word-break: break-word; color: var(--ink-3); }
+.gq-line.is-echo { color: var(--ink); }
+.gq-line.is-err { color: #fca5a5; }
+.gq-line.is-ok { color: #86efac; }
+.gq-line.is-note { color: var(--ink-4); }
+.gq-prompt { color: var(--accent-1); }
+
+.gq-entry { margin-top: 0.4rem; padding-top: 0.45rem; border-top: 1px solid rgb(var(--line-rgb) / 0.2); white-space: pre-wrap; word-break: break-word; color: var(--ink); }
+.gq-caret { display: inline-block; width: 0.55em; height: 1em; vertical-align: -0.15em; background: var(--accent-2); animation: gq-blink 1.05s step-end infinite; }
+@keyframes gq-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .gq-caret { animation: none; } }
+
+.gq-places { margin: 0; padding: 0.55rem 0.7rem; font-size: 0.74rem; line-height: 1.5; color: var(--ink-3); background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 10px; }
+.gq-graph { flex: 1 1 auto; margin: 0; padding: 0.65rem 0.7rem; font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace; font-size: 0.74rem; line-height: 1.6; color: var(--ink-2); background: rgb(var(--well-rgb) / 0.8); border: 1px solid rgb(var(--line-rgb) / 0.3); border-radius: 10px; overflow: auto; min-height: 8rem; -webkit-user-select: text; user-select: text; white-space: pre; }
+
+@media (max-width: 30rem) {
+  .gq-screen, .gq-entry { font-size: 0.72rem; }
+  .gq-term { padding: 0.6rem 0.65rem; }
+  .gq-screen { height: clamp(13rem, 42vh, 20rem); }
+}
+
 /* ---- name-in-binary ---- */
 /* ---- Your name in binary ---- */
 .board-name-binary { display: block; width: 100%; max-width: 44rem; }

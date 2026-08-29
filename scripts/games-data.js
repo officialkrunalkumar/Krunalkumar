@@ -31,7 +31,7 @@
      related   other slugs. The generator throws on an unknown one, so a
                renamed game cannot leave a dead card behind.
 
-   THE SECTION IS COMPLETE — 66 games in seven categories. Anything new goes
+   THE SECTION IS COMPLETE — 67 games in seven categories. Anything new goes
    in as one module under assets/js/games/<cat>/ plus one entry below, and
    then: node scripts/games.js, add the <url> to sitemap.xml, and rebuild the
    search index. build.js fails the deploy if the sitemap entry is missing,
@@ -2911,7 +2911,88 @@ const GAMES = [
       { q: 'Is par really the shortest possible?', a: 'No, and no claim is made that it is. It is the shortest the author found. Several of these lists almost certainly have shorter answers.' },
       { q: 'Does anything leave the browser?', a: 'No. There is no network call in the game at all. The only thing stored is your best total, in this browser, under a key you can clear with your site data.' },
     ],
-    related: ['subnet-sprint', 'phishing-or-not', 'typespeed'],
+    related: ['git-quest', 'subnet-sprint', 'phishing-or-not'],
+  },
+  {
+    slug: 'git-quest',
+    cat: 'cs',
+    name: 'Git quest',
+    glyph: '⎇',
+    script: 'cs/git-quest.js',
+    board: true, pad: 'none',
+    bestKey: 'git-quest',
+    engine: 'Seventeen git commands over an in-memory object store',
+    title: 'Git Quest — Learn Git By Typing Real Commands, Free In Your Browser',
+    ogTitle: 'Thirteen missions, one toy repository',
+    description: 'Thirteen missions solved by typing real git commands — init, commit, branch, merge, ' +
+      'rebase, reset, revert and a reflog rescue — against a repository that lives in the page and nowhere else.',
+    short: 'Thirteen missions, one toy repository.',
+    h1: 'Git quest',
+    hero: 'Reading about git is the weaker half of learning it. Here is the stronger half: a repository ' +
+      'that exists only in this page, seventeen git commands reimplemented over it, and thirteen missions ' +
+      'that walk from <code>git init</code> to a reflog rescue. The commit graph redraws beside the ' +
+      'terminal as you type, because <em>a branch is a sticky note on a commit</em> is a sentence you ' +
+      'believe only after watching the label slide while the dots stay put.',
+    facts: ['Seventeen git commands', 'Thirteen missions', 'The graph drawn as you type', 'Break it freely — retry rebuilds'],
+    hud: [
+      { key: 'mission', label: 'Mission', accent: true, init: '1/13' },
+      { key: 'cmds', label: 'Commands', init: '0' },
+      { key: 'best', label: 'Best' },
+    ],
+    controls: [
+      '<button class="game-btn" type="button" id="game-help">Commands</button>',
+      '<button class="game-btn" type="button" id="game-hint">Hint</button>',
+    ],
+    keys: [
+      { k: 'Type', d: 'A command' },
+      { k: 'Enter', d: 'Run it' },
+      { k: '↑ ↓', d: 'Command history' },
+      { k: 'Tab', d: 'Complete a word' },
+      { k: 'Esc', d: 'Clear the line' },
+    ],
+    touch: 'Tap the terminal to raise the keyboard; the Commands and Hint buttons above do the same as typing help and hint.',
+    infoHeading: 'What this teaches, and how honestly',
+    info: [
+      {
+        h: 'A reimplementation, not git',
+        p: 'Every command here is JavaScript over an in-memory object store: commits are snapshots with ' +
+          'parents, branches are labels holding one id, HEAD is a pointer, and the hashes are pretend. ' +
+          'Nothing executes on your machine and nothing is stored beyond your best score. The real thing ' +
+          'is one <code>git init</code> away in any terminal, and it works exactly like the toy &mdash; ' +
+          'that is the point of the toy.',
+      },
+      {
+        h: 'A scene per mission, so exploring cannot break anything',
+        p: 'Each mission rebuilds the repository into a curated starting state. Wander off the brief as far ' +
+          'as you like &mdash; make branches, reset things, detach HEAD &mdash; and <code>retry</code> puts ' +
+          'the scene back without touching your progress. The goals check repository state, not the order ' +
+          'you typed things in, so any route that gets there counts.',
+      },
+      {
+        h: 'The graph is the lesson',
+        p: 'The panel beside the terminal redraws the commit graph and the three places &mdash; working ' +
+          'tree, index, HEAD &mdash; after every command. Watching <code>reset --soft</code> move one of ' +
+          'the three while <code>--hard</code> moves all of them teaches more than any table. The prose ' +
+          'half of this game is the article <a href="/blog/git-explained-from-the-object-up">Git, ' +
+          'explained from the object up</a>, written alongside it.',
+      },
+      {
+        h: 'What is deliberately missing',
+        p: 'There are no remotes: no push, pull, fetch or clone, because this page makes no network calls ' +
+          'by design and a pretend server would hand out pretend lessons. Conflict resolution is ' +
+          '<code>--ours</code>/<code>--theirs</code> rather than an editor, and there is no interactive ' +
+          'rebase. The companion article covers the collaboration half properly.',
+      },
+    ],
+    faq: [
+      { q: 'Is this real git?', a: 'No. Seventeen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for.' },
+      { q: 'Do I need to know git already?', a: 'No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog — the game and the article were written together.' },
+      { q: 'Why is there no push or pull?', a: 'This page makes no network calls, by design, and a simulated server would hand out simulated lessons. Remotes, force-with-lease and the collaboration model are covered in the companion article instead.' },
+      { q: 'Can I get stuck?', a: 'Not permanently. retry rebuilds the current mission&rsquo;s scene from scratch, hint nudges, and Restart begins a fresh run. Exploring beyond the brief cannot wedge a later mission, because every mission builds its own scene.' },
+      { q: 'What counts towards the best score?', a: 'Every command you run, including help, hint and the ones git refuses. Lower is better, and somewhere around forty-five on a first pass is a respectable showing.' },
+      { q: 'Does anything I type leave the page?', a: 'No. There are no network calls anywhere in this game. The only thing stored is the command count of your best run, in this browser.' },
+    ],
+    related: ['shell-quest', 'ctf-arcade', 'password-duel'],
   },
 
   {
