@@ -1892,9 +1892,16 @@ html:not(.js) .game-filter { display: none; }
 /* ---- Git quest ---- */
 .board-git-quest { display: block; width: 100%; max-width: 62rem; }
 
-/* Same standing brief as shell-quest, same reason: a mission you cannot
-   re-read after three commands is a mission you abandon. */
-.gq-brief { margin: 0 0 0.7rem; padding-left: 0.7rem; border-left: 3px solid var(--accent-2); font-size: 0.85rem; line-height: 1.55; color: var(--ink-3); }
+/* The mission panel, OUT of the terminal. Briefs and mission status used to
+   print into the scrollback and read as output nobody typed; the terminal
+   now carries only echoes and git's answers, and the game talks here. */
+.gq-mission { margin: 0 0 0.8rem; padding: 0.7rem 0.85rem; background: rgb(var(--well-rgb) / 0.8); border-left: 3px solid var(--accent-2); border-radius: 8px; }
+.gq-mission-kicker { margin: 0 0 0.25rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em; color: var(--accent-1); }
+.gq-mission-brief { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--ink-2); }
+.gq-mission-note { margin: 0.45rem 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--ink-4); }
+.gq-mission-note:empty { display: none; }
+.gq-mission-note.is-done { color: #86efac; }
+.gq-mission-note.is-hint { color: #fcd34d; }
 
 /* Terminal and graph side by side: the whole point of the panel is seeing
    the labels move WHILE typing, so it must not live below the fold. On a

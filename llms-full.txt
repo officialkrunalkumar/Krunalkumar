@@ -186,7 +186,7 @@ snakes and ladders, hangman and a memory grid. Terminal: cmatrix, pipes,
 cbonsai, rain, aafire, rogue, adventure, star trek, ninvaders, tty solitaire,
 asciijump, greed, robots, wumpus, typespeed, arithmetic and bastet. Board:
 chess against a real negamax engine with alpha-beta pruning and quiescence
-search, plus ludo and carrom. For programmers: git quest (thirteen git missions over a toy repository), shell quest (eight puzzles in a
+search, plus ludo and carrom. For programmers: git quest (nineteen git missions over a toy repository), shell quest (eight puzzles in a
 simulated Unix shell), guess the output, assembly puzzles, regex golf, a CTF
 arcade, phishing-or-not, a password strength duel, subnet sprint and a sorting
 race. Toys: boids, falling sand, game of life. Fun: a typing trainer on real

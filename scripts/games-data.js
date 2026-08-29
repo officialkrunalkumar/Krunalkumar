@@ -2921,21 +2921,21 @@ const GAMES = [
     script: 'cs/git-quest.js',
     board: true, pad: 'none',
     bestKey: 'git-quest',
-    engine: 'Seventeen git commands over an in-memory object store',
+    engine: 'Eighteen git commands over an in-memory object store',
     title: 'Git Quest — Learn Git By Typing Real Commands, Free In Your Browser',
-    ogTitle: 'Thirteen missions, one toy repository',
-    description: 'Thirteen missions solved by typing real git commands — init, commit, branch, merge, ' +
-      'rebase, reset, revert and a reflog rescue — against a repository that lives in the page and nowhere else.',
-    short: 'Thirteen missions, one toy repository.',
+    ogTitle: 'Nineteen missions, one toy repository',
+    description: 'Nineteen missions solved by typing real git commands — init, commit, branch, merge, ' +
+      'rebase, reset, revert, a reflog rescue and a capstone — against a repository that lives in the page and nowhere else.',
+    short: 'Nineteen missions, one toy repository.',
     h1: 'Git quest',
     hero: 'Reading about git is the weaker half of learning it. Here is the stronger half: a repository ' +
-      'that exists only in this page, seventeen git commands reimplemented over it, and thirteen missions ' +
-      'that walk from <code>git init</code> to a reflog rescue. The commit graph redraws beside the ' +
+      'that exists only in this page, eighteen git commands reimplemented over it, and nineteen missions ' +
+      'that walk from <code>git init</code> to a capstone that uses the whole toolbox. The commit graph redraws beside the ' +
       'terminal as you type, because <em>a branch is a sticky note on a commit</em> is a sentence you ' +
       'believe only after watching the label slide while the dots stay put.',
-    facts: ['Seventeen git commands', 'Thirteen missions', 'The graph drawn as you type', 'Break it freely — retry rebuilds'],
+    facts: ['Eighteen git commands', 'Nineteen missions', 'The graph drawn as you type', 'Break it freely — retry rebuilds'],
     hud: [
-      { key: 'mission', label: 'Mission', accent: true, init: '1/13' },
+      { key: 'mission', label: 'Mission', accent: true, init: '1/19' },
       { key: 'cmds', label: 'Commands', init: '0' },
       { key: 'best', label: 'Best' },
     ],
@@ -2985,11 +2985,11 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is this real git?', a: 'No. Seventeen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for.' },
+      { q: 'Is this real git?', a: 'No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for.' },
       { q: 'Do I need to know git already?', a: 'No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog — the game and the article were written together.' },
       { q: 'Why is there no push or pull?', a: 'This page makes no network calls, by design, and a simulated server would hand out simulated lessons. Remotes, force-with-lease and the collaboration model are covered in the companion article instead.' },
       { q: 'Can I get stuck?', a: 'Not permanently. retry rebuilds the current mission&rsquo;s scene from scratch, hint nudges, and Restart begins a fresh run. Exploring beyond the brief cannot wedge a later mission, because every mission builds its own scene.' },
-      { q: 'What counts towards the best score?', a: 'Every command you run, including help, hint and the ones git refuses. Lower is better, and somewhere around forty-five on a first pass is a respectable showing.' },
+      { q: 'What counts towards the best score?', a: 'Every command you run, including help, hint and the ones git refuses. Lower is better, and somewhere around seventy on a first pass is a respectable showing.' },
       { q: 'Does anything I type leave the page?', a: 'No. There are no network calls anywhere in this game. The only thing stored is the command count of your best run, in this browser.' },
     ],
     related: ['shell-quest', 'ctf-arcade', 'password-duel'],
