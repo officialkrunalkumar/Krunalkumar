@@ -1092,7 +1092,7 @@ Twelve canvas/WebGL toys on their own tiny shell, `viz-shell.js` (not `tool-shel
 | `/labs/shader-playground` | Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers. |
 | `/labs/fractal-explorer` | Zoom the Mandelbrot and Julia sets smoothly on your GPU. Hover to pick a Julia constant. |
 | `/labs/processor-explorer` | Fly from the chip package down to a single transistor - six labelled levels of semantic zoom, with data pulsing through every one. |
-| `/labs/word-cloud` | Paste text and get a frequency-sized word cloud packed into a heart, star or cloud shape, in colours you choose, downloadable as a PNG. No upload, no watermark. |
+| `/labs/word-cloud` | Paste text and get a frequency-sized word cloud packed into any of 336 shapes — 65 drawn, 271 emoji — or any character you type or picture you load, in colours you choose, downloadable as a PNG. No upload, no watermark. |
 | `/labs/tcp-congestion` | Step the three-way handshake with real seq/ack numbers, walk the TCP state machine, and watch Reno congestion control draw its sawtooth. Simulated, checked against RFC 793. |
 | `/labs/buffer-overflow` | Watch a string copy climb over the saved frame pointer into the return address on a real byte-addressed stack, then hijack control flow and watch a stack canary catch it. NX/ASLR limits shown honestly. |
 | `/labs/regex-engine` | Parse, Thompson NFA, subset construction, backtracking and a measured ReDoS blowup. Differentially tested against JavaScript RegExp. |

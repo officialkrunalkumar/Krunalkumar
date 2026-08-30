@@ -40,11 +40,11 @@
         },
         "featureList": [
                 "Frequency-sized word cloud",
-                "Shape masks: heart, star, circle, diamond, cloud",
+                "336 shapes: 65 drawn, 271 emoji, plus any character or your own picture",
                 "Colour palettes",
                 "Font selection",
                 "Automatic filler-word removal",
-                "Spiral packing layout",
+                "Pixel-accurate packing with a small-word fill pass",
                 "PNG download",
                 "Deterministic regenerate and shuffle"
         ],
@@ -96,7 +96,7 @@
                         "name": "Some of my words did not appear - why?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A tight shape can run out of room. The tool places the most frequent words first and tells you if any did not fit; raise the \"max words\" limit, pick a rounder shape, or use a bigger canvas and they will."
+                                "text": "A tight shape can run out of room. The tool places the most frequent words first and tells you how many it placed; raise the \"max words\" limit, pick a rounder shape, or turn off \"repeat words\" so the space goes to new words rather than to repeats."
                         }
                 },
                 {
@@ -204,7 +204,7 @@
         <p class="hero-text">Paste an essay, a speech, a set of reviews or a whole book chapter, and watch the words that matter rise to the top &mdash; sized by how often they appear, packed into a shape, coloured to taste, and yours to download as a PNG. The paid sites charge for this and upload your text to do it. This does the whole thing in your browser, for free, and keeps your words to itself.</p>
         <ul class="lab-facts">
           <li>The biggest word is the most frequent</li>
-          <li>Heart, star, circle, cloud and more shapes</li>
+          <li>336 shapes &mdash; or any emoji, letter or picture of your own</li>
           <li>Colour palettes and font choices</li>
           <li>Download a PNG &mdash; no watermark</li>
           <li>Your text is never uploaded</li>
@@ -277,12 +277,12 @@
             <p>The one thing a word cloud communicates is which words appear most: the biggest word is the most common one. So the text is counted &mdash; each word&rsquo;s size comes from how often it occurs &mdash; and the ordinary filler words (&ldquo;the&rdquo;, &ldquo;and&rdquo;, &ldquo;of&rdquo;) that appear in every text are dropped, because they would dominate the cloud while saying nothing about your text in particular. You can turn that off, or add your own words to ignore.</p>
           </article>
           <article class="info-card">
-            <h3>Packed on a spiral, largest first</h3>
-            <p>Each word starts at the centre and walks outward along a spiral until it finds a gap it fits in. The biggest words go first and take the middle; the smaller ones tuck into the spaces left around them. It is the same greedy idea behind the well-known d3-cloud layout, and it is what makes the result look packed rather than scattered.</p>
+            <h3>Packed by pixels, largest first</h3>
+            <p>A word is placed where none of its own inked pixels touch a pixel already used &mdash; not where its rectangle happens to be free. That is the difference between words that sit in a grid of boxes and words that tuck into the bowl of a big letter. The biggest words go down first and take the middle; then the list is cycled again at steadily smaller sizes, down to a few pixels tall, and it is that tail of small words that reaches into a heart&rsquo;s cleft or a star&rsquo;s points and makes the shape actually read.</p>
           </article>
           <article class="info-card">
             <h3>The shape is a stencil, not a crop</h3>
-            <p>Pick a heart or a star and the words are only placed where they fit inside that outline &mdash; the cloud grows into the shape rather than being drawn as a rectangle and then clipped. Rounder shapes hold more words; a thin star will turn some away, and the tool tells you when it does.</p>
+            <p>Pick a heart, a teddy bear or a rocket and the words are only placed where they fit inside that outline &mdash; the cloud grows into the shape rather than being drawn as a rectangle and then clipped. There are 65 drawn shapes and 271 emoji to choose from, and two that matter more than any of them: you can type any character your machine can draw, or load a picture of your own &mdash; a logo, a silhouette, a pet &mdash; and the words will take its shape. The picture is read in this tab and never uploaded.</p>
           </article>
           <article class="info-card">
             <h3>Free, and private by construction</h3>
@@ -309,7 +309,11 @@
           </details>
           <details class="lab-faq">
             <summary>Some of my words did not appear - why?</summary>
-            <div>A tight shape can run out of room. The tool places the most frequent words first and tells you if any did not fit; raise the "max words" limit, pick a rounder shape, or use a bigger canvas and they will.</div>
+            <div>A tight shape can run out of room. The tool places the most frequent words first and tells you how many it placed; raise the "max words" limit, pick a rounder shape, or turn off "repeat words" so the space goes to new words rather than to repeats.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I use my own picture or logo as the shape?</summary>
+            <div>Yes. Choose "A picture&hellip;" under Shape and pick a file. Anything with a clear outline works &mdash; a logo, a silhouette, a stencil. The file is read inside this tab by your own browser and is never uploaded, so a company logo or an unreleased design is safe to try.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use the image commercially?</summary>

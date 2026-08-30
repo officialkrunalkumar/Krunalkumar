@@ -200,6 +200,268 @@ const MOTIFS = {
     <rect x="796" y="352" width="14" height="14"/><rect x="752" y="374" width="14" height="14"/>
     <rect x="774" y="374" width="14" height="14"/><rect x="796" y="374" width="14" height="14"/>
   </g>`,
+
+  /* ---- The labs ------------------------------------------------------
+     Every lab card used to carry a two-letter monogram of its title in a
+     rounded box: "SO" for the sorting visualiser, "PB" for the breach
+     check. It said nothing — and because it was only two letters, the C
+     compiler and the C++ compiler both came out as "CC", so two different
+     tools shipped the same picture.
+
+     These are per-KIND rather than per-lab, for the reason the game motifs
+     are: a bespoke drawing for each of sixty-four is not a thing that
+     survives the sixty-fifth being added. A kind still says something true
+     — a decoder card does not look like a terminal card — and any lab
+     without an entry falls back to the free-tool motif rather than to
+     nothing. Same box as the motifs above, roughly x 690-1130, y 130-480. */
+
+  labTerminal: `
+  <rect x="716" y="176" width="340" height="250" rx="14" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <path d="M716 218 H1056" stroke="#7dd3fc" stroke-width="4" opacity="0.6"/>
+  <g fill="#38bdf8" opacity="0.85">
+    <circle cx="746" cy="197" r="7"/><circle cx="770" cy="197" r="7" opacity="0.6"/><circle cx="794" cy="197" r="7" opacity="0.4"/>
+  </g>
+  <g font-family="'Consolas','Segoe UI',monospace" font-size="26" font-weight="700" fill="#7dd3fc">
+    <text x="748" y="268">$ ls /usr</text>
+    <text x="748" y="308" opacity="0.7">bin  lib  share</text>
+    <text x="748" y="348" opacity="0.55">$ uname -a</text>
+  </g>
+  <rect x="748" y="372" width="18" height="30" fill="#7dd3fc"/>`,
+
+  labSort: `
+  <g fill="#38bdf8">
+    <rect x="716" y="330" width="40" height="120" rx="5" opacity="0.55"/>
+    <rect x="768" y="270" width="40" height="180" rx="5" opacity="0.55"/>
+    <rect x="820" y="190" width="40" height="260" rx="5" fill="#7dd3fc"/>
+    <rect x="872" y="360" width="40" height="90" rx="5" fill="#7dd3fc"/>
+    <rect x="924" y="240" width="40" height="210" rx="5" opacity="0.55"/>
+    <rect x="976" y="300" width="40" height="150" rx="5" opacity="0.55"/>
+    <rect x="1028" y="210" width="40" height="240" rx="5" opacity="0.55"/>
+  </g>
+  <path d="M840 168 l0 -22 l72 0 l0 22" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <path d="M876 132 l0 24 m-9 -9 l9 9 l9 -9" fill="none" stroke="#7dd3fc" stroke-width="5" stroke-linecap="round"/>`,
+
+  labCode: `
+  <rect x="716" y="170" width="340" height="270" rx="14" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <g fill="#38bdf8" opacity="0.85">
+    <circle cx="748" cy="200" r="7"/><circle cx="772" cy="200" r="7" opacity="0.6"/><circle cx="796" cy="200" r="7" opacity="0.4"/>
+  </g>
+  <g fill="#7dd3fc">
+    <rect x="748" y="234" width="120" height="11" rx="5"/>
+    <rect x="778" y="262" width="180" height="11" rx="5" opacity="0.75"/>
+    <rect x="778" y="290" width="140" height="11" rx="5" opacity="0.6"/>
+    <rect x="808" y="318" width="164" height="11" rx="5" opacity="0.5"/>
+    <rect x="748" y="346" width="96" height="11" rx="5" opacity="0.75"/>
+  </g>
+  <g transform="translate(996,392)">
+    <circle r="34" fill="#7dd3fc"/>
+    <path d="M-10 -15 l24 15 l-24 15 z" fill="#0b1220"/>
+  </g>`,
+
+  labShield: `
+  <path d="M886 150 l150 54 v104 c0 78 -64 130 -150 162 c-86 -32 -150 -84 -150 -162 v-104 z"
+        fill="none" stroke="#7dd3fc" stroke-width="6"/>
+  <path d="M886 186 l116 42 v80 c0 60 -50 100 -116 126 c-66 -26 -116 -66 -116 -126 v-80 z"
+        fill="#38bdf8" opacity="0.16"/>
+  <circle cx="886" cy="300" r="30" fill="none" stroke="#7dd3fc" stroke-width="6"/>
+  <rect x="878" y="300" width="16" height="46" rx="8" fill="#7dd3fc"/>`,
+
+  labCert: `
+  <rect x="716" y="158" width="270" height="300" rx="12" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <g fill="#38bdf8" opacity="0.8">
+    <rect x="748" y="196" width="150" height="12" rx="6"/>
+    <rect x="748" y="230" width="206" height="9" rx="4" opacity="0.7"/>
+    <rect x="748" y="256" width="176" height="9" rx="4" opacity="0.7"/>
+    <rect x="748" y="282" width="196" height="9" rx="4" opacity="0.7"/>
+    <rect x="748" y="308" width="130" height="9" rx="4" opacity="0.7"/>
+  </g>
+  <g transform="translate(1010,352)">
+    <circle r="62" fill="#0b1220" stroke="#7dd3fc" stroke-width="6"/>
+    <circle r="42" fill="none" stroke="#38bdf8" stroke-width="4" opacity="0.7"/>
+    <path d="M-18 2 l14 15 l26 -32" fill="none" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-26 58 l-14 62 l40 -26 l40 26 l-14 -62" fill="#7dd3fc" opacity="0.55"/>
+  </g>`,
+
+  labNetwork: `
+  <g stroke="#38bdf8" stroke-width="4" opacity="0.65" fill="none">
+    <path d="M780 200 L920 300 L1060 220"/><path d="M780 200 L800 400"/>
+    <path d="M920 300 L800 400"/><path d="M920 300 L1000 420"/><path d="M1060 220 L1000 420"/>
+  </g>
+  <g fill="#7dd3fc">
+    <circle cx="920" cy="300" r="26"/>
+    <circle cx="780" cy="200" r="17"/><circle cx="1060" cy="220" r="17"/>
+    <circle cx="800" cy="400" r="17"/><circle cx="1000" cy="420" r="17"/>
+  </g>
+  <circle cx="920" cy="300" r="44" fill="none" stroke="#7dd3fc" stroke-width="3" opacity="0.45"/>`,
+
+  labPackets: `
+  <g fill="#38bdf8">
+    <rect x="716" y="186" width="250" height="26" rx="6" opacity="0.85"/>
+    <rect x="716" y="226" width="330" height="26" rx="6" opacity="0.6"/>
+    <rect x="716" y="266" width="196" height="26" rx="6" opacity="0.75"/>
+    <rect x="716" y="306" width="288" height="26" rx="6" opacity="0.5"/>
+    <rect x="716" y="346" width="150" height="26" rx="6" opacity="0.7"/>
+  </g>
+  <path d="M716 404 H1060" stroke="#7dd3fc" stroke-width="4"/>
+  <g fill="#7dd3fc">
+    <rect x="740" y="396" width="4" height="18"/><rect x="836" y="396" width="4" height="18"/>
+    <rect x="932" y="396" width="4" height="18"/><rect x="1028" y="396" width="4" height="18"/>
+  </g>`,
+
+  labHash: `
+  <g fill="#38bdf8" opacity="0.8">
+    <rect x="716" y="226" width="120" height="12" rx="6"/>
+    <rect x="716" y="256" width="86" height="12" rx="6" opacity="0.7"/>
+    <rect x="716" y="286" width="140" height="12" rx="6" opacity="0.55"/>
+  </g>
+  <path d="M866 262 h56 m-14 -12 l14 12 l-14 12" fill="none" stroke="#7dd3fc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="932" y="206" width="112" height="112" rx="14" fill="none" stroke="#7dd3fc" stroke-width="6"/>
+  <path d="M962 232 v60 M1002 232 v60 M948 254 h80 M948 274 h80" stroke="#7dd3fc" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#7dd3fc" opacity="0.9">
+    <rect x="716" y="368" width="328" height="14" rx="7"/>
+    <rect x="716" y="396" width="252" height="14" rx="7" opacity="0.6"/>
+  </g>`,
+
+  labFile: `
+  <path d="M746 156 h180 l64 64 v250 h-244 z" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <path d="M926 156 v64 h64" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <g fill="#38bdf8" opacity="0.75">
+    <rect x="776" y="252" width="150" height="11" rx="5"/>
+    <rect x="776" y="280" width="184" height="11" rx="5" opacity="0.7"/>
+    <rect x="776" y="308" width="120" height="11" rx="5" opacity="0.55"/>
+    <rect x="776" y="336" width="164" height="11" rx="5" opacity="0.45"/>
+  </g>
+  <g transform="translate(1024,378)">
+    <circle r="46" fill="none" stroke="#7dd3fc" stroke-width="7"/>
+    <path d="M33 33 l30 30" stroke="#7dd3fc" stroke-width="9" stroke-linecap="round"/>
+  </g>`,
+
+  labDb: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="5">
+    <rect x="716" y="176" width="340" height="250" rx="12"/>
+    <path d="M716 236 H1056 M716 296 H1056 M716 356 H1056 M830 176 V426 M944 176 V426"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.55">
+    <rect x="716" y="176" width="340" height="60"/>
+  </g>
+  <g fill="#7dd3fc" opacity="0.75">
+    <rect x="744" y="198" width="60" height="12" rx="6"/>
+    <rect x="858" y="198" width="60" height="12" rx="6"/>
+    <rect x="972" y="198" width="60" height="12" rx="6"/>
+  </g>`,
+
+  labMail: `
+  <rect x="716" y="190" width="340" height="228" rx="14" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <path d="M716 206 L886 322 L1056 206" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <g fill="#38bdf8" opacity="0.7">
+    <rect x="748" y="352" width="120" height="9" rx="4"/>
+    <rect x="748" y="374" width="176" height="9" rx="4" opacity="0.7"/>
+  </g>`,
+
+  labRegex: `
+  <g font-family="'Consolas','Segoe UI',monospace" font-weight="800" fill="#7dd3fc">
+    <text x="716" y="286" font-size="96">/</text>
+    <text x="1010" y="286" font-size="96">/</text>
+  </g>
+  <rect x="774" y="212" width="212" height="96" rx="10" fill="#38bdf8" opacity="0.2"/>
+  <g fill="#7dd3fc">
+    <rect x="794" y="248" width="34" height="14" rx="7"/>
+    <rect x="842" y="248" width="52" height="14" rx="7" opacity="0.75"/>
+    <rect x="908" y="248" width="26" height="14" rx="7" opacity="0.6"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.6">
+    <rect x="716" y="366" width="150" height="11" rx="5"/>
+    <rect x="716" y="394" width="240" height="11" rx="5" opacity="0.7"/>
+  </g>`,
+
+  labCpu: `
+  <rect x="796" y="200" width="200" height="200" rx="12" fill="#0f1a28" stroke="#7dd3fc" stroke-width="6"/>
+  <rect x="842" y="246" width="108" height="108" rx="8" fill="#38bdf8" opacity="0.35"/>
+  <g stroke="#7dd3fc" stroke-width="6" stroke-linecap="round">
+    <path d="M836 200 v-34 M886 200 v-34 M936 200 v-34"/>
+    <path d="M836 400 v34 M886 400 v34 M936 400 v34"/>
+    <path d="M796 246 h-34 M796 296 h-34 M796 346 h-34"/>
+    <path d="M996 246 h34 M996 296 h34 M996 346 h34"/>
+  </g>`,
+
+  labWave: `
+  <path d="M716 300 q34 -110 68 0 t68 0 t68 0 t68 0 t68 0"
+        fill="none" stroke="#7dd3fc" stroke-width="7" stroke-linecap="round"/>
+  <path d="M716 300 q17 -60 34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0 t34 0"
+        fill="none" stroke="#38bdf8" stroke-width="4" opacity="0.5"/>
+  <g fill="#38bdf8" opacity="0.6">
+    <rect x="716" y="380" width="26" height="46" rx="5"/><rect x="754" y="360" width="26" height="66" rx="5"/>
+    <rect x="792" y="394" width="26" height="32" rx="5"/><rect x="830" y="352" width="26" height="74" rx="5"/>
+    <rect x="868" y="378" width="26" height="48" rx="5"/><rect x="906" y="344" width="26" height="82" rx="5"/>
+  </g>`,
+
+  labGrid: `
+  <defs><linearGradient id="lgGrid" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0.15"/>
+  </linearGradient></defs>
+  <rect x="716" y="176" width="340" height="250" rx="12" fill="url(#lgGrid)" opacity="0.55"/>
+  <g fill="none" stroke="#0b1220" stroke-width="3" opacity="0.5">
+    <path d="M784 176 V426 M852 176 V426 M920 176 V426 M988 176 V426"/>
+    <path d="M716 226 H1056 M716 276 H1056 M716 326 H1056 M716 376 H1056"/>
+  </g>
+  <rect x="716" y="176" width="340" height="250" rx="12" fill="none" stroke="#7dd3fc" stroke-width="5"/>`,
+
+  labWords: `
+  <g font-family="'Segoe UI',sans-serif" font-weight="800" fill="#7dd3fc" text-anchor="middle">
+    <text x="886" y="270" font-size="74">words</text>
+    <text x="792" y="206" font-size="34" opacity="0.8">shape</text>
+    <text x="994" y="212" font-size="28" opacity="0.65">colour</text>
+    <text x="800" y="330" font-size="30" opacity="0.7">count</text>
+    <text x="988" y="336" font-size="38" opacity="0.85">size</text>
+    <text x="886" y="392" font-size="26" opacity="0.55">frequency</text>
+  </g>`,
+
+  labClock: `
+  <circle cx="886" cy="298" r="118" fill="none" stroke="#7dd3fc" stroke-width="7"/>
+  <path d="M886 298 V210 M886 298 l62 40" fill="none" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="886" cy="298" r="12" fill="#7dd3fc"/>
+  <g fill="#38bdf8" opacity="0.7">
+    <rect x="880" y="166" width="12" height="22" rx="6"/><rect x="880" y="408" width="12" height="22" rx="6"/>
+    <rect x="754" y="292" width="22" height="12" rx="6"/><rect x="996" y="292" width="22" height="12" rx="6"/>
+  </g>`,
+
+  labKeys: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="5">
+    <rect x="716" y="212" width="340" height="180" rx="14"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.7">
+    <rect x="742" y="240" width="44" height="36" rx="6"/><rect x="798" y="240" width="44" height="36" rx="6"/>
+    <rect x="854" y="240" width="44" height="36" rx="6" fill="#7dd3fc"/><rect x="910" y="240" width="44" height="36" rx="6"/>
+    <rect x="966" y="240" width="64" height="36" rx="6"/>
+    <rect x="742" y="288" width="64" height="36" rx="6"/><rect x="818" y="288" width="44" height="36" rx="6"/>
+    <rect x="874" y="288" width="44" height="36" rx="6"/><rect x="930" y="288" width="44" height="36" rx="6"/>
+    <rect x="986" y="288" width="44" height="36" rx="6"/>
+    <rect x="798" y="336" width="176" height="36" rx="6" fill="#7dd3fc" opacity="0.6"/>
+  </g>`,
+
+  labLink: `
+  <rect x="716" y="228" width="340" height="80" rx="40" fill="#0f1a28" stroke="#7dd3fc" stroke-width="5"/>
+  <circle cx="762" cy="268" r="16" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <g fill="#38bdf8" opacity="0.75">
+    <rect x="796" y="261" width="110" height="14" rx="7"/>
+    <rect x="918" y="261" width="70" height="14" rx="7" opacity="0.6"/>
+  </g>
+  <g fill="none" stroke="#7dd3fc" stroke-width="7" stroke-linecap="round">
+    <path d="M812 372 h-30 a34 34 0 0 1 0 -34 h30"/>
+    <path d="M960 372 h30 a34 34 0 0 0 0 -34 h-30"/>
+    <path d="M840 355 h92"/>
+  </g>`,
+
+  labKey: `
+  <g fill="none" stroke="#7dd3fc" stroke-width="7">
+    <circle cx="800" cy="300" r="72"/>
+  </g>
+  <circle cx="800" cy="300" r="28" fill="#0b1220" stroke="#38bdf8" stroke-width="5"/>
+  <g fill="#7dd3fc">
+    <rect x="866" y="284" width="190" height="32" rx="8"/>
+    <rect x="960" y="316" width="26" height="52" rx="6"/>
+    <rect x="1016" y="316" width="26" height="52" rx="6"/>
+  </g>`,
 };
 
 // ---------------------------------------------------------------------------
@@ -251,7 +513,155 @@ function wrapTitle(title, max) {
     else { line = next; }
   });
   if (line) out.push(line);
-  return out.slice(0, 2);          // two lines is all the card has room for
+  /* Three lines, not two. Two was enough for game names ("Snake", "Air
+     hockey") but the labs have real sentences for titles — "A real BSD shell,
+     running in your browser" came out as "…running in your", which reads as a
+     bug rather than as a title. The subtitle and footer are positioned from
+     lines.length, so a third line pushes them down rather than colliding. */
+  return out.slice(0, 3);
+}
+
+/* ---------------------------------------------------------------------------
+   Labs. Slug -> [motif, eyebrow]. Anything not listed still gets a card, using
+   the code motif and a plain "Free tool" eyebrow, so a new lab is never worse
+   off than it would have been without an entry.
+   --------------------------------------------------------------------------- */
+const LAB_KIND = {
+  'algorithm-visualizer': ['labSort', 'Visualiser'],
+  'os-algorithms':        ['labSort', 'Visualiser'],
+  'regex-engine':         ['labRegex', 'Visualiser'],
+  'regex':                ['labRegex', 'Free tool'],
+  'tcp-congestion':       ['labPackets', 'Visualiser'],
+  'fractal-explorer':     ['labGrid', 'Visualiser'],
+  'shader-playground':    ['labGrid', 'Playground'],
+  'synth':                ['labWave', 'Playground'],
+  'word-cloud':           ['labWords', 'Free tool'],
+  'typing':               ['labKeys', 'Free tool'],
+  'timestamp':            ['labClock', 'Free tool'],
+
+  'c':          ['labCode', 'Compiler'],
+  'cpp':        ['labCode', 'Compiler'],
+  'python':     ['labCode', 'Runtime'],
+  'javascript': ['labCode', 'Runtime'],
+  'typescript': ['labCode', 'Runtime'],
+  'ruby':       ['labCode', 'Runtime'],
+  'perl':       ['labCode', 'Runtime'],
+  'php':        ['labCode', 'Runtime'],
+  'lua':        ['labCode', 'Runtime'],
+
+  'sql':             ['labDb', 'Free tool'],
+  'postgres':        ['labDb', 'Runtime'],
+  'sqlite-browser':  ['labDb', 'Free tool'],
+
+  'bsd':     ['labTerminal', 'Emulator'],
+  'linux':   ['labTerminal', 'Emulator'],
+  'hacklab': ['labTerminal', 'Security tool'],
+
+  'breach-check':      ['labShield', 'Security tool'],
+  'password':          ['labKey', 'Security tool'],
+  'leak':              ['labKey', 'Security tool'],
+  'cvss':              ['labShield', 'Security tool'],
+  'email-security':    ['labShield', 'Security tool'],
+  'buffer-overflow':   ['labCpu', 'Visualiser'],
+  'steganography':     ['labGrid', 'Security tool'],
+  'cryptography':      ['labHash', 'Security tool'],
+  'cipher':            ['labHash', 'Free tool'],
+  'hash':              ['labHash', 'Free tool'],
+  'hash-cracker':      ['labHash', 'Security tool'],
+  'encoding':          ['labHash', 'Free tool'],
+  'jwt':               ['labCert', 'Security tool'],
+  'cert-decoder':      ['labCert', 'Security tool'],
+  'certificate-forge': ['labCert', 'Security tool'],
+  'ct-log':            ['labCert', 'Security tool'],
+
+  'dns':       ['labNetwork', 'Network tool'],
+  'subnet':    ['labNetwork', 'Network tool'],
+  'rdap':      ['labNetwork', 'Network tool'],
+  'chat':      ['labNetwork', 'Network tool'],
+  'pcap-analyzer': ['labPackets', 'Network tool'],
+  'har-analyzer':  ['labPackets', 'Network tool'],
+  'dos':       ['labPackets', 'Visualiser'],
+  'api':       ['labLink', 'Free tool'],
+  'url-inspector': ['labLink', 'Free tool'],
+
+  'email-headers': ['labMail', 'Free tool'],
+
+  'archive-inspector':  ['labFile', 'Security tool'],
+  'file-inspector':     ['labFile', 'Free tool'],
+  'exif':               ['labFile', 'Free tool'],
+  'memory-strings':     ['labFile', 'Security tool'],
+  'registry-viewer':    ['labFile', 'Free tool'],
+  'image':              ['labGrid', 'Free tool'],
+
+  'cpu-simulator':      ['labCpu', 'Simulator'],
+  'processor-explorer': ['labCpu', 'Free tool'],
+};
+
+/* The first sentence of the page's own description, which is written to explain
+   the tool rather than to fill a card, so it is cut at a sentence end where one
+   is close enough and only hard-truncated when it is not. */
+function firstSentence(text, max) {
+  const s = String(text).replace(/\s+/g, ' ').trim();
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf(' — '), cut.lastIndexOf(' - '));
+  if (stop > max * 0.5) return cut.slice(0, stop).trim();
+  const sp = cut.lastIndexOf(' ');
+  return (sp > 0 ? cut.slice(0, sp) : cut).trim() + '…';
+}
+
+function labCards() {
+  const dir = path.join(ROOT, 'labs');
+  let files = [];
+  try {
+    files = fs.readdirSync(dir).filter((f) => f.endsWith('.html'));
+  } catch (err) {
+    return [];                       // no labs directory, no lab cards
+  }
+
+  const cards = [];
+  files.forEach((f) => {
+    const slug = f.replace(/\.html$/, '');
+    const html = fs.readFileSync(path.join(dir, f), 'utf8');
+
+    /* The destination is whatever the PAGE says its og:image is, not a path
+       built from the slug. Three of the labs predate the og-lab- convention
+       and point at og-biodata-maker.jpg and friends; deriving the name instead
+       of reading it would have written a second card next to each of those and
+       left the one actually being served untouched. A page with no og:image,
+       or one pointing off-site, gets no card rather than a guess. */
+    const og = (html.match(/property="og:image" content="([^"]*)"/) || [])[1];
+    const m = og && og.match(/\/assets\/images\/([^/"]+\.jpg)$/);
+    if (!m) return;
+    const dest = 'assets/images/' + m[1];
+    // the labs hub is not a lab; it has its own card in the list above
+    if (m[1] === 'og-labs.jpg') return;
+    /* The <h1> rather than the <title>: the title ends in
+       "| Krunalkumar Shah", which belongs in a tab and not set at 56px
+       across a share card. */
+    const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || slug;
+    /* \s+ rather than a single space: a good many of these pages put the meta
+       attributes on their own lines, and a one-line pattern silently matched
+       nothing there — those labs fell through to the generic "Runs in your
+       browser" subtitle while looking like they had simply not been given one. */
+    const desc = (html.match(/name="description"\s+content="([^"]*)"/) || [])[1] || '';
+    const strip = (s) => String(s).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const kind = LAB_KIND[slug] || ['labCode', 'Free tool'];
+
+    cards.push({
+      id: 'lab-' + slug,
+      motif: kind[0],
+      dest: dest,
+      eyebrow: 'Labs · ' + kind[1],
+      /* 20, not the 22 the game names use. A lab title is a description
+         ("Password strength checker and generator") rather than a name, so it
+         actually reaches the limit — and at 56px a 22-character line runs to
+         about x=740, into the motif box that starts at 690. */
+      lines: wrapTitle(strip(h1), 20),
+      sub: firstSentence(strip(desc) || "Runs in your browser. Free, no sign-up.", 88),
+    });
+  });
+  return cards;
 }
 
 function gameCards() {
@@ -311,7 +721,7 @@ const CARDS = [
   /* Every game and the arcade hub, derived from the manifest by gameCards()
      below rather than listed by hand. A function declaration is hoisted, so
      it is callable from this initialiser. */
-].concat(gameCards());
+].concat(labCards(), gameCards());
 
 
 /* HTML entities decoded BEFORE escaping. The manifest is written for HTML
@@ -335,6 +745,12 @@ const esc = (s) =>
 
 function svg(card) {
   const lines = card.lines;
+  /* The subtitle wraps inside the LEFT COLUMN rather than running as one long
+     line. At 25px a 76-character line reaches about x=1030, straight through
+     the motif — fine for the game cards, whose taglines are half a dozen words,
+     and not fine for the labs, whose descriptions are real sentences. Wrapped
+     at 46 it stops around x=655, clear of the motif box that starts at 690. */
+  const subLines = wrapTitle(card.sub, 46).slice(0, 2);
   // Width/height are set here, not just a viewBox: an SVG with only a viewBox
   // has no intrinsic size and Chromium rasterises it at a default 300x150
   // before scaling, which comes out soft.
@@ -354,8 +770,8 @@ function svg(card) {
   <g font-family="'Segoe UI', Tahoma, sans-serif">
     <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">${esc(card.eyebrow.toUpperCase())}</text>
 ${lines.map((l, i) => `    <text x="80" y="${280 + i * 66}" fill="#f8fafc" font-size="56" font-weight="800">${esc(l)}</text>`).join('\n')}
-    <text x="80" y="${280 + lines.length * 66 + 14}" fill="#e2e8f0" font-size="25" font-weight="600">${esc(card.sub)}</text>
-    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org</text>
+${subLines.map((l, i) => `    <text x="80" y="${280 + lines.length * 66 + 14 + i * 33}" fill="#e2e8f0" font-size="25" font-weight="600">${esc(l)}</text>`).join('\n')}
+    <text x="80" y="${Math.max(545, 280 + lines.length * 66 + 14 + (subLines.length - 1) * 33 + 40)}" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org</text>
   </g>
 </svg>
 `;
@@ -372,8 +788,15 @@ function main() {
     process.exit(m.length ? 1 : 0);
   }
 
-  const todo = process.argv.includes('--force') ? CARDS : missing();
-  if (!todo.length) { console.log('og cards: all present, nothing to render'); return; }
+  /* --only <substring> narrows a --force run to the cards whose id matches.
+     Without it, changing one family of motifs means re-rendering all of them,
+     which rewrites a hundred and forty committed JPEGs to identical-looking
+     but byte-different files and buries the actual change in the diff. */
+    const onlyAt = process.argv.indexOf('--only');
+  const only = onlyAt > -1 ? process.argv[onlyAt + 1] : null;
+  let todo = process.argv.includes('--force') ? CARDS : missing();
+  if (only) todo = todo.filter((c) => c.id.indexOf(only) === 0);
+  if (!todo.length) { console.log('og cards: nothing to render'); return; }
 
   const page = `<!doctype html><meta charset="utf-8"><title>og cards</title>
 <body style="background:#111;color:#eee;font:14px system-ui;padding:16px">
