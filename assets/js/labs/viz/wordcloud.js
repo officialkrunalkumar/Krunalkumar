@@ -1979,11 +1979,30 @@
        INK     anything else — split light from dark, with the split point
                chosen by Otsu's method rather than a fixed number, because a
                fixed number is right for one picture and wrong for the next. */
-    var clear = 0;
-    for (i = 0; i < n; i++) if (drawn[i] && d[i * 4 + 3] < 200) clear++;
+    /* Is this a cut-out? Measured over the RECTANGLE THE PICTURE OCCUPIES, not
+       over the pixels it drew.
+
+       The old test asked what share of the DRAWN pixels were translucent — but
+       "drawn" already means alpha > 8, so it was only ever counting the
+       part-transparent fringe left by antialiasing. A clean cut-out PNG of a
+       solid subject has a hard edge and almost no fringe, so it scored close
+       to zero and was not recognised as a cut-out at all. What actually makes
+       a picture a cut-out is that much of its rectangle is FULLY transparent,
+       which is what this counts. */
+    var ix0 = Math.max(0, Math.floor((gw - dw) / 2));
+    var iy0 = Math.max(0, Math.floor((gh - dh) / 2));
+    var ix1 = Math.min(gw - 1, Math.ceil(ix0 + dw - 1));
+    var iy1 = Math.min(gh - 1, Math.ceil(iy0 + dh - 1));
+    var rectArea = 0, transparent = 0;
+    for (var ry = iy0; ry <= iy1; ry++) {
+      for (var rx = ix0; rx <= ix1; rx++) {
+        rectArea++;
+        if (d[(ry * gw + rx) * 4 + 3] < 128) transparent++;
+      }
+    }
     var drawnCount = 0;
     for (i = 0; i < n; i++) if (drawn[i]) drawnCount++;
-    var mode = (drawnCount && clear > drawnCount * 0.04) ? 'alpha' : null;
+    var mode = (rectArea && transparent > rectArea * 0.04) ? 'alpha' : null;
 
     function px(ix) { return [d[ix * 4], d[ix * 4 + 1], d[ix * 4 + 2]]; }
     function dist(a, b) {
@@ -1997,14 +2016,41 @@
       for (r = gh - 1; r >= 0; r--) { var any2 = false; for (c2 = 0; c2 < gw; c2++) if (drawn[r * gw + c2]) { any2 = true; break; } if (any2) { y1 = r; break; } }
       for (c2 = 0; c2 < gw; c2++) { var any3 = false; for (r = 0; r < gh; r++) if (drawn[r * gw + c2]) { any3 = true; break; } if (any3) { x0 = c2; break; } }
       for (c2 = gw - 1; c2 >= 0; c2--) { var any4 = false; for (r = 0; r < gh; r++) if (drawn[r * gw + c2]) { any4 = true; break; } if (any4) { x1 = c2; break; } }
-      var cs = [px(y0 * gw + x0), px(y0 * gw + x1), px(y1 * gw + x0), px(y1 * gw + x1)];
-      var spread = 0;
-      for (var a = 0; a < 4; a++) for (var b = a + 1; b < 4; b++) spread = Math.max(spread, dist(cs[a], cs[b]));
-      if (spread < 60) {
-        mode = 'key';
-        key = [Math.round((cs[0][0] + cs[1][0] + cs[2][0] + cs[3][0]) / 4),
-               Math.round((cs[0][1] + cs[1][1] + cs[2][1] + cs[3][1]) / 4),
-               Math.round((cs[0][2] + cs[1][2] + cs[2][2] + cs[3][2]) / 4)];
+      /* THE BACKGROUND COLOUR, from the border of the picture.
+
+         This used to read exactly the four corners of the bounding box and
+         average them. A bounding box is a rectangle, but the picture inside it
+         need not reach the corners — a rounded-corner logo, a clipped or
+         feathered edge — and an undrawn pixel on a canvas is not "no colour",
+         it is rgba(0,0,0,0), which reads as pure black. All four corners then
+         agreed on black, passed the similarity test with room to spare, and
+         the whole image was keyed against a background it never had: every
+         genuinely dark part of the picture was discarded as background.
+
+         So: skip any pixel the picture did not draw, sample all four edges
+         rather than four points, and take the MEDIAN rather than the mean, so
+         one stray dark pixel — or an object that happens to touch an edge —
+         cannot decide the answer for the whole image. */
+      var samples = [];
+      function edgeSample(ix) { if (drawn[ix]) samples.push(px(ix)); }
+      var stepX = Math.max(1, Math.floor((x1 - x0 + 1) / 60));
+      var stepY = Math.max(1, Math.floor((y1 - y0 + 1) / 60));
+      for (c2 = x0; c2 <= x1; c2 += stepX) { edgeSample(y0 * gw + c2); edgeSample(y1 * gw + c2); }
+      for (r = y0; r <= y1; r += stepY) { edgeSample(r * gw + x0); edgeSample(r * gw + x1); }
+
+      if (samples.length >= 12) {
+        var med = [0, 0, 0];
+        for (var ch = 0; ch < 3; ch++) {
+          var vals = samples.map(function (s) { return s[ch]; })
+                            .sort(function (p, q) { return p - q; });
+          med[ch] = vals[vals.length >> 1];
+        }
+        /* Three quarters of the border has to agree with that median before
+           this is called a flat background at all; a photograph's border does
+           not, and it correctly falls through to the ink threshold instead. */
+        var devs = samples.map(function (s) { return dist(s, med); })
+                          .sort(function (p, q) { return p - q; });
+        if (devs[Math.floor(devs.length * 0.75)] < 60) { mode = 'key'; key = med; }
       }
     }
 
@@ -2065,7 +2111,13 @@
     x.putImageData(out, 0, 0);
 
     // kept so generate() can say something useful when the result is unusable
-    this.imageRead = { mode: mode, coverage: drawnCount ? inCount / drawnCount : 0 };
+    /* Coverage against the picture's whole RECTANGLE, not against the pixels it
+       drew. Measured against drawn pixels a clean cut-out scores 100% — every
+       opaque pixel is, correctly, part of the shape — and the visitor was told
+       their perfectly good silhouette "came out almost solid". Against the
+       rectangle the number means what the warning needs it to mean: how much
+       of the picture turned into cloud. */
+    this.imageRead = { mode: mode, coverage: rectArea ? inCount / rectArea : 0 };
   };
 
   WordCloudApp.prototype.generate = function () {
