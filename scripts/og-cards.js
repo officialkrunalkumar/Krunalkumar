@@ -503,8 +503,33 @@ const CATEGORY_EYEBROW = {
 /* Titles are set at 56px in a 1200px card with the motif taking the right
    half, so a line longer than this overruns the artwork. Broken on spaces,
    never mid-word. */
-function wrapTitle(title, max) {
-  const words = String(title).split(/\s+/);
+/* HTML entities decoded BEFORE escaping. The manifest is written for HTML
+   and uses &mdash;, &middot; and friends; an SVG is XML, which defines only
+   amp, lt, gt, quot and apos, so anything else makes the document
+   unparseable. Chromium then fails the image load silently and the card is
+   simply skipped — which is how four games came out with no card at all
+   while the run reported success. */
+const ENTITIES = {
+  mdash: '—', ndash: '–', middot: '·', hellip: '…',
+  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“',
+  nbsp: ' ', times: '×', amp: '&', lt: '<', gt: '>', quot: '"',
+};
+const deEntity = (s) =>
+  String(s)
+    .replace(/&#(\d+);/g, (m, d) => String.fromCharCode(Number(d)))
+    .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in ENTITIES ? ENTITIES[k.toLowerCase()] : m));
+
+const esc = (s) =>
+  deEntity(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/* Every line, uncapped. Kept separate from wrapTitle because a caller that
+   wants to KNOW whether a title overflows cannot find out from a function that
+   has already thrown the overflow away. */
+function wrapAll(title, max) {
+  /* Decoded first. "&amp;" is five characters in the source and one on the
+     card, so measuring the raw string spends the line budget on text nobody
+     sees and breaks the line in the wrong place. */
+  const words = deEntity(String(title)).split(/\s+/);
   const out = [];
   let line = '';
   words.forEach((w) => {
@@ -513,12 +538,16 @@ function wrapTitle(title, max) {
     else { line = next; }
   });
   if (line) out.push(line);
+  return out;
+}
+
+function wrapTitle(title, max) {
   /* Three lines, not two. Two was enough for game names ("Snake", "Air
      hockey") but the labs have real sentences for titles — "A real BSD shell,
      running in your browser" came out as "…running in your", which reads as a
      bug rather than as a title. The subtitle and footer are positioned from
      lines.length, so a third line pushes them down rather than colliding. */
-  return out.slice(0, 3);
+  return wrapAll(title, max).slice(0, 3);
 }
 
 /* ---------------------------------------------------------------------------
@@ -610,6 +639,35 @@ function firstSentence(text, max) {
   return (sp > 0 ? cut.slice(0, sp) : cut).trim() + '…';
 }
 
+/* wrapTitle keeps three lines and silently discards the rest, which on two of
+   the labs meant a share card reading "Peer-to-peer chat, and why a browser
+   cannot listen on a" — stopping mid-sentence with nothing to say it had. A
+   title too long for the card is cut at its first clause boundary instead, so
+   what remains is a phrase rather than a fragment; if there is no boundary to
+   cut at, the ellipsis at least admits to the cut. */
+function cardTitle(title, max, fallback) {
+  const full = wrapAll(title, max);
+  if (full.length <= 3) return full;
+
+  // 1. cut at the first clause boundary, so what is left is a phrase
+  for (const mark of [' — ', ' – ', ': ', ', ', '; ']) {
+    const at = title.indexOf(mark);
+    if (at > 0) {
+      const head = title.slice(0, at).trim();
+      if (head && wrapAll(head, max).length <= 3) return wrapAll(head, max);
+    }
+  }
+  // 2. the page's own <title>, which is written to be short
+  if (fallback) {
+    const alt = wrapAll(fallback, max);
+    if (alt.length <= 3) return alt;
+  }
+  // 3. give up, but say so
+  const kept = full.slice(0, 3);
+  kept[2] = kept[2].replace(/[\s,;:]+$/, '') + '…';
+  return kept;
+}
+
 function labCards() {
   const dir = path.join(ROOT, 'labs');
   let files = [];
@@ -647,6 +705,10 @@ function labCards() {
     const desc = (html.match(/name="description"\s+content="([^"]*)"/) || [])[1] || '';
     const strip = (s) => String(s).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
     const kind = LAB_KIND[slug] || ['labCode', 'Free tool'];
+    /* The <title> without the site suffix: written to fit a browser tab, so it
+       is the natural second choice when the <h1> is a whole sentence. */
+    const rawTitle = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
+    const shortTitle = strip(rawTitle).replace(/\s*[|—-]\s*Krunalkumar Shah\s*$/, '').trim();
 
     cards.push({
       id: 'lab-' + slug,
@@ -657,7 +719,7 @@ function labCards() {
          ("Password strength checker and generator") rather than a name, so it
          actually reaches the limit — and at 56px a 22-character line runs to
          about x=740, into the motif box that starts at 690. */
-      lines: wrapTitle(strip(h1), 20),
+      lines: cardTitle(strip(h1), 20, shortTitle),
       sub: firstSentence(strip(desc) || "Runs in your browser. Free, no sign-up.", 88),
     });
   });
@@ -724,24 +786,6 @@ const CARDS = [
 ].concat(labCards(), gameCards());
 
 
-/* HTML entities decoded BEFORE escaping. The manifest is written for HTML
-   and uses &mdash;, &middot; and friends; an SVG is XML, which defines only
-   amp, lt, gt, quot and apos, so anything else makes the document
-   unparseable. Chromium then fails the image load silently and the card is
-   simply skipped — which is how four games came out with no card at all
-   while the run reported success. */
-const ENTITIES = {
-  mdash: '—', ndash: '–', middot: '·', hellip: '…',
-  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“',
-  nbsp: ' ', times: '×', amp: '&', lt: '<', gt: '>', quot: '"',
-};
-const deEntity = (s) =>
-  String(s)
-    .replace(/&#(\d+);/g, (m, d) => String.fromCharCode(Number(d)))
-    .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in ENTITIES ? ENTITIES[k.toLowerCase()] : m));
-
-const esc = (s) =>
-  deEntity(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function svg(card) {
   const lines = card.lines;
