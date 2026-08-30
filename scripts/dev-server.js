@@ -86,6 +86,25 @@ const TYPES = {
      already exactly what the fallback below produces. A row that restates the
      default is one more thing to keep true for no gain. */
   '.ts': 'video/mp2t',
+
+  /* The explainer videos and their narration source. Without these rows a .mp4
+     falls through to application/octet-stream, and because vercel.json sets
+     X-Content-Type-Options: nosniff for every path — which this server
+     faithfully replays — the browser is forbidden from sniffing its way out of
+     that. Firefox refuses a non-media type on <video> outright and Chrome's
+     media sniffing is disabled by nosniff, so the videos play in production,
+     where Vercel resolves .mp4 through mime-db, and are dead locally. That is
+     exactly the local-only divergence the .mjs and .ts rows above exist to
+     prevent, which is the whole argument for adding these too. */
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.wav': 'audio/wav',
+
+  /* Captions, and this one is not merely cosmetic: a <track> whose file comes
+     back as anything but text/vtt is rejected outright, so the subtitles would
+     be silently absent locally while working in production. Same trap as the
+     .mp4 row above, one step further along. */
+  '.vtt': 'text/vtt; charset=utf-8',
 };
 
 function isFile(p) {
@@ -293,11 +312,53 @@ const server = http.createServer((req, res) => {
 
   const type = TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream';
 
+  /* RANGE REQUESTS, because a <video> needs them.
+
+     Without a 206 the browser cannot seek, and for a fragmented MP4 it also
+     cannot learn the running time up front — the scrubber starts empty and
+     grows as the file streams in, which looks broken and is the sort of thing
+     you only discover locally if the dev server behaves like the real host.
+     Vercel serves ranges; this now does too, so the two agree. */
+  const stat = fs.statSync(file);
+  const range = req.headers.range;
+  const m = range && /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+  if (m && stat.size > 0) {
+    let start = m[1] === '' ? null : Number(m[1]);
+    let end = m[2] === '' ? null : Number(m[2]);
+    if (start === null) {                    // "-N": the last N bytes
+      start = Math.max(0, stat.size - (end || 0));
+      end = stat.size - 1;
+    } else if (end === null || end >= stat.size) {
+      end = stat.size - 1;
+    }
+    if (start > end || start >= stat.size) {
+      res.writeHead(416, Object.assign({}, sent, {
+        'Content-Range': 'bytes */' + stat.size,
+        'Cache-Control': 'no-store',
+      }));
+      res.end();
+      console.log('416  ' + pathname + '  ' + range);
+      return;
+    }
+    res.writeHead(206, Object.assign({}, sent, {
+      'Content-Type': type,
+      'Content-Range': 'bytes ' + start + '-' + end + '/' + stat.size,
+      'Content-Length': (end - start + 1),
+      'Accept-Ranges': 'bytes',
+      'Cache-Control': 'no-store',
+    }));
+    fs.createReadStream(file, { start, end }).pipe(res);
+    console.log('206  ' + pathname + '  ' + start + '-' + end + '/' + stat.size);
+    return;
+  }
+
   /* no-store, deliberately: the whole point of a dev server is that a reload
      shows the edit you just made. It goes on last so it wins over whatever
      Cache-Control vercel.json had for this path. */
   res.writeHead(200, Object.assign({}, sent, {
     'Content-Type': type,
+    'Content-Length': stat.size,
+    'Accept-Ranges': 'bytes',
     'Cache-Control': 'no-store',
   }));
   fs.createReadStream(file).pipe(res);

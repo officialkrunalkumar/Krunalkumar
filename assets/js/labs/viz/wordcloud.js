@@ -52,7 +52,12 @@
     'after again all also am any because been before being below between both each few more most ' +
     'other some than too very just once here how what when where which who whom why over under out ' +
     'up down off then so only own same s t don now').split(/\s+/);
-  var STOP = {};
+  /* Object.create(null), not {}. A plain object inherits constructor,
+     __proto__, toString and the rest, so a text containing the word
+     "constructor" looked like a stop word that was already present, and the
+     word vanished from the cloud entirely. A dictionary keyed by arbitrary
+     user text must not carry Object.prototype with it. */
+  var STOP = Object.create(null);
   STOPWORDS.forEach(function (w) { STOP[w] = true; });
 
   /* Split text into lowercase word tokens. Apostrophes inside a word are kept
@@ -112,7 +117,7 @@
     opts = opts || {};
     var minLength = opts.minLength || 2;
     var useStops = opts.stopwords !== false;
-    var extraStops = {};
+    var extraStops = Object.create(null);
     (opts.extraStopwords || []).forEach(function (w) { extraStops[String(w).toLowerCase()] = true; });
 
     /* A single letter is noise in English, but a single character is an
@@ -121,7 +126,7 @@
        would throw away most of a Chinese text. */
     var IDEOGRAPH = /[぀-ヿ㐀-䶿一-鿿豈-﫿]/;
 
-    var counts = {};
+    var counts = Object.create(null);
     tokenize(text).forEach(function (w) {
       if (w.length < minLength && !IDEOGRAPH.test(w)) return;
       if (useStops && STOP[w]) return;
@@ -153,8 +158,11 @@
   /*  SHAPE MASKS                                                             */
   /* ------------------------------------------------------------------------ */
   /*  Each mask takes normalised coordinates in [-1, 1] and says whether the   */
-  /*  point is inside the shape. Layout accepts a word only if its whole box    */
-  /*  is inside, so the cloud fills the shape instead of being clipped to it.   */
+  /*  point is inside the shape. Every cell outside it is marked occupied       */
+  /*  before packing starts, so a word can only land where its own inked        */
+  /*  pixels fit inside — the shape is the container the cloud grows into,      */
+  /*  not a crop applied afterwards. (These implicit predicates are the         */
+  /*  fallback and the test seam; the browser passes a rasterised mask.)        */
   /* ======================================================================== */
 
   var SHAPES = {
@@ -222,7 +230,11 @@
   /*  down. That is what lets a 'j' tuck under a 'T' and the whole thing fill    */
   /*  a shape tightly instead of leaving rectangular gaps.                      */
   /*                                                                            */
-  /*  makeSprite(word, fontSize, vertical) -> { gw, gh, cells } is injected:    */
+  /*  makeSprite(word, fontSize, angle) -> { gw, gh, cells, offX, offY } is      */
+  /*  injected. The third argument is an ANGLE IN RADIANS, not the old vertical  */
+  /*  boolean, and offX/offY give where fillText's origin sits relative to the   */
+  /*  cropped sprite's corner — a caller that omits them is assumed to be        */
+  /*  handing over an uncropped box and they default to its centre.              */
   /*  the browser rasterises on a canvas and downsamples to the grid; the test  */
   /*  harness hands over a filled rectangle. So the packing — the part with the */
   /*  bugs — is tested without a canvas, while the real rendering stays sharp.  */
@@ -382,17 +394,18 @@
       anchors = out;
     }
 
-    /* Spiral a word out from the centre until its pixels find a free spot.
+    /* Walk the anchor list until the word's pixels find a free spot.
 
-       The angle step is 1/r rather than a constant. On an Archimedean spiral
-       the distance between two samples an angle dø apart is about r·dø, so a
-       constant step spreads the candidates further and further apart as the
-       spiral winds out: at the old 0.22 rad, positions 200px from the centre
-       were sampled every 44px. Anything that would have fitted in a gap
-       between two of those samples was simply never offered it, which is why
-       small words failed to find the crevices they were meant to fill and the
-       outlines of the shapes stayed ragged. Stepping by 1/r keeps the samples
-       roughly a cell apart the whole way out. */
+       There is no spiral here any more. A spiral has to trade off between
+       sampling densely and reaching the rim: stepping along one by roughly a
+       cell, reaching the far corner of a 320x200 grid costs about fifty
+       thousand candidate positions, and paying that for every word of every
+       sweep is not affordable. Stepping coarsely instead — which is what this
+       used to do, at a constant 0.22 rad — leaves most of the board unoffered:
+       200px out, positions were sampled every 44px, and anything that would
+       have fitted between two samples was never offered one. The anchor list
+       has neither problem, because it is built once and covers every cell
+       exactly once. */
     function place(word, fontSize, angle, colorSeed, spread) {
       var sprite = makeSprite(word, fontSize, angle);
       if (!sprite || !sprite.gw || !sprite.gh) return false;
@@ -490,35 +503,27 @@
       }
     }
 
-    var used = 0, avail = 0;
-    for (var k = 0; k < occ.length; k++) { if (occ[k]) used++; }
-    // available cells are those inside the shape (initially free)
-    var inside = 0;
+    /* Coverage: inked cells inside the shape, over cells inside the shape.
+
+       One pass, not three. This used to count occupied cells into `used`, walk
+       the mask again to count `inside`, and then call placedCells() to walk it
+       a third time — with `used` and `avail` never read afterwards. On a
+       320x200 grid that was ~192,000 mask evaluations per layout to produce
+       one percentage. */
+    var inside = 0, inked = 0;
     for (var gy3 = 0; gy3 < gh; gy3++) {
       for (var gx3 = 0; gx3 < gw; gx3++) {
         var nnx = ((gx3 + 0.5) / gw) * 2 - 1;
         var nny = ((gy3 + 0.5) / gh) * 2 - 1;
-        if (mask(nnx, nny)) inside++;
+        if (!mask(nnx, nny)) continue;
+        inside++;
+        if (occ[gy3 * gw + gx3]) inked++;
       }
     }
-    var coverage = inside ? Math.min(1, placedCells(occ, gw, gh, mask) / inside) : 0;
+    var coverage = inside ? Math.min(1, inked / inside) : 0;
 
     return { placed: placed, skipped: skipped, width: width, height: height,
              coverage: coverage, total: placed.length, work: work };
-  }
-
-  // Count occupied cells that are inside the shape (i.e. actually filled by
-  // words, not the blocked-out surround).
-  function placedCells(occ, gw, gh, mask) {
-    var n = 0;
-    for (var gy = 0; gy < gh; gy++) {
-      for (var gx = 0; gx < gw; gx++) {
-        var nx = ((gx + 0.5) / gw) * 2 - 1;
-        var ny = ((gy + 0.5) / gh) * 2 - 1;
-        if (mask(nx, ny) && occ[gy * gw + gx]) n++;
-      }
-    }
-    return n;
   }
 
   var CORE = {
@@ -846,9 +851,17 @@
     this.thrInput.min = '0'; this.thrInput.max = '100'; this.thrInput.step = '2';
     this.thrInput.value = '50';
     this.thrInput.setAttribute('aria-label', 'How much of the picture counts as the shape');
+    /* Coalesced, because a full re-layout on every pixel of a drag runs
+       synchronously on the main thread and the slider fights the hand holding
+       it. One frame's delay is imperceptible and makes the drag smooth. */
     this.thrInput.addEventListener('input', function () {
       self.opts.imageThreshold = parseInt(self.thrInput.value, 10);
-      if (self.opts.shape === 'image') self.generate();
+      if (self.opts.shape !== 'image') return;
+      if (self._thrTimer) clearTimeout(self._thrTimer);
+      self._thrTimer = setTimeout(function () {
+        self._thrTimer = null;
+        self.generate();
+      }, 90);
     });
     thrField.appendChild(this.thrInput);
     this.imageRow.appendChild(thrField);
@@ -1037,7 +1050,7 @@
      pixels on every side, which is a rounding error on a 90px word and a
      doubling on a 7px one — the small words were being held apart by their own
      height. */
-  WordCloudApp.prototype.spriteMaker = function (grid) {
+  WordCloudApp.prototype.spriteMaker = function (grid, maxW, maxH) {
     var fontCss = FONTS[this.opts.font].css;
     if (!this._tmp) { this._tmp = document.createElement('canvas'); }
     var tmp = this._tmp;
@@ -1046,7 +1059,9 @@
        pass sweeps, and rasterising is the expensive part, so sprites are
        memoised. The key includes the font because a font change rebuilds the
        whole maker anyway. */
-    var cache = {};
+    /* Also prototype-free: the cache key ends in the word itself, so
+       "constructor" would otherwise collide with an inherited property. */
+    var cache = Object.create(null);
     return function (word, fontSize, angle) {
       angle = angle || 0;
       var key = fontSize + '|' + angle.toFixed(3) + '|' + word;
@@ -1066,7 +1081,24 @@
       var ca = Math.abs(Math.cos(angle)), sa = Math.abs(Math.sin(angle));
       var w = Math.ceil(textW * ca + textH * sa);
       var h = Math.ceil(textW * sa + textH * ca);
-      if (w < 1 || h < 1) return null;
+      if (w < 1 || h < 1) { cache[key] = null; return null; }
+
+      /* A CEILING, checked before anything is allocated.
+
+         The scratch canvas was sized straight from measureText with no upper
+         bound, and a "word" can be arbitrarily long: a hash dump, a keyboard
+         mash, a spaceless-script paragraph. Both tokenisers return such a run
+         as ONE token, and one token means maxCount === minCount, so it is
+         asked for at 89px. Measured: 5,000 characters asks for a 249683x143
+         canvas — 136MB of ImageData, scanned pixel by pixel twice, and then
+         asked for again at each of a dozen ladder rungs.
+
+         The packer already refuses any sprite larger than the board, so
+         nothing that could ever have been placed is lost by refusing it here
+         instead — only the allocation is. Cached as null so the ladder does
+         not re-measure it at every rung. */
+      if (w > maxW || h > maxH) { cache[key] = null; return null; }
+
       tmp.width = w; tmp.height = h;
       tctx.clearRect(0, 0, w, h);
       tctx.font = fontCss.replace('%s', fontSize);
@@ -2008,7 +2040,11 @@
        it the only feedback is "that came out wrong". */
     var tune = (this.opts.imageThreshold == null ? 50 : this.opts.imageThreshold) - 50;
     if (mode === 'ink') cut = Math.max(2, Math.min(254, cut + tune * 1.8));
-    var keyTol = Math.max(8, 60 + tune * 1.6);
+    /* MINUS, not plus. "inside" here is dist(pixel, background) > keyTol, so a
+       bigger tolerance takes LESS of the picture — the opposite of what the
+       same slider does in ink mode, where a bigger cut takes more. One control
+       has to mean one thing: dragging right always takes in more. */
+    var keyTol = Math.max(8, 60 - tune * 1.6);
 
     var out = x.createImageData(gw, gh);
     var o = out.data;
@@ -2055,7 +2091,7 @@
       fill: this.opts.repeat !== false,
       fillMinFont: this.opts.fillMinFont,
       angleSet: ANGLE_SETS[this.opts.angles] ? ANGLE_SETS[this.opts.angles].angles : undefined
-    }, this.spriteMaker(grid), maskFn);
+    }, this.spriteMaker(grid, this.opts.width, this.opts.height), maskFn);
     this.lastMs = (window.performance && performance.now) ? Math.round(performance.now() - t0) : null;
     var top = this.items.slice(0, 3).map(function (w) { return w.word + ' (' + w.count + ')'; }).join(', ');
     var note = this.result.total + ' words placed from ' + this.items.length +

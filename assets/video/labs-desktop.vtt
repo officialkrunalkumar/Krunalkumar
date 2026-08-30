@@ -1,0 +1,46 @@
+WEBVTT
+
+1
+00:00:01.520 --> 00:00:10.710
+Write your code, and press Run. This is a real
+compiler, running on your own machine — not on
+a server somewhere.
+
+2
+00:00:11.710 --> 00:00:19.210
+Programs that read input get an input pane.
+Type what the program should read, then run
+it.
+
+3
+00:00:20.210 --> 00:00:28.830
+The pin remembers your code on this device. It
+is off by default, so nothing is kept unless
+you ask for it.
+
+4
+00:00:29.830 --> 00:00:36.050
+Reset puts the starter program back, so you
+can experiment without losing anything.
+
+5
+00:00:37.050 --> 00:00:42.570
+Fullscreen gives you the whole screen. Press
+Escape to come back.
+
+6
+00:00:43.570 --> 00:00:52.500
+The storage panel shows exactly what is being
+held: your code, and the runtime this lab
+downloaded so it can work offline.
+
+7
+00:00:53.500 --> 00:00:57.000
+You can clear your saved code with one button.
+
+8
+00:00:58.000 --> 00:01:07.070
+Or clear the cached runtime as well. It simply
+downloads again next time. None of it was ever
+on a server.
+

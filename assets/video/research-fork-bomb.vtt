@@ -1,0 +1,99 @@
+WEBVTT
+
+1
+00:00:00.850 --> 00:00:05.250
+A fork bomb replicates itself, without
+stopping.
+
+2
+00:00:05.750 --> 00:00:10.800
+No privilege is needed, so even a hardened
+system is exposed.
+
+3
+00:00:11.300 --> 00:00:16.000
+The process table fills, and the machine stops
+answering.
+
+4
+00:00:16.550 --> 00:00:20.030
+Every usual defence breaks something else.
+
+5
+00:00:22.950 --> 00:00:25.540
+A process calls fork.
+
+6
+00:00:26.040 --> 00:00:28.960
+Its name is on the exception list.
+
+7
+00:00:29.460 --> 00:00:33.140
+So it is trusted, and runs unchecked.
+
+8
+00:00:33.640 --> 00:00:36.920
+Now something the system has never seen.
+
+9
+00:00:37.420 --> 00:00:39.960
+Not on the exception list.
+
+10
+00:00:40.460 --> 00:00:42.730
+And not a known offender.
+
+11
+00:00:43.230 --> 00:00:45.750
+So its forks are counted.
+
+12
+00:00:46.250 --> 00:00:50.690
+Five hundred and twelve. Past the threshold.
+
+13
+00:00:51.190 --> 00:00:54.040
+Killed, and the name recorded.
+
+14
+00:00:54.540 --> 00:00:56.970
+The same name comes back.
+
+15
+00:00:57.470 --> 00:01:01.850
+This time it is not killed. It runs capped.
+
+16
+00:01:02.350 --> 00:01:06.600
+And watched. It keeps forking abnormally.
+
+17
+00:01:07.100 --> 00:01:11.020
+So it is killed, before the table ever filled.
+
+18
+00:01:11.520 --> 00:01:15.560
+Later, a legitimate program shares that name.
+
+19
+00:01:16.060 --> 00:01:21.100
+Quarantined too. Suspected, not condemned.
+
+20
+00:01:21.600 --> 00:01:24.240
+Its fork rate stays normal.
+
+21
+00:01:24.740 --> 00:01:27.170
+So the name is struck off.
+
+22
+00:01:27.670 --> 00:01:32.840
+It forks freely. The false positive corrected
+itself.
+
+23
+00:01:33.740 --> 00:01:38.560
+Forty-four milliseconds, at a five hundred
+fork threshold.
+

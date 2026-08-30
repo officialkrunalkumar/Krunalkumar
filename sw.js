@@ -140,7 +140,6 @@ var DOC_URLS = [
   '/favicon.svg',
   '/site.webmanifest',
   '/assets/images/apple-touch-icon.png',
-  '/assets/images/logo-64.jpg',
   // The navigation fallback for the installed app. Self-contained by design —
   // precaching this one document is enough to keep an offline launch branded
   // instead of showing the browser's network-error page.

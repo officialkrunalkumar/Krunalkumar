@@ -737,7 +737,7 @@ const ENTITIES = {
 };
 const deEntity = (s) =>
   String(s)
-    .replace(/&#(d+);/g, (m, d) => String.fromCharCode(Number(d)))
+    .replace(/&#(\d+);/g, (m, d) => String.fromCharCode(Number(d)))
     .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in ENTITIES ? ENTITIES[k.toLowerCase()] : m));
 
 const esc = (s) =>
@@ -792,10 +792,28 @@ function main() {
      Without it, changing one family of motifs means re-rendering all of them,
      which rewrites a hundred and forty committed JPEGs to identical-looking
      but byte-different files and buries the actual change in the diff. */
-    const onlyAt = process.argv.indexOf('--only');
-  const only = onlyAt > -1 ? process.argv[onlyAt + 1] : null;
+  /* Both spellings, and a missing value is an error rather than a silent
+     full run: `--force --only` with nothing after it used to fall through to
+     rendering all 136 cards, which is the exact accident --only exists to
+     prevent. */
+  let only = null;
+  const joined = process.argv.find((a) => a.indexOf('--only=') === 0);
+  if (joined) only = joined.slice(7);
+  else {
+    const at = process.argv.indexOf('--only');
+    if (at > -1) {
+      only = process.argv[at + 1];
+      if (!only || only.indexOf('--') === 0) {
+        console.error('--only needs a value, e.g. --only lab-');
+        process.exit(1);
+      }
+    }
+  }
   let todo = process.argv.includes('--force') ? CARDS : missing();
-  if (only) todo = todo.filter((c) => c.id.indexOf(only) === 0);
+  if (only) {
+    todo = todo.filter((c) => c.id.indexOf(only) === 0);
+    if (!todo.length) { console.error('--only ' + only + ' matched no cards'); process.exit(1); }
+  }
   if (!todo.length) { console.log('og cards: nothing to render'); return; }
 
   const page = `<!doctype html><meta charset="utf-8"><title>og cards</title>
