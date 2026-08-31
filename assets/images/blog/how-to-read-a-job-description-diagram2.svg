@@ -1,0 +1,75 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-how-to-read-a-job-description-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-how-to-read-a-job-description-diagram2">A table of four questions to ask on a call, each with the shape of an answer that confirms the job description is real and the shape of an answer that says it is not. Why is this role open, answered with a specific event and its date rather than a general claim about always hiring. What must this person have done by day ninety, answered with two named outcomes rather than the job description read back. Which requirements would you waive for the right person, answered by naming one and refusing another rather than calling all of them essential. Who decides what this role works on next quarter, answered with a person and a forum rather than a claim about being fluid.</title>
+  <g>
+    <text x="40" y="48" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">FOUR QUESTIONS, AND WHAT THE ANSWER TELLS YOU</text>
+    <text x="40" y="76" fill="#64748b" font-size="15">Ask about the last time something happened rather than the general policy. The general case gets you the posting again; the last time gets you the job.</text>
+
+    <text x="40" y="118" fill="#1e77a4" font-size="14" font-weight="800" letter-spacing="2">ASK THIS</text>
+    <text x="356" y="118" fill="#157f41" font-size="14" font-weight="800" letter-spacing="2">THE DESCRIPTION IS REAL</text>
+    <text x="768" y="118" fill="#a3352f" font-size="14" font-weight="800" letter-spacing="2">THE DESCRIPTION IS DECORATION</text>
+
+    <!-- Row 1 -->
+    <rect x="40" y="132" width="300" height="100" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="60" y="166" fill="#6b7a90" font-size="15" font-weight="700">&#8220;Why is this role</text>
+    <text x="60" y="190" fill="#6b7a90" font-size="15" font-weight="700">open?&#8221;</text>
+    <text x="60" y="216" fill="#64748b" font-size="14">Tests: does it exist yet?</text>
+
+    <rect x="356" y="132" width="396" height="100" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="378" y="166" fill="#157f41" font-size="15">&#8220;We split the platform team in March</text>
+    <text x="378" y="190" fill="#157f41" font-size="15">and this half has had no owner since.&#8221;</text>
+    <text x="378" y="216" fill="#64748b" font-size="14">An event, with a date attached.</text>
+
+    <rect x="768" y="132" width="352" height="100" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="790" y="166" fill="#a3352f" font-size="15">&#8220;We&#8217;re always hiring good</text>
+    <text x="790" y="190" fill="#a3352f" font-size="15">people.&#8221;</text>
+    <text x="790" y="216" fill="#64748b" font-size="14">No seat, no scope, no urgency.</text>
+
+    <!-- Row 2 -->
+    <rect x="40" y="248" width="300" height="100" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="60" y="282" fill="#6b7a90" font-size="15" font-weight="700">&#8220;What must this person</text>
+    <text x="60" y="306" fill="#6b7a90" font-size="15" font-weight="700">have done by day 90?&#8221;</text>
+    <text x="60" y="332" fill="#64748b" font-size="14">Tests: is it defined?</text>
+
+    <rect x="356" y="248" width="396" height="100" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="378" y="282" fill="#157f41" font-size="15">&#8220;Cleared the payout reconciliation</text>
+    <text x="378" y="306" fill="#157f41" font-size="15">backlog and taken an on-call week.&#8221;</text>
+    <text x="378" y="332" fill="#64748b" font-size="14">Specific, and modest enough to be true.</text>
+
+    <rect x="768" y="248" width="352" height="100" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="790" y="282" fill="#a3352f" font-size="15">The job description, read</text>
+    <text x="790" y="306" fill="#a3352f" font-size="15">back to you.</text>
+    <text x="790" y="332" fill="#64748b" font-size="14">Nobody has thought past the hire.</text>
+
+    <!-- Row 3 -->
+    <rect x="40" y="364" width="300" height="100" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="60" y="398" fill="#6b7a90" font-size="15" font-weight="700">&#8220;Which requirements</text>
+    <text x="60" y="422" fill="#6b7a90" font-size="15" font-weight="700">would you waive?&#8221;</text>
+    <text x="60" y="448" fill="#64748b" font-size="14">Tests: which are real?</text>
+
+    <rect x="356" y="364" width="396" height="100" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="378" y="398" fill="#157f41" font-size="15">&#8220;The Kubernetes line, easily. The</text>
+    <text x="378" y="422" fill="#157f41" font-size="15">Postgres depth, no &#8212; that is the job.&#8221;</text>
+    <text x="378" y="448" fill="#64748b" font-size="14">They have sorted their own list already.</text>
+
+    <rect x="768" y="364" width="352" height="100" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="790" y="398" fill="#a3352f" font-size="15">&#8220;All of them are</text>
+    <text x="790" y="422" fill="#a3352f" font-size="15">essential.&#8221;</text>
+    <text x="790" y="448" fill="#64748b" font-size="14">Either regulated, or unexamined.</text>
+
+    <!-- Row 4 -->
+    <rect x="40" y="480" width="300" height="100" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="60" y="514" fill="#6b7a90" font-size="15" font-weight="700">&#8220;Who decides what this</text>
+    <text x="60" y="538" fill="#6b7a90" font-size="15" font-weight="700">role works on next?&#8221;</text>
+    <text x="60" y="564" fill="#64748b" font-size="14">Tests: who holds the line?</text>
+
+    <rect x="356" y="480" width="396" height="100" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="378" y="514" fill="#157f41" font-size="15">&#8220;Priya, with the team, at quarterly</text>
+    <text x="378" y="538" fill="#157f41" font-size="15">planning. You would be in the room.&#8221;</text>
+    <text x="378" y="564" fill="#64748b" font-size="14">A name, a forum, and your seat in it.</text>
+
+    <rect x="768" y="480" width="352" height="100" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="790" y="514" fill="#a3352f" font-size="15">&#8220;It depends. We&#8217;re pretty</text>
+    <text x="790" y="538" fill="#a3352f" font-size="15">fluid here.&#8221;</text>
+    <text x="790" y="564" fill="#64748b" font-size="14">Accountable without authority.</text>
+  </g>
+</svg>

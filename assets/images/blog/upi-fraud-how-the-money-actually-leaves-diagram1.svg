@@ -1,0 +1,133 @@
+<svg width="1160" height="648" viewBox="0 0 1160 648" role="img" aria-labelledby="d-upi-fraud-how-the-money-actually-leaves-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-upi-fraud-how-the-money-actually-leaves-diagram1">Three UPI flows drawn by which phone shows the PIN prompt. In flow one you pay: you start it, the PIN prompt appears on your phone, and money leaves your account. In flow two you are paid: they start it, the PIN prompt appears on their phone, your phone only shows an alert, and money arrives. In flow three you are asked: they raise a collect request against your account, the request travels to your phone, the PIN prompt appears on your phone, and money leaves your account even though the request was described as a refund. The PIN prompt always appears on the phone the money leaves, and no screen anywhere asks for it in order to receive.</title>
+
+  <text x="40" y="46" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHICH PHONE SHOWS THE PIN PROMPT</text>
+  <text x="40" y="76" fill="#64748b" font-size="15">The same three flows, drawn by where the approval appears. Everything else on the screen is text somebody chose to type.</text>
+
+  <!-- ================= Panel 1 — you pay ================= -->
+  <g>
+    <rect x="40" y="96" width="340" height="396" rx="16" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <rect x="58" y="118" width="164" height="34" rx="17" fill="#1e77a4"/>
+    <text x="140" y="140" fill="#ffffff" font-size="15" font-weight="800" letter-spacing="1" text-anchor="middle">1 &#183; YOU PAY</text>
+    <text x="58" y="180" fill="#64748b" font-size="15">You open your app and</text>
+    <text x="58" y="202" fill="#64748b" font-size="15">choose to send money.</text>
+
+    <!-- your phone -->
+    <rect x="70" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="83" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="83" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="83" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <rect x="83" y="306" width="74" height="30" rx="9" fill="#1e77a4"/>
+    <text x="120" y="326" fill="#ffffff" font-size="11" font-weight="800" letter-spacing="1" text-anchor="middle">ENTER PIN</text>
+    <text x="120" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">your phone</text>
+
+    <!-- their phone -->
+    <rect x="250" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="263" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="263" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="263" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <text x="300" y="326" fill="#64748b" font-size="12" text-anchor="middle">credited</text>
+    <text x="300" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">their phone</text>
+
+    <line x1="180" y1="286" x2="222" y2="286" stroke="#1e77a4" stroke-width="4" stroke-linecap="round"/>
+    <path d="M222 277 l18 9 -18 9z" fill="#1e77a4"/>
+    <text x="210" y="310" fill="#1e77a4" font-size="12" font-weight="700" text-anchor="middle">&#8377; out</text>
+
+    <line x1="60" y1="410" x2="360" y2="410" stroke="#94a3b8" stroke-width="1"/>
+    <text x="60" y="434" fill="#6b7a90" font-size="12" font-weight="800" letter-spacing="1">PIN PROMPT APPEARS ON</text>
+    <text x="60" y="458" fill="#1e77a4" font-size="17" font-weight="800">Your phone</text>
+    <text x="60" y="480" fill="#64748b" font-size="14">Money leaves. You chose to.</text>
+  </g>
+
+  <!-- ================= Panel 2 — you are paid ================= -->
+  <g>
+    <rect x="410" y="96" width="340" height="396" rx="16" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <rect x="428" y="118" width="196" height="34" rx="17" fill="#157f41"/>
+    <text x="526" y="140" fill="#ffffff" font-size="15" font-weight="800" letter-spacing="1" text-anchor="middle">2 &#183; YOU ARE PAID</text>
+    <text x="428" y="180" fill="#64748b" font-size="15">They open their app and</text>
+    <text x="428" y="202" fill="#64748b" font-size="15">choose to send money to you.</text>
+
+    <!-- your phone -->
+    <rect x="440" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="453" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="453" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="453" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <text x="490" y="326" fill="#157f41" font-size="12" font-weight="700" text-anchor="middle">alert only</text>
+    <text x="490" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">your phone</text>
+
+    <!-- their phone -->
+    <rect x="620" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="633" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="633" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="633" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <rect x="633" y="306" width="74" height="30" rx="9" fill="#157f41"/>
+    <text x="670" y="326" fill="#ffffff" font-size="11" font-weight="800" letter-spacing="1" text-anchor="middle">ENTER PIN</text>
+    <text x="670" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">their phone</text>
+
+    <line x1="610" y1="286" x2="568" y2="286" stroke="#157f41" stroke-width="4" stroke-linecap="round"/>
+    <path d="M568 277 l-18 9 18 9z" fill="#157f41"/>
+    <text x="580" y="310" fill="#157f41" font-size="12" font-weight="700" text-anchor="middle">&#8377; in</text>
+
+    <line x1="430" y1="410" x2="730" y2="410" stroke="#94a3b8" stroke-width="1"/>
+    <text x="430" y="434" fill="#6b7a90" font-size="12" font-weight="800" letter-spacing="1">PIN PROMPT APPEARS ON</text>
+    <text x="430" y="458" fill="#157f41" font-size="17" font-weight="800">Their phone</text>
+    <text x="430" y="480" fill="#64748b" font-size="14">Money arrives. You were told after.</text>
+  </g>
+
+  <!-- ================= Panel 3 — you are asked ================= -->
+  <g>
+    <rect x="780" y="96" width="340" height="396" rx="16" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <rect x="798" y="118" width="204" height="34" rx="17" fill="#a3352f"/>
+    <text x="900" y="140" fill="#ffffff" font-size="15" font-weight="800" letter-spacing="1" text-anchor="middle">3 &#183; YOU ARE ASKED</text>
+    <text x="798" y="180" fill="#64748b" font-size="15">They raise a collect request</text>
+    <text x="798" y="202" fill="#64748b" font-size="15">against your account.</text>
+
+    <!-- your phone -->
+    <rect x="810" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="823" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="823" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="823" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <rect x="823" y="306" width="74" height="30" rx="9" fill="#a3352f"/>
+    <text x="860" y="326" fill="#ffffff" font-size="11" font-weight="800" letter-spacing="1" text-anchor="middle">ENTER PIN</text>
+    <text x="860" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">your phone</text>
+
+    <!-- their phone -->
+    <rect x="990" y="224" width="100" height="140" rx="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8" opacity="0.55">
+      <rect x="1003" y="248" width="74" height="7" rx="3.5"/>
+      <rect x="1003" y="264" width="58" height="7" rx="3.5"/>
+      <rect x="1003" y="280" width="68" height="7" rx="3.5"/>
+    </g>
+    <text x="1040" y="326" fill="#64748b" font-size="12" text-anchor="middle">waiting</text>
+    <text x="1040" y="386" fill="#6b7a90" font-size="14" font-weight="700" text-anchor="middle">their phone</text>
+
+    <text x="950" y="246" fill="#6b7a90" font-size="11" font-weight="700" text-anchor="middle">request</text>
+    <line x1="980" y1="262" x2="938" y2="262" stroke="#6b7a90" stroke-width="3" stroke-dasharray="6 5"/>
+    <path d="M938 254 l-16 8 16 8z" fill="#6b7a90"/>
+
+    <line x1="920" y1="312" x2="962" y2="312" stroke="#a3352f" stroke-width="4" stroke-linecap="round"/>
+    <path d="M962 303 l18 9 -18 9z" fill="#a3352f"/>
+    <text x="950" y="336" fill="#a3352f" font-size="12" font-weight="700" text-anchor="middle">&#8377; out</text>
+
+    <line x1="800" y1="410" x2="1100" y2="410" stroke="#94a3b8" stroke-width="1"/>
+    <text x="800" y="434" fill="#6b7a90" font-size="12" font-weight="800" letter-spacing="1">PIN PROMPT APPEARS ON</text>
+    <text x="800" y="458" fill="#a3352f" font-size="17" font-weight="800">Your phone</text>
+    <text x="800" y="480" fill="#64748b" font-size="14">Money leaves. You were told it arrives.</text>
+  </g>
+
+  <rect x="40" y="516" width="1080" height="52" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="64" y="548" fill="#157f41" font-size="16" font-weight="800">THE PIN PROMPT APPEARS ON THE PHONE THE MONEY LEAVES. NO SCREEN ANYWHERE ASKS FOR IT TO RECEIVE.</text>
+
+  <text x="40" y="600" fill="#64748b" font-size="15">Panels 2 and 3 are introduced to the target with the same sentence &#8212; you are about to receive money. Only panel 2 is receiving anything.</text>
+  <text x="40" y="626" fill="#64748b" font-size="15">A QR code behaves like panel 1: it is an address to pay to. Scanning one has never pulled money in, whatever the sender says it does.</text>
+</svg>

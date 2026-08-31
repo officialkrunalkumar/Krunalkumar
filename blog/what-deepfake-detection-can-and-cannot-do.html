@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Why an AI detector's confidence percentage is not evidence, what a forensic examiner actually looks at, and what C2PA provenance genuinely fixes."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What Deepfake Detection Can and Cannot Do" />
+    <meta
+      property="og:description"
+      content="Detection is losing the arms race, and a confidence percentage is a number somebody invented. What holds up is signed provenance and a payment process that never needed to judge a voice."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-deepfake-detection-can-and-cannot-do.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A file signed at capture, the same file after a platform upload with its signature and metadata stripped, and a magnifier over the result showing a question mark" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What Deepfake Detection Can and Cannot Do" />
+    <meta
+      name="twitter:description"
+      content="Detection is losing the arms race, and a confidence percentage is a number somebody invented. What holds up is signed provenance and a payment process that never needed to judge a voice."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-deepfake-detection-can-and-cannot-do.jpg" />
+    <title>What Deepfake Detection Can and Cannot Do | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What Deepfake Detection Can and Cannot Do",
+        "description": "Why detectors that return a confidence percentage are selling certainty they do not have, what each forensic signal genuinely implies and what innocently produces it, what signed provenance under C2PA fixes and what it leaves open, and why the working defence against a synthetic voice on a payment call is an out-of-band process rather than a better detector.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-deepfake-detection-can-and-cannot-do.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do"
+        },
+        "keywords": "deepfake detection, media forensics, C2PA, Content Credentials, provenance, error level analysis, ELA, noise floor, PRNU, business email compromise, voice cloning, payment fraud"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "What deepfake detection can and cannot do", "item": "https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can you just tell me whether this video is real?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Usually not from the file alone, and anyone who answers that question quickly is guessing. What I can tell you is what the file supports: whether it carries a signed provenance record, what its encoding history looks like, whether its geometry and lighting hold together, and where the earliest copy I can find came from. Often the decisive fact sits outside the file entirely — the account that posted it, the date it first appeared, or a second recording of the same moment. I would rather hand you that than a percentage."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are AI detectors useless, then?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not useless, but badly mismatched to the way people use them. A detector is a classifier trained on the output of the generators whoever built it had access to, so it is strongest on those and weakest on the model released after the training set was frozen — which is the one you are actually being attacked with. Used as one input among several, by someone who knows what it was trained on, it has a place. Used as a verdict on a single file, it produces a confident answer with nothing under it, and a confident wrong answer is worse than no answer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "The photo has no metadata at all. Does that mean it was faked?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Missing metadata is the normal state of almost every image you will ever be sent. Large platforms strip it on upload, chat apps re-encode and strip it, and a screenshot never had any to begin with. Absence proves nothing whatsoever. The reverse holds too: metadata that is present is trivially editable, so unless it sits inside a signed provenance manifest it is a claim about the file rather than evidence about it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does a Content Credentials badge actually prove?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "That a particular device or piece of software signed this asset with this stated history, and that the bytes have not changed since. That is genuinely valuable, and it is the strongest thing in the field. It does not prove the scene in front of the lens was real, because a signing camera pointed at a screen produces a validly signed photograph of a fake. It does not prove the signer is honest, only that the certificate chains to something you decided to trust. And an asset with no credential is not thereby fake — it is an asset with no credential, which describes most of the internet."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is error level analysis proof that an image was edited?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and this is the most misread tool in the field. ELA maps where compression history differs across an image. Sharp edges, saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken, and one extra re-save flattens the whole map into uniform noise. Bright does not mean pasted. It is also worth asking what amplification factor produced the picture you are being shown, because turning the gain up until something looks suspicious is how ELA is usually used to mislead."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I stop a cloned voice from getting a payment out of my company?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not by detecting it. Make the payment process indifferent to how convincing the voice was. No payment and no change of bank details is ever approved on the channel the request arrived on. Verification is a callback to a number from your own records, never a number offered during the call. A second approver is reached separately. Urgency and seniority become stop conditions rather than reasons to skip a step, and stopping a payment has to be safe for the most junior person in the chain. None of that requires anyone to judge whether a voice was synthetic."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Someone has made a fake video of me. What should I do first?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Preserve before you react. Save the original file rather than a screenshot of it, record the exact address, the account and the time you saw it, and take a hash of the file so you can later show that the copy you handed over is the copy you found. Then report it: in India that means the national cybercrime portal or the 1930 helpline, and the platform's own reporting route in parallel. Do not pay anyone offering removal, and do not argue with the poster. What you preserve in the first hour is usually worth more than any analysis done a week later."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">What deepfake detection can and cannot do</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>What deepfake detection can and cannot do</h1>
+          <p class="hero-text">
+            People send me a video and ask whether it is real. They expect the answer to come from a tool, and they
+            expect the tool to return a number. Neither of those expectations survives contact with the work.
+            Detection is the losing side of an arms race it cannot win by design, and the honest response is not a
+            better detector — it is provenance, and it is process.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 25 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/deepfake-detection-cover.svg" alt="A file signed at capture, the same file after a platform upload with its signature and metadata stripped, and a magnifier over the result showing a question mark" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-question-and-the-honest-answer">The question, and the honest answer</a></li>
+                <li><a href="#why-the-detector-is-always-the-losing-side">Why the detector is always the losing side</a></li>
+                <li><a href="#what-a-confidence-percentage-is-really-telling-you">What a confidence percentage is really telling you</a></li>
+                <li><a href="#what-an-examiner-actually-looks-at">What an examiner actually looks at</a></li>
+                <li><a href="#why-absence-proves-nothing">Why absence proves nothing</a></li>
+                <li><a href="#content-credentials-what-signing-genuinely-fixes">Content Credentials: what signing genuinely fixes</a></li>
+                <li><a href="#the-part-that-actually-costs-money">The part that actually costs money</a></li>
+                <li><a href="#a-policy-a-perfect-fake-cannot-pass">A policy a perfect fake cannot pass</a></li>
+                <li><a href="#what-i-tell-a-client-who-asks-me-to-check-a-video">What I tell a client who asks me to check a video</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-question-and-the-honest-answer">The question, and the honest answer</h2>
+              <p>
+                The request always arrives in the same shape. A forwarded clip, a screenshot of a screenshot, a voice
+                note that sounds like someone's managing director, and one sentence: <em>can you check if this is
+                real?</em> The person asking wants a yes or a no, and they would settle for a number.
+              </p>
+              <p>
+                I cannot give them one from the file, and neither can anybody else. That is not modesty about my own
+                equipment. It is a statement about what these techniques measure. Every signal a forensic examiner
+                reads from an image or a video measures <strong>processing history</strong> — what encoders touched
+                this file, how many times, and whether one region of it has a different history from its neighbours.
+                None of them measure truthfulness. A photograph of a real event that has been cropped, resized and
+                sent through two chat apps lights up every one of them. A carefully made fake, saved once through the
+                same chat app, puts them all out.
+              </p>
+              <p>
+                So this article does two things. First it takes apart the promise that a detector can settle the
+                question, because that promise is the reason people stop looking for the answers that would actually
+                have worked. Then it describes what does work, in the two places where it matters: signed provenance
+                for the files that carry it, and process for the situation where a fake is about to cost you money.
+              </p>
+              <blockquote>
+                <p>
+                  The uncomfortable structure of this field: the tools that give you a confident answer are the ones
+                  you should not trust, and the tools you should trust will not give you a confident answer.
+                </p>
+              </blockquote>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Everything in this article is a tool you can run.</strong> There is a media forensics lab on
+                  this site that takes a photo or a short video and runs the signal set an examiner would look at —
+                  provenance, error level analysis, quantisation tables, the noise floor, a frequency plot, copy-move
+                  — and says in plain words what each one does and does not imply. It returns no verdict, no score
+                  and no percentage, deliberately. It runs entirely in your browser and nothing you drop into it is
+                  uploaded.
+                </p>
+                <a class="btn btn-primary" href="/labs/media-forensics">Open the media forensics lab</a>
+              </div>
+
+              <h2 id="why-the-detector-is-always-the-losing-side">Why the detector is always the losing side</h2>
+              <p>
+                Start with the structural problem, because it explains everything downstream.
+              </p>
+              <p>
+                A deepfake detector is a classifier. Somebody collects real images and images produced by the
+                generators they had access to, trains a model to separate the two, and measures how well it does on
+                data it has not seen. What that model learns is not "what a fake looks like" in any general sense. It
+                learns the <em>fingerprints of the specific generators in its training set</em> — the way a
+                particular upsampling layer stipples texture, the way a particular decoder handles hair against a
+                bright background, the way a particular pipeline writes its final JPEG.
+              </p>
+              <p>
+                This is not a criticism of the technique. It is what supervised classification does. The problem is
+                what it means for deployment. In the published evaluation literature the pattern is consistent enough
+                to be treated as the default expectation: detectors that score very well on held-out data from the
+                generators they were trained on lose a substantial part of that performance when they are tested
+                against a generator they have never seen, and lose more when the test images have been compressed and
+                resized the way real shared media always is. I am deliberately not quoting a number here, because the
+                numbers move with every paper and every new model release, and citing one would give this paragraph
+                more precision than the field has. The <em>shape</em> is the reliable part: generalisation across
+                generators is where detectors fall down, and the generator you are being attacked with is by
+                definition the one that came out after the detector was trained.
+              </p>
+              <p>
+                Then there is the part that makes it an arms race rather than a hard problem. A detector that is
+                public is a fitness function. Anyone building a generator can run their output through it and adjust
+                until it passes. That relationship is not incidental; it is the literal architecture of a generative
+                adversarial network, where a discriminator's job is to catch the generator and the generator's job is
+                to defeat the discriminator, and the generator wins that game as a matter of training design. Diffusion
+                models are trained differently, but the economics are the same: publishing a detector publishes the
+                test that the next model has to pass.
+              </p>
+              <p>
+                And then the environment does the rest. The signals detectors lean on are fragile in exactly the way
+                real-world media is rough. Resize an image and the fine-grained statistics it was reading are gone.
+                Re-encode it and the compression writes its own texture over the top. Screenshot it and you have
+                thrown away the file entirely and replaced it with a photograph of a screen. Almost every file anyone
+                asks me about has been through all three.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The asymmetry that decides it.</strong> A detector has to work on every generator, at every
+                  quality, after arbitrary handling. An attacker has to defeat it once, on one file, and can test
+                  against the detector as many times as they like before sending anything. Those are not comparable
+                  jobs, and no amount of engineering makes them comparable.
+                </p>
+              </div>
+
+              <h2 id="what-a-confidence-percentage-is-really-telling-you">What a confidence percentage is really telling you</h2>
+              <p>
+                A tool that prints <em>87% likely AI-generated</em> is making a claim that sounds like a measurement
+                and is not one. Three things are wrong with it at once.
+              </p>
+              <p>
+                <strong>It is a model output, not a probability of the thing you care about.</strong> The number is
+                the classifier's score, squeezed into a range that reads like a percentage. It answers "how far is
+                this input from the decision boundary I learned on my training data," which is a question about the
+                model. You wanted an answer about the world. Those coincide only when the input resembles the
+                training distribution, and the whole previous section was about why it does not.
+              </p>
+              <p>
+                <strong>It ignores the base rate, and the base rate dominates.</strong> Take a hypothetical to see
+                the shape of it — the numbers are illustrative, not measured. Suppose one video in a thousand crossing
+                your desk is synthetic, and suppose you have a detector that flags genuine videos wrongly one time in
+                twenty. Run a thousand videos through it and you get the one real fake, if you are lucky, plus about
+                fifty false alarms. Fewer than one in fifty of your flags is right; roughly forty-nine out of fifty
+                are wrong. A screening tool used on a population where the thing you are hunting is rare produces mostly
+                false positives no matter how good it looks in a benchmark table, and that arithmetic is not
+                something a better model fixes.
+              </p>
+              <p>
+                <strong>False positives here are not free.</strong> This is the part that gets skipped. Telling
+                someone their genuine photograph is 87% likely fake is not a neutral error. In a workplace it is an
+                accusation. In a dispute it is evidence someone will act on. In a court it is worse. Students have
+                been accused of cheating on the output of text detectors with the same architecture and the same
+                failure mode, and the harm did not require the tool to be malicious — only to be believed.
+              </p>
+              <p>
+                This is why the lab on this site prints no number anywhere. There is nothing honest to compute one
+                from: the signals do not combine into a measurement of authenticity, because they are not measuring
+                authenticity. A score would make the page look more reliable than the underlying evidence is, which is
+                the exact failure it exists to avoid.
+              </p>
+
+              <h2 id="what-an-examiner-actually-looks-at">What an examiner actually looks at</h2>
+              <p>
+                Here is the working set, in the order I would go through it, with what each one supports and what it
+                cannot carry. The order matters: it goes from evidence to inference, and most of the list is
+                inference.
+              </p>
+
+              <h3>Provenance metadata</h3>
+              <p>
+                A C2PA manifest, an XMP history block, an IPTC record, the EXIF <code>Software</code> field, the
+                make and model of the camera, the lens, the timestamps. This is the only thing in the list that is
+                evidence rather than inference, which is why it goes first — everything else is an argument from
+                statistics, and this is a record somebody wrote down.
+              </p>
+              <p>
+                Two hard limits. The first is that it is almost always missing, because every large platform strips
+                metadata on upload, most chat apps re-encode and strip on send, and a screenshot never had any.
+                <strong>Absence is the expected state and proves nothing at all.</strong> The second is that
+                unsigned metadata is a claim, not a fact. EXIF is a few bytes in a header; anyone can write whatever
+                they like into it in about ten seconds. Presence tells you what the file <em>says</em> about itself.
+                Only a signature makes it tell you anything more, which is the whole subject of the C2PA section
+                below.
+              </p>
+
+              <h3>Error level analysis, and why it is the most misread tool in the field</h3>
+              <p>
+                The mechanism is simple. Re-encode the image at a known JPEG quality, subtract the result from the
+                original, amplify the difference, and look at the map. Regions that were already heavily compressed
+                change little on re-encoding; regions carrying more information change more. So the map shows where
+                compression history differs across the frame.
+              </p>
+              <p>
+                The popular reading — bright means pasted — is wrong often enough to be dangerous, and it is the
+                reason ELA has been used to "prove" things about news photographs that were not true. Sharp edges,
+                saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken. A
+                clear sky is dark in the ELA of every untouched photograph ever taken. Neither fact is about
+                manipulation. Worse, the tool degrades to uselessness under exactly the handling most images have had:
+                a PNG has no JPEG history to read, a screenshot has one uniform compression history laid over
+                everything, and a single extra re-save flattens the entire map.
+              </p>
+              <p>
+                There is one more thing to insist on. Always ask what amplification was applied to the picture you
+                are being shown. The gain is a free parameter, and turning it up until something looks suspicious is
+                how ELA is usually used to mislead. A map without its amplification factor stated is a rhetorical
+                device, not a measurement — which is why the lab prints the factor next to the image.
+              </p>
+
+              <h3>Quantisation tables and double compression</h3>
+              <p>
+                A JPEG carries the tables it was quantised with, and inverting the standard scaling recovers the
+                quality setting that wrote it. That tells you something narrow but real: whether a general-purpose
+                encoder produced this copy, or something shipping its own tables did — a camera body, an Adobe
+                product, an Apple pipeline. A "photograph straight from a phone" whose tables belong to a desktop
+                editor is worth a question.
+              </p>
+              <p>
+                The related trick is the ghost sweep: re-encode across a range of qualities and watch the error
+                curve. A second dip is consistent with two generations of compression. Consistent with — not evidence
+                of. Cropping produces it. Rotating produces it. A messaging app produces it. A content management
+                system generating a thumbnail produces it. Nearly every image on the internet has a double compression
+                history, and almost none of them were faked.
+              </p>
+
+              <h3>The noise floor</h3>
+              <p>
+                Camera sensors write a faint, roughly uniform grain across the whole frame, and the pattern is
+                specific enough to the individual sensor that it can act as a fingerprint. Real work on this —
+                photo-response non-uniformity — correlates a suspect image against a reference fingerprint built from
+                dozens of images taken with the same camera body. It is genuinely strong evidence when you have the
+                body and the reference set, which is why it shows up in serious casework and almost never in a
+                one-file question on the internet.
+              </p>
+              <p>
+                What you can do with a single file is much weaker: measure internal consistency. How much fine detail
+                does each region carry, relative to how much structure it contains, and which regions disagree with
+                the rest of the frame? A patch that is smoother than its surroundings deserve is what a denoised or
+                generated region looks like. It is also what a defocused background looks like, what a smooth wall
+                looks like, and what any region a phone's own noise reduction worked hardest on looks like.
+              </p>
+
+              <h3>Frequency artefacts</h3>
+              <p>
+                Take a windowed crop, run a two-dimensional Fourier transform, look at the magnitude. The
+                transposed-convolution upsampling in older GAN-era generators left a periodic checkerboard in their
+                output, and that shows up here as bright spots away from the centre and off the axes. For a period
+                this was one of the more reliable tells.
+              </p>
+              <p>
+                Two caveats, both large enough to end the sentence. Current diffusion-based generators have largely
+                engineered that artefact away, so a clean plot says nothing about origin. And periodic peaks in the
+                same place are produced by a resize, a photograph of a screen, a halftone print, a fabric weave, and
+                the JPEG block grid itself. A signal that both the innocent case and the modern guilty case produce
+                identically is not a discriminator.
+              </p>
+
+              <h3>Geometry and lighting</h3>
+              <p>
+                This is the part no classifier does for you, and the part that still catches things. Do shadows agree
+                on where the light is? Do reflections in glass and water contain what they should? Do the catchlights
+                in both eyes agree in shape and position? Do straight lines in the background — a door frame, a
+                skirting board, a window mullion — survive passing behind a head, or do they kink? Do perspective
+                lines converge somewhere consistent? Do ears, teeth and hairlines behave as individual objects rather
+                than texture?
+              </p>
+              <p>
+                Physical consistency is expensive for a generator to get right across a whole scene and cheap for a
+                person to check, which is a rare combination in this field. The honest limits: it needs resolution,
+                so it dies on a low-quality forward, and human observers overclaim badly — we are very good at
+                inventing an explanation for a shadow once we have decided what we are looking at. It is a source of
+                questions, not of verdicts.
+              </p>
+
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-deepfake-signals">
+                <table class="post-table">
+                  <caption id="table-caption-deepfake-signals">Each signal, what it genuinely supports, and the innocent explanation you have to rule out first.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Signal</th>
+                      <th scope="col">What it measures</th>
+                      <th scope="col">What it cannot tell you</th>
+                      <th scope="col">Innocently produced by</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Signed provenance</td>
+                      <td>That a named tool or device signed these exact bytes, with this stated history</td>
+                      <td>Whether the scene in front of the lens was real</td>
+                      <td>Nothing — but its absence is produced by every upload</td>
+                    </tr>
+                    <tr>
+                      <td>Unsigned metadata</td>
+                      <td>What the file claims about its own origin</td>
+                      <td>Anything, on its own — the fields are freely editable</td>
+                      <td>Any editor, any export, any deliberate edit</td>
+                    </tr>
+                    <tr>
+                      <td>Error level analysis</td>
+                      <td>Where compression history differs across the frame</td>
+                      <td>Whether a bright region was pasted in</td>
+                      <td>Edges, texture, saturated colour, one extra re-save</td>
+                    </tr>
+                    <tr>
+                      <td>Quantisation tables</td>
+                      <td>Which encoder wrote this particular copy</td>
+                      <td>Which encoder wrote the copy before it</td>
+                      <td>Every app, platform and thumbnailer in the chain</td>
+                    </tr>
+                    <tr>
+                      <td>Double compression</td>
+                      <td>That the file has more than one compression generation</td>
+                      <td>Which generation contained the edit, if any</td>
+                      <td>Cropping, rotating, chat apps, CMS resizing</td>
+                    </tr>
+                    <tr>
+                      <td>Noise floor</td>
+                      <td>Which regions carry less fine detail than their structure implies</td>
+                      <td>Which camera took it, without a reference set</td>
+                      <td>Defocus, smooth surfaces, in-camera noise reduction</td>
+                    </tr>
+                    <tr>
+                      <td>Frequency peaks</td>
+                      <td>Periodic structure in the image</td>
+                      <td>Whether a modern generator produced it</td>
+                      <td>Resizing, screens, print halftones, fabric, the JPEG grid</td>
+                    </tr>
+                    <tr>
+                      <td>Geometry and lighting</td>
+                      <td>Whether the scene is physically consistent with itself</td>
+                      <td>Anything, at low resolution</td>
+                      <td>Unusual light sources, wide lenses, honest confusion</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 id="why-absence-proves-nothing">Why absence proves nothing</h2>
+              <p>
+                Put those signals against the journey a file actually takes to reach you, and the reason this whole
+                enterprise struggles becomes a picture rather than an argument. Nothing in the chain below is
+                adversarial. It is ordinary handling by ordinary software, and it destroys the evidence anyway.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram1.svg" alt="A grid of six forensic signals against five stages of handling. C2PA manifests and EXIF are signed or written at capture, amended by an edit, and stripped entirely by a chat app or a platform. Quantisation tables are rewritten by every encoder in the chain. Error level analysis, the noise floor and frequency peaks start readable and are progressively muddied by resizing and recompression until a screenshot leaves nothing to read." width="1160" height="700" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Six signals against the ordinary handling every shared file has already had. By the right-hand column there is nothing left that an examiner can lean on — and the right-hand column is where almost every real question arrives. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Read the top-right corner carefully, because it is the single most misused fact in this subject. A
+                file with no metadata, no manifest, flat ELA and a confounded frequency plot is not a suspicious file.
+                It is a normal file that has been on the internet. If somebody tells you an image is fake
+                <em>because</em> the metadata is missing, they have described the behaviour of every social platform
+                on earth and called it a finding.
+              </p>
+              <p>
+                The same logic runs the other way and is just as important. A file that <em>does</em> carry rich
+                metadata is not thereby genuine, because those fields are trivially writable. If you want to see how
+                little effort that takes, the EXIF lab on this site reads every field in a photograph and lets you
+                strip them — the fastest way to understand that a metadata block is a claim rather than a record.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>See what your own photographs are carrying.</strong> The EXIF viewer reads the make, model,
+                  lens, software, timestamps and — where it is present — the GPS coordinates written into an image,
+                  and strips them on request. Run it on a photo straight off your phone, then on the same photo after
+                  you have sent it to yourself through a messaging app, and the difference is the whole point of the
+                  diagram above.
+                </p>
+                <a class="btn btn-primary" href="/labs/exif">Open the EXIF viewer</a>
+              </div>
+
+              <h2 id="content-credentials-what-signing-genuinely-fixes">Content Credentials: what signing genuinely fixes</h2>
+              <p>
+                Everything so far has been detection, and detection is losing. The one place the field is genuinely
+                gaining ground is the opposite move: instead of trying to spot the fakes, sign the real ones.
+              </p>
+              <p>
+                That is what C2PA is — an open specification, published by an industry coalition, for attaching a
+                cryptographically signed manifest to a media file. Adobe's Content Credentials is the best-known
+                implementation of it, and several camera manufacturers have shipped or announced in-camera signing.
+                The mechanism is ordinary
+                <a href="/glossary#term-public-key-cryptography">public key cryptography</a> applied to a
+                well-specified assertion set: the manifest records claims about how the asset was made and what was
+                done to it, a hash binds those claims to the actual bytes, and a
+                <a href="/glossary#term-digital-signature">digital signature</a> over the whole thing chains to an
+                <a href="/glossary#term-x-509">X.509</a> certificate. Edit the asset in a participating tool and it
+                writes a new manifest that references the previous one, so you get a chain rather than a single
+                stamp.
+              </p>
+              <p>
+                <strong>What that genuinely buys you</strong> is worth stating plainly, because it is real and it is
+                more than anything on the detection side offers. A valid manifest tells you that a specific device or
+                piece of software produced this asset with this declared history, and that not one byte has changed
+                since it was signed. Any modification breaks the hash binding. That is a verifiable, falsifiable
+                statement about a file, which is exactly what the rest of this article has been complaining that we
+                do not have.
+              </p>
+              <p>
+                Now the limits, all four of which matter and all four of which get skipped in the marketing.
+              </p>
+              <ul>
+                <li>
+                  <strong>It attests to the capture, not to the world.</strong> A signing camera pointed at a
+                  high-resolution screen produces a perfectly valid, correctly signed photograph of a fake. The
+                  signature says "this camera really did record these photons." It does not say the photons came from
+                  a real scene. This gap has a name in other fields — the analogue hole — and no amount of
+                  cryptography closes it.
+                </li>
+                <li>
+                  <strong>An unsigned asset is not thereby fake.</strong> This is the failure mode I expect to cause
+                  the most harm as adoption grows. The overwhelming majority of genuine media has no credential and
+                  never will: old photographs, cheap cameras, anything that passed through a platform that strips
+                  manifests, anything screenshotted. If people learn to read "no Content Credential" as "probably
+                  fake," the standard will have made things worse rather than better.
+                </li>
+                <li>
+                  <strong>Stripping is trivial and silent.</strong> Removing a manifest takes no skill and leaves no
+                  evidence in the file that it was ever there. Soft bindings — a watermark or a perceptual
+                  fingerprint that survives re-encoding — are designed to let a stripped asset be matched back to its
+                  record, and they help, but they are best-effort recovery rather than a guarantee.
+                </li>
+                <li>
+                  <strong>A signature is only as good as the trust list.</strong> Verification means checking a
+                  certificate chain against a set of issuers somebody decided to trust. That is a governance problem,
+                  not a mathematical one, and it inherits every hard question the
+                  <a href="/glossary#term-certificate-authority">certificate authority</a> system has: who gets
+                  admitted, who revokes, what happens when a signing key leaks out of a device. A validly signed asset
+                  from a signer you should not have trusted verifies perfectly.
+                </li>
+              </ul>
+              <p>
+                None of that makes provenance a bad bet. It makes it a bet on the right side of the asymmetry.
+                Detection asks an unbounded question about an adversary who gets the last move; provenance asks a
+                bounded question about a signature, and a bounded question is one that has an answer. My honest
+                reading is that provenance will end up mattering most for institutions with something to lose —
+                newsrooms, courts, insurers, anyone whose own material needs to be checkable later — and will matter
+                very little for the anonymous clip that lands in a group chat, which will never have carried a
+                manifest in the first place.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>One practical caution.</strong> Seeing a credential badge in an interface is not the same as
+                  verifying it. Presence of a manifest is not validity: checking the signature needs the certificate
+                  chain and a trust list, which means a network lookup. Any tool that shows you a badge without
+                  telling you what it checked has shown you a picture of a padlock.
+                </p>
+              </div>
+
+              <h2 id="the-part-that-actually-costs-money">The part that actually costs money</h2>
+              <p>
+                Almost everything written about deepfakes is about the media. The losses are not about the media.
+              </p>
+              <p>
+                Here is the case that keeps arriving, in one shape or another. Somebody in finance gets a call. The
+                voice is the managing director's, or the group CFO's, and it is close enough that nobody thinks about
+                it twice — a couple of minutes of a public conference talk or a podcast appearance is enough source
+                audio for a convincing clone, and there is no shortage of executives with a couple of minutes of
+                public audio. There is a live acquisition, or a regulator, or a supplier about to walk. It is
+                confidential, so do not mention it to anyone. The payment has to go today, to these details, and the
+                caller will stay on the line while it is set up.
+              </p>
+              <p>
+                Strip the voice out and you are looking at business email compromise, which is at least a decade old
+                and has never needed synthetic media to work. The structure has always been the same and it is the
+                structure that does the damage:
+              </p>
+              <ul>
+                <li><strong>Authority</strong>, so that questioning the request feels like insubordination.</li>
+                <li><strong>Urgency</strong>, so there is no time to check.</li>
+                <li><strong>Isolation</strong>, so nobody who would recognise the trick gets asked.</li>
+                <li><strong>A single channel</strong>, chosen by the attacker, which they control end to end.</li>
+              </ul>
+              <p>
+                The cloned voice is not a new attack. It is a better pretext bolted onto an old one — it removes the
+                last informal check, which was that the request sounded like the person. That check was never a
+                control. It was a habit that happened to work while voices were hard to fake, and it stopped working.
+              </p>
+              <p>
+                It is the same skeleton at individual scale in
+                <a href="/blog/digital-arrest-scam-explained">the digital arrest scam</a>, where a fake officer on a
+                video call keeps a victim isolated for hours and walks them through their own bank transfer. That
+                article's central observation applies exactly here: the theatre is elaborate and the mechanism is
+                simple, and every version of it needs the target to stay on one channel that the attacker controls.
+                On the taxonomy side, this is
+                <a href="/blog/types-of-cyberattacks">social engineering rather than a technical intrusion</a> — no
+                system was compromised, and no detector was going to be consulted.
+              </p>
+
+              <h2 id="a-policy-a-perfect-fake-cannot-pass">A policy a perfect fake cannot pass</h2>
+              <p>
+                So here is the recommendation, and it will disappoint anyone hoping for a product. Do not buy a
+                detector for this. Build a payment process that does not care how good the fake was.
+              </p>
+              <p>
+                The design principle is one line: <strong>a request and its verification must never travel on the
+                same channel, and the verification must be initiated by you.</strong> Everything else follows from
+                it.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram2.svg" alt="An urgent inbound request on a channel the caller chose, passing through an out-of-band gate with three conditions — a callback to a number from your own records, a second approver reached separately, and a challenge phrase agreed in advance — before a payment is released. A dashed path running directly from the request to the payment is crossed out." width="1160" height="470" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The control does not involve judging the media at all. Every loss of this kind travels the dashed line at the bottom, and a policy either has that line or it does not. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                In practice, that is these rules, and they are worth writing down as rules rather than leaving as
+                good sense:
+              </p>
+              <ol>
+                <li>
+                  <strong>No payment is approved on the channel it was requested on.</strong> Not the call, not the
+                  email thread, not the chat. This one rule does most of the work, and it is the one people negotiate
+                  away first.
+                </li>
+                <li>
+                  <strong>Call back on a number from your own records.</strong> Never a number given during the call,
+                  never a number in the signature of the email that made the request, never a number the caller reads
+                  out. The attacker's entire position depends on controlling both ends of the conversation, and a
+                  callback to a number they do not control ends it.
+                </li>
+                <li>
+                  <strong>A second approver, reached separately.</strong> Dual authorisation only counts if the second
+                  person was reached through a different route and forms their own view. Two people on the same
+                  conference call is one channel with two people on it.
+                </li>
+                <li>
+                  <strong>A challenge phrase agreed in advance.</strong> A short shared phrase, agreed out of band,
+                  kept out of the CRM and the shared drive and the email archive — because a cloned voice can say
+                  anything, but it cannot know something the attacker never had access to. Rotate it, and never use
+                  it for anything else.
+                </li>
+                <li>
+                  <strong>Changes to bank details are their own control.</strong> Treat a vendor's request to change
+                  account details as a security event: confirm it by calling the vendor contact you already had, not
+                  the one on the new instruction, and confirm it before the next payment run rather than during it.
+                </li>
+                <li>
+                  <strong>Urgency is a stop condition, not a reason to skip a step.</strong> Write it into the policy
+                  in those words. "The CFO is boarding a flight and cannot be reached" is not an exception; it is the
+                  scenario the control was written for.
+                </li>
+                <li>
+                  <strong>Stopping a payment has to be safe.</strong> This is the cultural half, and it is not
+                  optional. If the most junior person in the chain is afraid to slow down a payment the managing
+                  director appears to have demanded, you do not have a control — you have a document. Say out loud,
+                  in advance, that nobody will ever be criticised for making a callback, and mean it the one time it
+                  is inconvenient.
+                </li>
+                <li>
+                  <strong>Rehearse it.</strong> Walk the finance team through the scenario once, with the actual
+                  phone numbers in front of them. A control nobody has performed is a control nobody will perform at
+                  four in the afternoon on a Friday.
+                </li>
+              </ol>
+              <p>
+                Notice what is not on that list. Nobody is asked to decide whether a voice was synthetic. Nobody runs
+                a file through a tool. The controls are indifferent to media quality, which is precisely why they
+                will still be standing when the generators improve again — and they will improve again. That
+                indifference is the property you are buying.
+              </p>
+              <p>
+                The same logic scales down to a family. Agree a word with your parents. Tell them that you will never
+                ask for money by message, that any such request should be answered by hanging up and calling your
+                usual number, and that being wrong about it costs nothing. The pattern that empties an individual's
+                account is the same pattern that empties a company's, at a different scale and with worse
+                consequences for the person it happens to.
+              </p>
+
+              <h2 id="what-i-tell-a-client-who-asks-me-to-check-a-video">What I tell a client who asks me to check a video</h2>
+              <p>
+                I will not open with a verdict, and I say so before we start, because the expectation is the thing
+                most likely to make the engagement useless. What I will do is this.
+              </p>
+              <p>
+                <strong>Ask for the original, not the copy you were shown.</strong> The file as it left the sender, or
+                as it sits on the platform — not a screenshot, not a forward, not a re-upload. Nine times in ten this
+                is the whole conversation, because the original does not exist any more and everything downstream is
+                weaker for it. Then hash the file and write down where it came from, who provided it and when, before
+                anyone opens it in anything. If this ends up mattering legally, that record is
+                <a href="/glossary#term-chain-of-custody">chain of custody</a>, and it is worth more than any analysis
+                — a point made at length in
+                <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually solved</a>, where
+                cases turn on preserved evidence far more often than on clever technique.
+              </p>
+              <p>
+                <strong>Read the provenance, then the signals, in that order.</strong> Manifest, metadata, encoder
+                history, then ELA, noise, frequency, copy-move. I will tell you what each one is consistent with. I
+                will also tell you, every time, what innocently produces it, because a list of signals without their
+                innocent explanations is not analysis, it is prosecution.
+              </p>
+              <p>
+                <strong>Look at the geometry and the lighting with my own eyes.</strong> Shadows, reflections,
+                catchlights, straight lines behind a head, hands, ears, jewellery, text in the background. Slowly,
+                frame by frame if it is video.
+              </p>
+              <p>
+                <strong>Then leave the file entirely, which is usually where the answer is.</strong> Where did this
+                first appear, and when? What account posted it, and how old is that account? Is there any second
+                recording of the same moment from a different angle? Does anything else place this person in that
+                room on that day? Was the event it depicts reported anywhere by anyone with a name? A file that first
+                appears on a three-week-old account, with no earlier copy anywhere, describing an event nobody else
+                recorded, has told you a great deal — and none of it came from the pixels.
+              </p>
+              <p>
+                And then I give you one of three answers, honestly labelled.
+              </p>
+              <ul>
+                <li>
+                  <strong>"This is consistent with X and inconsistent with Y."</strong> The most common useful
+                  outcome. It is not a verdict, but it is often enough to act on, and it survives being questioned.
+                </li>
+                <li>
+                  <strong>"Here is where it came from."</strong> The best outcome, and it almost always comes from
+                  provenance or from open-source work outside the file rather than from pixel analysis.
+                </li>
+                <li>
+                  <strong>"I do not know, and here is exactly what I would need in order to know."</strong> The
+                  answer nobody wants and the one that is sometimes true. A tool that never says this is not more
+                  capable than I am. It is less honest.
+                </li>
+              </ul>
+              <p>
+                If the answer matters enough — a disputed video in a legal matter, a fabricated recording of an
+                employee, a compliance question — then the framing has to change too. The question stops being "is it
+                real" and becomes "can this be authenticated, by whom, and is the handling defensible." That is a
+                different piece of work, closer to
+                <a href="/blog/security-compliance-explained">the evidence discipline compliance work runs on</a>
+                than to anything a browser tool does, and it is decided by process and documentation rather than by
+                a signal map.
+              </p>
+              <p>
+                One last thing I tell people, because it is the part that generalises. The right response to a world
+                where media can be fabricated cheaply is not to get better at spotting fabrications. It is to stop
+                treating an unverified recording as proof of anything on its own — to ask where it came from before
+                asking what it shows. That was always good practice. It is now the only practice that works.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Can you just tell me whether this video is real?</summary>
+                  <p>
+                    Usually not from the file alone, and anyone who answers that question quickly is guessing. What I
+                    can tell you is what the file supports: whether it carries a signed provenance record, what its
+                    encoding history looks like, whether its geometry and lighting hold together, and where the
+                    earliest copy I can find came from. Often the decisive fact sits outside the file entirely — the
+                    account that posted it, the date it first appeared, or a second recording of the same moment. I
+                    would rather hand you that than a percentage.
+                  </p>
+                </details>
+                <details>
+                  <summary>Are AI detectors useless, then?</summary>
+                  <p>
+                    Not useless, but badly mismatched to the way people use them. A detector is a classifier trained
+                    on the output of the generators whoever built it had access to, so it is strongest on those and
+                    weakest on the model released after the training set was frozen — which is the one you are
+                    actually being attacked with. Used as one input among several, by someone who knows what it was
+                    trained on, it has a place. Used as a verdict on a single file, it produces a confident answer
+                    with nothing under it, and a confident wrong answer is worse than no answer.
+                  </p>
+                </details>
+                <details>
+                  <summary>The photo has no metadata at all. Does that mean it was faked?</summary>
+                  <p>
+                    No. Missing metadata is the normal state of almost every image you will ever be sent. Large
+                    platforms strip it on upload, chat apps re-encode and strip it, and a screenshot never had any to
+                    begin with. Absence proves nothing whatsoever. The reverse holds too: metadata that is present is
+                    trivially editable, so unless it sits inside a signed provenance manifest it is a claim about the
+                    file rather than evidence about it.
+                  </p>
+                </details>
+                <details>
+                  <summary>What does a Content Credentials badge actually prove?</summary>
+                  <p>
+                    That a particular device or piece of software signed this asset with this stated history, and
+                    that the bytes have not changed since. That is genuinely valuable, and it is the strongest thing
+                    in the field. It does not prove the scene in front of the lens was real, because a signing camera
+                    pointed at a screen produces a validly signed photograph of a fake. It does not prove the signer
+                    is honest, only that the certificate chains to something you decided to trust. And an asset with
+                    no credential is not thereby fake — it is an asset with no credential, which describes most of
+                    the internet.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is error level analysis proof that an image was edited?</summary>
+                  <p>
+                    No, and this is the most misread tool in the field. ELA maps where compression history differs
+                    across an image. Sharp edges, saturated colour and fine texture are bright in the ELA of every
+                    untouched photograph ever taken, and one extra re-save flattens the whole map into uniform noise.
+                    Bright does not mean pasted. It is also worth asking what amplification factor produced the
+                    picture you are being shown, because turning the gain up until something looks suspicious is how
+                    ELA is usually used to mislead.
+                  </p>
+                </details>
+                <details>
+                  <summary>How do I stop a cloned voice from getting a payment out of my company?</summary>
+                  <p>
+                    Not by detecting it. Make the payment process indifferent to how convincing the voice was. No
+                    payment and no change of bank details is ever approved on the channel the request arrived on.
+                    Verification is a callback to a number from your own records, never a number offered during the
+                    call. A second approver is reached separately. Urgency and seniority become stop conditions
+                    rather than reasons to skip a step, and stopping a payment has to be safe for the most junior
+                    person in the chain. None of that requires anyone to judge whether a voice was synthetic.
+                  </p>
+                </details>
+                <details>
+                  <summary>Someone has made a fake video of me. What should I do first?</summary>
+                  <p>
+                    Preserve before you react. Save the original file rather than a screenshot of it, record the
+                    exact address, the account and the time you saw it, and take a hash of the file so you can later
+                    show that the copy you handed over is the copy you found. Then report it: in India that means the
+                    national cybercrime portal or the 1930 helpline, and the platform's own reporting route in
+                    parallel. Do not pay anyone offering removal, and do not argue with the poster. What you preserve
+                    in the first hour is usually worth more than any analysis done a week later.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The summary I would want someone to leave with is short. Detection is losing, and the tools that
+                sound most certain are the ones losing hardest. Signed provenance is the real advance, and it answers
+                a narrower question than its badge suggests. And in the place where fakes actually take money off
+                people, the fix was never technical: it is a callback on a number the attacker does not control, a
+                second person reached separately, and permission to slow down. None of that requires anyone to be
+                good at spotting a fake, which is the only reason it will still be working next year.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-deepfake-detection-can-and-cannot-do" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=What%20Deepfake%20Detection%20Can%20and%20Cannot%20Do&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-deepfake-detection-can-and-cannot-do" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=What%20Deepfake%20Detection%20Can%20and%20Cannot%20Do%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-deepfake-detection-can-and-cannot-do" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/digital-arrest-scam-explained">The digital arrest scam, explained</a></li>
+              <li><a href="/blog/types-of-cyberattacks">Types of cyberattacks, mapped: causes, defenses, and the CIA triad</a></li>
+              <li><a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved: from first alert to the courtroom</a></li>
+              <li><a href="/blog/surface-web-deep-web-and-dark-web">Surface web, deep web, and dark web: what the three layers actually are</a></li>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Have a file, or a payment process, you need looked at?</h2>
+            <p>
+              For a disputed image or video I will tell you what it supports and what it does not, in writing, with
+              the innocent explanations stated alongside the findings. For a business the more valuable work is
+              usually the other one: the callback rule, the second approver, and the rehearsal that makes them real.
+              I do both, and I teach both to the people I mentor.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/labs/media-forensics">Run the forensics lab</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

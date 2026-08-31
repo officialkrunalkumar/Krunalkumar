@@ -1,0 +1,107 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-surface-web-deep-web-and-dark-web-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-surface-web-deep-web-and-dark-web-diagram1">The three layers of the web drawn by how a page is reached rather than by depth: the surface web is indexed by crawlers following links, the deep web is ordinary pages a crawler cannot pass a sign-in to reach, and the dark web is an overlay network where traffic is relayed through three hops</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW THE PAGE IS REACHED — NOT HOW DEEP IT SITS</text>
+
+  <!-- 1. Surface: indexed -->
+  <g>
+    <rect x="40" y="90" width="345" height="440" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="128" fill="#6b7a90" font-size="21" font-weight="800">Surface web</text>
+    <text x="62" y="153" fill="#64748b" font-size="15">indexed — a crawler can reach it</text>
+
+    <g stroke="#1e77a4" stroke-width="1.5" fill="none">
+      <rect x="70" y="196" width="52" height="64" rx="6"/>
+      <rect x="158" y="196" width="52" height="64" rx="6"/>
+      <rect x="246" y="196" width="52" height="64" rx="6"/>
+    </g>
+    <g stroke="#1e77a4" stroke-width="1.2" opacity="0.7">
+      <line x1="80" y1="214" x2="112" y2="214"/><line x1="80" y1="228" x2="112" y2="228"/><line x1="80" y1="242" x2="102" y2="242"/>
+      <line x1="168" y1="214" x2="200" y2="214"/><line x1="168" y1="228" x2="200" y2="228"/><line x1="168" y1="242" x2="190" y2="242"/>
+      <line x1="256" y1="214" x2="288" y2="214"/><line x1="256" y1="228" x2="288" y2="228"/><line x1="256" y1="242" x2="278" y2="242"/>
+    </g>
+    <g stroke="#1e77a4" stroke-width="2.5" stroke-linecap="round">
+      <line x1="122" y1="228" x2="150" y2="228"/>
+      <path d="M144 222 L152 228 L144 234" fill="none"/>
+      <line x1="210" y1="228" x2="238" y2="228"/>
+      <path d="M232 222 L240 228 L232 234" fill="none"/>
+    </g>
+    <text x="70" y="292" fill="#64748b" font-size="15">a link, then a link, then a link</text>
+
+    <text x="70" y="348" fill="#6b7a90" font-size="16">A news article</text>
+    <text x="70" y="374" fill="#6b7a90" font-size="16">A product page</text>
+    <text x="70" y="400" fill="#6b7a90" font-size="16">This blog post</text>
+
+    <text x="70" y="462" fill="#64748b" font-size="15">If something can follow a link</text>
+    <text x="70" y="484" fill="#64748b" font-size="15">to it and store a copy, it is</text>
+    <text x="70" y="506" fill="#64748b" font-size="15">surface web.</text>
+  </g>
+
+  <!-- 2. Deep: authenticated -->
+  <g>
+    <rect x="407" y="90" width="345" height="440" rx="14" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="429" y="128" fill="#6b7a90" font-size="21" font-weight="800">Deep web</text>
+    <text x="429" y="153" fill="#64748b" font-size="15">behind a sign-in, so no crawler</text>
+
+    <rect x="437" y="196" width="52" height="64" rx="6" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <g stroke="#93671a" stroke-width="1.2" opacity="0.7">
+      <line x1="447" y1="214" x2="479" y2="214"/><line x1="447" y1="228" x2="479" y2="228"/><line x1="447" y1="242" x2="469" y2="242"/>
+    </g>
+    <g stroke="#d42b25" stroke-width="2.5" stroke-linecap="round">
+      <line x1="489" y1="228" x2="527" y2="228"/>
+      <line x1="536" y1="220" x2="552" y2="236"/>
+      <line x1="552" y1="220" x2="536" y2="236"/>
+    </g>
+    <line x1="572" y1="180" x2="572" y2="282" stroke="#93671a" stroke-width="2" stroke-dasharray="7 6"/>
+    <path d="M563 222 v-7 a9 9 0 0 1 18 0 v7" fill="none" stroke="#93671a" stroke-width="2.5"/>
+    <rect x="559" y="222" width="26" height="20" rx="4" fill="#93671a"/>
+    <rect x="608" y="196" width="52" height="64" rx="6" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <g stroke="#93671a" stroke-width="1.2" opacity="0.7">
+      <line x1="618" y1="214" x2="650" y2="214"/><line x1="618" y1="228" x2="650" y2="228"/><line x1="618" y1="242" x2="640" y2="242"/>
+    </g>
+    <text x="437" y="292" fill="#64748b" font-size="15">stopped by the login, not the network</text>
+
+    <text x="437" y="348" fill="#6b7a90" font-size="16">Your webmail inbox</text>
+    <text x="437" y="374" fill="#6b7a90" font-size="16">Your bank, once you are in</text>
+    <text x="437" y="400" fill="#6b7a90" font-size="16">A company intranet</text>
+    <text x="437" y="426" fill="#6b7a90" font-size="16">A paywalled journal</text>
+
+    <text x="437" y="462" fill="#64748b" font-size="15">Same servers, same protocol,</text>
+    <text x="437" y="484" fill="#64748b" font-size="15">same browser. Most of it is</text>
+    <text x="437" y="506" fill="#64748b" font-size="15">yours, and it is dull.</text>
+  </g>
+
+  <!-- 3. Dark: overlay network -->
+  <g>
+    <rect x="774" y="90" width="345" height="440" rx="14" fill="none" stroke="#8f49df" stroke-width="1.5"/>
+    <text x="796" y="128" fill="#6b7a90" font-size="21" font-weight="800">Dark web</text>
+    <text x="796" y="153" fill="#64748b" font-size="15">an overlay network, not a depth</text>
+
+    <g stroke="#8f49df" stroke-width="2.5" stroke-linecap="round">
+      <line x1="814" y1="228" x2="846" y2="228"/>
+      <line x1="880" y1="228" x2="912" y2="228"/>
+      <line x1="946" y1="228" x2="978" y2="228"/>
+      <line x1="1012" y1="228" x2="1046" y2="228"/>
+    </g>
+    <circle cx="804" cy="228" r="11" fill="#8f49df"/>
+    <g fill="none" stroke="#8f49df" stroke-width="2">
+      <rect x="846" y="215" width="34" height="26" rx="6"/>
+      <rect x="912" y="215" width="34" height="26" rx="6"/>
+      <rect x="978" y="215" width="34" height="26" rx="6"/>
+      <circle cx="1058" cy="228" r="11" stroke-width="2.5"/>
+    </g>
+    <text x="804" y="268" fill="#64748b" font-size="14" text-anchor="middle">you</text>
+    <text x="929" y="268" fill="#64748b" font-size="14" text-anchor="middle">three relays</text>
+    <text x="1058" y="268" fill="#64748b" font-size="14" text-anchor="middle">service</text>
+    <text x="796" y="292" fill="#64748b" font-size="15">no single relay knows both ends</text>
+
+    <text x="796" y="348" fill="#6b7a90" font-size="16">Newspaper tip lines</text>
+    <text x="796" y="374" fill="#6b7a90" font-size="16">Mirrors of ordinary news sites</text>
+    <text x="796" y="400" fill="#6b7a90" font-size="16">Readers dodging a filter</text>
+    <text x="796" y="426" fill="#6b7a90" font-size="16">Criminal markets, genuinely</text>
+
+    <text x="796" y="462" fill="#64748b" font-size="15">Reached only by software that</text>
+    <text x="796" y="484" fill="#64748b" font-size="15">speaks its routing protocol.</text>
+    <text x="796" y="506" fill="#64748b" font-size="15">Small — thousands of sites.</text>
+  </g>
+
+  <text x="40" y="576" fill="#64748b" font-size="15">The deep web is enormous because logged-in pages are ordinary. The overlay networks are tiny beside it — and neither can be counted.</text>
+</svg>

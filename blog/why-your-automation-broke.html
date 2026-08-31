@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="An automation that ran for a year does not stop for mysterious reasons. The eight causes that account for it, and the guard that catches each one early."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Why Your Automation Broke, and How to Build One That Fails Loudly" />
+    <meta
+      property="og:description"
+      content="Nothing on your side changed — that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-automation-broke.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A run history strip where seven runs succeeded and the next five never happened, beside a silenced alarm reading zero errors and zero alerts" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Automation" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why Your Automation Broke, and How to Build One That Fails Loudly" />
+    <meta
+      name="twitter:description"
+      content="Nothing on your side changed — that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-automation-broke.jpg" />
+    <title>Why Your Automation Broke | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why Your Automation Broke, and How to Build One That Fails Loudly",
+        "description": "Why an automation that worked for a year suddenly stopped, and how to build one that fails loudly instead: a deprecated API version, an expired or revoked refresh token, a rate limit that only bites at scale, a renamed CRM field, a webhook retried or delivered twice, a timezone or daylight saving boundary, a changed default page size, and a schema that gained a required field — each with the guard that catches it, followed by idempotency keys, dead-letter queues, alerting on absence rather than on error, contract tests against the vendor, pinned API versions and version-controlled workflows.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-automation-broke.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Automation",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/why-your-automation-broke"
+        },
+        "keywords": "automation reliability, workflow monitoring, idempotency key, dead-letter queue, API deprecation, OAuth refresh token, rate limiting, webhook retries, contract testing, n8n, Zapier, Make"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "Why Your Automation Broke", "item": "https://krunalkumar.dpdns.org/blog/why-your-automation-broke" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "My automation stopped and the logs are completely empty. Where do I start?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An empty log is itself the finding: it means nothing executed, so the fault is at the edge rather than in the middle. Check three things in this order. First the credential — open the connection in the platform and look for a reauthentication prompt, or call a cheap authenticated endpoint by hand and see whether you get a 401. Second the trigger — confirm the workflow is still active, that a schedule survived any recent platform migration, and that a webhook endpoint registered with the vendor still points at a URL that exists. Third the vendor's status page and changelog for the window in which the last successful run sits. Between them those three cover the large majority of empty-log cases, and all three are faster to check than reading the workflow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How often does this actually happen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Often enough that I plan for it rather than react to it, and I would rather give you a rule than a statistic I cannot back with published data. The rule is that the expected lifetime of an integration without maintenance is roughly the interval at which its slowest-moving vendor ships a breaking change, and for mainstream business software that is a matter of months rather than years. If a workflow matters, budget for it to need attention two or three times a year, and treat a year of complete silence as a sign that nobody is checking rather than evidence that nothing has moved."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is self-hosting more or less reliable than a hosted platform?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Neither, and the question is really about which failures you would rather own. A hosted platform absorbs patching, uptime and connector maintenance, and in exchange you get their outages, their retry policy and their deprecations on their timetable. Self-hosting gives you control over every one of those and hands you the pager. What actually changes reliability is not the hosting model — it is whether anybody is alerted when the thing stops. I have seen self-hosted workflows with better monitoring than enterprise deployments, and the reverse, and in both cases the monitoring was the variable."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I really need a dead-letter queue for a five-step workflow?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Probably not, and I would not build one first. For a small workflow the useful order is: alert on absence, then handle retries safely with an idempotency key, then add a dead-letter queue when you find yourself losing items you cannot reconstruct. The signal that you need one is specific — a failure where you cannot answer the question \"which records did not get processed, and can I run them again\". Until you have hit that question, the queue is scaffolding for a problem you do not have, and the monitoring is not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I test a change without touching the vendor's live data?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use a sandbox where the vendor offers one, and check whether its schema matches production before you trust a green result. Where there is no sandbox, the workable pattern is a disposable record you create and delete in the same run, tagged clearly enough that a human finding it in the CRM knows what it is. Keep a separate set of credentials for testing so a mistake is contained, run tests against a copy of the workflow rather than the live one, and get written agreement from whoever owns the account before anything scheduled starts writing into their production system."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "The vendor emailed about a deprecation months ago. Why did it still surprise us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Because the notice went to an inbox rather than to a system. Vendor announcements arrive as email to whoever created the account, at a moment when the change is not yet actionable, and they are read by a person who is not the person who will have to do the work. The fix is mechanical rather than cultural: route changelog and status feeds to a shared address that a team reads, record every pinned version and its announced end date in the same place you track other dated obligations, and let a contract test be the backstop for the notices that get missed anyway. Assume some will always get missed."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I just rebuild it in code instead?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Only if the reason is one of a short list: volume that makes per-operation pricing absurd, logic that has outgrown what a visual canvas can express readably, or a requirement for tests and review that the platform cannot give you. Rebuilding in code does not remove a single cause from the first half of this article — the vendor still deprecates, the token still expires, the page size still changes. What it changes is that the guards become ordinary code you can test, and the workflow becomes a diff. That is a real gain, and it arrives with a maintenance burden that a no-code platform was carrying for you."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Why Your Automation Broke</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Automation</p>
+          <h1>Why your automation broke, and how to build one that fails loudly</h1>
+          <p class="hero-text">
+            The sentence that opens almost every one of these conversations is "we didn't change anything." It is
+            usually true, and it is the reason the thing stopped rather than a defence against it. Your workflow was
+            the only part of the arrangement holding still. Here are the eight causes that actually account for it,
+            what each one looks like from the outside — which is normally silence — and the specific guard that
+            catches it.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 25 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/automation-broke-cover.svg" alt="A run history strip where seven runs succeeded and the next five never happened, beside a silenced alarm reading zero errors and zero alerts" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#nothing-on-your-side-changed">Nothing on your side changed</a></li>
+                <li><a href="#why-the-failure-is-silent">Why the failure is silent</a></li>
+                <li><a href="#a-vendor-deprecated-an-api-version">1. A vendor deprecated an API version</a></li>
+                <li><a href="#a-refresh-token-expired-or-was-revoked">2. A refresh token expired or was revoked</a></li>
+                <li><a href="#a-rate-limit-that-only-bites-at-scale">3. A rate limit that only bites at scale</a></li>
+                <li><a href="#a-field-was-renamed-in-the-crm">4. A field was renamed in the CRM</a></li>
+                <li><a href="#a-webhook-arrived-twice-or-never">5. A webhook arrived twice, or never</a></li>
+                <li><a href="#a-timezone-or-a-dst-boundary">6. A timezone, or a DST boundary</a></li>
+                <li><a href="#pagination-changed-underneath-you">7. Pagination changed underneath you</a></li>
+                <li><a href="#a-schema-gained-a-required-field">8. A schema gained a required field</a></li>
+                <li><a href="#the-eight-in-one-table">The eight in one table</a></li>
+                <li><a href="#alert-on-absence-not-on-error">Alert on absence, not on error</a></li>
+                <li><a href="#idempotency-keys">Idempotency keys</a></li>
+                <li><a href="#a-dead-letter-queue-you-actually-drain">A dead-letter queue you actually drain</a></li>
+                <li><a href="#contract-tests-against-the-vendor">Contract tests against the vendor</a></li>
+                <li><a href="#pin-the-version-and-keep-the-workflow-in-git">Pin the version, and keep the workflow in git</a></li>
+                <li><a href="#what-to-ask-a-vendor-before-you-build">What to ask a vendor before you build</a></li>
+                <li><a href="#fast-detection-beats-prevention">Fast detection beats prevention</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="nothing-on-your-side-changed">Nothing on your side changed</h2>
+              <p>
+                An automation is not a program you run. It is a standing agreement between several programs you do
+                not control: a trigger owned by one vendor, an authentication token issued by a second, a record
+                shape defined by a third, a schedule kept by a platform, and a network in between that is nobody's
+                in particular. Every one of those pieces is on somebody else's release calendar, with somebody
+                else's opinion about what counts as a breaking change.
+              </p>
+              <p>
+                So "we didn't change anything" is not a defence. It is the diagnosis. The workflow held still while
+                the ground underneath it moved, and the useful question is never <em>what did we break</em>. It is
+                two other questions: what moved, and why did a customer find out before we did.
+              </p>
+              <p>
+                That second question is the one this article is really about. The first half below is a list of what
+                actually moves — eight causes that between them account for nearly everything I have been called in
+                to look at. The second half is the engineering that turns any of them from a three-week silence into
+                a message you get on the morning it happens. If you only have an afternoon, skip to
+                <a href="#alert-on-absence-not-on-error">alerting on absence</a>, which is worth more than the other
+                three guards combined.
+              </p>
+
+              <h2 id="why-the-failure-is-silent">Why the failure is silent</h2>
+              <p>
+                Every alarm most teams own is wired to an error. A step throws, the platform catches it, an email
+                goes out, somebody looks. That is a real mechanism and it works — for the failures where something
+                ran.
+              </p>
+              <p>
+                It does nothing at all for the failures where nothing ran. And the most common breakages sit at the
+                edge of the workflow rather than in the middle of it: the trigger that stops polling, the credential
+                that stops being accepted, the schedule that quietly detaches after a platform migration. In every
+                one of those, no step executes, so no step throws, so the error alarm has nothing to fire on. The
+                run history simply stops having new rows in it, and a table with no new rows looks exactly like a
+                table you have not scrolled to the top of.
+              </p>
+              <p>
+                There is a second reason, and it is the one that stings. An automation is a thing you deliberately
+                stopped watching. That is what you paid for. Nobody notices the invoices that did not get created
+                for the same reason nobody notices a lift that is not making a noise.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/why-your-automation-broke-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/why-your-automation-broke-diagram1.svg" alt="Two shapes of failure compared: a loud failure where a run starts, a step returns an error, the platform retries and parks the run and an alert reaches a human the same day; and a silent failure where a revoked token stops the trigger firing, so no step runs, nothing raises an error, nothing lands in the dead-letter queue and no alert is ever sent, with a guard band showing an alert that fires when the count of successful runs in a window falls to zero" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The top row is the failure your alerting was designed for. The bottom row is the one that costs you the client — and the only difference in the mechanism is that nothing ever executed. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Keep that picture in mind through the next eight sections. For each cause I have written what it
+                looks like from outside, because that is the only view you get at three in the morning, and the
+                specific guard that catches it. Several of the guards repeat. That is not padding — the same three
+                or four checks cover most of the list, which is the good news buried in a long article.
+              </p>
+
+              <h2 id="a-vendor-deprecated-an-api-version">1. A vendor deprecated an API version</h2>
+              <p>
+                <strong>From outside.</strong> Two shapes, and the second is far worse than the first. The loud
+                shape is an HTTP 410, or a 400 whose body mentions a version you have never typed anywhere. The
+                quiet shape is an endpoint that still answers 200 while the field you read is now nested one level
+                deeper, or renamed, or gone — so your workflow runs green and writes empty strings into a CRM for a
+                fortnight.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> Almost never without warning. The warning went to the email address
+                that created the vendor account, which on a small team is a founder's inbox, an alias nobody reads,
+                or an ex-employee, eight months before the cut-off date. It was also on a status page and in a
+                changelog, both of which are pull mechanisms in a world where nothing else about your operations is
+                a pull mechanism.
+              </p>
+              <p>
+                <strong>The guard.</strong> Pin the version explicitly — in the path, the header, or wherever the
+                vendor puts it — and never rely on the default. "The default" means "whatever is current on the day
+                this runs", which is a moving target you have handed to a stranger. Then subscribe a shared address
+                that a working human reads to the changelog and status feed, and record every pinned version with
+                its announced end date somewhere you will actually look, which for me means a comment in the
+                repository next to the call. The <a href="/labs/har-analyzer">HAR analyser</a> is useful when you
+                are trying to establish what a vendor is really returning today versus what you assumed a year ago:
+                capture the exchange from the browser and read the actual response rather than the documentation.
+              </p>
+
+              <h2 id="a-refresh-token-expired-or-was-revoked">2. A refresh token expired or was revoked</h2>
+              <p>
+                <strong>From outside.</strong> Pure silence, and this is the archetype of the whole article. The
+                trigger stops firing. Nothing errors, because nothing runs. Some platforms show a "connection needs
+                reauthentication" banner in a settings page that nobody has opened since the day it was built.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> There is a long list and every item is ordinary. The employee
+                whose account the integration was connected under left, and IT deprovisioned them properly. A user
+                changed a password, and the identity provider invalidates refresh tokens on password change. An
+                administrator revoked third-party app access during a security tidy-up, correctly. The refresh
+                token had an absolute lifetime and simply reached it. Or — the one I would name specifically because
+                it catches people repeatedly — the OAuth client is still in a provider's testing or unverified
+                state, where refresh tokens are deliberately short-lived, so the integration works beautifully for a
+                week and then does not.
+              </p>
+              <p>
+                <strong>The guard.</strong> Three things, in order of how much they buy you. Connect integrations
+                under a service account or a shared mailbox that survives a person leaving, not under whoever
+                happened to be at the keyboard. Add a token-health check that runs on a schedule, calls the
+                cheapest authenticated endpoint the vendor has — a <code>/me</code> or a <code>/whoami</code> — and
+                alerts on a 401 rather than logging it. And alert on absence, because a token failure that kills
+                the trigger will never reach any check that lives inside the workflow. If your access token is a
+                JWT, <a href="/labs/jwt">the JWT lab</a> decodes one in the browser and shows you its expiry claim,
+                which is the fastest way to find out whether you are looking at a one-hour token, a
+                ninety-day one, or something with no expiry at all.
+              </p>
+
+              <h2 id="a-rate-limit-that-only-bites-at-scale">3. A rate limit that only bites at scale</h2>
+              <p>
+                <strong>From outside.</strong> Partial results. Some records processed, some not, and no error
+                anywhere if the workflow treats a
+                <a href="/glossary#term-http-status-codes">429</a> as just another response and carries on to the
+                next step. A run that says success and did two thirds of the job is worse than a run that failed,
+                because the first one is invisible and the second one is a ticket.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> Limits are per second, per minute, per day, and often per bursty
+                window on top of that — and you were comfortably underneath all of them for a year. Then a customer
+                imports a spreadsheet, or a backfill runs, or a retry storm from an unrelated failure eats the
+                minute's budget, or the vendor tightens the number because somebody else abused it. Nothing in your
+                workflow changed. Its volume did.
+              </p>
+              <p>
+                <strong>The guard.</strong> Treat 429 as a first-class outcome with its own branch, never as a
+                generic failure and never as a shrug: respect the <code>Retry-After</code> header when the vendor
+                sends one, back off exponentially with jitter when it does not, and cap your own concurrency rather
+                than trusting the platform's default parallelism. Then add the cheapest and most underrated check
+                in this article — count the records you took in and the records you wrote out, and alert when they
+                differ. A run that reports "processed 46 of 512" is a run that tells you the truth. This is the
+                same trade-off I spent a research project on in a different domain: a limiter that protects a
+                system by refusing honest work has only moved the failure, and the only way to know which side of
+                that line you are on is to measure the work that did not happen.
+              </p>
+
+              <h2 id="a-field-was-renamed-in-the-crm">4. A field was renamed in the CRM</h2>
+              <p>
+                <strong>From outside.</strong> Again two shapes. Loud: an HTTP 422 naming a field you do not
+                recognise. Quiet, and far more common: the automation writes into a key the system no longer knows
+                and the system accepts the request and drops the value, or reads a field that is now null and
+                cheerfully writes an empty string. Everything is green. Nothing is populated.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> Somebody in sales operations renamed a field, changed a picklist
+                value, or rebuilt a stage. That is their job and they are allowed to do it. The problem is on your
+                side: most CRMs keep a stable internal identifier and a friendly label, and the integration was
+                bound to the label because the label is what the connector's dropdown showed you when you built it.
+              </p>
+              <p>
+                <strong>The guard.</strong> Bind to the immutable identifier wherever the vendor exposes one, even
+                when the label is what a human would read. Validate the record before you use it: assert that the
+                fields you depend on are present and non-empty, and fail the run when they are not. That last part
+                is the important half — most no-code platforms make skipping easier than failing, and a workflow
+                that skips is a workflow that has learned to lie to you. And tell the CRM owner, in one sentence,
+                which fields an automation depends on. That conversation costs five minutes and prevents the
+                rename.
+              </p>
+
+              <h2 id="a-webhook-arrived-twice-or-never">5. A webhook arrived twice, or never</h2>
+              <p>
+                <strong>From outside.</strong> Duplicates, which are visible but embarrassing — two invoices, two
+                Slack messages, two rows, one confused customer. Or the opposite and quieter failure: a delivery
+                that never arrived at all, because the vendor retried three times into a five-minute outage on your
+                side and then gave up. A webhook that was never received leaves no trace anywhere in your systems.
+                There is nothing to search for.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> At-least-once delivery is the contract almost every webhook ships
+                with, and it is the right contract. A sender that cannot get an acknowledgement cannot distinguish
+                a request that failed from a request that succeeded slowly, so it sends again. Which means the
+                common duplicate is not a vendor bug at all: you did the work, then answered after their timeout,
+                and they did what the documentation says they will do.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/why-your-automation-broke-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/why-your-automation-broke-diagram2.svg" alt="One webhook event delivered twice, drawn with and without an idempotency key: without a key the slow reply causes the vendor to redeliver the same event id and the work runs twice, producing two invoices; with a key the event id is recorded in the same transaction as the work, so the redelivery finds the id already complete, skips the work and returns 200, leaving one invoice" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Exactly-once delivery is not something a sender can offer you. It is something a receiver builds, out of the sender's event id and one lookup. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                <strong>The guard.</strong> Answer 200 as soon as you have durably stored the event, and do the
+                actual work afterwards, so a slow downstream system can never turn into a duplicate. Deduplicate on
+                the vendor's event id with an <a href="#idempotency-keys">idempotency key</a>, covered properly
+                below. And for the missing-delivery half, which no amount of receiver-side care will fix, add
+                reconciliation: once a day, pull the vendor's list of events for the period and compare it against
+                what you processed. That job is boring, it runs in a minute, and it is the only thing on this list
+                that can find an event you never knew existed.
+              </p>
+
+              <h2 id="a-timezone-or-a-dst-boundary">6. A timezone, or a DST boundary</h2>
+              <p>
+                <strong>From outside.</strong> A report that arrives at the wrong hour. A daily job that on one day
+                a year does not run at all, and on another day runs twice. A "yesterday's records" query that on
+                those same days covers 23 hours or 25 hours, so a day of data goes missing or gets counted twice —
+                and nothing anywhere errors, because 23 hours of records is a perfectly valid set of records.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> The schedule is expressed in one zone, the platform's servers keep
+                another, the customer lives in a third, and the vendor's API returns timestamps in a fourth. India
+                does not observe daylight saving, which means a team here can build and operate something for
+                years without ever meeting the boundary, and then meet it through a European or American counterpart's
+                data. A job scheduled at a local wall-clock time that does not exist on the spring-forward day
+                simply does not run; on the autumn day, that same wall-clock time happens twice.
+              </p>
+              <p>
+                <strong>The guard.</strong> Schedule in UTC and convert only for display. Make every window
+                explicit and half-open — greater than or equal to the start, strictly less than the end — rather
+                than asking for "yesterday", which is a word and not a boundary. Store timestamps with their offset
+                rather than as bare local strings. And for anything that must happen once a day, prefer logic that
+                says "if this has not run since the last boundary, run it now" over logic that fires at an instant,
+                which is the same idempotency idea arriving from a different direction. The
+                <a href="/glossary#term-unix-timestamp">Unix timestamp</a> entry in the glossary is the short
+                version of why an integer that does not carry a zone at all is often the safest thing to store.
+              </p>
+
+              <h2 id="pagination-changed-underneath-you">7. Pagination changed underneath you</h2>
+              <p>
+                <strong>From outside.</strong> Nothing. This is the purest silent failure on the list. You ask for
+                a list, take the first page, and stop — because for a year the first page <em>was</em> the whole
+                list. Then the account grows past the page size, or the vendor reduces its default from 100 to 50
+                to shed load, and from that day you process the first 50 of 300 records on every run, successfully,
+                forever. There is no error at any point in the life of that bug.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> The loop was never written, because there was never a second page
+                to write it against. It is not carelessness; it is a test that could not have failed at the time.
+                This is the same shape as most security findings I write up — a decision that was correct under the
+                conditions of the day, and stopped being correct when the conditions moved.
+              </p>
+              <p>
+                <strong>The guard.</strong> Always follow the cursor until the vendor says there is no next page,
+                even when you are certain there is only one page. Always pass an explicit page size rather than
+                accepting a default that is theirs to change. And keep the count check from the rate-limit section,
+                with one addition: if the number of records you processed is exactly equal to the page size, treat
+                that as a signal rather than a coincidence, because it almost always is one.
+              </p>
+
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The pattern under the last three.</strong> A renamed field, a changed page size and a
+                  daylight-saving boundary have nothing technically in common, and they fail identically: the
+                  workflow reports success while producing incomplete or empty output. Any check that only asks
+                  "did the run finish" is blind to all three. A check that asks "how many records went in, how many
+                  came out, and does that match yesterday" catches all three, with one query.
+                </p>
+              </div>
+
+              <h2 id="a-schema-gained-a-required-field">8. A schema gained a required field</h2>
+              <p>
+                <strong>From outside.</strong> A 400 or a 422 on write, naming a field you have never sent. This
+                one is at least loud, which is why it is last. The nastier variant is a field that becomes
+                mandatory on create but not on update, so half your workflow carries on working and the half that
+                onboards new records does not — which reads, on a dashboard, as a drop in new customers rather than
+                as a broken integration.
+              </p>
+              <p>
+                <strong>Why it happens.</strong> The vendor added a concept — a currency on a line item, a consent
+                flag, a region on a customer — and made it mandatory for new records. Plenty of vendors do not
+                classify adding a required field as a breaking change, because every client they test with already
+                sends it. From your side it is unambiguously breaking.
+              </p>
+              <p>
+                <strong>The guard.</strong> A contract test, described below, is the only thing that finds this
+                before your customer's record does. A scheduled job that creates and deletes one throwaway object
+                of each shape you write will fail the morning the requirement lands, rather than the morning
+                somebody signs up.
+              </p>
+
+              <h2 id="the-eight-in-one-table">The eight in one table</h2>
+              <p>
+                Same eight, compressed. The middle column is the one worth reading twice, because it is what you
+                will actually be looking at when you are trying to work out what happened.
+              </p>
+              <!-- tabindex/role/aria-labelledby: this div is the scroll container, and on a
+                   narrow phone it hides most of the third column. A scrollable region has to be
+                   reachable by keyboard and has to say what it is (WCAG 2.1.1). The caption
+                   already names it, so it is borrowed rather than duplicated. -->
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-automationbroke">
+                <table class="post-table">
+                  <caption id="table-caption-automationbroke">The eight causes, how each one presents itself, and the guard that catches it. Where a cause has both a loud and a quiet form, the quiet form is the one described.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">What moved</th>
+                      <th scope="col">What you see from outside</th>
+                      <th scope="col">The guard that catches it</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>API version deprecated</td>
+                      <td>Fields quietly missing from a 200 response</td>
+                      <td>Pin the version; contract test; read the changelog</td>
+                    </tr>
+                    <tr>
+                      <td>Refresh token expired or revoked</td>
+                      <td>Silence — the trigger stops firing entirely</td>
+                      <td>Alert on absence; daily token-health check</td>
+                    </tr>
+                    <tr>
+                      <td>Rate limit reached at volume</td>
+                      <td>A successful run that processed two thirds</td>
+                      <td>Handle 429 explicitly; count in against out</td>
+                    </tr>
+                    <tr>
+                      <td>CRM field renamed</td>
+                      <td>Green runs writing empty values</td>
+                      <td>Bind to ids; validate the record; fail, do not skip</td>
+                    </tr>
+                    <tr>
+                      <td>Webhook retried or duplicated</td>
+                      <td>Two invoices, or an event that never arrived</td>
+                      <td>Idempotency key on the event id; daily reconciliation</td>
+                    </tr>
+                    <tr>
+                      <td>Timezone or DST boundary</td>
+                      <td>A missing day, a doubled day, a job that skipped</td>
+                      <td>Schedule in UTC; half-open windows; run-once logic</td>
+                    </tr>
+                    <tr>
+                      <td>Default page size changed</td>
+                      <td>Nothing at all — steady, silent truncation</td>
+                      <td>Follow the cursor; explicit page size; count check</td>
+                    </tr>
+                    <tr>
+                      <td>Schema gained a required field</td>
+                      <td>422 on create, while updates keep working</td>
+                      <td>Contract test that creates and deletes a record</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                Four distinct guards cover all eight rows. The rest of this article is those four, plus the two
+                practices that make fixing any of them a small job instead of an archaeology exercise.
+              </p>
+
+              <h2 id="alert-on-absence-not-on-error">Alert on absence, not on error</h2>
+              <p>
+                If you take one thing from this article, take this one. It is an afternoon of work and it covers
+                more ground than everything else here put together.
+              </p>
+              <blockquote>
+                <p>
+                  A workflow that has stopped running produces no errors at all. Every alarm wired to an error is
+                  therefore blind to the failure mode that stays hidden the longest.
+                </p>
+              </blockquote>
+              <p>
+                The mechanism is deliberately dull. At the end of every successful run, write a heartbeat: a
+                timestamp in a table, a row in a log, a ping to a dead-man's-switch service that expects to hear
+                from you on an interval. Then have something outside the workflow — and it must be outside, because
+                a monitor that lives inside the thing it monitors dies with it — check the age of the newest
+                heartbeat and alert when it exceeds the interval plus a margin.
+              </p>
+              <p>
+                Two refinements are worth the extra hour. First, alert on the count, not only the age: successful
+                runs per hour, records processed per run. A workflow that runs on schedule and processes zero
+                records every time is failing, and an age check will never notice. Second, alert on the step change
+                as well as the zero — yesterday's run handled 500 records and today's handled 12, which is either a
+                quiet holiday or the pagination bug from section seven.
+              </p>
+              <p>
+                The honest caveat: this check will page somebody for a benign gap. A vendor has an outage, a
+                genuinely quiet Sunday drops the count, a deployment pauses the queue for six minutes. The response
+                to that is to widen the window or exclude the known-quiet period — not to delete the check, which is
+                what usually happens on the second false alarm. A monitor everybody has muted is worse than no
+                monitor, because it is also a story you tell yourself about being covered.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Practise reading the evidence.</strong> When an automation misbehaves, the first artefact
+                  you get is a log, and the skill is spotting the gap rather than the error — the hour with no
+                  entries, the status code that appears fifty times in a minute, the request that stops recurring.
+                  The log analyser on this site takes a pasted log and surfaces those patterns, entirely in your
+                  browser. Nothing you paste is uploaded anywhere.
+                </p>
+                <a class="btn btn-primary" href="/labs/log-analyser">Open the log analyser</a>
+              </div>
+
+              <h2 id="idempotency-keys">Idempotency keys</h2>
+              <p>
+                Retries are not optional. Networks drop, vendors time out, platforms replay. Anything that will be
+                retried has to be safe to retry, and an idempotency key is how you get that with one lookup.
+              </p>
+              <p>
+                The idea: before doing work that has a side effect, record a key that identifies <em>this specific
+                unit of work</em>. If the key is already recorded as complete, skip the work and return the stored
+                result. Two rules make the difference between a key that works and a key that is decoration, and
+                the diagram earlier in this article draws both:
+              </p>
+              <ul>
+                <li>
+                  <strong>Use the sender's identifier, not one you generate.</strong> A key you generate at the top
+                  of the handler is a different key on the retry, which defeats the entire mechanism. Use the
+                  vendor's event id where they give you one. Where they do not, derive it deterministically from
+                  the natural key of the work — the order id plus the word "invoice" hashed together will do, and
+                  the <a href="/labs/hash">hash lab</a> is a quick way to convince yourself that the same input
+                  really does give the same digest every time.
+                </li>
+                <li>
+                  <strong>Write the key in the same transaction as the work.</strong> If you record the key first
+                  and then do the work, a crash in between leaves a key claiming completion for work that never
+                  happened. If you do the work first and then record the key, a crash in between leaves work with
+                  no key and the retry duplicates it. The gap between the two writes is the bug, and the fix is to
+                  not have a gap.
+                </li>
+              </ul>
+              <p>
+                Two practical notes. Give the key a lifetime that comfortably outlives the vendor's retry window —
+                if they retry over 24 hours, a key you expire after an hour is a key that is absent when it
+                matters. And check whether the vendor accepts an <code>Idempotency-Key</code> header on writes,
+                which many payment and billing APIs do: sending one makes <em>your</em> retries safe on
+                <em>their</em> side, which is the other half of the same problem and costs you one header.
+              </p>
+
+              <h2 id="a-dead-letter-queue-you-actually-drain">A dead-letter queue you actually drain</h2>
+              <p>
+                A dead-letter queue is a place failed items go, with their input intact, so they can be inspected
+                and replayed rather than lost. It is a straightforward idea that fails in practice for two
+                straightforward reasons.
+              </p>
+              <p>
+                The first is that nobody looks at it. A queue with no alarm on it is a folder. Alert on depth
+                greater than zero, not on rate — one stuck item is a signal, and waiting for a spike means waiting
+                for the thing you were trying to avoid. The second is that items arrive without enough context to
+                replay: an error message and a record id, and by the time anybody opens it the record has moved on
+                and the original payload is gone. Store the complete input, the error, the attempt count, the
+                timestamp and a correlation id that ties the entry back to the run that produced it.
+              </p>
+              <p>
+                Then make replay a single command. If draining the queue means somebody reconstructing a request by
+                hand from a screenshot, the queue is a graveyard with good intentions. And test the replay path
+                deliberately, on purpose, before you need it — the first replay is where you discover that the
+                downstream system has since started rejecting the payload shape you stored.
+              </p>
+              <p>
+                One honest limit. A dead-letter queue only catches items that entered the system and failed. It
+                catches nothing from sections two, six or seven of this article, where the item never entered at
+                all. That is not an argument against having one; it is an argument against believing an empty queue
+                means everything is fine. An empty queue and a silent workflow look identical.
+              </p>
+
+              <h2 id="contract-tests-against-the-vendor">Contract tests against the vendor</h2>
+              <p>
+                Your own tests check your code. A contract test checks your assumption about someone else's, and
+                it is the only guard in this article that finds a vendor's change before your data does.
+              </p>
+              <p>
+                It is small. A scheduled job — daily is usually enough — that calls the endpoints you depend on and
+                asserts the things you actually rely on: that the field exists, that it has the type you expect,
+                that a list endpoint returns a next-page cursor in the shape you parse, that creating and deleting
+                one throwaway object of each kind you write still succeeds. It fails loudly and it names the field.
+                Compared with discovering the same fact three weeks later through a customer, it is close to free.
+              </p>
+              <p>
+                Two caveats, because this one gets oversold. Vendor sandboxes drift from production — a sandbox
+                schema is often behind, occasionally ahead, and sometimes has different limits — so a green
+                contract test against a sandbox is evidence rather than proof. And plenty of vendors have no
+                sandbox at all, in which case you are testing against production with a tagged, disposable record
+                that you create and delete in the same job, and you should agree that in writing with whoever owns
+                the account before you start writing rows into their live system on a schedule.
+              </p>
+
+              <h2 id="pin-the-version-and-keep-the-workflow-in-git">Pin the version, and keep the workflow in git</h2>
+              <p>
+                Two practices that do not prevent anything by themselves and make everything else cheaper.
+              </p>
+              <p>
+                <strong>Pin the version.</strong> Say which version of the API you are calling, everywhere,
+                explicitly. An unpinned integration is a promise that a stranger's release schedule is your release
+                schedule. Pinning does not make you safe forever — versions do get retired — but it converts a
+                surprise into a dated obligation, and a dated obligation can be put in a calendar.
+              </p>
+              <p>
+                <strong>Keep the workflow in version control.</strong> Export the workflow definition on a schedule
+                and commit it. The moment you do, "what changed and when" is a diff rather than an argument, and
+                the question of who edited the live workflow at 6pm on Friday has an answer. This is one of the
+                real differences between the platforms, and it is why I said in
+                <a href="/blog/n8n-make-or-zapier-an-honest-comparison">the honest comparison of n8n, Make and
+                Zapier</a> that a change you cannot review in a pull request is a change nobody is reviewing. If
+                you want the underlying mechanism to stop feeling magical,
+                <a href="/labs/git-objects">the git objects lab</a> takes a commit apart to show why a diff between
+                two exports is cheap and reliable.
+              </p>
+              <p>
+                One caveat that matters: an exported workflow can contain credentials, endpoint URLs and sample
+                payloads with real customer data in them. Scrub the export before it lands in a repository, and
+                store credentials by reference rather than by value. Putting a working key into git history to gain
+                reviewability is a bad trade, and it is one of the most common findings in
+                <a href="/blog/what-a-security-review-actually-finds">a security review</a>.
+              </p>
+
+              <h2 id="what-to-ask-a-vendor-before-you-build">What to ask a vendor before you build</h2>
+              <p>
+                Most of the eight causes above are decided before you write a line — by which vendor you picked and
+                what they promise. These are the questions I ask, and they take one email:
+              </p>
+              <ul>
+                <li><strong>What is your deprecation policy, and what notice period do you commit to?</strong> A number in writing is worth more than a reassurance on a call.</li>
+                <li><strong>Where is the changelog, and can I subscribe an address that is not the account owner's?</strong> This single question fixes cause number one.</li>
+                <li><strong>Is webhook delivery at-least-once, and do you send a stable event id?</strong> Without an id you cannot deduplicate, and you will have to reconcile instead.</li>
+                <li><strong>What is the retry schedule and the delivery timeout, and can I fetch events I missed?</strong> The last clause is the one people forget to ask, and it is the only recovery path for an outage on your side.</li>
+                <li><strong>What are the rate limits, per what window, and what do you return when I hit them?</strong> "It depends on your plan" is an answer you can work with; no answer is not.</li>
+                <li><strong>Is there a sandbox, and does its schema match production?</strong> The second half of that question is the interesting half.</li>
+                <li><strong>How long does a refresh token live, and what invalidates it?</strong> Password changes, admin revocation and app-verification state all belong in the answer.</li>
+                <li><strong>Can I pin an API version, and how long do you keep old ones running?</strong></li>
+                <li><strong>Is there a status page with a feed, and does it cover the API or only the product?</strong> Those are frequently not the same system, and only one of them is the one you depend on.</li>
+              </ul>
+              <p>
+                If a vendor cannot answer most of these, that is information about the integration you are about to
+                build rather than a judgement on the person who replied. Sometimes you build on them anyway,
+                because the business reason is good — and then you budget for more monitoring, because you have
+                just been told you will get less warning. Either way, that answer belongs in the estimate before it
+                belongs in the invoice, which is the same argument as
+                <a href="/blog/scoping-work-before-you-quote-it">scoping the work before you quote it</a>.
+              </p>
+
+              <h2 id="fast-detection-beats-prevention">Fast detection beats prevention</h2>
+              <p>
+                Here is the part that a services page would leave out. You cannot prevent most of this.
+              </p>
+              <p>
+                A vendor can ship a change with no notice at all. An account can be suspended by an automated fraud
+                system on a Saturday. A data centre can lose a region. A client's IT department can revoke an app
+                during a security review nobody told you about, entirely correctly. There is no architecture that
+                makes an integration immune to a company you do not own, and any consultant who implies otherwise
+                is selling you a feeling.
+              </p>
+              <p>
+                So the goal is not zero breakage. It is time to detection, measured honestly. Every guard in the
+                second half of this article exists to shorten the distance between the moment something moves and
+                the moment a human knows — from three weeks to ten minutes — and to make sure that when a human
+                does know, the input is still sitting there so the work can be replayed rather than reconstructed.
+              </p>
+              <p>
+                The metric I would hold a system to is not how many failures it had. It is how you found out about
+                each one. If the answer is "a customer told us" more than once in a year, the problem is not the
+                vendor who changed something. It is that the automation was built to succeed quietly and allowed to
+                fail quietly too, and those are the same design decision made once.
+              </p>
+              <blockquote>
+                <p>
+                  Build automations that are boring when they work and loud when they do not. The second half is
+                  the part that gets skipped, because on the day you build it there is nothing to hear.
+                </p>
+              </blockquote>
+              <p>
+                A worked example of the whole shape — trigger, classification, human gate, and what happens when a
+                step fails — is in the walkthrough of
+                <a href="/blog/automating-email-replies-with-n8n">automating email replies with n8n</a>, and the
+                code for a production system built the same way is public in
+                <a href="/blog/i-open-sourced-my-ai-sdr">the AI SDR I open-sourced</a>. Both are worth reading with
+                this article's list beside them, because you will spot the guards in them, and also the places
+                where I chose to accept a risk rather than engineer it away.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>My automation stopped and the logs are completely empty. Where do I start?</summary>
+                  <p>
+                    An empty log is itself the finding: it means nothing executed, so the fault is at the edge
+                    rather than in the middle. Check three things in this order. First the credential — open the
+                    connection in the platform and look for a reauthentication prompt, or call a cheap
+                    authenticated endpoint by hand and see whether you get a 401. Second the trigger — confirm the
+                    workflow is still active, that a schedule survived any recent platform migration, and that a
+                    webhook endpoint registered with the vendor still points at a URL that exists. Third the
+                    vendor's status page and changelog for the window in which the last successful run sits.
+                    Between them those three cover the large majority of empty-log cases, and all three are faster
+                    to check than reading the workflow.
+                  </p>
+                </details>
+                <details>
+                  <summary>How often does this actually happen?</summary>
+                  <p>
+                    Often enough that I plan for it rather than react to it, and I would rather give you a rule
+                    than a statistic I cannot back with published data. The rule is that the expected lifetime of
+                    an integration without maintenance is roughly the interval at which its slowest-moving vendor
+                    ships a breaking change, and for mainstream business software that is a matter of months
+                    rather than years. If a workflow matters, budget for it to need attention two or three times a
+                    year, and treat a year of complete silence as a sign that nobody is checking rather than
+                    evidence that nothing has moved.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is self-hosting more or less reliable than a hosted platform?</summary>
+                  <p>
+                    Neither, and the question is really about which failures you would rather own. A hosted
+                    platform absorbs patching, uptime and connector maintenance, and in exchange you get their
+                    outages, their retry policy and their deprecations on their timetable. Self-hosting gives you
+                    control over every one of those and hands you the pager. What actually changes reliability is
+                    not the hosting model — it is whether anybody is alerted when the thing stops. I have seen
+                    self-hosted workflows with better monitoring than enterprise deployments, and the reverse, and
+                    in both cases the monitoring was the variable.
+                  </p>
+                </details>
+                <details>
+                  <summary>Do I really need a dead-letter queue for a five-step workflow?</summary>
+                  <p>
+                    Probably not, and I would not build one first. For a small workflow the useful order is:
+                    alert on absence, then handle retries safely with an idempotency key, then add a dead-letter
+                    queue when you find yourself losing items you cannot reconstruct. The signal that you need one
+                    is specific — a failure where you cannot answer the question "which records did not get
+                    processed, and can I run them again". Until you have hit that question, the queue is
+                    scaffolding for a problem you do not have, and the monitoring is not.
+                  </p>
+                </details>
+                <details>
+                  <summary>How do I test a change without touching the vendor's live data?</summary>
+                  <p>
+                    Use a sandbox where the vendor offers one, and check whether its schema matches production
+                    before you trust a green result. Where there is no sandbox, the workable pattern is a
+                    disposable record you create and delete in the same run, tagged clearly enough that a human
+                    finding it in the CRM knows what it is. Keep a separate set of credentials for testing so a
+                    mistake is contained, run tests against a copy of the workflow rather than the live one, and
+                    get written agreement from whoever owns the account before anything scheduled starts writing
+                    into their production system.
+                  </p>
+                </details>
+                <details>
+                  <summary>The vendor emailed about a deprecation months ago. Why did it still surprise us?</summary>
+                  <p>
+                    Because the notice went to an inbox rather than to a system. Vendor announcements arrive as
+                    email to whoever created the account, at a moment when the change is not yet actionable, and
+                    they are read by a person who is not the person who will have to do the work. The fix is
+                    mechanical rather than cultural: route changelog and status feeds to a shared address that a
+                    team reads, record every pinned version and its announced end date in the same place you track
+                    other dated obligations, and let a contract test be the backstop for the notices that get
+                    missed anyway. Assume some will always get missed.
+                  </p>
+                </details>
+                <details>
+                  <summary>Should I just rebuild it in code instead?</summary>
+                  <p>
+                    Only if the reason is one of a short list: volume that makes per-operation pricing absurd,
+                    logic that has outgrown what a visual canvas can express readably, or a requirement for tests
+                    and review that the platform cannot give you. Rebuilding in code does not remove a single
+                    cause from the first half of this article — the vendor still deprecates, the token still
+                    expires, the page size still changes. What it changes is that the guards become ordinary code
+                    you can test, and the workflow becomes a diff. That is a real gain, and it arrives with a
+                    maintenance burden that a no-code platform was carrying for you.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                None of the eight causes above is exotic, and none of the guards is clever. That is rather the
+                point: the difference between an automation that quietly stops for three weeks and one that tells
+                you within the hour is a handful of dull checks that nobody is excited to build on the day there is
+                nothing to hear. If you recognised two of these in something you are running, the next step is an
+                afternoon with a heartbeat and a count — or a conversation.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-automation-broke" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=Why%20Your%20Automation%20Broke%2C%20and%20How%20to%20Build%20One%20That%20Fails%20Loudly&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-automation-broke" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=Why%20Your%20Automation%20Broke%2C%20and%20How%20to%20Build%20One%20That%20Fails%20Loudly%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-automation-broke" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/n8n-make-or-zapier-an-honest-comparison">n8n, Make, or Zapier: an honest comparison</a></li>
+              <li><a href="/blog/automating-email-replies-with-n8n">Automating email replies with n8n: a practical guide</a></li>
+              <li><a href="/blog/i-open-sourced-my-ai-sdr">I open-sourced my AI SDR</a></li>
+              <li><a href="/blog/scoping-work-before-you-quote-it">Scope the work before you quote it</a></li>
+              <li><a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want the guards put on something you already run?</h2>
+            <p>
+              I build and repair automations for small teams, and the first conversation is usually about which of
+              the eight above your workflow is exposed to and which of them is worth spending money on. Often the
+              honest answer is that one afternoon of monitoring would have caught the thing that cost you a
+              fortnight, and the rest can wait.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">See how I work</a>
+              <a class="btn btn-secondary" href="/contact">Start a conversation</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

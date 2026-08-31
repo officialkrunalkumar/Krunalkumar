@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: how a SIM swap works — a phone showing no service beside a second phone receiving the one-time codes, with a SIM card moving between them">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.42" r="0.58">
+      <stop offset="0" stop-color="#f87171" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#f87171" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="140" cy="92" r="2"/><circle cx="428" cy="64" r="1.5"/><circle cx="686" cy="102" r="2"/>
+    <circle cx="98" cy="432" r="1.5"/><circle cx="336" cy="552" r="2"/><circle cx="1142" cy="74" r="1.5"/>
+    <circle cx="1054" cy="576" r="2"/><circle cx="624" cy="588" r="1.5"/>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="172" fill="#7dd3fc" font-size="24" font-weight="800" letter-spacing="7">SECURITY</text>
+    <text x="80" y="248" fill="#f8fafc" font-size="48" font-weight="800">How a SIM swap works</text>
+    <text x="80" y="308" fill="#f8fafc" font-size="48" font-weight="800">and why an OTP is not</text>
+    <text x="80" y="368" fill="#f8fafc" font-size="48" font-weight="800">the protection you think</text>
+    <text x="80" y="440" fill="#e2e8f0" font-size="26" font-weight="600">Whoever holds the number holds</text>
+    <text x="80" y="478" fill="#e2e8f0" font-size="26" font-weight="600">the codes. The tell is silence.</text>
+    <text x="80" y="548" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+
+  <!-- Your handset, detached from the subscription, and the handset the
+       number now answers on. Nothing was decrypted; one record moved. -->
+  <rect x="792" y="146" width="156" height="286" rx="24" fill="rgba(148,163,184,0.06)" stroke="#94a3b8" stroke-width="5"/>
+  <g stroke="#64748b" stroke-width="7" stroke-linecap="round">
+    <path d="M822 214 v10"/><path d="M844 206 v18"/><path d="M866 198 v26"/><path d="M888 190 v34"/>
+  </g>
+  <g stroke="#f87171" stroke-width="6" stroke-linecap="round">
+    <path d="M902 190 l24 24"/><path d="M926 190 l-24 24"/>
+  </g>
+  <text x="870" y="292" fill="#f87171" font-family="'Segoe UI', Tahoma, sans-serif" font-size="21" font-weight="800" letter-spacing="2" text-anchor="middle">NO SERVICE</text>
+  <text x="870" y="472" fill="#94a3b8" font-family="'Segoe UI', Tahoma, sans-serif" font-size="20" font-weight="700" text-anchor="middle">your handset</text>
+
+  <rect x="1000" y="206" width="132" height="248" rx="22" fill="rgba(248,113,113,0.08)" stroke="#f87171" stroke-width="5"/>
+  <rect x="1022" y="252" width="88" height="46" rx="10" fill="rgba(248,113,113,0.18)" stroke="#f87171" stroke-width="3"/>
+  <g fill="#f87171">
+    <circle cx="1040" cy="275" r="6"/><circle cx="1058" cy="275" r="6"/>
+    <circle cx="1076" cy="275" r="6"/><circle cx="1094" cy="275" r="6"/>
+  </g>
+  <g fill="#94a3b8" opacity="0.7">
+    <rect x="1022" y="324" width="88" height="8" rx="4"/>
+    <rect x="1022" y="346" width="64" height="8" rx="4"/>
+    <rect x="1022" y="368" width="76" height="8" rx="4"/>
+  </g>
+  <text x="1066" y="492" fill="#94a3b8" font-family="'Segoe UI', Tahoma, sans-serif" font-size="20" font-weight="700" text-anchor="middle">their handset</text>
+
+  <!-- the SIM profile moving across -->
+  <g transform="translate(944,86)">
+    <path d="M0 0 h44 l16 16 v40 h-60z" fill="rgba(248,113,113,0.16)" stroke="#f87171" stroke-width="3"/>
+    <path d="M14 16 h32 M14 30 h32 M14 44 h32" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <path d="M956 178 h64" stroke="#f87171" stroke-width="6" stroke-linecap="round" fill="none" stroke-dasharray="14 10"/>
+  <path d="M1016 164 l24 14 -24 14z" fill="#f87171"/>
+</svg>

@@ -2643,3 +2643,5704 @@ html:not(.js) .lab-filter { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .lab-glossary-terms a { transition: none; }
 }
+
+/* ==========================================================================
+   Media forensics — the analysis stage and its standing disclaimer
+   --------------------------------------------------------------------------
+   One canvas carries every view this tool has: the photograph, the ELA map,
+   the noise residual, a square FFT plot and a two-panel magnifier. Their
+   aspect ratios have nothing in common, so the stage is a flex box with its
+   own height and the canvas is constrained on both axes and centred inside
+   it. A replaced element with max-width and max-height and no explicit
+   height keeps its own ratio, so a 256x256 plot and a 3:2 photograph both sit
+   correctly without either dictating the size of the panel.
+
+   The disclaimer strip is not decoration and not a footnote. It is the first
+   thing inside the tool and it stays on screen the whole time the tool is in
+   use, because the visitor who scrolls past the prose and starts dropping
+   files is exactly the one who would otherwise read a wall of measurements
+   with no frame around them. Same construction as .lab-netnote — a left
+   border rather than a bullet, with the border width subtracted from the left
+   padding so the text lines up with the toolbar below it — but its own class,
+   because this warning has nothing to do with network requests and a shared
+   name would invite someone to "tidy" one of them into the other.
+   ========================================================================== */
+
+.lab-mfnote {
+  display: block;
+  margin: 0;
+  padding: 0.65rem 0.85rem 0.65rem calc(0.85rem - 3px);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #fde68a;
+  background: rgba(251, 191, 36, 0.09);
+  border-left: 3px solid #fbbf24;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+}
+.lab-mfnote strong { color: #fbbf24; font-weight: 600; }
+
+.lab-mfrow {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  align-items: stretch;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.lab-mfrow .lab-drop { margin: 1rem; }
+
+.lab-mfstage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 1rem;
+  background: #020617;
+  border-left: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.lab-mfcanvas {
+  display: block;
+  max-width: 100%;
+  max-height: min(46vh, 400px);
+  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background: #020617;
+  /* Clicking moves the analysis crop, so the pointer has to say so. Arrow
+     keys do the same thing, which is why this is a focusable element and
+     needs a visible ring of its own against the near-black stage. */
+  cursor: crosshair;
+}
+.lab-mfcanvas:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+.lab-mfcap {
+  margin: 0;
+  max-width: 44rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+  text-align: center;
+}
+/* The strength readout sits beside its slider and changes width as the number
+   goes 0 -> 100; a fixed minimum stops the Apply button next to it shuffling
+   sideways on every drag. */
+.lab-mfstrength { display: inline-block; min-width: 2.2rem; text-align: right; }
+
+@media (max-width: 860px) {
+  .lab-mfrow { grid-template-columns: minmax(0, 1fr); }
+  .lab-mfstage {
+    border-left: 0;
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+  }
+  .lab-mfcanvas { max-height: 38vh; }
+}
+@media (max-width: 560px) {
+  /* Follows the toolbar's own padding drop, exactly as .lab-netnote does, or
+     the banner text stops lining up with the controls under it. */
+  .lab-mfnote {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.6rem 0.6rem calc(0.6rem - 3px);
+  }
+}
+
+/* ==========================================================================
+   UPI and payment fraud (/labs/upi-fraud)
+   --------------------------------------------------------------------------
+   Three panels behind one tab strip, and one thing on the page that had to be
+   built rather than borrowed: the payment mock in the first panel.
+
+   It is deliberately drawn as a wireframe — dashed rule, monospace, a standing
+   ribbon across the top saying it is an illustration — and not as a convincing
+   phone screen. A page teaching people to distrust a screen must not itself
+   ship a screenshot anyone could crop and reuse, so the styling here is doing
+   safety work rather than decoration. The element that looks like a confirm
+   button is a paragraph: it has no button affordance beyond its border, takes
+   no focus, and there is no payment flow behind it to find.
+
+   .is-tell is the payoff of a round. It marks the single line that settled the
+   question, and it is only ever added after the visitor has answered.
+   ========================================================================== */
+
+.lab-upi { min-height: 32rem; }
+
+.upi-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 0.9rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.upi-tab {
+  flex: 1 1 12rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  text-align: left;
+  font: inherit;
+  padding: 0.7rem 0.7rem 0.6rem;
+  color: var(--ink-3);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.upi-tab-n {
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-4);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+}
+
+.upi-tab-txt { display: flex; flex-direction: column; gap: 0.12rem; min-width: 0; }
+.upi-tab-title { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+.upi-tab-sub { font-size: 0.75rem; color: var(--ink-4); line-height: 1.4; }
+
+.upi-tab:hover { color: var(--ink); }
+.upi-tab[aria-selected="true"] { color: var(--accent-1); border-bottom-color: var(--accent-1); }
+.upi-tab[aria-selected="true"] .upi-tab-n {
+  color: var(--accent-1);
+  border-color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.12);
+}
+.upi-tab:focus-visible { outline: 2px solid var(--accent-1); outline-offset: -2px; }
+
+.upi-bodies { padding: 1.2rem 1.1rem 1.5rem; }
+.upi-panel:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; }
+
+.upi-lede {
+  margin: 0 0 1.1rem;
+  max-width: 46rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.upi-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.upi-progress {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+}
+
+.upi-tally { margin: 0; font-size: 0.8rem; color: var(--ink-4); }
+
+/* The mock ----------------------------------------------------------------- */
+
+.upi-stage { margin: 0 0 1.1rem; }
+
+.upi-mock {
+  margin: 0;
+  max-width: 27rem;
+  border: 2px dashed rgb(var(--accent-rgb) / 0.38);
+  border-radius: 12px;
+  background: rgb(var(--deep-rgb) / 0.6);
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  overflow: hidden;
+}
+
+.upi-mock-ribbon {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border-bottom: 1px dashed rgba(251, 191, 36, 0.4);
+}
+
+.upi-mock-title {
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.upi-rows { margin: 0; padding: 0 0.9rem 0.6rem; }
+
+.upi-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  padding: 0.4rem 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 6px;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.3);
+}
+
+.upi-row-k {
+  flex: 0 0 9.5rem;
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--ink-4);
+}
+
+.upi-row-v {
+  flex: 1 1 8rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.upi-mock-action {
+  margin: 0.3rem 0.9rem 1rem;
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  border: 1px solid rgb(var(--accent-rgb) / 0.4);
+  border-radius: 8px;
+  background: rgb(var(--accent-rgb) / 0.1);
+}
+
+/* Only ever applied after an answer. */
+.upi-row.is-tell,
+.upi-mock-action.is-tell {
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.14);
+  color: #fde68a;
+}
+.upi-row.is-tell .upi-row-v,
+.upi-row.is-tell .upi-row-k { color: #fde68a; }
+
+.upi-tellmark {
+  display: inline-block;
+  margin-left: 0.55rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #451a03;
+  background: #fbbf24;
+}
+
+/* The question ------------------------------------------------------------- */
+
+.upi-ask {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.upi-choices { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.9rem; }
+
+.upi-choice {
+  flex: 1 1 15rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  color: var(--ink);
+  background: var(--raise-85);
+  border: 1px solid rgb(var(--accent-rgb) / 0.32);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.upi-choice:hover:not(:disabled) { border-color: var(--accent-1); }
+.upi-choice:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+.upi-choice:disabled { cursor: default; opacity: 0.75; }
+.upi-choice.is-picked { border-width: 2px; }
+.upi-choice.is-answer {
+  border-color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+  color: #bbf7d0;
+  opacity: 1;
+}
+.upi-choice.is-picked:not(.is-answer) {
+  border-color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  color: #fecaca;
+  opacity: 1;
+}
+
+.upi-verdict {
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.upi-verdict:empty { margin: 0; }
+.upi-verdict.is-right { color: #86efac; }
+.upi-verdict.is-wrong { color: #fca5a5; }
+
+.upi-explain { max-width: 46rem; }
+.upi-why { margin: 0 0 0.7rem; font-size: 0.9rem; line-height: 1.7; color: var(--ink-3); }
+
+.upi-rule {
+  margin: 0.9rem 0 0;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #d1fae5;
+  border-left: 3px solid #4ade80;
+  border-radius: 0 8px 8px 0;
+  background: rgba(74, 222, 128, 0.07);
+}
+
+.upi-rule-k {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4ade80;
+}
+
+.upi-next { margin: 1rem 0 0; }
+
+.upi-go {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  color: #f8fafc;
+  background: #0f766e;
+  border: 1px solid #14b8a6;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.upi-go:hover { background: #115e59; }
+.upi-go:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+.upi-done { max-width: 46rem; }
+.upi-done-h { margin: 0 0 0.6rem; font-size: 1.05rem; color: var(--ink); }
+.upi-done-p { margin: 0 0 0.8rem; font-size: 0.92rem; line-height: 1.7; color: var(--ink-3); }
+
+.upi-caption {
+  margin: 1.2rem 0 0;
+  max-width: 42rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+/* Panel 2 — the scripts ---------------------------------------------------- */
+
+.upi-scriptframe {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.upi-tabs-v {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0;
+  border-bottom: 0;
+  border-right: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.upi-tabs-v .upi-tab {
+  flex: 0 0 auto;
+  border-bottom: 0;
+  border-right: 2px solid transparent;
+  border-radius: 8px 0 0 8px;
+}
+.upi-tabs-v .upi-tab[aria-selected="true"] {
+  border-right-color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.08);
+}
+
+.upi-bodies-v { padding: 0; min-width: 0; }
+
+.upi-script-h {
+  margin: 0 0 0.9rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.upi-beat { margin: 0 0 1rem; max-width: 46rem; }
+
+.upi-beat-k {
+  margin: 0 0 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.upi-beat-v { margin: 0; font-size: 0.92rem; line-height: 1.72; color: var(--ink-3); }
+
+.upi-beat-q {
+  padding: 0.75rem 0.95rem;
+  border-left: 3px solid var(--accent-1);
+  border-radius: 0 8px 8px 0;
+  background: rgb(var(--accent-rgb) / 0.07);
+}
+.upi-beat-q .upi-beat-k { color: var(--accent-1); }
+.upi-beat-q .upi-beat-v { color: var(--ink-2); }
+
+/* Panel 3 — the first hour ------------------------------------------------- */
+
+.upi-clock {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.upi-band {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.45);
+}
+
+.upi-band-k {
+  margin: 0 0 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fbbf24;
+}
+
+.upi-band-v { margin: 0; font-size: 0.85rem; line-height: 1.65; color: var(--ink-3); }
+
+.upi-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.upi-number {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 10px;
+  background: rgba(74, 222, 128, 0.06);
+}
+
+.upi-number-a {
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #86efac;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.upi-number-a:hover { text-decoration: underline; }
+.upi-number-a:focus-visible { outline: 2px solid #4ade80; outline-offset: 3px; border-radius: 4px; }
+.upi-number-n { margin: 0; font-size: 0.82rem; line-height: 1.6; color: var(--ink-3); }
+
+.upi-steps { margin: 0 0 1.6rem; padding: 0; list-style: none; }
+
+.upi-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 0.65rem;
+  padding: 0.7rem 0.2rem;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.3);
+}
+.upi-step:last-child { border-bottom: 1px solid rgb(var(--line-rgb) / 0.3); }
+
+.upi-check {
+  margin: 0.28rem 0 0;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #4ade80;
+  cursor: pointer;
+}
+.upi-check:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+.upi-step-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.upi-step-n { flex: 0 0 auto; font-size: 0.78rem; font-weight: 700; color: var(--accent-1); }
+
+.upi-step-d {
+  grid-column: 2;
+  margin: 0.25rem 0 0;
+  font-size: 0.87rem;
+  line-height: 1.68;
+  color: var(--ink-3);
+}
+
+.upi-step.is-done .upi-step-t { text-decoration: line-through; color: var(--ink-4); }
+.upi-step.is-done .upi-step-d { color: var(--ink-4); }
+
+.upi-honest {
+  max-width: 46rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.05);
+}
+.upi-honest-h { margin: 0 0 0.6rem; font-size: 1.02rem; color: #fca5a5; }
+.upi-honest-p { margin: 0 0 0.8rem; font-size: 0.9rem; line-height: 1.72; color: var(--ink-3); }
+.upi-honest-p:last-child { margin-bottom: 0; }
+
+@media (max-width: 780px) {
+  .upi-scriptframe { grid-template-columns: minmax(0, 1fr); }
+  .upi-tabs-v {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+    padding-bottom: 0.4rem;
+  }
+  .upi-tabs-v .upi-tab {
+    flex: 1 1 11rem;
+    border-right: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px 8px 0 0;
+  }
+  .upi-tabs-v .upi-tab[aria-selected="true"] { border-bottom-color: var(--accent-1); }
+  .upi-bodies-v { padding-top: 0.4rem; }
+}
+
+@media (max-width: 560px) {
+  .upi-bodies { padding: 1rem 0.75rem 1.3rem; }
+  .upi-tabs { padding: 0 0.4rem; }
+  .upi-tab { flex: 1 1 100%; padding: 0.55rem 0.5rem; }
+  .upi-row-k { flex: 1 1 100%; }
+  /* iOS Safari zooms the page when a control under 16px takes focus, and never
+     zooms back out. The two answer buttons are the controls a visitor presses
+     over and over here, so they are the ones that would strand somebody
+     sideways for the rest of the visit. */
+  .upi-choice, .upi-go { font-size: 16px; }
+}
+
+/* ==========================================================================
+   TOTP explainer (/labs/totp)
+   --------------------------------------------------------------------------
+   Two panels that both update four times a second, so everything here is
+   built for text that changes under a reader's eyes rather than for a page
+   that is painted once.
+
+   The derivation panel is a list of fixed rows, not a re-rendered terminal.
+   A <pre> rewritten on every tick would churn the accessibility tree
+   continuously and make the panel impossible to sit inside with a screen
+   reader; these rows are created once and only their textContent changes,
+   with the one announcement on the page reserved for the moment the code
+   itself changes.
+
+   Colours come from the theme tokens except the QR canvas, which is drawn
+   near-black on white in both themes because a camera needs the contrast and
+   does not care what the rest of the page is doing.
+   ========================================================================== */
+
+.totp-now,
+.totp-steps {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+}
+
+/* --- the headline code and its countdown ---------------------------------- */
+.totp-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+.totp-ring { flex: 0 0 auto; }
+.totp-head-text { min-width: 0; }
+.totp-code {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.14em;
+  color: var(--accent-1);
+  /* The digits change every step; tabular figures stop the whole panel
+     shuffling sideways each time a 1 replaces an 8. */
+  font-variant-numeric: tabular-nums;
+}
+.totp-countdown {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-4);
+}
+.totp-head .lab-btn { margin-left: auto; }
+
+/* --- clock skew ----------------------------------------------------------- */
+.totp-skew { margin-top: 1.1rem; }
+.totp-skew > label {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+.totp-skew-value {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  color: var(--accent-1);
+  font-variant-numeric: tabular-nums;
+}
+.totp-skew input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+.totp-skew input[type='range']:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 3px;
+}
+.totp-skew-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+  /* The sentence changes length as you drag; reserve the tallest of the
+     three so the cards under it do not jump while the thumb is moving. */
+  min-height: 3.4em;
+}
+
+/* --- the three windows ---------------------------------------------------- */
+.totp-windows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.totp-window {
+  padding: 0.6rem 0.65rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.5);
+  min-width: 0;
+}
+/* Two states can land on the same card, so they use two different visual
+   channels — a filled border for the server's step, an inset ring for the
+   device's — and neither carries the meaning on its own: the tag line inside
+   each card says which is which in words. */
+.totp-window.is-server {
+  border-color: rgb(var(--accent-rgb) / 0.75);
+  background: rgb(var(--accent-rgb) / 0.1);
+}
+.totp-window.is-device { box-shadow: inset 0 0 0 2px #4ade80; }
+.totp-window-t {
+  margin: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.totp-window-code {
+  margin: 0.15rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  word-break: break-all;
+}
+.totp-window-range {
+  margin: 0.15rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+.totp-window-tag {
+  margin: 0.3rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--accent-1);
+  min-height: 2.9em;
+}
+
+/* --- verifying a typed code ----------------------------------------------- */
+.totp-verify { margin-top: 1.2rem; }
+.totp-verify > label {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+.totp-verify-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.totp-verify-row .lab-toolfield { flex: 1 1 8rem; }
+.totp-verify-out {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+  min-height: 1.5em;
+}
+.totp-verify-out.is-ok { color: #4ade80; }
+.totp-verify-out.is-err { color: #f87171; }
+.totp-verify-out.is-warn { color: #fbbf24; }
+
+/* --- the derivation rows -------------------------------------------------- */
+.totp-step {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.16);
+}
+.totp-step:last-child { border-bottom: 0; }
+.totp-step-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+.totp-step-n {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  color: var(--accent-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.4);
+  border-radius: 50%;
+}
+.totp-step-value {
+  margin: 0.3rem 0 0 1.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink);
+  /* A SHA-512 digest is 128 hex characters. Wrap it rather than letting the
+     page scroll sideways. */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.totp-step-note {
+  margin: 0.25rem 0 0 1.85rem;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+}
+.totp-hex { color: var(--ink); }
+/* The four bytes dynamic truncation picked out. Underlined as well as
+   coloured, so the highlight survives a colour-blind reader and a printout. */
+.totp-hex-pick {
+  color: #fbbf24;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- the provisioning URI and its QR -------------------------------------- */
+.totp-qrrow {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  background: rgb(var(--deep-rgb) / 0.55);
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.totp-qrbox { min-width: 0; }
+.totp-qr {
+  display: block;
+  width: 15rem;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  background: #ffffff;
+  /* The modules are drawn at an integer scale; this keeps their edges hard
+     if the element is scaled down to fit a narrow screen. */
+  image-rendering: pixelated;
+}
+.totp-qr[hidden] { display: none; }
+.totp-qrnote {
+  margin: 0.5rem 0 0;
+  max-width: 15rem;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+}
+.totp-qrtext { min-width: 0; }
+.totp-qrtext p {
+  margin: 0 0 0.6rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+.totp-qrtext p:last-child { margin-bottom: 0; }
+.totp-qrtext code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-1);
+}
+
+/* In fullscreen .lab becomes a 100vh flex column, and every row that is not
+   the panes has to opt out of shrinking — the same thing .lab-resultbar does
+   further up this file. Without it the panes take the space and the QR is
+   squeezed to a few pixels of white. */
+.lab.is-fullscreen .totp-qrrow {
+  flex: 0 0 auto;
+  max-height: 32vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 860px) {
+  .totp-now,
+  .totp-steps { overflow: visible; }
+  .totp-qrrow { grid-template-columns: minmax(0, 1fr); }
+  .totp-qrnote { max-width: none; }
+}
+
+@media (max-width: 560px) {
+  .totp-windows { grid-template-columns: minmax(0, 1fr); }
+  .totp-window-tag { min-height: 0; }
+  .totp-skew-note { min-height: 0; }
+  .totp-head .lab-btn { margin-left: 0; }
+}
+
+/* ==========================================================================
+   Git object explorer
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/git-objects.js builds its whole interface — shell,
+   working-tree editor, commit graph and the object/ref/reflog tabs — into this
+   mount and injects its own scoped stylesheet for the internals, the same way
+   the CPU simulator does. Only the two rules the page shell owns live here.
+
+   The mount holds a scrolling grid rather than a canvas, so it needs the
+   opposite of the .lab-canvas treatment: no height cap in the page (the panels
+   cap their own scroll areas), and in fullscreen it must be allowed to take
+   the remaining height and scroll internally rather than run off the bottom.
+   ========================================================================== */
+.lab-git-mount { min-height: 0; }
+.lab-viz.is-fullscreen .lab-git-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme for /labs/upi-fraud: those panels are one of the dark
+   instruments. Kept here rather than up in the .upi-* block so it lands after
+   every base rule in this file, the same reason main.css keeps its own pins at
+   the end.
+
+   main.css already pins .lab-multi-mount to an opaque #0b1220 in light theme,
+   because everything the multi-shell labs inject was drawn once, for dark. Its
+   own note explains that a widget's class-scoped colours survive the site's
+   light re-inking, and that holds here — the ambers, greens and reds in the
+   .upi-* block are literal hexes and stay where they were put.
+
+   What does not survive is the half of this panel that reaches for a token.
+   Those flip to their light values while the ground under them does not move,
+   which is the same failure main.css documents for .lab-stdin: light ink on a
+   fill that stayed dark. Measured on that #0b1220 ground with light on, before
+   this block:
+
+     --ink-2    1.28:1   .upi-row-v      every value in the payment mock
+     --ink-3    1.81:1   .upi-why        the explanation after an answer
+     --ink-4    2.94:1   .upi-tab-sub    the second line on every tab
+     --accent-1 3.16:1   .upi-tab-title  the tab labels themselves
+
+   So the tokens are pinned to their dark values for the mount's subtree, the
+   way main.css pins them for the terminal panes. Nothing outside the mount is
+   touched: the gate, the toolbar and every section below the lab are ordinary
+   site chrome and are meant to go light. --raise-85 is restated as well as
+   --raise-rgb, because in light theme it is a literal rgba rather than a
+   composition of the token above it. */
+:root[data-theme="light"] .lab-upi .lab-multi-mount {
+  --accent-rgb: 125 211 252;
+  --accent2-rgb: 56 189 248;
+  --accent-1: #7dd3fc;
+  --accent-2: #38bdf8;
+  --ink: #f8fafc;
+  --ink-2: #e2e8f0;
+  --ink-3: #cbd5e1;
+  --ink-4: #94a3b8;
+  --line-rgb: 148 163 184;
+  --deep-rgb: 15 23 42;
+  --raise-rgb: 46 62 80;
+  --raise-85: rgb(46 62 80 / 0.85);
+}
+
+/* ==========================================================================
+   Unicode inspector — the two segmentation strips and the character table
+   --------------------------------------------------------------------------
+   /labs/unicode has to show the same string three ways at once: as the
+   browser draws it (the input box), as grapheme clusters, and as raw code
+   points. The two strips below the panes carry the second and third, and the
+   table under them carries the per-character detail.
+
+   Every colour here is written out rather than taken from a theme token,
+   which is the same choice .lab-terminal already makes and for the same
+   reason: these surfaces are fixed dark in both themes. The chips encode
+   severity in colour — amber for a formatting character, red for one that
+   changes meaning without changing appearance, violet for a lookalike — and
+   a token that flips with the theme would either invert that meaning or
+   collapse two of the three into each other. A fixed surface keeps one set of
+   contrast ratios to check instead of two.
+
+   The panes are shorter here than the .lab-tool default. There are three more
+   regions below them, and the whole tool has to be reachable without the
+   report scrolling off the top of the screen.
+
+   .uni-cell carries unicode-bidi: isolate. Nothing that reaches these chips
+   is a bidi control — classify() turns those into labels first — but a chip
+   holding a single Arabic or Hebrew letter would still take part in the
+   paragraph's own reordering. Isolating each cell means the strip is always
+   in logical order, left to right, which is the entire point of showing it.
+   ========================================================================== */
+
+.lab-unicode .lab-panes {
+  height: min(38vh, 320px);
+  min-height: 220px;
+}
+
+.uni-strips {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  background: #020617;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.uni-striplabel {
+  margin: 0 0 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.uni-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  min-height: 2.4rem;
+  padding: 0.4rem;
+  max-height: 11rem;
+  overflow-y: auto;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  background: #0b1120;
+}
+.uni-strip:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.uni-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  padding: 0.2rem 0.3rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: #e2e8f0;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 5px;
+  /* See the header: one cell, one direction, always. */
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* A chip standing in for something with no glyph is a label, not a
+   character, so it is set smaller and in capitals to read as one. */
+.uni-cell-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.uni-cell.is-quiet {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.06);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+.uni-cell.is-warn {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.45);
+}
+.uni-cell.is-danger {
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.16);
+  border-color: rgba(248, 113, 113, 0.6);
+}
+.uni-cell.is-confusable {
+  color: #c4b5fd;
+  background: rgba(167, 139, 250, 0.14);
+  border-color: rgba(167, 139, 250, 0.5);
+}
+.uni-cell-more {
+  color: #94a3b8;
+  background: none;
+  border-style: dashed;
+  font-size: 0.72rem;
+}
+
+/* A cluster box holds what a person would call one character, with the
+   number of code points inside it. A box with more than one is the whole
+   lesson of that strip, so it gets the accent border. */
+.uni-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.08);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.uni-cluster.is-multi {
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(56, 189, 248, 0.1);
+}
+.uni-cluster-glyph {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: #f8fafc;
+}
+.uni-cluster-count {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #7dd3fc;
+}
+.uni-cluster:not(.is-multi) .uni-cluster-count { color: #64748b; }
+
+.uni-counts {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.75rem;
+  color: #7dd3fc;
+}
+
+/* Ten columns of forensic detail. It scrolls in both directions inside its
+   own box rather than stretching the page, which is what an overflowing
+   table does to every layout it is put in. */
+.uni-tablewrap {
+  max-height: 22rem;
+  overflow: auto;
+  background: #020617;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+.uni-tablewrap:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: -2px;
+}
+
+.uni-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+.uni-table caption {
+  padding: 0.5rem 0.85rem;
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.uni-table th,
+.uni-table td {
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+.uni-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: #7dd3fc;
+  background: #0b1120;
+  font-weight: 600;
+}
+.uni-table tbody tr.is-danger { background: rgba(248, 113, 113, 0.12); }
+.uni-table tbody tr.is-confusable { background: rgba(167, 139, 250, 0.1); }
+.uni-table .uni-num { color: #64748b; text-align: right; }
+.uni-table .uni-glyph { font-size: 0.95rem; color: #f8fafc; direction: ltr; unicode-bidi: isolate; }
+.uni-table .uni-cp { color: #86efac; }
+.uni-table .uni-bytes { color: #7dd3fc; }
+
+.uni-tablenote {
+  margin: 0;
+  padding: 0.5rem 0.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: #fbbf24;
+}
+.uni-tablenote:empty { display: none; }
+
+/* A snippet whose whole point is the characters you cannot see, so it keeps
+   its own box rather than borrowing .lab-example's, and marks the invisible
+   ones inline the way the tool does. */
+.uni-snippet code { white-space: pre; }
+.uni-mark {
+  display: inline-block;
+  padding: 0 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.16);
+  border: 1px solid rgba(248, 113, 113, 0.55);
+  border-radius: 4px;
+}
+
+/* Fullscreen turns .lab into a column flex box and hands the panes the
+   remaining height. These three rows are not in that shared list because they
+   only exist here, and without a fixed basis they would each take a share of
+   the space the report needs. They keep their own scroll instead. */
+.lab-unicode.is-fullscreen .uni-strips,
+.lab-unicode.is-fullscreen .uni-tablewrap,
+.lab-unicode.is-fullscreen .uni-tablenote { flex: 0 0 auto; }
+.lab-unicode.is-fullscreen .uni-strip { max-height: 7rem; }
+.lab-unicode.is-fullscreen .uni-tablewrap { max-height: 28vh; }
+
+@media (max-width: 860px) {
+  .lab-unicode .lab-panes { height: auto; }
+  .uni-strip { max-height: 8rem; }
+  .uni-tablewrap { max-height: 18rem; }
+}
+
+@media (max-width: 560px) {
+  .uni-strips { padding: 0.6rem; }
+  .uni-counts { font-size: 0.7rem; }
+  .uni-table { font-size: 0.7rem; }
+}
+
+/* ==========================================================================
+   /labs/phishing-dissector
+   --------------------------------------------------------------------------
+   Two additions only: the row of worked-example buttons above the panes, and
+   the highlight the dissector paints over the exact bytes that produced a
+   finding. Everything else on that page reuses the shell above.
+   ========================================================================== */
+
+.pd-samples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.85rem;
+  background: rgb(var(--deep-rgb) / 0.55);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+
+.pd-samples-label {
+  margin: 0 0.35rem 0 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* Six of these sit on one line on a desktop and wrap to three rows on a
+   phone, so they are a size down from the toolbar buttons they sit under. */
+.pd-samples .lab-btn { padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+
+/* The highlight has to survive on the terminal's fixed near-black ground in
+   both site themes, which is why it is a solid pair of hard-coded colours
+   rather than a tinted background over the inherited phosphor green: a
+   translucent wash over #020617 is not reliably legible, and the whole point
+   of the mark is that you can see precisely which characters it covers.
+   box-decoration-break keeps the ends drawn when a long quoted line wraps —
+   .lab-terminal is pre-wrap, so it does. */
+.lab-terminal .pd-hit {
+  padding: 0 0.1em;
+  border-radius: 2px;
+  color: #1c1917;
+  background: #fbbf24;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+@media (max-width: 560px) {
+  .pd-samples { padding: 0.55rem; }
+  /* The desktop size-down exists so six of these fit on one line. On a phone
+     they wrap onto three rows anyway, so the only thing it buys there is a
+     touch target smaller than every other control on the page. */
+  .pd-samples .lab-btn { padding: 0.42rem 0.6rem; font-size: 0.8rem; }
+}
+
+/* ==========================================================================
+   QR generator and inspector (/labs/qr)
+   --------------------------------------------------------------------------
+   The generate half needs a form sitting beside a picture, which no existing
+   lab layout provides — every other tool in here is text in, text out. The
+   fields themselves reuse .lab-metric, .lab-select and .lab-toolfield
+   unchanged, so this block is only the two-column stage and the preview.
+
+   The preview is painted on white and never follows the site theme. A QR code
+   rendered light-on-dark fails to scan on a good number of phone cameras, and
+   a preview you cannot photograph off the screen is worse than none.
+   ========================================================================== */
+.lab-qrstage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
+  align-items: start;
+  background: rgb(var(--deep-rgb) / 0.5);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.lab-qrfields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.7rem 0.9rem;
+  padding: 0.9rem;
+  min-width: 0;
+}
+.lab-qrfields .lab-toolfield { width: 100%; flex: 0 1 auto; }
+.lab-qrwide { grid-column: 1 / -1; }
+.lab-qrwide textarea.lab-toolfield {
+  resize: vertical;
+  min-height: 4.5rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.lab-qrcheck {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+.lab-qrcheck input { accent-color: var(--accent-1); cursor: pointer; }
+
+.lab-qrpreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border-left: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.lab-qrcanvas {
+  display: block;
+  width: 100%;
+  max-width: 13rem;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background: #fff;
+  /* Nearest-neighbour, or the browser's smoothing rounds the module edges and
+     the thing on screen stops being scannable at small sizes. */
+  image-rendering: pixelated;
+}
+.lab-qrmeta {
+  margin: 0;
+  text-align: center;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+}
+
+/* display:grid and display:flex above both beat the UA sheet's [hidden] rule,
+   so the half that is not in use would otherwise stay on screen. */
+.lab-qrstage[hidden],
+.lab-qrfields[hidden],
+#tool-genpanel[hidden],
+#tool-inspanel[hidden] { display: none; }
+
+@media (max-width: 860px) {
+  .lab-qrstage { grid-template-columns: minmax(0, 1fr); }
+  .lab-qrpreview {
+    border-left: 0;
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+  }
+  .lab-qrcanvas { max-width: 11rem; }
+}
+
+/* ==========================================================================
+   Threat modelling tool (/labs/threat-model)
+   --------------------------------------------------------------------------
+   Three steps in one shell: describe the system, work through the STRIDE
+   proposals, print the model. The steps are a tablist rather than three
+   stacked sections because step 2 is long — fifty threat cards on a system of
+   any real size — and burying step 3 under all of it would mean nobody ever
+   found the printable output.
+
+   The one rule that shapes the rest: every control is a real form control with
+   a real visible label. This is a form for writing a document, not a canvas,
+   and the whole thing has to work with a keyboard, on a phone and under a
+   screen reader — none of which a drag-and-drop diagram editor would have
+   managed honestly in the space available.
+   ========================================================================== */
+
+.lab-threatmodel { min-height: 34rem; }
+
+/* Step tabs ---------------------------------------------------------------- */
+.tm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+  background: rgb(var(--deep-rgb) / 0.55);
+}
+.tm-tab {
+  flex: 1 1 12rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink-3);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.tm-tab-step {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  color: var(--ink-4);
+  border: 1px solid rgb(var(--line-rgb) / 0.5);
+}
+.tm-tab-txt { display: flex; flex-direction: column; gap: 0.12rem; min-width: 0; }
+.tm-tab-title { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+.tm-tab-sub { font-size: 0.75rem; color: var(--ink-4); line-height: 1.4; }
+.tm-tab:hover { color: var(--ink); }
+.tm-tab[aria-selected="true"] { color: var(--accent-1); border-bottom-color: var(--accent-1); }
+.tm-tab[aria-selected="true"] .tm-tab-step {
+  color: var(--accent-1);
+  border-color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.12);
+}
+.tm-tab:focus-visible { outline: 2px solid var(--accent-1); outline-offset: -2px; }
+
+/* The count of undecided proposals, so step 2 says how much work is left
+   without the visitor having to open it. */
+.tm-tab-n {
+  display: inline-block;
+  min-width: 1.35rem;
+  padding: 0 0.35rem;
+  margin-left: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 999px;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.14);
+}
+.tm-tab-n:empty { display: none; }
+
+/* Panels ------------------------------------------------------------------- */
+.tm-body { min-height: 0; }
+.tm-panel[hidden] { display: none; }
+.tm-panel:focus-visible { outline: 2px solid var(--accent-1); outline-offset: -3px; }
+.tm-panel-in { padding: 1.2rem 1.1rem 1.6rem; }
+
+.tm-lede {
+  margin: 0 0 1.2rem;
+  max-width: 52rem;
+  font-size: 0.92rem;
+  line-height: 1.72;
+  color: var(--ink-3);
+}
+.tm-hint {
+  margin: 0 0 0.8rem;
+  max-width: 52rem;
+  font-size: 0.83rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+}
+.tm-hint strong { color: var(--ink-2); font-weight: 600; }
+.tm-hint-inline { margin: 0; flex: 1 1 18rem; }
+
+/* Labelled controls -------------------------------------------------------- */
+.tm-lbl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  min-width: 0;
+}
+.tm-lbl > span {
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-4);
+}
+/* .lab-toolfield carries flex: 1 1 14rem for the toolbar rows it was written
+   for. Inside a column label that basis becomes a HEIGHT, so every field would
+   grow to fourteen rems tall. Reset it and let the label's width do the work. */
+.tm-lbl .lab-toolfield,
+.tm-lbl .lab-select {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+.tm-lbl-grow { flex: 1 1 12rem; }
+.tm-lbl-block { display: flex; width: 100%; margin-bottom: 0.8rem; }
+.tm-textarea {
+  font-family: inherit;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  resize: vertical;
+  white-space: pre-wrap;
+}
+
+/* Sub-sections ------------------------------------------------------------- */
+.tm-sub {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.tm-sub h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.tm-list { margin: 0 0 0.9rem; padding: 0; list-style: none; }
+.tm-empty {
+  margin: 0;
+  padding: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  border: 1px dashed rgb(var(--line-rgb) / 0.45);
+  border-radius: 10px;
+}
+.tm-listhead {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.tm-addrow { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* Boundary and element rows ------------------------------------------------ */
+.tm-brow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.tm-el {
+  margin-bottom: 0.75rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+  border-left: 3px solid rgb(var(--line-rgb) / 0.6);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.42);
+}
+.tm-el--entity { border-left-color: #fbbf24; }
+.tm-el--process { border-left-color: var(--accent-1); }
+.tm-el--store { border-left-color: #4ade80; }
+.tm-el--flow { border-left-color: #a78bfa; }
+
+.tm-el-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.tm-el-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.tm-el-row .tm-lbl { flex: 1 1 11rem; }
+
+.tm-badge {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  color: #0b1220;
+  background: rgb(var(--line-rgb) / 0.6);
+}
+.tm-badge--entity { background: #fbbf24; }
+.tm-badge--process { background: var(--accent-1); }
+.tm-badge--store { background: #4ade80; }
+.tm-badge--flow { background: #a78bfa; }
+
+.tm-del { flex: 0 0 auto; align-self: flex-end; }
+.tm-del:hover:not(:disabled) {
+  border-color: rgba(248, 113, 113, 0.55);
+  color: #fca5a5;
+}
+
+/* Boundary map ------------------------------------------------------------- */
+.tm-map-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+}
+.tm-map-group {
+  padding: 0.75rem 0.8rem;
+  border: 1px dashed rgb(var(--accent-rgb) / 0.4);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.4);
+}
+.tm-map-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+}
+.tm-chips { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  border: 1px solid rgb(var(--line-rgb) / 0.45);
+  border-radius: 999px;
+  background: rgb(var(--well-rgb) / 0.7);
+}
+.tm-chip--empty { color: var(--ink-4); border-style: dashed; font-style: italic; }
+.tm-chip-k {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.tm-chip--entity .tm-chip-k { color: #fbbf24; }
+.tm-chip--process .tm-chip-k { color: var(--accent-1); }
+.tm-chip--store .tm-chip-k { color: #4ade80; }
+
+.tm-flows { margin: 0; padding: 0; list-style: none; }
+.tm-flow {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.3);
+}
+.tm-flow:last-child { border-bottom: 0; }
+.tm-flow-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+.tm-flow-name { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
+.tm-flow-path { font-size: 0.82rem; color: var(--ink-3); }
+.tm-flow-cross { margin: 0.2rem 0 0; font-size: 0.78rem; color: #fbbf24; }
+.tm-flow-warn { margin: 0.2rem 0 0; font-size: 0.78rem; color: #f87171; }
+
+/* Threat panel ------------------------------------------------------------- */
+.tm-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+  font-size: 0.83rem;
+  color: var(--ink-4);
+}
+.tm-stat b { font-size: 1rem; color: var(--ink); }
+.tm-stat.is-accepted b { color: var(--accent-1); }
+.tm-stat.is-rejected b { color: var(--ink-3); }
+.tm-stat.is-high b { color: #f87171; }
+.tm-stat.is-warn b { color: #fbbf24; }
+
+.tm-group { margin-bottom: 1.8rem; }
+.tm-group-h {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.25rem;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.tm-group-h .tm-badge { align-self: center; }
+.tm-group-sub { margin: 0 0 0.7rem; font-size: 0.82rem; color: var(--ink-4); }
+.tm-threatlist { margin: 0 0 0.7rem; padding: 0; list-style: none; }
+
+.tm-threat {
+  margin-bottom: 0.7rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.42);
+}
+.tm-threat.is-accepted { border-color: rgb(var(--accent-rgb) / 0.5); }
+/* Rejected cards stay legible rather than being dimmed into illegibility —
+   the reason written on one is the part worth reading next year. */
+.tm-threat.is-rejected { border-style: dashed; background: rgb(var(--deep-rgb) / 0.22); }
+
+.tm-threat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+.tm-cat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.24rem 0.5rem;
+  font-size: 0.74rem;
+  border-radius: 6px;
+  color: var(--ink-2);
+  border: 1px solid rgb(var(--line-rgb) / 0.5);
+}
+.tm-cat b { font-size: 0.82rem; color: var(--accent-1); }
+.tm-tag {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-4);
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+  border-radius: 999px;
+}
+.tm-risk {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+/* Risk carries a border as well as a colour, so the band survives a
+   colour-blind reader and a black-and-white printout. */
+.tm-risk--low { color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.5); }
+.tm-risk--med { color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.5); }
+.tm-risk--high { color: #f87171; border: 1px solid rgba(248, 113, 113, 0.6); }
+.tm-risk--none { color: var(--ink-4); border: 1px dashed rgb(var(--line-rgb) / 0.5); }
+
+.tm-threat-title { font-family: inherit; font-size: 0.9rem; }
+.tm-why {
+  margin: 0 0 0.7rem;
+  max-width: 52rem;
+  font-size: 0.84rem;
+  line-height: 1.68;
+  color: var(--ink-4);
+}
+.tm-threat-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem; }
+.tm-decide[aria-pressed="true"] {
+  color: #0b1220;
+  border-color: transparent;
+}
+.tm-decide--accepted[aria-pressed="true"] { background: #4ade80; }
+.tm-decide--rejected[aria-pressed="true"] { background: #cbd5e1; }
+
+.tm-rate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+.tm-rate .tm-lbl { flex: 1 1 9rem; }
+.tm-suggest { max-width: 100%; }
+.tm-addthreat { max-width: 26rem; }
+
+/* The printable model ------------------------------------------------------ */
+.tm-reportbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.tm-report { max-width: 60rem; }
+.tm-rhead {
+  padding-bottom: 0.9rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid rgb(var(--accent-rgb) / 0.35);
+}
+.tm-rkicker {
+  margin: 0 0 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-1);
+}
+.tm-rtitle { margin: 0 0 0.45rem; font-size: 1.4rem; letter-spacing: -0.015em; }
+.tm-rmeta { margin: 0; font-size: 0.8rem; line-height: 1.6; color: var(--ink-4); }
+
+.tm-rsec { margin-bottom: 1.5rem; }
+.tm-rsec-h {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.tm-rtext { margin: 0 0 0.6rem; font-size: 0.88rem; line-height: 1.7; color: var(--ink-3); }
+.tm-rlist { margin: 0; padding-left: 1.1rem; font-size: 0.86rem; line-height: 1.7; color: var(--ink-3); }
+.tm-rlist li { margin-bottom: 0.5rem; }
+.tm-rlist b { color: var(--ink); }
+
+/* Wide tables scroll inside their own box; the page never scrolls sideways. */
+.tm-tablewrap { overflow-x: auto; }
+.tm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+.tm-table th,
+.tm-table td {
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+}
+.tm-table th {
+  font-weight: 600;
+  color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.07);
+  white-space: nowrap;
+}
+.tm-table td { color: var(--ink-3); }
+.tm-cell-risk { font-weight: 700; }
+
+.tm-rfoot {
+  margin-top: 1.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.4);
+}
+.tm-rfoot p {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+}
+.tm-rfoot p:last-child { margin-bottom: 0; }
+
+/* Fullscreen --------------------------------------------------------------- */
+.lab-threatmodel.is-fullscreen { display: flex; flex-direction: column; }
+.lab-threatmodel.is-fullscreen .lab-toolbar,
+.lab-threatmodel.is-fullscreen .tm-tabs { flex: 0 0 auto; }
+.lab-threatmodel.is-fullscreen .tm-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+
+@media (max-width: 700px) {
+  .tm-panel-in { padding: 1rem 0.85rem 1.4rem; }
+  .tm-tab { flex: 1 1 100%; }
+  .tm-el-row .tm-lbl,
+  .tm-rate .tm-lbl { flex: 1 1 100%; }
+  .tm-map-groups { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Printing ----------------------------------------------------------------- */
+/* Scoped to .tm-page — the class only this page's <main> carries — because a
+   bare `.page-shell > :not(...)` rule here would blank every other page on the
+   site when it was printed. The report is forced visible whichever step is on
+   screen, so Ctrl+P from anywhere in the tool produces the model. */
+@media print {
+  .tm-page > :not(.lab-threatmodel) { display: none !important; }
+
+  .lab-threatmodel {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+    min-height: 0;
+  }
+  .lab-threatmodel .lab-toolbar,
+  .lab-threatmodel .lab-gate,
+  .lab-threatmodel .tm-tabs,
+  .lab-threatmodel .tm-reportbar,
+  .lab-threatmodel #tm-panel-system,
+  .lab-threatmodel #tm-panel-threats { display: none !important; }
+
+  .lab-threatmodel #tm-panel-report { display: block !important; }
+  .lab-threatmodel .tm-body,
+  .lab-threatmodel .tm-panel-in {
+    display: block !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .tm-report { max-width: none; }
+  .tm-rsec, .tm-table tr { break-inside: avoid; }
+  .tm-table { font-size: 0.72rem; }
+  .tm-table th,
+  .tm-table td { border: 1px solid #999 !important; }
+  .tm-tablewrap { overflow: visible !important; }
+  .tm-risk--low, .tm-risk--med, .tm-risk--high, .tm-risk--none {
+    border-color: #999 !important;
+  }
+}
+
+/* ==========================================================================
+   OSINT self-check (/labs/osint-self-check)
+   --------------------------------------------------------------------------
+   That page swaps one input pane between a textarea and a file drop zone as
+   you change what you are checking, and it does the swap with the `hidden`
+   attribute so the inactive control leaves the tab order and the accessibility
+   tree rather than merely going invisible.
+
+   The textarea needs nothing: it has no author `display`, so the UA sheet's
+   [hidden] rule applies. `.lab-drop` sets `display: flex`, which silently
+   outranks that rule and would leave a dashed 200px box sitting under the
+   textarea. This is the same fix already made for `.lab-toolbar [hidden]` and
+   for the QR lab's two halves, kept next to them in spirit.
+   ========================================================================== */
+.lab-drop[hidden] { display: none; }
+
+/* ==========================================================================
+   Log analyser (/labs/log-analyser)
+   --------------------------------------------------------------------------
+   The only lab that genuinely needs both input controls at once. A week of
+   auth.log arrives as a file; the six lines somebody wants a second opinion on
+   arrive from the clipboard, and making them choose a mode first is a worse
+   answer than showing both.
+
+   Stacking the two stock classes as they are does not work: `.lab-drop` and
+   `.lab-toolinput` both carry `flex: 1`, so they split the pane in half and
+   the paste area ends up too short to read a log line in. The drop zone
+   shrinks to its own content here and the textarea keeps the rest.
+   ========================================================================== */
+.lab-log .lab-drop {
+  flex: 0 0 auto;
+  margin: 0.85rem 0.85rem 0.6rem;
+  padding: 0.9rem 1rem;
+}
+.lab-log .lab-drop-icon { font-size: 1.2rem; }
+.lab-log .lab-toolinput { flex: 1 1 auto; min-height: 7rem; }
+
+/* ==========================================================================
+   Measured complexity (/labs/big-o)
+   --------------------------------------------------------------------------
+   viz/big-o.js builds and styles everything inside this mount, id-scoped to
+   #bigoviz, the same way the OS-algorithms lab does. The page supplies only
+   the container and the pre-boot fallback line, so the three rules here are
+   the ones a module cannot own: the mount's own box, and what fullscreen does
+   to it.
+
+   Fullscreen wants the opposite behaviour to /labs/os-algorithms, which is
+   why it does not simply join that selector list. There, five stacked panels
+   and a set of tables each need their own scroll. Here the canvas IS the
+   content and its 360px is a compromise for a page that also has to hold
+   prose above and below it; in fullscreen that compromise is gone, so the
+   chart takes half the viewport and the surrounding controls scroll past it.
+   ========================================================================== */
+.lab-bigo-mount { min-height: 4rem; padding: 1rem 0 0; }
+
+.lab-viz.is-fullscreen .lab-bigo-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Same id-plus-class specificity as the module's own .bo-canvas rule, so this
+   wins without !important. lab-fullscreen.js fires a window resize after it
+   toggles the class, and the module redraws the canvas at its new size from
+   that event. */
+#bigoviz.is-fullscreen .bo-canvas { height: 52vh; }
+
+/* ==========================================================================
+   Docker layer explorer (/labs/docker-layers)
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/docker-layers.js builds its whole interface into this
+   mount and injects its own scoped stylesheet for the internals, the same way
+   the git object explorer and the CPU simulator do. Only the two rules the
+   page shell owns live here.
+
+   The mount holds a scrolling two-column grid rather than a canvas, so it
+   wants the opposite of the .lab-canvas treatment: no height cap in the page,
+   because the editor and the panels size themselves, and in fullscreen it has
+   to take the remaining height and scroll internally rather than run off the
+   bottom of the viewport.
+   ========================================================================== */
+.lab-docker-mount { min-height: 0; }
+.lab-viz.is-fullscreen .lab-docker-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   Colour contrast checker (/labs/contrast)
+   --------------------------------------------------------------------------
+   Three things this page needs that no other lab does: a preview panel whose
+   colours are set from JavaScript and must therefore stay legible at ANY pair
+   the visitor types, a row of colour-vision simulation cards, and a pairwise
+   matrix table.
+
+   One rule runs through all of it. Nothing may inherit a theme colour onto a
+   ground the visitor controls. The preview and the simulation stages have
+   arbitrary backgrounds by definition, so every piece of text inside them has
+   its colour written by the tool, and the chrome around them — labels, ratios,
+   notes — sits OUTSIDE those grounds on the normal card surface, where the
+   theme's own measured contrast still holds. A caption rendered unreadable on
+   top of a visitor-chosen background would be a poor advertisement for a
+   contrast checker.
+   ========================================================================== */
+
+.lab-contrast .lab-panes { height: auto; min-height: 0; }
+
+/* The format help sits between the two colour fields and the panes so it
+   reads as a note on the fields rather than a caption on the output. */
+.cn-formats {
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.cn-formats code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.95em;
+  color: var(--accent-1);
+}
+
+/* The native swatch. Browsers give input[type=color] a chunky default border
+   and padding that matches nothing else in the row, so it is stripped back to
+   a plain square sized to .lab-toolfield's height. The wrapping label keeps
+   the click target at the whole square rather than the inner well some
+   engines expose. */
+.cn-swatchlabel { display: inline-flex; flex: 0 0 auto; }
+.cn-swatchinput {
+  width: 2.4rem;
+  height: 2.2rem;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  border-radius: 8px;
+}
+.cn-swatchinput::-webkit-color-swatch-wrapper { padding: 2px; }
+.cn-swatchinput::-webkit-color-swatch { border: 0; border-radius: 5px; }
+.cn-swatchinput::-moz-color-swatch { border: 0; border-radius: 5px; }
+.cn-swatchinput:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+/* Preview and verdicts ----------------------------------------------------- */
+.cn-previewwrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* The one element on the page whose background belongs to the visitor. It has
+   no border of its own for the same reason: a themed outline around an
+   arbitrary fill reads as part of the sample, and it is not. */
+.cn-preview {
+  margin: 1rem 1rem 0.9rem;
+  padding: 1.1rem 1.2rem;
+  background: #020617;
+  border-radius: 10px;
+}
+.cn-preview p { margin: 0 0 0.7rem; }
+.cn-preview p:last-child { margin-bottom: 0; }
+.cn-sample-large { font-size: 1.5rem; font-weight: 700; line-height: 1.25; }
+.cn-sample-normal { font-size: 1rem; line-height: 1.6; }
+.cn-sample-muted { font-size: 0.8125rem; line-height: 1.6; }
+.cn-sample-ui {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border: 2px solid currentColor;
+  border-radius: 8px;
+}
+
+.cn-verdicts { padding: 0 1rem 1rem; }
+.cn-verdict {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.16);
+}
+.cn-verdict:first-child { border-top: 0; }
+.cn-verdict-name { font-size: 0.88rem; font-weight: 600; color: var(--ink-2); }
+.cn-verdict-note {
+  grid-column: 1 / -1;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+
+/* Pass and fail are words first. The colour is a second signal layered on the
+   label, never the label itself — which is the argument this whole page
+   exists to make, so getting it wrong here would be embarrassing. */
+.cn-verdict-badge {
+  justify-self: end;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.cn-verdict-badge.is-pass { color: #4ade80; background: rgba(74, 222, 128, 0.1); }
+.cn-verdict-badge.is-fail { color: #f87171; background: rgba(248, 113, 113, 0.1); }
+
+/* Blocks below the panes --------------------------------------------------- */
+.cn-block {
+  padding: 1.2rem 1.1rem 1.4rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.16);
+  background: rgb(var(--deep-rgb) / 0.35);
+}
+.cn-block-title { margin: 0 0 0.5rem; font-size: 1.02rem; color: var(--ink); }
+.cn-block-note {
+  margin: 0 0 0.9rem;
+  max-width: 62ch;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+.cn-block-note code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.95em;
+  color: var(--accent-1);
+}
+.cn-block-warn { color: #fbbf24; }
+
+/* Fix cards ---------------------------------------------------------------- */
+.cn-fixgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 0.9rem;
+}
+.cn-fixcard {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  border-radius: 10px;
+  background: rgb(var(--well-rgb) / 0.6);
+}
+/* The smaller of the two moves is marked by a border AND by words appended to
+   its heading, because "the accent-bordered one" is not information a
+   monochrome reader receives. */
+.cn-fixcard.is-smallest { border-color: rgb(var(--accent-rgb) / 0.6); }
+.cn-fixcard.is-smallest .cn-fixcard-title::after {
+  content: ' — the smaller move';
+  font-weight: 400;
+  color: var(--accent-1);
+}
+.cn-fixcard-title { margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-2); }
+.cn-fixcard-head { display: flex; align-items: center; flex-wrap: wrap; gap: 0.55rem; }
+.cn-fixcard-swatch {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+}
+.cn-fixcard-hex {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.cn-fixcard-ratio {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  color: #4ade80;
+}
+.cn-fixcard-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+.cn-fixcard-warn { color: #fbbf24; }
+.cn-fixcard .lab-btn { margin-top: 0.75rem; }
+
+/* Colour-vision simulation ------------------------------------------------- */
+.cn-sims {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem;
+}
+.cn-sim {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  border-radius: 10px;
+  background: rgb(var(--well-rgb) / 0.6);
+}
+.cn-sim-name { margin: 0 0 0.6rem; font-size: 0.88rem; color: var(--ink); }
+/* Same rule as .cn-preview: the ground belongs to the visitor, so everything
+   drawn on it takes an explicit colour from the tool and nothing inherits. */
+.cn-sim-stage {
+  padding: 0.7rem 0.75rem;
+  border-radius: 8px;
+  background: #020617;
+}
+.cn-sim-text { margin: 0 0 0.6rem; font-size: 0.86rem; line-height: 1.45; }
+.cn-sim-button {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+.cn-sim-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.6rem;
+  font-size: 0.74rem;
+}
+.cn-sim-dot { flex: 0 0 auto; width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+.cn-sim-dotlabel { margin-right: 0.5rem; }
+.cn-sim-ratio {
+  margin: 0.6rem 0 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  color: var(--ink-2);
+  word-break: break-all;
+}
+.cn-sim-basis { margin: 0; font-size: 0.72rem; line-height: 1.55; color: var(--ink-4); }
+
+/* Palette matrix ----------------------------------------------------------- */
+.cn-palettebox {
+  display: block;
+  width: 100%;
+  flex: 0 1 auto;
+  resize: vertical;
+  line-height: 1.55;
+}
+.cn-paletteactions { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.7rem 0 1rem; }
+
+/* Fourteen colours make a table wider than a phone, and that is fine — it
+   scrolls inside its own box rather than pushing the page sideways. */
+.cn-tablewrap { margin-bottom: 0.9rem; overflow-x: auto; }
+.cn-matrix {
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+.cn-matrix caption {
+  caption-side: top;
+  padding-bottom: 0.6rem;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+.cn-matrix th,
+.cn-matrix td {
+  padding: 0.35rem 0.45rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  text-align: center;
+  white-space: nowrap;
+}
+.cn-matrix th {
+  background: rgb(var(--deep-rgb) / 0.6);
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.cn-matrix-corner { font-size: 0.72rem; color: var(--ink-4); }
+.cn-matrix-swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.3rem;
+  vertical-align: -1px;
+  border-radius: 3px;
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+}
+.cn-matrix-label {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+}
+.cn-matrix-ratio {
+  display: block;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-weight: 600;
+}
+/* The grade is spelled out under every ratio. The tinted cell backgrounds are
+   decoration on top of that text, deliberately — a matrix that encoded its
+   result only in cell colour would fail its own tritanopia panel. */
+.cn-matrix-tag { display: block; font-size: 0.64rem; letter-spacing: 0.03em; }
+.cn-matrix td.is-aaa   { background: rgba(74, 222, 128, 0.14); color: #bbf7d0; }
+.cn-matrix td.is-aa    { background: rgba(74, 222, 128, 0.07); color: #86efac; }
+.cn-matrix td.is-large { background: rgba(251, 191, 36, 0.1); color: #fcd34d; }
+.cn-matrix td.is-fail  { background: rgba(248, 113, 113, 0.1); color: #fca5a5; }
+.cn-matrix td.is-self  { background: rgb(var(--deep-rgb) / 0.45); color: var(--ink-4); }
+
+@media (max-width: 860px) {
+  .lab-contrast .lab-panes { grid-template-columns: minmax(0, 1fr); }
+  .cn-previewwrap { overflow-y: visible; }
+  .cn-block { padding: 1rem 0.85rem 1.2rem; }
+}
+
+@media (max-width: 560px) {
+  .cn-sample-large { font-size: 1.3rem; }
+  .cn-sims { grid-template-columns: minmax(0, 1fr); }
+  .cn-fixgrid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Light theme -------------------------------------------------------------- */
+/* Only the chrome flips. The preview and the simulation stages keep whatever
+   the visitor chose in both themes, because the entire point of them is that
+   the pair is shown exactly as specified.
+
+   The values below reuse hexes this site already measured for its light theme
+   (see the two contrast-correction blocks at the end of main.css) rather than
+   introducing new ones. Measured the same way as those: every text element in
+   these blocks walked, each against the background it actually composites
+   onto, in both themes. Worst case dark is the FAIL badge at 5.35:1; worst
+   case light is the PASS badge and the inline <code> at 4.76:1 — both above
+   the 4.5:1 floor for their 11.8px size, and both tight enough that a shade
+   more contrast would be worth having if these hexes were not already the
+   site-wide ones. Nothing here falls below AA. */
+:root[data-theme="light"] .cn-verdict-badge.is-pass { color: #0a6b28; background: rgba(34, 197, 94, 0.14); }
+:root[data-theme="light"] .cn-verdict-badge.is-fail { color: #a11212; background: rgba(220, 38, 38, 0.1); }
+:root[data-theme="light"] .cn-fixcard-ratio { color: #0a6b28; }
+:root[data-theme="light"] .cn-fixcard-warn,
+:root[data-theme="light"] .cn-block-warn { color: #6b5600; }
+:root[data-theme="light"] .cn-matrix td.is-aaa   { background: rgba(34, 197, 94, 0.16); color: #0a6b28; }
+:root[data-theme="light"] .cn-matrix td.is-aa    { background: rgba(34, 197, 94, 0.09); color: #0a6b28; }
+:root[data-theme="light"] .cn-matrix td.is-large { background: rgba(251, 191, 36, 0.18); color: #6b5600; }
+:root[data-theme="light"] .cn-matrix td.is-fail  { background: rgba(220, 38, 38, 0.1); color: #a11212; }
+
+/* ==========================================================================
+   /labs/db-index — the database index visualiser
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/db-index.js builds its whole interface into this mount —
+   tabs, the B+tree drawing, the query panels, the cost chart — and injects its
+   own stylesheet for the internals, id-scoped to #dbindexviz, the same way the
+   git and OS-algorithm labs do. Only the three rules the page shell owns live
+   here.
+
+   Same shape as .lab-git-mount rather than .lab-canvas: the mount holds
+   scrolling panels, not a single drawing surface, so it takes no height cap in
+   the page (the panels cap their own scroll areas) and in fullscreen it must be
+   allowed to take the remaining height and scroll inside itself rather than
+   push the transport off the bottom of the screen.
+   ========================================================================== */
+.lab-dbindex-mount { min-height: 4rem; }
+.lab-viz.is-fullscreen .lab-dbindex-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme: this widget is a dark instrument, drawn once, for dark.
+
+   main.css already does this for the four older mounts and explains why at
+   length there — the injected panels are translucent navy, so without an
+   opaque ground under them they composite over a light page and strand their
+   own labels at about 1.1:1. This mount is newer than that rule and is not in
+   its selector list, so it gets the same treatment here. labs.css loads after
+   main.css, so a same-specificity rule at the end of this file lands last.
+
+   :not([class]) matters for the same reason it does there: without it this
+   would also catch the widget's own elements and flatten every colour the lab
+   teaches with — matched against unmatched, index against heap, win against
+   lose — into one ink. The widget's own rules are id-scoped and outrank this,
+   so only its class-less descendants, which have no colour of their own, are
+   rescued from the site's light re-inking. */
+:root[data-theme="light"] .lab-dbindex-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+:root[data-theme="light"] .lab-dbindex-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}
+
+/* ==========================================================================
+   /labs/salary-breakdown — an Indian CTC taken apart
+   --------------------------------------------------------------------------
+   Appended for this lab only. Everything here is prefixed `sb-` except the
+   handful of rules that reach into shell classes, and every one of those is
+   scoped under .lab-salary so no other tool can be touched by them.
+
+   The page is a long vertical read — controls, a headline strip, two panes and
+   three result blocks — so the shapes below borrow the .cn-* conventions the
+   contrast lab established rather than inventing new ones: a `-block` with a
+   title and a note, cards in an auto-fit grid, and tables that scroll inside
+   their own container instead of widening the page.
+
+   Every result here is a number with a word next to it, never a colour on its
+   own: the winning regime carries the words "Lower tax", the bonus month is
+   labelled in its row header, and the highlighted row of the sensitivity table
+   is named in the caption. The tints are a second signal layered on text that
+   already says the same thing.
+   ========================================================================== */
+
+/* The panes hold a scrolling summary and a long terminal, and both want the
+   room. Repeated inside this file's own media query below, because the shared
+   `.lab-tool .lab-panes` mobile rule has the same specificity and appears
+   earlier in the file — without the repeat, this would win on phones too. */
+.lab-salary .lab-panes { height: min(70vh, 620px); }
+
+/* .lab-pane-input > div is display:contents, so a plain wrapper div inside the
+   left pane would vanish and take its scroll container with it. A class on the
+   child outranks that rule. */
+.lab-salary .lab-pane-input > .sb-scroll {
+  /* flex:1 so the box owns the rest of the pane rather than leaving a few
+     hundred pixels of dead ground under the cards, and min-height:0 so it
+     actually scrolls inside that height instead of pushing the pane taller —
+     the same pairing .lab-drop uses in the file tools. */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-height: 0;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* The financial-year banner ------------------------------------------------ */
+/* Amber rather than the page accent, and above the controls rather than under
+   the result: the year these slabs came from is the one thing a visitor has to
+   read before they trust anything below it. */
+.sb-fy {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+  background: rgba(251, 191, 36, 0.08);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.35);
+}
+.sb-fy strong { color: var(--ink); }
+.sb-fy-tag {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+/* A <select> is sized by its widest option and, as a flex item, has an
+   automatic minimum size — so the preset picker held the toolbar 37px wider
+   than the phone it was on and the fullscreen button was clipped off the end.
+   min-width:0 lets it shrink; the option labels were shortened to match so it
+   rarely has to. */
+.lab-salary .lab-toolbar .lab-select { min-width: 0; max-width: 100%; }
+
+/* main.css gives a:focus-visible, button, input and textarea the accent ring
+   but not select, so a keyboard user tabbing through the four pickers here
+   dropped from the site's ring onto whatever the browser draws by default.
+   Scoped to this lab rather than fixed globally: .lab-select is used across
+   Labs and a site-wide focus change is not this page's to make. */
+.lab-salary .lab-select:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+
+/* Control groups ----------------------------------------------------------- */
+.sb-groups { border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14); }
+.sb-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.1);
+}
+.sb-group:first-child { border-top: 0; }
+.sb-group > legend {
+  padding: 0.7rem 0.9rem 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.sb-group .lab-metrics { border-bottom: 0; }
+.sb-metric-wide { grid-column: span 2; }
+
+/* .lab-toolfield carries `flex: 1 1 14rem`, which inside .lab-metric — a
+   column flex container — is a 14rem HEIGHT rather than a width. */
+.lab-salary .lab-metric .lab-toolfield {
+  flex: 0 0 auto;
+  width: 100%;
+}
+.sb-num { font-variant-numeric: tabular-nums; }
+
+.sb-rangerow { display: flex; align-items: center; gap: 0.6rem; }
+.sb-range {
+  flex: 1 1 auto;
+  min-width: 0;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+.sb-range:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; }
+.lab-salary .sb-rangerow .lab-toolfield { flex: 0 0 5rem; width: 5rem; }
+
+.sb-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.sb-check input { margin-top: 0.15rem; accent-color: var(--accent-1); cursor: pointer; }
+.sb-check input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+.sb-presetnote {
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.83rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.sb-presetnote:empty { display: none; }
+
+/* The headline strip ------------------------------------------------------- */
+.sb-headline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.9rem;
+  padding: 1rem 0.95rem;
+  background: rgb(var(--deep-rgb) / 0.6);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+/* Takes the whole strip, because it replaces the figures rather than sitting
+   beside them: an empty or over-committed form has no in-hand number, and a
+   sentence in the space where the number would be is the honest answer. */
+.sb-alert {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #fbbf24;
+}
+.sb-figure { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.sb-figure-label { font-size: 0.76rem; color: var(--ink-4); }
+.sb-figure-value {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent-1);
+  overflow-wrap: anywhere;
+}
+
+/* Regime cards ------------------------------------------------------------- */
+.sb-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+}
+.sb-card {
+  padding: 0.85rem 0.9rem 0.95rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.25);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.45);
+}
+.sb-card.is-win { border-color: rgba(74, 222, 128, 0.55); }
+.sb-card-head { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+.sb-card-title { margin: 0; font-size: 0.92rem; font-weight: 600; color: var(--ink-2); }
+.sb-card-badge {
+  padding: 0.05rem 0.45rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+.sb-card-amount {
+  margin: 0.5rem 0 0.6rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.sb-card-rows {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.2rem 0.6rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.sb-card-rows dt { color: var(--ink-4); }
+.sb-card-rows dd {
+  margin: 0;
+  text-align: right;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.sb-verdict {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+
+/* Blocks below the panes --------------------------------------------------- */
+.sb-block {
+  padding: 1.2rem 1.1rem 1.4rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.16);
+  background: rgb(var(--deep-rgb) / 0.35);
+}
+.sb-block-title { margin: 0 0 0.5rem; font-size: 1.02rem; color: var(--ink); }
+.sb-block-note {
+  margin: 0 0 0.9rem;
+  max-width: 68ch;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+.sb-note {
+  margin: 0.85rem 0 0;
+  max-width: 68ch;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+}
+
+/* The three HRA tests ------------------------------------------------------ */
+.sb-tests { margin: 0; padding: 0; list-style: none; }
+.sb-test {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.15rem 0.7rem;
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  border-radius: 8px;
+  background: rgb(var(--deep-rgb) / 0.4);
+}
+.sb-test.is-min { border-color: rgba(74, 222, 128, 0.5); }
+.sb-test-name { font-size: 0.85rem; color: var(--ink-2); }
+.sb-test-amount {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.sb-test-tag { grid-column: 1 / -1; font-size: 0.72rem; color: #4ade80; }
+.sb-test-tag:empty { display: none; }
+
+/* Tables ------------------------------------------------------------------- */
+/* Wide content scrolls inside its own box, so the page body never scrolls
+   sideways because a salary table happened to be six columns of numbers. */
+.sb-tablewrap { overflow-x: auto; }
+.sb-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.sb-table caption {
+  caption-side: top;
+  padding-bottom: 0.6rem;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+.sb-table th,
+.sb-table td {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  text-align: right;
+  white-space: nowrap;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+}
+.sb-table thead th,
+.sb-table tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: rgb(var(--deep-rgb) / 0.6);
+}
+.sb-table td { color: var(--ink-3); }
+.sb-table .sb-net { color: var(--ink); font-weight: 700; }
+.sb-table tr.is-bonus td,
+.sb-table tr.is-bonus th { background: rgba(251, 191, 36, 0.1); }
+.sb-table tr.is-current td,
+.sb-table tr.is-current th { background: rgb(var(--accent-rgb) / 0.12); }
+
+.sb-sens td:nth-child(2) { min-width: 12rem; text-align: left; }
+.sb-bar {
+  display: block;
+  height: 0.4rem;
+  margin-bottom: 0.25rem;
+  border-radius: 999px;
+  background: rgb(var(--line-rgb) / 0.25);
+  overflow: hidden;
+}
+.sb-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #14b8a6, var(--accent-1));
+}
+.sb-bar-value { display: block; font-weight: 700; color: var(--ink); }
+
+@media (max-width: 860px) {
+  .lab-salary .lab-panes { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .lab-salary .lab-pane-input > .sb-scroll { overflow-y: visible; }
+  .lab-salary .lab-terminal { min-height: 20rem; max-height: 60vh; }
+  .sb-block { padding: 1rem 0.85rem 1.2rem; }
+}
+
+@media (max-width: 560px) {
+  .sb-metric-wide { grid-column: auto; }
+  .sb-figure-value { font-size: 1.15rem; }
+}
+
+/* Light theme -------------------------------------------------------------- */
+/* Only the accents hardcoded above need flipping; everything else is already
+   written in theme tokens. The replacements are hexes this site already
+   measured for its light theme (see the contrast block above) rather than new
+   ones: #0a6b28 on the green tints and #6b5600 on the amber, both comfortably
+   above 4.5:1 at the sizes used here. */
+:root[data-theme="light"] .sb-fy-tag,
+:root[data-theme="light"] .sb-alert { color: #6b5600; }
+:root[data-theme="light"] .sb-card-badge { color: #0a6b28; background: rgba(34, 197, 94, 0.14); }
+:root[data-theme="light"] .sb-test-tag { color: #0a6b28; }
+:root[data-theme="light"] .sb-table tr.is-bonus td,
+:root[data-theme="light"] .sb-table tr.is-bonus th { background: rgba(251, 191, 36, 0.2); }
+
+/* ==========================================================================
+   /labs/passkeys — the live WebAuthn explorer
+   --------------------------------------------------------------------------
+   assets/js/labs/tools/passkeys.js builds the whole right-hand panel out of
+   whatever the authenticator returned, so almost everything here styles nodes
+   that do not exist until someone approves a prompt. Three decisions are worth
+   writing down.
+
+   One: the byte dumps and the JSON blocks are pinned dark in both themes, the
+   way .lab-terminal is. They carry eight colour-coded field tones, and the
+   only way to keep those tones legible in light theme as well would be a
+   second palette that means the same thing — for a hex dump, which reads as a
+   terminal to everybody anyway.
+
+   Two: colour is never the only channel. Every tone in the dump has a matching
+   entry in the legend underneath giving the field's name, its byte range and
+   what it is, so the dump is a picture of the structure and the legend is the
+   structure. The dump itself is aria-hidden; two hundred hex pairs read aloud
+   are noise, and the legend says everything the colours do.
+
+   Three: the panes here hold a long report rather than a fixed instrument, so
+   this lab takes a taller .lab-panes than the shared default and lets both
+   sides scroll independently.
+   ========================================================================== */
+
+.lab-passkeys .lab-panes { height: min(78vh, 760px); }
+.pk-side,
+.pk-report {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+}
+/* `.lab-pane-input > div { display: contents }` further up this file exists so
+   the file-drop tools can wrap their zone without adding a flex level. A
+   wrapper that dissolves takes its own scroll container with it, and the left
+   column here is a scrolling report rather than a single control, so it opts
+   back out. Two class names, so this outranks the rule it is undoing. */
+.lab-passkeys .lab-pane-input > .pk-side { display: block; }
+
+/* --- left column: this browser, and what it is holding -------------------- */
+.pk-sidehead {
+  margin: 1.2rem 0 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.pk-sidehead:first-child { margin-top: 0; }
+
+.pk-cred {
+  margin-bottom: 0.7rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.32);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.5);
+}
+.pk-cred-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+.pk-cred-name {
+  min-width: 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.pk-cred-forget {
+  margin-left: auto;
+  flex: 0 0 auto;
+  padding: 0.2rem 0.5rem;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  background: none;
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.pk-cred-forget:hover { color: #f87171; border-color: rgba(248, 113, 113, 0.55); }
+.pk-cred-forget:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+.pk-empty {
+  margin: 0.4rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+/* --- the report ----------------------------------------------------------- */
+.pk-report-head { margin-bottom: 1rem; }
+.pk-report-h {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pk-report-sub {
+  margin: 0.25rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+.pk-sec {
+  padding: 0.9rem 0;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.2);
+}
+.pk-sec-h {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.9rem;
+  color: var(--accent-1);
+  overflow-wrap: anywhere;
+}
+.pk-sec-sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+}
+
+.pk-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.68;
+  color: var(--ink-3);
+  max-width: 46rem;
+}
+.pk-note.is-err { color: #fca5a5; }
+
+/* --- label / value rows --------------------------------------------------- */
+.pk-kv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  padding: 0.28rem 0;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.12);
+}
+.pk-kv:last-child { border-bottom: 0; }
+.pk-k {
+  flex: 0 0 12rem;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+.pk-v {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.pk-v.pk-mono {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  color: var(--ink);
+}
+.pk-v.is-ok   { color: #4ade80; }
+.pk-v.is-warn { color: #fbbf24; }
+.pk-v.is-err  { color: #f87171; }
+.pk-v.is-dim  { color: var(--ink-4); }
+/* The origin. Underlined as well as coloured so the emphasis survives a
+   colour-blind reader and a printout, the same reasoning as the truncation
+   highlight in the TOTP lab. */
+.pk-v.pk-hot {
+  color: #fbbf24;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- JSON and byte blocks ------------------------------------------------- */
+.pk-pre,
+.pk-bytes {
+  margin: 0.6rem 0 0;
+  padding: 0.75rem 0.85rem;
+  max-height: 22rem;
+  overflow: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.76rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  background: #020617;
+  border: 1px solid rgb(var(--line-rgb) / 0.35);
+  border-radius: 8px;
+}
+.pk-pre { white-space: pre-wrap; word-break: break-word; }
+.pk-pre-bad { border-color: rgba(248, 113, 113, 0.45); }
+.pk-bytes { word-break: break-all; }
+
+.pk-b { white-space: normal; }
+.pk-tone-0 { color: #64748b; }
+.pk-tone-1 { color: #38bdf8; }
+.pk-tone-2 { color: #fbbf24; }
+.pk-tone-3 { color: #4ade80; }
+.pk-tone-4 { color: #f472b6; }
+.pk-tone-5 { color: #a78bfa; }
+.pk-tone-6 { color: #fb923c; }
+.pk-tone-7 { color: #2dd4bf; }
+.pk-tone-8 { color: #e2e8f0; }
+
+.pk-legend {
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+.pk-legend-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.pk-swatch {
+  flex: 0 0 auto;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+  background: currentColor;
+}
+.pk-legend-name {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  color: var(--ink);
+}
+.pk-legend-range {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+.pk-legend-note { flex: 1 1 14rem; min-width: 0; color: var(--ink-3); }
+
+/* --- the flags table ------------------------------------------------------ */
+.pk-flags {
+  width: 100%;
+  margin: 0.7rem 0 0;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.pk-flags-cap {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.76rem;
+  color: var(--ink-4);
+}
+.pk-flags th,
+.pk-flags td {
+  padding: 0.32rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.18);
+}
+.pk-flags th { color: var(--accent-1); font-weight: 600; }
+.pk-flag-bit,
+.pk-flag-name,
+.pk-flag-set {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  white-space: nowrap;
+}
+.pk-flag-why { color: var(--ink-3); line-height: 1.55; }
+.pk-flag-why b { color: var(--ink); }
+/* A set bit is marked three ways — the word "yes", a brighter ink, and a left
+   rule — because this table is the one place on the page where the difference
+   between two rows is the entire lesson. */
+.pk-flags tr.is-on .pk-flag-set { color: #4ade80; font-weight: 700; }
+.pk-flags tr.is-on td:first-child { box-shadow: inset 2px 0 0 #4ade80; }
+.pk-flags tr.is-off { color: var(--ink-4); }
+.pk-flags tr.is-off .pk-flag-why,
+.pk-flags tr.is-off .pk-flag-why b { color: var(--ink-4); }
+
+/* --- the origin-binding demonstration ------------------------------------- */
+.pk-phish {
+  padding: 1.1rem;
+  background: rgb(var(--deep-rgb) / 0.55);
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.pk-phish-h {
+  margin: 0;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pk-phish-sub {
+  margin: 0.3rem 0 0.8rem;
+  max-width: 46rem;
+  font-size: 0.86rem;
+  line-height: 1.68;
+  color: var(--ink-3);
+}
+.pk-phish-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.pk-phish-controls .lab-select { flex: 1 1 18rem; min-width: 0; }
+.pk-phish-rows { margin-top: 0.8rem; }
+
+.pk-diff {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.pk-diff-col { min-width: 0; }
+.pk-diff-h {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.pk-diff .pk-pre { margin-top: 0.35rem; max-height: 14rem; }
+
+/* In fullscreen .lab becomes a 100vh flex column and every row that is not the
+   panes has to opt out of shrinking, the same as .lab-resultbar and the TOTP
+   QR row do further up this file. Without it the panes take everything and the
+   demonstration is squeezed to a couple of pixels. */
+.lab.is-fullscreen .pk-phish {
+  flex: 0 0 auto;
+  max-height: 34vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 860px) {
+  .lab-passkeys .lab-panes { height: auto; }
+  .pk-side,
+  .pk-report { max-height: 70vh; }
+  .pk-diff { grid-template-columns: minmax(0, 1fr); }
+  .pk-k { flex: 1 1 100%; }
+}
+
+/* ==========================================================================
+   /labs/invoice-maker — the GST invoice and quotation maker
+   --------------------------------------------------------------------------
+   The third document maker, and the first one whose CSS lives here instead of
+   in a stylesheet of its own. That is deliberate: every rule below is either
+   `inv-` prefixed or scoped to `.inv-page`, the class only that page's <main>
+   carries, so nothing here can reach the other sixty lab pages that load this
+   file. A page-specific stylesheet would also have to be registered in three
+   hand-maintained lists (the build's CSS_FILES, the service worker's precache,
+   and the offline gate) and this file is already in all three.
+
+   Two very different surfaces live below and must not bleed into each other:
+
+     1. The APP CHROME — toolbar, form, checks strip, preview frame. This
+        follows the site theme like every other lab, so it is built from
+        tokens and reads correctly in dark and light.
+     2. The SHEET — the A4 document. This is paper. An invoice does not have a
+        dark mode, so every colour inside .inv-sheet is a fixed literal in
+        BOTH themes, on purpose. --inv-accent is set inline by the JS and is
+        the one colour the visitor chooses.
+
+   The sheet is laid out at a fixed 794px, which is 210mm at CSS's 96dpi — the
+   same pixels-per-millimetre the browser uses when it prints to A4. On screen
+   it is scaled down with transform: scale() to fit its pane; in print the
+   transform is dropped and the sheet becomes the page.
+
+   Three print rules genuinely cannot be scoped by a selector — @page, the
+   root background, and main.css's body::before byline, which is right on an
+   article and wrong on somebody's invoice. Those are injected by
+   invoice-maker.js on that page only; see the comment there.
+   ========================================================================== */
+
+/* ---- toolbar ------------------------------------------------------------- */
+
+/* Author `display` on a flex child silently outranks the UA sheet's [hidden]
+   rule, and three controls here are toggled with the attribute so they leave
+   the tab order rather than merely going invisible. */
+#invoicemaker [hidden] { display: none !important; }
+
+.inv-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.inv-pill-label {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* Pills rather than a <select>: with four templates and two document types,
+   every choice fits on screen, and "one click apart" is only true when the
+   click target is already visible. */
+.inv-pill {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.34rem 0.85rem;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.inv-pill:hover { border-color: rgb(var(--accent-rgb) / 0.6); color: var(--ink); }
+
+.inv-pill[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b1220;
+}
+
+.inv-swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Each swatch paints itself from --inv-sw set inline in the markup, so the
+   colour list lives in one place instead of six rules here. */
+.inv-swatch {
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--inv-sw);
+  border: 2px solid rgb(var(--line-rgb) / 0.4);
+  cursor: pointer;
+}
+
+.inv-swatch:hover { transform: scale(1.12); }
+
+/* The page background as an inset gap, so the pressed state reads as a ring
+   in both themes rather than a thicker blob. */
+.inv-swatch[aria-pressed='true'] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px rgb(var(--bg-base-rgb) / 0.9) inset;
+}
+
+.inv-print-btn {
+  font-size: 0.86rem;
+  padding: 0.45rem 1rem;
+}
+
+/* The status line gets its own always-reserved full-width row at the foot of
+   the toolbar. Inline, its arrival pushed the primary print button onto a
+   second row — a CTA that hops the moment you save a draft. The min-height
+   keeps the slot occupied while empty, so the toolbar is the same height with
+   and without a message. */
+.inv-status {
+  flex: 1 1 100%;
+  min-height: 1.1em;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink-4);
+}
+
+.inv-status.is-ok { color: #4ade80; }
+.inv-status.is-warn { color: #fbbf24; }
+.inv-status.is-err { color: #f87171; }
+
+/* ---- the checks strip ----------------------------------------------------
+   The GST decision in words, plus the GSTIN and PAN verdicts. It sits between
+   the toolbar and the panes because it is about the whole document, not about
+   whichever field has focus. Nothing in it prints: it is advice about the
+   invoice rather than part of the invoice.
+   ------------------------------------------------------------------------- */
+
+.inv-checkstrip {
+  padding: 0.75rem 0.9rem;
+  background: rgb(var(--deep-rgb) / 0.45);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.inv-checkstrip-h {
+  margin: 0 0 0.45rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.inv-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.inv-check:last-child { margin-bottom: 0; }
+
+.inv-check-dot {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.inv-check-ok .inv-check-dot { color: #4ade80; }
+.inv-check-warn .inv-check-dot { color: #fbbf24; }
+.inv-check-err .inv-check-dot { color: #f87171; }
+.inv-check-err .inv-check-text { color: var(--ink-2); }
+
+/* ---- the two columns ----------------------------------------------------- */
+
+.inv-panes {
+  display: grid;
+  /* The preview is the deliverable, so it takes the wider half: the bigger it
+     renders, the less the scale transform blurs 10px table type. */
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+.inv-formcol {
+  padding: 1.1rem 1.2rem 1.6rem;
+  border-right: 1px solid rgb(var(--line-rgb) / 0.25);
+  min-width: 0;
+}
+
+.inv-previewcol {
+  padding: 1.1rem 1.2rem 1.6rem;
+  min-width: 0;
+  /* Slightly recessed ground, so the white sheet reads as an object lying on
+     the tool rather than a hole cut in it. */
+  background: rgb(var(--well-rgb) / 0.55);
+}
+
+/* Deliberately not sticky. .lab sets overflow: hidden, which makes itself the
+   nearest scrollport, and a sticky child of a box that never scrolls is
+   simply inert — it would look like a bug rather than behave like one. */
+.inv-preview-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 1080px) {
+  .inv-panes { grid-template-columns: minmax(0, 1fr); }
+  .inv-formcol {
+    border-right: 0;
+    border-bottom: 1px solid rgb(var(--line-rgb) / 0.25);
+  }
+}
+
+/* ---- form ---------------------------------------------------------------- */
+
+.inv-form-section { margin-bottom: 1.5rem; }
+.inv-form-section:last-child { margin-bottom: 0; }
+
+.inv-form-section > h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  padding-left: 0.55rem;
+  border-left: 3px solid var(--accent);
+}
+
+.inv-grid { gap: 0.75rem; }
+
+/* main.css gives every .field textarea 150px — right for a contact form,
+   oversized for five of them stacked in a column. */
+.inv-form .field textarea { min-height: 74px; }
+
+.inv-opt {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+
+/* A checkbox is the one field where the label belongs beside the control
+   rather than above it, so this one row overrides .field's column flow. */
+.inv-checkfield {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.inv-checkfield input {
+  width: auto;
+  min-width: 1.05rem;
+  height: 1.05rem;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.inv-logo-row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.inv-logo-field { flex: 1 1 220px; }
+
+.inv-logo-thumb-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.inv-logo-thumb-box img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+}
+
+/* Line items render as small cards so a Remove button unambiguously belongs
+   to the row above it. */
+.inv-item {
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  background: rgb(var(--raise-rgb) / 0.5);
+  border: 1px solid rgb(var(--line-rgb) / 0.3);
+  border-radius: 10px;
+}
+
+.inv-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.inv-item-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.inv-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.inv-remove { font-size: 0.76rem; padding: 0.28rem 0.6rem; }
+.inv-move { font-size: 0.76rem; line-height: 1; padding: 0.28rem 0.45rem; }
+
+/* Disabled means "already at that end" — visible, so the cluster never
+   changes shape, and plainly inert. */
+.inv-move:disabled { opacity: 0.35; cursor: default; }
+
+.inv-add { margin-top: 0.1rem; }
+
+/* ---- the sheet: fixed paper palette in both themes ----------------------- */
+
+.inv-sheet-wrap {
+  position: relative;
+  /* The JS sets an explicit px height (sheet height times scale) so the page
+     does not reserve the full unscaled 1123px and leave a dead gap below. */
+  overflow: hidden;
+}
+
+.inv-sheet {
+  width: 794px;
+  min-height: 1123px;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+  transform-origin: top left;
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.4);
+  overflow-wrap: break-word;
+}
+
+/* Shown only while the form is untouched, and never printed. */
+.inv-empty-hint {
+  padding: 90px 60px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+.inv-s-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.inv-s-headleft { min-width: 0; }
+.inv-s-headright { text-align: right; min-width: 230px; }
+
+.inv-s-logo img {
+  display: block;
+  max-width: 150px;
+  max-height: 64px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.inv-s-bizname { font-size: 18px; font-weight: 700; line-height: 1.2; }
+.inv-s-bizaddr { font-size: 12px; color: #5b6472; white-space: pre-line; margin-top: 3px; }
+
+.inv-s-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--inv-accent);
+}
+
+.inv-s-copy {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5b6472;
+  margin-top: 2px;
+}
+
+.inv-s-meta { margin-top: 8px; }
+
+.inv-s-kv {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  font-size: 10.5px;
+  margin-bottom: 1px;
+}
+
+.inv-s-kv-k { color: #5b6472; }
+.inv-s-kv-v { font-weight: 600; }
+
+.inv-s-caution {
+  margin-top: 6px;
+  padding: 4px 7px;
+  font-size: 11px;
+  text-align: left;
+  color: #9f1239;
+  border: 1px solid #f1c7d1;
+  border-radius: 4px;
+}
+
+.inv-s-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.inv-s-party { min-width: 0; }
+
+.inv-s-party-h {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--inv-accent);
+  margin-bottom: 3px;
+}
+
+.inv-s-party-name { font-weight: 700; font-size: 13px; }
+.inv-s-party-line { font-size: 11px; line-height: 1.4; color: #47505c; white-space: pre-line; }
+
+.inv-s-body { margin-top: 10px; }
+
+/* ---- tables -------------------------------------------------------------- */
+
+.inv-s-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.inv-s-tbl th,
+.inv-s-tbl td {
+  padding: 5px 7px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e2e6ec;
+}
+
+.inv-s-tbl thead th {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #47505c;
+  background: #f1f5f9;
+  border-bottom: 1.5px solid var(--inv-accent);
+}
+
+.inv-c-num { width: 26px; color: #5b6472; }
+.inv-c-hsn { width: 74px; }
+
+/* Scoped through .inv-s-tbl on purpose: `.inv-s-tbl th` and `.inv-s-tbl td`
+   set text-align: left and outrank a bare `.inv-c-n` on specificity, which
+   left every money column ragged-left under a right-aligned heading. */
+.inv-s-tbl .inv-c-n { text-align: right; white-space: nowrap; }
+.inv-s-strong { font-weight: 700; }
+.inv-s-desc { font-weight: 600; }
+.inv-s-descsub { font-size: 10.5px; color: #5b6472; }
+
+/* Right-aligned, and sized so the totals column lines up under the amount
+   column of the table above it. */
+.inv-s-totals {
+  margin: 12px 0 0 auto;
+  width: 280px;
+  font-size: 11.5px;
+}
+
+.inv-s-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 1px 8px;
+}
+
+.inv-s-total-row span:last-child { white-space: nowrap; }
+
+.inv-s-total-grand {
+  margin-top: 4px;
+  padding: 5px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--inv-accent);
+  border-radius: 3px;
+}
+
+.inv-s-section { margin-top: 12px; }
+
+.inv-s-h {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--inv-accent);
+  margin: 10px 0 3px;
+}
+
+.inv-s-tbl-sum { width: auto; min-width: 60%; }
+.inv-s-sumfoot td { font-weight: 700; border-top: 1.5px solid #cbd2dc; }
+
+/* ---- the foot: words, notes, signature ---------------------------------- */
+
+.inv-s-foot { margin-top: 10px; }
+
+.inv-s-words {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 11.5px;
+  background: #f8fafc;
+  border-left: 3px solid var(--inv-accent);
+}
+
+.inv-s-words-k { color: #5b6472; white-space: nowrap; }
+.inv-s-words-v { font-weight: 700; }
+
+.inv-s-footcols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.inv-s-footleft { min-width: 0; }
+
+.inv-s-declare {
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #cbd2dc;
+  border-radius: 3px;
+}
+
+.inv-s-para { font-size: 11px; line-height: 1.4; color: #47505c; white-space: pre-line; }
+
+.inv-s-msme {
+  margin-top: 8px;
+  padding-top: 5px;
+  font-size: 10.5px;
+  color: #5b6472;
+  border-top: 1px dashed #cbd2dc;
+}
+
+.inv-s-sign { text-align: center; }
+.inv-s-signfor { font-size: 11.5px; font-weight: 600; }
+.inv-s-signline { height: 34px; border-bottom: 1px solid #9aa3af; }
+.inv-s-signname { font-size: 11px; color: #5b6472; margin-top: 4px; }
+
+/* ---- template 1: Plain. One accent rule, no boxes. ---------------------- */
+
+.inv-t-plain { padding: 30px 40px; }
+.inv-t-plain .inv-s-head { padding-bottom: 10px; border-bottom: 2px solid var(--inv-accent); }
+
+/* ---- template 2: Ledger. The boxed grid an Indian GST invoice usually
+   arrives in: supplier, buyer and document details in three ruled cells. --- */
+
+.inv-t-ledger { padding: 0; border: 1px solid #cbd2dc; }
+
+.inv-t-ledger .inv-s-ledgerhead {
+  padding: 14px 20px;
+  text-align: center;
+  border-bottom: 1px solid #cbd2dc;
+}
+
+.inv-t-ledger .inv-s-ledgergrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #cbd2dc;
+}
+
+.inv-t-ledger .inv-s-ledgercell { padding: 12px 14px; }
+.inv-t-ledger .inv-s-ledgercell + .inv-s-ledgercell { border-left: 1px solid #cbd2dc; }
+.inv-t-ledger .inv-s-kv { justify-content: space-between; }
+.inv-t-ledger .inv-s-meta { margin-top: 4px; }
+.inv-t-ledger .inv-s-body { padding: 0 18px 20px; margin-top: 12px; }
+.inv-t-ledger .inv-s-tbl th,
+.inv-t-ledger .inv-s-tbl td { border: 1px solid #cbd2dc; }
+.inv-t-ledger .inv-s-logo img { max-height: 46px; margin-bottom: 6px; }
+
+/* ---- template 3: Banded. Accent band across the top with the logo. ------ */
+
+.inv-t-banded { padding: 0; }
+
+.inv-t-banded .inv-s-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 36px;
+  background: var(--inv-accent);
+  color: #ffffff;
+}
+
+.inv-t-banded .inv-s-bandleft { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.inv-t-banded .inv-s-bandright { text-align: right; }
+.inv-t-banded .inv-s-title { color: #ffffff; }
+.inv-t-banded .inv-s-copy { color: rgba(255, 255, 255, 0.8); }
+.inv-t-banded .inv-s-bizaddr { color: rgba(255, 255, 255, 0.85); }
+
+/* The band's own ground is the accent, so a white plate keeps a dark logo
+   legible on it without asking anyone to supply a second file. */
+.inv-t-banded .inv-s-band .inv-s-logo img {
+  max-height: 54px;
+  padding: 5px;
+  background: #ffffff;
+  border-radius: 4px;
+  margin-bottom: 0;
+}
+
+.inv-t-banded .inv-s-bandbody { padding: 16px 36px 0; }
+
+/* Under the band the document details sit in a normal party column, so the
+   rows read as label/value pairs across the column rather than as a right-
+   aligned block under a left-aligned heading. */
+.inv-t-banded .inv-s-parties .inv-s-kv { justify-content: space-between; }
+.inv-t-banded .inv-s-parties { margin-top: 0; }
+
+.inv-t-banded .inv-s-supstrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 14px;
+  padding-top: 8px;
+  font-size: 11px;
+  color: #5b6472;
+  border-top: 1px solid #e2e6ec;
+}
+
+.inv-t-banded .inv-s-body { padding: 0 36px 26px; }
+
+/* ---- template 4: Compact. Same plain layout, tightened, for the invoice
+   with twenty line items on it. ------------------------------------------- */
+
+.inv-t-compact { padding: 26px 32px; font-size: 10px; }
+.inv-t-compact .inv-s-head { padding-bottom: 9px; border-bottom: 1.5px solid var(--inv-accent); }
+.inv-t-compact .inv-s-bizname { font-size: 16px; }
+.inv-t-compact .inv-s-title { font-size: 17px; }
+.inv-t-compact .inv-s-parties { margin-top: 14px; }
+.inv-t-compact .inv-s-body { margin-top: 14px; }
+.inv-t-compact .inv-s-tbl { font-size: 10.5px; }
+.inv-t-compact .inv-s-tbl th,
+.inv-t-compact .inv-s-tbl td { padding: 4px 6px; }
+.inv-t-compact .inv-s-totals { font-size: 11px; width: 270px; }
+.inv-t-compact .inv-s-total-grand { font-size: 13px; }
+
+/* ---- who built this: screen only ---------------------------------------- */
+
+.inv-builtby p { margin: 0; font-size: 0.92rem; color: var(--ink-3); }
+.inv-builtby p + p { margin-top: 0.45rem; }
+
+@media (max-width: 700px) {
+  .inv-grid { grid-template-columns: minmax(0, 1fr); }
+  .inv-checkstrip { padding: 0.6rem 0.7rem; }
+  .inv-formcol,
+  .inv-previewcol { padding: 0.9rem 0.8rem 1.2rem; }
+}
+
+/* ==========================================================================
+   /labs/invoice-maker — print
+   --------------------------------------------------------------------------
+   Scoped to .inv-page, the class only that page's <main> carries. A bare
+   `.page-shell > :not(#invoicemaker)` rule here would blank every other page
+   on the site when it was printed.
+
+   main.css declares `* { background: transparent; color: #000 }` with
+   !important for ink-friendly article printing. Importance beats normal
+   whatever the specificity, so the whole sheet palette has to be re-asserted
+   with equal importance — and where importance ties, specificity decides,
+   which is why a class selector is enough to win against `*`.
+   ========================================================================== */
+
+@media print {
+  .inv-page > :not(#invoicemaker) { display: none !important; }
+
+  .inv-page {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  #invoicemaker {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .inv-toolbar,
+  .inv-checkstrip,
+  .inv-formcol,
+  .inv-preview-title,
+  .inv-empty-hint { display: none !important; }
+
+  .inv-panes { display: block; }
+  .inv-previewcol { padding: 0; background: none; }
+
+  /* The JS set an explicit scaled height on the wrap; the printed sheet is
+     unscaled, so both the height and the transform have to go. */
+  .inv-sheet-wrap { height: auto !important; overflow: visible; }
+
+  .inv-sheet {
+    transform: none !important;
+    width: 100% !important;
+    /* A hair under 297mm: exactly-full content plus the browser's rounding
+       would spill a blank second page. Longer invoices still flow onto real
+       further pages. */
+    min-height: 296mm;
+    box-shadow: none;
+  }
+
+  /* The accent band and the header fills are the design, not decoration —
+     without this most browsers "save ink" and print them white. */
+  .inv-sheet,
+  .inv-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .inv-sheet { background: #ffffff !important; }
+  .inv-sheet, .inv-sheet * { color: #1f2937 !important; }
+
+  .inv-s-bizaddr,
+  .inv-s-copy,
+  .inv-s-kv-k,
+  .inv-s-descsub,
+  .inv-s-signname,
+  .inv-s-msme,
+  .inv-s-words-k { color: #5b6472 !important; }
+  .inv-s-party-line,
+  .inv-s-para,
+  .inv-s-tbl thead th { color: #47505c !important; }
+  .inv-s-tbl thead th { background: #f1f5f9 !important; }
+  .inv-s-h,
+  .inv-s-party-h,
+  .inv-s-title { color: var(--inv-accent) !important; }
+  .inv-s-words { background: #f8fafc !important; }
+  .inv-s-caution { color: #9f1239 !important; }
+
+  .inv-s-total-grand { background: var(--inv-accent) !important; }
+  .inv-s-total-grand, .inv-s-total-grand * { color: #ffffff !important; }
+
+  .inv-t-banded .inv-s-band { background: var(--inv-accent) !important; }
+  .inv-t-banded .inv-s-band, .inv-t-banded .inv-s-band * { color: #ffffff !important; }
+  .inv-t-banded .inv-s-band .inv-s-bizaddr { color: rgba(255, 255, 255, 0.85) !important; }
+  .inv-t-banded .inv-s-band .inv-s-copy { color: rgba(255, 255, 255, 0.8) !important; }
+  .inv-t-banded .inv-s-band .inv-s-logo img { background: #ffffff !important; }
+  .inv-t-banded .inv-s-title { color: #ffffff !important; }
+
+  /* Never split one line item across a page break, never orphan a heading at
+     the foot of a page, and repeat the table head on the second page so a
+     long invoice stays readable. */
+  .inv-s-tbl thead { display: table-header-group; }
+  .inv-s-tbl tr { break-inside: avoid; page-break-inside: avoid; }
+  .inv-s-foot,
+  .inv-s-totals { break-inside: avoid; page-break-inside: avoid; }
+  .inv-s-h { break-after: avoid; page-break-after: avoid; }
+}
+
+/* ==========================================================================
+   Loan, EMI and prepayment (/labs/emi)
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/emi.js builds its whole interface into this mount — the
+   loan bar, five tab panels, four canvases and the schedule table — and
+   injects its own stylesheet for the internals, id-scoped to #emiviz, the same
+   way the big-O, git and OS-algorithm labs do. Only the rules the page shell
+   owns live here.
+
+   Same shape as .lab-dbindex-mount rather than .lab-canvas: the mount holds
+   scrolling panels, not one drawing surface, so it takes no height cap in the
+   page (the schedule caps its own scroll area) and in fullscreen it has to be
+   allowed to take the remaining height and scroll inside itself rather than
+   push the transport off the bottom of the screen.
+   ========================================================================== */
+.lab-emi-mount { min-height: 4rem; }
+.lab-viz.is-fullscreen .lab-emi-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme: this widget is a dark instrument, drawn once, for dark.
+
+   main.css already does this for the older mounts and explains why at length
+   there — the injected panels are translucent navy, so without an opaque
+   ground under them they composite over a light page and strand their own
+   labels at about 1.1:1. This mount is newer than that rule and is not in its
+   selector list, so it gets the same treatment here. labs.css loads after
+   main.css, so a same-specificity rule at the end of this file lands last.
+
+   :not([class]) matters for the same reason it does there: without it this
+   would also flatten every colour the lab teaches with — amber interest
+   against blue principal is the entire point of the split chart's legend —
+   into one ink. The widget's own rules are id-scoped and outrank this, so only
+   its class-less descendants, which have no colour of their own, are rescued
+   from the site's light re-inking. */
+:root[data-theme="light"] .lab-emi-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+:root[data-theme="light"] .lab-emi-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}
+
+/* An amortisation schedule is a document people genuinely print and take to a
+   bank, which is not true of any other lab on this site. Printed as-is it is a
+   black rectangle: the module paints a dark instrument, and a printer is asked
+   to lay down ink for all of it. So print inverts the ground, drops the
+   chrome that means nothing on paper — the tabs, the buttons, the canvases,
+   whose data is in the table underneath anyway — and repeats the table head on
+   every page. The #emiviz prefix is not decoration: it is the specificity the
+   module's own rules carry, and without it these would lose to them. */
+@media print {
+  .lab-emi-mount { background: #fff; }
+  #emiviz .em-wrap { color: #111; }
+  #emiviz .em-tabs,
+  #emiviz .em-btnrow,
+  #emiviz .em-chartwrap,
+  #emiviz .em-legend { display: none; }
+  #emiviz .em-loanbar,
+  #emiviz .em-headline,
+  #emiviz .em-formula,
+  #emiviz .em-card,
+  #emiviz .em-note,
+  #emiviz .em-details { background: #fff; border-color: #999; }
+  #emiviz .em-headline-v,
+  #emiviz .em-headline-n,
+  #emiviz .em-card-h,
+  #emiviz .em-card-big,
+  #emiviz .em-card-sub,
+  #emiviz .em-lede,
+  #emiviz .em-h,
+  #emiviz .em-formula,
+  #emiviz .em-row-k,
+  #emiviz .em-row-v,
+  #emiviz .em-field-label { color: #111; }
+  #emiviz .em-tablewrap { max-height: none; overflow: visible; border-color: #999; }
+  #emiviz .em-table thead { display: table-header-group; }
+  #emiviz .em-table tr { break-inside: avoid; page-break-inside: avoid; }
+  #emiviz .em-table th { background: #eee; color: #111; border-bottom-color: #999; }
+  #emiviz .em-table td,
+  #emiviz .em-table .em-td-int,
+  #emiviz .em-table .em-td-pri { color: #111; border-bottom-color: #ccc; }
+}
+
+/* ==========================================================================
+   /labs/image-tools — the compressor, converter and resizer
+   --------------------------------------------------------------------------
+   Only what the shell does not already give this page. The toolbar, the option
+   grid (.lab-metrics), the drop zone, the range rows and the output pane are
+   all reused as they are; what is new is the before/after stage and the queue.
+
+   The stage keeps its own near-black ground in both themes, the same decision
+   .cn-preview and .lab-mfstage made and for the same reason: the visitor is
+   here to judge an image, and a ground that changes with the site theme
+   changes their judgement of it. The canvas paints its own #020617 anyway, so
+   the wrapper matches rather than framing it in a second colour.
+   ========================================================================== */
+.it-note {
+  margin: 0;
+  padding: 0.55rem 0.9rem;
+  max-width: 78ch;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.35);
+}
+.it-note:last-of-type { border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14); }
+.it-note a { color: var(--accent-1); }
+
+/* A checkbox needs its label wrapped around it, and .lab-metric's own label
+   rule would then style the whole clickable row like a field caption. So the
+   caption above such a control is a span carrying the same styling by hand. */
+.it-metric-head { font-size: 0.78rem; color: var(--ink-4); }
+.it-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.it-check input { accent-color: var(--accent-1); cursor: pointer; }
+
+.it-stagerow {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  align-items: stretch;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.it-stagerow .lab-drop { margin: 1rem; }
+
+.it-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 1rem;
+  background: #020617;
+  border-left: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+/* Dragging the divider is a pointer gesture on the canvas, so touch has to be
+   told not to scroll the page out from under the finger doing it. */
+.it-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background: #020617;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.it-splitrow { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.it-splitrow .lab-range input[type='range'] { width: 10rem; }
+
+.it-sizes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.25rem 1rem;
+}
+.it-size {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+}
+.it-caption {
+  margin: 0;
+  max-width: 60rem;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: #94a3b8;
+}
+
+/* The queue ---------------------------------------------------------------- */
+.it-listblock {
+  padding: 0.9rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+  background: rgb(var(--deep-rgb) / 0.4);
+}
+.it-listhead { margin: 0 0 0.6rem; font-size: 0.95rem; color: var(--ink); }
+.it-list { margin: 0; padding: 0; list-style: none; }
+.it-empty { padding: 0.8rem 0.2rem; font-size: 0.84rem; color: var(--ink-4); }
+
+.it-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.16);
+}
+.it-row:first-child { border-top: 0; }
+
+/* The whole row is the target for choosing which image the split view shows,
+   so it is a real <button> rather than a click handler on an <li> — it needs
+   the focus ring, the pressed state and the keyboard behaviour a button
+   already has. */
+.it-row-pick {
+  flex: 1 1 18rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+.it-row-pick:hover { border-color: rgb(var(--accent-rgb) / 0.35); }
+.it-row-pick:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+.it-row.is-selected .it-row-pick {
+  border-color: rgb(var(--accent-rgb) / 0.6);
+  background: rgb(var(--accent-rgb) / 0.1);
+}
+/* Selection is marked by a word as well as a border, because "the outlined
+   one" is not information a monochrome or high-contrast reader receives. */
+.it-row.is-selected .it-row-name::after {
+  content: ' — shown above';
+  font-weight: 400;
+  color: var(--accent-1);
+}
+.it-row-name {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.it-row-meta {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+  overflow-wrap: anywhere;
+}
+.it-row-bad { color: #f87171; }
+.it-row-warn { color: #fbbf24; }
+.it-row-save, .it-row-drop { flex: 0 0 auto; padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+
+.it-totals {
+  margin: 0.8rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+@media (max-width: 860px) {
+  .it-stagerow { grid-template-columns: minmax(0, 1fr); }
+  .it-stage { border-left: 0; border-top: 1px solid rgb(var(--accent-rgb) / 0.14); }
+}
+
+/* Light theme: the stage stays dark on purpose (see the block comment above),
+   so only the text drawn on it needs holding away from the site's light
+   re-inking. Everything else in this block already uses theme tokens. */
+:root[data-theme="light"] .it-size { color: #cbd5e1; }
+:root[data-theme="light"] .it-caption { color: #94a3b8; }
+
+/* ==========================================================================
+   /labs/pdf-tools — the PDF toolkit
+   --------------------------------------------------------------------------
+   Two lists and nothing else. The document list sits under the drop zone in
+   the input pane; the page bench sits below both panes, because it is the
+   thing you actually work in and it needs the full width once several
+   documents are merged.
+
+   Every row is a flex line rather than a table on purpose. A table row cannot
+   wrap, and on a phone these rows carry a filename, a size, a rotation and
+   five buttons — which as a table meant a horizontal scrollbar under every
+   single page. As flex lines the buttons drop to their own line and the row
+   stays readable at 360px.
+
+   All colours come from the theme tokens, so the light theme is covered with
+   no [data-theme] rule of its own. The two literal colours are the amber and
+   red already used for .lab-status warnings elsewhere in this file.
+   ========================================================================== */
+
+/* The panes keep their normal height; the bench grows below them. In
+   fullscreen the panes must stop growing or the bench is pushed off the
+   bottom of the screen with no way to reach it. */
+.lab-pdftools:fullscreen { overflow-y: auto; }
+.lab-pdftools:fullscreen .lab-panes { flex: 0 0 auto; height: min(50vh, 420px); }
+
+/* Loaded documents ---------------------------------------------------------
+   .lab-pane-input is a flex column and .lab-drop takes flex:1, so this list
+   sits under it at its own content height and scrolls when there are many. */
+.pdf-docs {
+  flex: 0 0 auto;
+  max-height: 11rem;
+  margin: 0 1rem 1rem;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.pdf-doc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  background: rgb(var(--deep-rgb) / 0.55);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 8px;
+}
+
+.pdf-doc + .pdf-doc { margin-top: 0.4rem; }
+
+/* An encrypted document is listed but cannot be used, so it is marked once
+   here rather than repeated in every row's text. */
+.pdf-doc.is-locked { border-color: rgba(251, 191, 36, 0.4); }
+.pdf-doc.is-locked .pdf-doc-meta { color: #fbbf24; }
+
+.pdf-doc-n {
+  flex: 0 0 auto;
+  min-width: 1.4rem;
+  padding: 0.05rem 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.12);
+  border-radius: 5px;
+}
+
+.pdf-doc-name {
+  flex: 1 1 8rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.pdf-doc-meta {
+  flex: 0 0 auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+
+/* Small square-ish buttons used in both lists. Deliberately a real <button>
+   with a real accessible name set by the tool, not an icon glyph on its own:
+   "↻" read aloud is not an instruction. */
+.pdf-mini {
+  flex: 0 0 auto;
+  min-width: 2rem;
+  padding: 0.24rem 0.5rem;
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--ink-2);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pdf-mini:hover:not(:disabled) {
+  background: var(--raise-85);
+  border-color: rgb(var(--accent-rgb) / 0.55);
+}
+.pdf-mini:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 1px; }
+.pdf-mini:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* The page bench ----------------------------------------------------------- */
+.pdf-bench {
+  padding: 0.85rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+  background: rgb(var(--deep-rgb) / 0.4);
+}
+
+.pdf-benchbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-benchlabel {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.pdf-benchbar .lab-toolfield { flex: 1 1 16rem; }
+
+.pdf-benchnote {
+  margin: 0.6rem 0 0.8rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+.pdf-benchnote code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.95em;
+  color: var(--accent-1);
+}
+
+.pdf-pages {
+  max-height: 26rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.pdf-page {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.7rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.12);
+}
+.pdf-page:last-child { border-bottom: 0; }
+.pdf-page:hover { background: rgb(var(--accent-rgb) / 0.05); }
+
+/* Fixed width so the numbers form a column the eye can run down, which is the
+   whole point of a numbered bench. */
+.pdf-page-n {
+  flex: 0 0 2.2rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.76rem;
+  text-align: right;
+  color: var(--accent-1);
+}
+
+.pdf-page-src {
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.pdf-page-dim,
+.pdf-page-rot {
+  flex: 0 0 auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+.pdf-page-rot { min-width: 2.6rem; color: #fbbf24; }
+
+.pdf-page-acts {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.pdf-empty {
+  padding: 1.2rem 0.6rem;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--ink-4);
+}
+
+@media (max-width: 620px) {
+  /* The size and rotation columns are the first to go: they are useful
+     context, not something you act on, and the five buttons are. */
+  .pdf-page-dim { flex-basis: 100%; }
+  .pdf-page-acts { margin-left: 0; }
+  .pdf-pages { max-height: none; }
+  .pdf-benchbar .lab-btn { flex: 1 1 auto; justify-content: center; }
+}
+
+/* ==========================================================================
+   /labs/typing-certificate — the timed typing test and its printable sheet
+   --------------------------------------------------------------------------
+   Another document maker whose CSS lives here rather than in a stylesheet of
+   its own — the same reasoning the invoice maker gives further up. Every rule
+   below is either `tc-` prefixed or scoped to `.tc-page`, the class only that
+   page's <main> carries, so nothing here can reach the other sixty lab pages
+   that load this file. A page-specific stylesheet would also have to be
+   registered in three hand-maintained lists (the build's CSS_FILES, the
+   service worker's precache and the offline gate) and this file is in all
+   three already.
+
+   The test itself borrows /labs/typing's classes wholesale — .typing-passage,
+   .typing-input, .typing-stats and the ty-ok / ty-bad / ty-at / ty-todo
+   character states are defined further up this file and are not redefined
+   here. Only the pane height differs, because this page has three panels of
+   results underneath the test rather than nothing.
+
+   Two surfaces live below and must not bleed into each other:
+
+     1. The APP CHROME — toolbar, score tiles, tables, chart. Built from theme
+        tokens, so it flips between dark and light like every other lab.
+     2. The SHEET — the A4 certificate. This is paper. A certificate does not
+        have a dark mode, so every colour inside .tc-sheet is a fixed literal
+        in BOTH themes, on purpose.
+
+   The sheet is laid out at 794px, which is 210mm at CSS's 96dpi — the same
+   pixels-per-millimetre the browser uses when it prints A4. On screen it is
+   scaled down with transform: scale() to fit its column; in print the
+   transform is dropped and the sheet becomes the page.
+
+   Three print rules genuinely cannot be scoped by a selector — @page, the
+   root background, and main.css's body::before byline, which is right on an
+   article and wrong on somebody's certificate. Those are injected by
+   typing-certificate.js on that page only; see the comment there.
+   ========================================================================== */
+
+/* ---- the test ------------------------------------------------------------ */
+
+/* One pane, not two, and shorter than the playgrounds use: the result, the
+   certificate and the history all sit below the test on this page, so it must
+   not eat the whole viewport on the way to them. */
+.lab-typingcert .lab-panes {
+  grid-template-columns: minmax(0, 1fr);
+  height: min(52vh, 440px);
+  min-height: 260px;
+}
+
+@media (max-width: 900px) {
+  .lab-typingcert .lab-panes { height: auto; }
+  .lab-typingcert .lab-pane { height: 60vh; min-height: 300px; }
+}
+
+/* ---- shared panel furniture ---------------------------------------------- */
+
+.tc-empty {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-left: 3px solid rgb(var(--accent-rgb) / 0.45);
+  border-radius: 0 10px 10px 0;
+}
+
+.tc-empty[hidden] { display: none; }
+
+.tc-sub-h {
+  margin: 1.6rem 0 0.7rem;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.tc-note {
+  margin: 0.7rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+/* ---- the score tiles ----------------------------------------------------- */
+
+.tc-scoregrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.7rem;
+}
+
+/* An author `display` on a grid container silently outranks the UA sheet's
+   [hidden] rule, so an empty grid would still hold a row open before any run
+   has finished. Same fix as .lab-drop[hidden] further up. */
+.tc-scoregrid[hidden] { display: none; }
+
+.tc-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 0.9rem;
+  background: rgb(var(--deep-rgb) / 0.5);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 10px;
+}
+
+.tc-tile-v {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-1);
+}
+
+/* The first tile is net WPM, the number the certificate carries and the one
+   people actually read. The rest are the context for it. */
+.tc-tile:first-child .tc-tile-v { color: #4ade80; }
+
+.tc-tile-l {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.tc-tile-n { font-size: 0.76rem; line-height: 1.45; color: var(--ink-4); }
+
+/* ---- tables -------------------------------------------------------------- */
+
+/* Wide tables scroll inside their own box; the page never scrolls sideways. */
+.tc-tablewrap { overflow-x: auto; }
+.tc-tablewrap[hidden] { display: none; }
+
+.tc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.tc-table th,
+.tc-table td {
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid rgb(var(--line-rgb) / 0.4);
+}
+
+.tc-table thead th {
+  font-weight: 600;
+  color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.07);
+  white-space: nowrap;
+}
+
+.tc-table tbody th { font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.tc-table td { color: var(--ink-3); }
+
+.tc-keycell code {
+  padding: 0.1rem 0.4rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.9em;
+  color: var(--ink);
+  background: rgba(2, 6, 23, 0.55);
+  border-radius: 4px;
+}
+
+.tc-keys[hidden] { display: none; }
+
+/* ---- the certificate controls -------------------------------------------- */
+
+.tc-certbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.tc-namefield { flex: 1 1 18rem; margin: 0; }
+
+/* Its own full-width line, so the reference text appearing never reflows the
+   button beside it. */
+.tc-idline {
+  flex: 1 1 100%;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+
+/* ---- the progress chart -------------------------------------------------- */
+
+.tc-chart { margin-bottom: 1.1rem; }
+
+.tc-chart-note {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--ink-4);
+}
+
+/* Fixed height with the aspect ratio deliberately not preserved: the line
+   fills whatever width the card has without the chart growing taller on a
+   phone, where vertical space is the scarce thing. */
+.tc-chart-svg {
+  display: block;
+  width: 100%;
+  height: 220px;
+  overflow: visible;
+}
+
+.tc-grid { stroke: rgb(var(--line-rgb) / 0.45); stroke-width: 1; }
+
+/* non-scaling-stroke because the viewBox is stretched horizontally to fill the
+   card; without it the line thins and thickens with the window width. */
+.tc-line {
+  fill: none;
+  stroke: var(--accent-1);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.tc-dot { fill: #4ade80; }
+.tc-axis { font-size: 11px; fill: var(--ink-4); }
+
+.tc-histactions { margin-top: 1.1rem; }
+
+/* ---- the sheet: fixed paper palette, both themes ------------------------- */
+
+.tc-sheet-wrap {
+  position: relative;
+  /* The JS sets an explicit px height (sheet height times scale) so the page
+     does not reserve the full unscaled 1123px and leave a dead gap below. */
+  overflow: hidden;
+}
+
+.tc-sheet {
+  display: flex;
+  /* 210mm x 297mm at 96dpi. The sheet is always laid out at full paper width
+     and scaled down with a transform to fit its column, so the preview is the
+     print shrunk rather than a reflowed approximation of it. */
+  width: 794px;
+  min-height: 1123px;
+  padding: 26px;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  transform-origin: top left;
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.4);
+  overflow-wrap: break-word;
+}
+
+/* One hairline rule and nothing else. No seal, no ribbon, no guilloche: those
+   exist to make a reader trust a document faster than they can read it, and
+   this document certifies nothing. The restraint is the design, and the page
+   says so out loud rather than leaving it to be noticed. */
+.tc-s-frame {
+  flex: 1;
+  padding: 46px 50px 30px;
+  border: 1px solid #cbd5e1;
+  border-top: 3px solid #334155;
+}
+
+.tc-s-kicker {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.tc-s-title {
+  margin: 6px 0 0;
+  padding-bottom: 16px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tc-s-lede { margin: 26px 0 0; font-size: 13px; color: #5b6472; }
+
+.tc-s-name {
+  margin: 4px 0 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+/* A ruled line rather than a placeholder name: printed blank it can be filled
+   in by hand, and it never prints somebody's guess at who typed the test. */
+.tc-s-name-blank { margin-top: 10px; }
+
+.tc-s-rule {
+  display: block;
+  width: 62%;
+  height: 26px;
+  border-bottom: 1px solid #94a3b8;
+}
+
+.tc-s-score {
+  margin: 4px 0 0;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+.tc-s-sub { margin: 8px 0 0; font-size: 14px; color: #47505c; }
+
+/* Four fixed columns, and deliberately NOT responsive: this grid is inside the
+   sheet, and the sheet is paper. It is always laid out at 794px and scaled, so
+   a viewport media query here would change the shape of the printed A4
+   depending on how wide the visitor's window happened to be. Every other rule
+   inside .tc-sheet is a fixed literal for the same reason. */
+.tc-s-figs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin: 32px 0 0;
+  padding: 20px 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tc-s-figs dt {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.tc-s-figs dd { margin: 3px 0 0; font-size: 15px; color: #1f2937; }
+
+.tc-s-ref { margin: 18px 0 0; }
+
+.tc-s-ref-k {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.tc-s-ref-v {
+  display: block;
+  margin-top: 3px;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #1f2937;
+}
+
+/* The part of the document that has to survive being skim-read. Boxed, and
+   headed in maroon, for exactly one reason: a reader who takes in nothing else
+   on the sheet must still take in that it certifies nothing. */
+.tc-s-honest {
+  margin: 26px 0 0;
+  padding: 16px 18px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+
+.tc-s-honest p { margin: 0 0 8px; font-size: 11.5px; line-height: 1.6; color: #47505c; }
+.tc-s-honest p:last-child { margin-bottom: 0; }
+
+.tc-s-honest-h { font-size: 12.5px; font-weight: 700; color: #9f1239; }
+
+.tc-s-empty { margin: 70px 0 0; }
+.tc-s-empty-h { margin: 0 0 10px; font-size: 22px; font-weight: 600; color: #334155; }
+.tc-s-empty p { margin: 0; font-size: 13px; line-height: 1.7; color: #5b6472; }
+
+.tc-s-foot {
+  margin: 26px 0 0;
+  padding-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Chrome only. Nothing inside .tc-sheet appears here, on purpose — see the
+   note on .tc-s-figs above. */
+@media (max-width: 700px) {
+  .tc-certbar { align-items: stretch; }
+  .tc-certbar .btn { width: 100%; text-align: center; }
+  .tc-scoregrid { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); }
+}
+
+/* ==========================================================================
+   /labs/typing-certificate — print
+   --------------------------------------------------------------------------
+   Scoped to .tc-page, the class only that page's <main> carries. A bare
+   `.page-shell > :not(.tc-printable)` rule here would blank every other page
+   on the site when it was printed.
+
+   main.css declares `* { background: transparent; color: #000 }` with
+   !important for ink-friendly article printing. Importance beats normal
+   whatever the specificity, so the whole sheet palette has to be re-asserted
+   with equal importance — and where importance ties, specificity decides,
+   which is why a class selector is enough to win against `*`.
+
+   Printing before a run has finished is not an error: the sheet renders its
+   own "nothing to certify yet" page, disclaimer included, so Ctrl+P at any
+   moment produces an honest sheet rather than blank paper.
+   ========================================================================== */
+
+@media print {
+  .tc-page > :not(.tc-printable) { display: none !important; }
+
+  .tc-page {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* .tc-printable is a .section-card, and main.css gives every section-card a
+     grey border when printed. On a certificate that is a second frame around
+     the real one. */
+  .tc-printable {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .tc-screenonly { display: none !important; }
+
+  /* The JS set an explicit scaled height on the wrap; the printed sheet is
+     unscaled, so both the height and the transform have to go. */
+  .tc-sheet-wrap { height: auto !important; overflow: visible !important; }
+
+  .tc-sheet {
+    transform: none !important;
+    width: 100% !important;
+    /* A hair under 297mm: exactly-full content plus the browser's rounding
+       would spill a blank second page. */
+    min-height: 296mm;
+    box-shadow: none;
+  }
+
+  /* The frame rule and the disclaimer's tint are the document, not
+     decoration — without this most browsers "save ink" and print them away. */
+  .tc-sheet,
+  .tc-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .tc-sheet { background: #ffffff !important; }
+  .tc-sheet, .tc-sheet * { color: #1f2937 !important; }
+
+  .tc-s-kicker,
+  .tc-s-figs dt,
+  .tc-s-ref-k,
+  .tc-s-foot { color: #64748b !important; }
+  .tc-s-lede,
+  .tc-s-sub,
+  .tc-s-honest p,
+  .tc-s-empty p { color: #47505c !important; }
+  .tc-s-title,
+  .tc-s-name,
+  .tc-s-score { color: #0f172a !important; }
+  .tc-s-empty-h { color: #334155 !important; }
+  .tc-s-honest { background: #f8fafc !important; }
+  .tc-s-honest-h { color: #9f1239 !important; }
+
+  /* The disclaimer must never be the thing that falls onto a second page by
+     itself, and the figures must not be split down the middle. */
+  .tc-s-honest,
+  .tc-s-figs { break-inside: avoid; page-break-inside: avoid; }
+}
+
+/* ==========================================================================
+   /labs/cookies — the Set-Cookie analyser
+   --------------------------------------------------------------------------
+   The report pane is structured DOM rather than the usual monospace terminal,
+   because the content here is prose in pairs: for every attribute, what it
+   protects and what it does not. Two sentences of that read badly wrapped to
+   a fixed-width pane, and the second sentence is the one people skip — so it
+   gets its own line, its own weight and a left rule that makes it hard to
+   slide past.
+
+   Verdict colour rides on a data-level attribute rather than a class per
+   state, so the JS sets one attribute and the cascade does the rest. The
+   literal greens, ambers and reds match the ones already used across this
+   file; the light theme re-states them at the bottom, because #4ade80 on a
+   pale card is not readable and this page is mostly small text.
+   ========================================================================== */
+
+.ck-report {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.9rem 1rem 1.2rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+.ck-report:focus-visible { outline: 2px solid rgb(var(--accent-rgb) / 0.5); outline-offset: -2px; }
+
+.ck-empty { max-width: 34rem; color: var(--ink-4); }
+.ck-empty p { margin: 0 0 0.8rem; }
+.ck-empty-h { font-weight: 600; color: var(--ink-2); }
+
+/* ---- one cookie ---------------------------------------------------------- */
+
+.ck-cookie {
+  margin: 0 0 1.1rem;
+  padding: 0.85rem 0.95rem 0.95rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.28);
+  border-left: 3px solid var(--accent-1);
+  border-radius: 10px;
+  background: rgb(var(--deep-rgb) / 0.4);
+}
+.ck-cookie[data-level='bad'] { border-left-color: #f87171; }
+.ck-cookie[data-level='info'] { border-left-color: #94a3b8; }
+.ck-cookie:last-child { margin-bottom: 0; }
+
+.ck-cookie-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.ck-cookie-name {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.ck-cookie-meta {
+  margin: 0.3rem 0 0;
+  font-size: 0.76rem;
+  color: var(--ink-4);
+}
+
+.ck-cookie-problem {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: #f87171;
+}
+
+/* The value is the one thing on this page that might be a live session token,
+   so it wraps rather than scrolls — a value that runs off the edge invites
+   somebody to widen the window and screenshot it instead. */
+.ck-cookie-val {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0.55rem 0 0;
+}
+.ck-cookie-vk {
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.ck-cookie-val code {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.25rem 0.5rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  background: rgba(2, 6, 23, 0.45);
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+
+.ck-badge {
+  padding: 0.12rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ck-badge.is-ok   { color: #4ade80; background: rgba(74, 222, 128, 0.12); }
+.ck-badge.is-warn { color: #fbbf24; background: rgba(251, 191, 36, 0.13); }
+.ck-badge.is-bad  { color: #f87171; background: rgba(248, 113, 113, 0.13); }
+.ck-badge.is-info { color: var(--accent-1); background: rgb(var(--accent-rgb) / 0.12); }
+
+/* ---- findings ------------------------------------------------------------ */
+
+.ck-findings { margin: 0.85rem 0 0; padding: 0; list-style: none; }
+
+.ck-finding {
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  border-left: 3px solid var(--ink-4);
+  border-radius: 0 6px 6px 0;
+  background: rgba(2, 6, 23, 0.3);
+}
+.ck-finding:last-child { margin-bottom: 0; }
+.ck-finding b { display: block; margin-bottom: 0.1rem; }
+.ck-finding.is-bad  { border-left-color: #f87171; }
+.ck-finding.is-bad b  { color: #f87171; }
+.ck-finding.is-warn { border-left-color: #fbbf24; }
+.ck-finding.is-warn b { color: #fbbf24; }
+.ck-finding.is-info { border-left-color: var(--accent-1); }
+.ck-finding.is-info b { color: var(--accent-1); }
+.ck-finding.is-ok   { border-left-color: #4ade80; }
+.ck-finding.is-ok b   { color: #4ade80; }
+
+/* ---- the attribute-by-attribute reading ---------------------------------- */
+
+.ck-attrs {
+  margin-top: 0.95rem;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.22);
+}
+
+.ck-attr { padding: 0.7rem 0 0.1rem; }
+.ck-attr + .ck-attr { border-top: 1px solid rgb(var(--line-rgb) / 0.14); }
+
+.ck-attr-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.35rem;
+}
+
+.ck-attr-k {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.ck-attr[data-level='good'] .ck-attr-k { color: #4ade80; }
+.ck-attr[data-level='warn'] .ck-attr-k { color: #fbbf24; }
+.ck-attr[data-level='bad'] .ck-attr-k  { color: #f87171; }
+
+.ck-attr-p, .ck-attr-n { margin: 0 0 0.45rem; font-size: 0.83rem; line-height: 1.65; }
+.ck-attr-p { color: var(--ink-3); }
+.ck-attr-p b { color: #4ade80; }
+
+/* The half people skip. Indented behind a rule so it cannot be read as a
+   continuation of the sentence above it. */
+.ck-attr-n {
+  padding-left: 0.7rem;
+  color: var(--ink-4);
+  border-left: 2px solid rgb(var(--line-rgb) / 0.3);
+}
+.ck-attr-n b { color: #fbbf24; }
+
+/* ---- a Cookie request header --------------------------------------------- */
+
+.ck-pairs { margin: 0.7rem 0 0; padding: 0; list-style: none; }
+
+.ck-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.65rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.14);
+}
+.ck-pair-n {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.ck-pair-b { font-size: 0.72rem; color: var(--ink-4); }
+.ck-pair-v {
+  flex: 1 1 10rem;
+  min-width: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  color: var(--ink-4);
+  overflow-wrap: anywhere;
+}
+
+/* ---- the budget strip ---------------------------------------------------- */
+
+.ck-budget {
+  padding: 0.9rem 1rem 1rem;
+  background: rgb(var(--deep-rgb) / 0.78);
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+
+.ck-budget-empty { margin: 0; font-size: 0.8rem; color: var(--ink-4); }
+
+.ck-budget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem 1.4rem;
+}
+
+.ck-budget-k {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.ck-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: rgb(var(--line-rgb) / 0.25);
+  overflow: hidden;
+}
+.ck-bar i { display: block; height: 100%; background: #4ade80; }
+.ck-budget-row[data-level='warn'] .ck-bar i { background: #fbbf24; }
+.ck-budget-row[data-level='bad'] .ck-bar i  { background: #f87171; }
+
+.ck-budget-v {
+  margin: 0.45rem 0 0;
+  font-size: 0.79rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+.ck-budget-v b { color: var(--ink-2); }
+.ck-budget-row[data-level='warn'] .ck-budget-v b { color: #fbbf24; }
+.ck-budget-row[data-level='bad'] .ck-budget-v b  { color: #f87171; }
+
+.ck-budget-note {
+  margin: 1rem 0 0;
+  font-size: 0.79rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+}
+
+/* ---- the SameSite and CSRF matrix ---------------------------------------- */
+
+/* Its own scroll container: five columns of prose will not fit a phone, and a
+   table that widens the page body takes every other section with it. */
+.ck-matrix-wrap { overflow-x: auto; margin-bottom: 0.9rem; }
+
+.ck-matrix {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.ck-matrix th,
+.ck-matrix td {
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid rgb(var(--line-rgb) / 0.32);
+}
+
+.ck-matrix thead th {
+  font-weight: 600;
+  color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.07);
+  white-space: nowrap;
+}
+
+.ck-matrix tbody th { font-weight: 500; color: var(--ink-2); }
+.ck-matrix td { color: var(--ink-4); white-space: nowrap; }
+
+/* Red for "sent" and green for "not sent", which is the opposite of the usual
+   instinct and the correct way round here: this table is about requests an
+   attacker causes, so the cookie arriving is the bad outcome. */
+.ck-matrix td.is-yes { color: #f87171; background: rgba(248, 113, 113, 0.08); }
+.ck-matrix td.is-no  { color: #4ade80; background: rgba(74, 222, 128, 0.08); }
+.ck-matrix td.is-part { color: #fbbf24; background: rgba(251, 191, 36, 0.09); white-space: normal; }
+
+/* The highlight is a ring rather than a fill, so it stacks on top of the
+   red/green cell colour instead of replacing it. */
+.ck-matrix [data-ss].is-live {
+  box-shadow: inset 0 0 0 2px rgb(var(--accent-rgb) / 0.65);
+}
+
+.ck-matrix-note {
+  margin: 0 0 1.4rem;
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+/* ---- the live document.cookie panel -------------------------------------- */
+
+.ck-live-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.ck-live-list { margin: 0; padding: 0; list-style: none; }
+
+.ck-live-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.8rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgb(var(--line-rgb) / 0.2);
+}
+
+.ck-live-name {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.ck-live-size { font-size: 0.74rem; color: var(--ink-4); }
+.ck-live-val {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+  overflow-wrap: anywhere;
+}
+
+.ck-live-sum { margin: 0.8rem 0 0; font-size: 0.83rem; color: var(--ink-3); }
+.ck-live-empty p { margin: 0 0 0.7rem; font-size: 0.88rem; line-height: 1.65; color: var(--ink-4); }
+.ck-live-empty p:last-child { margin-bottom: 0; }
+.ck-live-note { margin: 1rem 0 0; font-size: 0.8rem; line-height: 1.65; color: var(--ink-4); }
+
+@media (max-width: 700px) {
+  .lab-tool .ck-report { min-height: 20rem; max-height: 60vh; }
+  .ck-matrix { min-width: 30rem; font-size: 0.78rem; }
+  .ck-live-actions .lab-btn { flex: 1 1 100%; }
+}
+
+/* Light theme. The dark-first literals above are unreadable on a pale card,
+   so every semantic colour is re-stated at a lightness that passes AA against
+   it rather than merely still reading as "green" or "red". */
+:root[data-theme='light'] .ck-badge.is-ok   { color: #0a6b28; background: rgba(34, 197, 94, 0.14); }
+:root[data-theme='light'] .ck-badge.is-warn { color: #6b5600; background: rgba(251, 191, 36, 0.2); }
+:root[data-theme='light'] .ck-badge.is-bad  { color: #a11212; background: rgba(220, 38, 38, 0.1); }
+
+:root[data-theme='light'] .ck-cookie[data-level='bad'] { border-left-color: #a11212; }
+:root[data-theme='light'] .ck-cookie-problem { color: #a11212; }
+
+:root[data-theme='light'] .ck-finding.is-bad  { border-left-color: #a11212; }
+:root[data-theme='light'] .ck-finding.is-bad b  { color: #a11212; }
+:root[data-theme='light'] .ck-finding.is-warn { border-left-color: #6b5600; }
+:root[data-theme='light'] .ck-finding.is-warn b { color: #6b5600; }
+:root[data-theme='light'] .ck-finding.is-ok   { border-left-color: #0a6b28; }
+:root[data-theme='light'] .ck-finding.is-ok b   { color: #0a6b28; }
+
+:root[data-theme='light'] .ck-attr[data-level='good'] .ck-attr-k { color: #0a6b28; }
+:root[data-theme='light'] .ck-attr[data-level='warn'] .ck-attr-k { color: #6b5600; }
+:root[data-theme='light'] .ck-attr[data-level='bad'] .ck-attr-k  { color: #a11212; }
+:root[data-theme='light'] .ck-attr-p b { color: #0a6b28; }
+:root[data-theme='light'] .ck-attr-n b { color: #6b5600; }
+
+:root[data-theme='light'] .ck-bar i { background: #16a34a; }
+:root[data-theme='light'] .ck-budget-row[data-level='warn'] .ck-bar i { background: #b45309; }
+:root[data-theme='light'] .ck-budget-row[data-level='bad'] .ck-bar i  { background: #dc2626; }
+:root[data-theme='light'] .ck-budget-row[data-level='warn'] .ck-budget-v b { color: #6b5600; }
+:root[data-theme='light'] .ck-budget-row[data-level='bad'] .ck-budget-v b  { color: #a11212; }
+
+:root[data-theme='light'] .ck-matrix td.is-yes  { color: #a11212; background: rgba(220, 38, 38, 0.09); }
+:root[data-theme='light'] .ck-matrix td.is-no   { color: #0a6b28; background: rgba(34, 197, 94, 0.13); }
+:root[data-theme='light'] .ck-matrix td.is-part { color: #6b5600; background: rgba(251, 191, 36, 0.2); }
+
+/* ==========================================================================
+   GST return working sheet (/labs/gst-return)
+   --------------------------------------------------------------------------
+   The input pane carries four things stacked rather than the usual one: the
+   two settings the arithmetic needs, a drop zone for JSON exports, a running
+   list of what has been dropped, and the CSV box. Every rule below is scoped
+   to the lab's own id, which also outranks `.lab-pane-input > div { display:
+   contents }` higher up this file — that rule is there for plain wrapper
+   divs, and each direct child here is a real box that has to keep its own.
+   ========================================================================== */
+
+.lab-gstr .lab-panes { height: min(74vh, 640px); }
+
+#gstreturn .lab-fieldrow { display: flex; flex: 0 0 auto; }
+
+#gstreturn .lab-drop {
+  display: flex;
+  flex: 0 0 auto;
+  margin: 0.85rem 0.85rem 0.5rem;
+  padding: 1rem 0.9rem;
+}
+
+#gstreturn .gstr-files {
+  display: block;
+  flex: 0 0 auto;
+  max-height: 7rem;
+  margin: 0 0.85rem 0.6rem;
+  overflow-y: auto;
+}
+
+#gstreturn .lab-toolinput { flex: 1 1 auto; min-height: 8rem; }
+
+.gstr-lbl { font-size: 0.8rem; color: var(--ink-4); }
+
+.gstr-file {
+  margin: 0 0 0.3rem;
+  padding: 0.35rem 0.6rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.76rem;
+  color: var(--ink-2);
+  background: rgb(var(--deep-rgb) / 0.55);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 7px;
+  word-break: break-word;
+}
+
+.gstr-file-empty { color: var(--ink-4); background: none; border-style: dashed; }
+
+/* The sheet prints rate-wise tables 79 characters wide. Wrapping a column of
+   money makes it unreadable, so this pane scrolls sideways instead of
+   wrapping — the same trade .lab-linux makes for kernel output. */
+#gstreturn .lab-terminal { white-space: pre; overflow: auto; word-break: normal; }
+
+/* The `.lab-gstr .lab-panes` height above is one class heavier than the
+   `.lab-panes { height: auto }` in the responsive block, and later in the
+   file than `.lab-tool`'s own 860px override, so the phone height has to be
+   restated here or the panes would keep their desktop height on a phone. */
+@media (max-width: 860px) {
+  .lab-gstr .lab-panes { height: auto; }
+  #gstreturn .lab-toolinput { min-height: 10rem; }
+}
+
+/* ==========================================================================
+   /labs/timezones — the meeting planner grid
+   --------------------------------------------------------------------------
+   Appended for this lab only. Every rule below is `tz-` prefixed or scoped
+   under `.lab-tz`, so nothing here can reach the other sixty lab pages that
+   load this file. The same reasoning the invoice maker gives further up
+   applies: a page-specific stylesheet would have to be registered in three
+   hand-maintained lists, and this file is already in all of them.
+
+   One decision runs through the whole block. NOTHING is laid out per hour
+   cell. Every band, tick and bar is positioned as a percentage of the span,
+   because the offsets this tool exists to show are not all whole hours —
+   India is +05:30, Nepal +05:45, the Chatham Islands +12:45 — and a grid of
+   equal cells would have to round them to the nearest hour, which is exactly
+   the mistake the page is about. A half-hour zone's ticks land on the half,
+   visibly out of step with its neighbours, and that misalignment is the
+   picture rather than a rendering flaw.
+
+   --tz-head is the width of the row label column, and it is used twice: once
+   in each row's grid template and once as the overlay's left edge. They must
+   agree or the proposed slot would be drawn at the wrong time, so they read
+   the same custom property rather than repeating a length.
+
+   Colour never carries a fact on its own. The shaded band is restated in
+   words in the readout beside the grid ("inside working hours", "the middle
+   of the night"), the overlap band is listed as times in the notes pane, and
+   the slot's position is spoken by its own aria-valuetext.
+   ========================================================================== */
+
+.lab-tz { --tz-head: 15rem; }
+
+/* Controls ----------------------------------------------------------------- */
+.tz-controls { flex-wrap: wrap; }
+.tz-controls .lab-select { flex: 1 1 15rem; min-width: 0; max-width: 26rem; }
+.tz-controls .lab-toolfield { flex: 1 1 13rem; }
+
+.tz-lbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ink-4);
+}
+.tz-lbl .lab-select,
+.tz-lbl .lab-toolfield { flex: 0 0 auto; }
+
+.tz-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.tz-check input { accent-color: var(--accent-1); cursor: pointer; }
+.tz-check input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+/* The one place an add can fail, so it gets a line of its own rather than
+   borrowing the output pane, which is two panes away from the field. */
+.tz-adderr {
+  flex: 1 1 100%;
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #fca5a5;
+}
+
+/* The grid ----------------------------------------------------------------- */
+/* Twenty-four hours of labelled ticks cannot fit a phone, so the grid keeps
+   its width and scrolls inside its own box. The page itself never scrolls
+   sideways, and the row labels stay put because they are sticky. */
+.tz-scroll {
+  overflow-x: auto;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+  background: #020617;
+}
+
+.tz-stage {
+  position: relative;
+  min-width: 54rem;
+}
+
+.tz-row {
+  display: grid;
+  grid-template-columns: var(--tz-head) minmax(0, 1fr);
+  align-items: stretch;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.12);
+}
+.tz-row:first-child { border-top: 0; }
+
+.tz-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  background: #0b1120;
+  border-right: 1px solid rgb(var(--accent-rgb) / 0.2);
+}
+
+/* The anchor zone is the one the date picker and the grid's start and end
+   belong to, so it is marked — with a rule down its edge and the word
+   "anchor" in its own meta line, never with the colour alone. */
+.tz-row.is-anchor .tz-rowhead { box-shadow: inset 3px 0 0 var(--accent-1); }
+
+.tz-rowtop { display: flex; align-items: baseline; gap: 0.4rem; }
+.tz-zname { margin: 0; font-size: 0.9rem; font-weight: 600; color: #f8fafc; }
+.tz-zmeta {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  color: #7dd3fc;
+}
+.tz-zid {
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.66rem;
+  color: #94a3b8;
+  overflow-wrap: anywhere;
+}
+
+.tz-work { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem; }
+.tz-worklbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+.tz-workpick {
+  padding: 0.15rem 1.5rem 0.15rem 0.35rem;
+  font-size: 0.72rem;
+  background-size: 0.6rem;
+  background-position: right 0.4rem center;
+  color: #e2e8f0;
+  background-color: #16243b;
+}
+
+.tz-rowacts { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+
+.tz-mini {
+  font: inherit;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  color: #cbd5e1;
+  background: #16243b;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.tz-mini:hover:not(:disabled) { border-color: #7dd3fc; color: #f8fafc; }
+.tz-mini:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+.tz-mini:disabled { opacity: 0.4; cursor: not-allowed; }
+.tz-mini[aria-pressed='true'] { color: #0b1220; background: #7dd3fc; border-color: #7dd3fc; }
+.tz-mini-del:hover:not(:disabled) { border-color: #f87171; color: #fca5a5; }
+
+/* The track ---------------------------------------------------------------- */
+.tz-track {
+  position: relative;
+  min-height: 3.4rem;
+  overflow: hidden;
+  background: #020617;
+}
+
+.tz-band { position: absolute; top: 0; bottom: 0; }
+
+/* Night first, working hours over it: an evening shift genuinely does run
+   into the night and should read as working hours where they overlap. */
+.tz-band-night { background: rgba(15, 23, 42, 0.9); border-top: 1px solid rgba(100, 116, 139, 0.2); }
+.tz-band-work { background: rgba(56, 189, 248, 0.16); box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.3); }
+
+.tz-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid rgba(148, 163, 184, 0.16);
+}
+.tz-tick-mid { border-left-color: rgba(251, 191, 36, 0.65); }
+
+.tz-ticklbl {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.15rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.62rem;
+  line-height: 1;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+.tz-ticklbl-mid { color: #fbbf24; font-weight: 700; }
+
+/* Overlay: overlap, now, and the proposed slot ----------------------------- */
+.tz-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--tz-head);
+  right: 0;
+  z-index: 1;
+  cursor: crosshair;
+}
+
+.tz-bands { position: absolute; inset: 0; pointer-events: none; }
+
+/* The stretch where every zone on the grid is inside its working hours. It is
+   a tinted column rather than an outline so it reads through all the rows at
+   once, which is the whole point of stacking them. */
+.tz-overlapband {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(74, 222, 128, 0.16);
+  border-left: 1px solid rgba(74, 222, 128, 0.55);
+  border-right: 1px solid rgba(74, 222, 128, 0.55);
+}
+
+.tz-nowline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px dotted #f472b6;
+}
+
+.tz-slot {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 10px;
+  background: rgba(251, 191, 36, 0.28);
+  border: 1px solid #fbbf24;
+  border-radius: 4px;
+  cursor: grab;
+  touch-action: none;
+}
+.tz-slot:active { cursor: grabbing; }
+.tz-slot:focus-visible { outline: 2px solid #fbbf24; outline-offset: 3px; }
+
+/* Two grab handles, so the bar reads as something you move rather than a
+   highlight that happens to be there. */
+.tz-slot::before,
+.tz-slot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 1rem;
+  margin-top: -0.5rem;
+  background: #fbbf24;
+}
+.tz-slot::before { left: 3px; }
+.tz-slot::after { right: 3px; }
+
+.tz-empty {
+  margin: 0;
+  padding: 1.6rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+/* The legend, under the grid ----------------------------------------------- */
+.tz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.76rem;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.5);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+.tz-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.tz-key i {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+.tz-key-work { background: rgba(56, 189, 248, 0.35); box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.6); }
+.tz-key-over { background: rgba(74, 222, 128, 0.35); box-shadow: inset 0 0 0 1px rgba(74, 222, 128, 0.7); }
+.tz-key-slot { background: rgba(251, 191, 36, 0.4); box-shadow: inset 0 0 0 1px #fbbf24; }
+.tz-key-night { background: rgba(15, 23, 42, 0.95); box-shadow: inset 0 0 0 1px rgba(100, 116, 139, 0.5); }
+
+/* The readout -------------------------------------------------------------- */
+.tz-readout {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.9rem 1rem;
+}
+
+.tz-readhead {
+  margin: 0 0 0.8rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.tz-readlist { margin: 0; padding: 0; list-style: none; }
+
+.tz-read {
+  padding: 0.6rem 0;
+  border-top: 1px solid rgb(var(--line-rgb) / 0.2);
+}
+.tz-read:first-child { border-top: 0; }
+.tz-read p { margin: 0; }
+
+.tz-read-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+.tz-read-time {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.05rem;
+  color: var(--accent-1);
+  font-variant-numeric: tabular-nums;
+}
+.tz-read-zone { font-size: 0.76rem; color: var(--ink-4); }
+.tz-read-date { font-size: 0.8rem; color: var(--ink-3); }
+.tz-read-warn { margin-top: 0.2rem; font-size: 0.78rem; line-height: 1.5; color: #fbbf24; }
+
+.tz-chip {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.08rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.tz-chip-ok { color: #4ade80; background: rgba(74, 222, 128, 0.1); }
+.tz-chip-warn { color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
+.tz-chip-bad { color: #f87171; background: rgba(248, 113, 113, 0.1); }
+.tz-chip-day { color: #a78bfa; background: rgba(167, 139, 250, 0.12); }
+
+.tz-msg { margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-4); }
+
+/* The summary line --------------------------------------------------------- */
+.tz-summary { flex: 1 1 22rem; min-height: 2.6rem; }
+
+/* Fullscreen: .lab becomes a 100vh flex column and every row that is not the
+   panes has to opt out of shrinking, the same as .lab-resultbar does further
+   up. Without it the panes take everything and the grid — the thing you went
+   fullscreen to see — is squeezed to a couple of pixels. */
+.lab-tz.is-fullscreen .tz-scroll,
+.lab-tz.is-fullscreen .tz-legend,
+.lab-tz.is-fullscreen .lab-fieldrow { flex: 0 0 auto; }
+.lab-tz.is-fullscreen .tz-scroll { max-height: 52vh; overflow-y: auto; }
+
+@media (max-width: 860px) {
+  .lab-tz { --tz-head: 11.5rem; }
+  .tz-stage { min-width: 46rem; }
+  .lab-tz .lab-panes { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .lab-tz .lab-pane { height: auto; min-height: 16rem; }
+  .lab-tz .lab-terminal { min-height: 18rem; max-height: 60vh; }
+  .tz-readout { max-height: 26rem; }
+}
+
+@media (max-width: 560px) {
+  .tz-workpick { font-size: 16px; }
+  .tz-mini { padding: 0.3rem 0.55rem; font-size: 0.75rem; }
+  .tz-track { min-height: 4rem; }
+}
+
+/* Light theme: the grid is one of the dark instruments, the same call
+   .lab-terminal and the image-tools stage make. It is a picture of a day —
+   night bands, shaded working hours, a tinted overlap column — and those tints
+   were measured once, on near-black. The chrome around it (toolbar, controls,
+   readout, the sections below) is ordinary site furniture built from tokens
+   and goes light as usual; only the text drawn ON the dark grid is held back
+   from the light re-inking here. */
+:root[data-theme="light"] .tz-zname { color: #f8fafc; }
+:root[data-theme="light"] .tz-zmeta { color: #7dd3fc; }
+:root[data-theme="light"] .tz-zid,
+:root[data-theme="light"] .tz-worklbl,
+:root[data-theme="light"] .tz-ticklbl,
+:root[data-theme="light"] .tz-empty { color: #94a3b8; }
+:root[data-theme="light"] .tz-ticklbl-mid { color: #fbbf24; }
+:root[data-theme="light"] .tz-mini { color: #cbd5e1; background: #16243b; }
+:root[data-theme="light"] .tz-mini[aria-pressed='true'] { color: #0b1220; background: #7dd3fc; }
+
+/* Printing a planner is a reasonable thing to want — the readout and the
+   summary line are the whole answer, and the grid prints as a picture of it.
+   The controls and the drag handles mean nothing on paper. */
+@media print {
+  .lab-tz .lab-toolbar,
+  .lab-tz .lab-fieldrow,
+  .lab-tz .lab-gate,
+  .lab-tz .tz-rowacts,
+  .lab-tz .tz-work { display: none !important; }
+  .lab-tz .tz-scroll { overflow: visible; }
+  .lab-tz .lab-panes { display: block; height: auto; }
+  .lab-tz .tz-readout { overflow: visible; max-height: none; }
+  .lab-tz .tz-read { break-inside: avoid; }
+}
+
+/* ==========================================================================
+   /labs/concurrency — threads, locks and the interleaving you choose
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/concurrency.js builds its whole interface into this mount
+   — the topic tabs, the shared-state strip, one column per thread, the
+   transcript and the enumeration table — and injects its own stylesheet for
+   the internals, id-scoped to #concurrencyviz, the same way the git, db-index
+   and OS-algorithm labs do. Only the rules the page shell owns live here.
+
+   Same shape as .lab-dbindex-mount rather than .lab-canvas: the mount holds
+   scrolling panels, not a single drawing surface, so it takes no height cap in
+   the page (the transcript caps its own scroll area) and in fullscreen it has
+   to be allowed to take the remaining height and scroll inside itself rather
+   than push the transport off the bottom of the screen.
+   ========================================================================== */
+.lab-concurrency-mount { min-height: 4rem; }
+.lab-viz.is-fullscreen .lab-concurrency-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme: this widget is a dark instrument, drawn once, for dark — the
+   same treatment, and for the same reason, as .lab-dbindex-mount above. The
+   injected panels are translucent navy, so with no opaque ground under them
+   they composite over a light page and strand their own labels at about 1.1:1.
+
+   :not([class]) matters as much here as it does there: without it this would
+   also catch the widget's own elements and flatten every colour the lab
+   teaches with — a blocked thread against a ready one, a lost update against a
+   correct total — into one ink. The widget's rules are id-scoped and outrank
+   this, so only its class-less descendants, which have no colour of their own,
+   are rescued from the site's light re-inking. */
+:root[data-theme="light"] .lab-concurrency-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+:root[data-theme="light"] .lab-concurrency-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}

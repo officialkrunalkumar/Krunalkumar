@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="How a SIM swap actually happens: the two ways a number changes hands, why SMS was never an authentication channel, and the defences that hold."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/how-sim-swap-works" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="How a SIM Swap Works, and Why an OTP Is Not Protection" />
+    <meta
+      property="og:description"
+      content="A SIM swap breaks no cryptography. It moves your number onto somebody else's SIM, and everything that treats the number as proof of identity follows it. The mechanism, the tell, and what actually holds."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/how-sim-swap-works" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/how-sim-swap-works.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A phone showing no service beside a second phone receiving the one-time codes, with a SIM card moving between them" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How a SIM Swap Works, and Why an OTP Is Not Protection" />
+    <meta
+      name="twitter:description"
+      content="A SIM swap breaks no cryptography. It moves your number onto somebody else's SIM, and everything that treats the number as proof of identity follows it. The mechanism, the tell, and what actually holds."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/how-sim-swap-works.jpg" />
+    <title>How a SIM Swap Works | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How a SIM Swap Works, and Why an OTP Is Not Protection",
+        "description": "An India-aware account of SIM swap fraud: what the attack actually is, how a number is re-pointed through a replacement SIM or a port, why the deciding check is a human at a retail counter working from details an attacker can gather from your public footprint, what happens in the window, why SS7 and SMS were never designed to carry authentication, why sudden loss of signal is the tell, and the defences that hold — authenticator apps, passkeys, closing the SMS recovery route, and what to do in the first hour.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/how-sim-swap-works.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/how-sim-swap-works"
+        },
+        "keywords": "SIM swap, SIM swap fraud, SIM cloning, OTP, SMS OTP, two-factor authentication, authenticator app, TOTP, passkey, SS7, mobile number portability, UPI fraud, 1930 helpline, India"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "How a SIM Swap Works", "item": "https://krunalkumar.dpdns.org/blog/how-sim-swap-works" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is a SIM swap the same thing as SIM cloning?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and the difference matters. Cloning means copying the secret key held inside the card onto a second card, so that two SIMs answer to the same identity. Against the SIM generations in use today that is genuinely hard, and it is not what is happening in these cases. A swap copies nothing. It is an ordinary administrative change at the operator — this number now belongs to that SIM profile — performed by staff who are supposed to be able to perform it, because people really do lose phones. Reporting uses the two words interchangeably. Only one of them is common, and it is the one with no cryptography in it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "My phone lost signal. Is that a SIM swap?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Almost always no. Networks have outages, trays work loose, handsets sulk after an update, and buildings have dead spots. But the cost of checking is about ten minutes and the cost of not checking can be your bank account, so treat it as an incident until it explains itself. Ask whether somebody next to you on the same network still has service, try the card in another handset, and call your own number from a different phone. If nothing resolves it quickly, contact your operator from another line rather than waiting to see whether it comes back on its own."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I put a port-out lock on my number in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not as a self-service switch, the way some carriers elsewhere offer one. What exists here is procedural rather than something you hold: a port needs a unique porting code generated by your current operator, a replacement SIM triggers a re-verification step, and the rules require the SMS facility to be barred for a period after a swap or a port. Those are speed bumps that buy detection time. They are not a lock, the details change without anyone telling you, and none of them is a substitute for moving your accounts off SMS. Ask your operator what is available on your account, take whatever they offer, and treat it as the weaker half of your defence."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does an eSIM make this better or worse?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Both, and neither decisively. There is no plastic card to hand across a counter, and the profile is downloaded to a specific device after the operator authorises it, which removes one physical step. But the deciding check is unchanged: somebody at the operator still decides whether the person asking is you, and a profile can be issued to a device on the other side of the country without anyone walking into a shop. Treat the format as close to irrelevant. The control you are relying on is the operator's identity check either way."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can a passkey be defeated by a SIM swap?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not directly. The private key stays inside the device that created it, the browser will only offer it to the site it was registered for, and what crosses the network is a signature that is useless anywhere else. There is no code in existence to intercept, so holding the number gets an attacker nothing. The real risk sits behind the passkey rather than in it: if the account still lets somebody reset their way in with an SMS code, the passkey is a strong lock on a door that has a second door beside it. Adding a passkey and leaving SMS recovery switched on is the most common way people believe they have fixed this and have not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if I lose the phone with my authenticator app on it?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "This is the honest cost of the advice, and it is why people stay on SMS. If the app is gone and you kept nothing, you are into each service's account-recovery process, which is slow, uneven and occasionally hopeless. So set it up properly on the day you move: save the recovery codes each service offers at enrolment and keep them offline somewhere that survives losing the phone, enrol a second device or a second factor where the service allows it, and prefer an app whose backup you control and have actually tested. Ten minutes of preparation turns a disaster into an inconvenience, and skipping it is why well-meant advice about authenticator apps sometimes ends badly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will reporting to 1930 get my money back?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sometimes, partly, and it depends almost entirely on speed. What the report can do is put a hold on funds that have not yet moved out of the chain of accounts they were pushed through, which is why minutes matter and days usually do not. It is not a refund mechanism and nobody can promise you an outcome. Report anyway, and through both routes — the helpline and the portal — because the complaint is also what makes a bank dispute, a police investigation and any later restitution possible. Raise the dispute with your bank in writing as well, keep every acknowledgement number, and do not let anyone tell you a rule will rescue you automatically. I am not a lawyer, and none of this is advice on your particular case."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">How a SIM Swap Works</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>How a SIM swap works, and why an OTP is not the protection you think it is</h1>
+          <p class="hero-text">
+            A SIM swap breaks no encryption and exploits no software. It moves one record at a telecom operator so
+            that your number answers on somebody else's SIM, and then collects everything the rest of the world
+            sends to that number in the belief that it is talking to you. The interesting part is not the theft. It
+            is that a control most Indian banks still treat as proof of identity comes down, in the end, to a person
+            at a counter deciding whether the customer in front of them is who they say they are.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 21 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/sim-swap-cover.svg" alt="A phone showing no service beside a second phone receiving the one-time codes, with a SIM card moving between them" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#what-a-sim-swap-actually-is">What a SIM swap actually is</a></li>
+                <li><a href="#how-a-phone-number-became-a-master-key">How a phone number became a master key</a></li>
+                <li><a href="#how-a-number-changes-hands">How a number changes hands</a></li>
+                <li><a href="#the-details-come-from-your-own-footprint">The details come from your own footprint</a></li>
+                <li><a href="#what-happens-in-the-window">What happens in the window</a></li>
+                <li><a href="#sms-was-never-an-authentication-channel">SMS was never an authentication channel</a></li>
+                <li><a href="#the-tell-is-silence">The tell is silence</a></li>
+                <li><a href="#what-actually-defends-you">What actually defends you</a></li>
+                <li><a href="#the-first-hour-in-order">The first hour, in order</a></li>
+                <li><a href="#what-none-of-this-fixes">What none of this fixes</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="what-a-sim-swap-actually-is">What a SIM swap actually is</h2>
+              <p>
+                Your SIM holds a secret key that proves to the network which subscription it belongs to. In a SIM
+                swap, that key is not extracted, copied or broken. What changes is a record on the operator's side:
+                the association between your number and a SIM profile is repointed at a different card. A
+                replacement SIM issued at a retail point, or a port of the number to a different operator
+                altogether, both end in the same state — the network now delivers calls and messages for your number
+                somewhere else, and the card sitting in your phone belongs to a subscription that no longer exists.
+              </p>
+              <p>
+                Nothing in that description is a flaw. Operators must be able to reissue a number, because people
+                lose phones, break SIM trays, drop handsets in water, and change networks. The capability is
+                necessary. The attack is not on the capability but on the procedure that decides whether the person
+                requesting it is the subscriber, and that procedure is, at its last step, a human judgement.
+              </p>
+              <p>
+                It is worth separating this from <strong>SIM cloning</strong>, which is what a lot of coverage calls
+                it. Cloning means copying the card's secret key onto a second card so that two SIMs answer to one
+                identity. That was practical against early SIM generations and is genuinely hard against the ones
+                deployed today. It is also almost never what has happened when somebody's accounts empty overnight.
+                The common event is the boring one: a form, a counter, and an approval.
+              </p>
+              <blockquote>
+                <p>
+                  There is no cryptography in this attack. There is an identity check performed by a person who has
+                  a queue behind them, a target to hit, and a checklist of details that the person in front of them
+                  can recite. That is the whole security boundary, and it is why the defence has to be somewhere
+                  else entirely.
+                </p>
+              </blockquote>
+
+              <h2 id="how-a-phone-number-became-a-master-key">How a phone number became a master key</h2>
+              <p>
+                Nobody decided that a mobile number should become the root of your identity. It accreted. In the
+                early 2010s a number was the one channel almost every adult already had, it cost nothing extra to
+                use, and it gave a service a way to reach you outside the session it was already talking to. That is
+                a genuinely useful property, and it solved a real problem at a moment when the alternatives were
+                worse.
+              </p>
+              <p>
+                In India the accretion went further than most places, because the number is bound to an identity
+                document by regulation. A connection is issued against verified identity, which makes the number
+                feel authoritative in a way an email address does not, and that feeling is what got it wired into
+                everything: banking one-time passwords, UPI device binding, income tax and government portals,
+                insurance, delivery, hospital records, and the recovery route for the email account that sits behind
+                all of them. It is the join key across services that never agreed to trust each other.
+              </p>
+              <p>
+                Here is the part that does not survive being said out loud. A phone number is not a secret and was
+                never designed to be one. You print it on invoices, hand it to shops for a loyalty scheme, put it on
+                a résumé, give it to a delivery rider, and type it into every form that asks. A control whose entire
+                strength is <em>possession of a public identifier</em> is a control that depends completely on the
+                process deciding who possesses it. We built the financial identity of a country on a value we also
+                treat as a contact detail.
+              </p>
+
+              <h2 id="how-a-number-changes-hands">How a number changes hands</h2>
+              <p>
+                Two routes, and it is worth knowing the shape of both, because the defences attach at different
+                points.
+              </p>
+              <p>
+                <strong>A replacement SIM.</strong> Somebody presents themselves at a point of sale as the
+                subscriber, says the card is lost or damaged, offers identity documents, and satisfies whatever the
+                operator's system asks about the account. A new card is issued and activated, and the old one stops
+                working. Every step exists for a legitimate reason and is performed thousands of times a day for
+                people who genuinely lost a phone.
+              </p>
+              <p>
+                <strong>A port to another operator.</strong> Mobile number portability in India runs on a unique
+                porting code, generated by your current operator and delivered to your number by SMS, which the new
+                operator needs before the number can move. Notice the circularity: the control that protects the
+                number is a message sent <em>to</em> the number. Whoever can read messages at that number can
+                authorise its own departure. This is not a secret design flaw — it is the only channel the system
+                had — but it is why the two routes tend to be discussed as one attack.
+              </p>
+              <p>
+                I am deliberately not going to describe what a convincing request looks like, which details are
+                asked for, or where the process bends. None of that helps you defend yourself and all of it helps
+                somebody else. The shape is what you need, and the shape is this: <strong>an identity check made by
+                a person, against recitable details, in a shop, under commercial pressure to complete
+                activations.</strong> Insider involvement at retail channels is a documented category of the same
+                problem, which is why enforcement attention periodically lands there rather than on the technology.
+              </p>
+              <p>
+                There are procedural brakes, and they are worth knowing because they shape the timeline rather than
+                prevent the event. Indian rules require the SMS facility on a number to be barred for a period after
+                a SIM is replaced or a number is ported, and a replacement triggers a re-verification step. That
+                buys you detection time — the gap between the swap and the first code being useful — and it is
+                exactly the gap the next two sections are about. Treat the specifics as subject to change, ask your
+                own operator what applies to your account, and do not confuse a delay with a lock.
+              </p>
+
+              <h2 id="the-details-come-from-your-own-footprint">The details come from your own footprint</h2>
+              <p>
+                A counter check is only as good as the difficulty of the questions, and the questions are drawn from
+                a small pool: your full name, date of birth, address, the last digits of an identity document,
+                sometimes a recent recharge or a couple of numbers you called. Those are not secrets in any
+                meaningful sense. They are facts about you that are already written down in a dozen places.
+              </p>
+              <p>
+                Where they come from is not exotic. Résumés carry a date of birth and an address as a matter of
+                convention. Matrimonial and job portals hold structured personal data by design. Delivery labels
+                carry name, address and number, and go into the bin intact. Breach corpora traded for years contain
+                exactly these fields, joined against a phone number, for hundreds of millions of people. Public
+                filings, society noticeboards, birthday posts and a school reunion album fill in the rest. This is
+                ordinary <a href="/glossary#term-osint">open-source intelligence</a>, and its power is in the join,
+                not in any single item.
+              </p>
+              <p>
+                So the useful question is not "is my data out there" — it is — but "how much of a counter check
+                could a stranger complete about me from what is public today". That is a question you can answer in
+                an afternoon, and answering it is more useful than any product that offers to monitor things on your
+                behalf.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>See your own footprint the way somebody else would.</strong> Paste your own bio, a
+                  handle, an out-of-office reply or a CV into the self-check lab on this site, or drop in a photo,
+                  and it shows what a stranger could work out from it — and, usefully for this article, which
+                  account-recovery question each detail helps answer. Nothing is uploaded and nobody is looked up;
+                  the work happens in your browser.
+                </p>
+                <a class="btn btn-primary" href="/labs/osint-self-check">Open the OSINT self-check</a>
+              </div>
+
+              <h2 id="what-happens-in-the-window">What happens in the window</h2>
+              <p>
+                From the moment the number moves, the attacker holds an identifier that dozens of companies accept
+                as evidence of who you are. What they do with it follows a predictable order, because some doors
+                open others.
+              </p>
+              <p>
+                <strong>Email first.</strong> The mail account is the recovery route for everything else, so it is
+                the highest-value target and usually the first. A forgotten-password flow that can be completed with
+                a code sent by SMS is completed. Once that account is held, the attacker can reset services that
+                never asked for a phone number at all, read the ones that send confirmations by mail, and delete the
+                warnings as they arrive.
+              </p>
+              <p>
+                <strong>Then the financial layer.</strong> Banking apps and UPI bind to a device by sending a
+                message from the handset to prove the number is present in it, which is a sensible control against
+                remote attackers and no control at all against somebody holding the number. Reset flows, card
+                controls, transaction limits and beneficiary additions are frequently gated on the same code. Where
+                money leaves through UPI, the mechanics of the debit itself are unchanged from
+                <a href="/blog/upi-fraud-how-the-money-actually-leaves">the ordinary UPI fraud pattern</a> — what
+                the swap supplies is the authorisation step that would otherwise have needed you.
+              </p>
+              <p>
+                <strong>Then everything with a balance or a name attached.</strong> Wallets, marketplaces with
+                stored cards, credit applications made in your name, and the messaging accounts through which your
+                contacts can be asked for money by somebody they believe is you.
+              </p>
+              <p>
+                One honest correction to the usual telling, because it changes what you should worry about. A SIM
+                swap on its own is rarely sufficient for the financial steps. Bank registration typically also wants
+                a card number, an expiry, an ATM PIN or an existing credential — so the swap is usually the
+                <em>last</em> step of a longer job, added once the rest has been gathered from a breach, a
+                <a href="/glossary#term-phishing">phishing</a> page, or an earlier conversation. That is why swaps
+                so often follow a message you clicked weeks ago, the sequence described in
+                <a href="/blog/what-happens-when-you-click-a-phishing-link">what happens when you click a phishing
+                link</a>. It is also why a swap sometimes coincides with a long, insistent phone call: an hour spent
+                talking to somebody official-sounding is an hour spent not looking at your handset, which is the
+                same manipulation of attention that powers
+                <a href="/blog/digital-arrest-scam-explained">the digital arrest scam</a>. If both happen at once,
+                treat them as one event.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/how-sim-swap-works-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/how-sim-swap-works-diagram1.svg" alt="Five steps showing the order accounts fall after a SIM swap, each labelled with the check that was actually made: the operator counter checked a person against documents, your handset checked nothing because you were never told, the email account checked only possession of the number, banking and UPI checked the number plus card details gathered elsewhere, and the last step inherits whatever the previous two granted, with three places marked where the chain breaks" width="1160" height="648" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>After the second step, five different companies ask the same question in five different words. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <h2 id="sms-was-never-an-authentication-channel">SMS was never an authentication channel</h2>
+              <p>
+                Step back from the swap for a moment, because the swap is only the most direct way to exploit a
+                weakness that is structural. SMS was designed in the 1980s as a way to deliver a short notification
+                to a subscriber, on a best-effort basis, inside a network of operators who all knew each other. It
+                does that job well. It has none of the properties an authentication channel needs.
+              </p>
+              <ul>
+                <li>
+                  <strong>It is not bound to the session.</strong> A six-digit code carries no information about
+                  which login it belongs to, so a fake page can ask you for a code that the real site just sent, and
+                  the code works. Every real-time phishing kit in circulation does exactly this, with no SIM swap
+                  anywhere in the story.
+                </li>
+                <li>
+                  <strong>It is not bound to a device.</strong> Delivery follows the number, wherever the number
+                  currently lives. That is the whole of this article in one sentence.
+                </li>
+                <li>
+                  <strong>It is not confidential end to end.</strong> A message passes through an application
+                  provider, an aggregator and one or more carrier networks. Each of those is an organisation with
+                  staff and systems, and the message is readable at every hop.
+                </li>
+                <li>
+                  <strong>It leaks at the edges.</strong> Lock-screen previews show codes without unlocking. Mobile
+                  malware with permission to read messages forwards them silently. Numbers deactivated for
+                  non-payment are recycled to new subscribers after a dormancy period, which means an account still
+                  pointing at an old number is pointing at a stranger.
+                </li>
+              </ul>
+              <p>
+                Then there is the interconnect. Operators exchange signalling between networks so that roaming,
+                call setup and message routing work across borders, and for decades that signalling ran on
+                <strong>SS7</strong>, a protocol family designed when the participants were a small club of state
+                monopolies who could reasonably trust one another. It has essentially no authentication of the
+                requesting network. When the club grew to thousands of operators, resellers and lessees, the trust
+                assumption stopped being true, and researchers demonstrated from around 2014 onwards that access to
+                that signalling plane allowed subscriber location tracking and the redirection of messages.
+                Publicly reported bank thefts followed, in which one-time codes were collected without touching the
+                victim's phone at all.
+              </p>
+              <p>
+                The industry response was signalling firewalls, home routing and, on newer networks, a different
+                protocol stack — Diameter on LTE, and a service-based architecture on 5G — each with its own
+                research literature. This has improved. But note what "improved" means here: your ability to receive
+                a code securely depends on the interconnect hygiene of operators you have never heard of, in
+                countries you have never visited, and you have no way to audit any of it and no way to choose.
+              </p>
+              <blockquote>
+                <p>
+                  SMS is a doorbell that we pressed into service as a lock, because it was already fitted to every
+                  door in the country. It still works exactly as well as a doorbell.
+                </p>
+              </blockquote>
+              <p>
+                None of which means you should refuse SMS codes where they are the only option. A password plus an
+                SMS code is meaningfully harder to defeat than a password alone, and for an account that holds
+                nothing, it is fine. The argument is narrower and more useful than "SMS is broken": it is that SMS
+                should not be the thing standing between somebody else and your money, and that for the accounts
+                where it currently is, better options already exist and take a few minutes each.
+              </p>
+
+              <h2 id="the-tell-is-silence">The tell is silence</h2>
+              <p>
+                This attack has one symptom, it arrives before the losses, and almost nobody recognises it.
+              </p>
+              <p>
+                <strong>Your phone drops to no service, for no reason, and stays there.</strong> Not slow data, not
+                one bar — no network at all, while everything else about the handset works normally. That is what a
+                detached subscription looks like from your side. There is no notification, no email and no call,
+                because every channel a company would use to warn you now routes to the person who took the number.
+              </p>
+              <p>
+                The reason it gets ignored is that it looks exactly like an ordinary outage, and ordinary outages
+                are common. So the useful rule is not "panic at no service" — it is <strong>treat unexplained loss
+                of service as an incident until it explains itself</strong>, and the check costs about ten minutes:
+              </p>
+              <ul>
+                <li>
+                  Is anyone near you on the same network still connected? A real outage rarely picks one handset out
+                  of a room.
+                </li>
+                <li>
+                  Does the card work in another handset, and does another card work in yours? That separates a
+                  hardware fault from a subscription that has gone.
+                </li>
+                <li>
+                  Call your own number from a different phone. Ringing on a network you cannot reach, or answered by
+                  someone else, ends the guessing immediately.
+                </li>
+                <li>
+                  If it does not resolve in minutes, contact your operator from another line and ask directly whether
+                  a replacement SIM was issued or a port was requested. Do not wait for it to come back.
+                </li>
+              </ul>
+              <p>
+                The secondary tells are worth knowing too, because they sometimes arrive first: an unexpected
+                message or email about a SIM change or a porting request you did not start, being signed out of
+                accounts on your other devices, a one-time code arriving for something you were not doing, or a call
+                from somebody claiming to be from your operator or your bank about a problem you had not noticed.
+                Each of those deserves a check made through a number you looked up yourself, never a number you were
+                given.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The asymmetry that matters.</strong> Over-reacting to a network outage costs you ten
+                  minutes and a phone call. Under-reacting to a real swap costs you the window in which anything can
+                  be stopped. There is no version of this where being careful is expensive, and that is unusual
+                  enough in security advice to be worth saying plainly.
+                </p>
+              </div>
+
+              <h2 id="what-actually-defends-you">What actually defends you</h2>
+              <p>
+                Roughly in order of how much each one buys you, and with the trade-off stated rather than skipped.
+              </p>
+              <p>
+                <strong>1. Move your accounts from SMS codes to an authenticator app.</strong> This is the change
+                that removes the number from the path. At enrolment the service and the app agree a shared secret,
+                which the app stores on the device and never sends again; each code is computed locally from that
+                secret and the current time, in a window of thirty seconds. No message is sent, no network is
+                involved in producing the code, and re-pointing your number does nothing to it. Start with the email
+                account, then the bank and payment apps, then everything else. The cost is real and worth naming: if
+                you lose the device and kept nothing, you are into account recovery, which is why the recovery codes
+                a service hands you at enrolment must be saved offline on the same day.
+              </p>
+              <p>
+                <strong>2. Use a passkey wherever it is offered.</strong> A passkey is a key pair created on your
+                device; the private half never leaves it, and signing in means the device signs a challenge that
+                names the site it came from. There is no shared secret on the server to steal, no code to intercept,
+                and nothing that can be replayed on a lookalike page — which is why it defeats the phishing that
+                still beats an authenticator app. Coverage in India is uneven and thin in banking, so treat this as
+                "wherever offered" rather than a plan. The full comparison is in
+                <a href="/blog/passwords-passkeys-and-what-actually-protects-you">passwords, passkeys, and what
+                actually protects you</a>.
+              </p>
+              <p>
+                <strong>3. Close the SMS fallback behind whatever you just set up.</strong> The most common mistake
+                on this list. If an account accepts a stronger factor but still lets somebody reset their way in
+                with a code to your number, you have added a lock beside an open door. Go into each account's
+                security settings and look specifically at recovery: remove the number as a reset method where an
+                alternative exists, and where it cannot be removed — which is most Indian banking — know that and
+                weight your other defences accordingly.
+              </p>
+              <p>
+                <strong>4. Protect the email account as if it were the bank.</strong> It is the recovery route for
+                everything, so it deserves the strongest factor you have, its own unique password, and a recovery
+                address that is not itself protected by SMS. Check its forwarding rules and filters occasionally too:
+                a rule that quietly forwards or deletes security mail is a standard way to keep a compromise alive
+                after a password change.
+              </p>
+              <p>
+                <strong>5. Set a SIM PIN, and take any lock your operator offers.</strong> A SIM PIN protects the
+                card against being moved into another phone; it does nothing against a replacement card issued at a
+                counter, so it is worth the two minutes without being the answer. Self-service porting freezes of the
+                kind some overseas carriers provide are not generally available in India — ask, take whatever is on
+                offer, and do not build your plan on it.
+              </p>
+              <p>
+                <strong>6. Check what has been issued against your identity.</strong> The government's Sanchar
+                Saathi portal lets you see the mobile connections registered in your name and report ones you did
+                not take. It is worth ten minutes twice a year, and it is the only view most people ever get of the
+                telecom side of their own identity.
+              </p>
+              <p>
+                <strong>7. Reduce what a stranger can recite about you.</strong> Not out of paranoia, but because
+                the counter check is made of exactly those facts. Take the date of birth off the public résumé,
+                shred delivery labels, tighten what a matrimonial or job profile shows to people who are not
+                connected to you, and stop answering the quiz-shaped posts that collect first schools and mothers'
+                maiden names. Assume anything already published stays published, and never reuse those facts as
+                account-recovery answers.
+              </p>
+              <p>
+                <strong>8. Keep a second channel for alerts.</strong> Turn on email alerts for bank transactions as
+                well as SMS, so that losing the number does not also lose your visibility. And remove old numbers you
+                no longer control from every account that still lists one, because recycled numbers hand your
+                recovery route to whoever gets it next.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/how-sim-swap-works-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/how-sim-swap-works-diagram2.svg" alt="Three second factors compared by where the secret lives: an SMS code, which the server generates and sends through an aggregator and the carrier interconnect to whichever SIM holds the number; an authenticator app, whose secret is stored on the device at enrolment and combined with the clock to compute a code offline; and a passkey, whose private key never leaves the device and whose signature is valid only for the site that sent the challenge" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>All three are sold as two-factor authentication. Only the last two are unaffected by who is holding your number this afternoon. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Watch a code being generated without a network.</strong> The TOTP lab on this site takes a
+                  shared secret and a clock and derives the six digits in front of you, step by step, so you can see
+                  that nothing is sent and nothing is received — the difference between a code that arrives and a
+                  code that is computed. It runs entirely in the browser, and no secret you type is transmitted
+                  anywhere.
+                </p>
+                <a class="btn btn-primary" href="/labs/totp">Open the TOTP lab</a>
+              </div>
+
+              <h2 id="the-first-hour-in-order">The first hour, in order</h2>
+              <p>
+                If your service has gone and the checks above point at a swap, speed is the only lever you have. If
+                there are two people in the room, run the first four in parallel rather than in sequence.
+              </p>
+              <ol>
+                <li>
+                  <strong>Get the number suspended.</strong> Call your operator from another phone, or go to the
+                  nearest company-owned store with identity documents, and ask them to block the number and reverse
+                  the replacement or the porting request. Say the words "SIM swap fraud" — it routes you to a process
+                  that exists rather than to general support.
+                </li>
+                <li>
+                  <strong>Take the email back, from a device that is not the affected phone.</strong> Change the
+                  password, sign out of every session, then check the recovery number, the recovery address, the
+                  forwarding rules and the filters for anything you did not add. Doing this before the bank calls is
+                  usually right, because the email is what regenerates access to everything else.
+                </li>
+                <li>
+                  <strong>Call your bank's fraud line.</strong> Freeze net banking, block the cards, block the UPI
+                  facility. Ask specifically whether a new device was registered, a beneficiary added, or a limit
+                  changed in the last few hours, and have them note the time your service was lost.
+                </li>
+                <li>
+                  <strong>Call 1930.</strong> The national cybercrime helpline, staffed around the clock under the
+                  Indian Cyber Crime Coordination Centre. Behind it sits the reporting system that pushes your
+                  complaint out to the banks and payment intermediaries in the chain, so money still in transit can
+                  be held.
+                </li>
+                <li>
+                  <strong>File at cybercrime.gov.in.</strong> The National Cybercrime Reporting Portal takes the
+                  complaint formally and gives you an acknowledgement number. Keep it. Every later conversation with
+                  a bank, an officer or a court starts from that number.
+                </li>
+                <li>
+                  <strong>Write down the timeline while it is fresh.</strong> The exact minute the signal went, every
+                  message and email that arrived before it, the reference of every debit, and screenshots of
+                  anything you can still see. Reconstructing this a week later is guesswork, and the timeline is what
+                  makes the rest credible.
+                </li>
+                <li>
+                  <strong>Go to the police as well.</strong> Your local cyber cell, or any station — under the Zero
+                  FIR principle none can refuse you for being outside its jurisdiction. What happens after that is
+                  described in <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are solved</a>.
+                </li>
+                <li>
+                  <strong>Then check what was opened, not only what was taken.</strong> Once the number is back,
+                  pull your credit report and look for accounts and loan enquiries you did not make, review the
+                  active sessions on your email and social accounts, and tell the people you speak to most that they
+                  may have been messaged in your name.
+                </li>
+              </ol>
+              <p>
+                <strong>On liability, honestly.</strong> The Reserve Bank's framework limits a customer's liability
+                for unauthorised electronic transactions where the loss arises from a third-party breach and the
+                customer reports it promptly, with the limit rising the longer the delay. That framework is real and
+                worth invoking. It is also administered by the bank in the first instance, and banks argue about
+                whether a transaction that was completed with a code delivered to your number was authorised. Raise
+                the dispute in writing, escalate to the banking ombudsman scheme if the answer is unsatisfactory or
+                slow, and go in expecting to make an argument rather than to quote a rule. I am not a lawyer, this is
+                not advice on your case, and the statutory background is in
+                <a href="/blog/india-it-act-explained">India's IT law, explained</a>.
+              </p>
+
+              <h2 id="what-none-of-this-fixes">What none of this fixes</h2>
+              <p>
+                This is the part that belongs in an article and not on a sales page, because every item on the list
+                above has a limit and you should choose knowing them.
+              </p>
+              <ul>
+                <li>
+                  <strong>You cannot audit the counter.</strong> The deciding check happens inside an organisation
+                  you are a customer of, performed by staff you will never meet, under a process you cannot read.
+                  Nothing in your settings reaches it. That is why every real defence here is about making the
+                  number matter less, rather than making the number safer.
+                </li>
+                <li>
+                  <strong>An insider defeats the process, not the technology.</strong> Where a swap is authorised by
+                  somebody who is supposed to authorise swaps, the checks were not bypassed. They were used.
+                </li>
+                <li>
+                  <strong>You cannot remove the number everywhere, and should not try.</strong> Indian banking is
+                  built on it; regulation, not laziness, keeps it there. The realistic goal is to demote it from an
+                  authentication factor to a notification channel wherever a service allows the distinction, and to
+                  accept that some services do not.
+                </li>
+                <li>
+                  <strong>Stronger factors move the attack rather than ending it.</strong> Take away the code and
+                  the pressure shifts to account recovery, to the support desk, and to you personally. A well-run
+                  <a href="/glossary#term-social-engineering">social engineering</a> call against a help desk is the
+                  same attack wearing different clothes.
+                </li>
+                <li>
+                  <strong>Detection is still yours.</strong> After all of this, the first indication remains a phone
+                  that went quiet. There is no service that will notice on your behalf, and any product claiming
+                  otherwise is describing something narrower than it sounds.
+                </li>
+              </ul>
+              <p>
+                What the list does buy is the thing that matters most: it takes your money and your identity off the
+                critical path of a decision made by a stranger in a shop. That is a smaller promise than
+                "protected", and it is the true one. Anyone selling you a setting that makes you swap-proof is
+                selling something.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Is a SIM swap the same thing as SIM cloning?</summary>
+                  <p>
+                    No, and the difference matters. Cloning means copying the secret key held inside the card onto a
+                    second card, so that two SIMs answer to the same identity. Against the SIM generations in use
+                    today that is genuinely hard, and it is not what is happening in these cases. A swap copies
+                    nothing. It is an ordinary administrative change at the operator — this number now belongs to
+                    that SIM profile — performed by staff who are supposed to be able to perform it, because people
+                    really do lose phones. Reporting uses the two words interchangeably. Only one of them is common,
+                    and it is the one with no cryptography in it.
+                  </p>
+                </details>
+                <details>
+                  <summary>My phone lost signal. Is that a SIM swap?</summary>
+                  <p>
+                    Almost always no. Networks have outages, trays work loose, handsets sulk after an update, and
+                    buildings have dead spots. But the cost of checking is about ten minutes and the cost of not
+                    checking can be your bank account, so treat it as an incident until it explains itself. Ask
+                    whether somebody next to you on the same network still has service, try the card in another
+                    handset, and call your own number from a different phone. If nothing resolves it quickly,
+                    contact your operator from another line rather than waiting to see whether it comes back on its
+                    own.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can I put a port-out lock on my number in India?</summary>
+                  <p>
+                    Not as a self-service switch, the way some carriers elsewhere offer one. What exists here is
+                    procedural rather than something you hold: a port needs a unique porting code generated by your
+                    current operator, a replacement SIM triggers a re-verification step, and the rules require the
+                    SMS facility to be barred for a period after a swap or a port. Those are speed bumps that buy
+                    detection time. They are not a lock, the details change without anyone telling you, and none of
+                    them is a substitute for moving your accounts off SMS. Ask your operator what is available on
+                    your account, take whatever they offer, and treat it as the weaker half of your defence.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does an eSIM make this better or worse?</summary>
+                  <p>
+                    Both, and neither decisively. There is no plastic card to hand across a counter, and the profile
+                    is downloaded to a specific device after the operator authorises it, which removes one physical
+                    step. But the deciding check is unchanged: somebody at the operator still decides whether the
+                    person asking is you, and a profile can be issued to a device on the other side of the country
+                    without anyone walking into a shop. Treat the format as close to irrelevant. The control you are
+                    relying on is the operator's identity check either way.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can a passkey be defeated by a SIM swap?</summary>
+                  <p>
+                    Not directly. The private key stays inside the device that created it, the browser will only
+                    offer it to the site it was registered for, and what crosses the network is a signature that is
+                    useless anywhere else. There is no code in existence to intercept, so holding the number gets an
+                    attacker nothing. The real risk sits behind the passkey rather than in it: if the account still
+                    lets somebody reset their way in with an SMS code, the passkey is a strong lock on a door that
+                    has a second door beside it. Adding a passkey and leaving SMS recovery switched on is the most
+                    common way people believe they have fixed this and have not.
+                  </p>
+                </details>
+                <details>
+                  <summary>What happens if I lose the phone with my authenticator app on it?</summary>
+                  <p>
+                    This is the honest cost of the advice, and it is why people stay on SMS. If the app is gone and
+                    you kept nothing, you are into each service's account-recovery process, which is slow, uneven
+                    and occasionally hopeless. So set it up properly on the day you move: save the recovery codes
+                    each service offers at enrolment and keep them offline somewhere that survives losing the phone,
+                    enrol a second device or a second factor where the service allows it, and prefer an app whose
+                    backup you control and have actually tested. Ten minutes of preparation turns a disaster into an
+                    inconvenience, and skipping it is why well-meant advice about authenticator apps sometimes ends
+                    badly.
+                  </p>
+                </details>
+                <details>
+                  <summary>Will reporting to 1930 get my money back?</summary>
+                  <p>
+                    Sometimes, partly, and it depends almost entirely on speed. What the report can do is put a hold
+                    on funds that have not yet moved out of the chain of accounts they were pushed through, which is
+                    why minutes matter and days usually do not. It is not a refund mechanism and nobody can promise
+                    you an outcome. Report anyway, and through both routes — the helpline and the portal — because
+                    the complaint is also what makes a bank dispute, a police investigation and any later
+                    restitution possible. Raise the dispute with your bank in writing as well, keep every
+                    acknowledgement number, and do not let anyone tell you a rule will rescue you automatically. I
+                    am not a lawyer, and none of this is advice on your particular case.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The uncomfortable summary is that your bank's one-time password protects you against everyone except
+                the person who has already made your number theirs — and that making your number theirs requires no
+                skill you would recognise as hacking. The good news is unusually concrete for this field: two
+                settings changes on your email account and your primary bank, made this evening, remove most of what
+                this article describes. Most security advice is a posture. This one is a checklist, and it finishes.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-sim-swap-works" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=How%20a%20SIM%20Swap%20Works%2C%20and%20Why%20an%20OTP%20Is%20Not%20Protection&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-sim-swap-works" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=How%20a%20SIM%20Swap%20Works%2C%20and%20Why%20an%20OTP%20Is%20Not%20Protection%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fhow-sim-swap-works" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+              <li><a href="/blog/upi-fraud-how-the-money-actually-leaves">UPI fraud: how the money actually leaves</a></li>
+              <li><a href="/blog/what-happens-when-you-click-a-phishing-link">What happens when you click a phishing link</a></li>
+              <li><a href="/blog/digital-arrest-scam-explained">The digital arrest scam, explained</a></li>
+              <li><a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved: from first alert to the courtroom</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want this checked properly, once?</h2>
+            <p>
+              Most of the work here is an hour spent in the security settings of five accounts, in the right order,
+              with somebody who knows which fallback matters. I do that for individuals and for teams, and I teach
+              it to the people I mentor — including the awkward part, which is deciding what you are choosing to
+              live with.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/contact">Start a conversation</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

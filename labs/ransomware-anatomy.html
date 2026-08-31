@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Step a ransomware incident through nine stages, watch a simulated file tree get locked, then switch controls on and see where each one stops the chain." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/ransomware-anatomy" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Ransomware, stage by stage — and what each control actually stops" />
+    <meta property="og:description" content="Step an incident from the first door to the ransom note, watch a fabricated file tree get enumerated and locked with the key hierarchy drawn honestly, then switch MFA, EDR, segmentation, least privilege, patching and offline backups on and see which stage each one halts. A simulation with no encryption anywhere in it. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/ransomware-anatomy" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ransomware-anatomy.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ransomware Anatomy" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ransomware, stage by stage — and what each control actually stops" />
+    <meta name="twitter:description" content="Step an incident from the first door to the ransom note, watch a fabricated file tree get enumerated and locked with the key hierarchy drawn honestly, then switch MFA, EDR, segmentation, least privilege, patching and offline backups on and see which stage each one halts. A simulation with no encryption anywhere in it. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ransomware-anatomy.jpg" />
+    <title>Ransomware Anatomy — Stage by Stage | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Ransomware Anatomy Explainer",
+        "url": "https://krunalkumar.dpdns.org/labs/ransomware-anatomy",
+        "applicationCategory": "EducationalApplication",
+        "applicationSubCategory": "Security awareness and incident explainer",
+        "operatingSystem": "Any modern web browser",
+        "description": "Step an incident from the first door to the ransom note, watch a fabricated file tree get enumerated and locked with the key hierarchy drawn honestly, then switch MFA, EDR, segmentation, least privilege, patching and offline backups on and see which stage each one halts. A simulation with no encryption anywhere in it. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Nine stages from initial access to the ransom note, steppable",
+                "Three entry routes: phishing, exposed remote desktop, unpatched edge device",
+                "Six defensive controls you can switch on mid-incident",
+                "The chain halts at the stage each control genuinely bites",
+                "A simulated file tree enumerated and locked",
+                "The key hierarchy drawn honestly, one key per file",
+                "Why an offline or immutable backup breaks the whole model",
+                "A recovery cost model built from your own numbers",
+                "No encryption, no sample and no operational detail"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does this page encrypt anything on my machine?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no cipher anywhere in this page, no call to any cryptography API, and no file of yours is read at any point. The file tree is invented and lives in this tab's memory. The key strings on screen are labels produced by a counter so that stepping backwards shows the same value it showed going forwards. It is a diagram that moves, not a program that does anything."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is this a guide to building ransomware?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and it is written to be useless as one. There is no sample, no code, no tool named, no command shown and no evasion technique described in a way anybody could act on. Every stage is named at the level a board paper names it, because helping somebody write that board paper is the entire purpose. The audience for this page is people who have to fund backups."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is paying the only way back without a backup?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because of how the keys are arranged. Each file gets its own fresh symmetric key, and that key is immediately wrapped with a public key shipped inside the binary, then discarded from memory. The wrapped key sits on your own disk next to the file. Only the matching private key opens it, and that private key never came near your network. So the thing you need is right there in front of you and cannot be opened, and the only party who can open it is the one asking for money."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does an offline backup really break the model?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It breaks the leverage, which is the part that matters. Finding and deleting your backups is a deliberate, targeted step taken before anything is encrypted, precisely because a restore is the only thing that makes the ransom optional. A copy that is genuinely offline, or immutable because the storage enforces retention rather than an account that can be taken over, survives that step. It does not stop the intrusion, it does not un-copy the data they stole, and it is worthless if nobody has ever tested a restore from it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does paying actually get the data back?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Paying buys a decryption tool written by the people who broke your estate, not a restore. Those tools are routinely slow, sometimes buggy, and partial or corrupted returns are normal rather than exceptional. You still have to rebuild the identity plane, because you are not handing an environment back to production while somebody else has held domain admin in it for three weeks. And the copy of your data they took before any encryption started is still theirs. Whether paying is even lawful depends on who is on the other end, and that is a question for a lawyer rather than for this page."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Which one control should we buy first?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The page deliberately refuses to answer that, because the answer changes with the door. Switch multi-factor authentication on and the exposed remote desktop route dies at stage one, while the phishing route is entirely unaffected and the unpatched appliance route does not even see a login prompt. That is the argument for depth: a single control halts one path, and the operator is running the same playbook against a list you are one line of. If you want a starting point rather than an answer, the two that change the ending rather than the story are backups you have restore-tested and somebody rostered to read the alerts you already generate."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Where do the numbers in the cost panel come from?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "From you. The panel does arithmetic on figures you type, and the defaults are illustrative placeholders rather than a benchmark. Published figures for downtime cost, ransom size, restore rate and decryptor failure disagree with each other by an order of magnitude depending on who was surveyed and who paid for the survey, so quoting one would look authoritative and tell you nothing. The shape of the arithmetic is the finding: the first steps are identical whichever way you go, and the paths only separate later than people expect."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Ransomware anatomy",
+                        "item": "https://krunalkumar.dpdns.org/labs/ransomware-anatomy"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Ransomware anatomy</li>
+          </ol>
+        </nav>
+        <h1>How a ransomware incident actually unfolds</h1>
+        <p class="hero-text">The encryption is the last twenty minutes of something that took three weeks. Everything expensive happens before it &mdash; the door, the foothold, the mapping, the deleted backups, the copy of your data taken quietly on a Tuesday. Step the whole chain here, switch the controls you already pay for on one at a time, and watch which stage each of them genuinely stops. Some of them stop nothing, and that is the most useful thing on the page.</p>
+        <ul class="lab-facts">
+          <li>Nine stages, from the first door to the note</li>
+          <li>Three entry routes, one control list, three different answers</li>
+          <li>Toggle MFA, EDR, segmentation, least privilege, patching, backups</li>
+          <li>The key hierarchy drawn honestly, one key per file</li>
+          <li>A recovery cost model built from your numbers, not mine</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This walkthrough is built and stepped in your browser and needs JavaScript to run.</p>
+          <p>The whole point is stepping the chain and switching controls on and off, so there is no static version to fall back to.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-viz" id="ransomviz">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This is a simulation and it runs entirely inside your browser. Nothing is uploaded,
+              nothing is fetched, no file of yours is read, and there is no server.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">Good to know</p>
+                <ul class="lab-gate-list">
+                  <li>No encryption of any kind happens on this page</li>
+                  <li>The file tree is invented and lives in this tab</li>
+                  <li>No sample, no code and no operational detail</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why it is here</p>
+                <ul class="lab-gate-list">
+                  <li>Written for the people who fund the defence</li>
+                  <li>Works offline once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="lab-netnote">
+          This lab explains <strong>how an incident unfolds and what stops it</strong>, and deliberately
+          helps nobody carry one out. There is no sample, no code, no tool named and no technique
+          described in a way anyone could act on. Nothing is encrypted, no file of yours is read, and
+          the page makes no network request of any kind.
+        </p>
+        <div class="lab-toolbar">
+
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-multi-mount" id="viz-ransomware-mount">
+          <p class="lab-proc-fallback">Starting the ransomware walkthrough&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The part people get wrong about the timeline</h2>
+          <p>Almost everyone pictures ransomware as a moment: a file is opened and the screen goes red.
+            The moment is real and it is the last twenty minutes of something that has usually been
+            running for weeks. Nearly every chance you had to stop it was in the part nobody pictures.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The encryption is the end, not the attack</h3>
+            <p>By the time anything is unreadable, somebody has already been inside long enough to learn your network, take your administrator credentials, work out what you can afford, copy the files worth copying and delete the recovery you were counting on. Encryption is deployed last because it is the only step that tells you they are there. Everything you would have wanted to catch happened while you had no idea.</p>
+          </article>
+          <article class="info-card">
+            <h3>Deleting your backups is a targeted step</h3>
+            <p>It is not collateral damage from a tool that encrypts everything it can see. Locating the backup system, finding the account that controls it and clearing the repository is done deliberately and done early, because a working restore is the single thing that makes the ransom optional. If your backups are reachable from a domain administrator account, they are part of the estate being attacked rather than the thing that recovers it.</p>
+          </article>
+          <article class="info-card">
+            <h3>The data left before the files locked</h3>
+            <p>Double extortion is the norm now, and it changes what a backup buys you. The encryption stops you working and a restore fixes that. The copy they took keeps working afterwards: a leak site, a countdown, a regulator, customers and a contract full of confidentiality clauses. &ldquo;We have backups&rdquo; is a complete answer to half of the incident and no answer at all to the other half.</p>
+          </article>
+          <article class="info-card">
+            <h3>Nobody is targeting you personally</h3>
+            <p>Most of this is industrialised. Access is found by scanning the whole internet for a vulnerable build, or bought from somebody who specialises in getting in and selling on. The operator who arrives afterwards is running a playbook against a list, and you are a line on it. That is not reassuring, but it does mean the controls that work are ordinary and boring rather than bespoke.</p>
+          </article>
+        </div>
+        <div class="lab-cta">
+          <p class="lab-cta-text">Ransomware is one attack among many, and it borrows its first move from
+            most of the others. The <strong>wider map</strong> &mdash; phishing, credential attacks, denial of
+            service and the rest, in plain language &mdash; is the article.</p>
+          <a class="btn btn-primary" href="/blog/types-of-cyberattacks">Read the article</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How to read the three panels</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The intrusion panel is the one that matters</h3>
+            <p>Pick an entry route, switch controls on in the left-hand panel and step the chain. It halts at the stage the control you enabled genuinely bites, and the stages below grey out because they never happened. Watch what multi-factor authentication does to the exposed remote desktop route and then what it does to the phishing route, which is nothing at all. That difference is the whole argument for buying more than one thing.</p>
+          </article>
+          <article class="info-card">
+            <h3>Not every control halts anything</h3>
+            <p>Each effect is labelled honestly as stopping the chain, blunting it, or only alerting. Segmentation halts nothing and caps the blast radius, which turns a company-ending event into a bad week in one business unit. Backups prevent none of the nine stages and change the ending completely. A page that drew every control as a wall would be easier to read and would be a lie.</p>
+          </article>
+          <article class="info-card">
+            <h3>The file panel draws the keys, not a cipher</h3>
+            <p>A fabricated tree gets enumerated and then locked, and the key hierarchy is drawn beside it: a fresh symmetric key per file, wrapped with a public key that shipped inside the binary, with the private half on a machine you will never reach. Switch the immutable copy on and watch the delete get refused. Nothing on this page encrypts anything, and the key strings are labels from a counter.</p>
+          </article>
+          <article class="info-card">
+            <h3>The bill panel uses your numbers</h3>
+            <p>Type in what a day down costs you, what you would be asked for, how many servers you have and how fast you can genuinely restore them, and it lays the paths side by side on the same day scale. The defaults are placeholders, not a benchmark &mdash; published figures for every one of those inputs disagree by an order of magnitude. The arithmetic is the point, and so is the fact that the first two steps are identical whichever way you go.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this page will not do</h2>
+          <p>Worth stating plainly rather than leaving anyone to wonder.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>There is no encryption anywhere in it</h3>
+            <p>No cipher, no cryptography API call, no key material and no file of yours read at any point. The tree is invented and lives in this tab. The hexadecimal strings shown as keys come from a counter, so scrubbing backwards shows the same value it showed going forwards &mdash; they are decoration over a story, and they are labelled as such in the panel.</p>
+          </article>
+          <article class="info-card">
+            <h3>There is no operational detail in it</h3>
+            <p>No sample, no code, no tool named, no command shown, nothing about how deployment or evasion is actually done. Every stage is described at the altitude a board paper describes it, because helping somebody write that paper is the entire purpose. If you came here looking for how to do any of this, there is nothing on the page for you.</p>
+          </article>
+          <article class="info-card">
+            <h3>It does not prove your controls work</h3>
+            <p>It shows where a control bites in a model I built. A real environment has misconfigurations, exceptions, an account somebody made in 2019 and a supplier with a permanent tunnel in. Treat the halt points as an argument for a control rather than as evidence about yours &mdash; the only thing that produces evidence about yours is testing it.</p>
+          </article>
+          <article class="info-card">
+            <h3>It does not tell you whether to pay</h3>
+            <p>That decision has legal, insurance and regulatory dimensions that vary by country and by who is on the other end, and none of them belong on a web page. What the page can do honestly is show you what paying buys &mdash; a decryption tool of unknown quality, and no effect at all on the copy of your data they already took.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does this page encrypt anything on my machine?</summary>
+            <div>No. There is no cipher anywhere in this page, no call to any cryptography API, and no file of yours is read at any point. The file tree is invented and lives in this tab's memory. The key strings on screen are labels produced by a counter so that stepping backwards shows the same value it showed going forwards. It is a diagram that moves, not a program that does anything.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is this a guide to building ransomware?</summary>
+            <div>No, and it is written to be useless as one. There is no sample, no code, no tool named, no command shown and no evasion technique described in a way anybody could act on. Every stage is named at the level a board paper names it, because helping somebody write that board paper is the entire purpose. The audience for this page is people who have to fund backups.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is paying the only way back without a backup?</summary>
+            <div>Because of how the keys are arranged. Each file gets its own fresh symmetric key, and that key is immediately wrapped with a public key shipped inside the binary, then discarded from memory. The wrapped key sits on your own disk next to the file. Only the matching private key opens it, and that private key never came near your network. So the thing you need is right there in front of you and cannot be opened, and the only party who can open it is the one asking for money.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does an offline backup really break the model?</summary>
+            <div>It breaks the leverage, which is the part that matters. Finding and deleting your backups is a deliberate, targeted step taken before anything is encrypted, precisely because a restore is the only thing that makes the ransom optional. A copy that is genuinely offline, or immutable because the storage enforces retention rather than an account that can be taken over, survives that step. It does not stop the intrusion, it does not un-copy the data they stole, and it is worthless if nobody has ever tested a restore from it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does paying actually get the data back?</summary>
+            <div>Paying buys a decryption tool written by the people who broke your estate, not a restore. Those tools are routinely slow, sometimes buggy, and partial or corrupted returns are normal rather than exceptional. You still have to rebuild the identity plane, because you are not handing an environment back to production while somebody else has held domain admin in it for three weeks. And the copy of your data they took before any encryption started is still theirs. Whether paying is even lawful depends on who is on the other end, and that is a question for a lawyer rather than for this page.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Which one control should we buy first?</summary>
+            <div>The page deliberately refuses to answer that, because the answer changes with the door. Switch multi-factor authentication on and the exposed remote desktop route dies at stage one, while the phishing route is entirely unaffected and the unpatched appliance route does not even see a login prompt. That is the argument for depth: a single control halts one path, and the operator is running the same playbook against a list you are one line of. If you want a starting point rather than an answer, the two that change the ending rather than the story are backups you have restore-tested and somebody rostered to read the alerts you already generate.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Where do the numbers in the cost panel come from?</summary>
+            <div>From you. The panel does arithmetic on figures you type, and the defaults are illustrative placeholders rather than a benchmark. Published figures for downtime cost, ransom size, restore rate and decryptor failure disagree with each other by an order of magnitude depending on who was surveyed and who paid for the survey, so quoting one would look authoritative and tell you nothing. The shape of the arithmetic is the finding: the first steps are identical whichever way you go, and the paths only separate later than people expect.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a stage is modelled wrongly, or a control halts something it would not halt in your environment, I would genuinely like to hear the argument.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=ransomware-anatomy#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20ransomware%20anatomy%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Related tools</h2>
+          <p>The stages this page walks past at speed, taken slowly one at a time.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/malware-triage">
+            <span class="lab-card-name">Malware triage</span>
+            <p class="lab-card-desc">Stage two, up close: what a responder reads off a suspicious file before anything is executed.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/file-inspector">
+            <span class="lab-card-name">File inspector</span>
+            <p class="lab-card-desc">What a file really is, from its bytes rather than its extension &mdash; the first question anyone asks about an attachment.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/phishing-dissector">
+            <span class="lab-card-name">Phishing dissector</span>
+            <p class="lab-card-desc">Take the first stage apart: the email that starts the most common route in this whole chain.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/email-headers">
+            <span class="lab-card-name">Email header analyser</span>
+            <p class="lab-card-desc">Where a message actually came from, read off the headers rather than the display name.</p>
+            <span class="lab-card-engine">Nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/breach-check">
+            <span class="lab-card-name">Password breach check</span>
+            <p class="lab-card-desc">The reused password behind the exposed remote desktop route. Five characters of its hash are sent, and no more.</p>
+            <span class="lab-card-engine">Uses the network</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+    <script defer src="/assets/js/labs/viz-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/multi-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/ransomware-anatomy.js"></script>
+  </body>
+</html>

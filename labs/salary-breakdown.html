@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Turn an Indian CTC into a monthly in-hand figure with every step shown: component split, PF, gratuity, professional tax by state, and both tax regimes." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/salary-breakdown" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="CTC to in hand, with every step shown" />
+    <meta property="og:description" content="Most salary calculators drop one number on you. This one shows the whole chain - how the CTC splits, employee and employer PF, gratuity accrual, professional tax by state, the HRA exemption as the minimum of its three tests, and both tax regimes computed side by side with slabs, rebate, surcharge and cess. Runs entirely in your browser; nothing you type is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/salary-breakdown" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-salary-breakdown.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CTC to In-Hand Salary Breakdown" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CTC to in hand, with every step shown" />
+    <meta name="twitter:description" content="Most salary calculators drop one number on you. This one shows the whole chain - how the CTC splits, employee and employer PF, gratuity accrual, professional tax by state, the HRA exemption as the minimum of its three tests, and both tax regimes computed side by side with slabs, rebate, surcharge and cess. Runs entirely in your browser; nothing you type is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-salary-breakdown.jpg" />
+    <title>CTC to In-Hand Salary Breakdown — India | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "CTC to In-Hand Salary Breakdown",
+        "url": "https://krunalkumar.dpdns.org/labs/salary-breakdown",
+        "applicationCategory": "FinanceApplication",
+        "applicationSubCategory": "Indian payroll and income tax arithmetic",
+        "operatingSystem": "Any modern web browser",
+        "description": "Take an Indian CTC apart with every step shown - the component split, employee and employer provident fund, gratuity accrual, professional tax by state, the HRA exemption as the minimum of its three tests, and income tax under both the old and new regimes with slabs, the section 87A rebate, surcharge bands and cess. Includes a month-by-month in-hand table and a sensitivity pass over the basic percentage. Runs entirely in your browser - nothing you type is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "CTC split into basic, HRA, special allowance, bonus and reimbursements",
+                "Employee and employer provident fund with the 15,000 wage-ceiling option",
+                "Gratuity accrual at 4.81 percent of basic",
+                "Professional tax month by month for thirteen state regimes",
+                "Old and new tax regimes computed side by side with every slab shown",
+                "Section 87A rebate, marginal relief, surcharge bands and 4 percent cess",
+                "HRA exemption as the minimum of its three statutory tests",
+                "Month-by-month in-hand table with a bonus and its TDS",
+                "Sensitivity pass over the basic percentage",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Which financial year are these slabs for?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The year named in the banner at the top of the tool. That year lives in one place in the code, and the banner, the headings and the arithmetic are all rendered from it, so they cannot drift apart. Indian tax rules change with every Budget, so check the slabs, the standard deduction and the rebate against the current Finance Act before you rely on anything here. If they have moved, this page is out of date until I update it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is this tax advice?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. It is arithmetic, written out so you can check it rather than trust it. Your real liability depends on things this page never sees - other income, capital gains, a second employer in the same year, perquisites, an employer NPS contribution under 80CCD(2), arrears, or the declaration you gave payroll in April. For a number you are going to act on, talk to a chartered accountant."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does my payslip not match this exactly?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Several small reasons that add up. Payroll usually posts the pension share of provident fund as a flat 1,250 rupees a month rather than 8.33 percent, applies professional tax on its own slab of monthly salary instead of the top rate, spreads TDS on a schedule of its own choosing, and may treat a reimbursement as taxable that this page assumes is not. The shape should match. The last few hundred rupees usually will not."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does anything I type here get uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server, no account, and no analytics event that carries any figure you enter. A salary, a rent and a list of deductions together are close to identifying on their own, which is exactly why the whole calculation happens in this tab and why the page keeps working with the network switched off."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Should I ask for a lower basic so I take home more?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Sometimes, and the sensitivity table shows you by exactly how much. A lower basic means less provident fund leaving your pay each month, but also a smaller employer contribution, a smaller gratuity accrual and a smaller HRA exemption if you are under the old regime. You are moving money between now and later, not creating any. Move the slider and decide which side you want it on."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Salary breakdown",
+                        "item": "https://krunalkumar.dpdns.org/labs/salary-breakdown"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Salary breakdown</li>
+          </ol>
+        </nav>
+        <h1>CTC to in hand, with every step shown</h1>
+        <p class="hero-text">An offer letter gives you one large number and a table nobody explains. What actually reaches your bank account depends on how that number was split, whether the employer&rsquo;s provident fund was counted inside it, which state you sit in, what rent you pay, and which tax regime you end up under. This takes it apart line by line, and shows the two or three places where the offer is genuinely negotiable.</p>
+        <ul class="lab-facts">
+          <li>Both tax regimes, side by side</li>
+          <li>Every slab, rebate, surcharge and cess</li>
+          <li>HRA as the minimum of three tests</li>
+          <li>Professional tax, month by month</li>
+          <li>Nothing you type is uploaded</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool lab-salary" id="salarytool">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved</li>
+                  <li>No tax advice &mdash; this is arithmetic you can check</li>
+                  <li>No lookups against any external database</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>Your salary and rent stay on your machine</li>
+                  <li>A figure you type is never transmitted</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="sb-preset">Starting structure</label>
+          <select class="lab-select" id="sb-preset">
+            <option value="it" selected>Typical Indian IT split</option>
+            <option value="ceiling">Higher basic, PF at the ceiling</option>
+            <option value="startup">Flat startup split, no HRA</option>
+            <option value="lowbasic">Low basic, big headline CTC</option>
+            <option value="custom">Custom&nbsp;&mdash; my own numbers</option>
+          </select>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Recompute</button>
+          <span class="lab-status" id="tool-selftest"></span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+
+        <!-- The financial year is the single most important disclaimer on this
+             page, so it sits above the controls rather than below the result.
+             The spans carry the same string as static text and salary-breakdown.js
+             overwrites them from its FY object at load, so the year on screen and
+             the year in the arithmetic cannot drift apart. -->
+        <p class="sb-fy">
+          <span class="sb-fy-tag">Slabs for <span data-fy-label>FY 2025-26</span></span>
+          Everything below uses the rates for
+          <strong><span data-fy-long>financial year 2025-26, which is assessment year 2026-27</span></strong>.
+          Indian tax rules change with every Budget. Confirm the slabs, the standard
+          deduction and the rebate against the current Finance Act before you use a
+          number from here, and treat all of it as arithmetic rather than tax advice.
+        </p>
+
+        <div class="sb-groups">
+          <fieldset class="sb-group">
+            <legend>The offer</legend>
+            <div class="lab-metrics">
+              <div class="lab-metric">
+                <label for="sb-ctc">Annual CTC (&#8377;)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-ctc" min="0" step="10000"
+                       value="1800000" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-bonus">Annual bonus (&#8377;)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-bonus" min="0" step="5000"
+                       value="100000" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-bonusmonth">Bonus paid in</label>
+                <select class="lab-select" id="sb-bonusmonth"></select>
+              </div>
+              <div class="lab-metric">
+                <label for="sb-reimb">Reimbursements, non-taxable (&#8377;/yr)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-reimb" min="0" step="1000"
+                       value="0" inputmode="numeric" autocomplete="off" />
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="sb-group">
+            <legend>The structure</legend>
+            <div class="lab-metrics">
+              <div class="lab-metric sb-metric-wide">
+                <label for="sb-basicpct">Basic, as a percentage of CTC</label>
+                <div class="sb-rangerow">
+                  <input class="sb-range" type="range" id="sb-basicrange" min="20" max="60" step="1"
+                         value="40" aria-label="Basic as a percentage of CTC, slider" />
+                  <input class="lab-toolfield sb-num" type="number" id="sb-basicpct"
+                         min="20" max="60" step="1" value="40" inputmode="decimal" autocomplete="off" />
+                </div>
+              </div>
+              <div class="lab-metric">
+                <label for="sb-hrapct">HRA, as a percentage of basic</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-hrapct" min="0" max="100" step="1"
+                       value="50" inputmode="decimal" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-pfbase">Provident fund is calculated on</label>
+                <select class="lab-select" id="sb-pfbase">
+                  <option value="full" selected>The full basic</option>
+                  <option value="ceiling">The &#8377;15,000 statutory wage ceiling</option>
+                </select>
+              </div>
+              <div class="lab-metric">
+                <label class="sb-check" for="sb-epfinctc">
+                  <input type="checkbox" id="sb-epfinctc" checked />
+                  <span>Employer PF counted inside the CTC</span>
+                </label>
+              </div>
+              <div class="lab-metric">
+                <label class="sb-check" for="sb-gratuity">
+                  <input type="checkbox" id="sb-gratuity" checked />
+                  <span>Gratuity accrual counted inside the CTC</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="sb-group">
+            <legend>Where you live, and what you claim</legend>
+            <div class="lab-metrics">
+              <div class="lab-metric sb-metric-wide">
+                <label for="sb-state">State, for professional tax</label>
+                <select class="lab-select" id="sb-state"></select>
+              </div>
+              <div class="lab-metric">
+                <label for="sb-rent">Rent you pay (&#8377;/month)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-rent" min="0" step="1000"
+                       value="25000" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label class="sb-check" for="sb-metro">
+                  <input type="checkbox" id="sb-metro" checked />
+                  <span>Metro city &mdash; Delhi, Mumbai, Kolkata or Chennai</span>
+                </label>
+              </div>
+              <div class="lab-metric">
+                <label for="sb-80c">80C beyond employee PF (&#8377;/yr)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-80c" min="0" step="5000"
+                       value="0" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-80d">80D health insurance (&#8377;/yr)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-80d" min="0" step="1000"
+                       value="0" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-nps">80CCD(1B) NPS (&#8377;/yr)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-nps" min="0" step="5000"
+                       value="0" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="sb-24b">24(b) home loan interest (&#8377;/yr)</label>
+                <input class="lab-toolfield sb-num" type="number" id="sb-24b" min="0" step="10000"
+                       value="0" inputmode="numeric" autocomplete="off" />
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <p class="sb-presetnote" id="sb-presetnote"></p>
+
+        <div class="sb-headline" id="sb-headline"></div>
+        <!-- The output pane gets an announcer from the shell, but all it can say
+             is how many lines arrived. This one carries the answer people came
+             for, once the value has settled. -->
+        <p class="sr-only" id="sb-announce" role="status" aria-live="polite"></p>
+
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label">Old regime against new</p>
+            <div class="sb-scroll">
+              <div class="sb-cards" id="sb-regimes"></div>
+              <p class="sb-verdict" id="sb-verdict"></p>
+            </div>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Every step of the arithmetic</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <div class="sb-block">
+          <h2 class="sb-block-title">The HRA exemption, as its three tests</h2>
+          <p class="sb-block-note">Section 10(13A) with rule 2A does not give you a
+            percentage. It gives you three numbers and takes the smallest: the HRA you
+            actually received, the rent you paid minus 10% of basic, and half your basic
+            in a metro or 40% of it anywhere else. Which one wins tells you what to change
+            &mdash; if the rent test is lowest, more HRA in the offer buys you nothing.
+            None of this exists under the new regime.</p>
+          <div id="sb-hra"></div>
+        </div>
+
+        <div class="sb-block">
+          <h2 class="sb-block-title">Month by month, because the months differ</h2>
+          <p class="sb-block-note">A single in-hand figure is an average, and the average
+            is a month you never actually get paid. Professional tax lands unevenly in
+            several states, the bonus arrives in one month and drags its tax across the
+            months after it, and March absorbs whatever rounding is left over. This is the
+            year as twelve separate numbers.</p>
+          <div id="sb-months"></div>
+        </div>
+
+        <div class="sb-block">
+          <h2 class="sb-block-title">The one lever you can actually negotiate</h2>
+          <p class="sb-block-note">The CTC is usually fixed long before you see it. The
+            split is not. Basic drives provident fund on both sides, the gratuity accrual
+            and the ceiling on your HRA exemption all at once, so moving it moves four
+            things together. Drag the basic slider above and this table moves with it.</p>
+          <div id="sb-sensitivity"></div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What a CTC is actually made of</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Cost to company, not cost to you</h3>
+            <p>A CTC is what the employer books as the cost of employing you, and it is allowed to include money that never reaches your account. The employer&rsquo;s provident fund contribution, the gratuity accrual, sometimes an insurance premium and occasionally a notional cost for a laptop all count. Two offers with the same CTC can differ by a lakh a year in cash purely on what was loaded into it.</p>
+          </article>
+          <article class="info-card">
+            <h3>Basic is the number everything hangs off</h3>
+            <p>Provident fund is 12% of basic on both sides. Gratuity accrues at 4.81% of basic. The HRA exemption is capped at 50% of basic in a metro and 40% outside it, and the rent test subtracts 10% of basic before it starts. One percentage point of basic moves all four. It is also the number employers are most willing to discuss, because it does not change the headline.</p>
+          </article>
+          <article class="info-card">
+            <h3>Special allowance is the balancing figure</h3>
+            <p>Whatever is left after basic, HRA, the employer contributions and any bonus has to go somewhere, and that somewhere is usually called special allowance. It is fully taxable, carries no exemption of any kind, and exists so the components add up to the CTC. A structure with a very large special allowance is a structure with a very small basic.</p>
+          </article>
+          <article class="info-card">
+            <h3>Gratuity is accrued, not earned</h3>
+            <p>The 4.81% is an accounting accrual. Nothing is payable until five continuous years are complete, so if you leave at three years that money was never yours. Counting it inside a CTC is entirely legal and entirely normal, and it is the line in the annexure most likely to be worth zero to you personally.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Where the two regimes actually differ</h2>
+          <p>Both are computed above, on the same salary, with every slab shown. These are the differences that decide it.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The new regime is the default</h3>
+            <p>If you say nothing, you are in it. Choosing the old one is an active declaration you make to payroll, and for salaried people the choice can be revisited each year at the time of filing. The new regime carries the larger standard deduction and the wider slabs; the old one carries the deductions.</p>
+          </article>
+          <article class="info-card">
+            <h3>The old regime is bought, not given</h3>
+            <p>It only wins if you actually have the deductions. Rent that supports a real HRA exemption, a full 80C, health insurance, the extra NPS window, home loan interest. Add them up honestly before choosing it. People routinely pick the old regime on the strength of deductions they intend to make and then do not.</p>
+          </article>
+          <article class="info-card">
+            <h3>The rebate is a cliff with a rail on it</h3>
+            <p>Section 87A wipes the tax out entirely up to a limit and stops dead above it. Without help, crossing that limit by a hundred rupees would cost tens of thousands, so the law adds marginal relief: just past the line, the tax cannot exceed the amount by which you crossed it. The tool shows the relief as its own line when it applies.</p>
+          </article>
+          <article class="info-card">
+            <h3>Surcharge is a tax on the tax</h3>
+            <p>Above 50 lakh of total income a surcharge is added on top of the tax itself, stepping up at 1 crore, 2 crore and, in the old regime only, 5 crore. Each threshold has its own marginal relief for the same reason. Then 4% health and education cess is charged on the tax plus surcharge, which is why the last line is never a round number.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this page does not know</h2>
+          <p>It sees a CTC, a split, a rent and a handful of deductions. Everything here is outside that, and every one of them can move the answer.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The financial year, once it moves</h3>
+            <p>The slabs, both standard deductions, the rebate, the surcharge bands and the cess all come from one Finance Act, and the banner at the top of the tool names which. They are set in a single object in the source, so updating the page is one edit &mdash; but until that edit happens, a Budget has moved and this has not. Check the year before you trust the number.</p>
+          </article>
+          <article class="info-card">
+            <h3>Everything that is not this salary</h3>
+            <p>Interest income, capital gains, rent you receive, a second employer in the same year, arrears, perquisites, an employer NPS contribution under 80CCD(2), or a loss carried forward. Any of them changes the taxable income the slabs are applied to, and none of them are inputs here. This is one salary, computed cleanly.</p>
+          </article>
+          <article class="info-card">
+            <h3>Professional tax, at the resolution states use</h3>
+            <p>Every state has its own slabs by monthly salary, and the figures here are the top slab, which is what applies at the sort of CTC this page is for. Someone on a lower salary pays less, or nothing. The constitutional cap is 2,500 rupees a year in every state, which is why no figure here can exceed it.</p>
+          </article>
+          <article class="info-card">
+            <h3>How your payroll actually behaves</h3>
+            <p>TDS under section 192 only has to be right by March. How it gets there is the employer&rsquo;s estimate, revised whenever you file a declaration or a bonus lands. The model here spreads the base tax evenly and recovers the bonus tax across the remaining months, which is common but not universal. Yours may front-load it, or catch up in February.</p>
+          </article>
+          <article class="info-card">
+            <h3>Which reimbursements are really tax free</h3>
+            <p>The reimbursement field here is assumed non-taxable, which is a generous assumption. In practice it depends on the head, the bills you actually submit and the current position on each allowance. If you cannot produce the bill, treat it as salary, and move it into the special allowance field instead.</p>
+          </article>
+          <article class="info-card">
+            <h3>Anything about your own circumstances</h3>
+            <p>Age, residential status, a disability deduction, section 80G, a joint home loan, or the year you switch regimes. I am a security engineer who reads Finance Acts carefully, not your accountant. The value here is that you can follow the arithmetic and argue with it, which is more than a single number lets you do.</p>
+          </article>
+        </div>
+        <div class="lab-cta">
+          <p class="lab-cta-text">If you are on the other side of this &mdash; quoting for
+            work rather than reading an offer &mdash; the same honesty applies to a rate
+            card. <strong>Scoping work before you quote it</strong> is the piece on
+            deciding what a job actually costs you before you put a number on it, and the
+            <strong>invoice maker</strong> turns the answer into a document you can send.</p>
+          <a class="btn btn-primary" href="/blog/scoping-work-before-you-quote-it">Read: scoping work before you quote it</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Which financial year are these slabs for?</summary>
+            <div>The year named in the banner at the top of the tool. That year lives in one place in the code, and the banner, the headings and the arithmetic are all rendered from it, so they cannot drift apart. Indian tax rules change with every Budget, so check the slabs, the standard deduction and the rebate against the current Finance Act before you rely on anything here. If they have moved, this page is out of date until I update it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is this tax advice?</summary>
+            <div>No. It is arithmetic, written out so you can check it rather than trust it. Your real liability depends on things this page never sees - other income, capital gains, a second employer in the same year, perquisites, an employer NPS contribution under 80CCD(2), arrears, or the declaration you gave payroll in April. For a number you are going to act on, talk to a chartered accountant.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does my payslip not match this exactly?</summary>
+            <div>Several small reasons that add up. Payroll usually posts the pension share of provident fund as a flat 1,250 rupees a month rather than 8.33 percent, applies professional tax on its own slab of monthly salary instead of the top rate, spreads TDS on a schedule of its own choosing, and may treat a reimbursement as taxable that this page assumes is not. The shape should match. The last few hundred rupees usually will not.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does anything I type here get uploaded?</summary>
+            <div>No. There is no server, no account, and no analytics event that carries any figure you enter. A salary, a rent and a list of deductions together are close to identifying on their own, which is exactly why the whole calculation happens in this tab and why the page keeps working with the network switched off.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Should I ask for a lower basic so I take home more?</summary>
+            <div>Sometimes, and the sensitivity table shows you by exactly how much. A lower basic means less provident fund leaving your pay each month, but also a smaller employer contribution, a smaller gratuity accrual and a smaller HRA exemption if you are under the old regime. You are moving money between now and later, not creating any. Move the slider and decide which side you want it on.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a figure here disagrees with your payslip or your accountant, I would genuinely like to know which line.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=salary-breakdown#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20salary%20breakdown%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/invoice-maker">
+            <span class="lab-card-name">Invoice maker</span>
+            <p class="lab-card-desc">The other side of the same arithmetic, as a document you can send.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/resume-maker">
+            <span class="lab-card-name">Resume maker</span>
+            <p class="lab-card-desc">Get to the offer letter this page takes apart.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/upi-fraud">
+            <span class="lab-card-name">UPI fraud patterns</span>
+            <p class="lab-card-desc">How money actually leaves an Indian bank account.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/cvss">
+            <span class="lab-card-name">CVSS calculator</span>
+            <p class="lab-card-desc">Another score with the whole derivation printed under it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/contrast">
+            <span class="lab-card-name">Colour contrast</span>
+            <p class="lab-card-desc">The same habit applied to a number designers argue about.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/salary-breakdown.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

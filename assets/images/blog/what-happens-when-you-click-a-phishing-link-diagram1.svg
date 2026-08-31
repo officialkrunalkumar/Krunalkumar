@@ -1,0 +1,106 @@
+<svg width="1160" height="720" viewBox="0 0 1160 720" role="img" aria-labelledby="d-what-happens-when-you-click-a-phishing-link-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-happens-when-you-click-a-phishing-link-diagram1">A sequence diagram of a real-time reverse-proxy phishing page defeating a one-time code. You open the link; the proxy fetches the genuine login page from the real service and relays it back, so it is pixel-perfect. You type your password and it is forwarded unchanged. The real service asks for a code, the request is relayed to you, and the six digits you read off your phone are relayed onward inside their thirty-second validity window. The real service issues a session cookie, and that cookie stops at the proxy: the attacker holds a signed-in session and the second factor was spent rather than bypassed. A passkey breaks the chain, because its signature is bound to the origin it was made on and the proxy's origin is not the real one.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW A PAGE IN THE MIDDLE SPENDS YOUR ONE-TIME CODE</text>
+
+  <!-- Lanes -->
+  <g>
+    <rect x="70" y="80" width="250" height="48" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="195" y="111" fill="#6b7a90" font-size="18" font-weight="800" text-anchor="middle">You</text>
+    <text x="195" y="148" fill="#64748b" font-size="14" text-anchor="middle">your browser, your phone</text>
+
+    <rect x="440" y="80" width="280" height="48" rx="12" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+    <text x="580" y="111" fill="#6b7a90" font-size="18" font-weight="800" text-anchor="middle">The page you landed on</text>
+    <text x="580" y="148" fill="#64748b" font-size="14" text-anchor="middle">a reverse proxy, relaying in real time</text>
+
+    <rect x="840" y="80" width="250" height="48" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="965" y="111" fill="#6b7a90" font-size="18" font-weight="800" text-anchor="middle">The real service</text>
+    <text x="965" y="148" fill="#64748b" font-size="14" text-anchor="middle">genuine domain, genuine login</text>
+  </g>
+
+  <g stroke="#6b7a90" stroke-width="1.5" stroke-dasharray="6 7" opacity="0.6">
+    <line x1="195" y1="162" x2="195" y2="570"/>
+    <line x1="580" y1="162" x2="580" y2="570"/>
+    <line x1="965" y1="162" x2="965" y2="570"/>
+  </g>
+
+  <!-- 1. you open the link -->
+  <g stroke="#1e77a4" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="195" y1="200" x2="558" y2="200"/>
+    <path d="M549 193 L559 200 L549 207"/>
+  </g>
+  <text x="376" y="186" fill="#64748b" font-size="15" text-anchor="middle">1 &#183; you open the link</text>
+
+  <!-- 2. proxy fetches the real page -->
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="602" y1="252" x2="948" y2="252"/>
+    <path d="M939 245 L949 252 L939 259"/>
+  </g>
+  <text x="775" y="238" fill="#64748b" font-size="15" text-anchor="middle">2 &#183; it fetches the real login page</text>
+
+  <!-- 3. the genuine page comes back and is relayed on -->
+  <g stroke="#157f41" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="948" y1="304" x2="602" y2="304"/>
+    <path d="M611 297 L601 304 L611 311"/>
+  </g>
+  <text x="775" y="290" fill="#64748b" font-size="15" text-anchor="middle">3 &#183; the genuine page comes back</text>
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="558" y1="304" x2="202" y2="304"/>
+    <path d="M211 297 L201 304 L211 311"/>
+  </g>
+  <text x="376" y="290" fill="#64748b" font-size="15" text-anchor="middle">and is relayed to you, pixel-perfect</text>
+
+  <!-- 4. password -->
+  <g stroke="#1e77a4" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="195" y1="372" x2="558" y2="372"/>
+    <path d="M549 365 L559 372 L549 379"/>
+  </g>
+  <text x="376" y="358" fill="#64748b" font-size="15" text-anchor="middle">4 &#183; you type your password</text>
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="602" y1="372" x2="948" y2="372"/>
+    <path d="M939 365 L949 372 L939 379"/>
+  </g>
+  <text x="775" y="358" fill="#64748b" font-size="15" text-anchor="middle">forwarded unchanged</text>
+
+  <!-- 5. the site asks for a code -->
+  <g stroke="#157f41" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="948" y1="424" x2="602" y2="424"/>
+    <path d="M611 417 L601 424 L611 431"/>
+  </g>
+  <text x="775" y="410" fill="#64748b" font-size="15" text-anchor="middle">5 &#183; the site asks for a code</text>
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="558" y1="424" x2="202" y2="424"/>
+    <path d="M211 417 L201 424 L211 431"/>
+  </g>
+  <text x="376" y="410" fill="#64748b" font-size="15" text-anchor="middle">so the prompt you see is real</text>
+
+  <!-- 6. the code -->
+  <g stroke="#1e77a4" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="195" y1="486" x2="558" y2="486"/>
+    <path d="M549 479 L559 486 L549 493"/>
+  </g>
+  <text x="376" y="472" fill="#64748b" font-size="15" text-anchor="middle">6 &#183; you read six digits off your phone</text>
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="602" y1="486" x2="948" y2="486"/>
+    <path d="M939 479 L949 486 L939 493"/>
+  </g>
+  <text x="775" y="472" fill="#64748b" font-size="15" text-anchor="middle">relayed inside its 30-second window</text>
+
+  <!-- 7. session cookie -->
+  <g stroke="#157f41" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="948" y1="548" x2="602" y2="548"/>
+    <path d="M611 541 L601 548 L611 555"/>
+  </g>
+  <text x="775" y="534" fill="#64748b" font-size="15" text-anchor="middle">7 &#183; a session cookie is issued</text>
+  <g stroke="#a3352f" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="558" y1="548" x2="202" y2="548" stroke-dasharray="6 7"/>
+    <path d="M211 541 L201 548 L211 555"/>
+  </g>
+  <text x="376" y="534" fill="#64748b" font-size="15" text-anchor="middle">you get a page that looks like success</text>
+
+  <!-- the cookie stops here -->
+  <rect x="420" y="588" width="320" height="72" rx="12" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+  <text x="580" y="616" fill="#6b7a90" font-size="17" font-weight="800" text-anchor="middle">The cookie stops here</text>
+  <text x="580" y="642" fill="#64748b" font-size="15" text-anchor="middle">your second factor was spent, not bypassed</text>
+
+  <text x="40" y="700" fill="#64748b" font-size="15">A passkey breaks this at step 6: its signature is bound to the origin it was made on, so the proxy has nothing it can relay.</text>
+</svg>

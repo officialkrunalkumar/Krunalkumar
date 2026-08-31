@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Generate and verify TOTP two-factor codes and watch every step: counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/totp" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Watch a two-factor code being built, one step at a time" />
+    <meta property="og:description" content="Enter or generate a Base32 secret and watch RFC 6238 run live: the counter taken from the clock, the HMAC, the dynamic truncation, the modulo. A clock-skew slider shows exactly why a server accepts the previous window, and the otpauth QR is drawn in the page. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/totp" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-totp.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="TOTP Generator &amp; Verifier" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Watch a two-factor code being built, one step at a time" />
+    <meta name="twitter:description" content="Enter or generate a Base32 secret and watch RFC 6238 run live: the counter taken from the clock, the HMAC, the dynamic truncation, the modulo. A clock-skew slider shows exactly why a server accepts the previous window, and the otpauth QR is drawn in the page. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-totp.jpg" />
+    <title>TOTP Generator &amp; Verifier — RFC 6238 | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TOTP Generator and Verifier",
+        "url": "https://krunalkumar.dpdns.org/labs/totp",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Security and digital forensics",
+        "operatingSystem": "Any modern web browser",
+        "description": "Generate and verify TOTP two-factor authentication codes and watch every intermediate step: the counter taken from the clock, the HMAC, the dynamic truncation and the modulo. Includes a clock-skew slider, window verification and an otpauth provisioning QR. Runs entirely in your browser - nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "TOTP and HOTP code generation",
+                "HMAC-SHA-1, SHA-256 and SHA-512",
+                "Every intermediate value shown live",
+                "Clock-skew and validation window simulation",
+                "otpauth provisioning URI and QR code",
+                "Verified against the RFC 4226 and RFC 6238 test vectors",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is my secret sent anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The secret is decoded and the HMAC computed in this tab, and the QR is drawn on a canvas here rather than fetched from a chart service - which is how most online QR generators work, and the reason they end up holding your secret. There is no server in this tool and no request carrying anything you type is ever made. Open the Network tab and watch."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Did you actually check this against the RFC test vectors?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, and the page runs them in front of you. The toolbar shows the result of the ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC 6238 Appendix B, across SHA-1, SHA-256 and SHA-512. If one failed the toolbar would say so in red rather than quietly showing you wrong numbers. You can re-run them yourself: open the browser console and call TotpEngine.selfTest()."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Should I use this instead of an authenticator app?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Use an authenticator app or a hardware key for accounts that matter. This page holds a secret in a text field so you can watch what happens to it, which is the right trade for understanding the mechanism and the wrong one for protecting an account."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does the code here not match my phone?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Almost always the clock. TOTP has no channel to correct a drifting device, so a phone half a minute out shows the next window's code - drag the skew slider and you can watch that happen. If the clock is right, check the algorithm, the digit count and the step: a service using SHA-256, eight digits or a sixty-second period will not match the defaults."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "If TOTP can be phished, is it worth turning on?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. It removes the entire class of attacks that work on a password alone: credential stuffing, password reuse, and anything that falls out of a breach dump. What it does not remove is somebody being walked through a convincing login page in real time. Passkeys remove that, because the browser will not sign for the wrong origin."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "TOTP generator",
+                        "item": "https://krunalkumar.dpdns.org/labs/totp"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">TOTP generator</li>
+          </ol>
+        </nav>
+        <h1>TOTP generator and verifier</h1>
+        <p class="hero-text">Most people assume the six digits in their authenticator app arrive from somewhere. They do not. The code is an HMAC over a number both sides work out from the clock, cut down to six digits by a rule from RFC 4226. Every one of those steps is on this page, updating as you watch.</p>
+        <ul class="lab-facts">
+          <li>HMAC-SHA-1, SHA-256 and SHA-512</li>
+          <li>Every intermediate value, live</li>
+          <li>Clock-skew slider and window check</li>
+          <li>otpauth URI and QR, drawn here</li>
+          <li>Checked against the RFC vectors</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="totptool">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved</li>
+                  <li>No secret is stored, logged or transmitted</li>
+                  <li>Not a replacement for an authenticator app &mdash; this is for understanding the mechanism</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>Evidence files stay on your machine</li>
+                  <li>A token or key you paste is never transmitted</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="tool-alg">Hash algorithm</label>
+          <select class="lab-select" id="tool-alg">
+            <option value="SHA-1" selected>HMAC-SHA-1</option>
+            <option value="SHA-256">HMAC-SHA-256</option>
+            <option value="SHA-512">HMAC-SHA-512</option>
+          </select>
+          <label class="sr-only" for="tool-digits">Number of digits</label>
+          <select class="lab-select" id="tool-digits">
+            <option value="6" selected>6 digits</option>
+            <option value="7">7 digits</option>
+            <option value="8">8 digits</option>
+          </select>
+          <label class="sr-only" for="tool-period">Time step</label>
+          <select class="lab-select" id="tool-period">
+            <option value="30" selected>30-second step</option>
+            <option value="60">60-second step</option>
+          </select>
+          <button class="lab-btn" type="button" id="tool-generate">Generate a secret</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Recompute</button>
+          <span class="lab-status" id="tool-selftest"></span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+
+        <div class="lab-fieldrow">
+          <label class="sr-only" for="tool-secret">Base32 shared secret</label>
+          <input class="lab-toolfield" type="text" id="tool-secret" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" autocomplete="off"
+                 placeholder="Base32 shared secret, e.g. JBSWY3DPEHPK3PXP" />
+          <span class="lab-status" id="tool-secret-status"></span>
+        </div>
+        <div class="lab-fieldrow">
+          <label class="sr-only" for="tool-issuer">Issuer name, for the provisioning URI</label>
+          <input class="lab-toolfield" type="text" id="tool-issuer" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" autocomplete="off"
+                 placeholder="Issuer, e.g. Example Corp" />
+          <label class="sr-only" for="tool-account">Account name, for the provisioning URI</label>
+          <input class="lab-toolfield" type="text" id="tool-account" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" autocomplete="off"
+                 placeholder="Account, e.g. alice@example.com" />
+        </div>
+
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label">The code right now</p>
+            <div class="totp-now">
+              <div class="totp-head">
+                <svg class="lab-meter-ring totp-ring" viewBox="0 0 44 44" width="56" height="56"
+                     aria-hidden="true" focusable="false">
+                  <circle class="track" cx="22" cy="22" r="19"></circle>
+                  <circle class="value" id="totp-ring-value" cx="22" cy="22" r="19"></circle>
+                </svg>
+                <div class="totp-head-text">
+                  <p class="totp-code" id="totp-code">&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;</p>
+                  <p class="totp-countdown" id="totp-countdown">Starting&hellip;</p>
+                </div>
+                <button class="lab-btn" type="button" data-copy-target="totp-code">Copy code</button>
+              </div>
+              <!-- Announced once per step, never per tick: the countdown changes
+                   four times a second and reading that aloud would make the
+                   panel unusable. -->
+              <p class="sr-only" id="totp-announce" role="status" aria-live="polite"></p>
+
+              <div class="totp-skew">
+                <label for="totp-skewrange">This device&rsquo;s clock is off by <span class="totp-skew-value" id="totp-skewvalue">0 s</span></label>
+                <input type="range" id="totp-skewrange" min="-120" max="120" step="1" value="0" />
+                <p class="totp-skew-note" id="totp-skewnote"></p>
+              </div>
+
+              <ul class="totp-windows" id="totp-windows"></ul>
+
+              <div class="totp-verify">
+                <label for="totp-check">Verify a code somebody typed</label>
+                <div class="totp-verify-row">
+                  <input class="lab-toolfield" type="text" id="totp-check" inputmode="numeric"
+                         maxlength="8" spellcheck="false" autocapitalize="off" autocorrect="off"
+                         autocomplete="off" placeholder="e.g. 287082" />
+                  <label class="sr-only" for="totp-tolerance">Accepted window</label>
+                  <select class="lab-select" id="totp-tolerance">
+                    <option value="0">Exact step only</option>
+                    <option value="1" selected>&plusmn; 1 step</option>
+                    <option value="2">&plusmn; 2 steps</option>
+                  </select>
+                  <button class="lab-btn" type="button" id="totp-verifybtn">Verify</button>
+                </div>
+                <p class="totp-verify-out" id="totp-verifyout" role="status" aria-live="polite"></p>
+              </div>
+            </div>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">How that number was derived</p>
+            <div class="totp-steps" id="totp-steps"></div>
+          </div>
+        </div>
+
+        <div class="lab-resultbar">
+          <label class="sr-only" for="totp-uri">otpauth provisioning URI</label>
+          <input class="lab-toolfield" type="text" id="totp-uri" readonly
+                 spellcheck="false" aria-describedby="totp-qrnote" />
+          <button class="lab-btn" type="button" data-copy-target="totp-uri">Copy URI</button>
+        </div>
+        <div class="totp-qrrow">
+          <div class="totp-qrbox">
+            <canvas class="totp-qr" id="totp-qr" width="8" height="8" role="img"
+                    aria-label="QR code of the provisioning URI"></canvas>
+            <p class="totp-qrnote" id="totp-qrnote"></p>
+          </div>
+          <div class="totp-qrtext">
+            <p>That string is the whole enrolment. When a site shows you a QR to
+              set up two-factor authentication, this is what is inside it: a
+              label, the Base32 secret, and the three parameters that have to
+              match &mdash; <code>algorithm</code>, <code>digits</code> and
+              <code>period</code>. Change any of them above and watch the URI
+              and the square change with it.</p>
+            <p>The square is drawn here, in the page, by a QR encoder written
+              for this tool. That matters more than it sounds: almost every
+              online QR generator builds the image on a server, which means
+              handing your two-factor secret to a stranger in order to look at
+              it. Nothing here leaves the tab.</p>
+            <p>The secret the page starts with is the one every piece of TOTP
+              documentation uses, so you can compare the codes against any other
+              implementation. It is also 80 bits and completely public, which is
+              why the field flags it &mdash; press <em>Generate a secret</em> for a
+              real 160-bit one.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What the six digits actually are</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>There is nothing to fetch</h3>
+            <p>Your phone and the server share one secret, agreed once at enrolment. Both divide the current Unix time by thirty to get the same integer, both compute an HMAC of it with that secret, and both cut the result down the same way. Put a phone in aeroplane mode for a year and it still produces the right code, because it was never asking anybody.</p>
+          </article>
+          <article class="info-card">
+            <h3>Why the code moves around inside the HMAC</h3>
+            <p>Dynamic truncation reads the last four bits of the digest, uses that as an offset, and takes the four bytes starting there. So the digits come from a different place in the MAC each step. A fixed slice would leak the same part of the output every time; this way an attacker collecting codes learns almost nothing about the rest of it.</p>
+          </article>
+          <article class="info-card">
+            <h3>The window is a clock allowance, not a security margin</h3>
+            <p>Servers accept the step before and after because phones drift and people type slowly. That is a usability decision with a cost: a code accepted with a &plusmn;1 window is live for up to ninety seconds, not thirty. Widening it further to reduce support tickets is the wrong lever &mdash; fix the clock instead.</p>
+          </article>
+          <article class="info-card">
+            <h3>Replay is the server&rsquo;s job, not the algorithm&rsquo;s</h3>
+            <p>Nothing in RFC 6238 stops the same code being used twice. The server has to remember the last counter it accepted for that user and refuse anything at or below it. Plenty of implementations skip that, which is how a code read over somebody&rsquo;s shoulder still works thirty seconds later on a different device.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Why TOTP beats SMS, and what still beats TOTP</h2>
+          <p>Both halves of this are worth saying out loud. TOTP is a genuine improvement over text messages, and it is not the end of the story.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>SMS is somebody else&rsquo;s network</h3>
+            <p>A code sent by text has to travel: through your carrier, through the interconnect, onto whichever SIM currently answers to your number. That gives you SIM swap, port-out fraud, SS7 interception, and a support agent at a phone company who can be talked into a transfer. TOTP has no delivery step at all. After enrolment nothing about the code ever crosses a network, so there is nothing to intercept and nobody to social-engineer.</p>
+          </article>
+          <article class="info-card">
+            <h3>Where TOTP still loses: the real-time relay</h3>
+            <p>A phishing proxy sits on a lookalike domain and forwards everything to the real site as you type. You enter the password, it relays it; the real site asks for a code, it asks you; you read the code off your phone, it relays that too &mdash; well inside the thirty seconds &mdash; and keeps the session cookie that comes back. The expiry never helps, because the attacker is not waiting. This is not exotic; the tooling for it is off the shelf.</p>
+          </article>
+          <article class="info-card">
+            <h3>Passkeys are the actual fix</h3>
+            <p>A passkey is a key pair bound to the origin it was created for. Signing in means signing a challenge from the site, and the browser will not sign one for a lookalike domain &mdash; not because it detects the phish, but because the wrong domain is simply not the same key. There is nothing to type, so nothing can be read aloud, screenshotted or relayed. That is a structural fix rather than a shorter window.</p>
+          </article>
+          <article class="info-card">
+            <h3>What to do in the meantime</h3>
+            <p>Turn on passkeys where they are offered. Use TOTP everywhere else, in preference to SMS. And treat the recovery codes as exactly what they are &mdash; a copy of the secret in plain sight &mdash; because the usual way an account with good two-factor falls over is a recovery flow, not a broken algorithm.</p>
+          </article>
+        </div>
+        <div class="lab-cta">
+          <p class="lab-cta-text">The longer version of this argument &mdash; why <strong>passkeys</strong> are a
+            different kind of thing rather than a better password, what a real-time proxy actually
+            does to a login, and what to do about passwords in the meantime &mdash; is written up
+            separately.</p>
+          <a class="btn btn-primary" href="/blog/passwords-passkeys-and-what-actually-protects-you">Read the article</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How I checked this, and what it does not do</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Against the published vectors</h3>
+            <p>The ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC 6238 Appendix B &mdash; six timestamps each for SHA-1, SHA-256 and SHA-512 &mdash; run in your browser when the page loads, and the toolbar shows the count. The hash implementations were also compared against a known-good library over several thousand random inputs while I was building this.</p>
+          </article>
+          <article class="info-card">
+            <h3>The QR encoder</h3>
+            <p>Written for this page: byte mode, error correction level M, versions 1 to 10. I checked it by decoding its own output back with a separately written reader &mdash; format bits, mask, de-interleaving, Reed-Solomon syndromes, the lot &mdash; and by comparing the format and version information against the published tables. If a URI is too long for version 10 the tool says so rather than drawing a square that will not scan.</p>
+          </article>
+          <article class="info-card">
+            <h3>The clock is your clock</h3>
+            <p>Everything here is computed from this device&rsquo;s system time. If that is wrong, the codes are wrong in exactly the way a real authenticator would be, which is the honest behaviour. The skew slider does not change your clock; it shows you what a device with that error would be producing right now.</p>
+          </article>
+          <article class="info-card">
+            <h3>What a real server has to do that this does not</h3>
+            <p>Verification here compares in constant time, which a server must also do. It does not do the rest of the server&rsquo;s job: rate-limiting attempts, refusing a counter it has already accepted, and storing the secret encrypted rather than in a column anyone with read access can select.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is my secret sent anywhere?</summary>
+            <div>No. The secret is decoded and the HMAC computed in this tab, and the QR is drawn on a canvas here rather than fetched from a chart service - which is how most online QR generators work, and the reason they end up holding your secret. There is no server in this tool and no request carrying anything you type is ever made. Open the Network tab and watch.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Did you actually check this against the RFC test vectors?</summary>
+            <div>Yes, and the page runs them in front of you. The toolbar shows the result of the ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC 6238 Appendix B, across SHA-1, SHA-256 and SHA-512. If one failed the toolbar would say so in red rather than quietly showing you wrong numbers. You can re-run them yourself: open the browser console and call TotpEngine.selfTest().</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Should I use this instead of an authenticator app?</summary>
+            <div>No. Use an authenticator app or a hardware key for accounts that matter. This page holds a secret in a text field so you can watch what happens to it, which is the right trade for understanding the mechanism and the wrong one for protecting an account.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does the code here not match my phone?</summary>
+            <div>Almost always the clock. TOTP has no channel to correct a drifting device, so a phone half a minute out shows the next window's code - drag the skew slider and you can watch that happen. If the clock is right, check the algorithm, the digit count and the step: a service using SHA-256, eight digits or a sixty-second period will not match the defaults.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>If TOTP can be phished, is it worth turning on?</summary>
+            <div>Yes. It removes the entire class of attacks that work on a password alone: credential stuffing, password reuse, and anything that falls out of a breach dump. What it does not remove is somebody being walked through a convincing login page in real time. Passkeys remove that, because the browser will not sign for the wrong origin.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a code does not match the one your app is showing, or a QR will not scan, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=totp#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20TOTP%20tool%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More security tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/hash">
+            <span class="lab-card-name">Hash generator</span>
+            <p class="lab-card-desc">The SHA family and HMAC on their own, for text or a file.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/jwt">
+            <span class="lab-card-name">JWT decoder</span>
+            <p class="lab-card-desc">The other place an HMAC decides whether you are logged in.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/password">
+            <span class="lab-card-name">Password strength</span>
+            <p class="lab-card-desc">The factor two-factor is protecting. Real entropy, real crack times.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/breach-check">
+            <span class="lab-card-name">Password breach check</span>
+            <p class="lab-card-desc">Whether the password behind the second factor is already public.</p>
+            <span class="lab-card-engine">Uses the network</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/totp.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

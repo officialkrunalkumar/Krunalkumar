@@ -1,0 +1,123 @@
+<svg width="1160" height="648" viewBox="0 0 1160 648" role="img" aria-labelledby="d-how-sim-swap-works-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-how-sim-swap-works-diagram1">The order in which accounts fall after a SIM swap, drawn as five steps with the check that was made at each one. Step one is the operator counter, where a replacement SIM is issued or the number is ported, and the check is a person comparing documents and personal details. Step two is your handset, which drops to no service, where nothing is checked because you are not part of the step. Step three is the email account, where a forgotten-password flow sends a code by SMS to the number and possession of the number is the only check. Step four is banking and UPI, where the app is set up on a new handset and the binding message is sent from that handset, checked against the number plus card details gathered elsewhere. Step five is the consequence: transfers, accounts and credit opened in your name, and contacts messaged. A rail below the chain states that after step two every door opens on one question, whether this person can receive an SMS at this number. A closing band shows the three places the chain breaks: an authenticator app instead of SMS, a passkey wherever it is offered, and the number removed as a recovery route.</title>
+
+  <text x="40" y="46" fill="#a3352f" font-size="20" font-weight="800" letter-spacing="3">THE ORDER THINGS FALL</text>
+  <text x="40" y="76" fill="#64748b" font-size="15">One record moved at an operator. Everything after it is the same check, asked five times by five different companies.</text>
+
+  <!-- 1. the counter -->
+  <g>
+    <rect x="40" y="104" width="188" height="210" rx="16" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <circle cx="70" cy="138" r="16" fill="#6b7a90"/>
+    <text x="70" y="144" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">1</text>
+    <text x="96" y="144" fill="#334155" font-size="15" font-weight="800">The counter</text>
+    <text x="56" y="180" fill="#64748b" font-size="13">A replacement SIM is</text>
+    <text x="56" y="199" fill="#64748b" font-size="13">issued, or the number</text>
+    <text x="56" y="218" fill="#64748b" font-size="13">is ported away.</text>
+    <line x1="56" y1="238" x2="212" y2="238" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="56" y="258" fill="#6b7a90" font-size="10.5" font-weight="800" letter-spacing="1">WHAT WAS CHECKED</text>
+    <text x="56" y="278" fill="#334155" font-size="12.5">A person, comparing</text>
+    <text x="56" y="296" fill="#334155" font-size="12.5">documents and details.</text>
+  </g>
+  <line x1="232" y1="209" x2="250" y2="209" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M250 201 l16 8 -16 8z" fill="#94a3b8"/>
+
+  <!-- 2. your handset -->
+  <g>
+    <rect x="263" y="104" width="188" height="210" rx="16" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <circle cx="293" cy="138" r="16" fill="#1e77a4"/>
+    <text x="293" y="144" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">2</text>
+    <text x="319" y="144" fill="#1e77a4" font-size="15" font-weight="800">Your handset</text>
+    <text x="279" y="180" fill="#64748b" font-size="13">Drops to no service. No</text>
+    <text x="279" y="199" fill="#64748b" font-size="13">alert, no mail, no call.</text>
+    <text x="279" y="218" fill="#1e77a4" font-size="13" font-weight="700">Your only warning.</text>
+    <line x1="279" y1="238" x2="435" y2="238" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="279" y="258" fill="#6b7a90" font-size="10.5" font-weight="800" letter-spacing="1">WHAT WAS CHECKED</text>
+    <text x="279" y="278" fill="#334155" font-size="12.5">Nothing. You are not</text>
+    <text x="279" y="296" fill="#334155" font-size="12.5">part of this step.</text>
+  </g>
+  <line x1="455" y1="209" x2="473" y2="209" stroke="#a3352f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M473 201 l16 8 -16 8z" fill="#a3352f"/>
+
+  <!-- 3. email -->
+  <g>
+    <rect x="486" y="104" width="188" height="210" rx="16" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+    <circle cx="516" cy="138" r="16" fill="#a3352f"/>
+    <text x="516" y="144" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">3</text>
+    <text x="542" y="144" fill="#a3352f" font-size="15" font-weight="800">The email</text>
+    <text x="502" y="180" fill="#64748b" font-size="13">Forgotten-password flow.</text>
+    <text x="502" y="199" fill="#64748b" font-size="13">The code arrives by SMS,</text>
+    <text x="502" y="218" fill="#64748b" font-size="13">at the number.</text>
+    <line x1="502" y1="238" x2="658" y2="238" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="502" y="258" fill="#6b7a90" font-size="10.5" font-weight="800" letter-spacing="1">WHAT WAS CHECKED</text>
+    <text x="502" y="278" fill="#a3352f" font-size="12.5" font-weight="700">Possession of the</text>
+    <text x="502" y="296" fill="#a3352f" font-size="12.5" font-weight="700">number. That is all.</text>
+  </g>
+  <line x1="678" y1="209" x2="696" y2="209" stroke="#a3352f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M696 201 l16 8 -16 8z" fill="#a3352f"/>
+
+  <!-- 4. bank and UPI -->
+  <g>
+    <rect x="709" y="104" width="188" height="210" rx="16" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+    <circle cx="739" cy="138" r="16" fill="#a3352f"/>
+    <text x="739" y="144" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">4</text>
+    <text x="765" y="144" fill="#a3352f" font-size="15" font-weight="800">Bank and UPI</text>
+    <text x="725" y="180" fill="#64748b" font-size="13">The app is set up on a</text>
+    <text x="725" y="199" fill="#64748b" font-size="13">new handset. Binding is</text>
+    <text x="725" y="218" fill="#64748b" font-size="13">an SMS from that phone.</text>
+    <line x1="725" y1="238" x2="881" y2="238" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="725" y="258" fill="#6b7a90" font-size="10.5" font-weight="800" letter-spacing="1">WHAT WAS CHECKED</text>
+    <text x="725" y="278" fill="#a3352f" font-size="12.5" font-weight="700">The number, plus card</text>
+    <text x="725" y="296" fill="#a3352f" font-size="12.5" font-weight="700">details from elsewhere.</text>
+  </g>
+  <line x1="901" y1="209" x2="919" y2="209" stroke="#a3352f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M919 201 l16 8 -16 8z" fill="#a3352f"/>
+
+  <!-- 5. money and identity -->
+  <g>
+    <rect x="932" y="104" width="188" height="210" rx="16" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <circle cx="962" cy="138" r="16" fill="#a3352f"/>
+    <text x="962" y="144" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">5</text>
+    <text x="988" y="144" fill="#a3352f" font-size="15" font-weight="800">The consequence</text>
+    <text x="948" y="180" fill="#64748b" font-size="13">Transfers. Accounts and</text>
+    <text x="948" y="199" fill="#64748b" font-size="13">credit opened in your</text>
+    <text x="948" y="218" fill="#64748b" font-size="13">name. Contacts messaged.</text>
+    <line x1="948" y1="238" x2="1104" y2="238" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="948" y="258" fill="#6b7a90" font-size="10.5" font-weight="800" letter-spacing="1">WHAT WAS CHECKED</text>
+    <text x="948" y="278" fill="#334155" font-size="12.5">Whatever step 3 and</text>
+    <text x="948" y="296" fill="#334155" font-size="12.5">step 4 already granted.</text>
+  </g>
+
+  <rect x="40" y="346" width="1080" height="56" rx="14" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+  <text x="64" y="380" fill="#a3352f" font-size="16" font-weight="800">AFTER STEP TWO, EVERY DOOR OPENS ON ONE QUESTION: CAN THIS PERSON RECEIVE AN SMS AT THIS NUMBER?</text>
+
+  <text x="40" y="444" fill="#157f41" font-size="18" font-weight="800" letter-spacing="2">WHERE THE CHAIN BREAKS</text>
+
+  <g>
+    <rect x="40" y="464" width="346" height="140" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="64" y="494" fill="#157f41" font-size="14.5" font-weight="800">An authenticator app instead of SMS</text>
+    <text x="64" y="520" fill="#64748b" font-size="13">The code is computed on the device from a</text>
+    <text x="64" y="540" fill="#64748b" font-size="13">secret stored when you enrolled. It never</text>
+    <text x="64" y="560" fill="#64748b" font-size="13">travels through the number, so re-pointing</text>
+    <text x="64" y="580" fill="#64748b" font-size="13">the number moves nothing. Breaks step 3.</text>
+  </g>
+
+  <g>
+    <rect x="407" y="464" width="346" height="140" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="431" y="494" fill="#157f41" font-size="14.5" font-weight="800">A passkey wherever it is offered</text>
+    <text x="431" y="520" fill="#64748b" font-size="13">The private key stays in the device and the</text>
+    <text x="431" y="540" fill="#64748b" font-size="13">signature is tied to the real site. There is</text>
+    <text x="431" y="560" fill="#64748b" font-size="13">no code in existence for anyone to receive,</text>
+    <text x="431" y="580" fill="#64748b" font-size="13">read out or repeat. Breaks steps 3 and 4.</text>
+  </g>
+
+  <g>
+    <rect x="774" y="464" width="346" height="140" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="798" y="494" fill="#157f41" font-size="14.5" font-weight="800">Number removed as a recovery route</text>
+    <text x="798" y="520" fill="#64748b" font-size="13">If a reset can still be finished by SMS, the</text>
+    <text x="798" y="540" fill="#64748b" font-size="13">stronger factor above it is decoration. The</text>
+    <text x="798" y="560" fill="#64748b" font-size="13">fallback is the door that is actually used.</text>
+    <text x="798" y="580" fill="#64748b" font-size="13">Closing it is what makes the other two hold.</text>
+  </g>
+
+  <text x="40" y="632" fill="#64748b" font-size="14.5">A swap is usually the last step of a longer job, not the whole job &#8212; steps 4 and 5 normally need details gathered before any of this began.</text>
+</svg>

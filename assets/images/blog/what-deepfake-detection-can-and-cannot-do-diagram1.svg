@@ -1,0 +1,171 @@
+<svg width="1160" height="700" viewBox="0 0 1160 700" role="img" aria-labelledby="d-what-deepfake-detection-can-and-cannot-do-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-deepfake-detection-can-and-cannot-do-diagram1">A grid showing which forensic signals survive each stage between the camera and you. C2PA manifests and EXIF are stripped as soon as a file passes through a chat app or a platform, quantisation tables are rewritten by every encoder that touches the file, and error level analysis, the noise floor and frequency peaks are progressively confounded by resizing and recompression until nothing readable is left.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE EACH SIGNAL DIES ON THE WAY TO YOU</text>
+
+  <!-- Column headers: the ordinary handling every shared file has already had -->
+  <g text-anchor="middle">
+    <text x="390" y="96" fill="#64748b" font-size="14">camera or</text>
+    <text x="390" y="116" fill="#64748b" font-size="14">model output</text>
+    <text x="558" y="96" fill="#64748b" font-size="14">opened and</text>
+    <text x="558" y="116" fill="#64748b" font-size="14">re-saved</text>
+    <text x="726" y="96" fill="#64748b" font-size="14">sent through</text>
+    <text x="726" y="116" fill="#64748b" font-size="14">a chat app</text>
+    <text x="894" y="96" fill="#64748b" font-size="14">posted to</text>
+    <text x="894" y="116" fill="#64748b" font-size="14">a platform</text>
+    <text x="1062" y="96" fill="#64748b" font-size="14">screenshotted</text>
+    <text x="1062" y="116" fill="#64748b" font-size="14">or filmed</text>
+  </g>
+  <line x1="40" y1="136" x2="1146" y2="136" stroke="#6b7a90" stroke-width="1" opacity="0.35"/>
+
+  <g>
+    <text x="40" y="178" fill="#6b7a90" font-size="17" font-weight="700">C2PA manifest</text>
+    <text x="40" y="202" fill="#64748b" font-size="14">a signed record of how the file was made</text>
+      <circle cx="390" cy="174" r="11" fill="#157f41"/>
+      <path d="M385 174 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="202" fill="#64748b" font-size="13" text-anchor="middle">signed</text>
+      <circle cx="558" cy="174" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="174" x2="563" y2="174" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="202" fill="#64748b" font-size="13" text-anchor="middle">claim added</text>
+      <circle cx="726" cy="174" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="721" y1="169" x2="731" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="731" y1="169" x2="721" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="202" fill="#64748b" font-size="13" text-anchor="middle">stripped</text>
+      <circle cx="894" cy="174" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="889" y1="169" x2="899" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="899" y1="169" x2="889" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="202" fill="#64748b" font-size="13" text-anchor="middle">stripped</text>
+      <circle cx="1062" cy="174" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="1057" y1="169" x2="1067" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="1067" y1="169" x2="1057" y2="179" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="202" fill="#64748b" font-size="13" text-anchor="middle">gone</text>
+    <line x1="40" y1="219" x2="1146" y2="219" stroke="#6b7a90" stroke-width="1" opacity="0.18"/>
+  </g>
+
+  <g>
+    <text x="40" y="256" fill="#6b7a90" font-size="17" font-weight="700">EXIF and XMP</text>
+    <text x="40" y="280" fill="#64748b" font-size="14">camera model, software, edit history</text>
+      <circle cx="390" cy="252" r="11" fill="#157f41"/>
+      <path d="M385 252 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="280" fill="#64748b" font-size="13" text-anchor="middle">written</text>
+      <circle cx="558" cy="252" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="252" x2="563" y2="252" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="280" fill="#64748b" font-size="13" text-anchor="middle">partly kept</text>
+      <circle cx="726" cy="252" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="721" y1="247" x2="731" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="731" y1="247" x2="721" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="280" fill="#64748b" font-size="13" text-anchor="middle">stripped</text>
+      <circle cx="894" cy="252" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="889" y1="247" x2="899" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="899" y1="247" x2="889" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="280" fill="#64748b" font-size="13" text-anchor="middle">stripped</text>
+      <circle cx="1062" cy="252" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="1057" y1="247" x2="1067" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="1067" y1="247" x2="1057" y2="257" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="280" fill="#64748b" font-size="13" text-anchor="middle">gone</text>
+    <line x1="40" y1="297" x2="1146" y2="297" stroke="#6b7a90" stroke-width="1" opacity="0.18"/>
+  </g>
+
+  <g>
+    <text x="40" y="334" fill="#6b7a90" font-size="17" font-weight="700">Quantisation tables</text>
+    <text x="40" y="358" fill="#64748b" font-size="14">which encoder wrote this exact copy</text>
+      <circle cx="390" cy="330" r="11" fill="#157f41"/>
+      <path d="M385 330 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="358" fill="#64748b" font-size="13" text-anchor="middle">camera's</text>
+      <circle cx="558" cy="330" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="330" x2="563" y2="330" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="358" fill="#64748b" font-size="13" text-anchor="middle">editor's</text>
+      <circle cx="726" cy="330" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="721" y1="330" x2="731" y2="330" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="358" fill="#64748b" font-size="13" text-anchor="middle">app's</text>
+      <circle cx="894" cy="330" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="889" y1="330" x2="899" y2="330" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="358" fill="#64748b" font-size="13" text-anchor="middle">platform's</text>
+      <circle cx="1062" cy="330" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="1057" y1="330" x2="1067" y2="330" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="358" fill="#64748b" font-size="13" text-anchor="middle">grabber's</text>
+    <line x1="40" y1="375" x2="1146" y2="375" stroke="#6b7a90" stroke-width="1" opacity="0.18"/>
+  </g>
+
+  <g>
+    <text x="40" y="412" fill="#6b7a90" font-size="17" font-weight="700">Error level analysis</text>
+    <text x="40" y="436" fill="#64748b" font-size="14">where compression history differs</text>
+      <circle cx="390" cy="408" r="11" fill="#157f41"/>
+      <path d="M385 408 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="436" fill="#64748b" font-size="13" text-anchor="middle">readable</text>
+      <circle cx="558" cy="408" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="408" x2="563" y2="408" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="436" fill="#64748b" font-size="13" text-anchor="middle">one layer on</text>
+      <circle cx="726" cy="408" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="721" y1="408" x2="731" y2="408" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="436" fill="#64748b" font-size="13" text-anchor="middle">muddied</text>
+      <circle cx="894" cy="408" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="889" y1="403" x2="899" y2="413" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="899" y1="403" x2="889" y2="413" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="436" fill="#64748b" font-size="13" text-anchor="middle">flattened</text>
+      <circle cx="1062" cy="408" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="1057" y1="403" x2="1067" y2="413" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="1067" y1="403" x2="1057" y2="413" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="436" fill="#64748b" font-size="13" text-anchor="middle">useless</text>
+    <line x1="40" y1="453" x2="1146" y2="453" stroke="#6b7a90" stroke-width="1" opacity="0.18"/>
+  </g>
+
+  <g>
+    <text x="40" y="490" fill="#6b7a90" font-size="17" font-weight="700">Noise floor</text>
+    <text x="40" y="514" fill="#64748b" font-size="14">sensor grain, region by region</text>
+      <circle cx="390" cy="486" r="11" fill="#157f41"/>
+      <path d="M385 486 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="514" fill="#64748b" font-size="13" text-anchor="middle">sensor grain</text>
+      <circle cx="558" cy="486" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="486" x2="563" y2="486" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="514" fill="#64748b" font-size="13" text-anchor="middle">resized</text>
+      <circle cx="726" cy="486" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="721" y1="486" x2="731" y2="486" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="514" fill="#64748b" font-size="13" text-anchor="middle">resized again</text>
+      <circle cx="894" cy="486" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="889" y1="481" x2="899" y2="491" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="899" y1="481" x2="889" y2="491" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="514" fill="#64748b" font-size="13" text-anchor="middle">smoothed away</text>
+      <circle cx="1062" cy="486" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="1057" y1="481" x2="1067" y2="491" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="1067" y1="481" x2="1057" y2="491" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="514" fill="#64748b" font-size="13" text-anchor="middle">screen grain</text>
+    <line x1="40" y1="531" x2="1146" y2="531" stroke="#6b7a90" stroke-width="1" opacity="0.18"/>
+  </g>
+
+  <g>
+    <text x="40" y="568" fill="#6b7a90" font-size="17" font-weight="700">Frequency peaks</text>
+    <text x="40" y="592" fill="#64748b" font-size="14">periodic upsampling artefacts</text>
+      <circle cx="390" cy="564" r="11" fill="#157f41"/>
+      <path d="M385 564 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="390" y="592" fill="#64748b" font-size="13" text-anchor="middle">generator's</text>
+      <circle cx="558" cy="564" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="553" y1="564" x2="563" y2="564" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="558" y="592" fill="#64748b" font-size="13" text-anchor="middle">resize peaks</text>
+      <circle cx="726" cy="564" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="721" y1="564" x2="731" y2="564" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="726" y="592" fill="#64748b" font-size="13" text-anchor="middle">more peaks</text>
+      <circle cx="894" cy="564" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+      <line x1="889" y1="564" x2="899" y2="564" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="894" y="592" fill="#64748b" font-size="13" text-anchor="middle">more peaks</text>
+      <circle cx="1062" cy="564" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+      <line x1="1057" y1="559" x2="1067" y2="569" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="1067" y1="559" x2="1057" y2="569" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1062" y="592" fill="#64748b" font-size="13" text-anchor="middle">screen moir&#233;</text>
+  </g>
+
+  <!-- Legend -->
+  <line x1="40" y1="614" x2="1146" y2="614" stroke="#6b7a90" stroke-width="1" opacity="0.35"/>
+  <g>
+    <circle cx="52" cy="650" r="11" fill="#157f41"/>
+    <path d="M47 650 l4 4.5 l7 -8.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="72" y="655" fill="#64748b" font-size="14">intact: as the source wrote it</text>
+    <circle cx="340" cy="650" r="11" fill="none" stroke="#93671a" stroke-width="2.5"/>
+    <line x1="335" y1="650" x2="345" y2="650" stroke="#93671a" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="360" y="655" fill="#64748b" font-size="14">overwritten: written by the last tool, not the source</text>
+    <circle cx="790" cy="650" r="11" fill="none" stroke="#d42b25" stroke-width="2.5"/>
+    <line x1="785" y1="645" x2="795" y2="655" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="795" y1="645" x2="785" y2="655" stroke="#d42b25" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="810" y="655" fill="#64748b" font-size="14">gone: nothing left to read</text>
+  </g>
+  <text x="40" y="690" fill="#64748b" font-size="15">Almost every file you are asked about arrives at the right-hand end. Absence of a signal there is the expected state, not evidence of a fake.</text>
+</svg>

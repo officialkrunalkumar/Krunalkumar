@@ -584,7 +584,17 @@ function urlToFile(loc, root) {
   p = p.split('?')[0].split('#')[0];
   if (p === '' || p === '/') return 'index.html';
   p = p.replace(/^\//, '').replace(/\/$/, '');
-  const candidates = [p, p + '.html', path.join(p, 'index.html')];
+  /* The last candidate is the fun/ rewrite. Seven pages — the two wish cards
+     and the five easter eggs — were moved into fun/ so the repository root
+     lists only the business pages, and vercel.json rewrites their original
+     top-level URLs onto that directory. A rewrite is not a redirect: /buddha
+     is still the address, so every link, share and sitemap <loc> is unchanged
+     and this resolver is the only thing that has to know the file moved.
+
+     Written as a candidate rather than a lookup table on purpose. Adding a
+     rewrite to vercel.json and forgetting this line would fail the sitemap
+     parity gate rather than ship a broken URL, which is the right failure. */
+  const candidates = [p, p + '.html', path.join(p, 'index.html'), path.join('fun', p + '.html')];
   for (const c of candidates) {
     /* isFile, not exists. /blog and /labs are real DIRECTORIES on disk, so the
        first candidate satisfied a bare existence test and this returned "blog"
@@ -806,6 +816,18 @@ const LLMS_COUNT_RULES = [
   ['llms.txt', [
     [/(prebuilt index of all )\d+( pages)/, 'pages'],
     [/(The )\d+( lab pages)/, 'labs'],
+    /* The three below were typed by hand and no rewrite had ever touched
+       them: the games hub's figure, and the language and machine counts,
+       which are spelled out rather than written as digits. They happened to
+       be right on the day this was added; nothing was keeping them that way,
+       which is the entire problem. The two word-form rules capture the text
+       BEFORE the figure so the spelled number itself is what gets replaced. */
+    [/(The )\d+( games, in)/, 'games'],
+    /* Group 1 is the text BEFORE the figure, never the figure itself — the
+       replacement is '$1' + value + '$2', so a rule that captures the old word
+       emits both and you get "ElevenEleven language playgrounds". */
+    [/(\): )[A-Za-z]+( language playgrounds)/, 'languages:Word'],
+    [/(, )[a-z]+( real machines)/, 'machines:word'],
   ]],
   ['llms-full.txt', [
     [/(index covering all )\d+( pages)/, 'pages'],
@@ -831,23 +853,94 @@ function labPageCount(root) {
     .filter((f) => !NON_LAB_FILES.has(path.basename(f))).length;
 }
 
+/* The two sub-counts the prose quotes that are NOT "every file under labs/".
+   Named by list rather than by number, for the same reason CSS_FILES is: a
+   number cannot tell you it has gone stale, and a list can be checked against
+   the disk. countFacts() below does exactly that and throws if a named lab has
+   been renamed away, so "eleven languages" cannot outlive the eleventh
+   language the way "Eleven languages" on five separate pages just did.
+
+   These are the two groups the labs hub sets apart under its own headings —
+   "Pick a language" and "Experience a real operating system" — which is where
+   the phrases in the prose come from. Adding a twelfth language means adding
+   it here, and then every page that quotes the figure updates itself. */
+const LANGUAGE_LABS = [
+  'c', 'cpp', 'javascript', 'lua', 'perl', 'php',
+  'postgres', 'python', 'ruby', 'sql', 'typescript',
+];
+const MACHINE_LABS = ['bsd', 'dos', 'linux'];
+
+/* Spelled-out forms, because the prose says "Eleven language playgrounds" and
+   not "11 language playgrounds" — the sentence is written for a reader, and a
+   rewrite that turned every one of them into a digit would be a downgrade
+   disguised as automation. Above twelve the spelled form stops helping, so
+   formatCount() falls back to digits and the sentence still reads. */
+const NUMBER_WORDS = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six',
+  'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve',
+];
+
+function formatCount(n, format) {
+  if (format === 'word' && n >= 0 && n < NUMBER_WORDS.length) return NUMBER_WORDS[n];
+  if (format === 'Word' && n >= 0 && n < NUMBER_WORDS.length) {
+    const w = NUMBER_WORDS[n];
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  }
+  return String(n);
+}
+
+/* ONE definition of every figure the site quotes about itself, so the colophon,
+   llms.txt and the prose on six other pages cannot disagree again. They already
+   did, and the surviving evidence is in the comments: og-cards.js opens by
+   calling it "66 games" and site-search.js explains itself twice with "59
+   labs", against a manifest holding 67 and a labs/ directory holding 62. Both
+   were true on the day they were typed. Nothing typed by hand stays true. */
+function countFacts(root, pages) {
+  root = root || ROOT;
+  const facts = {};
+
+  if (pages != null) facts.pages = pages;
+  facts.labs = labPageCount(root);
+  facts.posts = fs.readdirSync(path.join(root, 'blog'))
+    .filter((f) => f.endsWith('.html') && f !== 'index.html').length;
+  try {
+    facts.games = (require(path.join(root, 'scripts/games-data.js')).GAMES || []).length;
+  } catch (e) { facts.games = 0; }
+
+  /* Verify before publishing. A renamed lab that silently dropped out of one
+     of these lists would publish "ten languages" on a hub still showing
+     eleven cards, which is the exact failure this whole pass exists to end. */
+  const missing = [];
+  for (const slug of LANGUAGE_LABS.concat(MACHINE_LABS)) {
+    if (!fs.existsSync(path.join(root, 'labs', slug + '.html'))) missing.push(slug);
+  }
+  if (missing.length) {
+    throw new Error('build: LANGUAGE_LABS/MACHINE_LABS name labs that do not exist: ' +
+      missing.join(', ') + ' — fix the list in build.js, not the pages that quote it.');
+  }
+  facts.languages = LANGUAGE_LABS.length;
+  facts.machines = MACHINE_LABS.length;
+
+  return facts;
+}
+
 function doLlmsCounts(indexStats, root) {
   root = root || ROOT;
   log('');
   log('llms page counts');
-  const facts = {
-    pages: String(indexStats.pages),
-    labs: String(labPageCount(root)),
-  };
+  const facts = countFacts(root, indexStats.pages);
   for (const [rel, rules] of LLMS_COUNT_RULES) {
     const abs = path.join(root, rel);
     if (!fs.existsSync(abs)) { log('  SKIP  ' + rel + ' (not found)'); continue; }
     const src = fs.readFileSync(abs, 'utf8');
     let out = src;
     let missing = 0;
-    for (const [re, key] of rules) {
+    for (const [re, spec] of rules) {
       if (!re.test(out)) { missing += 1; continue; }
-      out = out.replace(re, '$1' + facts[key] + '$2');
+      /* "key" or "key:format" — the format suffix is what lets one fact
+         render as 11 in one sentence and "Eleven" in another. */
+      const [key, format] = String(spec).split(':');
+      out = out.replace(re, '$1' + formatCount(facts[key], format) + '$2');
     }
     const state = out === src ? 'already current'
       : (CHECK ? 'would update' : 'updated');
@@ -936,23 +1029,31 @@ function doJsonLd(root) {
    -------------------------------------------------------------------------- */
 const NOINDEX_PAGES = new Set([
   '404.html',
-  'teapot.html',
-  'terminal.html',
-  'einstein.html',
+  'fun/teapot.html',
+  'fun/terminal.html',
+  'fun/einstein.html',
   // The two wish cards. They have no content of their own — everything on
   // them arrives in the query string — so a crawled copy shows no name at
   // all, and indexing them would put three pages in front of the same query.
   // The tool that BUILDS them, /labs/wish-generator, is indexed instead.
-  'birthday.html',
-  'festival.html',
+  'fun/birthday.html',
+  'fun/festival.html',
   'labs/hacklab-guestbook.html',
   'google46d0a7ad3f01b5a6.html',
   'offline.html',   // the SW's navigation fallback — reachable only offline
 ]);
 
+/* The inverse of urlToFile, and it has to agree with it about fun/ or the
+   parity gate reports a page missing from a sitemap that lists it correctly.
+   A file in fun/ is SERVED at the root by a vercel.json rewrite, so its URL
+   is the one without the directory — /buddha, not /fun/buddha. Anything else
+   in fun/ that is noindex never reaches this function, because the gate has
+   already dropped NOINDEX_PAGES. */
 function fileToUrl(rel) {
   if (rel === 'index.html') return '/';
-  return '/' + rel.replace(/\.html$/, '').replace(/\/index$/, '');
+  const stripped = rel.replace(/\.html$/, '').replace(/\/index$/, '');
+  if (stripped.indexOf('fun/') === 0) return '/' + stripped.slice(4);
+  return '/' + stripped;
 }
 
 function doSitemapParity(root) {
@@ -1019,10 +1120,10 @@ function doSitemapParity(root) {
    a page that lost its static header is damage, not a new exclusion.
    -------------------------------------------------------------------------- */
 const CHROMELESS = new Set([
-  'teapot.html',                  // full-screen easter egg, no navigation by design
-  'terminal.html',                // ditto
-  'birthday.html',                // a card somebody was sent; a nav bar would make it a website
-  'festival.html',                // ditto
+  'fun/teapot.html',                  // full-screen easter egg, no navigation by design
+  'fun/terminal.html',                // ditto
+  'fun/birthday.html',                // a card somebody was sent; a nav bar would make it a website
+  'fun/festival.html',                // ditto
   'labs/hacklab-guestbook.html',  // sandboxed document inside HackLab's iframe
   'google46d0a7ad3f01b5a6.html',  // Search Console token, never rendered
   'offline.html',                 // self-contained by design: it must render with zero network
@@ -1168,8 +1269,8 @@ const SW_PRECACHED_PAGES = [
   'labs/resume-maker.html',
   'labs/biodata-maker.html',
   'labs/wish-generator.html',
-  'birthday.html',
-  'festival.html',
+  'fun/birthday.html',
+  'fun/festival.html',
   /* Added when /offline stopped being a JS-free page. It now loads
      offline.js to build its lists from the real cache, and a precached page
      whose script is NOT precached is the worst version of this bug: the page
@@ -1542,6 +1643,99 @@ function writeColophon(pages) {
   log('  updated ' + changed + ' figure(s)');
 }
 
+/* --------------------------------------------------------------------------
+   8b. Every OTHER page's self-counts
+   --------------------------------------------------------------------------
+   The colophon pass above solved this for one page and stopped there, so the
+   same numbers went on being typed by hand everywhere else: "Eleven language
+   playgrounds" on the homepage, on /services and on four lab pages; "11
+   languages" three times in the labs hub's own <head>; "10 posts" on the blog
+   index. Six files, one fact, and no way for any of them to notice they had
+   gone stale — which is how /labs came to advertise 11 languages in its meta
+   description on a hub whose sitemap the same build was gating for accuracy.
+
+   Same mechanism as the colophon, widened to every HTML file: a figure is a
+   <span data-count="key"> and this rewrites its text. The optional
+   data-count-format="word" renders it spelled out, because these sentences
+   are prose and "11 language playgrounds" reads worse than the thing it
+   replaced. Values committed to the files are the last deploy's, so the repo
+   copy is always right; the next deploy after a page lands corrects it.
+
+   A <head> cannot hold a <span>, so meta descriptions and og:description are
+   handled by the same key list applied to attribute text — see COUNT_META
+   below. Those anchor on the words around the number exactly the way the llms
+   rules do, and a reworded sentence stops matching and is reported rather
+   than being silently half-rewritten.
+   -------------------------------------------------------------------------- */
+
+/* [file, regexp, 'key' or 'key:format'] — for the figures that live inside a
+   <meta content="..."> where markup is not available. */
+const COUNT_META = [
+  ['labs/index.html', /(Free online compilers for )\d+( languages)/g, 'languages'],
+];
+
+function writeCounts(pages) {
+  log('');
+  log('page counts');
+
+  let facts;
+  try { facts = countFacts(ROOT, pages); }
+  catch (e) { log('  FAIL  ' + e.message); throw e; }
+
+  let filesChanged = 0;
+  let figures = 0;
+  let metaHits = 0;
+
+  for (const rel of listHtmlPages(ROOT)) {
+    const abs = path.join(ROOT, rel);
+    const before = fs.readFileSync(abs, 'utf8');
+    let after = before;
+
+    after = after.replace(
+      /(<span([^>]*\sdata-count="([a-z]+)"[^>]*)>)([^<]*)(<\/span>)/g,
+      (all, open, attrs, key, value, close) => {
+        if (!(key in facts)) return all;
+        const fm = /\sdata-count-format="([A-Za-z]+)"/.exec(attrs);
+        const next = formatCount(facts[key], fm ? fm[1] : null);
+        if (next === value) return all;
+        figures += 1;
+        return open + next + close;
+      }
+    );
+
+    for (const [target, re, spec] of COUNT_META) {
+      if (target !== rel) continue;
+      /* These are /g regexes and .test() advances lastIndex on them, so a
+         test-then-replace pair silently skips the first match. Reset before
+         each use rather than relying on replace() to do it. */
+      re.lastIndex = 0;
+      if (!re.test(after)) {
+        log('  NOTE  ' + rel + ': a count phrase in <head> no longer matches; not rewritten');
+        continue;
+      }
+      re.lastIndex = 0;
+      const [key, format] = String(spec).split(':');
+      after = after.replace(re, (m, a, b) => {
+        const next = a + formatCount(facts[key], format) + b;
+        /* Count what CHANGED, not what matched. Counting matches made every
+           build report "3 head phrase(s)" on a file it had not touched. */
+        if (next !== m) metaHits += 1;
+        return next;
+      });
+    }
+
+    if (after !== before) {
+      filesChanged += 1;
+      if (!CHECK) fs.writeFileSync(abs, after);
+    }
+  }
+
+  log('  facts: ' + Object.keys(facts).map((k) => k + '=' + facts[k]).join('  '));
+  if (!filesChanged) { log('  already current, nothing to write'); return; }
+  log('  ' + (CHECK ? 'would update ' : 'updated ') + figures + ' figure(s) and ' +
+      metaHits + ' head phrase(s) across ' + filesChanged + ' file(s)');
+}
+
 function verifyOutput() {
   log('');
   log('output check');
@@ -1581,6 +1775,7 @@ function verifyOutput() {
 
   log('  ' + MUST_EXIST.length + ' critical files present and intact, ' + pages + ' HTML pages');
   writeColophon(pages);
+  writeCounts(pages);
 }
 
 /* -------------------------------------------------------------------------- */

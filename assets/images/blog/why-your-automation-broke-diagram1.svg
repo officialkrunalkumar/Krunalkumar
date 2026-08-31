@@ -1,0 +1,82 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-why-your-automation-broke-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-why-your-automation-broke-diagram1">Two shapes of failure compared. In the loud failure a run starts, a step returns an error, the platform retries and parks the run, and an error alert reaches a human the same day. In the silent failure the trigger stops firing after a token is revoked, so no step runs, nothing raises an error, there is no failed run to retry and no alert is ever sent, and the outage is found weeks later by a customer. A guard band below shows the only check that catches the second shape: an alert that fires when the count of successful runs in a window falls to zero.</title>
+  <defs>
+    <marker id="brk-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">THE TWO SHAPES OF FAILURE</text>
+
+    <!-- Loud failure -->
+    <text x="40" y="98" fill="#157f41" font-size="15" font-weight="800" letter-spacing="2">THE ONE YOU FIND OUT ABOUT</text>
+
+    <rect x="40" y="114" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="148" fill="#6b7a90" font-size="17" font-weight="800">1 &#183; The run starts</text>
+    <text x="62" y="180" fill="#64748b" font-size="15">The trigger fires at 09:00</text>
+    <text x="62" y="206" fill="#64748b" font-size="15">and fetches the record</text>
+    <text x="62" y="232" fill="#64748b" font-size="15">it was going to process</text>
+
+    <rect x="324" y="114" width="244" height="132" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="346" y="148" fill="#6b7a90" font-size="17" font-weight="800">2 &#183; A step fails</text>
+    <text x="346" y="180" fill="#64748b" font-size="15">The CRM answers with</text>
+    <text x="346" y="206" fill="#a3352f" font-size="15" font-weight="700">HTTP 422, field unknown</text>
+    <text x="346" y="232" fill="#64748b" font-size="15">The run raises an error</text>
+
+    <rect x="608" y="114" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="630" y="148" fill="#6b7a90" font-size="17" font-weight="800">3 &#183; Something reacts</text>
+    <text x="630" y="180" fill="#64748b" font-size="15">Retries, then the run is</text>
+    <text x="630" y="206" fill="#64748b" font-size="15">parked as failed with</text>
+    <text x="630" y="232" fill="#64748b" font-size="15">its input kept intact</text>
+
+    <rect x="892" y="114" width="244" height="132" rx="12" fill="#157f41"/>
+    <text x="914" y="148" fill="#ffffff" font-size="17" font-weight="800">4 &#183; You hear it</text>
+    <text x="914" y="180" fill="#ffffff" font-size="15">An alert names the run,</text>
+    <text x="914" y="206" fill="#ffffff" font-size="15">the step and the error.</text>
+    <text x="914" y="232" fill="#ffffff" font-size="15">Fixed the same day.</text>
+
+    <line x1="284" y1="180" x2="318" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+    <line x1="568" y1="180" x2="602" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+    <line x1="852" y1="180" x2="886" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+
+    <!-- Silent failure -->
+    <text x="40" y="292" fill="#a3352f" font-size="15" font-weight="800" letter-spacing="2">THE ONE THAT COSTS YOU THE CLIENT</text>
+
+    <rect x="40" y="308" width="244" height="132" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="62" y="342" fill="#6b7a90" font-size="17" font-weight="800">1 &#183; Nothing starts</text>
+    <text x="62" y="374" fill="#64748b" font-size="15">The refresh token was</text>
+    <text x="62" y="400" fill="#a3352f" font-size="15" font-weight="700">revoked on Tuesday</text>
+    <text x="62" y="426" fill="#64748b" font-size="15">The trigger stops polling</text>
+
+    <rect x="324" y="308" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="346" y="342" fill="#6b7a90" font-size="17" font-weight="800">2 &#183; Nothing fails</text>
+    <text x="346" y="374" fill="#64748b" font-size="15">No step executed, so no</text>
+    <text x="346" y="400" fill="#64748b" font-size="15">step raised an error.</text>
+    <text x="346" y="426" fill="#64748b" font-size="15">The log is simply empty.</text>
+
+    <rect x="608" y="308" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="630" y="342" fill="#6b7a90" font-size="17" font-weight="800">3 &#183; Nothing reacts</text>
+    <text x="630" y="374" fill="#64748b" font-size="15">No failed run to retry.</text>
+    <text x="630" y="400" fill="#64748b" font-size="15">Nothing lands in the</text>
+    <text x="630" y="426" fill="#64748b" font-size="15">dead-letter queue.</text>
+
+    <rect x="892" y="308" width="244" height="132" rx="12" fill="#a3352f"/>
+    <text x="914" y="342" fill="#ffffff" font-size="17" font-weight="800">4 &#183; Nobody hears</text>
+    <text x="914" y="374" fill="#ffffff" font-size="15">0 errors. 0 alerts.</text>
+    <text x="914" y="400" fill="#ffffff" font-size="15">Found three weeks on,</text>
+    <text x="914" y="426" fill="#ffffff" font-size="15">by a customer asking.</text>
+
+    <line x1="284" y1="374" x2="318" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+    <line x1="568" y1="374" x2="602" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+    <line x1="852" y1="374" x2="886" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#brk-arr)"/>
+
+    <!-- The guard -->
+    <rect x="40" y="468" width="1096" height="88" rx="12" fill="none" stroke="#157f41" stroke-width="2" stroke-dasharray="9 7"/>
+    <text x="64" y="496" fill="#157f41" font-size="16" font-weight="800">The guard that catches the second row</text>
+    <text x="64" y="522" fill="#6b7a90" font-size="15">Every error alarm you own is wired to the top row. Add one that is wired to the bottom row: alert when the count of</text>
+    <text x="64" y="546" fill="#6b7a90" font-size="15">successful runs in the last window is zero. It is the only check whose input is an absence rather than an event.</text>
+
+    <text x="40" y="588" fill="#64748b" font-size="15">Monitoring errors tells you that a run went wrong. Only counting runs tells you that a run never happened &#8212;</text>
+    <text x="40" y="612" fill="#64748b" font-size="15">and a workflow that has stopped running is the failure mode that stays hidden the longest.</text>
+  </g>
+</svg>

@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Why a hot, fast-draining phone is almost never hacked, why it is not listening to you, the six signals that do matter, and the checks to run on Android and iOS."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Why Your Phone Feels Hacked, and Probably Is Not" />
+    <meta
+      property="og:description"
+      content="The dull explanations are usually the right ones. Why the phone is not listening, the six signals that do matter, and the checks you can run yourself in twenty minutes."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-phone-feels-hacked-and-probably-is-not.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A phone screen listing four possible explanations, three of them cleared and one flagged for attention" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why Your Phone Feels Hacked, and Probably Is Not" />
+    <meta
+      name="twitter:description"
+      content="The dull explanations are usually the right ones. Why the phone is not listening, the six signals that do matter, and the checks you can run yourself in twenty minutes."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-phone-feels-hacked-and-probably-is-not.jpg" />
+    <title>Why Your Phone Feels Hacked | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why Your Phone Feels Hacked, and Probably Is Not",
+        "description": "The most common question an ordinary person brings to a security person, answered without dismissiveness and without fear: the ordinary explanations for heat and battery drain, why the phone is not listening to your conversations, the six signals that do warrant concern, the checks anyone can run on Android and iOS, an honest section on stalkerware and safety, and when a factory reset will not help.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-phone-feels-hacked-and-probably-is-not.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not"
+        },
+        "keywords": "phone hacked, mobile security, stalkerware, accessibility service abuse, SIM swap, account sessions, mail forwarding rule, factory reset, ad targeting, Android security, iOS security"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "Why Your Phone Feels Hacked", "item": "https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can someone hack my phone just from my number?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not in the way the phrase suggests. A number lets somebody send you things — a message with a link, a call, an invitation to install something — and every one of those still needs you to act before it works. What a number does enable without your involvement is an attack on the number itself: persuading your operator to move it to a new SIM, after which every code sent by text arrives on somebody else's phone. That is why moving your important second factors off SMS buys more safety than any app you could install."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "My battery drains fast and the phone gets hot. Does that mean spyware?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Almost never on its own. Battery capacity falls with age and with heat, so a two-year-old phone genuinely lasts less than it did when you bought it. A major operating system update makes the phone re-index photos and search for several days. And one app that changed in the last week is the single most common cause of a sudden overnight difference. Check the battery screen for one app you cannot explain, check that storage is not nearly full, and give the phone a week after an update. If the drain survives all three, it is worth looking further."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my phone listening to my conversations to choose adverts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The evidence says no, and the real explanation is more interesting than the myth. Both platforms now show an indicator whenever the microphone is live and keep a log you can read, so a permanently listening app would be visible; continuous audio would also cost battery and data that somebody would have measured by now. What actually happens is that ad networks already link your devices to the people around you through a shared home connection, shared logins, uploaded contact lists and overlapping locations, so a search somebody else made can select the advert you see. Then memory does the rest: you scroll past thousands of adverts a week and remember only the handful that echo something recent."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "I received a one-time code I did not ask for. What should I do?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Treat it as somebody standing at your door holding your key. Do not read the code out to anyone, whatever they claim to be, and do not approve a sign-in prompt you did not start. Change that account's password from a different device you trust, sign out every other session, and then check the account for a forwarding rule or a recovery address you did not create. One stray code can be a wrong number. A second one is not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will an antivirus app tell me if my phone is compromised?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Much less than the advertising implies. On iOS an app cannot inspect other apps at all, so anything sold as an iPhone virus scanner is checking almost nothing. On Android, Play Protect and the reputable scanners do catch commodity stalkerware and known malicious apps, which is worth having and is already built into the phone. Neither will find a targeted implant, and neither is a substitute for the account checks, because the account is where the real finding usually is."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does a factory reset fix a hacked phone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It fixes the device and nothing else. A reset removes apps, permissions, device administrators and configuration profiles, so if the problem lived on the phone it is genuinely gone. It does not sign out a session on your account, delete a mail-forwarding rule, revoke a third-party app's access, or move your number back after a SIM swap. And restoring from a backup taken while the problem existed puts the problem straight back, which is why people conclude the reset did not work. Fix the accounts first, then reset, then set the phone up as new."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Somebody I live with may have put something on my phone. What is the safe first step?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not a technical one. Monitoring tools report, so removing one tells the person watching that you found it, and the period after surveillance stops is a known point of escalation. Use a device that person cannot reach, and speak to a support organisation before you change anything on the phone, so that there is a plan covering your safety rather than only the software. In India that means 181 for the women's helpline, 112 in an emergency, and cybercrime.gov.in or 1930 to report. If evidence might matter later, photograph what you found rather than deleting it."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Why Your Phone Feels Hacked</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>Why your phone feels hacked, and probably is not</h1>
+          <p class="hero-text">
+            The phone runs hot, the battery is gone by four in the afternoon, and an advert turns up for the exact
+            thing you were talking about at lunch. This is the question I am asked more than any other, by people
+            who are not in security and who are usually being brushed off or frightened rather than answered. So:
+            what is actually causing each of those, the six signals that would change my mind, the checks you can
+            run yourself in twenty minutes, and the part about stalkerware where the safety advice comes before
+            the technical advice.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 24 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/phone-hacked-cover.svg" alt="A phone screen listing four possible explanations, three of them cleared and one flagged for attention" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-question-i-get-most">The question I get most</a></li>
+                <li><a href="#start-with-the-dull-explanations">Start with the dull explanations</a></li>
+                <li><a href="#my-phone-is-listening-to-me">"My phone is listening to me"</a></li>
+                <li><a href="#the-six-signals-that-do-matter">The six signals that do matter</a></li>
+                <li><a href="#the-checks-you-can-run-yourself">The checks you can run yourself</a></li>
+                <li><a href="#the-permission-nobody-checks">The permission almost nobody checks</a></li>
+                <li><a href="#stalkerware-honestly">Stalkerware, honestly</a></li>
+                <li><a href="#when-a-factory-reset-helps">When a factory reset helps</a></li>
+                <li><a href="#what-keeps-a-phone-boring">What keeps a phone boring</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-question-i-get-most">The question I get most</h2>
+              <p>
+                Of everything an ordinary person brings to somebody who works in security, this arrives most
+                often, and it usually arrives sideways — at the end of a call about something else, or as a
+                message that opens with an apology for asking. It comes from relatives, from a client's office
+                manager, from people who found this site looking for something else entirely. The phone is
+                behaving strangely and they want to know whether somebody is in it.
+              </p>
+              <p>
+                There are two standard answers and both are bad. The first is the shrug: phones get hot, you are
+                imagining it, buy a new one. That is comfortable to give and it is wrong often enough to matter,
+                because sometimes the person is right and there is a real signal underneath the noise. The second
+                is the upsell: you may well be infected, here is a scanner, here is a subscription. That answer
+                sells anxiety back to the person who arrived carrying it.
+              </p>
+              <p>
+                The useful answer is a triage, and it starts with a structural fact that reorders everything that
+                follows. When something has genuinely gone wrong, it is far more often the <em>accounts</em> than
+                the <em>device</em>. Compromising a modern phone at the operating-system level is difficult and
+                expensive; it is done, but it is done to specific people for specific reasons. Adding a forwarding
+                rule to a mailbox costs an attacker nothing beyond a password somebody reused. So the checks in
+                this article run in that order — accounts first, phone second — which is the opposite of where
+                everybody's attention naturally goes.
+              </p>
+              <p>
+                I cannot tell you your phone is fine. I have not seen it, and anyone who declares a device clean
+                from a description is guessing. What I can give you is the same order I work through, the reasons
+                each step is where it is, and an honest statement of what each check does and does not prove.
+              </p>
+
+              <h2 id="start-with-the-dull-explanations">Start with the dull explanations, because they are usually right</h2>
+              <p>
+                Almost every symptom in the original message — heat, drain, slowness, storage warnings, a phone
+                that "isn't what it was" — has an ordinary cause that is genuinely more likely than any attacker.
+                Working through these first is not a way of dismissing the question. It is what makes the real
+                signals visible, because a signal is only a signal once the noise is accounted for.
+              </p>
+              <ul>
+                <li>
+                  <strong>The battery is older than you think.</strong> Lithium-ion cells lose capacity with every
+                  charge cycle and lose it faster in heat, which is why a phone that lives in a car or a pocket in
+                  an Indian summer ages quickly. Both platforms will show you a battery health figure. Once
+                  capacity has fallen far enough, the phone also begins limiting peak performance to avoid sudden
+                  shutdowns — so the same worn cell produces both the drain and the sluggishness, and neither is
+                  software.
+                </li>
+                <li>
+                  <strong>One app changed last week.</strong> The most common cause of "it was fine and then
+                  overnight it wasn't" is an app that updated and started doing more in the background. The
+                  battery screen on both platforms breaks usage down per app and separates foreground from
+                  background time. You are looking for one name near the top that you cannot account for — a
+                  social app, a delivery app, anything that has decided it needs your location continuously.
+                </li>
+                <li>
+                  <strong>You just took a major update.</strong> For several days after an operating system
+                  upgrade the phone is genuinely busy: re-analysing the photo library, rebuilding the search
+                  index, re-optimising installed apps. It gets warm, it drains, and it does this mostly while
+                  charging overnight, which is exactly when people notice. It also stops on its own. Give an
+                  update a week before concluding anything.
+                </li>
+                <li>
+                  <strong>Thermal throttling.</strong> A warm phone slows itself down deliberately. Direct sun, a
+                  thick case, fast charging while gaming, or a car mount on a dashboard will all do it. The
+                  experience — everything suddenly laggy, for no visible reason — is precisely what people
+                  describe when they suspect something is stealing the processor.
+                </li>
+                <li>
+                  <strong>Storage pressure.</strong> A phone that is nearly full behaves like a broken one. Caches
+                  are evicted and rebuilt constantly, apps get killed and reloaded instead of resuming, updates
+                  fail halfway, and the camera stutters. Below roughly a tenth free, this stops being a warning
+                  and starts being the explanation for everything else.
+                </li>
+                <li>
+                  <strong>It is the network, not the phone.</strong> A congested cell at 7pm, a crowded wifi
+                  channel in an apartment block, or a router that has been up for eleven months will make every
+                  app feel wrong at once. When everything is slow and nothing is specific, test the same tasks on
+                  a different connection before you look at the device.
+                </li>
+              </ul>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>Why this order, and not out of politeness.</strong> If you go looking for an attacker
+                  first, every ordinary symptom becomes evidence, and you will find a pattern because you are
+                  looking for one. Clear the mundane causes and one of two things happens: the symptom goes away,
+                  which is the answer; or it survives, and you now have something specific that is genuinely worth
+                  taking seriously. Both outcomes are useful. Neither requires you to install anything.
+                </p>
+              </div>
+
+              <h2 id="my-phone-is-listening-to-me">"My phone is listening to me"</h2>
+              <p>
+                This is the most interesting question in the set, and the honest answer is more unsettling than
+                the myth rather than less. Let me be precise about each piece, because vagueness here is what
+                keeps the story alive.
+              </p>
+              <p>
+                <strong>What is technically true.</strong> An app you have granted microphone access to can
+                record. That capability is real and it is not disputed. What has changed is that it is no longer
+                invisible: both platforms now light an on-screen indicator whenever the microphone is live, and
+                both keep a log you can read afterwards — the App Privacy Report on iOS, the Privacy Dashboard on
+                Android. An app that listened continuously would be leaving a trail on your own screen, all day,
+                every day.
+              </p>
+              <p>
+                <strong>What is expensive.</strong> Turning ambient audio into advertising signal means either
+                shipping the audio somewhere, which shows up in mobile data, or running speech recognition on the
+                device, which shows up in battery. At the scale that would be needed — hundreds of millions of
+                phones, continuously — this is not a subtle cost, and the academic groups who have gone looking
+                for it by intercepting the traffic of thousands of Android apps did not find covert always-on
+                audio. What they did find is worth knowing anyway: apps quietly sending recordings of their own
+                screens, including what users typed into them, off to analytics companies. The surveillance was
+                real. It just was not the microphone.
+              </p>
+              <p>
+                <strong>The one documented exception, stated exactly.</strong> A number of apps have shipped
+                advertising code that listens for inaudible audio beacons — tones embedded in television adverts
+                and shop displays, designed to tell an advertiser that this phone was in the room when that
+                advert played. That is genuine, it has drawn regulatory attention, and it is a real invasion. It
+                is also not a transcript of your conversation, and the distinction matters, because people who
+                are told a vague scary thing stop looking, while people who are told the specific thing can go
+                and check.
+              </p>
+              <p>
+                <strong>So why does it feel so exact?</strong> Because two duller mechanisms are working together,
+                and each is individually stronger than a microphone would be.
+              </p>
+              <ol>
+                <li>
+                  <strong>The identity graph did it.</strong> Ad networks link devices to each other long before
+                  anyone says anything out loud. Two phones and a laptop on the same home connection share a
+                  public address. A person signed into the same account on both is one profile. An app that
+                  either of you allowed to read the address book has uploaded the other's number. Two devices in
+                  the same place every evening are related, and can be sold as such. So when your brother searches
+                  for a treadmill on the flat's wifi, the advert that arrives on your phone two days later is not
+                  responding to your sentence. It is responding to his click, and you are attached to him by five
+                  separate joins.
+                </li>
+                <li>
+                  <strong>You are keeping a very biased tally.</strong> You are shown an enormous number of
+                  adverts each week and remember essentially none of them. The only ones that survive into memory
+                  are the ones that land near something salient — a conversation you had, a worry you have. A hit
+                  becomes a story you tell people. A miss evaporates without ever being counted. That is enough,
+                  on its own, to turn ordinary coincidence into what feels like proof.
+                </li>
+              </ol>
+              <p>
+                And there is a third possibility that people dislike but which is often the real one: you searched
+                for it yourself and forgot. Conversations and searches cluster around the same preoccupations.
+                You mentioned the treadmill out loud <em>because</em> you had been thinking about it, and you had
+                been thinking about it because you looked something up on Tuesday evening.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/why-your-phone-feels-hacked-and-probably-is-not-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/why-your-phone-feels-hacked-and-probably-is-not-diagram2.svg" alt="Three panels showing how an advert can follow a spoken conversation without a microphone: the signals an ad network already holds to link two devices, the two-day sequence in which a search on one device selects the advert shown on the other, and a scale drawing of a week of adverts in which the ones remembered are a sliver of the ones seen" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Nothing in this path needs a word you said aloud. The uncanny feeling comes from the order events happen in, and from the fact that misses are never counted. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                You can settle this for your own phone in about a minute, which is the part I like. Open the
+                Privacy Dashboard on Android or the App Privacy Report on iOS and read which apps used the
+                microphone, and when. If your phone were listening, that log would say so. If the log is empty and
+                the adverts still land, you have your answer, and it is the graph.
+              </p>
+              <p>
+                None of which means the targeting is harmless. It is genuinely invasive, and being invasive by
+                inference rather than by microphone does not make it better — it makes it cheaper, which is worse.
+                The fixes are the boring ones: revoke microphone access from every app that has no business with
+                it, reset the advertising identifier, and turn off cross-app tracking. If you want to see the
+                other half of what is inferred about you, photographs are a good place to start, because a picture
+                straight off a phone often carries the coordinates it was taken at —
+                <a href="/labs/exif">the EXIF viewer</a> reads that
+                <a href="/glossary#term-metadata">metadata</a> in your browser without uploading anything.
+              </p>
+
+              <h2 id="the-six-signals-that-do-matter">The six signals that do matter, in order</h2>
+              <p>
+                These are ranked by two things multiplied together: how strongly the signal points at a real
+                compromise, and how often it turns out to be real rather than innocent. Notice that the first
+                three are not on the phone at all.
+              </p>
+              <ol>
+                <li>
+                  <p>
+                    <strong>A session or a linked device you do not recognise.</strong> This is first because it
+                    is direct evidence rather than inference. Your Google account, your Apple Account, your
+                    Microsoft account and most social apps keep a list of everywhere you are signed in, with a
+                    rough location and a last-used time. The one that catches the most, in my experience of being
+                    asked, is WhatsApp's linked devices list: a web session opened months ago on a shared laptop
+                    or at a cousin's house is still live, still receiving every message, and nobody remembers
+                    creating it. A device on that list you cannot account for is a finding. Act on it before you
+                    finish reading this article.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <strong>A mail rule or forwarding address you did not create.</strong> Second because it is
+                    the attacker's persistence, and because it survives the thing people do first. Somebody gets
+                    into a mailbox, adds a rule that copies anything matching "bank", "OTP" or "invoice" to an
+                    outside address, and then the victim changes their password and believes it is over. The rule
+                    keeps working. A crueller variant files those messages straight into Archive so the alerts
+                    never appear at all. These rules live on the mail server, not in your phone's mail app, so
+                    they are invisible unless you go and look at them in the account settings.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <strong>A device administrator, work profile or configuration profile on a personal phone.</strong>
+                    This is the mechanism that hands another party real power over the device — installing apps,
+                    applying restrictions, sometimes seeing traffic, and wiping it. On a phone your employer gave
+                    you it is expected and correct. On a phone you bought yourself, with no work account on it,
+                    somebody put it there. Android calls it device admin apps; iOS calls it device management, and
+                    the list should be empty.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <strong>One-time codes arriving that you did not request.</strong> A code you did not ask for
+                    means somebody has reached the second factor, which means they already have or believe they
+                    have the password — or that your address is being tested at scale by a
+                    <a href="/glossary#term-credential-stuffing">credential stuffing</a> run. Either way, never
+                    read the number out to a caller, however official they sound; that request is the hinge of
+                    the <a href="/blog/digital-arrest-scam-explained">digital arrest scam</a> and of most account
+                    takeovers that follow a <a href="/glossary#term-phishing">phishing</a> page. Change that
+                    password from a different device, and do it now rather than after the second code.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <strong>The phone drops to no service while others nearby have signal.</strong> Usually this
+                    is coverage, a loose SIM tray, or an operator outage, which is why it sits fifth. But it is
+                    also the one visible symptom of a SIM swap, where somebody persuades your operator to move
+                    your number to a SIM they hold — and from that moment every code sent by text is theirs. The
+                    tell is the combination: your number goes dead, and the bank messages that used to arrive
+                    stop. If both happen together, call the operator from another phone immediately. It is also
+                    the strongest argument for moving off SMS codes entirely, which is the subject of
+                    <a href="/blog/passwords-passkeys-and-what-actually-protects-you">the passwords and passkeys
+                    post</a>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <strong>Mobile data you cannot explain.</strong> Last, deliberately, because it is the sign
+                    people cite most and the weakest one on the list. A photo backup that ran off wifi, an app
+                    that updated on mobile data, or one autoplaying video will each move more data than commodity
+                    monitoring software, which is designed to be quiet precisely because it expects to be looked
+                    for. It becomes meaningful only in a specific form: one app you cannot identify, sitting near
+                    the top of the per-app data list, month after month.
+                  </p>
+                </li>
+              </ol>
+              <p>
+                The order says something about my own bias, and I would rather name it than hide it: I will send
+                somebody to their account settings long before I send them to a scanner, because that is where
+                the findings actually are. If you want the wider version of that exercise — what is discoverable
+                about you, and which of it you can still close —
+                <a href="/labs/osint-self-check">the self-check lab</a> walks the same ground for your public
+                footprint rather than your device.
+              </p>
+
+              <h2 id="the-checks-you-can-run-yourself">The checks you can run yourself</h2>
+              <p>
+                Twenty minutes, no software, no cost, in this order, because the early ones find more than the
+                late ones. One caveat before you start: if you have any reason to think the phone itself is being
+                watched by somebody you know, stop here and read the stalkerware section first, because the order
+                of operations is different and the difference matters for your safety.
+              </p>
+              <p><strong>The accounts, first.</strong></p>
+              <ul>
+                <li>
+                  <strong>Your main email account.</strong> Open the security page and read the device list and
+                  the recent activity. Then — and this is the step people skip — open the mail settings and read
+                  the filters or rules, and the forwarding settings. Then read the list of third-party apps that
+                  have access to the account. An old grant to a service you stopped using in 2022 is a key still
+                  sitting in the lock, and revoking it costs nothing.
+                </li>
+                <li>
+                  <strong>The recovery details on every account that matters.</strong> Recovery phone number,
+                  recovery email address, and any backup codes. Changing those is how an attacker keeps an
+                  account after you change the password, so a recovery address you do not recognise is as serious
+                  as a session you do not recognise.
+                </li>
+                <li>
+                  <strong>The messaging apps.</strong> WhatsApp has Linked devices. Telegram has Devices.
+                  Instagram has Login activity. These take thirty seconds each and they are where the surprises
+                  usually are.
+                </li>
+                <li>
+                  <strong>Your passwords, in bulk.</strong> If one of your accounts was in somebody else's
+                  <a href="/glossary#term-data-breach">breach</a>, the password from it is being tried everywhere
+                  else you used it. <a href="/labs/breach-check">The breach checker</a> hashes what you type in
+                  the browser and sends only the first five characters of that hash, so you can check without
+                  handing a password to anybody — including me.
+                </li>
+              </ul>
+              <p><strong>Then the phone, on Android.</strong></p>
+              <ul>
+                <li><strong>Privacy dashboard</strong> — which apps used the microphone, camera and location in the last day.</li>
+                <li><strong>Special app access</strong>, under Apps in Settings. Read every list on that screen, but especially <strong>Notification access</strong>, which lets an app read every notification including one-time codes, and <strong>Display over other apps</strong>, which is what makes a fake screen possible. Each list should be short and every entry should be something you can name.</li>
+                <li><strong>Device admin apps</strong> — normally empty, or Find My Device alone.</li>
+                <li><strong>Accessibility, installed apps</strong> — the single most important list on the phone, and the subject of the next section.</li>
+                <li><strong>Play Protect</strong> — run a scan. It is free, it is already there, and it catches the commodity stuff.</li>
+                <li><strong>Data usage per app</strong>, sorted, looking for the one name you cannot place.</li>
+              </ul>
+              <p><strong>Then the phone, on iOS.</strong></p>
+              <ul>
+                <li><strong>General &rarr; VPN &amp; Device Management.</strong> On a personal phone this should be empty. A configuration profile you did not install is the iOS equivalent of the device admin finding above, and it is the single highest-value check on the platform.</li>
+                <li><strong>Privacy &amp; Security &rarr; App Privacy Report.</strong> Turn it on and give it a week. It logs which apps touched the microphone, camera and location, and which domains each app contacted, which is a surprisingly educational thing to read even when nothing is wrong.</li>
+                <li><strong>Screen Time.</strong> A Screen Time passcode you did not set is a genuine finding rather than a curiosity — it is a common route for another person to restrict and monitor a device without installing anything.</li>
+                <li><strong>Privacy &amp; Security &rarr; Safety Check.</strong> Built for exactly the situation in the next section: it shows who you are sharing location and data with, and lets you stop all of it at once.</li>
+                <li><strong>Your name at the top of Settings</strong> — the device list, and Family Sharing. An unfamiliar device signed into your Apple Account is the same finding as an unfamiliar session.</li>
+              </ul>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>What a clean set of lists does and does not prove.</strong> All of the above is the
+                  device reporting on itself. That is genuinely useful against everything ordinary people
+                  actually encounter — commodity monitoring apps, over-permissive junk, a session somebody left
+                  open. It is not proof of anything against an implant built to hide from those exact screens.
+                  Absence of evidence is evidence here, and it is worth having, but it is not proof, and I would
+                  rather say that than let you finish the checklist believing something stronger than it can
+                  support.
+                </p>
+              </div>
+
+              <h2 id="the-permission-nobody-checks">The permission almost nobody checks</h2>
+              <p>
+                On Android one setting outranks every other on that list, and almost nobody has ever opened it:
+                Settings, Accessibility, Installed apps. An app granted an accessibility service can read the
+                contents of every window on the screen, observe what you type, draw on top of other apps, and
+                perform taps and swipes as though they were yours. There is no further prompt after the first
+                toggle, and the grant applies to every other app on the phone.
+              </p>
+              <p>
+                That is not a flaw, and it is important to say so. Screen readers, switch access and voice control
+                need precisely these abilities to do their job, and the people who depend on them depend on them
+                completely. The problem is packaging: an enormous grant, behind a single toggle, on a screen that
+                a person in a hurry learns to tap through — and once granted, the system cannot tell the
+                difference between a screen reader and an overlay that is emptying a bank account.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/why-your-phone-feels-hacked-and-probably-is-not-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/why-your-phone-feels-hacked-and-probably-is-not-diagram1.svg" alt="Three panels: the accessibility toggle in Android settings with the warning text nobody reads, the four capabilities it grants across every other app, and the four-step chain by which those capabilities read a one-time code, overlay a fake screen, approve a transfer and clear the alert" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>No exploit, no root, no malware signature — one permission, granted by hand, in a screen designed for something else entirely. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                This is the mechanism behind most of the Android banking fraud that reaches me as a question,
+                usually described by the victim as "the phone did it by itself". In a sense it did. The app read
+                the code from the notification, covered the real screen with a convincing fake one, approved the
+                transaction underneath it and dismissed the alert, and the person holding the phone saw a loading
+                spinner. Nothing about that requires a vulnerability. It requires a toggle.
+              </p>
+              <p>
+                The rule to apply is simple and it needs no expertise. Everything on your accessibility list
+                should be something you can name and justify: a screen reader, a switch access tool, a keyboard,
+                perhaps an automation app you deliberately set up. A torch, a game, a video downloader, a
+                "battery cleaner" or a file manager that asked for it during setup should never be there. When in
+                doubt, turn it off — a legitimate app will tell you what stopped working, and a dishonest one
+                will go quiet.
+              </p>
+              <p>
+                iOS has no equivalent, because apps there cannot read or drive other apps' screens at all. The
+                same class of risk arrives by different doors on that platform: a configuration profile, or
+                somebody who knows your Apple Account password, which is the next section.
+              </p>
+
+              <h2 id="stalkerware-honestly">Stalkerware, honestly</h2>
+              <p>
+                This deserves its own treatment because the risk profile is completely different from everything
+                above, and because the usual advice — find it, remove it — can make a person less safe rather
+                than more.
+              </p>
+              <p>
+                <strong>Who is actually at risk.</strong> Commercial monitoring apps are not a stranger threat.
+                They are sold to people who have physical access to the phone and a relationship with the person
+                carrying it: a partner or ex-partner, a parent, occasionally an employer with a device they
+                supplied. Installing one needs either a few minutes with the unlocked phone, or the account
+                password. If nobody has had either, this section is probably not about you. If somebody has, it
+                may be, and the rest of this is written for that case.
+              </p>
+              <p>
+                <strong>Two routes, and the second is more common than people expect.</strong> The first is an
+                app: installed by hand, often renamed to look like a system service, holding accessibility,
+                notification access and device admin so that it cannot be removed in the ordinary way. The second
+                is no app at all. Somebody who knows your Apple or Google password can see your photos, your
+                location, your messages where they sync, and your browsing, from their own device — with nothing
+                installed on your phone to find. That route leaves no trace on the handset, which is exactly why
+                the account checks came first in this article.
+              </p>
+              <p>
+                <strong>The signs, stated with their limits.</strong> An entry on the accessibility, notification
+                access or device admin lists you cannot account for. A configuration profile on an iPhone nobody
+                gave you for work. A Screen Time passcode you did not set. Location sharing you did not turn on.
+                An unfamiliar device on your account. Battery and heat that are genuinely new and survive every
+                explanation in the second section of this article. And the human signal, which is often the
+                strongest of the lot: the other person knowing things they have no ordinary way of knowing. None
+                of these is proof on its own, and the absence of all of them is not proof either. Anybody who
+                tells you otherwise is overselling.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The safety part comes before the technical part.</strong> Monitoring tools report, and
+                  a tool going dark is itself information to the person watching. In a controlling or abusive
+                  relationship, the period immediately after surveillance stops is a recognised point of
+                  escalation, which is why every organisation that works with survivors puts planning before
+                  removal. So the order here is deliberately different from every other section on this page:
+                </p>
+                <p>
+                  Do not change anything on the monitored phone yet. Do your searching and any account changes
+                  from a device the other person cannot reach — a friend's phone, a work computer, a library
+                  terminal. Speak to a support organisation first, so that whatever you do next sits inside a
+                  plan that covers your safety and not only the software. And if any of this might matter later
+                  for a police complaint or a court, photograph what you found rather than deleting it, because
+                  removing the app removes the evidence. In India: 181 for the women's helpline, 112 in an
+                  emergency, and cybercrime.gov.in or 1930 to report a cybercrime. The Coalition Against
+                  Stalkerware publishes guidance and a directory of support organisations by country, written by
+                  people who work with survivors rather than by vendors.
+                </p>
+              </div>
+              <p>
+                I have supported law enforcement as a registered cyber-expert volunteer since 2020, and the thing
+                that consistently makes these cases worse is not a technical mistake. It is a person acting alone,
+                quickly, on a device that is being watched. If you want a second pair of eyes while you think it
+                through, that is part of what the personal side of my work is for — the
+                <a href="/services">services page</a> says what it covers, and the first conversation is a
+                conversation rather than an invoice.
+              </p>
+
+              <h2 id="when-a-factory-reset-helps">When a factory reset helps, and when it will not</h2>
+              <p>
+                A reset is the reflex answer, and it is a genuinely good tool used at the right point in the
+                sequence. It is also the single most common way people convince themselves a problem is fixed
+                when it is not.
+              </p>
+              <p>
+                <strong>What it does.</strong> It removes apps, permissions, accessibility grants, notification
+                access, device administrators and configuration profiles. If the problem lived on the phone, a
+                reset is a complete fix and it is faster than diagnosing which app was responsible. There is no
+                shame in reaching for it instead of hunting.
+              </p>
+              <p>
+                <strong>What it does not touch.</strong> Anything that lives in an account. Sessions stay signed
+                in. Forwarding rules keep forwarding. Third-party app grants keep granting. App-specific
+                passwords keep working. A changed recovery address stays changed. If your mailbox was the way in,
+                a freshly reset phone signs straight back into the same compromised mailbox and everything
+                resumes. It also does nothing whatsoever about a SIM swap, because your number is held at the
+                operator, not on the handset.
+              </p>
+              <p>
+                <strong>The trap in the middle: the backup.</strong> Restoring from a backup taken while the
+                problem existed puts the problem back. On Android your apps return; on iOS your settings and, from
+                an encrypted backup, stored passwords and some profiles return with them. People then report that
+                the reset "did not work". The reset worked. The restore undid it. Set the phone up as new, bring
+                back photos and documents, and reinstall apps by hand — which has the side benefit of showing you
+                how many you were carrying for no reason.
+              </p>
+              <p><strong>The order that actually works</strong>, starting from a device you trust:</p>
+              <ol>
+                <li>Change the password on your main email account first. It is the recovery route for everything else, so nothing downstream is worth fixing until it is secure.</li>
+                <li>Sign out every other session on that account, and revoke every third-party app grant you do not currently use.</li>
+                <li>Delete any rule or forwarding address you did not create, and correct the recovery phone and recovery email.</li>
+                <li>Move the second factor off SMS wherever the service allows it — an authenticator app, or a passkey where one is offered.</li>
+                <li>Only now, reset the phone, and set it up as new rather than from a backup.</li>
+                <li>Then change the remaining passwords, from the clean phone, using a manager so they are all different.</li>
+              </ol>
+              <p>
+                <strong>And when a reset is the wrong tool entirely.</strong> If you have a specific reason to
+                believe you are individually targeted — you are a journalist, an activist, a lawyer or an
+                official in a matter somebody powerful cares about — then wiping the phone destroys the only
+                evidence that could establish what happened, and you should not do it. Mercenary spyware is real,
+                it is expensive, and it is aimed at a small number of people who usually have a reason to suspect
+                they are among them. That work needs mobile forensics, not a settings menu: Amnesty International's
+                Security Lab and Access Now's Digital Security Helpline both accept requests of exactly this kind,
+                and both are better placed than any general-purpose consultant, myself included.
+              </p>
+
+              <h2 id="what-keeps-a-phone-boring">What actually keeps a phone boring</h2>
+              <p>
+                Roughly in order of how much each one buys you, and none of it involves buying anything:
+              </p>
+              <ul>
+                <li>
+                  <strong>Take the updates, and check the support window before you buy.</strong> Most real
+                  mobile compromise happens to phones that stopped receiving security patches. How many years of
+                  updates a handset is promised is a security property with a price attached, and it belongs in
+                  the purchase decision alongside the camera.
+                </li>
+                <li>
+                  <strong>Protect the account before the device.</strong> The strongest password you have on the
+                  email account, a phishing-resistant second factor, recovery details you control. Everything in
+                  the ranked list above was an account finding for a reason.
+                </li>
+                <li>
+                  <strong>Lock the screen properly.</strong> A long passcode rather than four digits, and a short
+                  auto-lock. Nearly every monitoring app that ends up on a phone was installed by somebody who
+                  could pick it up and unlock it.
+                </li>
+                <li>
+                  <strong>Install from the official store, and count your apps.</strong> Every app is a permission
+                  list you agreed to and forgot. Remove anything you have not opened in a year; the ones that
+                  wanted the most access are usually the ones you use least.
+                </li>
+                <li>
+                  <strong>Never install the file a stranger sent you.</strong> The APK attached to a WhatsApp
+                  message, whatever the story around it — a wedding invitation, a courier update, a bank
+                  verification app, an offer that needs one more step. This single habit accounts for a large
+                  share of what actually happens to phones in India, and it is entirely under your control. What
+                  happens after that first tap is laid out in
+                  <a href="/blog/what-happens-when-you-click-a-phishing-link">what happens when you click a
+                  phishing link</a>.
+                </li>
+                <li>
+                  <strong>Review permissions twice a year.</strong> Microphone, camera, location, notification
+                  access, accessibility. Ten minutes, and it is the closest thing to a real security audit an
+                  ordinary person can perform on their own phone.
+                </li>
+                <li>
+                  <strong>Use the platform's own protections rather than a scanner.</strong> Play Protect on
+                  Android. On iOS, for people at genuine risk, Lockdown Mode, which removes several classes of
+                  attack surface at the cost of some convenience.
+                </li>
+              </ul>
+              <p>
+                If money is already moving, none of the above is the first call — the sequence for that is in
+                <a href="/blog/upi-fraud-how-the-money-actually-leaves">how the money actually leaves</a>, and it
+                is measured in minutes rather than days. And if the whole subject arrived in your life through a
+                message telling you your data was found somewhere frightening, the
+                <a href="/blog/surface-web-deep-web-and-dark-web">three layers of the web</a> post explains why
+                that sentence is almost always doing less work than it sounds like.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Can someone hack my phone just from my number?</summary>
+                  <p>
+                    Not in the way the phrase suggests. A number lets somebody send you things — a message with
+                    a link, a call, an invitation to install something — and every one of those still needs you
+                    to act before it works. What a number does enable without your involvement is an attack on
+                    the number itself: persuading your operator to move it to a new SIM, after which every code
+                    sent by text arrives on somebody else's phone. That is why moving your important second
+                    factors off SMS buys more safety than any app you could install.
+                  </p>
+                </details>
+                <details>
+                  <summary>My battery drains fast and the phone gets hot. Does that mean spyware?</summary>
+                  <p>
+                    Almost never on its own. Battery capacity falls with age and with heat, so a two-year-old
+                    phone genuinely lasts less than it did when you bought it. A major operating system update
+                    makes the phone re-index photos and search for several days. And one app that changed in the
+                    last week is the single most common cause of a sudden overnight difference. Check the battery
+                    screen for one app you cannot explain, check that storage is not nearly full, and give the
+                    phone a week after an update. If the drain survives all three, it is worth looking further.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is my phone listening to my conversations to choose adverts?</summary>
+                  <p>
+                    The evidence says no, and the real explanation is more interesting than the myth. Both
+                    platforms now show an indicator whenever the microphone is live and keep a log you can read,
+                    so a permanently listening app would be visible; continuous audio would also cost battery and
+                    data that somebody would have measured by now. What actually happens is that ad networks
+                    already link your devices to the people around you through a shared home connection, shared
+                    logins, uploaded contact lists and overlapping locations, so a search somebody else made can
+                    select the advert you see. Then memory does the rest: you scroll past thousands of adverts a
+                    week and remember only the handful that echo something recent.
+                  </p>
+                </details>
+                <details>
+                  <summary>I received a one-time code I did not ask for. What should I do?</summary>
+                  <p>
+                    Treat it as somebody standing at your door holding your key. Do not read the code out to
+                    anyone, whatever they claim to be, and do not approve a sign-in prompt you did not start.
+                    Change that account's password from a different device you trust, sign out every other
+                    session, and then check the account for a forwarding rule or a recovery address you did not
+                    create. One stray code can be a wrong number. A second one is not.
+                  </p>
+                </details>
+                <details>
+                  <summary>Will an antivirus app tell me if my phone is compromised?</summary>
+                  <p>
+                    Much less than the advertising implies. On iOS an app cannot inspect other apps at all, so
+                    anything sold as an iPhone virus scanner is checking almost nothing. On Android, Play Protect
+                    and the reputable scanners do catch commodity stalkerware and known malicious apps, which is
+                    worth having and is already built into the phone. Neither will find a targeted implant, and
+                    neither is a substitute for the account checks, because the account is where the real finding
+                    usually is.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does a factory reset fix a hacked phone?</summary>
+                  <p>
+                    It fixes the device and nothing else. A reset removes apps, permissions, device
+                    administrators and configuration profiles, so if the problem lived on the phone it is
+                    genuinely gone. It does not sign out a session on your account, delete a mail-forwarding
+                    rule, revoke a third-party app's access, or move your number back after a SIM swap. And
+                    restoring from a backup taken while the problem existed puts the problem straight back, which
+                    is why people conclude the reset did not work. Fix the accounts first, then reset, then set
+                    the phone up as new.
+                  </p>
+                </details>
+                <details>
+                  <summary>Somebody I live with may have put something on my phone. What is the safe first step?</summary>
+                  <p>
+                    Not a technical one. Monitoring tools report, so removing one tells the person watching that
+                    you found it, and the period after surveillance stops is a known point of escalation. Use a
+                    device that person cannot reach, and speak to a support organisation before you change
+                    anything on the phone, so that there is a plan covering your safety rather than only the
+                    software. In India that means 181 for the women's helpline, 112 in an emergency, and
+                    cybercrime.gov.in or 1930 to report. If evidence might matter later, photograph what you
+                    found rather than deleting it.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The reason this question deserves a serious answer rather than a shrug is that the person asking
+                it is usually right about something, even when they are wrong about the phone. Something did
+                change. It is just far more likely to be a worn battery, an app that updated, or a session left
+                open on a laptop three years ago than anybody sitting inside the device. Work down the list, in
+                order, and you will end up in one of two places: a specific dull explanation, or a specific thing
+                worth fixing. Both are better than the feeling you started with.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-phone-feels-hacked-and-probably-is-not" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=Why%20Your%20Phone%20Feels%20Hacked%2C%20and%20Probably%20Is%20Not&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-phone-feels-hacked-and-probably-is-not" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=Why%20Your%20Phone%20Feels%20Hacked%2C%20and%20Probably%20Is%20Not%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhy-your-phone-feels-hacked-and-probably-is-not" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+              <li><a href="/blog/what-happens-when-you-click-a-phishing-link">What happens when you click a phishing link</a></li>
+              <li><a href="/blog/upi-fraud-how-the-money-actually-leaves">UPI fraud: how the money actually leaves</a></li>
+              <li><a href="/blog/digital-arrest-scam-explained">The digital arrest scam, explained</a></li>
+              <li><a href="/blog/surface-web-deep-web-and-dark-web">Surface web, deep web, and dark web</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Still not sure about a particular phone?</h2>
+            <p>
+              Most of the time the honest answer is one of the dull ones, and finding that out costs an evening
+              rather than a fee. When it is not — a session somebody left open, an account somebody else can
+              recover, a phone another person set up — the work is small, specific, and worth doing properly.
+              I do that for individuals as well as for teams.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/contact">Ask a question</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

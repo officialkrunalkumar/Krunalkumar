@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Describe a system and this tool proposes the STRIDE threats for each element. Accept, reject or rewrite each one, attach a mitigation, print the model." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/threat-model" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Build a real STRIDE threat model in one page" />
+    <meta property="og:description" content="Describe a system as elements and trust boundaries, and this tool proposes the STRIDE threats that apply to each one. Accept, reject or rewrite each, rate it, attach a mitigation, print the model and export it as JSON. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/threat-model" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-threat-model.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="STRIDE Threat Modelling Tool" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Build a real STRIDE threat model in one page" />
+    <meta name="twitter:description" content="Describe a system as elements and trust boundaries, and this tool proposes the STRIDE threats that apply to each one. Accept, reject or rewrite each, rate it, attach a mitigation, print the model and export it as JSON. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-threat-model.jpg" />
+    <title>STRIDE Threat Modelling Tool | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "STRIDE Threat Modelling Tool",
+        "url": "https://krunalkumar.dpdns.org/labs/threat-model",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Security and digital forensics",
+        "operatingSystem": "Any modern web browser",
+        "description": "Describe a system as elements and trust boundaries, and this tool proposes the STRIDE threats that apply to each one. Accept, reject or rewrite each, rate it, attach a mitigation, print the model and export it as JSON. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "STRIDE per element threat proposals",
+                "Trust boundary mapping",
+                "Likelihood and impact rating",
+                "Built-in mitigation library",
+                "Printable one-page threat model",
+                "JSON export and re-import",
+                "Two worked examples",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does a threat model like this prove anything?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. It is a thinking tool and a record of a conversation, not a certification, an audit or a test. It says what a group of people thought could go wrong on a particular day. It says nothing about whether the mitigations were built, whether they work, or whether somebody has already got in. Anyone who hands you a threat model as evidence of security has misunderstood what it is for."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why STRIDE and not something else?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because it is the easiest framework to start with and the hardest to argue with. Six categories, a fixed mapping from element types to categories, and no scoring to disagree about. It is one framework among several: LINDDUN handles privacy properly, PASTA is risk and attacker centred, and an attack tree suits one specific question better than a whole system. Any of them would find things STRIDE misses."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Where is my work saved?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "In this browser, on this device, under the localStorage key lab.threat-model. It is not sent anywhere and it is not readable by any other site. A private window, cleared site data or a different browser will not have it, which is exactly why the JSON export exists. Export the file if the model matters."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How does the tool decide which threats apply?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It applies the classic STRIDE-per-element table and nothing more. External entities can be spoofed and can repudiate. Processes are exposed to all six. Data stores can be tampered with, read, destroyed, and repudiated against when they are a record of events. Data flows can be tampered with, read and blocked. That table is the whole of the automation here. The tool has not understood your architecture, and the proposals are prompts for you to answer, not findings."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why are likelihood and impact only three levels?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because more levels invite a precision nobody has. Low, medium and high are judgements a room can actually agree on, and their product gives six distinct risk values, which is enough to sort the list. If you want a calibrated severity number for a specific vulnerability, that is what CVSS is for, and there is a calculator for it in these labs."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I bring last quarter's model back?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Export JSON writes a plain file, and Import JSON reads it back with every decision, rating, mitigation and rejection reason intact. The file is readable text, so it belongs in version control next to the system it describes rather than in a folder somebody has to remember."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is anything I type uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server involved. A threat model is a list of a system's weak points and their owner's names, which is one of the least sensible things anyone could paste into a website, so this one makes no network request at all and works with the network switched off."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Threat modelling tool",
+                        "item": "https://krunalkumar.dpdns.org/labs/threat-model"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell tm-page">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Threat modelling tool</li>
+          </ol>
+        </nav>
+        <h1>STRIDE threat modelling tool</h1>
+        <p class="hero-text">Most threat models die as a whiteboard photograph. This one asks you to describe the system in pieces, proposes the STRIDE threats that the classic mapping says apply to each piece, and makes you accept or reject every single one. What comes out is a page you can print and a file you can open again next quarter.</p>
+        <ul class="lab-facts">
+          <li>STRIDE per element, applied properly</li>
+          <li>Accept, reject or rewrite each proposal</li>
+          <li>Likelihood, impact and a mitigation library</li>
+          <li>Printable model and JSON you can re-import</li>
+          <li>Two worked examples, one of them mine</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool lab-threatmodel" id="threatmodel">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you type here is
+              uploaded or logged &mdash; which for security work is the whole point, not a
+              footnote. The one thing it does keep is your draft, saved in this browser
+              so a reload does not lose it. It goes nowhere else, and &ldquo;Start empty&rdquo;
+              erases it.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>It does not understand your architecture; it applies one published table</li>
+                  <li>It produces no score of its own &mdash; the ratings are yours</li>
+                  <li>A threat model is not a certification, an audit or a test</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A threat model names your weak points &mdash; it should not leave your machine</li>
+                  <li>Your draft is kept in this browser only, under <code>lab.threat-model</code></li>
+                  <li>Nothing you type ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <button class="lab-btn" type="button" id="tm-ex-saas">Example: SaaS + payments</button>
+          <button class="lab-btn" type="button" id="tm-ex-auto">Example: CRM automation</button>
+          <button class="lab-btn" type="button" data-act="export">Export JSON</button>
+          <button class="lab-btn" type="button" id="tm-import-btn">Import JSON</button>
+          <button class="lab-btn" type="button" data-act="print">Print</button>
+          <button class="lab-btn" type="button" id="tm-clear">Start empty</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Refresh proposals</button>
+          <span class="lab-status" id="tm-status" role="status" aria-live="polite"></span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <!-- tabindex="-1" so a keyboard user tabs onto the visible Import
+             button above rather than onto an invisible file input. The button
+             calls input.click() for them. -->
+        <label class="sr-only" for="tm-import">Threat model JSON file</label>
+        <input class="sr-only" type="file" id="tm-import" accept="application/json,.json" tabindex="-1" />
+
+        <div class="tm-tabs" role="tablist" aria-label="Threat model steps">
+          <button class="tm-tab" type="button" role="tab" id="tm-tab-system"
+                  aria-controls="tm-panel-system" aria-selected="true">
+            <span class="tm-tab-step">1</span>
+            <span class="tm-tab-txt">
+              <span class="tm-tab-title">The system</span>
+              <span class="tm-tab-sub">Elements and trust boundaries</span>
+            </span>
+          </button>
+          <button class="tm-tab" type="button" role="tab" id="tm-tab-threats"
+                  aria-controls="tm-panel-threats" aria-selected="false" tabindex="-1">
+            <span class="tm-tab-step">2</span>
+            <span class="tm-tab-txt">
+              <span class="tm-tab-title">The threats <span class="tm-tab-n" id="tm-tab-threats-n"></span></span>
+              <span class="tm-tab-sub">Accept, reject, rate, mitigate</span>
+            </span>
+          </button>
+          <button class="tm-tab" type="button" role="tab" id="tm-tab-report"
+                  aria-controls="tm-panel-report" aria-selected="false" tabindex="-1">
+            <span class="tm-tab-step">3</span>
+            <span class="tm-tab-txt">
+              <span class="tm-tab-title">The model</span>
+              <span class="tm-tab-sub">Print it, or export the JSON</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="tm-body">
+          <div class="tm-panel" role="tabpanel" id="tm-panel-system"
+               aria-labelledby="tm-tab-system" tabindex="0">
+            <div class="tm-panel-in">
+              <p class="tm-lede">Describe what exists before you think about what could go wrong. Four kinds of thing, and the lines between them &mdash; that is the whole vocabulary.</p>
+
+              <label class="tm-lbl tm-lbl-grow tm-lbl-block" for="tm-name">
+                <span>What system is this?</span>
+                <input class="lab-toolfield" type="text" id="tm-name" spellcheck="false"
+                       autocomplete="off" placeholder="e.g. Customer portal, release 3" />
+              </label>
+
+              <label class="tm-lbl tm-lbl-grow tm-lbl-block" for="tm-scope">
+                <span>Scope &mdash; what is in, and what is deliberately out</span>
+                <textarea class="lab-toolfield tm-textarea" id="tm-scope" rows="4" spellcheck="true"
+                          placeholder="Out of scope does not mean safe. It means somebody else owns it, and you should be able to say what you are relying on them for."></textarea>
+              </label>
+
+              <section class="tm-sub">
+                <h3>Trust boundaries</h3>
+                <p class="tm-hint">A trust boundary is a line where the level of trust changes: between the internet and your servers, between your account and a vendor&rsquo;s, between one team&rsquo;s service and another&rsquo;s. Nearly every interesting threat lives on one of these lines.</p>
+                <ul class="tm-list" id="tm-boundaries"></ul>
+                <button class="lab-btn" type="button" id="tm-add-boundary">Add a trust boundary</button>
+              </section>
+
+              <section class="tm-sub">
+                <h3>Elements</h3>
+                <p class="tm-hint">An <strong>external entity</strong> is a person or system outside your control. A <strong>process</strong> is code you run. A <strong>data store</strong> is anywhere data rests. A <strong>data flow</strong> is data moving between two of them. Add the boxes first, then the arrows.</p>
+                <ul class="tm-list" id="tm-elements"></ul>
+                <div class="tm-addrow">
+                  <button class="lab-btn" type="button" id="tm-add-entity" data-add="entity">Add external entity</button>
+                  <button class="lab-btn" type="button" id="tm-add-process" data-add="process">Add process</button>
+                  <button class="lab-btn" type="button" id="tm-add-store" data-add="store">Add data store</button>
+                  <button class="lab-btn" type="button" id="tm-add-flow" data-add="flow">Add data flow</button>
+                </div>
+              </section>
+
+              <section class="tm-sub">
+                <h3>Boundary map</h3>
+                <p class="tm-hint">Drawn from what you entered, not positioned by hand. The question it answers is the one that matters: what sits where, and which flows cross a line.</p>
+                <div class="tm-map" id="tm-map"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="tm-panel" role="tabpanel" id="tm-panel-threats"
+               aria-labelledby="tm-tab-threats" tabindex="0" hidden>
+            <div class="tm-panel-in">
+              <p class="tm-lede">Every proposal below comes from one published table &mdash; the classic STRIDE-per-element mapping &mdash; applied to the type of thing each element is. The tool has not understood your system. These are questions for you to answer, and an answer of &ldquo;no, not here, because&hellip;&rdquo; is worth as much as a yes.</p>
+              <div class="tm-tally" id="tm-tally"></div>
+              <div id="tm-threats"></div>
+            </div>
+          </div>
+
+          <div class="tm-panel" role="tabpanel" id="tm-panel-report"
+               aria-labelledby="tm-tab-report" tabindex="0" hidden>
+            <div class="tm-panel-in">
+              <div class="tm-reportbar">
+                <button class="lab-btn lab-btn-run" type="button" data-act="print">Print this model</button>
+                <button class="lab-btn" type="button" data-act="export">Download JSON</button>
+                <p class="tm-hint tm-hint-inline">Ctrl+P from any tab prints this and nothing else &mdash; the header, the tool and the rest of the page are dropped by the print stylesheet.</p>
+              </div>
+              <article class="tm-report" id="tm-report"></article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Using STRIDE without kidding yourself</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The mapping is the only automatic part</h3>
+            <p>External entities can be spoofed and can repudiate. Processes are exposed to all six categories. Data stores can be tampered with, read, destroyed, and repudiated against when they hold a record of events. Data flows can be tampered with, read and blocked. That table is twenty years old and it is the whole of the automation here. Everything past it is your judgement.</p>
+          </article>
+          <article class="info-card">
+            <h3>Rejections are the valuable half</h3>
+            <p>A model full of accepted threats tells you what worried somebody. A model that records why four of them do not apply tells you what was thought about and settled, and it is the half that survives contact with next year&rsquo;s argument. The rejection reason box exists because &ldquo;we considered that&rdquo; is worthless without the sentence that follows it.</p>
+          </article>
+          <article class="info-card">
+            <h3>Risk here is arithmetic, not insight</h3>
+            <p>Likelihood times impact, three levels each, six possible values. It sorts the list and nothing more. If you want a defensible severity number for one specific vulnerability, that is a different instrument &mdash; use the <a href="/labs/cvss">CVSS calculator</a>, and remember that even a 9.8 is a comparison, not a priority.</p>
+          </article>
+          <article class="info-card">
+            <h3>Model early, and model small</h3>
+            <p>A threat model is cheapest before the code exists and most expensive after the incident. A single feature, a single integration, one afternoon with the people who built it &mdash; that is the version that gets done. A model of the entire estate is the version that gets started, abandoned, and quoted for years as evidence that threat modelling does not work.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What the two examples are for</h2>
+          <p>Both load with one click and come with some decisions already made, because a page of forty undecided proposals teaches nobody the shape of the work.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>A small SaaS with a payment provider</h3>
+            <p>The familiar shape: a web app, a billing worker, a customer database, and a vendor holding the card data so you do not have to. It is here because the interesting threats are not in the application &mdash; they are on the webhook you did not verify, the log that quietly recorded an email address, and the customer id in the URL that nobody tested swapping.</p>
+          </article>
+          <article class="info-card">
+            <h3>An automation workflow touching a CRM</h3>
+            <p>This one is my own <a href="/services">consulting work</a>, modelled honestly rather than flatteringly. A self-hosted workflow engine reads a client&rsquo;s shared mailbox, drafts a reply with a language model, and writes to their CRM. Almost every asset in it belongs to somebody else, I hold the keys to all of them, and the run history stores every message by default. That last one is the threat people miss.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Where this sits next to compliance</h2>
+        </div>
+        <p>Auditors ask whether you do threat modelling. The honest answer is a model per significant change, kept in version control next to the thing it describes, with the rejections and the dates intact &mdash; which is what the JSON export here is for. What it is not is evidence that your system is secure, and a framework that treats it as such is measuring paperwork. I have written about that gap at length in <a href="/blog/security-compliance-explained">security compliance, explained</a>, and if you would rather someone sat in the room and ran the session with your engineers, that is part of what I <a href="/services">do for a living</a>.</p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does a threat model like this prove anything?</summary>
+            <div>No. It is a thinking tool and a record of a conversation, not a certification, an audit or a test. It says what a group of people thought could go wrong on a particular day. It says nothing about whether the mitigations were built, whether they work, or whether somebody has already got in. Anyone who hands you a threat model as evidence of security has misunderstood what it is for.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why STRIDE and not something else?</summary>
+            <div>Because it is the easiest framework to start with and the hardest to argue with. Six categories, a fixed mapping from element types to categories, and no scoring to disagree about. It is one framework among several: LINDDUN handles privacy properly, PASTA is risk and attacker centred, and an attack tree suits one specific question better than a whole system. Any of them would find things STRIDE misses.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Where is my work saved?</summary>
+            <div>In this browser, on this device, under the localStorage key lab.threat-model. It is not sent anywhere and it is not readable by any other site. A private window, cleared site data or a different browser will not have it, which is exactly why the JSON export exists. Export the file if the model matters.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How does the tool decide which threats apply?</summary>
+            <div>It applies the classic STRIDE-per-element table and nothing more. External entities can be spoofed and can repudiate. Processes are exposed to all six. Data stores can be tampered with, read, destroyed, and repudiated against when they are a record of events. Data flows can be tampered with, read and blocked. That table is the whole of the automation here. The tool has not understood your architecture, and the proposals are prompts for you to answer, not findings.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why are likelihood and impact only three levels?</summary>
+            <div>Because more levels invite a precision nobody has. Low, medium and high are judgements a room can actually agree on, and their product gives six distinct risk values, which is enough to sort the list. If you want a calibrated severity number for a specific vulnerability, that is what CVSS is for, and there is a calculator for it in these labs.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I bring last quarter's model back?</summary>
+            <div>Yes. Export JSON writes a plain file, and Import JSON reads it back with every decision, rating, mitigation and rejection reason intact. The file is readable text, so it belongs in version control next to the system it describes rather than in a folder somebody has to remember.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is anything I type uploaded?</summary>
+            <div>No. There is no server involved. A threat model is a list of a system's weak points and their owner's names, which is one of the least sensible things anyone could paste into a website, so this one makes no network request at all and works with the network switched off.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or a file will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=threat-model#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20threat%20modelling%20tool%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More security tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/cvss">
+            <span class="lab-card-name">CVSS calculator</span>
+            <p class="lab-card-desc">Score one vulnerability on the official v3.1 formula, with the maths shown.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/web-layers">
+            <span class="lab-card-name">Web request layers</span>
+            <p class="lab-card-desc">Every layer one page load passes through, and what can go wrong at each.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/phishing-dissector">
+            <span class="lab-card-name">Phishing email dissector</span>
+            <p class="lab-card-desc">Paste an email and see every reason it is or is not phishing.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/email-security">
+            <span class="lab-card-name">Email security checker</span>
+            <p class="lab-card-desc">SPF, DKIM and DMARC for a domain, read and explained.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/subnet">
+            <span class="lab-card-name">Subnet calculator</span>
+            <p class="lab-card-desc">Where your network boundaries actually are, in CIDR.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/threat-model.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

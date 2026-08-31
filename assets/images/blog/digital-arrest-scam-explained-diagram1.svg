@@ -1,0 +1,62 @@
+<svg width="1160" height="580" viewBox="0 0 1160 580" role="img" aria-labelledby="d-digital-arrest-scam-explained-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-digital-arrest-scam-explained-diagram1">Escalation timeline of a digital arrest call: minute 0 the hook, a recorded call about a parcel or an FIR; minute 2 the handoff to an officer on video; minute 10 the proof, a uniform, case number and a sealed-looking PDF; minute 20 the isolation instruction to stay on camera and tell nobody; hour one to six the first payment to a verification account; day one to three the escalation as deposits are broken and gold is sold. At every step the correct move is the same: end the call.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW A &#8216;DIGITAL ARREST&#8217; CALL ESCALATES</text>
+
+  <line x1="60" y1="300" x2="1100" y2="300" stroke="#6b7a90" stroke-width="3"/>
+
+  <g text-anchor="middle">
+    <!-- Minute 0 (above) -->
+    <text x="130" y="120" fill="#6b7a90" font-size="18" font-weight="800">The hook</text>
+    <text x="130" y="147" fill="#64748b" font-size="15">A recorded call about</text>
+    <text x="130" y="169" fill="#64748b" font-size="15">a parcel or an FIR</text>
+    <line x1="130" y1="180" x2="130" y2="283" stroke="#1e77a4" stroke-width="2"/>
+    <rect x="70" y="283" width="120" height="34" rx="17" fill="#1e77a4"/>
+    <text x="130" y="305" fill="#ffffff" font-size="16" font-weight="800">Minute 0</text>
+
+    <!-- Minute 2 (below) -->
+    <line x1="305" y1="317" x2="305" y2="345" stroke="#1e77a4" stroke-width="2"/>
+    <rect x="245" y="283" width="120" height="34" rx="17" fill="#1e77a4"/>
+    <text x="305" y="305" fill="#ffffff" font-size="16" font-weight="800">Minute 2</text>
+    <text x="305" y="372" fill="#6b7a90" font-size="18" font-weight="800">The handoff</text>
+    <text x="305" y="399" fill="#64748b" font-size="15">Transferred to an</text>
+    <text x="305" y="421" fill="#64748b" font-size="15">&#8216;officer&#8217; on video</text>
+
+    <!-- Minute 10 (above) -->
+    <text x="480" y="120" fill="#6b7a90" font-size="18" font-weight="800">The proof</text>
+    <text x="480" y="147" fill="#64748b" font-size="15">Uniform, case number,</text>
+    <text x="480" y="169" fill="#64748b" font-size="15">a sealed-looking PDF</text>
+    <line x1="480" y1="180" x2="480" y2="283" stroke="#93671a" stroke-width="2"/>
+    <rect x="420" y="283" width="120" height="34" rx="17" fill="#93671a"/>
+    <text x="480" y="305" fill="#ffffff" font-size="16" font-weight="800">Minute 10</text>
+
+    <!-- Minute 20 (below) -->
+    <line x1="655" y1="317" x2="655" y2="345" stroke="#93671a" stroke-width="2"/>
+    <rect x="595" y="283" width="120" height="34" rx="17" fill="#93671a"/>
+    <text x="655" y="305" fill="#ffffff" font-size="16" font-weight="800">Minute 20</text>
+    <text x="655" y="372" fill="#6b7a90" font-size="18" font-weight="800">The isolation</text>
+    <text x="655" y="399" fill="#64748b" font-size="15">Stay on camera.</text>
+    <text x="655" y="421" fill="#64748b" font-size="15">Tell nobody.</text>
+
+    <!-- Hour 1-6 (above) -->
+    <text x="830" y="120" fill="#6b7a90" font-size="18" font-weight="800">The first payment</text>
+    <text x="830" y="147" fill="#64748b" font-size="15">To a &#8216;verification</text>
+    <text x="830" y="169" fill="#64748b" font-size="15">account&#8217;, &#8216;refundable&#8217;</text>
+    <line x1="830" y1="180" x2="830" y2="283" stroke="#a3352f" stroke-width="2"/>
+    <rect x="770" y="283" width="120" height="34" rx="17" fill="#a3352f"/>
+    <text x="830" y="305" fill="#ffffff" font-size="16" font-weight="800">Hour 1&#8211;6</text>
+
+    <!-- Day 1-3 (below) -->
+    <line x1="1005" y1="317" x2="1005" y2="345" stroke="#a3352f" stroke-width="2"/>
+    <rect x="945" y="283" width="120" height="34" rx="17" fill="#a3352f"/>
+    <text x="1005" y="305" fill="#ffffff" font-size="16" font-weight="800">Day 1&#8211;3</text>
+    <text x="1005" y="372" fill="#6b7a90" font-size="18" font-weight="800">The escalation</text>
+    <text x="1005" y="399" fill="#64748b" font-size="15">Deposits broken,</text>
+    <text x="1005" y="421" fill="#64748b" font-size="15">gold sold, loans taken</text>
+  </g>
+
+  <rect x="60" y="452" width="1040" height="48" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="84" y="482" fill="#157f41" font-size="16" font-weight="800">AT EVERY STEP ABOVE, THE CORRECT MOVE IS THE SAME &#8212; END THE CALL.</text>
+
+  <text x="40" y="534" fill="#64748b" font-size="15">Hanging up on a caller is not an offence in India, and no genuine investigation has ever required anyone to stay on camera.</text>
+  <text x="40" y="560" fill="#64748b" font-size="15">The line only runs left to right while the victim stays alone; one conversation with another person ends it at any point.</text>
+</svg>

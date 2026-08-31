@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: The interview questions I ask — five questions listed in a panel, each tagged with the trait it is actually testing">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.35" r="0.62">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="146" cy="88" r="2"/><circle cx="438" cy="62" r="1.5"/><circle cx="612" cy="98" r="2"/>
+    <circle cx="92" cy="448" r="1.5"/><circle cx="344" cy="570" r="2"/><circle cx="1132" cy="82" r="1.5"/>
+    <circle cx="1048" cy="598" r="2"/><circle cx="640" cy="586" r="1.5"/>
+  </g>
+
+  <!-- The question sheet -->
+  <rect x="656" y="112" width="476" height="406" rx="16" fill="rgba(125,211,252,0.06)" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.4"/>
+  <text x="688" y="156" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" letter-spacing="4">FIVE QUESTIONS</text>
+
+  <rect x="688" y="176" width="412" height="58" rx="10" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="2" stroke-opacity="0.55"/>
+  <rect x="688" y="176" width="7" height="58" rx="3.5" fill="#7dd3fc"/>
+  <rect x="714" y="192" width="256" height="9" rx="4.5" fill="#7dd3fc" opacity="0.8"/>
+  <text x="714" y="222" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="800" letter-spacing="2">SELF-ASSESSMENT</text>
+
+  <rect x="688" y="246" width="412" height="58" rx="10" fill="rgba(74,222,128,0.10)" stroke="#4ade80" stroke-width="2" stroke-opacity="0.55"/>
+  <rect x="688" y="246" width="7" height="58" rx="3.5" fill="#4ade80"/>
+  <rect x="714" y="262" width="300" height="9" rx="4.5" fill="#4ade80" opacity="0.75"/>
+  <text x="714" y="292" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="800" letter-spacing="2">DEBUGGING METHOD</text>
+
+  <rect x="688" y="316" width="412" height="58" rx="10" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="2" stroke-opacity="0.55"/>
+  <rect x="688" y="316" width="7" height="58" rx="3.5" fill="#7dd3fc"/>
+  <rect x="714" y="332" width="222" height="9" rx="4.5" fill="#7dd3fc" opacity="0.8"/>
+  <text x="714" y="362" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="800" letter-spacing="2">COMMUNICATION</text>
+
+  <rect x="688" y="386" width="412" height="58" rx="10" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="2" stroke-opacity="0.55"/>
+  <rect x="688" y="386" width="7" height="58" rx="3.5" fill="#fbbf24"/>
+  <rect x="714" y="402" width="278" height="9" rx="4.5" fill="#fbbf24" opacity="0.7"/>
+  <text x="714" y="432" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="800" letter-spacing="2">DO THEY ASK FIRST</text>
+
+  <rect x="688" y="456" width="412" height="58" rx="10" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="2" stroke-opacity="0.55"/>
+  <rect x="688" y="456" width="7" height="58" rx="3.5" fill="#7dd3fc"/>
+  <rect x="714" y="472" width="196" height="9" rx="4.5" fill="#7dd3fc" opacity="0.8"/>
+  <text x="714" y="502" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="800" letter-spacing="2">MOTIVATION</text>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="196" fill="#7dd3fc" font-size="24" font-weight="800" letter-spacing="7">CAREER &amp; MENTORSHIP</text>
+    <text x="80" y="276" fill="#f8fafc" font-size="52" font-weight="800">The interview</text>
+    <text x="80" y="340" fill="#f8fafc" font-size="52" font-weight="800">questions I ask</text>
+    <text x="80" y="420" fill="#e2e8f0" font-size="26" font-weight="600">And what each one is really</text>
+    <text x="80" y="456" fill="#e2e8f0" font-size="26" font-weight="600">testing, from the other side</text>
+    <text x="80" y="556" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

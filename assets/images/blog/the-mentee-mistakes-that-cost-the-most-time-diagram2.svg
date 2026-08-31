@@ -1,0 +1,51 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-the-mentee-mistakes-that-cost-the-most-time-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-the-mentee-mistakes-that-cost-the-most-time-diagram2">Two curves plotted against how long you have been stuck. What the struggle teaches you rises steeply over the first hour, peaks somewhere between twenty minutes and half a day, and then falls away as you re-read the same page. What the delay costs everyone else stays flat for the first hour and then climbs steeply once a day has gone. The band between those two behaviours is the window in which to ask: too early and you skip the part that installs the memory, too late and someone else pays for your silence. Below, the four things a good request for help contains: what you are trying to do, what you tried in order, what happened exactly, and what you think is going on.</title>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW LONG TO STAY STUCK BEFORE YOU ASK</text>
+
+    <!-- Legend -->
+    <line x1="500" y1="84" x2="550" y2="84" stroke="#157f41" stroke-width="5" stroke-linecap="round"/>
+    <text x="560" y="90" fill="#64748b" font-size="15">what the struggle teaches you</text>
+    <line x1="830" y1="84" x2="880" y2="84" stroke="#a3352f" stroke-width="5" stroke-linecap="round"/>
+    <text x="890" y="90" fill="#64748b" font-size="15">what the delay costs</text>
+
+    <!-- Bands -->
+    <rect x="120" y="130" width="180" height="300" fill="#8f49df" fill-opacity="0.10"/>
+    <rect x="300" y="130" width="400" height="300" fill="#157f41" fill-opacity="0.13"/>
+    <rect x="700" y="130" width="380" height="300" fill="#a3352f" fill-opacity="0.10"/>
+    <line x1="300" y1="130" x2="300" y2="430" stroke="#6b7a90" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <line x1="700" y1="130" x2="700" y2="430" stroke="#6b7a90" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+    <text x="210" y="156" fill="#8f49df" font-size="15" font-weight="800" letter-spacing="1" text-anchor="middle">TOO EARLY</text>
+    <text x="500" y="156" fill="#157f41" font-size="16" font-weight="800" letter-spacing="1" text-anchor="middle">ASK IN HERE</text>
+    <text x="890" y="156" fill="#a3352f" font-size="15" font-weight="800" letter-spacing="1" text-anchor="middle">TOO LATE</text>
+
+    <!-- Curves -->
+    <path d="M 120 412 C 200 400, 262 300, 330 244 S 470 186, 560 186 S 664 196, 700 216 C 780 268, 900 336, 1080 372" fill="none" stroke="#157f41" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 120 418 C 300 416, 440 410, 600 386 S 840 268, 1080 170" fill="none" stroke="#a3352f" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Axis -->
+    <line x1="110" y1="430" x2="1090" y2="430" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <text x="120" y="452" fill="#64748b" font-size="14" font-weight="700">you get stuck</text>
+    <text x="300" y="452" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">20 min</text>
+    <text x="500" y="452" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">1 hour</text>
+    <text x="700" y="452" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">half a day</text>
+    <text x="890" y="452" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">a day</text>
+    <text x="1080" y="452" fill="#64748b" font-size="14" font-weight="700" text-anchor="end">three days</text>
+
+    <!-- What a good ask contains -->
+    <rect x="120" y="480" width="960" height="104" rx="14" fill="none" stroke="#6b7a90" stroke-opacity="0.5" stroke-width="1.5"/>
+    <text x="140" y="506" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2">WHAT THE MESSAGE HAS TO CONTAIN WHEN YOU DO ASK</text>
+
+    <circle cx="150" cy="546" r="8" fill="#1e77a4"/>
+    <text x="166" y="551" fill="#6b7a90" font-size="15" font-weight="700">What I am trying to do</text>
+    <circle cx="390" cy="546" r="8" fill="#1e77a4"/>
+    <text x="406" y="551" fill="#6b7a90" font-size="15" font-weight="700">What I tried, in order</text>
+    <circle cx="620" cy="546" r="8" fill="#1e77a4"/>
+    <text x="636" y="551" fill="#6b7a90" font-size="15" font-weight="700">What happened, pasted</text>
+    <circle cx="866" cy="546" r="8" fill="#1e77a4"/>
+    <text x="882" y="551" fill="#6b7a90" font-size="15" font-weight="700">What I think is going on</text>
+
+    <text x="40" y="610" fill="#64748b" font-size="15">Writing those four lines answers the question about a third of the time before you send it. That is not wasted effort — it is the struggle, compressed.</text>
+  </g>
+</svg>

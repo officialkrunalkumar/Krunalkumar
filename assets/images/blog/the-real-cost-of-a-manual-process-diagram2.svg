@@ -1,0 +1,88 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-the-real-cost-of-a-manual-process-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-the-real-cost-of-a-manual-process-diagram2">Cumulative spend on the same process over twelve months, plotted two ways. Doing it by hand costs 20,480 rupees a month and rises as a straight line from zero to 2,45,760 rupees at month twelve. Automating costs 70,000 rupees up front and then 5,410 rupees a month, so its line starts high and rises slowly to 1,34,920 rupees. The two lines cross at month 4.6, where 95,130 rupees has been spent either way. A panel beside the chart shows the arithmetic, and a warning notes that payback is not profit: after the crossing the saving is capacity rather than cash unless the freed hours are actually used.</title>
+  <defs>
+    <marker id="cost-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHEN THE BUILD PAYS FOR ITSELF</text>
+    <text x="40" y="82" fill="#64748b" font-size="15">Cumulative spend on the same process, month by month &#8212; the same enquiry intake as before</text>
+
+    <!-- grid -->
+    <g stroke="#6b7a90" stroke-width="1" opacity="0.3">
+      <line x1="120" y1="100" x2="700" y2="100"/>
+      <line x1="120" y1="184" x2="700" y2="184"/>
+      <line x1="120" y1="268" x2="700" y2="268"/>
+      <line x1="120" y1="352" x2="700" y2="352"/>
+      <line x1="120" y1="436" x2="700" y2="436"/>
+    </g>
+    <g stroke="#6b7a90" stroke-width="1.5">
+      <line x1="120" y1="100" x2="120" y2="520"/>
+      <line x1="120" y1="520" x2="700" y2="520"/>
+    </g>
+
+    <g fill="#64748b" font-size="13" text-anchor="end">
+      <text x="110" y="105">&#8377;2,50,000</text>
+      <text x="110" y="189">&#8377;2,00,000</text>
+      <text x="110" y="273">&#8377;1,50,000</text>
+      <text x="110" y="357">&#8377;1,00,000</text>
+      <text x="110" y="441">&#8377;50,000</text>
+      <text x="110" y="525">&#8377;0</text>
+    </g>
+
+    <g fill="#64748b" font-size="13" text-anchor="middle">
+      <text x="120" y="545">0</text>
+      <text x="217" y="545">2</text>
+      <text x="313" y="545">4</text>
+      <text x="410" y="545">6</text>
+      <text x="507" y="545">8</text>
+      <text x="603" y="545">10</text>
+      <text x="700" y="545">12</text>
+      <text x="410" y="574" font-size="14" font-weight="700" fill="#6b7a90">Months since the build began</text>
+    </g>
+
+    <!-- the two lines -->
+    <path d="M120 520 L700 107" fill="none" stroke="#a3352f" stroke-width="3"/>
+    <path d="M120 520 L120 402 L700 293" fill="none" stroke="#157f41" stroke-width="3"/>
+
+    <text x="414" y="292" fill="#a3352f" font-size="16" font-weight="800" transform="rotate(-35.4 414 292)">Keep doing it by hand</text>
+    <text x="418" y="331" fill="#157f41" font-size="16" font-weight="800" transform="rotate(-10.6 418 331)">Build it, then run it</text>
+
+    <!-- crossover -->
+    <line x1="345" y1="200" x2="345" y2="360" stroke="#1e77a4" stroke-width="1.5" stroke-dasharray="7 6"/>
+    <circle cx="345" cy="360" r="7" fill="#ffffff" stroke="#1e77a4" stroke-width="3"/>
+    <text x="336" y="192" fill="#1e77a4" font-size="15" font-weight="800" text-anchor="end">PAYBACK &#183; MONTH 4.6</text>
+    <text x="336" y="214" fill="#64748b" font-size="14" text-anchor="end">&#8377;95,130 spent, either way</text>
+
+    <line x1="706" y1="107" x2="726" y2="107" stroke="#64748b" stroke-width="2" marker-end="url(#cost-arr)"/>
+    <line x1="706" y1="293" x2="726" y2="293" stroke="#64748b" stroke-width="2" marker-end="url(#cost-arr)"/>
+
+    <!-- panel -->
+    <text x="740" y="120" fill="#1e77a4" font-size="16" font-weight="800" letter-spacing="2">THE ARITHMETIC</text>
+
+    <text x="740" y="152" fill="#6b7a90" font-size="15" font-weight="700">Manual, all in</text>
+    <text x="740" y="176" fill="#64748b" font-size="15">&#8377;20,480 a month</text>
+
+    <text x="740" y="206" fill="#6b7a90" font-size="15" font-weight="700">Automated, running</text>
+    <text x="740" y="230" fill="#64748b" font-size="15">&#8377;2,400 tool + &#8377;1,140 exceptions</text>
+    <text x="740" y="252" fill="#64748b" font-size="15">+ &#8377;1,870 upkeep = &#8377;5,410</text>
+
+    <text x="740" y="282" fill="#6b7a90" font-size="15" font-weight="700">Monthly saving</text>
+    <text x="740" y="306" fill="#157f41" font-size="15" font-weight="700">&#8377;20,480 &#8722; &#8377;5,410 = &#8377;15,070</text>
+
+    <text x="740" y="336" fill="#6b7a90" font-size="15" font-weight="700">Build, with contingency</text>
+    <text x="740" y="360" fill="#64748b" font-size="15">38 hours quoted, 50 budgeted,</text>
+    <text x="740" y="382" fill="#64748b" font-size="15">at &#8377;1,400 an hour = &#8377;70,000</text>
+
+    <text x="740" y="412" fill="#6b7a90" font-size="15" font-weight="700">Payback</text>
+    <text x="740" y="436" fill="#1e77a4" font-size="15" font-weight="700">&#8377;70,000 &#247; &#8377;15,070 = 4.6 months</text>
+
+    <rect x="740" y="452" width="380" height="136" rx="12" fill="none" stroke="#a3352f" stroke-width="2" stroke-dasharray="9 7"/>
+    <text x="762" y="480" fill="#a3352f" font-size="16" font-weight="800">Payback is not profit</text>
+    <text x="762" y="504" fill="#6b7a90" font-size="14">After the crossing the saving is</text>
+    <text x="762" y="526" fill="#6b7a90" font-size="14">capacity, not cash &#8212; unless the</text>
+    <text x="762" y="548" fill="#6b7a90" font-size="14">freed hours are actually filled</text>
+    <text x="762" y="570" fill="#6b7a90" font-size="14">with something that earns.</text>
+  </g>
+</svg>

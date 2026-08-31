@@ -1,0 +1,88 @@
+<svg width="1160" height="660" viewBox="0 0 1160 660" role="img" aria-labelledby="d-what-an-auditor-actually-wants-from-security-training-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-an-auditor-actually-wants-from-security-training-diagram1">How one training session becomes audit evidence: the session produces four records — an attendance register with names, date and hours; the material as delivered; a completion record per attendee carrying a unique ID; and an independent lookup the auditor can run themselves. A solid arrow carries that evidence to ISO/IEC 27001:2022, where Annex A 6.3 asks for awareness, education and training and clause 7.2 forces a retained record of competence. Dashed arrows carry it to SOC 2, where the service auditor maps it to the common criteria against the control the company wrote, and to India's DPDP Act 2023, where section 8(5) asks for reasonable security safeguards and never names training at all.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">ONE SESSION, FOUR RECORDS, THREE DIFFERENT READERS</text>
+  <text x="1120" y="42" fill="#64748b" font-size="15" text-anchor="end">Solid: the standard names the evidence</text>
+  <text x="1120" y="64" fill="#64748b" font-size="15" text-anchor="end">Dashed: the reviewer decides whether it counts</text>
+
+  <!-- The session -->
+  <g>
+    <rect x="40" y="240" width="232" height="190" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="278" fill="#6b7a90" font-size="21" font-weight="800">The session</text>
+    <text x="62" y="303" fill="#64748b" font-size="15">half a day to three days</text>
+    <text x="62" y="340" fill="#6b7a90" font-size="16">A named trainer</text>
+    <text x="62" y="366" fill="#6b7a90" font-size="16">A named team</text>
+    <text x="62" y="392" fill="#6b7a90" font-size="16">A topic your policy lists</text>
+  </g>
+  <g stroke="#6b7a90" stroke-width="2" fill="none">
+    <line x1="272" y1="335" x2="316" y2="335"/>
+  </g>
+  <polygon points="330,335 314,328 314,342" fill="#6b7a90"/>
+
+  <!-- The four records -->
+  <g>
+    <rect x="330" y="96" width="350" height="104" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="352" y="132" fill="#6b7a90" font-size="19" font-weight="800">1 · Attendance register</text>
+    <text x="352" y="159" fill="#64748b" font-size="15">Names, date, start and end time, hours.</text>
+    <text x="352" y="181" fill="#64748b" font-size="15">Who was in the room, not who was invited.</text>
+
+    <rect x="330" y="220" width="350" height="104" rx="12" fill="none" stroke="#8f49df" stroke-width="1.5"/>
+    <text x="352" y="256" fill="#6b7a90" font-size="19" font-weight="800">2 · Material as delivered</text>
+    <text x="352" y="283" fill="#64748b" font-size="15">The dated copy of what was actually taught,</text>
+    <text x="352" y="305" fill="#64748b" font-size="15">so coverage can be checked against policy.</text>
+
+    <rect x="330" y="344" width="350" height="104" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="352" y="380" fill="#6b7a90" font-size="19" font-weight="800">3 · Completion record</text>
+    <text x="352" y="407" fill="#64748b" font-size="15">One per attendee, carrying the hours</text>
+    <text x="352" y="429" fill="#64748b" font-size="15">and a unique certificate ID.</text>
+
+    <rect x="330" y="468" width="350" height="104" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="352" y="504" fill="#6b7a90" font-size="19" font-weight="800">4 · Independent lookup</text>
+    <text x="352" y="531" fill="#64748b" font-size="15">The reviewer checks that ID themselves,</text>
+    <text x="352" y="553" fill="#64748b" font-size="15">without emailing the trainer to ask.</text>
+  </g>
+
+  <!-- Collector spine -->
+  <g stroke="#6b7a90" stroke-width="1.5" fill="none" stroke-opacity="0.8">
+    <line x1="680" y1="148" x2="712" y2="148"/>
+    <line x1="680" y1="272" x2="712" y2="272"/>
+    <line x1="680" y1="396" x2="712" y2="396"/>
+    <line x1="680" y1="520" x2="712" y2="520"/>
+    <line x1="712" y1="148" x2="712" y2="520"/>
+  </g>
+
+  <!-- Evidence to reader -->
+  <g fill="none" stroke-width="2">
+    <line x1="712" y1="171" x2="776" y2="171" stroke="#1e77a4"/>
+    <line x1="712" y1="345" x2="776" y2="345" stroke="#157f41" stroke-dasharray="7 6"/>
+    <line x1="712" y1="519" x2="776" y2="519" stroke="#93671a" stroke-dasharray="7 6"/>
+  </g>
+  <polygon points="790,171 774,164 774,178" fill="#1e77a4"/>
+  <polygon points="790,345 774,338 774,352" fill="#157f41"/>
+  <polygon points="790,519 774,512 774,526" fill="#93671a"/>
+
+  <!-- The three readers -->
+  <g>
+    <rect x="790" y="96" width="330" height="150" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="812" y="132" fill="#6b7a90" font-size="19" font-weight="800">ISO/IEC 27001:2022</text>
+    <text x="812" y="160" fill="#64748b" font-size="15">Annex A 6.3 asks that people receive</text>
+    <text x="812" y="182" fill="#64748b" font-size="15">awareness, education and training.</text>
+    <text x="812" y="210" fill="#1e77a4" font-size="15" font-weight="700">Clause 7.2 is what forces the record:</text>
+    <text x="812" y="232" fill="#1e77a4" font-size="15" font-weight="700">retained evidence of competence.</text>
+
+    <rect x="790" y="270" width="330" height="150" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="812" y="306" fill="#6b7a90" font-size="19" font-weight="800">SOC 2</text>
+    <text x="812" y="334" fill="#64748b" font-size="15">The service auditor maps the same</text>
+    <text x="812" y="356" fill="#64748b" font-size="15">pack to the common criteria, and</text>
+    <text x="812" y="378" fill="#64748b" font-size="15">tests it against the control you wrote.</text>
+    <text x="812" y="406" fill="#157f41" font-size="15" font-weight="700">Their call to make, never the trainer's.</text>
+
+    <rect x="790" y="444" width="330" height="150" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="812" y="480" fill="#6b7a90" font-size="19" font-weight="800">DPDP Act 2023 · India</text>
+    <text x="812" y="508" fill="#64748b" font-size="15">Section 8(5) asks for reasonable</text>
+    <text x="812" y="530" fill="#64748b" font-size="15">security safeguards and never uses</text>
+    <text x="812" y="552" fill="#64748b" font-size="15">the word training at all.</text>
+    <text x="812" y="580" fill="#93671a" font-size="15" font-weight="700">Evidence for an argument, not a box.</text>
+  </g>
+
+  <text x="40" y="628" fill="#64748b" font-size="15">Nothing on the right is granted by the trainer. The left column is all a trainer can actually deliver.</text>
+</svg>

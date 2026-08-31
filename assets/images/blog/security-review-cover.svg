@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What a security review actually finds — a magnifier over a ranked list of findings, the top one marked critical">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="150" cy="82" r="2"/><circle cx="430" cy="58" r="1.5"/><circle cx="700" cy="96" r="2"/>
+    <circle cx="96" cy="452" r="1.5"/><circle cx="352" cy="566" r="2"/><circle cx="1128" cy="86" r="1.5"/>
+    <circle cx="1044" cy="596" r="2"/><circle cx="648" cy="588" r="1.5"/>
+  </g>
+
+  <!-- Ranked findings panel -->
+  <rect x="716" y="128" width="404" height="374" rx="16" fill="rgba(125,211,252,0.06)" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.4"/>
+  <text x="748" y="176" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" letter-spacing="4">FINDINGS</text>
+
+  <rect x="748" y="200" width="340" height="52" rx="10" fill="rgba(248,113,113,0.16)" stroke="#f87171" stroke-width="2"/>
+  <rect x="748" y="200" width="8" height="52" rx="4" fill="#f87171"/>
+  <rect x="778" y="216" width="196" height="10" rx="5" fill="#f87171" opacity="0.9"/>
+  <rect x="778" y="234" width="120" height="8" rx="4" fill="#f87171" opacity="0.5"/>
+  <text x="1064" y="233" fill="#f87171" font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" text-anchor="end">1</text>
+
+  <rect x="748" y="266" width="340" height="52" rx="10" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="748" y="266" width="8" height="52" rx="4" fill="#fbbf24"/>
+  <rect x="778" y="282" width="164" height="10" rx="5" fill="#fbbf24" opacity="0.85"/>
+  <rect x="778" y="300" width="96" height="8" rx="4" fill="#fbbf24" opacity="0.45"/>
+  <text x="1064" y="299" fill="#fbbf24" font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" text-anchor="end">2</text>
+
+  <rect x="748" y="332" width="340" height="52" rx="10" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="2"/>
+  <rect x="748" y="332" width="8" height="52" rx="4" fill="#7dd3fc"/>
+  <rect x="778" y="348" width="180" height="10" rx="5" fill="#7dd3fc" opacity="0.8"/>
+  <rect x="778" y="366" width="110" height="8" rx="4" fill="#7dd3fc" opacity="0.4"/>
+  <text x="1064" y="365" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" text-anchor="end">3</text>
+
+  <rect x="748" y="398" width="340" height="52" rx="10" fill="rgba(148,163,184,0.10)" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="748" y="398" width="8" height="52" rx="4" fill="#94a3b8"/>
+  <rect x="778" y="414" width="140" height="10" rx="5" fill="#94a3b8" opacity="0.7"/>
+  <rect x="778" y="432" width="86" height="8" rx="4" fill="#94a3b8" opacity="0.4"/>
+  <text x="1064" y="431" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" text-anchor="end">4</text>
+
+  <!-- Magnifier over the top finding -->
+  <g fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round">
+    <circle cx="772" cy="224" r="56"/>
+    <path d="M812 264 L856 308"/>
+  </g>
+  <circle cx="772" cy="224" r="56" fill="rgba(74,222,128,0.10)"/>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="196" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">BUSINESS</text>
+    <text x="80" y="272" fill="#f8fafc" font-size="48" font-weight="800">What a security review</text>
+    <text x="80" y="334" fill="#f8fafc" font-size="48" font-weight="800">actually finds</text>
+    <text x="80" y="416" fill="#e2e8f0" font-size="26" font-weight="600">The same eight things, in roughly</text>
+    <text x="80" y="452" fill="#e2e8f0" font-size="26" font-weight="600">the same order</text>
+    <text x="80" y="556" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

@@ -1,0 +1,77 @@
+<svg width="1160" height="500" viewBox="0 0 1160 500" role="img" aria-labelledby="d-n8n-make-or-zapier-an-honest-comparison-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-n8n-make-or-zapier-an-honest-comparison-diagram2">One five-step automation billed three ways. Zapier counts each successful action step, so the trigger and the filter are free and the two steps after the filter are charged only on the runs that pass. Make counts every module execution including the trigger. n8n Cloud counts one execution per run no matter how many nodes it contains, and self-hosted n8n has no per-run meter at all — you pay for a server and your own time instead.</title>
+  <text x="52" y="42" fill="#1e77a4" font-size="19" font-weight="800" letter-spacing="3">SAME WORKFLOW, THREE METERS</text>
+  <text x="52" y="70" fill="#64748b" font-size="15">A row lands, you look the contact up, you keep only the new ones, then create a record and post to Slack.</text>
+  <text x="52" y="92" fill="#64748b" font-size="15">1,000 rows a month; 600 of them pass the filter.</text>
+
+  <g>
+    <circle cx="60" cy="115" r="8" fill="#1e77a4"/>
+    <text x="76" y="121" fill="#64748b" font-size="14">counted by the meter</text>
+    <circle cx="240" cy="115" r="8" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="256" y="121" fill="#64748b" font-size="14">not counted</text>
+  </g>
+
+  <g font-size="15" text-anchor="middle">
+    <text x="340" y="145" fill="#6b7a90" font-weight="700">Trigger</text>
+    <text x="340" y="167" fill="#64748b" font-size="13">new row</text>
+    <text x="470" y="145" fill="#6b7a90" font-weight="700">Search</text>
+    <text x="470" y="167" fill="#64748b" font-size="13">find contact</text>
+    <text x="600" y="145" fill="#6b7a90" font-weight="700">Filter</text>
+    <text x="600" y="167" fill="#64748b" font-size="13">is it new?</text>
+    <text x="730" y="145" fill="#6b7a90" font-weight="700">Create</text>
+    <text x="730" y="167" fill="#64748b" font-size="13">CRM record</text>
+    <text x="860" y="145" fill="#6b7a90" font-weight="700">Notify</text>
+    <text x="860" y="167" fill="#64748b" font-size="13">Slack</text>
+    <text x="1020" y="145" fill="#1e77a4" font-weight="800">Per month</text>
+    <text x="1020" y="167" fill="#64748b" font-size="13">1,000 rows</text>
+  </g>
+
+  <line x1="52" y1="184" x2="1108" y2="184" stroke="#6b7a90" stroke-width="1.5" opacity="0.5"/>
+  <line x1="52" y1="251" x2="1108" y2="251" stroke="#6b7a90" stroke-width="1" opacity="0.28"/>
+  <line x1="52" y1="313" x2="1108" y2="313" stroke="#6b7a90" stroke-width="1" opacity="0.28"/>
+  <line x1="52" y1="375" x2="1108" y2="375" stroke="#6b7a90" stroke-width="1" opacity="0.28"/>
+
+  <!-- Zapier: tasks -->
+  <text x="52" y="215" fill="#6b7a90" font-size="16" font-weight="800">Zapier</text>
+  <text x="52" y="235" fill="#64748b" font-size="13">one task per action step</text>
+  <circle cx="340" cy="220" r="9" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+  <circle cx="470" cy="220" r="9" fill="#1e77a4"/>
+  <text x="470" y="246" fill="#64748b" font-size="12" text-anchor="middle">x1,000</text>
+  <circle cx="600" cy="220" r="9" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+  <circle cx="730" cy="220" r="9" fill="#1e77a4"/>
+  <text x="730" y="246" fill="#64748b" font-size="12" text-anchor="middle">x600</text>
+  <circle cx="860" cy="220" r="9" fill="#1e77a4"/>
+  <text x="860" y="246" fill="#64748b" font-size="12" text-anchor="middle">x600</text>
+  <text x="1020" y="226" fill="#6b7a90" font-size="16" font-weight="800" text-anchor="middle">2,200 tasks</text>
+
+  <!-- Make: operations -->
+  <text x="52" y="277" fill="#6b7a90" font-size="16" font-weight="800">Make</text>
+  <text x="52" y="297" fill="#64748b" font-size="13">one operation per module run</text>
+  <circle cx="340" cy="282" r="9" fill="#1e77a4"/>
+  <text x="340" y="308" fill="#64748b" font-size="12" text-anchor="middle">x1,000</text>
+  <circle cx="470" cy="282" r="9" fill="#1e77a4"/>
+  <text x="470" y="308" fill="#64748b" font-size="12" text-anchor="middle">x1,000</text>
+  <circle cx="600" cy="282" r="9" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+  <circle cx="730" cy="282" r="9" fill="#1e77a4"/>
+  <text x="730" y="308" fill="#64748b" font-size="12" text-anchor="middle">x600</text>
+  <circle cx="860" cy="282" r="9" fill="#1e77a4"/>
+  <text x="860" y="308" fill="#64748b" font-size="12" text-anchor="middle">x600</text>
+  <text x="1020" y="288" fill="#6b7a90" font-size="16" font-weight="800" text-anchor="middle">3,200 ops</text>
+
+  <!-- n8n Cloud: executions -->
+  <text x="52" y="339" fill="#6b7a90" font-size="16" font-weight="800">n8n Cloud</text>
+  <text x="52" y="359" fill="#64748b" font-size="13">one execution per run</text>
+  <rect x="288" y="327" width="624" height="34" rx="10" fill="none" stroke="#157f41" stroke-width="2"/>
+  <text x="600" y="349" fill="#6b7a90" font-size="14" text-anchor="middle">the whole run is one unit — adding nodes does not add cost</text>
+  <text x="1020" y="350" fill="#6b7a90" font-size="16" font-weight="800" text-anchor="middle">1,000 execs</text>
+
+  <!-- n8n self-hosted -->
+  <text x="52" y="401" fill="#6b7a90" font-size="16" font-weight="800">n8n, self-hosted</text>
+  <text x="52" y="421" fill="#64748b" font-size="13">no per-run meter</text>
+  <rect x="288" y="389" width="624" height="34" rx="10" fill="none" stroke="#157f41" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="600" y="411" fill="#6b7a90" font-size="14" text-anchor="middle">you pay for a server, a database, backups, and your own attention</text>
+  <text x="1020" y="412" fill="#6b7a90" font-size="16" font-weight="800" text-anchor="middle">one server</text>
+
+  <text x="52" y="462" fill="#64748b" font-size="15">Now add an iterator that fans one row into fifty line items. Only one of these three totals stays where you left it.</text>
+  <text x="52" y="484" fill="#64748b" font-size="14">Which built-in steps are free changes over time in all three. Count your own meter on a real week before you commit.</text>
+</svg>

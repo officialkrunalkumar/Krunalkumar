@@ -1,0 +1,41 @@
+<svg width="760" height="380" viewBox="0 0 760 380" role="img" aria-labelledby="d-n8n-make-or-zapier-an-honest-comparison-diagram3" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-n8n-make-or-zapier-an-honest-comparison-diagram3">Two ways a connector change reaches a workflow. On a hosted platform the vendor's connector update lands directly in the running workflow with no version you chose, so the first signal is usually a failed run or a field that arrives empty. On a self-hosted n8n pinned to an image tag, the update waits until you pull it, which means you choose the date and can roll the tag back — and also means the fix waits until you act.</title>
+  <text x="24" y="36" fill="#1e77a4" font-size="16" font-weight="800" letter-spacing="2">WHEN THE VENDOR CHANGES SOMETHING, WHO PICKS THE DATE?</text>
+
+  <!-- Hosted -->
+  <rect x="24" y="60" width="344" height="252" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+  <text x="46" y="90" fill="#6b7a90" font-size="17" font-weight="800">Hosted connector</text>
+  <rect x="52" y="106" width="288" height="40" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+  <text x="196" y="131" fill="#6b7a90" font-size="14" text-anchor="middle">Vendor updates the connector</text>
+  <g stroke="#93671a" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="196" y1="146" x2="196" y2="176"/>
+    <path d="M190 170 L196 178 L202 170"/>
+  </g>
+  <rect x="52" y="182" width="288" height="40" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+  <text x="196" y="207" fill="#6b7a90" font-size="14" text-anchor="middle">Your live workflow, already changed</text>
+  <text x="52" y="250" fill="#64748b" font-size="13">No version you chose, no tag to roll back.</text>
+  <text x="52" y="272" fill="#64748b" font-size="13">You hear about it from a failed run — or</text>
+  <text x="52" y="294" fill="#64748b" font-size="13">from a field that quietly arrives empty.</text>
+
+  <!-- Self-hosted, pinned -->
+  <rect x="392" y="60" width="344" height="252" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="414" y="90" fill="#6b7a90" font-size="17" font-weight="800">Self-hosted, pinned image</text>
+  <rect x="420" y="106" width="288" height="40" rx="8" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="564" y="131" fill="#6b7a90" font-size="14" text-anchor="middle">New image published, not installed</text>
+  <g stroke="#157f41" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="564" y1="146" x2="564" y2="160"/>
+  </g>
+  <rect x="452" y="160" width="224" height="26" rx="7" fill="none" stroke="#157f41" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="564" y="178" fill="#157f41" font-size="13" font-weight="700" text-anchor="middle">you pull it, on your date</text>
+  <g stroke="#157f41" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="564" y1="186" x2="564" y2="200"/>
+    <path d="M558 194 L564 202 L570 194"/>
+  </g>
+  <rect x="420" y="206" width="288" height="40" rx="8" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="564" y="231" fill="#6b7a90" font-size="14" text-anchor="middle">Your workflow, unchanged until then</text>
+  <text x="420" y="272" fill="#64748b" font-size="13">You test the upgrade, then roll back the</text>
+  <text x="420" y="294" fill="#64748b" font-size="13">tag if it breaks. The fix waits for you too.</text>
+
+  <text x="24" y="342" fill="#64748b" font-size="14">Neither column is free. One trades control for maintenance; the other trades maintenance</text>
+  <text x="24" y="364" fill="#64748b" font-size="14">for control. Pick the cost you can actually pay.</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-what-a-security-review-actually-finds-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-a-security-review-actually-finds-diagram1">Two request paths compared. In the broken path a request for invoice 1042 is authenticated, then loaded by id alone and returned, with no step that asks whether the invoice belongs to the caller. In the fixed path the same request is authenticated and then loaded by id and owner together, so a row belonging to someone else returns nothing and the response is an ordinary 404</title>
+  <defs>
+    <marker id="rev-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE AUTHORISATION GOES MISSING</text>
+
+    <!-- Broken path -->
+    <text x="40" y="106" fill="#a3352f" font-size="15" font-weight="800" letter-spacing="2">THE PATH A REVIEW KEEPS FINDING</text>
+
+    <rect x="40" y="122" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="156" fill="#6b7a90" font-size="17" font-weight="800">1 · The request</text>
+    <text x="62" y="188" fill="#64748b" font-size="15">GET /api/invoices/1042</text>
+    <text x="62" y="214" fill="#64748b" font-size="15">Cookie: session=&#8230;</text>
+    <text x="62" y="240" fill="#64748b" font-size="15">Caller is Asha</text>
+
+    <rect x="324" y="122" width="244" height="132" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="346" y="156" fill="#6b7a90" font-size="17" font-weight="800">2 · Authenticate</text>
+    <text x="346" y="188" fill="#64748b" font-size="15">Is the session valid?</text>
+    <text x="346" y="214" fill="#157f41" font-size="15" font-weight="700">Yes &#8212; this is Asha</text>
+    <text x="346" y="240" fill="#64748b" font-size="15">The only check present</text>
+
+    <rect x="608" y="122" width="244" height="132" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="630" y="156" fill="#6b7a90" font-size="17" font-weight="800">3 · Load by id</text>
+    <text x="630" y="188" fill="#64748b" font-size="15">SELECT * FROM invoices</text>
+    <text x="630" y="214" fill="#a3352f" font-size="15" font-weight="700">WHERE id = 1042</text>
+    <text x="630" y="240" fill="#64748b" font-size="15">Owner never mentioned</text>
+
+    <rect x="892" y="122" width="244" height="132" rx="12" fill="#a3352f"/>
+    <text x="914" y="156" fill="#ffffff" font-size="17" font-weight="800">4 · Respond</text>
+    <text x="914" y="188" fill="#ffffff" font-size="15">200 OK</text>
+    <text x="914" y="214" fill="#ffffff" font-size="15">Bhavin&#8217;s invoice,</text>
+    <text x="914" y="240" fill="#ffffff" font-size="15">handed to Asha</text>
+
+    <line x1="284" y1="188" x2="318" y2="188" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+    <line x1="568" y1="188" x2="602" y2="188" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+    <line x1="852" y1="188" x2="886" y2="188" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+
+    <rect x="324" y="282" width="812" height="88" rx="12" fill="none" stroke="#a3352f" stroke-width="2" stroke-dasharray="9 7"/>
+    <text x="348" y="308" fill="#a3352f" font-size="16" font-weight="800">The missing step</text>
+    <text x="348" y="334" fill="#6b7a90" font-size="15">Nothing between steps 2 and 3 asks whether invoice 1042 belongs to Asha.</text>
+    <text x="348" y="358" fill="#6b7a90" font-size="15">Changing the number in the URL is the entire exploit.</text>
+
+    <!-- Fixed path -->
+    <text x="40" y="400" fill="#157f41" font-size="15" font-weight="800" letter-spacing="2">THE PATH AFTER THE FIX</text>
+
+    <rect x="40" y="416" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="450" fill="#6b7a90" font-size="17" font-weight="800">1 · The request</text>
+    <text x="62" y="482" fill="#64748b" font-size="15">Unchanged &#8212; the same</text>
+    <text x="62" y="508" fill="#64748b" font-size="15">URL, the same session,</text>
+    <text x="62" y="534" fill="#64748b" font-size="15">the same caller</text>
+
+    <rect x="324" y="416" width="244" height="132" rx="12" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="346" y="450" fill="#6b7a90" font-size="17" font-weight="800">2 · Authenticate</text>
+    <text x="346" y="482" fill="#64748b" font-size="15">Is the session valid?</text>
+    <text x="346" y="508" fill="#157f41" font-size="15" font-weight="700">Yes &#8212; this is Asha</text>
+    <text x="346" y="534" fill="#64748b" font-size="15">Unchanged as well</text>
+
+    <rect x="608" y="416" width="244" height="132" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="630" y="450" fill="#6b7a90" font-size="17" font-weight="800">3 · Load with owner</text>
+    <text x="630" y="482" fill="#64748b" font-size="15">SELECT * FROM invoices</text>
+    <text x="630" y="508" fill="#64748b" font-size="15">WHERE id = 1042</text>
+    <text x="630" y="534" fill="#157f41" font-size="15" font-weight="700">AND account = :caller</text>
+
+    <rect x="892" y="416" width="244" height="132" rx="12" fill="#157f41"/>
+    <text x="914" y="450" fill="#ffffff" font-size="17" font-weight="800">4 · Respond</text>
+    <text x="914" y="482" fill="#ffffff" font-size="15">404 Not Found</text>
+    <text x="914" y="508" fill="#ffffff" font-size="15">Zero rows returned, so</text>
+    <text x="914" y="534" fill="#ffffff" font-size="15">nothing is confirmed</text>
+
+    <line x1="284" y1="482" x2="318" y2="482" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+    <line x1="568" y1="482" x2="602" y2="482" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+    <line x1="852" y1="482" x2="886" y2="482" stroke="#64748b" stroke-width="2.5" marker-end="url(#rev-arr)"/>
+
+    <text x="40" y="578" fill="#64748b" font-size="15">One clause is the entire difference. Authentication answers who is calling;</text>
+    <text x="40" y="602" fill="#64748b" font-size="15">authorisation answers what this caller may have &#8212; and only the second one is optional to forget.</text>
+  </g>
+</svg>

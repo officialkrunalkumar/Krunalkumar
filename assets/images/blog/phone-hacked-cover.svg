@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Why your phone feels hacked, and probably is not. A phone screen listing four possible explanations, three of them cleared and one flagged for attention">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.32">
+    <circle cx="146" cy="86" r="2"/><circle cx="418" cy="62" r="1.5"/><circle cx="686" cy="100" r="2"/>
+    <circle cx="102" cy="470" r="1.5"/><circle cx="360" cy="574" r="2"/><circle cx="1136" cy="90" r="1.5"/>
+    <circle cx="1058" cy="588" r="2"/><circle cx="640" cy="592" r="1.5"/>
+  </g>
+
+  <!-- The phone, with the triage running down its screen: three ordinary
+       explanations cleared, one signal that is worth acting on. -->
+  <rect x="812" y="112" width="252" height="406" rx="30" fill="rgba(125,211,252,0.06)" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.45"/>
+  <rect x="890" y="128" width="96" height="12" rx="6" fill="#38bdf8" opacity="0.5"/>
+  <rect x="830" y="156" width="216" height="344" rx="16" fill="none" stroke="#7dd3fc" stroke-width="2" stroke-opacity="0.35"/>
+
+  <!-- Battery ageing -->
+  <rect x="846" y="180" width="184" height="60" rx="12" fill="rgba(148,163,184,0.10)" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="864" y="200" width="34" height="20" rx="4" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <rect x="866" y="202" width="12" height="16" rx="2" fill="#94a3b8"/>
+  <rect x="899" y="206" width="4" height="8" rx="2" fill="#94a3b8"/>
+  <rect x="914" y="199" width="70" height="9" rx="4.5" fill="#94a3b8" opacity="0.7"/>
+  <rect x="914" y="214" width="46" height="7" rx="3.5" fill="#94a3b8" opacity="0.4"/>
+  <circle cx="1006" cy="210" r="13" fill="none" stroke="#4ade80" stroke-width="2.5"/>
+  <path d="M999 210 l5 5 l9 -10" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Heat -->
+  <rect x="846" y="258" width="184" height="60" rx="12" fill="rgba(148,163,184,0.10)" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M879 296 v-20" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="879" cy="303" r="8" fill="#94a3b8"/>
+  <rect x="914" y="277" width="62" height="9" rx="4.5" fill="#94a3b8" opacity="0.7"/>
+  <rect x="914" y="292" width="38" height="7" rx="3.5" fill="#94a3b8" opacity="0.4"/>
+  <circle cx="1006" cy="288" r="13" fill="none" stroke="#4ade80" stroke-width="2.5"/>
+  <path d="M999 288 l5 5 l9 -10" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Storage -->
+  <rect x="846" y="336" width="184" height="60" rx="12" fill="rgba(148,163,184,0.10)" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="864" y="356" width="36" height="10" rx="3" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <rect x="864" y="370" width="36" height="10" rx="3" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <rect x="914" y="355" width="74" height="9" rx="4.5" fill="#94a3b8" opacity="0.7"/>
+  <rect x="914" y="370" width="42" height="7" rx="3.5" fill="#94a3b8" opacity="0.4"/>
+  <circle cx="1006" cy="366" r="13" fill="none" stroke="#4ade80" stroke-width="2.5"/>
+  <path d="M999 366 l5 5 l9 -10" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- The one that matters: a session you do not recognise -->
+  <rect x="846" y="414" width="184" height="60" rx="12" fill="rgba(251,191,36,0.16)" stroke="#fbbf24" stroke-width="2.5"/>
+  <rect x="846" y="414" width="8" height="60" rx="4" fill="#fbbf24"/>
+  <rect x="866" y="432" width="34" height="24" rx="4" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+  <path d="M878 456 v6 h10 v-6" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+  <rect x="914" y="433" width="66" height="9" rx="4.5" fill="#fbbf24" opacity="0.9"/>
+  <rect x="914" y="448" width="44" height="7" rx="3.5" fill="#fbbf24" opacity="0.55"/>
+  <circle cx="1006" cy="444" r="13" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+  <rect x="1004" y="437" width="4" height="9" rx="2" fill="#fbbf24"/>
+  <rect x="1004" y="449" width="4" height="4" rx="2" fill="#fbbf24"/>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="196" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+    <text x="80" y="272" fill="#f8fafc" font-size="44" font-weight="800">Why your phone feels</text>
+    <text x="80" y="330" fill="#f8fafc" font-size="44" font-weight="800">hacked, and probably is not</text>
+    <text x="80" y="410" fill="#e2e8f0" font-size="26" font-weight="600">The dull explanations first.</text>
+    <text x="80" y="446" fill="#e2e8f0" font-size="26" font-weight="600">Then the six that actually matter.</text>
+    <text x="80" y="556" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

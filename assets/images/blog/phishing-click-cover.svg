@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What happens when you click a phishing link. Three vignettes — a cursor clicking a link in a browser window, a login form beside a padlock, and a document beside a run button">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Three vignettes, because "I clicked" is three different events with three
+       different outcomes. They are drawn apart rather than stacked: none of them
+       leads to the next on its own. -->
+
+  <!-- Opening the page -->
+  <g transform="translate(790,110)">
+    <rect x="0" y="0" width="210" height="84" rx="10" fill="none" stroke="#94a3b8" stroke-width="3"/>
+    <line x1="0" y1="22" x2="210" y2="22" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8">
+      <circle cx="16" cy="11" r="3.5"/><circle cx="32" cy="11" r="3.5"/><circle cx="48" cy="11" r="3.5"/>
+    </g>
+    <rect x="18" y="42" width="104" height="8" rx="4" fill="#7dd3fc"/>
+    <line x1="18" y1="58" x2="122" y2="58" stroke="#7dd3fc" stroke-width="2"/>
+    <path d="M134 42 L134 78 L143 69 L150 84 L158 80 L151 66 L162 65 Z" fill="#f8fafc" stroke="#121b2c" stroke-width="2" stroke-linejoin="round"/>
+    <text x="0" y="122" fill="#94a3b8" font-family="'Segoe UI', Tahoma, sans-serif" font-size="20" font-weight="700">the page opens</text>
+  </g>
+
+  <!-- Typing credentials -->
+  <g transform="translate(790,252)">
+    <rect x="0" y="0" width="210" height="84" rx="10" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+    <rect x="18" y="18" width="118" height="16" rx="8" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <rect x="18" y="48" width="118" height="16" rx="8" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <g fill="#94a3b8">
+      <circle cx="30" cy="56" r="3"/><circle cx="42" cy="56" r="3"/><circle cx="54" cy="56" r="3"/><circle cx="66" cy="56" r="3"/>
+    </g>
+    <path d="M160 46 v-10 a14 14 0 0 1 28 0 v10" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+    <rect x="154" y="46" width="40" height="30" rx="7" fill="#7dd3fc"/>
+    <circle cx="174" cy="57" r="4" fill="#121b2c"/>
+    <rect x="172" y="57" width="4" height="10" rx="2" fill="#121b2c"/>
+    <text x="0" y="122" fill="#94a3b8" font-family="'Segoe UI', Tahoma, sans-serif" font-size="20" font-weight="700">you type something in</text>
+  </g>
+
+  <!-- Running the file -->
+  <g transform="translate(790,394)">
+    <path d="M18 0 H104 L138 34 V84 H18 Z" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M104 0 V34 H138" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linejoin="round"/>
+    <g stroke="#94a3b8" stroke-width="3" stroke-linecap="round" opacity="0.8">
+      <line x1="36" y1="50" x2="112" y2="50"/>
+      <line x1="36" y1="66" x2="92" y2="66"/>
+    </g>
+    <rect x="154" y="28" width="48" height="48" rx="11" fill="none" stroke="#f87171" stroke-width="4"/>
+    <path d="M171 41 L191 52 L171 63 Z" fill="#f87171"/>
+    <text x="0" y="122" fill="#94a3b8" font-family="'Segoe UI', Tahoma, sans-serif" font-size="20" font-weight="700">something runs</text>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="168" fill="#7dd3fc" font-size="24" font-weight="800" letter-spacing="7">SECURITY</text>
+    <text x="80" y="240" fill="#f8fafc" font-size="52" font-weight="800">What happens when</text>
+    <text x="80" y="300" fill="#f8fafc" font-size="52" font-weight="800">you click a</text>
+    <text x="80" y="360" fill="#f8fafc" font-size="52" font-weight="800">phishing link</text>
+    <text x="80" y="428" fill="#e2e8f0" font-size="27" font-weight="600">Six different things get called</text>
+    <text x="80" y="466" fill="#e2e8f0" font-size="27" font-weight="600">&#8220;clicking&#8221;. Only some are serious.</text>
+    <text x="80" y="555" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

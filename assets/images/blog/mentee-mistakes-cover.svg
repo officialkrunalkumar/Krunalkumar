@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: The mentee mistakes that cost the most time — nine patterns, and the one that costs the most">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.38" r="0.62">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- a closed loop that never opens, and the one arrow that leaves it -->
+  <g fill="none">
+    <circle cx="930" cy="270" r="100" stroke="#7dd3fc" stroke-width="8" stroke-opacity="0.5" stroke-dasharray="16 14"/>
+    <path d="M 918 158 L 950 172 L 918 186 Z" fill="#7dd3fc" fill-opacity="0.5" stroke="none"/>
+    <path d="M 1002 340 Q 1042 382 1050 418" stroke="#7dd3fc" stroke-width="9" stroke-linecap="round"/>
+    <path d="M 1034 410 L 1060 442 L 1064 402 Z" fill="#7dd3fc" stroke="none"/>
+    <rect x="1030" y="452" width="112" height="78" rx="18" fill="#7dd3fc" fill-opacity="0.92" stroke="none"/>
+    <rect x="1052" y="478" width="68" height="9" rx="4" fill="#172437" stroke="none"/>
+    <rect x="1052" y="500" width="44" height="9" rx="4" fill="#172437" stroke="none"/>
+  </g>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">MENTORSHIP</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="54" font-weight="800">The mentee mistakes</text>
+    <text x="80" y="348" fill="#f8fafc" font-size="54" font-weight="800">that cost the most time</text>
+    <text x="80" y="418" fill="#e2e8f0" font-size="30" font-weight="600">Nine patterns, and the one that costs the most.</text>
+    <text x="80" y="540" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

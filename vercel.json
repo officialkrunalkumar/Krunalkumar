@@ -233,5 +233,35 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/buddha",
+      "destination": "/fun/buddha"
+    },
+    {
+      "source": "/party",
+      "destination": "/fun/party"
+    },
+    {
+      "source": "/birthday",
+      "destination": "/fun/birthday"
+    },
+    {
+      "source": "/festival",
+      "destination": "/fun/festival"
+    },
+    {
+      "source": "/teapot",
+      "destination": "/fun/teapot"
+    },
+    {
+      "source": "/einstein",
+      "destination": "/fun/einstein"
+    },
+    {
+      "source": "/terminal",
+      "destination": "/fun/terminal"
+    }
   ]
 }

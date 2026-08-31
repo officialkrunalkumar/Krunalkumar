@@ -1,0 +1,68 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-the-mentee-mistakes-that-cost-the-most-time-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-the-mentee-mistakes-that-cost-the-most-time-diagram1">Two learning loops side by side. The tutorial loop runs from picking a tutorial, to typing what you see, to watching it run, to feeling ready for the next one, and then straight back to picking a tutorial, with a return arrow labelled that no decision in the circle was yours, and it leaves behind a folder of code you could not have written from a blank file. The build loop runs from picking one problem you actually have, to trying it and getting stuck, to reading the source or asking with what you tried, to shipping it to one real person, and the return arrow is that person's bug report becoming the next problem, leaving behind something in use and an ordered list of what to fix.</title>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">TWO LOOPS THAT FEEL THE SAME FROM INSIDE</text>
+
+    <!-- Left panel: the tutorial loop -->
+    <rect x="40" y="90" width="520" height="440" rx="16" fill="none" stroke="#6b7a90" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="130" y="126" fill="#a3352f" font-size="17" font-weight="800" letter-spacing="1">THE TUTORIAL LOOP</text>
+
+    <rect x="130" y="150" width="300" height="58" rx="12" fill="none" stroke="#a3352f" stroke-opacity="0.55" stroke-width="2"/>
+    <text x="280" y="185" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Pick a tutorial</text>
+    <line x1="280" y1="208" x2="280" y2="224" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 274 222 L 286 222 L 280 234 Z" fill="#6b7a90"/>
+
+    <rect x="130" y="232" width="300" height="58" rx="12" fill="none" stroke="#a3352f" stroke-opacity="0.55" stroke-width="2"/>
+    <text x="280" y="267" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Type what you see on the screen</text>
+    <line x1="280" y1="290" x2="280" y2="306" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 274 304 L 286 304 L 280 316 Z" fill="#6b7a90"/>
+
+    <rect x="130" y="314" width="300" height="58" rx="12" fill="none" stroke="#a3352f" stroke-opacity="0.55" stroke-width="2"/>
+    <text x="280" y="349" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">It runs. It works.</text>
+    <line x1="280" y1="372" x2="280" y2="388" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 274 386 L 286 386 L 280 398 Z" fill="#6b7a90"/>
+
+    <rect x="130" y="396" width="300" height="58" rx="12" fill="none" stroke="#a3352f" stroke-opacity="0.55" stroke-width="2"/>
+    <text x="280" y="431" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Feel ready for the next one</text>
+
+    <path d="M 130 425 H 80 V 179 H 122" fill="none" stroke="#a3352f" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 120 173 L 132 179 L 120 185 Z" fill="#a3352f"/>
+    <text x="66" y="302" fill="#a3352f" font-size="14" font-weight="700" text-anchor="middle" transform="rotate(-90 66 302)">no decision here was yours</text>
+
+    <text x="130" y="486" fill="#64748b" font-size="15">After forty hours: a folder of code you</text>
+    <text x="130" y="508" fill="#64748b" font-size="15">could not write again from a blank file.</text>
+
+    <!-- Right panel: the build loop -->
+    <rect x="600" y="90" width="520" height="440" rx="16" fill="none" stroke="#6b7a90" stroke-opacity="0.4" stroke-width="1.5"/>
+    <text x="690" y="126" fill="#157f41" font-size="17" font-weight="800" letter-spacing="1">THE BUILD LOOP</text>
+
+    <rect x="690" y="150" width="300" height="58" rx="12" fill="none" stroke="#157f41" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="840" y="185" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Pick one problem you actually have</text>
+    <line x1="840" y1="208" x2="840" y2="224" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 834 222 L 846 222 L 840 234 Z" fill="#6b7a90"/>
+
+    <rect x="690" y="232" width="300" height="58" rx="12" fill="none" stroke="#157f41" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="840" y="267" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Try it, and get stuck</text>
+    <line x1="840" y1="290" x2="840" y2="306" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 834 304 L 846 304 L 840 316 Z" fill="#6b7a90"/>
+
+    <rect x="690" y="314" width="300" height="58" rx="12" fill="none" stroke="#157f41" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="840" y="340" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Read the source, or ask</text>
+    <text x="840" y="360" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">with what you already tried</text>
+    <line x1="840" y1="372" x2="840" y2="388" stroke="#6b7a90" stroke-opacity="0.7" stroke-width="2"/>
+    <path d="M 834 386 L 846 386 L 840 398 Z" fill="#6b7a90"/>
+
+    <rect x="690" y="396" width="300" height="58" rx="12" fill="none" stroke="#157f41" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="840" y="431" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="middle">Put it in one real person's hands</text>
+
+    <path d="M 690 425 H 640 V 179 H 682" fill="none" stroke="#157f41" stroke-opacity="0.75" stroke-width="2"/>
+    <path d="M 680 173 L 692 179 L 680 185 Z" fill="#157f41"/>
+    <text x="626" y="302" fill="#157f41" font-size="14" font-weight="700" text-anchor="middle" transform="rotate(-90 626 302)">their first bug report is the next problem</text>
+
+    <text x="690" y="486" fill="#64748b" font-size="15">After forty hours: something in use, and</text>
+    <text x="690" y="508" fill="#64748b" font-size="15">an ordered list of what to fix next.</text>
+
+    <text x="40" y="570" fill="#64748b" font-size="15">Both loops produce the feeling of progress every evening. Only one of them produces evidence.</text>
+    <text x="40" y="596" fill="#64748b" font-size="15">The difference is not effort or talent — it is whether anything ever leaves the circle.</text>
+  </g>
+</svg>

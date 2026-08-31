@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Paste your own bio, handle, out-of-office or CV and see what a stranger could work out, and which password reset each detail helps answer. No uploads." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/osint-self-check" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What a stranger can learn about you from what you post" />
+    <meta property="og:description" content="Paste your own bio, handle, out-of-office reply or CV, or drop your own photo. Every finding is mapped to the security question or password reset it helps answer. It analyses only what you supply about yourself: nothing is uploaded, nobody is looked up, and no network request is made." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/osint-self-check" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-osint-self-check.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OSINT Self-Check" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What a stranger can learn about you from what you post" />
+    <meta name="twitter:description" content="Paste your own bio, handle, out-of-office reply or CV, or drop your own photo. Every finding is mapped to the security question or password reset it helps answer. It analyses only what you supply about yourself: nothing is uploaded, nobody is looked up, and no network request is made." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-osint-self-check.jpg" />
+    <title>OSINT Self-Check — What Your Posts Reveal | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "OSINT Self-Check",
+        "url": "https://krunalkumar.dpdns.org/labs/osint-self-check",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Security and digital forensics",
+        "operatingSystem": "Any modern web browser",
+        "description": "Paste your own bio, handle, out-of-office reply or CV, or drop your own photo. Every finding is mapped to the security question or password reset it helps answer. It analyses only what you supply about yourself: nothing is uploaded, nobody is looked up, and no network request is made.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Bio and caption disclosure analysis",
+                "Out-of-office reply analysis, with a safer rewrite",
+                "Public CV disclosure analysis",
+                "Username reuse explained, with a checklist to run yourself",
+                "Photo review beyond metadata: reflections, documents, uniforms, barcodes",
+                "Every finding mapped to the account-recovery question it answers",
+                "No lookups, no network requests, no accounts checked",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does this look anyone up?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no fetch, no XHR, no remote image and no username probed against a site. Everything on this page is string matching and arithmetic in your own tab, over text and files you supplied yourself. Open your browser's Network tab and use the tool: nothing appears."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I check somebody else with this?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Please do not. The tool cannot tell whose text you pasted, so nothing stops you technically, and that is exactly why the rule is written down rather than enforced. It exists so you can look at your own exposure. Pointing it at another person turns a self-check into surveillance, and if that is what you want, this is the wrong page."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it not tell me which accounts my username has?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because a tool that takes a handle and returns a list of that person's accounts is a stalking tool, whatever the intention of whoever wrote it. So this shows you how enumeration works, prints the variants a tool would derive, and hands you the checklist of account types to work through in your own browser. The searching stays a deliberate act by you, on you."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does a clean result mean I am safe?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and the output says so. This only knows the patterns in its own rule table. Plenty of real disclosure is an ordinary sentence with no pattern in it: the cafe you are always in, the ceiling of a hospital ward, the fact that you replied at three in the morning. A clean result means no rule matched, not that nothing was given away."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it not read the EXIF in my photo itself?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because that tool already exists here and does it properly. This one walks the file's segments to tell you whether a metadata block is present, then sends you to the EXIF viewer at /labs/exif to decode the tags and download a stripped copy. What it adds instead is the half that stripping does not fix: reflections, documents, house numbers, uniforms and barcodes, which live in the pixels."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is anything I paste or drop uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server to upload to and no request is made. Your photo is decoded from a blob URL, which is a local address for bytes already in the tab, and your text never leaves the textarea. Nothing is stored either: reload the page and it is gone."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is there no risk score?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because nothing here is calibrated against a measured population, so a number would be invented. It would also be the part people remembered instead of the reasons, and the reasons are the useful bit. Findings are grouped as high, medium and low, and each one names the door it opens."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "OSINT self-check",
+                        "item": "https://krunalkumar.dpdns.org/labs/osint-self-check"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">OSINT self-check</li>
+          </ol>
+        </nav>
+        <h1>What a stranger can learn about you</h1>
+        <p class="hero-text">Not from anything hidden &mdash; from the things you already published. A bio, a handle, an out-of-office reply, a CV, a photograph of your desk. Paste your own and see each detail mapped to the security question or password reset it helps somebody answer.</p>
+        <p class="hero-text"><strong>This only reads what you give it about yourself.</strong> It never looks anyone up and it makes no network request of any kind &mdash; there is no lookup to run, on you or on anybody else. If the text or the photo belongs to another person, this is the wrong page: that is not a self-check, it is surveillance, and I would rather say so at the top than in a footnote.</p>
+        <ul class="lab-facts">
+          <li>Your own bio, handle, CV, reply or photo</li>
+          <li>Each finding tied to the reset it opens</li>
+          <li>No lookups &mdash; on you or on anyone</li>
+          <li>No network request of any kind</li>
+          <li>A hardening checklist you can actually work through</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="osintselfcheck">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No lookup of a name, a handle or an address, ever</li>
+                  <li>No account is checked on any site</li>
+                  <li>No verdict, no score, no percentage</li>
+                  <li>No account, no history, nothing saved</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>The subject of this tool is a person &mdash; you</li>
+                  <li>A tool that found the accounts would be a stalking tool</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="tool-mode">What are you checking</label>
+          <select class="lab-select" id="tool-mode">
+            <option value="bio">Bio, caption or profile text</option>
+            <option value="handle">Username or handle</option>
+            <option value="ooo">Out-of-office reply</option>
+            <option value="cv">Public CV or resume text</option>
+            <option value="photo">A photo you posted</option>
+          </select>
+          <button class="lab-btn" type="button" id="tool-sample">Load an example</button>
+          <button class="lab-btn" type="button" id="tool-clear">Clear</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Check</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label" id="tool-pane-label">Bio, caption or profile text</p>
+            <!-- The textarea and the drop zone are wrapped together on purpose.
+                 `.lab-pane-input > div` is display:contents, which is meant for a
+                 wrapper like this one; a .lab-drop sitting there as a direct child
+                 would lose its own box and with it the dashed border. -->
+            <div>
+              <label class="sr-only" for="tool-text" id="tool-text-label">Bio, caption or profile text</label>
+              <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
+                        autocorrect="off"></textarea>
+              <div class="lab-drop" id="tool-drop" tabindex="0" role="button"
+                   aria-label="Choose a photo, or drag one here" hidden>
+                <p class="lab-drop-icon" aria-hidden="true">&#8681;</p>
+                <p class="lab-drop-main">Drop one of your own photos here, or click to choose</p>
+                <p class="lab-drop-hint">Read in this tab and never uploaded. Up to 25 MB.</p>
+                <p class="lab-drop-name" id="tool-dropname"></p>
+                <!-- tabindex="-1": .sr-only is a clip recipe rather than
+                     display:none, so this input would otherwise stay focusable
+                     inside the role="button" drop zone. ARIA forbids focusable
+                     descendants of a button, and a keyboard user would land on an
+                     invisible 1x1 target. The zone still opens the picker. -->
+                <input class="sr-only" type="file" id="tool-file" accept="image/*" tabindex="-1" />
+              </div>
+            </div>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">What it discloses</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How this reads what you paste</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Every finding names the door it opens</h3>
+            <p>A list of things you mentioned is not useful. What is useful is the mapping: your dog is called Coco is not interesting until you notice it is the literal answer to a security question you set in 2014. So each finding prints the text that triggered it, what it hands a stranger, and the recovery question, reset flow or pretext it feeds.</p>
+          </article>
+          <article class="info-card">
+            <h3>The danger is arithmetic, not any one fact</h3>
+            <p>A city is harmless. A school is harmless. A birth year is harmless. Together they are an identity, and with a pet name on top they are most of a password reset. The summary at the end of each report collects the doors rather than the details, because that is the part worth acting on.</p>
+          </article>
+          <article class="info-card">
+            <h3>There is no score, deliberately</h3>
+            <p>Nothing here is calibrated against a measured population of real profiles, so a percentage would be invented. It would also be the part you remembered instead of the reasons. Findings are grouped high, medium and low, and low genuinely means low &mdash; a bare year on its own is weak evidence until it sits next to a school name.</p>
+          </article>
+          <article class="info-card">
+            <h3>It only knows the patterns I wrote down</h3>
+            <p>A clean result is not a clean bill of health, and the output says so rather than congratulating you. The most revealing things people post have no pattern in them at all: the cafe you are always in, the ceiling of a hospital ward, the fact that you replied at three in the morning. Read your own text again afterwards with the question &ldquo;what could somebody do with this&rdquo;.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>A photo gives away more than its metadata</h2>
+          <p>Stripping EXIF is the easy half, and it is where nearly everybody stops. The rest is in the pixels, survives every stripper, and is what actually locates people.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The metadata half, done properly elsewhere</h3>
+            <p>This tool walks the file&rsquo;s segments and tells you whether an EXIF, XMP, IPTC or PNG text block is present, and how large. It does not decode the tags, because the <a href="/labs/exif">EXIF viewer</a> already does that properly and hands you a stripped copy of the file. A second half-built parser here would be worse than a link.</p>
+          </article>
+          <article class="info-card">
+            <h3>Reflections</h3>
+            <p>Glasses, a window, a kettle, a car door, a phone screen, a spoon. Reflections have identified rooms, streets and the person holding the camera, and nobody ever checks them because nobody is looking at the background of their own photograph.</p>
+          </article>
+          <article class="info-card">
+            <h3>Paper, screens and barcodes</h3>
+            <p>An envelope with an address window, a prescription, a delivery label, an inbox open on the monitor behind you. A boarding pass barcode carries the booking reference, which is often enough to open the booking and read the rest of the itinerary &mdash; you can see what one contains in the <a href="/labs/qr">QR and barcode lab</a>, using a code you generate yourself.</p>
+          </article>
+          <article class="info-card">
+            <h3>Numbers, plates and nameplates</h3>
+            <p>A number on a gate, a society board, a letterbox, a vehicle registration, the sticker on a router with the network name and default password on it. One number plus a neighbourhood is an address, and a network name is searchable in public wardriving databases.</p>
+          </article>
+          <article class="info-card">
+            <h3>Uniforms, badges and lanyards</h3>
+            <p>A school crest on a child&rsquo;s uniform names the school and the neighbourhood, twice a day, five days a week. A work badge names the employer and often prints the employee number, which is the detail that makes a helpdesk caller sound like they are already inside.</p>
+          </article>
+          <article class="info-card">
+            <h3>The background you always have</h3>
+            <p>The same tiles, the same curtain, the same corner of the same balcony. Across enough posts a repeated background becomes a location even when no single photograph shows one, which is why removing the coordinates from one file does much less than people think.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Why the username panel will not find your accounts</h2>
+          <p>The technique is worth understanding. Performing it for you is not something this site is going to do.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>How enumeration works</h3>
+            <p>Profile URLs are predictable. A tool holds a list of templates, asks for each one and reads the status code: 200 means the name is taken, 404 means it is free. Sites that answer 200 for everything are matched on the words in the body instead. Sign-up forms leak the same fact from the other direction &mdash; &ldquo;that username is already taken&rdquo; is a yes &mdash; and so does a reset form that says &ldquo;no account with that address&rdquo; instead of the careful &ldquo;if an account exists, we have sent an email&rdquo;.</p>
+          </article>
+          <article class="info-card">
+            <h3>Why this page does none of it</h3>
+            <p>A tool that takes a handle and returns a list of that person&rsquo;s accounts is a stalking tool, whatever its author intended. So this one prints the variants an enumerator would derive, explains the mechanism, and gives you the checklist of account types to work through in your own browser. The searching stays a deliberate act, done by you, on you.</p>
+          </article>
+          <article class="info-card">
+            <h3>A match is a hypothesis, not proof</h3>
+            <p>Common handles collide, people get impersonated, and old accounts get resold. A confident list of &ldquo;your accounts&rdquo; is somebody&rsquo;s guess that they are about to act on. That is worth remembering both when you audit yourself and when you see one of these lists produced about someone else.</p>
+          </article>
+          <article class="info-card">
+            <h3>The one lookup worth doing on purpose</h3>
+            <p>Check your address against a breach index. The <a href="/labs/breach-check">breach check</a> does that with k-anonymity &mdash; and unlike this page it genuinely does make a network request, which it says on the card and on the page, because the difference matters. While you are there, <a href="/labs/leak">what your browser leaks</a> shows what a site learns about you before you have typed anything at all.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The hardening checklist</h2>
+          <p>In the order I would actually do them. Most of this is twenty minutes of settings and one uncomfortable half hour with your own old posts.</p>
+        </div>
+        <ol class="lab-steps">
+          <li>Turn location off in the camera app, not just in the app you post from. The coordinates are written when the photo is taken, and they travel with the file to everyone you email it to.</li>
+          <li>Change the security questions your feed already answers. Put a long random string in the answer field and keep it in your password manager. A question whose answer is a fact about you is not a secret; it is a quiz your posts have already sat.</li>
+          <li>Move to an authenticator app or a passkey wherever it is offered. A generated code beats a question your bio answers &mdash; there is a working <a href="/labs/totp">TOTP explorer</a> here, and <a href="/blog/passwords-passkeys-and-what-actually-protects-you">passwords, passkeys and what actually protects you</a> covers the choice.</li>
+          <li>Take your recovery email and recovery phone number off every public profile. They are the two fields a takeover needs, and they are usually published for convenience.</li>
+          <li>Search your own handle in quotation marks, then work down the account-type checklist the tool prints. Empty the accounts you no longer use before you close them &mdash; closing one often leaves the content up.</li>
+          <li>Use a boring, unshared handle for anything sensitive: banking, health, anything legal. Reuse is convenient precisely because it is linkable.</li>
+          <li>Strip the out-of-office reply to two lines, or switch off the external one entirely. No date, no reason, no named colleague, no mobile number. Most mail systems can send a fuller message inside the company only.</li>
+          <li>Take the date of birth, home address, parent&rsquo;s name, photograph, signature and referees off any CV you have made public. A city and a country is all an employer needs before a real conversation.</li>
+          <li>Set the privacy zone in your fitness app so it covers home, work and the school run, and check what the default was before you changed it.</li>
+          <li>Go back through old photo albums with the checklist in front of you. Documents, keys, uniforms, house numbers and screens are what you are looking for, and they will mostly be in pictures you posted years ago.</li>
+          <li>Check your email addresses against a breach index and change anything reused. The <a href="/labs/breach-check">breach check</a> and the <a href="/labs/password">password strength lab</a> are both here.</li>
+          <li>Ask the people close to you to do the same. A good deal of what identifies you was posted by somebody else, tagged, and left public &mdash; a marriage biodata is the sharpest example of that, and <a href="/blog/what-a-marriage-biodata-leaks">what a marriage biodata leaks</a> goes through one line by line.</li>
+        </ol>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this deliberately will not do</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>It will not check anybody but you</h3>
+            <p>The tool cannot tell whose text you pasted, so nothing stops you technically. That is precisely why the rule is written down rather than enforced by a check that would not work. Point it at yourself. If you want to point it at somebody else, close the tab.</p>
+          </article>
+          <article class="info-card">
+            <h3>It will not make a request</h3>
+            <p>No fetch, no XHR, no remote image, no font from a third party, no analytics event carrying anything you typed. Open your Network tab and use the whole page &mdash; nothing appears. That is the only form of this promise that can be verified rather than believed.</p>
+          </article>
+          <article class="info-card">
+            <h3>It will not keep anything</h3>
+            <p>Nothing you paste or drop is stored, in this tab or anywhere else. Reload the page and it is gone. The one thing that persists across the Labs section is the flag saying you have read the consent card, which is a single value in local storage.</p>
+          </article>
+          <article class="info-card">
+            <h3>It will not tell you that you are safe</h3>
+            <p>No rule matching is not the same as nothing disclosed, and the output refuses to pretend otherwise. Treat a clean result as &ldquo;none of my patterns fired&rdquo;, then read your own words again as a stranger would. For the wider picture of how this material gets used, <a href="/blog/types-of-cyberattacks">types of cyberattacks</a> is the longer piece.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does this look anyone up?</summary>
+            <div>No. There is no fetch, no XHR, no remote image and no username probed against a site. Everything on this page is string matching and arithmetic in your own tab, over text and files you supplied yourself. Open your browser's Network tab and use the tool: nothing appears.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I check somebody else with this?</summary>
+            <div>Please do not. The tool cannot tell whose text you pasted, so nothing stops you technically, and that is exactly why the rule is written down rather than enforced. It exists so you can look at your own exposure. Pointing it at another person turns a self-check into surveillance, and if that is what you want, this is the wrong page.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it not tell me which accounts my username has?</summary>
+            <div>Because a tool that takes a handle and returns a list of that person's accounts is a stalking tool, whatever the intention of whoever wrote it. So this shows you how enumeration works, prints the variants a tool would derive, and hands you the checklist of account types to work through in your own browser. The searching stays a deliberate act by you, on you.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does a clean result mean I am safe?</summary>
+            <div>No, and the output says so. This only knows the patterns in its own rule table. Plenty of real disclosure is an ordinary sentence with no pattern in it: the cafe you are always in, the ceiling of a hospital ward, the fact that you replied at three in the morning. A clean result means no rule matched, not that nothing was given away.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it not read the EXIF in my photo itself?</summary>
+            <div>Because that tool already exists here and does it properly. This one walks the file's segments to tell you whether a metadata block is present, then sends you to the EXIF viewer at /labs/exif to decode the tags and download a stripped copy. What it adds instead is the half that stripping does not fix: reflections, documents, house numbers, uniforms and barcodes, which live in the pixels.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is anything I paste or drop uploaded?</summary>
+            <div>No. There is no server to upload to and no request is made. Your photo is decoded from a blob URL, which is a local address for bytes already in the tab, and your text never leaves the textarea. Nothing is stored either: reload the page and it is gone.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is there no risk score?</summary>
+            <div>Because nothing here is calibrated against a measured population, so a number would be invented. It would also be the part people remembered instead of the reasons, and the reasons are the useful bit. Findings are grouped as high, medium and low, and each one names the door it opens.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a rule fires on something innocent, or misses something obvious in your own text, I would genuinely like to know &mdash; a missed case is worth more to me than a working one.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=osint-self-check#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20OSINT%20self-check%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More security tools</h2>
+          <p>Most of these work the same way as this one: on your machine, with nothing uploaded. The one that queries a public index says so on its card, because the difference is the whole point.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/exif">
+            <span class="lab-card-name">EXIF viewer</span>
+            <p class="lab-card-desc">Read the camera, timestamp and GPS inside a photo, then download a stripped copy.</p>
+            <span class="lab-card-engine">Reads the file&rsquo;s own metadata</span>
+          </a>
+          <a class="lab-card" href="/labs/breach-check">
+            <span class="lab-card-name">Breach check</span>
+            <p class="lab-card-desc">Whether an address of yours appears in a known breach, without sending the address.</p>
+            <span class="lab-card-engine">Queries Have I Been Pwned</span>
+          </a>
+          <a class="lab-card" href="/labs/leak">
+            <span class="lab-card-name">What your browser leaks</span>
+            <p class="lab-card-desc">IP, GPU, time zone and a fingerprint that survives clearing cookies.</p>
+            <span class="lab-card-engine">Read live from your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/password">
+            <span class="lab-card-name">Password strength</span>
+            <p class="lab-card-desc">Real entropy and offline crack times, including what your own words cost you.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/qr">
+            <span class="lab-card-name">QR generator and inspector</span>
+            <p class="lab-card-desc">See what a code you photographed actually carries, before anything opens it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/biodata-maker">
+            <span class="lab-card-name">Marriage biodata maker</span>
+            <p class="lab-card-desc">Make the page &mdash; then read it back through this one before sharing it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/osint-self-check.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

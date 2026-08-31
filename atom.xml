@@ -10,6 +10,142 @@
     <name>Krunalkumar Shah</name>
   </author>
   <entry>
+    <title>Why Your Automation Broke, and How to Build One That Fails Loudly</title>
+    <link href="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
+    <id>https://krunalkumar.dpdns.org/blog/why-your-automation-broke</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>A deprecated API version, a revoked refresh token, a renamed CRM field, a webhook delivered twice. The failure mode that matters is silence: a workflow that stops running produces no errors at all, which is why you alert on absence rather than on error.</summary>
+  </entry>
+  <entry>
+    <title>The Real Cost of a Manual Process</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-real-cost-of-a-manual-process" />
+    <id>https://krunalkumar.dpdns.org/blog/the-real-cost-of-a-manual-process</id>
+    <published>2026-08-31T08:30:00+05:30</published>
+    <updated>2026-08-31T08:30:00+05:30</updated>
+    <summary>Minutes times frequency times a loaded hourly rate is where people start and stop, and it undercounts by a third before you reach rework, queue time and key-person risk. A method you can run on your own numbers today, including the cases where automating is the wrong call.</summary>
+  </entry>
+  <entry>
+    <title>How a SIM Swap Works, and Why an OTP Is Not the Protection You Think</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-sim-swap-works" />
+    <id>https://krunalkumar.dpdns.org/blog/how-sim-swap-works</id>
+    <published>2026-08-31T08:00:00+05:30</published>
+    <updated>2026-08-31T08:00:00+05:30</updated>
+    <summary>Your number is a credential that a human at a retail counter can hand to somebody else. Why SMS was never an authentication channel, what the attacker does in the window, and the one tell worth knowing: a phone that drops to no service for no reason is an incident.</summary>
+  </entry>
+  <entry>
+    <title>What Consent Actually Means Under the DPDP Act</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-consent-actually-means-under-dpdp" />
+    <id>https://krunalkumar.dpdns.org/blog/what-consent-actually-means-under-dpdp</id>
+    <published>2026-08-31T07:30:00+05:30</published>
+    <updated>2026-08-31T07:30:00+05:30</updated>
+    <summary>Free, specific, informed, unconditional and unambiguous, with clear affirmative action — which is why "by using this site you agree" is not consent. What a compliant notice looks like, what a Consent Manager is, and which parts still depend on Rules phasing in.</summary>
+  </entry>
+  <entry>
+    <title>Why Your Phone Feels Hacked, and Probably Is Not</title>
+    <link href="https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not" />
+    <id>https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not</id>
+    <published>2026-08-31T07:00:00+05:30</published>
+    <updated>2026-08-31T07:00:00+05:30</updated>
+    <summary>The innocent explanations are usually right, and the "my phone listens to me" experience has a more interesting real answer than the myth. Then the signals that do warrant concern, the checks anyone can run, and honest safety advice on stalkerware.</summary>
+  </entry>
+  <entry>
+    <title>How to Read a Data Breach Notification</title>
+    <link href="https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" />
+    <id>https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification</id>
+    <published>2026-08-31T06:30:00+05:30</published>
+    <updated>2026-08-31T06:30:00+05:30</updated>
+    <summary>"We have no evidence of misuse" is absence of evidence. "Passwords were encrypted" usually means hashed, and the question is how. What the phrasing hides, and a checklist that differs by which data actually leaked.</summary>
+  </entry>
+  <entry>
+    <title>The Interview Questions I Ask</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask" />
+    <id>https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask</id>
+    <published>2026-08-31T06:00:00+05:30</published>
+    <updated>2026-08-31T06:00:00+05:30</updated>
+    <summary>What each question is really testing, the signals that predict good engineers and the ones that only look like signal — and the interviewer failure modes that decide the next fifty minutes in the first five.</summary>
+  </entry>
+  <entry>
+    <title>The Mentee Mistakes That Cost the Most Time</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time" />
+    <id>https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time</id>
+    <published>2026-08-31T05:30:00+05:30</published>
+    <updated>2026-08-31T05:30:00+05:30</updated>
+    <summary>Tutorial loops that feel like progress, starting over instead of finishing, asking for a roadmap instead of picking a problem. Each one with why it feels right, what it costs, and the specific different action.</summary>
+  </entry>
+  <entry>
+    <title>How to Read a Job Description</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-to-read-a-job-description" />
+    <id>https://krunalkumar.dpdns.org/blog/how-to-read-a-job-description</id>
+    <published>2026-08-31T05:00:00+05:30</published>
+    <updated>2026-08-31T05:00:00+05:30</updated>
+    <summary>Requirements repeated in the responsibilities are real; the ones only in the bullet list often are not. What the familiar phrases carry, what is missing that should worry you, and how to test the description against reality on the call.</summary>
+  </entry>
+  <entry>
+    <title>What Deepfake Detection Can and Cannot Do</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do" />
+    <id>https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do</id>
+    <published>2026-08-31T16:00:00+05:30</published>
+    <updated>2026-08-31T16:00:00+05:30</updated>
+    <summary>Every detector that returns a percentage is selling confidence it does not have, because the detector and the generator are the same arms race. What a forensic examiner actually looks at, and why the real defence against a cloned voice on a payment call is process rather than detection.</summary>
+  </entry>
+  <entry>
+    <title>UPI Fraud: How the Money Actually Leaves</title>
+    <link href="https://krunalkumar.dpdns.org/blog/upi-fraud-how-the-money-actually-leaves" />
+    <id>https://krunalkumar.dpdns.org/blog/upi-fraud-how-the-money-actually-leaves</id>
+    <published>2026-08-31T15:00:00+05:30</published>
+    <updated>2026-08-31T15:00:00+05:30</updated>
+    <summary>A collect request and a payment look almost identical on screen, and one of them takes your money. The PIN authorises money leaving, always — no refund, cashback or prize has ever needed it. The scripts that reach people here, and what to do in the first hour.</summary>
+  </entry>
+  <entry>
+    <title>What Happens When You Click a Phishing Link</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link" />
+    <id>https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link</id>
+    <published>2026-08-31T14:00:00+05:30</published>
+    <updated>2026-08-31T14:00:00+05:30</updated>
+    <summary>Opening the page, typing a password, approving an MFA prompt and running an attachment are four very different problems, and only some of them are serious. What the click itself discloses, why 2FA is not the reassurance people think, and an ordered checklist for the first thirty minutes.</summary>
+  </entry>
+  <entry>
+    <title>n8n, Make, or Zapier: An Honest Comparison</title>
+    <link href="https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison" />
+    <id>https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison</id>
+    <published>2026-08-31T13:00:00+05:30</published>
+    <updated>2026-08-31T13:00:00+05:30</updated>
+    <summary>The decision that actually matters is not the feature list, it is where the workflow runs and whose infrastructure your client’s data crosses. Written from shipping production workflows in all three, including what happens when the vendor changes an API.</summary>
+  </entry>
+  <entry>
+    <title>What an Auditor Actually Wants From Security Training</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training" />
+    <id>https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training</id>
+    <published>2026-08-31T12:00:00+05:30</published>
+    <updated>2026-08-31T12:00:00+05:30</updated>
+    <summary>ISO/IEC 27001:2022 Annex A 6.3 asks for awareness, education and training, and an assessor asks to see who attended, what was covered and when. What counts as evidence, what does not, and why no trainer can promise an audit outcome.</summary>
+  </entry>
+  <entry>
+    <title>What a Security Review Actually Finds</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-a-security-review-actually-finds" />
+    <id>https://krunalkumar.dpdns.org/blog/what-a-security-review-actually-finds</id>
+    <published>2026-08-31T11:00:00+05:30</published>
+    <updated>2026-08-31T11:00:00+05:30</updated>
+    <summary>The same findings recur: an ID in a URL nobody checks belongs to the caller, missing rate limits on reset flows, a secret in a build layer, a forgotten staging environment with production data. Why each happens, and why a clean review does not mean secure.</summary>
+  </entry>
+  <entry>
+    <title>Digital Arrest: The Scam That Keeps You on Camera</title>
+    <link href="https://krunalkumar.dpdns.org/blog/digital-arrest-scam-explained" />
+    <id>https://krunalkumar.dpdns.org/blog/digital-arrest-scam-explained</id>
+    <published>2026-08-31T10:00:00+05:30</published>
+    <updated>2026-08-31T10:00:00+05:30</updated>
+    <summary>There is no such thing as a digital arrest — the anatomy of the fake-police video call, why acute stress makes careful people comply, and exactly what to do, including the conversation to have with an older parent first.</summary>
+  </entry>
+  <entry>
+    <title>Surface Web, Deep Web, and Dark Web: What the Three Layers Actually Are</title>
+    <link href="https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web" />
+    <id>https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>The iceberg picture teaches three false things at once. The deep web is your inbox and your bank, the dark web is a small overlay network rather than a deeper layer, and "we found your data on the dark web" is doing far less than it sounds.</summary>
+  </entry>
+  <entry>
     <title>Git, Explained From the Object Up</title>
     <link href="https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up" />
     <id>https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up</id>

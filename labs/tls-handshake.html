@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Step a TLS 1.3 handshake message by message next to TLS 1.2, see which messages are encrypted from what point, and watch HKDF derive the traffic secrets." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/tls-handshake" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Watch a TLS handshake, message by message" />
+    <meta property="og:description" content="Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, see exactly which messages are encrypted and from which point, click any ClientHello extension for its real bytes, and watch a genuine HKDF-Expand-Label key schedule derive the traffic secrets. Break it on purpose and read the exact alert the client sends. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/tls-handshake" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-tls-handshake.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="TLS Handshake Explorer" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Watch a TLS handshake, message by message" />
+    <meta name="twitter:description" content="Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, see exactly which messages are encrypted and from which point, click any ClientHello extension for its real bytes, and watch a genuine HKDF-Expand-Label key schedule derive the traffic secrets. Break it on purpose and read the exact alert the client sends. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-tls-handshake.jpg" />
+    <title>TLS Handshake Explorer — 1.3 beside 1.2 | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TLS Handshake Explorer",
+        "url": "https://krunalkumar.dpdns.org/labs/tls-handshake",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Network security explainer",
+        "operatingSystem": "Any modern web browser",
+        "description": "Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, see exactly which messages are encrypted and from which point, click any ClientHello extension for its real bytes, and watch a genuine HKDF-Expand-Label key schedule derive the traffic secrets. Break it on purpose and read the exact alert the client sends. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "TLS 1.3 and TLS 1.2 stepped message by message",
+                "Which messages are encrypted, and from which point",
+                "ClientHello taken apart field by field with real bytes",
+                "Every extension explained, including SNI and ECH",
+                "A real HKDF-Expand-Label key schedule over editable inputs",
+                "Transcript hashes computed with SHA-256",
+                "Expired certificate, name mismatch, downgrade and cipher failures",
+                "The exact alert record each failure produces",
+                "Round trips counted, including 0-RTT early data",
+                "The replay risk of 0-RTT, stated plainly"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does this lab talk to a server or read my real TLS traffic?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Neither. There is no TLS client in this page and it opens no connection of any kind. It is a model of the protocol built from the specification, so it can show you how a handshake is shaped and it can tell you nothing whatsoever about a real server. If you want to inspect an actual connection, that is what a packet capture and the PCAP analyzer are for."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is the certificate encrypted in TLS 1.3 but not in TLS 1.2?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because TLS 1.3 splits the server response in two. ServerHello carries only what is needed to derive keys, and the moment it lands both sides can compute the handshake traffic secrets from the key shares and the transcript. Everything after that point, the certificate chain included, travels under those keys. TLS 1.2 could not do this because the client had not sent any key material yet when the certificate went out, so there was nothing to encrypt it with."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "If TLS 1.3 encrypts so much, why can my ISP still see which sites I visit?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the server name extension in the ClientHello is plaintext, and it has to be: the server needs to know which certificate to present before there is any key to hide the question under. That single field is what domain-level blocking and logging are built on. Encrypted Client Hello fixes it by sealing the real ClientHello to a public key published in DNS, and it needs the server, the browser and a private DNS lookup all lined up, which is why it is not yet the default anywhere."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Are the keys on the key schedule tab real?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The arithmetic is real and the inputs are not. Every value is HMAC-SHA-256 computed in your browser exactly as RFC 8446 section 7.1 specifies, and the transcript hashes are genuine SHA-256 digests of the sample handshake messages this lab builds. Two of the values, the Early Secret with no PSK and the derived secret that follows it, match the constants published in RFC 8448, which is the check that confirms the label encoding is right. What is invented is the ECDHE shared secret, the randoms and the stand-in certificate body, so nothing here will match a capture you own."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is 0-RTT safe to turn on?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It is a trade, and the honest answer is that it depends on what the first request does. Early data is replayable, because nothing fresh from the server covers it, and RFC 8446 says outright that the available defences are incomplete across a cluster of servers. It also has no forward secrecy, since it is keyed from the resumption secret rather than a fresh exchange. For an idempotent GET on a slow link it is a large win. For anything that changes state it is a bad idea, which is why browsers and servers both restrict it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does TLS 1.3 still send a ChangeCipherSpec that does nothing?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Middlebox compatibility. Enough deployed equipment had learned the exact shape of a TLS 1.2 handshake that a connection which did not look like one got dropped, so TLS 1.3 keeps a meaningless ChangeCipherSpec record and a random legacy session ID purely to look familiar on the wire. RFC 8446 requires receivers to ignore it. It is one of the more honest admissions in a modern protocol specification, and it is why reading a capture means knowing which records are decorative."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is TLS 1.2 broken?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and saying so would be the kind of overstatement this site tries to avoid. A TLS 1.2 connection with an ECDHE key exchange, an AEAD cipher suite and the extended master secret extension is sound today. What TLS 1.3 did was remove the option to configure it badly: static RSA, renegotiation, compression, CBC constructions and hundreds of weak suites are gone rather than merely discouraged. The privacy gain from encrypting the certificate and the alerts is real and separate from that."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "TLS handshake",
+                        "item": "https://krunalkumar.dpdns.org/labs/tls-handshake"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">TLS handshake</li>
+          </ol>
+        </nav>
+        <h1>The TLS handshake, message by message</h1>
+        <p class="hero-text">Everyone knows the padlock means TLS. Far fewer people could say which message the encryption actually starts at &mdash; and most published diagrams put it in the wrong place. Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, take the ClientHello apart byte by byte, watch a real HKDF key schedule produce the traffic secrets, then break the handshake on purpose and read the exact alert the client sends back.</p>
+        <ul class="lab-facts">
+          <li>TLS 1.3 and TLS 1.2, the same connection twice</li>
+          <li>Which messages are encrypted, and from where</li>
+          <li>Every ClientHello extension, with its real bytes</li>
+          <li>HKDF-Expand-Label actually computed, not drawn</li>
+          <li>Expired, mismatched, downgraded &mdash; and the alert for each</li>
+          <li>0-RTT, and the replay risk it is paid for with</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This visualisation is drawn and animated in your browser and needs JavaScript to run.</p>
+          <p>The whole point is watching the algorithm step, so there is no static version to fall back to.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-viz" id="tlsviz">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This runs entirely inside your browser &mdash; the model, the hashing, the key
+              schedule, all of it on your own machine. Nothing is uploaded and there is no server.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">Good to know</p>
+                <ul class="lab-gate-list">
+                  <li>Everything runs on your device</li>
+                  <li>No TLS connection is opened to anything</li>
+                  <li>Nothing is uploaded or stored</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why it is here</p>
+                <ul class="lab-gate-list">
+                  <li>Seeing it beats reading about it</li>
+                  <li>Works offline once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="lab-netnote">
+          There is <strong>no TLS client in this page</strong>. It models the protocol from the
+          specification and makes no network request of any kind, so it can show you how a handshake
+          is shaped and it can tell you nothing at all about a real server. The key schedule
+          arithmetic is genuine; the secrets it runs on are samples you can edit.
+        </p>
+        <div class="lab-toolbar">
+
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-multi-mount" id="viz-tls-mount">
+          <p class="lab-proc-fallback">Starting the TLS handshake explorer&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The thing most handshake diagrams get wrong</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Encryption starts one message after ServerHello</h3>
+            <p>The usual picture puts a padlock next to &ldquo;Finished&rdquo;, as though the handshake negotiates in the open and only then closes the door. In TLS 1.3 that is wrong by four messages. Both sides can compute the handshake traffic secrets the instant ServerHello lands, because the key shares and the transcript are all they need &mdash; so EncryptedExtensions, the certificate, CertificateVerify and Finished are all already encrypted. Every row in the ladder carries the key it travels under, taken from the model rather than drawn on, so the two versions cannot quietly disagree with each other.</p>
+          </article>
+          <article class="info-card">
+            <h3>The certificate is the row worth comparing</h3>
+            <p>In TLS 1.2 the certificate chain is plaintext. Anyone with a tap on the path learns which site you are talking to for free, whatever else they cannot read. TLS 1.3 moved it behind the handshake keys, which is one of the largest practical privacy changes in the protocol&rsquo;s history &mdash; and it is undercut in practice by the server name still travelling in the clear a message earlier. Switch modes with the same failure selected and watch that one row change colour.</p>
+          </article>
+          <article class="info-card">
+            <h3>In TLS 1.3, even the failure is private</h3>
+            <p>Select the expired certificate and run it in both versions. In TLS 1.2 the alert leaves before any keys exist, so an observer sees a plaintext record saying fatal, certificate_expired &mdash; the failure and its reason are public. In TLS 1.3 handshake keys already exist by the time the client gives up, so the alert is encrypted inside a record that claims on the outside to be ordinary application data. The tool shows both, byte for byte.</p>
+          </article>
+          <article class="info-card">
+            <h3>Some records are pure theatre</h3>
+            <p>A TLS 1.3 handshake still contains a ChangeCipherSpec that means nothing and a 32-byte session ID for a protocol with no session IDs. Both exist so the exchange looks like TLS 1.2 to middleboxes that would otherwise drop it. RFC 8446 calls this compatibility mode and requires the receiver to ignore it. Reading a capture properly means knowing which records are load-bearing and which are costume.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How to read the four tabs</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The handshake &mdash; and how to break it</h3>
+            <p>Step or play through the messages. Click any one to pin it, and the panel below gives you what it contains, what it is for, and what somebody watching the wire actually sees at that moment. The failure picker is the part worth spending time in: an expired certificate, a name that does not match, a forced downgrade and a cipher list with no overlap each stop the handshake where a real client would stop it and show the alert record byte by byte. One of those alerts is honestly ambiguous and the tool says so instead of inventing a rule.</p>
+          </article>
+          <article class="info-card">
+            <h3>The ClientHello, built rather than pasted</h3>
+            <p>Every field is constructed from the structure, so typing a longer server name really does move the length fields above it. Click any extension for its hex dump and a table of what each run of bytes means. The extensions are where the interesting history lives: a version field frozen at TLS 1.2 forever, a session ID that is deliberate noise, a public key sent on spec before the server has said a word, and one plaintext field that tells everyone on the path exactly where you are going.</p>
+          </article>
+          <article class="info-card">
+            <h3>The key schedule is arithmetic, not a picture</h3>
+            <p>Every secret is HMAC-SHA-256 computed in your browser as RFC 8446 section 7.1 specifies, over transcript hashes that are genuine SHA-256 digests of the sample messages this lab builds. The Early Secret and the derived value after it match the constants published in RFC 8448, which is the check that the label encoding is right. Edit the shared secret and watch every line below change completely. The inputs are samples and the page says so on every panel &mdash; the ladder is correct, and none of these numbers came from a real connection.</p>
+          </article>
+          <article class="info-card">
+            <h3>Round trips, including the one you can skip</h3>
+            <p>Set your own latency and see where the time actually goes: DNS, then TCP, then TLS, then the request. TLS 1.3 saves one round trip over 1.2 &mdash; unless the client&rsquo;s key-share guess was wrong, in which case HelloRetryRequest hands the saving straight back. 0-RTT removes the last one entirely and charges for it in replay risk and forward secrecy, both of which are spelled out rather than mentioned.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this cannot tell you</h2>
+          <p>The limits are as much the point as the walkthrough.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>It is a model, not a client</h3>
+            <p>There is no TLS implementation in this page and it opens no connection. It cannot test your server, cannot tell you which version a site negotiates, and cannot verify anybody&rsquo;s certificate. If you want to know what a real connection did, capture it and read the capture &mdash; the <a href="/labs/pcap-analyzer">PCAP analyzer</a> takes the file. If you want to know what is in a certificate you already have, that is the <a href="/labs/cert-decoder">certificate decoder</a>.</p>
+          </article>
+          <article class="info-card">
+            <h3>The secrets are samples, and deliberately so</h3>
+            <p>The ECDHE shared secret, the randoms, the public keys and the certificate body are all invented, and the certificate body is a short stand-in rather than real DER. That is why the key schedule can be shown at all: real key material on a public page would be either fake or a disaster. The derivation is exact and the inputs are not, and no output here will match a capture you own.</p>
+          </article>
+          <article class="info-card">
+            <h3>Only the SHA-256 suites are computed</h3>
+            <p>TLS_AES_128_GCM_SHA256 and TLS_CHACHA20_POLY1305_SHA256 both run the SHA-256 ladder, so both are computed properly. TLS_AES_256_GCM_SHA384 runs the identical schedule with SHA-384 and 48-byte secrets, and it is not implemented here rather than being faked with the wrong hash and a relabelled output.</p>
+          </article>
+          <article class="info-card">
+            <h3>One alert code is genuinely uncertain</h3>
+            <p>There is no alert in the specification that means &ldquo;wrong hostname&rdquo;. OpenSSL maps that failure to bad_certificate(42), other stacks send certificate_unknown(46), and browsers frequently close the connection and show their own interstitial instead. The tool shows the most common code and says plainly that it is a hint about which library you are talking to rather than a diagnosis. certificate_expired(45) and handshake_failure(40) have no such ambiguity.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does this lab talk to a server or read my real TLS traffic?</summary>
+            <div>Neither. There is no TLS client in this page and it opens no connection of any kind. It is a model of the protocol built from the specification, so it can show you how a handshake is shaped and it can tell you nothing whatsoever about a real server. If you want to inspect an actual connection, that is what a packet capture and the <a href="/labs/pcap-analyzer">PCAP analyzer</a> are for.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is the certificate encrypted in TLS 1.3 but not in TLS 1.2?</summary>
+            <div>Because TLS 1.3 splits the server response in two. ServerHello carries only what is needed to derive keys, and the moment it lands both sides can compute the handshake traffic secrets from the key shares and the transcript. Everything after that point, the certificate chain included, travels under those keys. TLS 1.2 could not do this because the client had not sent any key material yet when the certificate went out, so there was nothing to encrypt it with.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>If TLS 1.3 encrypts so much, why can my ISP still see which sites I visit?</summary>
+            <div>Because the server name extension in the ClientHello is plaintext, and it has to be: the server needs to know which certificate to present before there is any key to hide the question under. That single field is what domain-level blocking and logging are built on. Encrypted Client Hello fixes it by sealing the real ClientHello to a public key published in DNS, and it needs the server, the browser and a private DNS lookup all lined up, which is why it is not yet the default anywhere.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Are the keys on the key schedule tab real?</summary>
+            <div>The arithmetic is real and the inputs are not. Every value is HMAC-SHA-256 computed in your browser exactly as RFC 8446 section 7.1 specifies, and the transcript hashes are genuine SHA-256 digests of the sample handshake messages this lab builds. Two of the values, the Early Secret with no PSK and the derived secret that follows it, match the constants published in RFC 8448, which is the check that confirms the label encoding is right. What is invented is the ECDHE shared secret, the randoms and the stand-in certificate body, so nothing here will match a capture you own.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is 0-RTT safe to turn on?</summary>
+            <div>It is a trade, and the honest answer is that it depends on what the first request does. Early data is replayable, because nothing fresh from the server covers it, and RFC 8446 says outright that the available defences are incomplete across a cluster of servers. It also has no forward secrecy, since it is keyed from the resumption secret rather than a fresh exchange. For an idempotent GET on a slow link it is a large win. For anything that changes state it is a bad idea, which is why browsers and servers both restrict it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does TLS 1.3 still send a ChangeCipherSpec that does nothing?</summary>
+            <div>Middlebox compatibility. Enough deployed equipment had learned the exact shape of a TLS 1.2 handshake that a connection which did not look like one got dropped, so TLS 1.3 keeps a meaningless ChangeCipherSpec record and a random legacy session ID purely to look familiar on the wire. RFC 8446 requires receivers to ignore it. It is one of the more honest admissions in a modern protocol specification, and it is why reading a capture means knowing which records are decorative.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is TLS 1.2 broken?</summary>
+            <div>No, and saying so would be the kind of overstatement this site tries to avoid. A TLS 1.2 connection with an ECDHE key exchange, an AEAD cipher suite and the extended master secret extension is sound today. What TLS 1.3 did was remove the option to configure it badly: static RSA, renegotiation, compression, CBC constructions and hundreds of weak suites are gone rather than merely discouraged. The privacy gain from encrypting the certificate and the alerts is real and separate from that.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a message is in the wrong place, an alert code is wrong for the stack you know, or a derived value does not match what your own HKDF produces, I would genuinely like to hear about it.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=tls-handshake#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20TLS%20handshake%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The rest of the connection</h2>
+          <p>This lab is one layer. These are the ones above and below it.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/cert-decoder">
+            <span class="lab-card-name">Certificate decoder</span>
+            <p class="lab-card-desc">What is actually inside the Certificate message &mdash; subject, SANs, validity, key usage, the whole chain.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/ct-log">
+            <span class="lab-card-name">Certificate transparency</span>
+            <p class="lab-card-desc">Where the SCTs in that certificate came from, and every certificate ever issued for a domain.</p>
+            <span class="lab-card-engine">Uses the network</span>
+          </a>
+          <a class="lab-card" href="/labs/tcp-congestion">
+            <span class="lab-card-name">TCP</span>
+            <p class="lab-card-desc">The round trip underneath this one, plus why the first few kilobytes after the handshake are slower than the rest.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/dns">
+            <span class="lab-card-name">DNS lookup</span>
+            <p class="lab-card-desc">The lookup before the connection, and where an Encrypted Client Hello key would be published.</p>
+            <span class="lab-card-engine">Uses the network</span>
+          </a>
+          <a class="lab-card" href="/labs/pcap-analyzer">
+            <span class="lab-card-name">PCAP analyzer</span>
+            <p class="lab-card-desc">Drop a real capture and find the handshakes in it &mdash; the tool this one deliberately is not.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/hash">
+            <span class="lab-card-name">Hash generator</span>
+            <p class="lab-card-desc">The SHA-256 that computes every transcript hash and HMAC on the key schedule tab.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+    <script defer src="/assets/js/labs/viz-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/multi-shell.js"></script>
+    <!-- The key schedule needs a synchronous SHA-256. This is the same verified
+         implementation /labs/hash runs on; writing a second one inside the
+         visualiser would mean two copies to keep correct. -->
+    <script defer src="/assets/js/labs/tools/hash-engines.js"></script>
+    <script defer src="/assets/js/labs/viz/tls-handshake.js"></script>
+  </body>
+</html>

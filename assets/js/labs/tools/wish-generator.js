@@ -102,6 +102,10 @@
     }
     if (state.from) p.set('from', state.from);
 
+    /* /birthday and /festival, unchanged. The two card FILES live in fun/ for
+       tidiness, but a vercel.json rewrite serves them at these paths, so the
+       address a visitor sees and the link built here are the same as they have
+       always been. Nothing here needs to know where the file sits. */
     var path = '/' + state.mode + '?' + p.toString();
     return absolute ? window.location.origin + path : path;
   }

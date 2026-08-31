@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: Digital arrest does not exist — a video-call window showing a figure in a police cap, struck through by a red circle-and-slash">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="rgba(88,52,166,0.35)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="140" cy="90" r="2"/><circle cx="420" cy="60" r="1.5"/><circle cx="700" cy="110" r="2"/>
+    <circle cx="90" cy="420" r="1.5"/><circle cx="320" cy="540" r="2"/><circle cx="1130" cy="70" r="1.5"/>
+    <circle cx="1060" cy="560" r="2"/><circle cx="620" cy="580" r="1.5"/>
+  </g>
+
+  <text x="80" y="150" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+  <text x="80" y="240" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">&#8220;Digital arrest&#8221;</text>
+  <text x="80" y="312" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">does not exist</text>
+  <text x="80" y="390" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">No Indian law allows it. Nobody is</text>
+  <text x="80" y="432" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">arrested over a video call.</text>
+  <text x="80" y="560" fill="#8fa0b8" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+
+  <!-- Circuit traces feeding the call window -->
+  <g stroke="#38bdf8" stroke-width="2.5" fill="none" opacity="0.55">
+    <polyline points="756,182 706,182 706,122"/>
+    <polyline points="756,344 706,344 706,404"/>
+    <polyline points="1094,204 1146,204 1146,144"/>
+  </g>
+  <g opacity="0.9">
+    <circle cx="706" cy="122" r="6" fill="#4ade80"/>
+    <circle cx="706" cy="404" r="6" fill="#a855f7"/>
+    <circle cx="1146" cy="144" r="6" fill="#fbbf24"/>
+  </g>
+
+  <!-- The video-call window -->
+  <rect x="760" y="140" width="330" height="250" rx="18" fill="rgba(125,211,252,0.08)" stroke="#e2e8f0" stroke-width="6"/>
+  <circle cx="792" cy="172" r="7" fill="#f87171"/>
+  <text x="808" y="179" fill="#f87171" font-family="'Segoe UI',sans-serif" font-size="17" font-weight="800" letter-spacing="3">LIVE</text>
+
+  <!-- Figure in a peaked cap, seated in frame -->
+  <g fill="#7dd3fc" opacity="0.75">
+    <circle cx="925" cy="258" r="38"/>
+    <path d="M879 232 h92 a6 6 0 0 1 0 12 h-92 a6 6 0 0 1 0-12z"/>
+    <path d="M889 232 a36 30 0 0 1 72 0z"/>
+    <path d="M862 366 a63 52 0 0 1 126 0z"/>
+  </g>
+
+  <!-- The countdown bar the caller keeps pointing at -->
+  <rect x="790" y="352" width="270" height="10" rx="5" fill="#e2e8f0" opacity="0.22"/>
+  <rect x="790" y="352" width="188" height="10" rx="5" fill="#fbbf24"/>
+
+  <!-- Struck through -->
+  <circle cx="1072" cy="404" r="54" fill="rgba(248,113,113,0.12)" stroke="#f87171" stroke-width="10"/>
+  <line x1="1034" y1="366" x2="1110" y2="442" stroke="#f87171" stroke-width="10" stroke-linecap="round"/>
+</svg>

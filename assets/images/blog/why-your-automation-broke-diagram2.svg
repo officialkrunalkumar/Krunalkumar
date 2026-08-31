@@ -1,0 +1,82 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-why-your-automation-broke-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-why-your-automation-broke-diagram2">One webhook event delivered twice, drawn with and without an idempotency key. Without a key, the vendor posts event evt_8f21, the receiver does the work but answers too slowly, the vendor times out and redelivers the same event, the work runs a second time and the customer is invoiced twice. With a key, the receiver records the vendor's event id before doing the work, so when the same id arrives again the lookup finds it already completed, the work is skipped and a 200 is returned immediately, leaving exactly one invoice.</title>
+  <defs>
+    <marker id="idem-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">ONE EVENT, DELIVERED TWICE</text>
+
+    <!-- Without a key -->
+    <text x="40" y="98" fill="#a3352f" font-size="15" font-weight="800" letter-spacing="2">WITHOUT AN IDEMPOTENCY KEY</text>
+
+    <rect x="40" y="114" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="148" fill="#6b7a90" font-size="17" font-weight="800">1 &#183; First delivery</text>
+    <text x="62" y="180" fill="#64748b" font-size="15">POST /hooks/payment</text>
+    <text x="62" y="206" fill="#64748b" font-size="15">event id evt_8f21</text>
+    <text x="62" y="232" fill="#64748b" font-size="15">The work runs. Invoice 1.</text>
+
+    <rect x="324" y="114" width="244" height="132" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="346" y="148" fill="#6b7a90" font-size="17" font-weight="800">2 &#183; The reply is late</text>
+    <text x="346" y="180" fill="#64748b" font-size="15">Your 200 arrives after</text>
+    <text x="346" y="206" fill="#a3352f" font-size="15" font-weight="700">the vendor&#8217;s 10s timeout</text>
+    <text x="346" y="232" fill="#64748b" font-size="15">It heard nothing at all</text>
+
+    <rect x="608" y="114" width="244" height="132" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="630" y="148" fill="#6b7a90" font-size="17" font-weight="800">3 &#183; It redelivers</text>
+    <text x="630" y="180" fill="#64748b" font-size="15">The same body, the same</text>
+    <text x="630" y="206" fill="#a3352f" font-size="15" font-weight="700">event id evt_8f21</text>
+    <text x="630" y="232" fill="#64748b" font-size="15">sent again 30s later</text>
+
+    <rect x="892" y="114" width="244" height="132" rx="12" fill="#a3352f"/>
+    <text x="914" y="148" fill="#ffffff" font-size="17" font-weight="800">4 &#183; Two invoices</text>
+    <text x="914" y="180" fill="#ffffff" font-size="15">The work runs again</text>
+    <text x="914" y="206" fill="#ffffff" font-size="15">because nothing knew</text>
+    <text x="914" y="232" fill="#ffffff" font-size="15">it had run before.</text>
+
+    <line x1="284" y1="180" x2="318" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+    <line x1="568" y1="180" x2="602" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+    <line x1="852" y1="180" x2="886" y2="180" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+
+    <!-- With a key -->
+    <text x="40" y="292" fill="#157f41" font-size="15" font-weight="800" letter-spacing="2">WITH AN IDEMPOTENCY KEY</text>
+
+    <rect x="40" y="308" width="244" height="132" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="62" y="342" fill="#6b7a90" font-size="17" font-weight="800">1 &#183; Record, then work</text>
+    <text x="62" y="374" fill="#64748b" font-size="15">evt_8f21 arrives. Write</text>
+    <text x="62" y="400" fill="#157f41" font-size="15" font-weight="700">the id, then do the work,</text>
+    <text x="62" y="426" fill="#64748b" font-size="15">both in one transaction.</text>
+
+    <rect x="324" y="308" width="244" height="132" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="346" y="342" fill="#6b7a90" font-size="17" font-weight="800">2 &#183; Same redelivery</text>
+    <text x="346" y="374" fill="#64748b" font-size="15">Nothing changes on the</text>
+    <text x="346" y="400" fill="#64748b" font-size="15">vendor&#8217;s side. evt_8f21</text>
+    <text x="346" y="426" fill="#64748b" font-size="15">is posted a second time.</text>
+
+    <rect x="608" y="308" width="244" height="132" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="630" y="342" fill="#6b7a90" font-size="17" font-weight="800">3 &#183; The id is known</text>
+    <text x="630" y="374" fill="#64748b" font-size="15">Look up evt_8f21.</text>
+    <text x="630" y="400" fill="#157f41" font-size="15" font-weight="700">Found, already complete.</text>
+    <text x="630" y="426" fill="#64748b" font-size="15">Skip the work entirely.</text>
+
+    <rect x="892" y="308" width="244" height="132" rx="12" fill="#157f41"/>
+    <text x="914" y="342" fill="#ffffff" font-size="17" font-weight="800">4 &#183; One invoice</text>
+    <text x="914" y="374" fill="#ffffff" font-size="15">Return 200 at once.</text>
+    <text x="914" y="400" fill="#ffffff" font-size="15">The side effect happened</text>
+    <text x="914" y="426" fill="#ffffff" font-size="15">exactly once.</text>
+
+    <line x1="284" y1="374" x2="318" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+    <line x1="568" y1="374" x2="602" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+    <line x1="852" y1="374" x2="886" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#idem-arr)"/>
+
+    <!-- The two rules -->
+    <rect x="40" y="468" width="1096" height="88" rx="12" fill="none" stroke="#157f41" stroke-width="2" stroke-dasharray="9 7"/>
+    <text x="64" y="496" fill="#157f41" font-size="16" font-weight="800">Two rules, and the key is worthless without both</text>
+    <text x="64" y="522" fill="#6b7a90" font-size="15">The key has to be the vendor&#8217;s event id, not one you generate &#8212; a key you generate is a different key on the retry.</text>
+    <text x="64" y="546" fill="#6b7a90" font-size="15">And it has to be written in the same transaction as the work, or the gap between the two is where the duplicate lives.</text>
+
+    <text x="40" y="588" fill="#64748b" font-size="15">The redelivery is not a bug in the vendor. At-least-once is the contract almost every webhook ships with, because</text>
+    <text x="40" y="612" fill="#64748b" font-size="15">a sender cannot tell a slow success from a failure &#8212; so exactly-once has to be built by the receiver.</text>
+  </g>
+</svg>

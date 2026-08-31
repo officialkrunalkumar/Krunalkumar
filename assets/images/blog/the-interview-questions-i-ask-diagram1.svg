@@ -1,0 +1,63 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-the-interview-questions-i-ask-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-the-interview-questions-i-ask-diagram1">Two ways of searching a six-stage system for a bug. The pipeline runs browser form, API request, handler, SQL query, cache layer, database, and the fault lives in the cache layer while the wrong total appears in the browser. In the guess-and-check search each run tests one guess and eliminates one stage, so six stages can take six runs and the order is chance. In the halving search each run prints a value at the midpoint and eliminates half of what is left, so six stages take three runs whatever the order.</title>
+  <defs>
+    <marker id="int-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="46" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW THE SEARCH IS SHAPED</text>
+    <text x="40" y="86" fill="#6b7a90" font-size="15" font-weight="800" letter-spacing="2">THE SIX STAGES BETWEEN THE CLICK AND THE WRONG TOTAL</text>
+
+    <rect x="40" y="104" width="155" height="60" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="117" y="140" fill="#6b7a90" font-size="15" font-weight="700" text-anchor="middle">Browser form</text>
+    <rect x="225" y="104" width="155" height="60" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="302" y="140" fill="#6b7a90" font-size="15" font-weight="700" text-anchor="middle">API request</text>
+    <rect x="410" y="104" width="155" height="60" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="487" y="140" fill="#6b7a90" font-size="15" font-weight="700" text-anchor="middle">Handler</text>
+    <rect x="595" y="104" width="155" height="60" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="672" y="140" fill="#6b7a90" font-size="15" font-weight="700" text-anchor="middle">SQL query</text>
+    <rect x="780" y="104" width="155" height="60" rx="10" fill="none" stroke="#a3352f" stroke-width="2.5"/>
+    <text x="857" y="140" fill="#a3352f" font-size="15" font-weight="800" text-anchor="middle">Cache layer</text>
+    <rect x="965" y="104" width="155" height="60" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="1042" y="140" fill="#6b7a90" font-size="15" font-weight="700" text-anchor="middle">Database</text>
+
+    <line x1="197" y1="134" x2="219" y2="134" stroke="#64748b" stroke-width="2.5" marker-end="url(#int-arr)"/>
+    <line x1="382" y1="134" x2="404" y2="134" stroke="#64748b" stroke-width="2.5" marker-end="url(#int-arr)"/>
+    <line x1="567" y1="134" x2="589" y2="134" stroke="#64748b" stroke-width="2.5" marker-end="url(#int-arr)"/>
+    <line x1="752" y1="134" x2="774" y2="134" stroke="#64748b" stroke-width="2.5" marker-end="url(#int-arr)"/>
+    <line x1="937" y1="134" x2="959" y2="134" stroke="#64748b" stroke-width="2.5" marker-end="url(#int-arr)"/>
+
+    <text x="117" y="188" fill="#6b7a90" font-size="13" text-anchor="middle">the wrong total shows here</text>
+    <text x="857" y="188" fill="#a3352f" font-size="13" font-weight="700" text-anchor="middle">the fault actually lives here</text>
+
+    <!-- Guess and check -->
+    <rect x="40" y="212" width="520" height="336" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="64" y="248" fill="#a3352f" font-size="16" font-weight="800" letter-spacing="2">GUESS AND CHECK</text>
+    <text x="64" y="284" fill="#64748b" font-size="15">1 &#183; Change the handler, re-run &#8212; still wrong</text>
+    <text x="64" y="310" fill="#64748b" font-size="15">2 &#183; Blame the browser, hard refresh &#8212; still wrong</text>
+    <text x="64" y="336" fill="#64748b" font-size="15">3 &#183; Rewrite the query, re-run &#8212; still wrong</text>
+    <text x="64" y="362" fill="#64748b" font-size="15">4 &#183; Add a log to the handler again &#8212; still wrong</text>
+    <text x="64" y="388" fill="#64748b" font-size="15">5 &#183; Try the cache &#8212; found, by luck, on the fifth try</text>
+    <text x="64" y="432" fill="#a3352f" font-size="15" font-weight="700">Each run eliminates exactly one stage.</text>
+    <text x="64" y="458" fill="#6b7a90" font-size="15">Six stages, up to six runs, and the order is chance.</text>
+    <text x="64" y="496" fill="#6b7a90" font-size="15">Afterwards the candidate can tell me what they</text>
+    <text x="64" y="520" fill="#6b7a90" font-size="15">changed, but not what they ruled out.</text>
+
+    <!-- Halving -->
+    <rect x="600" y="212" width="520" height="336" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="624" y="248" fill="#157f41" font-size="16" font-weight="800" letter-spacing="2">HALVE WHAT IS LEFT</text>
+    <text x="624" y="284" fill="#64748b" font-size="15">1 &#183; Print the value at the midpoint, the SQL query</text>
+    <text x="624" y="310" fill="#157f41" font-size="15" font-weight="700">&#8594; correct here, so stages 1 to 4 are clean</text>
+    <text x="624" y="336" fill="#64748b" font-size="15">2 &#183; Print it again at the cache layer</text>
+    <text x="624" y="362" fill="#a3352f" font-size="15" font-weight="700">&#8594; wrong here, so the fault is in this step</text>
+    <text x="624" y="388" fill="#64748b" font-size="15">3 &#183; Read the twenty lines between those two prints</text>
+    <text x="624" y="432" fill="#157f41" font-size="15" font-weight="700">Each run eliminates half of what is left.</text>
+    <text x="624" y="458" fill="#6b7a90" font-size="15">Six stages, three runs, whatever the order.</text>
+    <text x="624" y="496" fill="#6b7a90" font-size="15">Afterwards the candidate can name every stage</text>
+    <text x="624" y="520" fill="#6b7a90" font-size="15">they eliminated and the evidence that did it.</text>
+
+    <text x="40" y="584" fill="#64748b" font-size="15">In the interview I am not listening for the bug. I am listening for whether the next step was chosen or merely tried &#8212;</text>
+    <text x="40" y="606" fill="#64748b" font-size="15">and for whether the story ends with a rule the candidate now carries into the next system they have never seen.</text>
+  </g>
+</svg>

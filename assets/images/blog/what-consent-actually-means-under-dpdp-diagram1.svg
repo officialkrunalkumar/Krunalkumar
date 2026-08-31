@@ -1,0 +1,78 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-what-consent-actually-means-under-dpdp-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-consent-actually-means-under-dpdp-diagram1">The two routes by which processing becomes lawful under the DPDP Act. The consent route runs in five steps: a notice served before the request, a clear affirmative action by the individual, a record the fiduciary keeps because the burden of proof is its own, withdrawal made as easy as giving, and stopping and erasing once consent is withdrawn. The legitimate-uses route is a closed list covering data the individual volunteered for that purpose, employment purposes, medical emergencies and public health, and legal obligations to the State. There is no legitimate-interests ground and no contract-performance ground, so anything outside the list needs consent.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">TWO WAYS PROCESSING BECOMES LAWFUL — AND ONLY TWO</text>
+
+  <!-- Route A: consent -->
+  <g>
+    <rect x="40" y="90" width="530" height="456" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="128" fill="#6b7a90" font-size="21" font-weight="800">Route A &#8212; Consent</text>
+    <text x="62" y="153" fill="#64748b" font-size="15">the default for anything commercial</text>
+
+    <line x1="86" y1="217" x2="86" y2="472" stroke="#1e77a4" stroke-width="1.5" stroke-dasharray="5 6"/>
+
+    <circle cx="86" cy="200" r="17" fill="#1e77a4"/>
+    <text x="86" y="206" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">1</text>
+    <text x="120" y="196" fill="#6b7a90" font-size="17" font-weight="700">Notice, served before you ask</text>
+    <text x="120" y="218" fill="#64748b" font-size="14.5">What data, what purpose, how to withdraw, how to complain</text>
+    <text x="120" y="238" fill="#64748b" font-size="14.5">&#8212; in English or any Eighth Schedule language, at their choice</text>
+
+    <circle cx="86" cy="268" r="17" fill="#1e77a4"/>
+    <text x="86" y="274" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">2</text>
+    <text x="120" y="264" fill="#6b7a90" font-size="17" font-weight="700">A clear affirmative action</text>
+    <text x="120" y="286" fill="#64748b" font-size="14.5">An unticked box the person ticks. Not a pre-tick,</text>
+    <text x="120" y="306" fill="#64748b" font-size="14.5">not scrolling, not continued use of the site.</text>
+
+    <circle cx="86" cy="336" r="17" fill="#1e77a4"/>
+    <text x="86" y="342" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">3</text>
+    <text x="120" y="332" fill="#6b7a90" font-size="17" font-weight="700">A record you can produce later</text>
+    <text x="120" y="354" fill="#64748b" font-size="14.5">Which notice version, which purposes, when, by what action.</text>
+    <text x="120" y="374" fill="#64748b" font-size="14.5">The burden of proving it is yours, not theirs.</text>
+
+    <circle cx="86" cy="404" r="17" fill="#1e77a4"/>
+    <text x="86" y="410" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">4</text>
+    <text x="120" y="400" fill="#6b7a90" font-size="17" font-weight="700">Withdrawal, as easy as giving</text>
+    <text x="120" y="422" fill="#64748b" font-size="14.5">If consent took one tap, withdrawal cannot take an email</text>
+    <text x="120" y="442" fill="#64748b" font-size="14.5">to support and a five-day wait.</text>
+
+    <circle cx="86" cy="472" r="17" fill="#1e77a4"/>
+    <text x="86" y="478" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">5</text>
+    <text x="120" y="468" fill="#6b7a90" font-size="17" font-weight="700">Then stop, and erase</text>
+    <text x="120" y="490" fill="#64748b" font-size="14.5">You stop, your processors stop, and the data goes &#8212; unless</text>
+    <text x="120" y="510" fill="#64748b" font-size="14.5">some other law requires you to keep it.</text>
+  </g>
+
+  <!-- Route B: legitimate uses -->
+  <g>
+    <rect x="610" y="90" width="510" height="456" rx="14" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="632" y="128" fill="#6b7a90" font-size="21" font-weight="800">Route B &#8212; Legitimate uses</text>
+    <text x="632" y="153" fill="#64748b" font-size="15">a closed list, not a catch-all</text>
+
+    <g stroke="#93671a" stroke-width="3" stroke-linecap="round">
+      <line x1="634" y1="191" x2="652" y2="191"/>
+      <line x1="634" y1="241" x2="652" y2="241"/>
+      <line x1="634" y1="291" x2="652" y2="291"/>
+      <line x1="634" y1="341" x2="652" y2="341"/>
+    </g>
+    <text x="666" y="197" fill="#6b7a90" font-size="15.5">Data they volunteered for that very purpose,</text>
+    <text x="666" y="217" fill="#6b7a90" font-size="15.5">having not said no to it</text>
+    <text x="666" y="247" fill="#6b7a90" font-size="15.5">Employment, and protecting the employer</text>
+    <text x="666" y="267" fill="#6b7a90" font-size="15.5">from loss or liability</text>
+    <text x="666" y="297" fill="#6b7a90" font-size="15.5">Medical emergency, epidemic, disaster,</text>
+    <text x="666" y="317" fill="#6b7a90" font-size="15.5">breakdown of public order</text>
+    <text x="666" y="347" fill="#6b7a90" font-size="15.5">Court orders, disclosures the law compels,</text>
+    <text x="666" y="367" fill="#6b7a90" font-size="15.5">State subsidies and benefits</text>
+
+    <rect x="632" y="396" width="466" height="136" rx="12" fill="none" stroke="#a3352f" stroke-width="1.8" stroke-dasharray="7 6"/>
+    <text x="654" y="428" fill="#a3352f" font-size="16" font-weight="800">Not on the list, and people assume they are:</text>
+    <g stroke="#a3352f" stroke-width="2.6" stroke-linecap="round">
+      <line x1="656" y1="450" x2="668" y2="462"/><line x1="668" y1="450" x2="656" y2="462"/>
+      <line x1="656" y1="478" x2="668" y2="490"/><line x1="668" y1="478" x2="656" y2="490"/>
+      <line x1="656" y1="506" x2="668" y2="518"/><line x1="668" y1="506" x2="656" y2="518"/>
+    </g>
+    <text x="684" y="462" fill="#64748b" font-size="15">&#8220;We have a legitimate interest in it&#8221;</text>
+    <text x="684" y="490" fill="#64748b" font-size="15">&#8220;It is necessary to perform the contract&#8221;</text>
+    <text x="684" y="518" fill="#64748b" font-size="15">&#8220;They were already our customer&#8221;</text>
+  </g>
+
+  <text x="40" y="586" fill="#64748b" font-size="15">Anything outside Route B needs Route A. And if you cannot produce the notice and the consent record, you are treated as never having had consent.</text>
+</svg>

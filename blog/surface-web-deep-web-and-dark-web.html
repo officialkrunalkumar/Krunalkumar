@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The surface, deep, and dark web explained: why the iceberg picture is wrong, how onion routing works, and what breach monitoring can and cannot tell you."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Surface Web, Deep Web, and Dark Web: What the Three Layers Actually Are" />
+    <meta
+      property="og:description"
+      content="Not three depths of one ocean — three ways of reaching a page. What the deep web really holds, how onion routing works, and why most dark web marketing is overstated."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/surface-web-deep-web-and-dark-web.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Three vignettes: linked pages under a magnifier, a page behind a padlock, and a message passed along three relays" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Surface Web, Deep Web, and Dark Web: What the Three Layers Actually Are" />
+    <meta
+      name="twitter:description"
+      content="Not three depths of one ocean — three ways of reaching a page. What the deep web really holds, how onion routing works, and why most dark web marketing is overstated."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/surface-web-deep-web-and-dark-web.jpg" />
+    <title>Surface, Deep, and Dark Web, Explained | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Surface Web, Deep Web, and Dark Web: What the Three Layers Actually Are",
+        "description": "An accurate explanation of the three layers of the web: why the iceberg picture misleads, why the deep web is mostly your own logged-in pages, how onion routing works, what is genuinely on the dark web in both directions, and why breach-monitoring marketing is usually overstated.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/surface-web-deep-web-and-dark-web.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web"
+        },
+        "keywords": "surface web, deep web, dark web, Tor, onion routing, overlay network, breach monitoring, k-anonymity, privacy, anonymity"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "Surface, Deep, and Dark Web", "item": "https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is it illegal to use Tor or visit the dark web?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In most countries, including India, running Tor and reading a site over it is not itself an offence — the software is public, and news organisations, researchers and privacy-minded people use it openly. What you do with it is judged the same way it would be on any other network: buying prohibited goods or accessing prohibited material is an offence regardless of how the connection was routed. A handful of states restrict or block anonymity tools outright, so this is one of the places to check your own jurisdiction rather than take a general answer from an article. For the Indian statutes that would apply, the IT Act post on this site is the longer read."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the deep web dangerous?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and the question usually comes from the iceberg picture rather than from anything real. The deep web is the part of the ordinary web a crawler cannot reach: your webmail, your bank's logged-in pages, a company intranet, a paywalled journal, results a database generates when you submit a form. You used it this morning. The risk in that layer is the ordinary one — a weak password, a reused password, a phishing page that catches you on the way in."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How big is the dark web really?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Small, and nobody can give you an honest number. Published counts of reachable Tor onion services have run in the tens of thousands of addresses, many of which are duplicates, mirrors, or offline within days. The often-quoted claim that the dark web is some large multiple of the visible web is not a measurement of anything — it confuses the dark web with the deep web, which cannot be counted either, because a database that generates a page per query has no fixed number of pages."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does a VPN make me anonymous the way Tor does?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A VPN moves your trust rather than removing it: your traffic is hidden from your network and your provider, and handed instead to the VPN company, which can see both who you are and where you are going. Tor's design splits that knowledge across three independently operated relays so no single one holds both halves. A VPN is a reasonable answer to an untrusted café network. It is not an anonymity system, whatever the advertising says."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can my data be removed from the dark web?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and any service selling removal is selling something it cannot deliver. Once a breach corpus has been copied, traded and mirrored, there is no registry to delete it from and no party obliged to honour a request. What you can do is make the leaked data useless: change the password everywhere it was reused, turn on multi-factor authentication, and treat the leaked details as permanently public when you choose account-recovery answers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do newspapers run onion sites?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For sources. A SecureDrop instance reached over Tor means a whistleblower's connection does not create a record at their internet provider or employer showing they contacted that newsroom. Several major papers run one, and several also publish onion mirrors of the paper itself so readers behind national filtering can reach ordinary news. It is the same technology as the criminal markets, used for the reason it was funded in the first place."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does a breach-monitoring service actually check?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It matches your email address or password against a corpus of already-published breach dumps that somebody collected and indexed. That is genuinely useful — it tells you which of your accounts is exposed — but it is a search of a known dataset, not surveillance of the dark web. No service can see what an unknown criminal holds privately, and none can remove anything. Treat \"we scan the dark web for you\" as marketing for \"we search dumps we already have\", and use the breach checker on this site if you want to see the honest version of the mechanism."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Surface, Deep, and Dark Web</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>Surface web, deep web, and dark web: what the three layers actually are</h1>
+          <p class="hero-text">
+            Almost every explanation of this starts with an iceberg, and the iceberg is wrong in the way that matters
+            most. These are not three depths of one ocean. They are three different answers to a single question:
+            who can reach this page, and how? Get that straight and the rest — including the part that gets sold to
+            you as fear — stops being mysterious.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 15 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/three-layers-cover.svg" alt="Three vignettes: linked pages under a magnifier, a page behind a padlock, and a message passed along three relays" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-iceberg-is-the-wrong-picture">The iceberg is the wrong picture</a></li>
+                <li><a href="#the-surface-web-whatever-a-crawler-can-reach">The surface web: whatever a crawler can reach</a></li>
+                <li><a href="#the-deep-web-mostly-yours-mostly-dull">The deep web: mostly yours, mostly dull</a></li>
+                <li><a href="#the-dark-web-is-an-overlay-network">The dark web is an overlay network</a></li>
+                <li><a href="#how-onion-routing-actually-works">How onion routing actually works</a></li>
+                <li><a href="#what-is-actually-on-it">What is actually on it</a></li>
+                <li><a href="#what-tor-does-not-protect-you-from">What Tor does not protect you from</a></li>
+                <li><a href="#we-found-your-data-on-the-dark-web">"We found your data on the dark web"</a></li>
+                <li><a href="#what-actually-protects-an-ordinary-person">What actually protects an ordinary person</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-iceberg-is-the-wrong-picture">The iceberg is the wrong picture</h2>
+              <p>
+                You know the diagram. A small tip above the waterline labelled "4% — Google, Facebook, Wikipedia," a
+                vast blue mass below it labelled "deep web," and at the very bottom, in red, a small dark chamber
+                labelled with a skull. It is a memorable image, and it teaches three false things at once.
+              </p>
+              <p>
+                The first is the arithmetic. Nobody can count the deep web, because most of it is not made of pages
+                at all — it is a database that produces a page when you ask it something. How many pages does an
+                airline's fare search have? As many as there are journeys you could type in. The percentages in the
+                iceberg trace back to a paper written in 2001, about a web that no longer exists, and they have been
+                copied forward ever since without anyone recounting.
+              </p>
+              <p>
+                The second is the vertical axis itself. Depth implies that you pass through the deep web on your way
+                down to the dark web, and that the deep web is a rougher neighbourhood than the surface. Neither is
+                true. Your email inbox is not adjacent to a criminal market, and no amount of scrolling gets you from
+                one to the other.
+              </p>
+              <p>
+                The third is the implication that all of this is somewhere <em>else</em>. It is not. Two of the three
+                layers are the ordinary web you use every day, and the third runs on the same wires as the other two.
+              </p>
+              <blockquote>
+                <p>
+                  Replace depth with reachability and everything falls into place. Surface: something can follow a
+                  link to it. Deep: it needs credentials or a query first. Dark: it needs different software to route
+                  to it at all. Three answers to one question — not three floors of a building.
+                </p>
+              </blockquote>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/surface-web-deep-web-and-dark-web-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/surface-web-deep-web-and-dark-web-diagram1.svg" alt="Three panels showing the layers by how a page is reached: the surface web as pages a crawler follows links between, the deep web as an ordinary page a crawler cannot pass a sign-in to reach, and the dark web as traffic relayed through three hops on an overlay network" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The same three words, drawn by reachability instead of depth. Nothing is stacked, because depth was never the axis. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Or take the diagram apart yourself.</strong> There is a lab on this site that classifies
+                  any address you type as surface, deep or dark and shows you which signal decided it, then steps a
+                  request through a three-relay circuit so you can watch what each relay learns and what it does not.
+                  It runs entirely in your browser and reaches nothing.
+                </p>
+                <a class="btn btn-primary" href="/labs/web-layers">Open the web layers lab</a>
+              </div>
+
+              <h2 id="the-surface-web-whatever-a-crawler-can-reach">The surface web: whatever a crawler can reach</h2>
+              <p>
+                A search engine works by crawling. It starts from pages it already knows, fetches each one, extracts
+                every link, and repeats — storing a copy of what it finds so it can answer questions about it later.
+                The surface web is simply the set of pages that process can reach and is allowed to keep.
+              </p>
+              <p>
+                That definition has softer edges than people expect. A page can be perfectly public and still miss the
+                index: nothing links to it, it is not in a sitemap, it sends a <code>noindex</code> header, or
+                <code>robots.txt</code> asks crawlers to stay away. By the strict definition, an unlinked public page
+                is deep web — which is a good sign that "deep" is a statement about discoverability, not about
+                secrecy. It is also why every page on this site is listed in a sitemap and checked against it on every
+                deploy: a page nothing links to is a page nobody finds.
+              </p>
+              <p>
+                Two honest caveats. The index is a snapshot, not the web — what you search is a copy taken at some
+                point in the past, and pages leave it as easily as they join. And "surface" says nothing about
+                quality or safety; the most effective <a href="/glossary#term-phishing">phishing</a> pages in the
+                world are indexed like anything else.
+              </p>
+
+              <h2 id="the-deep-web-mostly-yours-mostly-dull">The deep web: mostly yours, mostly dull</h2>
+              <p>
+                Here is the correction that does the most work in this article: <strong>the deep web is boring, and
+                most of it belongs to you.</strong> Every one of these is deep web:
+              </p>
+              <ul>
+                <li>Your webmail inbox, and every message in it.</li>
+                <li>Your bank's pages once you have signed in — the balance, the statements, the transfer form.</li>
+                <li>Your employer's intranet, ticketing system, payroll portal and shared drives.</li>
+                <li>A hospital's patient record system, and a court's case management system.</li>
+                <li>An academic journal behind a paywall, and a library catalogue that only answers a search.</li>
+                <li>The flight results a booking site generates when you type two cities and a date.</li>
+                <li>This page's own admin side, if it had one, and every draft you have ever written in a cloud editor.</li>
+              </ul>
+              <p>
+                None of that is hidden in any dramatic sense. It sits on ordinary servers, speaks ordinary HTTPS, and
+                opens in the same browser you are reading this in. It is "deep" for one reason only: a crawler arrives
+                at the sign-in form and stops there, because it has no account. That is the whole mechanism. The wall
+                is authentication, not the network.
+              </p>
+              <p>
+                Which means you visit the deep web dozens of times a day and have never once thought of it that way.
+                If somebody tells you they can "get into the deep web," they are describing logging in.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The useful consequence.</strong> Because the deep web is guarded by credentials rather than
+                  by obscurity, everything that protects it is the boring account hygiene from
+                  <a href="/blog/passwords-passkeys-and-what-actually-protects-you">the passwords and passkeys
+                  post</a> — unique passwords, a manager, and a second factor. There is no separate "deep web
+                  security." There is just your login.
+                </p>
+              </div>
+
+              <h2 id="the-dark-web-is-an-overlay-network">The dark web is an overlay network</h2>
+              <p>
+                The dark web is not a bigger, scarier layer underneath the deep web. It is a small set of
+                <strong>overlay networks</strong> — networks built on top of the ordinary internet, using the same
+                cables and the same TCP/IP, but adding their own addressing and their own routing rules on top. Tor
+                is by far the main one. I2P and Hyphanet exist and are much smaller. That is close to the whole list.
+              </p>
+              <p>
+                "Overlay" is the word worth keeping. Nothing new is dug underneath the internet; a layer is drawn over
+                it, and only software that speaks that layer's protocol can address anything inside it. Your normal
+                browser cannot open one of its addresses for the same reason a phone cannot dial a postal code — not
+                because the destination is deep, but because the address belongs to a different system.
+              </p>
+              <p>
+                Two structural facts explain most of what follows. First, addresses on Tor are not domain names.
+                There is no <a href="/glossary#term-dns">DNS</a> lookup, no registrar, and no
+                <a href="/glossary#term-certificate-authority">certificate authority</a> vouching for anyone: the
+                address is derived from the service's own
+                <a href="/glossary#term-public-key-cryptography">public key</a>, which is why it looks like a long
+                string of nonsense and why it cannot be typed from memory. The name <em>is</em> the key, so connecting
+                to the right address proves you reached the right server without a third party in the middle. Second,
+                there is no directory. There is no search engine that has crawled it all, which is why size claims
+                should be read as guesses.
+              </p>
+              <p>
+                And it is small. Published counts of reachable onion services have run in the tens of thousands of
+                addresses — many of them duplicates, mirrors, or gone within a week. Set that against a deep web that
+                includes every inbox on earth and the iceberg inverts itself.
+              </p>
+              <p>
+                This article deliberately does not tell you how to get there. Not because the information is arcane,
+                but because the architecture is the part that makes you safer, and the route is the part that only
+                helps someone already looking for trouble. Describing the mechanism is the job here; the map is not.
+              </p>
+
+              <h2 id="how-onion-routing-actually-works">How onion routing actually works</h2>
+              <p>
+                Onion routing solves a specific problem. On the ordinary internet, every packet carries both the
+                sender's address and the recipient's, so anyone positioned between the two — your internet provider,
+                the café's router, the destination's host — can see who is talking to whom, even when
+                <a href="/glossary#term-tls">TLS</a> hides what is said. Encryption protects the contents. Onion
+                routing goes after the envelope.
+              </p>
+              <p>
+                The idea is layered encryption over a chain of volunteer relays. Simplified but not falsified:
+              </p>
+              <ol>
+                <li>
+                  Your client fetches a signed list of the network's relays. That list is public — the relays are
+                  volunteers running published software at published addresses, which surprises people who expect a
+                  secret network to have secret machines.
+                </li>
+                <li>
+                  It picks three of them: a <strong>guard</strong>, a <strong>middle</strong>, and an
+                  <strong>exit</strong>. It then negotiates a separate key with each one, in turn, through the
+                  circuit it is building.
+                </li>
+                <li>
+                  Before sending anything, your client wraps the data in three layers of encryption — outermost for
+                  the guard, then the middle, then the exit. Hence "onion."
+                </li>
+                <li>
+                  Each relay peels exactly one layer. It learns the address it received the data from and the address
+                  it must send it to, and nothing else. The guard knows who you are but not where you are going. The
+                  exit knows where you are going but not who you are. The middle relay knows neither, and exists
+                  precisely so the guard and the exit never talk to each other directly.
+                </li>
+              </ol>
+              <p>
+                Reaching an onion service rather than an ordinary website changes the shape again: instead of one
+                circuit out to the open internet, both sides build their own circuits and meet at an agreed
+                rendezvous relay. Neither end ever learns the other's real address, and the traffic never leaves the
+                network, so there is no exit relay to eavesdrop at.
+              </p>
+              <p>
+                Now the limitation, stated plainly, because the Tor Project states it too: this is resistance to
+                traffic analysis, not a guarantee of anonymity. An adversary who can watch the traffic entering the
+                network near you <em>and</em> the traffic leaving it near your destination can line up the timing and
+                the volumes and correlate the two ends without breaking any encryption at all. Against a
+                well-resourced observer with that vantage point, the design does not promise to win — and anyone who
+                tells you it does is selling something.
+              </p>
+
+              <h2 id="what-is-actually-on-it">What is actually on it</h2>
+              <p>
+                Both directions, honestly, because the usual coverage picks one and the usual rebuttal picks the
+                other.
+              </p>
+              <p>
+                <strong>The criminal half is real.</strong> Marketplaces for drugs, stolen payment card data and
+                credential dumps genuinely operate there. So do ransomware groups, who run leak sites to publish the
+                data of victims who refused to pay — the second half of the double extortion described in
+                <a href="/blog/types-of-cyberattacks">the cyberattacks map</a>. Fraud services, forged document
+                sellers and worse all exist. Pretending otherwise to make a point about nuance would be dishonest.
+              </p>
+              <p>
+                It is also worth knowing that these operations get taken down regularly, and almost never because
+                anyone broke the cryptography. They fall to ordinary investigative work: a server misconfigured for a
+                few hours, a reused username from a decade-old forum post, a payment traced through an exchange, an
+                informant. The technology hides the route; it does not hide a mistake. That is the same evidence
+                trail described in <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually
+                solved</a>.
+              </p>
+              <p>
+                <strong>The other half is real too, and much less reported.</strong> Several major newspapers run
+                SecureDrop instances reachable over Tor, so a source can send documents without their employer or
+                their internet provider holding a record that they contacted a newsroom. The BBC and Deutsche Welle
+                publish onion mirrors of their news sites, so that readers in countries where those sites are blocked
+                can reach ordinary news — not contraband, the football results. Facebook ran one for about a decade,
+                for the same reason. Human rights organisations use it, and so do people escaping domestic abuse, whose
+                adversary is one specific person with access to the household router.
+              </p>
+              <p>
+                And the largest use of Tor is not onion services at all. Most of its traffic is people using Tor
+                Browser to reach the perfectly ordinary web — the surface web — with their location and their
+                identity separated from what they read. The "dark web" part is the smaller half of the smaller thing.
+              </p>
+
+              <h2 id="what-tor-does-not-protect-you-from">What Tor does not protect you from</h2>
+              <p>
+                Being specific about the limits is what makes the rest believable. The network hides the route. It
+                does not hide you from yourself.
+              </p>
+              <ul>
+                <li>
+                  <strong>Logging in.</strong> Sign into an account that carries your name and you have identified
+                  yourself by hand. No amount of relaying undoes that.
+                </li>
+                <li>
+                  <strong>Plain HTTP past the exit.</strong> When you reach the ordinary web, the exit relay is the
+                  last hop and sees exactly what any network operator would. If the destination is not on HTTPS, that
+                  includes the contents — the classic
+                  <a href="/glossary#term-man-in-the-middle">man-in-the-middle</a> position, volunteered for.
+                </li>
+                <li>
+                  <strong>The browser.</strong> Most real de-anonymisations have gone through the software, not the
+                  network: a plugin that makes its own direct connection, a file that opens outside the browser and
+                  phones home, a fingerprint assembled from fonts and screen size. This is why Tor Browser is so
+                  deliberately uniform and so insistent about not maximising the window.
+                </li>
+                <li>
+                  <strong>Your own behaviour.</strong> Writing style, timing, a reused handle, a photograph with its
+                  <a href="/glossary#term-metadata">metadata</a> intact. The
+                  <a href="/glossary#term-osint">open-source intelligence</a> techniques that piece those together
+                  work regardless of how the packets travelled.
+                </li>
+                <li>
+                  <strong>An observer at both ends.</strong> The timing correlation above. It is a real limit of the
+                  design, not an implementation bug someone will fix.
+                </li>
+              </ul>
+              <p>
+                I cannot promise anonymity to anyone, and neither can anybody else. What the design offers is that no
+                single party in the path holds both halves of the answer. That is a meaningful property. It is not
+                invisibility.
+              </p>
+
+              <h2 id="we-found-your-data-on-the-dark-web">"We found your data on the dark web"</h2>
+              <p>
+                This sentence sells a great deal of software, and it is doing something much smaller than it sounds.
+              </p>
+              <p>
+                Start with where breach data actually lives. Most of it is not on Tor at all. Dumps circulate on
+                clearnet forums, in Telegram channels, on paste sites and ordinary file hosts, and they are traded and
+                re-traded until the same records appear in a dozen "new" collections. Calling that "the dark web" is a
+                marketing choice, not a technical description — the phrase simply frightens better than "a forum you
+                could open right now."
+              </p>
+              <p>
+                Now the mechanism. A monitoring service holds a corpus of published breach dumps that someone
+                collected and indexed. When it "scans the dark web for your data," it searches that corpus for your
+                email address. That is a genuinely useful thing to do. But notice what it structurally cannot be:
+              </p>
+              <ul>
+                <li>
+                  <strong>It cannot see what has not been published.</strong> A criminal holding a fresh database
+                  privately is invisible to every monitoring service on the market.
+                </li>
+                <li>
+                  <strong>It cannot remove anything.</strong> There is no registry, no takedown route, and nobody
+                  obliged to comply. Any product promising deletion is promising something it does not control.
+                </li>
+                <li>
+                  <strong>A hit is history, not an emergency.</strong> It tells you a site you used was breached at
+                  some point. Whether that matters depends entirely on whether you reused the password.
+                </li>
+                <li>
+                  <strong>"0 results" proves nothing.</strong> It means the corpus this vendor happens to hold does
+                  not contain your address today.
+                </li>
+              </ul>
+              <p>
+                The honest version of the product is worth having anyway, because knowing <em>which</em> account was
+                exposed is what tells you which password to change. That is why the lab on this site does the real
+                thing and describes it in those terms rather than the frightening ones.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Check a password without sending it anywhere.</strong> The breach checker on this site
+                  hashes your password in the browser, sends only the first five characters of that hash, and does
+                  the comparison locally on what comes back — the
+                  <a href="/glossary#term-k-anonymity">k-anonymity</a> protocol that Have I Been Pwned defines. What
+                  it will not claim is that it "scans the dark web," because nothing can. It searches a public corpus
+                  of <a href="/glossary#term-data-breach">breached</a> passwords, which is the part that is real and
+                  the part that is useful.
+                </p>
+                <a class="btn btn-primary" href="/labs/breach-check">Open the breach checker</a>
+              </div>
+
+              <p>
+                One more thing worth naming, because it is where this topic turns into money leaving a bank account.
+                "Your data has been found on the dark web" is a standard opening line for scams — a call, a message,
+                or a pop-up that starts with a frightening true-sounding fact and ends with an urgent instruction.
+                The escalation of that pattern is covered in
+                <a href="/blog/digital-arrest-scam-explained">the digital arrest scam</a>, and the tell is always the
+                same: real security news never arrives with a deadline attached.
+              </p>
+
+              <h2 id="what-actually-protects-an-ordinary-person">What actually protects an ordinary person</h2>
+              <p>
+                None of the defences here are about the dark web, which is the point. Your exposure comes from
+                ordinary breaches of ordinary services, and it is fixed with ordinary discipline. Roughly in order of
+                how much each one buys you:
+              </p>
+              <ul>
+                <li>
+                  <strong>A unique password per site, from a password manager.</strong> This is the single control
+                  that turns somebody else's breach into somebody else's problem. Reuse is what makes leaked
+                  credentials valuable — it is the whole basis of
+                  <a href="/glossary#term-credential-stuffing">credential stuffing</a>.
+                </li>
+                <li>
+                  <strong>Multi-factor authentication, phishing-resistant where offered.</strong> A passkey or a
+                  hardware key cannot be replayed by a convincing copy of a login page. Codes and push prompts can be.
+                </li>
+                <li>
+                  <strong>Protect the email account first.</strong> It is the recovery route for everything else, so
+                  it deserves the strongest password and the strongest second factor you have.
+                </li>
+                <li>
+                  <strong>Assume the leaked details are permanent.</strong> Your date of birth, your mother's maiden
+                  name and your address are not secrets any more, so never use them as account-recovery answers.
+                  <a href="/blog/what-a-marriage-biodata-leaks">A marriage biodata</a> is a compact example of how
+                  much of that gets published voluntarily.
+                </li>
+                <li>
+                  <strong>Slow down on anything urgent.</strong> Nearly every loss that starts with a security scare
+                  ends with a payment made in a hurry. Hang up, look up the number yourself, call back.
+                </li>
+                <li>
+                  <strong>Check where a link really goes before you follow it.</strong> Pull a name apart in
+                  <a href="/labs/dns">the DNS lookup lab</a> or a link apart in
+                  <a href="/labs/url-inspector">the URL inspector</a>, and you will see how much a plausible-looking
+                  address can hide.
+                </li>
+                <li>
+                  <strong>If you actually need Tor, use Tor Browser as shipped.</strong> Do not bolt the network onto
+                  your everyday browser, and do not log into your own accounts through it. The defaults are the
+                  protection.
+                </li>
+              </ul>
+              <p>
+                And if you want the vocabulary in one place rather than scattered through articles, the
+                <a href="/glossary">glossary</a> defines the terms this post leans on — from
+                <a href="/glossary#term-threat-model">threat model</a> to
+                <a href="/glossary#term-tls">TLS</a> — in a paragraph each.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Is it illegal to use Tor or visit the dark web?</summary>
+                  <p>
+                    In most countries, including India, running Tor and reading a site over it is not itself an
+                    offence — the software is public, and news organisations, researchers and privacy-minded people
+                    use it openly. What you do with it is judged the same way it would be on any other network:
+                    buying prohibited goods or accessing prohibited material is an offence regardless of how the
+                    connection was routed. A handful of states restrict or block anonymity tools outright, so this is
+                    one of the places to check your own jurisdiction rather than take a general answer from an
+                    article. For the Indian statutes that would apply,
+                    <a class="text-link" href="/blog/india-it-act-explained">the IT Act post</a> is the longer read.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is the deep web dangerous?</summary>
+                  <p>
+                    No, and the question usually comes from the iceberg picture rather than from anything real. The
+                    deep web is the part of the ordinary web a crawler cannot reach: your webmail, your bank's
+                    logged-in pages, a company intranet, a paywalled journal, results a database generates when you
+                    submit a form. You used it this morning. The risk in that layer is the ordinary one — a weak
+                    password, a reused password, a phishing page that catches you on the way in.
+                  </p>
+                </details>
+                <details>
+                  <summary>How big is the dark web really?</summary>
+                  <p>
+                    Small, and nobody can give you an honest number. Published counts of reachable onion services
+                    have run in the tens of thousands of addresses, many of which are duplicates, mirrors, or offline
+                    within days. The often-quoted claim that the dark web is some large multiple of the visible web
+                    is not a measurement of anything — it confuses the dark web with the deep web, which cannot be
+                    counted either, because a database that generates a page per query has no fixed number of pages.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does a VPN make me anonymous the way Tor does?</summary>
+                  <p>
+                    No. A VPN moves your trust rather than removing it: your traffic is hidden from your network and
+                    your provider, and handed instead to the VPN company, which can see both who you are and where
+                    you are going. Tor's design splits that knowledge across three independently operated relays so
+                    no single one holds both halves. A VPN is a reasonable answer to an untrusted café network. It is
+                    not an anonymity system, whatever the advertising says.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can my data be removed from the dark web?</summary>
+                  <p>
+                    No, and any service selling removal is selling something it cannot deliver. Once a breach corpus
+                    has been copied, traded and mirrored, there is no registry to delete it from and no party obliged
+                    to honour a request. What you can do is make the leaked data useless: change the password
+                    everywhere it was reused, turn on multi-factor authentication, and treat the leaked details as
+                    permanently public when you choose account-recovery answers.
+                  </p>
+                </details>
+                <details>
+                  <summary>Why do newspapers run onion sites?</summary>
+                  <p>
+                    For sources. A SecureDrop instance reached over Tor means a whistleblower's connection does not
+                    create a record at their internet provider or employer showing they contacted that newsroom.
+                    Several major papers run one, and several also publish onion mirrors of the paper itself so
+                    readers behind national filtering can reach ordinary news. It is the same technology as the
+                    criminal markets, used for the reason it was funded in the first place.
+                  </p>
+                </details>
+                <details>
+                  <summary>What does a breach-monitoring service actually check?</summary>
+                  <p>
+                    It matches your email address or password against a corpus of already-published breach dumps
+                    that somebody collected and indexed. That is genuinely useful — it tells you which of your
+                    accounts is exposed — but it is a search of a known dataset, not surveillance of the dark web. No
+                    service can see what an unknown criminal holds privately, and none can remove anything. Treat
+                    "we scan the dark web for you" as marketing for "we search dumps we already have," and use
+                    <a class="text-link" href="/labs/breach-check">the breach checker</a> if you want to see the
+                    honest version of the mechanism.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The three words are useful once they stop describing depth. Surface is what a crawler found. Deep is
+                what needs a login, which is almost everything you personally care about. Dark is a routing choice
+                that a small number of people make for reasons ranging from criminal to admirable. None of it is
+                underneath anything.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fsurface-web-deep-web-and-dark-web" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=Surface%20Web%2C%20Deep%20Web%2C%20and%20Dark%20Web%3A%20What%20the%20Three%20Layers%20Actually%20Are&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fsurface-web-deep-web-and-dark-web" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=Surface%20Web%2C%20Deep%20Web%2C%20and%20Dark%20Web%3A%20What%20the%20Three%20Layers%20Actually%20Are%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fsurface-web-deep-web-and-dark-web" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+              <li><a href="/blog/digital-arrest-scam-explained">The digital arrest scam, explained</a></li>
+              <li><a href="/blog/types-of-cyberattacks">Types of cyberattacks, mapped: causes, defenses, and the CIA triad</a></li>
+              <li><a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved: from first alert to the courtroom</a></li>
+              <li><a href="/blog/what-a-marriage-biodata-leaks">What a marriage biodata leaks</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Worried about what is already out there?</h2>
+            <p>
+              Most of the time the honest answer is smaller and more fixable than the marketing suggests — and the
+              work is finding out which accounts are actually exposed and closing those. I do that for individuals
+              and for teams, and I teach it to the people I mentor.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/labs">Try the security labs</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

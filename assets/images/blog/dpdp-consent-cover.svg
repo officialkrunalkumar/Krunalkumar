@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What consent actually means under the DPDP Act — a consent notice card with an unticked box and a clear affirmative action, beside chips reading free, specific, informed and unambiguous">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="rgba(88,52,166,0.35)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="150" cy="86" r="2"/><circle cx="430" cy="58" r="1.5"/><circle cx="695" cy="104" r="2"/>
+    <circle cx="95" cy="430" r="1.5"/><circle cx="330" cy="546" r="2"/><circle cx="1126" cy="76" r="1.5"/>
+    <circle cx="1055" cy="576" r="2"/><circle cx="630" cy="582" r="1.5"/>
+  </g>
+
+  <text x="80" y="150" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+  <text x="80" y="240" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">What consent actually</text>
+  <text x="80" y="312" fill="#f8fafc" font-family="'Segoe UI',sans-serif" font-size="62" font-weight="800">means under DPDP</text>
+  <text x="80" y="390" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">India&#8217;s data protection law, written for</text>
+  <text x="80" y="432" fill="#cbd5e1" font-family="'Segoe UI',sans-serif" font-size="30">the company that has to comply.</text>
+  <text x="80" y="560" fill="#8fa0b8" font-family="'Segoe UI',sans-serif" font-size="26" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+
+  <!-- Consent notice card with a clear affirmative action -->
+  <g>
+    <rect x="800" y="118" width="330" height="272" rx="16" fill="rgba(125,211,252,0.10)" stroke="#7dd3fc" stroke-width="3"/>
+    <text x="828" y="160" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" letter-spacing="3">NOTICE</text>
+    <g stroke="#cbd5e1" stroke-width="4" stroke-linecap="round" opacity="0.75">
+      <line x1="828" y1="188" x2="1100" y2="188"/>
+      <line x1="828" y1="210" x2="1064" y2="210"/>
+      <line x1="828" y1="232" x2="1086" y2="232"/>
+      <line x1="828" y1="254" x2="1010" y2="254"/>
+    </g>
+    <rect x="828" y="286" width="34" height="34" rx="7" fill="none" stroke="#4ade80" stroke-width="3.5"/>
+    <g stroke="#cbd5e1" stroke-width="4" stroke-linecap="round" opacity="0.75">
+      <line x1="880" y1="303" x2="1064" y2="303"/>
+    </g>
+    <rect x="828" y="340" width="150" height="34" rx="9" fill="#4ade80"/>
+    <text x="903" y="365" fill="#131f2d" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" text-anchor="middle">I agree</text>
+    <rect x="994" y="340" width="108" height="34" rx="9" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+    <text x="1048" y="365" fill="#94a3b8" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="700" text-anchor="middle">No</text>
+  </g>
+
+  <!-- The four qualities consent has to have -->
+  <g font-family="'Segoe UI',sans-serif" text-anchor="middle" font-size="20" font-weight="800">
+    <rect x="800" y="424" width="158" height="42" rx="21" fill="#7dd3fc"/>
+    <text x="879" y="452" fill="#131f2d">FREE</text>
+    <rect x="972" y="424" width="158" height="42" rx="21" fill="#4ade80"/>
+    <text x="1051" y="452" fill="#131f2d">SPECIFIC</text>
+    <rect x="800" y="482" width="158" height="42" rx="21" fill="#fbbf24"/>
+    <text x="879" y="510" fill="#131f2d">INFORMED</text>
+    <rect x="972" y="482" width="158" height="42" rx="21" fill="#a855f7"/>
+    <text x="1051" y="510" fill="#131f2d" font-size="17">UNAMBIGUOUS</text>
+  </g>
+</svg>

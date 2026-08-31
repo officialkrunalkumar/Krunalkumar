@@ -1,0 +1,49 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-what-a-security-review-actually-finds-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-a-security-review-actually-finds-diagram2">A remediation plan plotted on two axes: exploitability rising up the vertical axis and remediation effort rising along the horizontal axis. Broken object-level authorisation and missing rate limits sit high and cheap, in the do-it-this-week quadrant; a live secret in the repository sits high and mid-effort; staging holding production data and over-broad cloud roles sit high and expensive, to be planned with a stopgap; dependency drift and verbose error pages sit low and cheap, to be batched; sessions that never invalidate sit low and expensive, to be accepted in writing</title>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">HOW THE REMEDIATION PLAN GETS ORDERED</text>
+
+    <!-- Quadrant field -->
+    <rect x="150" y="96" width="960" height="420" rx="14" fill="none" stroke="#6b7a90" stroke-opacity="0.5" stroke-width="1.5"/>
+    <line x1="630" y1="96" x2="630" y2="516" stroke="#6b7a90" stroke-opacity="0.45" stroke-width="2"/>
+    <line x1="150" y1="306" x2="1110" y2="306" stroke="#6b7a90" stroke-opacity="0.45" stroke-width="2"/>
+
+    <!-- Axes -->
+    <text x="128" y="104" fill="#64748b" font-size="14" font-weight="700" text-anchor="end">high</text>
+    <text x="128" y="516" fill="#64748b" font-size="14" font-weight="700" text-anchor="end">low</text>
+    <text x="88" y="306" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2" text-anchor="middle" transform="rotate(-90 88 306)">EXPLOITABILITY</text>
+    <text x="150" y="546" fill="#64748b" font-size="14" font-weight="700">cheap</text>
+    <text x="1110" y="546" fill="#64748b" font-size="14" font-weight="700" text-anchor="end">expensive</text>
+    <text x="630" y="546" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2" text-anchor="middle">REMEDIATION EFFORT</text>
+
+    <!-- Quadrant names -->
+    <text x="170" y="132" fill="#a3352f" font-size="16" font-weight="800" letter-spacing="1">FIX IT THIS WEEK</text>
+    <text x="1090" y="132" fill="#93671a" font-size="16" font-weight="800" letter-spacing="1" text-anchor="end">PLAN IT, WITH A STOPGAP TODAY</text>
+    <text x="170" y="498" fill="#157f41" font-size="16" font-weight="800" letter-spacing="1">BATCH IT INTO THE NEXT SPRINT</text>
+    <text x="1090" y="498" fill="#8f49df" font-size="16" font-weight="800" letter-spacing="1" text-anchor="end">ACCEPT IT, IN WRITING</text>
+
+    <!-- Findings -->
+    <circle cx="300" cy="200" r="9" fill="#a3352f"/>
+    <text x="320" y="206" fill="#6b7a90" font-size="16" font-weight="700">Broken object-level authorisation</text>
+    <circle cx="240" cy="256" r="9" fill="#a3352f"/>
+    <text x="260" y="262" fill="#6b7a90" font-size="16" font-weight="700">No rate limit on login or reset</text>
+    <circle cx="452" cy="164" r="9" fill="#a3352f"/>
+    <text x="432" y="170" fill="#6b7a90" font-size="16" font-weight="700" text-anchor="end">Live secret in the repository</text>
+
+    <circle cx="756" cy="212" r="9" fill="#93671a"/>
+    <text x="776" y="218" fill="#6b7a90" font-size="16" font-weight="700">Staging holding production data</text>
+    <circle cx="872" cy="278" r="9" fill="#93671a"/>
+    <text x="892" y="284" fill="#6b7a90" font-size="16" font-weight="700">Over-broad cloud role</text>
+
+    <circle cx="304" cy="374" r="9" fill="#157f41"/>
+    <text x="324" y="380" fill="#6b7a90" font-size="16" font-weight="700">Dependency drift</text>
+    <circle cx="222" cy="440" r="9" fill="#157f41"/>
+    <text x="242" y="446" fill="#6b7a90" font-size="16" font-weight="700">Stack traces in error pages</text>
+
+    <circle cx="812" cy="392" r="9" fill="#8f49df"/>
+    <text x="832" y="398" fill="#6b7a90" font-size="16" font-weight="700">Sessions that never invalidate</text>
+
+    <text x="40" y="578" fill="#64748b" font-size="15">A CVSS score is one input to the vertical axis, not the axis itself.</text>
+    <text x="40" y="602" fill="#64748b" font-size="15">Whether the flaw is reachable, who can reach it, and what that account already holds decide the height.</text>
+  </g>
+</svg>

@@ -1,0 +1,108 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-n8n-make-or-zapier-an-honest-comparison-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-n8n-make-or-zapier-an-honest-comparison-diagram1">The same automation drawn three times to show which machine holds the data and the stored credentials in transit: with Zapier the workflow engine and the OAuth tokens sit inside Zapier's cloud, with Make they sit inside Make's cloud in whichever region you chose at sign-up, and with self-hosted n8n they sit on a server you run, which removes a subprocessor and adds patching, backups and uptime to your own list</title>
+  <text x="40" y="50" fill="#1e77a4" font-size="19" font-weight="800" letter-spacing="3">SAME AUTOMATION — THREE ANSWERS TO "WHOSE MACHINE HOLDS THE DATA?"</text>
+
+  <!-- 1. Zapier -->
+  <g>
+    <rect x="40" y="80" width="345" height="486" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="118" fill="#6b7a90" font-size="21" font-weight="800">Zapier</text>
+    <text x="62" y="142" fill="#64748b" font-size="15">hosted only — no self-host option</text>
+
+    <rect x="70" y="166" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="212" y="193" fill="#6b7a90" font-size="15" text-anchor="middle">Your client's system</text>
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="212" y1="208" x2="212" y2="234"/>
+      <path d="M206 228 L212 236 L218 228"/>
+    </g>
+
+    <rect x="58" y="242" width="309" height="182" rx="10" fill="none" stroke="#93671a" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="72" y="266" fill="#93671a" font-size="14" font-weight="700">NOT YOUR INFRASTRUCTURE</text>
+    <rect x="80" y="282" width="265" height="44" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="212" y="309" fill="#6b7a90" font-size="15" text-anchor="middle">Zap engine + your logic</text>
+    <rect x="80" y="342" width="265" height="60" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <path d="M104 371 v-8 a8 8 0 0 1 16 0 v8" fill="none" stroke="#93671a" stroke-width="2.5"/>
+    <rect x="100" y="371" width="24" height="18" rx="4" fill="#93671a"/>
+    <text x="136" y="368" fill="#6b7a90" font-size="14">OAuth tokens for every</text>
+    <text x="136" y="388" fill="#6b7a90" font-size="14">app you connected</text>
+
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="212" y1="424" x2="212" y2="450"/>
+      <path d="M206 444 L212 452 L218 444"/>
+    </g>
+    <rect x="70" y="458" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="212" y="485" fill="#6b7a90" font-size="15" text-anchor="middle">Destination system</text>
+
+    <text x="70" y="524" fill="#64748b" font-size="14">Goes on the subprocessor list.</text>
+    <text x="70" y="545" fill="#64748b" font-size="14">Region is theirs to choose, not yours.</text>
+  </g>
+
+  <!-- 2. Make -->
+  <g>
+    <rect x="407" y="80" width="345" height="486" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="429" y="118" fill="#6b7a90" font-size="21" font-weight="800">Make</text>
+    <text x="429" y="142" fill="#64748b" font-size="15">hosted — you pick a region, once</text>
+
+    <rect x="437" y="166" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="579" y="193" fill="#6b7a90" font-size="15" text-anchor="middle">Your client's system</text>
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="579" y1="208" x2="579" y2="234"/>
+      <path d="M573 228 L579 236 L585 228"/>
+    </g>
+
+    <rect x="425" y="242" width="309" height="182" rx="10" fill="none" stroke="#93671a" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="439" y="266" fill="#93671a" font-size="14" font-weight="700">NOT YOUR INFRASTRUCTURE</text>
+    <rect x="447" y="282" width="265" height="44" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="579" y="309" fill="#6b7a90" font-size="15" text-anchor="middle">Scenario engine + your logic</text>
+    <rect x="447" y="342" width="265" height="60" rx="8" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <path d="M471 371 v-8 a8 8 0 0 1 16 0 v8" fill="none" stroke="#93671a" stroke-width="2.5"/>
+    <rect x="467" y="371" width="24" height="18" rx="4" fill="#93671a"/>
+    <text x="503" y="368" fill="#6b7a90" font-size="14">Same tokens, same place —</text>
+    <text x="503" y="388" fill="#6b7a90" font-size="14">in the zone you signed up in</text>
+
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="579" y1="424" x2="579" y2="450"/>
+      <path d="M573 444 L579 452 L585 444"/>
+    </g>
+    <rect x="437" y="458" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="579" y="485" fill="#6b7a90" font-size="15" text-anchor="middle">Destination system</text>
+
+    <text x="437" y="524" fill="#64748b" font-size="14">Goes on the subprocessor list too —</text>
+    <text x="437" y="545" fill="#64748b" font-size="14">but you can answer "which country?".</text>
+  </g>
+
+  <!-- 3. n8n, self-hosted -->
+  <g>
+    <rect x="774" y="80" width="345" height="486" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="796" y="118" fill="#6b7a90" font-size="21" font-weight="800">n8n, self-hosted</text>
+    <text x="796" y="142" fill="#64748b" font-size="15">a container on a machine you rent</text>
+
+    <rect x="804" y="166" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="946" y="193" fill="#6b7a90" font-size="15" text-anchor="middle">Your client's system</text>
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="946" y1="208" x2="946" y2="234"/>
+      <path d="M940 228 L946 236 L952 228"/>
+    </g>
+
+    <rect x="792" y="242" width="309" height="182" rx="10" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="806" y="266" fill="#157f41" font-size="14" font-weight="700">YOUR INFRASTRUCTURE</text>
+    <rect x="814" y="282" width="265" height="44" rx="8" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="946" y="309" fill="#6b7a90" font-size="15" text-anchor="middle">n8n container + Postgres</text>
+    <rect x="814" y="342" width="265" height="60" rx="8" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <path d="M838 371 v-8 a8 8 0 0 1 16 0 v8" fill="none" stroke="#157f41" stroke-width="2.5"/>
+    <rect x="834" y="371" width="24" height="18" rx="4" fill="#157f41"/>
+    <text x="870" y="368" fill="#6b7a90" font-size="14">Tokens encrypted in a</text>
+    <text x="870" y="388" fill="#6b7a90" font-size="14">database you back up</text>
+
+    <g stroke="#1e77a4" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="946" y1="424" x2="946" y2="450"/>
+      <path d="M940 444 L946 452 L952 444"/>
+    </g>
+    <rect x="804" y="458" width="285" height="42" rx="8" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="946" y="485" fill="#6b7a90" font-size="15" text-anchor="middle">Destination system</text>
+
+    <text x="804" y="524" fill="#64748b" font-size="14">Nothing new to disclose — and patching,</text>
+    <text x="804" y="545" fill="#64748b" font-size="14">backups and uptime are now yours.</text>
+  </g>
+
+  <text x="40" y="600" fill="#64748b" font-size="15">The dashed box is the part you do not control. Every other difference in this comparison is downstream of it.</text>
+</svg>

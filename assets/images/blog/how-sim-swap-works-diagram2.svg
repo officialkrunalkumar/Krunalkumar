@@ -1,0 +1,105 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-how-sim-swap-works-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-how-sim-swap-works-diagram2">Three second factors compared by where the secret actually lives. For an SMS code the secret is a fresh number the server generates, and it travels from the server through an aggregator and the carrier interconnect to whichever SIM currently holds the number, so a SIM swap defeats it completely and a fake login page can relay it. For an authenticator app the secret is a value stored on the device when you enrolled, the device combines it with the clock to compute six digits offline, and nothing crosses the network, so a SIM swap does nothing to it, though a fake login page can still relay the code. For a passkey the secret is a private key held in the device and never released, the site sends a challenge naming itself, the device returns a signature valid only for that site, so a SIM swap does nothing and the signature cannot be replayed elsewhere. A rail states that a SIM swap defeats only the first column, phishing defeats the first two, and the third resists both, but only if SMS is not still accepted as a recovery route behind it.</title>
+
+  <text x="40" y="46" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE THE SECOND FACTOR ACTUALLY LIVES</text>
+  <text x="40" y="76" fill="#64748b" font-size="15">All three are called two-factor authentication. Only one of them is unaffected by who is holding your number this afternoon.</text>
+
+  <!-- Column 1 - SMS code -->
+  <g>
+    <rect x="40" y="100" width="346" height="420" rx="16" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <rect x="58" y="122" width="176" height="34" rx="17" fill="#a3352f"/>
+    <text x="146" y="144" fill="#ffffff" font-size="14.5" font-weight="800" letter-spacing="1" text-anchor="middle">1 &#183; SMS CODE</text>
+
+    <text x="58" y="192" fill="#6b7a90" font-size="11" font-weight="800" letter-spacing="1">THE SECRET IS</text>
+    <text x="58" y="214" fill="#334155" font-size="13.5">A number the server invents, then posts</text>
+    <text x="58" y="233" fill="#334155" font-size="13.5">to whoever answers on that line.</text>
+
+    <rect x="58" y="256" width="310" height="34" rx="9" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="72" y="278" fill="#64748b" font-size="12.5">the site&#8217;s server generates six digits</text>
+    <line x1="213" y1="292" x2="213" y2="302" stroke="#94a3b8" stroke-width="2"/>
+    <path d="M205 302 l8 10 8 -10z" fill="#94a3b8"/>
+
+    <rect x="58" y="312" width="310" height="34" rx="9" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="72" y="334" fill="#64748b" font-size="12.5">aggregator, carrier, interconnect</text>
+    <line x1="213" y1="348" x2="213" y2="358" stroke="#a3352f" stroke-width="2"/>
+    <path d="M205 358 l8 10 8 -10z" fill="#a3352f"/>
+
+    <rect x="58" y="368" width="310" height="34" rx="9" fill="rgba(163,53,47,0.08)" stroke="#a3352f" stroke-width="2"/>
+    <text x="72" y="390" fill="#a3352f" font-size="12.5" font-weight="700">whichever SIM holds the number now</text>
+
+    <line x1="58" y1="422" x2="368" y2="422" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="58" y="446" fill="#6b7a90" font-size="12.5" font-weight="700">SIM swap</text>
+    <text x="200" y="446" fill="#a3352f" font-size="12.5" font-weight="800">defeats it entirely</text>
+    <text x="58" y="470" fill="#6b7a90" font-size="12.5" font-weight="700">Fake login page</text>
+    <text x="200" y="470" fill="#a3352f" font-size="12.5" font-weight="800">relays it in seconds</text>
+    <text x="58" y="498" fill="#64748b" font-size="12.5">Still better than a password alone. Not</text>
+    <text x="58" y="514" fill="#64748b" font-size="12.5">much better than that.</text>
+  </g>
+
+  <!-- Column 2 - authenticator app -->
+  <g>
+    <rect x="407" y="100" width="346" height="420" rx="16" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <rect x="425" y="122" width="232" height="34" rx="17" fill="#1e77a4"/>
+    <text x="541" y="144" fill="#ffffff" font-size="14.5" font-weight="800" letter-spacing="1" text-anchor="middle">2 &#183; AUTHENTICATOR APP</text>
+
+    <text x="425" y="192" fill="#6b7a90" font-size="11" font-weight="800" letter-spacing="1">THE SECRET IS</text>
+    <text x="425" y="214" fill="#334155" font-size="13.5">A value stored on the device when you</text>
+    <text x="425" y="233" fill="#334155" font-size="13.5">enrolled. It is never sent again.</text>
+
+    <rect x="425" y="256" width="310" height="34" rx="9" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="439" y="278" fill="#64748b" font-size="12.5">enrolment: the secret is stored, once</text>
+    <line x1="580" y1="292" x2="580" y2="302" stroke="#94a3b8" stroke-width="2"/>
+    <path d="M572 302 l8 10 8 -10z" fill="#94a3b8"/>
+
+    <rect x="425" y="312" width="310" height="34" rx="9" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="439" y="334" fill="#1e77a4" font-size="12.5">secret + the clock, computed offline</text>
+    <line x1="580" y1="348" x2="580" y2="358" stroke="#1e77a4" stroke-width="2"/>
+    <path d="M572 358 l8 10 8 -10z" fill="#1e77a4"/>
+
+    <rect x="425" y="368" width="310" height="34" rx="9" fill="rgba(30,119,164,0.08)" stroke="#1e77a4" stroke-width="2"/>
+    <text x="439" y="390" fill="#1e77a4" font-size="12.5" font-weight="700">six digits, on this device only</text>
+
+    <line x1="425" y1="422" x2="735" y2="422" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="425" y="446" fill="#6b7a90" font-size="12.5" font-weight="700">SIM swap</text>
+    <text x="567" y="446" fill="#157f41" font-size="12.5" font-weight="800">does nothing to it</text>
+    <text x="425" y="470" fill="#6b7a90" font-size="12.5" font-weight="700">Fake login page</text>
+    <text x="567" y="470" fill="#a3352f" font-size="12.5" font-weight="800">still relays it</text>
+    <text x="425" y="498" fill="#64748b" font-size="12.5">No network is involved in making the</text>
+    <text x="425" y="514" fill="#64748b" font-size="12.5">code, which is the whole point.</text>
+  </g>
+
+  <!-- Column 3 - passkey -->
+  <g>
+    <rect x="774" y="100" width="346" height="420" rx="16" fill="none" stroke="#157f41" stroke-width="2"/>
+    <rect x="792" y="122" width="150" height="34" rx="17" fill="#157f41"/>
+    <text x="867" y="144" fill="#ffffff" font-size="14.5" font-weight="800" letter-spacing="1" text-anchor="middle">3 &#183; PASSKEY</text>
+
+    <text x="792" y="192" fill="#6b7a90" font-size="11" font-weight="800" letter-spacing="1">THE SECRET IS</text>
+    <text x="792" y="214" fill="#334155" font-size="13.5">A private key held by the device and</text>
+    <text x="792" y="233" fill="#334155" font-size="13.5">never handed to anyone, including you.</text>
+
+    <rect x="792" y="256" width="310" height="34" rx="9" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="806" y="278" fill="#64748b" font-size="12.5">the site sends a challenge, naming itself</text>
+    <line x1="947" y1="292" x2="947" y2="302" stroke="#94a3b8" stroke-width="2"/>
+    <path d="M939 302 l8 10 8 -10z" fill="#94a3b8"/>
+
+    <rect x="792" y="312" width="310" height="34" rx="9" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="806" y="334" fill="#157f41" font-size="12.5">the device signs it; the key stays put</text>
+    <line x1="947" y1="348" x2="947" y2="358" stroke="#157f41" stroke-width="2"/>
+    <path d="M939 358 l8 10 8 -10z" fill="#157f41"/>
+
+    <rect x="792" y="368" width="310" height="34" rx="9" fill="rgba(21,127,65,0.08)" stroke="#157f41" stroke-width="2"/>
+    <text x="806" y="390" fill="#157f41" font-size="12.5" font-weight="700">a signature valid for that site alone</text>
+
+    <line x1="792" y1="422" x2="1102" y2="422" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="792" y="446" fill="#6b7a90" font-size="12.5" font-weight="700">SIM swap</text>
+    <text x="934" y="446" fill="#157f41" font-size="12.5" font-weight="800">does nothing to it</text>
+    <text x="792" y="470" fill="#6b7a90" font-size="12.5" font-weight="700">Fake login page</text>
+    <text x="934" y="470" fill="#157f41" font-size="12.5" font-weight="800">has nothing to relay</text>
+    <text x="792" y="498" fill="#64748b" font-size="12.5">There is no code anywhere for anyone to</text>
+    <text x="792" y="514" fill="#64748b" font-size="12.5">read out, forward or be tricked into.</text>
+  </g>
+
+  <rect x="40" y="540" width="1080" height="52" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+  <text x="64" y="572" fill="#157f41" font-size="15.5" font-weight="800">A SWAP BEATS COLUMN ONE. PHISHING BEATS ONE AND TWO. ONLY THREE RESISTS BOTH &#8212; IF SMS RECOVERY IS OFF.</text>
+</svg>

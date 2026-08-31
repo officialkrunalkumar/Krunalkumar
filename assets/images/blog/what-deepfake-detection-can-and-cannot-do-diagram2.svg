@@ -1,0 +1,64 @@
+<svg width="1160" height="470" viewBox="0 0 1160 470" role="img" aria-labelledby="d-what-deepfake-detection-can-and-cannot-do-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-deepfake-detection-can-and-cannot-do-diagram2">A payment control drawn as three stages: an urgent inbound request arriving on a channel the caller chose, an out-of-band verification gate requiring a callback to a number from your own records, a second approver reached separately, and a challenge phrase agreed in advance, and only then a released payment. A dashed path underneath showing a direct route from the request to the payment is crossed out, because the policy has no bypass for urgency or seniority.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">THE CONTROL A PERFECT FAKE STILL CANNOT PASS</text>
+
+  <!-- 1. The request. Whoever appears to be on it, this channel cannot approve. -->
+  <g>
+    <rect x="40" y="90" width="300" height="180" rx="14" fill="none" stroke="#d42b25" stroke-width="1.5"/>
+    <text x="62" y="128" fill="#6b7a90" font-size="21" font-weight="800">Inbound and urgent</text>
+    <text x="62" y="153" fill="#64748b" font-size="15">on the channel the caller chose</text>
+    <text x="62" y="192" fill="#6b7a90" font-size="16">A call. A voice note.</text>
+    <text x="62" y="218" fill="#6b7a90" font-size="16">A video call. An email thread.</text>
+    <text x="62" y="244" fill="#6b7a90" font-size="16">A message from the boss.</text>
+  </g>
+
+  <g stroke="#6b7a90" stroke-width="2.5" stroke-linecap="round">
+    <line x1="348" y1="180" x2="404" y2="180"/>
+    <path d="M396 173 L406 180 L396 187" fill="none"/>
+  </g>
+
+  <!-- 2. The gate. Every condition is out of band, so media quality is irrelevant. -->
+  <g>
+    <rect x="412" y="90" width="352" height="280" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="436" y="128" fill="#6b7a90" font-size="21" font-weight="800">Out of band, every time</text>
+    <text x="436" y="153" fill="#64748b" font-size="15">no exception for urgency or seniority</text>
+
+    <circle cx="450" cy="192" r="12" fill="#1e77a4"/>
+    <text x="450" y="197" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">1</text>
+    <text x="476" y="188" fill="#6b7a90" font-size="16">Call back on a number from</text>
+    <text x="476" y="210" fill="#6b7a90" font-size="16">your own records</text>
+
+    <circle cx="450" cy="252" r="12" fill="#1e77a4"/>
+    <text x="450" y="257" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">2</text>
+    <text x="476" y="248" fill="#6b7a90" font-size="16">A second approver, reached</text>
+    <text x="476" y="270" fill="#6b7a90" font-size="16">on a different channel</text>
+
+    <circle cx="450" cy="312" r="12" fill="#1e77a4"/>
+    <text x="450" y="317" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">3</text>
+    <text x="476" y="308" fill="#6b7a90" font-size="16">A challenge phrase agreed in</text>
+    <text x="476" y="330" fill="#6b7a90" font-size="16">advance, kept out of the CRM</text>
+  </g>
+
+  <g stroke="#6b7a90" stroke-width="2.5" stroke-linecap="round">
+    <line x1="772" y1="180" x2="828" y2="180"/>
+    <path d="M820 173 L830 180 L820 187" fill="none"/>
+  </g>
+
+  <!-- 3. Release. The fake never had to be detected. -->
+  <g>
+    <rect x="836" y="90" width="284" height="180" rx="14" fill="none" stroke="#157f41" stroke-width="1.5"/>
+    <text x="858" y="128" fill="#6b7a90" font-size="21" font-weight="800">Payment released</text>
+    <text x="858" y="153" fill="#64748b" font-size="15">only when all three pass</text>
+    <text x="858" y="192" fill="#6b7a90" font-size="16">How good the voice was</text>
+    <text x="858" y="218" fill="#6b7a90" font-size="16">never came up, because</text>
+    <text x="858" y="244" fill="#6b7a90" font-size="16">nobody had to judge it.</text>
+  </g>
+
+  <!-- The route the attacker needs, and the one the policy does not have -->
+  <path d="M190 282 V404 H978 V282" fill="none" stroke="#d42b25" stroke-width="2" stroke-dasharray="8 7"/>
+  <g stroke="#d42b25" stroke-width="3" stroke-linecap="round">
+    <line x1="572" y1="392" x2="596" y2="416"/>
+    <line x1="596" y1="392" x2="572" y2="416"/>
+  </g>
+  <text x="584" y="444" fill="#64748b" font-size="15" text-anchor="middle">Every loss of this kind goes through this line. A policy either has it or it does not.</text>
+</svg>

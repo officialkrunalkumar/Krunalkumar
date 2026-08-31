@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: n8n, Make, or Zapier — three lanes of data, two ending inside a vendor's cloud and one ending on a server you own">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.42" r="0.62">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- three lanes: same data, three places the middle of the flow lives -->
+  <text x="720" y="176" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="17" font-weight="800" letter-spacing="3">WHERE THE MIDDLE OF THE FLOW LIVES</text>
+
+  <g stroke="#38bdf8" stroke-width="3" opacity="0.65" fill="none">
+    <path d="M 786 222 L 818 222"/><path d="M 1006 222 L 1038 222"/>
+    <path d="M 786 322 L 818 322"/><path d="M 1006 322 L 1038 322"/>
+    <path d="M 786 422 L 818 422"/><path d="M 1006 422 L 1038 422"/>
+  </g>
+
+  <g fill="none" stroke="#7dd3fc" stroke-width="3">
+    <rect x="742" y="200" width="44" height="44" rx="10"/>
+    <rect x="742" y="300" width="44" height="44" rx="10"/>
+    <rect x="742" y="400" width="44" height="44" rx="10"/>
+    <rect x="1038" y="200" width="44" height="44" rx="10"/>
+    <rect x="1038" y="300" width="44" height="44" rx="10"/>
+    <rect x="1038" y="400" width="44" height="44" rx="10"/>
+  </g>
+
+  <g font-family="'Segoe UI',sans-serif" font-size="18" font-weight="800" text-anchor="middle">
+    <rect x="818" y="198" width="188" height="48" rx="12" fill="#7dd3fc"/>
+    <text x="912" y="228" fill="#0a1324">Zapier cloud</text>
+    <rect x="818" y="298" width="188" height="48" rx="12" fill="#7dd3fc"/>
+    <text x="912" y="328" fill="#0a1324">Make cloud</text>
+    <rect x="818" y="398" width="188" height="48" rx="12" fill="none" stroke="#7dd3fc" stroke-width="3" stroke-dasharray="10 7"/>
+    <text x="912" y="428" fill="#e2e8f0">your server</text>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="190" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AUTOMATION</text>
+    <text x="80" y="268" fill="#f8fafc" font-size="52" font-weight="800">n8n, Make, or Zapier</text>
+    <text x="80" y="334" fill="#f8fafc" font-size="52" font-weight="800">an honest comparison</text>
+    <text x="80" y="404" fill="#e2e8f0" font-size="27" font-weight="600">The decision is not features. It is where</text>
+    <text x="80" y="444" fill="#e2e8f0" font-size="27" font-weight="600">the workflow runs, and who is liable.</text>
+    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

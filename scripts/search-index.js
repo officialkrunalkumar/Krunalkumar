@@ -58,14 +58,14 @@ const EXCLUDE = new Set([
   'labs/hacklab-guestbook.html',
   'partials/header.html',
   'partials/footer.html',
-  'teapot.html',
-  'terminal.html',
-  'einstein.html',
+  'fun/teapot.html',
+  'fun/terminal.html',
+  'fun/einstein.html',
   // The wish cards render from the query string, so an indexed copy would be
   // a blank greeting. Searching "birthday" here should land on the tool that
   // makes one — /labs/wish-generator, which IS in the index.
-  'birthday.html',
-  'festival.html',
+  'fun/birthday.html',
+  'fun/festival.html',
   'offline.html',   // the SW's navigation fallback: only ever seen offline,
                     // where search could not fetch this index anyway
 ]);
@@ -103,9 +103,16 @@ function listPages() {
   return out.sort();
 }
 
+/* Must agree with build.js's fileToUrl, and for the same reason: the seven
+   pages in fun/ are SERVED at the root by a vercel.json rewrite, so /buddha is
+   their address and /fun/buddha is not one a visitor should ever be handed.
+   Search results link to whatever this returns, so getting it wrong sends the
+   reader to a URL the sitemap does not list and the canonical disowns. */
 function urlFor(rel) {
   if (rel === 'index.html') return '/';
-  return '/' + rel.replace(/\.html$/, '').replace(/\/index$/, '');
+  const stripped = rel.replace(/\.html$/, '').replace(/\/index$/, '');
+  if (stripped.indexOf('fun/') === 0) return '/' + stripped.slice(4);
+  return '/' + stripped;
 }
 
 function sectionFor(url) {

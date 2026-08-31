@@ -1,0 +1,75 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-how-to-read-a-job-description-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-how-to-read-a-job-description-diagram1">A job posting split into two columns. On the left, four responsibilities describing the actual work: owning the billing service and its Postgres schema, taking one week in a five-week on-call rotation, reconciling payouts with two vendors, and shipping daily behind feature flags. On the right, six requirement bullets. Three of them — Postgres, on-call, and payments domain experience — are joined by a line to a responsibility that uses them, and are marked as load-bearing. Three more — Kubernetes, a list of four other tools, and a degree — connect to nothing in the responsibilities and are marked as wishes.</title>
+  <defs>
+    <marker id="jd-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#157f41"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="48" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHICH REQUIREMENTS ARE LOAD-BEARING</text>
+    <text x="40" y="76" fill="#64748b" font-size="15">A requirement that is real gets used somewhere in the description of the work. One that appears only in the bullet list usually does not.</text>
+
+    <!-- Responsibilities -->
+    <text x="40" y="122" fill="#157f41" font-size="15" font-weight="800" letter-spacing="2">WHAT YOU&#8217;LL DO &#183; THE ACTUAL WORK</text>
+
+    <rect x="40" y="136" width="430" height="66" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="164" fill="#6b7a90" font-size="15" font-weight="700">Own the billing service and its</text>
+    <text x="62" y="186" fill="#6b7a90" font-size="15" font-weight="700">Postgres schema and migrations</text>
+
+    <rect x="40" y="214" width="430" height="66" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="242" fill="#6b7a90" font-size="15" font-weight="700">Take one week in a five-week</text>
+    <text x="62" y="264" fill="#6b7a90" font-size="15" font-weight="700">on-call rotation for that service</text>
+
+    <rect x="40" y="292" width="430" height="66" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="320" fill="#6b7a90" font-size="15" font-weight="700">Reconcile payouts with two</text>
+    <text x="62" y="342" fill="#6b7a90" font-size="15" font-weight="700">payment vendors each month</text>
+
+    <rect x="40" y="370" width="430" height="66" rx="12" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="62" y="398" fill="#6b7a90" font-size="15" font-weight="700">Ship to production daily,</text>
+    <text x="62" y="420" fill="#6b7a90" font-size="15" font-weight="700">behind feature flags</text>
+
+    <!-- Requirements -->
+    <text x="690" y="122" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2">REQUIREMENTS &#183; THE BULLET LIST</text>
+
+    <rect x="690" y="136" width="430" height="44" rx="10" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="712" y="164" fill="#157f41" font-size="15" font-weight="700">3+ years with Postgres</text>
+    <text x="1098" y="164" fill="#157f41" font-size="14" font-weight="800" text-anchor="end">REAL</text>
+
+    <rect x="690" y="192" width="430" height="44" rx="10" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="712" y="220" fill="#157f41" font-size="15" font-weight="700">Comfortable carrying a pager</text>
+    <text x="1098" y="220" fill="#157f41" font-size="14" font-weight="800" text-anchor="end">REAL</text>
+
+    <rect x="690" y="248" width="430" height="44" rx="10" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="712" y="276" fill="#157f41" font-size="15" font-weight="700">Payments or fintech background</text>
+    <text x="1098" y="276" fill="#157f41" font-size="14" font-weight="800" text-anchor="end">REAL</text>
+
+    <rect x="690" y="304" width="430" height="44" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <text x="712" y="332" fill="#6b7a90" font-size="15">Kubernetes in production</text>
+    <text x="1098" y="332" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="end">WISH</text>
+
+    <rect x="690" y="360" width="430" height="44" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <text x="712" y="388" fill="#6b7a90" font-size="15">Kafka, Terraform, Grafana, Spark</text>
+    <text x="1098" y="388" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="end">WISH</text>
+
+    <rect x="690" y="416" width="430" height="44" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <text x="712" y="444" fill="#6b7a90" font-size="15">Bachelor&#8217;s degree in Computer Science</text>
+    <text x="1098" y="444" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="end">FILTER</text>
+
+    <!-- Links from the work to the bullets that describe it -->
+    <path d="M470 169 L580 169 L580 158 L684 158" fill="none" stroke="#157f41" stroke-width="2.5" marker-end="url(#jd-arr)"/>
+    <path d="M470 247 L600 247 L600 214 L684 214" fill="none" stroke="#157f41" stroke-width="2.5" marker-end="url(#jd-arr)"/>
+    <path d="M470 325 L620 325 L620 270 L684 270" fill="none" stroke="#157f41" stroke-width="2.5" marker-end="url(#jd-arr)"/>
+
+    <text x="486" y="364" fill="#a3352f" font-size="15" font-weight="700">No responsibility on</text>
+    <text x="486" y="386" fill="#a3352f" font-size="15" font-weight="700">the left reaches</text>
+    <text x="486" y="408" fill="#a3352f" font-size="15" font-weight="700">these three</text>
+    <path d="M660 304 L660 460" fill="none" stroke="#a3352f" stroke-width="2.5" stroke-dasharray="7 6"/>
+    <path d="M660 326 L684 326 M660 382 L684 382 M660 438 L684 438" fill="none" stroke="#a3352f" stroke-width="2.5" stroke-dasharray="7 6"/>
+
+    <!-- Reading -->
+    <rect x="40" y="482" width="1080" height="104" rx="12" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="64" y="512" fill="#1e77a4" font-size="16" font-weight="800">How to count</text>
+    <text x="64" y="538" fill="#64748b" font-size="15">Count only the three marked REAL. Meet most of those and you are a candidate, whatever the other three bullets say.</text>
+    <text x="64" y="562" fill="#64748b" font-size="15">Meet the wishes and none of the real ones and you are a keyword match, which is a slower way of being turned down.</text>
+  </g>
+</svg>

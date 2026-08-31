@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="What ISO/IEC 27001 Annex A 6.3 asks for, how SOC 2 assessors map the same evidence, where DPDP sits, and the training records that survive a review."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What an Auditor Actually Wants From Security Training" />
+    <meta
+      property="og:description"
+      content="Not a logo on a certificate — a record of who attended, what was covered, when, and evidence the programme was planned. What each framework asks, and what no trainer can promise."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-an-auditor-actually-wants-from-security-training.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A checklist of four evidence records beside chips labelled ISO 27001, SOC 2, and DPDP Act 2023" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Business" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What an Auditor Actually Wants From Security Training" />
+    <meta
+      name="twitter:description"
+      content="Not a logo on a certificate — a record of who attended, what was covered, when, and evidence the programme was planned. What each framework asks, and what no trainer can promise."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-an-auditor-actually-wants-from-security-training.jpg" />
+    <title>What an Auditor Wants From Security Training | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What an Auditor Actually Wants From Security Training",
+        "description": "What ISO/IEC 27001:2022 Annex A 6.3 and clause 7.2 actually require of an awareness programme, how SOC 2 service auditors map the same evidence to the common criteria, where India's DPDP Act 2023 leaves training, the four records that satisfy a reviewer, what does not count, and the limits no trainer can cross.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-an-auditor-actually-wants-from-security-training.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Business",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training"
+        },
+        "keywords": "security awareness training, ISO 27001 Annex A 6.3, ISO 27001 clause 7.2, SOC 2 common criteria, DPDP Act 2023, audit evidence, corporate training, compliance, attendance record, certificate verification"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "What an Auditor Wants From Security Training", "item": "https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does ISO/IEC 27001 require annual security awareness training?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Neither Annex A 6.3 nor clause 7.3 names a frequency. The control asks for appropriate awareness, education and training together with regular updates of your policies, as relevant to a person's job function. Annual is a widespread convention, not a requirement. What actually binds you is your own policy: if it commits you to quarterly refreshers and your records show one session a year, the auditor raises a nonconformity against your document rather than against the standard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will a training certificate make us ISO 27001 certified or SOC 2 compliant?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. ISO/IEC 27001 certification is issued by an accredited certification body after auditing your management system, and a SOC 2 report is an opinion signed by a licensed CPA firm after testing your controls. A training record is evidence for one control inside those audits, and a useful piece of evidence, but it is not a shortcut to either outcome. Any vendor implying otherwise is describing something that does not exist."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does training have to be in-house, or can an external trainer count?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Either counts. Nothing in the standard names who delivers it. What gets tested is whether the right people received training appropriate to their job function, whether the content lined up with your policies, and whether you retained the record. An external session with a clean register is stronger evidence than an internal one nobody wrote down."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What will the auditor actually sample?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "People. Expect them to take your personnel list, pick a handful of names across different roles and joining dates, and ask you to produce the evidence for each of them. New joiners are the usual weak point, because the original session is documented well and the person who started three months later is not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a click-through video enough?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It depends entirely on what the platform records. A module that logs per-user completion with a timestamp is decent evidence. A video that logs only that a link was opened proves distribution rather than participation, and an assessor can tell the difference with one question about what the system stores."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does India's DPDP Act 2023 require security training?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not by name. Section 8(5) requires a Data Fiduciary to protect personal data by taking reasonable security safeguards to prevent a personal data breach, and leaves what counts as reasonable to be argued on the facts. Training is one of the things you point to in that argument, which is a different job from ticking a box. This is orientation rather than legal advice, and the penalty for getting safeguards wrong is the largest in the Act."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are you an accredited training partner of a certification body?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and I would rather say it here than let you find out after the invoice. I hold no instructor certification either, and none of the certificates I list is a teaching credential. If your requirement is a scheme-recognised qualification printed on the certificate, book an accredited provider. What I offer instead is material built for your team after an intro call, delivered by the person you booked, with the attendance record, the material as delivered, and per-attendee certificates carrying an ID your auditor can check on the verification page without going through me."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">What an Auditor Wants From Security Training</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Business</p>
+          <h1>What an auditor actually wants from security training</h1>
+          <p class="hero-text">
+            Every corporate training conversation that reaches procurement arrives at the same question, usually
+            phrased as "is your training certified?" What the person means is: when our assessor asks how we
+            satisfy the awareness requirement, will this hold up? Those are two different questions, and only one
+            of them is about the trainer. This is what the standards actually say, what an assessor asks to see,
+            and what nobody can promise you.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 17 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/auditor-training-cover.svg" alt="A checklist of four evidence records beside chips labelled ISO 27001, SOC 2, and DPDP Act 2023" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-question-behind-the-question">The question behind the question</a></li>
+                <li><a href="#what-annex-a-6-3-actually-says">What Annex A 6.3 actually says</a></li>
+                <li><a href="#what-an-assessor-asks-to-see">What an assessor asks to see</a></li>
+                <li><a href="#how-soc-2-maps-the-same-evidence">How SOC 2 maps the same evidence</a></li>
+                <li><a href="#where-indias-dpdp-act-sits">Where India's DPDP Act sits</a></li>
+                <li><a href="#the-evidence-pack-that-survives-a-review">The evidence pack that survives a review</a></li>
+                <li><a href="#what-does-not-count">What does not count</a></li>
+                <li><a href="#the-limits-no-trainer-can-cross">The limits no trainer can cross</a></li>
+                <li><a href="#what-to-ask-any-training-vendor">What to ask any training vendor</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-question-behind-the-question">The question behind the question</h2>
+              <p>
+                "Is your training certified?" is a question about the vendor. "Will this satisfy our auditor?" is a
+                question about your file. They get asked in the same breath and they have almost nothing to do with
+                each other, which is why the conversation so often ends with both sides slightly disappointed.
+              </p>
+              <p>
+                No logo on a certificate satisfies an awareness control. What satisfies it is a record showing that
+                the right people were trained on the right things at the right time, inside a programme somebody
+                planned. Most of that record is produced by you, not by whoever stands at the front of the room.
+                The trainer contributes four artefacts and a date. You contribute the plan, the personnel list, the
+                follow-up for the people who missed it, and the discipline to keep all of it in one place.
+              </p>
+              <p>
+                So the useful version of this article is not "book me." It is: here is what each of the three
+                regimes you are most likely to be facing actually asks for, here is the pack that answers it, and
+                here is the line past which no training vendor — including this one — can help you.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>What this is and is not.</strong> This is practitioner orientation from someone who
+                  builds and delivers the material, not legal advice and not an assurance opinion. Standards get
+                  revised, rules get notified, and your own assessor's judgement governs your engagement. Read the
+                  clause text yourself, and where the obligations are real, talk to counsel or to your assessor
+                  before relying on anything here.
+                </p>
+              </div>
+
+              <h2 id="what-annex-a-6-3-actually-says">What Annex A 6.3 actually says</h2>
+              <p>
+                The 2022 revision of ISO/IEC 27001 restructured Annex A into 93 controls across four themes —
+                organizational, people, physical, technological. Awareness lives in the people theme as control
+                <strong>6.3, "Information security awareness, education and training."</strong> Its substance is
+                that personnel of the organization, and relevant interested parties, shall receive appropriate
+                information security awareness, education and training, together with regular updates of the
+                organization's information security policy, topic-specific policies and procedures, as relevant for
+                their job function.
+              </p>
+              <p>
+                That sentence is doing four things, and each one is worth reading slowly:
+              </p>
+              <ul>
+                <li>
+                  <strong>"Personnel and relevant interested parties."</strong> Not only employees. Contractors,
+                  and often the vendor staff working inside your systems, are in scope if your own risk assessment
+                  put them there. This is the most commonly missed half of the control.
+                </li>
+                <li>
+                  <strong>"Appropriate."</strong> Proportionate to the role. A developer, a finance clerk and a
+                  support agent do not need identical sessions, and an assessor who sees one generic deck given to
+                  everybody will ask how you decided it was appropriate for each function.
+                </li>
+                <li>
+                  <strong>"Regular updates."</strong> A cadence, not an event. The control anticipates that your
+                  policies change and that people need to hear about it more than once.
+                </li>
+                <li>
+                  <strong>Tied to your own policies.</strong> The content is anchored to your information security
+                  policy and your topic-specific policies — not to generic industry material that never mentions
+                  how your company actually works.
+                </li>
+              </ul>
+              <p>
+                Now the four things the control does <em>not</em> say, because this is where vendors overstate. It
+                does not name a frequency. It does not name a duration. It does not say who must deliver it. And it
+                does not require that a certificate exist at all. If someone tells you the standard mandates annual
+                training, they are quoting a widespread convention as though it were the text.
+              </p>
+              <p>
+                The record requirement is somewhere else, and that is the part most people miss. Annex A is a
+                reference set of controls you select from and justify in your Statement of Applicability. The
+                management-system requirements you are audited against are clauses 4 to 10, and two of them do the
+                work here. <strong>Clause 7.2, Competence</strong>, requires you to determine the competence
+                necessary for people whose work affects information security performance, ensure it on the basis of
+                education, training or experience, take action where there is a gap, and — the operative phrase —
+                <em>retain documented information as evidence of competence</em>. <strong>Clause 7.3,
+                Awareness</strong>, requires that people doing work under your control are aware of the policy, of
+                their contribution to its effectiveness, and of the implications of not conforming. Clause 7.5
+                governs how documented information is created, controlled and retained.
+              </p>
+              <blockquote>
+                <p>
+                  Annex A 6.3 is why you run the session. Clause 7.2 is why you keep the register. If you take one
+                  sentence from this article into your next vendor call, make it that one.
+                </p>
+              </blockquote>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/what-an-auditor-actually-wants-from-security-training-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/what-an-auditor-actually-wants-from-security-training-diagram1.svg" alt="How one training session becomes audit evidence: the session produces an attendance register, the material as delivered, a per-attendee completion record and an independent lookup, and a solid arrow carries that pack to ISO/IEC 27001 while dashed arrows carry it to SOC 2 and India's DPDP Act, where the mapping is the reviewer's judgement" width="1160" height="660" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The trainer produces the middle column and nothing else. Solid means the standard names the evidence; dashed means a reviewer decides whether it counts. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <h2 id="what-an-assessor-asks-to-see">What an assessor asks to see</h2>
+              <p>
+                A certification audit is a sample, not a census. Nobody reads every record you hold. The auditor
+                takes your personnel list, picks a handful of names across different roles and joining dates, and
+                asks you to produce the evidence for each of those people. Almost everything below follows from
+                that one mechanic.
+              </p>
+              <p>In practice the questions are four:</p>
+              <ol>
+                <li>
+                  <strong>Who attended?</strong> Named individuals, matched against the personnel list they came
+                  from. "The engineering team" is not an answer to a question about one specific person.
+                </li>
+                <li>
+                  <strong>What was covered?</strong> A topic list, or the material itself, close enough to your
+                  policy that an assessor can see the connection without you narrating it.
+                </li>
+                <li>
+                  <strong>When, and for how long?</strong> A date, and hours. The hours matter more than people
+                  expect, because they are the difference between a briefing and training.
+                </li>
+                <li>
+                  <strong>Where is the plan?</strong> Evidence that this was programmed rather than improvised.
+                </li>
+              </ol>
+              <p>
+                The fourth is the hardest, and the one that separates a file that reads well from one that does
+                not. A single dated session sitting in a folder reads as a reaction to the audit. A one-page
+                programme — the topics, the cadence, who owns it, how new joiners are covered, when it gets
+                reviewed — turns that same session into an instance of a system. Assessors look for the system,
+                because a system is what a management standard certifies.
+              </p>
+              <p>
+                The sample that catches people out is almost always <strong>new joiners</strong>. The original
+                session is documented beautifully; the person who started four months later has nothing. If you fix
+                one thing after reading this, make it induction: a documented route by which somebody joining in
+                March receives, and is recorded as receiving, what the January cohort got.
+              </p>
+              <p>
+                Two more things a thorough assessor looks for. First, whether the loop closes — did you measure
+                anything, and act on what you measured? Simulation results, a short assessment, a management review
+                minute noting coverage and gaps. Second, and this one is self-inflicted: <strong>whether you did
+                what your own policy says</strong>. If your policy commits you to quarterly refreshers and your
+                records show one session a year, you have written your own nonconformity. Those are the easiest
+                findings in the world to raise, because the auditor only has to read two of your documents.
+              </p>
+
+              <h2 id="how-soc-2-maps-the-same-evidence">How SOC 2 maps the same evidence</h2>
+              <p>
+                <a href="/glossary#term-soc-2">SOC 2</a> works differently enough that the same evidence gets
+                treated differently, and the difference is worth understanding before you buy anything. It is not a
+                certification: it is an attestation, in which a licensed CPA firm examines your controls against
+                the AICPA's Trust Services Criteria and signs an opinion. How it compares with the other frameworks
+                is the longer subject of <a href="/blog/security-compliance-explained">the compliance
+                explainer</a>.
+              </p>
+              <p>
+                Here is the mechanic that matters for training. <strong>In SOC 2, you write the control.</strong>
+                The criteria are general; your description of the system is where you state what you actually do. A
+                sentence like "all personnel complete security awareness training within thirty days of hire and at
+                least annually thereafter" is <em>your</em> sentence, not the framework's. The service auditor then
+                tests whether that sentence was true for every instance in the observation period. You do not fail
+                because a standard demanded a particular class. You fail because your own stated control did not
+                operate.
+              </p>
+              <p>
+                Where does the evidence usually land? Typically against the common criteria covering the control
+                environment and internal communication — the criterion about demonstrating a commitment to attract,
+                develop and retain competent individuals, and the one about internally communicating the
+                information and responsibilities that internal control needs in order to function. Some firms tie
+                the code-of-conduct acknowledgement in alongside it.
+              </p>
+              <p>
+                But state the limit plainly, because this is where training vendors reliably oversell:
+                <strong>which criterion a given piece of evidence supports is the service auditor's determination,
+                not the trainer's.</strong> There is no accreditation that makes a course "SOC 2 compliant" — the
+                phrase describes something that does not exist. A vendor cannot map your evidence for you, cannot
+                bind your auditor to a mapping, and cannot tell you in advance that a session will be accepted
+                against a criterion. What a vendor can do is hand you a pack complete enough that the mapping is
+                easy for the people whose call it is.
+              </p>
+              <p>
+                Two practical consequences. A <strong>Type II</strong> report punishes a missing register far
+                harder than a Type I does, because it tests operation across a period rather than design on a
+                single date — a good session that fell outside the observation window buys you nothing in that
+                report. And exceptions in SOC 2 are counted per instance: three people out of forty with no
+                completion record is a noted exception with a described cause, not an automatic failure. That is a
+                more forgiving structure than most people expect, and a far less forgiving one if you have no
+                records at all.
+              </p>
+
+              <h2 id="where-indias-dpdp-act-sits">Where India's DPDP Act sits</h2>
+              <p>
+                India's <a href="/glossary#term-dpdp-act-2023">Digital Personal Data Protection Act, 2023</a> is
+                the regime most likely to matter if your people or your data sit here, and it treats this subject
+                differently again. Section 8(5) requires a Data Fiduciary to protect personal data in its
+                possession or under its control, including data processed on its behalf by a Data Processor, by
+                taking <strong>reasonable security safeguards</strong> to prevent a personal data breach.
+              </p>
+              <p>
+                The word "training" does not appear in that obligation. That is not an oversight — outcome-based
+                drafting is deliberate, because naming specific controls in a statute freezes them at the moment of
+                drafting. The consequence for you is precise, and worth being blunt about: <strong>training is
+                never a box the DPDP Act asks you to tick.</strong> It is one of the things you point to when you
+                have to argue, after something has gone wrong, that your safeguards were reasonable.
+              </p>
+              <p>
+                That argument is worth preparing for, because the stakes here are the highest in the Act. Its
+                schedule of penalties puts failure to take reasonable security safeguards at the top — up to
+                ₹250 crore, more than for any other breach of obligation the Act lists. The implementing rules
+                notified in 2025 phase in through 2027 and set out in more detail what those safeguards are
+                expected to include; <a href="/blog/india-it-act-explained">the IT law explainer</a> covers how the
+                Act and the older statutes fit together.
+              </p>
+              <p>
+                The practical consequence for someone planning a programme is that DPDP tells you nothing about
+                what to teach, so the useful question becomes: what would a breach investigation reveal about your
+                people? If your incidents start with a convincing email, awareness training on
+                <a href="/glossary#term-phishing">phishing</a> is a defensible safeguard, and you should be able to
+                show it was delivered and repeated. If your real exposure is one shared administrator credential,
+                training is not the control — access management is — and no amount of awareness content will make
+                that argument for you. Match the training to your
+                <a href="/glossary#term-threat-model">threat model</a> rather than to a checklist, and the
+                reasonableness argument mostly writes itself.
+              </p>
+
+              <h2 id="the-evidence-pack-that-survives-a-review">The evidence pack that survives a review</h2>
+              <p>
+                Four artefacts. Three of them are obvious once stated, and the fourth is the one most vendors skip.
+              </p>
+              <ol>
+                <li>
+                  <strong>Attendance with dates and hours.</strong> The names of the people who were actually
+                  present, the date, and the start and end time. Not the invite list, not the calendar entry, not
+                  the headcount. For a remote session the platform's attendance export is better evidence than a
+                  typed list, because it records join and leave times per person.
+                </li>
+                <li>
+                  <strong>The material as delivered.</strong> The deck, exercises and handouts as they stood on the
+                  day, dated and kept. Version matters more than people expect: an assessor comparing coverage
+                  against your policy needs the version that was taught, not the improved one you shipped a month
+                  later.
+                </li>
+                <li>
+                  <strong>A completion record per attendee.</strong> One document per person, carrying their name,
+                  the session, the date, the hours and an identifier. Per person, because the sample is per person.
+                  A single certificate issued to the company cannot answer "show me the evidence for this
+                  employee," which is the only question that actually gets asked.
+                </li>
+                <li>
+                  <strong>A way for the reviewer to check a certificate without going through the trainer.</strong>
+                  If your auditor's only route to confirming a certificate is emailing the person who issued it,
+                  they have one source wearing two hats. Every completion certificate I issue carries a unique ID
+                  that anybody can look up on <a href="/verify">the verification page</a> — your auditor included,
+                  without contacting me, and without any company name being published there.
+                </li>
+              </ol>
+              <p>
+                The honest caveat on that fourth item, because it is the one I could most easily oversell: a
+                verification page I host is still a record I control. What it removes is the delay and the
+                awkwardness of a verification email landing in the middle of fieldwork, and the reasonable
+                suspicion an auditor has about a document whose only corroboration is the person who wrote it. What
+                it does not do is make me a certification body, or turn a lookup into a notarised fact. It is a
+                better second source than an email. It is not a trust anchor.
+              </p>
+              <p>
+                There is a fifth item, and it comes from your side rather than mine: <strong>the programme
+                document.</strong> One page naming the topics, the cadence, the owner, how new joiners are covered
+                and when the whole thing gets reviewed. Without it, four perfect records still read as one event
+                that happened to be well minuted.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>Keep them together.</strong> One folder per session, named by date, holding the four
+                  artefacts and referenced from the programme document. That sounds like filing advice because it
+                  is filing advice, and it is worth more at audit time than a better session whose records are
+                  spread across an inbox, a shared drive, and a training platform nobody has admin access to any
+                  more.
+                </p>
+              </div>
+
+              <h2 id="what-does-not-count">What does not count</h2>
+              <p>
+                The failures are consistent enough to list, and none of them are about the quality of the teaching.
+              </p>
+              <ul>
+                <li>
+                  <strong>A video everyone clicked through.</strong> This is not an argument against e-learning — a
+                  well-built module that records per-user completion with a timestamp is decent evidence, often
+                  better than a live session nobody wrote down. It is an argument about what the platform logs. If
+                  your system records "opened" rather than "completed," and cannot say who reached the end, you
+                  have proof of distribution rather than participation, and an assessor will establish that with
+                  one question.
+                </li>
+                <li>
+                  <strong>A policy nobody read.</strong> An acknowledgement checkbox is evidence that a person
+                  clicked a box on a date. That is a real record and worth keeping, but on its own it shows neither
+                  what they were made aware of nor that awareness followed. Clause 7.3 asks about awareness; a
+                  click is a signature, not an outcome.
+                </li>
+                <li>
+                  <strong>An annual slide deck with no record of who attended.</strong> The most common failure I
+                  hear described, and the most frustrating, because the session usually happened and was usually
+                  fine. Six months later there is nothing to sample.
+                </li>
+                <li>
+                  <strong>A screenshot of the video call grid.</strong> Not a register, not durable, and it names
+                  only whoever had their camera on.
+                </li>
+                <li>
+                  <strong>A vendor certificate naming the company.</strong> It evidences a purchase, not
+                  attendance.
+                </li>
+                <li>
+                  <strong>Training that does not match your own policy's scope.</strong> The contractor population
+                  is the usual gap, because Annex A 6.3 reaches relevant interested parties and your contractors
+                  are exactly that.
+                </li>
+              </ul>
+              <p>
+                It is entirely possible to run genuinely good training and have nothing to show for it, and equally
+                possible to hold an unimpeachable file behind a session nobody remembers. An audit can only see one
+                of those two things. That is a limitation of audits rather than a reason to stop caring about the
+                other one — but it is a very good reason to keep the register.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>What awareness content looks like when it is not a slide.</strong> The labs on this site
+                  run entirely in the browser, with nothing installed and nothing uploaded, which is what makes
+                  them usable on a locked-down corporate laptop. The phishing dissector pulls a message apart
+                  header by header, so a team can see for themselves which signals were forgeable and which were
+                  not — the kind of hour a register is genuinely worth keeping for.
+                </p>
+                <a class="btn btn-primary" href="/labs/phishing-dissector">Open the phishing dissector</a>
+              </div>
+
+              <h2 id="the-limits-no-trainer-can-cross">The limits no trainer can cross</h2>
+              <p>
+                <strong>No trainer can promise you an audit outcome.</strong> ISO/IEC 27001 certification is
+                granted by an accredited certification body after auditing your management system. A SOC 2 opinion
+                is signed by a licensed CPA firm after testing your controls. A trainer supplies one input to one
+                control among dozens. Any vendor selling "audit-ready" or "guaranteed to pass" is making a promise
+                they have no standing to make, and the rest of their claims deserve to be read in that light.
+              </p>
+              <p>
+                There is also a distinction that gets deliberately blurred in this market, and naming it is what
+                decides which vendor you should be calling.
+              </p>
+              <ul>
+                <li>
+                  <strong>Being an accredited training partner of a certification body</strong> means a scheme has
+                  approved you to deliver its courses, so that the certificate you hand out is recognised inside
+                  that scheme. This matters enormously when the credential itself is the product — a Lead
+                  Implementer or Lead Auditor course, where somebody needs a qualification the scheme will
+                  acknowledge. If that is your requirement, an accredited provider is the only correct answer.
+                </li>
+                <li>
+                  <strong>Being competent to teach the material</strong> is about whether the session changes what
+                  people do on Monday. It is a different property entirely. Accredited partners can be dull and
+                  forgettable; people who have done the work can be excellent and hold no partnership at all.
+                  Neither status implies the other, and a vendor who lets you believe it does is telling you
+                  something about how the rest of the engagement will go.
+                </li>
+              </ul>
+              <p>
+                Which of the two applies here, plainly: <strong>I am not an accredited training partner of any
+                certification body, and I hold no instructor certification.</strong> None of the certificates I
+                list is a teaching credential. If what your team needs is a scheme-recognised qualification printed
+                on the certificate, I am the wrong supplier, and you will hear that on the intro call rather than
+                after the invoice.
+              </p>
+              <p>
+                What I bring is the second kind of standing: published Linux security research (IJRAT, 2019), an
+                M.E. in Information Security, six months as an Assistant Professor teaching operating systems and
+                information security, teaching engineers since 2021 through MountBlue, Springboard, Coding Ninjas,
+                Correlation One and Codementor, and volunteering as a registered cyber-expert supporting law
+                enforcement since 2020. And the thing I would rather say now than have you discover later:
+                <strong>corporate training under my own name is a new service line.</strong> It is built on that
+                teaching, not on two hundred previous corporate sessions. If you need a vendor who has run this
+                exact day many times over, that is a fair reason to hire someone else — which is what
+                <a href="/services#corporate-training">the services page</a> says as well.
+              </p>
+
+              <h2 id="what-to-ask-any-training-vendor">What to ask any training vendor</h2>
+              <p>
+                Eight questions, in the order I would ask them. None of them are gotchas: a vendor who has thought
+                about your file answers all eight in ten minutes, and one who has not will struggle on the second.
+              </p>
+              <ol>
+                <li>
+                  <strong>What do I receive afterwards, in what format, and how quickly?</strong> A good answer
+                  names artefacts and a number of days. A vague one means you will be chasing paperwork in the week
+                  your fieldwork starts.
+                </li>
+                <li>
+                  <strong>Is the completion record issued per attendee?</strong> If it is one certificate for the
+                  company, you cannot answer a per-person sample.
+                </li>
+                <li>
+                  <strong>Can my auditor check that record without contacting you?</strong> "We will confirm by
+                  email" is workable but slow. A lookup they can run themselves is better. Either way, settle it
+                  before you book rather than during the audit.
+                </li>
+                <li>
+                  <strong>Do I get the material as delivered, dated, and may I keep it?</strong> Some vendors
+                  licence rather than hand over, which is a legitimate model. Your file still needs a copy, so
+                  agree it in the contract.
+                </li>
+                <li>
+                  <strong>Will you map your outline to the controls we have to evidence — and will you say where
+                  the mapping is our assessor's call?</strong> This is the diagnostic question. A vendor who maps
+                  everything with total confidence has not understood what an assessor does.
+                </li>
+                <li>
+                  <strong>Who is actually in the room?</strong> A named person, or a pool from which somebody gets
+                  assigned. Both models exist. Only one of them lets you evaluate the trainer in advance.
+                </li>
+                <li>
+                  <strong>How are absentees and new joiners covered?</strong> A recording with completion tracking,
+                  a repeat session, or nothing. If the answer is nothing, your induction gap is now the vendor's
+                  gap too.
+                </li>
+                <li>
+                  <strong>Have you run this before, and for how many teams?</strong> A small number is not
+                  disqualifying — everybody starts somewhere — but you should hear it before you sign rather than
+                  infer it afterwards.
+                </li>
+              </ol>
+              <p>
+                One negative test is worth keeping alongside those eight: if any answer sounds like a guaranteed
+                audit outcome, treat it as a reason to walk rather than as reassurance. The instinct that makes you
+                suspicious of a security product promising to stop every attack applies here too. People who are
+                careful about what they promise are usually the ones who understand the thing they are promising
+                about, which is the argument
+                <a href="/blog/scoping-work-before-you-quote-it">scoping work before you quote it</a> makes at
+                greater length.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Does ISO/IEC 27001 require annual security awareness training?</summary>
+                  <p>
+                    No. Neither Annex A 6.3 nor clause 7.3 names a frequency. The control asks for appropriate
+                    awareness, education and training together with regular updates of your policies, as relevant
+                    to a person's job function. Annual is a widespread convention, not a requirement. What actually
+                    binds you is your own policy: if it commits you to quarterly refreshers and your records show
+                    one session a year, the auditor raises a nonconformity against your document rather than
+                    against the standard.
+                  </p>
+                </details>
+                <details>
+                  <summary>Will a training certificate make us ISO 27001 certified or SOC 2 compliant?</summary>
+                  <p>
+                    No. ISO/IEC 27001 certification is issued by an accredited certification body after auditing
+                    your management system, and a SOC 2 report is an opinion signed by a licensed CPA firm after
+                    testing your controls. A training record is evidence for one control inside those audits, and a
+                    useful piece of evidence, but it is not a shortcut to either outcome. Any vendor implying
+                    otherwise is describing something that does not exist.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does training have to be in-house, or can an external trainer count?</summary>
+                  <p>
+                    Either counts. Nothing in the standard names who delivers it. What gets tested is whether the
+                    right people received training appropriate to their job function, whether the content lined up
+                    with your policies, and whether you retained the record. An external session with a clean
+                    register is stronger evidence than an internal one nobody wrote down.
+                  </p>
+                </details>
+                <details>
+                  <summary>What will the auditor actually sample?</summary>
+                  <p>
+                    People. Expect them to take your personnel list, pick a handful of names across different roles
+                    and joining dates, and ask you to produce the evidence for each of them. New joiners are the
+                    usual weak point, because the original session is documented well and the person who started
+                    three months later is not.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is a click-through video enough?</summary>
+                  <p>
+                    It depends entirely on what the platform records. A module that logs per-user completion with a
+                    timestamp is decent evidence. A video that logs only that a link was opened proves distribution
+                    rather than participation, and an assessor can tell the difference with one question about what
+                    the system stores.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does India's DPDP Act 2023 require security training?</summary>
+                  <p>
+                    Not by name. Section 8(5) requires a Data Fiduciary to protect personal data by taking
+                    reasonable security safeguards to prevent a personal data breach, and leaves what counts as
+                    reasonable to be argued on the facts. Training is one of the things you point to in that
+                    argument, which is a different job from ticking a box. This is orientation rather than legal
+                    advice, and the penalty for getting safeguards wrong is the largest in the Act.
+                  </p>
+                </details>
+                <details>
+                  <summary>Are you an accredited training partner of a certification body?</summary>
+                  <p>
+                    No, and I would rather say it here than let you find out after the invoice. I hold no
+                    instructor certification either, and none of the certificates I list is a teaching credential.
+                    If your requirement is a scheme-recognised qualification printed on the certificate, book an
+                    accredited provider. What I offer instead is material built for your team after an intro call,
+                    delivered by the person you booked, with the attendance record, the material as delivered, and
+                    per-attendee certificates carrying an ID your auditor can check on the verification page
+                    without going through me.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The honest answer to "will this satisfy our auditor" is a shape rather than a yes. The session is
+                the smaller half of it, and the more interesting half to run. The file is the half that gets read.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-an-auditor-actually-wants-from-security-training" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=What%20an%20Auditor%20Actually%20Wants%20From%20Security%20Training&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-an-auditor-actually-wants-from-security-training" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=What%20an%20Auditor%20Actually%20Wants%20From%20Security%20Training%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-an-auditor-actually-wants-from-security-training" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/security-compliance-explained">Security compliance, explained: GDPR, HIPAA, PCI DSS, SOC 2, and more</a></li>
+              <li><a href="/blog/india-it-act-explained">India's IT law, explained: from the IT Act 2000 to the DPDP era</a></li>
+              <li><a href="/blog/scoping-work-before-you-quote-it">Scope the work before you quote it</a></li>
+              <li><a href="/blog/types-of-cyberattacks">Types of cyberattacks, mapped: causes, defenses, and the CIA triad</a></li>
+              <li><a href="/blog/the-four-ms-every-business-needs">The four M&rsquo;s every business runs on</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Booking training that has to hold up in a review?</h2>
+            <p>
+              Tell me which control you are evidencing and which framework is asking, and I will tell you what a
+              session can and cannot carry — including the cases where the honest answer is that you need an
+              accredited provider instead. The outline and a fixed quote come before any date is held.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services#training-topics">See what I can run</a>
+              <a class="btn btn-secondary" href="/verify">Check a certificate</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

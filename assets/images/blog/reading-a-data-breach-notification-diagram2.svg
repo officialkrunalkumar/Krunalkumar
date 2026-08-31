@@ -1,0 +1,71 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-reading-a-data-breach-notification-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-reading-a-data-breach-notification-diagram2">A breach timeline marking first access, discovery, containment and the notification you receive, with the dwell time and the disclosure lag drawn as spans, above a second panel comparing how fast each party is told: CERT-In within six hours of the incident being noticed, the Data Protection Board without delay and in full within seventy-two hours, and the affected individual last of all</title>
+  <text x="40" y="44" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">THREE DATES — AND THE ONE YOU ARE USUALLY GIVEN</text>
+
+  <text x="40" y="82" fill="#6b7a90" font-size="17" font-weight="800">The incident</text>
+
+  <!-- Markers -->
+  <g font-size="17" font-weight="800" fill="#6b7a90" text-anchor="middle">
+    <text x="150" y="122">first access</text>
+    <text x="520" y="122">discovery</text>
+    <text x="660" y="122">contained</text>
+    <text x="1010" y="122">you are told</text>
+  </g>
+  <g font-size="14" fill="#64748b" text-anchor="middle">
+    <text x="150" y="144">the attacker is in</text>
+    <text x="520" y="144">somebody notices</text>
+    <text x="1010" y="144">this email</text>
+  </g>
+  <g stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 5">
+    <line x1="150" y1="154" x2="150" y2="192"/>
+    <line x1="520" y1="154" x2="520" y2="192"/>
+    <line x1="660" y1="134" x2="660" y2="192"/>
+    <line x1="1010" y1="154" x2="1010" y2="192"/>
+  </g>
+
+  <!-- Axis -->
+  <line x1="80" y1="200" x2="1100" y2="200" stroke="#6b7a90" stroke-width="2.5"/>
+  <path d="M1090 193 L1102 200 L1090 207" fill="none" stroke="#6b7a90" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="150" cy="200" r="10" fill="#d42b25"/>
+  <circle cx="520" cy="200" r="10" fill="#93671a"/>
+  <circle cx="660" cy="200" r="7" fill="none" stroke="#93671a" stroke-width="2.5"/>
+  <circle cx="1010" cy="200" r="10" fill="#1e77a4"/>
+
+  <!-- Spans -->
+  <rect x="150" y="222" width="370" height="28" rx="8" fill="rgba(147,103,26,0.12)" stroke="#93671a" stroke-width="1.5"/>
+  <text x="335" y="241" fill="#93671a" font-size="16" font-weight="800" text-anchor="middle">dwell time</text>
+  <rect x="520" y="222" width="490" height="28" rx="8" fill="rgba(30,119,164,0.10)" stroke="#1e77a4" stroke-width="1.5"/>
+  <text x="765" y="241" fill="#1e77a4" font-size="16" font-weight="800" text-anchor="middle">disclosure lag</text>
+
+  <g font-size="15" fill="#64748b" text-anchor="middle">
+    <text x="335" y="276">exposed, and nobody is looking</text>
+    <text x="335" y="296">medians are weeks now; the tail is long</text>
+    <text x="765" y="276">contain, image, scope the records, file with regulators, draft</text>
+    <text x="765" y="296">most of this is necessary — a lag in months rarely is</text>
+  </g>
+
+  <line x1="40" y1="326" x2="1120" y2="326" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 6"/>
+
+  <text x="40" y="360" fill="#6b7a90" font-size="17" font-weight="800">Who gets told, and how fast</text>
+
+  <!-- Row 1: CERT-In -->
+  <text x="40" y="404" fill="#6b7a90" font-size="17" font-weight="800">CERT-In</text>
+  <text x="40" y="424" fill="#64748b" font-size="14">national incident response</text>
+  <rect x="330" y="388" width="44" height="30" rx="8" fill="rgba(30,119,164,0.16)" stroke="#1e77a4" stroke-width="1.5"/>
+  <text x="390" y="408" fill="#1e77a4" font-size="16" font-weight="800">6 hours of noticing — IT Act s.70B(6) directions</text>
+
+  <!-- Row 2: the Board -->
+  <text x="40" y="464" fill="#6b7a90" font-size="17" font-weight="800">Data Protection Board</text>
+  <text x="40" y="484" fill="#64748b" font-size="14">the regulator, under DPDP</text>
+  <rect x="330" y="448" width="170" height="30" rx="8" fill="rgba(143,73,223,0.12)" stroke="#8f49df" stroke-width="1.5"/>
+  <text x="516" y="468" fill="#8f49df" font-size="16" font-weight="800">without delay, then in full within 72 hours</text>
+
+  <!-- Row 3: you -->
+  <text x="40" y="524" fill="#6b7a90" font-size="17" font-weight="800">You</text>
+  <text x="40" y="544" fill="#64748b" font-size="14">whose data it actually was</text>
+  <rect x="330" y="508" width="700" height="30" rx="8" fill="rgba(147,103,26,0.12)" stroke="#93671a" stroke-width="1.5"/>
+  <text x="1046" y="528" fill="#93671a" font-size="16" font-weight="800">“recently”</text>
+
+  <text x="40" y="578" fill="#64748b" font-size="15">Bar lengths are illustrative, not to scale. The ordering is the point: obligations measured in hours run to regulators, and</text>
+  <text x="40" y="600" fill="#64748b" font-size="15">the one that reaches you has the loosest clock. Look for the date range first; its absence is the first thing to hold against a notice.</text>
+</svg>

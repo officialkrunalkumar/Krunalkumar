@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: How to read a data breach notification — an email with its careful phrases underlined, above a timeline showing the gap between the breach and the letter">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="#e2e8f0" opacity="0.35">
+    <circle cx="150" cy="82" r="2"/><circle cx="430" cy="58" r="1.5"/><circle cx="700" cy="96" r="2"/>
+    <circle cx="96" cy="452" r="1.5"/><circle cx="352" cy="566" r="2"/><circle cx="1128" cy="86" r="1.5"/>
+    <circle cx="1044" cy="596" r="2"/><circle cx="648" cy="588" r="1.5"/>
+  </g>
+
+  <!-- The notification, with the hedged phrases underlined -->
+  <rect x="700" y="96" width="420" height="286" rx="16" fill="rgba(125,211,252,0.06)" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.4"/>
+  <path d="M700 112 a16 16 0 0 1 16 -16 h388 a16 16 0 0 1 16 16 v30 h-420 z" fill="rgba(125,211,252,0.10)"/>
+  <g fill="#7dd3fc">
+    <circle cx="724" cy="119" r="5"/><circle cx="742" cy="119" r="5"/><circle cx="760" cy="119" r="5"/>
+  </g>
+  <text x="1092" y="125" fill="#7dd3fc" font-family="'Segoe UI',sans-serif" font-size="15" font-weight="800" letter-spacing="3" text-anchor="end">NOTICE</text>
+
+  <rect x="732" y="172" width="292" height="9" rx="4.5" fill="#94a3b8" opacity="0.55"/>
+  <rect x="732" y="196" width="196" height="9" rx="4.5" fill="#fbbf24" opacity="0.9"/>
+  <path d="M732 213 h196" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <rect x="732" y="234" width="340" height="9" rx="4.5" fill="#94a3b8" opacity="0.55"/>
+  <rect x="732" y="258" width="242" height="9" rx="4.5" fill="#f87171" opacity="0.9"/>
+  <path d="M732 275 h242" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <rect x="732" y="296" width="310" height="9" rx="4.5" fill="#94a3b8" opacity="0.55"/>
+  <rect x="732" y="320" width="164" height="9" rx="4.5" fill="#4ade80" opacity="0.85"/>
+  <path d="M732 337 h164" stroke="#4ade80" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  <rect x="732" y="352" width="118" height="9" rx="4.5" fill="#94a3b8" opacity="0.35"/>
+
+  <!-- The gap between the breach and the letter -->
+  <g stroke="#94a3b8" stroke-width="3" stroke-linecap="round">
+    <path d="M716 438 h388"/>
+  </g>
+  <circle cx="746" cy="438" r="11" fill="#f87171"/>
+  <circle cx="906" cy="438" r="11" fill="#fbbf24"/>
+  <circle cx="1074" cy="438" r="11" fill="#38bdf8"/>
+  <g stroke="#fbbf24" stroke-width="3" stroke-dasharray="8 7" opacity="0.7">
+    <path d="M746 474 h160"/>
+  </g>
+  <g stroke="#38bdf8" stroke-width="3" stroke-dasharray="8 7" opacity="0.7">
+    <path d="M906 474 h168"/>
+  </g>
+  <g font-family="'Segoe UI', Tahoma, sans-serif" font-size="17" font-weight="700">
+    <text x="746" y="412" fill="#f87171" text-anchor="middle">breach</text>
+    <text x="906" y="412" fill="#fbbf24" text-anchor="middle">noticed</text>
+    <text x="1074" y="412" fill="#38bdf8" text-anchor="middle">told</text>
+    <text x="826" y="500" fill="#94a3b8" text-anchor="middle" font-size="16" font-weight="600">exposed</text>
+    <text x="990" y="500" fill="#94a3b8" text-anchor="middle" font-size="16" font-weight="600">drafted</text>
+  </g>
+
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="196" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">SECURITY</text>
+    <text x="80" y="272" fill="#f8fafc" font-size="48" font-weight="800">How to read a data</text>
+    <text x="80" y="334" fill="#f8fafc" font-size="48" font-weight="800">breach notification</text>
+    <text x="80" y="416" fill="#e2e8f0" font-size="26" font-weight="600">Every phrase in that email</text>
+    <text x="80" y="452" fill="#e2e8f0" font-size="26" font-weight="600">was chosen</text>
+    <text x="80" y="556" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org · Blog</text>
+  </g>
+</svg>

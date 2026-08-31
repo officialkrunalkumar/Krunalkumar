@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Make a GST invoice or a quotation: CGST plus SGST or IGST decided from the place of supply, rate-wise tax summary, amount in words. Prints to A4." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/invoice-maker" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="GST invoice and quotation maker — the tax split done properly" />
+    <meta property="og:description" content="Make a GST invoice or a quotation: CGST plus SGST or IGST decided by comparing your state with the place of supply, rate-wise tax summary, amount in words in lakh and crore, round-off shown as its own line. Four templates, prints to A4 through your own print dialog, and nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/invoice-maker" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-invoice-maker.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="GST Invoice and Quotation Maker" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GST invoice and quotation maker — the tax split done properly" />
+    <meta name="twitter:description" content="Make a GST invoice or a quotation: CGST plus SGST or IGST decided by comparing your state with the place of supply, rate-wise tax summary, amount in words in lakh and crore, round-off shown as its own line. Four templates, prints to A4 through your own print dialog, and nothing is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-invoice-maker.jpg" />
+    <title>GST Invoice & Quotation Maker | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "GST Invoice and Quotation Maker",
+        "url": "https://krunalkumar.dpdns.org/labs/invoice-maker",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Invoicing and billing documents",
+        "operatingSystem": "Any modern web browser",
+        "description": "Fill a form, pick one of four templates, and print a GST invoice or a quotation to A4. The CGST plus SGST or IGST split is decided by comparing the supplier's state with the place of supply, with UTGST used where the union territory has no legislature. Rate-wise tax summary, amount in words in Indian numbering, round-off shown as its own line. Runs entirely in your browser - nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Invoice and quotation from the same form",
+                "CGST plus SGST for intra-state, IGST for inter-state, decided from the place of supply",
+                "UTGST in place of SGST for union territories without a legislature",
+                "Per-line GST rates of 0, 5, 12, 18 and 28 percent",
+                "Rate-wise tax summary table",
+                "Export and SEZ under LUT as a zero-rated document",
+                "Not-registered and composition modes with the required declaration",
+                "GSTIN format and check-character validation",
+                "Amount in words in lakh and crore",
+                "Round-off to the nearest rupee shown as its own line",
+                "Due date computed from the payment terms",
+                "MSME and Udyam footer line",
+                "Four A4 print templates",
+                "Draft saved in this browser only when you press Save",
+                "Export and re-import everything as a JSON file",
+                "No upload - the whole document is built on your device"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does anything I type leave my browser?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server behind this page, so there is nowhere for it to go. Your client list, your rates, your GSTIN and whatever you type into the payment details box are held in the page while the tab is open, and the only copies that ever exist are the ones you make on purpose: a printed PDF, a downloaded .json file, or a draft you save into this browser. There is also no share link anywhere in this tool, deliberately - a link that carried the form would carry the payment details with it, into browser history and into whatever app you sent it through."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is this accounting software, or tax advice?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Neither. It is a document generator: it lays out one invoice or one quotation and prints it. It keeps no ledger, tracks nothing across documents, files no return, and cannot tell you what rate your work attracts or whether you should be registered at all. Those are questions for a chartered accountant, and the arithmetic here does not replace one. What it does do is the part software should never get wrong - the tax split, the rate-wise summary and the totals."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How does it decide between CGST plus SGST and IGST?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "By comparing two state codes: yours, and the place of supply. Same state means the supply is intra-state, so the tax splits into CGST and SGST at half the rate each. Different states means inter-state, so it is IGST at the whole rate. If your state is a union territory without its own legislature - Chandigarh, Lakshadweep, Ladakh, the Andaman and Nicobar Islands, Dadra and Nagar Haveli and Daman and Diu, or Other Territory - the state half is UTGST rather than SGST. Delhi, Puducherry and Jammu and Kashmir have legislatures, so they take SGST. Until both states are set the tool refuses to pick, because guessing is exactly how the wrong tax gets charged."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What if I am not registered for GST?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Switch the tax treatment to \"not registered\" and the tax columns disappear, no GST is charged, and the document prints as a plain invoice with a line saying no tax has been charged. If you are under the composition scheme, choose that instead: it prints as a Bill of Supply and carries the declaration a composition taxable person is required to print, because a composition dealer may not collect tax on supplies. The heading changes with the mode for the same reason - only a registered person issues a tax invoice."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How do I get a PDF?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Press \"Print / Save as PDF\" and choose \"Save as PDF\" as the destination in your browser's print dialog. The page is set up so that only the document prints - no site header, no toolbar, no form, no site byline - on A4 with the sheet carrying its own margins. There is no PDF library on this page on purpose: your browser already has an excellent one, and nobody can put a paywall in front of your own print dialog."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Where do my bank details go?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Into a plain text box, onto the printed document, and nowhere else. The tool never asks for an account number as a structured field, never validates one, never puts one in a link, and never sends one anywhere. If you save a draft, that text is part of what is written into this browser's storage on this device - which is why the draft is saved only when you press Save, and why there is a button to delete it. On a shared machine, print the PDF and skip the draft."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will my draft still be here tomorrow?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Only if you pressed \"Save draft\", and only in this browser on this device. A saved draft survives closing the tab, and the page tells you it is there rather than loading it for you - a form full of client details and payment terms should not reappear on its own for whoever opens this page next on the same computer. \"Load draft\" brings it back, \"Delete saved draft\" removes it. If you want a copy you can move or keep, press \"Download data\" and you get an invoice-data.json file you own."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it say my GSTIN is wrong?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A GSTIN is fifteen characters - a two-digit state code, the ten-character PAN of the holder, an entity number, a fixed Z, and a check character computed from the other fourteen. The check character catches the ordinary typo that a length check cannot, because a transposed pair is still fifteen characters long. The tool also says so when the state code at the front does not match the state you picked. None of it blocks printing: it is your number, and the warning is there to be read, not obeyed."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I bill in dollars for an export?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Not in this version - every amount is in rupees, and I would rather say so than print a dollar sign in front of arithmetic built for INR. The export mode does the other half of the job: it charges no tax, prints the zero-rated declaration for a supply made under a Letter of Undertaking, and leaves the rate column showing what would otherwise have applied. For a foreign-currency invoice you need the conversion rate and the date it was taken, which is bookkeeping, not layout."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is there a round-off line?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because tax at 18 percent on an odd number almost never lands on a whole rupee, and the total on an Indian invoice is normally rounded to one. The tool computes every amount in paise, rounds the grand total to the nearest rupee, and prints the difference as its own line so that the column can still be added up by hand and reconciled. A total that quietly differs from the sum of the lines above it is the kind of thing an accounts department sends back."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Invoice maker",
+                        "item": "https://krunalkumar.dpdns.org/labs/invoice-maker"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+    <main id="main-content" class="page-shell inv-page">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Invoice maker</li>
+          </ol>
+        </nav>
+        <h1>GST invoice and quotation maker</h1>
+        <p class="hero-text">Most free invoice generators print CGST and SGST on every document they make, whoever the buyer is. That is wrong roughly half the time: under GST the split is decided by comparing your state with the place of supply, and a supply that crosses a state line takes IGST instead. This one asks for both states, says out loud which rule it applied, and refuses to guess when either is missing. It is a document generator &mdash; it makes one invoice or one quotation and prints it. It is not accounting software and it is not tax advice.</p>
+        <ul class="lab-facts">
+          <li>Nothing is uploaded</li>
+          <li>CGST + SGST, IGST or UTGST, decided from the place of supply</li>
+          <li>Rate-wise tax summary</li>
+          <li>Amount in words, and the round-off shown</li>
+          <li>Four templates, prints to A4</li>
+          <li>No account, no watermark, no paywall</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet a dead form and an empty sheet
+           with no explanation. boot.js adds html.js synchronously, so the CSS
+           hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>The document is laid out in your browser as you type, the tax is worked out there, and the print styling is applied the same way.</p>
+          <p>That is also the privacy story: because everything happens locally, there is no server-rendered fallback to show you.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+
+      <div class="lab inv-lab" id="invoicemaker">
+        <div class="lab-toolbar inv-toolbar">
+          <div class="inv-pill-group" role="group" aria-label="Document type">
+            <span class="inv-pill-label">Document</span>
+            <button class="inv-pill inv-mode" type="button" data-doc="invoice" aria-pressed="true">Invoice</button>
+            <button class="inv-pill inv-mode" type="button" data-doc="quotation" aria-pressed="false">Quotation</button>
+          </div>
+          <div class="inv-pill-group" role="group" aria-label="Template">
+            <span class="inv-pill-label">Template</span>
+            <button class="inv-pill inv-tpl" type="button" data-template="plain" aria-pressed="true">Plain</button>
+            <button class="inv-pill inv-tpl" type="button" data-template="ledger" aria-pressed="false">Ledger</button>
+            <button class="inv-pill inv-tpl" type="button" data-template="banded" aria-pressed="false">Banded</button>
+            <button class="inv-pill inv-tpl" type="button" data-template="compact" aria-pressed="false">Compact</button>
+          </div>
+          <div class="inv-swatches" role="group" aria-label="Accent colour">
+            <button class="inv-swatch" type="button" data-accent="#1d4ed8" style="--inv-sw:#1d4ed8" aria-label="Blue accent" aria-pressed="true"></button>
+            <button class="inv-swatch" type="button" data-accent="#0f766e" style="--inv-sw:#0f766e" aria-label="Teal accent" aria-pressed="false"></button>
+            <button class="inv-swatch" type="button" data-accent="#9f1239" style="--inv-sw:#9f1239" aria-label="Maroon accent" aria-pressed="false"></button>
+            <button class="inv-swatch" type="button" data-accent="#166534" style="--inv-sw:#166534" aria-label="Green accent" aria-pressed="false"></button>
+            <button class="inv-swatch" type="button" data-accent="#334155" style="--inv-sw:#334155" aria-label="Charcoal accent" aria-pressed="false"></button>
+            <button class="inv-swatch" type="button" data-accent="#b45309" style="--inv-sw:#b45309" aria-label="Amber accent" aria-pressed="false"></button>
+          </div>
+          <span class="spacer"></span>
+          <button class="lab-btn" type="button" id="inv-load-sample">Load example</button>
+          <button class="lab-btn" type="button" id="inv-save-draft">Save draft</button>
+          <button class="lab-btn" type="button" id="inv-load-draft">Load draft</button>
+          <button class="lab-btn" type="button" id="inv-delete-draft">Delete saved draft</button>
+          <button class="lab-btn" type="button" id="inv-export">Download data (.json)</button>
+          <button class="lab-btn" type="button" id="inv-import">Load data</button>
+          <!-- The real picker for "Load data". A button that opens a picker is
+               friendlier than a bare file input, so the input hides. -->
+          <input type="file" id="inv-import-file" accept=".json,application/json" hidden />
+          <button class="lab-btn" type="button" id="inv-clear">Clear everything</button>
+          <button class="btn btn-primary inv-print-btn" type="button" id="inv-print">Print / Save as PDF</button>
+          <!-- Its own always-present full-width row, so an arriving message
+               never reflows the buttons above it. -->
+          <span class="inv-status" id="inv-status" role="status" aria-live="polite"></span>
+        </div>
+
+        <section class="inv-checkstrip" aria-labelledby="inv-checks-h">
+          <h2 class="inv-checkstrip-h" id="inv-checks-h">What this checked</h2>
+          <div id="inv-checks"></div>
+        </section>
+
+        <div class="inv-panes">
+          <div class="inv-formcol">
+            <form class="inv-form" id="inv-form" autocomplete="off">
+              <!-- Screen-reader-only so the outline runs h1 &gt; h2 &gt; h3
+                   instead of jumping from the page title to "The document". -->
+              <h2 class="sr-only">The form</h2>
+
+              <section class="inv-form-section">
+                <h3>The document</h3>
+                <div class="form-grid inv-grid">
+                  <label class="field"><span>Invoice / quotation number</span>
+                    <input type="text" data-key="docNumber" placeholder="NS/2026-27/014" /></label>
+                  <label class="field"><span>Date</span>
+                    <input type="date" data-key="docDate" /></label>
+                  <label class="field"><span>Payment terms</span>
+                    <select data-key="terms">
+                      <option value="receipt">Due on receipt</option>
+                      <option value="7">Net 7 days</option>
+                      <option value="15">Net 15 days</option>
+                      <option value="30">Net 30 days</option>
+                      <option value="45">Net 45 days</option>
+                      <option value="60">Net 60 days</option>
+                      <option value="custom">Custom&hellip;</option>
+                    </select></label>
+                  <label class="field" id="inv-wrap-termsdays" hidden><span>Days</span>
+                    <input type="text" data-key="termsDays" inputmode="numeric" placeholder="30" /></label>
+                  <label class="field"><span>Reference / PO number</span>
+                    <input type="text" data-key="poRef" placeholder="PO-88213" /></label>
+                  <label class="field"><span>Copy label</span>
+                    <select data-key="copyLabel">
+                      <option value="">None</option>
+                      <option value="Original for Recipient">Original for Recipient</option>
+                      <option value="Duplicate for Supplier">Duplicate for Supplier</option>
+                      <option value="Triplicate for Transporter">Triplicate for Transporter</option>
+                    </select></label>
+                  <label class="field full"><span>Tax treatment</span>
+                    <select data-key="taxMode">
+                      <option value="gst">Registered &mdash; charge GST</option>
+                      <option value="export">Export or SEZ under LUT &mdash; zero rated</option>
+                      <option value="unregistered">Not registered for GST &mdash; below the threshold</option>
+                      <option value="composition">Composition scheme &mdash; bill of supply</option>
+                    </select></label>
+                  <label class="field inv-checkfield" id="inv-wrap-revcharge">
+                    <input type="checkbox" data-key="revCharge" />
+                    <span>Tax payable under reverse charge</span></label>
+                </div>
+                <p class="form-hint">The due date is worked out from the terms. On a quotation the same field prints as &ldquo;valid until&rdquo;.</p>
+              </section>
+
+              <section class="inv-form-section">
+                <h3>Your business</h3>
+                <div class="inv-logo-row">
+                  <label class="field inv-logo-field">
+                    <span>Logo <em class="inv-opt">optional</em></span>
+                    <input type="file" id="inv-f-logo" accept="image/*" />
+                  </label>
+                  <div class="inv-logo-thumb-box" id="inv-logo-box" hidden>
+                    <img id="inv-logo-thumb" alt="Your logo, as it will appear on the document" />
+                    <button class="lab-btn" type="button" id="inv-logo-remove">Remove logo</button>
+                  </div>
+                </div>
+                <div class="form-grid inv-grid">
+                  <label class="field full"><span>Business name</span>
+                    <input type="text" data-key="bizName" placeholder="Your firm or your own name" /></label>
+                  <label class="field full"><span>Address</span>
+                    <textarea data-key="bizAddress" rows="2" placeholder="Street, city, PIN"></textarea></label>
+                  <label class="field"><span>Your state</span>
+                    <select data-key="bizState" id="inv-f-bizState"></select></label>
+                  <label class="field"><span>GSTIN</span>
+                    <input type="text" data-key="bizGstin" spellcheck="false" autocapitalize="characters" placeholder="24AAQCS1234H1ZE" /></label>
+                  <label class="field"><span>PAN <em class="inv-opt">optional</em></span>
+                    <input type="text" data-key="bizPan" spellcheck="false" autocapitalize="characters" placeholder="AAQCS1234H" /></label>
+                  <label class="field"><span>Udyam number <em class="inv-opt">optional</em></span>
+                    <input type="text" data-key="bizUdyam" placeholder="UDYAM-GJ-01-0001234" /></label>
+                  <label class="field"><span>Phone</span>
+                    <input type="text" data-key="bizPhone" placeholder="+91 ..." /></label>
+                  <label class="field"><span>Email</span>
+                    <input type="text" data-key="bizEmail" placeholder="accounts@example.com" /></label>
+                  <label class="field"><span>Website</span>
+                    <input type="text" data-key="bizWeb" placeholder="example.com" /></label>
+                </div>
+              </section>
+
+              <section class="inv-form-section">
+                <h3>Bill to</h3>
+                <div class="form-grid inv-grid">
+                  <label class="field full"><span>Client name</span>
+                    <input type="text" data-key="clientName" placeholder="Their registered name" /></label>
+                  <label class="field full"><span>Address</span>
+                    <textarea data-key="clientAddress" rows="2"></textarea></label>
+                  <label class="field"><span>Client&rsquo;s state</span>
+                    <select data-key="clientState" id="inv-f-clientState"></select></label>
+                  <label class="field"><span>Client GSTIN <em class="inv-opt">optional</em></span>
+                    <input type="text" data-key="clientGstin" spellcheck="false" autocapitalize="characters" /></label>
+                  <label class="field"><span>Place of supply</span>
+                    <select data-key="pos" id="inv-f-pos"></select></label>
+                  <label class="field"><span>Phone</span>
+                    <input type="text" data-key="clientPhone" /></label>
+                  <label class="field"><span>Email</span>
+                    <input type="text" data-key="clientEmail" /></label>
+                </div>
+                <p class="form-hint">For goods the place of supply is usually where they are delivered, which is why it defaults to the client&rsquo;s state. For some services it is somewhere else entirely, so it is a field of its own rather than an assumption.</p>
+              </section>
+
+              <section class="inv-form-section">
+                <h3>Line items</h3>
+                <div id="inv-items" class="inv-item-list"></div>
+                <button class="lab-btn inv-add" type="button" id="inv-item-add">+ Add item</button>
+                <p class="form-hint">HSN for goods, SAC for services. Quantity and rate accept decimals; the rate column is per unit, before tax.</p>
+              </section>
+
+              <section class="inv-form-section">
+                <h3>Discount, notes and payment</h3>
+                <div class="form-grid inv-grid">
+                  <label class="field"><span>Discount type</span>
+                    <select data-key="discountType">
+                      <option value="amt">Flat amount (&#8377;)</option>
+                      <option value="pct">Percentage of the subtotal</option>
+                    </select></label>
+                  <label class="field"><span>Discount value</span>
+                    <input type="text" data-key="discountValue" inputmode="decimal" placeholder="0" /></label>
+                  <label class="field full"><span>Notes</span>
+                    <textarea data-key="notes" rows="2" placeholder="What is included, what is not"></textarea></label>
+                  <label class="field full"><span>Payment details</span>
+                    <textarea data-key="bank" rows="3" placeholder="Bank, account name, UPI ID &mdash; whatever you want printed"></textarea></label>
+                  <label class="field full"><span>Terms printed on the document</span>
+                    <textarea data-key="termsText" rows="2" placeholder="Payment within 15 days. Interest on overdue amounts."></textarea></label>
+                  <label class="field"><span>Signatory name</span>
+                    <input type="text" data-key="signName" placeholder="Who signs it" /></label>
+                </div>
+                <p class="form-hint">Payment details are a plain text box on purpose. Nothing here treats an account number as a field, validates one, or puts one in a link &mdash; it is typed by you, printed on your document, and goes nowhere else.</p>
+              </section>
+            </form>
+          </div>
+
+          <div class="inv-previewcol">
+            <h2 class="inv-preview-title" id="inv-preview-title">Live preview &mdash; A4, invoice</h2>
+            <div class="inv-sheet-wrap" id="inv-sheet-wrap">
+              <div class="inv-sheet" id="inv-sheet" aria-label="Document preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The part every free invoice tool gets wrong</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The place of supply decides the tax</h3>
+            <p>Not your address, not the client&rsquo;s billing address by itself &mdash; the place of supply. Same state as yours, and the tax splits into CGST and SGST at half the rate each. A different state, and it is IGST at the full rate. Print the wrong pair and both sides file a return that does not reconcile, which is why the tool shows the comparison it made in words above the form.</p>
+          </article>
+          <article class="info-card">
+            <h3>UTGST is not a typo for SGST</h3>
+            <p>A union territory without its own legislature &mdash; Chandigarh, Lakshadweep, Ladakh, the Andaman and Nicobar Islands, Dadra and Nagar Haveli and Daman and Diu, and Other Territory &mdash; charges UTGST as the state half. Delhi, Puducherry and Jammu and Kashmir have legislatures, so they take SGST. The label follows your state automatically, because nobody should have to remember that list.</p>
+          </article>
+          <article class="info-card">
+            <h3>Paise, not floating point</h3>
+            <p>Every amount is held as a whole number of paise from the first multiplication onwards, each line and each tax half is rounded once at a defined point, and the discount is allocated back across the lines so the shares add up to the discount exactly. Then the grand total is rounded to the nearest rupee and the difference prints as a round-off line, so the column still adds up by hand.</p>
+          </article>
+          <article class="info-card">
+            <h3>Four situations, four documents</h3>
+            <p>Registered supplier: a tax invoice with the rate-wise summary a GST invoice needs. Export or SEZ under a Letter of Undertaking: zero rated, with the declaration printed and the rates still shown. Below the threshold: no GST at all and a plain invoice. Composition scheme: a Bill of Supply carrying the line about not being eligible to collect tax. The heading changes because the document genuinely is a different one.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How it works</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Everything is local</h3>
+            <p>There is no server behind this page, so nothing you type can be uploaded. The form, the four templates, the tax arithmetic and the preview all run in your browser. That matters here for a specific reason: an invoice carries your client list, your rates, your GSTIN and whatever payment details you put on it, and those are precisely the things a free tool with a server has an incentive to keep.</p>
+          </article>
+          <article class="info-card">
+            <h3>Drafts are a decision, not a default</h3>
+            <p>&ldquo;Save draft&rdquo; writes the form into this browser&rsquo;s storage on this device, and nothing else writes anything. It is never loaded back automatically &mdash; the page tells you a draft exists and waits, because a form full of a client&rsquo;s details reappearing for the next person at a shared desk is not a feature. &ldquo;Delete saved draft&rdquo; removes it. &ldquo;Download data&rdquo; gives you the whole thing as a .json file you own and can carry anywhere.</p>
+          </article>
+          <article class="info-card">
+            <h3>Printing is the export</h3>
+            <p>There is no PDF library here on purpose. Your browser already ships an excellent PDF engine &mdash; the print dialog &mdash; and the print rules hand it only the sheet, sized to A4, with the site header, the toolbar, the form and even the site&rsquo;s own byline removed. Choose &ldquo;Save as PDF&rdquo; and you have the document; choose a printer and you have paper. No watermark either way, because there is no step at which anyone could add one.</p>
+          </article>
+          <article class="info-card">
+            <h3>What it is not</h3>
+            <p>It is not accounting software: no ledger, no numbering series, no tracking of what has been paid, no returns. It is not tax advice either &mdash; it cannot tell you which rate your work attracts, whether you should be registered, or whether a supply is zero rated. If you need that, ask a chartered accountant. If you need a careful private tool built for your own users, that is the kind of work I take on: see the <a href="/services">services page</a>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does anything I type leave my browser?</summary>
+            <div>No. There is no server behind this page, so there is nowhere for it to go. Your client list, your rates, your GSTIN and whatever you type into the payment details box are held in the page while the tab is open, and the only copies that ever exist are the ones you make on purpose: a printed PDF, a downloaded .json file, or a draft you save into this browser. There is also no share link anywhere in this tool, deliberately - a link that carried the form would carry the payment details with it, into browser history and into whatever app you sent it through.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is this accounting software, or tax advice?</summary>
+            <div>Neither. It is a document generator: it lays out one invoice or one quotation and prints it. It keeps no ledger, tracks nothing across documents, files no return, and cannot tell you what rate your work attracts or whether you should be registered at all. Those are questions for a chartered accountant, and the arithmetic here does not replace one. What it does do is the part software should never get wrong - the tax split, the rate-wise summary and the totals.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How does it decide between CGST plus SGST and IGST?</summary>
+            <div>By comparing two state codes: yours, and the place of supply. Same state means the supply is intra-state, so the tax splits into CGST and SGST at half the rate each. Different states means inter-state, so it is IGST at the whole rate. If your state is a union territory without its own legislature - Chandigarh, Lakshadweep, Ladakh, the Andaman and Nicobar Islands, Dadra and Nagar Haveli and Daman and Diu, or Other Territory - the state half is UTGST rather than SGST. Delhi, Puducherry and Jammu and Kashmir have legislatures, so they take SGST. Until both states are set the tool refuses to pick, because guessing is exactly how the wrong tax gets charged.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What if I am not registered for GST?</summary>
+            <div>Switch the tax treatment to "not registered" and the tax columns disappear, no GST is charged, and the document prints as a plain invoice with a line saying no tax has been charged. If you are under the composition scheme, choose that instead: it prints as a Bill of Supply and carries the declaration a composition taxable person is required to print, because a composition dealer may not collect tax on supplies. The heading changes with the mode for the same reason - only a registered person issues a tax invoice.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How do I get a PDF?</summary>
+            <div>Press "Print / Save as PDF" and choose "Save as PDF" as the destination in your browser's print dialog. The page is set up so that only the document prints - no site header, no toolbar, no form, no site byline - on A4 with the sheet carrying its own margins. There is no PDF library on this page on purpose: your browser already has an excellent one, and nobody can put a paywall in front of your own print dialog.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Where do my bank details go?</summary>
+            <div>Into a plain text box, onto the printed document, and nowhere else. The tool never asks for an account number as a structured field, never validates one, never puts one in a link, and never sends one anywhere. If you save a draft, that text is part of what is written into this browser's storage on this device - which is why the draft is saved only when you press Save, and why there is a button to delete it. On a shared machine, print the PDF and skip the draft.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Will my draft still be here tomorrow?</summary>
+            <div>Only if you pressed "Save draft", and only in this browser on this device. A saved draft survives closing the tab, and the page tells you it is there rather than loading it for you - a form full of client details and payment terms should not reappear on its own for whoever opens this page next on the same computer. "Load draft" brings it back, "Delete saved draft" removes it. If you want a copy you can move or keep, press "Download data" and you get an invoice-data.json file you own.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it say my GSTIN is wrong?</summary>
+            <div>A GSTIN is fifteen characters - a two-digit state code, the ten-character PAN of the holder, an entity number, a fixed Z, and a check character computed from the other fourteen. The check character catches the ordinary typo that a length check cannot, because a transposed pair is still fifteen characters long. The tool also says so when the state code at the front does not match the state you picked. None of it blocks printing: it is your number, and the warning is there to be read, not obeyed.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I bill in dollars for an export?</summary>
+            <div>Not in this version - every amount is in rupees, and I would rather say so than print a dollar sign in front of arithmetic built for INR. The export mode does the other half of the job: it charges no tax, prints the zero-rated declaration for a supply made under a Letter of Undertaking, and leaves the rate column showing what would otherwise have applied. For a foreign-currency invoice you need the conversion rate and the date it was taken, which is bookkeeping, not layout.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is there a round-off line?</summary>
+            <div>Because tax at 18 percent on an odd number almost never lands on a whole rupee, and the total on an Indian invoice is normally rounded to one. The tool computes every amount in paise, rounds the grand total to the nearest rupee, and prints the difference as its own line so that the column can still be added up by hand and reconciled. A total that quietly differs from the sum of the lines above it is the kind of thing an accounts department sends back.</div>
+          </details>
+      </section>
+
+      <!-- Screen only: the print rules hide everything in .inv-page except the
+           tool, so this can never land on somebody's invoice. -->
+      <aside class="section-card inv-builtby" aria-label="Who built this">
+        <p>Built by me, Krunalkumar Shah &mdash; by hand, no framework and no dependencies, the way the rest of this site is built; the <a href="/colophon">colophon</a> counts the receipts.</p>
+        <p>If your business needs a careful, private tool of its own, that is the work I take on &mdash; details on the <a href="/services">services page</a>.</p>
+      </aside>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a total looks wrong, a template misprints, or the tax split disagrees with your accountant, I would genuinely like to know &mdash; that last one especially.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=invoice-maker#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20invoice%20maker%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More to play with</h2>
+          <p>The other document makers work exactly the same way: fill a form, pick a template, print.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/resume-maker">
+            <span class="lab-card-name">Resume maker</span>
+            <p class="lab-card-desc">Five templates, live preview, and no paywall at the download button &mdash; because printing is the download.</p>
+            <span class="lab-card-engine">Fill, pick a template, print</span>
+          </a>
+          <a class="lab-card" href="/labs/biodata-maker">
+            <span class="lab-card-name">Marriage biodata maker</span>
+            <p class="lab-card-desc">The same idea pointed at the one document whose data you really should not hand to a random website.</p>
+            <span class="lab-card-engine">Fill, pick a template, print</span>
+          </a>
+          <a class="lab-card" href="/labs/upi-fraud">
+            <span class="lab-card-name">UPI &amp; payment fraud</span>
+            <p class="lab-card-desc">How the collect-request and fake-payment-screenshot scams work, from the side that gets billed.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/qr">
+            <span class="lab-card-name">QR generator and inspector</span>
+            <p class="lab-card-desc">Make a payment QR, or read one before you trust it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/tools/invoice-maker.js"></script>
+  </body>
+</html>

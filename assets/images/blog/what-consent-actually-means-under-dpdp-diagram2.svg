@@ -1,0 +1,78 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-what-consent-actually-means-under-dpdp-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-consent-actually-means-under-dpdp-diagram2">An annotated consent notice for a small company, with five numbered parts and a key explaining what each part satisfies. Part one itemises the data collected. Part two lists each purpose with its own unticked box, only the first marked required. Part three states where consent is withdrawn and says it takes the same single tap as giving it. Part four names the company grievance address and the Data Protection Board as the route after that. Part five offers the same notice in English or any Eighth Schedule language. The caption notes what is deliberately absent: a pre-ticked box, a bundled acceptance of the whole privacy policy, and any purpose that cannot be stated in one line.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHAT A COMPLIANT CONSENT NOTICE ACTUALLY LOOKS LIKE</text>
+
+  <!-- The notice itself -->
+  <g>
+    <rect x="40" y="90" width="580" height="456" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="88" y="132" fill="#6b7a90" font-size="19" font-weight="800">Before you create your account</text>
+
+    <circle cx="62" cy="176" r="13" fill="#1e77a4"/>
+    <text x="62" y="181" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">1</text>
+    <text x="88" y="176" fill="#6b7a90" font-size="15.5" font-weight="700">What we will collect</text>
+    <text x="88" y="200" fill="#64748b" font-size="15">Your name, your email address, your mobile number.</text>
+
+    <circle cx="62" cy="242" r="13" fill="#1e77a4"/>
+    <text x="62" y="247" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">2</text>
+    <text x="88" y="242" fill="#6b7a90" font-size="15.5" font-weight="700">What we will use it for</text>
+    <g fill="none" stroke="#1e77a4" stroke-width="1.8">
+      <rect x="90" y="258" width="17" height="17" rx="4"/>
+      <rect x="90" y="290" width="17" height="17" rx="4"/>
+      <rect x="90" y="322" width="17" height="17" rx="4"/>
+    </g>
+    <text x="120" y="272" fill="#64748b" font-size="15">Create and run your account</text>
+    <rect x="352" y="258" width="86" height="19" rx="9" fill="#93671a"/>
+    <text x="395" y="272" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">REQUIRED</text>
+    <text x="120" y="304" fill="#64748b" font-size="15">Send you product updates by email</text>
+    <text x="120" y="336" fill="#64748b" font-size="15">Share your number with our delivery partner</text>
+
+    <circle cx="62" cy="380" r="13" fill="#1e77a4"/>
+    <text x="62" y="385" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">3</text>
+    <text x="88" y="380" fill="#6b7a90" font-size="15.5" font-weight="700">Changing your mind</text>
+    <text x="88" y="404" fill="#64748b" font-size="15">Settings &#8594; Privacy. One tap, the same as giving it.</text>
+
+    <circle cx="62" cy="444" r="13" fill="#1e77a4"/>
+    <text x="62" y="449" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">4</text>
+    <text x="88" y="444" fill="#6b7a90" font-size="15.5" font-weight="700">If something goes wrong</text>
+    <text x="88" y="468" fill="#64748b" font-size="15">privacy@example.in. If we do not fix it, you may complain</text>
+    <text x="88" y="488" fill="#64748b" font-size="15">to the Data Protection Board of India.</text>
+
+    <circle cx="62" cy="522" r="13" fill="#1e77a4"/>
+    <text x="62" y="527" fill="#ffffff" font-size="13" font-weight="800" text-anchor="middle">5</text>
+    <text x="88" y="522" fill="#64748b" font-size="15">Read this in: English &#183; Hindi &#183; Gujarati &#183; Tamil &#183; and 18 more</text>
+  </g>
+
+  <!-- Why each part is there -->
+  <g>
+    <text x="660" y="126" fill="#1e77a4" font-size="16" font-weight="800" letter-spacing="2">WHY EACH PART IS THERE</text>
+
+    <circle cx="676" cy="176" r="13" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="676" y="181" fill="#1e77a4" font-size="13" font-weight="800" text-anchor="middle">1</text>
+    <text x="706" y="176" fill="#6b7a90" font-size="16" font-weight="700">The data, itemised</text>
+    <text x="706" y="199" fill="#64748b" font-size="14.5">Three named fields, not &#8220;information about you&#8221;.</text>
+
+    <circle cx="676" cy="248" r="13" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="676" y="253" fill="#1e77a4" font-size="13" font-weight="800" text-anchor="middle">2</text>
+    <text x="706" y="248" fill="#6b7a90" font-size="16" font-weight="700">One purpose, one box, unbundled</text>
+    <text x="706" y="271" fill="#64748b" font-size="14.5">Every box starts empty. Only the first is required,</text>
+    <text x="706" y="291" fill="#64748b" font-size="14.5">and only because the account cannot exist without it.</text>
+
+    <circle cx="676" cy="340" r="13" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="676" y="345" fill="#1e77a4" font-size="13" font-weight="800" text-anchor="middle">3</text>
+    <text x="706" y="340" fill="#6b7a90" font-size="16" font-weight="700">Withdrawal no harder than consent</text>
+    <text x="706" y="363" fill="#64748b" font-size="14.5">Named screen, named path, same number of taps.</text>
+
+    <circle cx="676" cy="412" r="13" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="676" y="417" fill="#1e77a4" font-size="13" font-weight="800" text-anchor="middle">4</text>
+    <text x="706" y="412" fill="#6b7a90" font-size="16" font-weight="700">Both grievance routes named</text>
+    <text x="706" y="435" fill="#64748b" font-size="14.5">Yours first, because the individual has to try you</text>
+    <text x="706" y="455" fill="#64748b" font-size="14.5">before the Board will hear it.</text>
+
+    <circle cx="676" cy="504" r="13" fill="none" stroke="#1e77a4" stroke-width="2"/>
+    <text x="676" y="509" fill="#1e77a4" font-size="13" font-weight="800" text-anchor="middle">5</text>
+    <text x="706" y="504" fill="#6b7a90" font-size="16" font-weight="700">Their language, not only yours</text>
+    <text x="706" y="527" fill="#64748b" font-size="14.5">English or any of the 22 Eighth Schedule languages.</text>
+  </g>
+
+  <text x="40" y="586" fill="#64748b" font-size="15">Missing on purpose: a pre-ticked box, a single bundled &#8220;I accept the privacy policy&#8221;, and any purpose that cannot be stated in one line.</text>
+</svg>

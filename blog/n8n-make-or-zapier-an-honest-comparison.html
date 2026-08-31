@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="n8n, Make, and Zapier compared by what actually decides it: where the workflow runs, who is liable for the data, and what each pricing meter really counts."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="n8n, Make, or Zapier: An Honest Comparison" />
+    <meta
+      property="og:description"
+      content="The decision is not features. It is whose infrastructure holds your client's data, what each meter actually counts, and which of the three you can still maintain in a year."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/n8n-make-or-zapier-an-honest-comparison.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Three lanes of the same data flow: two passing through a vendor's cloud, one through a dashed box labelled your server" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Automation" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="n8n, Make, or Zapier: An Honest Comparison" />
+    <meta
+      name="twitter:description"
+      content="The decision is not features. It is whose infrastructure holds your client's data, what each meter actually counts, and which of the three you can still maintain in a year."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/n8n-make-or-zapier-an-honest-comparison.jpg" />
+    <title>n8n vs Make vs Zapier, Compared | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "n8n, Make, or Zapier: An Honest Comparison",
+        "description": "A comparison that commits to answers: why hosting and liability decide the tool before features do, what each of the three is genuinely best at and where each falls over, how task, operation and execution billing surprise you at different scales, what maintenance actually costs in each, and when the right answer is code or Apps Script instead.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/n8n-make-or-zapier-an-honest-comparison.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Automation",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison"
+        },
+        "keywords": "n8n, Make, Zapier, workflow automation, self-hosting, data residency, iPaaS comparison, Apps Script, RevOps, automation maintenance"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "n8n, Make, or Zapier", "item": "https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Which one is cheapest?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nobody can answer that from a price sheet, including me, because the three tools do not meter the same thing. A workflow with few steps and low volume is cheapest on Zapier. A workflow that fans one trigger out into dozens of items is punished hardest on Make and barely noticed by n8n. A workflow running constantly at high volume is cheapest as code on a server you already have. Build the thing, run it for one real week, read the usage counter the tool gives you, multiply by four, then double it for the retries and the growth you have not thought of yet. That number is your comparison. The pricing page is not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is n8n open source?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not in the OSI sense, and the distinction matters commercially. n8n is source-available under the Sustainable Use License, which the company describes as fair-code: you can read it, modify it, and self-host it for your own internal business purposes at no licence cost. What you cannot do is host it as a service for other people, or resell it, without a separate commercial arrangement. If you are an agency planning to run one instance and sell workflows on it to clients, read the licence properly before you build the business model on it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I self-host Make or Zapier?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Both are hosted products only, and that is a deliberate part of what they sell — the uptime, the connector maintenance and the security posture are the product. What they offer instead is a choice of region: Make asks which data zone you want when you create the account, and Zapier has published data-residency options at the enterprise end of its pricing. Neither is a substitute for the data never leaving your own infrastructure, so if a contract requires that, the hosted tools are out before you compare a single feature."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does self-hosting n8n make me compliant?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. It removes one subprocessor from the path, which can be the specific thing a contract asks for, and it hands you every obligation that vendor was carrying: patching the container, keeping the database backed up and encrypted, protecting the credential encryption key, restricting who can open the editor, and noticing when it stops. I have moved clients off self-hosted instances and onto n8n Cloud precisely because nobody was doing that work. An unpatched server you control is not more compliant than a maintained service you disclosed."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I move a workflow from one tool to another?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not automatically. Make exports a scenario blueprint as JSON and n8n exports a workflow as JSON, but they are unrelated formats describing different execution models, and Zapier has no equivalent export at all. Migration means rebuilding by hand, re-authorising every connection, and re-testing every branch. Anything claiming to convert between them is doing a rough translation you will still have to check step by step. Treat the choice as something you live with for a couple of years, not a setting you can change later."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which one should I use for AI agents?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "All three can call a model API, so the real question is whether you want the tool to orchestrate the agent or just to make the request. n8n has the deepest native tooling for this — model nodes, tool calling, memory and vector store nodes as ordinary parts of a workflow — which is why I built my open-source AI SDR on it. Zapier and Make both have perfectly good AI steps for the common case of classify this, then draft that. What usually decides it is not the feature list but where the prompt and the customer record are allowed to travel."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I stop an automation bill from surprising me?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Learn what one run costs in the tool's own unit before you scale it, because each tool counts a different thing: Zapier counts action steps, Make counts module executions including the trigger, and n8n Cloud counts whole executions. Then find the multiplier that is specific to your data rather than to your workflow — usually an array that arrives with a variable number of items — and work out the worst realistic day rather than the average one. Put a usage alert on the account, and write the expected monthly figure into the quote so nobody is surprised in month three."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What about Power Automate, Workato, or the others?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The same two questions decide those too. Power Automate is worth a serious look when the organisation already lives in Microsoft 365, for exactly the reason Apps Script is worth a look when it lives in Google — the data does not leave a boundary that has already been accepted. Workato and the enterprise integration platforms sell governance, audit trails and support contracts, which is what a large compliance department is actually buying. I have kept this article to the three I ship production work in, because a comparison written from a marketing page is not worth reading."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">n8n, Make, or Zapier</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Automation</p>
+          <h1>n8n, Make, or Zapier: an honest comparison</h1>
+          <p class="hero-text">
+            I build automation for a living — HubSpot, n8n, Make and Zapier, in production, for clients who notice when
+            it breaks. Most comparisons of these three are feature tables, and feature tables do not decide anything any
+            more. The thing that decides it is where the workflow runs and who is liable when it goes wrong. Everything
+            else is downstream of that.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 23 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/n8n-make-zapier-cover.svg" alt="Three lanes of the same data flow: two passing through a vendor's cloud, one through a dashed box labelled your server" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-decision-that-actually-matters">The decision that actually matters</a></li>
+                <li><a href="#where-the-workflow-runs-and-who-is-liable">Where the workflow runs, and who is liable</a></li>
+                <li><a href="#zapier-the-one-that-works-this-afternoon">Zapier: the one that works this afternoon</a></li>
+                <li><a href="#make-the-one-that-draws-the-data">Make: the one that draws the data</a></li>
+                <li><a href="#n8n-the-one-you-can-own">n8n: the one you can own</a></li>
+                <li><a href="#three-meters-and-how-each-one-surprises-you">Three meters, and how each one surprises you</a></li>
+                <li><a href="#the-maintenance-question-nobody-asks">The maintenance question nobody asks</a></li>
+                <li><a href="#when-the-answer-is-none-of-them">When the answer is none of them</a></li>
+                <li><a href="#when-the-answer-is-apps-script">When the answer is Apps Script</a></li>
+                <li><a href="#the-decision-table">The decision table</a></li>
+                <li><a href="#what-i-actually-pick">What I actually pick</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-decision-that-actually-matters">The decision that actually matters</h2>
+              <p>
+                Open any of the three and you will find the same building blocks. A trigger. A branch. A step that calls
+                an HTTP endpoint. A step where you can write JavaScript because the visual thing ran out of road. A
+                library of prebuilt connectors for whatever software the client actually uses. The gaps between them are
+                real but they are narrow, and they close a little every quarter, which is why a feature table written
+                today is a stale document by the time somebody reads it.
+              </p>
+              <p>
+                Here is the column the feature tables do not have:
+              </p>
+              <blockquote>
+                <p>
+                  When this workflow runs at three in the morning, whose computer is it running on, and whose name is on
+                  the incident report if that computer is breached?
+                </p>
+              </blockquote>
+              <p>
+                Zapier and Make are hosted products. There is no self-hosted edition, by design — the uptime and the
+                connector maintenance <em>are</em> what you are buying. That means your client's records pass through a
+                third party's infrastructure on every run, the run history sitting in that infrastructure contains the
+                actual field values rather than a summary of them, and the OAuth tokens for every system you connected
+                are stored there too. If your contract enumerates subprocessors, they go on the list.
+              </p>
+              <p>
+                n8n can be self-hosted. A container, a Postgres database, a machine you rent. Nothing about the workflow
+                touches an intermediary at all. That is the entire argument, and it is the only argument that survives a
+                conversation with a legal team.
+              </p>
+              <p>
+                Let me be fair before this reads as a pitch for self-hosting. That constraint applies to roughly one
+                project in four. If nobody has mentioned data residency, nobody has a data processing agreement, and the
+                payload is marketing emails, then a hosted vendor's security posture is almost certainly better than the
+                one I would put together on a virtual server for a small client. Choosing self-hosted n8n for a five-step
+                Zap-shaped job is not rigour. It is an unnecessary server for someone to forget about.
+              </p>
+              <p>
+                But get the order right. Answer the hosting question first, narrow to the tools that satisfy it, and only
+                then argue about connectors and editors. Doing it the other way round is how a team ends up rebuilding
+                nine months of workflows because a new client's security questionnaire asked one question nobody had
+                thought about.
+              </p>
+
+              <h2 id="where-the-workflow-runs-and-who-is-liable">Where the workflow runs, and who is liable</h2>
+              <p>
+                Draw the same automation three times and the difference stops being abstract. It is one dashed box.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram1.svg" alt="The same automation drawn three times: with Zapier and Make the workflow engine and the stored OAuth tokens sit inside the vendor's cloud, marked as infrastructure you do not control; with self-hosted n8n they sit inside a box marked as your own infrastructure, which removes a subprocessor and adds patching, backups and uptime to your responsibilities" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Three copies of one flow. The only structural difference is which machine holds the logic and the credentials in the middle — and every other difference in this article follows from it. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Three consequences that come up in real client conversations, in the order they come up:
+              </p>
+              <ul>
+                <li>
+                  <strong>Execution history is a copy of the data, not a log about it.</strong> This is the one people
+                  miss. Hosted tools keep run history so you can debug, and that history holds the real field values that
+                  passed through — the name, the address, the invoice line. If a run carries
+                  <a href="/glossary#term-pii">personal data</a>, that data now also lives in a vendor's log store for
+                  whatever the retention window is on your plan. Check what that window is. On some plans it is a
+                  setting; on others it is fixed.
+                </li>
+                <li>
+                  <strong>The credential store is one place holding keys to everything.</strong> An automation account
+                  usually ends up connected to the CRM, the mailbox, the file store and the billing system all at once.
+                  Whoever can open that account can act as all of them. Scope every connection down to what the workflow
+                  needs and no more — <a href="/glossary#term-least-privilege">least privilege</a> is not a formality
+                  here, it is the difference between one compromised token and a full-company incident.
+                </li>
+                <li>
+                  <strong>Region is a question you will be asked.</strong> Make asks which data zone you want when you
+                  create the account, and moving afterwards means rebuilding in a new account rather than flipping a
+                  switch. n8n Cloud offers a region choice too. Zapier's public position has historically been its own
+                  infrastructure with residency options at the enterprise end of the pricing. Verify the current answer
+                  before you promise anything to a client — this is exactly the kind of detail that changes between when
+                  I write this and when you read it.
+                </li>
+              </ul>
+              <p>
+                None of this makes hosted automation reckless. It makes it a disclosure. If you can name the vendor, name
+                the region, name the retention window and show the connection scopes, you have a defensible answer for
+                most clients in most industries. What you cannot do is pretend the question was not asked, and the
+                shape of the obligations is the same one I set out in
+                <a href="/blog/security-compliance-explained">the compliance post</a>.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The counterweight, stated plainly.</strong> Self-hosting is a promise you have to keep every
+                  month: patching the container, backing up the database, protecting the credential encryption key,
+                  renewing the certificate, restricting who can open the editor, and noticing when the disk fills. I have
+                  moved clients <em>off</em> self-hosted n8n and onto n8n Cloud, because an instance nobody has patched
+                  in a year is worse than the subprocessor they were avoiding. If nobody on the team can confidently run
+                  a container in production, self-hosting is not a security decision. It is a liability with a nicer
+                  story attached.
+                </p>
+              </div>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Work out what you are actually protecting first.</strong> Before choosing where a workflow
+                  runs, it helps to write down what it touches, who could reach it, and what the worst realistic outcome
+                  is. The threat modelling lab on this site walks that through as a structured exercise rather than a
+                  vibe, and it runs entirely in your browser.
+                </p>
+                <a class="btn btn-primary" href="/labs/threat-model">Open the threat model lab</a>
+              </div>
+
+              <h2 id="zapier-the-one-that-works-this-afternoon">Zapier: the one that works this afternoon</h2>
+              <p>
+                Zapier is the oldest of the three and it has spent that time on one thing: the shortest possible distance
+                between a person having an idea and that idea running. You pick a trigger app, pick an action app, map a
+                few fields, turn it on. There is no canvas to learn and no execution model to understand.
+              </p>
+              <p><strong>What it is genuinely best at:</strong></p>
+              <ul>
+                <li>
+                  <strong>Connector breadth.</strong> It is not close. The obscure scheduling tool your client's
+                  operations person insists on is probably in there, and probably with the specific action you need.
+                  Every hour you do not spend reading an API doc is an hour the project came in under quote.
+                </li>
+                <li>
+                  <strong>A business person can read it.</strong> A Zap is a numbered list of steps in plain English.
+                  When the person who built it leaves, somebody in marketing can open it and work out what it does. I
+                  rate this far more highly than I used to, because most automation does not die of a technical failure.
+                  It dies because nobody left understands it.
+                </li>
+                <li>
+                  <strong>The two-to-five step integration.</strong> Form submission creates a CRM record and posts to
+                  Slack. New invoice files a copy in Drive and messages the accountant. For this job — which is most jobs
+                  — Zapier is the best of the three and the argument is over.
+                </li>
+              </ul>
+              <p><strong>Where it falls over:</strong></p>
+              <ul>
+                <li>
+                  <strong>Branching past a certain point.</strong> Paths work, and a Zap with three Paths and nested
+                  conditions inside them becomes something only its author can hold in their head. The vertical list that
+                  makes simple flows readable makes complex ones opaque.
+                </li>
+                <li>
+                  <strong>Anything list-shaped.</strong> Handling an array of items is awkward, and it is billed per
+                  item, so the awkwardness has a cost attached.
+                </li>
+                <li>
+                  <strong>Real transformations.</strong> The moment reshaping the data gets genuinely hard, you end up in
+                  a Code step — which means you have written code in a text box, with no local editor, no dependency
+                  management, no tests, and no way to run it outside Zapier to see what it does.
+                </li>
+                <li>
+                  <strong>Reuse.</strong> Shared logic across Zaps is limited, so in practice you copy. Then you change
+                  one copy.
+                </li>
+                <li>
+                  <strong>Change review.</strong> There is a version history that tells you a change happened. There is
+                  no diff a colleague can read, and no way to propose a change without making it.
+                </li>
+              </ul>
+
+              <h2 id="make-the-one-that-draws-the-data">Make: the one that draws the data</h2>
+              <p>
+                Make — Integromat, before the rename — puts the workflow on a canvas as connected circles, and the thing
+                being drawn is the data, not just the order of steps. That distinction is the whole personality of the
+                tool.
+              </p>
+              <p><strong>What it is genuinely best at:</strong></p>
+              <ul>
+                <li>
+                  <strong>Lists, properly.</strong> Iterators split an array into items, aggregators fold them back into
+                  one. Doing work per item and then collecting the results is a normal supported thing rather than a
+                  workaround, and if your data arrives as a bundle of line items this alone can decide it.
+                </li>
+                <li>
+                  <strong>Debugging you can actually do.</strong> The execution history shows the input and the output of
+                  every module for a given run, as real JSON. When a client says "this one came out wrong on Tuesday,"
+                  you can open Tuesday and see exactly which module produced the wrong shape. That is a meaningfully
+                  better answer than either of the other two gives you out of the box.
+                </li>
+                <li>
+                  <strong>Error handling attached to the step.</strong> You can hang an error route off a specific module
+                  and say what should happen when that step fails — retry, ignore, take a different path, or park the run
+                  so it can be resumed after you fix the cause. That last one has saved me a full reprocessing job more
+                  than once.
+                </li>
+                <li>
+                  <strong>Explaining it to a client.</strong> A canvas with routers on it is a picture you can put in a
+                  handover document, and non-technical stakeholders follow it.
+                </li>
+              </ul>
+              <p><strong>Where it falls over:</strong></p>
+              <ul>
+                <li>
+                  <strong>The canvas turns on you.</strong> Somewhere past twenty modules the picture that was helping
+                  becomes a plate of spaghetti, and the layout is manual, so keeping it readable is unpaid work somebody
+                  has to keep doing.
+                </li>
+                <li>
+                  <strong>The billing punishes its own strength.</strong> Operations are counted per module execution, so
+                  the iterators that make Make good at lists are exactly what makes the bill move. More on that below.
+                </li>
+                <li>
+                  <strong>The expression language.</strong> It is capable, and you write it inside a small input box with
+                  a function picker. Anything longer than one line is unpleasant to author and worse to review.
+                </li>
+                <li>
+                  <strong>Blueprints are exportable, not reviewable.</strong> A scenario exports as JSON, which is a real
+                  backup and a real way to copy a scenario between accounts. It is not a format designed for human
+                  review: identifiers and canvas coordinates churn, so a one-field change can produce a diff hundreds of
+                  lines long.
+                </li>
+              </ul>
+
+              <h2 id="n8n-the-one-you-can-own">n8n: the one you can own</h2>
+              <p>
+                Start with the licence, because it is the most commonly misstated fact about
+                <a href="/glossary#term-n8n">n8n</a>. It is <strong>source-available, not open source in the OSI
+                sense</strong>. The Sustainable Use License — the company calls the approach fair-code — lets you read
+                the source, modify it, and self-host it for your own internal business purposes at no licence cost. It
+                does not let you host it as a service for other people or resell it without a separate arrangement. If
+                you are an agency planning one instance with client workflows on it as a product, that sentence is the
+                one to take to a lawyer before you take it to a landing page.
+              </p>
+              <p><strong>What it is genuinely best at:</strong></p>
+              <ul>
+                <li>
+                  <strong>Self-hosting, which is the point.</strong> A container and a database. Once it is running on
+                  infrastructure you control, the data residency conversation is finished in one sentence.
+                </li>
+                <li>
+                  <strong>The workflow is a document.</strong> Export any workflow as JSON, commit it, review it in a
+                  pull request, restore it after a bad change. This single property is why n8n wins the maintenance
+                  argument later in this article, and it is not a feature the other two can add without changing what
+                  they are.
+                </li>
+                <li>
+                  <strong>Code where you want it, nodes where you do not.</strong> A Code node sits in an otherwise
+                  visual workflow, so the eighty per cent that is plumbing stays visual and the twenty per cent that is
+                  genuinely logic is written properly. No other tool here gets that balance as right.
+                </li>
+                <li>
+                  <strong>Sub-workflows.</strong> Real reuse. One "write this outcome back to the CRM" workflow that ten
+                  others call, fixed in one place.
+                </li>
+                <li>
+                  <strong>AI orchestration.</strong> The model, tool-calling, memory and vector store nodes are ordinary
+                  parts of a workflow rather than a bolt-on, which is why I built
+                  <a href="/blog/i-open-sourced-my-ai-sdr">CleverResponder, my open-source AI SDR</a>, on it rather than
+                  on either of the others.
+                </li>
+              </ul>
+              <p><strong>Where it falls over:</strong></p>
+              <ul>
+                <li>
+                  <strong>You own the uptime, in the boring literal sense.</strong> Upgrades, backups, certificate
+                  renewal, disk space, and the pager. If the workflow matters at 3 a.m., somebody has to care at 3 a.m.
+                </li>
+                <li>
+                  <strong>Upgrades occasionally break workflows.</strong> You need a staging instance and the discipline
+                  to test on it, and most small teams have neither.
+                </li>
+                <li>
+                  <strong>Fewer connectors.</strong> You will write raw HTTP requests against documented APIs more often
+                  than in Zapier. That is fine if you can read an API doc and a wall if you cannot.
+                </li>
+                <li>
+                  <strong>Community nodes are somebody else's code.</strong> Installing one puts a third-party package
+                  inside the server that holds every credential you own. Treat it like adding a dependency to production,
+                  because it is one — the same
+                  <a href="/glossary#term-supply-chain-attack">supply chain</a> question you would ask anywhere else.
+                </li>
+                <li>
+                  <strong>The handover problem, inverted.</strong> A non-engineer can maintain a Zap. A non-engineer
+                  usually cannot maintain an n8n workflow with three Code nodes in it, and pretending otherwise at
+                  handover is how a project becomes permanently yours.
+                </li>
+              </ul>
+
+              <h2 id="three-meters-and-how-each-one-surprises-you">Three meters, and how each one surprises you</h2>
+              <p>
+                I am not going to quote prices. They will be wrong within months and they are the least interesting part
+                anyway. What is worth learning is the <em>shape</em> of each meter, because each one surprises you in a
+                different direction and the surprise arrives at scale, after the client has already committed.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram2.svg" alt="One five-step automation billed three ways: Zapier counts each successful action step so the trigger and filter are free, Make counts every module execution including the trigger, n8n Cloud counts one execution per run regardless of node count, and self-hosted n8n has no per-run meter at all" width="1160" height="500" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The same workflow, the same month, three different totals — and the ranking flips the moment the data changes shape rather than the workflow. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                <strong>Zapier meters tasks: one per action step that succeeds.</strong> Triggers do not count, and steps
+                that stop the run generally do not either. The surprise is a multiplication people do not do in their
+                head: a six-action Zap running a thousand times a month is not a thousand of anything, it is six thousand
+                tasks. Teams budget on runs and get billed on actions, and the gap is exactly the number of steps they
+                added after the first estimate.
+              </p>
+              <p>
+                <strong>Make meters operations: one per module execution, including the trigger.</strong> The surprise
+                here is different and worse, because the multiplier lives in your data rather than in your workflow. One
+                trigger that returns eighty line items, feeding an iterator, turns a single conceptual "run" into hundreds
+                of operations — and the number changes daily with the size of the incoming payload. A scheduled scenario
+                also consumes at least one operation each time it checks, whether or not there is anything to do, so a
+                scenario polling every minute is spending all month finding nothing.
+              </p>
+              <p>
+                <strong>n8n Cloud meters executions: one per workflow run, however many nodes it contains.</strong> This
+                is the shape that rewards big workflows, and it is genuinely liberating to add a node without doing
+                arithmetic. The place the flat promise bends is sub-workflows, which can count as their own executions
+                depending on how they are called — so if your design calls a sub-workflow per item in a loop, check that
+                specific behaviour on your plan before you build it that way.
+              </p>
+              <p>
+                <strong>Self-hosted n8n meters nothing, which is the trap.</strong> The bill moves from a line item to a
+                server plus your attention, and attention is the cost nobody puts in the quote. Budget the maintenance
+                hours explicitly, write them into the proposal as a recurring number, and you avoid the slow argument
+                that starts in month four —
+                <a href="/blog/scoping-work-before-you-quote-it">the same discipline as scoping any other work before
+                quoting it</a>.
+              </p>
+              <blockquote>
+                <p>
+                  Whichever you choose: build the real thing, run it for one real week on real volume, then read the
+                  tool's own usage counter. Multiply by four for the month, and double it for the retries and the growth
+                  you have not thought of. That number is the comparison. The pricing page is a work of fiction about
+                  somebody else's workflow.
+                </p>
+              </blockquote>
+              <p>
+                One more shape worth naming: free tiers are sized for a demo. They are generous enough to prove the idea
+                and never enough to run it, which is not a scam, it is the business model. The failure is quoting a
+                project against the free tier and discovering the real plan in week three, after the price is fixed.
+              </p>
+
+              <h2 id="the-maintenance-question-nobody-asks">The maintenance question nobody asks</h2>
+              <p>
+                Every evaluation I have ever been handed compares what the tools can build. None of them compare what the
+                tools cost to keep alive, which is where the money actually goes, because a workflow is not a thing you
+                finish. It is a thing that decays as the systems underneath it change.
+              </p>
+
+              <h3>When the vendor changes an API</h3>
+              <p>
+                An endpoint gets deprecated, a field is renamed, an OAuth scope is split in two. Something in the chain
+                will do this within a year — this is not a hypothetical, it is a Tuesday. The interesting difference is
+                who picks the date.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram3.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram3.svg" alt="Two ways a connector change reaches a workflow: on a hosted platform the vendor's update lands in the running workflow with no version you chose, so the first signal is a failed run or an empty field; on a self-hosted n8n pinned to an image tag the update waits until you pull it, so you choose the date and can roll back, and the fix also waits for you" width="760" height="380" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Hosted means the fix arrives without you doing anything, and so does the breaking change. Pinned means neither arrives until you decide. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                On a hosted tool the vendor updates the connector for you, which is a real and underrated benefit — most
+                API changes are absorbed before you ever hear about them. The cost is that a connector update can also
+                change field names or output shapes underneath a mapping you wrote a year ago, and there is no version
+                you chose and no tag to roll back to. On a self-hosted n8n pinned to an image tag, nothing changes until
+                you pull a new image, which means you test the upgrade on staging and roll back if it breaks. It also
+                means the fix waits for you. Neither column is free, and I would take the hosted behaviour for a simple
+                integration and the pinned behaviour for anything load-bearing.
+              </p>
+
+              <h3>How you find out a run failed</h3>
+              <ul>
+                <li>
+                  <strong>Zapier.</strong> Errors appear in the history, and after repeated failures you get an email and
+                  the Zap is switched off. That last part is the one that hurts in practice: it stops quietly on Tuesday
+                  and you hear about it on Friday, from the client.
+                </li>
+                <li>
+                  <strong>Make.</strong> Failed runs can be held in an incomplete-executions queue so you can fix the
+                  cause and resume the same run rather than reconstructing it, and error routes let you decide the
+                  behaviour per module. A scenario also deactivates after enough consecutive failures.
+                </li>
+                <li>
+                  <strong>n8n.</strong> You can wire a single error workflow that catches failures from every other
+                  workflow and sends them wherever your team already looks, set retry-on-fail per node, and inspect the
+                  exact input and output of the node that failed. This is the one that behaves like software you operate.
+                </li>
+              </ul>
+              <p>
+                The general point matters more than the differences: <strong>none of the three will page anyone unless
+                you build the paging.</strong> The default everywhere is an email to whoever created the connection, who
+                is frequently a person who has left the company. The first thing I add to any handover is a failure
+                notification into a channel that a current employee actually reads.
+              </p>
+
+              <h3>Can you see what changed?</h3>
+              <p>
+                A workflow that a colleague edited last week is a change you did not review. What each tool gives you:
+              </p>
+              <ul>
+                <li><strong>Zapier.</strong> A version history that records that something changed. Not a reviewable diff.</li>
+                <li>
+                  <strong>Make.</strong> A blueprint export that is diffable in the technical sense and unreadable in the
+                  practical one, for the reasons above.
+                </li>
+                <li>
+                  <strong>n8n.</strong> Workflow JSON that a human can read. Node positions still churn and the diff is
+                  noisier than source code, but a reviewer can find the changed parameter. Git integration exists on the
+                  paid tiers; on a self-hosted community instance you export through the API in a scheduled job and commit
+                  the result, which is not elegant and is entirely sufficient.
+                </li>
+              </ul>
+
+              <h3>Can somebody else take it over?</h3>
+              <p>
+                This is the question I would ask first if I could only ask one. Whoever inherits the workflow needs the
+                credentials, some documentation, and the ability to read the thing itself. Choose for the person holding
+                it in eighteen months rather than the person building it this week, and a surprising number of these
+                arguments resolve themselves.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>There is no migration path between them.</strong> A Make blueprint and an n8n workflow are
+                  unrelated formats describing different execution models, and Zapier has no comparable export at all.
+                  Switching tools means rebuilding by hand, re-authorising every connection and re-testing every branch.
+                  Price the choice as a two-year commitment, because that is what it is.
+                </p>
+              </div>
+
+              <h2 id="when-the-answer-is-none-of-them">When the answer is none of them</h2>
+              <p>
+                Sometimes the honest recommendation is that this should not be a workflow tool at all. It should be two
+                hundred lines in a repository, with tests, running wherever the rest of your software runs. The signs are
+                specific:
+              </p>
+              <ul>
+                <li>
+                  <strong>The logic is the product.</strong> If what the workflow does is the thing the business sells,
+                  it belongs somewhere it can be reviewed, tested and owned properly.
+                </li>
+                <li>
+                  <strong>You need tests.</strong> None of the three has a real testing story. You cannot assert "given
+                  this payload, this happens" and run it on every change. You test by running it and looking, which is
+                  fine for three steps and indefensible for thirty.
+                </li>
+                <li>
+                  <strong>Volume makes per-unit billing absurd.</strong> Tens of thousands of records a day through a
+                  meter that charges per item is a rounding error in a database job and a line item that gets a meeting.
+                </li>
+                <li>
+                  <strong>You need replay.</strong> Reprocessing a month of events, in order, without creating duplicates,
+                  is a normal requirement in code and a research project in a workflow tool.
+                </li>
+                <li>
+                  <strong>More than about three branches of real business logic.</strong> A canvas is a poor way to draw a
+                  state machine, and a numbered list is worse.
+                </li>
+                <li>
+                  <strong>Every node is a thin wrapper around code you would rather write.</strong> When the workflow is
+                  mostly Code steps joined by arrows, the visual tool has stopped paying for itself.
+                </li>
+              </ul>
+              <p>
+                And the counterweight, because "just write code" is glib. Code needs somewhere to deploy, somewhere to
+                keep secrets, monitoring, and a person on call — which is precisely the bundle the hosted tools are
+                selling. If a team has none of that, moving the automation into a repository moves the problem rather
+                than solving it. The reason I reach for code more often than people expect is that most teams I work with
+                already have all of it for their own product, and the automation is the only thing living outside the
+                system they already know how to operate.
+              </p>
+
+              <h2 id="when-the-answer-is-apps-script">When the answer is Apps Script</h2>
+              <p>
+                If every system involved is already Google — Sheets, Gmail, Drive, Calendar, Forms — then Google Apps
+                Script is often the right answer, and it is the option nobody puts on the shortlist.
+              </p>
+              <ul>
+                <li>
+                  <strong>It runs inside the Workspace boundary.</strong> No new vendor, no new
+                  <a href="/glossary#term-jwt">token</a> stored on a third party's server, nothing crossing out of an
+                  account the organisation already trusts. In a compliance conversation that is sometimes the entire
+                  argument won in one sentence.
+                </li>
+                <li>
+                  <strong>It is included.</strong> You are already paying for it. There is no task meter, no operation
+                  meter and no seat to add.
+                </li>
+                <li>
+                  <strong>The triggers are enough for most of this work.</strong> Time-driven, on form submit, on edit,
+                  on open. That covers a large share of what small businesses build Zaps for.
+                </li>
+                <li>
+                  <strong>It is code with version control.</strong> The <code>clasp</code> command-line tool pulls the
+                  project into local files, so you get a real editor, a repository and reviewable diffs — which is more
+                  than two of the three tools in this article can offer.
+                </li>
+              </ul>
+              <p>
+                Where it stops, equally plainly. You are governed by quotas rather than by a bill: limits on how long a
+                single execution may run, and daily caps on things like messages sent and external requests made. You do
+                not get charged for exceeding them, you get stopped, which is a different failure mode to plan for. The
+                moment a second SaaS product enters the picture you are writing raw API calls with no connector library,
+                and one of the other three becomes the sensible answer. And the script tends to live in a place nobody
+                looks, owned by whichever account created it — I have seen more than one useful script die quietly with an
+                offboarded employee. Put the project in a shared drive, and commit the source somewhere the team can find
+                it.
+              </p>
+
+              <h2 id="the-decision-table">The decision table</h2>
+              <p>
+                Keyed on the constraint rather than the feature, because the constraint is the thing you actually have.
+                Find the row that describes your situation and stop reading the others.
+              </p>
+              <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
+                   at 375px it hides ~105-240px of table. A scrollable region has to be
+                   reachable by keyboard and has to say what it is (WCAG 2.1.1). The
+                   caption already names it, so it is borrowed rather than duplicated. -->
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-n8nmakeorzapier">
+                <table class="post-table">
+                  <caption id="table-caption-n8nmakeorzapier">What I would pick for each constraint, and the reason. Where two options are listed, the first is the one I reach for more often.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Your constraint</th>
+                      <th scope="col">What I would pick</th>
+                      <th scope="col">Why</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Data cannot leave infrastructure you control</td>
+                      <td>Self-hosted n8n, or code</td>
+                      <td>The only two answers with no third party in the path</td>
+                    </tr>
+                    <tr>
+                      <td>Adding a subprocessor needs client approval</td>
+                      <td>Self-hosted n8n, or Apps Script</td>
+                      <td>Nothing new to add to the list, so nothing to approve</td>
+                    </tr>
+                    <tr>
+                      <td>Hosted is fine, but it must stay in a named region</td>
+                      <td>Make, or n8n Cloud</td>
+                      <td>Both let you choose a region — confirm it before promising</td>
+                    </tr>
+                    <tr>
+                      <td>Nobody on the team can maintain a server</td>
+                      <td>Zapier or Make</td>
+                      <td>A hosted tool that works beats a self-hosted one that rots</td>
+                    </tr>
+                    <tr>
+                      <td>Two apps, five steps, needed today</td>
+                      <td>Zapier</td>
+                      <td>Fastest to running, and a non-engineer can keep it alive</td>
+                    </tr>
+                    <tr>
+                      <td>Heavy branching you must explain to a client</td>
+                      <td>Make</td>
+                      <td>The canvas is the explanation, and the routers are readable</td>
+                    </tr>
+                    <tr>
+                      <td>One trigger fans out into dozens of items</td>
+                      <td>n8n, or code</td>
+                      <td>Per-operation billing is precisely wrong for this shape</td>
+                    </tr>
+                    <tr>
+                      <td>Tens of thousands of records a day</td>
+                      <td>Code</td>
+                      <td>Every per-unit meter becomes absurd at this volume</td>
+                    </tr>
+                    <tr>
+                      <td>Everything already lives in Google Workspace</td>
+                      <td>Apps Script</td>
+                      <td>No new vendor, no new token, no new bill</td>
+                    </tr>
+                    <tr>
+                      <td>Changes must be reviewable in a pull request</td>
+                      <td>Self-hosted n8n, or code</td>
+                      <td>Exportable JSON is the only version control story here</td>
+                    </tr>
+                    <tr>
+                      <td>It needs an AI agent that calls tools</td>
+                      <td>n8n</td>
+                      <td>The others call a model; this one orchestrates one</td>
+                    </tr>
+                    <tr>
+                      <td>You are an agency hosting it for clients</td>
+                      <td>n8n Cloud, or code</td>
+                      <td>Read the Sustainable Use License before you self-host it</td>
+                    </tr>
+                    <tr>
+                      <td>The workflow is the thing you sell</td>
+                      <td>Code</td>
+                      <td>Product logic belongs in a repository with tests</td>
+                    </tr>
+                    <tr>
+                      <td>Nobody has stated any constraint at all</td>
+                      <td>Zapier</td>
+                      <td>Then optimise for the fastest thing someone else can maintain</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 id="what-i-actually-pick">What I actually pick</h2>
+              <p>
+                Three questions, in this order, and I have never needed a fourth.
+              </p>
+              <ol>
+                <li>
+                  <strong>Has anyone said "data residency", "processing agreement", "subprocessor", or named a
+                  regulation?</strong> If yes, the shortlist is self-hosted n8n or code, and the maintenance goes in the
+                  quote as a recurring line rather than a favour.
+                </li>
+                <li>
+                  <strong>Who maintains this in eighteen months?</strong> If the honest answer is somebody in the
+                  business rather than an engineer, it is Zapier — or Make if the flow genuinely branches. If the answer
+                  is a developer who will still be there, it is n8n.
+                </li>
+                <li>
+                  <strong>Does it repeat more than weekly, and does it touch anything irreversible?</strong> If so, put a
+                  human approval step in front of the irreversible part whatever you chose. That is the
+                  <a href="/blog/ai-driven-human-assisted">AI-driven, human-assisted</a> pattern, and it is the same
+                  discipline I use for
+                  <a href="/blog/automating-email-replies-with-n8n">email reply automation</a>: automation earns autonomy
+                  by being boring for a while first.
+                </li>
+              </ol>
+              <p>
+                My default when nobody has answered any of those — which is most first conversations — is to build it in
+                whatever the client already pays for. The second-best tool that someone in the room can maintain beats
+                the best tool that only I can. That is not a compromise, it is the actual requirement, and it is the same
+                reasoning I apply to
+                <a href="/blog/which-ai-tool-for-which-job">choosing between AI tools</a>: frequency and ownership decide
+                more than capability does.
+              </p>
+              <p>
+                The one thing I will not tell you is which is cheapest, because nobody honestly can. The answer depends
+                on the shape of your data rather than on anybody's price sheet, and the only way to know is to build one
+                real workflow and read the meter for a week.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Which one is cheapest?</summary>
+                  <p>
+                    Nobody can answer that from a price sheet, including me, because the three tools do not meter the
+                    same thing. A workflow with few steps and low volume is cheapest on Zapier. A workflow that fans one
+                    trigger out into dozens of items is punished hardest on Make and barely noticed by n8n. A workflow
+                    running constantly at high volume is cheapest as code on a server you already have. Build the thing,
+                    run it for one real week, read the usage counter the tool gives you, multiply by four, then double it
+                    for the retries and the growth you have not thought of yet. That number is your comparison. The
+                    pricing page is not.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is n8n open source?</summary>
+                  <p>
+                    Not in the OSI sense, and the distinction matters commercially. n8n is source-available under the
+                    Sustainable Use License, which the company describes as fair-code: you can read it, modify it, and
+                    self-host it for your own internal business purposes at no licence cost. What you cannot do is host
+                    it as a service for other people, or resell it, without a separate commercial arrangement. If you are
+                    an agency planning to run one instance and sell workflows on it to clients, read the licence properly
+                    before you build the business model on it.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can I self-host Make or Zapier?</summary>
+                  <p>
+                    No. Both are hosted products only, and that is a deliberate part of what they sell — the uptime, the
+                    connector maintenance and the security posture are the product. What they offer instead is a choice
+                    of region: Make asks which data zone you want when you create the account, and Zapier has published
+                    data-residency options at the enterprise end of its pricing. Neither is a substitute for the data
+                    never leaving your own infrastructure, so if a contract requires that, the hosted tools are out
+                    before you compare a single feature.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does self-hosting n8n make me compliant?</summary>
+                  <p>
+                    No. It removes one subprocessor from the path, which can be the specific thing a contract asks for,
+                    and it hands you every obligation that vendor was carrying: patching the container, keeping the
+                    database backed up and encrypted, protecting the credential encryption key, restricting who can open
+                    the editor, and noticing when it stops. I have moved clients off self-hosted instances and onto n8n
+                    Cloud precisely because nobody was doing that work. An unpatched server you control is not more
+                    compliant than a maintained service you disclosed.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can I move a workflow from one tool to another?</summary>
+                  <p>
+                    Not automatically. Make exports a scenario blueprint as JSON and n8n exports a workflow as JSON, but
+                    they are unrelated formats describing different execution models, and Zapier has no equivalent export
+                    at all. Migration means rebuilding by hand, re-authorising every connection, and re-testing every
+                    branch. Anything claiming to convert between them is doing a rough translation you will still have to
+                    check step by step. Treat the choice as something you live with for a couple of years, not a setting
+                    you can change later.
+                  </p>
+                </details>
+                <details>
+                  <summary>Which one should I use for AI agents?</summary>
+                  <p>
+                    All three can call a model API, so the real question is whether you want the tool to orchestrate the
+                    agent or just to make the request. n8n has the deepest native tooling for this — model nodes, tool
+                    calling, memory and vector store nodes as ordinary parts of a workflow — which is why I built
+                    <a class="text-link" href="/blog/i-open-sourced-my-ai-sdr">my open-source AI SDR</a> on it. Zapier
+                    and Make both have perfectly good AI steps for the common case of classify this, then draft that.
+                    What usually decides it is not the feature list but where the prompt and the customer record are
+                    allowed to travel.
+                  </p>
+                </details>
+                <details>
+                  <summary>How do I stop an automation bill from surprising me?</summary>
+                  <p>
+                    Learn what one run costs in the tool's own unit before you scale it, because each tool counts a
+                    different thing: Zapier counts action steps, Make counts module executions including the trigger, and
+                    n8n Cloud counts whole executions. Then find the multiplier that is specific to your data rather than
+                    to your workflow — usually an array that arrives with a variable number of items — and work out the
+                    worst realistic day rather than the average one. Put a usage alert on the account, and write the
+                    expected monthly figure into the quote so nobody is surprised in month three.
+                  </p>
+                </details>
+                <details>
+                  <summary>What about Power Automate, Workato, or the others?</summary>
+                  <p>
+                    The same two questions decide those too. Power Automate is worth a serious look when the organisation
+                    already lives in Microsoft 365, for exactly the reason Apps Script is worth a look when it lives in
+                    Google — the data does not leave a boundary that has already been accepted. Workato and the
+                    enterprise integration platforms sell governance, audit trails and support contracts, which is what a
+                    large compliance department is actually buying. I have kept this article to the three I ship
+                    production work in, because a comparison written from a marketing page is not worth reading.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The tools will keep converging, and half the specific behaviours above will have shifted by the time
+                somebody quotes this back to me. The two questions underneath them will not, because they are about the
+                work rather than the vendor: whose machine is this running on, and who will still understand it next
+                year. Answer those and the shortlist writes itself.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fn8n-make-or-zapier-an-honest-comparison" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=n8n%2C%20Make%2C%20or%20Zapier%3A%20An%20Honest%20Comparison&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fn8n-make-or-zapier-an-honest-comparison" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=n8n%2C%20Make%2C%20or%20Zapier%3A%20An%20Honest%20Comparison%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fn8n-make-or-zapier-an-honest-comparison" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/automating-email-replies-with-n8n">Automating email replies with n8n</a></li>
+              <li><a href="/blog/i-open-sourced-my-ai-sdr">I open-sourced my AI SDR</a></li>
+              <li><a href="/blog/which-ai-tool-for-which-job">Which AI tool for which job</a></li>
+              <li><a href="/blog/scoping-work-before-you-quote-it">Scope the work before you quote it</a></li>
+              <li><a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Not sure which of these your project needs?</h2>
+            <p>
+              Most of the time the answer falls out of two questions about hosting and handover, and it takes one
+              conversation rather than a trial of three platforms. I build and maintain these systems for clients, and I
+              will tell you when the honest answer is the cheaper tool or no tool at all.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/contact">Tell me about the workflow</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Take any string apart code point by code point: invisible characters shown in place, homoglyph and Trojan Source detection, NFC/NFD/NFKC/NFKD compared." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/unicode" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="The characters in your text that you cannot see" />
+    <meta property="og:description" content="Take any string apart code point by code point: invisible and bidi characters shown in place, homoglyph and Trojan Source detection, the four normalisation forms side by side, and grapheme clusters drawn against bytes. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/unicode" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-unicode.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Unicode Inspector" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The characters in your text that you cannot see" />
+    <meta name="twitter:description" content="Take any string apart code point by code point: invisible and bidi characters shown in place, homoglyph and Trojan Source detection, the four normalisation forms side by side, and grapheme clusters drawn against bytes. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-unicode.jpg" />
+    <title>Unicode Inspector — Invisible Characters | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Unicode Inspector and Invisible Character Detector",
+        "url": "https://krunalkumar.dpdns.org/labs/unicode",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Security and digital forensics",
+        "operatingSystem": "Any modern web browser",
+        "description": "Take any string apart code point by code point: invisible and bidi characters shown in place, homoglyph and Trojan Source detection, the four normalisation forms side by side, and grapheme clusters drawn against bytes. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Per-character code point, name, category, script and block",
+                "UTF-8, UTF-16 and UTF-32 byte sequences",
+                "Zero-width, bidi, tag and variation selector detection",
+                "Homoglyph analysis with a confusable skeleton",
+                "Punycode and mixed-script domain spoof check",
+                "NFC, NFD, NFKC and NFKD side by side",
+                "Grapheme cluster segmentation",
+                "Trojan Source detection",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is my text sent anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Every code point is examined in your browser, and the character data comes from the browser's own Unicode tables rather than a lookup service. There is no server behind this page and no network request when you press Inspect."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is a zero-width character?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A code point that occupies a position in a string and paints nothing. Zero width space, the byte order mark, the soft hyphen and the two joiners are the common ones. They survive copy and paste, they count towards a length limit, and two strings that differ only by one of them are different strings to every computer and the same string to every person."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is Trojan Source?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A 2021 result showing that bidirectional formatting characters let source code display in one order and compile in another. The reviewer approves what the screen shows and the compiler reads what the file stores. Every language with comments and string literals is affected, which makes it a review and CI problem rather than a bug in any one language."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why do two identical-looking usernames register as separate accounts?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the uniqueness check compared the raw strings. Normalise to NFKC first and compare the normalised values, which folds fullwidth letters, ligatures and the mathematical alphabets down to plain ASCII. Cross-script lookalikes such as Cyrillic a survive NFKC untouched, so compare confusable skeletons as well if impersonation is part of your threat model."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does a character sometimes have no name here?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the full Unicode character database is megabytes and this page downloads nothing. Names are exact for ASCII, controls, formatting characters, bidi, tags, variation selectors and spaces, algorithmic for CJK, Hangul and private use, and absent for everything else. Category and script always come from the browser's own Unicode tables, so those two columns are exact for every character."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How is a grapheme cluster different from a character?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A grapheme cluster is what a person would call one character. A family emoji is one cluster, seven code points and twenty-five UTF-8 bytes. Truncating by code points or by bytes can cut a cluster in half, which is how a length limit produces half an emoji and how a substring produces a string no decoder will accept."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Unicode inspector",
+                        "item": "https://krunalkumar.dpdns.org/labs/unicode"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Unicode inspector</li>
+          </ol>
+        </nav>
+        <h1>Unicode inspector</h1>
+        <p class="hero-text">A string is a sequence of code points. What you see is a picture of it. Almost every Unicode bug that becomes a security bug lives in the gap between the two &mdash; a username with an invisible character in it, a domain spelled in Cyrillic, a line of source that reads one way and compiles the other. Paste something in and the gap becomes visible.</p>
+        <ul class="lab-facts">
+          <li>Every code point, named and decoded</li>
+          <li>Invisible and bidi characters shown in place</li>
+          <li>Homoglyph and domain spoof analysis</li>
+          <li>NFC, NFD, NFKC and NFKD side by side</li>
+          <li>Trojan Source detection</li>
+          <li>Nothing uploaded</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool lab-unicode" id="unicodetool">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved</li>
+                  <li>Character names are partial; category and script are exact</li>
+                  <li>The confusable table is curated, not the full UTS 39 set</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>Evidence files stay on your machine</li>
+                  <li>A token or key you paste is never transmitted</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="tool-sample">Load an example</label>
+          <select class="lab-select" id="tool-sample">
+            <option value="" selected>Load an example&hellip;</option>
+          </select>
+          <button class="lab-btn" type="button" id="tool-clean"
+                  title="Strip the invisible characters, keeping emoji joiners">Remove invisibles</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Inspect</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label">Text</p>
+            <label class="sr-only" for="tool-text">Text to inspect</label>
+            <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
+                      autocorrect="off" placeholder="Paste a username, a domain, a filename, a line of source&hellip;"></textarea>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Report</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <!-- The same string twice: once segmented the way a person reads it,
+             once the way it is stored. Where the two counts disagree is the
+             whole subject of this page. -->
+        <div class="uni-strips">
+          <div>
+            <p class="uni-striplabel" id="uni-label-clusters">As you see it &mdash; grapheme clusters</p>
+            <div class="uni-strip" id="tool-clusters" tabindex="0" role="group"
+                 aria-labelledby="uni-label-clusters"></div>
+          </div>
+          <div>
+            <p class="uni-striplabel" id="uni-label-points">As it is stored &mdash; code points, in logical order</p>
+            <div class="uni-strip" id="tool-points" tabindex="0" role="group"
+                 aria-labelledby="uni-label-points"></div>
+          </div>
+          <p class="uni-counts" id="tool-counts"></p>
+        </div>
+
+        <div class="uni-tablewrap" tabindex="0" role="region" aria-label="Per-character breakdown">
+          <table class="uni-table">
+            <caption>Every code point, in order</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Char</th>
+                <th scope="col">Code point</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Script</th>
+                <th scope="col">Block</th>
+                <th scope="col">UTF-8</th>
+                <th scope="col">UTF-16</th>
+                <th scope="col">UTF-32</th>
+              </tr>
+            </thead>
+            <tbody id="tool-tbody"></tbody>
+          </table>
+        </div>
+        <p class="uni-tablenote" id="tool-tablenote"></p>
+
+        <div class="lab-resultbar">
+          <label class="sr-only" for="tool-result">Cleaned text</label>
+          <textarea class="lab-toolfield lab-toolresult" id="tool-result" readonly rows="2"
+                    spellcheck="false" placeholder="A copy with the invisible characters removed appears here"></textarea>
+          <button class="lab-btn" type="button" data-copy-target="tool-result">Copy</button>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Where the gap opens up</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Characters that paint nothing</h3>
+            <p>ZERO WIDTH SPACE, the byte order mark, the soft hyphen and the two joiners occupy a position and draw nothing. They survive copy and paste, they count towards length limits, and a filter that blocks <code>admin</code> does not block <code>ad</code> plus a zero-width space plus <code>min</code>. Tag characters go further: U+E0000 to U+E007F are an invisible copy of ASCII, so an entire sentence can travel inside a string that renders as three words.</p>
+          </article>
+          <article class="info-card">
+            <h3>Homoglyphs and the address bar</h3>
+            <p>Cyrillic <code>&#x430;</code> and Latin <code>a</code> are different characters that most fonts draw identically. A domain using one for the other is a different domain that looks like yours. The skeleton in the report replaces every lookalike with the plain character it imitates, so two names a person cannot tell apart collapse to the same string &mdash; which is the only comparison worth running before you register or trust a name.</p>
+          </article>
+          <article class="info-card">
+            <h3>Bidi overrides reorder the display</h3>
+            <p>RIGHT-TO-LEFT OVERRIDE and the isolate characters change the order text is drawn in without changing the order it is stored in. An attachment stored as <code>invoice&hellip;gnp.exe</code> displays as <code>invoice.png</code>. Source code stored one way compiles differently from the way it reviews. In both cases the display is the lie and the bytes are the truth.</p>
+          </article>
+          <article class="info-card">
+            <h3>Normalisation and uniqueness</h3>
+            <p>NFC composes accents onto their letters. NFKC goes further and folds compatibility variants, so fullwidth <code>&#xFF41;&#xFF44;&#xFF4D;&#xFF49;&#xFF4E;</code>, the <code>fi</code> ligature and the mathematical alphabets all collapse to plain ASCII. If a signup form stores what was typed and checks uniqueness against what was stored, two visually identical usernames become two accounts. Normalise, then check, then store both.</p>
+          </article>
+          <article class="info-card">
+            <h3>Three ways to count one string</h3>
+            <p>A family emoji is one thing to a person, seven code points to a string, and twenty-five bytes to a file. A validator that trims at twenty characters, a database column that counts bytes and a UI that counts what the user sees will disagree, and the disagreement shows up as half an emoji, a mojibake tail, or a string a decoder rejects.</p>
+          </article>
+          <article class="info-card">
+            <h3>What to actually do</h3>
+            <p>Decide what your inputs are allowed to contain and enforce it at the edge: usernames and identifiers rarely need formatting characters at all. Normalise to NFKC before any uniqueness or equality check. Reject bidi controls in source at commit time. And when something looks wrong but reads fine, paste it here before you spend an afternoon on it.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Trojan Source, in one snippet</h2>
+          <p>The example below is the shape from the 2021 disclosure. Load it into the tool with the examples menu to see it with the real characters in place.</p>
+        </div>
+        <p>This is what a reviewer sees on screen:</p>
+        <pre class="lab-example uni-snippet"><code>var accessLevel = "user";
+if (accessLevel != "user") {   // Check if admin
+  grantAdminRights();
+}</code></pre>
+        <p>And this is what the file stores. Two bidi characters have been written
+          out as red markers so this page stays readable; in the real file they
+          are invisible and occupy no width at all.</p>
+        <pre class="lab-example uni-snippet"><code>var accessLevel = "user";
+if (accessLevel != "user<span class="uni-mark">RLO</span> <span class="uni-mark">LRI</span>// Check if admin<span class="uni-mark">PDI</span> <span class="uni-mark">LRI</span>") {
+  grantAdminRights();
+}</code></pre>
+        <p>The comment text is inside the string literal. The comparison therefore
+          can never be true, the branch always runs, and every reviewer who read
+          the first version approved the second. Nothing about the code is
+          unusual; only the direction it is painted in changed.</p>
+        <ol class="lab-steps">
+          <li>Reject bidi controls in source at commit time, in a hook or a CI step, unless a file genuinely needs them.</li>
+          <li>Turn on the compiler warning where there is one &mdash; rustc, gcc and clang all added one after the disclosure.</li>
+          <li>Make the code viewer show them. GitHub warns about bidi characters in diffs, and most editors can render them as visible marks.</li>
+          <li>For a first pass, grep is enough: U+202A to U+202E, U+2066 to U+2069, U+200E, U+200F and U+061C.</li>
+        </ol>
+        <p>The same trick works outside source code. An email display name, a
+          commit message, a filename in an archive and a support ticket all render
+          through the same algorithm. If you take phishing artefacts apart
+          regularly, the <a href="/labs/phishing-dissector">phishing dissector</a>,
+          the <a href="/labs/url-inspector">URL inspector</a> and the
+          <a href="/labs/email-headers">email header analyzer</a> handle the parts
+          of that job that are not about characters.</p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is my text sent anywhere?</summary>
+            <div>No. Every code point is examined in your browser, and the character data comes from the browser's own Unicode tables rather than a lookup service. There is no server behind this page and no network request when you press Inspect.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What is a zero-width character?</summary>
+            <div>A code point that occupies a position in a string and paints nothing. Zero width space, the byte order mark, the soft hyphen and the two joiners are the common ones. They survive copy and paste, they count towards a length limit, and two strings that differ only by one of them are different strings to every computer and the same string to every person.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What is Trojan Source?</summary>
+            <div>A 2021 result showing that bidirectional formatting characters let source code display in one order and compile in another. The reviewer approves what the screen shows and the compiler reads what the file stores. Every language with comments and string literals is affected, which makes it a review and CI problem rather than a bug in any one language.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why do two identical-looking usernames register as separate accounts?</summary>
+            <div>Because the uniqueness check compared the raw strings. Normalise to NFKC first and compare the normalised values, which folds fullwidth letters, ligatures and the mathematical alphabets down to plain ASCII. Cross-script lookalikes such as Cyrillic a survive NFKC untouched, so compare confusable skeletons as well if impersonation is part of your threat model.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does a character sometimes have no name here?</summary>
+            <div>Because the full Unicode character database is megabytes and this page downloads nothing. Names are exact for ASCII, controls, formatting characters, bidi, tags, variation selectors and spaces, algorithmic for CJK, Hangul and private use, and absent for everything else. Category and script always come from the browser's own Unicode tables, so those two columns are exact for every character.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How is a grapheme cluster different from a character?</summary>
+            <div>A grapheme cluster is what a person would call one character. A family emoji is one cluster, seven code points and twenty-five UTF-8 bytes. Truncating by code points or by bytes can cut a cluster in half, which is how a length limit produces half an emoji and how a substring produces a string no decoder will accept.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or a character is named badly, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=unicode#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Unicode%20inspector%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More security tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/encoding">
+            <span class="lab-card-name">Encoder / decoder</span>
+            <p class="lab-card-desc">Base64, hex, URL and more, with auto-detection.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/regex">
+            <span class="lab-card-name">Regex tester</span>
+            <p class="lab-card-desc">Live matching, plus a catastrophic backtracking check.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/url-inspector">
+            <span class="lab-card-name">URL inspector</span>
+            <p class="lab-card-desc">Take a phishing link apart without opening it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/phishing-dissector">
+            <span class="lab-card-name">Phishing dissector</span>
+            <p class="lab-card-desc">Pull a suspicious email apart, header by header.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/email-headers">
+            <span class="lab-card-name">Email header analyzer</span>
+            <p class="lab-card-desc">Trace where an email actually came from.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/unicode.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

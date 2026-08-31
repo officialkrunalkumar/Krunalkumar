@@ -1,0 +1,73 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-the-interview-questions-i-ask-diagram2" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-the-interview-questions-i-ask-diagram2">Two interview structures compared. On the left, an unstructured interview forms a closed loop: the first five minutes set a prior, the difficulty of the follow-up questions drifts to match it, the answers then agree with the prior, and the prior grows stronger and feels earned, which feeds back into the next question. On the right, a structured interview breaks that loop with five mechanical steps: the same questions in the same order, each score written down before the next question is asked, the CV kept shut until the scores are in, two interviewers scoring independently before comparing, and a rule that when the total disagrees with the feeling, the feeling has to argue its case.</title>
+  <defs>
+    <marker id="loop-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#a3352f"/>
+    </marker>
+    <marker id="step-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#157f41"/>
+    </marker>
+  </defs>
+  <g>
+    <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE THE FIRST FIVE MINUTES GOES</text>
+
+    <!-- Unstructured loop -->
+    <rect x="40" y="88" width="520" height="472" rx="12" fill="none" stroke="#a3352f" stroke-width="2"/>
+    <text x="64" y="124" fill="#a3352f" font-size="16" font-weight="800" letter-spacing="2">UNSTRUCTURED: THE LOOP CLOSES</text>
+
+    <rect x="205" y="150" width="190" height="66" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="300" y="180" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="middle">First five minutes</text>
+    <text x="300" y="200" fill="#64748b" font-size="13" text-anchor="middle">set a prior</text>
+
+    <rect x="350" y="264" width="190" height="66" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="445" y="294" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="middle">Question difficulty</text>
+    <text x="445" y="314" fill="#64748b" font-size="13" text-anchor="middle">drifts to match it</text>
+
+    <rect x="205" y="378" width="190" height="66" rx="10" fill="#a3352f"/>
+    <text x="300" y="408" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">The answers agree</text>
+    <text x="300" y="428" fill="#ffffff" font-size="13" text-anchor="middle">with the prior</text>
+
+    <rect x="60" y="264" width="190" height="66" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="155" y="294" fill="#6b7a90" font-size="14" font-weight="800" text-anchor="middle">The prior hardens</text>
+    <text x="155" y="314" fill="#64748b" font-size="13" text-anchor="middle">and feels earned</text>
+
+    <path d="M 395 194 C 440 208 452 232 447 258" fill="none" stroke="#a3352f" stroke-width="2.5" marker-end="url(#loop-arr)"/>
+    <path d="M 443 336 C 438 362 424 382 400 396" fill="none" stroke="#a3352f" stroke-width="2.5" marker-end="url(#loop-arr)"/>
+    <path d="M 205 400 C 178 386 160 364 155 336" fill="none" stroke="#a3352f" stroke-width="2.5" marker-end="url(#loop-arr)"/>
+    <path d="M 158 258 C 163 230 178 208 200 194" fill="none" stroke="#a3352f" stroke-width="2.5" marker-end="url(#loop-arr)"/>
+
+    <text x="64" y="490" fill="#6b7a90" font-size="15">Nothing in this loop is dishonest. Every step is a small</text>
+    <text x="64" y="514" fill="#6b7a90" font-size="15">and reasonable adjustment, which is exactly why the</text>
+    <text x="64" y="538" fill="#6b7a90" font-size="15">transcript ends up agreeing with the first impression.</text>
+
+    <!-- Structured -->
+    <rect x="600" y="88" width="520" height="472" rx="12" fill="none" stroke="#157f41" stroke-width="2"/>
+    <text x="624" y="124" fill="#157f41" font-size="16" font-weight="800" letter-spacing="2">STRUCTURED: THE LOOP STAYS OPEN</text>
+
+    <rect x="624" y="146" width="472" height="52" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="648" y="178" fill="#64748b" font-size="15">1 &#183; Same questions, same order, every candidate</text>
+
+    <rect x="624" y="208" width="472" height="52" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="648" y="240" fill="#64748b" font-size="15">2 &#183; Score written down before the next question</text>
+
+    <rect x="624" y="270" width="472" height="52" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="648" y="302" fill="#64748b" font-size="15">3 &#183; The CV stays shut until the scores are in</text>
+
+    <rect x="624" y="332" width="472" height="52" rx="10" fill="none" stroke="#6b7a90" stroke-width="1.5"/>
+    <text x="648" y="364" fill="#64748b" font-size="15">4 &#183; Two people score before they compare notes</text>
+
+    <rect x="624" y="394" width="472" height="52" rx="10" fill="#157f41"/>
+    <text x="648" y="426" fill="#ffffff" font-size="15" font-weight="700">5 &#183; If the total disagrees, the feeling argues its case</text>
+
+    <line x1="860" y1="200" x2="860" y2="204" stroke="#157f41" stroke-width="2.5" marker-end="url(#step-arr)"/>
+    <line x1="860" y1="262" x2="860" y2="266" stroke="#157f41" stroke-width="2.5" marker-end="url(#step-arr)"/>
+    <line x1="860" y1="324" x2="860" y2="328" stroke="#157f41" stroke-width="2.5" marker-end="url(#step-arr)"/>
+    <line x1="860" y1="386" x2="860" y2="390" stroke="#157f41" stroke-width="2.5" marker-end="url(#step-arr)"/>
+
+    <text x="624" y="490" fill="#6b7a90" font-size="15">None of this makes me objective. It makes the bias</text>
+    <text x="624" y="514" fill="#6b7a90" font-size="15">expensive to act on without noticing, which is roughly</text>
+    <text x="624" y="538" fill="#6b7a90" font-size="15">the most a single hour can be asked to buy.</text>
+
+    <text x="40" y="596" fill="#64748b" font-size="15">The failure mode is not that I judge early &#8212; I cannot help that. It is that judging early quietly rewrites the questions I ask next.</text>
+  </g>
+</svg>

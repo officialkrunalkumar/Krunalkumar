@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="An EMI calculator that keeps going: the full amortisation schedule, prepayment compared both ways, and what a rate rise does to your tenure." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/emi" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="The EMI calculator that keeps going after the EMI" />
+    <meta property="og:description" content="Work out an EMI, then everything the brochure stops short of: the full amortisation schedule, what a prepayment actually saves depending on which option you pick, what a rate rise quietly does to your tenure, and the real cost of a loan once the processing fee is counted. Runs entirely in your browser; nothing you type is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/emi" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-emi.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Loan, EMI and Prepayment Calculator" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The EMI calculator that keeps going after the EMI" />
+    <meta name="twitter:description" content="Work out an EMI, then everything the brochure stops short of: the full amortisation schedule, what a prepayment actually saves depending on which option you pick, what a rate rise quietly does to your tenure, and the real cost of a loan once the processing fee is counted. Runs entirely in your browser; nothing you type is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-emi.jpg" />
+    <title>Loan EMI and Prepayment Calculator | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Loan EMI, Amortisation and Prepayment Calculator",
+        "url": "https://krunalkumar.dpdns.org/labs/emi",
+        "applicationCategory": "FinanceApplication",
+        "applicationSubCategory": "Loan and mortgage arithmetic",
+        "operatingSystem": "Any modern web browser",
+        "description": "Work out an EMI, then everything the brochure stops short of: the full amortisation schedule, what a prepayment actually saves depending on which option you pick, what a rate rise quietly does to your tenure, and the real cost of a loan once the processing fee is counted. Runs entirely in your browser; nothing you type is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "INR"
+        },
+        "featureList": [
+                "EMI from principal, rate and tenure with the formula shown",
+                "Full amortisation schedule, monthly or by year",
+                "Interest and principal split charted for every instalment",
+                "Prepayment compared both ways: cut the tenure or cut the EMI",
+                "Floating-rate simulator: extended tenure against a higher instalment",
+                "Two loans compared including processing fees and the effective rate",
+                "Optional old-regime tax panel for sections 24(b) and 80C",
+                "Schedule export as CSV",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is anything I type here sent anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server behind this page and no network call anywhere in the code: no upload, no lookup, no analytics on the numbers you enter. A loan amount, a salary and a tax slab are exactly the details people hand to a random website without thinking about it, and this one has nowhere to send them even if it wanted to. Close the tab and the numbers are gone."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Reduce the EMI or reduce the tenure, which should I pick?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Cutting the tenure almost always saves more, often several times more, and the lab computes both on your own numbers so you can see the gap rather than take my word for it. The reason is that interest is charged on the balance, so a rupee taken off the balance early stops accruing interest for every month that was left. Cutting the EMI hands part of that saving back by keeping the debt alive for the full original term. The honest case for cutting the EMI is cash flow, not cost: a smaller instalment is what you want when the monthly payment is the thing straining."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "My lender raised the rate and my EMI did not change. Is that good?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It means the tenure moved instead, which is the default at almost every lender and needs no signature from you. It is not a favour. The same rise absorbed by a longer tenure costs considerably more in total interest than the same rise absorbed by a higher instalment, and the rate-change tab prices both on your loan. After any repricing, look at your statement for the field that actually changed."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will my bank’s numbers match these exactly?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The EMI will, to the rupee, because everybody uses the same annuity formula. The schedule can drift by a few rupees, because lenders differ on how they round, on whether interest is computed on a daily or a monthly reducing balance, and on what they do with the broken period between disbursal and your first instalment. Those gaps are small and they are not the point. The shape is the point. The sanction letter is the document that binds, not this page."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is the effective rate higher than the rate I was quoted?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because a fee is money you borrowed and never received. The effective rate here is the internal rate of return of the actual cashflow: what reached your account on day one, against what leaves it every month until the loan closes. Two loans can carry the same headline rate and different prices, and a loan with a lower rate and a larger fee is regularly the dearer of the two."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "The total cost and the effective rate sometimes disagree. Which one is right?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The effective rate, and the disagreement is worth understanding. Adding up rupees across twenty years treats money paid today and money paid in year nineteen as the same thing, and they are not. A fee is paid in full on day one; the interest it buys you out of arrives slowly. Discounting them, which is what the effective rate does, is the arithmetic your lender uses on its own side of the deal. The lab shows both figures and says so when they point different ways."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I trust the tax panel?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Treat it as arithmetic, not advice. I am not a tax professional. The ceilings are written into the code, two lakh under section 24(b) for a self-occupied house and one and a half lakh under 80C, and budgets move those numbers. It also assumes the old regime, which has not been the default since FY 2023-24 and gives you neither deduction on a self-occupied house under the new one. Confirm every figure against the current year. What the panel is genuinely useful for is seeing which years the deduction is worth anything in, which are the early ones, where the interest is largest."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is in the CSV export?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Every instalment of whichever scenario you exported: the month, the opening balance, the payment, how that payment split between interest and principal, any extra you paid, and the closing balance. The numbers are written plain, with no currency symbol and no thousands separators, so a spreadsheet reads the columns as numbers rather than as text it has to be argued with. The file is assembled in your browser and handed over through a blob URL, so it is never uploaded anywhere."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Loan and EMI",
+                        "item": "https://krunalkumar.dpdns.org/labs/emi"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Loan and EMI</li>
+          </ol>
+        </nav>
+        <h1>Loan EMI, and the four things the brochure stops short of</h1>
+        <p class="hero-text">Every bank site has an EMI calculator and every one of them ends at the same place: one number a month, and a pie chart. The parts that decide what a loan actually costs are never on that page &mdash; how little of an early instalment touches the debt, which prepayment option saves three times more than the other, what a rate rise quietly does to your tenure, and how a processing fee makes a lower headline rate the dearer loan. This one keeps going.</p>
+        <ul class="lab-facts">
+          <li>The annuity formula, with your numbers in it</li>
+          <li>Every instalment split into interest and principal</li>
+          <li>Prepayment priced both ways</li>
+          <li>What a repricing does to the end date</li>
+          <li>Nothing you type leaves the browser</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This lab does all of its arithmetic inside your browser and needs JavaScript to do it. Every number on the page is computed in this tab, from figures you typed, seconds before you see them.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server. A loan amount and a tax slab are not details worth handing to a website.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-viz" id="emiviz">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This runs entirely inside your browser &mdash; the formula, the schedule,
+              the charts, the tax arithmetic, all of it on your own machine. Nothing is
+              uploaded and there is no server behind it.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved between visits</li>
+                  <li>No rate lookups, no lender data, no comparison feed</li>
+                  <li>No advice &mdash; it is arithmetic, and the limits are stated below</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A loan amount and a salary stay on your machine</li>
+                  <li>Nothing you type ever appears in your Network tab</li>
+                  <li>The CSV is built in this tab and never uploaded</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-emi-mount" id="viz-emi-mount">
+          <p class="lab-proc-fallback">Starting the loan lab&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The four things this page exists for</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The first instalment barely touches the debt</h3>
+            <p>Interest is charged each month on whatever is still owed, and at the start that is the entire loan. On thirty lakh over twenty years at a normal rate, the first payment is about eighty-two per cent interest and knocks under five thousand rupees off the balance. Principal does not overtake interest until roughly the twelfth year. The chart draws that for every instalment, and the shape is more persuasive than the sentence.</p>
+          </article>
+          <article class="info-card">
+            <h3>Two prepayment answers, and one is far better</h3>
+            <p>Hand a lender extra money and it will ask whether you want a smaller instalment or an earlier finish. Most people say smaller instalment, because that is the one you can feel. On the default loan here, cutting the tenure saves about three and a half times what cutting the EMI saves &mdash; on exactly the same money. Both are computed side by side, so you are choosing rather than guessing.</p>
+          </article>
+          <article class="info-card">
+            <h3>A rate rise usually arrives as extra months</h3>
+            <p>When a floating rate moves up, the lender&rsquo;s default is to leave your instalment exactly where it is and add months to the end. It needs no signature and it changes nothing you can see on your bank statement, which is why so few people notice. A one-point rise two years into a twenty-year loan can add four years. Raising the EMI instead costs more per month and far less overall, and the lab prices both.</p>
+          </article>
+          <article class="info-card">
+            <h3>A rate is not a price</h3>
+            <p>A processing fee is money you borrowed and never received, so it makes the loan more expensive than the advertised rate says. The comparison tab prices the whole cashflow &mdash; what actually reached your account against what actually leaves it &mdash; and reports the rate that balances the two. That number is regularly a quarter point above the one on the poster, and it is the one worth comparing.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How the arithmetic is done</h2>
+          <p>None of this is difficult. It is only hidden, which is a different problem, so here is all of it.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>One formula, printed on the page</h3>
+            <p>The EMI is the standard annuity payment: principal times the monthly rate times (1&nbsp;+&nbsp;r) to the power n, divided by the same power minus one. Every lender in the world uses it. The lab prints it with your numbers substituted, so you can check the result by hand, and it prints the zero-rate case too, where the whole thing collapses into a division.</p>
+          </article>
+          <article class="info-card">
+            <h3>The schedule is walked, not approximated</h3>
+            <p>There is no closed-form shortcut in here. Each month the engine charges interest on the balance that exists, subtracts what the payment covers, applies any extra you have paid, and moves on. That is the only honest way to model a prepayment landing in month thirteen, a rate change in month twenty-five and a recast instalment afterwards, because all three of them break the closed form.</p>
+          </article>
+          <article class="info-card">
+            <h3>Rounding is done the way a lender does it</h3>
+            <p>The instalment is rounded to the rupee, interest is charged to the paise, and the final payment is whatever clears the balance rather than the EMI. That is why the last row is never a round number and why a closure statement never matches the sanction letter. Where an option exists to hold the end date &mdash; a recast after a prepayment &mdash; the new instalment is rounded up, so the loan cannot slip a month to a rounding error.</p>
+          </article>
+          <article class="info-card">
+            <h3>The effective rate is solved, not estimated</h3>
+            <p>The effective cost is the internal rate of return of the real cashflow, found by bisecting on the discount rate until the present value of every instalment equals the money that actually reached your account. Eighty halvings put it far past any precision worth quoting. There is a self-test in the module: with no fee it must reproduce the nominal rate exactly, and adding a fee must raise it.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How far this can be trusted</h2>
+          <p>The arithmetic is right. Whether it describes your loan is a separate question, and these are the places the two come apart.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Your contract wins, always</h3>
+            <p>This models a monthly reducing balance with a level instalment, which is what the overwhelming majority of retail loans are. Lenders still differ on rounding, on daily versus monthly rests, and on the broken period between disbursal and the first instalment. Those move the schedule by rupees, not by thousands, but the sanction letter is the document that binds and this page is not.</p>
+          </article>
+          <article class="info-card">
+            <h3>What it deliberately does not model</h3>
+            <p>Staged disbursal on an under-construction property, and the pre-EMI interest you pay in the meantime. Moratoriums and step-up instalment plans. Insurance premiums funded into the loan. Prepayment penalties, which a floating-rate loan to an individual generally does not carry and a fixed-rate one generally does. Any of those changes the answer, and none of them is guessed at here.</p>
+          </article>
+          <article class="info-card">
+            <h3>It says nothing about whether to borrow</h3>
+            <p>Prepaying is not automatically right. Money spent clearing a cheap home loan is money not earning anywhere else, and after tax relief the comparison is closer than it looks. Beating a home loan rate is possible; beating a personal loan or a credit card rate is not, and that is the one case where the answer is not really in doubt. This page prices the loan. What to do about it is yours.</p>
+          </article>
+          <article class="info-card">
+            <h3>The tax panel is the least stable part</h3>
+            <p>It is switched off until you turn it on, and it applies only to a home loan under the old regime. The ceilings are hard-coded and budgets move them; the new regime, default since FY 2023-24, gives you neither on a self-occupied house. Pre-construction interest, 80EE and 80EEA, joint ownership and surcharge are all outside it. Same rule as the <a href="/labs/salary-breakdown">salary breakdown lab</a>: confirm it against the current year, and it is arithmetic, not advice.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is anything I type here sent anywhere?</summary>
+            <div>No. There is no server behind this page and no network call anywhere in the code: no upload, no lookup, no analytics on the numbers you enter. A loan amount, a salary and a tax slab are exactly the details people hand to a random website without thinking about it, and this one has nowhere to send them even if it wanted to. Close the tab and the numbers are gone.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Reduce the EMI or reduce the tenure, which should I pick?</summary>
+            <div>Cutting the tenure almost always saves more, often several times more, and the lab computes both on your own numbers so you can see the gap rather than take my word for it. The reason is that interest is charged on the balance, so a rupee taken off the balance early stops accruing interest for every month that was left. Cutting the EMI hands part of that saving back by keeping the debt alive for the full original term. The honest case for cutting the EMI is cash flow, not cost: a smaller instalment is what you want when the monthly payment is the thing straining.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>My lender raised the rate and my EMI did not change. Is that good?</summary>
+            <div>It means the tenure moved instead, which is the default at almost every lender and needs no signature from you. It is not a favour. The same rise absorbed by a longer tenure costs considerably more in total interest than the same rise absorbed by a higher instalment, and the rate-change tab prices both on your loan. After any repricing, look at your statement for the field that actually changed.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Will my bank’s numbers match these exactly?</summary>
+            <div>The EMI will, to the rupee, because everybody uses the same annuity formula. The schedule can drift by a few rupees, because lenders differ on how they round, on whether interest is computed on a daily or a monthly reducing balance, and on what they do with the broken period between disbursal and your first instalment. Those gaps are small and they are not the point. The shape is the point. The sanction letter is the document that binds, not this page.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is the effective rate higher than the rate I was quoted?</summary>
+            <div>Because a fee is money you borrowed and never received. The effective rate here is the internal rate of return of the actual cashflow: what reached your account on day one, against what leaves it every month until the loan closes. Two loans can carry the same headline rate and different prices, and a loan with a lower rate and a larger fee is regularly the dearer of the two.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>The total cost and the effective rate sometimes disagree. Which one is right?</summary>
+            <div>The effective rate, and the disagreement is worth understanding. Adding up rupees across twenty years treats money paid today and money paid in year nineteen as the same thing, and they are not. A fee is paid in full on day one; the interest it buys you out of arrives slowly. Discounting them, which is what the effective rate does, is the arithmetic your lender uses on its own side of the deal. The lab shows both figures and says so when they point different ways.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I trust the tax panel?</summary>
+            <div>Treat it as arithmetic, not advice. I am not a tax professional. The ceilings are written into the code, two lakh under section 24(b) for a self-occupied house and one and a half lakh under 80C, and budgets move those numbers. It also assumes the old regime, which has not been the default since FY 2023-24 and gives you neither deduction on a self-occupied house under the new one. Confirm every figure against the current year. What the panel is genuinely useful for is seeing which years the deduction is worth anything in, which are the early ones, where the interest is largest.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What is in the CSV export?</summary>
+            <div>Every instalment of whichever scenario you exported: the month, the opening balance, the payment, how that payment split between interest and principal, any extra you paid, and the closing balance. The numbers are written plain, with no currency symbol and no thousands separators, so a spreadsheet reads the columns as numbers rather than as text it has to be argued with. The file is assembled in your browser and handed over through a blob URL, so it is never uploaded anywhere.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a figure here disagrees with your lender&rsquo;s by more than a few rupees, I would genuinely like to know &mdash; tell me the amount, the rate, the tenure and what your statement says.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=emi#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20EMI%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More numbers worth checking yourself</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/salary-breakdown">
+            <span class="lab-card-name">Salary breakdown</span>
+            <p class="lab-card-desc">What the offer says against what lands in the account, with the same honesty about tax rules.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/big-o">
+            <span class="lab-card-name">Big-O, measured</span>
+            <p class="lab-card-desc">The other lab about a curve nobody checks &mdash; complexity classes timed on your own machine.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/upi-fraud">
+            <span class="lab-card-name">UPI fraud walkthrough</span>
+            <p class="lab-card-desc">The scripts that take money out of an account, and the one screen that gives every one of them away.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/contrast">
+            <span class="lab-card-name">Colour contrast</span>
+            <p class="lab-card-desc">A ratio with every step of its arithmetic shown, for the same reason this page shows the formula.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/cvss">
+            <span class="lab-card-name">CVSS calculator</span>
+            <p class="lab-card-desc">Another score people quote without ever seeing where it came from.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/qr">
+            <span class="lab-card-name">QR generator and inspector</span>
+            <p class="lab-card-desc">Decode a payment QR and see exactly where it would send your money before you scan it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+    <script defer src="/assets/js/labs/viz-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/emi.js"></script>
+  </body>
+</html>

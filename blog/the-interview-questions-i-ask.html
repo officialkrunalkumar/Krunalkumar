@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The five questions I keep asking in technical interviews, what each one is really testing, and the signals that only look like signal."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="The Interview Questions I Ask" />
+    <meta
+      property="og:description"
+      content="Five questions, what each one is actually testing, the signals that only look like signal, and the three failure modes that belong to the interviewer rather than the candidate."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/the-interview-questions-i-ask.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Five interview questions listed in a panel, each tagged with the trait it is testing" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Career &amp; Mentorship" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Interview Questions I Ask" />
+    <meta
+      name="twitter:description"
+      content="Five questions, what each one is actually testing, the signals that only look like signal, and the three failure modes that belong to the interviewer rather than the candidate."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/the-interview-questions-i-ask.jpg" />
+    <title>The Interview Questions I Ask | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "The Interview Questions I Ask",
+        "description": "The interviewer's side of a technical interview: the five questions worth keeping and what each one actually tests, how to hear a good answer to a question the candidate cannot answer, which signals predict good engineers and which only look like signal, and the three failure modes that belong to the interviewer rather than the candidate.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/the-interview-questions-i-ask.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Career & Mentorship",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask"
+        },
+        "keywords": "technical interview questions, interviewing engineers, hiring signals, structured interview, live coding round, interviewer bias, anchoring, mentorship, internship hiring"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "The Interview Questions I Ask", "item": "https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Should the questions be shared in advance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For anything structured, yes, and I do: the format, the rough timings, whether they may look things up, and what the coding round will look like. Nothing on my list gets worse for being known. If somebody prepares for the question about what they would change by genuinely thinking about what they would change, then they have done the work I was trying to measure. The only questions ruined by disclosure are the ones testing whether a candidate has seen a trick before, and that is a reason to drop them rather than a reason to keep them secret. Surprise is not rigour, and it quietly costs you every good engineer who interviews badly under ambush."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long should a technical interview be?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Long enough for two substantial questions and their follow-ups, which is about fifty minutes, and no longer than that in one sitting. The value curve is steep at the start and flat quickly: most of what I learn arrives in the follow-ups to the first real question. Past an hour I am mostly measuring stamina and how recently somebody ate. If one round cannot carry the decision, run two short rounds with different people rather than one long round with the same person, because a second interviewer is worth far more than a second half-hour."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a take-home better than a live coding round?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It is better at measuring the code and worse at measuring the person. A take-home shows you what somebody produces with time, their own tools and nobody watching, which is much closer to the actual job. It also charges the candidate several unpaid hours, and charges them unequally — someone with a job and a family pays far more than a student does. If I use one, I cap it at about two hours, say the cap out loud, accept whatever exists when the cap is reached, and then spend the live time talking about their code rather than watching them write more. A small live problem plus a real conversation about something they already built gets most of the same signal for a fraction of the candidate's time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What about a candidate who freezes?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Assume it is nerves rather than ability until something proves otherwise, because that is what it usually is. Stop the clock, say plainly that this happens often and is not being scored, and go back to their own project — a question they cannot get wrong. Most people are back within a few minutes. If they are not, the honest move is to say that the format may not be showing me their best work, and to offer another route such as a small piece of asynchronous work. What I try hard not to do is score the freeze itself, because an interview is a performance under artificial conditions and I am not hiring a performer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many interviewers should be in the room?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Two, and mostly for the interviewers rather than for the candidate. One asks and one writes, and then both score independently before either says a word, because the moment one of them speaks first the other's score moves toward it. Three or more turns a conversation into a panel, and a panel makes people perform instead of think. One interviewer is workable if the scoring is written down as it happens, but it leaves the whole anchoring problem resting on the goodwill of a single tired person at four in the afternoon."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if the candidate uses an AI assistant?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Let them, and say so at the start, because the alternative is testing people under conditions that no longer exist anywhere. Then interview the interaction rather than the output: what they asked for, what they accepted, what they threw away, and how they checked it. The gap between engineers is no longer who can produce code — it is who can tell when the produced code is wrong. A candidate who pastes in a suggestion and cannot explain why the edge case at the bottom is handled that way has told me something more useful than any closed-book test would have."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this apply to interviewing interns rather than engineers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The questions survive; the weighting changes. For an intern the project question and the bug question carry almost everything, because they are the only two that still work when the candidate's entire experience is one college project — and they work perfectly well on one college project, honestly described. The two-year question matters more rather than less, because a mismatch of intent costs an intern a much larger fraction of their available time. The coding problem gets smaller and the clarifying-questions part gets larger. What I stop expecting is breadth. What I keep expecting is that they can describe their own part of the work."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">The Interview Questions I Ask</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Career &amp; Mentorship</p>
+          <h1>The interview questions I ask</h1>
+          <p class="hero-text">
+            I have run mock interviews and live technical rounds for MountBlue, Springboard, Coding Ninjas and
+            Codementor, which is a lot of hours on the side of the table that does not get written about much.
+            This is that side: the five questions I keep, what each one is actually testing, the signals I have
+            learned to distrust, and the three ways I have caught myself getting it wrong. It is not a flattering
+            post about interviewers.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 23 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/interview-questions-cover.svg" alt="Five interview questions listed in a panel, each tagged with the trait it is testing" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#why-the-list-got-shorter">Why the list got shorter</a></li>
+                <li><a href="#what-an-hour-can-and-cannot-measure">What an hour can and cannot measure</a></li>
+                <li><a href="#walk-me-through-something-you-built">1. Walk me through something you built</a></li>
+                <li><a href="#a-bug-that-took-you-too-long">2. A bug that took you too long</a></li>
+                <li><a href="#explain-that-to-someone-non-technical">3. Explain that to someone non-technical</a></li>
+                <li><a href="#a-small-problem-deliberately-underspecified">4. A small, underspecified problem</a></li>
+                <li><a href="#what-do-you-want-to-be-doing-in-two-years">5. What do you want to be doing in two years?</a></li>
+                <li><a href="#signals-that-predict-and-signals-that-only-look-like-it">Signals that predict, and signals that only look like it</a></li>
+                <li><a href="#what-a-good-i-do-not-know-sounds-like">What a good "I do not know" sounds like</a></li>
+                <li><a href="#the-failure-modes-that-are-mine">The failure modes that are mine</a></li>
+                <li><a href="#what-the-interviewer-owes-the-candidate">What the interviewer owes the candidate</a></li>
+                <li><a href="#what-a-candidate-can-take-from-this">What a candidate can take from this</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="why-the-list-got-shorter">Why the list got shorter</h2>
+              <p>
+                I started out with more questions than I have now, and most of them were clever. A puzzle about
+                weighing balls. Reverse a linked list in place. A definition question I could mark right or wrong
+                in my head while the candidate was still talking. All three felt rigorous. None of them told me
+                anything I could not have read off a CV.
+              </p>
+              <p>
+                What they measured was exposure. Somebody who had already met the puzzle answered it in forty
+                seconds, and somebody who had not sat there being watched. The forty-second answer was not
+                evidence of thinking; it was evidence of having met the puzzle. I was, in effect, grading people
+                on how many interviews they had already failed.
+              </p>
+              <p>
+                The list that survived is five questions long, none of them secret, and in every one of them the
+                interesting part is the follow-up rather than the question. That is the test I now apply before
+                keeping a question: is it worse for being known in advance? If publishing a question ruins it,
+                the question was measuring recall. If publishing it changes nothing — because the only way to
+                prepare is to go and do the work — then it was measuring the thing I wanted. Every question below
+                passes that test, which is exactly why I can publish them.
+              </p>
+
+              <h2 id="what-an-hour-can-and-cannot-measure">What an hour can and cannot measure</h2>
+              <p>
+                Before the questions, the limit, because everything after this is worth less if you skip it.
+              </p>
+              <p>
+                An interview is a sample of one person, in one hour, under conditions that exist nowhere else in
+                the job: a stranger watching, a clock running, no colleagues, no documentation, no chance to sleep
+                on it. What that hour can show me is narrow and quite real:
+              </p>
+              <ul>
+                <li>How somebody thinks when they are thinking out loud rather than presenting a conclusion.</li>
+                <li>What they do at the edge of what they know.</li>
+                <li>Whether a claim about their own work survives one honest follow-up.</li>
+                <li>Whether they can pick up a technical idea and hand it to somebody who does not share their vocabulary.</li>
+              </ul>
+              <p>
+                What it cannot show me is most of what matters: how they behave in month three when the novelty
+                has gone, what they do when a deadline slips and it is partly their fault, whether they are the
+                person others quietly go to, whether they keep learning once nobody is grading them. I have been
+                wrong about candidates in both directions and I expect to go on being wrong. An interview produces
+                a probability, not a verdict, and an interviewer who talks about it as a verdict has stopped
+                noticing what the instrument is.
+              </p>
+              <p>
+                That shapes the questions. Each one below is an attempt to reach something that survives outside
+                the room.
+              </p>
+
+              <h2 id="walk-me-through-something-you-built">1. "Walk me through something you built, and what you would change"</h2>
+              <p>
+                Two halves, and the second half is the question.
+              </p>
+              <p>
+                The first half is easy, and I ask it anyway, because it is a question nobody can get wrong and it
+                is a decent way to spend five minutes while somebody's hands stop shaking. Anyone can narrate a
+                project. Some people narrate one well. That part is warm-up.
+              </p>
+              <p>
+                The second half is where the information is. "What would you change" asks for a judgement about
+                work the candidate owns, delivered to the person deciding whether to hire them. It is a small,
+                safe test of whether they will say something true when the incentive runs the other way.
+              </p>
+              <p>
+                <strong>What a strong answer sounds like.</strong> A specific regret with a reason attached. "I
+                put the ownership check in every handler and it should have been in the data layer, because I
+                forgot it twice." "I chose the database I already knew, the data turned out to be relational, and
+                I spent two weekends writing joins by hand." Concrete, technical, unflattering, and obviously
+                arrived at by thinking about it afterwards rather than in the last ten seconds.
+              </p>
+              <p>
+                <strong>What a weak answer sounds like</strong> is not "I made a mistake". It is one of two
+                things. Either "nothing, it works fine" — which is either no reflection or no ownership, and the
+                follow-up tells me which — or an upgrade that is really a fashion statement: I would add
+                microservices, I would move it to Kubernetes, I would rewrite it in Rust. Ask why, and there is
+                nothing underneath.
+              </p>
+              <p>
+                The follow-ups that separate people:
+              </p>
+              <ul>
+                <li><strong>"What did that cost you?"</strong> A real regret has a price attached — hours, a bug, an awkward conversation with a user. An invented one does not.</li>
+                <li><strong>"Which part did you write?"</strong> On a team project this is the whole question. Asked kindly, it is answered honestly far less often than you would expect.</li>
+                <li><strong>"What would you do differently on the next one, starting Monday?"</strong> This is what separates a regret from a rule, and a rule is the part that transfers.</li>
+              </ul>
+              <p>
+                This is also the one question where somebody with no professional experience is not at a
+                disadvantage. A college project described honestly, with a real opinion about its weaknesses,
+                beats a large team project the candidate cannot locate themselves inside. My own trap here is
+                rewarding scale, and I have to watch for it: a bigger system is not a better answer.
+              </p>
+
+              <h2 id="a-bug-that-took-you-too-long">2. "Tell me about a bug that took you too long"</h2>
+              <p>
+                The phrasing carries the question. Ask about a <em>hard</em> bug and you get a war story with a
+                hero in it. "Too long" gives permission for the part I actually want — the stretch where they
+                were stuck and wrong.
+              </p>
+              <p>
+                I am listening for the shape of the search. Was a hypothesis formed and then tested, or were
+                things changed until the symptom went away? Was the error message read, all of it, or skimmed for
+                a familiar word? When two explanations were available, was the boring one checked first or the
+                interesting one?
+              </p>
+              <p>
+                The mechanism underneath a good answer is not mysterious. A bug lives somewhere in a chain of
+                stages, and there are two ways to find it. You can poke at stages in whatever order they occur to
+                you, in which case each attempt eliminates one stage and the order is luck. Or you can check a
+                value at the midpoint, learn which half is clean, and repeat — in which case each attempt
+                eliminates half of what is left. The second is not cleverness. It is the only method that gets
+                relatively faster as the system gets bigger.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/the-interview-questions-i-ask-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/the-interview-questions-i-ask-diagram1.svg" alt="A six-stage pipeline with the fault in the cache layer, compared under two searches: guess-and-check, where each run eliminates one stage and the order is chance, and halving, where each run prints a value at the midpoint and eliminates half of what is left, finding the fault in three runs" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>Both candidates find the bug. Only one of them can tell me afterwards what each step ruled out. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                I do not need anybody to say the word bisection. I need to hear that the next step was chosen
+                rather than merely tried, and that they can still name what each step ruled out. "It was some
+                caching thing" is the answer that worries me most, and not because of caching — it is that a
+                person who cannot say what the bug was never understood the fix, which means the fix was a
+                coincidence and it will not survive contact with the next one.
+              </p>
+              <p>
+                Two things people expect me to penalise and I do not. Asking somebody for help is a method, not a
+                failure; the only distinction that matters is whether they asked <em>after</em> narrowing it down
+                or <em>instead of</em> narrowing it down. And taking three days is fine. Systems are hard. What I
+                am scoring is the shape of the three days.
+              </p>
+              <p>
+                The follow-up that earns its place: <strong>"What would have let you find it in ten
+                minutes?"</strong> Sometimes the answer is a log line that did not exist, sometimes a test,
+                sometimes a habit of checking the dull explanation before the interesting one. Any of those is a
+                person converting an experience into a rule. "I would just know next time" is not, and it is the
+                most common answer I get.
+              </p>
+
+              <h2 id="explain-that-to-someone-non-technical">3. "Explain that to someone non-technical"</h2>
+              <p>
+                Not the generic version. Not "explain recursion to a five-year-old", which has a rehearsed answer
+                sitting on the internet. I pick something the candidate said thirty seconds ago, out of their own
+                project, and ask them to say it again for a person who does not have the vocabulary. Usually I
+                name the person: your client, the support engineer who takes the call, your own family.
+              </p>
+              <p>
+                Two things get tested at once. The first is whether they understand the thing or have memorised
+                its shape. You can recite a definition without understanding it. You cannot re-derive it in
+                different words without understanding it, which is why asking somebody to rephrase is a far
+                sharper instrument than asking them to define.
+              </p>
+              <p>
+                The second is whether they can work with people who are not them. Most engineering work fails at
+                a boundary — between two engineers, between an engineer and a client, between the person who
+                built the thing and the person who has to support it at midnight. Somebody who cannot cross that
+                boundary in an interview will not cross it in a meeting either.
+              </p>
+              <p>
+                <strong>What a good answer does.</strong> Reaches for a concrete example rather than a metaphor.
+                Checks partway through whether the listener is still there. And leaves things out. That last one
+                is the real skill: understanding a thing is what lets you decide which ninety per cent of it does
+                not need saying right now, and a person who cannot leave anything out is usually holding a
+                memorised block they are afraid to break.
+              </p>
+              <p>
+                <strong>What a weak answer does.</strong> Slows down and gets louder, which is jargon delivered
+                more carefully. Or reaches for an analogy that quietly requires the technical thing to be
+                understood already. Or picks an analogy, notices it breaking, and keeps going rather than saying
+                "that comparison stops working here", which would have been the best sentence in the interview.
+              </p>
+              <p>
+                This is the same muscle as giving feedback well, and for the same reason: both are the work of
+                getting an idea across a gap between two people, and both go wrong when the speaker optimises for
+                sounding thorough instead of for being understood. I have written separately about
+                <a href="/blog/smart-feedback-how-to-give-and-receive-it">how to give and receive feedback</a>,
+                and the overlap is not a coincidence.
+              </p>
+
+              <h2 id="a-small-problem-deliberately-underspecified">4. A small problem, deliberately underspecified</h2>
+              <p>
+                There is a coding round. It is small, and the specification is incomplete on purpose.
+              </p>
+              <p>
+                Something in this shape: <em>here are some log lines; tell me the busiest hour.</em>
+              </p>
+              <p>
+                That is the whole brief, and it is missing nearly everything a person needs. It does not say what
+                the log format is. It does not say what <em>busiest</em> means — most requests, most distinct
+                users, most bytes? It does not say what to do about a tie. It does not say how much data there
+                is, which decides whether this fits in memory or has to be streamed. It does not say whether the
+                timestamps carry a time zone, which on real logs is where the actual bug will be.
+              </p>
+              <p>
+                Every one of those is a question a working engineer asks before writing code, because every one
+                of them changes the code. A candidate who starts typing immediately has just shown me what they
+                will do with an ambiguous ticket, and that is a far more useful thing to learn than whether they
+                remember the exact name of a standard library function.
+              </p>
+              <p>
+                So the round is scored on the conversation before the code, and I say so out loud at the start,
+                because otherwise good people optimise for the wrong thing under stress. I say three other things
+                as well:
+              </p>
+              <ul>
+                <li><strong>Look things up.</strong> The internet stays open. Writing a hash map from memory has not been a job requirement for a long time, and testing it selects for people who revised recently rather than people who built recently.</li>
+                <li><strong>A working slow answer beats an elegant broken one.</strong> If it runs and it is right, we can talk about making it fast. The reverse conversation does not exist.</li>
+                <li><strong>Think out loud, and I will not interrupt except to answer questions.</strong> Silence from me is not disapproval. It is me trying not to lead the witness.</li>
+              </ul>
+              <p>
+                At the end I ask where it gets slow rather than what the complexity is, because the first question
+                has a real answer and the second one has a memorised one. Somebody who says "the sort dominates
+                once the file stops fitting in memory" has understood something. Somebody who says "O of n log n"
+                may have understood the same thing, but I cannot tell yet, so I ask the first version. If anybody
+                wants to see the shapes those curves make before their next interview, the
+                <a href="/labs/big-o">Big-O lab</a> plots them against each other and the
+                <a href="/glossary#term-big-o-notation">glossary entry</a> is the short written version.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The check I run on my own problem.</strong> If I have one specific solution in my head,
+                  I am not testing the problem — I am testing whether the candidate can guess what I am thinking,
+                  and I will score fluency in my own habits as competence. The test for whether a problem is safe
+                  to use is simple: would I be pleased by three genuinely different answers to it? If not, it is
+                  a puzzle wearing a work costume, and it goes back in the drawer.
+                </p>
+              </div>
+
+              <h2 id="what-do-you-want-to-be-doing-in-two-years">5. "What do you want to be doing in two years?"</h2>
+              <p>
+                Two years, not five. Five invites theatre — nobody knows, everybody performs, and the answer is a
+                paragraph engineered to sound ambitious in a way nobody can check. Two years is short enough that
+                a real answer has to be concrete, and long enough that it is not just a description of next month.
+              </p>
+              <p>
+                I am not testing ambition. I am testing motivation and fit, and the point is to find a mismatch
+                now rather than in month four, when it costs somebody a year of their working life.
+              </p>
+              <p>
+                A bad answer is not a modest one. "I want to be a senior engineer" is fine. "I want to still be
+                writing code and not managing anybody" is fine, and refreshingly rare. What is useless is the
+                answer that could have been given to any company on earth — the one about growth and learning and
+                challenging myself, which carries no information because it excludes nothing.
+              </p>
+              <p>
+                The answers I find most useful are frequently the ones that do not flatter me. "I want to move
+                toward data work." "I want to be somewhere I am not the only person doing this, because I have
+                been the only person doing this." "I want to be teaching some of it by then." That is a candidate
+                telling me what they need, which is the only way I can honestly say whether we have it — and if
+                we do not, saying so is the cheapest useful thing I will ever do for either of us.
+              </p>
+              <p>
+                This is where the interview stops running in one direction, and it should. The candidate is
+                deciding whether to spend a year or two of a finite career here, on far less information than I
+                have. So this is where I describe what the work actually looks like, including the dull parts,
+                and what we cannot offer. Running <a href="/internships">internship cohorts</a> has made me much
+                stricter about that, because the mismatches that hurt are almost never mismatches of skill. They
+                are somebody who wanted to be taught landing somewhere with nobody free to teach, or somebody who
+                wanted to be left alone landing somewhere that reviews every line. Both are visible in the answer
+                to this question, if you ask it properly and then stop talking.
+              </p>
+
+              <h2 id="signals-that-predict-and-signals-that-only-look-like-it">Signals that predict, and signals that only look like it</h2>
+              <p>
+                What follows is judgement rather than data, and I want to label it that way before you read it. I
+                have not run a controlled study on my own hiring, and neither has anybody else interviewing at
+                this scale. This is a pattern I believe I see, held with the confidence that deserves.
+              </p>
+              <p>
+                The ones I trust:
+              </p>
+              <ul>
+                <li><strong>Specificity that increases under follow-up.</strong> The single most reliable thing on the list. Push on a claim and it either gets more detailed or it gets vaguer. Both directions are informative and they are easy to tell apart.</li>
+                <li><strong>Changing position when given new information.</strong> Not caving — changing. "That is a fair point, my approach breaks there" is somebody tracking the problem rather than defending a position, and it is rarer than it should be, because most candidates have been taught that changing their mind looks weak.</li>
+                <li><strong>A question I had not thought of.</strong> About the problem, the product, the team, anything. It is direct evidence of a mind that is modelling rather than answering.</li>
+                <li><strong>An accurately drawn boundary.</strong> Somebody who says "I know this side well and I have never touched that side" has handed me a map I can use. Somebody who is uniformly confident has handed me nothing.</li>
+                <li><strong>Evidence of having finished something.</strong> However small. Most people start things. Far fewer have taken one thing all the way to its unglamorous end, and the difference shows up in the first month.</li>
+              </ul>
+              <p>
+                The ones that look like signal and are not:
+              </p>
+              <ul>
+                <li>
+                  <strong>The brand on the CV.</strong> A well-known institution tells you about an admissions
+                  process from several years ago, which was itself substantially a test of preparation somebody
+                  had to be able to afford. A well-known previous employer tells you they passed that company's
+                  interview, which is a fact about that interview. Neither has ever predicted, for me, how the
+                  follow-up questions would go. I still catch myself relaxing when I recognise a name, and the
+                  relaxing is the damage — it means I ask less.
+                </li>
+                <li>
+                  <strong>Speed at puzzles.</strong> Measures how many puzzles somebody has met. A candidate who
+                  has never seen the trick and reasons steadily toward a decent answer has shown me more than one
+                  who produces the known answer instantly. The second is far more pleasant to watch, which is
+                  precisely why the mistake is so easy to make.
+                </li>
+                <li>
+                  <strong>Confidence.</strong> The most expensive false signal in the set, because it does not
+                  feel like a signal — it feels like relief. Confidence is a presentation skill, distributed by
+                  background, by language, by how many rooms like this one somebody has already sat in. It
+                  correlates with practice at interviews and barely at all with being right. The correction has
+                  to be mechanical: whenever I notice I am rating somebody highly, I make myself name the answer
+                  that earned it. If I cannot, I was rating the delivery.
+                </li>
+                <li>
+                  <strong>A polished system-design answer.</strong> The load balancer, the cache, the queue, the
+                  read replica, in that order, unprompted, in ninety seconds. It is a memorised diagram, and the
+                  way to find out is to ask why the queue is there. Sometimes the answer is excellent and the
+                  whole conversation opens up. Often the reply is a restatement, and occasionally I am told that
+                  queues are best practice, which is the sound of a diagram with nothing behind it.
+                </li>
+              </ul>
+
+              <h2 id="what-a-good-i-do-not-know-sounds-like">What a good "I do not know" sounds like</h2>
+              <p>
+                The most useful minute in most interviews arrives when I ask something the candidate genuinely
+                cannot answer. It is the only part of the hour where I get to watch the procedure somebody runs
+                when their knowledge stops, and that procedure is closer to the actual job than anything else in
+                the room.
+              </p>
+              <p>
+                A good answer has three parts, in order. Say you do not know. Say what you do know that borders
+                it. Then reason out loud toward a guess, and label the guess as a guess.
+              </p>
+              <blockquote>
+                <p>
+                  "I have not implemented one. What I know is that without an index the database reads every row,
+                  so an index must be a structure that lets it skip rows — probably something sorted, because
+                  then you could search it by halving instead of scanning. If that is right, it would explain why
+                  an index helps a range query and does not help a search for text in the middle of a column,
+                  since you cannot halve your way to a suffix. That is reasoning from what a scan costs, not
+                  something I have read, so I would want to check it."
+                </p>
+              </blockquote>
+              <p>
+                That answer is worth more to me than a correct memorised definition, and it is worth saying why.
+                I am not hiring for the set of facts somebody holds today. Those facts have a shelf life and they
+                are all a search away. I am hiring for what happens when the facts run out, which is most
+                Tuesdays. The answer above also happens to be broadly right, which illustrates the point neatly:
+                a person who understands what a scan costs can rebuild half the theory from first principles.
+                Anybody who wants to check that reasoning can watch a lookup walk the structure in the
+                <a href="/labs/db-index">database index lab</a>.
+              </p>
+              <p>
+                The one thing that spoils it is presenting the guess as knowledge. "It is a B-tree", said flatly
+                by somebody who has read the phrase and nothing more, converts a good answer into a claim I now
+                have to verify — and once I have caught one confident wrong statement, I have to re-examine every
+                confident statement that came before it. That is why bluffing is expensive out of all proportion
+                to the fact being bluffed about. "I think, but I would check" costs nothing and protects
+                everything.
+              </p>
+
+              <h2 id="the-failure-modes-that-are-mine">The failure modes that are mine</h2>
+              <p>
+                Most writing about interviews is about how candidates fail. Having sat on this side for a while, I
+                think the larger share of bad hiring decisions is made by the interviewer. Here are the three I
+                have caught myself doing.
+              </p>
+
+              <h3>Leading the witness</h3>
+              <p>
+                "So you would put a queue there, right?" The candidate says yes — of course they do, I am the one
+                deciding — and I have now taught them the answer and am about to give them credit for it. It
+                feels like helping. It is contaminating the sample.
+              </p>
+              <p>
+                The tell is airtime. If I am doing more than about a third of the talking, I am not interviewing,
+                I am presenting, and whatever I write down afterwards will be partly about me.
+              </p>
+              <p>
+                The fixes are small and slightly uncomfortable. Ask <em>what would you do here</em> rather than
+                <em>would you do X</em>. Then be quiet. The silence after a question belongs to the candidate,
+                and the urge to fill it is mine to hold rather than theirs to relieve. I count to five before
+                rescuing anybody, and most of the time they were mid-thought.
+              </p>
+
+              <h3>Hiring for similarity</h3>
+              <p>
+                The candidate who reminds me of me is not the candidate who is best. Same tools, same framing,
+                same instincts about what matters — it reads as competence because it reads as agreement, and
+                agreement is pleasant.
+              </p>
+              <p>
+                This one is genuinely hard, because it does not feel like bias. It feels like rapport. There is
+                never a moment where you think "I prefer this person because they are like me". There is a moment
+                where you think "this conversation is going really well" — and it is going really well because
+                nobody in it is being challenged.
+              </p>
+              <p>
+                Two things help. Write down what the role actually needs before the interview, and score against
+                that list rather than against the feeling. And treat a high rating with no specific answer
+                attached to it as a warning rather than a conclusion: if I cannot point at the thing they said
+                that earned it, I am scoring the rapport.
+              </p>
+
+              <h3>Letting the first five minutes decide the next fifty</h3>
+              <p>
+                This is the expensive one, because it hides. An interview does not usually go wrong by my
+                announcing a verdict early. It goes wrong by my forming a quiet prior in the first five minutes
+                and then, without noticing, asking easier follow-ups of the candidate I have decided is strong
+                and harder ones of the candidate I have decided is weak. The transcript then agrees with me. It
+                agrees with me because I wrote it.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/the-interview-questions-i-ask-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/the-interview-questions-i-ask-diagram2.svg" alt="An unstructured interview drawn as a closed loop where the first five minutes set a prior, question difficulty drifts to match it, the answers agree with the prior and the prior hardens, beside a structured interview broken into five mechanical steps that keep the loop open" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The loop closes on its own, one reasonable adjustment at a time. Structure does not make anyone objective; it makes the drift expensive to perform without noticing. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                The fixes have to be mechanical rather than moral, because deciding to be less biased does not
+                work. Same questions, same order, every candidate. Write the score for an answer before asking
+                the next question, so it cannot be quietly revised backwards by what comes later. Keep the CV
+                shut until the scores are in. And when the total disagrees with the feeling at the end, make the
+                feeling argue its case out loud, with an answer to point at.
+              </p>
+              <p>
+                One more thing helps more than any of those: open with the candidate's own project, which is the
+                question they cannot fail. The first five minutes are mostly nerves, and nerves are not a signal
+                about anything except how many interviews somebody has already had.
+              </p>
+
+              <h2 id="what-the-interviewer-owes-the-candidate">What the interviewer owes the candidate</h2>
+              <p>
+                An interview is an asymmetric transaction. I have the information, I control the clock, and this
+                is one of several conversations in my week while it may be the only one in theirs. That asymmetry
+                creates obligations, and they are cheap to meet.
+              </p>
+              <ul>
+                <li><strong>Say the format at the start.</strong> How long, how many parts, whether they can look things up, whether the coding is on paper or a machine, and when the questions-for-us section arrives. Nerves are mostly uncertainty, and half of that uncertainty is free to remove.</li>
+                <li><strong>Say when a section is over.</strong> Otherwise people spend the next ten minutes silently re-answering a question they think went badly. Closing it explicitly hands them the ten minutes back.</li>
+                <li><strong>Answer their questions honestly, including the unflattering ones.</strong> If somebody asks why the last person left, an evasive answer is itself the answer, and they will read it correctly.</li>
+                <li><strong>Give feedback, hired or not.</strong> Specific enough to act on, sent within a few days, and about the answers rather than about the person.</li>
+              </ul>
+              <p>
+                The last one is where an interviewer's reputation actually lives, and reputations travel further
+                than companies assume, because candidates talk to each other. But that is the self-interested
+                reason and it is not the real one. Somebody spent a week preparing and an hour being examined.
+                Sending nothing back is a small unkindness entirely within your power to avoid. If you are unsure
+                how to word it, the <a href="/blog/smart-feedback-how-to-give-and-receive-it">post on feedback</a>
+                is a workable structure, and
+                <a href="/blog/what-running-internship-cohorts-taught-me-about-mentorship">what running an
+                internship cohort taught me about mentorship</a> is largely about how much of this still applies
+                long after the interview is over.
+              </p>
+
+              <h2 id="what-a-candidate-can-take-from-this">What a candidate can take from this</h2>
+              <p>
+                This is written from the interviewer's chair, but most of it inverts cleanly. The
+                <a href="/blog/how-to-stand-out-in-an-internship-interview">candidate-side companion to this
+                post</a> covers preparation properly; what follows is only the part that comes from knowing what
+                the questions are for.
+              </p>
+              <ul>
+                <li><strong>Preparing for these questions is not cheating, but the preparation is the work.</strong> There is no script for "what would you change about it". There is only having built something and having thought honestly about its weaknesses. Do that and the question answers itself. Write a paragraph and it will not survive the second follow-up.</li>
+                <li><strong>Have one bug story where you were wrong for a while.</strong> Not your most impressive bug — the one where you held a wrong assumption for three hours. Know what finally made you question it. That is the whole answer.</li>
+                <li><strong>Practise saying "I do not know" out loud until it stops feeling like a loss.</strong> Then practise the two sentences that come after it. Most candidates lose ground not for the gap itself but for what they do in the four seconds following it.</li>
+                <li><strong>Ask clarifying questions before you write code.</strong> It is not stalling and it is not weakness. It is the job. If an interviewer penalises you for it, that is information about the workplace.</li>
+                <li><strong>Ask them the two-year question back.</strong> What does somebody who joined two years ago do now? It is polite, it is specific, and the quality of the answer tells you a great deal about whether anyone there is thinking about your growth.</li>
+                <li><strong>Weigh a bad interview as data.</strong> Leading questions, a puzzle with one right answer, an interviewer reading from a page and not listening — those are things you are being shown about how a place thinks, on the day it is trying hardest to impress you.</li>
+              </ul>
+              <p>
+                And the thing that took me longest to learn, from both chairs: an interview is not the test that
+                decides your worth. It is a short, noisy, badly calibrated instrument that two people are pointing
+                at each other in the dark. Everyone in the room is guessing. Knowing that makes it easier to be
+                honest, and honest is the only strategy in this post that works on both sides of the table.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Should the questions be shared in advance?</summary>
+                  <p>
+                    For anything structured, yes, and I do: the format, the rough timings, whether they may look
+                    things up, and what the coding round will look like. Nothing on my list gets worse for being
+                    known. If somebody prepares for the question about what they would change by genuinely
+                    thinking about what they would change, then they have done the work I was trying to measure.
+                    The only questions ruined by disclosure are the ones testing whether a candidate has seen a
+                    trick before, and that is a reason to drop them rather than a reason to keep them secret.
+                    Surprise is not rigour, and it quietly costs you every good engineer who interviews badly
+                    under ambush.
+                  </p>
+                </details>
+                <details>
+                  <summary>How long should a technical interview be?</summary>
+                  <p>
+                    Long enough for two substantial questions and their follow-ups, which is about fifty minutes,
+                    and no longer than that in one sitting. The value curve is steep at the start and flat
+                    quickly: most of what I learn arrives in the follow-ups to the first real question. Past an
+                    hour I am mostly measuring stamina and how recently somebody ate. If one round cannot carry
+                    the decision, run two short rounds with different people rather than one long round with the
+                    same person, because a second interviewer is worth far more than a second half-hour.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is a take-home better than a live coding round?</summary>
+                  <p>
+                    It is better at measuring the code and worse at measuring the person. A take-home shows you
+                    what somebody produces with time, their own tools and nobody watching, which is much closer
+                    to the actual job. It also charges the candidate several unpaid hours, and charges them
+                    unequally — someone with a job and a family pays far more than a student does. If I use one,
+                    I cap it at about two hours, say the cap out loud, accept whatever exists when the cap is
+                    reached, and then spend the live time talking about their code rather than watching them
+                    write more. A small live problem plus a real conversation about something they already built
+                    gets most of the same signal for a fraction of the candidate's time.
+                  </p>
+                </details>
+                <details>
+                  <summary>What about a candidate who freezes?</summary>
+                  <p>
+                    Assume it is nerves rather than ability until something proves otherwise, because that is
+                    what it usually is. Stop the clock, say plainly that this happens often and is not being
+                    scored, and go back to their own project — a question they cannot get wrong. Most people are
+                    back within a few minutes. If they are not, the honest move is to say that the format may not
+                    be showing me their best work, and to offer another route such as a small piece of
+                    asynchronous work. What I try hard not to do is score the freeze itself, because an interview
+                    is a performance under artificial conditions and I am not hiring a performer.
+                  </p>
+                </details>
+                <details>
+                  <summary>How many interviewers should be in the room?</summary>
+                  <p>
+                    Two, and mostly for the interviewers rather than for the candidate. One asks and one writes,
+                    and then both score independently before either says a word, because the moment one of them
+                    speaks first the other's score moves toward it. Three or more turns a conversation into a
+                    panel, and a panel makes people perform instead of think. One interviewer is workable if the
+                    scoring is written down as it happens, but it leaves the whole anchoring problem resting on
+                    the goodwill of a single tired person at four in the afternoon.
+                  </p>
+                </details>
+                <details>
+                  <summary>What if the candidate uses an AI assistant?</summary>
+                  <p>
+                    Let them, and say so at the start, because the alternative is testing people under conditions
+                    that no longer exist anywhere. Then interview the interaction rather than the output: what
+                    they asked for, what they accepted, what they threw away, and how they checked it. The gap
+                    between engineers is no longer who can produce code — it is who can tell when the produced
+                    code is wrong. A candidate who pastes in a suggestion and cannot explain why the edge case at
+                    the bottom is handled that way has told me something more useful than any closed-book test
+                    would have.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does this apply to interviewing interns rather than engineers?</summary>
+                  <p>
+                    The questions survive; the weighting changes. For an intern the project question and the bug
+                    question carry almost everything, because they are the only two that still work when the
+                    candidate's entire experience is one college project — and they work perfectly well on one
+                    college project, honestly described. The two-year question matters more rather than less,
+                    because a mismatch of intent costs an intern a much larger fraction of their available time.
+                    The coding problem gets smaller and the clarifying-questions part gets larger. What I stop
+                    expecting is breadth. What I keep expecting is that they can describe their own part of the
+                    work.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                None of these questions are hard to copy, and copying them is fine, because they are not the
+                interesting part. The interesting part is being willing to hear an answer you did not expect, and
+                then not asking the next question in a way that quietly erases it.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fthe-interview-questions-i-ask" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=The%20Interview%20Questions%20I%20Ask&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fthe-interview-questions-i-ask" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=The%20Interview%20Questions%20I%20Ask%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fthe-interview-questions-i-ask" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/how-to-stand-out-in-an-internship-interview">How to stand out in an internship interview</a></li>
+              <li><a href="/blog/what-running-internship-cohorts-taught-me-about-mentorship">What running an internship cohort is teaching me about mentorship</a></li>
+              <li><a href="/blog/smart-feedback-how-to-give-and-receive-it">Smart feedback: how to give and receive it</a></li>
+              <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
+              <li><a href="/blog/finding-the-right-career">Finding the right career</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want to sit on the other side of one of these?</h2>
+            <p>
+              I run a small internship cohort built around real projects and honest feedback, and the interview
+              for it uses the questions above — published in advance, for exactly the reason given at the top of
+              this post. If you would rather talk about how your own team interviews, that is a conversation I am
+              happy to have too.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/internships">Apply for an internship</a>
+              <a class="btn btn-secondary" href="/contact">Start a conversation</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

@@ -158,11 +158,23 @@ function compile(rules, kind) {
 }
 
 const REDIRECTS = compile(config.redirects, 'redirect');
+const REWRITES = compile(config.rewrites, 'rewrite');
 const HEADERS = compile(config.headers, 'header');
 const CLEAN_URLS = config.cleanUrls === true;
 const TRAILING_SLASH = config.trailingSlash === true;
-if (config.rewrites) notes.push('vercel.json declares rewrites, which this server does not apply');
 notes.push('Cache-Control comes out as no-store, not the value in vercel.json — see the header of this file');
+
+/* The FIRST matching rewrite wins and the rest are not consulted, which is how
+   Vercel treats them and the opposite of the header rule below. Returns the
+   destination path, or null when nothing matches — the caller then resolves
+   the original pathname as usual, so a rewrite can only ever add a place to
+   look and never take one away. */
+function rewriteFor(pathname) {
+  for (const rule of REWRITES) {
+    if (rule.re.test(pathname)) return String(rule.destination || '');
+  }
+  return null;
+}
 
 /* Every matching rule is applied in file order and a later one overwrites an
    earlier one key by key. That ordering is load-bearing, not incidental: the
@@ -239,9 +251,20 @@ function resolveFile(pathname) {
   const rel = decodeURIComponent(pathname).replace(/^\/+/, '');
   const base = path.join(ROOT, rel);
 
+  /* REWRITES, applied here rather than as a redirect, because that is what
+     Vercel does with them: the address the visitor asked for is kept and a
+     different file answers it. This server used to print "vercel.json declares
+     rewrites, which this server does not apply" and then 404 — which meant
+     /buddha worked in production and was a dead link locally, the exact class
+     of local-only divergence this file exists to prevent. */
+  const rewritten = rewriteFor(pathname);
+  const rbase = rewritten ? path.join(ROOT, rewritten.replace(/^\/+/, '')) : null;
+
   const candidates = rel === ''
     ? [path.join(ROOT, 'index.html')]
     : [base, base + '.html', path.join(base, 'index.html')];
+
+  if (rbase) candidates.push(rbase, rbase + '.html', path.join(rbase, 'index.html'));
 
   for (const c of candidates) {
     if (isFile(c)) return c;

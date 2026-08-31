@@ -1,7 +1,9 @@
 /* ==========================================================================
    site-search.js — search across the whole site, with no server.
    --------------------------------------------------------------------------
-   59 labs is well past the point where browsing finds anything. The index
+   The labs alone are well past the point where browsing finds anything, and
+   the exact figure is deliberately not written here: every hand-typed count in
+   this repository has been wrong at some point. The index
    lives at /assets/data/search-index.json, generated from the pages
    themselves, and is fetched once on first use — not on page load, because
    most visits never search and ~80 KB on the wire is not worth spending on them.
@@ -56,7 +58,7 @@
         /* The panel is a listbox that is only ever LOOKED at: nothing about it
            is announced, so a screen reader user typed a query and heard
            nothing — no count, no "no results" — on the one page whose whole
-           reason for existing is that 59 labs is past the point where browsing
+           reason for existing is that the site is past the point where browsing
            finds anything. This region carries the single fact that matters. */
         '<p class="sr-only" id="site-search-status" role="status" aria-live="polite"></p>' +
       '</div>';

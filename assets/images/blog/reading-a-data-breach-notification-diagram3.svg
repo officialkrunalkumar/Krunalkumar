@@ -1,0 +1,128 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-reading-a-data-breach-notification-diagram3" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-reading-a-data-breach-notification-diagram3">Credential stuffing drawn twice. In the first case the password was reused, so one leaked email and password pair from a single breached site is replayed by automation against many unrelated services and opens two of them. In the second case every site had a different generated password, so the same leaked pair is rejected everywhere and the breach has no reach beyond the company that lost it.</title>
+  <text x="40" y="44" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHERE THE DAMAGE ACTUALLY HAPPENS — NOT AT THE BREACHED COMPANY</text>
+
+  <!-- ============ BAND A: reused password ============ -->
+  <text x="40" y="72" fill="#d42b25" font-size="16" font-weight="800" letter-spacing="2">IF THE PASSWORD WAS REUSED</text>
+
+  <text x="40" y="115" fill="#6b7a90" font-size="15" font-weight="700">the breached site</text>
+  <rect x="40" y="123" width="270" height="110" rx="12" fill="none" stroke="#d42b25" stroke-width="1.5"/>
+  <g font-family="ui-monospace, Consolas, monospace" font-size="14" fill="#64748b">
+    <text x="60" y="152">you@mail.com : Summer2024!</text>
+    <text x="60" y="178">a.patel@mail.com : qwerty123</text>
+    <text x="60" y="204">r.iyer@mail.com : Summer2024!</text>
+  </g>
+  <text x="60" y="226" fill="#64748b" font-size="14">…a few million more pairs</text>
+
+  <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="310" y1="178" x2="358" y2="178"/>
+    <path d="M352 172 L360 178 L352 184"/>
+  </g>
+
+  <text x="376" y="125" fill="#6b7a90" font-size="15" font-weight="700">replay</text>
+  <rect x="376" y="133" width="210" height="90" rx="12" fill="rgba(212,43,37,0.06)" stroke="#d42b25" stroke-width="1.5"/>
+  <g font-size="14" fill="#64748b">
+    <text x="396" y="160">rotating proxies</text>
+    <text x="396" y="182">real browsers</text>
+    <text x="396" y="204">one attempt per account</text>
+  </g>
+
+  <g stroke="#6b7a90" stroke-width="1.5" fill="none" opacity="0.8">
+    <path d="M586 178 C 616 178, 620 100, 648 100"/>
+    <path d="M586 178 C 616 178, 620 139, 648 139"/>
+    <path d="M586 178 L 648 178"/>
+    <path d="M586 178 C 616 178, 620 217, 648 217"/>
+    <path d="M586 178 C 616 178, 620 256, 648 256"/>
+  </g>
+
+  <g>
+    <rect x="650" y="84" width="330" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="670" y="105" fill="#64748b" font-size="15">a streaming service</text>
+    <text x="960" y="105" fill="#64748b" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="123" width="330" height="32" rx="8" fill="rgba(212,43,37,0.10)" stroke="#d42b25" stroke-width="2"/>
+    <text x="670" y="144" fill="#6b7a90" font-size="15" font-weight="700">a food delivery account</text>
+    <text x="960" y="144" fill="#d42b25" font-size="15" font-weight="800" text-anchor="end">opened</text>
+
+    <rect x="650" y="162" width="330" height="32" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="670" y="183" fill="#64748b" font-size="15">a retailer</text>
+    <text x="960" y="183" fill="#64748b" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="201" width="330" height="32" rx="8" fill="rgba(212,43,37,0.10)" stroke="#d42b25" stroke-width="2"/>
+    <text x="670" y="222" fill="#6b7a90" font-size="15" font-weight="700">the email account</text>
+    <text x="960" y="222" fill="#d42b25" font-size="15" font-weight="800" text-anchor="end">opened</text>
+
+    <rect x="650" y="240" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="261" fill="#64748b" font-size="15">a bank portal</text>
+    <text x="960" y="261" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">2nd factor</text>
+  </g>
+  <text x="1000" y="144" fill="#64748b" font-size="14">the breached</text>
+  <text x="1000" y="164" fill="#64748b" font-size="14">company already</text>
+  <text x="1000" y="184" fill="#64748b" font-size="14">reset its own</text>
+  <text x="1000" y="204" fill="#64748b" font-size="14">password. These</text>
+  <text x="1000" y="224" fill="#64748b" font-size="14">did not.</text>
+
+  <line x1="40" y1="300" x2="1120" y2="300" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 6"/>
+
+  <!-- ============ BAND B: unique passwords ============ -->
+  <text x="40" y="330" fill="#1a7f4f" font-size="16" font-weight="800" letter-spacing="2">IF EVERY SITE HAD ITS OWN GENERATED PASSWORD</text>
+
+  <text x="40" y="382" fill="#6b7a90" font-size="15" font-weight="700">the same breached site</text>
+  <rect x="40" y="390" width="270" height="100" rx="12" fill="none" stroke="#d42b25" stroke-width="1.5"/>
+  <g font-family="ui-monospace, Consolas, monospace" font-size="14" fill="#64748b">
+    <text x="60" y="422">you@mail.com :</text>
+    <text x="60" y="446">v7Qm-2xLd-p91Kz</text>
+  </g>
+  <text x="60" y="474" fill="#64748b" font-size="14">used at exactly one site</text>
+
+  <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="310" y1="440" x2="358" y2="440"/>
+    <path d="M352 434 L360 440 L352 446"/>
+  </g>
+
+  <text x="376" y="387" fill="#6b7a90" font-size="15" font-weight="700">the identical replay</text>
+  <rect x="376" y="395" width="210" height="90" rx="12" fill="rgba(26,127,79,0.06)" stroke="#1a7f4f" stroke-width="1.5"/>
+  <g font-size="14" fill="#64748b">
+    <text x="396" y="422">same automation</text>
+    <text x="396" y="444">same proxies</text>
+    <text x="396" y="466">same target list</text>
+  </g>
+
+  <g stroke="#6b7a90" stroke-width="1.5" fill="none" opacity="0.8">
+    <path d="M586 440 C 616 440, 620 362, 648 362"/>
+    <path d="M586 440 C 616 440, 620 401, 648 401"/>
+    <path d="M586 440 L 648 440"/>
+    <path d="M586 440 C 616 440, 620 479, 648 479"/>
+    <path d="M586 440 C 616 440, 620 518, 648 518"/>
+  </g>
+
+  <g>
+    <rect x="650" y="346" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="367" fill="#64748b" font-size="15">a streaming service</text>
+    <text x="960" y="367" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="385" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="406" fill="#64748b" font-size="15">a food delivery account</text>
+    <text x="960" y="406" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="424" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="445" fill="#64748b" font-size="15">a retailer</text>
+    <text x="960" y="445" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="463" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="484" fill="#64748b" font-size="15">the email account</text>
+    <text x="960" y="484" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">no</text>
+
+    <rect x="650" y="502" width="330" height="32" rx="8" fill="none" stroke="#1a7f4f" stroke-width="1.5"/>
+    <text x="670" y="523" fill="#64748b" font-size="15">a bank portal</text>
+    <text x="960" y="523" fill="#1a7f4f" font-size="15" font-weight="800" text-anchor="end">no</text>
+  </g>
+  <text x="1000" y="424" fill="#64748b" font-size="14">nothing to</text>
+  <text x="1000" y="444" fill="#64748b" font-size="14">replay. The pair</text>
+  <text x="1000" y="464" fill="#64748b" font-size="14">is worth one</text>
+  <text x="1000" y="484" fill="#64748b" font-size="14">account, already</text>
+  <text x="1000" y="504" fill="#64748b" font-size="14">reset.</text>
+
+  <text x="40" y="572" fill="#64748b" font-size="15">Attackers try the obvious mutations too — Summer2024! becomes Summer2025! — so incrementing a password is not changing it.</text>
+  <text x="40" y="596" fill="#64748b" font-size="15">A unique password per site removes the attack; a second factor only limits it. The manager matters more than the vigilance.</text>
+</svg>

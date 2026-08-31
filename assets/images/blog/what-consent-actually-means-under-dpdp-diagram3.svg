@@ -1,0 +1,63 @@
+<svg width="1160" height="470" viewBox="0 0 1160 470" role="img" aria-labelledby="d-what-consent-actually-means-under-dpdp-diagram3" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-what-consent-actually-means-under-dpdp-diagram3">The breach notification clock under the DPDP framework, drawn as three stations. The clock starts when you become aware of a personal data breach, on knowledge rather than on certainty. Without delay you owe two separate notifications: one to each affected individual describing what happened, what data was involved, what it may mean for them, what you are doing and who to contact; and an initial intimation to the Data Protection Board. Within seventy-two hours you owe the Board a detailed report covering the facts and circumstances, the reason, containment, findings about who caused it, remedial measures, and a copy of what you told the affected individuals. The caption notes that this shape comes from the DPDP Rules and binds when that phase commences, and that CERT-In's separate six-hour direction already runs alongside it.</title>
+  <text x="40" y="52" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">THE BREACH CLOCK — TWO DEADLINES, NOT ONE</text>
+
+  <!-- Station 1: awareness -->
+  <g>
+    <rect x="40" y="92" width="290" height="274" rx="14" fill="none" stroke="#a3352f" stroke-width="1.5"/>
+    <circle cx="64" cy="126" r="9" fill="#a3352f"/>
+    <text x="84" y="132" fill="#6b7a90" font-size="19" font-weight="800">You become aware</text>
+    <text x="64" y="164" fill="#64748b" font-size="14.5">The clock starts on knowing,</text>
+    <text x="64" y="184" fill="#64748b" font-size="14.5">not on being certain.</text>
+    <text x="64" y="226" fill="#64748b" font-size="14.5">It covers any breach of</text>
+    <text x="64" y="246" fill="#64748b" font-size="14.5">personal data &#8212; unauthorised</text>
+    <text x="64" y="266" fill="#64748b" font-size="14.5">access, disclosure, loss or</text>
+    <text x="64" y="286" fill="#64748b" font-size="14.5">destruction &#8212; with no</text>
+    <text x="64" y="306" fill="#64748b" font-size="14.5">severity threshold under it.</text>
+  </g>
+
+  <g stroke="#93671a" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="336" y1="229" x2="362" y2="229"/>
+    <path d="M356 223 L366 229 L356 235"/>
+  </g>
+
+  <!-- Station 2: without delay -->
+  <g>
+    <rect x="372" y="92" width="396" height="274" rx="14" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <circle cx="396" cy="126" r="9" fill="#93671a"/>
+    <text x="416" y="132" fill="#6b7a90" font-size="19" font-weight="800">Without delay</text>
+    <text x="396" y="162" fill="#64748b" font-size="14.5">Two notifications, not one.</text>
+
+    <text x="396" y="200" fill="#93671a" font-size="15.5" font-weight="700">&#8594; Each affected individual</text>
+    <text x="396" y="224" fill="#64748b" font-size="14.5">what happened, what data was involved,</text>
+    <text x="396" y="244" fill="#64748b" font-size="14.5">what it may mean for them, what you are</text>
+    <text x="396" y="264" fill="#64748b" font-size="14.5">doing about it, and who they can contact</text>
+
+    <text x="396" y="302" fill="#93671a" font-size="15.5" font-weight="700">&#8594; The Data Protection Board</text>
+    <text x="396" y="326" fill="#64748b" font-size="14.5">an initial intimation describing the breach</text>
+  </g>
+
+  <g stroke="#1e77a4" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="774" y1="229" x2="800" y2="229"/>
+    <path d="M794 223 L804 229 L794 235"/>
+  </g>
+
+  <!-- Station 3: 72 hours -->
+  <g>
+    <rect x="810" y="92" width="310" height="274" rx="14" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <circle cx="834" cy="126" r="9" fill="#1e77a4"/>
+    <text x="854" y="132" fill="#6b7a90" font-size="19" font-weight="800">Within 72 hours</text>
+    <text x="834" y="162" fill="#64748b" font-size="14.5">A detailed report to the Board.</text>
+    <text x="834" y="200" fill="#64748b" font-size="14.5">The facts and circumstances.</text>
+    <text x="834" y="224" fill="#64748b" font-size="14.5">The reason it happened.</text>
+    <text x="834" y="248" fill="#64748b" font-size="14.5">What you did to contain it.</text>
+    <text x="834" y="272" fill="#64748b" font-size="14.5">What you found about who</text>
+    <text x="834" y="292" fill="#64748b" font-size="14.5">caused it, and the remedies.</text>
+    <text x="834" y="326" fill="#64748b" font-size="14.5">A copy of what you told the</text>
+    <text x="834" y="346" fill="#64748b" font-size="14.5">affected individuals.</text>
+  </g>
+
+  <text x="40" y="406" fill="#64748b" font-size="15">Two honest caveats. This shape comes from the DPDP Rules, so it binds when that phase of the rollout commences rather than today.</text>
+  <text x="40" y="428" fill="#64748b" font-size="15">And CERT-In&#8217;s own six-hour reporting direction already applies to a wide class of incidents right now.</text>
+  <text x="40" y="450" fill="#64748b" font-size="15">The two clocks run at the same time, and neither one replaces the other.</text>
+</svg>

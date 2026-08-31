@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="All 118 elements, each with a drawn swatch of what the substance really looks like, a shell diagram, and the full physical data. Colour by category, block or state." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/periodic-table" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="The periodic table, showing what each element actually looks like" />
+    <meta property="og:description" content="All 118 elements, each with a procedurally drawn swatch of the real substance - silvery metal, the specific yellow of sulfur, bromine's orange-brown liquid, the glow of a noble gas in a discharge tube. Click any element for a shell diagram drawn from its electron configuration, the full physical data, and a plain sentence on what it is for. Colour by category, block, or state at any temperature you choose. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/periodic-table" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-periodic-table.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Periodic Table &amp; Element Explorer" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The periodic table, showing what each element actually looks like" />
+    <meta name="twitter:description" content="All 118 elements, each with a procedurally drawn swatch of the real substance - silvery metal, the specific yellow of sulfur, bromine's orange-brown liquid, the glow of a noble gas in a discharge tube. Click any element for a shell diagram drawn from its electron configuration, the full physical data, and a plain sentence on what it is for. Colour by category, block, or state at any temperature you choose. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-periodic-table.jpg" />
+    <title>Periodic Table &amp; Element Explorer | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Periodic Table and Element Explorer",
+        "url": "https://krunalkumar.dpdns.org/labs/periodic-table",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any modern web browser",
+        "description": "All 118 elements, each with a procedurally drawn swatch of the real substance, a shell diagram generated from its electron configuration, and the full physical data - weight, category, group, period, block, electronegativity, radius, ionisation energy, melting and boiling points, density, discovery, abundance and oxidation states. Colour by category, block, or state at any temperature. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "All 118 elements in the conventional layout",
+                "Procedurally drawn appearance swatch for every element",
+                "Electron shell diagram generated from the configuration",
+                "Full and noble-gas electron configurations",
+                "Colour by category, by block, or by state at a chosen temperature",
+                "Temperature slider from 1 K to 6500 K",
+                "Keyboard navigation with the arrow keys",
+                "Works offline once the page is cached"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Are the swatches photographs of the real elements?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and they are not trying to be. This site ships no licensed photographs and fetches nothing from anywhere else, so every swatch is drawn in your browser from an explicit descriptor - one base colour, a phase, and a surface kind such as lustrous metal, brittle crystal, glowing gas or liquid metal - using CSS gradients and inline SVG. The aim is that a metal reads as metal and a gas reads as a gas, not that it passes for a photograph."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How accurate are the numbers?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The atomic weights are the IUPAC abridged values; melting and boiling points are in kelvin at one atmosphere; radii are the empirical (Slater) values, which is why the noble gases have none - those values come from bond lengths and the noble gases do not form the bonds. Everything is stated to the precision the source gives it. Where a value is genuinely disputed or has never been measured, the page says unknown rather than filling the gap with something plausible."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why do so many of the heavy elements say unknown?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because nobody has measured them. Above fermium the elements have never existed in weighable amounts - most have been made a few atoms at a time and lasted milliseconds - so their melting points, densities and radii are relativistic-chemistry predictions rather than measurements, and several have no accepted prediction at all. Those elements carry a warning in the panel and their unmeasured values read unknown. A number invented to fill the cell would look more complete and be worse than useless."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why are the lanthanides and actinides in separate rows at the bottom?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Purely to make the table fit. Elements 57 to 71 and 89 to 103 belong between groups 2 and 3 of periods 6 and 7; leaving them there makes the table 32 columns wide. Pulling them out is the conventional compromise, and the 57-71 and 89-103 markers stand where the block really belongs - pressing Enter on one jumps down to the row. IUPAC assigns no group numbers across the f-block, and which two of these elements belong in group 3 is still argued over, so this table shows no group number for them rather than picking a side."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What does the temperature slider do?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Set the colouring to state at temperature and the slider recolours every element solid, liquid or gas for that temperature at one atmosphere, worked out from its melting and boiling points. At 298 K only mercury and bromine are liquid; wind it up and you can watch the table melt in order. Three elements are handled as special cases: carbon and arsenic sublime rather than melt at atmospheric pressure, and helium does not freeze at atmospheric pressure at any temperature."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is the shell diagram how electrons really behave?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Electrons do not orbit the nucleus in rings; they occupy probability clouds with shapes the diagram cannot show. A Bohr picture is wrong about where the electrons are and right about how many are in each shell, which is the fact it is here to make visible. The ring counts are summed straight out of the electron configuration printed beside them, so the picture and the text cannot drift apart."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can I use it with a keyboard?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Tab into the table and the arrow keys move between elements by their real position, skipping the gaps; Home and End jump to the ends of a row, Ctrl+Home and Ctrl+End to hydrogen and oganesson. Moving the selection updates the detail panel, which is announced as a live region, and every tile carries a spoken label with the name, symbol, number, category, group and period."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does it run on my machine?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Entirely. The element data is embedded in the page's own JavaScript, the swatches and diagrams are drawn in your browser, and there is no network call of any kind. Once the page is cached it works offline."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Periodic table",
+                        "item": "https://krunalkumar.dpdns.org/labs/periodic-table"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Periodic table</li>
+          </ol>
+        </nav>
+        <h1>The periodic table, drawn as the elements actually look</h1>
+        <p class="hero-text">Every periodic table colours the tiles by category and stops there, which leaves you knowing sulfur is a &ldquo;reactive nonmetal&rdquo; and no idea that it is a startling lemon yellow. This one draws the substance as well as the data: silvery metal that reads as metal, bromine&rsquo;s dark red-brown liquid fuming orange, chlorine&rsquo;s pale green, caesium&rsquo;s gold, graphite&rsquo;s black lustre, a noble gas glowing in a discharge tube. Click any element for a shell diagram built from its electron configuration and the numbers behind it.</p>
+        <ul class="lab-facts">
+          <li>All 118 elements</li>
+          <li>A drawn appearance for every one</li>
+          <li>Shell diagram from the configuration</li>
+          <li>Colour by category, block or state</li>
+          <li>A temperature slider, 1&nbsp;K to 6500&nbsp;K</li>
+          <li>Arrow-key navigable</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty box with no
+           explanation. boot.js adds html.js synchronously, so the CSS below
+           hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>The table, the appearance swatches and the shell diagrams are all drawn in your browser and need JavaScript to run.</p>
+          <p>The whole point is the drawing, so there is no static version to fall back to.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-viz" id="ptable">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This runs entirely inside your browser &mdash; the drawing, the data, all of it on
+              your own machine. Nothing is uploaded and there is no server.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">Good to know</p>
+                <ul class="lab-gate-list">
+                  <li>Everything runs on your device</li>
+                  <li>The element data ships with the page</li>
+                  <li>Nothing is uploaded or stored</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why it is here</p>
+                <ul class="lab-gate-list">
+                  <li>Seeing it beats reading about it</li>
+                  <li>Works offline once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="viz-colour">How to colour the table</label>
+          <select class="lab-select" id="viz-colour">
+            <option value="category" selected>Colour: category</option>
+            <option value="state">Colour: state at temperature</option>
+            <option value="block">Colour: block</option>
+            <option value="appearance">Colour: real appearance</option>
+          </select>
+          <label class="lab-range" for="viz-temp"><span>Temperature</span><input type="range" id="viz-temp" min="1" max="6500" value="298" step="1" /></label>
+          <output class="pt-temp" id="viz-tempout" for="viz-temp">298 K</output>
+          <label class="sr-only" for="viz-search">Find an element by name, symbol or atomic number</label>
+          <input class="pt-find" type="search" id="viz-search" placeholder="Find: name, symbol or number" autocomplete="off" spellcheck="false" />
+          <button class="lab-btn" type="button" id="viz-reset">Reset</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="pt-mount" id="viz-pt-mount"></div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this one does differently</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>It shows you the substance</h3>
+            <p>Each element carries an explicit appearance descriptor &mdash; a base colour, a phase, and a surface kind such as lustrous metal, dull metal, brittle crystal, black lustre or glowing gas &mdash; and the renderer builds the highlight, the shadow and the grain from that. Copper is copper-coloured, gold is gold, iodine is a blue-black crystal that fumes violet, mercury beads up.</p>
+          </article>
+          <article class="info-card">
+            <h3>Drawn, not photographed</h3>
+            <p>There is not a single licensed photograph in this repository and nothing on this site fetches an image from anywhere else, so the swatches are procedural: CSS gradients for the small tile, inline SVG with real gradients and an <code>feTurbulence</code> grain for the large one. It will never be a photograph. It is meant to be recognisable, and honest about being a drawing.</p>
+          </article>
+          <article class="info-card">
+            <h3>The shell diagram is derived</h3>
+            <p>The electron configuration is stored once, in a machine-readable form. The noble-gas shorthand is computed by matching the previous noble gas as a prefix, and the shell occupancies are computed by summing each subshell into its principal quantum number. Three views of one fact, so they cannot drift apart &mdash; and the real anomalies (chromium, copper, palladium, platinum, the lanthanide irregularities) are in there rather than rounded off to what aufbau predicts.</p>
+          </article>
+          <article class="info-card">
+            <h3>Watch the table melt</h3>
+            <p>Set the colouring to state at temperature and drag the slider. At 298&nbsp;K exactly two elements are liquid. At 400&nbsp;K every alkali metal but lithium has melted; by 3700&nbsp;K carbon alone is still solid, tungsten having gone five kelvin earlier. It is the melting and boiling data doing something you can actually see instead of sitting in a column.</p>
+          </article>
+          <article class="info-card">
+            <h3>It says unknown when it does not know</h3>
+            <p>Above fermium the elements have never existed in weighable amounts, so their melting points, densities and radii are predictions from relativistic quantum chemistry rather than measurements &mdash; and several have no accepted prediction at all. Those cells read <em>unknown</em> and the element is flagged as predicted. Inventing a plausible number for rutherfordium&rsquo;s density would make the page look more complete and be worse than useless.</p>
+          </article>
+          <article class="info-card">
+            <h3>Keyboard first</h3>
+            <p>The arrow keys move between elements by their real position in the table, skipping the gaps, and moving the selection updates the panel &mdash; freezing it would make the table unreadable with a keyboard. Every tile carries a spoken label, the panel is a live region, and the 57&ndash;71 and 89&ndash;103 markers are real buttons that jump down into the pulled-out rows.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Where the numbers come from</h2>
+          <p>Worth knowing before you quote anything off this page.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The units, stated plainly</h3>
+            <p>Atomic weights are the IUPAC abridged values; a number in square brackets is a mass number rather than a weight, because that element has no stable isotope and there is nothing to average. Melting and boiling points are in kelvin at one atmosphere, with the Celsius value alongside. Densities are quoted with their units in the value, because gases are measured in grams per litre and solids in grams per cubic centimetre and silently mixing the two would be a lie in the fourth decimal place.</p>
+          </article>
+          <article class="info-card">
+            <h3>Radii, and the gaps in them</h3>
+            <p>The radii are the empirical values, which is why the noble gases have none: those figures are derived from bond lengths, and the noble gases do not form the bonds. Rather than swap in a value from a different scale and quietly mix two definitions in one column, the page leaves it blank and says so.</p>
+          </article>
+          <article class="info-card">
+            <h3>The f-block has no group numbers</h3>
+            <p>IUPAC assigns no group numbers across the lanthanides and actinides, and which two elements belong in group 3 &mdash; lanthanum and actinium, or lutetium and lawrencium &mdash; is still argued over in the literature. This table shows no group number for those thirty elements rather than picking a side and presenting it as settled.</p>
+          </article>
+          <article class="info-card">
+            <h3>Allotropes complicate everything</h3>
+            <p>Carbon is graphite and diamond; phosphorus is white, red and black; tin has two forms that look nothing alike. One swatch cannot show all of that, so the swatch draws the common form and the description names the others. Where a density depends on the allotrope, the value says which one it is.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Are the swatches photographs of the real elements?</summary>
+            <div>No, and they are not trying to be. This site ships no licensed photographs and fetches nothing from anywhere else, so every swatch is drawn in your browser from an explicit descriptor - one base colour, a phase, and a surface kind such as lustrous metal, brittle crystal, glowing gas or liquid metal - using CSS gradients and inline SVG. The aim is that a metal reads as metal and a gas reads as a gas, not that it passes for a photograph.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How accurate are the numbers?</summary>
+            <div>The atomic weights are the IUPAC abridged values; melting and boiling points are in kelvin at one atmosphere; radii are the empirical (Slater) values, which is why the noble gases have none - those values come from bond lengths and the noble gases do not form the bonds. Everything is stated to the precision the source gives it. Where a value is genuinely disputed or has never been measured, the page says unknown rather than filling the gap with something plausible.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why do so many of the heavy elements say unknown?</summary>
+            <div>Because nobody has measured them. Above fermium the elements have never existed in weighable amounts - most have been made a few atoms at a time and lasted milliseconds - so their melting points, densities and radii are relativistic-chemistry predictions rather than measurements, and several have no accepted prediction at all. Those elements carry a warning in the panel and their unmeasured values read unknown. A number invented to fill the cell would look more complete and be worse than useless.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why are the lanthanides and actinides in separate rows at the bottom?</summary>
+            <div>Purely to make the table fit. Elements 57 to 71 and 89 to 103 belong between groups 2 and 3 of periods 6 and 7; leaving them there makes the table 32 columns wide. Pulling them out is the conventional compromise, and the 57-71 and 89-103 markers stand where the block really belongs - pressing Enter on one jumps down to the row. IUPAC assigns no group numbers across the f-block, and which two of these elements belong in group 3 is still argued over, so this table shows no group number for them rather than picking a side.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What does the temperature slider do?</summary>
+            <div>Set the colouring to state at temperature and the slider recolours every element solid, liquid or gas for that temperature at one atmosphere, worked out from its melting and boiling points. At 298 K only mercury and bromine are liquid; wind it up and you can watch the table melt in order. Three elements are handled as special cases: carbon and arsenic sublime rather than melt at atmospheric pressure, and helium does not freeze at atmospheric pressure at any temperature.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is the shell diagram how electrons really behave?</summary>
+            <div>No. Electrons do not orbit the nucleus in rings; they occupy probability clouds with shapes the diagram cannot show. A Bohr picture is wrong about where the electrons are and right about how many are in each shell, which is the fact it is here to make visible. The ring counts are summed straight out of the electron configuration printed beside them, so the picture and the text cannot drift apart.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I use it with a keyboard?</summary>
+            <div>Yes. Tab into the table and the arrow keys move between elements by their real position, skipping the gaps; Home and End jump to the ends of a row, Ctrl+Home and Ctrl+End to hydrogen and oganesson. Moving the selection updates the detail panel, which is announced as a live region, and every tile carries a spoken label with the name, symbol, number, category, group and period.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does it run on my machine?</summary>
+            <div>Entirely. The element data is embedded in the page's own JavaScript, the swatches and diagrams are drawn in your browser, and there is no network call of any kind. Once the page is cached it works offline.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a swatch looks wrong to you, or a number does not match your reference, I would like to know which element and which source.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=periodic-table#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20periodic%20table%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More to play with</h2>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/processor-explorer">
+            <span class="lab-card-name">Inside a processor</span>
+            <p class="lab-card-desc">Fly from a chip package down to a single transistor.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/fractal-explorer">
+            <span class="lab-card-name">Fractal explorer</span>
+            <p class="lab-card-desc">Zoom the Mandelbrot and Julia sets on your GPU.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/shader-playground">
+            <span class="lab-card-name">Shader playground</span>
+            <p class="lab-card-desc">Write a GLSL fragment shader, see it instantly.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/algorithm-visualizer">
+            <span class="lab-card-name">Algorithm visualizer</span>
+            <p class="lab-card-desc">Watch sorting, searching and pathfinding, animated.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/cpu-simulator">
+            <span class="lab-card-name">CPU simulator</span>
+            <p class="lab-card-desc">Step through assembly, watch the registers change.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+    <script defer src="/assets/js/labs/viz-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/periodic-table.js"></script>
+  </body>
+</html>

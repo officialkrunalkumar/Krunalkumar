@@ -1,0 +1,83 @@
+<svg width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="d-reading-a-data-breach-notification-diagram1" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title id="d-reading-a-data-breach-notification-diagram1">Five standard breach notification phrases paired with what each one leaves open: accessed does not rule out that a copy left, may have been affected describes the company's logging rather than your risk, no evidence of misuse covers only their own systems, naming the data that was excluded leaves the included data unlisted, and encrypted is the wrong word for a hashed password</title>
+  <text x="40" y="44" fill="#1e77a4" font-size="20" font-weight="800" letter-spacing="3">WHAT THE SENTENCE SAYS — AND WHAT IT DOES NOT RULE OUT</text>
+  <text x="60" y="76" fill="#64748b" font-size="15" font-weight="700">The phrase in the notice</text>
+  <text x="540" y="76" fill="#64748b" font-size="15" font-weight="700">What it leaves open</text>
+
+  <!-- Row 1: accessed vs acquired -->
+  <g>
+    <rect x="40" y="92" width="418" height="88" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="130" fill="#6b7a90" font-size="19" font-weight="800">“…accessed…”</text>
+    <text x="62" y="156" fill="#64748b" font-size="15">rather than “…acquired…”</text>
+    <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="470" y1="136" x2="506" y2="136"/>
+      <path d="M500 130 L508 136 L500 142"/>
+    </g>
+    <rect x="520" y="92" width="600" height="88" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="542" y="122" fill="#64748b" font-size="15">Accessed means they could read it. Acquired means a copy left.</text>
+    <text x="542" y="144" fill="#64748b" font-size="15">If the stronger word is missing, the usual reason is not good news —</text>
+    <text x="542" y="166" fill="#64748b" font-size="15">it is that the outbound logging cannot tell the two apart.</text>
+  </g>
+
+  <!-- Row 2: may have been affected -->
+  <g>
+    <rect x="40" y="190" width="418" height="88" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="230" fill="#6b7a90" font-size="19" font-weight="800">“may have been affected”</text>
+    <text x="62" y="256" fill="#64748b" font-size="15">also “potentially involved”</text>
+    <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="470" y1="234" x2="506" y2="234"/>
+      <path d="M500 228 L508 234 L500 240"/>
+    </g>
+    <rect x="520" y="190" width="600" height="88" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="542" y="220" fill="#64748b" font-size="15">A statement about their telemetry, not about your risk. They know a</text>
+    <text x="542" y="242" fill="#64748b" font-size="15">set was in scope and cannot narrow it to rows, so the whole set is</text>
+    <text x="542" y="264" fill="#64748b" font-size="15">told. Undetermined is not a lighter version of exposed.</text>
+  </g>
+
+  <!-- Row 3: no evidence of misuse -->
+  <g>
+    <rect x="40" y="288" width="418" height="88" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="328" fill="#6b7a90" font-size="19" font-weight="800">“no evidence of misuse”</text>
+    <text x="62" y="354" fill="#64748b" font-size="15">also “no reason to believe”</text>
+    <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="470" y1="332" x2="506" y2="332"/>
+      <path d="M500 326 L508 332 L500 338"/>
+    </g>
+    <rect x="520" y="288" width="600" height="88" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="542" y="318" fill="#64748b" font-size="15">They can only see their own systems. Your password gets replayed at</text>
+    <text x="542" y="340" fill="#64748b" font-size="15">a different company; a loan is opened at a bank they have never</text>
+    <text x="542" y="362" fill="#64748b" font-size="15">heard of. None of that is visible from where they looked.</text>
+  </g>
+
+  <!-- Row 4: did not include financial information -->
+  <g>
+    <rect x="40" y="386" width="418" height="88" rx="12" fill="none" stroke="#1e77a4" stroke-width="1.5"/>
+    <text x="62" y="422" fill="#6b7a90" font-size="19" font-weight="800">“did not include financial</text>
+    <text x="62" y="448" fill="#6b7a90" font-size="19" font-weight="800">information”</text>
+    <g stroke="#6b7a90" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="470" y1="430" x2="506" y2="430"/>
+      <path d="M500 424 L508 430 L500 436"/>
+    </g>
+    <rect x="520" y="386" width="600" height="88" rx="12" fill="none" stroke="#93671a" stroke-width="1.5"/>
+    <text x="542" y="416" fill="#64748b" font-size="15">Names a category outside the breach and leaves the inside unlisted.</text>
+    <text x="542" y="438" fill="#64748b" font-size="15">“Financial” is usually defined narrowly — salary, transactions and</text>
+    <text x="542" y="460" fill="#64748b" font-size="15">your bank's name can all sit outside it. Find the positive list.</text>
+  </g>
+
+  <!-- Row 5: passwords were encrypted -->
+  <g>
+    <rect x="40" y="484" width="418" height="88" rx="12" fill="none" stroke="#d42b25" stroke-width="1.5"/>
+    <text x="62" y="524" fill="#6b7a90" font-size="19" font-weight="800">“passwords were encrypted”</text>
+    <text x="62" y="550" fill="#64748b" font-size="15">the word to stop trusting</text>
+    <g stroke="#d42b25" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="470" y1="528" x2="506" y2="528"/>
+      <path d="M500 522 L508 528 L500 534"/>
+    </g>
+    <rect x="520" y="484" width="600" height="88" rx="12" fill="none" stroke="#d42b25" stroke-width="1.5"/>
+    <text x="542" y="514" fill="#64748b" font-size="15">Passwords are meant to be hashed, not encrypted — encryption is</text>
+    <text x="542" y="536" fill="#64748b" font-size="15">reversible and the key often sits in the breached system. Either the</text>
+    <text x="542" y="558" fill="#64748b" font-size="15">design is wrong or the sentence is empty. Ask the algorithm and salt.</text>
+  </g>
+
+  <text x="40" y="600" fill="#64748b" font-size="15">None of these are false. Each stays true on the least favourable facts the writer could not exclude — so the hedge is the finding.</text>
+</svg>

@@ -349,7 +349,7 @@
         </nav>
         <h1>Online compilers that run on your machine, not ours</h1>
         <p class="hero-text">
-          Eleven languages, three real machines and dozens more tools, all executing inside your own browser tab.
+          <span data-count="languages" data-count-format="Word">Eleven</span> languages, <span data-count="machines" data-count-format="word">three</span> real machines and dozens more tools, all executing inside your own browser tab.
           There is no server compiling your code, which means no queue, no account, no usage cap
           &mdash; and no copy of your work anywhere but your own computer. Free, and staying that way.
         </p>
@@ -638,7 +638,37 @@
             <p class="lab-card-desc">One number read under Unix, Windows FILETIME, WebKit, Cocoa and HFS+ at once &mdash; so you can tell which wrote it.</p>
             <span class="lab-card-engine">Every epoch, converted</span>
           </a>
-        </div>
+                  <a class="lab-card" href="/labs/phishing-dissector">
+            <h3 class="lab-card-name">Phishing email dissector</h3>
+            <p class="lab-card-desc">Paste an email and see every reason it is or is not phishing — lookalike domains, punycode, anchor-vs-href mismatches and the urgency language, each tied to the bytes that triggered it.</p>
+            <span class="lab-card-engine">Nothing you paste leaves the page</span>
+          </a>
+          <a class="lab-card" href="/labs/totp">
+            <h3 class="lab-card-name">TOTP explorer</h3>
+            <p class="lab-card-desc">Watch a six-digit code being derived: counter, HMAC, dynamic truncation, modulo. Adjust the clock skew and see why the previous window still works.</p>
+            <span class="lab-card-engine">Verified against the RFC vectors</span>
+          </a>
+          <a class="lab-card" href="/labs/upi-fraud">
+            <h3 class="lab-card-name">UPI &amp; payment fraud</h3>
+            <p class="lab-card-desc">Why a collect request looks like a payment, the scripts behind the common Indian payment scams, and what actually to do in the first hour after money moves.</p>
+            <span class="lab-card-engine">A diagram, never a real payment</span>
+          </a>
+          <a class="lab-card" href="/labs/osint-self-check">
+            <h3 class="lab-card-name">What you give away</h3>
+            <p class="lab-card-desc">What a stranger learns from your own photo, handle and bio — mapped to the password reset each fact helps answer. Analyses only what you paste about yourself, and looks nobody up.</p>
+            <span class="lab-card-engine">Never leaves your machine</span>
+          </a>
+          <a class="lab-card" href="/labs/threat-model">
+            <h3 class="lab-card-name">Threat model builder</h3>
+            <p class="lab-card-desc">Describe a system, get the STRIDE threats that actually apply to each element, rate them and export a real one-page threat model you can take into a review.</p>
+            <span class="lab-card-engine">Saved in your browser only</span>
+          </a>
+          <a class="lab-card" href="/labs/passkeys">
+            <h3 class="lab-card-name">Passkeys &amp; WebAuthn</h3>
+            <p class="lab-card-desc">Register a real passkey against this page and watch the attestation, the flag bits and the signature — then see why a lookalike origin cannot use it.</p>
+            <span class="lab-card-engine">Uses the browser&rsquo;s real WebAuthn API</span>
+          </a>
+</div>
       </section>
 
       <section class="section-card" id="forensics-tools">
@@ -683,7 +713,27 @@
             <p class="lab-card-desc">Parse a Windows registry hive for autostart keys, USB history and recent activity. No Windows required.</p>
             <span class="lab-card-engine">Parses Windows hive files</span>
           </a>
-        </div>
+                  <a class="lab-card" href="/labs/media-forensics">
+            <h3 class="lab-card-name">Media forensics</h3>
+            <p class="lab-card-desc">The honest version of a deepfake detector: provenance, ELA, noise floor, FFT and copy-move, each explained — with no verdict, because no browser can give you one.</p>
+            <span class="lab-card-engine">Runs on your machine, no upload</span>
+          </a>
+          <a class="lab-card" href="/labs/malware-triage">
+            <h3 class="lab-card-name">Malware triage</h3>
+            <p class="lab-card-desc">Static triage of an executable: PE and ELF headers, section entropy, imports read in plain English, packer tells and IOC extraction. Plus an EICAR generator for testing your own antivirus.</p>
+            <span class="lab-card-engine">Static only &mdash; nothing is executed</span>
+          </a>
+          <a class="lab-card" href="/labs/log-analyser">
+            <h3 class="lab-card-name">Log analyser</h3>
+            <p class="lab-card-desc">Drop auth.log, nginx, Apache or IIS logs and get findings: brute force separated from password spray, the successful login after a run of failures, and scanner fingerprints.</p>
+            <span class="lab-card-engine">Parses in your tab, nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/pdf-tools">
+            <h3 class="lab-card-name">PDF toolkit</h3>
+            <p class="lab-card-desc">Merge, split, reorder, rotate and strip metadata — with the xref and page tree parsed here rather than on somebody else&rsquo;s server.</p>
+            <span class="lab-card-engine">Your document never leaves</span>
+          </a>
+</div>
       </section>
 
       <section class="section-card" id="network-tools">
@@ -800,7 +850,62 @@
             <p class="lab-card-desc">Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on your GPU. Hover to pick a Julia constant.</p>
             <span class="lab-card-engine">WebGL, float32-deep zoom</span>
           </a>
-        </div>
+                  <a class="lab-card" href="/labs/periodic-table">
+            <h3 class="lab-card-name">Periodic table</h3>
+            <p class="lab-card-desc">All 118 elements with the physical data, a drawn electron shell, and a swatch approximating what each one actually looks like.</p>
+            <span class="lab-card-engine">Runs entirely in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/web-layers">
+            <h3 class="lab-card-name">Surface, deep and dark web</h3>
+            <p class="lab-card-desc">Classify any URL as surface, deep or dark and see why; then step a request through onion routing, hop by hop.</p>
+            <span class="lab-card-engine">No network requests at all</span>
+          </a>
+          <a class="lab-card" href="/labs/git-objects">
+            <h3 class="lab-card-name">Git object explorer</h3>
+            <p class="lab-card-desc">Run real git commands against a toy repo and watch the actual objects appear — blobs, trees and commits with genuine SHA-1 hashes, plus a reflog proving nothing is lost.</p>
+            <span class="lab-card-engine">Real SHA-1 over real object bytes</span>
+          </a>
+          <a class="lab-card" href="/labs/tls-handshake">
+            <h3 class="lab-card-name">TLS handshake</h3>
+            <p class="lab-card-desc">Step a TLS 1.3 handshake message by message and watch the key schedule derive — then switch to 1.2 and see why it needs a second round trip. Break it and read the alert.</p>
+            <span class="lab-card-engine">Real HKDF over sample values</span>
+          </a>
+          <a class="lab-card" href="/labs/ransomware-anatomy">
+            <h3 class="lab-card-name">Ransomware anatomy</h3>
+            <p class="lab-card-desc">Watch an incident unfold stage by stage, then switch on MFA, segmentation or offline backups and see exactly where each one stops it. A simulation over a fake tree, never your files.</p>
+            <span class="lab-card-engine">Simulated &mdash; nothing is encrypted</span>
+          </a>
+          <a class="lab-card" href="/labs/wifi-security">
+            <h3 class="lab-card-name">Wi-Fi security</h3>
+            <p class="lab-card-desc">WEP through WPA3, with the four-way handshake and SAE drawn side by side so you can see why capturing a WPA3 handshake gives an attacker nothing to crack offline.</p>
+            <span class="lab-card-engine">Explanation, not tooling</span>
+          </a>
+          <a class="lab-card" href="/labs/compiler">
+            <h3 class="lab-card-name">Compiler explorer</h3>
+            <p class="lab-card-desc">A small language taken all the way down: source to tokens to a drawn AST to bytecode, then stepped through a stack VM with the call frames visible. Click a node, see its bytecode.</p>
+            <span class="lab-card-engine">Lexer, parser and VM all in the tab</span>
+          </a>
+          <a class="lab-card" href="/labs/big-o">
+            <h3 class="lab-card-name">Big-O, measured</h3>
+            <p class="lab-card-desc">Race the complexity classes on your own machine and watch the curve get drawn from real timings. On log-log axes the slope is the exponent, which is the whole point.</p>
+            <span class="lab-card-engine">Timed here, not looked up</span>
+          </a>
+          <a class="lab-card" href="/labs/db-index">
+            <h3 class="lab-card-name">Database index</h3>
+            <p class="lab-card-desc">Insert keys and watch a B+tree split and grow, then run the same query with and without an index and compare the pages actually touched. Leftmost-prefix and covering indexes included.</p>
+            <span class="lab-card-engine">A real B+tree, built as you type</span>
+          </a>
+          <a class="lab-card" href="/labs/http-versions">
+            <h3 class="lab-card-name">HTTP/1.1 vs 2 vs 3</h3>
+            <p class="lab-card-desc">Race all three over one simulated link. Raise the packet-loss slider and watch HTTP/2 stall on TCP head-of-line blocking while HTTP/3 keeps going — the reason QUIC exists.</p>
+            <span class="lab-card-engine">A simulation, and it says so</span>
+          </a>
+          <a class="lab-card" href="/labs/docker-layers">
+            <h3 class="lab-card-name">Docker layer explorer</h3>
+            <p class="lab-card-desc">Edit a Dockerfile and watch the layer stack size itself, see which layers your edit invalidates, and find the secret still sitting in an earlier layer after you deleted it.</p>
+            <span class="lab-card-engine">Modelled sizes, for teaching</span>
+          </a>
+</div>
       </section>
 
       <section class="section-card" id="document-makers">
@@ -828,7 +933,12 @@
             <p class="lab-card-desc">Traditional to minimal templates with photo and invocation line, every field optional &mdash; the one document whose data you really should not hand to a random website.</p>
             <span class="lab-card-engine">Rendered &amp; printed in your browser</span>
           </a>
-        </div>
+                  <a class="lab-card" href="/labs/invoice-maker">
+            <h3 class="lab-card-name">GST invoice maker</h3>
+            <p class="lab-card-desc">Quotations and invoices with CGST/SGST or IGST picked from the place of supply, amount in words, MSME terms and a clean A4 print. Nothing leaves the browser.</p>
+            <span class="lab-card-engine">Nothing is uploaded, ever</span>
+          </a>
+</div>
       </section>
 
       <section class="section-card">
@@ -868,7 +978,42 @@
             <p class="lab-card-desc">HTTP requests straight from your browser. No proxy in the path, so nothing you send is relayed through anyone.</p>
             <span class="lab-card-engine">Your browser&rsquo;s own fetch</span>
           </a>
-        </div>
+                  <a class="lab-card" href="/labs/unicode">
+            <h3 class="lab-card-name">Unicode inspector</h3>
+            <p class="lab-card-desc">Code points, normalisation and grapheme clusters &mdash; and the security half: invisible characters, bidi overrides, homoglyph domains and a Trojan Source demonstration.</p>
+            <span class="lab-card-engine">Runs entirely in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/qr">
+            <h3 class="lab-card-name">QR generator and inspector</h3>
+            <p class="lab-card-desc">Build a QR code with real Reed-Solomon error correction, and decode a suspicious one to see exactly where it would send you before you go there.</p>
+            <span class="lab-card-engine">Encoder and decoder both local</span>
+          </a>
+          <a class="lab-card" href="/labs/contrast">
+            <h3 class="lab-card-name">Colour contrast</h3>
+            <p class="lab-card-desc">WCAG ratios with the arithmetic shown — sRGB to luminance to the ratio — plus APCA alongside, colour-blindness simulation, and the smallest nudge that makes a pair pass.</p>
+            <span class="lab-card-engine">Runs entirely in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/salary-breakdown">
+            <h3 class="lab-card-name">CTC to in-hand</h3>
+            <p class="lab-card-desc">Every step from CTC to what actually lands: PF, gratuity, professional tax, and both tax regimes side by side with the arithmetic shown.</p>
+            <span class="lab-card-engine">Both regimes, computed here</span>
+          </a>
+          <a class="lab-card" href="/labs/emi">
+            <h3 class="lab-card-name">Loan EMI &amp; prepayment</h3>
+            <p class="lab-card-desc">The amortisation the brochure stops short of — and what a prepayment really saves, depending on whether you cut the EMI or cut the tenure.</p>
+            <span class="lab-card-engine">Full schedule, exportable</span>
+          </a>
+          <a class="lab-card" href="/labs/image-tools">
+            <h3 class="lab-card-name">Image compressor</h3>
+            <p class="lab-card-desc">Compress, convert and resize without uploading. Find the quality where the file stops shrinking and starts looking worse, batch it, and download a ZIP built in the tab.</p>
+            <span class="lab-card-engine">Encoders run on your machine</span>
+          </a>
+          <a class="lab-card" href="/labs/typing-certificate">
+            <h3 class="lab-card-name">Typing test &amp; certificate</h3>
+            <p class="lab-card-desc">A timed test with a printable result. It says on its face that it is self-generated, because a certificate you issue yourself is not a credential.</p>
+            <span class="lab-card-engine">Self-administered, and it says so</span>
+          </a>
+</div>
       </section>
 
       <section class="section-card">

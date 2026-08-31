@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="How to read a data breach notification: what accessed, acquired and encrypted passwords really mean, and what to do based on what actually leaked."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="How to Read a Data Breach Notification" />
+    <meta
+      property="og:description"
+      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open — and what to actually do, by what leaked."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/reading-a-data-breach-notification.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A breach notification email with its careful phrases underlined, and a timeline showing the gap between the breach and the letter" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to Read a Data Breach Notification" />
+    <meta
+      name="twitter:description"
+      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open — and what to actually do, by what leaked."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/reading-a-data-breach-notification.jpg" />
+    <title>How to Read a Data Breach Notification | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How to Read a Data Breach Notification",
+        "description": "A close reading of the email that begins we recently became aware of an incident: what accessed, acquired and may have been affected each mean, why no evidence of misuse is a statement about the company's visibility rather than your risk, what encrypted passwords hides, the three dates a notification usually gives you one of, a response checklist by data type, why credential stuffing is the real downstream risk, and what the DPDP Act and the CERT-In directions actually oblige in India.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/reading-a-data-breach-notification.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification"
+        },
+        "keywords": "data breach notification, breach disclosure, credential stuffing, password hashing, salt, DPDP Act 2023, CERT-In directions, credit monitoring, identity theft, Aadhaar, incident response"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://krunalkumar.dpdns.org/blog" },
+          { "@type": "ListItem", "position": 3, "name": "Reading a Breach Notification", "item": "https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "The notification says the passwords were encrypted. Do I still need to change mine?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Start with the word itself: passwords are supposed to be hashed, not encrypted, because encryption is reversible with a key and the key often sits in the same system that was breached. So the sentence means either that they did something they should not have, or that whoever wrote the notice did not know the difference — and neither reading tells you your password is safe. Even a correctly hashed password is only as strong as the guessing it survives: bcrypt, scrypt or Argon2 with a real work factor makes each guess expensive, while an unsalted MD5 or SHA-1 hash of a common password falls to a lookup. You cannot check which one they used, so change it at that service and everywhere you reused it, and let the algorithm turn out to be good news you did not need."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does \"we have no evidence of misuse\" actually mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It means they looked at what they can see and did not find anything. That is worth having, but notice how narrow the view is. Misuse of your data mostly happens somewhere else — a login attempt at a different company, a phishing message sent from an address they do not control, a loan application at a bank they have no relationship with. None of that is visible from inside the breached company's logs, and none of it would be, however carefully they looked. The useful follow-up question is not whether they found evidence but what evidence would have looked like and whether they were positioned to see it. In most incidents the honest answer is that they were not."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the free credit monitoring worth taking?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Take it, because it is free and it takes ten minutes, but do not treat it as the response. Monitoring is detection after the fact — it tells you a new account or enquiry appeared, which means the fraud already happened. It usually covers one bureau rather than all of them, it expires after a year or two while a leaked identity number is permanent, and it does nothing whatsoever about the risk that actually applies to most breaches, which is somebody replaying your password at other sites. A credit bureau has no view of your email account. In India you are entitled to one free full credit report per calendar year from each credit information company, so a recurring calendar reminder gives you most of the same value permanently and at no cost."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "My Aadhaar or PAN number was in the breach. What can I actually do?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You cannot change the number, so the work is making the number less useful. For Aadhaar, UIDAI lets you lock biometrics and lock the number itself through the mAadhaar app or the portal, generate a Virtual ID to hand over instead of the real number, and review your authentication history to see where it has been used. For PAN, the exposure that matters is credit taken in your name, so pull your credit report from each bureau and read the enquiries section rather than only the score. Beyond that, expect the number to be quoted at you by callers as proof they are genuine — a leaked identity number is worth far more to a social engineer than to a fraudster filling in a form, and treating it as public is the mental adjustment that protects you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I tell a real breach notification from a phishing email pretending to be one?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Do not try to tell them apart, because both a real notice and a good forgery will look plausible and attackers deliberately send fakes in the days after a real breach becomes news. Instead, never act inside the email. Do not click the link, do not use the phone number in it, and do not type a password into anything it opens. Go to the company the way you normally do — the app on your phone, or an address you type yourself — and look for the notice there. Real notices are published on the company's own site and repeated by the press; a notice that exists only in your inbox and only behind a link is a strong signal on its own."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I sue the company or get compensation under the DPDP Act?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not under that Act, and this is the part people are most often surprised by. The Digital Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties — the Schedule runs up to two hundred and fifty crore rupees for failing to take reasonable security safeguards and up to two hundred crore for failing to give breach intimation — but those penalties are paid to the government, not to you. The Act creates no route to individual compensation. What it does give you is a right to grievance redressal that you must use with the company first, and then a complaint to the Board. If you lost money, the routes that can actually return it are your bank's unauthorised-transaction process, the cybercrime helpline, and a consumer forum claim for deficiency in service."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Nothing has happened in six months. Am I in the clear?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Silence is weak evidence, because breach data does not expire and it is often used long after it is stolen. A corpus gets traded, merged with other corpora, and worked through by different people at different times; credential lists in particular are replayed for years because a password that was reused in 2024 is frequently still in use. Identity numbers age even more slowly than that. This is not a reason to stay anxious — it is a reason to make the fix structural rather than vigilant. A unique password per site and a phishing-resistant second factor keep working while you forget about the incident entirely, which is the whole point of choosing controls over watchfulness."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Reading a Breach Notification</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>How to read a data breach notification</h1>
+          <p class="hero-text">
+            "We recently became aware of an incident." Every word after that opening was chosen, reviewed by a
+            lawyer, and written to be true on the worst set of facts the company could not rule out. That is not
+            dishonesty — it is what careful drafting under legal exposure produces. But it means the email is a
+            document to be read rather than a message to be believed, and the reading is a skill. Here is the
+            vocabulary, the dates that are missing, and what to actually do — which depends almost entirely on
+            which fields leaked.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 26 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/breach-notification-cover.svg" alt="A breach notification email with its careful phrases underlined, and a timeline showing the gap between the breach and the letter" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-email-is-a-legal-document">The email is a legal document</a></li>
+                <li><a href="#the-vocabulary-decoded">The vocabulary, decoded</a></li>
+                <li><a href="#accessed-acquired-and-may-have-been-affected">Accessed, acquired, and "may have been affected"</a></li>
+                <li><a href="#no-evidence-of-misuse">"We have no evidence of misuse"</a></li>
+                <li><a href="#did-not-include-financial-information">"Did not include financial information"</a></li>
+                <li><a href="#passwords-were-encrypted">"Passwords were encrypted"</a></li>
+                <li><a href="#the-three-dates">The three dates, and why you get one</a></li>
+                <li><a href="#what-a-good-notification-contains">What a good notification contains</a></li>
+                <li><a href="#your-checklist-by-what-leaked">Your checklist, by what leaked</a></li>
+                <li><a href="#credential-stuffing-is-the-real-risk">Credential stuffing is the real risk</a></li>
+                <li><a href="#the-credit-monitoring-offer">The credit monitoring offer</a></li>
+                <li><a href="#the-india-angle-dpdp-and-cert-in">The India angle: DPDP and CERT-In</a></li>
+                <li><a href="#the-first-hour-in-order">The first hour, in order</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-email-is-a-legal-document">The email is a legal document</h2>
+              <p>
+                A breach notification is written by a small committee. Security supplies the facts that are
+                established, which is usually fewer than everyone expects. Legal decides which of those facts must be
+                stated, which may be stated, and which sentence structures survive being read out in a proceeding
+                two years later. Communications makes it readable. Nobody in that room is trying to mislead you, and
+                nearly everybody in that room is trying to avoid asserting something that later turns out to be
+                wrong.
+              </p>
+              <p>
+                The result is a particular register. Claims about the company's own actions are definite: we
+                contained, we engaged, we notified. Claims about what happened to your data are hedged: may have
+                been, potentially, could have included. Claims about consequences are negative: we have no evidence
+                of. Once you notice that the confidence in each sentence is set by who is in a position to know, the
+                document starts telling you a great deal — not by what it says, but by which parts it refuses to say
+                plainly.
+              </p>
+              <p>
+                So the reading technique is simple and slightly adversarial. For each sentence, ask two questions.
+                What would have to be true for this sentence to be true? And what would the sentence have said if
+                the facts were better? A company that could write "no data left our systems" writes that, because it
+                is excellent news. A company that writes "we have no evidence that data was removed" is telling you
+                it could not establish the good version.
+              </p>
+              <blockquote>
+                <p>
+                  You are not looking for lies. You are looking for the shape of what the writer could not say. The
+                  hedge is the finding.
+                </p>
+              </blockquote>
+
+              <h2 id="the-vocabulary-decoded">The vocabulary, decoded</h2>
+              <p>
+                Five phrases do most of the work in most notifications. They recur because they are the safest
+                available wording for the situations that recur, which is precisely what makes them readable. Here
+                they are side by side with what each one leaves open.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/reading-a-data-breach-notification-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/reading-a-data-breach-notification-diagram1.svg" alt="Five standard breach notification phrases in a left column, each paired on the right with what the phrase does not rule out: accessed does not mean a copy did not leave, may have been affected describes the company's logging rather than your risk, no evidence of misuse covers only their own systems, a list of excluded data leaves the included data unlisted, and encrypted passwords is the wrong word for hashed" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>None of these sentences are false. Each is written to stay true on the least favourable facts the writer could not exclude. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <h2 id="accessed-acquired-and-may-have-been-affected">Accessed, acquired, and "may have been affected"</h2>
+              <p>
+                These three describe three genuinely different states of the world, and the difference between them
+                is the single most useful thing in the document.
+              </p>
+              <p>
+                <strong>Accessed</strong> means somebody was in a position to read it. Their session reached the
+                database, the file share, the storage bucket. It says nothing about whether a copy left. This is a
+                real distinction and not a weasel word: an attacker who queried a table and an attacker who exported
+                it are two different incidents with two different consequences for you.
+              </p>
+              <p>
+                <strong>Acquired</strong> — sometimes written as exfiltrated, downloaded, or removed from our
+                environment — means a copy left. This is the stronger word and companies use it only when they can
+                establish it, because it is the word that triggers the widest obligations in the widest number of
+                jurisdictions. If a notice avoids it, that is worth noticing.
+              </p>
+              <p>
+                But avoid the tempting inference. A notice that says accessed rather than acquired is not usually
+                telling you no copy left. It is far more often telling you they cannot determine whether a copy
+                left, because the outbound traffic was not logged at a level that would show it, or the logs had
+                already rolled over by the time anyone looked. In my experience of reading systems rather than
+                notices, the ability to answer "what left" after the fact is uncommon, and it is uncommon in exactly
+                the organisations most likely to be breached.
+              </p>
+              <p>
+                <strong>"May have been affected"</strong> is the phrase people find most frustrating, and it is
+                usually the most honest one in the document. It is almost never a softening. It is a statement
+                about the company's telemetry: they know a set of records was in scope, they cannot narrow it to the
+                individual rows, so everyone in the set gets told. Which means being in the "may have" group does
+                not make your exposure hypothetical — it makes it undetermined, and undetermined is not a lighter
+                version of exposed. Treat it as exposed and move on.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>One question worth asking.</strong> If the company has a support channel, ask which
+                  categories of your record were in the affected set — not whether you personally were affected,
+                  which they usually cannot answer, but which fields the compromised system held. That question is
+                  answerable from an architecture diagram rather than from logs, and it is the answer that decides
+                  your entire response.
+                </p>
+              </div>
+
+              <h2 id="no-evidence-of-misuse">"We have no evidence of misuse"</h2>
+              <p>
+                This sentence is true and it is nearly weightless, for a structural reason rather than a cynical
+                one.
+              </p>
+              <p>
+                Consider where misuse of your data actually shows up. Somebody replays your email and password at a
+                different company's login page. Somebody sends a phishing message that quotes your real recent order
+                to make itself convincing. Somebody applies for credit using your identity number at a lender you
+                have never heard of. Somebody sells the corpus to somebody else who does one of those things eleven
+                months later. Every one of those events happens on infrastructure the breached company does not own,
+                cannot see, and has no relationship with.
+              </p>
+              <p>
+                So "no evidence of misuse" means: within our own systems, in the window we examined, using the
+                logging we had, we did not observe anything. That is a genuinely useful statement about whether the
+                attacker continued to operate inside their environment. It is not a statement about your risk, and
+                it was never capable of being one.
+              </p>
+              <p>
+                Two related phrases behave the same way. <strong>"We have no reason to believe"</strong> is weaker
+                still, because it does not even assert that anyone looked. And <strong>"out of an abundance of
+                caution"</strong> is a framing device: it presents a mandatory disclosure as a voluntary courtesy.
+                Sometimes that is fair — companies do notify beyond their strict obligations. Often it is a notice
+                that a statute required, wearing a friendlier coat.
+              </p>
+              <p>
+                The useful reframe is that absence of evidence is a claim about the observer, not about the world.
+                It is the same logic as a breach-monitoring service returning zero results, which tells you only
+                that the corpus that vendor happens to hold does not contain your address today — the mechanism
+                covered in
+                <a href="/blog/surface-web-deep-web-and-dark-web">the piece on the surface, deep and dark web</a>.
+                A negative result is bounded by the search, always.
+              </p>
+
+              <h2 id="did-not-include-financial-information">"Did not include financial information"</h2>
+              <p>
+                Read this one as an exercise in set theory. The sentence defines a category that is outside the
+                breach. It leaves the inside of the breach unenumerated. Those are not the same as telling you what
+                leaked, and a notification that only ever describes the breach by what it excluded has told you
+                nothing you can act on.
+              </p>
+              <p>
+                There is a second trap in the word financial. Companies usually mean it narrowly — card numbers,
+                bank account numbers, the things that map to a fraud statute. That definition can happily coexist
+                with the breach including your salary band, your transaction history, your loan status, the name of
+                your bank, and the last four digits of your card. None of those let anyone take money directly. All
+                of them make a phone call from someone claiming to be your bank enormously more convincing, which
+                is the actual mechanism by which most people lose money after a breach.
+              </p>
+              <p>
+                So the test for this sentence is: <strong>find the positive list.</strong> A good notification says
+                "the affected records contained name, email address, mobile number, date of birth and delivery
+                address." A poor one says financial information was not involved and stops. If there is no positive
+                list, the honest interpretation is that you do not know what leaked, and the correct response is to
+                assume the categories a service of that type would obviously hold.
+              </p>
+              <p>
+                The same shape appears in "the incident did not affect our core systems", "customer passwords were
+                not stored on the affected server", and "no card data was involved as we do not store card data".
+                Each is a true and narrow statement standing in for a broad one that was not made. Where the broad
+                statement is available, companies make it, because it is the one that ends the story.
+              </p>
+
+              <h2 id="passwords-were-encrypted">"Passwords were encrypted"</h2>
+              <p>
+                This is the phrase I would most like people to stop being reassured by, and the reason is a single
+                word.
+              </p>
+              <p>
+                Passwords should not be encrypted. Encryption is reversible by design — that is what it is for — and
+                it requires a key, and the key has to live somewhere the application can reach, which is very often
+                the same environment that was just breached. Passwords should be
+                <a href="/glossary#term-hash-function">hashed</a>: run through a one-way function so that the stored
+                value cannot be turned back into the password even by the company itself. A service that can email
+                you your existing password is a service that is not hashing.
+              </p>
+              <p>
+                So when a notification says encrypted, there are two possibilities and neither is comforting. Either
+                they genuinely used reversible encryption, which is a serious design fault. Or whoever drafted the
+                sentence used encrypted as a general-purpose word for scrambled and meant hashed, in which case the
+                sentence contains no technical information at all. You cannot tell which from the outside, and the
+                distinction matters enough that a well-drafted notice makes it.
+              </p>
+              <p>
+                Even "hashed" on its own is incomplete. Three things decide whether a stolen hash is a problem:
+              </p>
+              <ul>
+                <li>
+                  <strong>The algorithm.</strong> <a href="/glossary#term-bcrypt">bcrypt</a>, scrypt and Argon2 are
+                  designed to be slow and to resist purpose-built hardware. <a href="/glossary#term-md5">MD5</a> and
+                  SHA-1 are designed to be fast, which is exactly the wrong property here: a commodity graphics card
+                  will work through billions of candidate passwords per second against them.
+                </li>
+                <li>
+                  <strong>The <a href="/glossary#term-salt">salt</a>.</strong> A unique random value per user,
+                  mixed in before hashing, so that two people with the same password do not produce the same stored
+                  value. Without it, one precomputed table — a
+                  <a href="/glossary#term-rainbow-table">rainbow table</a> — cracks every common password in the
+                  dump at once, and the attacker's cost is amortised across every user rather than paid per user.
+                </li>
+                <li>
+                  <strong>The work factor.</strong> Even a good algorithm can be configured to run fast. The cost
+                  parameter is what makes each guess expensive, and it is meant to be raised over the years as
+                  hardware improves. Many systems set it once at launch and never touch it again.
+                </li>
+              </ul>
+              <p>
+                A notification that says "passwords were hashed and salted using bcrypt" has told you something
+                genuinely reassuring, and I have read notices that do exactly that. Most say encrypted and leave it
+                there. Since you cannot verify any of it, the decision procedure is the same in every case: change
+                the password at that service, and change it everywhere you reused it. If their hashing turns out to
+                have been excellent, you spent twenty minutes you did not strictly need to spend.
+              </p>
+              <p>
+                One more thing worth naming, because it is where a strong hash quietly stops helping. Hashing
+                protects the password, not the person. If your password was weak, or was in a previous breach, or
+                follows a pattern anyone would guess, it will fall to an offline attack whatever the algorithm is —
+                the cost per guess only matters when there are a great many guesses to make. That is the argument
+                for length and randomness rather than complexity rules, which is the subject of
+                <a href="/blog/passwords-passkeys-and-what-actually-protects-you">the passwords and passkeys
+                post</a>.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>See what a work factor buys.</strong> The password lab on this site estimates the
+                  <a href="/glossary#term-password-entropy">entropy</a> of a password and shows how long it survives
+                  at different guessing rates, which is the fastest way to feel the difference between a fast hash
+                  and a slow one. Everything happens in the browser, and nothing you type is sent anywhere.
+                </p>
+                <a class="btn btn-primary" href="/labs/password">Open the password lab</a>
+              </div>
+
+              <h2 id="the-three-dates">The three dates, and why you get one</h2>
+              <p>
+                Every breach has at least three dates attached to it, and almost every notification gives you only
+                the last one, softened into the word "recently".
+              </p>
+              <ol>
+                <li><strong>The date of first access</strong> — when the attacker got in.</li>
+                <li><strong>The date of discovery</strong> — when somebody at the company noticed, or was told.</li>
+                <li><strong>The date of notification</strong> — when the email reached you.</li>
+              </ol>
+              <p>
+                The interval between the first two is dwell time, and it is the number that describes how long you
+                were exposed while nobody was looking. Published industry medians have improved markedly over the
+                last decade, from many months down to a few weeks, but a median hides its own tail: the cases that
+                matter most are frequently the long ones, and a meaningful share of breaches are still discovered by
+                an outside party rather than by the victim. When the discoverer is a customer, a researcher, a
+                payment processor noticing a fraud pattern, or law enforcement arriving with a copy of your data,
+                dwell time tends to be measured in seasons.
+              </p>
+              <p>
+                The interval between the second two is the disclosure lag, and it is where most public anger lands —
+                usually unfairly, and sometimes precisely fairly. The unfair part is that a great deal has to happen
+                in that window: containment, forensic imaging, working out which records were in scope, checking
+                whether the attacker still has a foothold, regulator filings, and drafting. Notifying on day one with
+                wrong scope means notifying again on day thirty with different numbers, which is worse for everyone.
+                The fair part is that this window is also where a company decides how much to say, and a lag measured
+                in months rarely has a forensic explanation.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/reading-a-data-breach-notification-diagram2.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/reading-a-data-breach-notification-diagram2.svg" alt="A breach timeline showing first access, discovery, containment and notification, with the dwell time gap and the disclosure lag marked, and a second lane comparing how fast regulators are told under the CERT-In six hour direction and the DPDP breach intimation rules against how long the affected individual waits" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The obligations that run in hours point at regulators. The one that reaches you has the loosest clock and arrives last. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Why the gap matters to you practically: <strong>the exposure window sets the scope of your
+                response.</strong> If the notice says the attacker had access between March and July, then every
+                credential you used at that service in that window is suspect, every message you sent through it is
+                potentially read, and every one-time code delivered to an email address held there should be treated
+                as compromised. If the notice gives no window at all, you have to assume the widest one, which is
+                strictly worse for you and costs the company nothing to prevent.
+              </p>
+              <p>
+                So the date range is the first thing I look for, and its absence is the first thing I hold against a
+                notification.
+              </p>
+
+              <h2 id="what-a-good-notification-contains">What a good notification contains</h2>
+              <p>
+                Having complained about the bad ones, here is the standard. A notification that does these five
+                things lets a reader act without guessing, and the number of notices that do all five is small.
+              </p>
+              <ul>
+                <li>
+                  <strong>What data, positively enumerated.</strong> The actual fields, listed. "Name, email
+                  address, mobile number, hashed password, delivery address." Not a category that was excluded, and
+                  not "certain personal information".
+                </li>
+                <li>
+                  <strong>How many people, and in which jurisdictions.</strong> A number tells you whether this is
+                  an incident or an event, and the jurisdictional split tells you which regulator has an interest —
+                  which in turn tells you what recourse exists.
+                </li>
+                <li>
+                  <strong>The date range.</strong> First access, discovery, containment. Three dates, stated
+                  plainly, even where one of them is approximate and labelled as such.
+                </li>
+                <li>
+                  <strong>What the company actually did.</strong> Not "we take security seriously". Did they force
+                  a password reset? Invalidate existing sessions, so a stolen token stops working? Rotate keys?
+                  Engage external forensics? Notify the regulator, and when? Each of those is checkable and each
+                  changes what you need to do.
+                </li>
+                <li>
+                  <strong>What you should do, matched to what leaked.</strong> Specific instructions for the fields
+                  that were involved, with any free service offered as an optional extra rather than as the
+                  headline. When the offer is the headline, the offer is the point of the email.
+                </li>
+              </ul>
+              <p>
+                Two further marks of a serious notice. It is published on the company's own site as well as emailed,
+                so you can verify it without trusting the message. And it does not ask you to click a link and log
+                in, because whoever wrote it understood that a wave of forgeries follows every real disclosure.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The forgery problem, stated once.</strong> In the days after a breach becomes public,
+                  attackers send fake notifications about it — same company, same story, a link to a convincing
+                  login page. Both the real message and the fake are unexpected emails about a frightening event
+                  with an action attached, so telling them apart by eye is the wrong game. Never act inside the
+                  email. Open the app or type the address yourself. What that page is really doing, and why it works,
+                  is unpacked in <a href="/blog/what-happens-when-you-click-a-phishing-link">what happens when you
+                  click a phishing link</a>.
+                </p>
+              </div>
+
+              <h2 id="your-checklist-by-what-leaked">Your checklist, by what leaked</h2>
+              <p>
+                This is the part generic advice gets most wrong. "Change your passwords and monitor your accounts"
+                is applied to every breach regardless of what was in it, which wastes effort on the harmless ones
+                and badly under-responds to the serious ones. The right action depends on the field, so here is the
+                field-by-field version, roughly from least to most consequential.
+              </p>
+              <ul>
+                <li>
+                  <strong>Email address only.</strong> Genuinely low risk, and no, you do not need to change
+                  anything. What changes is the quality of the phishing you will receive: a message that knows you
+                  are a customer of that company, and sometimes knows what you bought, is far more convincing than
+                  a generic one. Expect it, and expect it to arrive weeks or months later. The one useful action is
+                  to make sure the email account itself has a strong unique password and a second factor, because
+                  it is the recovery route to everything else you own.
+                </li>
+                <li>
+                  <strong>Password.</strong> The only genuinely urgent item, and the order matters. Change it at
+                  the breached service, then at every other place you used the same password or a near variant of
+                  it. Do your email account first, then anything holding money, then the rest. If you cannot
+                  remember where you reused it, that is itself the finding, and the fix is a password manager
+                  generating a different password for every site from here on.
+                </li>
+                <li>
+                  <strong>Phone number.</strong> Two consequences. It goes onto call and message lists, which is
+                  irritating rather than dangerous. And it becomes a target for
+                  <a href="/glossary#term-social-engineering">social engineering</a> against your mobile operator:
+                  a SIM swap moves your number to somebody else's card, and every one-time code sent by SMS follows
+                  it. The response is to move your important accounts off SMS codes onto an authenticator app or a
+                  passkey wherever the option exists, and to ask your operator what protections against a
+                  fraudulent SIM replacement they offer.
+                </li>
+                <li>
+                  <strong>Postal address.</strong> Low direct risk. The real problem is that addresses are used as
+                  identity-verification answers by call centres, and yours is now available to someone pretending
+                  to be you. Nothing to change; note it, and be suspicious of anyone who proves their legitimacy by
+                  reciting details about you rather than by something only the real company would know.
+                </li>
+                <li>
+                  <strong>Date of birth, mother's maiden name, security answers.</strong> Retire them permanently.
+                  These were always a bad authentication mechanism — they are facts, not secrets, and facts leak.
+                  Wherever a site insists on security questions, put a random string in the answer field and store
+                  it in your password manager. The answer does not have to be true; it has to be unguessable.
+                </li>
+                <li>
+                  <strong>Payment card.</strong> Counter-intuitively one of the easier cases, because a card is
+                  replaceable and consumer liability for unauthorised electronic transactions is limited by rule in
+                  most jurisdictions, India included, provided you report promptly. Do not settle for watching the
+                  statement. Ask for a replacement card, because a number in a dump is worked through eventually
+                  and the effort of replacing it now is smaller than the effort of disputing transactions later.
+                </li>
+                <li>
+                  <strong>Government identity number.</strong> The worst case, because the consequences are the
+                  most serious and the remedies are the weakest: you cannot rotate an Aadhaar number, a PAN, a
+                  passport number or a national insurance number. The work is making the number less useful. Lock
+                  biometrics and the number itself through the issuing authority where that facility exists, use a
+                  virtual or masked identifier when handing it over, and read your authentication or credit history
+                  rather than assuming somebody else is reading it for you. Then adjust your expectations
+                  permanently: a caller quoting your identity number has proved nothing at all.
+                </li>
+              </ul>
+              <p>
+                If you want to know what a stranger can already assemble about you from public sources before you
+                start, the <a href="/labs/osint-self-check">self-check lab</a> walks the same steps an
+                <a href="/glossary#term-osint">open-source intelligence</a> analyst would, in your own browser and
+                against your own details. It is a sobering way to discover how much of the "personal information"
+                in a breach was already reachable, and which pieces genuinely were not.
+              </p>
+
+              <h2 id="credential-stuffing-is-the-real-risk">Credential stuffing is the real risk</h2>
+              <p>
+                Here is the thing that actually happens to ordinary people after a breach, and it is not what the
+                notification prepares you for.
+              </p>
+              <p>
+                The breached company will force a password reset. Whatever your password there was, it stops
+                working. The attacker gains very little at the company they broke into. What they gain is a list of
+                email addresses paired with passwords — and the value of that list is entirely at other companies,
+                because a meaningful proportion of people use the same password in more than one place.
+              </p>
+              <p>
+                <a href="/glossary#term-credential-stuffing">Credential stuffing</a> is the industrialised version
+                of that idea. Take a few million pairs from breach A. Point automation at the login pages of
+                hundreds of unrelated services — banks, retailers, streaming, food delivery, government portals.
+                Route the attempts through residential proxies so no single address looks abnormal, drive real
+                browsers so the requests carry plausible fingerprints, and go slowly enough per account to avoid
+                any lockout. Success rates per attempt are low, commonly cited in fractions of a percent. Against a
+                list of millions, a fraction of a percent is still a great many working accounts, and each one is
+                sold or used.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/reading-a-data-breach-notification-diagram3.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/reading-a-data-breach-notification-diagram3.svg" alt="Credential stuffing shown twice: with a reused password one leaked pair from a single breached site opens accounts at several unrelated services, and with unique passwords from a manager the same leaked pair is rejected everywhere because no other site holds that password" width="1160" height="620" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The breach happens at one company. The damage happens at the eleventh company, where nobody knows to reset anything. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Two refinements are worth knowing because they defeat the obvious defences. The first is credential
+                tweaking: attackers do not only try the leaked password, they try the predictable mutations of it,
+                because that is what people do when forced to change one. Adding a digit, incrementing a number,
+                appending the year or an exclamation mark — these are enumerated automatically. Changing
+                <em>Summer2024!</em> to <em>Summer2025!</em> is not changing your password.
+              </p>
+              <p>
+                The second is that the value of a list decays slowly. Credentials from breaches years old still
+                produce hits, because passwords are rarely retired and reuse is stable over time. This is why "it
+                has been six months and nothing happened" is not evidence of safety.
+              </p>
+              <p>
+                The defence is one sentence long and everything else is secondary: <strong>a different password at
+                every site</strong>, generated and stored by a password manager, so that a breach at one company is
+                an event with no blast radius anywhere else. Multi-factor authentication is a strong second layer,
+                and worth turning on everywhere — but note that a code from an app or an SMS can still be phished
+                in real time by a convincing login page, whereas a passkey cannot be replayed against a site it was
+                not created for. Unique passwords remove the attack; the second factor limits it.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Find out which of your accounts is already in a public dump.</strong> The breach checker
+                  on this site searches published breach corpora for an address, and checks a password using
+                  <a href="/glossary#term-k-anonymity">k-anonymity</a> — hashing it in your browser and sending only
+                  the first five characters of that hash, so the password itself never leaves the page. It will not
+                  claim to scan the dark web, because nothing can. It searches what has been published, which is the
+                  part that is real and the part that tells you which password to change first.
+                </p>
+                <a class="btn btn-primary" href="/labs/breach-check">Open the breach checker</a>
+              </div>
+
+              <h2 id="the-credit-monitoring-offer">The credit monitoring offer</h2>
+              <p>
+                Almost every large notification includes twelve or twenty-four months of free credit monitoring or
+                identity protection. Take it — it is free, it takes ten minutes, and it occasionally catches
+                something. Then understand why it is a small gesture rather than a remedy, because the gap between
+                how it reads and what it does is wide.
+              </p>
+              <ul>
+                <li>
+                  <strong>It detects, it does not prevent.</strong> Monitoring tells you a new enquiry or account
+                  appeared on your file. By then the application has been made and, often, approved. The control
+                  that actually prevents is freezing or locking your credit file so that new applications cannot be
+                  processed, which is a separate action and usually not the one being offered.
+                </li>
+                <li>
+                  <strong>It usually covers one bureau.</strong> Lenders report to different credit information
+                  companies, and an application at a lender that reports elsewhere may not raise anything at all.
+                  Single-bureau monitoring is roughly a fraction of the coverage the name implies.
+                </li>
+                <li>
+                  <strong>It expires; your data does not.</strong> A twelve-month subscription against an identity
+                  number you will hold for life is a mismatch of timescales. Breach corpora are traded for years,
+                  and the quiet period after a breach is exactly when monitoring lapses.
+                </li>
+                <li>
+                  <strong>It is aimed at the wrong risk.</strong> Most breaches expose credentials and contact
+                  details, not credit-relevant identity. A credit bureau has no visibility into your email account,
+                  your streaming account or your food delivery account, which is where credential stuffing actually
+                  lands. For a breach of email addresses and passwords, credit monitoring is close to irrelevant.
+                </li>
+                <li>
+                  <strong>It costs the company very little.</strong> Bought at the scale of a large breach, per
+                  person, it is inexpensive — and it converts an awkward paragraph into a paragraph with an offer
+                  in it. That is not a reason to refuse it. It is a reason not to read it as the measure of how
+                  seriously the incident is being treated.
+                </li>
+              </ul>
+              <p>
+                Where it genuinely earns its place is a breach that included identity numbers and enough supporting
+                detail to open an account in your name, and where you would otherwise never check. In that case
+                take the subscription and also set a recurring calendar reminder, because in India you are entitled
+                to one free full credit report per calendar year from each credit information company. Pulling
+                those yourself gives you multi-bureau coverage, permanently, for nothing — which is a better
+                arrangement than the one in the email.
+              </p>
+
+              <h2 id="the-india-angle-dpdp-and-cert-in">The India angle: DPDP and CERT-In</h2>
+              <p>
+                Two separate regimes govern what an Indian company must do after a breach, and they point in
+                different directions. Understanding which is which explains why the regulator often knows before
+                you do.
+              </p>
+              <p>
+                <strong>The CERT-In directions.</strong> Issued in April 2022 under section 70B(6) of the
+                <a href="/blog/india-it-act-explained">Information Technology Act</a>, they require service
+                providers, intermediaries, data centres and body corporates to report specified cyber incidents to
+                CERT-In within six hours of noticing them or being told about them. The same directions require
+                synchronised clocks and the retention of logs for a rolling period within India — the practical
+                purpose being that an investigation months later has something to read. Note who this obligation
+                runs to: it is a report to the national incident response agency. Nothing in it tells you anything.
+              </p>
+              <p>
+                <strong>The DPDP Act, 2023.</strong> Section 8(6) obliges a
+                <a href="/glossary#term-data-fiduciary">Data Fiduciary</a> to give intimation of a personal data
+                breach both to the Data Protection Board and to each affected
+                <a href="/glossary#term-dpdp-act-2023">Data Principal</a>, in the form and manner prescribed by the
+                Rules. That obligation sits on the same footing as the consent duties in
+                <a href="/blog/what-consent-actually-means-under-dpdp">what consent actually means under the DPDP
+                Act</a>: both are things the company owes you, and both are enforced by the Board rather than by
+                you. The Rules set out what the intimation must contain — the nature and extent of the breach,
+                when and where it occurred, the likely consequences, the mitigation taken, and a contact point —
+                and require the individual to be told without delay, with the Board getting an initial intimation
+                without delay and a fuller account within seventy-two hours. Because the Act and its Rules commence
+                in stages, check the operative text for the date you are reading this rather than trusting a
+                summary, mine included.
+              </p>
+              <p>
+                <strong>The penalties are real and they are not yours.</strong> The Schedule to the Act provides
+                for penalties of up to two hundred and fifty crore rupees for failure to take reasonable security
+                safeguards to prevent a breach, and up to two hundred crore for failure to give breach intimation.
+                Those are among the largest numbers in Indian regulatory practice. They are also payable to the
+                government. The DPDP Act creates no statutory route to individual compensation, which is the single
+                most common misunderstanding I encounter about it. There is also a duty running the other way: the
+                Schedule provides a penalty of up to ten thousand rupees for a Data Principal who files a
+                frivolous or false complaint, which is worth knowing before you file one in anger.
+              </p>
+              <p>
+                <strong>So what recourse actually exists?</strong> Honestly, less than the headline numbers
+                suggest, and the useful routes are these, in order:
+              </p>
+              <ol>
+                <li>
+                  <strong>The company's own grievance mechanism first.</strong> A Data Fiduciary must publish a
+                  contact for data protection queries, and you are expected to have used it before escalating.
+                  Write to it, ask the specific questions from earlier in this article, and keep the reply.
+                </li>
+                <li>
+                  <strong>Then the Data Protection Board.</strong> A complaint can lead to an inquiry and a penalty
+                  against the company. It will not compensate you, and it is a slow instrument. It is still worth
+                  filing where a company has plainly failed to notify, because that is the pattern the Board exists
+                  to correct.
+                </li>
+                <li>
+                  <strong>If money has moved, act on the financial track immediately.</strong> Report the
+                  unauthorised transaction to your bank at once — the Reserve Bank's customer protection framework
+                  limits your liability where you report promptly, and the clock is short. File on the national
+                  cybercrime reporting portal and use the 1930 helpline, which exists precisely to attempt to
+                  freeze funds while they are still in the chain. The mechanics of how quickly that money moves,
+                  and why the first hour matters more than everything after it, are in
+                  <a href="/blog/upi-fraud-how-the-money-actually-leaves">how the money actually leaves</a>.
+                </li>
+                <li>
+                  <strong>A consumer forum, for deficiency in service.</strong> This is the route that can produce
+                  actual compensation to you as an individual, and it is separate from the data protection regime
+                  entirely. It requires demonstrable loss and it takes time.
+                </li>
+              </ol>
+              <p>
+                I have supported law enforcement as a registered cyber-expert volunteer since 2020, and the pattern
+                I would want any reader to take from that work is unglamorous: the outcomes that go well are the
+                ones where somebody acted within hours and kept records. Evidence decays, funds move, and logs roll
+                over. The legal framework matters, but it operates on whatever is left by the time it engages —
+                which is the same lesson as
+                <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually solved</a>.
+              </p>
+
+              <h2 id="the-first-hour-in-order">The first hour, in order</h2>
+              <p>
+                Stripped of everything above, this is what I do when one of these arrives, and the order is
+                deliberate — each step reduces the cost of getting a later one wrong.
+              </p>
+              <ol>
+                <li>
+                  <strong>Do not click anything in the email.</strong> Open the company's app or type its address
+                  yourself and look for the notice there. If it does not exist there, treat the email as a forgery
+                  until proven otherwise.
+                </li>
+                <li>
+                  <strong>Read for the positive field list and the date range.</strong> Those two facts determine
+                  everything that follows. If either is missing, assume the wider case.
+                </li>
+                <li>
+                  <strong>Change the password at that service</strong>, to something newly generated rather than a
+                  variant of the old one.
+                </li>
+                <li>
+                  <strong>Change it everywhere you reused it</strong>, email account first, then anything financial.
+                  If the list is long, that is a signal about your password practice rather than about this breach.
+                </li>
+                <li>
+                  <strong>Turn on the strongest second factor each of those accounts offers</strong>, preferring a
+                  passkey or an authenticator app over SMS.
+                </li>
+                <li>
+                  <strong>Log out other sessions where the option exists.</strong> Changing a password does not
+                  always end existing sessions, and a stolen session token keeps working until something invalidates
+                  it.
+                </li>
+                <li>
+                  <strong>Act on the specific fields.</strong> Card replaced, identity number locked, security
+                  answers retired — whichever of the checklist above applies.
+                </li>
+                <li>
+                  <strong>Then stop.</strong> Note the date, take the free monitoring if offered, and go back to
+                  your life. Sustained anxiety is not a control, and the controls you just put in place keep working
+                  without your attention. That is the entire reason to prefer them.
+                </li>
+              </ol>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>The notification says the passwords were encrypted. Do I still need to change mine?</summary>
+                  <p>
+                    Yes. Start with the word itself: passwords are supposed to be hashed, not encrypted, because
+                    encryption is reversible with a key and the key often sits in the same system that was breached.
+                    So the sentence means either that they did something they should not have, or that whoever wrote
+                    the notice did not know the difference — and neither reading tells you your password is safe.
+                    Even a correctly hashed password is only as strong as the guessing it survives: bcrypt, scrypt
+                    or Argon2 with a real work factor makes each guess expensive, while an unsalted MD5 or SHA-1
+                    hash of a common password falls to a lookup. You cannot check which one they used, so change it
+                    at that service and everywhere you reused it, and let the algorithm turn out to be good news you
+                    did not need.
+                  </p>
+                </details>
+                <details>
+                  <summary>What does "we have no evidence of misuse" actually mean?</summary>
+                  <p>
+                    It means they looked at what they can see and did not find anything. That is worth having, but
+                    notice how narrow the view is. Misuse of your data mostly happens somewhere else — a login
+                    attempt at a different company, a phishing message sent from an address they do not control, a
+                    loan application at a bank they have no relationship with. None of that is visible from inside
+                    the breached company's logs, and none of it would be, however carefully they looked. The useful
+                    follow-up question is not whether they found evidence but what evidence would have looked like
+                    and whether they were positioned to see it. In most incidents the honest answer is that they
+                    were not.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is the free credit monitoring worth taking?</summary>
+                  <p>
+                    Take it, because it is free and it takes ten minutes, but do not treat it as the response.
+                    Monitoring is detection after the fact — it tells you a new account or enquiry appeared, which
+                    means the fraud already happened. It usually covers one bureau rather than all of them, it
+                    expires after a year or two while a leaked identity number is permanent, and it does nothing
+                    whatsoever about the risk that actually applies to most breaches, which is somebody replaying
+                    your password at other sites. A credit bureau has no view of your email account. In India you
+                    are entitled to one free full credit report per calendar year from each credit information
+                    company, so a recurring calendar reminder gives you most of the same value permanently and at no
+                    cost.
+                  </p>
+                </details>
+                <details>
+                  <summary>My Aadhaar or PAN number was in the breach. What can I actually do?</summary>
+                  <p>
+                    You cannot change the number, so the work is making the number less useful. For Aadhaar, UIDAI
+                    lets you lock biometrics and lock the number itself through the mAadhaar app or the portal,
+                    generate a Virtual ID to hand over instead of the real number, and review your authentication
+                    history to see where it has been used. For PAN, the exposure that matters is credit taken in
+                    your name, so pull your credit report from each bureau and read the enquiries section rather
+                    than only the score. Beyond that, expect the number to be quoted at you by callers as proof they
+                    are genuine — a leaked identity number is worth far more to a social engineer than to a
+                    fraudster filling in a form, and treating it as public is the mental adjustment that protects
+                    you.
+                  </p>
+                </details>
+                <details>
+                  <summary>How do I tell a real breach notification from a phishing email pretending to be one?</summary>
+                  <p>
+                    Do not try to tell them apart, because both a real notice and a good forgery will look plausible
+                    and attackers deliberately send fakes in the days after a real breach becomes news. Instead,
+                    never act inside the email. Do not click the link, do not use the phone number in it, and do not
+                    type a password into anything it opens. Go to the company the way you normally do — the app on
+                    your phone, or an address you type yourself — and look for the notice there. Real notices are
+                    published on the company's own site and repeated by the press; a notice that exists only in your
+                    inbox and only behind a link is a strong signal on its own.
+                  </p>
+                </details>
+                <details>
+                  <summary>Can I sue the company or get compensation under the DPDP Act?</summary>
+                  <p>
+                    Not under that Act, and this is the part people are most often surprised by. The Digital
+                    Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties —
+                    the Schedule runs up to two hundred and fifty crore rupees for failing to take reasonable
+                    security safeguards and up to two hundred crore for failing to give breach intimation — but
+                    those penalties are paid to the government, not to you. The Act creates no route to individual
+                    compensation. What it does give you is a right to grievance redressal that you must use with the
+                    company first, and then a complaint to the Board. If you lost money, the routes that can
+                    actually return it are your bank's unauthorised-transaction process, the cybercrime helpline,
+                    and a consumer forum claim for deficiency in service.
+                  </p>
+                </details>
+                <details>
+                  <summary>Nothing has happened in six months. Am I in the clear?</summary>
+                  <p>
+                    Silence is weak evidence, because breach data does not expire and it is often used long after it
+                    is stolen. A corpus gets traded, merged with other corpora, and worked through by different
+                    people at different times; credential lists in particular are replayed for years because a
+                    password that was reused in 2024 is frequently still in use. Identity numbers age even more
+                    slowly than that. This is not a reason to stay anxious — it is a reason to make the fix
+                    structural rather than vigilant. A unique password per site and a phishing-resistant second
+                    factor keep working while you forget about the incident entirely, which is the whole point of
+                    choosing controls over watchfulness.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                The uncomfortable truth under all of this is that you did not choose the security of the company
+                that lost your data, and you cannot audit it from your inbox. What you can choose is how much a
+                single company's bad day is allowed to cost you — and that is decided almost entirely before the
+                email arrives, by whether the password they lost was one you used anywhere else. Read the notice
+                carefully, act on the fields that leaked, and then spend the afternoon on the thing that makes the
+                next notification boring.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Freading-a-data-breach-notification" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=How%20to%20Read%20a%20Data%20Breach%20Notification&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Freading-a-data-breach-notification" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=How%20to%20Read%20a%20Data%20Breach%20Notification%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Freading-a-data-breach-notification" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+              <li><a href="/blog/what-happens-when-you-click-a-phishing-link">What happens when you click a phishing link</a></li>
+              <li><a href="/blog/surface-web-deep-web-and-dark-web">Surface web, deep web, and dark web: what the three layers actually are</a></li>
+              <li><a href="/blog/what-consent-actually-means-under-dpdp">What consent actually means under the DPDP Act</a></li>
+              <li><a href="/blog/upi-fraud-how-the-money-actually-leaves">UPI fraud: how the money actually leaves</a></li>
+              <li><a href="/blog/india-it-act-explained">India's IT law, explained</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>On the other side of the letter</h2>
+            <p>
+              If you are the one who has to write a notification rather than read one, the useful work happens
+              earlier: knowing what data you hold, what your logs would let you say afterwards, and which fields
+              you could honestly enumerate. That is most of what a security review looks at, and it is a much
+              cheaper conversation before an incident than during one.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">See how I work</a>
+              <a class="btn btn-secondary" href="/labs">Try the security labs</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="You clicked. What the page already learned, how a real-time relay spends your one-time code, and an ordered checklist for the first thirty minutes."
+    />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What Happens When You Click a Phishing Link" />
+    <meta
+      property="og:description"
+      content="Clicking describes six different events, and only three of them need anything done in a hurry. What the page already learned, how a relay spends your one-time code, and what to do in the first thirty minutes."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-happens-when-you-click-a-phishing-link.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Three vignettes: a cursor clicking a link in a browser window, a login form beside a padlock, and a document beside a run button" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Security" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What Happens When You Click a Phishing Link" />
+    <meta
+      name="twitter:description"
+      content="Clicking describes six different events, and only three of them need anything done in a hurry. What the page already learned, how a relay spends your one-time code, and what to do in the first thirty minutes."
+    />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-happens-when-you-click-a-phishing-link.jpg" />
+    <title>What Happens When You Click a Phishing Link | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What Happens When You Click a Phishing Link",
+        "description": "What actually happens after you click a phishing link: what the page learns before you type anything, how a real-time reverse proxy relays a one-time code, why drive-by compromise is rarer than the panic suggests, what a macro, an LNK, an ISO or smuggled HTML really does, and an ordered checklist for the first thirty minutes.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-happens-when-you-click-a-phishing-link.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Security",
+        "author": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah",
+          "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://krunalkumar.dpdns.org/#person",
+          "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link"
+        },
+        "keywords": "phishing link, clicked a phishing link, credential harvesting, adversary in the middle, reverse proxy phishing, session cookie theft, MFA bypass, passkeys, HTML smuggling, incident response, mail forwarding rules"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://krunalkumar.dpdns.org/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://krunalkumar.dpdns.org/blog"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Clicking a phishing link",
+            "item": "https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link"
+          }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can just opening a phishing link hack my phone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Almost never, on a phone that is still getting updates. Loading a page runs the page's code inside the browser's sandbox, where it cannot read your other tabs, your saved passwords, your files or your messages. Compromise through rendering alone needs a working exploit chain against your exact browser and operating system version, and those are expensive enough to be aimed at named individuals rather than sprayed at a mailing list. The realistic risk on a phone is the ordinary one: the page asks you to sign in, or to install a profile or an app from outside the store, and you do it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "I clicked the link but did not type anything. Do I need to change my password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. If nothing was entered and nothing was downloaded, no credential left your device, and there is nothing for a password change to undo. What the click did disclose is that your address is live and that a person reads it, which is worth money to whoever sold the list, so expect the volume of similar mail to rise. Report the message, keep it rather than deleting it, and carry on."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does changing my password fix it?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Only half of it, and it is the half people stop at. A modern credential-harvesting page steals the session cookie the real service issued, and a session cookie is not a password — it is a token saying this browser has already signed in. Until that session is ended, the new password changes nothing for the attacker. Change the password, then use the sign-out-everywhere or revoke-sessions control, in that order, and then look for what outlives both: mail rules, forwarding addresses, connected apps and recovery details."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "I have two-factor authentication. Does that not stop this?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It stops the reused-password attack, which is worth having. It does not stop a page that relays your login to the real site in real time. A code from an app or an SMS is valid for a short window and the attacker needs about a second of it; a push approval is easier still, because the prompt you approve is the attacker's genuine login attempt. The factors that survive are the ones bound to the address you are actually on — a passkey or a hardware security key — because the signature they produce verifies nowhere except the real site. That only holds if the weaker methods are removed from the account, because an attacker will simply choose the fallback."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I delete the email?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not yet. The headers are the only reliable record of where the message came from and how it authenticated, and deleting it removes that record from the place anyone investigating would look. Report it with whatever button your mail client provides, tell whoever handles security where you work, and leave the message alone until they say otherwise. If there is nobody to report it to, move it to a folder rather than deleting it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "I downloaded the attachment but did not open it. Is that bad?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A file sitting on disk has not run, and a file that has not run has not done anything. Delete it, empty the bin, and you are back where you started. The line that matters is execution, not download, which is exactly why the answer to what you actually did has to separate the two: the response on either side of that line is completely different."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is an antivirus scan enough after I ran something?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and this is where people most often stop too early. A clean scan means the scanner recognised nothing, not that nothing is there, and the tooling used for initial access is rebuilt specifically to be unrecognised for its first days in the wild. If something ran, treat every credential typed on that machine as exposed, change them from a different device, and have the machine rebuilt rather than cleaned. Rebuilding is inconvenient and reliable. Cleaning is convenient and a guess."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How would I know if someone is already reading my mailbox?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Look for the housekeeping rather than for drama. Check the mailbox rules and any forwarding address, because a rule that files security alerts and banking mail somewhere you never look is the standard first move and it survives a password change. Check the sent and deleted folders for messages you did not write. Check the list of connected or authorised applications, because an app you once approved holds its own token. Then read the recent sign-in activity your provider records, which shows locations and devices even when nothing else looks unusual."
+            }
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article>
+        <section class="page-hero">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li aria-current="page">Clicking a phishing link</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Security</p>
+          <h1>What happens when you click a phishing link</h1>
+          <p class="hero-text">
+            Nobody asks this in advance. They ask it afterwards, with their heart going, and the honest answer starts
+            by refusing the question as asked: opening the page, typing a password, approving a prompt, downloading a
+            file and running it are five different things, and only some of them are serious. Here is what each one
+            actually does, and what to do in the first thirty minutes.
+          </p>
+          <p class="post-meta">Published 31 August 2026 · 20 min read · by Krunalkumar Shah</p>
+        </section>
+
+        <figure class="post-cover">
+          <img src="/assets/images/blog/phishing-click-cover.svg" alt="Three vignettes: a cursor clicking a link in a browser window, a login form beside a padlock, and a document beside a run button" width="1200" height="630" decoding="async" />
+        </figure>
+
+        <section class="section-card">
+          <div class="post-layout">
+            <nav class="post-toc" aria-label="In this article">
+              <p class="eyebrow">In this article</p>
+              <ol>
+                <li><a href="#the-question-people-actually-ask">The question people actually ask</a></li>
+                <li><a href="#six-things-that-all-get-called-clicking">Six things that all get called "clicking"</a></li>
+                <li><a href="#what-opening-the-page-already-told-them">What opening the page already told them</a></li>
+                <li><a href="#the-credential-page-end-to-end">The credential page, end to end</a></li>
+                <li><a href="#why-i-have-2fa-is-thinner-than-it-sounds">Why "I have 2FA" is thinner than it sounds</a></li>
+                <li><a href="#drive-by-compromise-and-what-replaced-it">Drive-by compromise, and what replaced it</a></li>
+                <li><a href="#the-attachment-path">The attachment path</a></li>
+                <li><a href="#the-first-thirty-minutes">The first thirty minutes</a></li>
+                <li><a href="#the-step-almost-everybody-misses">The step almost everybody misses</a></li>
+                <li><a href="#when-it-is-genuinely-fine">When it is genuinely fine</a></li>
+                <li><a href="#questions-people-ask">Questions people ask</a></li>
+              </ol>
+            </nav>
+
+            <div class="post-body">
+              <h2 id="the-question-people-actually-ask">The question people actually ask</h2>
+              <p>
+                Nobody reads an article about phishing before they click. They read it afterwards, usually within
+                about ninety seconds, and the question is always the same three words: <em>am I hacked?</em>
+              </p>
+              <p>
+                The honest answer starts by taking the question apart, because "I clicked" describes at least six
+                different events and only three of them need anything done in a hurry. Most writing on this subject
+                answers a question nobody asked — how to spot a phishing email — which is excellent advice arriving
+                several minutes too late.
+              </p>
+              <p>
+                The panic is also usually mis-aimed. People who opened a page and typed nothing spend the evening
+                running virus scans; people who typed a password into a convincing form assume the password change was
+                the end of it. Getting those the right way round is most of the value here.
+              </p>
+              <blockquote>
+                <p>
+                  Everything turns on one boundary: nothing you did not type, and nothing that did not execute, has
+                  cost you anything yet. Almost every wrong response to a phishing click comes from putting that line
+                  in the wrong place.
+                </p>
+              </blockquote>
+
+              <h2 id="six-things-that-all-get-called-clicking">Six things that all get called "clicking"</h2>
+              <p>
+                Before any of the mechanics, work out which of these you actually did. It is the only question whose
+                answer changes what happens next, and the one people are least precise about when they are frightened.
+              </p>
+              <!-- tabindex/role/aria-labelledby: this div is the scroll container, and on a
+                   narrow screen it hides part of the table. A scrollable region has to be
+                   reachable by keyboard and has to say what it is (WCAG 2.1.1); the caption
+                   already names it, so it is borrowed rather than duplicated. -->
+              <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-phishingclick">
+                <table class="post-table">
+                  <caption id="table-caption-phishingclick">The six answers to "I clicked", and what each one actually costs. Only three of them need anything done in a hurry.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">What you actually did</th>
+                      <th scope="col">What it handed over</th>
+                      <th scope="col">What it takes to undo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Opened the page, closed it</td>
+                      <td>Your IP and browser, and proof a human read the address</td>
+                      <td>Nothing technical. Report it.</td>
+                    </tr>
+                    <tr>
+                      <td>Read the page, typed nothing</td>
+                      <td>The same, plus whatever the tracking token in the link identified you as</td>
+                      <td>Nothing technical. Expect more of the same mail.</td>
+                    </tr>
+                    <tr>
+                      <td>Typed a username and password</td>
+                      <td>Working credentials for that account, and for anywhere you reused them</td>
+                      <td>Change the password from a clean device, then revoke sessions</td>
+                    </tr>
+                    <tr>
+                      <td>Typed a one-time code, or approved a push prompt</td>
+                      <td>A live signed-in session — the second factor is already satisfied</td>
+                      <td>All of the above, then re-enrol MFA and audit rules, apps and recovery</td>
+                    </tr>
+                    <tr>
+                      <td>Downloaded a file, did not open it</td>
+                      <td>Nothing beyond the click itself</td>
+                      <td>Delete the file</td>
+                    </tr>
+                    <tr>
+                      <td>Opened or ran the file, or enabled content</td>
+                      <td>Possibly code execution on that device, and whatever it can reach</td>
+                      <td>Isolate the machine, escalate, rebuild it; change passwords elsewhere</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                Rows one, two and five are the common case, and they are why this article can end on a reassuring note
+                without lying to you. Rows three, four and six are worth a bad hour. The rest of this explains why the
+                boundaries fall exactly there.
+              </p>
+
+              <h2 id="what-opening-the-page-already-told-them">What opening the page already told them</h2>
+              <p>
+                Suppose you type nothing. You open the link, the page looks wrong, you close the tab. Something still
+                happened, and it is worth being precise about what.
+              </p>
+              <p>
+                Fetching a page is a request, and a request carries a return address. The server logged your IP, which
+                resolves to your internet provider and, at best, to a city — mobile carrier ranges are coarse enough
+                to place you in the wrong state. It logged your <code>User-Agent</code>, naming your browser, its
+                version and your operating system. If the page ran any script it could also read your screen size,
+                language and timezone, which together make a rough fingerprint.
+              </p>
+              <p>
+                The more interesting part is the link itself. Almost every phishing link in a bulk campaign carries a
+                per-recipient token — a random string in the path, a query parameter, or your address encoded into the
+                URL fragment. That token is how the landing page greets you by name and pre-fills your address in the
+                sign-in box, which is the most effective trick in the business, because a form that already knows who
+                you are reads as a form you have used before. Pull a suspicious link apart in
+                <a href="/labs/url-inspector">the URL inspector</a> and you can usually see the token, the redirect
+                chain and the encoded address without fetching anything.
+              </p>
+              <p>
+                And then the part that costs you something later: the token told the sender
+                <strong>which specific person clicked</strong>. An address that clicks is a confirmed live address
+                read by a human who engages with mail, and that is a materially more valuable record than one that has
+                only ever been sent to. Lists get scored, sorted and resold on exactly that signal. This is why a
+                click reliably produces more mail rather than less — the slow-burning consequence nobody warns you
+                about.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The same disclosure happens before you click.</strong> If your mail client loads remote
+                  images, a one-pixel image on the sender's server reports that the message was opened, roughly from
+                  where, and when — the tracking pixel ordinary marketing mail has used for twenty years. Turning off
+                  automatic image loading costs you nothing but a click on the messages you actually wanted.
+                </p>
+              </div>
+              <p>
+                Now the reassuring half, as flatly as I can put it. Opening a page does not give it your other tabs,
+                your saved passwords, your files, your mail or your contacts. The same-origin policy is the oldest
+                load-bearing rule in the browser: a page at one address cannot read the contents of a page at another.
+                A <a href="/glossary#term-phishing">phishing</a> page is a stranger shouting through a letterbox. It
+                can lie to you very convincingly. It cannot reach in.
+              </p>
+
+              <h2 id="the-credential-page-end-to-end">The credential page, end to end</h2>
+              <p>
+                The overwhelming majority of phishing has one goal, and it is not malware. It is a working login —
+                cheap to attempt, high-yield, and needing no exploit and no code execution anywhere.
+              </p>
+              <p>
+                The older shape is a static copy. The attacker saves the real sign-in page, points the form at a
+                script of their own, and hosts it somewhere: a compromised site, a free hosting subdomain,
+                increasingly a legitimate form or survey service so the domain in the address bar belongs to a company
+                you already trust. You type your address and password, the script stores them, and then it redirects
+                you to the genuine site. That last step is the clever part. You land on the real login page, assume
+                you mistyped, sign in properly, and the second attempt works — so nothing ever felt wrong.
+              </p>
+              <p>
+                <strong>That is the version most people picture, and it is no longer the version that matters.</strong>
+                What has taken over is a real-time reverse proxy, sometimes called adversary-in-the-middle. The
+                attacker copies nothing. Their server sits between you and the real service and relays every request
+                in both directions, so what you are looking at <em>is</em> the real page, fetched live: perfect
+                layout, current branding, genuine error messages, and any change the service shipped this morning
+                already present. The certificate is valid, because the attacker's own domain has a perfectly ordinary
+                one. Every piece of advice about looking for a padlock is satisfied.
+              </p>
+
+              <figure class="post-figure post-figure-wide">
+                <a href="/assets/images/blog/what-happens-when-you-click-a-phishing-link-diagram1.svg" target="_blank" rel="noopener">
+                  <img src="/assets/images/blog/what-happens-when-you-click-a-phishing-link-diagram1.svg" alt="A sequence diagram of a reverse-proxy phishing page: you open the link, the proxy fetches the real login page and relays it back, your password is forwarded unchanged, the real service asks for a code, the six digits you read off your phone are relayed onward inside their thirty-second window, and the session cookie the service issues stops at the proxy" width="1160" height="720" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>The relay, step by step. Nothing in it is forged — every page and every prompt is the genuine article, passed through. Tap the diagram to open it full-screen.</figcaption>
+              </figure>
+
+              <p>
+                Follow what the attacker ends up holding. Not a password: a <strong>session cookie</strong>. When the
+                real service is finally satisfied that you are you, it issues a token saying this browser has signed
+                in, and that token lands in the proxy's hands rather than yours. A session cookie does not care how
+                the session was established. Replayed into a fresh browser, it is an account already open — no
+                password prompt, no second factor, nothing left to solve. That is
+                <a href="/glossary#term-session-hijacking">session hijacking</a>, arrived at through the front door.
+              </p>
+              <p>
+                This is the fact that changes the response, and why the checklist below insists on revoking sessions
+                rather than only changing a password. A password change closes the front door. The stolen cookie is
+                somebody already inside.
+              </p>
+
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Take the message apart instead of guessing.</strong> The phishing dissector on this site
+                  reads a raw email and quotes every finding back with the byte offset it came from — display name
+                  against the real address, punycode and lookalike hosts decoded in both directions, link text against
+                  the actual destination, attachment names read as bytes. It never fetches a link and never expands a
+                  shortener, because opening one would tell the sender you read the message. Everything happens in
+                  your browser and nothing is uploaded.
+                </p>
+                <a class="btn btn-primary" href="/labs/phishing-dissector">Open the phishing dissector</a>
+              </div>
+
+              <h2 id="why-i-have-2fa-is-thinner-than-it-sounds">Why "I have 2FA" is thinner than it sounds</h2>
+              <p>
+                Multi-factor authentication is still the highest-value control most people can turn on, and nothing
+                below is an argument against it. But "I have 2FA" gets used as a complete answer to "did they get
+                in", and against a live relay it is not one. Rank the factors by what a proxy can do to each.
+              </p>
+              <ul>
+                <li>
+                  <strong>An SMS code.</strong> Relayed like any other typed value, with the extra weakness that it
+                  can be intercepted at the carrier through a SIM swap without your device being involved at all. The
+                  weakest thing still widely offered.
+                </li>
+                <li>
+                  <strong>A code from an authenticator app.</strong> Stronger: the secret never travels, and there is
+                  no carrier to social-engineer. But the code is six digits valid for a thirty-second step, and the
+                  relay needs about one second of that. Typing it into the wrong page spends it just as effectively as
+                  typing it into the right one. <a href="/labs/totp">The TOTP lab</a> derives codes in front of you
+                  and shows the window ticking down, which makes the size of that gap concrete.
+                </li>
+                <li>
+                  <strong>A push approval.</strong> The easiest of all to defeat, because nothing needs relaying —
+                  the attacker triggers a genuine login and you approve it. The prompt on your phone is real. It is
+                  simply not yours.
+                </li>
+                <li>
+                  <strong>Number matching.</strong> A real improvement, and often misunderstood. It solves prompt
+                  fatigue, because you can no longer approve a prompt you did not cause. Against a relay it helps
+                  less than people assume: the proxy is already showing you the attacker's screen and can pass the
+                  number straight through.
+                </li>
+                <li>
+                  <strong>A passkey or a hardware security key.</strong> The one that breaks the mechanism rather than
+                  raising its price. The key signs a challenge together with the origin — the exact address the
+                  browser is on — and will not produce a signature for an origin the credential was not created on.
+                  The proxy's domain is not the real domain, so there is nothing to relay and nothing to type into the
+                  wrong box. It is the only factor here that fails closed when you make a mistake.
+                </li>
+              </ul>
+              <p>
+                One honest limit on that last point, because it gets left out of the marketing.
+                <strong>A passkey protects an account only as well as the weakest method still enabled on it.</strong>
+                If an SMS fallback or a recovery-code path is available, an attacker takes that instead; nobody
+                attacks the strong door when a window is open. Removing the fallbacks is the part people skip.
+                <a href="/blog/passwords-passkeys-and-what-actually-protects-you">The passkeys post</a> covers what a
+                passkey actually is, what it does not fix, and how to set one up without locking yourself out.
+              </p>
+
+              <h2 id="drive-by-compromise-and-what-replaced-it">Drive-by compromise, and what replaced it</h2>
+              <p>
+                Here is where most writing on this subject gets frightening and stops being useful, so let me be
+                plain: <strong>on a browser that is up to date, simply rendering a page very rarely results in code
+                running on your machine.</strong> That was routine fifteen years ago, when Flash, Java applets and
+                unsandboxed plugins were everywhere. It is not routine now.
+              </p>
+              <p>
+                The reason is architectural. Page content is parsed in a renderer process stripped of the privileges
+                to touch your files or your network, sites are isolated from one another at the process level, and a
+                working attack therefore needs a chain: one bug to run code inside the sandbox, a second to escape it.
+                Chains like that are expensive, they die the moment either bug is patched, and spending one on bulk
+                credential phishing means burning a valuable asset for a mail password. They get pointed at named
+                individuals — journalists, dissidents, executives — not at mailing lists.
+              </p>
+              <p>
+                The exceptions deserve naming rather than hand-waving: a browser or operating system months behind on
+                updates, a phone the manufacturer stopped supporting, a machine where somebody disabled updates
+                because a reboot was inconvenient. If you are reading this on something in that state, the update
+                <em>is</em> the security work.
+              </p>
+              <p>
+                What has genuinely replaced drive-by compromise is more embarrassing to fall for: the page persuades
+                you to run the code yourself. A page claims your browser needs an update and offers the installer. A
+                fake verification box says "prove you are human" and walks you through pressing a keyboard shortcut
+                and pasting a command already sitting in your clipboard. A document claims to be encrypted and needs a
+                special viewer. None of these are exploits. They are instructions, and they work because they arrive
+                with a plausible reason and a small amount of urgency.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>The rule that covers all of it.</strong> No legitimate website has ever needed you to open a
+                  terminal, press a key combination, or paste a command in order to prove you are a person or to view
+                  a document. Not one. If a page asks, the page is the attack — and closing the tab is the entire
+                  remedy, because nothing has run yet.
+                </p>
+              </div>
+
+              <h2 id="the-attachment-path">The attachment path: macros, shortcuts, containers and smuggled HTML</h2>
+              <p>
+                Attachments are the other branch, and they differ from links in one crucial way: a file does nothing
+                until something executes it. Every technique below exists to get past a scanner and then get you to
+                supply that execution.
+              </p>
+              <ul>
+                <li>
+                  <strong>Macros.</strong> A program written in Visual Basic for Applications, stored inside an Office
+                  document, able to run when the document opens. This dominated for years, until Microsoft began
+                  blocking macros by default in files carrying the mark of the web — the flag Windows attaches to
+                  anything downloaded from the internet. The banner asking you to "enable content" is the last
+                  obstacle between a document and code running as you, which is why the message above it is always
+                  some variation of "this document was created in an earlier version".
+                </li>
+                <li>
+                  <strong>Containers: ISO, IMG, VHD and password-protected archives.</strong> These exist because of
+                  that rule. The mark of the web attaches to the downloaded file, and historically did not propagate
+                  to files pulled out of a mounted disk image — so an ISO delivers its contents unmarked and the macro
+                  block does not apply. An archive with its password written in the email body does a related job: no
+                  scanner can read inside it, and a human helpfully supplies the key.
+                  <a href="/labs/archive-inspector">The archive inspector</a> lists what is inside an archive without
+                  extracting or running anything.
+                </li>
+                <li>
+                  <strong>Windows shortcuts (.lnk).</strong> The one that surprises people. A shortcut contains no
+                  code at all — it contains a command line. A file named <code>Invoice_March.pdf.lnk</code>, wearing
+                  whatever icon its author chose, can point at PowerShell with arguments that fetch and run something.
+                  The icon is decoration and the extension is hidden by default. What you double-click is a command,
+                  dressed as a document.
+                </li>
+                <li>
+                  <strong>HTML smuggling.</strong> The attachment is an <code>.html</code> file, which every mail
+                  gateway is happy to pass. Opening it runs a few lines of script that assemble the real payload out
+                  of data already embedded in that same file and hand it to you as a download. No executable crossed
+                  the network, so there was nothing in transit to catch — the file was manufactured on your machine.
+                </li>
+                <li>
+                  <strong>Anything else that can hold an embedded object.</strong> OneNote pages, compiled help files,
+                  and every format that lets an author embed something clickable have had their turn. The category
+                  rotates whenever a default changes. The shape does not.
+                </li>
+              </ul>
+              <p>
+                All of these need a human action after the download, and that is the boundary that decides your
+                response. <a href="/labs/file-inspector">The file inspector</a> reads a file's
+                <a href="/glossary#term-magic-bytes">magic bytes</a> and tells you what it actually is rather than
+                what it is named — which settles the common version of this question, whether the thing calling itself
+                a PDF is one, without opening it.
+              </p>
+
+              <h2 id="the-first-thirty-minutes">The first thirty minutes</h2>
+              <p>
+                This is the part to bookmark. It is ordered, and the order matters more than any individual step.
+              </p>
+              <p><strong>Everyone, before anything else:</strong></p>
+              <ol>
+                <li>
+                  <strong>Do not delete the message.</strong> The headers are the only reliable record of where it
+                  came from and how it authenticated, and deleting it destroys that record in the one place anyone
+                  investigating would look. Report it, then leave it alone.
+                  <a href="/labs/email-headers">The email header analyser</a> reads the <code>Received</code> chain
+                  and the <a href="/glossary#term-dmarc">DMARC</a> result and explains them line by line.
+                </li>
+                <li>
+                  <strong>Decide which of the six things you did.</strong> Not what you are afraid you did. If you are
+                  unsure whether you typed a password, check your password manager's history — an autofill event on an
+                  unfamiliar domain is a definitive answer, and its absence is a good sign.
+                </li>
+              </ol>
+              <p><strong>If you only opened the page and typed nothing:</strong></p>
+              <ol>
+                <li>Report it, so the same message can be pulled from everyone else's mailbox.</li>
+                <li>Expect more mail of the same kind for a few months.</li>
+                <li>There is no third step. Do not run a scan out of anxiety; a page you closed installed nothing.</li>
+              </ol>
+              <p><strong>If you typed a password, typed a code, or approved a prompt:</strong></p>
+              <ol>
+                <li>
+                  <strong>Move to a different device you trust.</strong> If anything is capturing what you type on the
+                  machine you clicked from, the new password is captured too. A phone is fine.
+                </li>
+                <li>
+                  <strong>Reach the real site by typing the address yourself.</strong> Not the link, not a search
+                  result, not a bookmark you cannot account for. Change the password there.
+                </li>
+                <li>
+                  <strong>Revoke every session, immediately afterwards.</strong> Look for "sign out everywhere",
+                  "active sessions" or "devices". This is the step that invalidates the stolen cookie, and not every
+                  provider does it automatically on a password change. Doing it before the change is worse than
+                  useless — a live attacker session can simply set the password back.
+                </li>
+                <li>
+                  <strong>Check mail rules and forwarding.</strong> The step almost everybody misses, which is why it
+                  has its own section below. Do not skip it because the password change felt like the end.
+                </li>
+                <li>
+                  <strong>Check connected apps and OAuth grants.</strong> An application you once approved holds its
+                  own token, and that token survives both a password change and a session revocation. Remove anything
+                  you do not recognise or no longer use.
+                </li>
+                <li>
+                  <strong>Check the recovery details.</strong> Recovery email, recovery phone, security questions,
+                  authenticator enrolments. Somebody with five minutes in the account may have added a route back in
+                  that has nothing to do with your password. Regenerate the backup codes while you are there.
+                </li>
+                <li>
+                  <strong>Change that password anywhere you reused it.</strong> Usually the largest part of the real
+                  blast radius, and the reason a password manager pays for itself. Start with the email account,
+                  because it is the recovery route for everything else.
+                </li>
+                <li>
+                  <strong>Tell whoever needs to know, now.</strong> Your IT or security team if this is a work
+                  account; your bank if payment details were involved. Report before you have finished investigating,
+                  not after — they can revoke things you cannot.
+                </li>
+              </ol>
+              <p><strong>If you ran a file, opened one, or enabled content:</strong></p>
+              <ol>
+                <li>
+                  <strong>Disconnect that machine from the network.</strong> Pull the cable, turn off the Wi-Fi. Do
+                  not start deleting things.
+                </li>
+                <li>
+                  <strong>Leave it powered on if anyone competent is going to look at it.</strong> Memory holds
+                  evidence a shutdown destroys. If nobody is going to look, this matters less than getting it off the
+                  network.
+                </li>
+                <li>
+                  <strong>Do the whole credential list above, from a different device.</strong> Assume everything
+                  typed on that machine since the file ran is exposed, including whatever a browser had saved.
+                </li>
+                <li>
+                  <strong>Escalate. Do not clean it and carry on.</strong> A clean antivirus result means the scanner
+                  recognised nothing, which is not the same as nothing being there — initial-access tooling is rebuilt
+                  specifically to be unrecognised for its first days in the wild. The reliable answer is a rebuild.
+                </li>
+              </ol>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>One rule sits underneath all of it: change credentials from a device other than the one you
+                  clicked on.</strong> Everything else here is negotiable depending on the account and the service.
+                  That one is not, because it is the only step that stays correct whether or not the machine turns out
+                  to be compromised.
+                </p>
+              </div>
+
+              <h2 id="the-step-almost-everybody-misses">The step almost everybody misses</h2>
+              <p>
+                When somebody gets into a mailbox, the first thing they do is not spectacular. They do not empty
+                anything or send anything dramatic. They create a rule.
+              </p>
+              <p>
+                A rule that moves every message containing <em>invoice</em>, <em>payment</em>, <em>bank</em>,
+                <em>security alert</em> or <em>password</em> into a folder nobody reads — Archive, RSS Feeds, a folder
+                named with a single full stop — and marks it read on the way. Sometimes a forwarding rule that
+                silently copies everything to an outside address. From that moment the attacker reads your mail and
+                you do not see the warnings about it, which is the objective: quiet, durable access to the
+                conversation rather than a smash and grab.
+              </p>
+              <p>
+                The reason this matters more than it sounds is that <strong>a mail rule survives a password
+                change.</strong> You reset the password, you feel finished, and the rule is still quietly filing your
+                bank's fraud alerts into a folder you have never opened. I have seen accounts where the password had
+                been changed twice and the rule from the original compromise was still running. It is the most
+                under-checked item on any incident checklist I have taught.
+              </p>
+              <p>Where to look, on the two systems most people are on:</p>
+              <ul>
+                <li>
+                  <strong>Microsoft 365 and Outlook on the web:</strong> Settings, then Mail, then Rules — and
+                  separately, Forwarding, because a forward is not listed as a rule. Also check the connected accounts
+                  section, and on a work account whether anyone has been given delegate access to your mailbox.
+                </li>
+                <li>
+                  <strong>Gmail:</strong> Settings, then Filters and blocked addresses, and separately Forwarding and
+                  POP/IMAP. Check whether IMAP was switched on, whether an unfamiliar address is listed under Send
+                  mail as, and whether anyone appears under Account permissions.
+                </li>
+              </ul>
+              <p>
+                Three more things worth thirty seconds each while you are in there. Read the Sent folder, and then
+                Deleted items, because somebody who mailed your contacts from your account usually removes the
+                evidence. Check the connected-applications list, since a token granted to an app is access no password
+                change touches. And read the recent sign-in activity your provider records — locations, devices, times
+                — which will often tell you plainly whether anything happened at all.
+              </p>
+              <p>
+                All of this is the same logic as the incident work in
+                <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually solved</a>: the
+                evidence that decides an outcome is boring, administrative, and easy to destroy by tidying up.
+              </p>
+
+              <h2 id="when-it-is-genuinely-fine">When it is genuinely fine</h2>
+              <p>
+                Most of the time it is fine, and saying so plainly is what makes the rest of this worth believing. If
+                a page only warns, people stop reading it — and then they stop reporting, which is the outcome that
+                actually costs money.
+              </p>
+              <p>You are fine, with nothing further to do, if any of these describes you:</p>
+              <ul>
+                <li>You opened the link, the page looked wrong, and you closed it. Nothing typed, so nothing left your device.</li>
+                <li>You reached a login page, felt uneasy, and went to the real site in another tab instead. That instinct is the control working.</li>
+                <li>The link was dead, or your browser or mail provider blocked it — which usually means somebody reported it before you did.</li>
+                <li>You downloaded a file and never opened it. Delete it, empty the bin, done. Downloading is not running.</li>
+                <li>You clicked from a supported phone, the page opened in the mail app's browser, and you typed nothing.</li>
+              </ul>
+              <p>
+                The thing that keeps me calm about phishing generally is that it is a volume business. Almost all of
+                these messages are aimed at nobody in particular — one template posted to a hundred thousand
+                addresses, in the hope that a fraction of a percent do the work. You were almost certainly not chosen.
+                You were on a list. The <a href="/blog/types-of-cyberattacks">wider map of attack families</a> puts
+                that in proportion: phishing is the cheapest entry in the catalogue, which is exactly why it is the
+                most common.
+              </p>
+              <p>
+                Report it even when you are certain you are fine, because your report is what gets the message pulled
+                from the mailboxes of people who would have typed their password. And if you run a team, the
+                highest-return thing you can do is make reporting blameless and fast. Every hour I have spent teaching
+                this has confirmed the same thing: if clicking gets somebody humiliated, the next person hides it for
+                four hours, and those four hours are the entire game.
+              </p>
+
+              <h2 id="questions-people-ask">Questions people ask</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Can just opening a phishing link hack my phone?</summary>
+                  <p>
+                    Almost never, on a phone that is still getting updates. Loading a page runs the page's code
+                    inside the browser's sandbox, where it cannot read your other tabs, your saved passwords, your
+                    files or your messages. Compromise through rendering alone needs a working exploit chain against
+                    your exact browser and operating system version, and those are expensive enough to be aimed at
+                    named individuals rather than sprayed at a mailing list. The realistic risk on a phone is the
+                    ordinary one: the page asks you to sign in, or to install a profile or an app from outside the
+                    store, and you do it.
+                  </p>
+                </details>
+                <details>
+                  <summary>I clicked the link but did not type anything. Do I need to change my password?</summary>
+                  <p>
+                    No. If nothing was entered and nothing was downloaded, no credential left your device, and there
+                    is nothing for a password change to undo. What the click did disclose is that your address is
+                    live and that a person reads it, which is worth money to whoever sold the list, so expect the
+                    volume of similar mail to rise. Report the message, keep it rather than deleting it, and carry
+                    on.
+                  </p>
+                </details>
+                <details>
+                  <summary>Does changing my password fix it?</summary>
+                  <p>
+                    Only half of it, and it is the half people stop at. A modern credential-harvesting page steals
+                    the session cookie the real service issued, and a session cookie is not a password — it is a
+                    token saying this browser has already signed in. Until that session is ended, the new password
+                    changes nothing for the attacker. Change the password, then use the sign-out-everywhere or
+                    revoke-sessions control, in that order, and then look for what outlives both: mail rules,
+                    forwarding addresses, connected apps and recovery details.
+                  </p>
+                </details>
+                <details>
+                  <summary>I have two-factor authentication. Does that not stop this?</summary>
+                  <p>
+                    It stops the reused-password attack, which is worth having. It does not stop a page that relays
+                    your login to the real site in real time. A code from an app or an SMS is valid for a short
+                    window and the attacker needs about a second of it; a push approval is easier still, because the
+                    prompt you approve is the attacker's genuine login attempt. The factors that survive are the
+                    ones bound to the address you are actually on — a passkey or a hardware security key — because
+                    the signature they produce verifies nowhere except the real site. That only holds if the weaker
+                    methods are removed from the account, because an attacker will simply choose the fallback.
+                  </p>
+                </details>
+                <details>
+                  <summary>Should I delete the email?</summary>
+                  <p>
+                    Not yet. The headers are the only reliable record of where the message came from and how it
+                    authenticated, and deleting it removes that record from the place anyone investigating would
+                    look. Report it with whatever button your mail client provides, tell whoever handles security
+                    where you work, and leave the message alone until they say otherwise. If there is nobody to
+                    report it to, move it to a folder rather than deleting it.
+                  </p>
+                </details>
+                <details>
+                  <summary>I downloaded the attachment but did not open it. Is that bad?</summary>
+                  <p>
+                    No. A file sitting on disk has not run, and a file that has not run has not done anything.
+                    Delete it, empty the bin, and you are back where you started. The line that matters is
+                    execution, not download, which is exactly why the answer to what you actually did has to
+                    separate the two: the response on either side of that line is completely different.
+                  </p>
+                </details>
+                <details>
+                  <summary>Is an antivirus scan enough after I ran something?</summary>
+                  <p>
+                    No, and this is where people most often stop too early. A clean scan means the scanner
+                    recognised nothing, not that nothing is there, and the tooling used for initial access is
+                    rebuilt specifically to be unrecognised for its first days in the wild. If something ran, treat
+                    every credential typed on that machine as exposed, change them from a different device, and have
+                    the machine rebuilt rather than cleaned. Rebuilding is inconvenient and reliable. Cleaning is
+                    convenient and a guess.
+                  </p>
+                </details>
+                <details>
+                  <summary>How would I know if someone is already reading my mailbox?</summary>
+                  <p>
+                    Look for the housekeeping rather than for drama. Check the mailbox rules and any forwarding
+                    address, because a rule that files security alerts and banking mail somewhere you never look is
+                    the standard first move and it survives a password change. Check the sent and deleted folders
+                    for messages you did not write. Check the list of connected or authorised applications, because
+                    an app you once approved holds its own token. Then read the recent sign-in activity your
+                    provider records, which shows locations and devices even when nothing else looks unusual.
+                  </p>
+                </details>
+              </div>
+
+              <p>
+                So: which of the six was it? If you typed nothing, you have lost a little privacy and gained some
+                spam, and that is genuinely the whole story. If you typed something, you have half an hour of dull,
+                specific work ahead — password, sessions, rules, apps, recovery, reuse — and the order matters more
+                than the speed. If something ran, stop reading and get the machine off the network. Everything else on
+                this page explains why those three answers are different.
+              </p>
+            </div>
+          </div>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-happens-when-you-click-a-phishing-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=What%20Happens%20When%20You%20Click%20a%20Phishing%20Link&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-happens-when-you-click-a-phishing-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=What%20Happens%20When%20You%20Click%20a%20Phishing%20Link%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-happens-when-you-click-a-phishing-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+              <li><a href="/blog/types-of-cyberattacks">Types of cyberattacks, mapped: causes, defenses, and the CIA triad</a></li>
+              <li><a href="/blog/surface-web-deep-web-and-dark-web">Surface web, deep web, and dark web: what the three layers actually are</a></li>
+              <li><a href="/blog/digital-arrest-scam-explained">The digital arrest scam, explained</a></li>
+              <li><a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved: from first alert to the courtroom</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Clicked something and want a straight answer?</h2>
+            <p>
+              Most of the time the answer is smaller than the fear, and the work is establishing which of the six
+              things actually happened and then closing whatever it opened — sessions, rules, tokens, reused
+              passwords. I do that for individuals and for teams, and I teach it to the people I mentor.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/services">Work with me</a>
+              <a class="btn btn-secondary" href="/labs">Try the security labs</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+          <div class="footer-cta-group">
+            <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+            <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

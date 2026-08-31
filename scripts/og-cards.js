@@ -470,7 +470,7 @@ const MOTIFS = {
 /* --------------------------------------------------------------------------
    The game cards, derived rather than typed.
 
-   66 games and a hub is far too many entries to keep by hand, and a card list
+   Every game plus the hub is far too many entries to keep by hand, and a card list
    maintained separately from the manifest is a list that goes stale silently:
    every game page already ships <meta property="og:image"> pointing at
    og-game-<slug>.jpg, so a game missing from here does not degrade to the
@@ -519,8 +519,16 @@ const deEntity = (s) =>
     .replace(/&#(\d+);/g, (m, d) => String.fromCharCode(Number(d)))
     .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in ENTITIES ? ENTITIES[k.toLowerCase()] : m));
 
+/* The double quote is escaped too, and it has to be. esc() feeds BOTH text
+   nodes and the root aria-label ATTRIBUTE, and a title with a quote in it —
+   the digital-arrest post's <h1> opens with one — closed that attribute early
+   and made the whole document unparseable. Chromium does not report a broken
+   SVG, it just never fires onload, so the card came out as "svg load failed"
+   with nothing naming the character responsible. &quot; renders as a plain
+   quote in a text node, so escaping it everywhere costs nothing. */
 const esc = (s) =>
-  deEntity(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  deEntity(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 
 /* Every line, uncapped. Kept separate from wrapTitle because a caller that
    wants to KNOW whether a title overflows cannot find out from a function that
@@ -556,6 +564,35 @@ function wrapTitle(title, max) {
    off than it would have been without an entry.
    --------------------------------------------------------------------------- */
 const LAB_KIND = {
+  'periodic-table':       ['labGrid', 'Visualiser'],
+  'web-layers':           ['labNetwork', 'Visualiser'],
+  'media-forensics':      ['labFile', 'Forensics'],
+  'malware-triage':       ['labShield', 'Forensics'],
+  'phishing-dissector':   ['labMail', 'Free tool'],
+  'upi-fraud':            ['labShield', 'Visualiser'],
+  'git-objects':          ['labSort', 'Visualiser'],
+  'qr':                   ['labGrid', 'Free tool'],
+  'totp':                 ['labKeys', 'Free tool'],
+  'unicode':              ['labWords', 'Free tool'],
+  'tls-handshake':        ['labCert', 'Visualiser'],
+  'osint-self-check':     ['labFile', 'Free tool'],
+  'log-analyser':         ['labTerminal', 'Forensics'],
+  'threat-model':         ['labShield', 'Free tool'],
+  'ransomware-anatomy':   ['labKey', 'Visualiser'],
+  'wifi-security':        ['labWave', 'Visualiser'],
+  'compiler':             ['labCpu', 'Visualiser'],
+  'big-o':                ['labSort', 'Visualiser'],
+  'db-index':             ['labDb', 'Visualiser'],
+  'http-versions':        ['labPackets', 'Visualiser'],
+  'docker-layers':        ['labGrid', 'Visualiser'],
+  'contrast':             ['labWave', 'Free tool'],
+  'passkeys':             ['labKeys', 'Free tool'],
+  'invoice-maker':        ['labWords', 'Document maker'],
+  'salary-breakdown':     ['labGrid', 'Free tool'],
+  'emi':                  ['labSort', 'Free tool'],
+  'image-tools':          ['labFile', 'Free tool'],
+  'pdf-tools':            ['labFile', 'Free tool'],
+  'typing-certificate':   ['labWords', 'Free tool'],
   'algorithm-visualizer': ['labSort', 'Visualiser'],
   'os-algorithms':        ['labSort', 'Visualiser'],
   'regex-engine':         ['labRegex', 'Visualiser'],
@@ -766,6 +803,93 @@ function gameCards() {
   return cards;
 }
 
+/* ---------------------------------------------------------------------------
+   The blog cards.
+
+   This file built site, lab and game cards and had no blog path at all, while
+   every post under blog/ has always declared
+   og:image=/assets/images/blog/og/<slug>.jpg. The 27 jpgs that satisfy those
+   declarations were made outside this script, so the first new post written
+   after them had a share card the build gate demanded and nothing on disk
+   could produce — the deploy simply failed, with the fix living in whatever
+   tool made the other 27.
+
+   Derived the same way labCards() derives its own: the destination is read
+   from the page rather than built from the slug, so a post that predates the
+   convention keeps the card it is actually serving.
+
+   The category comes from blog/index.html, because that is where it is already
+   authoritative — every card there carries data-category and blog-index.js
+   filters on it. Reading it here means the share card's eyebrow and the site's
+   own filter can never disagree.
+   --------------------------------------------------------------------------- */
+const BLOG_KIND = {
+  'security':           ['labShield', 'Security'],
+  'automation-ai':      ['labCpu', 'Automation & AI'],
+  'career-mentorship':  ['labWords', 'Career'],
+  'business':           ['labGrid', 'Business'],
+  'life':               ['labWave', 'Essay'],
+};
+
+function blogCategories() {
+  /* href -> data-category, straight off the hub. Both attribute orders appear
+     in that file, so this matches the pair rather than assuming which comes
+     first. */
+  const out = {};
+  let hub = '';
+  try { hub = fs.readFileSync(path.join(ROOT, 'blog/index.html'), 'utf8'); }
+  catch (err) { return out; }
+  const re = /<a[^>]*href="\/blog\/([a-z0-9-]+)"[^>]*data-category="([a-z-]+)"/g;
+  let m;
+  while ((m = re.exec(hub)) !== null) out[m[1]] = m[2];
+  return out;
+}
+
+function blogCards() {
+  const dir = path.join(ROOT, 'blog');
+  let files = [];
+  try {
+    files = fs.readdirSync(dir).filter((f) => f.endsWith('.html') && f !== 'index.html');
+  } catch (err) {
+    return [];                       // no blog directory, no blog cards
+  }
+
+  const cats = blogCategories();
+  const cards = [];
+  files.forEach((f) => {
+    const slug = f.replace(/\.html$/, '');
+    const html = fs.readFileSync(path.join(dir, f), 'utf8');
+
+    const og = (html.match(/property="og:image"\s+content="([^"]*)"/) || [])[1];
+    const m = og && og.match(/\/assets\/images\/blog\/og\/([^/"]+\.jpg)$/);
+    if (!m) return;                  // no declared card, or one pointing off-site
+
+    const strip = (s) => String(s).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || slug;
+    const desc = (html.match(/name="description"\s+content="([^"]*)"/) || [])[1] || '';
+    const rawTitle = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
+    const shortTitle = strip(rawTitle).replace(/\s*[|—-]\s*Krunalkumar Shah\s*$/, '').trim();
+    /* A post not yet carded on the hub has no category here, and the eyebrow
+       then has nothing to qualify itself with — so it stays a bare "Blog"
+       rather than the "Blog · Blog" a fallback label produces. */
+    const kind = BLOG_KIND[cats[slug]] || ['labWords', null];
+
+    cards.push({
+      id: 'blog-' + slug,
+      motif: kind[0],
+      dest: 'assets/images/blog/og/' + m[1],
+      /* "Blog · Security" rather than bare "Blog": a post's card is most often
+         seen next to a lab's, and the lab cards already qualify themselves. */
+      eyebrow: kind[1] ? 'Blog · ' + kind[1] : 'Blog',
+      /* 20 to match the labs. A post title is a sentence, like a lab's
+         description and unlike a game's name. */
+      lines: cardTitle(strip(h1), 20, shortTitle),
+      sub: firstSentence(strip(deEntity(desc)) || 'Writing on security, systems and building things well.', 88),
+    });
+  });
+  return cards;
+}
+
 const CARDS = [
   { id: 'glossary', dest: 'assets/images/og-glossary.jpg', eyebrow: 'Glossary',
     lines: ['Security, systems', 'and code terms'], sub: 'Every word, linked to the lab that shows it' },
@@ -783,7 +907,7 @@ const CARDS = [
   /* Every game and the arcade hub, derived from the manifest by gameCards()
      below rather than listed by hand. A function declaration is hoisted, so
      it is callable from this initialiser. */
-].concat(labCards(), gameCards());
+].concat(labCards(), gameCards(), blogCards());
 
 
 

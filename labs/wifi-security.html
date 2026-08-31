@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="WEP to WPA3 side by side, the WPA2 four-way handshake and SAE drawn out input by input, and how an evil twin collects credentials on public wifi." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/wifi-security" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Why a captured WPA2 handshake is a cracking target and a WPA3 one is not" />
+    <meta property="og:description" content="WEP through WPA3 side by side, the WPA2 four-way handshake with the PTK derivation drawn out input by input, the SAE exchange beside it, how an evil twin and a captive portal collect credentials, and an honest answer on public wifi and VPNs. Explanation only. Runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/wifi-security" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-wifi-security.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wi-Fi Security Explained" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why a captured WPA2 handshake is a cracking target and a WPA3 one is not" />
+    <meta name="twitter:description" content="WEP through WPA3 side by side, the WPA2 four-way handshake with the PTK derivation drawn out input by input, the SAE exchange beside it, how an evil twin and a captive portal collect credentials, and an honest answer on public wifi and VPNs. Explanation only. Runs entirely in your browser." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-wifi-security.jpg" />
+    <title>Wi-Fi Security Explained — WEP to WPA3 | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Wi-Fi Security Explained",
+        "url": "https://krunalkumar.dpdns.org/labs/wifi-security",
+        "applicationCategory": "EducationalApplication",
+        "applicationSubCategory": "Network security education",
+        "operatingSystem": "Any modern web browser",
+        "description": "WEP through WPA3 side by side, the WPA2 four-way handshake with the PTK derivation drawn out input by input, the SAE exchange beside it, how an evil twin and a captive portal collect credentials, and an honest answer on public wifi and VPNs. Explanation only. Runs entirely in your browser.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "WEP, WPA/TKIP, WPA2-PSK, WPA2-Enterprise and WPA3-SAE compared",
+                "The WPA2 four-way handshake, stepped frame by frame",
+                "PTK derivation with every input marked public or secret",
+                "The SAE dragonfly exchange beside it",
+                "Why a WPA3 capture is not an offline guessing target",
+                "Evil twin and captive portal stages, with the tells",
+                "Why hidden SSIDs and MAC filtering are not security",
+                "What HTTPS already protects on public wifi, and where a VPN helps"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does this tool test my own wireless network?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. It cannot see your network, your adapter or any network at all - a web page has no access to the radio. This is an explanation of how the protocols work, drawn so you can step through them. To check your own network, open your router's wireless settings and read what the security mode says."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is WPA2 still safe to use?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "With a long random passphrase, yes, and AES-CCMP itself has no practical break. But the four-way handshake gives anyone who observes it an offline target: they can test passphrase guesses at their own pace with nothing further sent to the network. That makes the passphrase the entire defence, so it has to be worth something. WPA3 removes the target rather than relying on the passphrase to survive it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why can a WPA3 handshake not be cracked offline?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the password only enters the exchange blinded by random values that are never transmitted. A listener ends up with two scalars, two curve elements and two confirm hashes, and testing a single password guess against any of it would mean solving a discrete logarithm. So each guess has to be tried live against the access point, one at a time, where it can be rate-limited, refused and logged."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does hiding my network name make it harder to find?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The beacon stops carrying the name, but every association and every probe from every client that knows the network still carries it in the clear. It is hidden from someone scrolling a list of networks and from nobody else. It is also slightly worse than doing nothing, because devices configured for a hidden network go looking for it by name wherever they are."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Do I actually need a VPN on public wifi?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Usually not for the reason it is sold. HTTPS already protects the contents, the integrity and the identity of nearly everything you do, and it closed the classic public-wifi scenario years ago. What still leaks is which hosts you connect to, through DNS, the TLS SNI field and the destination addresses. If hiding that from the local network is a specific concern of yours, a VPN genuinely helps - but it moves that trust to the provider rather than removing it, and it does nothing about tracking, phishing or malware."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Are the keys and nonces on this page real?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and the page says so on screen where they appear. It performs no cryptography. The hex strings are a deterministic placeholder that exists so that changing the network name visibly changes what depends on it, which is a real property worth seeing. The structure of the derivation, the sizes and the roles of each key are the real ones."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Wi-Fi security",
+                        "item": "https://krunalkumar.dpdns.org/labs/wifi-security"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+            <a class="nav-link" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Wi-Fi security</li>
+          </ol>
+        </nav>
+        <h1>Wi-Fi security, from WEP to WPA3</h1>
+        <p class="hero-text">Almost everything written about wireless security is either a list of router settings that change nothing, or a warning about public wifi that stopped being true around the time HTTPS became universal. This lab does the other thing: it draws the mechanism. Walk the five generations, step the WPA2 four-way handshake with every input marked public or secret, put the WPA3 exchange next to it, and see exactly why one of them can be guessed at offline and the other cannot. Explanation only &mdash; there is no capture step and no attack here.</p>
+        <ul class="lab-facts">
+          <li>WEP to WPA3, what each fixed and still leaks</li>
+          <li>The four-way handshake, frame by frame</li>
+          <li>PTK derivation: five public inputs, one secret</li>
+          <li>SAE beside it, and why the capture is worthless</li>
+          <li>Evil twin and portal tells you can actually notice</li>
+          <li>Public wifi and VPNs, answered honestly</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This visualisation is drawn and stepped in your browser and needs JavaScript to run.</p>
+          <p>The whole point is watching the handshake unfold one frame at a time, so there is no static version to fall back to.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-viz" id="wifisecviz">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This runs entirely inside your browser &mdash; the diagrams, the stepping, all of it on
+              your own machine. Nothing is uploaded and there is no server.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>It cannot see your network or any network</li>
+                  <li>No capture, no cracking, no attack tooling</li>
+                  <li>It performs no cryptography &mdash; the hex is illustrative and labelled</li>
+                  <li>Nothing is uploaded or stored</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why it is here</p>
+                <ul class="lab-gate-list">
+                  <li>The mechanism is the part nobody draws</li>
+                  <li>Seeing which inputs are public explains the rest</li>
+                  <li>Works offline once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-multi-mount" id="viz-wifi-mount">
+          <p class="lab-proc-fallback">Starting the wireless security explainer… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The part that is worth understanding</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Five of the six inputs travel in the clear</h3>
+            <p>The WPA2 session key comes out of a pseudo-random function fed six things: the PMK, a fixed string from the standard, both MAC addresses and both nonces. The string is published. The MAC addresses are in every frame header. Both nonces are sent unencrypted during the handshake. The only input a listener does not have is the PMK &mdash; and the PMK is nothing but your passphrase and your network name. That is why the passphrase carries the entire network, and why &ldquo;use a long random one&rdquo; is a specific technical requirement rather than general advice.</p>
+          </article>
+          <article class="info-card">
+            <h3>Offline versus live is the whole difference</h3>
+            <p>A captured WPA2 handshake contains a MIC that any candidate passphrase can be tested against. The testing happens on the attacker&rsquo;s own hardware, at their own pace, with nothing sent back to the network &mdash; so there is nothing to rate-limit, nothing to lock out and nothing to log. SAE removes that. The password only enters the exchange blinded by random values that are never transmitted, so every guess has to be made live against the access point, which can slow it down, refuse it and record it. Same password, wildly different economics.</p>
+          </article>
+          <article class="info-card">
+            <h3>Forward secrecy is the quiet upgrade</h3>
+            <p>Under WPA2-PSK the session key derives from the passphrase and two public nonces, so anyone who records encrypted traffic today and learns the passphrase in five years can decrypt what they recorded. SAE derives the session key from random values chosen fresh for each exchange and then discarded, so learning the password afterwards buys nothing against anything already recorded. It is the least advertised part of WPA3 and arguably the most valuable.</p>
+          </article>
+          <article class="info-card">
+            <h3>Most &ldquo;hardening&rdquo; is not security</h3>
+            <p>A hidden SSID is still broadcast by every client that knows it. A MAC address is in the clear in every frame header, on every network, always, and it is a software setting on essentially every device. Both are settings that make a network list look tidier and change nothing an attacker has to do. What genuinely helps is short and dull: a long random passphrase, WPA3 with transition mode off, protected management frames on, WPS off, firmware updated, and guests on a properly isolated network.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Where this stops</h2>
+          <p>What the page can show you, and what it deliberately does not.</p>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>It is an explanation, not a workshop</h3>
+            <p>There is no capture step here, no cracking, nothing about knocking a device off a network, and no tool named for any of it. The mechanism and the defence are the content. If you want to know why a handshake is worth protecting, the derivation panel answers that far better than a command line would; if you want to run an attack, this is the wrong page and I am not going to write the right one.</p>
+          </article>
+          <article class="info-card">
+            <h3>The cryptography is drawn, not computed</h3>
+            <p>This page performs no cryptography. The hex strings in the handshake family are a deterministic placeholder, present so that changing the network name visibly changes what depends on it &mdash; which is a real property, and the reason a precomputed table only ever helps against one SSID. Every panel that shows one says what it is. The structure, the key sizes and the role of each derived key are the genuine ones.</p>
+          </article>
+          <article class="info-card">
+            <h3>It cannot see your network</h3>
+            <p>A web page has no access to a wireless adapter, so nothing here can tell you what your own network is running. Your router&rsquo;s wireless settings page can, in one line. If it says WEP or WPA, that is worth acting on today; if it says WPA2, the passphrase is the thing to look at; if it offers WPA3, take it and check what stops working before you turn transition mode off.</p>
+          </article>
+          <article class="info-card">
+            <h3>Signals, not proof</h3>
+            <p>The evil-twin family lists tells, and a tell is not evidence. Two access points with the same name is completely normal in any building large enough to need two. A portal appearing is normal. What is not normal is a certificate warning, a network that has lost its lock icon, or a sign-in page asking for a password that unlocks something other than the wifi &mdash; and those are the three worth acting on.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does this tool test my own wireless network?</summary>
+            <div>No. It cannot see your network, your adapter or any network at all - a web page has no access to the radio. This is an explanation of how the protocols work, drawn so you can step through them. To check your own network, open your router's wireless settings and read what the security mode says.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is WPA2 still safe to use?</summary>
+            <div>With a long random passphrase, yes, and AES-CCMP itself has no practical break. But the four-way handshake gives anyone who observes it an offline target: they can test passphrase guesses at their own pace with nothing further sent to the network. That makes the passphrase the entire defence, so it has to be worth something. WPA3 removes the target rather than relying on the passphrase to survive it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why can a WPA3 handshake not be cracked offline?</summary>
+            <div>Because the password only enters the exchange blinded by random values that are never transmitted. A listener ends up with two scalars, two curve elements and two confirm hashes, and testing a single password guess against any of it would mean solving a discrete logarithm. So each guess has to be tried live against the access point, one at a time, where it can be rate-limited, refused and logged.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does hiding my network name make it harder to find?</summary>
+            <div>No. The beacon stops carrying the name, but every association and every probe from every client that knows the network still carries it in the clear. It is hidden from someone scrolling a list of networks and from nobody else. It is also slightly worse than doing nothing, because devices configured for a hidden network go looking for it by name wherever they are.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Do I actually need a VPN on public wifi?</summary>
+            <div>Usually not for the reason it is sold. HTTPS already protects the contents, the integrity and the identity of nearly everything you do, and it closed the classic public-wifi scenario years ago. What still leaks is which hosts you connect to, through DNS, the TLS SNI field and the destination addresses. If hiding that from the local network is a specific concern of yours, a VPN genuinely helps - but it moves that trust to the provider rather than removing it, and it does nothing about tracking, phishing or malware.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Are the keys and nonces on this page real?</summary>
+            <div>No, and the page says so on screen where they appear. It performs no cryptography. The hex strings are a deterministic placeholder that exists so that changing the network name visibly changes what depends on it, which is a real property worth seeing. The structure of the derivation, the sizes and the roles of each key are the real ones.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a panel will not render, or you think something here is wrong, I would like to know &mdash; and if it is wrong, please say which part.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=wifi-security#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20wifi%20security%20lab%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The rest of the network stack</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/subnet">
+            <span class="lab-card-name">Subnet calculator</span>
+            <p class="lab-card-desc">The addressing your access point hands out, worked out bit by bit.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/dns">
+            <span class="lab-card-name">DNS lookup</span>
+            <p class="lab-card-desc">The resolver a network gives you is the one deciding where names point.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/web-layers">
+            <span class="lab-card-name">Surface, deep and dark web</span>
+            <p class="lab-card-desc">Onion routing hop by hop, and what each relay actually knows.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/cert-decoder">
+            <span class="lab-card-name">Certificate decoder</span>
+            <p class="lab-card-desc">The certificate check that a portal cannot fake, taken apart.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/phishing-dissector">
+            <span class="lab-card-name">Phishing dissector</span>
+            <p class="lab-card-desc">The same trick as a fake portal, delivered by email instead.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/password">
+            <span class="lab-card-name">Password strength</span>
+            <p class="lab-card-desc">Real entropy and offline crack times &mdash; which is exactly what a captured handshake gives an attacker.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+        <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-name">
+            <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+            Krunalkumar Shah
+          </p>
+          <p class="footer-tagline">
+            Cybersecurity professional and published Linux security researcher, building AI-driven automation
+            and the practical systems that run on it.
+          </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+        </div>
+        <div class="footer-links">
+          <nav class="footer-col" aria-label="Footer">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/projects">Projects</a>
+            <a href="/research">Research</a>
+            <a href="/labs">Labs</a>
+            <a href="/games">Games</a>
+            <a href="/internships">Internships</a>
+            <a href="/client-reviews">Recommendations</a>
+            <a href="/blog">Blog</a>
+            <a href="/glossary">Glossary</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <nav class="footer-col" aria-label="From the blog">
+            <h3>From the blog</h3>
+            <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+            <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+            <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+            <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+            <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+            <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+            <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+            <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+            <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+            <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+            <a href="/blog">All articles →</a>
+          </nav>
+          <div class="footer-col">
+            <h3>Connect</h3>
+            <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+            <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+            <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+            <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+            <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+          
+            <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+            <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+            <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+        <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+        <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+    <script defer src="/assets/js/labs/viz-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/multi-shell.js"></script>
+    <script defer src="/assets/js/labs/viz/wifi-security.js"></script>
+  </body>
+</html>
