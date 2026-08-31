@@ -10,6 +10,46 @@
     <name>Krunalkumar Shah</name>
   </author>
   <entry>
+    <title>What a VPN Does and Does Not Do</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-a-vpn-does-and-does-not-do" />
+    <id>https://krunalkumar.dpdns.org/blog/what-a-vpn-does-and-does-not-do</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>A VPN is an encrypted tunnel to somebody else's server. That genuinely helps against a hostile network and an ISP that logs — but it moves who you have to trust rather than removing the need to trust anyone. What it does, the long list of what it does not, and the honest cases where it is the right tool.</summary>
+  </entry>
+  <entry>
+    <title>What Build Gates Taught Me About CI</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci" />
+    <id>https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration — including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct.</summary>
+  </entry>
+  <entry>
+    <title>When a Static Site Outgrows Static</title>
+    <link href="https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static" />
+    <id>https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>A static site can run compilers, an operating system emulator and a forensics suite entirely in the visitor's browser, so "static" is not a synonym for "simple". These are the honest signals that you have genuinely outgrown it, the intermediate steps most projects skip on the way to a backend, and the things you give up the moment you have a server.</summary>
+  </entry>
+  <entry>
+    <title>Why Every Number Here Is Counted</title>
+    <link href="https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted" />
+    <id>https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>A number typed into a sentence is a claim with nobody responsible for it. It was true the day it was written and nothing since has had an opinion. This is why every figure on this site is recounted at deploy time instead — the mechanism, the real drift it was built to stop, and the honest limit on what counting can fix.</summary>
+  </entry>
+  <entry>
+    <title>Writing Comments That Survive</title>
+    <link href="https://krunalkumar.dpdns.org/blog/writing-comments-that-survive" />
+    <id>https://krunalkumar.dpdns.org/blog/writing-comments-that-survive</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>The comment that restates what the code does is the first one to go stale, because the code moves and the sentence does not. The comments that survive record something the code cannot say for itself: a measurement, an alternative that was rejected, a constraint that is load-bearing, and above all a bug that was actually hit. Examples throughout are from this site's own source.</summary>
+  </entry>
+  <entry>
     <title>The First Week of an Automation Job</title>
     <link href="https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement" />
     <id>https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement</id>

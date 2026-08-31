@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Six build gates on this site, and the silent failure that caused each. Why a gate must refuse the deploy, and why one that cries wolf is worse than none." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Six gates, and the bug that produced each one" />
+    <meta property="og:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration — including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-build-gate-failures-taught-me-about-ci.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A deploy pipeline stopped at a gate, with the failing file named" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Engineering" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Six gates, and the bug that produced each one" />
+    <meta name="twitter:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration — including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-build-gate-failures-taught-me-about-ci.jpg" />
+    <title>What Build Gates Taught Me About CI | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Six gates, and the bug that produced each one",
+        "description": "A walk through the six gates in this static site's build script, the silent production failure that produced each one, and the general lessons about CI: gate the artefacts nothing else exercises, fail the deploy rather than warn, and prove your gate can fail.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-build-gate-failures-taught-me-about-ci.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Engineering",
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci"
+        },
+        "keywords": "continuous integration, build gates, static site, deploy pipeline, silent failure, CI design"
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Are these gates a replacement for tests?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, they cover different things. Tests exercise code that runs. These gates check artefacts that nothing runs — structured data, sitemaps, precache lists, share images — where a defect is invisible in review and silent in production. A project wants both."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why fail the deploy instead of logging a warning?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because a warning in a build log is read once, by the person who added it. Stopping the deploy is the only setting at which the check reliably changes what happens next. If a problem is not worth stopping for, it is probably not worth a gate."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How do you know a gate actually works?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "By making it fail on purpose. The gates in this build are exported from the script so they can be pointed at a deliberately broken copy of the site and proven to throw. A gate nobody has ever seen fail is a gate nobody knows works."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does this approach scale to a large codebase?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The principle does; the economics may not. These checks are cheap because the artefacts are files and the site is small, so the whole pass runs on every deploy. On a large codebase equivalent checks are slower, and a slow check tends to get moved to a nightly job, at which point it is a warning again."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is the single most useful gate to add first?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Whichever one covers a fact that currently lives in two places. That is where drift is guaranteed rather than possible, and it is usually the cheapest gate to write, because you are comparing two lists you already have."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Blog",
+                        "item": "https://krunalkumar.dpdns.org/blog"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "What build gates taught me",
+                        "item": "https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article class="post">
+        <section class="post-inner">
+          <section class="page-hero">
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+              <ol>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li aria-current="page">What build gates taught me</li>
+              </ol>
+            </nav>
+            <p class="eyebrow">Engineering</p>
+            <h1>What build-gate failures taught me about CI</h1>
+            <p class="hero-text">Every gate in this site's build exists because something shipped broken and nobody noticed — not in testing, not in review, and not in the deploy log. This is the six of them, the bug behind each, and what they changed about how I think about continuous integration.</p>
+            <p class="post-meta">Published 31 August 2026 &middot; 9 min read &middot; by Krunalkumar Shah</p>
+          </section>
+
+          <figure class="post-cover">
+            <img src="/assets/images/blog/build-gates-cover.svg" alt="A deploy pipeline stopped at a gate, with the failing file named" width="1200" height="630" decoding="async" />
+          </figure>
+
+          <section class="section-card">
+            <div class="post-layout">
+              <nav class="post-toc" aria-label="In this article">
+                <p class="eyebrow">In this article</p>
+                <ol>
+                  <li><a href="#the-thing-nothing-else-runs">The thing nothing else runs</a></li>
+                  <li><a href="#two-lists-that-must-agree">Two lists that must agree</a></li>
+                  <li><a href="#the-gate-that-blamed-the-innocent">The gate that blamed the innocent</a></li>
+                  <li><a href="#failures-only-strangers-see">Failures only strangers see</a></li>
+                  <li><a href="#what-a-gate-owes-you">What a gate owes you</a></li>
+                  <li><a href="#where-this-does-not-transfer">Where it does not transfer</a></li>
+                </ol>
+              </nav>
+
+              <div class="post-body">
+              <p>
+                This site has no tests in the usual sense. It has gates: a build script that reads what it is
+                about to publish, checks a handful of properties, and refuses to publish if any of them is
+                false. There are six, and not one of them was designed. Each was written after something
+                shipped broken and stayed broken, because nothing in the pipeline had any opinion about it.
+              </p>
+              <p>
+                That is the useful part. A gate written in advance is a guess about what might go wrong. A
+                gate written after the fact is a description of what did. The six below are the second kind,
+                and the pattern they share turned out to be more interesting than any of them individually.
+              </p>
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>All of this is readable.</strong> The gates live in one file,
+                  <code>scripts/build.js</code>, and every quotation below is a comment from it. The
+                  colophon explains the rest of how the site is put together.
+                </p>
+                <a class="btn btn-primary" href="/colophon">Read the colophon</a>
+              </div>
+              <h2 id="the-thing-nothing-else-runs">Gate the thing nothing else exercises</h2>
+              <p>
+                Every page here carries structured data &mdash; JSON-LD blocks describing the page to search
+                engines. Nothing on the page uses them. No visitor sees them, no script reads them, and no
+                test could plausibly fail because of them. The build's comment states the problem exactly:
+              </p>
+              <blockquote>
+                <p>
+                  a JSON-LD block with a stray trailing comma renders identically to a valid one, and the
+                  only party that ever parses it is a crawler that silently drops it
+                </p>
+              </blockquote>
+              <p>
+                Both halves matter. It renders identically, so review will not catch it. The only consumer
+                fails silently, so production will not report it. Between those two facts there is no moment
+                at which anybody finds out.
+              </p>
+              <p>
+                The gate parses every block on every page, the way a crawler would, and names the file if one
+                does not parse. It is about fifteen lines. The reason it is worth having is not that JSON-LD
+                is important; it is that this shape &mdash; invisible in review, silent in production &mdash;
+                describes a whole category of artefact. Sitemaps, feeds, service worker manifests, robots
+                files, structured data, share images. Nobody looks at any of them until a stranger does.
+              </p>
+              <p>
+                If I had to give one rule from all six gates, it is this one. <strong>Tests cover the code
+                that runs. Gates cover the artefacts that do not.</strong>
+              </p>
+              <h2 id="two-lists-that-must-agree">Anywhere two lists must agree, one will drift</h2>
+              <p>
+                Three of the six gates are the same gate wearing different clothes. Each one is a case where
+                a fact lived in two places and nothing held them together.
+              </p>
+              <p>
+                The <strong>sitemap parity gate</strong> holds the pages on disk equal to the URLs in
+                <code>sitemap.xml</code>. It has two failure modes and both are silent: a new page that never
+                made it into the sitemap is simply not surfaced to crawlers, and a sitemap entry whose page
+                was deleted has crawlers requesting 404s under your own name. Neither shows up anywhere you
+                would look.
+              </p>
+              <p>
+                The <strong>service-worker precache gate</strong> holds a hand-written file list equal to
+                what the pages actually load. That list's own comment had already admitted the failure mode
+                before the gate existed &mdash; <em>&ldquo;if a page grows a new stylesheet or script, it
+                must be added here or offline quietly breaks&rdquo;</em> &mdash; which is a remarkable thing
+                to write down and then leave to discipline. The gate turns that sentence into a refusal.
+              </p>
+              <p>
+                The <strong>static chrome gate</strong> is the starkest of the three. Every page ships a full
+                static copy of the header and footer so there is something real before JavaScript arrives.
+                The README asked for those copies to be kept in sync by hand, across ninety-odd pages. A link
+                added to the canonical partial but not to the copies is invisible to exactly one group of
+                people: those browsing without JavaScript &mdash; the people the static copy exists for.
+              </p>
+              <p>
+                Written out like that, the lesson is almost embarrassing. <strong>&ldquo;Remember to update
+                X&rdquo; in a README is a bug with a delay on it.</strong> The delay is however long it takes
+                somebody to forget, which on a good day is weeks. It is not a process problem and more
+                discipline does not fix it; the only fix is to make one of the two lists derived from the
+                other, or to make disagreement fail the build.
+              </p>
+              <h2 id="the-gate-that-blamed-the-innocent">The gate that blamed the fifty-two files that were correct</h2>
+              <p>
+                The games on this site are described twice: once in a manifest that generates the pages, and
+                once in the module that actually runs. Some fields appear in both. Where they disagreed,
+                the manifest quietly lost &mdash; because nothing hands it to the runtime, so a value set only
+                there is a comment that reads like code.
+              </p>
+              <p>
+                Three bugs shipped that way, and each one is a small lesson in how convincing a wrong file
+                can look. Minesweeper recorded the <em>slowest</em> clear as its best score. Hangman's page
+                said a stray tap could not cost you a guess; a tap spent a guess. Later, a racing game was
+                found keeping its slowest lap as the record, because the module set the score key but not the
+                sort order, so the shell's default of &ldquo;higher is better&rdquo; was applied to a lap time
+                in seconds. The build's comment on that family is the sentence I keep coming back to:
+                <em>each looked correct in whichever file you happened to open.</em>
+              </p>
+              <p>
+                So a gate was written to compare the two. And the gate was wrong. Its pattern was built by
+                joining strings rather than written as a regular expression literal:
+              </p>
+              <pre><code>new RegExp('\b' + field + '\s*:')</code></pre>
+              <p>
+                In a normal string, <code>\b</code> is not a word boundary &mdash; it is a backspace
+                character. <code>\s</code> is just the letter <code>s</code>. The pattern matched nothing, so
+                the gate concluded every game was broken, and the list of files it told you to go and fix was
+                precisely the list of files that were already correct.
+              </p>
+              <p>
+                That is the most useful failure in the whole set, because it is a failure of the safety
+                mechanism rather than of the thing it guards. The conclusion written above the fix is blunt:
+                <strong>a gate whose own pattern is wrong is worse than no gate, because it sends you to fix
+                code that was never broken.</strong>
+              </p>
+              <p>
+                Which leads directly to the rule I would now apply everywhere. <strong>A gate nobody has
+                ever seen fail is a gate nobody knows works.</strong> The gates here are exported from the
+                build script for that reason and no other &mdash; so they can be pointed at a deliberately
+                broken copy of the site and proven to throw.
+              </p>
+              <h2 id="failures-only-strangers-see">The failures only a stranger ever sees</h2>
+              <p>
+                The sixth gate checks that every share image a page declares actually exists. It sounds
+                trivial. The failure it prevents is not.
+              </p>
+              <p>
+                A page pointing at a missing card does not fall back to a generic one. The crawler fetches
+                the URL, gets a 404, and the link posts with no image at all. The build's comment describes
+                where that leaves you: <em>invisible locally, invisible in the deploy log, and only shows up
+                when somebody shares the page, which is the one moment the image was for.</em>
+              </p>
+              <p>
+                Sixty-six game pages had shipped in exactly that state. The generator emitted an image path
+                for every one of them and not a single file had been rendered. Every page was correct, every
+                link worked, the deploy was green, and every share was blank.
+              </p>
+              <p>
+                I think this is the most under-rated class of production bug. It is not that the failure is
+                subtle; it is that <strong>the failure is invisible from inside</strong>. Nothing you can run
+                on your own machine, and nothing the pipeline reports, is affected by it. The only observer
+                is someone outside the system, at a moment you are not watching. Feeds, share cards, canonical
+                URLs, redirects, robots directives, email deliverability and DNS all live in this category,
+                and they are all worth a gate for the same reason.
+              </p>
+              <h2 id="what-a-gate-owes-you">What a gate owes you when it fires</h2>
+              <p>
+                Writing six of these changed my view of what a check should do when it trips. Three things,
+                in order of how often they are got wrong.
+              </p>
+              <p>
+                <strong>Fail the deploy, do not warn.</strong> A warning in a build log is read once, by the
+                person who added it. This site's gates throw and the deploy stops, with the phrase
+                &ldquo;refusing to publish&rdquo; in the message. That is not severity theatre; it is the
+                only setting at which the check reliably changes behaviour. A warning is a note to a future
+                person who will not read it.
+              </p>
+              <p>
+                <strong>Name the file, and say what to do.</strong> Each gate prints the offending path and
+                what is wrong with it. One of them goes further and simply performs the fix rather than
+                demanding it &mdash; a fingerprint that used to fail the build and instruct you to edit two
+                constants by hand now just writes the value itself. That is usually the better ending: if the
+                gate knows enough to detect the problem, ask whether it knows enough to solve it.
+              </p>
+              <p>
+                <strong>Do not cry wolf.</strong> The games gate deliberately ignores values that merely
+                restate the default, because flagging those would have produced dozens of correct-but-noisy
+                complaints, and a gate that complains about seventy-eight things nobody needs to act on is a
+                gate people learn to skim. Precision is not a nicety here. It is what keeps the check alive.
+              </p>
+              <h2 id="where-this-does-not-transfer">Where this does not transfer</h2>
+              <p>
+                I should be careful about how far to push this. These gates are cheap because the artefacts
+                are files. Reading every HTML page on a small static site takes a second or two, so the whole
+                check can run on every deploy with no meaningful cost, and there is never a reason to skip
+                it or sample it.
+              </p>
+              <p>
+                That economics does not hold everywhere. On a large codebase the equivalent checks are slower,
+                and slow checks get moved to a nightly job, and a nightly job is a warning again rather than a
+                gate. I have not run this approach at that scale and I would not claim it transfers unchanged.
+              </p>
+              <p>
+                There is also a real failure mode in the other direction, which the wrong-regex story is one
+                example of: gates are code, they have bugs, and a bug in a gate costs more than a bug in a
+                feature because it is trusted. Adding a gate is adding something else that can be wrong. That
+                is worth it when the thing it guards fails silently, and much less obviously worth it when
+                the thing it guards already fails loudly on its own.
+              </p>
+              <p>
+                What I would carry to any project, at any size, is narrower than &ldquo;write gates&rdquo;.
+                It is this: <strong>find the artefacts nothing exercises, and the facts that live in two
+                places, and treat those two lists as your real risk register.</strong> On this site that
+                turned out to be six items, and every one of them had already shipped broken before anybody
+                went looking.
+              </p>
+              </div>
+            </div>
+          </section>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-build-gate-failures-taught-me-about-ci" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=Six%20gates%2C%20and%20the%20bug%20that%20produced%20each%20one&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-build-gate-failures-taught-me-about-ci" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=Six%20gates%2C%20and%20the%20bug%20that%20produced%20each%20one%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-build-gate-failures-taught-me-about-ci" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/what-66-games-taught-me-about-software">What sixty-six tiny games taught me about serious software</a></li>
+              <li><a href="/blog/why-your-automation-broke">Why your automation broke, and how to build one that fails loudly</a></li>
+              <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>Want the rest of how this site is built?</h2>
+            <p>The colophon covers the whole arrangement — no framework, no dependencies, and a build that counts its own figures rather than trusting anyone to keep them current.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/colophon">Read the colophon</a>
+              <a class="btn btn-secondary" href="/labs">Browse the labs</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

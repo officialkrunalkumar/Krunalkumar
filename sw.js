@@ -293,7 +293,17 @@ var BLOG_URLS = [
   '/blog/why-i-quote-fixed-price',
   '/assets/images/blog/fixed-price-cover.svg',
   '/blog/why-we-dont-store-your-password-is-usually-false',
-  '/assets/images/blog/password-storage-cover.svg'
+  '/assets/images/blog/password-storage-cover.svg',
+  '/blog/what-a-vpn-does-and-does-not-do',
+  '/assets/images/blog/vpn-cover.svg',
+  '/blog/what-build-gate-failures-taught-me-about-ci',
+  '/assets/images/blog/build-gates-cover.svg',
+  '/blog/when-a-static-site-outgrows-being-static',
+  '/assets/images/blog/static-outgrows-cover.svg',
+  '/blog/why-every-number-on-this-site-is-counted',
+  '/assets/images/blog/counted-numbers-cover.svg',
+  '/blog/writing-comments-that-survive',
+  '/assets/images/blog/comments-survive-cover.svg'
 ];
 
 var BLOG_SET = {};

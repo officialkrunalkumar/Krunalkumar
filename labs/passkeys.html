@@ -381,6 +381,13 @@
             <p>Registration can carry a statement about the make and model of the authenticator, signed by a manufacturer key. That is an enterprise control &mdash; only these approved security keys &mdash; and a privacy cost for everyone else. Most consumer deployments ask for <code>none</code>, which is why the AAGUID you see is usually sixteen zero bytes.</p>
           </article>
         </div>
+        <p>
+          There is a second thing passkeys quietly fix. &ldquo;We do not store your password&rdquo; is a
+          claim that is <a class="text-link" href="/blog/why-we-dont-store-your-password-is-usually-false">usually
+          false as stated</a> &mdash; a hash is still password-derived data, and a stolen database is a
+          cracking problem rather than a dead end. With a passkey the server holds only a public key and
+          there is no shared secret to steal, which makes the sentence true for the first time.
+        </p>
       </section>
 
       <section class="section-card">
