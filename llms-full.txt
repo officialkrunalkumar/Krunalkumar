@@ -85,47 +85,77 @@
 
 Complete index at https://krunalkumar.dpdns.org/blog
 
-1. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom — blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
+1. **What Build-Gate Failures Taught Me About CI (Aug 31, 2026):** Six gates in this site’s build and the silent production failure that produced each: structured data nothing exercises, two lists that must agree, a hand-synced static header, a precache list, a games manifest whose own regular expression was wrong, and sixty-six share images that were never rendered. Argues that a gate must fail the deploy rather than warn, and that a gate nobody has seen fail is a gate nobody knows works.
+   https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci
+2. **Writing Comments That Survive (Aug 31, 2026):** Why a comment restating the code goes stale and a comment recording a reason does not. Four kinds that survive — the measurement, the bug that was actually hit, the rejected alternative, and the stated limit — each quoted from this repository’s own source.
+   https://krunalkumar.dpdns.org/blog/writing-comments-that-survive
+3. **When a Static Site Outgrows Being Static (Aug 31, 2026):** What static hosting genuinely buys, the specific signals that you have outgrown it (a secret, writes, personalisation, freshness, non-developer editors, a search index that gets too large), the intermediate steps most projects skip, and what you give up on crossing over.
+   https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static
+4. **Why Every Number on This Site Is Counted Rather Than Typed (Aug 31, 2026):** A typed number is a claim with no owner. How figures are rewritten at deploy from what the build counted, the real drift that motivated it, publishing a bound when exactness is unavailable, and the honest limit — nothing about the world outside the repository can be counted.
+   https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted
+5. **What a VPN Does and Does Not Do (Aug 31, 2026):** A VPN moves who you have to trust rather than removing the need to trust anyone. What the tunnel hides and from whom, why near-universal HTTPS closed most of the classic coffee-shop pitch, the long list it cannot help with (cookies, logins, fingerprinting, malware), and when Tor is the right tool instead.
+   https://krunalkumar.dpdns.org/blog/what-a-vpn-does-and-does-not-do
+6. **Why "We Don’t Store Your Password" Is Usually False (Aug 31, 2026):** The ladder of what is actually stored, from plaintext through reversible encryption and fast hashes to slow hashes with a pepper. How to tell from outside which rung a site is on, and why passkeys make the sentence true for the first time.
+   https://krunalkumar.dpdns.org/blog/why-we-dont-store-your-password-is-usually-false
+7. **How to Read a Privacy Policy in Five Minutes (Aug 31, 2026):** An ordered procedure: search rather than read, find the sharing section first because that is where the business model is, then retention, legal basis, deletion, the change clause and the acquisition clause. Ends by comparing the policy against the network tab.
+   https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes
+8. **What Happens to Your Accounts When You Die (Aug 31, 2026):** The practical companion on digital legacy. Platform tools, password-manager emergency access, why a master password must never go into a will, the India-specific nomination layer, and what happens to two-factor and recovery codes.
+   https://krunalkumar.dpdns.org/blog/what-happens-to-your-accounts-when-you-die
+9. **The Password Advice That Stopped Being True (Aug 31, 2026):** Composition rules and forced rotation, who originally recommended them, and why NIST and the UK NCSC reversed both. What replaced them — length over complexity, uniqueness over cleverness, a manager over memory, and MFA ranked honestly.
+   https://krunalkumar.dpdns.org/blog/the-password-advice-that-stopped-being-true
+10. **What Your Browser Tells Every Site You Visit (Aug 31, 2026):** What is sent before a single script runs, what a page can read afterwards, and why the combination fingerprints you when no individual value identifies anyone. Includes the counter-intuitive part: an unusual privacy setup can make you easier to recognise.
+   https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site
+11. **What "AI Agent" Means Once You Have to Maintain One (Aug 31, 2026):** The spectrum from a prompt with a tool call to a multi-agent system, and the maintenance reality: non-deterministic tests, a model dependency you cannot pin, unbounded loop cost, tools as the actual product, and prompt injection through anything the agent reads.
+   https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one
+12. **How to Brief a Security Consultant So the Quote Is Accurate (Aug 31, 2026):** What to supply and why each item moves the number: what you actually want, scope as an inventory, environment, access level, third parties, constraints, rules of engagement, deliverable and retest. Plus the questions a good consultant asks back.
+   https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant
+13. **The HubSpot Mistakes That Cost the Most to Undo (Aug 31, 2026):** The CRM decisions that are load-bearing by the time you notice: object model chosen wrong, property sprawl, deal stages describing internal process rather than buyer state, lifecycle moved backwards by an integration, and deduplication left until later.
+   https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo
+14. **Why I Quote Fixed-Price, What It Costs Me, and When I Refuse To (Aug 31, 2026):** The case for fixed price from the client side, the risk premium it carries for the person quoting, and the work that will not be quoted that way — open-ended research, third-party dependencies, and anything where done cannot yet be described.
+   https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price
+15. **What Actually Happens in the First Week of an Automation Engagement (Aug 31, 2026):** What gets read, asked and measured before anything is built, why the first week produces a map and a decision rather than a working automation, and the steps that should not be automated at all.
+   https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement
+16. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom — blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
    https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up
-2. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
+17. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
    https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software
-3. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+18. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
    https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick
-4. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
+19. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
    https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks
-5. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
+20. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
    https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website
-6. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
+21. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
    https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted
-7. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
+22. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
    https://krunalkumar.dpdns.org/blog/types-of-cyberattacks
-8. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
+23. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
    https://krunalkumar.dpdns.org/blog/security-compliance-explained
-9. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
+24. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
    https://krunalkumar.dpdns.org/blog/india-it-act-explained
-10. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
+25. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
    https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved
-11. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
+26. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
    https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job
-12. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
+27. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
    https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr
-13. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
+28. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
    https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by
-14. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
+29. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
    https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai
-15. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
+30. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
    https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs
-16. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
+31. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
    https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship
-17. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
+32. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
    https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview
-18. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
+33. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
    https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it
-19. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
+34. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
    https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development
-20. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
+35. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
    https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb
-21. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+36. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
    https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n
 
 ---
@@ -412,7 +442,7 @@ browsers directly to each other, and says so prominently before anything else.
 
 ## Security tools
 
-Sixteen browser-based security tools at /labs/<name>. Each runs entirely in the
+Browser-based security tools at /labs/<name>. Each runs entirely in the
 visitor's tab with no network requests, no account and no history. This is not a
 privacy footnote but the design constraint: the inputs these tools take — evidence
 files, production JWTs, passwords, photographs with GPS in them, raw email headers —
@@ -435,6 +465,13 @@ popular online equivalent does exactly that.
 - /labs/cvss — CVSS v3.1 calculator. The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
 - /labs/subnet — Subnet & CIDR calculator. IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification.
 - /labs/timestamp — Forensic timestamp converter. Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it.
+- /labs/dmarc-builder — SPF and DMARC record builder. Authors the records rather than checking them, with a live count against the RFC 7208 ten-lookup limit, a p=none to quarantine to reject rollout plan, DKIM selector guidance, and a DMARC aggregate report parser.
+- /labs/sbom-inspector — SBOM inspector. Reads a package-lock.json or requirements.txt for direct versus transitive counts, packages with install scripts, typosquat-lookalike names, licence mix and unpinned ranges. Exports CycloneDX.
+- /labs/cookie-inspector — Cookie inspector. Explains every Set-Cookie attribute, flags combinations a browser rejects outright, and covers __Host- prefixes, CHIPS and what SameSite does and does not do about CSRF.
+- /labs/csp-playground — CSP playground. Write a Content-Security-Policy, paste a page, see what would be blocked, including a nonce silently voiding ‘unsafe-inline’ and JSONP on your own origin defeating ‘self’.
+- /labs/rainbow-tables — Salt and rainbow tables. Builds a precomputed table live, breaks unsalted hashes with it, then adds a salt and shows it become worthless. Times a fast hash against a slow one in the tab.
+- /labs/timing-attack — Timing side-channel. Recovers a secret byte by byte from measured medians against a naive comparison, and fails against a constant-time one. Reports the browser’s own timer resolution rather than assuming it.
+- /labs/firewall-rules — Firewall rule simulator. Walks a packet through an iptables or nftables chain rule by rule, detects shadowed rules, models stateful matching, and explains DROP against REJECT.
 
 ## Network lookup tools
 
@@ -463,10 +500,11 @@ They read real container and dump formats rather than guessing.
 - /labs/pcap-analyzer — PCAP analyzer. Decodes a packet capture (pcap/pcapng): Ethernet/IP/TCP/UDP layers, conversations, DNS and HTTP, and plaintext credentials carved from the stream.
 - /labs/memory-strings — Memory string extractor. Carves printable ASCII and UTF-16 strings from a raw memory or process dump, with length filtering and pattern highlighting for URLs, keys and paths.
 - /labs/registry-viewer — Windows registry viewer. Parses a raw Windows registry hive file into its key/value tree, decoding every value type, without a Windows machine.
+- /labs/incident-timeline — Incident timeline builder. Merges logs in several formats and timezones into one UTC timeline, flags clock skew, and separates genuine drift from a timezone set wrong. Exports Markdown or CSV.
 
 ## Interactive visualisers
 
-Twelve visualisers at /labs/<name>. Where the tools are request/response, these
+Visualisers at /labs/<name>. Where the tools are request/response, these
 run live: a canvas, a simulation, an algorithm stepped one frame at a time. Many
 share a chassis (assets/js/labs/viz/multi-shell.js) giving tabs, a transport
 (reset/back/play/step/end), a speed control and a compare table. Every algorithmic
@@ -487,6 +525,26 @@ All run entirely client-side.
 - /labs/cpu-simulator — CPU & assembly simulator. Write assembly for a small clean instruction set and single-step it, watching registers, flags, memory and the stack change. A real two-pass assembler, no eval.
 - /labs/shader-playground — GLSL shader playground. Write a fragment shader and see it render live on the GPU, with time and mouse uniforms and compile errors reported with line numbers.
 - /labs/fractal-explorer — Fractal explorer. Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on the GPU, with several colour palettes; hover to pick a Julia constant.
+- /labs/regex-automata — Regex automata. Regex to Thompson NFA to DFA to minimised DFA, stepped one character at a time, with catastrophic backtracking plotted against linear-time DFA matching.
+- /labs/ieee754 — IEEE-754 explorer. Bit layout with the exact decimal value the bits hold, 0.1 + 0.2 stepped through the rounding, denormals, NaN payloads, and Kahan summation against accumulated error.
+- /labs/concurrency — Concurrency primitives. One shared counter solved four ways, with the visitor driving the scheduler to cause a lost update deliberately, plus deadlock via lock ordering.
+- /labs/cap-theorem — CAP theorem sandbox. Five nodes, a network you can partition, CP or AP behaviour, and quorum arithmetic (R+W>N) evaluated live. Covers PACELC and what CAP does not claim.
+
+## Everyday tools
+
+Tools at /labs/<name> for documents, money, time and text. Same constraint as
+the rest: everything runs in the visitor’s tab, nothing is uploaded, and where
+a result depends on a rule that changes with the finance act or varies by state,
+the page says so rather than printing a confident number.
+
+- /labs/qr-payloads — vCard, WiFi and UPI QR builder. Contact cards, WiFi join strings, calendar events, geo points and UPI intent URIs, with a pasted UPI URI read back in plain language. States plainly that every UPI QR is a request for you to pay: a pay QR and a receive QR look identical.
+- /labs/rent-vs-buy — Rent versus buy (India). Both paths over N years with the down payment and monthly difference invested, net worth plotted, the crossover year marked, optional old-regime tax treatment, and sensitivity sliders because two unknowable numbers dominate the answer.
+- /labs/gst-return — GST return working sheet. Reads invoices exported from /labs/invoice-maker, totals rate-wise, splits CGST/SGST from IGST, separates B2B from B2C and zero-rated exports, and catches invoice-number gaps, duplicates and GSTIN checksum failures. It files nothing.
+- /labs/timezones — Timezone meeting planner. A stacked hour grid across zones with working hours shaded and overlap highlighted, handling DST transitions, half-hour and quarter-hour offsets, and slots landing on a different calendar day.
+- /labs/indian-ids — Indian ID format checker. Aadhaar Verhoeff checksum, PAN structure, GSTIN check digit, IFSC, UPI VPA and vehicle registration. It checks format and checksum only, performs no lookup, and cannot tell you an ID is real.
+- /labs/diff-merge — Diff and three-way merge. Side-by-side and unified views with word and character highlighting, then a base/mine/theirs merge resolved by hand. Whitespace toggle, CRLF made visible, unified patch export.
+- /labs/mojibake — Mojibake repair. Diagnoses broken text (UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities) and says which damage is reversible and which has lost data for good.
+- /labs/ansi-escapes — ANSI escape explainer. Decodes escape sequences in pasted text and builds them in the other direction. Covers why colour breaks in a pipe, NO_COLOR, and why escapes in untrusted log output are a security problem.
 
 ## Language playgrounds, terminals & HackLab
 
