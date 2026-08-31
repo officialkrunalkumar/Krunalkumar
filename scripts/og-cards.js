@@ -564,6 +564,26 @@ function wrapTitle(title, max) {
    off than it would have been without an entry.
    --------------------------------------------------------------------------- */
 const LAB_KIND = {
+  /* the labs added in the security / developer / practical batch */
+  'dmarc-builder':         ['labMail', 'Security tool'],
+  'sbom-inspector':        ['labFile', 'Security tool'],
+  'cookie-inspector':      ['labShield', 'Security tool'],
+  'csp-playground':        ['labShield', 'Playground'],
+  'rainbow-tables':        ['labHash', 'Security tool'],
+  'timing-attack':         ['labClock', 'Security tool'],
+  'firewall-rules':        ['labNetwork', 'Simulator'],
+  'regex-automata':        ['labRegex', 'Visualiser'],
+  'mojibake':              ['labWords', 'Free tool'],
+  'ieee754':               ['labCpu', 'Visualiser'],
+  'concurrency':           ['labCpu', 'Visualiser'],
+  'cap-theorem':           ['labNetwork', 'Visualiser'],
+  'ansi-escapes':          ['labTerminal', 'Free tool'],
+  'qr-payloads':           ['labGrid', 'Free tool'],
+  'rent-vs-buy':           ['labSort', 'Free tool'],
+  'gst-return':            ['labWords', 'Free tool'],
+  'timezones':             ['labClock', 'Free tool'],
+  'indian-ids':            ['labKeys', 'Free tool'],
+  'diff-merge':            ['labSort', 'Free tool'],
   'periodic-table':       ['labGrid', 'Visualiser'],
   'web-layers':           ['labNetwork', 'Visualiser'],
   'media-forensics':      ['labFile', 'Forensics'],
@@ -796,7 +816,15 @@ function gameCards() {
     motif: 'gameArcade',
     dest: 'assets/images/og-games.jpg',
     eyebrow: 'Games',
-    lines: ['Sixty-seven games,', 'nothing to install'],
+    /* Counted from the manifest, not typed. This line read 'Sixty-seven games,'
+       as a string literal, and nothing anywhere recounted it — the colophon
+       pass, the page-count pass and the llms rules all skip this file, because
+       it is a generator rather than a page. So it would have gone on claiming
+       sixty-seven on every share of /games while the manifest grew underneath
+       it, and the only way anyone would find out is by reading a link somebody
+       else posted. GAMES is already in scope here; the figure now moves when
+       the manifest does, and the card is re-rendered by this same script. */
+    lines: [GAMES.length + ' games,', 'nothing to install'],
     sub: 'No ads, no sign-up, and they keep working offline',
   });
 

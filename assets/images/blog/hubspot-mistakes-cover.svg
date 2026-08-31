@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: reports, workflows and properties stacked on an object model, with a crack running up from the bottom layer">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke="#38bdf8" stroke-width="3">
+    <rect x="720" y="150" width="360" height="330" rx="14" stroke-opacity="0.35"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.85">
+    <rect x="756" y="186" width="288" height="46" rx="9"/>
+    <rect x="756" y="246" width="288" height="46" rx="9"/>
+    <rect x="756" y="306" width="288" height="46" rx="9"/>
+  </g>
+  <g font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" fill="#0f1a28">
+    <text x="786" y="216">REPORTS</text>
+    <text x="786" y="276">WORKFLOWS</text>
+    <text x="786" y="336">PROPERTIES</text>
+  </g>
+  <rect x="756" y="380" width="288" height="46" rx="9" fill="none" stroke="#f87171" stroke-width="5" stroke-dasharray="14 10"/>
+  <text x="786" y="410" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" fill="#fca5a5">OBJECT MODEL</text>
+  <text x="786" y="452" font-family="'Segoe UI',sans-serif" font-size="17" font-weight="600" fill="#94a3b8">everything above sits on this</text>
+  <path d="M1006 378 L988 342 L1012 306 L990 268 L1010 232 L992 194"
+        fill="none" stroke="#f87171" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">REVOPS</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="52" font-weight="800">The HubSpot mistakes</text>
+    <text x="80" y="345" fill="#f8fafc" font-size="52" font-weight="800">that are hard to undo</text>
+    <text x="80" y="422" fill="#e2e8f0" font-size="26" font-weight="600">Cheap to prevent, costly to repair</text>
+    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

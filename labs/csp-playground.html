@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Write a Content-Security-Policy, paste a page's markup, and see which resources a browser would block, which slip through, and which directive decided." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/csp-playground" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="See what your Content-Security-Policy blocks - and what it quietly lets through" />
+    <meta property="og:description" content="Paste a Content-Security-Policy and a page's markup, and get a resource-by-resource verdict: allowed or blocked, the directive that decided it, and the exact source expression that matched. It parses the fallback chain to default-src, nonces, hashes, strict-dynamic, scheme and host sources, and it flags the mistakes that make a policy look strict while stopping nothing. Runs entirely in your browser; nothing is fetched and nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/csp-playground" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-csp-playground.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Content-Security-Policy playground" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="See what your Content-Security-Policy blocks - and what it quietly lets through" />
+    <meta name="twitter:description" content="Paste a Content-Security-Policy and a page's markup, and get a resource-by-resource verdict: allowed or blocked, the directive that decided it, and the exact source expression that matched. It parses the fallback chain to default-src, nonces, hashes, strict-dynamic, scheme and host sources, and it flags the mistakes that make a policy look strict while stopping nothing. Runs entirely in your browser; nothing is fetched and nothing is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-csp-playground.jpg" />
+    <title>Content-Security-Policy tester | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Content-Security-Policy playground",
+        "url": "https://krunalkumar.dpdns.org/labs/csp-playground",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Web application security",
+        "operatingSystem": "Any modern web browser",
+        "description": "Paste a Content-Security-Policy and a page's markup, and get a resource-by-resource verdict: allowed or blocked, the directive that decided it, and the exact source expression that matched. It parses the fallback chain to default-src, nonces, hashes, strict-dynamic, scheme and host sources, and it flags the mistakes that make a policy look strict while stopping nothing. Runs entirely in your browser; nothing is fetched and nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Content-Security-Policy directive parsing",
+                "Source expression matching against real URLs",
+                "default-src fallback chain resolution",
+                "Nonce and SHA hash evaluation for inline blocks",
+                "Policy mistake detection",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does my policy or my markup get uploaded anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind — not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is the markup I paste actually parsed, or just pattern-matched?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested — so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it say a directive is unknown when I copied it from a blog post?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Most likely it was removed from the specification, or it was a typo in the post. Either way the outcome is the point: a browser ignores a directive name it does not recognise, usually without a console error, so a misspelled object-src protects nothing and looks identical to a working one. The tool suggests the nearest real directive name when the spelling is close."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does it tell me what my browser would really do?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It implements the source-matching rules from CSP Level 3 that decide real policies: scheme, host with a leading wildcard, port, path prefix, 'self', scheme sources, nonces, hashes, 'strict-dynamic' and the fallback chain. It is not a browser. It does not follow redirects, which drop path matching in practice, and it has no model of sandbox, trusted-types or report grouping. Check anything surprising against a real browser's console."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is script-src 'self' not enough on its own?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because 'self' means your whole origin, not your intended files. One JSONP endpoint, one open redirect that reaches one, one user-writable path, and an injected script tag pointing at your own host executes attacker-chosen code. The stronger shape is a per-response nonce with 'strict-dynamic', which ignores host and scheme sources entirely and admits only what you nonced plus what those scripts load themselves."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What are the four policies in the dropdown?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The real Content-Security-Policy headers this site ships, one per path rule, copied out of its vercel.json. Loading one prints what it is protecting and why. The strictest is the one on the HackLab guestbook: it is the only policy here that allows inline script, because it is a deliberate stored-XSS target, and it is the only one where connect-src, form-action and base-uri are all 'none' so the payload runs and has nowhere to send what it finds."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "CSP playground",
+                        "item": "https://krunalkumar.dpdns.org/labs/csp-playground"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">CSP playground</li>
+          </ol>
+        </nav>
+        <h1>Content-Security-Policy playground</h1>
+        <p class="hero-text">A CSP that is too strict announces itself &mdash; the site breaks in front of you. The dangerous one is the policy that reads like a fortress and stops nothing: a misspelled directive name, an <code>'unsafe-inline'</code> cancelled by a nonce, a <code>'self'</code> undone by one JSONP endpoint on your own host. Write a policy, paste a page, and see every resource decided one at a time.</p>
+        <ul class="lab-facts">
+          <li>Directives, source lists and the default-src fallback chain</li>
+          <li>Nonces, hashes, schemes, wildcards and 'strict-dynamic'</li>
+          <li>Names the directive and the source that decided each verdict</li>
+          <li>Flags typo&rsquo;d directive names, which browsers ignore in silence</li>
+          <li>Nothing is fetched &mdash; the markup is parsed inertly</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="cspplayground">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>It reads the policy text and the markup, and nothing else</li>
+                  <li>It never requests a URL you paste, or checks that one exists</li>
+                  <li>It models the specification, not your exact browser build</li>
+                  <li>Markup only &mdash; it cannot see what a script does after it loads</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A production policy from work stays on your machine</li>
+                  <li>Pasted markup is parsed inertly &mdash; nothing in it runs or loads</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="csp-preset">Load one of this site&rsquo;s own policies</label>
+          <select class="lab-select" id="csp-preset">
+            <option value="">This site&rsquo;s own four policies&hellip;</option>
+          </select>
+          <button class="lab-btn" type="button" id="csp-ex-ordinary">Example: an ordinary page</button>
+          <button class="lab-btn" type="button" id="csp-ex-traps">Example: the classic mistakes</button>
+          <button class="lab-btn" type="button" id="csp-ex-strict">Example: nonce + strict-dynamic</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Evaluate</button>
+          <span class="lab-status" id="csp-status" role="status" aria-live="polite"></span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-fieldrow">
+          <label class="sr-only" for="csp-url">URL of the page the policy is delivered with</label>
+          <input class="lab-toolfield" type="text" id="csp-url" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" autocomplete="off"
+                 value="https://krunalkumar.dpdns.org/labs/csp-playground"
+                 placeholder="Page URL &mdash; this is what 'self' means, and what relative URLs resolve against" />
+        </div>
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label">Content-Security-Policy</p>
+            <label class="sr-only" for="tool-in">Content-Security-Policy header value</label>
+            <textarea class="lab-toolinput" id="tool-in" spellcheck="false"
+                      placeholder="default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'"></textarea>
+            <p class="lab-pane-label">Page markup</p>
+            <label class="sr-only" for="csp-html">Page markup to test against the policy</label>
+            <textarea class="lab-toolinput" id="csp-html" spellcheck="false"
+                      placeholder="Paste a page, or a fragment. Script tags, links, images, iframes, forms, inline styles and event handlers are all read."></textarea>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Verdict</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The four mistakes that make a policy decorative</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>A nonce silently cancels &lsquo;unsafe-inline&rsquo;</h3>
+            <p>The specification is explicit: when a source list carries a nonce or a hash, <code>'unsafe-inline'</code> in that same list is ignored outright. So <code>script-src 'self' 'unsafe-inline' 'nonce-abc123'</code> is not the permissive policy it reads as &mdash; every inline block without that exact nonce is refused. It cuts the other way too. Somebody who adds a nonce to a policy that already carried <code>'unsafe-inline'</code> has made it strict without deleting a thing, and will spend an afternoon wondering why the analytics snippet died. The one deliberate use of writing both is backwards compatibility: browsers too old to understand nonces fall back to <code>'unsafe-inline'</code>, and modern ones never see it.</p>
+          </article>
+          <article class="info-card">
+            <h3>&lsquo;self&rsquo; is only as strong as the weakest file on your origin</h3>
+            <p><code>script-src 'self'</code> permits any script served by your own host. Any script. That includes a JSONP endpoint that reflects an attacker-chosen callback name into a JavaScript response, an open redirect that lands on one, an old file upload directory, and anything else on the origin that will echo text back with a JavaScript content type. An attacker who can inject a single <code>&lt;script src&gt;</code> tag pointing at your own domain gets arbitrary execution, and the policy allowed it correctly. The tool flags exactly this case when it sees a same-origin script URL carrying a callback parameter.</p>
+          </article>
+          <article class="info-card">
+            <h3>One <code>&lt;base&gt;</code> tag moves every relative URL you have</h3>
+            <p><code>base-uri</code> is not covered by <code>default-src</code>, so a policy that never mentions it does not restrict it. An injected <code>&lt;base href="https://attacker.example/"&gt;</code> then re-points every relative URL on the page &mdash; and a nonced <code>&lt;script src="app.js"&gt;</code> obediently fetches the attacker's <code>app.js</code>, nonce attached, entirely within the policy. <code>base-uri 'self'</code> or <code>base-uri 'none'</code> closes it in one line. Paste the strict-dynamic example here and watch the base tag get refused; delete the directive and watch the same page load somebody else's script.</p>
+          </article>
+          <article class="info-card">
+            <h3>default-src covers less than its name suggests</h3>
+            <p><code>default-src</code> is the fallback for the <em>fetch</em> directives only. <code>base-uri</code>, <code>form-action</code>, <code>frame-ancestors</code>, <code>report-uri</code> and <code>sandbox</code> have no fallback at all: if you did not write them, they are not enforced. A missing <code>frame-ancestors</code> means clickjacking is being handled by an <code>X-Frame-Options</code> header, or by nothing. A missing <code>form-action</code> means injected markup can post the page's contents anywhere, and <code>connect-src</code> will not stop it, because a form submission is a navigation rather than a fetch. And <code>object-src 'none'</code> costs nothing on a modern site, which is a good reason to write it down.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Does my policy or my markup get uploaded anywhere?</summary>
+            <div>No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind &mdash; not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is the markup I paste actually parsed, or just pattern-matched?</summary>
+            <div>Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested &mdash; so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it say a directive is unknown when I copied it from a blog post?</summary>
+            <div>Most likely it was removed from the specification, or it was a typo in the post. Either way the outcome is the point: a browser ignores a directive name it does not recognise, usually without a console error, so a misspelled object-src protects nothing and looks identical to a working one. The tool suggests the nearest real directive name when the spelling is close.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does it tell me what my browser would really do?</summary>
+            <div>It implements the source-matching rules from CSP Level 3 that decide real policies: scheme, host with a leading wildcard, port, path prefix, 'self', scheme sources, nonces, hashes, 'strict-dynamic' and the fallback chain. It is not a browser. It does not follow redirects, which drop path matching in practice, and it has no model of sandbox, trusted-types or report grouping. Check anything surprising against a real browser's console.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is script-src 'self' not enough on its own?</summary>
+            <div>Because 'self' means your whole origin, not your intended files. One JSONP endpoint, one open redirect that reaches one, one user-writable path, and an injected script tag pointing at your own host executes attacker-chosen code. The stronger shape is a per-response nonce with 'strict-dynamic', which ignores host and scheme sources entirely and admits only what you nonced plus what those scripts load themselves.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What are the four policies in the dropdown?</summary>
+            <div>The real Content-Security-Policy headers this site ships, one per path rule, copied out of its vercel.json. Loading one prints what it is protecting and why. The strictest is the one on the HackLab guestbook: it is the only policy here that allows inline script, because it is a deliberate stored-XSS target, and it is the only one where connect-src, form-action and base-uri are all 'none' so the payload runs and has nowhere to send what it finds.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=csp-playground#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20CSP%20playground%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More web security tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/hacklab">
+            <span class="lab-card-name">HackLab</span>
+            <p class="lab-card-desc">Live XSS, SQL injection and traversal targets &mdash; the attacks a CSP is written against.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/url-inspector">
+            <span class="lab-card-name">URL inspector</span>
+            <p class="lab-card-desc">Take a suspicious link apart without opening it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/email-security">
+            <span class="lab-card-name">Email security audit</span>
+            <p class="lab-card-desc">SPF, DKIM and DMARC &mdash; the other policy header people get subtly wrong.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/jwt">
+            <span class="lab-card-name">JWT decoder</span>
+            <p class="lab-card-desc">Read and verify a token, claim by claim.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/tls-handshake">
+            <span class="lab-card-name">TLS handshake</span>
+            <p class="lab-card-desc">Step a TLS 1.3 handshake message by message.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/csp-playground.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

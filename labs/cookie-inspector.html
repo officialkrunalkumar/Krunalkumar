@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Paste a Set-Cookie header and get every attribute explained, the prefix and SameSite rules that make a browser reject it outright, and a scored verdict." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/cookie-inspector" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="The Set-Cookie rules that make a browser throw your cookie away" />
+    <meta property="og:description" content="Paste one or many Set-Cookie header lines. Every attribute is explained in plain language, the rules that get a cookie silently rejected are checked - __Host-, __Secure-, SameSite=None without Secure, Partitioned - the expiry arithmetic is done, and each cookie is scored with every deduction spelled out. Runs entirely in your browser; nothing is uploaded and no request is made." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/cookie-inspector" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-cookie-inspector.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Set-Cookie header inspector" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Set-Cookie rules that make a browser throw your cookie away" />
+    <meta name="twitter:description" content="Paste one or many Set-Cookie header lines. Every attribute is explained in plain language, the rules that get a cookie silently rejected are checked - __Host-, __Secure-, SameSite=None without Secure, Partitioned - the expiry arithmetic is done, and each cookie is scored with every deduction spelled out. Runs entirely in your browser; nothing is uploaded and no request is made." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-cookie-inspector.jpg" />
+    <title>Set-Cookie header inspector | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Set-Cookie Header Inspector",
+        "url": "https://krunalkumar.dpdns.org/labs/cookie-inspector",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Web application security",
+        "operatingSystem": "Any modern web browser",
+        "description": "Paste one or many Set-Cookie header lines. Every attribute is explained in plain language, the rules that get a cookie silently rejected are checked - __Host-, __Secure-, SameSite=None without Secure, Partitioned - the expiry arithmetic is done, and each cookie is scored with every deduction spelled out. Runs entirely in your browser; nothing is uploaded and no request is made.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "RFC 6265 Set-Cookie parsing",
+                "__Host- and __Secure- prefix enforcement",
+                "SameSite, Partitioned and Priority explained",
+                "Cookie-date and Max-Age arithmetic",
+                "Scoped scoring with every deduction shown",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is anything I paste uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The header is parsed in your browser and nothing is sent anywhere — there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why would a browser reject a cookie without telling me?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the specification says to ignore, not to warn. A __Host- cookie with a Domain attribute, a __Secure- cookie without Secure, SameSite=None without Secure, a Domain that does not match the host: every one of those is dropped on the floor. Some browsers log a note in devtools, most of the time nobody is looking at it, and the server never learns anything. The symptom is a session that does not persist."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does SameSite=Lax mean I can drop my CSRF token?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and this is worth being precise about. Lax still permits top-level cross-site GET navigation, so any state-changing GET is still exposed. It is a browser behaviour, so an old or unusual client can ignore it. Site means registrable domain, so a compromised sibling subdomain is same-site and unaffected. And Chromium shipped a carve-out letting a cross-site top-level POST through for very new cookies, published as temporary. Keep the token."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What does Partitioned do to an embedded widget?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It gives the widget a separate cookie jar per embedding site. Anything the widget remembers about one site keeps working. Anything that depended on recognising the same visitor across different embedding sites stops, permanently, and there is no attribute that restores it. If a widget needs identity across sites, that now has to be an explicit sign-in rather than a cookie."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Max-Age or Expires — which one wins?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Max-Age, always. It wins regardless of which appeared first in the header and regardless of which date is later; Expires is only consulted when Max-Age is absent or is not a plain integer. Max-Age is also the better attribute, because it is a duration rather than a date and does not depend on the visitor’s clock being right."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What can this tool not tell me?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value — a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Cookie inspector",
+                        "item": "https://krunalkumar.dpdns.org/labs/cookie-inspector"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Cookie inspector</li>
+          </ol>
+        </nav>
+        <h1>Set-Cookie header inspector</h1>
+        <p class="hero-text">A cookie header is one of the few places where the browser can disagree with you in complete silence. Get the prefix wrong, or write SameSite=None without Secure, and the cookie is not weakened &mdash; it is thrown away, with no console warning and no server-side signal. Paste the header here and find out what the browser actually did with it.</p>
+        <ul class="lab-facts">
+          <li>Every attribute explained in plain language</li>
+          <li>The prefix rules that cause silent rejection</li>
+          <li>Expiry arithmetic, Max-Age and Expires</li>
+          <li>CSRF and SameSite, the honest version</li>
+          <li>Nothing is uploaded and no request is made</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="cookieinspector">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved</li>
+                  <li>Long pastes are capped so the page stays responsive</li>
+                  <li>No request is made to the site the cookie came from</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A live session cookie stays on your machine</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Nobody is told which header you were looking at</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Inspect</button>
+          <button class="lab-btn" type="button" id="tool-sample">Load an example</button>
+          <button class="lab-btn" type="button" id="tool-clear">Clear</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <label class="lab-field-inline">
+          <span>Response URL, optional &mdash; without it the Domain match, the default path and the secure-origin rules cannot be checked</span>
+          <input class="lab-toolfield" type="text" id="tool-origin" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" autocomplete="off"
+                 placeholder="https://app.example.com/account/settings" />
+        </label>
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label">Set-Cookie lines</p>
+            <label class="sr-only" for="tool-text">Set-Cookie header lines, one per line</label>
+            <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
+                      autocorrect="off" placeholder="Set-Cookie: sessionid=abc123; Path=/; Secure; HttpOnly; SameSite=Lax&#10;&#10;One cookie per line. The &quot;Set-Cookie:&quot; prefix is optional."></textarea>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Output</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The parts of a cookie header that bite</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>A name prefix is a rule, not a convention</h3>
+            <p><code>__Host-</code> and <code>__Secure-</code> are read by the browser, not by your team. A cookie named <code>__Host-session</code> must carry <code>Secure</code>, must carry <code>Path=/</code>, and must have no <code>Domain</code> attribute at all. Break any of those and the cookie is <strong>rejected</strong> &mdash; not stored with weaker settings, not downgraded, not logged. Dropped. <code>__Secure-</code> needs only <code>Secure</code>, and fails the same way without it. That is the whole point of the prefix: it is a constraint you cannot accidentally undo later, because the browser refuses the cookie rather than quietly accepting a worse one. It is also the single most common surprise here, because the symptom is a login that will not stick and there is nothing in any console to search for.</p>
+          </article>
+          <article class="info-card">
+            <h3>The cookie is the entire mechanism of CSRF</h3>
+            <p>A browser attaches cookies by destination, not by who asked. A form on an attacker&rsquo;s page that posts to your bank gets your bank&rsquo;s cookies attached, because that is exactly what cookies were designed to do. <code>SameSite=Lax</code> removes most of it: cross-site POST, iframe, image and fetch all arrive without the cookie. It still permits top-level GET navigation, so a state-changing GET is reachable from any page on the internet with the visitor&rsquo;s session attached. And &ldquo;site&rdquo; means the registrable domain, so a page on a sibling subdomain is same-site and SameSite will not notice it. Lax is defence in depth. It is not a replacement for a token.</p>
+          </article>
+          <article class="info-card">
+            <h3>Partitioned, and what it takes away</h3>
+            <p>CHIPS stores a third-party cookie in a jar keyed by the top-level site as well as by its own host, and requires <code>Secure</code>. The same widget embedded on two different sites gets two cookies with the same name and no way to see across. That is the point of it, and it is also the cost: a widget that relied on one shared cookie to recognise a visitor everywhere cannot do that any more. Per-embedding state survives &mdash; a collapsed panel, a chosen language, a cart on that one shop. Cross-site identity does not, and no attribute brings it back.</p>
+          </article>
+          <article class="info-card">
+            <h3>A Domain attribute only ever widens</h3>
+            <p>There is no way to narrow a cookie with <code>Domain</code>. The narrow cookie is the one with no <code>Domain</code> attribute at all, which matches that exact host and nothing else. Writing <code>Domain=example.com</code> on a response from <code>app.example.com</code> hands the cookie to every host under <code>example.com</code>: an old staging box, a marketing page somebody put on a hosted platform, a CNAME pointed at a vendor. Any of them can read it, and any of them can overwrite it &mdash; cookies do not obey the same-origin policy, so scheme, port and host do not protect you. A compromised sibling gets the session, and can also hand a visitor a session of its choosing.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is anything I paste uploaded?</summary>
+            <div>No. The header is parsed in your browser and nothing is sent anywhere &mdash; there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why would a browser reject a cookie without telling me?</summary>
+            <div>Because the specification says to ignore, not to warn. A __Host- cookie with a Domain attribute, a __Secure- cookie without Secure, SameSite=None without Secure, a Domain that does not match the host: every one of those is dropped on the floor. Some browsers log a note in devtools, most of the time nobody is looking at it, and the server never learns anything. The symptom is a session that does not persist.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does SameSite=Lax mean I can drop my CSRF token?</summary>
+            <div>No, and this is worth being precise about. Lax still permits top-level cross-site GET navigation, so any state-changing GET is still exposed. It is a browser behaviour, so an old or unusual client can ignore it. Site means registrable domain, so a compromised sibling subdomain is same-site and unaffected. And Chromium shipped a carve-out letting a cross-site top-level POST through for very new cookies, published as temporary. Keep the token.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What does Partitioned do to an embedded widget?</summary>
+            <div>It gives the widget a separate cookie jar per embedding site. Anything the widget remembers about one site keeps working. Anything that depended on recognising the same visitor across different embedding sites stops, permanently, and there is no attribute that restores it. If a widget needs identity across sites, that now has to be an explicit sign-in rather than a cookie.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Max-Age or Expires &mdash; which one wins?</summary>
+            <div>Max-Age, always. It wins regardless of which appeared first in the header and regardless of which date is later; Expires is only consulted when Max-Age is absent or is not a plain integer. Max-Age is also the better attribute, because it is a duration rather than a date and does not depend on the visitor&rsquo;s clock being right.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What can this tool not tell me?</summary>
+            <div>A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value &mdash; a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=cookie-inspector#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Cookie%20inspector%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More web security tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/jwt">
+            <span class="lab-card-name">JWT decoder</span>
+            <p class="lab-card-desc">Decode and verify the token that is often sitting inside the cookie you just inspected.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/har-analyzer">
+            <span class="lab-card-name">HAR analyzer</span>
+            <p class="lab-card-desc">Find the tokens, cookies and keys in a browser network export, and redact a copy safe to share.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/url-inspector">
+            <span class="lab-card-name">URL inspector</span>
+            <p class="lab-card-desc">Take a phishing link apart without opening it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/email-headers">
+            <span class="lab-card-name">Email header analyzer</span>
+            <p class="lab-card-desc">Trace a message&rsquo;s real delivery path and read what SPF, DKIM and DMARC said.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/http-versions">
+            <span class="lab-card-name">HTTP/1.1 vs 2 vs 3</span>
+            <p class="lab-card-desc">Race all three over one simulated link and watch head-of-line blocking happen.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/cookie-inspector.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

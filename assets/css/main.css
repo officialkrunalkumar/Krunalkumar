@@ -1490,6 +1490,23 @@ main [id] {
   color: var(--muted, #9fb3cd);
 }
 
+/* The caveat under the games walkthroughs.
+
+   It is set below the grid rather than inside a figcaption because it applies
+   to the pair, not to one video, and it is the only place on this site where a
+   number is corrected by prose instead of by the build. The desktop cut quotes
+   the game count both in its narration and in the interface it recorded, and
+   both are baked into the picture — so it cannot be fixed by editing a caption
+   file, only by re-recording. Until then this says so out loud.
+
+   Kept quiet deliberately: it is a footnote, not a warning. */
+.explainer-note {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted, #9fb3cd);
+}
+
 @media (max-width: 900px) {
   .explainer-grid {
     grid-template-columns: minmax(0, 1fr);

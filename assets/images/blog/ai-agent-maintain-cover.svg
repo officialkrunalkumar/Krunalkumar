@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cover image: What an AI agent is once you maintain it">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b2c"/>
+      <stop offset="1" stop-color="#1f2c3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke="#38bdf8" stroke-width="3">
+    <rect x="720" y="150" width="360" height="330" rx="14" stroke-opacity="0.35"/>
+  </g>
+  <rect x="752" y="192" width="150" height="58" rx="10" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <text x="827" y="228" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" fill="#e2e8f0" text-anchor="middle">MODEL</text>
+  <rect x="898" y="292" width="150" height="58" rx="10" fill="none" stroke="#7dd3fc" stroke-width="5"/>
+  <text x="973" y="328" font-family="'Segoe UI',sans-serif" font-size="20" font-weight="800" fill="#e2e8f0" text-anchor="middle">TOOL</text>
+  <g fill="none" stroke="#38bdf8" stroke-width="4" opacity="0.9">
+    <path d="M902 221 C 962 221, 973 250, 973 282"/>
+    <path d="M898 321 C 838 321, 827 292, 827 260"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.9">
+    <path d="M973 292 L 966 278 L 980 278 Z"/>
+    <path d="M827 250 L 820 264 L 834 264 Z"/>
+  </g>
+  <rect x="752" y="398" width="296" height="14" rx="7" fill="#38bdf8" opacity="0.25"/>
+  <rect x="752" y="398" width="196" height="14" rx="7" fill="#7dd3fc"/>
+  <g stroke="#f87171" stroke-width="5" stroke-linecap="round" opacity="0.9">
+    <path d="M956 386 L956 424"/>
+  </g>
+  <rect x="900" y="434" width="112" height="38" rx="10" fill="#7dd3fc"/>
+  <text x="956" y="460" font-family="'Segoe UI',sans-serif" font-size="19" font-weight="800" fill="#0f1a28" text-anchor="middle">STOP</text>
+  <g font-family="'Segoe UI', Tahoma, sans-serif">
+    <text x="80" y="200" fill="#7dd3fc" font-size="26" font-weight="800" letter-spacing="8">AI ENGINEERING</text>
+    <text x="80" y="280" fill="#f8fafc" font-size="52" font-weight="800">What an AI agent is</text>
+    <text x="80" y="345" fill="#f8fafc" font-size="52" font-weight="800">once you maintain it</text>
+    <text x="80" y="422" fill="#e2e8f0" font-size="26" font-weight="600">The maintenance is the job</text>
+    <text x="80" y="545" fill="#94a3b8" font-size="24" font-weight="700">krunalkumar.dpdns.org &#183; Blog</text>
+  </g>
+</svg>

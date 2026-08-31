@@ -360,7 +360,7 @@
           <li>Free forever</li>
         </ul>
 
-        <!-- Type-to-filter for the sixty-plus cards below. Purely a view on
+        <!-- Type-to-filter for every card below. Purely a view on
              this one page (site-wide search is "/"), so it lives in the DOM as
              plain markup and lab-filter.js wires it up. Hidden without JS via
              labs.css, because an input that filters nothing is a broken
@@ -410,6 +410,12 @@
             <figcaption><strong>On a phone</strong> &mdash; the editor and the output become Code and Output tabs, and the storage panel works the same.</figcaption>
           </figure>
         </div>
+        <p class="explainer-note">
+          <span aria-hidden="true">*</span> Labs are still being added, so the ones in the walkthrough are
+          examples rather than the full set. What it shows does not go out of date: the editor, the input
+          pane, the pin, fullscreen and the storage panel work the same way in every lab here, including the
+          ones added since this was recorded.
+        </p>
       </section>
 
       <section class="section-card">
@@ -536,13 +542,13 @@
           <p class="eyebrow">Also in Labs</p>
           <h2>Cybersecurity &amp; digital forensics tools</h2>
           <p>
-            Eighteen cards below. Sixteen of them are tools for the work where &ldquo;nothing
+            Every card below is a tool for the work where &ldquo;nothing
             leaves your browser&rdquo; stops being a nice line and becomes the reason to use them at
             all. An evidence file, a production
             token, a photograph with GPS in it, the headers of a phishing email &mdash; these are
             exactly the things people paste into a random website without thinking, and almost
             every online tool of this kind uploads them. These do not, because there is no server
-            behind them to upload to. The other two &mdash; the synth desk and the colophon &mdash;
+            behind them to upload to. Two of them &mdash; the synth desk and the colophon &mdash;
             are neither security nor forensics, and are here because there was nowhere better to
             put them.
           </p>
@@ -667,6 +673,41 @@
             <h3 class="lab-card-name">Passkeys &amp; WebAuthn</h3>
             <p class="lab-card-desc">Register a real passkey against this page and watch the attestation, the flag bits and the signature — then see why a lookalike origin cannot use it.</p>
             <span class="lab-card-engine">Uses the browser&rsquo;s real WebAuthn API</span>
+          </a>
+          <a class="lab-card" href="/labs/dmarc-builder">
+            <h3 class="lab-card-name">SPF and DMARC builder</h3>
+            <p class="lab-card-desc">Author the records rather than check them, with a live count against the ten-lookup SPF limit and a p=none to reject rollout plan.</p>
+            <span class="lab-card-engine">Builds the records, and reads DMARC reports</span>
+          </a>
+          <a class="lab-card" href="/labs/sbom-inspector">
+            <h3 class="lab-card-name">SBOM inspector</h3>
+            <p class="lab-card-desc">Paste a lockfile: direct versus transitive, install scripts, typosquat lookalikes, licence mix and unpinned ranges. Exports CycloneDX.</p>
+            <span class="lab-card-engine">Reads the lockfile, never the registry</span>
+          </a>
+          <a class="lab-card" href="/labs/cookie-inspector">
+            <h3 class="lab-card-name">Cookie inspector</h3>
+            <p class="lab-card-desc">Every Set-Cookie attribute explained, with the combinations that are silently rejected &mdash; and what SameSite really does about CSRF.</p>
+            <span class="lab-card-engine">Parses the header as a browser would</span>
+          </a>
+          <a class="lab-card" href="/labs/csp-playground">
+            <h3 class="lab-card-name">CSP playground</h3>
+            <p class="lab-card-desc">Write a policy, paste a page, see what breaks. Including the two traps: a nonce that voids &lsquo;unsafe-inline&rsquo;, and JSONP on your own origin.</p>
+            <span class="lab-card-engine">This site&rsquo;s own four policies as examples</span>
+          </a>
+          <a class="lab-card" href="/labs/rainbow-tables">
+            <h3 class="lab-card-name">Salt and rainbow tables</h3>
+            <p class="lab-card-desc">Build a table, break unsalted hashes with it, add a salt and watch it become worthless. Then time a fast hash against a slow one.</p>
+            <span class="lab-card-engine">Real hashing, measured in your tab</span>
+          </a>
+          <a class="lab-card" href="/labs/timing-attack">
+            <h3 class="lab-card-name">Timing side-channel</h3>
+            <p class="lab-card-desc">Recover a secret byte by byte from measured medians, and watch the same attack fail against a constant-time compare.</p>
+            <span class="lab-card-engine">Honest about browser timer coarsening</span>
+          </a>
+          <a class="lab-card" href="/labs/firewall-rules">
+            <h3 class="lab-card-name">Firewall rule simulator</h3>
+            <p class="lab-card-desc">Walk a packet through an iptables or nftables chain rule by rule. Finds shadowed rules, models conntrack, and explains DROP against REJECT.</p>
+            <span class="lab-card-engine">A model of the chain, not netfilter</span>
           </a>
 </div>
       </section>
@@ -905,6 +946,26 @@
             <p class="lab-card-desc">Edit a Dockerfile and watch the layer stack size itself, see which layers your edit invalidates, and find the secret still sitting in an earlier layer after you deleted it.</p>
             <span class="lab-card-engine">Modelled sizes, for teaching</span>
           </a>
+          <a class="lab-card" href="/labs/regex-automata">
+            <h3 class="lab-card-name">Regex automata</h3>
+            <p class="lab-card-desc">Regex to NFA to DFA to minimised DFA, stepped one character at a time &mdash; and catastrophic backtracking plotted against linear-time matching.</p>
+            <span class="lab-card-engine">Thompson, subset construction, Hopcroft</span>
+          </a>
+          <a class="lab-card" href="/labs/ieee754">
+            <h3 class="lab-card-name">IEEE-754 explorer</h3>
+            <p class="lab-card-desc">Flip any bit and read the exact decimal those bits hold, step 0.1 + 0.2 through the rounding, and watch Kahan summation earn its keep.</p>
+            <span class="lab-card-engine">Exact decimal, by big-integer arithmetic</span>
+          </a>
+          <a class="lab-card" href="/labs/concurrency">
+            <h3 class="lab-card-name">Concurrency primitives</h3>
+            <p class="lab-card-desc">One counter, four solutions, and you are the scheduler &mdash; so you can cause the lost update on purpose, then watch a mutex remove it.</p>
+            <span class="lab-card-engine">You choose every interleaving</span>
+          </a>
+          <a class="lab-card" href="/labs/cap-theorem">
+            <h3 class="lab-card-name">CAP theorem sandbox</h3>
+            <p class="lab-card-desc">Cut the network between five nodes, pick CP or AP, and watch quorum arithmetic decide. Covers PACELC and what CAP does not claim.</p>
+            <span class="lab-card-engine">R + W &gt; N, evaluated live</span>
+          </a>
 </div>
       </section>
 
@@ -1012,6 +1073,46 @@
             <h3 class="lab-card-name">Typing test &amp; certificate</h3>
             <p class="lab-card-desc">A timed test with a printable result. It says on its face that it is self-generated, because a certificate you issue yourself is not a credential.</p>
             <span class="lab-card-engine">Self-administered, and it says so</span>
+          </a>
+          <a class="lab-card" href="/labs/mojibake">
+            <h3 class="lab-card-name">Mojibake repair</h3>
+            <p class="lab-card-desc">Paste broken text and get the diagnosis and the repair chain &mdash; and a straight answer about which damage is reversible and which is not.</p>
+            <span class="lab-card-engine">Repairs the bytes, not the glyphs</span>
+          </a>
+          <a class="lab-card" href="/labs/ansi-escapes">
+            <h3 class="lab-card-name">ANSI escape explainer</h3>
+            <p class="lab-card-desc">Decode escape sequences in pasted text, or build them. Why colour breaks in a pipe, and why escapes in a log file are a security problem.</p>
+            <span class="lab-card-engine">Both directions, rendered faithfully</span>
+          </a>
+          <a class="lab-card" href="/labs/qr-payloads">
+            <h3 class="lab-card-name">vCard, WiFi and UPI QR builder</h3>
+            <p class="lab-card-desc">Contact cards, WiFi joins, calendar events and UPI links &mdash; with the UPI payload read out in plain language, because every UPI QR asks you to pay.</p>
+            <span class="lab-card-engine">Builds the payload, and explains it</span>
+          </a>
+          <a class="lab-card" href="/labs/rent-vs-buy">
+            <h3 class="lab-card-name">Rent versus buy (India)</h3>
+            <p class="lab-card-desc">Both paths plotted as net worth with the difference invested, the crossover year marked, and sliders for the two numbers nobody can know.</p>
+            <span class="lab-card-engine">Full amortisation, optional old-regime tax</span>
+          </a>
+          <a class="lab-card" href="/labs/gst-return">
+            <h3 class="lab-card-name">GST return working sheet</h3>
+            <p class="lab-card-desc">Totals your invoices rate-wise, splits CGST/SGST from IGST, and catches invoice-number gaps, duplicates and GSTIN checksum failures.</p>
+            <span class="lab-card-engine">A working sheet &mdash; it files nothing</span>
+          </a>
+          <a class="lab-card" href="/labs/timezones">
+            <h3 class="lab-card-name">Timezone meeting planner</h3>
+            <p class="lab-card-desc">Working hours shaded across every zone with the overlap highlighted, and honest handling of DST, half-hour offsets and next-day slots.</p>
+            <span class="lab-card-engine">Real offsets from your browser&rsquo;s Intl data</span>
+          </a>
+          <a class="lab-card" href="/labs/indian-ids">
+            <h3 class="lab-card-name">Indian ID format checker</h3>
+            <p class="lab-card-desc">Aadhaar, PAN, GSTIN, IFSC, UPI VPA and vehicle numbers, checked for format and checksum only &mdash; it does no lookup and cannot say an ID is real.</p>
+            <span class="lab-card-engine">Checksum only, no lookup, ever</span>
+          </a>
+          <a class="lab-card" href="/labs/diff-merge">
+            <h3 class="lab-card-name">Diff and three-way merge</h3>
+            <p class="lab-card-desc">Side-by-side or unified, down to the character, then resolve a base/mine/theirs merge by hand. Makes CRLF visible and exports a real patch.</p>
+            <span class="lab-card-engine">Myers diff, computed here</span>
           </a>
 </div>
       </section>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Build a hash lookup table live, crack unsalted MD5, SHA-1 and SHA-256 with it, watch a salt make it useless, then time fast versus slow hashing." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/rainbow-tables" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Build a rainbow table, then watch one salt make it worthless" />
+    <meta property="og:description" content="An interactive walkthrough of salting and rainbow tables that computes everything in your browser. Build a lookup table from a built-in wordlist, crack unsalted hashes with it, add a per-entry salt and watch the same table score zero, then build a genuine toy-sized rainbow table with real chain walks and false alarms. It finishes by timing SHA-256 against PBKDF2 on your own machine. Nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/rainbow-tables" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-rainbow-tables.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Salt and rainbow tables, built and broken live" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Build a rainbow table, then watch one salt make it worthless" />
+    <meta name="twitter:description" content="An interactive walkthrough of salting and rainbow tables that computes everything in your browser. Build a lookup table from a built-in wordlist, crack unsalted hashes with it, add a per-entry salt and watch the same table score zero, then build a genuine toy-sized rainbow table with real chain walks and false alarms. It finishes by timing SHA-256 against PBKDF2 on your own machine. Nothing is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-rainbow-tables.jpg" />
+    <title>Salt and Rainbow Tables, Built Live | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Salt and Rainbow Tables",
+        "url": "https://krunalkumar.dpdns.org/labs/rainbow-tables",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Password hashing and cryptography",
+        "operatingSystem": "Any modern web browser",
+        "description": "An interactive walkthrough of salting and rainbow tables that computes everything in your browser. Build a lookup table from a built-in wordlist, crack unsalted hashes with it, add a per-entry salt and watch the same table score zero, then build a genuine toy-sized rainbow table with real chain walks and false alarms. It finishes by timing SHA-256 against PBKDF2 on your own machine. Nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Live lookup-table build from a built-in wordlist",
+                "Unsalted MD5, SHA-1 and SHA-256 cracking",
+                "Per-entry salting demonstration",
+                "A genuine toy-sized rainbow table with chain walk",
+                "PBKDF2 versus SHA-256 speed test",
+                "Runs entirely in your browser, nothing uploaded"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is a rainbow table just a big lookup table?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and conflating the two is the most common mistake here. A lookup table maps every digest straight to its plaintext. A rainbow table stores only the start and end of long chains built by alternating a hash and a reduction function, then walks a target hash to find a matching endpoint. It trades computation at crack time for a much smaller stored table. Step 4 builds a real one so you can watch the walk."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does salting make a password uncrackable?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The salt is stored in the clear next to the hash, so an attacker targeting one account simply re-hashes the wordlist with that account’s salt, and a weak password still falls. What salting removes is the ability to attack everyone at once with a single precomputed table. Combine a salt with a deliberately slow hash and each of those per-user attacks also becomes expensive. Step 3 demonstrates both halves."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does the rainbow demo use MD5 and not SHA-256?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The chain walk needs tens of thousands of fast, sequential hashes, and crypto.subtle is asynchronous, which makes that slow and awkward. MD5 is implemented directly in the page, runs synchronously, and is exactly the fast, unsalted, legacy hash that rainbow tables were ever effective against. The lookup-table steps still let you pick SHA-1 and SHA-256."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Are the speed numbers a real benchmark?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. They are one browser, on one machine, on one day, and they move with JIT warm-up and thermal state. The SHA-256 rate is also throttled by per-call overhead in JavaScript, so it sits far below what native code or a GPU manages. Use the ratio between the fast and slow hash, which is the honest signal; do not read either absolute rate as a hardware figure."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is my pasted hash uploaded anywhere?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. Everything runs in this browser tab. SHA-1 and SHA-256 go through the browser’s built-in crypto.subtle, which is local, and MD5 is implemented in the page itself. There is no fetch, no upload and no server. A hash you paste never appears in your Network tab."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can this crack my real password hash?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Only if the plaintext happens to be one of the few thousand common passwords in the built-in wordlist and the hash is unsalted. That is the point: weak, unsalted hashes fall instantly, and anything else does not. This is a teaching demonstration, not a cracking rig, and it says its limits out loud in the output."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Rainbow tables",
+                        "item": "https://krunalkumar.dpdns.org/labs/rainbow-tables"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Rainbow tables</li>
+          </ol>
+        </nav>
+        <h1>Salt and rainbow tables, built live in your browser</h1>
+        <p class="hero-text">Most explanations of salting assert the lesson and get it slightly wrong. This one shows the mechanics instead: a lookup table hashing a wordlist, the same table cracking unsalted hashes, a salt reducing it to zero, a real rainbow table with chains and false alarms, and a fast-versus-slow hashing test timed on your machine. Every number is computed here, not narrated.</p>
+        <ul class="lab-facts">
+          <li>A lookup table you watch fill</li>
+          <li>Cracks unsalted MD5, SHA-1, SHA-256</li>
+          <li>A salt, and what it truly stops</li>
+          <li>A genuine rainbow table, chains and all</li>
+          <li>Fast vs slow hashing, timed here</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="rainbowtables">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; the hashing happens on your own processor</li>
+                  <li>The wordlist is a few thousand common passwords, not a full dictionary</li>
+                  <li>It only cracks unsalted hashes, and reads at most 500 pasted digests</li>
+                  <li>The rainbow table is deliberately toy-sized, over a 4-character keyspace</li>
+                  <li>The speed test is one machine on one day, not a benchmark of record</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>Any hash you paste stays in this tab</li>
+                  <li>Nothing you enter ever appears in your Network tab</li>
+                  <li>SHA uses the browser&rsquo;s crypto.subtle; MD5 is implemented in the page</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="rt-algo">Hash algorithm</label>
+          <select class="lab-select" id="rt-algo">
+            <option value="sha256" selected>SHA-256</option>
+            <option value="sha1">SHA-1</option>
+            <option value="md5">MD5</option>
+          </select>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Run this step</button>
+          <span class="lab-status" id="rt-status" role="status" aria-live="polite">Ready. Pick a step below.</span>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+        <div class="lab-fieldrow rt-steps" role="group" aria-label="Demonstration steps">
+          <button class="lab-btn" type="button" id="rt-step1" aria-pressed="true">1 &middot; Build the table</button>
+          <button class="lab-btn" type="button" id="rt-step2" aria-pressed="false">2 &middot; Crack unsalted</button>
+          <button class="lab-btn" type="button" id="rt-step3" aria-pressed="false">3 &middot; Add a salt</button>
+          <button class="lab-btn" type="button" id="rt-step4" aria-pressed="false">4 &middot; Rainbow table</button>
+          <button class="lab-btn" type="button" id="rt-step5" aria-pressed="false">5 &middot; Fast vs slow</button>
+        </div>
+        <div class="lab-panes">
+          <div class="lab-pane lab-pane-input">
+            <p class="lab-pane-label" id="rt-inlabel">Hashes to crack (one per line) &mdash; optional, blank uses a demo set</p>
+            <label class="sr-only" for="tool-in">Hashes to crack, one per line</label>
+            <textarea class="lab-toolinput" id="tool-in" spellcheck="false" autocapitalize="off"
+                      autocorrect="off" placeholder="Leave blank to crack a generated demo set, or paste unsalted MD5 / SHA-1 / SHA-256 hashes, one per line. Step 2 is the only step that reads this box."></textarea>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Output</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What this is really teaching</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>A lookup table is not a rainbow table</h3>
+            <p>People use the terms interchangeably, and they are not the same thing. A lookup table stores every digest next to its plaintext &mdash; fast to search, but the space cost is brutal. A rainbow table stores only the two ends of long chains of alternating hash and reduction steps, trading time for space. Steps 1 and 4 build one of each so the difference is concrete.</p>
+          </article>
+          <article class="info-card">
+            <h3>A salt is not a secret</h3>
+            <p>A salt is random bytes stored in the clear, right beside the hash. It does nothing to stop someone cracking one chosen user &mdash; they just hash the wordlist again with that user&rsquo;s salt. What it stops is amortisation: one precomputed table can no longer crack a million accounts at once, because every account needs the work redone. Step 3 shows exactly that.</p>
+          </article>
+          <article class="info-card">
+            <h3>Slow hashes buy time, not secrecy</h3>
+            <p>PBKDF2, bcrypt, scrypt and Argon2 are deliberately slow, so each guess in an offline attack costs more. Step 5 times SHA-256 against PBKDF2 and reports the ratio. bcrypt, scrypt and Argon2 go further with memory-hardness, which is what actually blunts a GPU &mdash; and which this page cannot measure fairly, so it does not pretend to.</p>
+          </article>
+          <article class="info-card">
+            <h3>Why rainbow tables faded</h3>
+            <p>Rainbow tables were only ever good against fast, unsalted hashes. Once salting became standard, each user needed their own table and the whole approach collapsed. Modern GPUs now brute-force small keyspaces outright, faster than looking up a chain. They still matter for one thing: old, unsalted MD5 or SHA-1 dumps, which is why the topic will not quite die.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is a rainbow table just a big lookup table?</summary>
+            <div>No, and conflating the two is the most common mistake here. A lookup table maps every digest straight to its plaintext. A rainbow table stores only the start and end of long chains built by alternating a hash and a reduction function, then walks a target hash to find a matching endpoint. It trades computation at crack time for a much smaller stored table. Step 4 builds a real one so you can watch the walk.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does salting make a password uncrackable?</summary>
+            <div>No. The salt is stored in the clear next to the hash, so an attacker targeting one account simply re-hashes the wordlist with that account&rsquo;s salt, and a weak password still falls. What salting removes is the ability to attack everyone at once with a single precomputed table. Combine a salt with a deliberately slow hash and each of those per-user attacks also becomes expensive. Step 3 demonstrates both halves.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does the rainbow demo use MD5 and not SHA-256?</summary>
+            <div>The chain walk needs tens of thousands of fast, sequential hashes, and crypto.subtle is asynchronous, which makes that slow and awkward. MD5 is implemented directly in the page, runs synchronously, and is exactly the fast, unsalted, legacy hash that rainbow tables were ever effective against. The lookup-table steps still let you pick SHA-1 and SHA-256.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Are the speed numbers a real benchmark?</summary>
+            <div>No. They are one browser, on one machine, on one day, and they move with JIT warm-up and thermal state. The SHA-256 rate is also throttled by per-call overhead in JavaScript, so it sits far below what native code or a GPU manages. Use the ratio between the fast and slow hash, which is the honest signal; do not read either absolute rate as a hardware figure.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is my pasted hash uploaded anywhere?</summary>
+            <div>No. Everything runs in this browser tab. SHA-1 and SHA-256 go through the browser&rsquo;s built-in crypto.subtle, which is local, and MD5 is implemented in the page itself. There is no fetch, no upload and no server. A hash you paste never appears in your Network tab.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can this crack my real password hash?</summary>
+            <div>Only if the plaintext happens to be one of the few thousand common passwords in the built-in wordlist and the hash is unsalted. That is the point: weak, unsalted hashes fall instantly, and anything else does not. This is a teaching demonstration, not a cracking rig, and it says its limits out loud in the output.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=rainbow-tables#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Rainbow%20tables%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More on hashing and passwords</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/hash-cracker">
+            <span class="lab-card-name">Live hash cracker</span>
+            <p class="lab-card-desc">Watch a wordlist and brute force race to break a hash.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/password">
+            <span class="lab-card-name">Password strength</span>
+            <p class="lab-card-desc">Real entropy and honest offline crack times.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/hash">
+            <span class="lab-card-name">Hash generator</span>
+            <p class="lab-card-desc">MD5, SHA-1 and SHA-256 digests, verified.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/breach-check">
+            <span class="lab-card-name">Password breach check</span>
+            <p class="lab-card-desc">k-anonymity lookups against known breaches.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/cryptography">
+            <span class="lab-card-name">Cryptography visualiser</span>
+            <p class="lab-card-desc">AES, RSA and ECC, one step at a time.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/rainbow-tables.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

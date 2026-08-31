@@ -8344,3 +8344,1107 @@ html:not(.js) .lab-filter { display: none; }
 :root[data-theme="light"] .lab-concurrency-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
   color: inherit;
 }
+
+/* ==========================================================================
+   SPF / DMARC / DKIM builder (/labs/dmarc-builder)
+   --------------------------------------------------------------------------
+   Four jobs behind one output pane, so the input half of .lab-panes holds four
+   panels and a tablist switches them. The existing .lab-tabs is not that: it
+   is display:none above 900px and exists to flip between editor and terminal
+   on a phone, so reusing it here would have made the tabs vanish on every
+   desktop. Hence a local strip, modelled on .tm-tabs.
+
+   Everything is scoped under #dmarcbuilder. The one rule that has to be is
+   .dm-forms: .lab-pane-input > div carries display:contents globally, which
+   would dissolve the panel wrapper and take the scroll container with it.
+   ========================================================================== */
+
+#dmarcbuilder .dm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  background: rgb(var(--deep-rgb) / 0.55);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+#dmarcbuilder .dm-tab {
+  flex: 1 1 11rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink-3);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+#dmarcbuilder .dm-tab-title { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+#dmarcbuilder .dm-tab-sub { font-size: 0.74rem; line-height: 1.4; color: var(--ink-4); }
+#dmarcbuilder .dm-tab:hover { color: var(--ink); }
+#dmarcbuilder .dm-tab[aria-selected='true'] {
+  color: var(--accent-1);
+  border-bottom-color: var(--accent-1);
+  background: rgb(var(--accent-rgb) / 0.07);
+}
+#dmarcbuilder .dm-tab:focus-visible { outline: 2px solid var(--accent-1); outline-offset: -2px; }
+
+/* The scroll container for whichever panel is on. display:block beats the
+   inherited display:contents; the overflow is what lets a long SPF list scroll
+   inside the fixed-height pane instead of stretching it. */
+#dmarcbuilder .dm-forms {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.9rem 0.95rem 1.2rem;
+}
+#dmarcbuilder .dm-panel[hidden] { display: none; }
+#dmarcbuilder .dm-panel:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+#dmarcbuilder .dm-lede {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+#dmarcbuilder .dm-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+#dmarcbuilder .dm-sub {
+  margin: 1.1rem 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* Labelled controls. .lab-toolfield carries flex: 1 1 14rem for the toolbar
+   rows it was written for; inside a column label that basis becomes a HEIGHT
+   and every field grows to fourteen rems tall. Same reset .tm-lbl needed. */
+#dmarcbuilder .dm-lbl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  margin-bottom: 0.7rem;
+}
+#dmarcbuilder .dm-lbl > span { font-size: 0.76rem; color: var(--ink-4); }
+#dmarcbuilder .dm-lbl .lab-toolfield,
+#dmarcbuilder .dm-lbl .lab-select {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+#dmarcbuilder .dm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0 0.7rem;
+}
+
+/* The live lookup counter. Colour is a second signal only — the sentence
+   inside always says the number and what it means in words. */
+#dmarcbuilder .dm-count {
+  margin: 0 0 0.7rem;
+  padding: 0.5rem 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background: rgb(var(--deep-rgb) / 0.6);
+  color: var(--ink-3);
+}
+#dmarcbuilder .dm-count.is-ok { border-color: rgba(74, 222, 128, 0.45); color: #86efac; }
+#dmarcbuilder .dm-count.is-near { border-color: rgba(251, 191, 36, 0.5); color: #fcd34d; }
+#dmarcbuilder .dm-count.is-over { border-color: rgba(248, 113, 113, 0.6); color: #fca5a5; }
+
+#dmarcbuilder .dm-rows { list-style: none; margin: 0 0 0.7rem; padding: 0; }
+#dmarcbuilder .dm-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem;
+  margin-bottom: 0.4rem;
+  border-radius: 8px;
+  background: rgb(var(--deep-rgb) / 0.5);
+  border: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+#dmarcbuilder .dm-row .lab-select,
+#dmarcbuilder .dm-row .lab-toolfield { font-size: 0.78rem; }
+#dmarcbuilder .dm-q { flex: 0 0 auto; min-width: 0; }
+#dmarcbuilder .dm-mech { flex: 1 1 13rem; min-width: 0; }
+#dmarcbuilder .dm-val { flex: 1 1 10rem; min-width: 0; }
+#dmarcbuilder .dm-cost {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  color: var(--ink-4);
+}
+#dmarcbuilder .dm-cost .lab-toolfield { flex: 0 0 4.2rem; width: 4.2rem; }
+#dmarcbuilder .dm-rm {
+  flex: 0 0 auto;
+  padding: 0.3rem 0.6rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+#dmarcbuilder .dm-empty {
+  padding: 0.7rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+  border: 1px dashed rgb(var(--accent-rgb) / 0.25);
+  border-radius: 8px;
+}
+#dmarcbuilder .dm-addrow { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+#dmarcbuilder .dm-addrow .lab-btn { font-size: 0.78rem; }
+#dmarcbuilder .dm-addrow .lab-select { flex: 1 1 11rem; min-width: 0; font-size: 0.78rem; }
+
+#dmarcbuilder .dm-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+#dmarcbuilder .dm-check input { accent-color: var(--accent-1); cursor: pointer; }
+
+#dmarcbuilder .dm-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+#dmarcbuilder .dm-textarea-lg { min-height: 14rem; }
+
+@media (max-width: 860px) {
+  #dmarcbuilder .dm-forms { max-height: 60vh; }
+  #dmarcbuilder .dm-tab { flex: 1 1 8rem; }
+}
+
+/* ==========================================================================
+   Rainbow tables lab (#rainbowtables)
+   --------------------------------------------------------------------------
+   The five demonstrations are a row of buttons acting as a step picker, and
+   the shell has no style for a pressed .lab-btn (only .lab-btn-icon), so the
+   active step needs one rule to look selected. Every selector here is scoped
+   under the root id so it cannot re-ink another lab.
+
+   The pressed state carries aria-pressed for a screen reader and a weight
+   change as well as the teal, so the selected step is not told by colour
+   alone.
+   ========================================================================== */
+#rainbowtables .rt-steps { gap: 0.4rem; }
+#rainbowtables .rt-steps .lab-btn { flex: 1 1 8.5rem; justify-content: center; }
+#rainbowtables .rt-steps .lab-btn[aria-pressed='true'] {
+  background: #0f766e;
+  border-color: #14b8a6;
+  color: #ecfdf5;
+  font-weight: 700;
+}
+#rainbowtables .rt-steps .lab-btn[aria-pressed='true']:hover:not(:disabled) {
+  background: #115e59;
+}
+
+/* ==========================================================================
+   /labs/mojibake — the repair chain, the stage text and the hex view
+   --------------------------------------------------------------------------
+   The diagnosis itself goes in the ordinary output pane. Everything here is
+   the second half of the tool: the ordered chain of transformations, the text
+   at whichever stage the visitor has stepped to, and a hex dump of that
+   stage's UTF-8 bytes.
+
+   The hex dump is the reason for the layout rather than an extra. Watching
+   C3 83 C2 A9 collapse to C3 A9 is the demonstration; the glyphs above it are
+   only the symptom. So the two sit side by side on a wide screen and stack in
+   that order — text first, then its bytes — on a narrow one.
+
+   Every rule is scoped under #mojibake. Two overrides earn their place:
+   .lab-status carries white-space: nowrap for the one-line readouts it was
+   written for, and the stage line here is a sentence that has to be let out of
+   it; .lab-terminal carries word-break: break-word, which would rewrap a hex
+   row mid-offset and destroy the column alignment that makes a dump readable.
+   ========================================================================== */
+#mojibake .mjb-stage {
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+  background: rgb(var(--deep-rgb) / 0.5);
+}
+#mojibake .mjb-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+#mojibake .mjb-col { display: flex; flex-direction: column; min-width: 0; }
+#mojibake .mjb-col + .mjb-col { border-left: 1px solid rgb(var(--accent-rgb) / 0.14); }
+#mojibake .mjb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.85rem;
+}
+#mojibake .mjb-chain { margin: 0; font-size: 0.86rem; }
+#mojibake .mjb-chain li { color: var(--ink-3); }
+#mojibake .mjb-chain .mjb-done { color: #4ade80; }
+#mojibake .mjb-chain .mjb-next { color: var(--accent-1); font-weight: 600; }
+#mojibake .mjb-chain .mjb-later { color: var(--ink-4); }
+#mojibake .mjb-stageline { white-space: normal; line-height: 1.6; }
+#mojibake .mjb-text { width: 100%; resize: vertical; white-space: pre-wrap; }
+#mojibake .mjb-hex {
+  flex: 0 0 auto;
+  max-height: 20rem;
+  font-size: 0.76rem;
+  white-space: pre;
+  word-break: normal;
+}
+@media (max-width: 860px) {
+  #mojibake .mjb-grid { grid-template-columns: minmax(0, 1fr); }
+  #mojibake .mjb-col + .mjb-col {
+    border-left: 0;
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+  }
+  #mojibake .mjb-hex { max-height: 14rem; }
+}
+/* In fullscreen the panes take the height they need and this panel scrolls
+   inside itself, rather than pushing the hex view off the bottom of the
+   screen — the same treatment .lab-metrics already gets above. */
+#mojibake.is-fullscreen .mjb-stage { flex: 0 1 auto; overflow-y: auto; }
+
+/* ==========================================================================
+   /labs/rent-vs-buy — two net-worth curves, and the year they cross
+   --------------------------------------------------------------------------
+   Appended for this lab only. Every rule below is scoped under #rentvsbuy,
+   including the handful that reach into shell classes, so nothing here can
+   reach another lab page. The naming follows the rvb- prefix the module uses,
+   and the shapes are borrowed from the salary lab rather than invented: a
+   grouped control block, a headline strip, panes, and result blocks with a
+   title, a note and a table that scrolls inside its own box.
+
+   Two colours carry meaning on this page — sky for buying, amber for renting —
+   and neither of them carries it alone. The legend spells both out in words,
+   the chart's aria-label states which path ends ahead and by how much, the
+   crossover is named in a row header in the table underneath, and every cell
+   of the sensitivity grid prints the year as text. The tints are the second
+   signal, never the only one.
+
+   The canvas keeps an opaque dark ground of its own in both themes. It is a
+   drawn instrument with its own fixed ink, the same decision .lab-canvas makes
+   further up this file; without the ground it would composite onto a light
+   page and strand its axis labels at about 1.1:1.
+   ========================================================================== */
+
+/* The left pane holds a chart plus a legend and a caption, the right pane a
+   long terminal, and both want the room. Repeated inside this file's own media
+   query below: the shared .lab-tool .lab-panes mobile rule has the same
+   specificity and appears earlier, so without the repeat this would win on
+   phones too and squash the chart into a 72vh box on a 640px screen. */
+#rentvsbuy .lab-panes { height: min(72vh, 640px); }
+
+/* .lab-pane-input > div { display: contents } further up this file would
+   dissolve a plain wrapper and take the chart's sizing context with it. A
+   named child outranks that rule. */
+#rentvsbuy .lab-pane-input > .rvb-scroll {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 0;
+  padding: 0.9rem;
+  overflow-y: auto;
+}
+
+/* The disclaimer banner ---------------------------------------------------- */
+/* Amber, and above the controls rather than under the answer: "two of these
+   numbers are guesses" is the thing a visitor has to read before they trust
+   anything below it. */
+#rentvsbuy .rvb-banner {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+#rentvsbuy .rvb-banner strong { color: var(--ink); }
+#rentvsbuy .rvb-banner-tag {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+/* Grouped controls --------------------------------------------------------- */
+#rentvsbuy .rvb-groups { border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14); }
+#rentvsbuy .rvb-group {
+  margin: 0;
+  padding: 0.2rem 0 0.5rem;
+  border: 0;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.12);
+}
+#rentvsbuy .rvb-group:first-child { border-top: 0; }
+#rentvsbuy .rvb-group > legend {
+  padding: 0.7rem 0.9rem 0.1rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+#rentvsbuy .rvb-group .lab-metrics { border-bottom: 0; }
+#rentvsbuy .rvb-hint {
+  margin: 0 0 0.2rem;
+  padding: 0 0.9rem;
+  max-width: 72ch;
+  font-size: 0.79rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+#rentvsbuy .rvb-metric-wide { grid-column: 1 / -1; }
+#rentvsbuy .lab-metric .lab-toolfield { width: 100%; font-variant-numeric: tabular-nums; }
+#rentvsbuy .rvb-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+#rentvsbuy .rvb-check input { margin-top: 0.15rem; accent-color: var(--accent-1); cursor: pointer; }
+#rentvsbuy .rvb-check input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+/* A disabled field is still on screen and still labelled, so it has to look
+   switched off rather than merely unresponsive. */
+#rentvsbuy .lab-metric input:disabled,
+#rentvsbuy .lab-metric select:disabled { opacity: 0.45; cursor: not-allowed; }
+#rentvsbuy [data-active="no"] > legend { opacity: 0.6; }
+
+/* Headline strip ----------------------------------------------------------- */
+#rentvsbuy .rvb-headline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  gap: 0.9rem;
+  padding: 1rem 0.95rem;
+  background: rgb(var(--deep-rgb) / 0.6);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+/* Takes the whole strip, because it replaces the figures rather than sitting
+   beside them: with no price there is no net worth, and a sentence in the
+   space where the number would be is the honest answer. */
+#rentvsbuy .rvb-alert {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #fbbf24;
+}
+#rentvsbuy .rvb-figure { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+#rentvsbuy .rvb-figure-label { font-size: 0.76rem; color: var(--ink-4); }
+#rentvsbuy .rvb-figure-value {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent-1);
+  overflow-wrap: anywhere;
+}
+#rentvsbuy .rvb-figure-note { font-size: 0.72rem; line-height: 1.45; color: var(--ink-4); }
+
+/* The chart ---------------------------------------------------------------- */
+#rentvsbuy .rvb-chart {
+  display: block;
+  width: 100%;
+  height: min(46vh, 340px);
+  min-height: 200px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--line-rgb) / 0.25);
+  background: #020617;
+}
+#rentvsbuy .rvb-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+#rentvsbuy .rvb-legend li { display: flex; align-items: center; gap: 0.4rem; }
+#rentvsbuy .rvb-swatch {
+  width: 1.1rem;
+  height: 0.2rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+#rentvsbuy .rvb-swatch-buy { color: #38bdf8; }
+#rentvsbuy .rvb-swatch-rent { color: #fbbf24; }
+#rentvsbuy .rvb-swatch-cross { color: #34d399; }
+#rentvsbuy .rvb-caption {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* Result blocks ------------------------------------------------------------ */
+#rentvsbuy .rvb-block {
+  padding: 1.2rem 1.1rem 1.4rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.16);
+  background: rgb(var(--deep-rgb) / 0.35);
+}
+#rentvsbuy .rvb-block-title { margin: 0 0 0.5rem; font-size: 1.02rem; color: var(--ink); }
+#rentvsbuy .rvb-block-note {
+  margin: 0 0 0.9rem;
+  max-width: 70ch;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ink-3);
+}
+#rentvsbuy .rvb-note {
+  margin: 0.85rem 0 0;
+  max-width: 70ch;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--ink-4);
+}
+
+/* Tables ------------------------------------------------------------------- */
+/* Wide content scrolls inside its own box, so the page body never scrolls
+   sideways because a twenty-row net-worth table happened to be six columns. */
+#rentvsbuy .rvb-tablewrap { overflow-x: auto; }
+#rentvsbuy .rvb-table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+#rentvsbuy .rvb-table caption {
+  caption-side: top;
+  padding-bottom: 0.6rem;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+#rentvsbuy .rvb-table th,
+#rentvsbuy .rvb-table td {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgb(var(--line-rgb) / 0.2);
+  text-align: right;
+  white-space: nowrap;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+}
+#rentvsbuy .rvb-table thead th,
+#rentvsbuy .rvb-table tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: rgb(var(--deep-rgb) / 0.6);
+}
+#rentvsbuy .rvb-table td { color: var(--ink-3); }
+#rentvsbuy .rvb-table .rvb-gap { color: var(--ink); font-weight: 700; }
+#rentvsbuy .rvb-table tr.is-cross td,
+#rentvsbuy .rvb-table tr.is-cross th { background: rgba(52, 211, 153, 0.12); }
+
+/* The sensitivity grid ----------------------------------------------------- */
+#rentvsbuy .rvb-gridtable { min-width: 30rem; }
+#rentvsbuy .rvb-gridtable td { text-align: center; }
+#rentvsbuy .rvb-gridtable td.is-buy { color: #7dd3fc; background: rgba(56, 189, 248, 0.08); }
+#rentvsbuy .rvb-gridtable td.is-rent { color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
+#rentvsbuy .rvb-gridtable td.is-here {
+  outline: 2px solid rgb(var(--accent-rgb) / 0.75);
+  outline-offset: -2px;
+}
+
+/* Fullscreen --------------------------------------------------------------- */
+#rentvsbuy.is-fullscreen .lab-panes { height: auto; flex: 1 1 auto; min-height: 0; }
+#rentvsbuy.is-fullscreen .rvb-groups { max-height: 34vh; overflow-y: auto; }
+
+@media (max-width: 860px) {
+  #rentvsbuy .lab-panes { grid-template-columns: minmax(0, 1fr); height: auto; }
+  #rentvsbuy .rvb-chart { height: min(42vh, 260px); }
+  #rentvsbuy .rvb-metric-wide { grid-column: auto; }
+}
+
+/* ==========================================================================
+   /labs/ansi-escapes — the ANSI escape explainer
+   --------------------------------------------------------------------------
+   Only three things here are not already in the shared kit: the attribute
+   checkbox strip in the build bar, the rendered-screen pane under the two
+   panes, and a blink that actually blinks.
+
+   The render pane is a terminal, so it is painted dark in both themes the way
+   .lab-terminal is, rather than being re-inked for light mode. Every span the
+   module builds carries its own inline colour computed from the SGR
+   parameters, and re-inking the ground under them would strand a #000000
+   foreground on a light background — SGR 30 is meant to be black text, and it
+   is only readable over the terminal's own ground.
+
+   Both [hidden] rules exist because the elements they cover set an author
+   `display` (grid on .lab-metrics, flex on .lab-pane), and an author display
+   beats the UA sheet's [hidden] rule. The build bar and the input pane are
+   toggled by mode, so without these the page would show every control at once.
+
+   Every rule is scoped under #ansiescapes. Sixty other lab pages share this
+   stylesheet and .ae- is short enough to collide with something one day.
+   ========================================================================== */
+#ansiescapes .lab-metrics[hidden],
+#ansiescapes .lab-pane[hidden] { display: none; }
+
+#ansiescapes .ae-attrs { grid-column: 1 / -1; }
+#ansiescapes .ae-attrs > span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+  margin-bottom: 0.35rem;
+}
+
+/* .lab-flags supplies the label and checkbox styling; the strip only needs to
+   be allowed to wrap, because eight attributes do not fit on one line inside
+   the metrics grid the way three regex flags fit across a toolbar. */
+#ansiescapes .ae-attrs-row { flex-wrap: wrap; gap: 0.35rem 1rem; }
+
+/* .lab-toolfield carries `flex: 1 1 14rem`, which inside .lab-metric — a
+   column flex container — is read as a 14rem HEIGHT rather than a width. The
+   salary lab hit the same thing; same fix, scoped to this root. */
+#ansiescapes .lab-metric .lab-toolfield { flex: 0 0 auto; width: 100%; }
+
+#ansiescapes .ae-colour {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 2.1rem;
+  padding: 0.15rem;
+  cursor: pointer;
+}
+
+#ansiescapes .ae-screenwrap {
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.18);
+  background: rgb(var(--deep-rgb) / 0.55);
+  padding: 0.75rem 1rem 0.9rem;
+}
+#ansiescapes .ae-screen {
+  margin: 0.4rem 0 0;
+  padding: 0.8rem 0.9rem;
+  max-height: 17rem;
+  overflow: auto;
+  border-radius: 8px;
+  background: #020617;
+  color: #cdd6e4;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+#ansiescapes .ae-screen:focus-visible {
+  outline: 2px solid rgb(var(--accent-rgb) / 0.5);
+  outline-offset: 2px;
+}
+#ansiescapes .ae-line { white-space: pre; min-height: 1.2em; }
+#ansiescapes .ae-empty { color: #5d907f; font-style: italic; }
+#ansiescapes .ae-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+/* SGR 5 is a blink and pretending otherwise would make the render a
+   description rather than a rendering. It is also the one attribute on this
+   page that moves on its own, so it honours prefers-reduced-motion by falling
+   back to a dotted underline — still visibly different from plain text, which
+   is the part that matters when colour and motion both have to carry a fact
+   in words as well. */
+@keyframes ae-blink { 50% { opacity: 0.15; } }
+#ansiescapes .ae-blink { animation: ae-blink 1.06s steps(1, end) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  #ansiescapes .ae-blink {
+    animation: none;
+    text-decoration: underline dotted;
+  }
+}
+
+/* Fullscreen: the two panes take the space, the render keeps a fixed slice at
+   the bottom and scrolls inside itself. Without the flex declaration it would
+   be squeezed to nothing by .lab-panes' flex: 1 1 auto. */
+#ansiescapes.is-fullscreen .ae-screenwrap { flex: 0 0 auto; }
+#ansiescapes.is-fullscreen .ae-screen { max-height: 30vh; }
+
+@media (max-width: 700px) {
+  #ansiescapes .ae-screen { max-height: 13rem; font-size: 0.76rem; }
+}
+
+/* ==========================================================================
+   Cookie inspector (/labs/cookie-inspector)
+   --------------------------------------------------------------------------
+   One rule, and it exists for the same reason .tm-lbl and .lab-salary already
+   carry theirs. .lab-toolfield was written for the toolbar rows it grew up in
+   and carries flex: 1 1 14rem. .lab-field-inline is a COLUMN flex container,
+   so that basis lands on the HEIGHT instead of the width, and the optional
+   response-URL field rendered as a 224px-tall box with a caret floating in
+   the middle of it. Scoped to this lab's root id, so nothing else moves.
+   ========================================================================== */
+#cookieinspector .lab-field-inline .lab-toolfield {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   /labs/cap-theorem — five replicas, ten links, and the partition you cut
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/cap-theorem.js builds its whole interface into this mount
+   — the SVG cluster graph, the topic tabs, the control column, the per-replica
+   table and the transcript — and injects its own stylesheet for the internals,
+   id-scoped to #captheorem, the same way the git, db-index and OS-algorithm
+   labs do. Only the rules the page shell owns live here.
+
+   Same shape as .lab-dbindex-mount rather than .lab-canvas: the mount holds
+   scrolling panels and a table, not a single drawing surface, so it takes no
+   height cap in the page, and in fullscreen it has to be allowed to take the
+   remaining height and scroll inside itself rather than push the toolbar off
+   the bottom of the screen.
+   ========================================================================== */
+.lab-cap-mount { min-height: 4rem; }
+.lab-viz.is-fullscreen .lab-cap-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme: this widget is a dark instrument, drawn once, for dark — the
+   same treatment, and for the same reason, as .lab-dbindex-mount above. The
+   injected panels are translucent navy, so with no opaque ground under them
+   they composite over a light page and strand their own labels at about 1.1:1.
+
+   :not([class]) matters as much here as it does there: without it this would
+   also catch the widget's own elements and flatten every colour the lab
+   teaches with — a cut link against a live one, a stale replica against a
+   current one — into one ink. The widget's rules are id-scoped and outrank
+   this, so only its class-less descendants, which have no colour of their own,
+   are rescued from the site's light re-inking. */
+:root[data-theme="light"] .lab-cap-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+:root[data-theme="light"] .lab-cap-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}
+
+/* ==========================================================================
+   /labs/rent-vs-buy, continued — the light theme
+   --------------------------------------------------------------------------
+   Split from the block above only because it was written after measuring the
+   rendered page rather than guessed at. Same scope rule: every selector here
+   is under #rentvsbuy.
+
+   The tints that read well on the dark page do not survive re-inking. In light
+   theme .rvb-block sits on rgba(203 216 232 / 0.35) over an almost-white lab
+   ground, and sky #38bdf8 lands at roughly 2:1 on it while amber #fbbf24 lands
+   at about 1.7:1. Both are unreadable, and in the sensitivity grid the tinted
+   text is the crossover year itself — the one number that block exists to
+   print. So the two families get a darker ink here and a slightly stronger
+   wash behind them, which puts both comfortably past 4.5:1 while keeping sky
+   for buying and amber for renting.
+
+   The legend swatches are the exception and keep the chart's exact ink,
+   because their whole job is to say which line on the canvas is which, and a
+   swatch in a different colour from the line it names is worse than a faint
+   one. They get a dark chip instead, so each sits on the same ground the
+   canvas draws on and the chip's own edge carries the contrast against the
+   page.
+   ========================================================================== */
+:root[data-theme="light"] #rentvsbuy .rvb-gridtable td.is-buy {
+  color: #075985;
+  background: rgba(56, 189, 248, 0.16);
+}
+:root[data-theme="light"] #rentvsbuy .rvb-gridtable td.is-rent {
+  color: #92400e;
+  background: rgba(251, 191, 36, 0.22);
+}
+:root[data-theme="light"] #rentvsbuy .rvb-table tr.is-cross td,
+:root[data-theme="light"] #rentvsbuy .rvb-table tr.is-cross th {
+  background: rgba(16, 185, 129, 0.16);
+}
+:root[data-theme="light"] #rentvsbuy .rvb-alert { color: #92400e; }
+:root[data-theme="light"] #rentvsbuy .rvb-banner-tag {
+  color: #92400e;
+  background: rgba(251, 191, 36, 0.18);
+}
+:root[data-theme="light"] #rentvsbuy .rvb-swatch {
+  box-shadow: 0 0 0 3px #0b1220;
+}
+
+/* ==========================================================================
+   QR payload builder (/labs/qr-payloads)
+   --------------------------------------------------------------------------
+   The whole page is built from existing classes — .lab-metrics for the field
+   grids, .lab-qrcheck for the checkboxes, .lab-resultbar for the copy row —
+   so this block is only the two things those classes cannot do on their own.
+
+   First, display beats [hidden]. .lab-metrics is display:grid and .lab-metric
+   is display:flex, and both of those outrank the user-agent sheet's [hidden]
+   rule, so the enterprise EAP fields and the timezone field stayed on screen
+   for every payload type. The same trap, for the same reason, is handled a few
+   hundred lines above for .lab-qrfields.
+
+   Second, the line-ending and folding controls are wrapped in one span so they
+   can be hidden together, which made three flex items into one and jammed the
+   selects against each other. display:contents dissolves the wrapper for
+   layout while leaving it in the DOM to be hidden. Every rule is scoped to
+   this lab's root id.
+   ========================================================================== */
+#qrpayloads .lab-metrics[hidden],
+#qrpayloads .lab-metric[hidden] { display: none; }
+
+#qrpayloads #tool-textopts { display: contents; }
+#qrpayloads #tool-textopts[hidden] { display: none; }
+
+/* ==========================================================================
+   /labs/diff-merge — a real Myers diff and a real three-way merge
+   --------------------------------------------------------------------------
+   Every rule here is scoped under #diffmerge, and every colour in the diff
+   view and the conflict cards is a literal rather than a token. That is
+   deliberate and it is the same decision .lab-terminal makes: this is a dark
+   instrument in both themes. Tokens flip in light mode, and a red removal
+   stripe that flips to a light-mode red on a hard-coded #020617 ground is
+   exactly how a diff ends up illegible for the people who chose light.
+
+   Colour never carries the fact on its own either. Every row prints its sign
+   in a column of its own — a space, a minus, a plus, a tilde for a modified
+   pair, an approximately-equal for a pair that only matches once whitespace
+   is ignored — and inside a changed line the removed run is struck through
+   while the added run is underlined. Turn the colour off entirely and the
+   diff still reads.
+   ========================================================================== */
+
+/* In fullscreen the flex column that .lab.is-fullscreen sets would squeeze
+   the three input boxes, the diff, the conflict cards and the report into one
+   screen with nothing scrollable. This layout is a stack; it scrolls. */
+#diffmerge.is-fullscreen { display: block; overflow-y: auto; }
+
+#diffmerge .dm-name { flex: 0 1 12rem; }
+#diffmerge .lab-terminal { max-height: 26rem; }
+
+/* Inputs ------------------------------------------------------------------- */
+#diffmerge .dm-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+#diffmerge .dm-in {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: rgb(var(--deep-rgb) / 0.5);
+  border-right: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+#diffmerge .dm-in:last-child { border-right: 0; }
+#diffmerge .dm-in[hidden] { display: none; }
+#diffmerge .dm-area { flex: 1 1 auto; min-height: 10rem; }
+#diffmerge .dm-in.is-over { background: rgba(125, 211, 252, 0.12); }
+#diffmerge .dm-inbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+}
+#diffmerge .dm-src { font-size: 0.72rem; color: var(--ink-4); }
+#diffmerge .dm-src.is-raw { color: var(--accent-1); }
+#diffmerge .dm-cr {
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+  background: rgb(var(--deep-rgb) / 0.4);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+
+/* The diff view ------------------------------------------------------------ */
+#diffmerge .dm-view {
+  max-height: min(56vh, 480px);
+  overflow: auto;
+  background: #020617;
+  color: #e2e8f0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.79rem;
+  line-height: 1.55;
+  tab-size: 4;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.18);
+}
+#diffmerge.is-fullscreen .dm-view { max-height: 60vh; }
+#diffmerge .dm-view:focus-visible { outline: 2px solid #7dd3fc; outline-offset: -2px; }
+
+#diffmerge .dm-row { display: grid; align-items: start; }
+#diffmerge .dm-row.dm-side {
+  grid-template-columns: 3.4rem 1.1rem minmax(0, 1fr) 3.4rem 1.1rem minmax(0, 1fr);
+}
+#diffmerge .dm-row.dm-uni {
+  grid-template-columns: 3.4rem 3.4rem 1.1rem minmax(0, 1fr);
+}
+#diffmerge .dm-num {
+  padding: 0 0.5rem;
+  text-align: right;
+  color: #94a3b8;
+  background: #0b1220;
+  user-select: none;
+}
+#diffmerge .dm-sign { text-align: center; color: #cbd5e1; user-select: none; }
+#diffmerge .dm-text {
+  padding: 0 0.5rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Removed on the left, added on the right, in both layouts. */
+#diffmerge .dm-side.dm-mod > :nth-child(-n + 3),
+#diffmerge .dm-side.dm-del > :nth-child(-n + 3) { background: rgba(248, 113, 113, 0.1); }
+#diffmerge .dm-side.dm-mod > :nth-child(n + 4),
+#diffmerge .dm-side.dm-ins > :nth-child(n + 4) { background: rgba(74, 222, 128, 0.1); }
+#diffmerge .dm-side.dm-ws > * { background: rgba(251, 191, 36, 0.09); }
+#diffmerge .dm-uni.dm-del { background: rgba(248, 113, 113, 0.1); }
+#diffmerge .dm-uni.dm-ins { background: rgba(74, 222, 128, 0.1); }
+#diffmerge .dm-uni.dm-ws { background: rgba(251, 191, 36, 0.09); }
+#diffmerge .dm-row .dm-text.dm-empty { background: rgba(148, 163, 184, 0.05); }
+
+#diffmerge .dm-x {
+  color: #fecaca;
+  background: rgba(220, 38, 38, 0.38);
+  text-decoration: line-through;
+}
+#diffmerge .dm-y {
+  color: #bbf7d0;
+  background: rgba(22, 163, 74, 0.4);
+  text-decoration: underline;
+}
+#diffmerge .dm-s { color: #cbd5e1; }
+#diffmerge .dm-mark { color: #fbbf24; }
+
+#diffmerge .dm-hunk { background: rgba(125, 211, 252, 0.08); }
+#diffmerge .dm-hunktext { padding: 0.1rem 0.6rem; color: #7dd3fc; }
+#diffmerge .dm-skip { background: rgba(148, 163, 184, 0.06); }
+#diffmerge .dm-skiptext {
+  padding: 0.1rem 0.6rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+#diffmerge .dm-none {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+}
+
+/* Merge panel and conflict cards ------------------------------------------- */
+#diffmerge .dm-merge[hidden] { display: none; }
+#diffmerge .dm-h {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.45rem 0.85rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  background: rgb(var(--deep-rgb) / 0.6);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+#diffmerge .dm-conflict {
+  padding: 0.9rem;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+#diffmerge .dm-conflict-h {
+  margin: 0 0 0.6rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+:root[data-theme="light"] #diffmerge .dm-conflict-h { color: #6b5600; }
+#diffmerge .dm-three {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+#diffmerge .dm-col { min-width: 0; }
+/* These four sit on the PAGE surface, not on the diff view's own dark ground,
+   so they take tokens rather than literals. A hard-coded #94a3b8 label reads
+   at about 2.3:1 against the light theme's white card, and the amber conflict
+   heading is worse than that — the one place in this block where borrowing
+   the terminal's palette would have been the wrong instinct. */
+#diffmerge .dm-col-h {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+#diffmerge .dm-pre,
+#diffmerge .dm-merged,
+#diffmerge .dm-edit {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  background: #020617;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+}
+#diffmerge .dm-pre { max-height: 12rem; overflow: auto; }
+#diffmerge .dm-merged {
+  display: block;
+  max-height: 22rem;
+  overflow: auto;
+  border-radius: 0;
+  border-width: 0;
+}
+#diffmerge .dm-acts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+#diffmerge .dm-chosen { font-size: 0.78rem; color: var(--ink-4); }
+#diffmerge .dm-editlabel {
+  display: block;
+  margin: 0.6rem 0 0.25rem;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+#diffmerge .dm-edit {
+  display: block;
+  width: 100%;
+  min-height: 4.5rem;
+  resize: vertical;
+}
+#diffmerge .dm-edit:focus-visible,
+#diffmerge .dm-pre:focus-visible,
+#diffmerge .dm-merged:focus-visible { outline: 2px solid #7dd3fc; outline-offset: -2px; }
+
+/* Narrow screens: the two number gutters cost a third of the width on a
+   phone, and side-by-side is the wrong layout there anyway — the copy says
+   so, and this keeps it readable for anyone who leaves it on regardless. */
+@media (max-width: 720px) {
+  #diffmerge .dm-view { font-size: 0.72rem; }
+  #diffmerge .dm-row.dm-side {
+    grid-template-columns: 2rem 1rem minmax(0, 1fr) 2rem 1rem minmax(0, 1fr);
+  }
+  #diffmerge .dm-row.dm-uni { grid-template-columns: 2rem 2rem 1rem minmax(0, 1fr); }
+  #diffmerge .dm-num { padding: 0 0.25rem; }
+}
+
+/* ==========================================================================
+   /labs/ieee754 — the floating point explorer
+   --------------------------------------------------------------------------
+   assets/js/labs/viz/ieee754.js builds its whole interface into this mount —
+   the topic tabs, the clickable bit strips, the stepped addition, the two
+   charts and the exact decimal expansions — and injects its own stylesheet
+   for the internals, id-scoped to #ieee754, the same way the git, db-index
+   and OS-algorithm labs do. Only the rules the page shell owns live here.
+
+   Same shape as .lab-dbindex-mount rather than .lab-canvas: the mount holds
+   scrolling panels, not a single drawing surface, so it takes no height cap
+   in the page (the panels cap their own scroll areas) and in fullscreen it
+   has to be allowed to take the remaining height and scroll inside itself
+   rather than push the transport off the bottom of the screen.
+   ========================================================================== */
+.lab-ieee754-mount { min-height: 4rem; }
+.lab-viz.is-fullscreen .lab-ieee754-mount {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Light theme: this widget is a dark instrument, drawn once, for dark — the
+   same treatment, and for the same reason, as .lab-dbindex-mount above. The
+   injected panels are translucent navy, so with no opaque ground under them
+   they composite over a light page and strand their own labels at about
+   1.1:1. The exact expansions are the worst case: a 750-digit string that
+   has to stay legible or the lab has no point.
+
+   :not([class]) matters as much here as it does there: without it this would
+   also catch the widget's own elements and flatten every colour the lab
+   teaches with — sign against exponent against fraction, naive against
+   Kahan against Neumaier — into one ink. The widget's rules are id-scoped
+   and outrank this, so only its class-less descendants, which have no colour
+   of their own, are rescued from the site's light re-inking. */
+:root[data-theme="light"] .lab-ieee754-mount {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+:root[data-theme="light"] .lab-ieee754-mount :is(span, div, p, b, i, small, label, td, th, li):not([class]) {
+  color: inherit;
+}
+
+/* ==========================================================================
+   Firewall rule simulator (/labs/firewall-rules)
+   --------------------------------------------------------------------------
+   One rule, for the same reason .lab-salary and #cookieinspector already carry
+   theirs. The packet builder is a .lab-metrics grid, and .lab-metric is a
+   COLUMN flex container, so .lab-toolfield's inherited flex: 1 1 14rem lands
+   on the HEIGHT instead of the width. Eight address and port boxes each came
+   out 224px tall with a caret floating in the middle. Scoped to this lab's
+   root id, so nothing else on the site moves.
+   ========================================================================== */
+#firewallrules .lab-metric .lab-toolfield {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   Incident timeline builder (/labs/incident-timeline)
+   --------------------------------------------------------------------------
+   One control per pasted source, built by the module once it knows the source
+   names, so the markup cannot know how many there will be. .lab-fieldrow
+   already supplies the wrapping flex row; what it has no class for is a
+   label and its select stacked as one item inside that row, which is the
+   only shape that keeps "Timezone for db-03" attached to the right dropdown
+   when four of them wrap onto two lines.
+
+   Every rule is scoped under #incidenttimeline. .tl-zone and .tl-note are
+   generic enough as names that an unscoped version of this block would
+   re-ink other labs the next time someone reaches for the same word.
+   ========================================================================== */
+#incidenttimeline .tl-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+#incidenttimeline .tl-zone > span { font-size: 0.78rem; color: var(--ink-4); }
+#incidenttimeline .tl-zone .lab-select,
+#incidenttimeline .tl-zone .lab-toolfield { width: 100%; }
+#incidenttimeline .tl-note {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink-4);
+}
+#incidenttimeline .tl-pairs { min-height: 4.5rem; resize: vertical; }

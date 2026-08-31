@@ -831,6 +831,22 @@ const LLMS_COUNT_RULES = [
   ]],
   ['llms-full.txt', [
     [/(index covering all )\d+( pages)/, 'pages'],
+    /* The games figure that opens the Games section. It was spelled out and
+       typed by hand, and no rewrite had ever touched it, so it sat at
+       "Sixty-seven" while the manifest grew underneath it — the same drift the
+       llms.txt rules above exist to stop, in the one file an assistant is most
+       likely to quote back verbatim.
+
+       Anchored on the heading above it rather than on the number, for the
+       reason group 1 always is here: the replacement is '$1' + value + '$2',
+       so a rule that captured the old word would emit both.
+
+       \r?\n, not \n. This file is CRLF in a Windows working copy and LF on the
+       Linux builder — .gitattributes pins only labs/*.html and glossary.html —
+       so a bare \n matched nothing locally and would have matched on Vercel.
+       A rule that works on exactly one of the two machines is the worst kind
+       of gate: it looks fine wherever you happen to be standing. */
+    [/(## Games \(\/games\)\r?\n\r?\n)[A-Za-z-]+( games, in seven categories)/, 'games:Word'],
   ]],
 ];
 

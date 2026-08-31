@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Paste terminal output and see every ANSI escape named, explained and rendered. Build sequences from controls, and defuse the ones in untrusted logs." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/ansi-escapes" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Every ANSI escape in your terminal output, named and rendered" />
+    <meta property="og:description" content="An escape sequence is a few invisible bytes that change colour, move the cursor, rename your window or write your clipboard. Paste terminal output and get every sequence identified with its name, its standard and what it does, rendered beside the explanation. Build your own and copy it in five quoting forms, or sanitise a log you do not trust. Runs entirely in your browser; nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/ansi-escapes" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ansi-escapes.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ANSI escape code explainer, builder and sanitiser" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Every ANSI escape in your terminal output, named and rendered" />
+    <meta name="twitter:description" content="An escape sequence is a few invisible bytes that change colour, move the cursor, rename your window or write your clipboard. Paste terminal output and get every sequence identified with its name, its standard and what it does, rendered beside the explanation. Build your own and copy it in five quoting forms, or sanitise a log you do not trust. Runs entirely in your browser; nothing is uploaded." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ansi-escapes.jpg" />
+    <title>ANSI escape codes, explained | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "ANSI Escape Code Explainer",
+        "url": "https://krunalkumar.dpdns.org/labs/ansi-escapes",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Terminal and text encoding tools",
+        "operatingSystem": "Any modern web browser",
+        "description": "An escape sequence is a few invisible bytes that change colour, move the cursor, rename your window or write your clipboard. Paste terminal output and get every sequence identified with its name, its standard and what it does, rendered beside the explanation. Build your own and copy it in five quoting forms, or sanitise a log you do not trust. Runs entirely in your browser; nothing is uploaded.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "SGR decoding including 256-colour and 24-bit truecolour",
+                "Cursor movement, erase, save/restore and scroll region",
+                "OSC window title, OSC 8 hyperlinks and OSC 52 clipboard",
+                "DEC private modes and the 8-bit C1 forms",
+                "Escape sequence builder with printf and echo -e output",
+                "Control sequence sanitiser in the cat -v convention",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Why does ls lose its colours when I pipe it into cat?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it — the escape sequences were never written. Passing --color=always overrides the check and writes them anyway."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "I used --color=always and now my file is full of [01;34m. What is that?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Those are the escape sequences themselves, sitting in the file as literal bytes. Each starts with a real 0x1B byte, which is invisible in most viewers, so you see the [01;34m and not the ESC in front of it. Paste a line into the decoder here and it will name every one, with its standard and its effect."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "How do I turn colour off for everything?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Set NO_COLOR. The rule from no-color.org is that the variable's presence disables colour whatever its value is, so even an empty NO_COLOR= counts as set. The neighbouring conventions are older and less consistent: CLICOLOR=0 disables, CLICOLOR_FORCE=1 forces colour on even when output is not a terminal, TERM=dumb tells a program the terminal can do nothing, and FORCE_COLOR is honoured by a lot of Node tooling. Support for each is per-program."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is running cat on an untrusted log file actually dangerous?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It is a real risk rather than a theoretical one. Cursor movement and erase let bytes in the file rewrite lines already on your screen, so a log entry can be made to lie about what happened. OSC can change the window title, and OSC 52 can write your clipboard, so the next thing you paste into a root shell is the attacker's. Several terminal emulators have also had memory-safety bugs in their OSC and DCS handlers. The sanitiser here shows you what is in a file before you let a terminal act on it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does less -R make it safe?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. The whole point of -R is to pass colour sequences through to the terminal, which means it passes the sequence through, and -r passes everything. Plain less with no flags is reasonable because it displays ESC[ instead of obeying it, and cat -v is closer to a safety measure because it makes every control byte visible. Neither is a security boundary. The durable fix is to strip control characters where the log is written, not where it is read."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does my escape sequence work in bash but not in sh?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Usually two separate reasons. echo -e is not POSIX: bash and zsh builtins honour it, dash prints a literal -e, and /bin/echo differs again, so printf is the portable choice. And the backslash-e shorthand is a GNU extension, while backslash-033, the octal form, works everywhere. The builder here prints both command lines side by side so you can see the difference."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "ANSI escapes",
+                        "item": "https://krunalkumar.dpdns.org/labs/ansi-escapes"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">ANSI escapes</li>
+          </ol>
+        </nav>
+        <h1>ANSI escape codes, explained</h1>
+        <p class="hero-text">An escape sequence is a handful of invisible bytes that tell your terminal to change colour, move the cursor, rename the window or write your clipboard. Paste some in and get every one named, dated to a standard and explained, with the result rendered beside it &mdash; then build your own, or defuse someone else&rsquo;s.</p>
+        <ul class="lab-facts">
+          <li>Every sequence named, with its standard</li>
+          <li>SGR rendered, not merely described</li>
+          <li>Build one, copy it in five forms</li>
+          <li>A sanitiser for untrusted log text</li>
+          <li>Runs in this tab, nothing uploaded</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="ansiescapes">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>Not a terminal emulator: 80 columns, no scrollback</li>
+                  <li>Private modes, OSC and device reports are explained, never obeyed</li>
+                  <li>Colours shown are xterm defaults; your terminal has its own</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A log excerpt you paste stays in this tab</li>
+                  <li>No raw escape byte for anything dangerous is placed on this page</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="tool-mode">What to do</label>
+          <select class="lab-select" id="tool-mode">
+            <option value="decode" selected>Decode &mdash; name and explain every sequence</option>
+            <option value="build">Build &mdash; make a sequence from controls</option>
+            <option value="sanitise">Sanitise &mdash; make untrusted output safe to read</option>
+          </select>
+          <label class="sr-only" for="tool-example">Load an example</label>
+          <select class="lab-select" id="tool-example">
+            <option value="">Load an example&hellip;</option>
+            <option value="attack">A log entry that rewrites the line above it</option>
+            <option value="ls">ls --color, as it lands in a file</option>
+            <option value="prompt">256-colour and truecolour in a prompt</option>
+            <option value="progress">A progress bar redrawing over itself</option>
+            <option value="osc">Window title, hyperlink and clipboard</option>
+            <option value="modes">Cursor, alt screen, bracketed paste, C1</option>
+          </select>
+          <label class="lab-flags"><input type="checkbox" id="tool-unquote" checked /> read \x1b, \033, \e and ^[ as ESC</label>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Run</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+
+        <div class="lab-metrics" id="tool-buildbar" hidden>
+          <div class="lab-metric ae-attrs">
+            <span id="ae-attrs-label">Attributes</span>
+            <div class="lab-flags ae-attrs-row" role="group" aria-labelledby="ae-attrs-label">
+              <label><input type="checkbox" id="b-a1" checked /> 1 bold</label>
+              <label><input type="checkbox" id="b-a2" /> 2 faint</label>
+              <label><input type="checkbox" id="b-a3" /> 3 italic</label>
+              <label><input type="checkbox" id="b-a4" /> 4 underline</label>
+              <label><input type="checkbox" id="b-a5" /> 5 blink</label>
+              <label><input type="checkbox" id="b-a7" /> 7 reverse</label>
+              <label><input type="checkbox" id="b-a8" /> 8 conceal</label>
+              <label><input type="checkbox" id="b-a9" /> 9 strikethrough</label>
+            </div>
+          </div>
+          <div class="lab-metric">
+            <label for="b-fg">Foreground</label>
+            <select class="lab-select" id="b-fg">
+              <option value="none">leave it alone</option>
+              <option value="39">39 &mdash; terminal default</option>
+              <option value="30">30 &mdash; black</option>
+              <option value="31">31 &mdash; red</option>
+              <option value="32">32 &mdash; green</option>
+              <option value="33">33 &mdash; yellow</option>
+              <option value="34">34 &mdash; blue</option>
+              <option value="35">35 &mdash; magenta</option>
+              <option value="36">36 &mdash; cyan</option>
+              <option value="37">37 &mdash; white</option>
+              <option value="90">90 &mdash; bright black (aixterm)</option>
+              <option value="91">91 &mdash; bright red (aixterm)</option>
+              <option value="92">92 &mdash; bright green (aixterm)</option>
+              <option value="93">93 &mdash; bright yellow (aixterm)</option>
+              <option value="94">94 &mdash; bright blue (aixterm)</option>
+              <option value="95">95 &mdash; bright magenta (aixterm)</option>
+              <option value="96">96 &mdash; bright cyan (aixterm)</option>
+              <option value="97">97 &mdash; bright white (aixterm)</option>
+              <option value="256" selected>38;5;N &mdash; 256-colour index</option>
+              <option value="rgb">38;2;R;G;B &mdash; truecolour</option>
+            </select>
+          </div>
+          <div class="lab-metric">
+            <label for="b-fg-idx">Foreground 256 index (0&ndash;255)</label>
+            <input class="lab-toolfield" type="number" id="b-fg-idx" min="0" max="255" step="1" value="208" />
+          </div>
+          <div class="lab-metric">
+            <label for="b-fg-rgb">Foreground truecolour</label>
+            <input class="lab-toolfield ae-colour" type="color" id="b-fg-rgb" value="#ff8700" />
+          </div>
+          <div class="lab-metric">
+            <label for="b-bg">Background</label>
+            <select class="lab-select" id="b-bg">
+              <option value="none" selected>leave it alone</option>
+              <option value="49">49 &mdash; terminal default</option>
+              <option value="40">40 &mdash; black</option>
+              <option value="41">41 &mdash; red</option>
+              <option value="42">42 &mdash; green</option>
+              <option value="43">43 &mdash; yellow</option>
+              <option value="44">44 &mdash; blue</option>
+              <option value="45">45 &mdash; magenta</option>
+              <option value="46">46 &mdash; cyan</option>
+              <option value="47">47 &mdash; white</option>
+              <option value="100">100 &mdash; bright black (aixterm)</option>
+              <option value="101">101 &mdash; bright red (aixterm)</option>
+              <option value="102">102 &mdash; bright green (aixterm)</option>
+              <option value="103">103 &mdash; bright yellow (aixterm)</option>
+              <option value="104">104 &mdash; bright blue (aixterm)</option>
+              <option value="105">105 &mdash; bright magenta (aixterm)</option>
+              <option value="106">106 &mdash; bright cyan (aixterm)</option>
+              <option value="107">107 &mdash; bright white (aixterm)</option>
+              <option value="256">48;5;N &mdash; 256-colour index</option>
+              <option value="rgb">48;2;R;G;B &mdash; truecolour</option>
+            </select>
+          </div>
+          <div class="lab-metric">
+            <label for="b-bg-idx">Background 256 index (0&ndash;255)</label>
+            <input class="lab-toolfield" type="number" id="b-bg-idx" min="0" max="255" step="1" value="236" />
+          </div>
+          <div class="lab-metric">
+            <label for="b-bg-rgb">Background truecolour</label>
+            <input class="lab-toolfield ae-colour" type="color" id="b-bg-rgb" value="#1c1c1c" />
+          </div>
+          <div class="lab-metric">
+            <label for="b-text">Sample text</label>
+            <input class="lab-toolfield" type="text" id="b-text" spellcheck="false" value="warning: disk 91% full" />
+          </div>
+          <div class="lab-metric">
+            <label for="b-form">Which form goes in the copy box</label>
+            <select class="lab-select" id="b-form">
+              <option value="x">\x1b &mdash; C, and most languages</option>
+              <option value="o">\033 &mdash; octal, works everywhere</option>
+              <option value="e">\e &mdash; GNU extension</option>
+              <option value="printf" selected>printf command line</option>
+              <option value="echo">echo -e command line</option>
+              <option value="raw">raw bytes, with a real invisible ESC</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lab-panes" id="tool-panes">
+          <div class="lab-pane lab-pane-input" id="tool-inpane">
+            <p class="lab-pane-label" id="tool-inlabel">Terminal output, or a log excerpt</p>
+            <label class="sr-only" for="tool-in">Text to examine</label>
+            <textarea class="lab-toolinput" id="tool-in" spellcheck="false" autocapitalize="off"
+                      autocorrect="off" placeholder="Paste terminal output, or pick an example above"></textarea>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">What each sequence is, and what it does</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <div class="ae-screenwrap">
+          <p class="lab-pane-label" id="ae-screen-label">Rendered &mdash; colour, cursor moves and erases carried out on an 80-column model</p>
+          <div class="ae-screen" id="tool-render" tabindex="0" role="region" aria-labelledby="ae-screen-label"></div>
+          <p class="ae-note" id="tool-rendernote" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="lab-resultbar">
+          <label class="sr-only" for="tool-result">Result to copy</label>
+          <textarea class="lab-toolfield lab-toolresult" id="tool-result" readonly rows="2"
+                    spellcheck="false" placeholder="The built sequence, or the safe-to-paste form of what you decoded"></textarea>
+          <button class="lab-btn" type="button" data-copy-target="tool-result">Copy</button>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Three things about escape sequences worth knowing</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Colour vanishes in a pipe on purpose</h3>
+            <p>A program that emits colour asks first. It calls <code>isatty</code> on file descriptor 1, and when standard output is a pipe or a file rather than a terminal, a well-behaved program emits no escape sequences at all. That is why <code>ls | cat</code> comes out plain and why grep loses its highlighting inside a script: nothing swallowed the colour, it was never written. <code>--color=always</code> removes the check, and the bytes then land in whatever you redirected into &mdash; which is how a log file ends up carrying <code>ESC[01;34m</code> in front of every path. Load the <em>ls --color</em> example above and the decoder will name every one of them, byte by byte.</p>
+          </article>
+          <article class="info-card">
+            <h3>NO_COLOR, and the conventions around it</h3>
+            <p>NO_COLOR (no-color.org) has one rule and it is worth stating precisely: if the variable is present in the environment, colour is disabled, <em>whatever its value is</em>. An empty <code>NO_COLOR=</code> counts as set, which catches out people who expect <code>0</code> to mean off. The older neighbours are less tidy. <code>CLICOLOR=0</code> asks for no colour; <code>CLICOLOR_FORCE=1</code> demands colour even when stdout is not a terminal, which is the escape hatch for piping into <code>less -R</code> deliberately. <code>TERM=dumb</code> tells a program the terminal has no capabilities worth using. <code>FORCE_COLOR</code> is honoured across a great deal of Node tooling. None of them is universal &mdash; every program decides for itself, and a program that honours none of them is not violating a standard.</p>
+          </article>
+          <article class="info-card">
+            <h3>Escapes in someone else&rsquo;s output are an attack surface</h3>
+            <p>This is the part worth taking seriously. If an attacker can get bytes into a log you later <code>cat</code>, they control your terminal for the length of that file. Cursor movement and erase let them rewrite lines that have already been printed, so an entry reading DENIED can be replaced by one reading ok before you have finished reading the screen &mdash; run the first example and read the overwritten-character count under the render. OSC can rename your window, and window titles are text people trust. OSC 52 writes your clipboard with nothing changing on screen, so the next thing you paste into a root shell is theirs. Alternate screen and bracketed paste can be left in the wrong state, and bracketed paste turned <em>off</em> is the state in which a pasted newline runs the command. Terminal emulators have shipped real memory-safety and command-injection bugs in their OSC and DCS handlers as well. Nothing on this page executes any of it: the clipboard example decodes to a harmless string, and every dangerous sequence is shown inert.</p>
+          </article>
+          <article class="info-card">
+            <h3>What the renderer will and will not do</h3>
+            <p>The render pane is a small screen model, not a terminal emulator, and it says so under every run. It carries out SGR, cursor movement, erase, insert and delete on eighty fixed columns, with no scrollback, no scroll region, no alternate screen buffer and tab stops every eight. Private modes, OSC, control strings and the device reports are named, explained and deliberately not obeyed &mdash; obeying <code>?1049</code> inside a div would mean nothing, and pretending otherwise would be the wrong lesson. The colours are xterm&rsquo;s default palette, computed from the 6&times;6&times;6 cube and the 24-step grey ramp; your terminal ships its own, so treat every hex value printed here as a reference point rather than a promise about your screen.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Why does ls lose its colours when I pipe it into cat?</summary>
+            <div>Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it &mdash; the escape sequences were never written. Passing --color=always overrides the check and writes them anyway.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>I used --color=always and now my file is full of [01;34m. What is that?</summary>
+            <div>Those are the escape sequences themselves, sitting in the file as literal bytes. Each starts with a real 0x1B byte, which is invisible in most viewers, so you see the [01;34m and not the ESC in front of it. Paste a line into the decoder here and it will name every one, with its standard and its effect.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>How do I turn colour off for everything?</summary>
+            <div>Set NO_COLOR. The rule from no-color.org is that the variable's presence disables colour whatever its value is, so even an empty NO_COLOR= counts as set. The neighbouring conventions are older and less consistent: CLICOLOR=0 disables, CLICOLOR_FORCE=1 forces colour on even when output is not a terminal, TERM=dumb tells a program the terminal can do nothing, and FORCE_COLOR is honoured by a lot of Node tooling. Support for each is per-program.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is running cat on an untrusted log file actually dangerous?</summary>
+            <div>It is a real risk rather than a theoretical one. Cursor movement and erase let bytes in the file rewrite lines already on your screen, so a log entry can be made to lie about what happened. OSC can change the window title, and OSC 52 can write your clipboard, so the next thing you paste into a root shell is the attacker's. Several terminal emulators have also had memory-safety bugs in their OSC and DCS handlers. The sanitiser here shows you what is in a file before you let a terminal act on it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does less -R make it safe?</summary>
+            <div>No. The whole point of -R is to pass colour sequences through to the terminal, which means it passes the sequence through, and -r passes everything. Plain less with no flags is reasonable because it displays ESC[ instead of obeying it, and cat -v is closer to a safety measure because it makes every control byte visible. Neither is a security boundary. The durable fix is to strip control characters where the log is written, not where it is read.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does my escape sequence work in bash but not in sh?</summary>
+            <div>Usually two separate reasons. echo -e is not POSIX: bash and zsh builtins honour it, dash prints a literal -e, and /bin/echo differs again, so printf is the portable choice. And the backslash-e shorthand is a GNU extension, while backslash-033, the octal form, works everywhere. The builder here prints both command lines side by side so you can see the difference.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=ansi-escapes#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20ANSI%20escapes%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More tools for reading what is actually in a file</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/unicode">
+            <span class="lab-card-name">Unicode inspector</span>
+            <p class="lab-card-desc">Invisible characters, bidi overrides and homoglyphs &mdash; the other way text lies about itself.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/log-analyser">
+            <span class="lab-card-name">Log analyser</span>
+            <p class="lab-card-desc">Drop auth.log or an nginx access log and get findings rather than a wall of lines.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/encoding">
+            <span class="lab-card-name">Encoder / decoder</span>
+            <p class="lab-card-desc">Base64, hex, URL and more, with auto-detection &mdash; including the OSC 52 payloads above.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/memory-strings">
+            <span class="lab-card-name">Memory dump extractor</span>
+            <p class="lab-card-desc">Pull ASCII and UTF-16 strings, URLs and keys out of a dump.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/linux">
+            <span class="lab-card-name">Linux terminal</span>
+            <p class="lab-card-desc">A real kernel and a BusyBox shell &mdash; somewhere to try printf and cat -v for yourself.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/ansi-escapes.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

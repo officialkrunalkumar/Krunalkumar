@@ -273,7 +273,27 @@ var BLOG_URLS = [
   '/assets/images/blog/which-ai-tool-for-which-job-diagram1.svg',
   '/assets/images/blog/which-ai-tool-for-which-job-diagram2.svg',
   '/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg',
-  '/assets/images/blog/which-ai-tool-for-which-job-diagram4.svg'
+  '/assets/images/blog/which-ai-tool-for-which-job-diagram4.svg',
+  '/blog/first-week-of-an-automation-engagement',
+  '/assets/images/blog/automation-first-week-cover.svg',
+  '/blog/how-to-brief-a-security-consultant',
+  '/assets/images/blog/security-brief-cover.svg',
+  '/blog/how-to-read-a-privacy-policy-in-five-minutes',
+  '/assets/images/blog/privacy-policy-cover.svg',
+  '/blog/the-hubspot-mistakes-that-cost-the-most-to-undo',
+  '/assets/images/blog/hubspot-mistakes-cover.svg',
+  '/blog/the-password-advice-that-stopped-being-true',
+  '/assets/images/blog/password-advice-cover.svg',
+  '/blog/what-ai-agent-means-once-you-maintain-one',
+  '/assets/images/blog/ai-agent-maintain-cover.svg',
+  '/blog/what-happens-to-your-accounts-when-you-die',
+  '/assets/images/blog/accounts-after-death-cover.svg',
+  '/blog/what-your-browser-tells-every-site',
+  '/assets/images/blog/browser-tells-cover.svg',
+  '/blog/why-i-quote-fixed-price',
+  '/assets/images/blog/fixed-price-cover.svg',
+  '/blog/why-we-dont-store-your-password-is-usually-false',
+  '/assets/images/blog/password-storage-cover.svg'
 ];
 
 var BLOG_SET = {};

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/games/firewall-defence" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Block everything and you lose the game" />
+    <meta property="og:description" content="Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/games/firewall-defence" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-firewall-defence.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Firewall defence" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Block everything and you lose the game" />
+    <meta name="twitter:description" content="Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-firewall-defence.jpg" />
+    <title>Firewall Defence — Rules Are The Towers</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Firewall defence",
+        "url": "https://krunalkumar.dpdns.org/games/firewall-defence",
+        "gamePlatform": "Web browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any modern web browser",
+        "description": "Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "playMode": "SinglePlayer",
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@id": "https://krunalkumar.dpdns.org/#person"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Why am I losing points for blocking traffic?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because most of what walks down that wire is your own business. Blocking a customer costs twelve points and blocking an attack earns ten, so a firewall that refuses everything is scored as the outage it is. This is the one thing the game exists to say: a rule set is judged by what it lets through as much as by what it stops, and the second number is the one nobody puts on a dashboard."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is the difference between DROP and REJECT?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Both stop the packet and both score the same here. DROP says nothing at all, so the sender waits for a timeout and learns nothing. REJECT returns an error immediately, which is kinder to a legitimate client that would otherwise hang, and which also confirms to whoever is scanning you that something is there. On screen a rejected packet turns round and goes back the way it came."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What does the SHADOWED label mean?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "That every packet the rule could match is already matched by a rule above it, so it can never fire. It is the commonest way a rule set rots: somebody adds a broad accept near the top, and three carefully written rules underneath quietly stop existing. Nothing warns you in production, which is why it is drawn here."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Are these real IP addresses?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and none of them can ever belong to anybody. The public ranges are 192.0.2.0/24, 198.51.100.0/24 and 203.0.113.0/24, which RFC 5737 reserves for documentation, plus the benchmarking range 198.18.0.0/15 for the distributed flood. The office is RFC 1918 private space. No real company, network or campaign is being reproduced."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can it actually be won?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes. Six hundred is the maximum — sixty attacks blocked, nothing legitimate dropped — and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Games",
+                        "item": "https://krunalkumar.dpdns.org/games"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Firewall defence",
+                        "item": "https://krunalkumar.dpdns.org/games/firewall-defence"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/games.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+          <header class="site-header noscript-header">
+        <nav class="nav" aria-label="Main">
+          <a class="brand" href="/">Krunalkumar Shah</a>
+          <div class="nav-list">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+            <a class="nav-link" href="/services">Services</a>
+            <a class="nav-link" href="/projects">Projects</a>
+            <a class="nav-link" href="/research">Research</a>
+            <a class="nav-link" href="/labs">Labs</a>
+            <a class="nav-link active" aria-current="page" href="/games">Games</a>
+            <a class="nav-link" href="/internships">Internships</a>
+            <a class="nav-link" href="/client-reviews">Recommendations</a>
+            <a class="nav-link" href="/blog">Blog</a>
+            <a class="nav-link" href="/contact">Contact</a>
+          </div>
+          <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/games">Games</a></li>
+            <li aria-current="page">Firewall defence</li>
+          </ol>
+        </nav>
+        <h1>Firewall defence</h1>
+        <p class="hero-text">Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work &mdash; and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.</p>
+        <ul class="game-facts">
+          <li>Seven rule slots, read in order</li>
+          <li>The first match decides, so position matters</li>
+          <li>Shadowed rules are marked dead</li>
+          <li>Blocking everything scores minus 264</li>
+        </ul>
+      </section>
+
+      <!-- A game cannot degrade to anything: there is no static version of
+           Snake. boot.js adds html.js synchronously, so games.css hides the
+           inert shell and this takes its place, rather than leaving a dead
+           canvas and a Play button that does nothing. -->
+      <noscript>
+        <div class="game-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This is a game. It is drawn and played in your browser, and there is no version of it that works without JavaScript.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+
+      <div class="game" id="game-firewall-defence">
+        <div class="game-bar">
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-label">Score</span>
+              <span class="game-stat-value is-accent" data-stat="score">0</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Attacks blocked</span>
+              <span class="game-stat-value" data-stat="blocked">0</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Legit dropped</span>
+              <span class="game-stat-value" data-stat="lost">0</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Wave</span>
+              <span class="game-stat-value" data-stat="wave">1/6</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">Best</span>
+              <span class="game-stat-value" data-stat="best">0</span>
+            </div>
+          </div>
+          <div class="game-toolbar">
+            <label class="sr-only" for="game-match">Match on</label>
+            <select class="game-select" autocomplete="off" id="game-match"><option value="port" selected>Destination port</option><option value="src">Source network</option><option value="proto">Protocol</option><option value="state">Connection state</option></select>
+            <label class="sr-only" for="game-value">Value to match</label>
+            <select class="game-select" autocomplete="off" id="game-value"><option value="22" selected>22 (SSH)</option><option value="25">25 (SMTP)</option><option value="53">53 (DNS)</option><option value="80">80 (HTTP)</option><option value="123">123 (NTP)</option><option value="443">443 (HTTPS)</option><option value="3306">3306 (MySQL)</option><option value="3389">3389 (RDP)</option><option value="8080">8080 (alt HTTP)</option><option value="high">1024 and above</option></select>
+            <label class="sr-only" for="game-action">Action</label>
+            <select class="game-select" autocomplete="off" id="game-action"><option value="DROP" selected>DROP</option><option value="REJECT">REJECT</option><option value="ACCEPT">ACCEPT</option></select>
+            <button class="game-btn" type="button" id="game-add" title="Add this rule to the end of the chain">Add rule</button>
+            <button class="game-btn" type="button" id="game-del" title="Remove the selected rule from the chain">Remove</button>
+            <label class="sr-only" for="game-policy">Default policy</label>
+            <select class="game-select" autocomplete="off" id="game-policy"><option value="ACCEPT" selected>Default policy: ACCEPT</option><option value="DROP">Default policy: DROP</option></select>
+            <button class="game-btn" type="button" id="game-wave">Start wave 1</button>
+            <span class="spacer"></span>
+            <button class="game-btn" type="button" id="game-pause">Pause</button>
+            <button class="game-btn" type="button" id="game-restart">Restart</button>
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
+            </svg>
+            <svg class="game-sound-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor" opacity=".45"/>
+              <path d="M4 20L20 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+            <button class="game-btn game-btn-icon" type="button" id="game-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+          </div>
+        </div>
+        <div class="game-stage game-stage--canvas">
+          <canvas class="game-canvas" id="game-canvas">The Firewall defence playfield. The game draws here once it starts.</canvas>
+          <div class="game-overlay" id="game-overlay">
+            <div class="game-overlay-card">
+              <span class="game-overlay-best" data-overlay="best" hidden>New best</span>
+              <h2 data-overlay="title">Ready?</h2>
+              <p class="game-overlay-score" data-overlay="score" hidden>0</p>
+              <p data-overlay="text"></p>
+              <div class="game-overlay-actions">
+                <button class="btn btn-primary" type="button" id="game-start">Play</button>
+                <button class="btn btn-primary" type="button" id="game-again" hidden>Play again</button>
+                <!-- Pausing needs its own button. It used to show "Play again", which
+                     offered a RESTART as the obvious action in the middle of a run and
+                     took keyboard focus, so Escape-then-Space threw the game away. The
+                     first fix removed every button from the pause overlay, which fixed
+                     the trap and left a mouse user with an overlay telling them to press
+                     a key. This is the actual answer: the safe action, as a button. -->
+                <button class="btn btn-primary" type="button" id="game-resume" hidden>Resume</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul class="game-keys">
+          <li><kbd>←</kbd> <kbd>→</kbd> Select a rule in the chain</li>
+          <li><kbd>↑</kbd> <kbd>↓</kbd> Move the selected rule earlier or later</li>
+          <li><kbd>Space</kbd> Release the wave, or add the rule you built</li>
+          <li><kbd>Esc</kbd> Pause</li>
+        </ul>
+        <p class="game-touch">Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too &mdash; tap it to flip the default between ACCEPT and DROP.</p>
+        <div class="game-pad" data-pad="none"></div>
+        <div class="game-data">
+          <p class="game-data-line">
+            Kept on this device: <strong data-best-readout>nothing yet</strong>
+            <span class="game-data-note" data-reset-note></span>
+          </p>
+          <button class="game-btn game-btn-quiet" type="button" id="game-reset-best">Reset this game&rsquo;s data</button>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Why blocking everything loses</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>The score is the whole design</h3>
+            <p>Ten points for stopping something that was an attack, twelve off for stopping something that was a customer, and nothing at all for the packets you simply let past. Across the six waves there are sixty malicious packets and seventy-two legitimate ones, which is why a default-deny policy with no accept rules under it finishes on about minus 264 rather than on a comfortable 600. The opposite mistake is faster: leave everything open and the server takes twenty hits and stops answering, usually somewhere in wave three. Neither of the two policies anyone reaches for first survives this, and that is the argument the whole game is making.</p>
+          </article>
+          <article class="info-card">
+            <h3>First match wins, so where a rule sits is part of what it says</h3>
+            <p>The chain is read left to right and the first rule that matches decides the packet's fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source &mdash; and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.</p>
+          </article>
+          <article class="info-card">
+            <h3>A rule nothing can reach is marked dead</h3>
+            <p>When every packet a rule could ever match is already decided by something above it, the rule is shadowed &mdash; it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.</p>
+          </article>
+          <article class="info-card">
+            <h3>Only state can separate a reply from a knock</h3>
+            <p>Wave four sends replies to connections your own server opened, arriving on high random ports, at the same moment the attacker starts knocking on high random ports. No list of port numbers separates those, and accepting everything above 1024 accepts the attack with the reply. What works is the shape almost every real inbound chain has: accept ESTABLISHED at the top, accept the handful of ports you actually publish, and refuse the rest by default. Four rules, in that order, and it holds for the three waves after it as well.</p>
+          </article>
+          <article class="info-card">
+            <h3>What this leaves out, and where to do it properly</h3>
+            <p>Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple &mdash; source and destination and port and protocol together &mdash; so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about &mdash; a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Why am I losing points for blocking traffic?</summary>
+            <div>Because most of what walks down that wire is your own business. Blocking a customer costs twelve points and blocking an attack earns ten, so a firewall that refuses everything is scored as the outage it is. This is the one thing the game exists to say: a rule set is judged by what it lets through as much as by what it stops, and the second number is the one nobody puts on a dashboard.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What is the difference between DROP and REJECT?</summary>
+            <div>Both stop the packet and both score the same here. DROP says nothing at all, so the sender waits for a timeout and learns nothing. REJECT returns an error immediately, which is kinder to a legitimate client that would otherwise hang, and which also confirms to whoever is scanning you that something is there. On screen a rejected packet turns round and goes back the way it came.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What does the SHADOWED label mean?</summary>
+            <div>That every packet the rule could match is already matched by a rule above it, so it can never fire. It is the commonest way a rule set rots: somebody adds a broad accept near the top, and three carefully written rules underneath quietly stop existing. Nothing warns you in production, which is why it is drawn here.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Are these real IP addresses?</summary>
+            <div>No, and none of them can ever belong to anybody. The public ranges are 192.0.2.0/24, 198.51.100.0/24 and 203.0.113.0/24, which RFC 5737 reserves for documentation, plus the benchmarking range 198.18.0.0/15 for the distributed flood. The office is RFC 1918 private space. No real company, network or campaign is being reproduced.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can it actually be won?</summary>
+            <div>Yes. Six hundred is the maximum &mdash; sixty attacks blocked, nothing legitimate dropped &mdash; and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a control does nothing or it will not start, I would like to know your browser.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=firewall-defence&amp;area=games#lab-feedback">Report a problem or send feedback</a>
+          <a class="game-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20Firewall%20defence%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More in the arcade</h2>
+        </div>
+        <div class="game-grid">
+          <a class="game-card" data-cat="cs" data-slug="subnet-sprint" href="/games/subnet-sprint">
+            <span class="game-thumb" data-thumb="subnet-sprint">
+              <span class="game-thumb-glyph" aria-hidden="true">/24</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Subnet sprint</h3>
+              <p class="game-card-desc">Two minutes of CIDR, generated fresh.</p>
+              <span class="game-card-meta">Runs in your browser<span class="game-card-best" data-best="subnet-sprint"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="traffic" href="/games/traffic">
+            <span class="game-thumb" data-thumb="traffic">
+              <span class="game-thumb-glyph" aria-hidden="true">╬</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Traffic</h3>
+              <p class="game-card-desc">Cause a deadlock. Then prevent it.</p>
+              <span class="game-card-meta">Runs in your browser<span class="game-card-best" data-best="traffic"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="incident-response" href="/games/incident-response">
+            <span class="game-thumb" data-thumb="incident-response">
+              <span class="game-thumb-glyph" aria-hidden="true">◷</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Incident response</h3>
+              <p class="game-card-desc">A breach, a clock, and no good options.</p>
+              <span class="game-card-meta">Runs in your browser<span class="game-card-best" data-best="incident-response"></span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/games/game-storage.js"></script>
+    <script defer src="/assets/js/games/game-shell.js"></script>
+    <script defer src="/assets/js/games/cs/firewall-defence.js"></script>
+  </body>
+</html>

@@ -31,7 +31,9 @@
      related   other slugs. The generator throws on an unknown one, so a
                renamed game cannot leave a dead card behind.
 
-   THE SECTION IS COMPLETE — 67 games in seven categories. Anything new goes
+   THE SECTION IS NOT FINISHED, and the count is deliberately not written down
+   here or anywhere a visitor can read it: games are still being added, so any
+   figure would be a snapshot rather than a fact. Anything new goes
    in as one module under assets/js/games/<cat>/ plus one entry below, and
    then: node scripts/games.js, add the <url> to sitemap.xml, and rebuild the
    search index. build.js fails the deploy if the sitemap entry is missing,
@@ -5094,6 +5096,1184 @@ const GAMES = [
     related: ['phishing-or-not', 'password-duel', 'ctf-arcade'],
   },
 
+  /* ---- added in the labs/games/posts batch ---- */
+  {
+    slug: 'assembly-golf',
+    cat: 'cs',
+    name: 'Assembly golf',
+    glyph: 'RET',
+    script: 'cs/assembly-golf.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'assembly-golf',
+    bestOrder: 'low',
+    tapAction: false,
+    engine: 'Twenty instructions, four registers, 24 cells with the stack in them',
+    title: 'Assembly Golf — Shortest Program Wins',
+    ogTitle: 'Eight functions, as few instructions as you can',
+    description: 'Write the shortest program that passes the hidden tests. Eight functions on an invented twenty instruction machine, scored on length and not on speed.',
+    short: 'Eight functions, shortest program wins.',
+    h1: 'Assembly golf',
+    hero: 'Eight functions to write &mdash; absolute value, a greatest common divisor, a string reversed in memory &mdash; on a machine with four registers, twenty-four cells and twenty instructions. Being right is only half of it: the score is how many instructions you wrote, and the lower number is the better one. The cycles your program spent are printed beside it and never added in, because on at least one of these levels the shortest answer and the quickest answer are not the same program, and folding the two figures together would hide the only trade worth learning.',
+    facts: [
+      'Twenty instructions',
+      'Eight functions to write',
+      'Test cases are hidden',
+      'Par is measured, not typed'
+    ],
+    hud: [
+      { key: 'level', label: 'Level', init: '1/8' },
+      { key: 'score', label: 'Instructions', accent: true, init: '0' },
+      { key: 'cycles', label: 'Cycles', init: '0' },
+      { key: 'best', label: 'Best', init: '&mdash;' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-level">Level</label>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="0" selected>1. Absolute value</option><option value="1">2. The smaller of two</option><option value="2">3. Sum 1 to n</option><option value="3">4. Count the set bits</option><option value="4">5. Reverse a string in memory</option><option value="5">6. Greatest common divisor</option><option value="6">7. Is it prime</option><option value="7">8. Fizzbuzz codes</option></select>',
+      '<button class="game-btn" type="button" id="game-run">Run</button>',
+      '<button class="game-btn" type="button" id="game-step">Step</button>',
+      '<button class="game-btn" type="button" id="game-submit">Submit</button>'
+    ],
+    keys: [
+      { k: 'Type', d: 'Write the program' },
+      { k: 'Step', d: 'One instruction at a time' },
+      { k: 'Run', d: 'Watch one case go past' },
+      { k: 'Submit', d: 'Run every hidden case' }
+    ],
+    touch: 'Tap the program box to raise the keyboard; Run, Step and Submit are buttons in the toolbar, with the level menu beside them. Tapping the board itself does nothing, so a stray thumb cannot disturb a run.',
+    infoHeading: 'What the two numbers mean, and what this machine is not',
+    info: [
+      {
+        h: 'Length is the score. Cycles are the price',
+        p: 'Your score is the number of instructions you wrote, summed over the eight levels, and nothing else goes into it &mdash; comments and labels are free. Beside it sits the cycle count: what your program actually cost to run across every hidden case, on a price list where <code>ADD</code> is one cycle, <code>MUL</code> is three and <code>DIV</code> is six. The two numbers pull against each other. Level seven is built to prove it: the shortest primality test divides by everything below n, and stopping at the square root instead costs two more instructions and a small fraction of the work. Every optimiser in a real <a href="/labs/compiler">compiler</a> is making some version of that choice, which is why <code>-Os</code> and <code>-O2</code> are different flags.'
+      },
+      {
+        h: 'Par is measured, and it is only the shortest I found',
+        p: 'Each level ships the shortest program I could write for it, as source text. Par is not typed into a table &mdash; the page assembles that program and runs it against the hidden cases when it opens, and prints what it actually cost. So par cannot drift out of date, and a reference program that stopped working would announce itself on the first visit rather than being believed for a year. What it is not is a proof: it is the shortest I found on the afternoon I wrote it, not the shortest that exists, and beating it is the interesting part. Several of these almost certainly go shorter.'
+      },
+      {
+        h: 'Why the test cases are hidden',
+        p: 'Golf against a printed list of cases is golf against the list: the shortest program that satisfies eight visible examples is a table of eight answers, and it teaches nothing. So the battery is hidden and two cases are shown, which is enough to make the signature unambiguous and not enough to cheat with. When a hidden case catches you it is revealed on the spot, with what it wanted and what your program actually left behind, and the machine panel is pointed at it so you can step through the exact run that failed. A case that has already done its job is no longer worth hiding.'
+      },
+      {
+        h: 'The runaway guard is a cap, not a diagnosis',
+        p: 'A program that has not finished after forty thousand cycles is stopped, and the message says it did not terminate within forty thousand cycles. It never says your program loops forever, because deciding that in general is the halting problem &mdash; there is no analysis that could be added here to answer it for every program, and the ones that look easiest are often the ones that are not. The commonest way to hit the cap is <code>DJNZ</code> on a counter that started at zero: it takes one off, misses zero going past, and counts down for a very long time.'
+      },
+      {
+        h: 'This machine is invented, and it is not the one next door',
+        p: 'Twenty instructions, four registers, twenty-four memory cells with the stack growing down through the top of them, and one signed flag standing in for the several a real processor keeps apart. It is a load/store design, so arithmetic happens between registers and memory is reached only through <code>LD</code> and <code>ST</code> &mdash; the same shape as any RISC, and the reason one line of C becomes three instructions. The cycle prices are invented but proportioned after real hardware. There is no pipeline, no cache, no interrupt and no penalty for a mispredicted branch, all of which matter enormously on a real chip. The <a href="/labs/cpu-simulator">CPU simulator</a> next door runs a fetch-decode-execute cycle a step at a time if you want to see where those go. The other assembly game here, <a href="/games/assembly-puzzles">assembly puzzles</a>, is a different machine with an input tape and a different scoring rule: it teaches what the instructions do, and this one assumes you already know.'
+      }
+    ],
+    faq: [
+      {
+        q: 'How is this different from the assembly puzzles game?',
+        a: 'Different machine and a different rule. That one hands you an input tape, asks for an output tape, and scores instructions plus cycles added together, so a working program is most of the win. Here the arguments arrive in registers and memory, there is a stack with CALL and RET, and the score is the length of your program on its own.'
+      },
+      {
+        q: 'Why does it say my program did not terminate?',
+        a: 'It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true &mdash; a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop.'
+      },
+      {
+        q: 'Is par really the shortest possible?',
+        a: 'No, and nothing here claims it is. Par is the shortest program I found for that level, measured by running it rather than by writing a number down. If you beat it, the page says so, and you are right and it is wrong.'
+      },
+      {
+        q: 'Why is my shorter program slower than par?',
+        a: 'Because those are two different competitions and this game only scores one of them. Level seven is the clearest case: the ten instruction answer does far more work than the twelve instruction one. Both figures are shown so you can see what the length cost you.'
+      },
+      {
+        q: 'Can I see the test cases?',
+        a: 'Two of them, from the start. The rest stay hidden until one of them fails your program, at which point that case is shown with the value it wanted and the value it got, and loaded into the machine panel so you can step through it.'
+      },
+      {
+        q: 'Are my programs saved anywhere?',
+        a: 'They are kept in this browser, per level, and nothing is sent anywhere &mdash; there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best.'
+      }
+    ],
+    related: ['assembly-puzzles', 'regex-golf', 'guess-the-output'],
+  },
+  {
+    slug: 'binary-search-duel',
+    cat: 'cs',
+    name: 'Binary search duel',
+    glyph: '½',
+    script: 'cs/binary-search-duel.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'binary-search-duel',
+    bestOrder: 'low',
+    tapAction: false,
+    engine: 'Both halves &middot; an exact cheat detector',
+    title: 'Binary Search Duel — Search, Then Answer',
+    ogTitle: 'You cannot beat log n. Try it from both ends.',
+    description: 'Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one.',
+    short: 'Narrow it down, then get narrowed down.',
+    h1: 'Binary search duel',
+    hero: 'Four rounds, alternating. In two of them I have written a number down and you hunt for it, with the interval still alive drawn as a bar, the candidates counted, and the cost of every off-centre guess worked out in bits. In the other two the roles swap: you think of a number and answer higher or lower, and I keep the interval your answers imply &mdash; so the moment two of them cannot both be true, I can name which two and show you the range they left empty. There is a third mode with no score in it at all, which is the one that reproduces the overflow bug that sat in java.util.Arrays.binarySearch for nine years.',
+    facts: [
+      'Two halves, roles reversed',
+      'The bits you wasted, per guess',
+      'An exact cheat detector',
+      'The 2006 overflow bug, reproduced'
+    ],
+    hud: [
+      { key: 'round', label: 'Round', init: '1 of 4' },
+      { key: 'probes', label: 'Probes', init: '0 of 7' },
+      { key: 'alive', label: 'Still alive', init: '100' },
+      { key: 'over', label: 'Over par', accent: true, init: '0' },
+      { key: 'best', label: 'Best', init: '&mdash;' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-mode">Mode</label>',
+      '<select class="game-select" autocomplete="off" id="game-mode"><option value="duel" selected>The duel &mdash; four rounds</option><option value="trap">The off-by-one trap</option></select>',
+      '<label class="sr-only" for="game-range">Range</label>',
+      '<select class="game-select" autocomplete="off" id="game-range"><option value="50">1 to 50</option><option value="100" selected>1 to 100</option><option value="1000">1 to 1,000</option><option value="10000">1 to 10,000</option></select>',
+      '<button class="game-btn" type="button" id="game-hint" aria-pressed="true" title="The best next guess is shown under the bar">Show the midpoint</button>'
+    ],
+    keys: [
+      { k: '← →', d: 'Move your guess by one, or answer lower and higher' },
+      { k: '↑ ↓', d: 'Move your guess in bigger steps' },
+      { k: 'Enter', d: 'Commit the guess, or say that is the one' },
+      { k: 'Type', d: 'A guess straight into the field, if you would rather' },
+      { k: 'Esc', d: 'Pause' }
+    ],
+    touch: 'Drag along the bar to place your guess &mdash; it clamps to the part still alive, so you cannot spend a guess on a number already ruled out &mdash; then tap the button underneath, which carries the number you set. In the answering half the three buttons are the whole interface. In the trap, the array cells are tappable and everything reruns the moment you change a setting.',
+    infoHeading: 'Why log n is a floor and not a habit',
+    info: [
+      {
+        h: 'One answer is one bit',
+        p: 'A yes-or-no answer separates the candidates into two groups, so it can at best halve the survivors, and a guess that splits them unevenly halves them by less than that. The exact floor is slightly kinder than the usual <code>log2(n)</code>, because a correct guess ends the round rather than answering it: with <em>k</em> guesses you can separate at most <code>2^k &minus; 1</code> values, so par is the smallest <em>k</em> where that reaches <em>n</em>. For 64 candidates that is seven and not six &mdash; the sort of off-by-one this game is otherwise about, so it is computed by doubling rather than by rounding a logarithm. None of the four ranges offered is a power of two, so here the two formulas agree.'
+      },
+      {
+        h: 'What an off-centre guess actually costs',
+        p: 'After each guess the page prints two numbers: what the answer was worth, and what the guess could have guaranteed. Those differ, and the difference is the lesson. Guess 40 in a live interval of 1 to 61 and you might get lucky and knock out 39 of them &mdash; but before the answer arrived, that guess risked leaving 39 alive where the midpoint risks at most 30. The shortfall, <code>log2(39/30)</code>, is a third of a bit thrown away whichever way the answer fell, and luck cannot buy it back. That is what the score counts, and why a lucky first-guess hit does not make you good at this.'
+      },
+      {
+        h: 'The half where you answer, and the two ways to bend it',
+        p: 'When I am searching, every answer you give is a constraint, and I keep the interval all of them imply. If an answer makes that interval empty there is nothing to guess at &mdash; the panel names the two answers involved and the range between them that has nothing in it. The other tactic is not cheating at all: answer to keep the larger half every time and you are playing the adversary from the lower-bound proof, deciding as late as possible, and the search then takes exactly par rather than less. The page says which of the two it is watching, and says plainly that it cannot tell an adversary from somebody with an awkward number.'
+      },
+      {
+        h: 'The off-by-one trap, and where to read more',
+        p: 'The third mode has no score. It runs the same search with a midpoint you choose &mdash; <code>lo + (hi &minus; lo) / 2</code> or the natural-looking <code>(lo + hi) / 2</code> &mdash; and a loop you choose, and shows what that combination does to all sixteen elements of a small array: one loop finds every value, one misses eight of them, and one hangs on exactly one. On sixteen elements the two midpoints are identical, which is precisely why the overflow hid for nine years; switch to the two-billion-element array and the naive one goes negative on the second probe. Why log n is the floor rather than a convention is in the <a href="/labs/big-o">big-O playground</a>, and searches and sorts run step by step in the <a href="/labs/algorithm-visualizer">algorithm visualiser</a>.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is the number chosen before I start guessing?',
+        a: 'Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer &mdash; which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it.'
+      },
+      {
+        q: 'Can I beat par?',
+        a: 'Yes, by luck. Par is the worst case: it is the number of guesses that is always enough and sometimes necessary. Guess 50 in a range of 1 to 100 and hit it, and you have used one guess for a job that needs seven. The page says so rather than congratulating you, and the score treats any round at or under par as clean, so luck cannot improve your record either.'
+      },
+      {
+        q: 'What counts as cheating in the half where I answer?',
+        a: 'Only an answer that contradicts one you have already given &mdash; and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par.'
+      },
+      {
+        q: 'How is the score worked out, and why is lower better?',
+        a: 'It is the guesses you spent over par in the two rounds where you searched, plus two for each contradiction caught in the rounds where you answered. A flawless duel is worth nothing over par, so it shows as "par". The number written to your browser is actually one higher, because the shell reads a zero as "no run happened"; that offset never reaches the page, and it only matters if you go looking in local storage.'
+      },
+      {
+        q: 'Does the overflow really happen in JavaScript?',
+        a: 'No, and the page says so where it shows it. JavaScript numbers are doubles, so <code>lo + hi</code> stays exact well past two billion. To reproduce what a Java or C <code>int</code> does, the sum is pushed through a bitwise OR with zero, which truncates it to 32 signed bits. The wraparound is simulated; the arithmetic and the negative index that comes out of it are real, and are the bug Joshua Bloch wrote up in 2006.'
+      },
+      {
+        q: 'Is anything uploaded, or kept?',
+        a: 'Nothing is uploaded. Your best score, your chosen range and whether you want the midpoint shown are kept in this browser on this device, and the reset strip under the game clears exactly those and nothing else.'
+      }
+    ],
+    related: ['guess-the-algorithm', 'assembly-puzzles', 'regex-golf'],
+  },
+  {
+    slug: 'cache-game',
+    cat: 'cs',
+    name: 'Cache game',
+    glyph: 'L1',
+    script: 'cs/cache-game.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'cache-game',
+    bestOrder: 'high',
+    tapAction: false,
+    tapKey: 'action',
+    engine: 'Set-associative simulator &middot; LRU, FIFO, MRU, random and Belady',
+    title: 'Cache Game — A Cache Simulator You Play',
+    ogTitle: 'You are the replacement policy',
+    description: 'A real cache simulator. See the tag, index and offset split for every access, pick the evictions yourself, then optimise a loop against Belady optimal.',
+    short: 'Be the cache, then beat it.',
+    h1: 'Cache game',
+    hero: 'Cache size, block size, associativity and a replacement policy, simulated properly &mdash; and the address cut into a tag, an index and an offset in front of you on every single access, because that decomposition is the part nobody quite internalises. On the first four levels you <em>are</em> the cache: the stream comes at you one access at a time and you say which line to throw out. On the last three the cache is fixed and the access pattern is yours to fix instead. Your misses are set beside the policy you chose and beside Belady optimal, which is computed for real by reading the rest of the stream and is therefore the one thing no cache can ever do.',
+    facts: [
+      'Tag, index and offset, every access',
+      'Belady optimal, computed for real',
+      'The three Cs counted separately',
+      'Seven levels, three of them yours to optimise'
+    ],
+    hud: [
+      { key: 'level', label: 'Level', init: '1/7' },
+      { key: 'rate', label: 'Hit rate', init: '&mdash;' },
+      { key: 'misses', label: 'Misses', init: '0' },
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'best', label: 'Best', init: '&mdash;' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-level">Level</label>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="0" selected>1. Two ways, one choice</option><option value="1">2. Where LRU has nothing left</option><option value="2">3. Dirty lines cost more</option><option value="3">4. Ten blocks, eight lines</option><option value="4">5. Row-major or column-major</option><option value="5">6. One stride, one set</option><option value="6">7. Block the multiply</option></select>',
+      '<label class="sr-only" for="game-policy">Replacement policy</label>',
+      '<select class="game-select" autocomplete="off" id="game-policy"><option value="lru" selected>LRU</option><option value="fifo">FIFO</option><option value="mru">MRU</option><option value="random">Random</option></select>',
+      '<button class="game-btn" type="button" id="game-write" aria-pressed="true" title="Write-back: a store marks the line dirty and memory is written when the line is evicted">Write-back</button>',
+      '<button class="game-btn" type="button" id="game-step">Step</button>',
+      '<button class="game-btn" type="button" id="game-bits" aria-pressed="true" title="The address is shown split into binary fields — click to show hex only">Binary</button>'
+    ],
+    keys: [
+      { k: 'Space', d: 'Issue the next access, or take the eviction' },
+      { k: '&larr; &rarr;', d: 'Move between the lines you may evict' },
+      { k: '&uarr; &darr;', d: 'Move between the patterns you may try' },
+      { k: 'Esc', d: 'Pause' }
+    ],
+    touch: 'Everything is a real button, so nothing needs a drag or a swipe. Tap <strong>Step</strong> in the toolbar to issue the next access; when a set fills up its lines become buttons and you tap the one to evict. On the last three levels you tap an access pattern to run it, and Step becomes <strong>Next level</strong> once the target is met. A tap on the board itself does nothing.',
+    infoHeading: 'What it simulates, and what it leaves out',
+    info: [
+      {
+        h: 'The three fields are arithmetic, not a heuristic',
+        p: 'A block of <em>B</em> bytes needs log&#8322;<em>B</em> offset bits to pick a byte inside it. A cache of <em>S</em> sets needs log&#8322;<em>S</em> index bits to pick the set, and the set is not a suggestion &mdash; a block whose index is 2 may live in set 2 or nowhere. Everything above those two fields is the tag, stored beside the data so a line can say which of the many blocks that share its set it is currently holding. Change the associativity and the number of sets changes, so the boundary between tag and index moves. That is what the toolbar is doing when the split on screen redraws. The <a href="/labs/processor-explorer">processor explorer</a> reports the real cache sizes of the machine you are reading this on.'
+      },
+      {
+        h: 'Belady is a bound, and it is unbuildable',
+        p: 'The optimal policy is to evict the line whose next use is furthest away. It is computed here exactly, by reading the rest of the access stream, and that is precisely why no processor has ever implemented it: it needs the future. It is on the board for one reason. &ldquo;LRU took fifteen&rdquo; is a number with nothing to mean until you also know that seven was possible on the same stream with the same cache. Everything real is a guess at Belady using only the past, and LRU is the guess that recency is a decent predictor of reuse &mdash; which it usually is, and on level two it is not.'
+      },
+      {
+        h: 'Conflict misses are the ones worth learning',
+        p: 'Every miss is counted as compulsory, capacity or conflict, and the split is derived rather than guessed: a block never referenced before is compulsory, and otherwise a fully associative cache of the same capacity is run alongside on the same stream to see whether the miss was avoidable. Level six is the payload. A row stride that is an exact multiple of the cache size sends every row to the same set, a direct-mapped set holds one line, and the loop misses on all sixty-four accesses with a working set that would have fitted eight times over. Fifty-six of those are conflict misses. Thirty-two bytes of padding per row, or eight-way associativity, both take it to eight. This is a bug that ships.'
+      },
+      {
+        h: 'One core, one level, no prefetcher, no TLB',
+        p: 'Stated plainly because the gaps matter more than the model. There is no second or third level of cache, so nothing here shows an L1 miss that an L2 catches cheaply. There is no hardware prefetcher, which on a real machine would have spotted the column walk on level five and hidden a good deal of it. There is no TLB, so address translation is free and invisible. And there is exactly ONE CORE, which means false sharing cannot be demonstrated here at all: two cores writing different bytes of the same line pass that line back and forth on a coherence protocol and slow each other down while sharing no data whatever, and the fix is padding the two variables onto separate lines. That paragraph is explanation, not simulation, and it is the only thing on this page that is. Real silicon has all four of these, and the <a href="/labs/cpu-simulator">CPU simulator</a> next door is the same kind of honest simplification one level further down.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is this a real cache from a real processor?',
+        a: 'No. The parameters are invented and deliberately tiny &mdash; sixty-four to five hundred and twelve bytes, sixteen-bit addresses &mdash; so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href="/labs/processor-explorer">processor explorer</a> is the page that does that.'
+      },
+      {
+        q: 'How am I allowed to beat LRU? Is Belady cheating?',
+        a: 'You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing &mdash; which is the point of putting the two numbers side by side.'
+      },
+      {
+        q: 'What is the difference between a capacity miss and a conflict miss?',
+        a: 'A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice &mdash; use a different policy for the shadow and a few misses change category.'
+      },
+      {
+        q: 'Does write-back change the hit rate?',
+        a: 'No, and that is why the counter for it is separate. Write-back and write-through place identical demands on the cache and produce identical hits and misses; what changes is memory traffic. Write-back marks the line dirty and defers the write until eviction, so repeated stores to one line cost one write instead of many, at the price of one dirty bit per line and a slower eviction. Level three is the one with stores in its stream, and level four turns its second pass into a read-modify-write.'
+      },
+      {
+        q: 'What happens if I change the policy or the level halfway through?',
+        a: 'Changing the replacement policy or the write mode restarts the current level, because your misses are scored against a reference run of the same stream and the two have to have been made under the same rules. Points already banked from earlier levels are kept. Changing the level restarts the whole run at that level, which is there for practice: starting at level seven can earn a hundred points and starting at level one can earn seven hundred, so there is nothing to gain by skipping.'
+      },
+      {
+        q: 'Is anything stored or sent anywhere?',
+        a: 'Nothing is sent. There is no network call in the game at all. The only things kept are your best total, your chosen level and the three toolbar settings, all in this browser under keys the reset button below the board will clear for you.'
+      }
+    ],
+    related: ['assembly-puzzles', 'guess-the-algorithm', 'traffic'],
+  },
+  {
+    slug: 'cipher-escape',
+    cat: 'cs',
+    name: 'Cipher escape',
+    glyph: '⊕',
+    script: 'cs/cipher-escape.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'cipher-escape',
+    engine: 'Five chained rooms &middot; every tool computed live',
+    title: 'Cipher Escape — Five Rooms, Five Ciphers',
+    ogTitle: 'Break one room to get into the next',
+    description: 'Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger.',
+    short: 'Five ciphers, chained. Each key is next door.',
+    h1: 'Cipher escape',
+    hero: 'Five locked rooms, and the note inside each one tells you what the next lock needs. The first is a Caesar shift with twenty-five possible keys, so you find it by looking at all of them at once; the last is a repeating-key XOR that you break by dragging a guessed phrase along the bytes until the key falls out of them. Nothing is gated. The frequency histogram, the Kasiski counter, the index of coincidence, the shift slider and the crib dragger are open in every room from the first second, all of them computed live on whatever ciphertext is in front of you. They are not decoration and they are not hints &mdash; they are the game.',
+    facts: [
+      'Five ciphers, chained end to end',
+      'Every tool computed live, nothing faked',
+      'Any room can be opened for you',
+      'Nothing is uploaded'
+    ],
+    hud: [
+      { key: 'room', label: 'Room', init: '1/5' },
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'hints', label: 'Hints', init: '0' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<button class="game-btn" type="button" id="game-hint">Hint</button>',
+      '<button class="game-btn" type="button" id="game-unlock" title="Sets this room to its answer and scores it zero, so the chain can carry on">Open this room for me</button>'
+    ],
+    keys: [
+      { k: '← →', d: 'Move the shift, the rail count or the crib offset' },
+      { k: '↑ ↓', d: 'Move between the five tools' },
+      { k: 'Enter', d: 'Go through a door once it has opened' },
+      { k: 'Esc', d: 'Pause &mdash; there is no clock, so nothing is lost either way' }
+    ],
+    touch: 'Drag a slider, or tap the &minus; and + buttons beside it if the drag fights the page. Type into the key fields and into the substitution table, which is one box per cipher letter. The five tool buttons swap the panel underneath them, and in the last room every offset the crib dragger likes is a tappable chip that moves the slider for you.',
+    infoHeading: 'Five broken ciphers, and how each one is broken',
+    info: [
+      {
+        h: 'A chain, not a workbench',
+        p: 'The <a href="/labs/cipher">classical cipher playground</a> next door is the workbench: one box, every cipher, run it forwards and backwards as long as you like. That is the right shape for a tool and the wrong shape for learning the order things happen in. Nobody sits down to &ldquo;do a Vigenere&rdquo; &mdash; they sit down with a blob, work out what kind of thing it is, reach for the measurement that narrows it, and only then turn a key. So here each plaintext is the next room&rsquo;s briefing: room one says the second lock takes a six-letter keyword and that it was never written down, room two names the rail count, room three hands over twelve letters of crib, room four names the crib for the XOR. The chain is the reason to actually read a plaintext instead of glancing at it and moving on.'
+      },
+      {
+        h: 'What each tool really does',
+        p: 'The histogram counts this ciphertext&rsquo;s letters against English and lists the pairs and triples that repeat, which is what separates a substitution from a transposition before you have decided anything: move letters about and the counts do not change, swap them and the counts move but the patterns stay. The shift slider prints all twenty-six Caesar decryptions at once, because a keyspace of 25 is not something you attack, it is something you read. Kasiski finds the real repeated trigrams, measures the gaps and tallies their factors; the index of coincidence slices the message into columns and asks which slicing makes each column look like English again; chi-squared then names the key letter for every column and prints the runners-up beside it, because a short column gets it wrong and pretending otherwise is the dishonest bit. The crib dragger does something different in each room, since the technique is different: implied key letters for a Caesar or a Vigenere, an implied partial alphabet with a contradiction test for the substitution, implied key bytes for the XOR.'
+      },
+      {
+        h: 'None of this is encryption',
+        p: 'Said plainly, because the pages that skip this are the reason people put base64 in a cookie and call it secure. A Caesar has twenty-five keys. A rail fence has about ten shapes worth trying. A substitution has 403 septillion alphabets and falls over in ten minutes anyway, because the shuffle does not hide how often each letter is used. The XOR key at the end is five lowercase letters, which is about twelve million possibilities &mdash; a laptop tries all of them and checks each result while you are still reading this sentence. Every one of these was state of the art once and every one is now a puzzle. What actually replaced them is in the labs: <a href="/labs/cryptography">AES, RSA and the elliptic curves</a>, and <a href="/labs/hash">the hash functions</a> that do the other half of the job.'
+      },
+      {
+        h: 'The attacks outlived the ciphers',
+        p: 'The ciphers are museum pieces; the three techniques are not. A crib is a known-plaintext attack, and knowing what part of a message says is still how real systems are broken &mdash; it is why a modern cipher is designed to stay secure against an attacker who already has matching plaintext and ciphertext. Frequency analysis is what deterministic encryption leaks: encrypt a database column so that the same value always produces the same ciphertext and you have rebuilt room four at scale, whatever the algorithm underneath. And the XOR room is the many-time pad: a one-time pad is unbreakable exactly once, and reusing the key is the failure the crib dragger walks straight through. That failure has shipped in production, more than once.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Do I need to know any cryptography to start?',
+        a: 'No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work &mdash; the Vigenere and the substitution &mdash; both have tools that do the arithmetic and leave you the judgement, which is the part worth having.'
+      },
+      {
+        q: 'Are the answers hidden from me?',
+        a: 'Not really. The ciphertexts and the right settings are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere &mdash; each one is produced by running that room\'s own decoder over its own ciphertext with the right key, which is the same code path your slider is using.'
+      },
+      {
+        q: 'Is the Kasiski analysis real, or a picture of one?',
+        a: 'Real, and computed from the ciphertext every time the panel opens. The repeated trigrams, their spacings, the factor tallies, the per-column index of coincidence and the chi-squared scores are all measured on the message in front of you rather than looked up. Paste any of these ciphertexts into the cipher playground in Labs and you will get the same numbers.'
+      },
+      {
+        q: 'What if I get stuck in one room?',
+        a: 'Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it &mdash; reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is "Open this room for me", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected.'
+      },
+      {
+        q: 'How is the score worked out?',
+        a: 'A thousand points across the five rooms: 150, 250, 150, 250 and 200, in that order. Each hint takes a quarter of the room it was taken in, and a room opened for you scores zero. There is no clock and no penalty for a wrong setting, because trying settings and looking at what comes out is the entire method.'
+      }
+    ],
+    related: ['ctf-arcade', 'password-duel', 'guess-the-algorithm'],
+  },
+  {
+    slug: 'firewall-defence',
+    cat: 'cs',
+    name: 'Firewall defence',
+    glyph: '▦',
+    script: 'cs/firewall-defence.js',
+    width: 720,
+    height: 480,
+    pad: 'none',
+    bestKey: 'firewall-defence',
+    tapAction: false,
+    engine: 'Seven rules in order &middot; first match wins',
+    title: 'Firewall Defence — Rules Are The Towers',
+    ogTitle: 'Block everything and you lose the game',
+    description: 'Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses.',
+    short: 'The towers are rules. The creeps are packets.',
+    h1: 'Firewall defence',
+    hero: 'Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work &mdash; and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.',
+    facts: [
+      'Seven rule slots, read in order',
+      'The first match decides, so position matters',
+      'Shadowed rules are marked dead',
+      'Blocking everything scores minus 264'
+    ],
+    hud: [
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'blocked', label: 'Attacks blocked', init: '0' },
+      { key: 'lost', label: 'Legit dropped', init: '0' },
+      { key: 'wave', label: 'Wave', init: '1/6' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-match">Match on</label>',
+      '<select class="game-select" autocomplete="off" id="game-match"><option value="port" selected>Destination port</option><option value="src">Source network</option><option value="proto">Protocol</option><option value="state">Connection state</option></select>',
+      '<label class="sr-only" for="game-value">Value to match</label>',
+      '<select class="game-select" autocomplete="off" id="game-value"><option value="22" selected>22 (SSH)</option><option value="25">25 (SMTP)</option><option value="53">53 (DNS)</option><option value="80">80 (HTTP)</option><option value="123">123 (NTP)</option><option value="443">443 (HTTPS)</option><option value="3306">3306 (MySQL)</option><option value="3389">3389 (RDP)</option><option value="8080">8080 (alt HTTP)</option><option value="high">1024 and above</option></select>',
+      '<label class="sr-only" for="game-action">Action</label>',
+      '<select class="game-select" autocomplete="off" id="game-action"><option value="DROP" selected>DROP</option><option value="REJECT">REJECT</option><option value="ACCEPT">ACCEPT</option></select>',
+      '<button class="game-btn" type="button" id="game-add" title="Add this rule to the end of the chain">Add rule</button>',
+      '<button class="game-btn" type="button" id="game-del" title="Remove the selected rule from the chain">Remove</button>',
+      '<label class="sr-only" for="game-policy">Default policy</label>',
+      '<select class="game-select" autocomplete="off" id="game-policy"><option value="ACCEPT" selected>Default policy: ACCEPT</option><option value="DROP">Default policy: DROP</option></select>',
+      '<button class="game-btn" type="button" id="game-wave">Start wave 1</button>'
+    ],
+    keys: [
+      { k: '← →', d: 'Select a rule in the chain' },
+      { k: '↑ ↓', d: 'Move the selected rule earlier or later' },
+      { k: 'Space', d: 'Release the wave, or add the rule you built' },
+      { k: 'Esc', d: 'Pause' }
+    ],
+    touch: 'Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too &mdash; tap it to flip the default between ACCEPT and DROP.',
+    infoHeading: 'Why blocking everything loses',
+    info: [
+      {
+        h: 'The score is the whole design',
+        p: 'Ten points for stopping something that was an attack, twelve off for stopping something that was a customer, and nothing at all for the packets you simply let past. Across the six waves there are sixty malicious packets and seventy-two legitimate ones, which is why a default-deny policy with no accept rules under it finishes on about minus 264 rather than on a comfortable 600. The opposite mistake is faster: leave everything open and the server takes twenty hits and stops answering, usually somewhere in wave three. Neither of the two policies anyone reaches for first survives this, and that is the argument the whole game is making.'
+      },
+      {
+        h: 'First match wins, so where a rule sits is part of what it says',
+        p: 'The chain is read left to right and the first rule that matches decides the packet\'s fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source &mdash; and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.'
+      },
+      {
+        h: 'A rule nothing can reach is marked dead',
+        p: 'When every packet a rule could ever match is already decided by something above it, the rule is shadowed &mdash; it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.'
+      },
+      {
+        h: 'Only state can separate a reply from a knock',
+        p: 'Wave four sends replies to connections your own server opened, arriving on high random ports, at the same moment the attacker starts knocking on high random ports. No list of port numbers separates those, and accepting everything above 1024 accepts the attack with the reply. What works is the shape almost every real inbound chain has: accept ESTABLISHED at the top, accept the handful of ports you actually publish, and refuse the rest by default. Four rules, in that order, and it holds for the three waves after it as well.'
+      },
+      {
+        h: 'What this leaves out, and where to do it properly',
+        p: 'Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple &mdash; source and destination and port and protocol together &mdash; so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about &mdash; a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Why am I losing points for blocking traffic?',
+        a: 'Because most of what walks down that wire is your own business. Blocking a customer costs twelve points and blocking an attack earns ten, so a firewall that refuses everything is scored as the outage it is. This is the one thing the game exists to say: a rule set is judged by what it lets through as much as by what it stops, and the second number is the one nobody puts on a dashboard.'
+      },
+      {
+        q: 'What is the difference between DROP and REJECT?',
+        a: 'Both stop the packet and both score the same here. DROP says nothing at all, so the sender waits for a timeout and learns nothing. REJECT returns an error immediately, which is kinder to a legitimate client that would otherwise hang, and which also confirms to whoever is scanning you that something is there. On screen a rejected packet turns round and goes back the way it came.'
+      },
+      {
+        q: 'What does the SHADOWED label mean?',
+        a: 'That every packet the rule could match is already matched by a rule above it, so it can never fire. It is the commonest way a rule set rots: somebody adds a broad accept near the top, and three carefully written rules underneath quietly stop existing. Nothing warns you in production, which is why it is drawn here.'
+      },
+      {
+        q: 'Are these real IP addresses?',
+        a: 'No, and none of them can ever belong to anybody. The public ranges are 192.0.2.0/24, 198.51.100.0/24 and 203.0.113.0/24, which RFC 5737 reserves for documentation, plus the benchmarking range 198.18.0.0/15 for the distributed flood. The office is RFC 1918 private space. No real company, network or campaign is being reproduced.'
+      },
+      {
+        q: 'Can it actually be won?',
+        a: 'Yes. Six hundred is the maximum &mdash; sixty attacks blocked, nothing legitimate dropped &mdash; and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.'
+      }
+    ],
+    related: ['subnet-sprint', 'traffic', 'incident-response'],
+  },
+  {
+    slug: 'overflow-puzzle',
+    cat: 'cs',
+    name: 'Overflow puzzle',
+    glyph: '↩',
+    script: 'cs/overflow-puzzle.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'overflow-puzzle',
+    engine: 'An invented machine &middot; four levels, four mitigations',
+    title: 'Buffer Overflow Puzzle — Four Levels',
+    ogTitle: 'Eleven bytes, and you never learn the address',
+    description: 'Craft the input that takes the return address on a toy machine. Four levels: the plain overflow, a stack canary, a no-execute stack and a randomised base.',
+    short: 'Take the return address, one byte at a time.',
+    h1: 'Overflow puzzle',
+    hero: 'A made-up machine with thirty-two cells of memory, a stack that grows down, and a note server with one bad line in it: a copy that has no idea how big the buffer is. Level one is the whole bug &mdash; walk your message off the end of an eight-cell buffer and put your own address into the two cells the return instruction reads, with every byte drawn as it lands. Then each level adds one mitigation, in roughly the order the industry added them, and asks you to get past it anyway: a stack canary, a no-execute stack, and a base address that moves every time the process starts. The machine is invented and none of this is a working technique. The picture is the part that transfers.',
+    facts: [
+      'Four levels, four mitigations',
+      'Every byte drawn as it lands',
+      'An invented machine, no real instruction set',
+      'Nothing is uploaded'
+    ],
+    hud: [
+      { key: 'level', label: 'Level', init: '1/4' },
+      { key: 'mit', label: 'Mitigations', init: 'none' },
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'best', label: 'Best', init: '&mdash;' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-level">Level</label>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="0" selected>1. Take the wheel</option><option value="1">2. The canary</option><option value="2">3. No-execute</option><option value="3">4. Randomised addresses</option></select>',
+      '<button class="game-btn" type="button" id="game-hint">Hint</button>',
+      '<button class="game-btn" type="button" id="game-answer">Show the answer</button>'
+    ],
+    keys: [
+      { k: 'Type', d: 'The message, as bytes' },
+      { k: 'Enter', d: 'Send it' },
+      { k: 'Tab', d: 'Reach the listing lines and the buttons' },
+      { k: 'Click', d: 'A labelled line appends its address' }
+    ],
+    touch: 'Tap the message box to raise the keyboard and type bytes into it; tap any labelled line in the program listing to append that address instead of typing it out. Send the note, Show the note and New process are three buttons underneath, and the stack panel redraws a byte at a time as the copy runs.',
+    infoHeading: 'What the four levels are for',
+    info: [
+      {
+        h: 'One mitigation per level, in the order they arrived',
+        p: 'Level one is the bug on its own: an eight-cell buffer, a copy with no bound, and the saved return address two cells above it. Level two puts a random value between the two and checks it before returning, so the naive payload aborts &mdash; and then hands you an over-read that prints the value, because a canary you can read is a formality. Level three marks the stack no-execute, so returning into your own bytes faults before one of them runs, and the only targets left are routines already in the program: one to set a register, one to check it, threaded together by two addresses on the stack. Level four moves the code to a fresh base every run, so the address you have been typing since level one is a guess &mdash; and the answer is to write half of it and leave the half you cannot know alone.'
+      },
+      {
+        h: 'The leak is the hinge, and it is the same leak twice',
+        p: 'Both the canary level and the ASLR level turn on one function that prints the note back to you and stops at a zero byte rather than at the end of the buffer. Fill all eight cells with something non-zero and it keeps going into whatever is above them. That is not a contrivance for the puzzle; a print or a copy that trusts a terminator it was never given is one of the most productive real bug shapes there is, and an over-read that reveals a secret is what turns a defence that depends on a secret back into no defence at all. Level four is the counterpart: the saved frame pointer there is zero, the print stops on it, and one byte in the right place is the difference between leaking a value and leaking a pointer.'
+      },
+      {
+        h: 'The machine is invented, and there is no payload here',
+        p: 'The registers, the instruction names, the addresses, the calling convention and the sizes are all made up. It is not x86, not ARM, not any real instruction set, and it is deliberately not a general interpreter &mdash; what is simulated is the frame, the copy, the canary check and the return dispatch, because that is where the lesson is. There is no shellcode on this page and no way to write any, and pointing the return address at the buffer on the first two levels gets you a fault about an opcode that does not exist. Nothing here transfers as a technique. What transfers is knowing what is above a buffer and why the copy cannot tell.'
+      },
+      {
+        h: 'What actually fixes it, said plainly',
+        p: 'A copy that is told how big the destination is and honours it, or a language where the length travels with the array so the copy cannot run off the end in the first place. Every mitigation in this game raises the price of turning the bug into control of the machine and removes no bugs at all: the out-of-bounds write is sitting in all four programs, in the same line, untouched. The <a href="/labs/buffer-overflow">buffer overflow lab</a> next door is the same subject as a sandbox &mdash; sliders, a live stack, and a copy you push around to see what happens. This is the same subject as four problems that have answers.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is this x86 or ARM?',
+        a: 'Neither, and not any other real instruction set. The machine is invented so that the whole of it fits beside the stack it is scribbling on: thirty-two cells, a couple of registers, and about a dozen instruction names that exist nowhere else. The shape of the frame is the honest part; the syntax is not meant to be.'
+      },
+      {
+        q: 'Will anything here work on a real program?',
+        a: 'No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model — where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit — and that model is worth having whichever side of it you are on.'
+      },
+      {
+        q: 'Why can I not put a zero byte in the message?',
+        a: 'Because the copy stops at one, the way a C string copy does. It is a real constraint rather than a rule invented for the puzzle: an address containing a zero byte cannot be carried through a copy that terminates on zero, and that single fact has decided real exploits. The stack here sits on page 0x0100 so that the addresses you need do not contain one.'
+      },
+      {
+        q: 'Do I have to do the levels in order?',
+        a: 'No. The dropdown opens any of the four whenever you like, and each is a self-contained program with its own listing. They are written to be read in order, because level two only makes sense once level one has worked and level four is level three with the address taken away.'
+      },
+      {
+        q: 'Is anything stored or sent?',
+        a: 'Nothing is sent anywhere — there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it.'
+      }
+    ],
+    related: ['assembly-puzzles', 'ctf-arcade', 'shell-quest'],
+  },
+  {
+    slug: 'packet-routing',
+    cat: 'cs',
+    name: 'Packet routing',
+    glyph: '⇄',
+    script: 'cs/packet-routing.js',
+    width: 720,
+    height: 520,
+    board: false,
+    pad: 'none',
+    bestKey: 'packet-routing',
+    bestOrder: 'high',
+    tapAction: false,
+    tapKey: 'action',
+    engine: 'Bellman-Ford and Dijkstra &middot; a drop-tail queue on every link',
+    title: 'Packet Routing — Route It, Then Break It',
+    ogTitle: 'Cut one link and watch the metric climb',
+    description: 'Seven routers whose tables are computed rather than drawn. Run Bellman-Ford or Dijkstra, cut a link, and watch count-to-infinity happen for real.',
+    short: 'Route it. Then cut a link.',
+    h1: 'Packet routing',
+    hero: 'Seven routers, eight links, and packets that have to get across. Nothing about the path is drawn in advance: each router holds its own table, every table is produced by an algorithm that can only see what a real router would see, and each hop is decided by whatever the table at that hop happens to say at that instant &mdash; including when what it says is wrong. Cut one link with distance vector running and you can watch two routers point at each other and count to sixteen while the packets between them go round in a circle until their hop count runs out.',
+    facts: [
+      'Bellman-Ford and Dijkstra, both real',
+      'Count-to-infinity, actually running',
+      'A drop-tail queue on every link',
+      'Six scenarios, four of them scored'
+    ],
+    hud: [
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'deliv', label: 'Delivered', init: '0' },
+      { key: 'drop', label: 'Dropped', init: '0' },
+      { key: 'lat', label: 'Mean latency', init: '—' },
+      { key: 'best', label: 'Best', init: '—' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-proto">Routing protocol</label>',
+      '<select class="game-select" autocomplete="off" id="game-proto"><option value="dv" selected>Distance vector &mdash; Bellman-Ford</option><option value="ls">Link state &mdash; Dijkstra</option><option value="static">Static routes</option></select>',
+      '<label class="sr-only" for="game-level">Scenario</label>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="sandbox" selected>Sandbox &mdash; no clock</option><option value="converge">1 &mdash; Converge</option><option value="infinity">2 &mdash; Count to infinity</option><option value="cut">3 &mdash; Survive a link cut</option><option value="fail">4 &mdash; Router failure</option><option value="spike">5 &mdash; Traffic spike</option></select>',
+      '<label class="sr-only" for="game-watch">Destination shown on the map</label>',
+      '<select class="game-select" autocomplete="off" id="game-watch"><option value="0">Watch A</option><option value="1">Watch B</option><option value="2">Watch C</option><option value="3" selected>Watch D</option><option value="4">Watch E</option><option value="5">Watch F</option><option value="6">Watch G</option></select>',
+      '<button class="game-btn" type="button" id="game-split" aria-pressed="false" title="Do not advertise a route back to the neighbour it was learned from">Split horizon</button>',
+      '<button class="game-btn" type="button" id="game-poison" aria-pressed="false" title="Advertise it back with the metric set to 16 instead of leaving it out">Poison reverse</button>',
+      '<button class="game-btn" type="button" id="game-ecmp" aria-pressed="false" title="Use every next hop of equal cost rather than only the first">Multipath</button>',
+      '<button class="game-btn" type="button" id="game-repair" title="Bring every link and router back up">Repair everything</button>'
+    ],
+    keys: [
+      { k: '← →', d: 'Move the selection round the routers and the links' },
+      { k: '↑ ↓', d: 'Change which destination the map is labelled for' },
+      { k: 'Space', d: 'Cut a link, fail a router, or move a static next hop' },
+      { k: 'Esc', d: 'Pause, and the scenario clock stops with it' }
+    ],
+    touch: 'Tap a router or a link to select it, then tap the same one again to act &mdash; the second tap cuts a link, fails a router, or on static routes moves that router&rsquo;s next hop along to its next neighbour. The three dropdowns pick the protocol, the scenario and which destination every router is labelled for; the panel on the right is the selected router&rsquo;s actual routing table.',
+    infoHeading: 'What is real in here, and what is not',
+    info: [
+      {
+        h: 'The tables are computed, not animated',
+        p: 'The number under each router is that router&rsquo;s own table entry, and the packet on the wire is going wherever that entry points. <strong>Distance vector</strong> is Bellman-Ford the way RIP does it: a router knows its own links and whatever its neighbours claim, it sends its whole vector every two seconds, and a report from its current next hop is believed even when it is worse than what it had. <strong>Link state</strong> is Dijkstra the way OSPF does it: each router floods a description of its own neighbourhood, ends up holding the whole map, and runs shortest path first over its own copy &mdash; and an edge only counts when <em>both</em> ends claim it, which is how a dead router&rsquo;s last advertisement stops being believed without anybody having to delete it. <strong>Static</strong> is seeded from the shortest paths so you begin from something that works, and then never changes again on its own, which is the entire case against it in one gesture.'
+      },
+      {
+        h: 'Count to infinity, and the tree it is shown on',
+        p: 'G hangs off E and nothing else, so every route to G runs through E. Cut that link with split horizon off and A hears E withdraw the route, then in the same round hears B offer a route to G that B only has because A gave it to B a round earlier. A believes it, because it did not come from E. Now the two of them add the cost of the link between them to each other&rsquo;s stale figure &mdash; 7, 9, 11, 13, 15 &mdash; until they reach 16, which is the only reason it stops. Every packet for G ping-pongs between them for those twelve seconds and dies of hop count. Turn split horizon on and the same cut settles in two rounds with no climb at all. The scenario opens by taking two links out of service so the map is a <em>tree</em>, and that is deliberate rather than convenient: split horizon only ever fixes the loop between two routers. Press Repair everything to put the ring back, cut it again with the fix still on, and the metric climbs anyway, because the stale route goes the long way round a loop split horizon cannot see. That is a property of the technique, and it is why RIP still needs the ceiling of 16.'
+      },
+      {
+        h: 'The queue is the other half, and the idle path is the point',
+        p: 'Each direction of each link transmits ten packets a second with a drop-tail queue of ten in front of it, so an overflowing queue drops the next arrival exactly as a real one does. A and D are six apart through B and C and six apart through E and F, and a shortest-path table with a tie in it picks the same winner every time &mdash; so the traffic spike fills one first hop while an equally short path beside it carries nothing, which the panel names in words while it happens. On the run I measured here, that scenario delivered 358 packets and dropped 191; with multipath switched on, the same load delivered 541 and dropped 7. That gap is why equal-cost multipath and traffic engineering exist. It is also where this model is crudest: it alternates per <em>packet</em>, and a real router hashes the addresses and ports so that one connection keeps one path. Alternating per packet would reorder a real flow, and the receiver would read the gaps as loss.'
+      },
+      {
+        h: 'What is deliberately missing',
+        p: 'There is no wire format in here at all &mdash; no RIP or OSPF packet, no hello protocol, no adjacency state machine, no areas, no authentication. There is no BGP and no policy, so every path is chosen on a cost, where real inter-domain routing is chosen on business relationships that no shortest-path algorithm can express. And the omission that matters most: <strong>nothing here reacts to a drop.</strong> The senders are open-loop and indifferent, so they keep pouring the same rate into a queue that is already full. A real network throttles itself, which is the whole subject of <a href="/labs/tcp-congestion">the TCP lab</a> next door &mdash; the sawtooth there is the feedback loop this page does not have. For the addressing underneath all of it there is <a href="/labs/subnet">the subnet calculator</a>, for the names on top of it <a href="/labs/dns">the DNS lookup</a>, and for a different failure entirely &mdash; four cars, four locks, nobody moving &mdash; <a href="/games/traffic">Traffic</a>.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Which protocol should I pick to pass a scenario?',
+        a: 'Link state, on every one of them, and the reason is worth watching rather than being told: it converges in a flood plus one computation, where distance vector has to pass a metric round the network a round at a time. Static routing passes the first scenario and fails the link cut outright, because it cannot heal &mdash; it will keep posting packets into the hole until you move the next hop yourself, which you can, one router at a time.'
+      },
+      {
+        q: 'Why does the metric stop at 16?',
+        a: 'Because the count has to terminate, and it terminates by arriving at a number both ends agree means unreachable. RIP picked 16, and the price of that choice is that no network more than fifteen hops across can be served by the protocol at all. It is a ceiling on the diameter bought to put a floor under the failure.'
+      },
+      {
+        q: 'I turned split horizon on and it still counted. Why?',
+        a: 'You repaired the ring. Split horizon stops a router advertising a route back to the neighbour it learned that route from, which removes the loop between two adjacent routers and nothing larger. With a ring in the map the stale route simply travels the long way round, and every router on the way adds a link cost to it. That is true of the real technique, not a shortcut here, and it is why the demonstration scenario starts by cutting the two links that close the ring.'
+      },
+      {
+        q: 'Is this how RIP and OSPF actually work?',
+        a: 'The algorithms are, the plumbing is not. Bellman-Ford with a periodic exchange, an infinity of 16, split horizon, poison reverse and a route expiry counter are all here and all doing the work. Flooding with sequence numbers, a two-way check on every edge and a per-router shortest path first computation are here too. What is missing is everything below that: packet formats, hello and adjacency, areas, authentication, triggered updates and holddown. This will teach you why a protocol behaves the way it does. It will not teach you to configure one.'
+      },
+      {
+        q: 'How is the score worked out?',
+        a: 'Delivered minus dropped, with a priority packet counted five times if you lose one, all multiplied by ten &mdash; then up to nine points for low mean latency on top. The multiplication is so that latency can only ever separate two runs that moved the same traffic, rather than quietly becoming the thing being measured. The panel also keeps a best for each scenario separately, because the six of them do not offer the same load and one number covering all of them would be a comparison nobody could act on.'
+      },
+      {
+        q: 'Does anything leave my browser?',
+        a: 'No. There is no network call in the game, which is a slightly funny thing to be able to say about a game named after routing. The only thing stored is your best score, in this browser, under keys the reset strip under the game will list and clear for you.'
+      }
+    ],
+    related: ['traffic', 'subnet-sprint', 'guess-the-algorithm'],
+  },
+  {
+    slug: 'plasma',
+    cat: 'toy',
+    name: 'Plasma',
+    glyph: '≋',
+    script: 'toy/plasma.js',
+    width: 640,
+    height: 440,
+    board: false,
+    pad: 'none',
+    bestKey: null,
+    bestOrder: 'high',
+    tapAction: false,
+    tapKey: 'action',
+    engine: 'Sine table &middot; 256-entry palette LUT',
+    title: 'Plasma — The Demoscene Colour Field',
+    ogTitle: 'It looks expensive. It costs one lookup a pixel.',
+    description: 'A demoscene plasma built the old way: a sine table, a 256-colour palette LUT and cycling by index offset. Change the terms, the frequency and the resolution.',
+    short: 'Sines added up, read through a turning palette.',
+    h1: 'Plasma',
+    hero: 'Sines added together and the sum read through a colour table &mdash; one across, one down, one along the diagonal, and two measured outward from a point you can drag. That is all of it. Nothing here is a gas or a fluid or a field being simulated; the name came from the look. Every value comes out of a 2048-entry table rather than <code>Math.sin</code>, and the colours move because an offset into the palette moves, which is exactly how it was done when the palette was hardware.',
+    facts: [
+      'A sine table, not Math.sin',
+      'Two to five sine terms',
+      'Palette cycling as an index offset',
+      'Renders smaller, scales up'
+    ],
+    hud: [
+      { key: 'res', label: 'Rendering at', accent: true, init: '640 × 440' },
+      { key: 'terms', label: 'Sine terms', init: '4' },
+      { key: 'cycle', label: 'Palette cycle', init: '0.60 turns/s' },
+      { key: 'fps', label: 'Frames', init: '—' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-terms">Sine terms</label>',
+      '<select class="game-select" autocomplete="off" id="game-terms"><option value="2">2 sines</option><option value="3">3 sines</option><option value="4" selected>4 sines</option><option value="5">5 sines</option></select>',
+      '<label class="game-range"><span>Frequency</span><input type="range" id="game-freq" min="40" max="260" value="100" /></label>',
+      '<label class="game-range"><span>Cycle</span><input type="range" id="game-cycle" min="0" max="200" value="60" /></label>',
+      '<label class="sr-only" for="game-palette">Palette</label>',
+      '<select class="game-select" autocomplete="off" id="game-palette"><option value="fire" selected>Fire</option><option value="ice">Ice</option><option value="rainbow">Rainbow</option><option value="grey">Greyscale</option><option value="accent">Two-tone</option></select>',
+      '<label class="sr-only" for="game-res">Resolution</label>',
+      '<select class="game-select" autocomplete="off" id="game-res"><option value="1" selected>Full size</option><option value="0.5">Half size</option><option value="0.34">Third size</option><option value="0.25">Quarter size</option></select>'
+    ],
+    keys: [
+      { k: '← → ↑ ↓', d: 'Move the field origin' },
+      { k: 'Drag', d: 'Move the field origin' },
+      { k: 'Space', d: 'Put the origin back in the middle' },
+      { k: 'Esc', d: 'Pause' }
+    ],
+    touch: 'Drag anywhere on the field to move its origin &mdash; every term is measured from that point, so the whole picture follows your finger. A tap on its own does nothing, so a stray thumb cannot move anything. The toolbar holds the number of sine terms, their frequency, the palette, the cycling speed and the resolution, and the HUD prints the size actually being filled.',
+    infoHeading: 'What a plasma actually is',
+    info: [
+      {
+        h: 'Interference, not physics',
+        p: 'A plasma is several periodic functions added together and the sum mapped through a colour table. There are five of them here: a sine across x, one down y, one along the diagonal, and two radial terms measured outward from the origin &mdash; the second from a centre orbiting it, which is what stops the rings looking like a target. Where crests agree you get a bright blob, where they disagree you get a dark one, and because each term drifts at its own rate the arrangement never quite repeats. Nothing about it models a gas or a fluid. The name is about the look, and the sliders are there so you can take it apart: drop to two terms and the crossed sines are plainly visible.'
+      },
+      {
+        h: 'It looks expensive and costs one lookup',
+        p: 'This is why the effect was everywhere in the demoscene. At full size the field is 640 by 440, so four terms is 1,126,400 sine evaluations a frame, or just under 68 million a second at sixty frames. <code>Math.sin</code> is a real transcendental call, and asking for it that often is where a browser plasma&rsquo;s frame rate goes before anybody thinks to blame the canvas. A 2048-entry table turns each one into an integer add, a mask and one typed-array read &mdash; and the Frames cell above is there so you can check that on your own machine rather than take it from me. There is a second gift in the table that is easy to miss: because it is indexed by an integer angle, adding angles is adding integers, so the diagonal term needs no angle-addition identity &mdash; its x half is precomputed per column and its y half per row.'
+      },
+      {
+        h: 'The palette-cycling trick',
+        p: 'On a VGA card the 256 colours on screen were indices into a hardware table, and you animated by rewriting that table between frames without touching a single pixel &mdash; 768 bytes of work for a whole screen of movement. That is where the waterfalls and the marching gradients of the era came from. There is no hardware palette any more, so here the offset is added when the index is computed instead: the same idea, done in software, one addition per pixel. It is also why every palette in this file is a closed loop whose last colour equals its first, because a palette with a seam shows the seam sweeping across the field once per cycle.'
+      },
+      {
+        h: 'Rendering smaller, and saying so',
+        p: 'The resolution control fills a smaller buffer and lets the browser scale it up, which is how a phone keeps sixty frames &mdash; quarter size is one sixteenth of the pixels. The HUD prints the buffer actually being filled and the frame rate measured in this tab, so both halves of the trade are on screen. A toy that quietly dropped its own resolution to flatter its frame counter would be lying about what it just did, which is the commonest form of a benchmark that means nothing.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is this a real plasma?',
+        a: 'No, and nothing here simulates one. It is interference between periodic functions — sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics.'
+      },
+      {
+        q: 'Why a sine table when Math.sin exists?',
+        a: 'Because of how many times it is called. Four terms over 281,600 pixels is 1.1 million evaluations a frame, and a table lookup is an integer add, a mask and an array read where a trigonometric call is a great deal more than that. The frame counter in the HUD is there so you can watch the effect of the resolution control on your own machine rather than take my word for the arithmetic.'
+      },
+      {
+        q: 'Why does it look soft at low resolution?',
+        a: 'Because the small buffer is scaled up with the browser’s own smoothing rather than as hard squares. A plasma has no edges in it to preserve, so the blur costs nothing and is close to what a CRT did to a 320 by 200 mode anyway. The HUD says which size is really being filled.'
+      },
+      {
+        q: 'Does it flash, and does it store anything?',
+        a: 'The palette cycle is a continuous gradient rather than a switch between states, and if your system asks for reduced motion the toy opens on a still frame and starts the cycle slow, saying so on the screen. Nothing is stored for this page: there is no score to keep. The sound toggle is shared with the rest of the games and is the one setting that survives a reload.'
+      }
+    ],
+    related: ['kaleidoscope', 'aafire', 'cmatrix'],
+  },
+  {
+    slug: 'race-condition',
+    cat: 'cs',
+    name: 'Race condition',
+    glyph: '⇄',
+    script: 'cs/race-condition.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'race-condition',
+    tapAction: false,
+    engine: 'Ten levels &middot; every interleaving counted',
+    title: 'Race Condition Puzzle — Break The Lock',
+    ogTitle: 'Nine bugs to cause on purpose. One you cannot.',
+    description: 'You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break.',
+    short: 'You are the scheduler. Cause the bug.',
+    h1: 'Race condition',
+    hero: 'Every level here asks you for a <em>wrong</em> answer. Make the counter read 1 after two increments. Take 150 out of an account holding 100. Charge one card three times for one order. The threads are drawn as columns of numbered steps and you click one to run a single step of it, so nothing is timed and nothing is random &mdash; because a race condition is not caused by speed, it is caused by an ordering being legal. Speed only decides how often you meet it. Four of the ten levels hand you a mutex and dare you to break it anyway, and the last one is a lock used correctly, which you cannot break at all.',
+    facts: [
+      'Ten levels, nine of them breakable',
+      'Every ordering counted, not estimated',
+      'One level you genuinely cannot beat',
+      'Nothing is uploaded'
+    ],
+    hud: [
+      { key: 'level', label: 'Level', init: '1/10' },
+      { key: 'score', label: 'Score', accent: true, init: '0' },
+      { key: 'runs', label: 'Runs', init: '0' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<button class="game-btn" type="button" id="game-undo">Step back</button>',
+      '<button class="game-btn" type="button" id="game-rerun">Run it again</button>',
+      '<button class="game-btn" type="button" id="game-hint" title="Highlight a thread that still leads to the bug">Hint</button>'
+    ],
+    keys: [
+      { k: 'Click', d: 'Run one step of that thread' },
+      { k: '← →', d: 'Move between the threads' },
+      { k: 'Enter', d: 'Run one step of the highlighted thread' },
+      { k: 'Space', d: 'The same, and it moves the verdict on' },
+      { k: 'Esc', d: 'Pause &mdash; there is no clock to stop' }
+    ],
+    touch: 'Tap a thread column to run its next step. A column marked blocked is waiting on a lock somebody else holds and will not move until they release it, so tapping it only tells you who is in the way. Step back undoes one step, Run it again resets the level from the top, and Hint points at a thread that still leads to the bug.',
+    infoHeading: 'Why the bug is the objective',
+    info: [
+      {
+        h: 'Because finding the interleaving is the skill',
+        p: 'A demo that shows you a race condition teaches you what one looks like. Being made to hunt for the ordering yourself teaches the habit that actually catches them, which is reading a read-modify-write and asking what happens if the other thread runs <em>here</em>, at every line, including the ones between the lines you wrote. Every level names a specific wrong answer as the goal, so you cannot finish one by accident and you always know what you were looking for.'
+      },
+      {
+        h: 'The orderings are counted for real, and the number is not a failure rate',
+        p: 'Solve a level and the game walks its entire state space and tells you how many of the legal orderings produce the bug: 18 of 20 on the counter, 2 of 44 on the double-checked lock, 0 of 2 on the last one. That is an exhaustive search run in your tab, not a figure somebody typed in &mdash; the Hint button uses the same walk, which is how it can say whether the bug is still reachable from where you are standing. But 90 per cent of orderings is not a 90 per cent failure rate, and the game says so every time it prints one: a real scheduler hardly ever preempts inside a five-line function, so the two clean orderings are exactly the ones your tests keep drawing, ten thousand times, green every time. The bug is not improbable. It is unfairly sampled, until the machine gets busy.'
+      },
+      {
+        h: 'Four locks that fail, each a mistake with a name',
+        p: 'The mutex levels are not a victory lap. In one the critical section covers the write but not the read, so the check that decided the write happens outside it and the lock makes no difference at all. In another two locks are taken in opposite orders, and the goal is a genuine deadlock rather than a lost update. In a third somebody shortened the critical section and left the write outside it. The fourth is double-checked locking with the publish reordered above the field write &mdash; the standard Java singleton idiom, printed in books, and broken on every JVM until the memory model was rewritten for Java 5. Each is presented as what it is: a real mistake, made in shipped code, by people who knew what a mutex was.'
+      },
+      {
+        h: 'And one level you cannot win',
+        p: 'The last level is the first level with the lock used properly, and there is no interleaving that breaks it. Run both of the two orderings the program has &mdash; that is the whole state space, and it takes ten clicks &mdash; and the game offers you the claim that it cannot be done, then confirms it: 0 of 2. A level whose answer is "you cannot, and here is why" is worth as much as the nine before it, because without it the game would quietly teach that all locks are theatre. <a href="/labs/concurrency">The concurrency lab</a> next door runs the same machinery without a puzzle attached, and the <a href="/games/traffic">junction in Traffic</a> is the deadlock level drawn in tarmac.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Do I need to know threads to play this?',
+        a: 'No. Every step is one line of ordinary-looking code and the shared state is drawn above the columns as it changes, so you can work out what a level does by pressing things. What you will need by level six is the idea that a lock is a period of time rather than a spell cast over a variable, and the levels teach that by breaking four of them.'
+      },
+      {
+        q: 'Is the model a real CPU?',
+        a: 'No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either — it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live.'
+      },
+      {
+        q: 'Where do the ordering counts come from?',
+        a: 'A depth-first walk of the whole state space, memoised on the state, run in your browser at the moment you solve the level. Nothing is stored in the page as a lookup table. The three-request level has 33,078 legal orderings and 32,100 of them charge the card three times; the last level has two orderings and neither one is wrong.'
+      },
+      {
+        q: 'Can I get stuck?',
+        a: 'A run can reach a point where the bug is no longer reachable — that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else.'
+      },
+      {
+        q: 'How is the score worked out?',
+        a: 'A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device — there is no server here to keep it anywhere else.'
+      },
+      {
+        q: 'Does anything leave the browser?',
+        a: 'No. There are no network calls in the game at all, and the only thing written to storage is your best score, which the reset strip under the board will clear.'
+      }
+    ],
+    related: ['traffic', 'guess-the-output', 'assembly-puzzles'],
+  },
+  {
+    slug: 'social-engineering',
+    cat: 'cs',
+    name: 'Social engineering',
+    glyph: '☏',
+    script: 'cs/social-engineering.js',
+    width: 720,
+    height: 520,
+    board: true,
+    pad: 'none',
+    bestKey: 'social-engineering',
+    bestOrder: 'high',
+    tapAction: false,
+    tapKey: 'action',
+    engine: 'Eight conversations &middot; two axes, scored apart',
+    title: 'Social Engineering — Defend The Call',
+    ogTitle: 'They did not break in. They rang up and asked.',
+    description: 'Eight conversations under live pressure — a call, a walk-in, a chat, a vendor at the door. Choose a reply, then see the technique named and scored.',
+    short: 'Pressure on the phone. Verify it politely.',
+    h1: 'Social engineering',
+    hero: 'The two phishing games here are about mail, which is a thing that sits still while you read it. This one is about a person: a voice that gets annoyed when you check, a courier at the goods door at ten to five on a Friday, a message saying somebody you trust has already approved it. You play the defender, never the attacker. Each reply is scored twice &mdash; did the asset stay protected, and was the answer professionally acceptable &mdash; because those two disagree constantly, and a defender who refuses everything is the same failure as a firewall that drops everything.',
+    facts: [
+      'Eight scenarios, four a run',
+      'Three of them are genuine callers',
+      'Scored on two axes, separately',
+      'No clock, on purpose'
+    ],
+    hud: [
+      { key: 'call', label: 'Conversation', init: '1/4' },
+      { key: 'tech', label: 'Technique', init: '—' },
+      { key: 'score', label: 'Score', accent: true, init: '—' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-length">How many conversations</label>',
+      '<select class="game-select" autocomplete="off" id="game-length"><option value="4" selected>Four conversations</option><option value="6">Six conversations</option><option value="8">All eight</option></select>',
+      '<button class="game-btn" type="button" id="game-coach" aria-pressed="false" title="The technique is named after you reply">Name the technique first</button>'
+    ],
+    keys: [
+      { k: '↑ ↓', d: 'Move between the three replies' },
+      { k: 'Enter', d: 'Give that reply, and carry on' },
+      { k: 'Esc', d: 'Pause &mdash; nothing is timed anyway' }
+    ],
+    touch: 'Tap a reply to give it, read what it cost on each axis, then tap Carry on. Every conversation ends on a panel naming the control that would have removed the pressure, and the debrief at the end collects them.',
+    infoHeading: 'Why this is scored on two axes',
+    info: [
+      {
+        h: 'Because one number teaches the wrong lesson',
+        p: 'Sending the payroll file to a director in a hurry is charming and a disaster. Slamming the door on a real fire-alarm engineer is safe and costs you the certification, the goodwill, and &mdash; three weeks later &mdash; the sign-in process itself, because somebody senior will quietly decide it is the problem. A single score averages those two failures into something that looks like the same mistake, and they are not. So every reply is rated out of ten on whether the asset stayed protected and out of ten on whether the answer was professionally acceptable, and both meters are the running mean rather than a drifting total &mdash; a mean of twelve ratings cannot hide the one turn where you read out an authenticator code.'
+      },
+      {
+        h: 'The best answers are almost always the polite verification',
+        p: 'Ring back on a number you looked up rather than one you were given. Ask for the ticket reference and open it yourself. Take the reference the caller offered before they withdraw it. Offer to put the file in the work drive instead of sending it to a personal address. Every one of those scores well on both axes, and none of them is a confrontation &mdash; the check is something you go and do, not something you demand from a person standing in front of you. &ldquo;Nobody is accusing anybody, the rule applies to every supplier including the ones we like&rdquo; is the single most useful sentence in the game, and it works because it is true.'
+      },
+      {
+        h: 'The techniques, and why they work underneath the argument',
+        p: 'Authority, so that seniority stands in for identity. Urgency, with a deadline chosen to make checking feel expensive. Reciprocity, which is why the person at the door is carrying two coffees and offering you one. Social proof &mdash; your colleague already approved it, and she is on a flight. Familiarity, which is what an hour of public reading buys: the rota, the outage, the form number, the nickname for the plant room. Tailgating, which runs entirely on how awful it feels to say something to somebody&rsquo;s face. And the helpdesk reversal, where the caller either claims to be IT or claims to be a user ringing IT. <a href="/blog/digital-arrest-scam-explained">The digital arrest scam</a> is authority and urgency run to their limit on a call designed never to end; <a href="/blog/how-sim-swap-works">a SIM swap</a> is the same conversation aimed at a support agent rather than at you; and <a href="/labs/osint-self-check">the OSINT self-check</a> in Labs shows what a stranger can read about you before they ring, which is where that uncomfortable familiarity comes from.'
+      },
+      {
+        h: 'There is no clock, and that is deliberate',
+        p: 'The <a href="/games/incident-response">incident response tabletop</a> next door charges you simulated minutes for deliberating, because a breach really does move while you read. This one must not, because the whole defence against a pretext is being allowed to take the time &mdash; a game that punished reading would be teaching the attacker&rsquo;s lesson with the attacker&rsquo;s own instrument. The pressure here lives inside the fiction, where it belongs: the caller escalates, the deadline tightens, the person at the door gets friendlier. You are never actually rushed.'
+      },
+      {
+        h: 'The process, not the person',
+        p: 'Every conversation ends on the one control that would have removed the pressure entirely &mdash; a callback rule, a named delegate, an out-of-band check, a visitor diary, a documented verification fallback &mdash; and not on what you should have spotted. Each of these attacks works by asking one individual to be clever, alone, at speed, against somebody who has rehearsed, and the answer to that is never a better individual. Which is also why blaming the person who was manipulated is both unkind and useless: unkind because the techniques are aimed squarely at ordinary decency, and useless because the next person shouted at for falling for one is the next person who quietly does not report one.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is this teaching me to be suspicious of everybody?',
+        a: 'The opposite, and the scoring enforces it. Three of the eight conversations are genuine callers and every run contains at least one, without saying which. Refusing them outright costs you on both meters, because it is not actually safe: turn a new starter away with no route and somebody lends them a login by Thursday, and now an account in the audit trail is two people. A defender who blocks everything has moved the risk somewhere nobody can see it rather than removing it.'
+      },
+      {
+        q: 'Are any of these real companies, people or scripts?',
+        a: 'None of them. Every name, company, building, purchase order and job reference is invented, and where a phone number is printed it comes from the block Ofcom reserves for drama and never allocates. No real campaign is reproduced. The attacker\'s side of each conversation is deliberately thin — a name, a hurry, a deadline, a reference you cannot reach — because the shape is the part worth recognising and nothing here should be liftable.'
+      },
+      {
+        q: 'Why is there no attacker mode?',
+        a: 'Because a game that had you writing the pretext would be publishing a working one, and there is no version of that which teaches a defender something they could not learn from the defender\'s chair. The depth in this game is all on your side of the conversation, which is where it is useful.'
+      },
+      {
+        q: 'How is the score worked out?',
+        a: 'Each reply is rated out of ten on two axes: whether the asset stayed protected, and whether the answer was professionally acceptable. Each meter is the mean of every reply so far, out of a hundred, and the score is the mean of the two. A run that is strong on one and weak on the other is the interesting result rather than a mistake, and the debrief says which.'
+      },
+      {
+        q: 'Does it work on a phone?',
+        a: 'Yes. Every reply is a full-width button you tap, there is no pad and no gesture to learn, and nothing is timed, so a slow read costs nothing. The two meters carry their figures as text and a word — strong, holding, slipping, poor — so colour is never the only signal.'
+      },
+      {
+        q: 'Is anything uploaded?',
+        a: 'No. There are no network calls in the game at all. The only things stored are your best score and the two toggles, in this browser on this device, and the reset strip under the game clears them.'
+      }
+    ],
+    related: ['phishing-inbox', 'incident-response', 'cyber-hygiene'],
+  },
+  {
+    slug: 'sqli-escape',
+    cat: 'cs',
+    name: 'SQL injection escape room',
+    glyph: '\';',
+    script: 'cs/sqli-escape.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'sqli-escape',
+    bestOrder: 'low',
+    engine: 'A real SQL parser over five toy tables',
+    title: 'SQL Injection Escape Room',
+    ogTitle: 'The database has a real parser. Break it.',
+    description: 'Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix.',
+    short: 'Four injection rooms, one real toy parser.',
+    h1: 'SQL injection escape room',
+    hero: 'Reading about SQL injection teaches you the diagram of the attack. This teaches you the attack, because there is a real little SQL engine in the page &mdash; a tokeniser, a parser and an evaluator over five in-memory tables &mdash; and it genuinely runs the query you build, injected part and all. Four rooms walk the real techniques in the real order: break a login, <code>UNION</code> a second table out, then pull a value one bit at a time through a page that says only <em>found</em>, and finally through nothing but a delay. Every room ends by showing the parameterised query that would have stopped it, with the value on its own line, because that one picture is the whole lesson.',
+    facts: [
+      'A real SQL parser, in the page',
+      'Four rooms, four techniques',
+      'Every payload hits only the toy database',
+      'Each room ends in the parameterised fix'
+    ],
+    hud: [
+      { key: 'room', label: 'Room', accent: true, init: '1/4' },
+      { key: 'tries', label: 'Queries', init: '0' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<button class="game-btn" type="button" id="game-help">SQL &amp; schema</button>',
+      '<button class="game-btn" type="button" id="game-hint">Hint</button>'
+    ],
+    keys: [
+      { k: 'Type', d: 'Your injection into the field' },
+      { k: 'Enter', d: 'Send the query' },
+      { k: 'Tab', d: 'Move between the fields' }
+    ],
+    touch: 'Tap a field and the phone keyboard comes up; type your injection there, then tap the button to run the query. In the blind rooms, pick the comparison and a character and tap Send probe. The two buttons above show the schema and a hint.',
+    infoHeading: 'What is real here, and what is deliberately a toy',
+    info: [
+      {
+        h: 'The parser is real; the database is not',
+        p: 'There is a genuine engine in this page &mdash; it tokenises the query, parses SELECT with WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, both comment forms and a handful of string functions, and then executes it, including the part you injected. What it runs over is five arrays of plain objects that live in the tab and nowhere else. Nothing touches a real database and there is no network call to make one &mdash; the attack is safe precisely because the target is a toy. For the same ideas with a real query planner in front of you, <a href="/labs/sql">the SQL playground</a> and <a href="/labs/sqlite-browser">the SQLite browser</a> are next door.'
+      },
+      {
+        h: 'The assembled query is the teaching device',
+        p: 'The string the server would build is on screen the whole time. The template is drawn dim and the characters you typed are drawn bright, so the exact moment a stray quote closes the string and turns the rest of the line into code is something you watch happen rather than something explained afterwards. Once you have seen <code>WHERE user=\'admin\' --\'</code> assemble itself, the fix stops being a rule to remember and starts being obvious.'
+      },
+      {
+        h: 'Why the tempting non-fixes do not work',
+        p: 'Escaping quotes by hand loses because you have to get every context right &mdash; strings, numbers, identifiers, LIKE patterns each escape differently &mdash; every single time, and one miss is the whole hole. A blocklist of keywords loses because <code>UNION</code> and <code>OR</code> appear in ordinary data, comments and case tricks slip past, and the list is a promise to enumerate every attack forever. Stored procedures are not automatically safe: one that builds a string and runs <code>EXEC(@sql)</code> is just as injectable. And an ORM is safe only where it parameterises &mdash; its raw-SQL and string-interpolation escape hatches are where the same bug walks back in.'
+      },
+      {
+        h: 'The fix is the same door in every room',
+        p: 'A prepared statement sends the query text and the values on separate channels, so a quote or a <code>--</code> in a value arrives as characters to search for, never as SQL to run. That is why each room ends on the parameterised version with the placeholder and the bound value on their own lines: the login payload becomes a username no row has, the UNION becomes a search term nothing matches, and the blind and timing channels close because the database can no longer be talked into confusing data with code.'
+      },
+      {
+        h: 'This is a defensive tool, and stays one',
+        p: 'Every payload in here is aimed at the five toy tables and could not be aimed anywhere else. There is no real product named, no filter-evasion catalogue and no exfiltration tooling &mdash; the deliverable of the whole game is the prepared statement at the end of each room. The point is to recognise the shape of the bug so you can close it in your own code, which is the only place any of this should ever be pointed.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is this real SQL?',
+        a: 'No &mdash; it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy.'
+      },
+      {
+        q: 'Does anything I type reach a real database?',
+        a: 'No. There are no network calls anywhere in this game, and the tables live in the page. The passwords you are trying to get around are sitting in that in-memory data, which is safe because a query cannot leave the tab it runs in.'
+      },
+      {
+        q: 'Do I need to know SQL already?',
+        a: 'It helps, but the Schema button shows every table and the SQL the engine understands, and each room has a hint that spells out the technique. If you want the theory in a tool rather than a game, the SQL playground and the SQLite browser in Labs cover it without a score attached.'
+      },
+      {
+        q: 'The blind rooms are slow. Is that the point?',
+        a: 'Yes. A blind injection leaks one bit at a time, so you extract a value character by character &mdash; and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open.'
+      },
+      {
+        q: 'What counts towards the best score?',
+        a: 'Every query you send, in every room, whether it works or errors &mdash; an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog.'
+      },
+      {
+        q: 'Is this teaching me to attack websites?',
+        a: 'It is teaching you to recognise and close the bug. Every payload targets only the toy tables in this page, there is nothing here aimed at a real product, and each room ends on the one thing that actually stops the attack: a parameterised query. That is the whole takeaway.'
+      }
+    ],
+    related: ['ctf-arcade', 'shell-quest', 'password-duel'],
+  },
+
+  /* ---- added in the labs/games/posts batch ---- */
+  {
+    slug: 'antakshari',
+    cat: 'fun',
+    name: 'Antakshari',
+    glyph: 'अ',
+    script: 'fun/antakshari.js',
+    board: true,
+    pad: 'none',
+    bestKey: 'antakshari',
+    engine: 'Two closed word lists &middot; a minimax on letters',
+    title: 'Antakshari — The Rule, Played With Words',
+    ogTitle: 'The antakshari rule, without the lyrics',
+    description: 'Every word must begin with the last letter of the one before it. Play the computer or pass the phone round, with a clock on every turn and no repeats.',
+    short: 'Last letter starts the next word.',
+    h1: 'Antakshari',
+    hero: 'Antakshari is sung, and the singing is the one thing this cannot ship: film lyrics are somebody else&rsquo;s copyrighted work, and nothing in this section adds a single audio byte to the site. So the <em>rule</em> is kept and the <em>content</em> is swapped &mdash; your entry must start with the last letter of the entry before it, no repeats in a round, twenty-five seconds a turn. The page says that out loud rather than hiding it behind a feature list.',
+    facts: [
+      'The rule, not the songs',
+      'No lyrics, stored or shown',
+      'It tells you how starved a letter is',
+      'Pass and play, or the computer'
+    ],
+    hud: [
+      { key: 'score', label: 'Chain', accent: true, init: '0' },
+      { key: 'time', label: 'Time', init: '25' },
+      { key: 'best', label: 'Best' }
+    ],
+    controls: [
+      '<label class="sr-only" for="game-mode">Opponent</label>',
+      '<select class="game-select" autocomplete="off" id="game-mode"><option value="computer" selected>Against the computer</option><option value="pass">Two players, pass and play</option></select>',
+      '<label class="sr-only" for="game-words">Word list</label>',
+      '<select class="game-select" autocomplete="off" id="game-words"><option value="english" selected>English words</option><option value="desi">Indian words</option></select>',
+      '<label class="sr-only" for="game-level">Difficulty</label>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="gentle">Gentle</option><option value="fair" selected>Fair</option><option value="sharp">Sharp</option></select>'
+    ],
+    keys: [{ k: 'Type', d: 'Your word' }, { k: 'Enter', d: 'Play it' }],
+    touch: 'Tap the field to raise the keyboard and type your word; Play it and Give up the round are buttons above the chain.',
+    infoHeading: 'How it plays, and what it refuses to do',
+    info: [
+      {
+        h: 'The list is the referee for both sides',
+        p: 'Every word comes from one of two hand-written lists &mdash; ordinary English nouns, or well-known Indian words written in Latin script, which are places, foods and objects and nothing out of a film. A real word the list has never heard of is refused, which is a genuine limit and is stated on the board rather than buried here. What the closed list buys is the counter below.'
+      },
+      {
+        h: 'It shows you how starved a letter is',
+        p: 'Because both sides draw from the same closed list, the game can tell you exactly how many unused words remain on the letter you are about to hand over. Handing somebody a starved letter is the entire strategy of antakshari, normally played by feel; here it is a number on the screen while you still have time to pick a different word.'
+      },
+      {
+        h: 'The computer plays that same strategy',
+        p: 'Its candidates are the unused words starting with the required letter, and it scores each by how few options you would be left with afterwards. On Sharp it takes the minimum every time. Where forty-seven words end in R and only fourteen begin with one, that is enough to be genuinely hard to beat &mdash; and Gentle exists because that is not always the game you want.'
+      },
+      {
+        h: 'No lyrics, and no letter keys either',
+        p: 'The shell that runs every game here binds arrows, Space, Enter and Escape and deliberately no letter at all, which is exactly what lets a game whose entire input is typing run on it: the text field is this game&rsquo;s own and nothing upstream is competing for your keystrokes.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Why are there no songs?',
+        a: 'Film lyrics are copyrighted, and a database of them is not something this site will publish. Every sound in this section is also synthesised rather than stored, so there is no audio here at all. Keeping the rule and swapping the content was the honest way to build it.'
+      },
+      {
+        q: 'My word is real but it was refused. Why?',
+        a: 'The word list is closed and hand-written, so it does not know every real word. That is a genuine limitation. It is also what lets the game count the remaining words on a letter, which is the part worth having.'
+      },
+      {
+        q: 'What is the difference between the two word lists?',
+        a: 'One is ordinary English nouns. The other is well-known Indian words in Latin script — places, foods and everyday objects. Neither contains anything taken from a film or any other copyrighted work.'
+      },
+      {
+        q: 'How is the score worked out?',
+        a: 'It is the length of the chain you kept going. Higher is better, and your best is kept in this browser on this device, under a key you can clear with your site data.'
+      },
+      {
+        q: 'Can two people play on one phone?',
+        a: 'Yes. Choose pass and play, and the game names each side in turn. Nothing is sent anywhere and there is no online mode, here or in any game on this site.'
+      }
+    ],
+    related: ['word-of-the-day', 'typing-trainer', 'hangman'],
+  },
+  {
+    slug: 'chimes',
+    cat: 'toy',
+    name: 'Wind chimes',
+    glyph: '♫',
+    script: 'toy/chimes.js',
+    width: 640,
+    height: 480,
+    pad: 'none',
+    bestKey: null,
+    tapAction: false,
+    engine: 'Free-free tube modes &middot; spherical pendulums',
+    title: 'Wind Chimes — Pitch From Tube Length',
+    ogTitle: 'A chime you can retune by cutting it',
+    description: 'A wind chime simulated rather than sampled: every note comes from its tube length, and the wind decides when it sounds. Six tubes, three metals, three tunings.',
+    short: 'Pitch comes from length. Wind decides when.',
+    h1: 'Wind chimes',
+    hero: 'Nothing here schedules a note. Each tube, the clapper and the sail swing as pendulums against a wind that gusts, and a tube sounds when the clapper actually reaches it &mdash; struck as hard as the closing speed says. The pitch is not assigned either: it falls out of the tube&rsquo;s length, and because it goes as one over length <em>squared</em>, halving a tube raises it two octaves rather than one. Drag the size slider and hear that happen.',
+    facts: [
+      'Pitch derived from length',
+      'Metal changes the length, not the note',
+      'The wind decides the rhythm',
+      'Sound is synthesised, never a file'
+    ],
+    hud: [
+      { key: 'note', label: 'Last note', accent: true, init: '—' },
+      { key: 'strikes', label: 'Strikes', init: '0' },
+      { key: 'tuning', label: 'Tuning', init: 'Pentatonic' },
+      { key: 'wind', label: 'Wind', init: 'Breeze' }
+    ],
+    controls: [
+      '<label class="game-range"><span>Wind</span><input type="range" id="game-wind" min="0" max="100" value="35" /></label>',
+      '<label class="game-range"><span>Gusts</span><input type="range" id="game-gust" min="0" max="100" value="45" /></label>',
+      '<label class="game-range"><span>Size</span><input type="range" id="game-size" min="55" max="160" value="100" /></label>',
+      '<label class="sr-only" for="game-tubes">Number of tubes</label>',
+      '<select class="game-select" autocomplete="off" id="game-tubes"><option value="4">4 tubes</option><option value="5">5 tubes</option><option value="6" selected>6 tubes</option><option value="8">8 tubes</option></select>',
+      '<label class="sr-only" for="game-tuning">Tuning</label>',
+      '<select class="game-select" autocomplete="off" id="game-tuning"><option value="pentatonic" selected>Pentatonic</option><option value="major">Major</option><option value="raga">Raga Bhairav</option></select>',
+      '<label class="sr-only" for="game-material">Material</label>',
+      '<select class="game-select" autocomplete="off" id="game-material"><option value="aluminium" selected>Aluminium</option><option value="brass">Brass</option><option value="glass">Glass</option></select>'
+    ],
+    keys: [{ k: 'Drag', d: 'Blow on the tubes' }, { k: 'Tap', d: 'A puff at that spot' }],
+    touch: 'Drag across the chime to blow on it, or tap for a puff at that spot. The sliders and the three dropdowns work the same as on a computer.',
+    infoHeading: 'What is actually being modelled',
+    info: [
+      {
+        h: 'The pitch is not a number I chose',
+        p: 'For the fundamental bending mode of a thin free-free tube, frequency goes as the radius of gyration over length squared, times the bar speed of the metal. That formula is what decides every note here. It is the <em>ideal</em> thin-tube case and real chimes are not tuned with it &mdash; a real tube has a wall thick enough to matter, a suspension hole and often an end cap, so the formula lands a few per cent out and a maker cuts long and trims by ear. What it gets right is the shape of the relationship, which is the part you can hear.'
+      },
+      {
+        h: 'Why brass and aluminium differ',
+        p: 'Only through the square root of stiffness over density. Swap the metal at a fixed tuning and the tubes visibly change length to hold the same notes, which is the honest way round: the material does not change the note, it changes how long the tube has to be to make it.'
+      },
+      {
+        h: 'Pentatonic, and why chimes use it',
+        p: 'A chime is struck at random by the weather, so any two tubes can sound together at any moment. A pentatonic scale has no semitone in it, which means no pair of tubes can clash &mdash; that is the whole reason it is the traditional choice. Switch to Major and listen for the seventh against the octave; it is not unpleasant, but it is a decision somebody made.'
+      },
+      {
+        h: 'The wind is a condition, not an event',
+        p: 'So the wind is a held sound layer that the shell fades with the run, while each strike is a one-shot built from four partials that decay at different rates &mdash; which is what makes struck metal sound like metal. In a gale the strikes are thinned deliberately, because the honest event rate and the bearable sound rate are different numbers.'
+      }
+    ],
+    faq: [
+      {
+        q: 'Is any of this a recording?',
+        a: 'No. There is no audio file anywhere in this section of the site. Every partial of every strike, and the wind behind them, is generated in your browser as you listen.'
+      },
+      {
+        q: 'Why does the size slider change the pitch so violently?',
+        a: 'Because pitch goes as one over length squared, not one over length. Halving a tube raises it by two octaves. That is the single most surprising thing about tuned tubes and the slider exists to make it audible.'
+      },
+      {
+        q: 'Are these real chime tunings?',
+        a: 'The scales are real and the relationship between length and pitch is real. The absolute frequencies are the ideal thin-tube formula rather than a measured instrument, so treat it as the right shape rather than a tuning reference.'
+      },
+      {
+        q: 'Is there a score?',
+        a: 'No. Nothing here can be won or lost, so no best score is kept and none is stored. It is a toy, and the page says so rather than inventing a number to chase.'
+      },
+      {
+        q: 'Why is the sound off when I arrive?',
+        a: 'Every game and toy here starts muted, because a page that makes noise unasked is a page people close. This is the one in the section most worth turning on.'
+      }
+    ],
+    related: ['fountain', 'rain', 'boids'],
+  }
 ];
 
 module.exports = { GAMES, CATEGORIES, HUB };

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Stack time zones on one grid, see where the working hours really overlap, and read the daylight-saving traps and day offsets in plain words." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/timezones" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Find the hour that works in every time zone - and the day it lands on" />
+    <meta property="og:description" content="Add the zones you care about, pick a date, and drag a slot across a grid that draws every offset to scale - including India at +05:30 and Nepal at +05:45. It shades each zone’s working hours, highlights the stretch where they all overlap, names the skipped and repeated hours on a daylight-saving date, and labels the slots that land on a different calendar day. Runs entirely in your browser; nothing is uploaded and no calendar is touched." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/timezones" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-timezones.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Timezone meeting planner" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Find the hour that works in every time zone - and the day it lands on" />
+    <meta name="twitter:description" content="Add the zones you care about, pick a date, and drag a slot across a grid that draws every offset to scale - including India at +05:30 and Nepal at +05:45. It shades each zone’s working hours, highlights the stretch where they all overlap, names the skipped and repeated hours on a daylight-saving date, and labels the slots that land on a different calendar day. Runs entirely in your browser; nothing is uploaded and no calendar is touched." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-timezones.jpg" />
+    <title>Timezone meeting planner | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Timezone meeting planner",
+        "url": "https://krunalkumar.dpdns.org/labs/timezones",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Scheduling and time zone tools",
+        "operatingSystem": "Any modern web browser",
+        "description": "Add the zones you care about, pick a date, and drag a slot across a grid that draws every offset to scale - including India at +05:30 and Nepal at +05:45. It shades each zone’s working hours, highlights the stretch where they all overlap, names the skipped and repeated hours on a daylight-saving date, and labels the slots that land on a different calendar day. Runs entirely in your browser; nothing is uploaded and no calendar is touched.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "Stacked hour grid across several IANA time zones",
+                "Per-zone working hours and a computed shared window",
+                "Daylight saving transitions, with the skipped and repeated hours shown",
+                "Half-hour and quarter-hour offsets drawn to scale",
+                "Draggable slot with a per-zone readout and day offsets",
+                "Clipboard summary line and .ics export with a UTC DTSTART",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Is anything uploaded?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no server to upload to. The zones, the date and the working hours you set never leave the tab, and the .ics file is built here with a blob URL rather than fetched from anywhere. You can watch your Network tab stay empty while you drag the slot."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Where do the time zone rules come from?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "From the IANA database inside your own browser, read through Intl.DateTimeFormat. That is deliberate: a copy baked into this page would be stale the moment a government moved a transition, and several do every year. The trade is that an old phone, or a machine with out-of-date system data, will draw out-of-date rules. If a date matters, confirm it with the other person rather than with this page."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it say there is no shared window?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because on the hours you gave it, there is not one. India and the US east coast have no overlap at all on a nine-to-five, which is a real fact about the planet rather than a fault in the drawing. When that happens the notes name the two zones that cannot meet, and show the closest the day gets: the stretch where the most people are working, and who would be outside their own hours for it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does it know about holidays or my colleague’s calendar?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, to both, and it never will. It cannot see any calendar, it does not check free/busy, it does not know who works where, and it has no idea about public holidays, Friday half-days, Ramadan hours or the fact that nobody in Madrid answers anything at 14:00. Working hours are whatever you type into the two pickers on each row. That is a guess about people, not a fact about them."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why is India half an hour out of step with everything?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "India Standard Time is UTC+05:30, one offset for the whole country, and Nepal went further at +05:45. The Chatham Islands run +12:45. None of that is unusual enough to round away, so this page does not: the ticks on those rows sit on the half or the quarter, out of line with their neighbours. If you have ever had a call start thirty minutes late, you have met the reason."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will the .ics land at the right time in someone else’s calendar?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist — the .ics is a draft that lands in your downloads folder and nowhere else."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Timezone planner",
+                        "item": "https://krunalkumar.dpdns.org/labs/timezones"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">Timezone planner</li>
+          </ol>
+        </nav>
+        <h1>Timezone meeting planner</h1>
+        <p class="hero-text">Pick a date, add the zones, and drag a slot across the day. Every offset is drawn to scale, the shared working window is computed rather than guessed, and a slot that lands on a different calendar day says so &mdash; because &ldquo;3pm Tuesday for you is 5:30am Wednesday for them&rdquo; is the mistake that actually costs meetings.</p>
+        <ul class="lab-facts">
+          <li>23 and 25-hour days, drawn to their real length</li>
+          <li>India +05:30, Nepal +05:45, Chatham +12:45, to scale</li>
+          <li>The shared working window, computed not guessed</li>
+          <li>Skipped and repeated hours named out loud</li>
+          <li>Copy line and .ics &mdash; nothing is sent anywhere</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool lab-tz" id="tzplanner">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No calendar integration &mdash; it reads and writes nothing</li>
+                  <li>No free/busy, no attendee lookup, no invitations sent</li>
+                  <li>No public holidays, no half-days, no lunch breaks</li>
+                  <li>Working hours are what you type, which is a guess about people</li>
+                  <li>Zone rules come from your own browser&rsquo;s IANA database</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>Nothing you type is uploaded, logged or stored</li>
+                  <li>No account, no history, nothing saved between visits</li>
+                  <li>The .ics file is built in this tab, not on a server</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-toolbar">
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Redraw</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+
+        <div class="lab-fieldrow tz-controls">
+          <label class="sr-only" for="tz-pick">Choose a zone to add</label>
+          <select class="lab-select" id="tz-pick"></select>
+          <label class="sr-only" for="tz-type">Or type an IANA zone name</label>
+          <input class="lab-toolfield" type="text" id="tz-type" list="tz-datalist"
+                 spellcheck="false" autocapitalize="off" autocorrect="off"
+                 placeholder="or type Asia/Kathmandu" />
+          <datalist id="tz-datalist"></datalist>
+          <button class="lab-btn" type="button" id="tz-add">Add zone</button>
+          <button class="lab-btn" type="button" id="tz-mine">Add my zone</button>
+          <p class="tz-adderr" id="tz-adderr" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="lab-fieldrow">
+          <label class="tz-lbl" for="tz-date">Date
+            <input class="lab-toolfield" type="date" id="tz-date" /></label>
+          <label class="tz-lbl" for="tz-anchor">Anchor zone
+            <select class="lab-select" id="tz-anchor"></select></label>
+          <label class="tz-lbl" for="tz-dur">Length
+            <select class="lab-select" id="tz-dur">
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60" selected>1 hour</option>
+              <option value="90">1 hour 30</option>
+              <option value="120">2 hours</option>
+            </select></label>
+          <label class="tz-check"><input type="checkbox" id="tz-24" checked /> 24-hour clock</label>
+          <label class="tz-check"><input type="checkbox" id="tz-shownow" checked /> Mark the current moment</label>
+        </div>
+
+        <div class="tz-scroll">
+          <div class="tz-stage" id="tz-stage">
+            <div id="tz-rows"></div>
+            <div class="tz-overlay" id="tz-overlay">
+              <div class="tz-bands" id="tz-bands"></div>
+              <div class="tz-slot" id="tz-slot" role="slider" tabindex="0"
+                   aria-label="Proposed meeting slot &mdash; drag it, or use the arrow keys"
+                   aria-valuemin="0" aria-valuemax="1440" aria-valuenow="600"
+                   aria-valuetext="Add a zone to see the proposed time."></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tz-legend">
+          <span class="tz-key"><i class="tz-key-work" aria-hidden="true"></i> Working hours, that zone</span>
+          <span class="tz-key"><i class="tz-key-over" aria-hidden="true"></i> Working hours in every zone at once</span>
+          <span class="tz-key"><i class="tz-key-slot" aria-hidden="true"></i> The proposed slot &mdash; drag it</span>
+          <span class="tz-key"><i class="tz-key-night" aria-hidden="true"></i> 22:00 to 06:00 locally</span>
+          <span class="tz-key">Dotted pink line: right now</span>
+          <span class="tz-key">Amber tick: local midnight</span>
+        </div>
+
+        <div class="lab-panes">
+          <div class="lab-pane">
+            <p class="lab-pane-label">The slot, zone by zone</p>
+            <div class="tz-readout" id="tz-readout">
+              <p class="tz-readhead" id="tz-readhead"></p>
+              <ul class="tz-readlist" id="tz-readlist"></ul>
+            </div>
+          </div>
+          <div class="lab-pane">
+            <p class="lab-pane-label">Notes</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <div class="lab-resultbar">
+          <label class="sr-only" for="tz-summary">Summary line to paste into an invitation</label>
+          <textarea class="lab-toolfield tz-summary" id="tz-summary" readonly spellcheck="false"></textarea>
+          <button class="lab-btn" type="button" data-copy-target="tz-summary">Copy summary</button>
+          <button class="lab-btn" type="button" id="tz-ics">Download .ics</button>
+          <p class="tz-msg">It reads and writes no calendar, checks nobody&rsquo;s availability, and trusts the IANA database inside your browser for every rule it draws. Nothing here is advice.</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>How the day is drawn</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Where the offsets come from</h3>
+            <p>There is no timezone database in this page. It asks <code>Intl.DateTimeFormat</code> to render a known instant in a named zone, reads the wall clock back with <code>formatToParts</code>, and takes the difference &mdash; that difference is the offset. Your browser already ships the IANA rules to drive <code>Intl</code>, so this borrows them rather than carrying a copy that would go stale within a year. It also means a device with out-of-date system data will draw out-of-date transitions, and there is nothing this page can do about that.</p>
+          </article>
+          <article class="info-card">
+            <h3>Nothing is a grid of hour cells</h3>
+            <p>Every band, tick and bar is placed as a percentage of the window rather than snapped to an hour column. India is +05:30, Nepal is +05:45 and the Chatham Islands are +12:45; a grid of equal cells would have to round them to the nearest hour, and that rounding is the exact mistake this page exists to stop. A half-hour zone&rsquo;s ticks land on the half, visibly out of step with its neighbours. That misalignment is the picture, not a rendering fault.</p>
+          </article>
+          <article class="info-card">
+            <h3>The day that is 23 hours long</h3>
+            <p>On a clock-change date a day is not 24 hours. Ask for the offset at 09:00 and again at 10:00 and the two answers differ; a search between them finds the second the clocks moved. Reading that one instant with both offsets then gives the skipped hour going forward and the repeated hour coming back, directly. Pick 29 March or 25 October 2026 with a European zone on the grid and the notes will name the hour that does not exist, or the one that happens twice.</p>
+          </article>
+          <article class="info-card">
+            <h3>The mistake this exists to stop</h3>
+            <p>Most scheduling errors are not about the hour. They are about the date: 20:00 in Mumbai is 02:30 the next morning in Auckland while New Zealand is on standard time, and 03:30 once it puts its clocks forward &mdash; the hour moves, the date does not, and an invitation that says only &ldquo;Wednesday&rdquo; is wrong for one of you either way. Any zone whose local date differs from the anchor zone&rsquo;s gets a labelled chip beside the time, the sentence underneath spells out how many calendar days apart they are, and the slot&rsquo;s own screen-reader text speaks the date in every zone on the grid.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is anything uploaded?</summary>
+            <div>No. There is no server to upload to. The zones, the date and the working hours you set never leave the tab, and the .ics file is built here with a blob URL rather than fetched from anywhere. You can watch your Network tab stay empty while you drag the slot.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Where do the time zone rules come from?</summary>
+            <div>From the IANA database inside your own browser, read through Intl.DateTimeFormat. That is deliberate: a copy baked into this page would be stale the moment a government moved a transition, and several do every year. The trade is that an old phone, or a machine with out-of-date system data, will draw out-of-date rules. If a date matters, confirm it with the other person rather than with this page.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it say there is no shared window?</summary>
+            <div>Because on the hours you gave it, there is not one. India and the US east coast have no overlap at all on a nine-to-five, which is a real fact about the planet rather than a fault in the drawing. When that happens the notes name the two zones that cannot meet, and show the closest the day gets: the stretch where the most people are working, and who would be outside their own hours for it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does it know about holidays or my colleague&rsquo;s calendar?</summary>
+            <div>No, to both, and it never will. It cannot see any calendar, it does not check free/busy, it does not know who works where, and it has no idea about public holidays, Friday half-days, Ramadan hours or the fact that nobody in Madrid answers anything at 14:00. Working hours are whatever you type into the two pickers on each row. That is a guess about people, not a fact about them.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why is India half an hour out of step with everything?</summary>
+            <div>India Standard Time is UTC+05:30, one offset for the whole country, and Nepal went further at +05:45. The Chatham Islands run +12:45. None of that is unusual enough to round away, so this page does not: the ticks on those rows sit on the half or the quarter, out of line with their neighbours. If you have ever had a call start thirty minutes late, you have met the reason.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Will the .ics land at the right time in someone else&rsquo;s calendar?</summary>
+            <div>The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist &mdash; the .ics is a draft that lands in your downloads folder and nowhere else.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=timezones#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20Timezone%20planner%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>More practical tools</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/timestamp">
+            <span class="lab-card-name">Timestamp converter</span>
+            <p class="lab-card-desc">Unix, Windows FILETIME and ISO strings, both ways.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/invoice-maker">
+            <span class="lab-card-name">Invoice maker</span>
+            <p class="lab-card-desc">Build an invoice and take the file away with you.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/salary-breakdown">
+            <span class="lab-card-name">Salary breakdown</span>
+            <p class="lab-card-desc">Where a CTC figure actually goes, line by line.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/emi">
+            <span class="lab-card-name">EMI calculator</span>
+            <p class="lab-card-desc">The real amortisation schedule behind a loan.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/qr">
+            <span class="lab-card-name">QR code maker</span>
+            <p class="lab-card-desc">Generate a code, and read what one already says.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/timezones.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

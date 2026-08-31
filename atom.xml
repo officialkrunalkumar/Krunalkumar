@@ -10,6 +10,86 @@
     <name>Krunalkumar Shah</name>
   </author>
   <entry>
+    <title>The First Week of an Automation Job</title>
+    <link href="https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement" />
+    <id>https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>A day-by-day account of the first week of an automation engagement: the discovery conversation, the read-only access that always takes longer than the work, watching the process run once instead of being told about it, counting volume and error rate before anyone claims an improvement, and the steps that should be left alone or deleted rather than automated.</summary>
+  </entry>
+  <entry>
+    <title>How to brief a security consultant</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant" />
+    <id>https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Scope, environment, access, third parties, constraints and deliverable: what a security consultant needs from you before a quote can be honest, and the questions a good one will ask back.</summary>
+  </entry>
+  <entry>
+    <title>Read a Privacy Policy in Five Minutes</title>
+    <link href="https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes" />
+    <id>https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Privacy policies are reference documents laid out like essays, so reading them in order is the slowest way to get an answer. Here is the ordered method I use instead: what to search for, why the sharing section is the business model, what “as long as necessary” really means, and how to check a policy against the page it describes.</summary>
+  </entry>
+  <entry>
+    <title>The HubSpot Mistakes Hardest to Undo</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo" />
+    <id>https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Some CRM mistakes cost an afternoon and some cost a quarter. Object model, property sprawl, deal stages, lifecycle drift, duplicate records, imports with no key, and production changes with nowhere to be wrong — why each one resists repair, and the cheap prevention for each.</summary>
+  </entry>
+  <entry>
+    <title>Password advice that stopped being true</title>
+    <link href="https://krunalkumar.dpdns.org/blog/the-password-advice-that-stopped-being-true" />
+    <id>https://krunalkumar.dpdns.org/blog/the-password-advice-that-stopped-being-true</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Composition rules, ninety-day expiry and blocked paste came from a 2003 NIST appendix whose author later said he regretted it. NIST SP 800-63B and the UK NCSC now advise against all three. What changed, why each rule failed mechanically, what is true instead, and what is still genuinely contested.</summary>
+  </entry>
+  <entry>
+    <title>AI agents, once you maintain one</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one" />
+    <id>https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Five different things get called an agent, and most products sold as one are a fixed chain or a router — usually the right choice. What changes once you maintain a real loop: evaluation sets instead of tests, a model dependency you cannot pin, caps on the loop, tool design, traces, and prompt injection.</summary>
+  </entry>
+  <entry>
+    <title>Your accounts after you die</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-happens-to-your-accounts-when-you-die" />
+    <id>https://krunalkumar.dpdns.org/blog/what-happens-to-your-accounts-when-you-die</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Your accounts are secured against exactly the people who will need them. A practical guide to the legacy tools the platforms provide, password manager emergency access, backup codes and hardware keys, nomination in India, and the domain renewal that quietly takes everything else with it.</summary>
+  </entry>
+  <entry>
+    <title>What your browser tells every site</title>
+    <link href="https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site" />
+    <id>https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>What a website reads about you before you click anything: the IP address, User-Agent and Accept-Language that arrive with the request, and the screen, time zone, CPU cores, GPU and canvas fingerprint a script reads afterwards. Why the combination identifies you when no single value does, why a fingerprint is harder to escape than a cookie, and why an unusual privacy setup can make you easier to pick out rather than harder.</summary>
+  </entry>
+  <entry>
+    <title>Why I quote fixed price</title>
+    <link href="https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price" />
+    <id>https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Why nearly every engagement I take ends up fixed-price: what it actually buys the client, the risk premium every fixed quote contains, why it punishes optimism and pushes towards defensive scoping, and the five kinds of work I refuse to price that way.</summary>
+  </entry>
+  <entry>
+    <title>Is “We Don’t Store Passwords” True?</title>
+    <link href="https://krunalkumar.dpdns.org/blog/why-we-dont-store-your-password-is-usually-false" />
+    <id>https://krunalkumar.dpdns.org/blog/why-we-dont-store-your-password-is-usually-false</id>
+    <published>2026-08-31T09:00:00+05:30</published>
+    <updated>2026-08-31T09:00:00+05:30</updated>
+    <summary>Nearly every service says it never stores your password. It stores a hash, which is still password-derived data and still a cracking problem. The six rungs of what is actually stored, the signals that give a bad implementation away from outside, and the designs where the claim finally becomes true.</summary>
+  </entry>
+  <entry>
     <title>Why Your Automation Broke, and How to Build One That Fails Loudly</title>
     <link href="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
     <id>https://krunalkumar.dpdns.org/blog/why-your-automation-broke</id>

@@ -762,6 +762,48 @@ ${chips}
           </div>
         </div>
       </section>
+
+      <!-- The two walkthroughs. Same construction as the pair on /labs, which
+           is where .explainer-* is defined (main.css, loaded here too).
+
+           THE ASTERISK IS LOAD-BEARING. Both the narration and the recorded
+           interface in the desktop cut quote the number of games as it stood
+           on the day it was recorded, and that number is baked into the
+           picture rather than supplied by the caption track — so it cannot be
+           corrected by editing a file, only by re-recording. Every other
+           figure on this site is recounted at deploy; this one cannot be, so
+           it gets a note instead of a silent lie. -->
+      <section class="section-card explainer-section">
+        <div class="section-heading">
+          <h2>How the games work</h2>
+          <p>Two short walkthroughs, with sound. Nothing plays until you press play.</p>
+        </div>
+        <div class="explainer-grid">
+          <figure class="explainer">
+            <video controls preload="none" playsinline width="1920" height="1080"
+                   poster="/assets/video/games-desktop-poster.jpg">
+              <source src="/assets/video/games-desktop.mp4" type="video/mp4" />
+            <track kind="captions" src="/assets/video/games-desktop.vtt" srclang="en" label="English" default />
+              Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
+            </video>
+            <figcaption><strong>On a computer</strong> &mdash; the categories, the type-to-filter box, and the storage panel where you can read your saved scores, clear them, or switch saving off.</figcaption>
+          </figure>
+          <figure class="explainer">
+            <video controls preload="none" playsinline width="1920" height="1080"
+                   poster="/assets/video/games-mobile-poster.jpg">
+              <source src="/assets/video/games-mobile.mp4" type="video/mp4" />
+            <track kind="captions" src="/assets/video/games-mobile.vtt" srclang="en" label="English" default />
+              Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
+            </video>
+            <figcaption><strong>On a phone</strong> &mdash; your scores shown as the real rows the browser is holding, cleared in one tap.</figcaption>
+          </figure>
+        </div>
+        <p class="explainer-note">
+          <span aria-hidden="true">*</span> The walkthrough was recorded when the arcade was smaller, so the
+          number of games it quotes is already behind. Games are still being added. The count on this page is
+          the one to trust &mdash; it is counted at every deploy rather than typed.
+        </p>
+      </section>
 ${sections}
       <section class="section-card">
         <div class="section-heading">

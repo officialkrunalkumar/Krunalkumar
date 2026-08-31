@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Your browser hands every site your address, time zone, screen, cores and GPU without asking. No single value identifies you. The combination usually does." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="What your browser tells every site you visit" />
+    <meta property="og:description" content="What a website reads about you before you click anything: the IP address, User-Agent and Accept-Language that arrive with the request, and the screen, time zone, CPU cores, GPU and canvas fingerprint a script reads afterwards. Why the combination identifies you when no single value does, why a fingerprint is harder to escape than a cookie, and why an unusual privacy setup can make you easier to pick out rather than harder." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-your-browser-tells-every-site.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A browser window with rows of small attributes, each joined by a line to a single identifier" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta property="article:published_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-08-31T09:00:00+05:30" />
+    <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
+    <meta property="article:section" content="Privacy" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What your browser tells every site you visit" />
+    <meta name="twitter:description" content="What a website reads about you before you click anything: the IP address, User-Agent and Accept-Language that arrive with the request, and the screen, time zone, CPU cores, GPU and canvas fingerprint a script reads afterwards. Why the combination identifies you when no single value does, why a fingerprint is harder to escape than a cookie, and why an unusual privacy setup can make you easier to pick out rather than harder." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-your-browser-tells-every-site.jpg" />
+    <title>What your browser tells every site | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What your browser tells every site you visit",
+        "description": "A plain-language walk through everything a website learns about you without asking, why those values combine into a fingerprint you cannot clear, and what actually helps.",
+        "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/what-your-browser-tells-every-site.jpg",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "articleSection": "Privacy",
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah"
+        },
+        "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site"
+        },
+        "keywords": "browser fingerprinting, canvas fingerprint, WebRTC leak, IP address, user agent, privacy, tracking without cookies, Tor Browser, resistFingerprinting"
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Does a VPN hide my browser fingerprint?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. A VPN changes the address a server sees and nothing else. Your screen, time zone, core count, GPU string and canvas hash are read inside the browser and are identical with the VPN on or off. Worse, if WebRTC escapes the tunnel then even the address leaks, which is what the leak page lets you check: compare the public address it finds against the one your provider says it is giving you."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does private browsing or incognito change my fingerprint?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Mostly no. Private browsing starts with empty storage, so it defeats cookies and anything else a site saved. It does not change your hardware, your fonts, your screen or your time zone, so the values that make up a fingerprint come out the same. Firefox and Tor Browser go further than ordinary private windows do, but an ordinary private window is a storage feature rather than a fingerprinting defence."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can a website really see which fonts I have installed?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It can probe for them. The usual method renders the same string in each candidate font and measures how wide the result comes out; a font that is missing falls back to a default and measures differently. Safari and Firefox have restricted this to system fonts, which limits how much a page can learn. The leak page on this site does not run a font probe, so you will not find a font row in its table."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Will turning JavaScript off stop this?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It stops the second half. Without scripts a page cannot read your screen, your core count, your GPU or a canvas hash. It still receives your IP address, User-Agent, Accept-Language and Referer, because those arrive with the request before any code runs. Browsing with JavaScript disabled is also rare enough to become a distinguishing feature in itself, and a large part of the web stops working."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is fingerprinting legal?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "It depends on the jurisdiction and the purpose, and I am not a lawyer. Under consent-based regimes such as India's DPDP Act or the GDPR, reading device characteristics in order to identify a person is generally the kind of processing that needs a lawful basis, and consent is the usual one. The practical problem is that enforcement happens after the fact. Nothing in the browser stops the read while it is occurring."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is my phone safer than my laptop for this?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Different rather than safer. Phones are more uniform, because a given model has one screen, one GPU and one core count, so you blend in with everyone carrying the same handset. Against that, the model itself is readable, and a phone carries an app layer with permissions that a browser tab does not have. Which of the two is easier to fingerprint in practice, I have not measured."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Blog",
+                        "item": "https://krunalkumar.dpdns.org/blog"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "What your browser tells every site",
+                        "item": "https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="stylesheet" href="/assets/css/blog.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/blog-toc.js"></script>
+    <script defer src="/assets/js/blog-share.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <article class="post">
+        <section class="post-inner">
+          <section class="page-hero">
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+              <ol>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li aria-current="page">What your browser tells every site</li>
+              </ol>
+            </nav>
+            <p class="eyebrow">Privacy</p>
+            <h1>What your browser tells every site you visit</h1>
+            <p class="hero-text">None of these values needed a permission prompt, and none of them identifies you on its own. Together they usually do, and unlike a cookie there is nothing for you to clear.</p>
+            <p class="post-meta">Published 31 August 2026 &middot; 10 min read &middot; by Krunalkumar Shah</p>
+          </section>
+
+          <figure class="post-cover">
+            <img src="/assets/images/blog/browser-tells-cover.svg" alt="A browser window with rows of small attributes, each joined by a line to a single identifier" width="1200" height="630" decoding="async" />
+          </figure>
+
+          <section class="section-card">
+            <div class="post-layout">
+              <nav class="post-toc" aria-label="In this article">
+                <p class="eyebrow">In this article</p>
+                <ol>
+                  <li><a href="#before-any-script-runs">Before any script runs</a></li>
+                  <li><a href="#once-a-script-runs">Once a script runs</a></li>
+                  <li><a href="#the-combination-is-the-identifier">Why the combination matters</a></li>
+                  <li><a href="#canvas-webgl-and-audio">Canvas, WebGL and audio</a></li>
+                  <li><a href="#worse-than-a-cookie">Worse than a cookie</a></li>
+                  <li><a href="#unusual-makes-you-easier-to-find">Unusual is worse</a></li>
+                  <li><a href="#what-actually-helps">What actually helps</a></li>
+                  <li><a href="#where-i-land">Where I land</a></li>
+                </ol>
+              </nav>
+
+              <div class="post-body">
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Read your own values first.</strong> There is a page on this site that performs every
+                  permissionless read described below and prints the answers in one table: your public address,
+                  browser string, time zone, core count, GPU and a canvas fingerprint. The rest of this article is easier to follow with your own
+                  numbers in front of you.
+                </p>
+                <a class="btn btn-primary" href="/labs/leak">Open the browser leak check</a>
+              </div>
+              <h2 id="before-any-script-runs">What arrives before any script runs</h2>
+              <p>
+                The first facts about you arrive before the page has begun thinking about you. They are part of
+                the request itself.
+              </p>
+              <p>
+                <strong>Your IP address</strong> is the return address on the packets, so it is not optional and
+                not a tracking decision. It says which network you are on &mdash; usually your internet
+                provider, or your employer &mdash; and roughly where that network is. It does not say your name,
+                your street, or which person in the building is typing. Geolocation databases map address ranges
+                onto places, and in my experience they get the country right far more often than the city,
+                though I have not measured that systematically. Many home connections rotate addresses, so an IP is a
+                weak long-term identifier by itself.
+              </p>
+              <p>
+                <strong>User-Agent</strong> names your browser, its version, its engine and your operating
+                system, and on a phone often the device. <strong>Accept-Language</strong> lists the languages you
+                want the page in, which alone often narrows a country. <strong>Referer</strong> &mdash;
+                misspelled in the standard since 1996 and never corrected &mdash; says which page sent you,
+                though most browsers now send only the origin across sites. None of this involves JavaScript.
+                Turning scripts off does not turn it off.
+              </p>
+              <h3>How a page learns your public address</h3>
+              <p>
+                Browsers ship <a class="text-link" href="/glossary#term-webrtc">WebRTC</a> so video calls can
+                connect two machines directly, which means each side must discover what address the other would
+                dial &mdash; a question put to a public STUN server. A page can open a peer connection to nobody,
+                let the browser gather those candidates, and read the addresses out. No prompt, because the API
+                was designed for calling rather than for asking permission to be called. That is how VPN leak
+                checkers work, and what the leak page does on load. It is also the one thing there that is
+                not purely local: learning a public address means showing it to somebody, so Google&rsquo;s and
+                Cloudflare&rsquo;s STUN servers see yours in the asking, and the page says so. Chrome and Firefox
+                now hide your address on your own network behind a random <code>.local</code> name; the public
+                one cannot be hidden.
+              </p>
+              <h2 id="once-a-script-runs">What a page can read once a script runs</h2>
+              <p>
+                Now the page is running code, and code can ask questions. Each item below is an ordinary API
+                call with no permission attached, and a row in the leak table:
+              </p>
+              <ul>
+                <li><strong>Screen and window.</strong> Resolution, device pixel ratio, and the window you are
+                  reading in; screen size is stable, window size moves when you resize.</li>
+                <li><strong>Time zone</strong>, from <code>Intl.DateTimeFormat</code>. Your rough location, with
+                  no location prompt and no address lookup.</li>
+                <li><strong>Languages, platform and touch points</strong> &mdash; what you read, and phone,
+                  tablet or desktop.</li>
+                <li><strong>CPU cores</strong> from <code>navigator.hardwareConcurrency</code>, and on Chromium
+                  <strong>device memory</strong> rounded coarsely. Both exist so pages can size their workloads,
+                  and both distinguish machines.</li>
+                <li><strong>Preferences you never told the page</strong> &mdash; dark or light mode, and whether
+                  you asked your system to reduce motion, an accessibility setting any page can read.</li>
+                <li><strong>The graphics stack.</strong> A WebGL extension called
+                  <code>WEBGL_debug_renderer_info</code> returns your GPU model as plain text. Not a category.
+                  The model.</li>
+              </ul>
+              <p>
+                Three more usually appear on lists like this and the leak page does not read them, rather than let you
+                hunt for missing rows. <strong>Installed fonts</strong> can be probed by
+                rendering a string in each candidate font and measuring the width, though Safari and Firefox
+                restrict this to system fonts. <strong>Battery</strong> level came from the Battery Status API,
+                which Chromium still ships, Firefox removed and Safari never implemented. <strong>Connection
+                type</strong> and a bandwidth estimate come from <code>navigator.connection</code>, a Chromium
+                feature. They exist; I did not measure them for you.
+              </p>
+              <h2 id="the-combination-is-the-identifier">None of it identifies you. The combination usually does.</h2>
+              <p>
+                Take any single row alone and it is harmless. Millions of people run a
+                1920&nbsp;&times;&nbsp;1080 screen, share your time zone, or have eight cores.
+              </p>
+              <p>
+                The mechanism is that the answers combine. If a value splits the population roughly in half,
+                knowing it is worth one bit, and bits add. Thirty-three bits of genuinely independent
+                information gets you to about one person on Earth, because two to the power thirty-three is
+                roughly 8.6&nbsp;billion. That is arithmetic, not a measurement of you: real attributes are
+                correlated, so they are worth less than face value, and how much less depends on the population
+                measured.
+              </p>
+              <p>
+                Every fingerprinting statistic you read, mine included, comes from whoever ran the test and
+                whoever visited their page. I have not measured the entropy of my own visitors.
+              </p>
+              <p>
+                What survives is the shape of the thing. A rare GPU string joined to an unusual core
+                count joined to a thinly populated time zone joined to a three-entry language list is not four
+                weak facts. It is one strong one. Fingerprinting is not a measurement. It is a join.
+              </p>
+              <h2 id="canvas-webgl-and-audio">Canvas, WebGL and audio, without the hand-waving</h2>
+              <p>
+                <strong>Canvas.</strong> The leak page creates a 240 by 60 canvas that is never shown, fills a
+                rectangle in orange, writes text at 16px with an emoji on the end, then draws a circle over it
+                with <code>globalCompositeOperation</code> set to <code>multiply</code>. It calls
+                <code>toDataURL()</code> and hashes the result. The instructions are identical on every machine;
+                the pixels are not, because rasterisation, anti-aliasing, font hinting and subpixel layout are
+                decided by your GPU, driver, fonts and browser build. A few pixels differing by one value is plenty:
+                a hash turns any difference into a completely different number. Run it tomorrow
+                and the number is the same, cookies cleared or not, because nothing was ever stored.
+              </p>
+              <p>
+                <strong>WebGL.</strong> Two levels. The blunt one has come up:
+                <code>WEBGL_debug_renderer_info</code> hands over the GPU model as a string. The subtle one is
+                that a page can render a scene off-screen and hash the pixels exactly as with canvas, and also
+                read the supported extension list, maximum texture size and shader precision ranges. That is a
+                profile of your driver rather than a name for your card, so two machines with the same GPU can
+                be told apart when their drivers differ.
+              </p>
+              <p>
+                <strong>Audio.</strong> This one draws nothing. A page builds an
+                <code>OfflineAudioContext</code>, feeds an oscillator through a
+                <code>DynamicsCompressorNode</code>, renders faster than real time, and hashes the resulting
+                samples. No sound is played and no microphone is involved. The output varies because the
+                compressor is implemented in software and floating-point behaviour differs across builds and
+                platforms. The leak page does not do this one, so there is no audio row to look for. How
+                discriminating it is next to canvas, I have not tested.
+              </p>
+              <h2 id="worse-than-a-cookie">Why a fingerprint is worse for you than a cookie</h2>
+              <p>
+                A cookie is a badge the site hands you and asks you to wear. You can look at it, delete it,
+                refuse it, and it expires on a date somebody had to choose. A fingerprint is not a badge, it is a
+                description. Nothing was placed on your machine, so
+                there is nothing to delete, no expiry, and no panel anywhere listing what sites have worked out.
+              </p>
+              <div class="post-callout" role="note">
+                <p>
+                  <strong>&ldquo;Clear browsing data&rdquo; does not touch this.</strong> It clears what was
+                  stored. Your GPU, screen, fonts and time zone were never stored; they are read fresh on every
+                  visit and they will read the same tomorrow.
+                </p>
+              </div>
+              <p>
+                Private browsing barely moves it either. A private window starts with empty storage, which
+                defeats cookies, then reports the same screen, core count, GPU and canvas hash. It does not make
+                you a new person, it makes you the same person with an empty pocket.
+              </p>
+              <p>
+                It also works across sites with nobody cooperating: two unrelated sites running the same
+                measurements arrive at the same value, with no shared third party and no dialogue box. Under most
+                consent regimes, including the one I wrote about in
+                <a class="text-link" href="/blog/what-consent-actually-means-under-dpdp">what consent actually
+                means under the DPDP Act</a>, reading device characteristics to identify a person is exactly the
+                processing meant to require consent. The reading still happens. The remedy is legal, and arrives
+                afterwards.
+              </p>
+              <h2 id="unusual-makes-you-easier-to-find">The part most privacy advice gets backwards</h2>
+              <p>
+                Here is the counter-intuitive bit, and the reason I wanted to write this. The instinct is
+                that revealing less makes you harder to identify. For fingerprinting, it frequently makes you
+                easier to identify.
+              </p>
+              <p>
+                A fingerprint does not need your details to be sensitive. It needs them to be <em>rare</em>. A
+                stock laptop running a default browser disappears into an enormous crowd of identical answers.
+                Install twenty extra fonts, run an unusual window size, spoof your time zone somewhere thinly
+                populated, adopt a niche browser, and each choice lifts you out of that crowd.
+              </p>
+              <p>
+                Inconsistency is its own signal. A browser claiming to be an iPhone while reporting sixteen
+                cores, a mouse pointer and a 3840&nbsp;&times;&nbsp;2160 screen is not a common iPhone. It is a
+                distinctive liar, and the mismatch is a stable feature to key on. A canvas that refuses to
+                return pixels is rarer than any particular hash, so blocking a read can be more identifying than
+                answering it. The goal is therefore not to say less but to look like more people, a different
+                objective that most advice never states.
+              </p>
+              <div class="lab-cta">
+                <p class="lab-cta-text">
+                  <strong>Test the claim instead of trusting me.</strong> Open the same page in the browser you
+                  consider private and in one on default settings, then compare. If the hardened setup gives the more unusual answers, that is this effect on your own machine.
+                </p>
+                <a class="btn btn-primary" href="/labs/leak">Compare two browsers</a>
+              </div>
+              <p>
+                What would change my mind: randomisation done properly. If a browser returns a
+                <em>different</em> fabricated canvas value to every site and session &mdash; the approach Brave
+                calls farbling &mdash; then being unusual stops mattering, because there is no stable value left
+                to join on. Whether that survives a site sampling the same measurement many times and averaging
+                the noise away is a real open question, and not one I have tested.
+              </p>
+              <h2 id="what-actually-helps">What actually helps, and how much</h2>
+              <p>
+                In rough order of effort, each with its limit attached, because a defence without its limits is
+                marketing.
+              </p>
+              <p>
+                <strong>A mainstream browser on default settings.</strong> Boring on purpose, free, and it puts
+                you in the largest crowd available. The limit: that crowd is large along each axis separately,
+                and the combination of GPU, screen and time zone can still pick you out. Defaults stop you
+                standing out, not being described.
+              </p>
+              <p>
+                <strong>Safari&rsquo;s reduced system information.</strong> Apple has for years limited what a
+                page can learn about the machine, and says so publicly. It is on by default, which matters more
+                than the strength of any single measure, because a defence everybody has is a crowd. It does not
+                make you identical to other Safari users, and I have not measured how much it removes.
+              </p>
+              <p>
+                <strong>Firefox&rsquo;s resist-fingerprinting mode.</strong> Enabled through
+                <code>privacy.resistFingerprinting</code>, it reports a common time zone rather than yours,
+                rounds the window through letterboxing, generalises the user agent, restricts fonts and
+                interferes with canvas reads. It is the most thorough thing outside Tor Browser, from which it was
+                inherited. Two limits: it visibly breaks pages, and hardly anybody turns it on, so it
+                can become the unusual thing that marks you.
+              </p>
+              <p>
+                <strong>Tor Browser.</strong> The only project that treats the problem correctly, by making
+                every user look the same rather than making each reveal less. The costs are real: it is slow,
+                some sites break and some refuse Tor outright. To watch what its three-relay circuit does, there
+                is a <a class="text-link" href="/labs/web-layers">step-through of one on this site</a>.
+              </p>
+              <p>
+                <strong>On the address specifically.</strong> If you use a VPN, compare the public address in
+                the leak table against the one your provider claims to give you. If they differ, the WebRTC
+                request escaped the tunnel. Block WebRTC outright and every browser video call stops
+                working. There is no version where you keep both.
+              </p>
+              <h2 id="where-i-land">Where I actually land on this</h2>
+              <p>
+                Most people reading this do not need Tor Browser. The useful question is not how to stop all of
+                it but who you are trying not to be recognised by. Ordinary ad tech is frustrated far more
+                cheaply than a determined adversary with a specific reason to care about you.
+              </p>
+              <p>
+                It is worth keeping in proportion too. A good deal of the fear I get asked about is misplaced; I
+                wrote a whole piece on
+                <a class="text-link" href="/blog/why-your-phone-feels-hacked-and-probably-is-not">why your phone
+                feels hacked and probably is not</a>, and the machinery described here is usually the real
+                explanation for an advert that feels like it was listening. The larger exposure for most people
+                is not their canvas hash. It is what they have already published. For that, paste your own bio
+                into <a class="text-link" href="/labs/osint-self-check">the self-check</a> and read what comes
+                back.
+              </p>
+              <p>
+                And the exception I owe you. This site loads Google Analytics on every page, mine included, so
+                Google receives the ordinary pageview signals: browser, screen size, language, and a location
+                derived from your address. Several of those are rows in the very table I have been pointing you
+                at. I could remove it and I have not, because I want to know which articles get read.
+                A trade I made, not a principle I would defend.
+              </p>
+              </div>
+            </div>
+          </section>
+
+          <div class="post-share">
+            <p class="eyebrow">Share this article</p>
+            <div class="post-share-actions">
+              <a class="post-share-btn" data-share="linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-your-browser-tells-every-site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg><span class="post-share-label">LinkedIn</span></a>
+              <a class="post-share-btn" data-share="x" href="https://x.com/intent/post?text=What%20your%20browser%20tells%20every%20site%20you%20visit&amp;url=https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-your-browser-tells-every-site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="post-share-label">X</span></a>
+              <a class="post-share-btn" data-share="whatsapp" href="https://wa.me/?text=What%20your%20browser%20tells%20every%20site%20you%20visit%20https%3A%2F%2Fkrunalkumar.dpdns.org%2Fblog%2Fwhat-your-browser-tells-every-site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg><span class="post-share-label">WhatsApp</span></a>
+              <button class="post-share-btn" type="button" data-share="copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><span class="post-share-label">Copy link</span></button>
+              <p id="share-status" class="sr-only" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <nav class="related-reading" aria-label="Related articles">
+            <p class="eyebrow">Related reading</p>
+            <ul>
+              <li><a href="/blog/why-your-phone-feels-hacked-and-probably-is-not">Why your phone feels hacked, and probably is not</a></li>
+              <li><a href="/blog/what-consent-actually-means-under-dpdp">What consent actually means under the DPDP Act</a></li>
+              <li><a href="/blog/surface-web-deep-web-and-dark-web">Surface web, deep web, and dark web</a></li>
+              <li><a href="/blog/passwords-passkeys-and-what-actually-protects-you">Passwords, passkeys, and what actually protects you</a></li>
+            </ul>
+          </nav>
+
+          <div class="post-cta">
+            <h2>See your own values, then decide what to do about them</h2>
+            <p>The leak page reads everything described here and prints it in one table, in your browser, with nothing sent to this site. If you would rather have someone look at an organisation&rsquo;s exposure than a browser&rsquo;s, that is work I take on.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/labs/leak">Open the browser leak check</a>
+              <a class="btn btn-secondary" href="/services">See what I do</a>
+            </div>
+          </div>
+
+          <p style="margin-top:2rem;">
+            <a class="text-link" href="/blog">← Back to all articles</a>
+          </p>
+        </section>
+      </article>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+  </body>
+</html>

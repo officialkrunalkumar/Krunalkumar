@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Build and take apart the strings inside QR codes: vCard, MECARD, Wi-Fi, calendar, geo and UPI. Every UPI QR asks you to pay, never to receive." />
+    <meta name="author" content="Krunalkumar Shah" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta name="theme-color" content="#121b2c" />
+    <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/qr-payloads" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
+    <meta property="og:title" content="Build the string inside a QR code - vCard, Wi-Fi, UPI - and read it back" />
+    <meta property="og:description" content="The payload builder that goes with the QR encoder: vCard 3.0 and 4.0, MECARD, Wi-Fi join strings, iCalendar events with real 75-octet folding, geo points and UPI intent URIs. Paste a UPI code and it explains in plain language who gets paid and how much - and says plainly that a pay QR and a receive QR look identical. Runs entirely in your browser, with no lookups of any kind." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/qr-payloads" />
+    <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-qr-payloads.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="QR payload builder and parser" />
+    <meta property="og:site_name" content="Krunalkumar Shah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Build the string inside a QR code - vCard, Wi-Fi, UPI - and read it back" />
+    <meta name="twitter:description" content="The payload builder that goes with the QR encoder: vCard 3.0 and 4.0, MECARD, Wi-Fi join strings, iCalendar events with real 75-octet folding, geo points and UPI intent URIs. Paste a UPI code and it explains in plain language who gets paid and how much - and says plainly that a pay QR and a receive QR look identical. Runs entirely in your browser, with no lookups of any kind." />
+    <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-qr-payloads.jpg" />
+    <title>QR payload builder | Krunalkumar Shah</title>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "vCard, Wi-Fi and UPI QR payload builder",
+        "url": "https://krunalkumar.dpdns.org/labs/qr-payloads",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Security and fraud awareness",
+        "operatingSystem": "Any modern web browser",
+        "description": "The payload builder that goes with the QR encoder: vCard 3.0 and 4.0, MECARD, Wi-Fi join strings, iCalendar events with real 75-octet folding, geo points and UPI intent URIs. Paste a UPI code and it explains in plain language who gets paid and how much - and says plainly that a pay QR and a receive QR look identical. Runs entirely in your browser, with no lookups of any kind.",
+        "isAccessibleForFree": true,
+        "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+        },
+        "featureList": [
+                "vCard 3.0 and 4.0 with correct text escaping",
+                "MECARD for scanners that prefer it",
+                "Wi-Fi join strings with WPA, WEP, open and WPA2-EAP",
+                "iCalendar VEVENT with 75-octet line folding",
+                "geo: points with a computed precision table",
+                "UPI intent URIs built and parsed in plain language",
+                "No upload required",
+                "Offline capable"
+        ],
+        "author": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        },
+        "publisher": {
+                "@type": "Person",
+                "@id": "https://krunalkumar.dpdns.org/#person",
+                "name": "Krunalkumar Shah",
+                "url": "https://krunalkumar.dpdns.org/"
+        }
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+                {
+                        "@type": "Question",
+                        "name": "Can I scan a QR code to receive money?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no such thing on UPI. Every UPI QR code is a request for the person scanning it to pay. A pay QR and a supposed receive QR look identical because there is only one kind. Anyone telling you to scan a code, or to enter your UPI PIN, in order to receive a refund or a prize is taking money out of your account. Receiving money on UPI never needs your PIN."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Can this tell me whether a UPI address is genuine?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No, and it says so on screen every time. Checking that a VPA exists or belongs to anyone means asking NPCI, which is a network request, and this page makes none. What it can do is read the string: the shape of the handle, whether the amount is fixed or left for you, whether the payee name borrows authority or contains letters from another alphabet drawn like Latin ones. All of that is judged on the text, not on reality."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Why does it not draw the QR code?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Because the QR encoder already exists at /labs/qr and there should be exactly one of it on this site. Two encoders means two things to check and two places for a bug to hide. This page produces the exact string; paste it into /labs/qr and that page draws the square, picks the mask and tells you which version it needed."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "What is line folding and why does it matter?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "iCalendar and vCard say a line should not exceed 75 octets, and a longer one is split by a line break plus a single space. Almost nothing implements it, and the rule that gets missed most is that the split must not fall inside a multi-octet character. Skip that and a description in Devanagari or with an emoji arrives corrupted, silently. The folder here counts octets, never splits a character, and prints the length of every line so you can see it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Is it safe to put my Wi-Fi password in a QR code?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "The password is inside the code in clear text and there is no way around that; the format has no room for anything else. Anyone who photographs the printed square has it permanently. On a guest network that reaches the internet and not the printer, the NAS or the cameras, that is a reasonable trade. On your main network it hands out the keys to everything on it."
+                        }
+                },
+                {
+                        "@type": "Question",
+                        "name": "Does anything I type here leave my browser?",
+                        "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "No. There is no fetch and no XHR in the code, no URL found in a payload is opened, resolved or previewed, and no address is looked up anywhere. That matters more here than on most pages, because the things people paste into a payload tool are Wi-Fi passwords, home coordinates and payment addresses."
+                        }
+                }
+        ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+                {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://krunalkumar.dpdns.org/"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Labs",
+                        "item": "https://krunalkumar.dpdns.org/labs"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "QR payload builder",
+                        "item": "https://krunalkumar.dpdns.org/labs/qr-payloads"
+                }
+        ]
+}
+    </script>
+    <script src="/assets/js/boot.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/labs.css" />
+    <link rel="preload" href="/partials/header" as="fetch" crossorigin />
+    <link rel="preload" href="/partials/footer" as="fetch" crossorigin />
+    <script defer src="/assets/js/include-partials.js"></script>
+    <script defer src="/assets/js/site-search.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <header class="site-header noscript-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Krunalkumar Shah</a>
+        <div class="nav-list">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/services">Services</a>
+          <a class="nav-link" href="/projects">Projects</a>
+          <a class="nav-link" href="/research">Research</a>
+          <a class="nav-link active" aria-current="page" href="/labs">Labs</a>
+          <a class="nav-link" href="/games">Games</a>
+          <a class="nav-link" href="/internships">Internships</a>
+          <a class="nav-link" href="/client-reviews">Recommendations</a>
+          <a class="nav-link" href="/blog">Blog</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </div>
+        <div class="nav-tools">
+            <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Switch theme" title="Switch theme">
+              <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+              </svg>
+              <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+            <button class="search-open" id="search-open" type="button"
+                    aria-label="Search the site" title="Search  /">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <section class="page-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/labs">Labs</a></li>
+            <li aria-current="page">QR payload builder</li>
+          </ol>
+        </nav>
+        <h1>vCard, Wi-Fi and UPI QR payload builder</h1>
+        <p class="hero-text">A QR code is a string in a costume. This builds the string &mdash; contact cards, Wi-Fi joins, calendar events, map points and UPI payment requests &mdash; with the escaping most builders get wrong, and reads one back the other way. Paste a UPI code here before you scan it.</p>
+        <ul class="lab-facts">
+          <li>vCard 3.0, 4.0 and MECARD</li>
+          <li>Wi-Fi, calendar, geo and UPI</li>
+          <li>Escaping checked by round trip</li>
+          <li>UPI codes explained in plain words</li>
+          <li>No lookups, nothing uploaded</li>
+        </ul>
+      </section>
+
+      <!-- A no-JS visitor would otherwise meet an empty editor and a dead Run
+           button with no explanation. boot.js adds html.js synchronously, so the
+           CSS below hides the inert tool and this takes its place. -->
+      <noscript>
+        <div class="lab-noscript">
+          <h2>This one needs JavaScript</h2>
+          <p>This tool does all of its work inside your browser and needs JavaScript to do it.</p>
+          <p>Nothing you enter is ever uploaded, which is exactly why the work has to happen here rather than on a server.</p>
+          <p>Turn JavaScript on for this site and reload, and it will work.
+            In the meantime the <a href="/blog">writing</a> and the rest of the
+            <a href="/">site</a> read perfectly well without it.</p>
+        </div>
+      </noscript>
+      <div class="lab lab-tool" id="qrpayloads">
+        <div class="lab-gate" id="lab-gate">
+          <div class="lab-gate-card">
+            <h2>Before you start</h2>
+            <p>
+              This tool runs entirely inside your browser. Nothing you paste or
+              drop here is uploaded, logged or stored &mdash; which for security work
+              is the whole point, not a footnote.
+            </p>
+            <div class="lab-gate-cols">
+              <div>
+                <p class="lab-gate-h limits">What it does not do</p>
+                <ul class="lab-gate-list">
+                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No account, no history, nothing saved</li>
+                  <li>It cannot check that a UPI address exists or belongs to anyone</li>
+                  <li>It cannot verify a sign= parameter &mdash; that needs a key it does not have</li>
+                  <li>It does not decode EMVCo or Bharat QR &mdash; the kind that starts 000201</li>
+                  <li>It does not draw the QR code; /labs/qr does that</li>
+                </ul>
+              </div>
+              <div>
+                <p class="lab-gate-h privacy">Why that matters here</p>
+                <ul class="lab-gate-list">
+                  <li>A Wi-Fi password you type is never transmitted</li>
+                  <li>A payment address you paste is never looked up</li>
+                  <li>No URL found in a payload is ever opened or resolved</li>
+                  <li>Nothing you paste ever appears in your Network tab</li>
+                  <li>Works with no internet once the page is cached</li>
+                  <li>Free, permanently</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lab-gate-actions">
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-warn">
+          <p class="lab-warn-text"><strong>A pay QR and a receive QR look identical.</strong> On UPI there is no such thing as a &ldquo;receive money&rdquo; QR &mdash; every UPI QR is a request for YOU to PAY. Anyone who tells you to scan a code to receive a refund is taking your money. Your UPI PIN is only ever needed to send.</p>
+        </div>
+
+        <div class="lab-toolbar">
+          <label class="sr-only" for="tool-mode">What to do</label>
+          <select class="lab-select" id="tool-mode">
+            <option value="build" selected>Build a payload</option>
+            <option value="parse">Read a payload</option>
+          </select>
+          <button class="lab-btn" type="button" id="tool-handoff">Read back what I built</button>
+          <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Build</button>
+          <span class="spacer"></span>
+          <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen"
+                  title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
+        </div>
+
+        <div id="tool-buildpanel">
+          <div class="lab-fieldrow">
+            <label class="sr-only" for="tool-kind">Payload type</label>
+            <select class="lab-select" id="tool-kind">
+              <option value="vcard3" selected>Contact card &mdash; vCard 3.0</option>
+              <option value="vcard4">Contact card &mdash; vCard 4.0</option>
+              <option value="mecard">Contact card &mdash; MECARD</option>
+              <option value="wifi">Wi-Fi network</option>
+              <option value="ical">Calendar event</option>
+              <option value="geo">Map point</option>
+              <option value="upi">UPI payment request</option>
+            </select>
+            <span id="tool-textopts">
+              <label class="sr-only" for="tool-eol">Line endings</label>
+              <select class="lab-select" id="tool-eol">
+                <option value="crlf" selected>Line endings: CRLF, per spec</option>
+                <option value="lf">Line endings: LF, one octet shorter each</option>
+              </select>
+              <label class="lab-metric lab-qrcheck" for="tool-fold">
+                <input type="checkbox" id="tool-fold" checked />
+                <span>Fold lines at 75 octets</span>
+              </label>
+            </span>
+          </div>
+
+          <div id="fields-contact">
+            <div class="lab-metrics">
+              <div class="lab-metric">
+                <label for="c-given">Given name</label>
+                <input class="lab-toolfield" type="text" id="c-given" autocomplete="off" value="Krunalkumar" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-family">Family name</label>
+                <input class="lab-toolfield" type="text" id="c-family" autocomplete="off" value="Shah" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-middle">Middle names</label>
+                <input class="lab-toolfield" type="text" id="c-middle" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-prefix">Prefix (Dr, Prof)</label>
+                <input class="lab-toolfield" type="text" id="c-prefix" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-suffix">Suffix (Jr, PhD)</label>
+                <input class="lab-toolfield" type="text" id="c-suffix" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-fn">Display name (blank composes it)</label>
+                <input class="lab-toolfield" type="text" id="c-fn" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-org">Organisation</label>
+                <input class="lab-toolfield" type="text" id="c-org" autocomplete="off" value="Shah, Sons &amp; Co; Security" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-title">Job title</label>
+                <input class="lab-toolfield" type="text" id="c-title" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-tel">Phone</label>
+                <input class="lab-toolfield" type="text" id="c-tel" autocomplete="off" inputmode="tel" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-teltype">Phone type</label>
+                <select class="lab-select" id="c-teltype">
+                  <option value="cell" selected>Mobile</option>
+                  <option value="home">Home, voice</option>
+                  <option value="work">Work, voice</option>
+                  <option value="fax">Work, fax</option>
+                  <option value="main">Main line</option>
+                </select>
+              </div>
+              <div class="lab-metric">
+                <label for="c-email">Email</label>
+                <input class="lab-toolfield" type="text" id="c-email" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-url">Website</label>
+                <input class="lab-toolfield" type="text" id="c-url" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-street">Street</label>
+                <input class="lab-toolfield" type="text" id="c-street" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-city">City or locality</label>
+                <input class="lab-toolfield" type="text" id="c-city" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-region">State or region</label>
+                <input class="lab-toolfield" type="text" id="c-region" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-post">Postcode</label>
+                <input class="lab-toolfield" type="text" id="c-post" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="c-country">Country</label>
+                <input class="lab-toolfield" type="text" id="c-country" autocomplete="off" />
+              </div>
+              <div class="lab-metric lab-qrwide">
+                <label for="c-note">Note</label>
+                <textarea class="lab-toolfield" id="c-note" rows="2" spellcheck="false"
+                          placeholder="Commas, semicolons and line breaks are all deliberate here - try them"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div id="fields-wifi" hidden>
+            <div class="lab-metrics">
+              <div class="lab-metric">
+                <label for="w-ssid">Network name (SSID)</label>
+                <input class="lab-toolfield" type="text" id="w-ssid" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric">
+                <label for="w-sec">Security</label>
+                <select class="lab-select" id="w-sec">
+                  <option value="WPA" selected>WPA / WPA2 / WPA3</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">Open, no password</option>
+                  <option value="WPA2-EAP">WPA2-EAP (enterprise)</option>
+                </select>
+              </div>
+              <div class="lab-metric">
+                <label for="w-pass">Password</label>
+                <input class="lab-toolfield" type="text" id="w-pass" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric lab-qrcheck">
+                <input type="checkbox" id="w-hidden" />
+                <label for="w-hidden">Hidden network</label>
+              </div>
+              <p class="lab-qrmeta lab-qrwide">The password goes into the code in clear text. There is no version of this format that hides it, so anyone who photographs the printed square keeps it forever. That is the argument for putting one on a guest network and nowhere else.</p>
+            </div>
+            <div class="lab-metrics" id="fields-eap" hidden>
+              <div class="lab-metric">
+                <label for="w-eap">EAP method</label>
+                <select class="lab-select" id="w-eap">
+                  <option value="PEAP" selected>PEAP</option>
+                  <option value="TTLS">TTLS</option>
+                  <option value="TLS">TLS</option>
+                  <option value="PWD">PWD</option>
+                </select>
+              </div>
+              <div class="lab-metric">
+                <label for="w-ph2">Phase 2 method</label>
+                <select class="lab-select" id="w-ph2">
+                  <option value="none" selected>None</option>
+                  <option value="MSCHAPV2">MSCHAPV2</option>
+                  <option value="PAP">PAP</option>
+                  <option value="GTC">GTC</option>
+                </select>
+              </div>
+              <div class="lab-metric">
+                <label for="w-identity">Identity</label>
+                <input class="lab-toolfield" type="text" id="w-identity" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric">
+                <label for="w-anon">Anonymous identity</label>
+                <input class="lab-toolfield" type="text" id="w-anon" autocomplete="off" spellcheck="false" />
+              </div>
+            </div>
+          </div>
+
+          <div id="fields-cal" hidden>
+            <div class="lab-metrics">
+              <div class="lab-metric lab-qrwide">
+                <label for="e-summary">Summary (the line the calendar shows)</label>
+                <input class="lab-toolfield" type="text" id="e-summary" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="e-start">Starts</label>
+                <input class="lab-toolfield" type="datetime-local" id="e-start" />
+              </div>
+              <div class="lab-metric">
+                <label for="e-end">Ends</label>
+                <input class="lab-toolfield" type="datetime-local" id="e-end" />
+              </div>
+              <div class="lab-metric">
+                <label for="e-tzmode">How to read those times</label>
+                <select class="lab-select" id="e-tzmode">
+                  <option value="utc" selected>Times are already UTC</option>
+                  <option value="browser" id="e-tzmode-browser">Times are wall clock here</option>
+                  <option value="named">Times are wall clock in a named zone</option>
+                </select>
+              </div>
+              <div class="lab-metric" id="e-tzid-wrap" hidden>
+                <label for="e-tzid">IANA zone name</label>
+                <input class="lab-toolfield" type="text" id="e-tzid" autocomplete="off"
+                       spellcheck="false" value="Asia/Kolkata" />
+              </div>
+              <div class="lab-metric">
+                <label for="e-location">Location</label>
+                <input class="lab-toolfield" type="text" id="e-location" autocomplete="off" />
+              </div>
+              <div class="lab-metric lab-qrwide">
+                <label for="e-desc">Description</label>
+                <textarea class="lab-toolfield" id="e-desc" rows="2" spellcheck="false"
+                          placeholder="Make this long. Folding at 75 octets is the rule almost nothing implements."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div id="fields-geo" hidden>
+            <div class="lab-metrics">
+              <div class="lab-metric">
+                <label for="g-lat">Latitude</label>
+                <input class="lab-toolfield" type="text" id="g-lat" autocomplete="off"
+                       inputmode="decimal" placeholder="23.0225" />
+              </div>
+              <div class="lab-metric">
+                <label for="g-lon">Longitude</label>
+                <input class="lab-toolfield" type="text" id="g-lon" autocomplete="off"
+                       inputmode="decimal" placeholder="72.5714" />
+              </div>
+              <div class="lab-metric">
+                <label for="g-unc">Uncertainty in metres (optional)</label>
+                <input class="lab-toolfield" type="text" id="g-unc" autocomplete="off" inputmode="decimal" />
+              </div>
+              <div class="lab-metric">
+                <label for="g-label">Pin label (Android only)</label>
+                <input class="lab-toolfield" type="text" id="g-label" autocomplete="off" />
+              </div>
+              <p class="lab-qrmeta lab-qrwide">How many decimal places you keep decides whether this names a neighbourhood or a front door. The tool works the distance out for the latitude you give it.</p>
+            </div>
+          </div>
+
+          <div id="fields-upi" hidden>
+            <div class="lab-metrics">
+              <div class="lab-metric">
+                <label for="u-pa">Payee address, pa</label>
+                <input class="lab-toolfield" type="text" id="u-pa" autocomplete="off"
+                       spellcheck="false" placeholder="name@bank" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-pn">Payee name, pn</label>
+                <input class="lab-toolfield" type="text" id="u-pn" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-am">Amount in rupees, am</label>
+                <input class="lab-toolfield" type="text" id="u-am" autocomplete="off"
+                       inputmode="decimal" placeholder="blank means the payer types it" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-tn">Note, tn (50 characters)</label>
+                <input class="lab-toolfield" type="text" id="u-tn" autocomplete="off" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-tr">Transaction reference, tr</label>
+                <input class="lab-toolfield" type="text" id="u-tr" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-mc">Merchant category, mc</label>
+                <input class="lab-toolfield" type="text" id="u-mc" autocomplete="off"
+                       inputmode="numeric" placeholder="four digits" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-mode">Mode</label>
+                <input class="lab-toolfield" type="text" id="u-mode" autocomplete="off" placeholder="04 on printed codes" />
+              </div>
+              <div class="lab-metric">
+                <label for="u-sign">Signature, sign</label>
+                <input class="lab-toolfield" type="text" id="u-sign" autocomplete="off" spellcheck="false" />
+              </div>
+              <p class="lab-qrmeta lab-qrwide">Whatever you put in sign is copied through as text. This page cannot compute a signature and cannot check one &mdash; that needs a key issued by NPCI. Currency is fixed at INR because that is what UPI settles in.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="tool-parsepanel" hidden>
+          <div class="lab-panes lab-panes-single">
+            <div class="lab-pane lab-pane-input">
+              <p class="lab-pane-label">Paste a payload string</p>
+              <label class="sr-only" for="tool-in">Payload string to read</label>
+              <textarea class="lab-toolinput" id="tool-in" spellcheck="false"
+                        autocapitalize="off" autocorrect="off"
+                        placeholder="upi://pay?pa=... or BEGIN:VCARD or WIFI:T:WPA;S:... - the string, not a picture of it"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-panes lab-panes-single">
+          <div class="lab-pane">
+            <p class="lab-pane-label">Output</p>
+            <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
+          </div>
+        </div>
+        <div class="lab-resultbar">
+          <label class="sr-only" for="tool-result">The payload string</label>
+          <textarea class="lab-toolfield lab-toolresult" id="tool-result" readonly rows="2"
+                    spellcheck="false" placeholder="The exact string - paste it into /labs/qr to draw the square"></textarea>
+          <button class="lab-btn" type="button" data-copy-target="tool-result">Copy</button>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>What is actually inside the square</h2>
+        </div>
+        <div class="content-grid two-up">
+          <article class="info-card">
+            <h3>Every UPI QR asks you to pay</h3>
+            <p>There is no &ldquo;receive money&rdquo; QR code on UPI. A payment request and a payment collection look the same because they <em>are</em> the same &mdash; a <code>upi://pay</code> URI naming a payee. If someone says scan this to get your refund, your prize, your deposit or your salary, completing it pays them. Your PIN is only ever needed to send. The parser here prints that on every UPI code it reads, including the ones you build yourself.</p>
+          </article>
+          <article class="info-card">
+            <h3>The payee name is just text</h3>
+            <p><code>pn</code> is a string typed by whoever printed the code. Nobody verifies it, and a code claiming to be from a bank costs nothing to make. The tool flags names that borrow authority and names carrying Cyrillic or Greek letters drawn like Latin ones, but it cannot check a UPI address against anything &mdash; that needs a lookup at NPCI, which is a network call this page will never make. Read the name your own app resolves, and stop if the two disagree.</p>
+          </article>
+          <article class="info-card">
+            <h3>Escaping is where builders break</h3>
+            <p>vCard, MECARD and the Wi-Fi string all use punctuation as structure. An organisation called &ldquo;Shah, Sons &amp; Co; Security&rdquo; contains two separators, and a builder that ignores them produces a card that arrives in pieces. Everything built here is escaped to the rule for its format, then parsed back and compared component by component, so you can watch the round trip rather than take my word for it.</p>
+          </article>
+          <article class="info-card">
+            <h3>A Wi-Fi QR carries the password in clear</h3>
+            <p>The string is <code>WIFI:T:WPA;S:name;P:password;;</code> and the password sits in it as plain characters. Nothing about the format encrypts or hides it, so anyone who photographs the printed square keeps it forever, including people who were never in the building. That is not a reason never to use one &mdash; it is the reason the right place for one is a guest network that reaches the internet and nothing else.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Can I scan a QR code to receive money?</summary>
+            <div>No. There is no such thing on UPI. Every UPI QR code is a request for the person scanning it to pay. A pay QR and a supposed receive QR look identical because there is only one kind. Anyone telling you to scan a code, or to enter your UPI PIN, in order to receive a refund or a prize is taking money out of your account. Receiving money on UPI never needs your PIN.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can this tell me whether a UPI address is genuine?</summary>
+            <div>No, and it says so on screen every time. Checking that a VPA exists or belongs to anyone means asking NPCI, which is a network request, and this page makes none. What it can do is read the string: the shape of the handle, whether the amount is fixed or left for you, whether the payee name borrows authority or contains letters from another alphabet drawn like Latin ones. All of that is judged on the text, not on reality.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does it not draw the QR code?</summary>
+            <div>Because the QR encoder already exists at /labs/qr and there should be exactly one of it on this site. Two encoders means two things to check and two places for a bug to hide. This page produces the exact string; paste it into /labs/qr and that page draws the square, picks the mask and tells you which version it needed.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>What is line folding and why does it matter?</summary>
+            <div>iCalendar and vCard say a line should not exceed 75 octets, and a longer one is split by a line break plus a single space. Almost nothing implements it, and the rule that gets missed most is that the split must not fall inside a multi-octet character. Skip that and a description in Devanagari or with an emoji arrives corrupted, silently. The folder here counts octets, never splits a character, and prints the length of every line so you can see it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Is it safe to put my Wi-Fi password in a QR code?</summary>
+            <div>The password is inside the code in clear text and there is no way around that; the format has no room for anything else. Anyone who photographs the printed square has it permanently. On a guest network that reaches the internet and not the printer, the NAS or the cameras, that is a reasonable trade. On your main network it hands out the keys to everything on it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Does anything I type here leave my browser?</summary>
+            <div>No. There is no fetch and no XHR in the code, no URL found in a payload is opened, resolved or previewed, and no address is looked up anywhere. That matters more here than on most pages, because the things people paste into a payload tool are Wi-Fi passwords, home coordinates and payment addresses.</div>
+          </details>
+      </section>
+
+      <section class="section-card lab-report">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>If a result looks wrong or an input will not parse, I would genuinely like to know.</p>
+        </div>
+        <div class="lab-report-actions">
+          <a class="btn btn-primary" href="/labs?from=qr-payloads#lab-feedback">Report a problem or send feedback</a>
+          <a class="lab-btn" href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20about%20the%20QR%20payload%20builder%3A%20" target="_blank" rel="noopener">Message on WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>The rest of the QR and payments set</h2>
+          <p>All of them work the same way: on your machine, with nothing uploaded and nothing looked up.</p>
+        </div>
+        <div class="lab-grid">
+          <a class="lab-card" href="/labs/qr">
+            <span class="lab-card-name">QR encoder and inspector</span>
+            <p class="lab-card-desc">The general half &mdash; draws the square, and decodes a photograph of one.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/upi-fraud">
+            <span class="lab-card-name">UPI and payment fraud</span>
+            <p class="lab-card-desc">Collect requests, mandates, and the phone call that comes with them.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/unicode">
+            <span class="lab-card-name">Unicode inspector</span>
+            <p class="lab-card-desc">The lookalike letters and invisible characters, one code point at a time.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/wifi-security">
+            <span class="lab-card-name">Wi-Fi security</span>
+            <p class="lab-card-desc">What a network protects, and what it never did.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/url-inspector">
+            <span class="lab-card-name">URL inspector</span>
+            <p class="lab-card-desc">Take a link out of a payload apart without opening it.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+          <a class="lab-card" href="/labs/timestamp">
+            <span class="lab-card-name">Timestamp converter</span>
+            <p class="lab-card-desc">UTC, offsets and the formats calendars argue about.</p>
+            <span class="lab-card-engine">Runs in your browser</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">
+        <img class="footer-logo" src="/favicon.svg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        Krunalkumar Shah
+      </p>
+      <p class="footer-tagline">
+        Cybersecurity professional and published Linux security researcher, building AI-driven automation
+        and the practical systems that run on it.
+      </p>
+      <div class="footer-cta-group">
+        <a class="btn btn-glow btn-hire footer-cta" href="/services">Hire me</a>
+        <a class="btn btn-glow btn-learn footer-cta" href="/internships">Learn with me</a>
+        <a class="footer-still" href="/buddha"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2.2 3 3.2 5.2 3.2 7 0 1.9-1.4 3.2-3.2 3.2S8.8 11.9 8.8 10c0-1.8 1-4 3.2-7z" fill="currentColor"/><path d="M5 9c2.9.7 4.7 2.1 5.4 3.6.7 1.5.1 2.6-1.4 2.6C6.7 15.2 4.6 12.8 5 9z" fill="currentColor" opacity=".8"/><path d="M19 9c-2.9.7-4.7 2.1-5.4 3.6-.7 1.5-.1 2.6 1.4 2.6C17.3 15.2 19.4 12.8 19 9z" fill="currentColor" opacity=".8"/><path d="M3.2 16.8c2.6-1 6-1.5 8.8-1.5s6.2.5 8.8 1.5c-2.2 2.1-5.4 3.2-8.8 3.2s-6.6-1.1-8.8-3.2z" fill="currentColor" opacity=".55"/></svg><span>A still place</span><span class="footer-still-sub">sit for a moment</span></a><a class="footer-still footer-still--loud" href="/party"><svg class="footer-still-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18.2a3 3 0 1 1-2-2.83V6.2l11-2.2v9.17a3 3 0 1 1-2-2.83V6.4L9 7.8v10.4z" fill="currentColor"/></svg><span>A loud place</span><span class="footer-still-sub">dance for a moment</span></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <nav class="footer-col" aria-label="Footer">
+        <h3>Explore</h3>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/services">Services</a>
+        <a href="/projects">Projects</a>
+        <a href="/research">Research</a>
+        <a href="/labs">Labs</a>
+        <a href="/games">Games</a>
+        <a href="/internships">Internships</a>
+        <a href="/client-reviews">Recommendations</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <nav class="footer-col" aria-label="From the blog">
+        <h3>From the blog</h3>
+        <a href="/blog/types-of-cyberattacks">Types of cyberattacks</a>
+        <a href="/blog/india-it-act-explained">India's IT law, explained</a>
+        <a href="/blog/security-compliance-explained">Security compliance, explained</a>
+        <a href="/blog/how-cybercrime-cases-are-solved">How cybercrime cases are solved</a>
+        <a href="/blog/ai-driven-human-assisted">AI driven, human assisted</a>
+        <a href="/blog/what-is-a-fork-bomb">What is a fork bomb?</a>
+        <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>
+        <a href="/blog/character-over-career-the-choices-i-live-by">Character over career</a>
+        <a href="/blog/types-of-love-and-choosing-a-life-partner">Choosing a life partner</a>
+        <a href="/blog/the-four-ms-every-business-needs">The 4 M&rsquo;s of business</a>
+        <a href="/blog">All articles →</a>
+      </nav>
+      <div class="footer-col">
+        <h3>Connect</h3>
+        <a href="https://www.linkedin.com/in/realkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> LinkedIn</a>
+        <a href="https://www.linkedin.com/company/krunalkumar-shah" target="_blank" rel="noopener" aria-label="LinkedIn company page"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg> Company</a>
+        <a href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a>
+        <a href="https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg> Google Scholar</a>
+        <a href="https://www.credly.com/users/officialkrunalkumar/badges" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 1 0 0 14A7 7 0 0 0 12 1zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8.5 15.5 7 23l5-3 5 3-1.5-7.5a8 8 0 0 1-7 0z"/></svg> Credly</a>
+      
+        <a href="mailto:krunalkumar@krunalkumar.dpdns.org"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg> Email</a>
+        <a href="https://wa.me/918200713617?text=Hello" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp</a>
+        <a href="https://calendar.app.google/x3SFLgyDeeLL7WjA8" target="_blank" rel="noopener"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg> Book a call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small class="footer-legal"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/refund">Refunds</a> · <a href="/verify">Verify certificate</a> · <a href="https://status.krunalkumar.dpdns.org" target="_blank" rel="noopener">Site status</a></small>
+    <small class="footer-msme">MSME registered, Govt. of India · Udyam Reg. No. UDYAM-GJ-23-0050928</small>
+    <small>© <span class="copyright-year">2026</span> Krunalkumar Shah. All rights reserved.</small>
+  </div>
+</footer>
+
+    <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/labs/lab-copy.js"></script>
+    <script defer src="/assets/js/labs/tool-shell.js"></script>
+    <script defer src="/assets/js/labs/tools/qr-payloads.js"></script>
+    <script defer src="/assets/js/labs/lab-fullscreen.js"></script>
+  </body>
+</html>

@@ -479,6 +479,84 @@
                         "position": 75,
                         "name": "Incident response",
                         "url": "https://krunalkumar.dpdns.org/games/incident-response"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 76,
+                        "name": "Assembly golf",
+                        "url": "https://krunalkumar.dpdns.org/games/assembly-golf"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 77,
+                        "name": "Binary search duel",
+                        "url": "https://krunalkumar.dpdns.org/games/binary-search-duel"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 78,
+                        "name": "Cache game",
+                        "url": "https://krunalkumar.dpdns.org/games/cache-game"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 79,
+                        "name": "Cipher escape",
+                        "url": "https://krunalkumar.dpdns.org/games/cipher-escape"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 80,
+                        "name": "Firewall defence",
+                        "url": "https://krunalkumar.dpdns.org/games/firewall-defence"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 81,
+                        "name": "Overflow puzzle",
+                        "url": "https://krunalkumar.dpdns.org/games/overflow-puzzle"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 82,
+                        "name": "Packet routing",
+                        "url": "https://krunalkumar.dpdns.org/games/packet-routing"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 83,
+                        "name": "Plasma",
+                        "url": "https://krunalkumar.dpdns.org/games/plasma"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 84,
+                        "name": "Race condition",
+                        "url": "https://krunalkumar.dpdns.org/games/race-condition"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 85,
+                        "name": "Social engineering",
+                        "url": "https://krunalkumar.dpdns.org/games/social-engineering"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 86,
+                        "name": "SQL injection escape room",
+                        "url": "https://krunalkumar.dpdns.org/games/sqli-escape"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 87,
+                        "name": "Antakshari",
+                        "url": "https://krunalkumar.dpdns.org/games/antakshari"
+                },
+                {
+                        "@type": "ListItem",
+                        "position": 88,
+                        "name": "Wind chimes",
+                        "url": "https://krunalkumar.dpdns.org/games/chimes"
                 }
         ]
 }
@@ -664,6 +742,48 @@
             <button type="button" class="game-filter-clear" id="game-filter-empty-clear">Clear the filter</button>
           </div>
         </div>
+      </section>
+
+      <!-- The two walkthroughs. Same construction as the pair on /labs, which
+           is where .explainer-* is defined (main.css, loaded here too).
+
+           THE ASTERISK IS LOAD-BEARING. Both the narration and the recorded
+           interface in the desktop cut quote the number of games as it stood
+           on the day it was recorded, and that number is baked into the
+           picture rather than supplied by the caption track — so it cannot be
+           corrected by editing a file, only by re-recording. Every other
+           figure on this site is recounted at deploy; this one cannot be, so
+           it gets a note instead of a silent lie. -->
+      <section class="section-card explainer-section">
+        <div class="section-heading">
+          <h2>How the games work</h2>
+          <p>Two short walkthroughs, with sound. Nothing plays until you press play.</p>
+        </div>
+        <div class="explainer-grid">
+          <figure class="explainer">
+            <video controls preload="none" playsinline width="1920" height="1080"
+                   poster="/assets/video/games-desktop-poster.jpg">
+              <source src="/assets/video/games-desktop.mp4" type="video/mp4" />
+            <track kind="captions" src="/assets/video/games-desktop.vtt" srclang="en" label="English" default />
+              Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
+            </video>
+            <figcaption><strong>On a computer</strong> &mdash; the categories, the type-to-filter box, and the storage panel where you can read your saved scores, clear them, or switch saving off.</figcaption>
+          </figure>
+          <figure class="explainer">
+            <video controls preload="none" playsinline width="1920" height="1080"
+                   poster="/assets/video/games-mobile-poster.jpg">
+              <source src="/assets/video/games-mobile.mp4" type="video/mp4" />
+            <track kind="captions" src="/assets/video/games-mobile.vtt" srclang="en" label="English" default />
+              Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
+            </video>
+            <figcaption><strong>On a phone</strong> &mdash; your scores shown as the real rows the browser is holding, cleared in one tap.</figcaption>
+          </figure>
+        </div>
+        <p class="explainer-note">
+          <span aria-hidden="true">*</span> The walkthrough was recorded when the arcade was smaller, so the
+          number of games it quotes is already behind. Games are still being added. The count on this page is
+          the one to trust &mdash; it is counted at every deploy rather than typed.
+        </p>
       </section>
 
       <section class="section-card" id="arcade-games">
@@ -1194,6 +1314,106 @@
               <span class="game-card-meta">Two scenarios &middot; four meters that trade against each other<span class="game-card-best" data-best="incident-response"></span></span>
             </span>
           </a>
+          <a class="game-card" data-cat="cs" data-slug="assembly-golf" href="/games/assembly-golf">
+            <span class="game-thumb" data-thumb="assembly-golf">
+              <span class="game-thumb-glyph" aria-hidden="true">RET</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Assembly golf</h3>
+              <p class="game-card-desc">Write the shortest program that passes the hidden tests. Eight functions on an invented twenty instruction machine, scored on length and not on speed.</p>
+              <span class="game-card-meta">Twenty instructions, four registers, 24 cells with the stack in them<span class="game-card-best" data-best="assembly-golf"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="binary-search-duel" href="/games/binary-search-duel">
+            <span class="game-thumb" data-thumb="binary-search-duel">
+              <span class="game-thumb-glyph" aria-hidden="true">½</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Binary search duel</h3>
+              <p class="game-card-desc">Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one.</p>
+              <span class="game-card-meta">Both halves &middot; an exact cheat detector<span class="game-card-best" data-best="binary-search-duel"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="cache-game" href="/games/cache-game">
+            <span class="game-thumb" data-thumb="cache-game">
+              <span class="game-thumb-glyph" aria-hidden="true">L1</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Cache game</h3>
+              <p class="game-card-desc">A real cache simulator. See the tag, index and offset split for every access, pick the evictions yourself, then optimise a loop against Belady optimal.</p>
+              <span class="game-card-meta">Set-associative simulator &middot; LRU, FIFO, MRU, random and Belady<span class="game-card-best" data-best="cache-game"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="cipher-escape" href="/games/cipher-escape">
+            <span class="game-thumb" data-thumb="cipher-escape">
+              <span class="game-thumb-glyph" aria-hidden="true">⊕</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Cipher escape</h3>
+              <p class="game-card-desc">Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger.</p>
+              <span class="game-card-meta">Five chained rooms &middot; every tool computed live<span class="game-card-best" data-best="cipher-escape"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="firewall-defence" href="/games/firewall-defence">
+            <span class="game-thumb" data-thumb="firewall-defence">
+              <span class="game-thumb-glyph" aria-hidden="true">▦</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Firewall defence</h3>
+              <p class="game-card-desc">Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses.</p>
+              <span class="game-card-meta">Seven rules in order &middot; first match wins<span class="game-card-best" data-best="firewall-defence"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="overflow-puzzle" href="/games/overflow-puzzle">
+            <span class="game-thumb" data-thumb="overflow-puzzle">
+              <span class="game-thumb-glyph" aria-hidden="true">↩</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Overflow puzzle</h3>
+              <p class="game-card-desc">Craft the input that takes the return address on a toy machine. Four levels: the plain overflow, a stack canary, a no-execute stack and a randomised base.</p>
+              <span class="game-card-meta">An invented machine &middot; four levels, four mitigations<span class="game-card-best" data-best="overflow-puzzle"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="packet-routing" href="/games/packet-routing">
+            <span class="game-thumb" data-thumb="packet-routing">
+              <span class="game-thumb-glyph" aria-hidden="true">⇄</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Packet routing</h3>
+              <p class="game-card-desc">Seven routers whose tables are computed rather than drawn. Run Bellman-Ford or Dijkstra, cut a link, and watch count-to-infinity happen for real.</p>
+              <span class="game-card-meta">Bellman-Ford and Dijkstra &middot; a drop-tail queue on every link<span class="game-card-best" data-best="packet-routing"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="race-condition" href="/games/race-condition">
+            <span class="game-thumb" data-thumb="race-condition">
+              <span class="game-thumb-glyph" aria-hidden="true">⇄</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Race condition</h3>
+              <p class="game-card-desc">You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break.</p>
+              <span class="game-card-meta">Ten levels &middot; every interleaving counted<span class="game-card-best" data-best="race-condition"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="social-engineering" href="/games/social-engineering">
+            <span class="game-thumb" data-thumb="social-engineering">
+              <span class="game-thumb-glyph" aria-hidden="true">☏</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Social engineering</h3>
+              <p class="game-card-desc">Eight conversations under live pressure — a call, a walk-in, a chat, a vendor at the door. Choose a reply, then see the technique named and scored.</p>
+              <span class="game-card-meta">Eight conversations &middot; two axes, scored apart<span class="game-card-best" data-best="social-engineering"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="cs" data-slug="sqli-escape" href="/games/sqli-escape">
+            <span class="game-thumb" data-thumb="sqli-escape">
+              <span class="game-thumb-glyph" aria-hidden="true">';</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">SQL injection escape room</h3>
+              <p class="game-card-desc">Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix.</p>
+              <span class="game-card-meta">A real SQL parser over five toy tables<span class="game-card-best" data-best="sqli-escape"></span></span>
+            </span>
+          </a>
         </div>
       </section>
 
@@ -1332,6 +1552,26 @@
               <h3 class="game-card-name">Kaleidoscope</h3>
               <p class="game-card-desc">Draw one line and a mirror barrel turns it into a figure. Three to twenty-four segments, true reflection or pure rotation, and a PNG you can keep.</p>
               <span class="game-card-meta">Dihedral stamping &middot; steered flow field<span class="game-card-best" data-best="kaleidoscope"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="toy" data-slug="plasma" href="/games/plasma">
+            <span class="game-thumb" data-thumb="plasma">
+              <span class="game-thumb-glyph" aria-hidden="true">≋</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Plasma</h3>
+              <p class="game-card-desc">A demoscene plasma built the old way: a sine table, a 256-colour palette LUT and cycling by index offset. Change the terms, the frequency and the resolution.</p>
+              <span class="game-card-meta">Sine table &middot; 256-entry palette LUT<span class="game-card-best" data-best="plasma"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="toy" data-slug="chimes" href="/games/chimes">
+            <span class="game-thumb" data-thumb="chimes">
+              <span class="game-thumb-glyph" aria-hidden="true">♫</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Wind chimes</h3>
+              <p class="game-card-desc">A wind chime simulated rather than sampled: every note comes from its tube length, and the wind decides when it sounds. Six tubes, three metals, three tunings.</p>
+              <span class="game-card-meta">Free-free tube modes &middot; spherical pendulums<span class="game-card-best" data-best="chimes"></span></span>
             </span>
           </a>
         </div>
@@ -1484,6 +1724,16 @@
               <h3 class="game-card-name">Love calculator</h3>
               <p class="game-card-desc">Type two names, get a percentage. It is a hash function, not a compatibility model — and then this page shows what actually predicts whether couples last.</p>
               <span class="game-card-meta">A hash function wearing a disguise<span class="game-card-best" data-best="love-calculator"></span></span>
+            </span>
+          </a>
+          <a class="game-card" data-cat="fun" data-slug="antakshari" href="/games/antakshari">
+            <span class="game-thumb" data-thumb="antakshari">
+              <span class="game-thumb-glyph" aria-hidden="true">अ</span>
+            </span>
+            <span class="game-card-body">
+              <h3 class="game-card-name">Antakshari</h3>
+              <p class="game-card-desc">Every word must begin with the last letter of the one before it. Play the computer or pass the phone round, with a clock on every turn and no repeats.</p>
+              <span class="game-card-meta">Two closed word lists &middot; a minimax on letters<span class="game-card-best" data-best="antakshari"></span></span>
             </span>
           </a>
         </div>
