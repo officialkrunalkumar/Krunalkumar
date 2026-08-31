@@ -1,6 +1,14 @@
 /* ==========================================================================
    game-shell.js — the one shell every game in /games runs inside.
+   Defines the global `GameShell`; every game registers with GameShell.define.
    --------------------------------------------------------------------------
+   That second line exists because tool-shell.js and game-storage.js both name
+   their export in the header and this file did not. It is also the only
+   mention of the name in the first 74 KB: `var GameShell` is assembled at the
+   very end of the IIFE, around line 1674 of 1697, so anything reading only the
+   start of the file — a reader included — never learns what it puts on the
+   window.
+
    labs/ has two shells already: tool-shell.js for the request/response
    forensics tools, and viz-shell.js for the live canvas toys. A game is
    closer to the second, but not close enough to share it, and the gap is
