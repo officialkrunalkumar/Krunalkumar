@@ -565,6 +565,8 @@ function wrapTitle(title, max) {
    --------------------------------------------------------------------------- */
 const LAB_KIND = {
   /* the labs added in the security / developer / practical batch */
+  'incident-timeline':     ['labClock', 'Forensics'],
+  /* the labs added in the security / developer / practical batch */
   'dmarc-builder':         ['labMail', 'Security tool'],
   'sbom-inspector':        ['labFile', 'Security tool'],
   'cookie-inspector':      ['labShield', 'Security tool'],
