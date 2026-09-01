@@ -9,7 +9,8 @@
     "dev": "node scripts/dev-server.js",
     "glossary": "node scripts/glossary.js",
     "glossary:backlinks": "node scripts/glossary-backlinks.js",
-    "og-cards": "node scripts/og-cards.js"
+    "og-cards": "node scripts/og-cards.js",
+    "check:labs": "node scripts/check-labs.js"
   },
   "engines": {
     "node": "24.x"

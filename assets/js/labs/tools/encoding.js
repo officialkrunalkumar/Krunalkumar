@@ -75,7 +75,18 @@
     }
     var out = '';
     for (var k = 0; k < bytes.length && bytes[k] === 0; k++) out += '1';
-    for (var m = digits.length - 1; m >= 0; m--) out += B58[digits[m]];
+    /* `digits` is seeded with a single 0 so the carry loop has somewhere to
+       start, and that seed is only a real digit once the value is non-zero.
+       Emitting it unconditionally put an extra '1' in front of everything
+       whose value is zero, and in Base58 a leading '1' IS a zero byte — so
+       the empty input encoded to "1" and decoded back to a NUL character,
+       and a single 0x00 byte encoded to "11" and came back as two of them.
+       The loop above already represents those bytes; this must not repeat
+       them. */
+    var isZero = digits.length === 1 && digits[0] === 0;
+    if (!isZero) {
+      for (var m = digits.length - 1; m >= 0; m--) out += B58[digits[m]];
+    }
     return out;
   }
   function fromBase58(text) {
