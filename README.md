@@ -69,7 +69,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 │   ├── js/boot.js                Head bootstrap: js-detect, partials-failure timer, GA4 loader
 │   ├── js/include-partials.js    Loads header/footer into every page at runtime
 │   ├── js/particle-bg.js         Particle canvas, reveal animations, nav behavior, back-to-top, auto year
-│   ├── js/wa-form.js             Shared WhatsApp form handler (contact + internship forms)
+│   ├── js/wa-form.js             Shared WhatsApp form handler (contact, internships, labs feedback, games feedback)
 │   ├── js/projects.js            Projects gallery pager + featured-card rotation
 │   ├── js/client-reviews.js      Recommendations carousel + featured-card rotation
 │   ├── js/blog-index.js          Blog index category filter chips + "Show more" reveal
@@ -83,6 +83,8 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 │   ├── images/                   Portrait, logo, certification badges, OG share images, research flowchart (SVG)
 │   ├── images/blog/              Blog post cover art (`*-cover.svg`), extracted figure diagrams (`<slug>-diagram<N>.svg`) + og/ share images
 │   └── pdf/                      Resume
+├── scripts/check-labs.js         Runtime gate — opens every tool lab in headless Chrome, presses Run, fails on a thrown error, an empty output pane or JavaScript failure text in it. `npm run check:labs`. Not part of `npm run check`; needs a browser on the machine
+├── scripts/cdp.js                ~200 lines of Chrome DevTools Protocol over Node's built-in WebSocket, so the gate above needs no dependency. Launch, navigate, evaluate, real mouse clicks, collect errors — nothing else
 ├── scripts/build.js              Deploy-time pass — strips CSS comments, dates sitemap <lastmod> from git, checks its own output. Runs on Vercel, never on the repo (see Deployment)
 ├── .well-known/security.txt      RFC 9116 security contact file
 ├── site.webmanifest              Web app manifest (install metadata + icons; theme tracks --bg-base)
@@ -91,7 +93,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 ├── llms.txt                      Curated link index for AI crawlers/assistants — update when adding pages or posts
 ├── llms-full.txt                 Full plain-text knowledge base (bio, career, research, projects, policies) for AI crawlers
 ├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
-├── package.json                  Zero dependencies. Exists to name `npm run build` / `npm run check` (both are scripts/build.js) and an engines floor of Node 18. `build` rewrites the working tree in place and is Vercel's to run — locally, use `check`
+├── package.json                  Zero dependencies. Exists to name `npm run build` / `npm run check` (both are scripts/build.js), `npm run check:labs` (scripts/check-labs.js) and an engines floor of Node 18. `build` rewrites the working tree in place and is Vercel's to run — locally, use `check`
 ├── .gitignore                    node_modules/, package-lock.json, .vercel/ — package.json makes these possible, none of them belong in the repo
 └── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
 ```
@@ -171,7 +173,7 @@ annual edit needed.
 The contact and internship forms don't need a backend: on submit, JavaScript builds a prefilled
 `wa.me/<number>` message from the fields and opens WhatsApp. When the visitor returns to the tab,
 the page asks whether the message went through — "yes" thanks them and clears the form, "not yet"
-keeps their details for a retry. Both forms share one handler, `assets/js/wa-form.js`, wired
+keeps their details for a retry. All four forms share one handler, `assets/js/wa-form.js`, wired
 declaratively (no inline script): mark the `<form>` with `data-wa-form` and it self-initialises on
 DOMContentLoaded. Five `data-*` attributes configure it, all required — `data-wa-fields`
 (space-separated required field names, in display order), `data-wa-message-template` (the WhatsApp
@@ -200,7 +202,7 @@ is no GTM container** — one was published empty, cost ~314KB a view for nothin
 Beyond page views, Google Analytics receives conversion
 events: `book_call_click`, `email_click`, `whatsapp_link_click`, `resume_download` (and
 `pdf_download` for non-resume PDFs) via the global click listener in `particle-bg.js` — mirrored
-on `/terminal` by `terminal.js` — plus `*_form_submit` / `*_form_confirmed` from `wa-form.js`,
+on `/terminal` by `terminal.js` — plus `*_form_submit` / `*_form_confirmed` from `wa-form.js` (`contact_form_*`, `internship_form_*`, `lab_feedback_*`, `games_feedback_*`),
 `certificate_verified` from `verify.js`, and the easter-egg events `easter_egg_terminal`,
 `fork_bomb_triggered`, `easter_egg_dance`, `easter_egg_teapot`, `easter_egg_teapot_cmd`, and `easter_egg_teapot_pour`.
 
@@ -232,6 +234,61 @@ The value is now `camera=(self), microphone=(self)`. Had this event existed, GA 
 `reason: permissions_policy` on every attempt.
 
 ### Visual layer
+
+**The arrows either side of the wordmark** are `.brand::before` / `::after` in `main.css`, and they
+are pseudo-elements rather than markup for a specific reason: every page carries a static copy of
+the header for the no-JS case, and the static chrome gate in `build.js` compares those copies
+against `partials/`. Real elements would have meant editing 288 pages or drifting from the partial.
+Colour is a background and shape is a mask, so the SVG carries no colour of its own and `--brand-l`
+keeps working in light mode. `::before` is the same rule mirrored with `scaleX(-1)`, which is why
+one set of chevrons points at the name from both sides.
+
+Three loops run on three clocks that are deliberately not multiples of each other: the arrows march
+into the name, a shine chases them, and the hue turns through a full circle. The hue is the one
+that matters. Two earlier versions animated position only — a wave that travelled, then a wave that
+travelled and rose and fell — and both were measured in a real browser doing exactly what they were
+told while still being reported as "no animation at all". Constant-velocity travel is motion the
+eye stops seeing almost immediately; a colour change is not. Note that `hue-rotate` and the glow
+share one `filter`, so they must live in ONE keyframe set — two animations on the same property
+means the later one silently wins and the first appears not to run. An even earlier version scaled
+the mask vertically to make a wave swell; don't reintroduce that idea, as squashing a mask pinches
+the thin parts of a stroke below a pixel and the line visibly breaks apart and heals twice a cycle.
+
+
+**Mayuri** is the assistant in the bottom-right corner, built in `particle-bg.js` where the plain
+WhatsApp bubble used to be. She is a **signpost, not a chatbot**, and the copy is written to
+promise exactly that: four routes to the right form, plus a real WhatsApp conversation. Nothing
+answers a question. She reuses `.whatsapp-float-close` and `body.wa-dismissed` unchanged, so the ×,
+the `w` shortcut and back-to-top reclaiming the corner all behave as before, and the analytics
+listener still books the panel's WhatsApp link as `whatsapp_link_click` because it matches on href.
+
+Three things there are easy to get wrong. `.mayuri-wrap` is `pointer-events: none` — it is as wide
+as the greeting bubble even while that bubble is invisible (opacity hides it but keeps its space),
+and it was sitting over the back-to-top button and eating every click aimed at it. The tapped
+expression is a **second complete face** cross-faded in, not the resting one scaled up: a lip shape
+at 2x is not a bigger smile, it is a mouth pulled out of shape. And her idle glances are driven
+from JS into `--look-x/y/r` rather than from keyframes, because a repeating glance reads as a tic
+within about three cycles; the head is a `<g>` pivoting on the base of the neck, so it turns rather
+than slides, and the timer skips while `document.hidden`.
+
+Her four routes lead to forms, and none of them carries `?from=`. That parameter already means
+something on the lab report form — it names the LAB a report came from, and the form prints
+*"Reporting from the &lt;name&gt; playground."* — so a `?from=mayuri` added for attribution would
+have invented a playground that does not exist.
+
+The games route is `/games#games-feedback`, which is the games hub's **own** form rather than the
+labs one. The per-game pages still link to `/labs?from=<slug>&area=games#lab-feedback`, because
+they know which game they are and that attribution is worth keeping; Mayuri does not, which is
+exactly who the hub form is for. Two forms now exist, so `#form-status` matters more than it
+looks: `wa-form.js` finds it with `getElementById`, not scoped to the form, so the two must never
+share a page. `lab-feedback.js` is loaded only on `/labs` for the same reason.
+
+She also appears on `/offline`, where the artwork is inlined into the page and the toggle lives in
+the already-precached `offline.js` — that page loads no stylesheet and no partials on purpose, so
+the glance loop and the head styles are duplicated there rather than shared. Her panel there says
+something different and true, because every route needs the network: she names what is already
+cached instead of showing four dead links.
+
 
 `particle-bg.js` renders the interactive particle canvas (respects `prefers-reduced-motion`),
 scroll-reveal animations via IntersectionObserver, and the floating back-to-top button. It
@@ -313,9 +370,74 @@ canonical sources, with nothing left to restore them from but git history. On Ve
 harmless because the container is thrown away; your checkout is not.
 
 ```bash
-npm run check    # dry run — prints exactly what would change, writes nothing. Use this one.
-npm run build    # the deploy step. Rewrites files in place. Vercel's job, not yours.
+npm run check      # dry run — prints exactly what would change, writes nothing. Use this one.
+npm run check:labs # opens every tool lab in a real browser and presses Run
+npm run build      # the deploy step. Rewrites files in place. Vercel's job, not yours.
 ```
+
+### The runtime gate (`npm run check:labs`)
+
+Everything `npm run check` does is a comparison between files: sitemap parity, precache coverage,
+manifest fields, JSON-LD, share images. **Not one of those gates ever presses a button**, so a lab
+can be completely dead and still pass the whole suite. One was.
+
+`labs/ansi-escapes` read an identifier — `MAX_COLS` — that no file declared. Under `'use strict'`
+that throws on the first printable character, so the rendered-screen pane stayed empty in all three
+modes, and the tool's own `try/catch` turned the crash into *"Could not finish reading that
+input"* — which blames the visitor for a missing `var`. It shipped, it passed every gate, and it
+survived a manual sweep too, because the report *above* the error rendered perfectly and whoever
+was reading stopped there.
+
+So this gate opens each lab in headless Chrome, dismisses the consent gate, presses Run, and fails
+on any of four things:
+
+1. an uncaught exception or a `console.error`;
+2. the consent gate not closing — everything behind it is `inert`, so a Run click would land on
+   nothing and the pane would keep its placeholder;
+3. an output pane that is empty, or unchanged when the gate typed something in — *"Paste a JWT
+   above."* is eighteen perfectly good characters and accepting it would be checking that the page
+   has markup, not that the lab works;
+4. JavaScript failure text anywhere in the output — `is not defined`, `is not a function`,
+   `Cannot read properties`, `[object Object]`. Note that **(1) would not have caught `MAX_COLS`**,
+   because the lab caught its own exception. Only this one does, and only because it scans the
+   whole pane rather than the first line.
+
+It does **not** check that answers are right. A lab can print a confidently wrong CVSS score and
+pass everything here; judging correctness means knowing the specification, which belongs beside the
+code it judges. This is the floor, not the ceiling.
+
+**It covers 48 labs and skips 64, deliberately.** A lab is picked up if its markup has both
+`#tool-run` and `#tool-out` — discovered from the page, not listed in the script, so adding a
+tool lab needs no edit here. That leaves out the three v86 machines, the eleven WebAssembly
+runtimes and the canvas visualisers: they would need per-lab timeouts, boot detection and bespoke
+selectors — most of the possible complexity for the labs *least* able to fail quietly. If Python
+stops running you find out in a day; a dead ANSI renderer sits there for months. `--verbose`
+prints exactly what was skipped, so the report states its own blind spots.
+
+```bash
+npm run check:labs                    # ~60s, 4 at a time
+node scripts/check-labs.js --verbose  # also list what was skipped and why
+node scripts/check-labs.js --only hash,jwt
+node scripts/check-labs.js --net      # include the labs that reach real services
+LABGATE_HEADFUL=1 npm run check:labs  # watch it drive
+```
+
+Network labs are out by default: `ct-log` is rate-limited to about nine unauthenticated queries an
+hour, and a gate that fails when the wifi drops is a gate that gets switched off.
+
+Three things about `scripts/cdp.js` are worth knowing before editing it, because each was a bug
+that produced *false* results:
+
+- **`element.click()` is not a trusted user gesture.** Anything gated behind one — audio,
+  fullscreen, clipboard — behaves differently under it, so the gate dispatches real
+  `Input.dispatchMouseEvent` presses. Clicking the easy way made all three v86 labs report a failed
+  audio worklet while booting perfectly.
+- **`scrollIntoView` does not finish synchronously.** Measuring the rectangle in the same turn
+  returns the pre-scroll position and the click lands in empty space — which looks exactly like a
+  Run button that does nothing.
+- **`requestAnimationFrame` does not fire in a backgrounded headless tab.** Waiting on a frame hung
+  every non-foreground tab until its call timed out, and *which* labs failed changed between runs.
+  That one cost an afternoon; use `setTimeout`.
 
 `build` is idempotent — a second run finds no comments left and writes identical bytes — but that
 only means a stray run does no *further* damage. The first one already stripped the sources; the

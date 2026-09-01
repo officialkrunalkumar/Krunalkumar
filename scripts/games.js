@@ -857,6 +857,84 @@ ${HUB.about.map((c) => `          <article class="info-card">
         </div>
       </section>
 
+      <!-- The games hub carries its OWN report form rather than sending people
+           to the one on /labs. Per-game pages still link to the labs form with
+           ?from=<slug>&area=games, because they know which game they are, and
+           that attribution is worth keeping. This one is for arrivals who do
+           not - the hub itself, and Mayuri's "Something about a game", which
+           has no slug to send.
+
+           Three ids here are load-bearing and must not be tidied:
+           #form-status is looked up by wa-form.js with getElementById, NOT
+           scoped to the form, and it returns early without it - which leaves
+           the submit button permanently disabled and logs nothing at all. The
+           analytics prefix must differ from lab_feedback or the two forms'
+           events merge. And #games-phone-hint keeps the hint id unique.
+
+           lab-feedback.js is deliberately NOT loaded on this page: it hardcodes
+           the labs form's ids, and giving this form those ids would have it
+           rewrite the template with a "Lab:" line and mislabel every report. -->
+      <section class="section-card" id="games-feedback">
+        <div class="section-heading">
+          <p class="eyebrow">Something not working?</p>
+          <h2>Tell me and I will fix it</h2>
+          <p>
+            These games run entirely inside your browser, and browsers differ. If something breaks
+            &mdash; a game that will not start, a control that does nothing, a score that will not save
+            &mdash; the quickest route is
+            <a href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20something%20is%20broken%20in%20Games%3A%20" target="_blank" rel="noopener">a WhatsApp message</a>.
+            Or fill this in and it opens WhatsApp with the details already written out.
+          </p>
+        </div>
+
+        <form id="games-feedback-form" class="contact-form" method="post" data-wa-form
+          data-wa-fields="name phone email message"
+          data-wa-message-template="Hello Krunalkumar, I am reporting something from the Games section of your website.\\nGame: Games hub (https://krunalkumar.dpdns.org/games)\\nName: {name}\\nContact: {phone}\\nEmail: {email}\\n\\nWhat is breaking / feedback:\\n{message}"
+          data-wa-analytics-prefix="games_feedback"
+          data-wa-followup-question="Did your report go through on WhatsApp?"
+          data-wa-confirmed-message="&#128591; Thank you &mdash; that genuinely helps. I will look into it and get back to you.">
+          <div class="form-grid">
+            <label class="field">
+              <span>Your name</span>
+              <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
+            </label>
+            <!-- The hint sits OUTSIDE the <label> on purpose &mdash; same structure and
+                 reasoning as contact.html: nested, it polluted the label's
+                 accessible name and aria-describedby read it a second time. -->
+            <div class="field">
+              <label class="field">
+                <span>Contact number</span>
+                <input type="tel" name="phone" pattern="^\\+?[0-9 ]{7,20}$" placeholder="+91 98765 43210" autocomplete="tel" aria-describedby="games-phone-hint" required />
+              </label>
+              <p class="form-hint" id="games-phone-hint">Digits, spaces, and + only.</p>
+            </div>
+            <label class="field">
+              <span>Email address</span>
+              <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+            </label>
+          </div>
+
+          <label class="field full">
+            <span>What is breaking, or any feedback</span>
+            <textarea name="message" rows="6" required
+              placeholder="What you were playing, what you expected, what happened instead &mdash; and your browser and device if you know them."></textarea>
+          </label>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" disabled>Send on WhatsApp</button>
+            <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          </div>
+          <p class="form-note">Prefer email? Write to
+          <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> &mdash;
+          no WhatsApp needed.</p>
+          <noscript>
+            <p class="form-note">This form needs JavaScript to open WhatsApp. Please email
+            <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> or message me on
+            <a class="text-link" href="https://wa.me/918200713617" target="_blank" rel="noopener">WhatsApp</a> directly.</p>
+          </noscript>
+        </form>
+      </section>
+
       <section class="section-card">
         <div class="section-heading">
           <h2>Questions people ask</h2>
@@ -873,6 +951,7 @@ ${chrome.footer}
     <script src="/assets/js/particle-bg.js" defer></script>
     <script defer src="/assets/js/games/game-storage.js"></script>
     <script defer src="/assets/js/games/hub.js"></script>
+    <script src="/assets/js/wa-form.js" defer></script>
   </body>
 </html>
 `;

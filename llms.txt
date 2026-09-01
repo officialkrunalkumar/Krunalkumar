@@ -278,6 +278,7 @@ biodata makers, and it only ever builds a link out of the name typed into it.
 - The 62 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
   so there is nothing to run without it. Each hides its controls and shows a <noscript> note rather
   than leaving dead buttons. Every other page is plain HTML and reads in full without JavaScript;
-  the four carrying a form (contact, internships, the labs hub's feedback box, and verify) point to
-  email instead — the first three drop the submit button, verify hides the whole lookup field.
+  the five carrying a form (contact, internships, the labs hub's feedback box, the games hub's
+  feedback box, and verify) point to email instead — the first four drop the submit button,
+  verify hides the whole lookup field.
 

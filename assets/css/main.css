@@ -183,10 +183,245 @@ img {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--ink);
+  /* Anchors the two signal traces below. Nothing else depends on it. */
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Signal traces — the light either side of the name.
+   --------------------------------------------------------------------------
+   On a wide screen the nav wraps: the name sits centred on the first row and
+   the links take the second, leaving roughly five hundred pixels of empty
+   header either side of it. This fills that span with a lit wave and a comet
+   running out along it.
+
+   IT GLOWS, AND THAT IS THE WHOLE POINT. Six variants came before this — a
+   circuit trace, a heartbeat, chevrons, a constellation, a binary stream, a
+   plain sine — all drawn as thin single-hue strokes, and every one of them
+   disappeared. A 1px line in one colour cannot hold its own beside an animated
+   rainbow wordmark on a starfield; it reads as a scratch on the screen. What
+   works next to light is more light. So: a thicker stroke, the site's whole
+   palette across it instead of one hue, a bloom underneath, and a bright head
+   travelling out from the name.
+
+   PSEUDO-ELEMENTS, NOT MARKUP. Every page carries a static copy of the header
+   for the no-JS case, and the build's static chrome gate compares those copies
+   against partials/. Real elements would have meant editing 288 pages or
+   drifting from the partial; ::before and ::after are invisible to both, so
+   this costs no markup, no request, and nothing the gate can disagree with.
+
+   THREE THINGS STACKED. The background paints the colour and the comet, the
+   mask cuts it to a wave, and drop-shadow blooms whatever survives — so the
+   glow follows the wave's shape rather than sitting behind it as a rectangle,
+   which is what a box-shadow would have given.
+   -------------------------------------------------------------------------- */
+.brand::before,
+.brand::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 26px;
+  margin-top: -13px;
+  width: clamp(2.5rem, 22vw, 21rem);
+  pointer-events: none;
+
+  /* The same idea as the dharmachakra breaker on /fun/buddha: an arrow that
+     draws itself inward and lands on the mark, rather than decoration parked
+     either side of it. Buddha builds it from TWO elements - the line is a
+     ::before and the chevron a separate ::after - because that version scales
+     the line, and anything nested inside a scaled box is stretched with it.
+
+     Here there is only one pseudo-element per side to spend, because the
+     header's static no-JS copy is duplicated across 288 pages and the chrome
+     gate compares them against partials/. So the arrow lives entirely in the
+     MASK as two layers, which union by default: a chevron head that flies in,
+     and a tapered shaft that lengthens behind it. Growing a mask LAYER is safe
+     where scaling the element is not - the shaft is a plain bar, so stretching
+     it horizontally only makes it longer, and the head is never scaled at all,
+     just moved. */
+  -webkit-mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='26' viewBox='0 0 17 26'%3E%3Cpath d='M13.5 5.5L5 13l8.5 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='26' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,13 q5.0,-4.4 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0' fill='none' stroke='url(%23s)' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+          mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='26' viewBox='0 0 17 26'%3E%3Cpath d='M13.5 5.5L5 13l8.5 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='26' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,13 q5.0,-4.4 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0' fill='none' stroke='url(%23s)' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat, no-repeat;
+          mask-repeat: no-repeat, no-repeat;
+  /* The RESTING state - arrow landed, full length. The animation overrides
+     these while it plays, so `animation: none` under reduced motion lands on a
+     complete arrow rather than on whatever frame zero happened to be. */
+  -webkit-mask-size: 17px 26px, 100% 26px;
+          mask-size: 17px 26px, 100% 26px;
+  -webkit-mask-position: 0% center, 100% center;
+          mask-position: 0% center, 100% center;
+
+  /* Colour flows; the mask decides the shape. Two layers, and the top one is
+     the dots: bright pips running down the wire toward the name, which is what
+     keeps the arrow alive now that it only draws itself once. They are sized to
+     cover the wave's full swing (about 3.5px either side of centre) - a pip
+     narrower than that would blink out wherever the wave was at a crest.
+
+     They are BACKGROUND, not a third mask layer, and that is not a style
+     choice. mask-position is already spoken for by the flight animation, and
+     two animations on one property do not blend - the later one in the list
+     wins outright and would have thrown the flight away. Background position
+     is free, so the dots ride there and the mask clips them to the shaft.
+
+     The stops are symmetric so each tile meets itself and neither layer ever
+     shows a seam. The taper lives in the mask, not here, which is why the
+     stream can be a flat repeating band. */
+  background-image:
+    radial-gradient(circle 4.5px at 17px 50%,
+      rgba(255, 255, 255, 0.98) 0 2.6px, rgba(255, 255, 255, 0) 4.5px),
+    linear-gradient(90deg,
+      #67e8f9 0%, #818cf8 25%, #f472b6 50%, #818cf8 75%, #67e8f9 100%);
+  background-repeat: repeat-x, repeat-x;
+  background-size: 34px 100%, 240px 100%;
+  background-position: 0 center, 0 center;
+
+  /* The arrow is drawn ONCE, on arrival, and then stays - `both` holds the
+     final keyframe so it never resets. All the continuing motion is in the
+     colour: the gradient streams along the shaft, and the hue turns underneath
+     it. A shape that redraws itself every few seconds competes with the page
+     for attention; a shape that arrives and then just glows does not. */
+  animation:
+    brand-arrow 1.5s cubic-bezier(0.22, 0.78, 0.3, 1) both,
+    brand-stream 2.2s linear infinite,
+    brand-hue 7s linear infinite;
+}
+/* The flight, played once. The head travels from the far edge to the wordmark
+   while the shaft lengthens behind it at exactly the same rate, so the two stay
+   joined - at any moment the head sits on the shaft's leading edge. It used to
+   fade and fly again on a loop; landing and staying is both calmer and closer
+   to what buddha's arrow does, which arrives at the wheel and belongs there. */
+@keyframes brand-arrow {
+  0% {
+    opacity: 0;
+    -webkit-mask-size: 17px 26px, 0% 26px;
+            mask-size: 17px 26px, 0% 26px;
+    -webkit-mask-position: 100% center, 100% center;
+            mask-position: 100% center, 100% center;
+  }
+  14% { opacity: 1; }
+  100% {
+    opacity: 1;
+    -webkit-mask-size: 17px 26px, 100% 26px;
+            mask-size: 17px 26px, 100% 26px;
+    -webkit-mask-position: 0% center, 100% center;
+            mask-position: 0% center, 100% center;
+  }
+}
+
+/* Colour streaming toward the name, on its own clock. This is what keeps
+   moving while the arrow holds, and it is why the pause between flights does
+   not read as the animation having stopped. */
+/* One animation, two layers, two speeds. The dots cross three of their 34px
+   tiles while the colour crosses one of its 240px ones, so the pips visibly
+   overtake the wash they are travelling through. Both distances are whole
+   multiples of their own tile, which is what makes the loop seamless - land on
+   a fraction and the pattern jumps every cycle. */
+@keyframes brand-stream {
+  from { background-position: 0 center, 0 center; }
+  to   { background-position: -102px center, -240px center; }
+}
+
+
+/* Hue turns through a full circle; brightness swells at the halfway point.
+   Both live in one keyframe set because they animate the SAME property, and two
+   animations on one property means the later one silently wins. */
+@keyframes brand-hue {
+  0% {
+    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
+            drop-shadow(0 0 12px hsla(265, 90%, 70%, 0.32)) hue-rotate(0deg);
+  }
+  50% {
+    filter: drop-shadow(0 0 9px hsla(199, 100%, 72%, 0.9))
+            drop-shadow(0 0 22px hsla(265, 95%, 74%, 0.55)) hue-rotate(180deg);
+  }
+  100% {
+    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
+            drop-shadow(0 0 12px hsla(265, 90%, 70%, 0.32)) hue-rotate(360deg);
+  }
+}
+
+.brand::before {
+  right: 100%;
+  margin-right: 1.15rem;
+  transform: scaleX(-1);
+}
+
+.brand::after {
+  left: 100%;
+  margin-left: 1.15rem;
+}
+
+/* The comet crosses once per cycle while the wave scrolls one tile and the
+   dots scroll two — so the dots overtake the wave and look carried by it
+   rather than painted on. Every layer lands on a whole tile at 100%, which is
+   what makes the loop seamless instead of snapping back.
+
+/* The comet is the part you actually see. It was a 26px dot before — a
+   `closest-side circle` in a 26px-tall box is 26px wide however wide the box
+   is — and once it was masked down to a 2.4px stroke there was almost nothing
+   of it left. A 74px ellipse survives the mask as a bright streak running out
+   along the wire, which is what makes the whole thing read as animated rather
+   than as a static squiggle drifting sideways.
+
+/* Only the bloom moves here. An earlier version scaled the MASK vertically to
+   make the wave swell, and it looked wrong for a concrete reason: squashing
+   the mask pinches the thin parts of the stroke below a pixel, so the line
+   visibly broke into pieces and healed again twice a cycle. Geometry stays
+   fixed; brightness is what breathes.
+
+/* Below the wrap point the name is no longer centred — it sits hard left with
+   the burger beside it, so a trace would run off the edge of the screen and
+   point at nothing. */
+@media (max-width: 900px) {
+  .brand::before,
+  .brand::after {
+    display: none;
+  }
+}
+
+/* Still, but not gone. The arrow stands at full length with its head landed on
+   the wordmark, exactly as buddha's does under this setting - it is shape as
+   much as motion, and removing it would take away part of the design rather
+   than part of the movement. The base rule already declares that resting
+   state, so stopping the animations is the whole fix. The glow is kept for the
+   same reason: it is how the arrow looks, not how it moves. */
+@media (prefers-reduced-motion: reduce) {
+  .brand::before,
+  .brand::after {
+    animation: none;
+    /* Only the colour band, no pips: a frozen row of dots reads as a dashed
+       line somebody forgot to finish, where the plain gradient reads as a
+       finished object. */
+    background-image:
+      linear-gradient(90deg,
+        #67e8f9 0%, #818cf8 25%, #f472b6 50%, #818cf8 75%, #67e8f9 100%);
+    background-size: 240px 100%;
+    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
+            drop-shadow(0 0 13px hsla(265, 90%, 70%, 0.35));
+  }
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .brand {
+  /* On .brand-label, the span inside the link - NOT on .brand itself, and the
+     difference matters the moment dance mode runs.
+
+     background-clip: text paints the background on this box and clips it to
+     this box's glyphs. Put the paint on the link and the wiggle on a span
+     inside it and the two come apart: the letters move, the paint does not
+     follow, and with -webkit-text-fill-color: transparent underneath there is
+     nothing else to see - the name would blink out for the length of the egg.
+     Paint and motion have to sit on the same element.
+
+     Moving it here also gets the arrows out of the way. They are pseudo-
+     elements of .brand, and a transform on .brand carries them with it; at up
+     to 21rem long, a 1.5deg rotation swung their far ends about 9px, which is
+     the flapping. The wiggle now lands on the span, which they are not
+     inside. */
+  .brand-label {
     /* Lightness is a token because the stops are painted straight onto the
        page: background-clip:text means `color` is ignored, so a light theme
        cannot fix this the usual way. At 70% these pastels sat around 1.2:1 on
@@ -213,12 +448,29 @@ img {
      instead of marching left-to-right; the hue filter spins quickly while
      JS also jumps --brand-hue at random, so the colors never settle; and a
      wiggle rides on top. Transform-only, so header layout never shifts. */
-  .brand.brand-dancing {
+  .brand.brand-dancing .brand-label {
     animation:
       brand-flow 0.7s ease-in-out infinite alternate,
       brand-hue-cycle 2.2s linear infinite,
       brand-dance 0.5s ease-in-out infinite;
   }
+}
+
+/* The arrows do not join in - they answer. Outside the @supports block because
+   none of this needs background-clip, and the egg should still read on a
+   browser that cannot do clipped text.
+
+   The name wiggles; the arrows get URGENT instead. The single arrival becomes a
+   repeating one, so they fire at the name over and over; the colour and the
+   pips run at four times their normal rate; and the hue spins fast enough to
+   keep pace with the random jumps JS is making to --brand-hue. Speed rather
+   than displacement, so nothing in the header moves out of place. */
+.brand.brand-dancing::before,
+.brand.brand-dancing::after {
+  animation:
+    brand-arrow 1.1s cubic-bezier(0.22, 0.78, 0.3, 1) infinite,
+    brand-stream 0.55s linear infinite,
+    brand-hue 1.1s linear infinite;
 }
 
 /* Gradient tiles seamlessly (first and last stops match), so sliding it by
@@ -2346,8 +2598,8 @@ footer {
 
 .back-to-top {
   position: fixed;
-  right: 1.2rem;
-  bottom: 4.8rem; /* stacked above the WhatsApp chat bubble */
+  right: 5.2rem;  /* beside Mayuri, not above her */
+  bottom: 1.7rem; /* centred against her 54px button */
   z-index: 40;
   width: 38px;
   height: 38px;
@@ -2448,7 +2700,634 @@ body.wa-dismissed .whatsapp-float-wrap {
   display: none;
 }
 
+/* --------------------------------------------------------------------------
+   Mayuri — the assistant corner
+   --------------------------------------------------------------------------
+   The plain WhatsApp bubble became a signpost: a face, a greeting, and four
+   routes to the right form. It is NOT a chatbot and the copy never implies
+   one — every route lands on a real form or a real conversation, which is the
+   only promise this can keep.
+
+   It reuses .whatsapp-float-close and body.wa-dismissed unchanged, so the ×,
+   the `w` shortcut and back-to-top reclaiming the corner all behave exactly as
+   they did before there was a panel.
+   -------------------------------------------------------------------------- */
+
+/* The wrapper is a layout box, nothing more, and it must not intercept a
+   click. It is as wide as the greeting bubble (15rem) even while that bubble
+   is invisible — opacity hides it but keeps its space — so it was sitting over
+   the back-to-top button and eating every press aimed at it. Only the parts a
+   visitor can actually use take pointer events back. */
+.mayuri-wrap {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.mayuri-panel,
+.mayuri-dock {
+  pointer-events: auto;
+}
+
+.mayuri-button {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mayuri-button:hover,
+.mayuri-button:focus-visible {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.5);
+}
+
+/* The round crop and the backdrop live here, not in the SVG. The avatar is
+   drawn twice on the page — once on the button, once in the panel header — and
+   a <clipPath> would have meant the same id twice, which is invalid. Cropping
+   in CSS lets the shoulders and hair run past the edge of the artwork and
+   simply be cut off.
+
+   Her backdrop does NOT follow the theme, and that is deliberate. Tying it to
+   the surface tokens was the first attempt: in light mode the disc went pale,
+   her face lost its edge against it and she stopped reading as a portrait at
+   all. Nobody inverts a photograph when the page goes light. So the medallion
+   is one fixed blue in both themes — dark enough to hold her skin tone, light
+   enough to separate from the dark panel — and only the RING adapts, in slate,
+   because a white ring vanishes on a light background. */
+.mayuri-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(160deg, #4a6fb5 0%, #2b4276 100%);
+  box-shadow: inset 0 0 0 2px rgba(148, 163, 184, 0.38);
+}
+
+.mayuri-face {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* She blinks, and the smile breathes. transform-box: fill-box is what makes
+   transform-origin mean "the middle of these shapes" rather than the middle of
+   the whole SVG canvas — without it the eyes squash toward the top-left corner
+   instead of closing. The two loops are deliberately not multiples of each
+   other, so the blink does not land on the same part of the smile every time
+   and start to look mechanical. */
+.mayuri-eyes,
+.mayuri-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.mayuri-eyes {
+  animation: mayuri-blink 5.4s ease-in-out infinite;
+}
+
+.mayuri-mouth {
+  animation: mayuri-smile 3.7s ease-in-out infinite;
+}
+
+@keyframes mayuri-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 96.5% { transform: scaleY(0.08); }
+}
+
+/* Barely anything, and that is the intent: a resting face is not performing.
+   The old values pumped the mouth hard enough that she looked like she was
+   mouthing something. */
+@keyframes mayuri-smile {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  50% { transform: scaleX(1.05) scaleY(1.07); }
+}
+
+/* The hop when she is tapped. Squash on the way down and stretch on the way
+   up — the oldest trick in animation, and the reason a plain scale pulse reads
+   as a loading spinner while this reads as delight. Three sparkles ride out
+   with it, drawn as one radial-gradient background so they cost no elements. */
+.mayuri-dock.is-cheering .mayuri-avatar {
+  animation: mayuri-hop 0.62s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* The face joins in — by SWAPPING to a second drawing, not by stretching the
+   first one. Scaling the resting mouth up was the earlier attempt and it
+   looked wrong for a concrete reason: a lip shape at 2x is not a bigger smile,
+   it is a mouth pulled out of shape. Delight is a different drawing.
+
+   Both faces are in the SVG at all times and only their opacity moves, so the
+   swap costs nothing and cannot half-apply. The eyes go with the mouth: a
+   grin under wide-open eyes reads as alarm, and the upturned arcs are the
+   whole difference. */
+.mayuri-eyes-happy,
+.mayuri-mouth-happy {
+  opacity: 0;
+}
+
+.mayuri-eyes,
+.mayuri-mouth,
+.mayuri-eyes-happy,
+.mayuri-mouth-happy {
+  transition: opacity 0.12s ease;
+}
+
+.mayuri-dock.is-cheering .mayuri-eyes,
+.mayuri-dock.is-cheering .mayuri-mouth {
+  opacity: 0;
+  animation: none;
+}
+
+.mayuri-dock.is-cheering .mayuri-eyes-happy,
+.mayuri-dock.is-cheering .mayuri-mouth-happy {
+  opacity: 1;
+}
+
+/* A wave when she arrives — a tilt, not a hand. At 54px an arm would be four
+   pixels of noise; a friendly lean left-right is the same greeting and stays
+   legible. Runs once, at the same moment the hello appears. */
+/* She glances around while idle. The offsets are set from JS as custom
+   properties rather than baked into keyframes, because keyframes repeat and a
+   repeating glance is a tic, not a living thing — the whole point is that you
+   cannot predict where she looks next. Pivot is the base of the neck, so the
+   head turns on it instead of sliding. */
+.mayuri-head {
+  transform-box: view-box;
+  transform-origin: 32px 47px;
+  transform:
+    translate(var(--look-x, 0px), var(--look-y, 0px))
+    rotate(var(--look-r, 0deg));
+  transition: transform 1100ms cubic-bezier(0.33, 0.9, 0.4, 1);
+}
+
+.mayuri-dock.is-waving .mayuri-avatar {
+  animation: mayuri-wave 1.5s ease-in-out;
+}
+
+@keyframes mayuri-wave {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-11deg); }
+  32%  { transform: rotate(9deg); }
+  49%  { transform: rotate(-8deg); }
+  66%  { transform: rotate(6deg); }
+  83%  { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes mayuri-hop {
+  0%   { transform: translateY(0) scale(1, 1); }
+  22%  { transform: translateY(2px) scale(1.1, 0.9); }
+  48%  { transform: translateY(-9px) scale(0.94, 1.08); }
+  72%  { transform: translateY(0) scale(1.06, 0.95); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+
+.mayuri-dock::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle 3px at 14% 24%, #7de3ff 0 60%, transparent 62%),
+    radial-gradient(circle 2.4px at 86% 30%, #ffd76a 0 60%, transparent 62%),
+    radial-gradient(circle 2.6px at 50% 4%, #ff9ad1 0 60%, transparent 62%);
+}
+
+.mayuri-dock.is-cheering::after {
+  animation: mayuri-sparkle 0.62s ease-out;
+}
+
+@keyframes mayuri-sparkle {
+  0%   { opacity: 0; transform: scale(0.6); }
+  35%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+/* Holds the button and its dismiss cross together so the cross can be placed
+   against the button's own corner. */
+.mayuri-dock {
+  position: relative;
+  width: 54px;
+  height: 54px;
+}
+
+.mayuri-avatar-lg {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+}
+
+/* On the button's top-right corner. It was pinned to the wrap before, which
+   put it a whole button-height away and read as unrelated to the thing it
+   closes. Overlapping the edge by a few pixels keeps the two joined, and the
+   ::before tap padding inherited from .whatsapp-float-close still stops a
+   mis-tap near the middle of the button from dismissing her. */
+.mayuri-dismiss {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  bottom: auto;
+}
+
+/* ---- the collapsed hello ---------------------------------------------- */
+/* Never overlaps the button — it sits above it in the column — so nobody has
+   to dismiss a greeting to reach the thing it is greeting them about. */
+.mayuri-greet {
+  /* Wide enough that nothing wraps on its own - the line break is a <br> in
+     the markup instead. Left to the wrapper at a narrow width this broke into
+     three ragged lines ("Hi, I / am / Mayuri!"); choosing the break gives two
+     balanced ones and a bubble about twice as wide as it is tall, which is the
+     round blob a spoken hello should be rather than a long straight strip. */
+  /* One line. It was two, broken with a <br> to make a round blob back when
+     there was a pill around it - with the pill gone there is nothing to make
+     round, and a stacked half-sentence just reads as a wrapping bug. nowrap
+     rather than a width, so it can never wrap again: at ~140px it clears even
+     a 320px screen once Mayuri and the margins are taken off. */
+  white-space: nowrap;
+  padding: 0.2rem 0.35rem;
+  text-align: center;
+  line-height: 1.3;
+  /* Lightness is a token because the two themes need opposite ends of the
+     scale: bright on the dark page, deep on the light one. */
+  /* Hue, lightness AND blur are all tokens, because the two themes need
+     genuinely different answers rather than one answer at two brightnesses.
+
+     On the dark page there is room above the background, so a pale cyan at a
+     wide blur reads as light coming off the letters. On white there is no room
+     above the background at all - the only thing that can read as shine is
+     colour - but a saturated haze at that same wide blur then fills the white
+     BETWEEN the strokes, and the letters lose their edges. That is what made
+     the day theme unreadable at a measured 5:1: the ratio was text against the
+     page, while the real background around each glyph had become blue fog.
+
+     So the light theme gets a deep indigo at a TIGHT blur: enough aura to read
+     as lit, not enough to close up the counters in the letterforms. */
+  --greet-h: 198;
+  --greet-s: 100%;
+  --greet-l: 88%;
+  --greet-glow-dim: hsla(198, 100%, 72%, 0.35);
+  --greet-glow-lit: hsla(198, 100%, 80%, 0.95);
+  --greet-blur-dim: 11px;
+  --greet-blur-lit: 24px;
+  --greet-blur-wide: 40px;
+  /* Her name is the only part that carries a gradient, and every stop in it is
+     built from ONE lightness token so the whole sweep stays inside the
+     contrast band. That is the difference between this and the earlier attempt
+     that put a gradient on the whole sentence: three words of moving colour is
+     a texture and cannot be read, one word is an accent, and pinning the
+     lightness means no frame of the animation can drift dark-on-dark or
+     pale-on-white. */
+  /* The name is one solid colour, not a gradient, and it carries a hard
+     outline in the page colour. Both of those are readability decisions that
+     cost a bit of flash:
+
+     A sweeping gradient means every frame paints a different colour under the
+     letters, so "is it readable" has no single answer - it is only as good as
+     its worst phase, and the worst phase is what you notice. Solid colour has
+     one answer.
+
+     The outline matters more. This text floats over whatever the page happens
+     to have in the bottom-right corner - a card, an image, the particle
+     canvas - so contrast against the THEME background is not the number that
+     decides legibility. A crisp ring of the page colour, laid down at eight
+     compass points, gives the glyphs their own local background, and the
+     backdrop stops mattering. text-shadow rather than -webkit-text-stroke
+     because shadows always paint behind the glyph; a stroke needs paint-order
+     to do that, and without it the letters come out hollowed. */
+  --name-ink: #ffffff;
+  --name-glow-dim: hsla(190, 100%, 72%, 0.4);
+  --name-glow-lit: hsla(190, 100%, 78%, 0.95);
+  color: hsl(var(--greet-h), var(--greet-s), var(--greet-l));
+  font-size: 1.02rem;
+  font-weight: 800;
+  /* No pill, so nothing separates the words from what is behind them. The
+     first three shadows do that - page-coloured, tight then wide, which reads
+     as text sitting proud of the page rather than as an outline. The fourth is
+     the shine, and it is the only part that moves.
+
+     Note the shine is a GLOW, never a colour sweep. An animated gradient was
+     tried on these letters and measured clean at every stop, and it still
+     could not be read: colour moving UNDER a glyph destroys it, where light
+     spilling AROUND one does not. */
+  text-shadow:
+    0 1px 2px rgb(var(--bg-base-rgb) / 0.95),
+    0 0 10px rgb(var(--bg-base-rgb) / 0.85),
+    0 0 20px rgb(var(--bg-base-rgb) / 0.6),
+    0 0 var(--greet-blur-dim) var(--greet-glow-dim);
+  animation: mayuri-greet-shine 2.6s ease-in-out infinite;
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* Light theme: a vivid mid-tone rather than a near-black teal, and a saturated
+   glow to match. At --greet-l: 30% this was measured at 5.09:1 - comfortably
+   past AA - and still reported as invisible, because the whole thing read as a
+   drab dark smudge with a white halo doing nothing behind it. Contrast was
+   never the problem; the absence of any visible colour was. */
+:root[data-theme="light"] .mayuri-greet {
+  /* Indigo, not the mid teal-blue this was. Two things were wrong with that
+     colour on paper: it sat at 5:1, which is past AA but not comfortable for
+     16px text, and it was the same hue as its own glow, so text and aura blurred
+     into one blue mass instead of reading as a lit object. Indigo at 38% is
+     nearly 9:1 and is a colour rather than a wash. */
+  --greet-h: 252;
+  --greet-s: 78%;
+  --greet-l: 38%;
+  --greet-glow-dim: hsla(252, 90%, 58%, 0.28);
+  --greet-glow-lit: hsla(268, 95%, 60%, 0.55);
+  /* A third of the dark theme's blur. This is the number that decides whether
+     the day version is legible. */
+  --greet-blur-dim: 4px;
+  --greet-blur-lit: 9px;
+  --greet-blur-wide: 16px;
+  /* 32%, not 38%. One lightness has to serve all three hues, and cyan is the
+     brightest of them at any given L - measured, hue 200 came out at 4.08:1 on
+     paper while indigo was at 10.7. The token is therefore set by its WORST
+     stop, not its average, or the name dims to unreadable once a cycle. */
+  /* Deep indigo on paper. Not "super white" here for the obvious reason -
+     white on a white page is invisible however it is outlined. What carries
+     across both themes is the OUTLINE and the weight, not the hue. */
+  --name-ink: hsl(252, 88%, 30%);
+  --name-glow-dim: hsla(262, 95%, 52%, 0.3);
+  --name-glow-lit: hsla(276, 95%, 55%, 0.55);
+}
+
+/* The shine. Only the last shadow changes - the three page-coloured ones are
+   repeated identically in both frames so the separation never wavers while the
+   light swells. */
+@keyframes mayuri-greet-shine {
+  0%, 100% {
+    text-shadow:
+      0 1px 2px rgb(var(--bg-base-rgb) / 0.95),
+      0 0 10px rgb(var(--bg-base-rgb) / 0.85),
+      0 0 20px rgb(var(--bg-base-rgb) / 0.6),
+      0 0 var(--greet-blur-dim) var(--greet-glow-dim);
+  }
+  50% {
+    text-shadow:
+      0 1px 2px rgb(var(--bg-base-rgb) / 0.95),
+      0 0 10px rgb(var(--bg-base-rgb) / 0.85),
+      0 0 20px rgb(var(--bg-base-rgb) / 0.6),
+      0 0 var(--greet-blur-lit) var(--greet-glow-lit),
+      0 0 var(--greet-blur-wide) var(--greet-glow-dim);
+  }
+}
+
+/* "Mayuri" only. The rest of the sentence keeps the flat colour and its own
+   softer treatment, so the name is the thing your eye lands on. */
+.mayuri-name {
+  color: var(--name-ink);
+  font-weight: 900;
+  font-size: 1.06em;
+  letter-spacing: 0.005em;
+  /* Eight offsets at 1.5px is a ring, not a blur - it is what makes the name
+     legible over a card, an image or the particle canvas rather than only over
+     the flat theme colour. The last two are the shine, and they are the only
+     part the animation touches. */
+  text-shadow:
+    1.5px 0 0 rgb(var(--bg-base-rgb)),
+    -1.5px 0 0 rgb(var(--bg-base-rgb)),
+    0 1.5px 0 rgb(var(--bg-base-rgb)),
+    0 -1.5px 0 rgb(var(--bg-base-rgb)),
+    1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+    -1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+    1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+    -1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+    0 0 12px var(--name-glow-dim);
+  animation: mayuri-name-glow 2.6s ease-in-out infinite;
+}
+
+/* Only the last shadow moves. The eight ring offsets are repeated byte for
+   byte in both frames, so the outline never thins while the light swells -
+   animating it too was what made the earlier version shimmer illegibly. */
+@keyframes mayuri-name-glow {
+  0%, 100% {
+    text-shadow:
+      1.5px 0 0 rgb(var(--bg-base-rgb)),
+      -1.5px 0 0 rgb(var(--bg-base-rgb)),
+      0 1.5px 0 rgb(var(--bg-base-rgb)),
+      0 -1.5px 0 rgb(var(--bg-base-rgb)),
+      1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+      -1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+      1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+      -1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+      0 0 10px var(--name-glow-dim);
+  }
+  50% {
+    text-shadow:
+      1.5px 0 0 rgb(var(--bg-base-rgb)),
+      -1.5px 0 0 rgb(var(--bg-base-rgb)),
+      0 1.5px 0 rgb(var(--bg-base-rgb)),
+      0 -1.5px 0 rgb(var(--bg-base-rgb)),
+      1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+      -1.1px 1.1px 0 rgb(var(--bg-base-rgb)),
+      1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+      -1.1px -1.1px 0 rgb(var(--bg-base-rgb)),
+      0 0 22px var(--name-glow-lit);
+  }
+}
+
+
+/* The plain opacity/transform pair is the no-animation fallback: it is what
+   applies under prefers-reduced-motion, where the pop is switched off. */
+.mayuri-greet.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  /* Both animations have to be named here. Redeclaring `animation` replaces the
+     whole list, so leaving the shine off this line would silently stop it the
+     moment the hello appeared - which is the only time anyone can see it. */
+  animation:
+    mayuri-greet-shine 2.6s ease-in-out infinite,
+    mayuri-greet-pop 5s ease-in-out both;
+}
+
+/* Out of nothing, up past full size, hold, then back to nothing. The overshoot
+   at 10% is what stops it reading as a box being resized: things that arrive
+   under their own power overshoot slightly and settle.
+
+   transform-origin is bottom right (set on the base rule), which is the corner
+   nearest Mayuri - so it grows out of her rather than out of thin air. The 5s
+   duration matches the setTimeout that removes the class, so the zoom-out
+   finishes exactly as the element is dropped. */
+@keyframes mayuri-greet-pop {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  10%  { opacity: 1; transform: translateY(0) scale(1.06); }
+  17%  { transform: translateY(0) scale(1); }
+  84%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(0) scale(0); }
+}
+
+/* One solid colour, not a gradient. An animated multi-stop gradient was tried
+   here and measured clean - every stop cleared 4.5:1 in both themes - and it
+   was still unreadable, because a gradient in motion puts a different colour
+   under each letter on every frame and there is never a stable shape to read.
+   Legibility is not only contrast; it is also the colour holding still. */
+
+/* ---- the panel ---------------------------------------------------------- */
+.mayuri-panel {
+  width: min(21rem, calc(100vw - 2.4rem));
+  padding: 0.9rem;
+  border: 1px solid rgb(var(--sheet-rgb) / 0.9);
+  border-radius: 18px;
+  background: rgb(var(--sheet-rgb) / 0.99);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
+  animation: mayuri-in 0.22s ease-out;
+}
+
+.mayuri-panel:focus { outline: none; }
+
+@keyframes mayuri-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mayuri-panel-head {
+  position: relative;
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding-right: 1.4rem;
+}
+
+.mayuri-hello {
+  margin: 0 0 0.2rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.mayuri-sub {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.mayuri-panel-close {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-3);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mayuri-panel-close:hover { color: var(--ink); }
+
+.mayuri-routes {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.85rem 0 0.7rem;
+}
+
+.mayuri-route {
+  display: block;
+  padding: 0.62rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: rgb(var(--bg-base-rgb) / 0.55);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.mayuri-route:hover,
+.mayuri-route:focus-visible {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgb(var(--bg-base-rgb) / 0.9);
+  transform: translateX(2px);
+}
+
+/* The label IS the route now; there is no second line under it any more. */
+.mayuri-route {
+  color: var(--ink);
+  font-size: 0.87rem;
+  font-weight: 620;
+}
+
+/* Teal into blue rather than WhatsApp green — the same two colours as the
+   feather in her hair, so the one button that leaves the site still looks like
+   it belongs to her. The glyph carries the recognition on its own; the slab of
+   brand green did not, it just fought every other colour on the page. */
+.mayuri-wa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #1fb5a6 0%, #2f6fd0 100%);
+  box-shadow: 0 6px 16px rgba(47, 111, 208, 0.32);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.mayuri-wa svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.mayuri-wa:hover,
+.mayuri-wa:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(47, 111, 208, 0.45);
+}
+
+/* Dismissed, or the mobile nav is open — same rules the plain bubble had. */
+body.wa-dismissed .mayuri-wrap {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mayuri-panel { animation: none; }
+  .mayuri-button { transition: none; }
+  /* The glow holds at its bright value rather than going out: the shine is
+     part of how the hello looks, not part of how it moves. */
+  .mayuri-greet,
+  .mayuri-greet.is-visible { transition: none; animation: none; }
+  /* The ring stays; only the pulse stops. */
+  .mayuri-name { animation: none; }
+  /* She holds still — eyes open, smile settled, no hop. */
+  .mayuri-eyes,
+  .mayuri-mouth { animation: none; }
+  .mayuri-dock.is-cheering .mayuri-avatar,
+  .mayuri-dock.is-waving .mayuri-avatar,
+  .mayuri-dock.is-cheering::after { animation: none; }
+  .mayuri-head { transition: none; }
+  .mayuri-eyes, .mayuri-mouth,
+  .mayuri-eyes-happy, .mayuri-mouth-happy { transition: none; }
+}
+
+
+/* She is gone, so the corner is free. */
 body.wa-dismissed .back-to-top {
+  right: 1.2rem;
   bottom: 1.2rem;
 }
 
@@ -2853,6 +3732,7 @@ footer a:hover {
      today's behaviour rather than gaining a new one. */
   body:has(.nav-list.open) .back-to-top,
   body:has(.nav-list.open) .whatsapp-float-wrap,
+  body:has(.nav-list.open) .mayuri-wrap,
   body:has(.nav-list.open) .bg-pause-toggle,
   body:has(.nav-list.open) .bg-settings-toggle,
   body:has(.nav-list.open) .bg-settings-panel,
@@ -2912,17 +3792,37 @@ footer a:hover {
     display: none;
   }
 
-  /* The WhatsApp bubble sits at bottom:1.2rem and is 42px tall, and its
-     dismiss button pads its tap target out to 28px offset -9px, so the
-     bubble's hit area reaches 74px up from the bottom of the viewport. At
-     bottom:4.8rem (76.8px) back-to-top's lower edge cleared that by 2.6px —
-     inside the slop of a thumb, so "scroll up" and "dismiss the bubble" were
-     effectively one target. 5.6rem (89.6px) puts 15px of dead space between
-     them. Untouched at 641px+, where a pointer is precise; and
-     body.wa-dismissed still wins with its bottom:1.2rem because it is the
-     more specific selector, so the button still reclaims the corner. */
+  /* Directly above Mayuri, not beside her. The desktop rule parks this at
+     right:5.2rem — in the lane to her left, where a wide viewport has room —
+     but a phone does not, and this rule used to override only `bottom`. That
+     left it holding BOTH offsets at once: up AND to the left, floating off her
+     shoulder attached to nothing, which is exactly how it looked.
+
+     Centred over her instead. Her button is 54px and this is 38px, so
+     1.2rem + 8px = 1.7rem puts the two on one vertical axis. bottom:5.6rem
+     (89.6px) clears her: the wrap sits at 1.2rem (19.2px) and she is 54px
+     tall, so she reaches 73.2px and 16px of gap is left — well past the thumb
+     slop that made "scroll up" and "dismiss" one target when these last
+     overlapped.
+
+     Untouched at 641px+, where a pointer is precise and the side lane works.
+     body.wa-dismissed still wins with right:1.2rem/bottom:1.2rem because it is
+     the more specific selector, so the corner is still reclaimed once she is
+     gone. */
   .back-to-top {
+    right: 1.7rem;
     bottom: 5.6rem;
+  }
+
+  /* The hello and the arrow both want the same strip of screen on a phone, and
+     measured they do overlap by about 20px. The arrow wins: it only appears
+     once you have scrolled past 420px, by which point a greeting fired 1.6s
+     after page load is stale. :has() rather than a JS class because the two are
+     unrelated siblings, and the same pattern is already used above for the open
+     nav. It outranks .mayuri-greet.is-visible on specificity (0,3,1 vs 0,2,0),
+     which is what lets it win without !important. */
+  body:has(.back-to-top.visible) .mayuri-greet {
+    opacity: 0;
   }
 }
 

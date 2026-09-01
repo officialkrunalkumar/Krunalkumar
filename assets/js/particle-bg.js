@@ -876,68 +876,406 @@
   });
   document.body.appendChild(backToTopButton);
 
-  // Floating WhatsApp chat bubble — opens a real conversation, no bot in between.
-  // Hideable two ways: the × on the bubble, and the `w` background shortcut,
-  // which unlike the × can also bring it back. Either way the back-to-top button
-  // drops down to take its corner, and the choice lasts the visit — the bubble
-  // returns once the tab is closed and the site is opened fresh. sessionStorage
-  // access is wrapped in try/catch because private modes can block storage.
-  // The global click listener below reports bubble clicks as whatsapp_link_click.
+  // Mayuri — the assistant bubble in the bottom-right corner.
+  //
+  // WHAT IT IS, said plainly, because the shape of it invites a wrong guess:
+  // this is a SIGNPOST, not a chatbot. Nothing here answers a question. It
+  // asks which of four things you are here about and hands you to the right
+  // form or to a real WhatsApp conversation with a person. The copy is written
+  // to promise exactly that and no more — an assistant that looks like it will
+  // answer and then cannot is worse than a plain link, which is what this
+  // replaced.
+  //
+  // Built in JS, like the plain bubble before it, so a no-JS visitor gets
+  // nothing rather than a dead panel. Giving them a working bubble would mean
+  // static markup in all 288 page footers; the corner is decoration, and that
+  // is not a trade worth making for it.
+  //
+  // Hideable two ways, both inherited from the bubble this grew out of: the ×,
+  // and the `w` background shortcut, which unlike the × can also bring it
+  // back. Either way the back-to-top button drops down to take the corner and
+  // the choice lasts the visit. sessionStorage is wrapped in try/catch because
+  // private modes block it.
+  //
+  // The global click listener below still books the WhatsApp link inside the
+  // panel as whatsapp_link_click — it matches on href, so moving the link from
+  // the bubble into a panel changed nothing about the reporting.
   {
     const WA_DISMISSED_KEY = 'waFloatDismissed';
+    const GREETED_KEY = 'mayuriGreeted';
+    // The message she hands over says where it came from. "I am on your
+    // website" told Krunalkumar nothing he could not already see; naming
+    // Mayuri tells him the person came through the corner rather than the
+    // contact page, which is the one useful thing this link can carry.
+    const WA_HREF = 'https://wa.me/918200713617?text=' +
+      encodeURIComponent('Hi Krunalkumar, Mayuri sent me over from your website — I would like to talk.');
+
     let waHidden = false;
     try {
       waHidden = sessionStorage.getItem(WA_DISMISSED_KEY) === '1';
     } catch (e) { /* storage unavailable — fall back to per-page dismissal */ }
 
-    // Always built, then hidden by a class when dismissed. The previous version
-    // removed the node outright, which a toggle cannot undo without rebuilding
-    // it; the stylesheet's display:none keeps it out of the tab order just as
-    // removal did.
-    {
-      const whatsappWrap = document.createElement('div');
-      whatsappWrap.className = 'whatsapp-float-wrap';
+    // A peahen crest over a friendly face: mayuri is the peahen, so the name
+    // and the picture say the same thing. Inline SVG rather than an image file
+    // because it is theme-coloured, costs no request, and has to stay crisp at
+    // 34px in a corner and 44px in the panel header.
+    const AVATAR =
+      '<svg class="mayuri-face" viewBox="0 0 64 64" aria-hidden="true" focusable="false">' +
+      // Order matters: neck, then clothing, then the hair BEHIND the head, then
+      // the face, then the hair in front. Drawn any other way the hair swallows
+      // the throat and the head sits straight on the shoulders.
+      '<path d="M27.6 41.5h8.8v10.5c0 2.4-2 4-4.4 4s-4.4-1.6-4.4-4z" fill="#eab89a"/>' +
+      '<path d="M27.6 41.5h8.8v5c-2.6 1.7-6.2 1.7-8.8 0z" fill="#d7a181"/>' +
+      // A plain tee — the kurta and dupatta that were here briefly read as fussy
+      // at 54px, since a neckline, a gold band and a drape is more detail than a
+      // circle this size can hold. Coral, not blue: the medallion behind her is
+      // blue, and a blue shirt on it left her with no shoulders at all. Warm
+      // against cool is also the one pairing that survives both themes.
+      '<path d="M7 64c2.4-9.5 9-14 16-15.6 3.4 3.4 15 3.4 18 0C48 50 54.6 54.5 57 64z" fill="#ef7360"/>' +
+      '<path d="M23 48.4c3 2.2 15 2.2 18 0l-2.6-1.2c-3 2-9.8 2-12.8 0z" fill="#cf5646"/>' +
+      // The company mark on her shirt. Centred between the two side locks, which
+      // is the only part of the shirt that is never covered at this size.
+      // "KS" is type; the underscore is a drawn bar. The glyph sits on the
+      // baseline in some fonts and below it in others, so at 6px it either
+      // vanished or clipped against the bottom of the circle - a rectangle is
+      // the same mark and always lands where it is put.
+      '<text x="30.2" y="59.4" text-anchor="middle" fill="#fff1e6" opacity="0.96" ' +
+        'font-family="Consolas, Menlo, monospace" font-size="6.6" font-weight="700" ' +
+        'letter-spacing="0.5">KS</text>' +
+      '<rect x="34.4" y="58.2" width="4.2" height="1.3" rx="0.65" fill="#fff1e6" opacity="0.96"/>' +
+      '<g class="mayuri-head">' +
+      // A lot of hair, and that is the point: a crown that overshoots the circle
+      // and two long locks cropped by the medallion. Small hair on a round face
+      // reads as a helmet.
+      '<path d="M13 62C5.5 48 5 30 10 20 14.5 10.5 22 5 32 5s17.5 5.5 22 15c5 10 4.5 28-3 42l-8-2c5.5-11 6.5-25 3-33-2.5-6-8-9.5-14-9.5S20.5 21 18 27c-3.5 8-2.5 22 3 33z" fill="#241a2f"/>' +
+      '<path d="M12.6 40c-3.4 12-3 23 .4 32l10-1.6c-3.4-9.6-4.4-20-3-31z" fill="#2e2240"/>' +
+      '<path d="M51.4 40c3.4 12 3 23-.4 32l-10-1.6c3.4-9.6 4.4-20 3-31z" fill="#2e2240"/>' +
+      // A sheen across the crown. Flat black hair was what made her look drawn
+      // rather than lit.
+      '<path d="M19 22c3.4-5.4 8-8.4 12.4-8.6-5.6 1.8-9.6 5.6-11.4 11.6-.6 2-1 4.2-1.2 6.4-.8-3.6-.6-6.8.2-9.4z" fill="#4a3a63" opacity="0.85"/>' +
+      // Face: an oval that tapers to the chin rather than a plain ellipse, which
+      // is most of the difference between a doll and a face.
+      // Round, not tapered. The oval-with-a-chin version was more anatomical and
+      // less cute, which is the wrong trade for a 54px face - roundness is most
+      // of what makes one read as friendly.
+      '<ellipse cx="32" cy="33.4" rx="13.7" ry="14.3" fill="#f8d4b6"/>' +
+      '<ellipse cx="19.4" cy="34" rx="1.8" ry="2.7" fill="#f0c4a2"/>' +
+      '<ellipse cx="44.6" cy="34" rx="1.8" ry="2.7" fill="#f0c4a2"/>' +
+      // Jhumkas: a stud and a small bell under it. Two shapes is the least that
+      // reads as an earring rather than a dot of paint.
+      '<circle cx="19.2" cy="36.9" r="0.95" fill="#f4c84a"/>' +
+      '<path d="M18.1 38.1h2.2l-.5 2.1h-1.2z" fill="#f4c84a"/>' +
+      '<circle cx="44.8" cy="36.9" r="0.95" fill="#f4c84a"/>' +
+      '<path d="M43.7 38.1h2.2l-.5 2.1h-1.2z" fill="#f4c84a"/>' +
+      '<path d="M17.4 34c-.6-13.4 6.6-21.2 14.6-21.2S47.2 20.6 46.6 34c-1.6-7.3-4.8-11.6-8.3-13-2.6 3.7-10.2 5.3-14.8 2.9-3.3 1.8-6.2 5.4-6.1 10.1z" fill="#241a2f"/>' +
+      '<path d="M17.6 25c-2.4 3.4-3.6 7.6-3.4 12.2-2.2-5.2-1.6-10.4 1-14.4z" fill="#241a2f"/>' +
+      '<path d="M46.4 25c2.4 3.4 3.6 7.6 3.4 12.2 2.2-5.2 1.6-10.4-1-14.4z" fill="#241a2f"/>' +
+      '<circle cx="32" cy="24.4" r="1.15" fill="#c0392b"/>' +
+      '<path d="M23.6 27.4q3.4-2.3 6.6-.2" stroke="#3f2c4c" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M33.8 27.2q3.2-2.1 6.6.2" stroke="#3f2c4c" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+      // TWO faces are drawn, and CSS cross-fades between them. The resting one
+      // blinks; the happy one appears while she is being tapped.
+      //
+      // It works this way because the first attempt STRETCHED the resting mouth
+      // into a grin with a transform, and a scaled-up lip shape does not look
+      // like a bigger smile - it looks like a mouth pulled out of shape, which
+      // is exactly what it was. A delighted face is a different drawing, not a
+      // distorted one.
+      '<g class="mayuri-eyes">' +
+        '<ellipse cx="26.9" cy="33.6" rx="2.65" ry="3.15" fill="#2e2036"/>' +
+        '<ellipse cx="37.1" cy="33.6" rx="2.65" ry="3.15" fill="#2e2036"/>' +
+        '<circle cx="27.7" cy="32.5" r="0.98" fill="#ffffff"/>' +
+        '<circle cx="37.9" cy="32.5" r="0.98" fill="#ffffff"/>' +
+        '<circle cx="26.1" cy="34.7" r="0.52" fill="#ffffff" opacity="0.72"/>' +
+        '<circle cx="36.3" cy="34.7" r="0.52" fill="#ffffff" opacity="0.72"/>' +
+        '<path d="M24.1 31.6q2.8-2.2 5.6-.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M34.4 31.1q2.8-1.7 5.5.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M23.9 31.4l-1.5-1" stroke="#2e2036" stroke-width="1.2" stroke-linecap="round"/>' +
+        '<path d="M40.1 31.4l1.5-1" stroke="#2e2036" stroke-width="1.2" stroke-linecap="round"/>' +
+      '</g>' +
+      // Happy eyes: the upturned arcs everyone reads as delight.
+      '<g class="mayuri-eyes-happy">' +
+        '<path d="M24.3 34.6q2.6-3.7 5.2 0" stroke="#2e2036" stroke-width="1.9" fill="none" stroke-linecap="round"/>' +
+        '<path d="M34.5 34.6q2.6-3.7 5.2 0" stroke="#2e2036" stroke-width="1.9" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
+      '<path d="M31.2 36.6q.9 1.3 1.8.2" stroke="#dda683" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="23.2" cy="38.4" rx="2.9" ry="1.8" fill="#ef8a8a" opacity="0.4"/>' +
+      '<ellipse cx="40.8" cy="38.4" rx="2.9" ry="1.8" fill="#ef8a8a" opacity="0.4"/>' +
+      // A simple upturned arc, not a pair of lips. The filled lip shape that
+      // was here first was trying to be pretty and landed on sulky instead —
+      // at 54px a mouth with volume reads as a pout, and the thing that reads
+      // as a smile is a curve with round ends and nothing else in it.
+      '<g class="mayuri-mouth">' +
+        // Wide and softly curved: pleased to see you, not braced. Too deep and it
+        // looks held; too shallow and she looks polite rather than glad. This sits
+        // between the two, and the arc is wider than it is deep, which is the part
+        // that makes it read as warm.
+        '<path d="M28.9 40.9q3.1 2.9 6.2 0" stroke="#c4636a" stroke-width="1.7" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
+      // The open smile, with a tongue behind it so it reads as a laugh rather
+      // than a hole.
+      '<g class="mayuri-mouth-happy">' +
+        '<path d="M27.9 39.9h8.2c0 3.9-1.9 6.2-4.1 6.2s-4.1-2.3-4.1-6.2z" fill="#a8434f"/>' +
+        '<path d="M30 43.6q2-1.5 4 0c-.4 1.7-1.4 2.4-2 2.4s-1.6-.7-2-2.4z" fill="#f19aa2"/>' +
+        '<path d="M27.9 39.9h8.2" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>' +
+      '</g>' +
+      // A peacock feather in her hair: mayuri is the peahen, so the name and the
+      // picture say the same thing.
+      '<g transform="translate(47.5 18) rotate(22)">' +
+        '<ellipse rx="4.4" ry="6.2" fill="#1fb5a6"/>' +
+        '<ellipse cy="0.6" rx="2.4" ry="3.5" fill="#2f6fd0"/>' +
+        '<circle cy="1" r="1.5" fill="#f4c84a"/>' +
+      '</g>' +
+      '</g>' +
+      '</svg>';
 
-      const whatsappFloat = document.createElement('a');
-      whatsappFloat.className = 'whatsapp-float';
-      whatsappFloat.href = 'https://wa.me/918200713617?text=' +
-        encodeURIComponent('Hello Krunalkumar, I am on your website and have a question.');
-      whatsappFloat.target = '_blank';
-      whatsappFloat.rel = 'noopener';
-      whatsappFloat.setAttribute('aria-label', 'Chat with Krunalkumar on WhatsApp');
-      whatsappFloat.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
+    const WA_ICON =
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
 
-      const whatsappClose = document.createElement('button');
-      whatsappClose.className = 'whatsapp-float-close';
-      whatsappClose.type = 'button';
-      whatsappClose.setAttribute('aria-label', 'Hide the WhatsApp chat button');
-      whatsappClose.textContent = '×';
-      function setWhatsappHidden(next) {
-        waHidden = next;
-        document.body.classList.toggle('wa-dismissed', waHidden);
-        try {
-          if (waHidden) {
-            sessionStorage.setItem(WA_DISMISSED_KEY, '1');
-          } else {
-            sessionStorage.removeItem(WA_DISMISSED_KEY);
-          }
-        } catch (e) { /* storage unavailable — the choice lasts this page only */ }
+    // Where each answer goes. The lab and contact forms both compose a
+    // WhatsApp message on submit (see "WhatsApp forms" in the README), so
+    // every route here ends in the same inbox — the form just arrives with the
+    // context already filled in, which a cold "hello" does not.
+    // Four labels, nothing else. Each carried a line of explanation under it
+    // and together they turned a menu into a paragraph — by the time somebody
+    // has read four descriptions they could have clicked the right one twice.
+    // Where each goes is the label's job to say.
+    /* Never ?from=mayuri. That parameter already means something on the lab
+       report form — it names the LAB a report came from, and the form prints
+       "Reporting from the <name> playground." — so inventing a value for
+       attribution would have invented a playground that does not exist.
+
+       But on a lab or game page there IS a real slug to pass, and she takes it
+       from the page's OWN report button rather than parsing location.pathname.
+       That button is the page's own statement of which lab it is, written by
+       the generator and kept correct by it; a pathname parse would re-derive
+       the same fact independently and start disagreeing the day a URL and a
+       slug stop matching. Reading what the page already says cannot drift.
+
+       Where there is no such button — the two hubs, a blog post, the home
+       page — the routes stay generic and the form simply opens unlabelled,
+       which is honest: she genuinely does not know which one you mean. */
+    const own = (() => {
+      const a = document.querySelector('a[href*="#lab-feedback"][href*="from="]');
+      return a ? a.getAttribute('href') : '';
+    })();
+    // Game pages carry the same link with &area=games; that is what tells the
+    // form to say "game" instead of "playground", and which of the two routes
+    // below is the one that actually knows where it is.
+    const ownIsGame = own.indexOf('area=games') !== -1;
+    const knowsLab = !!own && !ownIsGame;
+    const knowsGame = !!own && ownIsGame;
+
+    const ROUTES = [
+      {
+        label: knowsLab ? 'A question about this lab' : 'A question about a lab',
+        href: knowsLab ? own : '/labs#lab-feedback'
+      },
+      {
+        label: knowsGame ? 'Something about this game' : 'Something about a game',
+        href: knowsGame ? own : '/games#games-feedback'
+      },
+      { label: 'Internships and mentoring', href: '/internships' },
+      { label: 'Work, hiring, or anything else', href: '/contact#contact-form' }
+    ];
+
+    const wrap = document.createElement('div');
+    wrap.className = 'mayuri-wrap';
+
+    // ---- the greeting, collapsed form ------------------------------------
+    // The SHORT hello. The full sentence lives inside the panel, where there
+    // is room to read it and a reason to — out here it would be four lines of
+    // text nobody asked for, floating over the page.
+    //
+    // Shown once a session, not once a page: it is a hello, and being told
+    // hello on all eleven pages of a visit is being nagged. It also never
+    // covers the button, so somebody who wants the panel is not fighting a
+    // toast to reach it.
+    const greet = document.createElement('div');
+    greet.className = 'mayuri-greet';
+    greet.setAttribute('role', 'status');
+    greet.innerHTML = '<span>Hi, I am </span>' +
+      '<span class="mayuri-name">Mayuri!</span>';
+
+    // ---- the panel --------------------------------------------------------
+    const panel = document.createElement('div');
+    panel.className = 'mayuri-panel';
+    panel.id = 'mayuri-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Mayuri — how can I help');
+    panel.hidden = true;
+
+    let routeHtml = '';
+    for (let i = 0; i < ROUTES.length; i++) {
+      routeHtml +=
+        '<a class="mayuri-route" href="' + ROUTES[i].href + '">' +
+          ROUTES[i].label +
+        '</a>';
+    }
+
+    panel.innerHTML =
+      '<div class="mayuri-panel-head">' +
+        '<span class="mayuri-avatar mayuri-avatar-lg">' + AVATAR + '</span>' +
+        '<div>' +
+          '<p class="mayuri-hello">Hi, I am Mayuri, personal assistant of Krunalkumar. ' +
+            'I am here to help.</p>' +
+          '<p class="mayuri-sub">Pick what this is about and I will take you to the ' +
+            'right place. A real person answers.</p>' +
+        '</div>' +
+        '<button class="mayuri-panel-close" type="button" aria-label="Close">&times;</button>' +
+      '</div>' +
+      '<div class="mayuri-routes">' + routeHtml + '</div>' +
+      '<a class="mayuri-wa" href="' + WA_HREF + '" target="_blank" rel="noopener">' +
+        WA_ICON + '<span>Message my boss directly</span>' +
+      '</a>';
+
+    // ---- the button -------------------------------------------------------
+    const button = document.createElement('button');
+    button.className = 'mayuri-button';
+    button.type = 'button';
+    button.setAttribute('aria-label', 'Open Mayuri, the help menu');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', 'mayuri-panel');
+    button.innerHTML = '<span class="mayuri-avatar">' + AVATAR + '</span>';
+
+    const close = document.createElement('button');
+    close.className = 'whatsapp-float-close mayuri-dismiss';
+    close.type = 'button';
+    close.setAttribute('aria-label', 'Hide Mayuri for this visit');
+    close.textContent = '\u00d7';
+
+    // The dismiss cross is positioned against the BUTTON, not the corner, so
+    // it lands on the button's own edge instead of floating a button-height
+    // away from the thing it closes.
+    const dock = document.createElement('div');
+    dock.className = 'mayuri-dock';
+    dock.appendChild(button);
+    dock.appendChild(close);
+
+    // ---- open / close -----------------------------------------------------
+    let open = false;
+
+    function setOpen(next) {
+      open = next;
+      panel.hidden = !open;
+      wrap.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        greet.classList.remove('is-visible');
+        // She has been met. This is what suppresses the hello on later pages.
+        try { sessionStorage.setItem(GREETED_KEY, '1'); } catch (e) {}
+        // Focus the panel itself rather than the first link: landing on a
+        // route makes it look chosen, and a screen reader should hear the
+        // greeting before the options it introduces.
+        panel.setAttribute('tabindex', '-1');
+        panel.focus();
+      } else {
+        button.focus();
       }
+    }
 
-      whatsappClose.addEventListener('click', () => setWhatsappHidden(true));
+    // A hop on every press. Deliberately driven by a class that is removed
+    // when the animation ends rather than on a timer: a second click during
+    // the first hop then restarts it cleanly instead of doing nothing
+    // because the class was still on.
+    button.addEventListener('click', () => {
+      if (!prefersReducedMotion) {
+        dock.classList.remove('is-cheering');
+        void dock.offsetWidth;            // restart the animation
+        dock.classList.add('is-cheering');
+      }
+      setOpen(!open);
+    });
+    dock.addEventListener('animationend', () => {
+      dock.classList.remove('is-cheering');
+      dock.classList.remove('is-waving');
+    });
 
-      // Handed to the `w` shortcut up in the canvas block, which runs earlier in
-      // this file than the bubble is built. Returns the new state so the caller
-      // can say which way it went without reaching back in here.
-      toggleWhatsappBubble = function () {
-        setWhatsappHidden(!waHidden);
-        return waHidden;
+    /* She looks around while she waits. Random intervals and random targets,
+       not a keyframe loop: anything on a fixed cycle reads as a tic within
+       about three repeats, and the whole point is that you cannot predict where
+       she looks next. One write on the dock drives both copies of her, since
+       the custom properties inherit down to each .mayuri-head. Skipped while
+       the tab is hidden — nobody is watching, and it would keep a timer warm
+       on a backgrounded page for nothing. */
+    if (!prefersReducedMotion) {
+      const glance = () => {
+        if (!document.hidden) {
+          const r = (n) => (Math.random() * n * 2 - n).toFixed(2);
+          dock.style.setProperty('--look-x', r(1.7) + 'px');
+          dock.style.setProperty('--look-y', r(1.2) + 'px');
+          dock.style.setProperty('--look-r', r(4.5) + 'deg');
+        }
+        setTimeout(glance, 1500 + Math.random() * 2800);
       };
+      setTimeout(glance, 1100);
+    }
+    panel.querySelector('.mayuri-panel-close').addEventListener('click', () => setOpen(false));
 
-      whatsappWrap.appendChild(whatsappFloat);
-      whatsappWrap.appendChild(whatsappClose);
-      document.body.appendChild(whatsappWrap);
-      setWhatsappHidden(waHidden);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && open) setOpen(false);
+    });
+
+    // Click-away. Checked against the whole wrap so a click on the button or
+    // inside the panel does not immediately close what it just opened.
+    document.addEventListener('click', (event) => {
+      if (open && !wrap.contains(event.target)) setOpen(false);
+    });
+
+    // ---- dismissal, unchanged from the bubble this replaced ---------------
+    function setWhatsappHidden(next) {
+      waHidden = next;
+      document.body.classList.toggle('wa-dismissed', waHidden);
+      if (waHidden && open) setOpen(false);
+      try {
+        if (waHidden) {
+          sessionStorage.setItem(WA_DISMISSED_KEY, '1');
+        } else {
+          sessionStorage.removeItem(WA_DISMISSED_KEY);
+        }
+      } catch (e) { /* storage unavailable — the choice lasts this page only */ }
+    }
+
+    close.addEventListener('click', () => setWhatsappHidden(true));
+
+    // Handed to the `w` shortcut up in the canvas block, which runs earlier in
+    // this file than the corner is built. Returns the new state so the caller
+    // can say which way it went without reaching back in here.
+    toggleWhatsappBubble = function () {
+      setWhatsappHidden(!waHidden);
+      return waHidden;
+    };
+
+    wrap.appendChild(greet);
+    wrap.appendChild(panel);
+    wrap.appendChild(dock);
+    document.body.appendChild(wrap);
+    setWhatsappHidden(waHidden);
+
+    /* The hello, on every page load, five seconds, then gone. It used to be
+       once a session, and the flag was written the moment it APPEARED - so a
+       visitor who arrived on any page but the one they landed on first never
+       saw it at all, and it looked like a feature that did not work.
+
+       The flag still exists, but it is now set when she is OPENED, not when
+       she says hello: somebody who has already met her does not need
+       introducing again, and somebody who has not gets introduced wherever
+       they came in. Skipped entirely under prefers-reduced-motion, since it
+       slides in, and something that moves in a corner unasked is exactly what
+       that setting is about. */
+    if (!waHidden && !prefersReducedMotion) {
+      let met = false;
+      try {
+        met = sessionStorage.getItem(GREETED_KEY) === '1';
+      } catch (e) { met = false; }
+      if (!met) {
+        setTimeout(() => {
+          if (waHidden || open) return;
+          dock.classList.add('is-waving');
+          greet.classList.add('is-visible');
+          setTimeout(() => greet.classList.remove('is-visible'), 5000);
+        }, 1600);
+      }
     }
   }
 

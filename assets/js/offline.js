@@ -247,3 +247,68 @@
       });
   });
 })(typeof self !== 'undefined' ? self : this);
+
+
+/* ==========================================================================
+   Mayuri, on this page only.
+   --------------------------------------------------------------------------
+   The rest of the site builds her in particle-bg.js, which /offline does not
+   load — it loads nothing but this file, on purpose. So the markup is inline
+   in the page and the only thing needed here is the toggle.
+
+   Written defensively: if any of the three nodes is missing this does nothing
+   at all rather than throwing, because an exception here would take the cache
+   listing above it down with it, and that listing is the reason the page
+   exists.
+   ========================================================================== */
+(function () {
+  var button = document.getElementById('mayuri-button');
+  var panel = document.getElementById('mayuri-panel');
+  var greet = document.getElementById('mayuri-greet');
+
+  /* Same idle glance as the main site. Kept here rather than shared, because
+     this page loads no stylesheet and no partials on purpose — it has to work
+     from cache alone. */
+  var wrap = document.querySelector('.mayuri-wrap');
+  if (wrap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var glance = function () {
+      if (!document.hidden) {
+        var r = function (n) { return (Math.random() * n * 2 - n).toFixed(2); };
+        wrap.style.setProperty('--look-x', r(1.7) + 'px');
+        wrap.style.setProperty('--look-y', r(1.2) + 'px');
+        wrap.style.setProperty('--look-r', r(4.5) + 'deg');
+      }
+      setTimeout(glance, 1500 + Math.random() * 2800);
+    };
+    setTimeout(glance, 1100);
+  }
+  if (!button || !panel) return;
+
+  var reduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setOpen(next) {
+    panel.hidden = !next;
+    button.setAttribute('aria-expanded', next ? 'true' : 'false');
+    if (next && greet) greet.hidden = true;
+  }
+
+  button.addEventListener('click', function () {
+    if (!reduced) {
+      button.classList.remove('is-cheering');
+      void button.offsetWidth;
+      button.classList.add('is-cheering');
+    }
+    setOpen(panel.hidden);
+  });
+  button.addEventListener('animationend', function () {
+    button.classList.remove('is-cheering');
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && !panel.hidden) setOpen(false);
+  });
+
+  // Five seconds, then she stops saying hello. Same as the rest of the site.
+  if (greet) window.setTimeout(function () { greet.hidden = true; }, 5000);
+})();
