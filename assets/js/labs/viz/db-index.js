@@ -156,7 +156,11 @@
     input.addEventListener('change', function () { onChange(input.checked); });
     wrap.appendChild(input);
     wrap.appendChild(E('span', null, labelText));
-    wrap.control = input;
+    /* No `wrap.control = input` here. HTMLLabelElement.control is a read-only
+       getter derived from the DOM, so assigning it threw a TypeError under
+       'use strict' and took the whole Covering-index tab down with it. The
+       input is already nested inside the label, which is the implicit
+       association the property would have reported anyway. */
     return wrap;
   }
   /* A labelled range slider that reports its value as it moves. */

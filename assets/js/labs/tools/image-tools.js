@@ -283,7 +283,13 @@
          to compare — those are left to the decoder, which handles them
          universally and where a wrong guess would flip a picture that is
          already correct. */
-      if (item.scan.width && decW === item.scan.width && decH === item.scan.height) {
+      /* ...and a SQUARE raster swaps into itself, so the comparison above is
+         true whether the decoder rotated or not. Without the inequality a
+         square photo shot in portrait got the quarter-turn applied twice and
+         came out 90 degrees wrong. Squares fall through to rotate = 1 with
+         2, 3 and 4, for the same reason: let the decoder own it. */
+      if (item.scan.width && item.scan.width !== item.scan.height &&
+          decW === item.scan.width && decH === item.scan.height) {
         item.rotate = o;
       }
     }

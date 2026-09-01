@@ -158,10 +158,23 @@
     }
 
     var now = Date.now();
-    var active = certs.filter(function (c) { return new Date(c.not_after) > now; });
+    /* The query at ENDPOINT does not pass expired=true, and Cert Spotter
+       returns only UNEXPIRED issuances by default — so `certs` is a snapshot
+       of what is live now, not the full logged history. Saying "N logged"
+       claimed the latter, which is the wrong answer to the question people
+       come here with ("what has ever been issued for my domain?"). Name what
+       the set actually is, and say plainly what is missing from it. */
+    var expiringSoon = certs.filter(function (c) {
+      return (new Date(c.not_after) - now) < 30 * 864e5;
+    });
 
-    out.heading(certs.length + ' certificate' + (certs.length === 1 ? '' : 's') +
-                ' logged   ·   ' + active.length + ' still valid');
+    out.heading(certs.length + ' unexpired certificate' +
+                (certs.length === 1 ? '' : 's') + ' currently logged' +
+                (expiringSoon.length ? '   ·   ' + expiringSoon.length +
+                 ' expiring within 30 days' : ''));
+    out.dim('Cert Spotter returns only unexpired issuances, so certificates that');
+    out.dim('have already lapsed are not counted here — this is what is live now,');
+    out.dim('not everything ever issued for the domain.');
     out.line('');
 
     // ---- the subdomain list, which is the actually useful part ----

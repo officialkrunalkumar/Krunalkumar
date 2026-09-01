@@ -321,13 +321,21 @@
             won: mode === 'pass' ? true : line.who === YOU,
             title: mode === 'pass' ? (line.who === YOU ? 'Red wins' : 'Yellow wins')
                                    : (line.who === YOU ? 'You win' : 'They win'),
-            message: 'Four in a row.'
+            message: 'Four in a row.',
+            /* Connect Four is won or lost, never scored. Without this the
+               shell falls back to this.score — a zero nobody set — and
+               prints it on the end card as if it were a result. */
+            hideScore: true
           });
           return true;
         }
         if (full()) {
           over = true;
-          g.over({ title: 'Full board', message: 'A draw — nobody got four.' });
+          g.over({
+            title: 'Full board',
+            message: 'A draw — nobody got four.',
+            hideScore: true
+          });
           return true;
         }
 

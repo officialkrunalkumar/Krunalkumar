@@ -88,8 +88,13 @@
     var mins = Math.round(Math.abs(diff) / 60000);
     var human;
     if (mins < 60) human = mins + ' minute' + (mins === 1 ? '' : 's');
-    else if (mins < 1440) human = Math.round(mins / 60) + ' hours';
-    else human = Math.round(mins / 1440) + ' days';
+    else if (mins < 1440) {
+      var hrs = Math.round(mins / 60);
+      human = hrs + ' hour' + (hrs === 1 ? '' : 's');
+    } else {
+      var dys = Math.round(mins / 1440);
+      human = dys + ' day' + (dys === 1 ? '' : 's');
+    }
     return d.toISOString() + '  (' + human + (diff < 0 ? ' ago' : ' from now') + ')';
   }
 

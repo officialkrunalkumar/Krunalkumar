@@ -149,8 +149,11 @@
     if (elWhatsapp) {
       /* wa.me takes the whole message as one encoded blob. Built here rather
          than in the markup because the URL changes on every keystroke. */
+      /* The festival branch used to end mid-sentence — "Wishing you a very
+         happy https://…" — because the thing being wished was never named. */
       var msg = (state.mode === 'birthday'
-        ? 'Happy Birthday! ' : 'Wishing you a very happy ') + abs;
+        ? 'Happy Birthday! '
+        : 'Wishing you a very happy ' + state.festival + '! ') + abs;
       setLinkReady(elWhatsapp, ready, 'https://wa.me/?text=' + encodeURIComponent(msg));
     }
 

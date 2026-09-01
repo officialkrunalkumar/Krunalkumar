@@ -1833,6 +1833,29 @@
     return String(s).replace(/([\\;,:"])/g, '\\$1');
   }
 
+  /* An all-hex SSID or password has to be QUOTED in a WIFI: URI, or the
+     scanner reads it as raw hex bytes and joins the wrong network — a
+     password of "12345678" is eight characters, not four bytes.
+     qr-payloads.js already does this; qr.js did not. */
+  function looksHex(s) {
+    return s.length > 0 && /^[0-9a-fA-F]+$/.test(s);
+  }
+  function wifiValue(s) {
+    return looksHex(s) ? '"' + escapeWifi(s) + '"' : escapeWifi(s);
+  }
+
+  /* vCard reserves \ ; , and newline inside a property value (RFC 6350 §3.4).
+     Unescaped, an ORG of "Acme, Inc." or an address with a semicolon splits
+     into fields the reader never meant to write. Backslash goes first, or it
+     would double-escape the escapes added after it. */
+  function escVcard(s) {
+    return String(s)
+      .replace(/\\/g, '\\\\')
+      .replace(/\r?\n/g, '\\n')
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;');
+  }
+
   function buildPayload() {
     var kind = val('tool-kind');
     if (kind === 'text') return val('f-text');
@@ -1840,8 +1863,8 @@
       var ssid = val('f-ssid');
       if (!ssid) return '';
       var sec = val('f-wifisec');
-      var s = 'WIFI:T:' + sec + ';S:' + escapeWifi(ssid) + ';';
-      if (sec !== 'nopass') s += 'P:' + escapeWifi(val('f-wifipass')) + ';';
+      var s = 'WIFI:T:' + sec + ';S:' + wifiValue(ssid) + ';';
+      if (sec !== 'nopass') s += 'P:' + wifiValue(val('f-wifipass')) + ';';
       if (el('f-wifihidden').checked) s += 'H:true;';
       return s + ';';
     }
@@ -1850,12 +1873,15 @@
       if (!name) return '';
       var parts = name.split(/\s+/);
       var last = parts.length > 1 ? parts.pop() : '';
+      /* Only the COMPONENTS are escaped on the N line — the semicolons
+         between them are structure, not data. */
       var lines = ['BEGIN:VCARD', 'VERSION:3.0',
-                   'N:' + last + ';' + parts.join(' ') + ';;;', 'FN:' + name];
-      if (val('f-vorg')) lines.push('ORG:' + val('f-vorg'));
-      if (val('f-vphone')) lines.push('TEL;TYPE=CELL:' + val('f-vphone'));
-      if (val('f-vemail')) lines.push('EMAIL:' + val('f-vemail'));
-      if (val('f-vurl')) lines.push('URL:' + val('f-vurl'));
+                   'N:' + escVcard(last) + ';' + escVcard(parts.join(' ')) + ';;;',
+                   'FN:' + escVcard(name)];
+      if (val('f-vorg')) lines.push('ORG:' + escVcard(val('f-vorg')));
+      if (val('f-vphone')) lines.push('TEL;TYPE=CELL:' + escVcard(val('f-vphone')));
+      if (val('f-vemail')) lines.push('EMAIL:' + escVcard(val('f-vemail')));
+      if (val('f-vurl')) lines.push('URL:' + escVcard(val('f-vurl')));
       lines.push('END:VCARD');
       return lines.join('\n');
     }

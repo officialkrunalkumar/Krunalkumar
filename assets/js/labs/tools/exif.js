@@ -224,7 +224,15 @@
       out.err('LOCATION PRESENT');
       out.row('latitude', lat.toFixed(6));
       out.row('longitude', lon.toFixed(6));
-      if (g.GPSAltitude) out.row('altitude', Math.round(g.GPSAltitude) + ' m');
+      /* GPSAltitude is an UNSIGNED rational holding the magnitude; the sign
+         lives in GPSAltitudeRef, where 1 means BELOW sea level (EXIF 2.32
+         §4.6.6). Reading the magnitude alone printed a Dead Sea photo as
+         +423 m. Tested against `typeof` rather than truthiness so that an
+         altitude of exactly 0 — sea level — still prints its row. */
+      if (typeof g.GPSAltitude === 'number') {
+        var alt = g.GPSAltitudeRef === 1 ? -g.GPSAltitude : g.GPSAltitude;
+        out.row('altitude', Math.round(alt) + ' m');
+      }
       if (g.GPSDateStamp) out.row('GPS date', g.GPSDateStamp);
       out.line('');
       out.warn('That is roughly street-level accuracy. Anyone with this file can');

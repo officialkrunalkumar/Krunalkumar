@@ -91,6 +91,7 @@
     var terms = rec.split(/\s+/).slice(1);
     var lookups = 0;
     var allTerm = null;
+    var redirectTo = null;
 
     terms.forEach(function (term) {
       var qualifier = /^[-~?+]/.test(term) ? term[0] : '+';
@@ -98,6 +99,7 @@
       var mech = body.split(/[:=/]/)[0].toLowerCase();
       if (LOOKUP_MECHANISMS.indexOf(mech) !== -1) lookups++;
       if (mech === 'all') allTerm = qualifier;
+      if (mech === 'redirect') redirectTo = body.split('=')[1] || '';
       if (mech === 'ptr') {
         out.warn('  ptr is deprecated (RFC 7208 §5.5) — slow, unreliable, and');
         out.warn('  some receivers ignore it entirely.');
@@ -123,6 +125,21 @@
       out.dim('    mechanisms, so the true total is higher than the number above —');
       out.dim('    working it out means recursively fetching each one.');
       out.dim('    Exceeding 10 breaks SPF entirely, with no warning anywhere.');
+    }
+
+    /* RFC 7208 §6.1: redirect= hands the whole evaluation to another domain's
+       record and is the normal way to write a record with no "all" of its own.
+       Reporting that as "says nothing about senders" marked correctly
+       configured domains as neutral. The modifier is only consulted when
+       there is no "all" — an "all" present makes redirect a no-op — which is
+       why this sits ahead of the no-policy branch and not inside it. */
+    if (!allTerm && redirectTo) {
+      out.row('default policy', 'redirect=' + redirectTo +
+              ' — delegated to that domain’s record', 't-warn');
+      out.dim('    The enforcing "all" lives in the SPF record at ' + redirectTo + '.');
+      out.dim('    This audit did not fetch it, so the score below is provisional:');
+      out.dim('    look that record up to see whether it ends -all or ~all.');
+      return { score: 2, max: 3, has: true, redirect: redirectTo };
     }
 
     if (!allTerm) {

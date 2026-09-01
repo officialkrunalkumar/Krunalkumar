@@ -752,12 +752,20 @@
 
       /* ---------------- the four rooms ---------------- */
 
-      /* Room one: two fields build a login query; the win is the admin row. */
+      /* Room one: two fields build a login query; the win is the admin row.
+
+         The fields in this game are typed INTO and read BY the player, so they
+         must not carry 'typing-catch'. That class belongs to the off-screen
+         keystroke catcher the terminal games use — game-shell.js parks it at
+         left:-9999px, opacity:0 — and putting it on a visible field renders
+         the box nowhere while the shell still focuses it, so typing vanishes
+         into an input nobody can see. Each room already calls focusSoon() on
+         its own first field, so nothing is lost by leaving the class off. */
       function mountLogin() {
         stageEl.innerHTML =
           '<div class="sqli-field">' +
           '<label class="sqli-label" for="sqli-user">Username</label>' +
-          '<input class="sqli-input typing-catch" id="sqli-user" type="text" autocomplete="off" ' +
+          '<input class="sqli-input" id="sqli-user" type="text" autocomplete="off" ' +
           'autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="try: admin" />' +
           '</div>' +
           '<div class="sqli-field">' +
@@ -817,7 +825,7 @@
         stageEl.innerHTML =
           '<div class="sqli-field">' +
           '<label class="sqli-label" for="sqli-search">Search products</label>' +
-          '<input class="sqli-input typing-catch" id="sqli-search" type="text" autocomplete="off" ' +
+          '<input class="sqli-input" id="sqli-search" type="text" autocomplete="off" ' +
           'autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="hammer" />' +
           '</div>' +
           '<div class="sqli-row">' +
@@ -906,7 +914,7 @@
           '<option value="&lt;">SUBSTRING &lt; char</option>' +
           '</select></div>' +
           '<div class="sqli-field"><label class="sqli-label" for="sqli-ch">Character</label>' +
-          '<input class="sqli-input sqli-char typing-catch" id="sqli-ch" type="text" maxlength="1" ' +
+          '<input class="sqli-input sqli-char" id="sqli-ch" type="text" maxlength="1" ' +
           'autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" /></div>' +
           '<div class="sqli-field"><button class="game-btn sqli-primary sqli-go" type="button" id="sqli-send">Send probe</button></div>' +
           '</div>' +
@@ -940,8 +948,19 @@
           var c = (chEl.value || '').toUpperCase().charAt(0);
           return c;
         }
+        /* The two comparison options are written &gt; and &lt; in the markup
+           above, because that is how you put those characters in an HTML
+           attribute. The parser decodes them, so opEl.value is already '>'
+           or '<' — comparing it against the entity text matched nothing and
+           every probe went out as '=', which quietly made the greater-than
+           and less-than options dead and the blind search unusable. Read the
+           decoded value, and fall back to '=' for anything unexpected. */
+        function currentOp() {
+          var v = opEl.value;
+          return (v === '>' || v === '<') ? v : '=';
+        }
         function repaint() {
-          var op = opEl.value === '&gt;' ? '>' : (opEl.value === '&lt;' ? '<' : '=');
+          var op = currentOp();
           paintQuery(segs(op, currentChar() || '?'));
           paintPrefix();
         }
@@ -976,7 +995,7 @@
         function send() {
           var ch = currentChar();
           if (!ch) { setHint('Type one character to compare against.'); return; }
-          var op = opEl.value === '&gt;' ? '>' : (opEl.value === '&lt;' ? '<' : '=');
+          var op = currentOp();
           var sql = paintQuery(segs(op, ch));
 
           if (mode === 'blind') {

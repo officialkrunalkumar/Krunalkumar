@@ -299,7 +299,13 @@
         open[i] = true;
         for (var c = 0; c < W * H; c++) if (mine[c]) open[c] = true;
         render();
-        g.over({ message: 'Mine at ' + (i % W + 1) + ', ' + (Math.floor(i / W) + 1) + '.' });
+        /* A loss has no clear time. The win below passes one as `score`, and
+           without hideScore here the shell fills the same slot with the unset
+           this.score — printing a large 0 where the win shows the time. */
+        g.over({
+          message: 'Mine at ' + (i % W + 1) + ', ' + (Math.floor(i / W) + 1) + '.',
+          hideScore: true
+        });
       }
 
       function checkWin() {

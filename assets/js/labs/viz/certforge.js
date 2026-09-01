@@ -426,7 +426,12 @@
     return signBytes(params.alg, params.signingKey, tbs).then(function (rawSig) {
       var sig = encodeSignatureForCert(params.alg, rawSig);
       var cert = assembleCertificate(tbs, params.alg, sig);
-      return { der: cert, pem: toPEM('CERTIFICATE', cert), tbs: tbs, signature: sig };
+      /* rawSignature is kept alongside the DER-wrapped one because WebCrypto
+         verify() wants the raw r||s for ECDSA, while the certificate embeds
+         SEQUENCE(r,s). Handing the embedded form straight back to verify()
+         fails on EC and succeeds on RSA, which is a confusing way to find out. */
+      return { der: cert, pem: toPEM('CERTIFICATE', cert), tbs: tbs,
+               signature: sig, rawSignature: rawSig };
     });
   }
 
@@ -750,14 +755,26 @@
         // success like this — used() de-dupes per page view, so the lab still
         // counts once however many tabs a visitor works through.
         if (window.KSLab) window.KSLab.used('generate');
-        self.show(res, subject);
+        /* The status line claimed the certificate was "verified" while nothing
+           had verified anything. verifyBytes is right here — the CA and CSR
+           tabs already use it — so actually check the signature against the
+           key that made it and let the word carry its meaning. */
+        return F.verifyBytes(STATE.alg, STATE.keypair.publicKey, res.rawSignature, res.tbs)
+          .then(function (okv) { self.show(res, subject, okv); },
+                function () { self.show(res, subject, null); });
       }).catch(function (err) {
         status(self.statusHost, 'bad', 'Signing failed: ' + err.message);
       });
     });
   };
-  CertTab.prototype.show = function (res, subject) {
-    status(this.statusHost, 'ok', 'Self-signed certificate generated and verified. ' +
+  /* verified: true = signature checked out, false = it did not, null = the
+     check itself could not run. Only the first earns the word. */
+  CertTab.prototype.show = function (res, subject, verified) {
+    status(this.statusHost, verified === false ? 'bad' : 'ok',
+      'Self-signed certificate ' +
+      (verified === true ? 'generated, and its signature verifies against its own public key. '
+       : verified === false ? 'generated, but its own signature did NOT verify — that should not happen. '
+       : 'generated. ') +
       res.der.length + ' bytes of DER. It is its own issuer, so it is a trust anchor — a browser ' +
       'would warn unless you added it to your trust store.');
     clear(this.outHost);

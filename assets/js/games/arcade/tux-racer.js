@@ -53,6 +53,10 @@
        applied, and a slow scrape down the hill overwrote a clean fast one
        and lit up 'New best' for it. */
     bestOrder: 'low',
+    /* over() is handed the time in TENTHS, so the raw number is ten times the
+       seconds it stands for and the HUD read a 59.6 s run as "596". Put the
+       point back and name the unit, the way sudoku and reaction-time do. */
+    formatBest: function (n) { return (n / 10).toFixed(1) + ' s'; },
     startTitle: 'Downhill',
     startText: 'Left and right to steer, down to tuck. Fish are points; trees are not.',
 

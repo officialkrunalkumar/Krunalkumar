@@ -1018,8 +1018,17 @@
         res.changes.push({ n: line, t: t,
                            what: 'account locked out: ' + (user || '?') + ' (from ' + src + ')' });
       } else if (id === '4771' || id === '4768') {
+        /* 4768 is logged whether the TGT request SUCCEEDED or FAILED — a
+           failure carries a non-zero Result Code (0x6 client-not-found is the
+           signature of Kerbrute-style username enumeration, 0x12 a disabled or
+           locked account). Counting every 4768 as a success turned exactly
+           that traffic into a false "successful authentication after N
+           failures" HIGH finding. Only a PRESENT and non-zero code demotes it,
+           so a terse export with no Result Code field reads as before. The
+           4776 branch below already gates on its code the same way. */
+        var kerbOk = id === '4768' && !/Result Code:\s*0x0*[1-9a-f]/i.test(msg);
         res.auth.push({ n: line, t: t, src: src, user: user || '(not logged)',
-                        ok: id === '4768', method: 'Kerberos ' + id, note: reason,
+                        ok: kerbOk, method: 'Kerberos ' + id, note: reason,
                         txt: 'Kerberos ' + id + '  user=' + (user || '?') + '  from=' + src });
       } else if (id === '4776') {
         var ok = /0x0\b/.test(sub) || /Error Code:\s*0x0/i.test(msg);

@@ -564,9 +564,14 @@
           continue;
         }
         if (mode === 2 && args && args.length >= 3) {
-          var r = parseInt(args[0], 10) || 0, g = parseInt(args[1], 10) || 0, b = parseInt(args[2], 10) || 0;
+          /* Echo the parameters as they were written, but build the hex from
+             the CLAMPED components: hex2 masks with & 255, so an out-of-range
+             999 came out as #e7 and the tool asserted a colour no terminal
+             would ever show. A terminal clamps to a byte, so 999 is #ff. */
+          var rawR = args[0], rawG = args[1], rawB = args[2];
+          var r = byte255(rawR), g = byte255(rawG), b = byte255(rawB);
           var th = '#' + hex2(r) + hex2(g) + hex2(b);
-          push(n + ';2;' + r + ';' + g + ';' + b, target + ' as 24-bit truecolour ' + th +
+          push(n + ';2;' + rawR + ';' + rawG + ';' + rawB, target + ' as 24-bit truecolour ' + th +
                '. Defined by ITU-T T.416 / ISO 8613-6 with colons; the semicolon form here is xterm practice and is what nearly everything emits');
           if (n === 38) state.fg = makeColour(th, 'truecolour ' + th);
           else if (n === 48) state.bg = makeColour(th, 'truecolour ' + th);
@@ -976,7 +981,7 @@
     }
     function put(ch) {
       if (cur.c >= COLS) { cur.c = 0; cur.r++; stat.wrapped++; }
-      if (cur.r >= MAX_ROWS || cur.c >= MAX_COLS) { stat.truncated = true; return; }
+      if (cur.r >= MAX_ROWS || cur.c >= COLS) { stat.truncated = true; return; }
       var row = rowAt(cur.r);
       padRow(row, cur.c);
       if (row[cur.c].printed && row[cur.c].ch !== ch) stat.overwrote++;
@@ -987,10 +992,10 @@
     function up(n) { var t = cur.r - n; if (t < 0) { t = 0; stat.clamped++; } cur.r = t; }
     function down(n) { cur.r = Math.min(MAX_ROWS - 1, cur.r + n); }
     function left(n) { var t = cur.c - n; if (t < 0) { t = 0; stat.clamped++; } cur.c = t; }
-    function right(n) { cur.c = Math.min(MAX_COLS - 1, cur.c + n); }
+    function right(n) { cur.c = Math.min(COLS - 1, cur.c + n); }
     function goTo(r, c) {
       cur.r = Math.max(0, Math.min(MAX_ROWS - 1, r));
-      cur.c = Math.max(0, Math.min(MAX_COLS - 1, c));
+      cur.c = Math.max(0, Math.min(COLS - 1, c));
     }
     function countRow(row) {
       var k = 0;
@@ -1009,7 +1014,7 @@
         var c = tok.code;
         if (c === 0x0a) { cur.r++; cur.c = 0; if (cur.r >= MAX_ROWS) stat.truncated = true; return; }
         if (c === 0x0d) { cur.c = 0; return; }
-        if (c === 0x09) { cur.c = Math.min(MAX_COLS - 1, (Math.floor(cur.c / 8) + 1) * 8); return; }
+        if (c === 0x09) { cur.c = Math.min(COLS - 1, (Math.floor(cur.c / 8) + 1) * 8); return; }
         if (c === 0x08) { left(1); return; }
         if (c === 0x0b || c === 0x0c) { cur.r++; if (cur.r >= MAX_ROWS) stat.truncated = true; return; }
         if (c === 0x84 || c === 0x85) { cur.r++; if (c === 0x85) cur.c = 0; return; }
@@ -1101,7 +1106,7 @@
           break;
         case 'X':
           row = rowAt(cur.r);
-          for (i = cur.c; i < cur.c + d1 && i < MAX_COLS; i++) clearCell(row, i);
+          for (i = cur.c; i < cur.c + d1 && i < COLS; i++) clearCell(row, i);
           break;
         case 'P':
           row = rowAt(cur.r);
@@ -1113,7 +1118,7 @@
         case '@':
           row = rowAt(cur.r);
           padRow(row, cur.c);
-          for (i = 0; i < d1 && row.length < MAX_COLS; i++) {
+          for (i = 0; i < d1 && row.length < COLS; i++) {
             row.splice(cur.c, 0, { ch: ' ', st: cloneStyle(st), printed: false });
           }
           break;
@@ -1477,8 +1482,12 @@
     var note;
     if (n === 39) note = 'Foreground back to the terminal default';
     else if (n === 49) note = 'Background back to the terminal default';
-    else if (n >= 90) note = 'Foreground bright ' + HUES[n - 90] + ' — aixterm extension, not ECMA-48';
+    /* 100-107 must be tested BEFORE 90-107: every bright-background code also
+       satisfies n >= 90, so with the tests the other way round the background
+       branch was unreachable and HUES[n - 90] indexed past the end of an
+       eight-entry table, printing "Foreground bright undefined". */
     else if (n >= 100) note = 'Background bright ' + HUES[n - 100] + ' — aixterm extension';
+    else if (n >= 90) note = 'Foreground bright ' + HUES[n - 90] + ' — aixterm extension, not ECMA-48';
     else if (n >= 40) note = 'Background ' + HUES[n - 40];
     else note = 'Foreground ' + HUES[n - 30];
     return { params: mode, note: note };

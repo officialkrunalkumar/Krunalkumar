@@ -297,7 +297,10 @@
           title: NAMES[seat] + ' wins',
           message: mode === 'pass'
             ? 'Home on an exact roll.'
-            : (seat === 0 ? 'You landed on 100 exactly.' : 'They got there first.')
+            : (seat === 0 ? 'You landed on 100 exactly.' : 'They got there first.'),
+          /* The dice decide this one; there is no score. Without this the
+             shell prints the unset this.score as a large zero. */
+          hideScore: true
         });
       }
 

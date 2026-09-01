@@ -129,6 +129,18 @@
     // Every 4th byte is alpha and is left alone: touching it can make pixels
     // subtly transparent, which some viewers and formats handle badly.
     var usable = Math.floor(data.length / 4) * 3;
+
+    /* A canvas stores colour PREMULTIPLIED by alpha, and getImageData has to
+       divide it back out. That round trip is lossy for every pixel with
+       alpha < 255 — measured on this exact code path, the low bit survives
+       at chance, 128 of 256 — so a message hidden in a PNG with any
+       transparency came back as noise with nothing saying why. Flattening to
+       opaque is what makes the low bits mean anything. It changes the image,
+       so it is reported below rather than done quietly. */
+    var madeOpaque = 0;
+    for (var a = 3; a < data.length; a += 4) {
+      if (data[a] !== 255) { data[a] = 255; madeOpaque++; }
+    }
     var header = 4 * 8;                       // 32-bit big-endian length
     var needed = header + payload.length * 8;
     if (needed > usable) {
@@ -165,7 +177,19 @@
         out.row('pixels touched', Math.ceil(bits.length / 3).toLocaleString() +
                 ' of ' + (image.naturalWidth * image.naturalHeight).toLocaleString());
         out.row('maximum change', '1 of 255 per channel');
+        if (madeOpaque) {
+          out.row('made opaque', madeOpaque.toLocaleString() + ' pixel' +
+                  (madeOpaque === 1 ? '' : 's'));
+        }
         out.rule();
+        if (madeOpaque) {
+          out.warn('This image had transparency. A canvas keeps colour premultiplied');
+          out.warn('by alpha, so the low bits of a partly transparent pixel do not');
+          out.warn('survive being read back — the message would have been noise. Those');
+          out.warn('pixels were made fully opaque before writing, so the saved PNG');
+          out.warn('has no transparency left where there was some before.');
+          out.line('');
+        }
         out.dim('The two images are visually identical because every altered');
         out.dim('channel moved by at most one step out of 255.');
         out.line('');

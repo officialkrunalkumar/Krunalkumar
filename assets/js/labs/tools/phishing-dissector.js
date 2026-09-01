@@ -603,7 +603,13 @@
     var angled = value.match(/^\s*(.*?)\s*<([^>]*)>/);
     var display = null, displayAt = -1, addr = null, addrAt = -1;
     if (angled) {
-      display = angled[1].replace(/^["']|["']$/g, '');
+      /* Decode RFC 2047 here, not just when printing. Every display-name
+         check downstream — the look-alike test, the name-claims-a-different-
+         domain test — is a string comparison, and an encoded word is opaque
+         to all of them. Leaving it raw meant base64-ing the display name was
+         a one-step way to pass all of them. displayAt still points at the
+         RAW span, which is what the highlighter needs. */
+      display = decodeMimeWords(angled[1].replace(/^["']|["']$/g, ''));
       addr = angled[2].trim();
       displayAt = base + value.indexOf(angled[1]);
       addrAt = base + value.indexOf(angled[2]);
@@ -1275,7 +1281,7 @@
       if (returnPath) out.row('Return-Path', visible(returnPath.raw));
       if (sender) out.row('Sender', visible(sender.raw));
       var subjectHeader = pick(headers, 'Subject');
-      out.row('Subject', subjectHeader ? visible(subjectHeader.value) : '(none)');
+      out.row('Subject', subjectHeader ? visible(decodeMimeWords(subjectHeader.value)) : '(none)');
       if (to) out.row('To', visible(to.raw));
       out.line('');
 
@@ -1556,9 +1562,25 @@
     if (mode !== 'url') {
       var subjectHeaderForLang = pick(headers, 'Subject');
       if (subjectHeaderForLang) {
-        languageHits = languageHits.concat(
-          analyseLanguage(RAW, subjectHeaderForLang.valueAt,
-                          subjectHeaderForLang.value.length));
+        var subjRaw = subjectHeaderForLang.value;
+        var subjDecoded = decodeMimeWords(subjRaw);
+        if (subjDecoded === subjRaw) {
+          languageHits = languageHits.concat(
+            analyseLanguage(RAW, subjectHeaderForLang.valueAt, subjRaw.length));
+        } else {
+          /* An encoded subject has no character-for-character mapping back
+             into RAW, so the phrase list has to run over the decoded text and
+             every hit is anchored at the start of the subject's raw value.
+             The highlight lands on the header rather than the exact word,
+             which is the price of detecting it at all — scanning the raw
+             encoded word found nothing, so base64-ing the subject skipped
+             every wording check in the tool. */
+          languageHits = languageHits.concat(
+            analyseLanguage(subjDecoded, 0, subjDecoded.length).map(function (r) {
+              r.hits.forEach(function (h) { h.at = subjectHeaderForLang.valueAt; });
+              return r;
+            }));
+        }
       }
       languageHits = languageHits.concat(analyseLanguage(RAW, bodyStart, bodyLength));
     }
