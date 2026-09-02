@@ -101,8 +101,31 @@
               '&type=' + encodeURIComponent(type);
     return LabNet.json({ url: url, headers: r.headers, out: out })
       .then(function (result) {
-        if (!result.data) {
-          throw new Error('The resolver returned something that is not JSON.');
+        /* The status check must run before the JSON check: a 429 or a 5xx
+           often arrives with an HTML or empty body, and letting "not JSON"
+           win would discard the one hard fact we hold — the HTTP status —
+           and send the failure to explainFailure, whose whole script is
+           about failures the browser refuses to describe. This one it
+           described just fine.
+
+           Cloudflare answers HTTP 400 — with a JSON error body that carries
+           no Status field — when a name slips past this file's loose regex
+           but fails its stricter one; the Status-field check also catches a
+           2xx missing the field, which the footer once interpolated as
+           "RCODE undefined", reading like a DNS response that never
+           happened. The error is flagged, and carries the status as a
+           number, so reportFailure can tell rate-limiting and resolver
+           trouble apart from a rejected name. */
+        if (!result.res.ok ||
+            !result.data || typeof result.data.Status !== 'number') {
+          if (result.res.ok && !result.data) {
+            throw new Error('The resolver returned something that is not JSON.');
+          }
+          var rejected = new Error('The resolver rejected the query (HTTP ' +
+                                   result.res.status + ') instead of answering it.');
+          rejected.resolverRejected = true;
+          rejected.httpStatus = result.res.status;
+          throw rejected;
         }
         return result.data;
       });
@@ -166,6 +189,36 @@
     return answers.length;
   }
 
+  /* Both the single lookup and the sweep end in the same catch, so the split
+     between "the resolver told us no" and "the browser will not say" lives
+     here once. A flagged rejection carries a real HTTP status and gets said
+     plainly — and the status matters, because a 429, a 5xx and a 400 are
+     three different stories: too many queries, the resolver's own trouble,
+     and a name it would not accept. Everything else is the opaque
+     cross-origin failure that explainFailure exists to be honest about. */
+  function reportFailure(err) {
+    if (err && err.resolverRejected) {
+      out.line('');
+      if (err.httpStatus === 429) {
+        out.err('HTTP 429 — ' + resolver().name + ' is rate-limiting this address.');
+        out.dim('Too many queries arrived too quickly and it is asking for a');
+        out.dim('pause. Nothing is wrong with the name — wait a moment and try');
+        out.dim('again.');
+      } else if (err.httpStatus >= 500) {
+        out.err('HTTP ' + err.httpStatus + ' — ' + resolver().name + ' is having trouble.');
+        out.dim('That is a failure on the resolver’s side, not a problem with');
+        out.dim('the name or with your connection. Try again shortly, or switch');
+        out.dim('to the other resolver above.');
+      } else {
+        out.err(err.message);
+        out.dim('The name looked plausible enough to send, but the resolver');
+        out.dim('does not consider it a valid DNS name.');
+      }
+      return;
+    }
+    LabNet.explainFailure(out, err, resolver().name);
+  }
+
   function footer(data) {
     out.rule();
     out.row('resolver', resolver().name);
@@ -218,9 +271,7 @@
       out.line('');
       renderAnswers(data, typeName);
       footer(data);
-    }).catch(function (err) {
-      LabNet.explainFailure(out, err, resolver().name);
-    });
+    }).catch(reportFailure);
   }
 
   /* The common-records sweep. Sequential on purpose: six parallel requests
@@ -269,9 +320,7 @@
         renderAnswers(data, type);
         out.line('');
         next();
-      }).catch(function (err) {
-        LabNet.explainFailure(out, err, resolver().name);
-      });
+      }).catch(reportFailure);
     }
     next();
   }

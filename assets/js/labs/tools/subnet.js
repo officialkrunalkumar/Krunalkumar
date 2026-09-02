@@ -111,7 +111,15 @@
           return;
         }
       } else {
-        bits = Number(slash[1].trim());
+        /* Number() is the wrong parser to trust on its own here: Number('')
+           is 0, so a trailing slash ("10.0.0.0/") silently produced a full /0
+           sheet, and Number('2.5') is 2.5, which the 0–32 range check below
+           happily accepts. A prefix length is a count of bits — a whole
+           number, at most two digits. Anything else becomes NaN, which fails
+           every comparison in the range check and lands on the same error
+           message a /33 does. */
+        var prefixText = slash[1].trim();
+        bits = /^\d{1,2}$/.test(prefixText) ? Number(prefixText) : NaN;
       }
     } else {
       bits = 32;
@@ -121,7 +129,7 @@
 
     var ipInt = toInt(ipText);
     if (ipInt === null) { out.err('"' + ipText + '" is not a valid IPv4 address.'); return; }
-    if (!(bits >= 0 && bits <= 32)) { out.err('Prefix length must be between 0 and 32.'); return; }
+    if (!(bits >= 0 && bits <= 32)) { out.err('Prefix length must be a whole number between 0 and 32.'); return; }
 
     var mask = bits === 0 ? 0 : (0xffffffff << (32 - bits)) >>> 0;
     var wildcard = (~mask) >>> 0;

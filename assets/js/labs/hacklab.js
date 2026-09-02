@@ -15,16 +15,18 @@
      genuinely executes; there is simply nothing behind it to reach.
    - The XSS is real, and fires inside a sandboxed <iframe> loaded from a
      throwaway page (/labs/hacklab-guestbook) that carries its own connect-src
-     'none' policy, so a payload running in it cannot fetch, beacon or
-     websocket a stolen value anywhere — it can only postMessage back to us,
-     which is how we detect the solve. And what it "steals" is a hardcoded
-     fake token: this whole site is static, with no accounts, no secrets and
-     no real user data, so even a flawless exploit walks away with a string
-     that was never worth anything. That harmlessness, not sandbox trickery,
-     is what makes it safe to host. (An opaque-origin sandbox would be tidier,
-     but a no-same-origin frame inherits this site's strict CSP and the
-     injected inline script would never run — the exercise has to allow the
-     script to fire to teach anything.)
+     'none' policy. That policy only stops the payload's OWN document from
+     fetching, though — CSP is per-document, and a same-origin frame can reach
+     window.parent, whose connect-src allows https: — so do not read this as
+     exfiltration-proof containment. It doesn't need to be: what a payload
+     "steals" is a hardcoded fake token, and this whole site is static, with
+     no accounts, no secrets and no real user data, so even a flawless
+     exploit walks away with a string that was never worth anything. That
+     harmlessness, not sandbox trickery, is what makes it safe to host. (An
+     opaque-origin sandbox would be tidier, but a no-same-origin frame
+     inherits this site's strict CSP and the injected inline script would
+     never run — the exercise has to allow the script to fire to teach
+     anything.)
    - Everything else — traversal, command injection, IDOR — runs against
      in-memory fakes. No real filesystem, no real shell.
 
@@ -288,9 +290,9 @@
       /* Says what the frame actually is. It used to read "isolated,
          opaque-origin iframe", which allow-same-origin below makes untrue — and
          on a page teaching people how sandboxing works, describing the sandbox
-         wrongly is worse than saying nothing. What contains the payload here is
-         the guestbook's own response CSP (connect-src 'none'), not the origin
-         it runs in. */
+         wrongly is worse than saying nothing. What makes hosting this safe is
+         not containment at all (see the longer comment below the frame): it is
+         that the origin holds no secrets and the token is fake. */
       var label = el('p', 'hl-label',
         'The moderator\'s view of the guestbook (sandboxed same-origin iframe, ' +
         'served with connect-src \'none\' so nothing can be sent out):');
@@ -304,9 +306,16 @@
          all. A same-origin document loaded from a real URL uses its OWN
          response CSP instead, and /labs/hacklab-guestbook is served with a
          policy that permits inline script (so the payload fires) while
-         setting connect-src 'none' (so the payload cannot send the stolen
-         value anywhere — it can only postMessage back here). The token is
-         fake, and the whole origin is a static site with no accounts and no
+         setting connect-src 'none' (so the payload's own document cannot
+         fetch anything directly). Be honest about how far that CSP goes,
+         though: it is per-document, not per-frame-tree. With allow-scripts
+         plus allow-same-origin the payload can reach window.parent, and a
+         parent.fetch(...) call runs under the PARENT page's connect-src
+         (which allows https:) — and the Cache API is not governed by CSP at
+         all. So the frame's CSP is a speed bump, not a wall, and a
+         maintainer must never treat this exercise as exfiltration-proof.
+         The load-bearing safety argument is different: the token is fake,
+         and the whole origin is a static site with no accounts and no
          secrets, so a working exploit steals a string that was never worth
          anything. That harmlessness is what makes this safe to host. */
       /* The one iframe on the site built in JS rather than HTML, so the one
@@ -329,8 +338,12 @@
       }
 
       window.addEventListener('message', function (ev) {
-        // The frame is opaque-origin, so ev.origin is "null"; accept messages
-        // only from our own frame element's content window.
+        // With allow-same-origin the frame is NOT opaque-origin: it runs on
+        // this site's own origin, so ev.origin here is our origin, not
+        // "null". An origin check alone would therefore also match messages
+        // from any other same-origin window, which is why the real gate is
+        // the ev.source identity check below — only messages from this exact
+        // frame element's content window are accepted.
         if (ev.source !== frame.contentWindow) return;
         if (ev.data && ev.data.ready) {
           victimReady = true;

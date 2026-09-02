@@ -146,17 +146,22 @@ img {
      ~3 L* and read too light for a full-width band. Being a literal, it
      must be shifted by hand with the other raised fills — see the token
      block at the top of this file. */
-  /* 0.97, not the 0.8 this carried for a long time. That 0.8 was picked by
+  /* 0.995, not the 0.8 this carried for a long time. That 0.8 was picked by
      looking at the top of the page, where the only thing behind the bar is
      #bg-canvas — a smooth radial gradient plus sparse particles, which barely
      registers through a partial fill. But the bar is sticky: scroll, and real
      content runs underneath it. Against a light card (~226/channel) a 0.8 fill
      lands ~67/channel while the same bar over the page ground lands ~26, so the
      band visibly mottled and smeared as cards passed beneath, and the nav read
-     as blurred. At 0.97 that same swing is ~6/channel — invisible — while the
-     bar still picks up a trace of the gradient underneath rather than sitting
-     on the page as a flat slab. */
-  background: rgb(28 40 58 / 0.97);
+     as blurred. The first correction stopped at 0.97 and called the remaining
+     ~6/channel swing invisible — the arithmetic was right and the conclusion
+     was not: on a dark ground the eye resolves single-digit channel steps,
+     and light cards still ghosted through the bar as faint bands travelling
+     with the scroll. At 0.995 the swing is ~1/channel, which genuinely is
+     below noticing. The bar is effectively opaque now, and that is the point:
+     "picks up a trace of the gradient underneath" was never worth ghosting
+     content through the nav. */
+  background: rgb(28 40 58 / 0.995);
   /* No backdrop-filter here, deliberately. The bar spans #bg-canvas, which
      repaints ~30fps on all 89 pages, and a backdrop-filter forces the browser
      to re-rasterize the strip behind the bar on every one of those frames —
@@ -279,6 +284,17 @@ img {
   background-size: 34px 100%, 240px 100%;
   background-position: 0 center, 0 center;
 
+  /* The glow colours are tokens for one reason: they also live inside the
+     brand-hue keyframes, and a running animation's `filter` beats any normal
+     declaration in the cascade — a light-theme `filter:` override would simply
+     lose on every frame. var() inside keyframes resolves against the element
+     the animation runs on, so redefining these four on the pseudo-element is
+     the only handle a theme has on the animated glow. */
+  --trace-glow-1: hsla(199, 95%, 65%, 0.55);
+  --trace-glow-1-lit: hsla(199, 100%, 72%, 0.9);
+  --trace-glow-2: hsla(265, 90%, 70%, 0.32);
+  --trace-glow-2-lit: hsla(265, 95%, 74%, 0.55);
+
   /* The arrow is drawn ONCE, on arrival, and then stays - `both` holds the
      final keyframe so it never resets. All the continuing motion is in the
      colour: the gradient streams along the shaft, and the hue turns underneath
@@ -331,16 +347,16 @@ img {
    animations on one property means the later one silently wins. */
 @keyframes brand-hue {
   0% {
-    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
-            drop-shadow(0 0 12px hsla(265, 90%, 70%, 0.32)) hue-rotate(0deg);
+    filter: drop-shadow(0 0 5px var(--trace-glow-1))
+            drop-shadow(0 0 12px var(--trace-glow-2)) hue-rotate(0deg);
   }
   50% {
-    filter: drop-shadow(0 0 9px hsla(199, 100%, 72%, 0.9))
-            drop-shadow(0 0 22px hsla(265, 95%, 74%, 0.55)) hue-rotate(180deg);
+    filter: drop-shadow(0 0 9px var(--trace-glow-1-lit))
+            drop-shadow(0 0 22px var(--trace-glow-2-lit)) hue-rotate(180deg);
   }
   100% {
-    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
-            drop-shadow(0 0 12px hsla(265, 90%, 70%, 0.32)) hue-rotate(360deg);
+    filter: drop-shadow(0 0 5px var(--trace-glow-1))
+            drop-shadow(0 0 12px var(--trace-glow-2)) hue-rotate(360deg);
   }
 }
 
@@ -355,23 +371,19 @@ img {
   margin-left: 1.15rem;
 }
 
-/* The comet crosses once per cycle while the wave scrolls one tile and the
-   dots scroll two — so the dots overtake the wave and look carried by it
-   rather than painted on. Every layer lands on a whole tile at 100%, which is
-   what makes the loop seamless instead of snapping back.
+/* There is no comet any more. The trace used to carry a third background
+   layer — a bright 74px ellipse that crossed the wire once per cycle — and it
+   went when the one-shot arrow flight took over the job of "a bright head
+   travelling out from the name". What remains is exactly the two layers the
+   base rule paints: the pips and the colour wash, each looping on a whole
+   multiple of its own tile (see brand-stream), which is what keeps the scroll
+   seamless instead of snapping back. */
 
-/* The comet is the part you actually see. It was a 26px dot before — a
-   `closest-side circle` in a 26px-tall box is 26px wide however wide the box
-   is — and once it was masked down to a 2.4px stroke there was almost nothing
-   of it left. A 74px ellipse survives the mask as a bright streak running out
-   along the wire, which is what makes the whole thing read as animated rather
-   than as a static squiggle drifting sideways.
-
-/* Only the bloom moves here. An earlier version scaled the MASK vertically to
-   make the wave swell, and it looked wrong for a concrete reason: squashing
-   the mask pinches the thin parts of the stroke below a pixel, so the line
-   visibly broke into pieces and healed again twice a cycle. Geometry stays
-   fixed; brightness is what breathes.
+/* Only brightness breathes; geometry holds still. An earlier version scaled
+   the MASK vertically to make the wave swell, and it looked wrong for a
+   concrete reason: squashing the mask pinches the thin parts of the stroke
+   below a pixel, so the line visibly broke into pieces and healed again twice
+   a cycle. The swell lives in brand-hue's drop-shadows instead. */
 
 /* Below the wrap point the name is no longer centred — it sits hard left with
    the burger beside it, so a trace would run off the edge of the screen and
@@ -400,9 +412,22 @@ img {
       linear-gradient(90deg,
         #67e8f9 0%, #818cf8 25%, #f472b6 50%, #818cf8 75%, #67e8f9 100%);
     background-size: 240px 100%;
-    filter: drop-shadow(0 0 5px hsla(199, 95%, 65%, 0.55))
-            drop-shadow(0 0 13px hsla(265, 90%, 70%, 0.35));
+    /* The dim-state tokens, so this static glow follows the theme the same
+       way the animated one does. */
+    filter: drop-shadow(0 0 5px var(--trace-glow-1))
+            drop-shadow(0 0 13px var(--trace-glow-2));
   }
+}
+
+/* inline-block because inline elements are not transformable: .brand-label is
+   a non-replaced inline <span>, and the transforms spec has every browser
+   ignore a transform on such a box outright — so the brand-dance wiggle below
+   silently never moved a pixel. Making the span inline-block costs no layout
+   (it is the link's only content) and turns the transform on. It lives in the
+   BASE rule, not the @supports block, so the box stays transformable whether
+   or not the browser can do clipped gradient text. */
+.brand-label {
+  display: inline-block;
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
@@ -2349,9 +2374,13 @@ main [id] {
   resize: vertical;
 }
 
-/* Soft ring for pointer focus only. Keyboard focus falls through to the
-   global :focus-visible rule (solid accent, 10:1) — the 40%-alpha ring
-   alone is ~2.8:1 against the card, below the 3:1 WCAG 1.4.11 minimum. */
+/* Soft ring for pointer focus only — the 40%-alpha ring alone is ~2.8:1
+   against the card, below the 3:1 WCAG 1.4.11 minimum, so it cannot be the
+   keyboard indicator. Keyboard focus IS visible on all three, but not by one
+   mechanism: input and textarea fall through to the global :focus-visible
+   rule in section 4 (solid accent, 10:1), while select is absent from that
+   rule's selector list, so it keeps the browser's own default :focus-visible
+   ring — no author rule touches a keyboard-focused select at all. */
 .field input:focus:not(:focus-visible),
 .field select:focus:not(:focus-visible),
 .field textarea:focus:not(:focus-visible) {
@@ -2627,41 +2656,13 @@ footer {
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s;
 }
 
-/* Floating WhatsApp chat bubble — injected by particle-bg.js, dismissible */
-.whatsapp-float-wrap {
-  position: fixed;
-  right: 1.2rem;
-  bottom: 1.2rem;
-  z-index: 40;
-}
-
-.whatsapp-float {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  background: #25d366;
-  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.whatsapp-float:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.45);
-}
-
-.whatsapp-float svg {
-  width: 22px;
-  height: 22px;
-  fill: #ffffff;
-}
-
-/* 20px visual circle (proportional to the 42px bubble), pushed diagonally off
-   the bubble so only a sliver of the two circles overlaps — a mis-tap near the
-   bubble's centre can never dismiss it. The ::before pseudo-element pads the
-   tap target back out to 28px without growing the visible circle. */
+/* The dismiss cross. The class name outlived the WhatsApp bubble it was built
+   for — Mayuri's × (particle-bg.js) reuses it as-is, which is why it keeps
+   the old name: renaming would touch nothing visible and break the reuse.
+   20px visual circle, pushed diagonally off the corner of whatever it sits on
+   so only a sliver of the two circles overlaps — a mis-tap near the centre
+   can never dismiss it. The ::before pseudo-element pads the tap target back
+   out to 28px without growing the visible circle. */
 .whatsapp-float-close {
   position: absolute;
   top: -9px;
@@ -2693,13 +2694,6 @@ footer {
   background: rgb(var(--sheet-rgb) / 1);
 }
 
-/* Once the bubble is dismissed, back-to-top reclaims the corner. The bubble
-   itself stays in the DOM so the `w` shortcut can bring it back; display:none
-   keeps it out of the tab order exactly as removing the node used to. */
-body.wa-dismissed .whatsapp-float-wrap {
-  display: none;
-}
-
 /* --------------------------------------------------------------------------
    Mayuri — the assistant corner
    --------------------------------------------------------------------------
@@ -2709,8 +2703,9 @@ body.wa-dismissed .whatsapp-float-wrap {
    only promise this can keep.
 
    It reuses .whatsapp-float-close and body.wa-dismissed unchanged, so the ×,
-   the `w` shortcut and back-to-top reclaiming the corner all behave exactly as
-   they did before there was a panel.
+   the `b` shortcut (it was `w` until that letter went to the theme switch)
+   and back-to-top reclaiming the corner all behave exactly as they did before
+   there was a panel.
    -------------------------------------------------------------------------- */
 
 /* The wrapper is a layout box, nothing more, and it must not intercept a
@@ -2955,10 +2950,29 @@ body.wa-dismissed .whatsapp-float-wrap {
   /* One line. It was two, broken with a <br> to make a round blob back when
      there was a pill around it - with the pill gone there is nothing to make
      round, and a stacked half-sentence just reads as a wrapping bug. nowrap
-     rather than a width, so it can never wrap again: at ~140px it clears even
-     a 320px screen once Mayuri and the margins are taken off. */
+     rather than a width, so it can never wrap again: ~140px of text, ~195px
+     with the halo's side padding below, still clears even a 320px screen once
+     Mayuri and the margins are taken off. */
   white-space: nowrap;
-  padding: 0.2rem 0.35rem;
+  /* A halo, not a box. The hello is bare text floated over whatever the page
+     has in its bottom-right corner, and over busy content — the internships
+     fee paragraph, the home status pill, a lab's output edge, all three
+     confirmed by eye — the outline shadows alone were not separation enough:
+     the stranger's text stayed legible THROUGH the greeting. A bordered pill
+     was tried and rejected (it turned a spoken hello into a UI card), so the
+     ground is an ellipse of the page colour that fades to nothing at its own
+     edge instead: no border, no radius, no shadow — no edge for the eye to
+     find, just the backdrop quietly going quiet behind the words. The token
+     keeps it the page colour in both themes. The padding and the 72% stop are
+     one decision, not two: the solid core of the ellipse has to reach past
+     the last glyph so the fade ring happens in empty space around the words,
+     not across the letterforms — at ~1.8rem side padding on this line of text
+     72% is where the core just clears the "H" and the "!". That is the whole
+     difference between a halo and a smudge. */
+  background: radial-gradient(ellipse closest-side,
+    rgb(var(--bg-base-rgb) / 0.92) 72%,
+    rgb(var(--bg-base-rgb) / 0) 100%);
+  padding: 0.55rem 1.8rem;
   text-align: center;
   line-height: 1.3;
   /* Lightness is a token because the two themes need opposite ends of the
@@ -3299,7 +3313,9 @@ body.wa-dismissed .whatsapp-float-wrap {
   box-shadow: 0 10px 22px rgba(47, 111, 208, 0.45);
 }
 
-/* Dismissed, or the mobile nav is open — same rules the plain bubble had. */
+/* Dismissed. The wrap stays in the DOM so the `b` shortcut can bring her
+   back; display:none keeps every control inside it out of the tab order
+   exactly as removing the node would. */
 body.wa-dismissed .mayuri-wrap {
   display: none;
 }
@@ -3307,8 +3323,11 @@ body.wa-dismissed .mayuri-wrap {
 @media (prefers-reduced-motion: reduce) {
   .mayuri-panel { animation: none; }
   .mayuri-button { transition: none; }
-  /* The glow holds at its bright value rather than going out: the shine is
-     part of how the hello looks, not part of how it moves. */
+  /* animation: none leaves the base rule's static text-shadow, so the glow
+     rests at its DIM value (--greet-blur-dim / --greet-glow-dim) — the 0%
+     frame of the shine, not the bright mid-frame. That is the right resting
+     state: the quiet aura is part of how the hello looks, and the swell to
+     bright was the motion, which is the part that stops. */
   .mayuri-greet,
   .mayuri-greet.is-visible { transition: none; animation: none; }
   /* The ring stays; only the pulse stops. */
@@ -3731,7 +3750,6 @@ footer a:hover {
      the menu. Escape still reaches it either way. Browsers without :has() keep
      today's behaviour rather than gaining a new one. */
   body:has(.nav-list.open) .back-to-top,
-  body:has(.nav-list.open) .whatsapp-float-wrap,
   body:has(.nav-list.open) .mayuri-wrap,
   body:has(.nav-list.open) .bg-pause-toggle,
   body:has(.nav-list.open) .bg-settings-toggle,
@@ -3814,15 +3832,46 @@ footer a:hover {
     bottom: 5.6rem;
   }
 
+  /* Scrolled to the very bottom, the fixed corner stack parks on top of the
+     footer's last rows: measured at 390px, elementFromPoint on the "Site
+     status" link returned the back-to-top arrow, so the link could not be
+     tapped at all. Desktop keeps the floats beside the footer's dead space;
+     a phone has none, so the footer buys the clearance itself.
+
+     7rem because the stack's top edge is arithmetic, not taste: the arrow
+     sits at bottom:5.6rem (89.6px, the rule above) and is 38px tall, so the
+     stack reaches 127.6px up from the viewport bottom — which at full scroll
+     IS the footer's bottom edge. The legal-links row rides one small line
+     (the MSME notice, ~17px) plus its 0.35rem gap above the padding, so 7rem
+     (112px) of padding puts that row's underside at ~134px — past the stack
+     with a few pixels of thumb slop, without opening a moat of empty footer
+     below it. */
+  footer {
+    padding-bottom: 7rem;
+  }
+
   /* The hello and the arrow both want the same strip of screen on a phone, and
      measured they do overlap by about 20px. The arrow wins: it only appears
      once you have scrolled past 420px, by which point a greeting fired 1.6s
      after page load is stale. :has() rather than a JS class because the two are
      unrelated siblings, and the same pattern is already used above for the open
-     nav. It outranks .mayuri-greet.is-visible on specificity (0,3,1 vs 0,2,0),
-     which is what lets it win without !important. */
+     nav.
+
+     animation:none is the declaration doing the work here, not opacity.
+     Whenever the greeting is actually on screen it is running
+     mayuri-greet-pop, and a running animation's keyframed opacity sits above
+     EVERY normal declaration in the cascade — no selector, at any
+     specificity, can out-vote it. So an earlier version of this rule that set
+     only opacity:0 beat .is-visible's own opacity on paper and still never
+     fired: the animation repainted opacity on every frame that mattered.
+     Killing the animation (the shine goes with it, which is fine — the whole
+     point is that nothing shows) is what lets the opacity:0 finally apply.
+     Specificity still earns its keep for one thing only: this rule's
+     animation:none has to out-rank the animation list .mayuri-greet.is-visible
+     declares, and at (0,3,1) vs (0,2,0) it does, without !important. */
   body:has(.back-to-top.visible) .mayuri-greet {
     opacity: 0;
+    animation: none;
   }
 }
 
@@ -3911,7 +3960,7 @@ footer a:hover {
   .site-header,
   footer,
   .skip-link,
-  .whatsapp-float-wrap,
+  .mayuri-wrap,
   .back-to-top,
   .bg-pause-toggle,
   .bg-settings-toggle,
@@ -4101,6 +4150,18 @@ footer a:hover {
 .theme-toggle .theme-sun { display: none; }
 :root[data-theme="light"] .theme-toggle .theme-sun { display: block; }
 :root[data-theme="light"] .theme-toggle .theme-moon { display: none; }
+
+/* No JS, no controls. Both of these buttons are pure script hooks — the
+   toggle flips data-theme from theme.js and the search button opens an
+   overlay site-search.js builds — yet in the static no-JS header they were
+   still visible, still in the tab order, and dead on every page. boot.js
+   stamps `js` on <html> synchronously from the <head>, before this stylesheet
+   even applies, so its absence reliably means scripting never ran and there
+   is no flash either way. A dead control is worse than a missing one. */
+html:not(.js) .theme-toggle,
+html:not(.js) .search-open {
+  display: none;
+}
 
 /* ---- the overlay ---- */
 .site-search-overlay {
@@ -4512,11 +4573,6 @@ footer a:hover {
    warm pill, pale green in a status chip — none of which survive on paper.
    ========================================================================== */
 
-:root[data-theme="light"] {
-  /* Headings were pure white. */
-  --heading: #0b1220;
-}
-
 :root[data-theme="light"] .page-hero h1,
 :root[data-theme="light"] h1 { color: #0b1220; }
 
@@ -4533,8 +4589,7 @@ footer a:hover {
   background: rgba(34, 197, 94, 0.16);
   border-color: rgba(21, 128, 61, 0.35);
 }
-:root[data-theme="light"] .availability-pill::before,
-:root[data-theme="light"] .availability-dot { background: #15803d; }
+:root[data-theme="light"] .availability-pill::before { background: #15803d; }
 
 /* The doorway to /buddha keeps its dawn colours, but they have to sit on a
    ground dark enough to carry them, or the cream text vanishes. */
@@ -4557,7 +4612,12 @@ footer a:hover {
    clears the 3:1 floor for a graphic. Declared once, here with the rest of the
    doorway's colours; the duplicate is gone. */
 :root[data-theme="light"] .footer-still-icon { color: #8f5600; }
-:root[data-theme="light"] .footer-still--loud { color: #7a0044; }
+/* The /party pill's magenta TEXT is not declared here. A bare
+   `:root[data-theme="light"] .footer-still--loud { color: #7a0044 }` used to
+   sit on this line and never painted a pixel — see the cascade note by the
+   footer#contact a.footer-still--loud block below, where the magenta now
+   lives. Only the icon can be re-inked at this specificity, because nothing
+   later touches .footer-still-icon inside the loud pill. */
 :root[data-theme="light"] .footer-still--loud .footer-still-icon { color: #a3005f; }
 :root[data-theme="light"] .footer-still::after {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.65), transparent);
@@ -4568,10 +4628,12 @@ footer a:hover {
    tinted with the page. In light mode that left two dark bars floating on
    white, which read as a rendering fault rather than a design. */
 :root[data-theme="light"] .site-header {
-  /* Raised from 0.92 with the dark bar above, and for the same reason: sticky
-     means real content slides under this, and at 0.92 a dark card showed through
-     as a grey smear across the nav. */
-  background: rgba(255, 255, 255, 0.97);
+  /* Tracks the dark bar's alpha, and for the same reason: sticky means real
+     content slides under this. 0.92 left a dark card showing through as a grey
+     smear across the nav; 0.97 still ghosted it as a faint band (the same
+     mismeasurement corrected on the dark bar — see the note there). 0.995
+     keeps the two themes' bars on one number. */
+  background: rgba(255, 255, 255, 0.995);
   border-bottom: 1px solid rgb(var(--line-rgb) / 0.24);
 }
 :root[data-theme="light"] footer#contact {
@@ -4603,6 +4665,45 @@ footer a:hover {
   color: #0b1220;
 }
 
+/* The signal traces either side of the name hard-code their paint for the
+   dark bar: white pips, pastel stops around 70% lightness, a pale-cyan bloom.
+   Every one of those is light-on-light here — on the white header the trace
+   all but disappeared, and the two arrowheads with it. Same structure as the
+   base rule — two background layers, pips above the gradient — so the
+   brand-stream animation keeps sliding both and the mask keeps clipping them;
+   only the paint changes. The stops are the same three hues pulled down to
+   ~40-45% lightness (the pastels sat near 70%, which is where they vanish on
+   white), the pips flip from white to the ink navy, and the glow tokens drop
+   to dark versions of the same hues at a slightly lower alpha — a pale bloom
+   around a dark stroke reads as a smudge on white, where a dark one reads as
+   weight. */
+:root[data-theme="light"] .brand::before,
+:root[data-theme="light"] .brand::after {
+  background-image:
+    radial-gradient(circle 4.5px at 17px 50%,
+      rgba(11, 18, 32, 0.95) 0 2.6px, rgba(11, 18, 32, 0) 4.5px),
+    linear-gradient(90deg,
+      #0891b2 0%, #4f46e5 25%, #db2777 50%, #4f46e5 75%, #0891b2 100%);
+  --trace-glow-1: hsla(199, 95%, 34%, 0.45);
+  --trace-glow-1-lit: hsla(199, 100%, 30%, 0.7);
+  --trace-glow-2: hsla(265, 90%, 40%, 0.28);
+  --trace-glow-2-lit: hsla(265, 95%, 42%, 0.5);
+}
+
+/* Under reduced motion the traces drop their pips — see the block near the
+   base rule: a frozen row of dots reads as a dashed line somebody forgot to
+   finish. That block loses to the light override above on specificity, which
+   would quietly bring the dots back for exactly the visitors who asked for
+   stillness — so the pip-less form is restated at the winning specificity. */
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="light"] .brand::before,
+  :root[data-theme="light"] .brand::after {
+    background-image:
+      linear-gradient(90deg,
+        #0891b2 0%, #4f46e5 25%, #db2777 50%, #4f46e5 75%, #0891b2 100%);
+  }
+}
+
 /* Buttons: the primary is accent-filled and fine, but the secondary was a
    dark slab with pale text. */
 :root[data-theme="light"] .btn-secondary {
@@ -4629,6 +4730,26 @@ footer a:hover {
   color: #34190a;
 }
 
+/* The /party doorway keeps its magenta identity, and it has to be declared
+   HERE to do it. The cascade trap: the amber block above paints not just the
+   anchor but its spans directly, at id specificity — and the label lives in
+   those spans, so a colour set on the anchor alone (which is all the old
+   bare `.footer-still--loud` rule further up did, at class specificity) can
+   never reach the visible text: a span's own colour beats anything it would
+   otherwise inherit. The loud values therefore restate the same
+   id-specificity selectors, after the amber ones, so they win the same way
+   the amber ones won. Hover deepens the magenta a step, mirroring the amber
+   pair's #4a2410 -> #34190a. */
+:root[data-theme="light"] footer#contact a.footer-still--loud,
+:root[data-theme="light"] footer#contact a.footer-still--loud span,
+:root[data-theme="light"] footer#contact a.footer-still--loud .footer-still-sub {
+  color: #7a0044;
+}
+:root[data-theme="light"] footer#contact a.footer-still--loud:hover,
+:root[data-theme="light"] footer#contact a.footer-still--loud:hover span {
+  color: #5c0033;
+}
+
 
 /* ==========================================================================
    Light theme: text
@@ -4647,12 +4768,17 @@ footer a:hover {
 /* .availability-pill was here at #008f31 — dropped. It measured 3.96:1 and the
    hand-tuned #0a6b28 near the end of this file already replaced it; leaving it
    made a third live declaration for one colour. */
-:root[data-theme="light"] .award-pill { color: #8f7200; }
-:root[data-theme="light"] .success-pill { color: #008f31; }
-:root[data-theme="light"] .verify-status-valid .verify-status { color: #008f31; }
+/* Dead overrides pruned. This block's inks for .award-pill, .success-pill,
+   .verify-status-valid and .verify-status-pending, plus the revoked half of
+   the notfound line below (and an .hl-list-cat further down), never painted:
+   the hand-tuned "hair darker" group and the "last of the contrast failures"
+   / challenge-list blocks later in this file re-declare the exact same
+   selectors at the exact same specificity, and when specificity ties the
+   later declaration wins. The later, measured values are the live ones;
+   these six lost silently on source order, so they are gone. .verify-status-
+   info and the notfound half survive because nothing later re-declares them. */
 :root[data-theme="light"] .verify-status-info .verify-status { color: #00568f; }
-:root[data-theme="light"] .verify-status-pending .verify-status { color: #8f7200; }
-:root[data-theme="light"] .verify-status-revoked .verify-status, :root[data-theme="light"] .verify-status-notfound .verify-status { color: #8f0000; }
+:root[data-theme="light"] .verify-status-notfound .verify-status { color: #8f0000; }
 /* The .bg-settings-panel / .bg-hint-toast pin, with its measurements, moved up
    into the single "Every surface that has to keep the dark palette" rule near
    the top of this section — it was the third byte-identical copy of the same
@@ -4764,7 +4890,6 @@ footer a:hover {
 :root[data-theme="light"] .lab-copy { background: rgba(31, 44, 63, 0.95); }
 :root[data-theme="light"] .lab-netnote strong { color: #7a5700; }
 :root[data-theme="light"] .lab-gate-foot { color: #745c00; }
-:root[data-theme="light"] .hl-list-cat { color: #00438f; }
 /* The greens below are HackLab's success path — solved, flag captured, here is
    the fix — and the generator gave the whole batch one of two hexes without
    asking what each one actually sits on. On their real light grounds #058a35
@@ -4899,22 +5024,25 @@ footer a:hover {
 :root[data-theme="light"] .btn-primary:hover,
 :root[data-theme="light"] footer#contact a.btn-primary,
 :root[data-theme="light"] .back-to-top,
-/* White is right on the green WhatsApp bubble and the netcat role chip, both
-   of which keep a saturated ground in either theme. It was wrong for the two
-   that were grouped in here by mistake:
+/* White is right on the netcat role chip, which keeps a saturated ground in
+   either theme. It was wrong for the two that were grouped in here by
+   mistake:
 
      .whatsapp-float-close  sits on rgb(var(--sheet-rgb) / 0.92), which is
                             white in this theme — a white glyph on a white
                             pill, 1.01:1. It has its own rule below.
      .lab-card-engine       was contradicted 30 lines further down anyway;
                             the later rule was the one taking effect, so this
-                            only made the file read as if it did something. */
-:root[data-theme="light"] .whatsapp-float,
+                            only made the file read as if it did something.
+
+   .whatsapp-float used to be listed here too; it left with the retired
+   bubble, whose rules are gone from this file. */
 :root[data-theme="light"] .chat-role-nc {
   color: #ffffff;
 }
 
-/* The dismiss badge on the floating WhatsApp button. */
+/* The dismiss badge — Mayuri's ×, still wearing the retired bubble's class
+   name (see the base rule for why it keeps it). */
 :root[data-theme="light"] .whatsapp-float-close {
   color: #0f172a;
   background: #ffffff;

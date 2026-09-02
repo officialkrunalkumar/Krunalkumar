@@ -11,7 +11,26 @@
 (function () {
   'use strict';
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Sampled at boot AND kept live: the OS-level switch can flip mid-visit
+  // (macOS System Settings, Windows animation toggle, a battery-saver mode),
+  // and CSS media queries respond instantly while a one-shot .matches read
+  // does not. Every handler below that reads this variable at event time —
+  // the animation loop, adjustSpeed, the greeting/glance callbacks, the
+  // back-to-top scroll — picks up the change for free; the canvas block adds
+  // its own change listener further down to restart or stop the loop.
+  // Boot-time-only decisions (whether the pause button, the speed row and the
+  // glance/greeting timers were built at all) deliberately stay as sampled:
+  // rebuilding injected chrome mid-visit is not worth the machinery, and the
+  // CSS reduced-motion rules already hide the pause button live.
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let prefersReducedMotion = reducedMotionQuery.matches;
+  // addEventListener on a MediaQueryList is missing in older Safari; the flag
+  // simply stays at its boot value there, which is exactly the old behaviour.
+  if (typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', (event) => {
+      prefersReducedMotion = event.matches;
+    });
+  }
 
   /* --------------------------------------------------------------------------
      Site chrome first — this is a resilience ordering, not a stylistic one.
@@ -453,6 +472,27 @@
       setTimeout(startAmbientLoop, 4000);
     }
 
+    // React to the OS reduced-motion switch flipping mid-visit. The shared
+    // flag is already updated by the top-of-file listener (registered first,
+    // so it has run by the time this one fires); this one takes the canvas
+    // consequences. Flipping ON needs no explicit stop — animate() checks the
+    // flag and returns without rescheduling — but repaint once so the frame
+    // left behind is a deterministic static field rather than whatever
+    // mid-pull state the loop happened to stop on. Flipping OFF restarts the
+    // loop unless the visitor had paused it themselves; the clock reset
+    // mirrors togglePause's resume path so the stopped stretch is not
+    // counted as elapsed time.
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+      reducedMotionQuery.addEventListener('change', () => {
+        if (prefersReducedMotion) {
+          drawFrame(0);
+        } else if (!animationPaused) {
+          lastFrameTime = performance.now();
+          scheduleFrame();
+        }
+      });
+    }
+
     // WCAG 2.2.2 pause control — auto-playing motion needs a way to stop it.
     // Under prefers-reduced-motion the canvas is already a single static frame,
     // so the button would be a no-op and is not rendered at all.
@@ -666,6 +706,12 @@
         setControlsShown(true);
         syncPanel();
         toast.classList.remove('visible');
+        // Send focus to the first control, the same way Mayuri's panel takes
+        // focus on open: a popover that opens behind the focus point is easy
+        // to miss entirely with a screen reader or a keyboard. The Escape
+        // handler's hadFocus check hands focus back to the toggle on close.
+        const firstControl = panel.querySelector('button, input');
+        if (firstControl) firstControl.focus();
       }
     }
 
@@ -824,8 +870,13 @@
     // Applies the body class for a visitor who already revealed the controls
     // earlier in the same visit; a no-op on a first page load.
     setControlsShown(controlsShown);
-    document.body.appendChild(panel);
+    // Toggle BEFORE panel: sequential focus order is DOM order, so the popover
+    // has to follow the button that expands it or Tab from the just-activated
+    // toggle skips straight past its own controls. Both elements are
+    // position: fixed (main.css pins the toggle to the corner and the panel
+    // above it), so this order changes nothing visually.
     document.body.appendChild(settingsToggle);
+    document.body.appendChild(panel);
   }
 
   // Above-the-fold hero blocks (.hero-copy, .hero-card, .page-hero) are left out
@@ -892,7 +943,7 @@
   // is not a trade worth making for it.
   //
   // Hideable two ways, both inherited from the bubble this grew out of: the ×,
-  // and the `w` background shortcut, which unlike the × can also bring it
+  // and the `b` background shortcut, which unlike the × can also bring it
   // back. Either way the back-to-top button drops down to take the corner and
   // the choice lasts the visit. sessionStorage is wrapped in try/catch because
   // private modes block it.
@@ -1087,13 +1138,23 @@
     // is room to read it and a reason to — out here it would be four lines of
     // text nobody asked for, floating over the page.
     //
-    // Shown once a session, not once a page: it is a hello, and being told
-    // hello on all eleven pages of a visit is being nagged. It also never
+    // Shown on every page load until she is OPENED: the suppression flag is
+    // written when somebody meets her, not when she says hello — the timer
+    // near the bottom of this block explains why it moved. It also never
     // covers the button, so somebody who wants the panel is not fighting a
     // toast to reach it.
     const greet = document.createElement('div');
     greet.className = 'mayuri-greet';
     greet.setAttribute('role', 'status');
+    // hidden, not just opacity 0. The CSS hides the resting greeting visually
+    // (opacity, pointer-events), but an opacity-hidden element still sits in
+    // the accessibility tree — so "Hi, I am Mayuri!" was permanently present
+    // on every page, including under prefers-reduced-motion where it never
+    // appears at all. The attribute is managed across the whole lifecycle:
+    // off just before the visible window opens (see the greeting timer at the
+    // bottom of this block), back on when the window closes or she is opened,
+    // and never removed under reduced motion.
+    greet.hidden = true;
     greet.innerHTML = '<span>Hi, I am </span>' +
       '<span class="mayuri-name">Mayuri!</span>';
 
@@ -1156,12 +1217,20 @@
     let open = false;
 
     function setOpen(next) {
+      // Captured before the panel is hidden: hiding a focused element drops
+      // focus to <body>, so by the time the refocus decision below runs the
+      // answer to "was focus in here?" would already be gone.
+      const hadFocus = wrap.contains(document.activeElement);
       open = next;
       panel.hidden = !open;
       wrap.classList.toggle('is-open', open);
       button.setAttribute('aria-expanded', open ? 'true' : 'false');
       if (open) {
         greet.classList.remove('is-visible');
+        // Out of the accessibility tree too, not just faded — the panel's own
+        // greeting is about to be read, and a stale live region underneath it
+        // would be announced alongside.
+        greet.hidden = true;
         // She has been met. This is what suppresses the hello on later pages.
         try { sessionStorage.setItem(GREETED_KEY, '1'); } catch (e) {}
         // Focus the panel itself rather than the first link: landing on a
@@ -1169,7 +1238,15 @@
         // greeting before the options it introduces.
         panel.setAttribute('tabindex', '-1');
         panel.focus();
-      } else {
+      } else if (hadFocus) {
+        // Same rule as the bg-settings popover: hand focus back to the button
+        // only when closing took it from inside the wrap. A click-away lands
+        // ON something — often a form field — and that click focuses its
+        // target before the document handler closes the panel, so an
+        // unconditional refocus here used to steal the caret mid-click and
+        // feed the next keystrokes to the single-letter background shortcuts.
+        // Closes from the panel's own controls, or Escape while focus is
+        // inside, still restore focus to the button exactly as before.
         button.focus();
       }
     }
@@ -1200,7 +1277,11 @@
        on a backgrounded page for nothing. */
     if (!prefersReducedMotion) {
       const glance = () => {
-        if (!document.hidden) {
+        // The flag is live, so re-check it per glance: if the OS switch flips
+        // mid-visit she stops looking around. The timer keeps re-arming — one
+        // idle setTimeout every few seconds is cheaper than teardown/rebuild
+        // machinery for a setting that flips back just as easily.
+        if (!document.hidden && !prefersReducedMotion) {
           const r = (n) => (Math.random() * n * 2 - n).toFixed(2);
           dock.style.setProperty('--look-x', r(1.7) + 'px');
           dock.style.setProperty('--look-y', r(1.2) + 'px');
@@ -1236,9 +1317,26 @@
       } catch (e) { /* storage unavailable — the choice lasts this page only */ }
     }
 
-    close.addEventListener('click', () => setWhatsappHidden(true));
+    close.addEventListener('click', () => {
+      // The cross sits inside the wrap it is about to hide, so a keyboard
+      // activation would otherwise drop focus onto <body> and the next Tab
+      // would restart from the top of the page. Focus goes to the back-to-top
+      // button when it is visible — it inherits this very corner once the
+      // bubble is gone, so it is the nearest thing to "where you already
+      // were" — and is otherwise just blurred, so focus lands on <body> by
+      // choice rather than by the accident of display:none. Checked before
+      // hiding, because hiding is what destroys the answer.
+      if (wrap.contains(document.activeElement)) {
+        if (backToTopButton.classList.contains('visible')) {
+          backToTopButton.focus();
+        } else if (document.activeElement && document.activeElement.blur) {
+          document.activeElement.blur();
+        }
+      }
+      setWhatsappHidden(true);
+    });
 
-    // Handed to the `w` shortcut up in the canvas block, which runs earlier in
+    // Handed to the `b` shortcut up in the canvas block, which runs earlier in
     // this file than the corner is built. Returns the new state so the caller
     // can say which way it went without reaching back in here.
     toggleWhatsappBubble = function () {
@@ -1270,10 +1368,26 @@
       } catch (e) { met = false; }
       if (!met) {
         setTimeout(() => {
-          if (waHidden || open) return;
+          // prefersReducedMotion is re-checked at fire time: the OS switch can
+          // flip during the 1.6s delay, and a greeting that slides in is
+          // exactly what it forbids.
+          if (waHidden || open || prefersReducedMotion) return;
           dock.classList.add('is-waving');
+          // Unhide BEFORE the visible class goes on: the role=status live
+          // region announces content that appears inside it, and content
+          // revealed by dropping [hidden] is what registers as appearing.
+          // Outside this window the element carries [hidden], so the hello
+          // only ever exists in the accessibility tree while it is genuinely
+          // on screen.
+          greet.hidden = false;
           greet.classList.add('is-visible');
-          setTimeout(() => greet.classList.remove('is-visible'), 5000);
+          setTimeout(() => {
+            greet.classList.remove('is-visible');
+            // Safe to hide in the same tick: the 5s mayuri-greet-pop keyframe
+            // ends at opacity 0 exactly as this timer fires, so there is no
+            // fade left to cut off.
+            greet.hidden = true;
+          }, 5000);
         }, 1600);
       }
     }

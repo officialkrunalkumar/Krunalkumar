@@ -214,10 +214,11 @@
     return this.ctx;
   };
 
-  /* Every sound goes through here first. A context created before a gesture
-     starts life suspended and stays that way until something asks it not to
-     be — and a toy that auto-starts has had no gesture, so the ask has to
-     happen at the moment of the sound rather than once at construction. */
+  /* Every sound goes through here first — one-shots via running() below,
+     beds via hold(). A context created before a gesture starts life
+     suspended and stays that way until something asks it not to be — and a
+     toy that auto-starts has had no gesture, so the ask has to happen at
+     the moment of the sound rather than once at construction. */
   Audio.prototype.wake = function () {
     var ctx = this.ensure();
     if (!ctx) return null;
@@ -225,6 +226,27 @@
     if (ctx.state === 'suspended' && ctx.resume) {
       try { ctx.resume(); } catch (err) { /* refused until a gesture */ }
     }
+    return ctx;
+  };
+
+  /* wake(), then insist the clock is actually moving. A suspended context's
+     currentTime is FROZEN: every one-shot scheduled against it lands on the
+     same timestamp, so an autoStart toy that beeps while suspended queues
+     voice after voice at one instant — hundreds, given a minute — and the
+     first real gesture resumes the context and plays the whole backlog as a
+     single clipping blast. (claim() cannot stop it: its setTimeout slots
+     expire on the wall clock while the audio clock stands still.) So a
+     one-shot that arrives while the context is not running is dropped, not
+     queued — a sound nobody could hear yet is a sound nobody will miss.
+     resume() flips the state asynchronously, so the one sound fired from
+     inside the resuming gesture itself may also be dropped; the next one,
+     milliseconds later, lands, which is a far smaller cost than the blast.
+     Beds are exempt on purpose: they are steered, never struck, so nothing
+     of theirs accumulates against a frozen clock — see hold(). */
+  Audio.prototype.running = function () {
+    var ctx = this.wake();
+    if (!ctx) return null;
+    if (ctx.state !== 'running') return null;
     return ctx;
   };
 
@@ -241,7 +263,7 @@
      gain switch clicks audibly at both ends, so both edges are ramped. */
   Audio.prototype.beep = function (freq, dur, type, level) {
     if (!this.on) return;
-    var ctx = this.wake();
+    var ctx = this.running();
     if (!ctx) return;
     dur = dur || 0.09;
     if (!this.claim(dur)) return;
@@ -264,7 +286,7 @@
      the same three lines; only the direction differs. */
   Audio.prototype.sweep = function (from, to, dur) {
     if (!this.on) return;
-    var ctx = this.wake();
+    var ctx = this.running();
     if (!ctx) return;
     dur = dur || 0.3;
     if (!this.claim(dur)) return;
@@ -291,7 +313,7 @@
      than make noises. */
   Audio.prototype.pluck = function (freq, dur, level, type) {
     if (!this.on) return;
-    var ctx = this.wake();
+    var ctx = this.running();
     if (!ctx) return;
     dur = dur || 0.5;
     if (!this.claim(dur)) return;
@@ -344,7 +366,7 @@
      hearing rain and starts hearing a sample being retriggered. */
   Audio.prototype.noise = function (dur, opts) {
     if (!this.on) return;
-    var ctx = this.wake();
+    var ctx = this.running();
     if (!ctx) return;
     var buf = this.noiseBuffer();
     if (!buf) return;
@@ -483,6 +505,14 @@
     this._held = on;
 
     if (on) {
+      /* wake(), not running(): beds do not get the one-shot suspended-clock
+         guard, and must not. A bed is steered rather than struck — each
+         call replaces the bus fade via cancelScheduledValues instead of
+         adding a voice, so nothing accumulates against a frozen currentTime
+         and there is no backlog for the first gesture to blast out. Gating
+         here would also strand the state: _held is already flipped above,
+         so an early return would make every later syncBeds() a no-op and
+         the beds would never fade in at all. */
       var ctx = this.wake();
       var bus = this.bus();
       if (!ctx || !bus) return;
@@ -534,11 +564,25 @@
   /* Days since the epoch, in the visitor's own timezone. The daily games key
      off this so "today's puzzle" changes at the visitor's midnight rather
      than at UTC's — a player in India should not get tomorrow's board at
-     5:30 in the morning. */
+     5:30 in the morning. The LOCAL calendar date is read off the clock and
+     then counted as if it were UTC, which is what keeps both promises at
+     once: the count ticks at local midnight, and the arithmetic never sees
+     a DST day of 23 or 25 hours.
+
+     This used to be year*1000 + dayOfYear, which was not a day count at
+     all: it jumped by ~636 every New Year (2025365 to 2026001), so any
+     "N days apart" arithmetic on it was wrong across the boundary. Fixing
+     it means the value every consumer sees shifts once, permanently — a
+     daily seed lands on a different item the day this ships, and a stored
+     old-scheme number never equals a new-scheme one. As of this change
+     nothing in the repository calls it (birthday-facts.js has its own,
+     unrelated, parameterised dayNumber), so no caller needs a migration;
+     anything added later starts clean on the true count. */
   function dayNumber() {
     var now = new Date();
-    return Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000) +
-           now.getFullYear() * 1000;
+    return Math.floor(
+      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000
+    );
   }
 
   /* ==================================================================
@@ -656,9 +700,18 @@
     /* noFocus: this overlay appears on PAGE LOAD, not because the player
        did anything. Yanking the keyboard onto the Play button here took
        focus from wherever the visitor actually was — the address bar, a
-       skip link, the heading a screen reader had just started reading. */
+       skip link, the heading a screen reader had just started reading.
+
+       The autoStart branch needs the same restraint. start() takes focus,
+       which is right for every start a player asks for and wrong for this
+       one, which the parser asked for: the autoStart games were doing at
+       load exactly the theft the noFocus flag exists to refuse. The flag
+       is raised only around this call, so takeFocus() can tell a boot
+       apart from a gesture without every caller having to say which it is. */
+    this._booting = true;
     if (this.spec.autoStart) this.start();
     else this.showOverlay('start', { noFocus: true });
+    this._booting = false;
 
     if (this.hooks.ready) this.hooks.ready();
   }
@@ -867,6 +920,26 @@
       if (!onScreen) return;
       if (SWALLOW[name]) event.preventDefault();
       self2.press(name, event);
+    });
+
+    /* And the matching release. The fallback above PRESSES keys for a game
+       whose focus fell to <body>, but nothing released them: the keyup also
+       lands outside this.el, so held[name] stayed true forever — the
+       Breakout bat drifted into the wall, the Asteroids ship thrust into
+       the nearest rock. Releasing is safe in a way pressing is not, so this
+       is deliberately looser than the keydown's three narrow conditions: a
+       release must always land, even off-screen or mid-pause, because
+       withholding one IS the stuck-key bug. The one guard that matters is
+       held[name] — the element-level keyup bubbles up to this listener, and
+       by the time it arrives it has already cleared the key and fired
+       hooks.release, so acting only on keys still held is what keeps one
+       physical release from firing twice. */
+    document.addEventListener('keyup', function (event) {
+      var name = named(event);
+      if (!name) return;
+      if (!self2.held[name]) return;
+      self2.held[name] = false;
+      if (self2.hooks.release) self2.hooks.release(name);
     });
 
     }
@@ -1190,6 +1263,12 @@
        That is why it stays the default and why only games that opt out are
        exempted here. */
     document.addEventListener('visibilitychange', function () {
+      /* A hidden tab will never see the keyup for a key the player lets go
+         of somewhere else, so anything held at this moment is held forever
+         — released here for EVERY game, including the thirty-three that opt
+         out of the pause below, because keeping state across a tab switch
+         is one thing and keeping a phantom keypress is another. */
+      if (document.hidden) self.releaseAll();
       if (document.hidden && self.state === 'playing' && self.spec.pauseOnBlur !== false) self.pause(true);
       /* THE THIRTY-THREE GAMES THAT OPT OUT OF AUTO-PAUSE STILL GO QUIET.
          A toy with pauseOnBlur: false keeps its state and its score across a
@@ -1202,6 +1281,9 @@
       self.syncBeds();
     });
     root.addEventListener('blur', function () {
+      /* Same reasoning as visibilitychange above: the keyup for a key
+         released while another window holds focus never arrives here. */
+      self.releaseAll();
       if (self.state === 'playing' && self.spec.pauseOnBlur !== false) self.pause(true);
     });
 
@@ -1239,6 +1321,21 @@
   /* ------------------------------------------------------------------
      Input dispatch.
      ------------------------------------------------------------------ */
+  /* Let go of everything at once. Losing the window or the tab takes the
+     keyboard away mid-hold, and the keyup for a key released while another
+     window has focus never reaches this document at all — so any key held
+     at that moment would stay held until the next run. Fires hooks.release
+     per key, so a game that keeps its own hold state (a thrust sound, a
+     charging shot) hears the same thing a real keyup would have told it. */
+  Game.prototype.releaseAll = function () {
+    for (var name in this.held) {
+      if (this.held[name]) {
+        this.held[name] = false;
+        if (this.hooks.release) this.hooks.release(name);
+      }
+    }
+  };
+
   Game.prototype.press = function (name, event) {
     /* Pause and restart work from any state, including the game-over
        screen, so a visitor never has to reach for the mouse to try again. */
@@ -1321,6 +1418,13 @@
   }
 
   Game.prototype.takeFocus = function () {
+    /* Never during boot. autoStart runs start() straight from the parser,
+       and taking focus on page load is the theft the noFocus overlay
+       comment in the constructor spells out — see where _booting is set.
+       Every other caller is answering a real gesture and takes focus
+       exactly as before. */
+    if (this._booting) return;
+
     var active = document.activeElement;
     if (active && isTypedField(active) && this.el && this.el.contains(active)) return;
 

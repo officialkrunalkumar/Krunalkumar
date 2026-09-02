@@ -1617,10 +1617,17 @@
   /* How each stored best reads as a sentence. These MIRROR the
      spec.formatBest functions inside the game modules, which do not load
      on this page — so without them the card printed the raw stored value:
-     a 953-second sudoku solve showed 'Best 953' instead of '15:53', and a
-     reaction time lost its 'ms'. A slug missing here prints the raw
-     number, which is correct for every game whose own page does the same.
-     If a game's formatBest changes, its line here changes with it. */
+     a 953-second sudoku solve showed 'Best 953' instead of '15:53', a
+     reaction time lost its 'ms', and tux-racer (which stores tenths of a
+     second) showed a 59.6 s run as 'Best 596' — ten times off, not just
+     unlabelled. So every game whose formatBest does more than echo the
+     number gets a line here. A slug missing here prints the raw number,
+     which is only correct for the games whose own formatter is the
+     identity on positive scores (memory, assembly-golf, assembly-puzzles,
+     overflow-puzzle — their '—'-for-zero branches never fire because this
+     page already hides a zero best) or that have no formatBest at all.
+     When adding a game with a formatter, or changing one, this table
+     changes with it — grep formatBest under assets/js/games/ to check. */
   var BEST_FORMATS = {
     sudoku: function (n) {
       var m = Math.floor(n / 60), s = Math.floor(n % 60);
@@ -1631,7 +1638,19 @@
     asciijump: function (n) { return Number(n).toFixed(1); },
     'regex-golf': function (n) { return n + ' chars'; },
     'shell-quest': function (n) { return n + ' commands'; },
-    'guess-the-algorithm': function (n) { return n + ' pts'; }
+    'guess-the-algorithm': function (n) { return n + ' pts'; },
+    /* Stored in TENTHS of a second (see the note in tux-racer.js), so the
+       card must put the decimal point back exactly as the game page does. */
+    'tux-racer': function (n) { return (n / 10).toFixed(1) + ' s'; },
+    /* Stored as 1 + strokes over par, because the shell reads a final of
+       zero as "no run" — so 1 means a flawless duel. The offset never
+       reaches the page, here or in the game. */
+    'binary-search-duel': function (n) {
+      return n <= 1 ? 'par' : '+' + (n - 1);
+    },
+    'git-quest': function (n) { return n + ' commands'; },
+    'phishing-inbox': function (n) { return n + ' pts'; },
+    'sqli-escape': function (n) { return n + ' queries'; }
   };
 
   function fillBests() {

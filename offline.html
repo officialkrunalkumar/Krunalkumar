@@ -17,11 +17,18 @@
     Deliberately self-contained: no partials, no external CSS, no inline JS
     (the CSP allows none, and a page whose job is to work with zero network
     should not depend on anything else arriving). The one script it loads,
-    offline.js, is itself precached, and the page reads fine without it — it
-    only prunes the lists below against the real cache. It is precached
-    by sw.js via DOC_URLS, excluded from the sitemap/search index/chrome gates
-    in scripts/build.js and scripts/search-index.js, and floor-checked in
-    build.js MUST_EXIST so a deploy cannot silently lose it.
+    offline.js, is itself part of the offline shell — the tiny install-time
+    precache (this page, that script, and the few static assets this page
+    references) that is the ONLY thing sw.js downloads uninvited. Everything
+    else on the site is cached on use: what a visitor opens becomes available
+    offline, what they never opened does not. That is why this page ships NO
+    static list of destinations any more — the old hand-kept precache lists
+    drifted (49 images went missing exactly that way), and a hand-kept list
+    of links here would drift the same way. The saved-pages list below is
+    built by offline.js from Cache Storage, so it cannot name a page the
+    device does not hold. The page is excluded from the sitemap/search
+    index/chrome gates in scripts/build.js and scripts/search-index.js, and
+    floor-checked in build.js MUST_EXIST so a deploy cannot silently lose it.
 
     Kept dark-only on purpose: the site's light theme is opt-in via a data
     attribute that boot.js sets, and boot.js does not run here.
@@ -62,13 +69,18 @@
     }
     a.btn:hover, a.btn:focus-visible { border-color: #7fb1ff; outline: none; }
     a.btn.primary { background: #23406e; border-color: #3a5f9e; }
+    /* display:inline-block above would defeat the hidden attribute, and the
+       Home button ships hidden until offline.js proves it can be honoured
+       (see the markup comment on it). Without this rule it would never hide. */
+    a.btn[hidden] { display: none; }
     .small { font-size: 0.85rem; margin-top: 1.6rem; color: #7b8aa6; }
 
-    /* The offline-capable pages are a LIST, not a row of buttons. There were
-       three of them when this page was written and a button each was fine;
-       with the arcade there are far more, and a wall of identical pills
-       stops being a set of choices and becomes a texture. A list also lets
-       each entry carry a word about what it is, which a button cannot. */
+    /* The saved pages are a LIST, not a row of buttons. There were three of
+       them when this page was written and a button each was fine; a regular
+       visitor can have dozens saved, and a wall of identical pills stops
+       being a set of choices and becomes a texture. A list also lets each
+       entry carry a word about what it is, which a button cannot. The list
+       itself is empty in the markup — offline.js fills it from the cache. */
     .group { margin-top: 1.5rem; text-align: left; }
     .group h2 {
       font-size: 0.78rem;
@@ -106,18 +118,34 @@
        her normal panel needs the network, so showing them to somebody with
        no connection would be four dead links from the one page whose whole
        job is to still work. She says what is true instead: nothing can be
-       fetched, here is what is already on the device. */
+       fetched, and what you opened while online is already on the device —
+       offline.js counts the saved pages and puts the number in her panel,
+       so even her claim is read from the cache rather than asserted. */
     .mayuri-wrap { position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 40;
       display: flex; flex-direction: column; align-items: flex-end; gap: .55rem; }
-    .mayuri-greet { white-space: nowrap; padding: .2rem .35rem;
+    .mayuri-greet { white-space: nowrap;
       text-align: center; line-height: 1.3;
       /* No box - the halo in the page colour separates the words from whatever
          is behind them, and the fourth shadow is the shine. Dark page only, so
-         these can be fixed colours rather than tokens. */
+         these can be fixed colours rather than tokens. The gradient is the
+         same edgeless radial halo the main site's greeting uses: solid page
+         colour under the words, fading to fully transparent before it reaches
+         the padding edge — so there is still no border and no pill, just air
+         that darkens toward the text. The padding exists to give that fade
+         room; shrink it and the gradient's 100% stop becomes a visible edge. */
+      padding: .45rem 1.1rem;
+      background: radial-gradient(ellipse closest-side, rgba(13,17,23,0.92) 55%, rgba(13,17,23,0) 100%);
       text-shadow: 0 1px 2px rgba(13,17,23,.95), 0 0 10px rgba(13,17,23,.85),
                    0 0 20px rgba(13,17,23,.6), 0 0 12px rgba(125,211,252,.5);
-      animation: mayuri-greet-shine 2.6s ease-in-out infinite;
-      color: #c2eaff; font-size: 1.02rem; font-weight: 800; }
+      color: #c2eaff; font-size: 1.02rem; font-weight: 800;
+      /* NOT opacity:0 here. This page has no is-visible class - offline.js shows
+         the hello by leaving it in the document and hides it 5s later with
+         greet.hidden = true. Carrying the main site's hidden-until-classed
+         base across made it permanently invisible. The pop runs on load
+         instead, and its final frame lines up with that timeout. */
+      transform-origin: bottom right; pointer-events: none;
+      animation: mayuri-greet-pop 5s ease-in-out both,
+                 mayuri-greet-shine 2.6s ease-in-out infinite; }
     /* Her name only. Solid white with a hard ring of the page colour at eight
        compass points, so it reads over anything this page puts behind it. */
     .mayuri-name { color: #fff; font-weight: 900; font-size: 1.06em;
@@ -127,14 +155,6 @@
       0%, 100% { text-shadow: 1.5px 0 0 #0d1117, -1.5px 0 0 #0d1117, 0 1.5px 0 #0d1117, 0 -1.5px 0 #0d1117, 1.1px 1.1px 0 #0d1117, -1.1px 1.1px 0 #0d1117, 1.1px -1.1px 0 #0d1117, -1.1px -1.1px 0 #0d1117, 0 0 10px rgba(125,211,252,.4); }
       50% { text-shadow: 1.5px 0 0 #0d1117, -1.5px 0 0 #0d1117, 0 1.5px 0 #0d1117, 0 -1.5px 0 #0d1117, 1.1px 1.1px 0 #0d1117, -1.1px 1.1px 0 #0d1117, 1.1px -1.1px 0 #0d1117, -1.1px -1.1px 0 #0d1117, 0 0 22px rgba(186,240,255,.95); }
     }
-      /* NOT opacity:0 here. This page has no is-visible class - offline.js shows
-         the hello by leaving it in the document and hides it 5s later with
-         greet.hidden = true. Carrying the main site's hidden-until-classed
-         base across made it permanently invisible. The pop runs on load
-         instead, and its final frame lines up with that timeout. */
-      transform-origin: bottom right; pointer-events: none;
-      animation: mayuri-greet-pop 5s ease-in-out both,
-                 mayuri-greet-shine 2.6s ease-in-out infinite; }
     @keyframes mayuri-greet-pop {
       0% { opacity: 0; transform: scale(0); }
       10% { opacity: 1; transform: scale(1.06); }
@@ -195,7 +215,7 @@
     <p class="mark">KS_</p>
     <h1>You are offline</h1>
     <p>This page needs a connection, and the network is not reachable right now.
-       Everything listed below is stored on this device and opens without one.</p>
+       Pages you opened while online are saved on this device and open without one.</p>
 
     <div class="actions">
       <!-- href="" resolves to the CURRENT url — which, because sw.js answers
@@ -204,58 +224,46 @@
            script needed. It used to point at "/", which retried the wrong
            page and called it trying again. -->
       <a class="btn primary" href="">Try again</a>
-      <a class="btn" href="/">Home</a>
+      <!-- SHIPS HIDDEN. Under on-use caching the home page is only saved if
+           it has been visited, so this link can no longer be assumed good.
+           offline.js reveals it when / is in the cache, or when the browser
+           is not actually offline (someone reading /offline directly while
+           online can follow it regardless). Defaulting to hidden means a
+           no-JavaScript visitor sees one fewer button rather than one dead
+           one — the whole point of this page is that nothing on it lies. -->
+      <a class="btn" id="home-link" href="/" hidden>Home</a>
     </div>
 
     <div class="group">
-      <h2>Always available</h2>
+      <h2>Saved on this device</h2>
       <!--
-        These six are precached by sw.js on install — the first five via
-        DOC_URLS, /blog via BLOG_URLS — so they are on the device whether or
-        not they have ever been opened. Nothing belongs in this list that is
-        only cached on use — that is what the second list is for, and the
-        difference between the two headings is the whole honesty of this
-        page. scripts/build.js enforces it: every internal link below must
-        appear in one of those precache lists or the deploy fails.
+        DELIBERATELY EMPTY IN THE MARKUP. This list is built by offline.js
+        from what is actually in Cache Storage, and must never be hand-written.
 
-        offline.js re-checks each one against the real cache at load and drops
-        any it cannot find, so a partial install cannot leave a dead link here.
+        This page used to promise a precached archive — six fixed links under
+        an "Always available" heading, backed by install-time lists in sw.js.
+        Those hand-kept lists drifted (49 blog images went missing exactly
+        that way), so the owner abolished them: sw.js now precaches only this
+        page's own shell, and everything else — posts, labs, games, doc-maker
+        pages — is cached when a visitor opens it. A fixed list of links here
+        would therefore name pages this device may not hold, and every such
+        link would produce the browser's "site cannot be reached" error from
+        the one page whose entire purpose is to still work.
+
+        A list built from the cache cannot drift by construction: an entry is
+        rendered BECAUSE a matching response was found. With no JavaScript
+        nothing is claimed at all, which is the correct answer to a question
+        that can only be answered by reading the cache.
       -->
-      <ul class="links" id="tool-list">
-        <li><a href="/labs/resume-maker">Resume maker <span>five templates, printing is the download</span></a></li>
-        <li><a href="/labs/biodata-maker">Biodata maker <span>the document you should never upload</span></a></li>
-        <li><a href="/labs/wish-generator">Wish generator <span>92 festivals, builds a link from a name</span></a></li>
-        <li><a href="/birthday">Birthday card <span>what the generator builds</span></a></li>
-        <li><a href="/festival">Festival card <span>the same, for the other 91</span></a></li>
-        <li><a href="/blog">The blog <span id="blog-count">every post, saved for reading offline</span></a></li>
-      </ul>
-      <p class="small" style="margin-top:0.7rem">Saved on your first visit to any page here &mdash; opening them
-         was never required. Nothing you type into them ever leaves your device, which is why they work with
-         no network.</p>
-    </div>
-
-    <div class="group">
-      <h2>Games you have played</h2>
-      <!--
-        DELIBERATELY EMPTY IN THE MARKUP. This list is built by offline.js from
-        what is actually in Cache Storage, and must never be hand-written.
-
-        It used to be a fixed list of six games under this same heading, which
-        meant it named games the visitor had never opened and every one of
-        those links produced the browser's "site cannot be reached" page. A
-        list of promises that a page cannot keep is worse than no list, and
-        worst of all on this page.
-
-        With no JavaScript nothing is claimed at all, which is the correct
-        answer to a question that can only be answered by reading the cache.
-      -->
-      <ul class="links" id="game-list"></ul>
-      <p class="small" id="games-note" style="margin-top:0.7rem">Games are saved only once you have opened them.
-         Turn on JavaScript to see which ones are on this device.</p>
+      <ul class="links" id="saved-list"></ul>
+      <p class="small" id="saved-note" style="margin-top:0.7rem">Pages are saved as you open them while
+         online &mdash; nothing is downloaded uninvited. Turn on JavaScript to see which ones are on
+         this device.</p>
     </div>
 
     <p class="small">Everything listed sits in this browser&rsquo;s cache storage, and clearing site data removes
-       it until your next visit.</p>
+       it until you next visit those pages. Nothing you type into the makers ever leaves your device, which is
+       why they work with no network once saved.</p>
   </main>
 
   <div class="mayuri-wrap">
@@ -263,9 +271,14 @@
     <div class="mayuri-panel" id="mayuri-panel" role="dialog" aria-label="Mayuri" hidden>
       <p class="hello">Hi, I am Mayuri, personal assistant of Krunalkumar.</p>
       <p class="sub">You are offline, so I cannot fetch anything new — and I would rather
-         say that than hand you links that will not open. Everything listed on this page is
-         already saved on this device and will work right now. When you are back online,
-         Krunalkumar answers on WhatsApp himself.</p>
+         say that than hand you links that will not open. The pages you visited while online
+         are saved on this device, and the list on this page is read straight from that cache,
+         so everything it names will open right now. When you are back online, Krunalkumar
+         answers on WhatsApp himself.</p>
+      <!-- Filled by offline.js with the real saved-page count ("Right now that
+           is 7 pages."). Ships hidden so a no-JavaScript visitor never sees an
+           empty sentence — her claim above is complete without it. -->
+      <p class="sub" id="mayuri-count" hidden></p>
     </div>
     <button class="mayuri-button" id="mayuri-button" type="button"
             aria-label="Mayuri" aria-expanded="false" aria-controls="mayuri-panel"><svg class="mayuri-face" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M27.6 41.5h8.8v10.5c0 2.4-2 4-4.4 4s-4.4-1.6-4.4-4z" fill="#eab89a"/><path d="M27.6 41.5h8.8v5c-2.6 1.7-6.2 1.7-8.8 0z" fill="#d7a181"/><path d="M7 64c2.4-9.5 9-14 16-15.6 3.4 3.4 15 3.4 18 0C48 50 54.6 54.5 57 64z" fill="#ef7360"/><path d="M23 48.4c3 2.2 15 2.2 18 0l-2.6-1.2c-3 2-9.8 2-12.8 0z" fill="#cf5646"/><text x="30.2" y="59.4" text-anchor="middle" fill="#fff1e6" opacity="0.96" font-family="Consolas, Menlo, monospace" font-size="6.6" font-weight="700" letter-spacing="0.5">KS</text><rect x="34.4" y="58.2" width="4.2" height="1.3" rx="0.65" fill="#fff1e6" opacity="0.96"/><g class="mayuri-head"><path d="M13 62C5.5 48 5 30 10 20 14.5 10.5 22 5 32 5s17.5 5.5 22 15c5 10 4.5 28-3 42l-8-2c5.5-11 6.5-25 3-33-2.5-6-8-9.5-14-9.5S20.5 21 18 27c-3.5 8-2.5 22 3 33z" fill="#241a2f"/><path d="M12.6 40c-3.4 12-3 23 .4 32l10-1.6c-3.4-9.6-4.4-20-3-31z" fill="#2e2240"/><path d="M51.4 40c3.4 12 3 23-.4 32l-10-1.6c3.4-9.6 4.4-20 3-31z" fill="#2e2240"/><path d="M19 22c3.4-5.4 8-8.4 12.4-8.6-5.6 1.8-9.6 5.6-11.4 11.6-.6 2-1 4.2-1.2 6.4-.8-3.6-.6-6.8.2-9.4z" fill="#4a3a63" opacity="0.85"/><ellipse cx="32" cy="33.4" rx="13.7" ry="14.3" fill="#f8d4b6"/><ellipse cx="19.4" cy="34" rx="1.8" ry="2.7" fill="#f0c4a2"/><ellipse cx="44.6" cy="34" rx="1.8" ry="2.7" fill="#f0c4a2"/><circle cx="19.2" cy="36.9" r="0.95" fill="#f4c84a"/><path d="M18.1 38.1h2.2l-.5 2.1h-1.2z" fill="#f4c84a"/><circle cx="44.8" cy="36.9" r="0.95" fill="#f4c84a"/><path d="M43.7 38.1h2.2l-.5 2.1h-1.2z" fill="#f4c84a"/><path d="M17.4 34c-.6-13.4 6.6-21.2 14.6-21.2S47.2 20.6 46.6 34c-1.6-7.3-4.8-11.6-8.3-13-2.6 3.7-10.2 5.3-14.8 2.9-3.3 1.8-6.2 5.4-6.1 10.1z" fill="#241a2f"/><path d="M17.6 25c-2.4 3.4-3.6 7.6-3.4 12.2-2.2-5.2-1.6-10.4 1-14.4z" fill="#241a2f"/><path d="M46.4 25c2.4 3.4 3.6 7.6 3.4 12.2 2.2-5.2 1.6-10.4-1-14.4z" fill="#241a2f"/><circle cx="32" cy="24.4" r="1.15" fill="#c0392b"/><path d="M23.6 27.4q3.4-2.3 6.6-.2" stroke="#3f2c4c" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M33.8 27.2q3.2-2.1 6.6.2" stroke="#3f2c4c" stroke-width="1.4" fill="none" stroke-linecap="round"/><g class="mayuri-eyes"><ellipse cx="26.9" cy="33.6" rx="2.65" ry="3.15" fill="#2e2036"/><ellipse cx="37.1" cy="33.6" rx="2.65" ry="3.15" fill="#2e2036"/><circle cx="27.7" cy="32.5" r="0.98" fill="#ffffff"/><circle cx="37.9" cy="32.5" r="0.98" fill="#ffffff"/><circle cx="26.1" cy="34.7" r="0.52" fill="#ffffff" opacity="0.72"/><circle cx="36.3" cy="34.7" r="0.52" fill="#ffffff" opacity="0.72"/><path d="M24.1 31.6q2.8-2.2 5.6-.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M34.4 31.1q2.8-1.7 5.5.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M23.9 31.4l-1.5-1" stroke="#2e2036" stroke-width="1.2" stroke-linecap="round"/><path d="M40.1 31.4l1.5-1" stroke="#2e2036" stroke-width="1.2" stroke-linecap="round"/></g><g class="mayuri-eyes-happy"><path d="M24.3 34.6q2.6-3.7 5.2 0" stroke="#2e2036" stroke-width="1.9" fill="none" stroke-linecap="round"/><path d="M34.5 34.6q2.6-3.7 5.2 0" stroke="#2e2036" stroke-width="1.9" fill="none" stroke-linecap="round"/></g><path d="M31.2 36.6q.9 1.3 1.8.2" stroke="#dda683" stroke-width="1.1" fill="none" stroke-linecap="round"/><ellipse cx="23.2" cy="38.4" rx="2.9" ry="1.8" fill="#ef8a8a" opacity="0.4"/><ellipse cx="40.8" cy="38.4" rx="2.9" ry="1.8" fill="#ef8a8a" opacity="0.4"/><g class="mayuri-mouth"><path d="M28.9 40.9q3.1 2.9 6.2 0" stroke="#c4636a" stroke-width="1.7" fill="none" stroke-linecap="round"/></g><g class="mayuri-mouth-happy"><path d="M27.9 39.9h8.2c0 3.9-1.9 6.2-4.1 6.2s-4.1-2.3-4.1-6.2z" fill="#a8434f"/><path d="M30 43.6q2-1.5 4 0c-.4 1.7-1.4 2.4-2 2.4s-1.6-.7-2-2.4z" fill="#f19aa2"/><path d="M27.9 39.9h8.2" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/></g><g transform="translate(47.5 18) rotate(22)"><ellipse rx="4.4" ry="6.2" fill="#1fb5a6"/><ellipse cy="0.6" rx="2.4" ry="3.5" fill="#2f6fd0"/><circle cy="1" r="1.5" fill="#f4c84a"/></g></g></svg></button>

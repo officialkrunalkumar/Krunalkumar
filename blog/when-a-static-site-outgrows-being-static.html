@@ -258,17 +258,21 @@
               </p>
               <p>
                 A service worker sits between the page and the network, decides what to keep, and serves it
-                back when there is nothing to serve from. On this site that means the document makers and
-                every article keep working on a train, and a game you have opened once keeps working
-                forever. Games are cached on use rather than up front, deliberately, so a first visit does
-                not pay to download an arcade nobody opened.
+                back when there is nothing to serve from. On this site that means any page you have opened
+                &mdash; an article, a document maker, a game &mdash; keeps working on a train from then on.
+                Everything is cached on use rather than up front, deliberately, so a first visit does not
+                pay to download an archive nobody asked for, and what a visitor never opened is honestly
+                not there.
               </p>
               <p>
-                The catch is the one every hand-maintained list has. The precached file list is written by
-                hand, and its own comment admitted the failure mode before anything enforced it &mdash; if a
-                page grows a new stylesheet or script, it has to be added there or offline quietly breaks.
-                That is not an argument against the approach; it is an argument for deriving the list from
-                the pages and failing the build when the two disagree, which is what happens here now.
+                The catch that shaped that choice is the one every hand-maintained list has. This site's
+                precache list used to be written by hand, and its own comment admitted the failure mode
+                before anything enforced it &mdash; if a page grows a new stylesheet or script, it has to be
+                added there or offline quietly breaks. A build gate held the list honest for a while; the
+                list itself was then retired for caching on use, which cannot drift by construction,
+                because the copy that is kept is the copy that was actually served. The one hand list left
+                is the offline fallback page and the couple of files it references &mdash; short enough for
+                the build to check whole and refuse to publish when it disagrees with the page.
               </p>
               <p>
                 The general point: <strong>reach for the browser capability before the server.</strong>

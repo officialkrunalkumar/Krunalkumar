@@ -115,47 +115,93 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price
 15. **What Actually Happens in the First Week of an Automation Engagement (Aug 31, 2026):** What gets read, asked and measured before anything is built, why the first week produces a map and a decision rather than a working automation, and the steps that should not be automated at all.
    https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement
-16. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom — blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
+16. **Digital Arrest, Explained (Aug 31, 2026):** There is no such thing as a digital arrest. How the fake-police video-call scam works, why it fools careful people, and what to do in the first hour.
+   https://krunalkumar.dpdns.org/blog/digital-arrest-scam-explained
+17. **How a SIM Swap Works (Aug 31, 2026):** How a SIM swap actually happens: the two ways a number changes hands, why SMS was never an authentication channel, and the defences that hold.
+   https://krunalkumar.dpdns.org/blog/how-sim-swap-works
+18. **UPI Fraud: How the Money Leaves (Aug 31, 2026):** A UPI collect request and a payment look almost identical on screen, and only one takes money. The six scam scripts, and what to do in the first hour.
+   https://krunalkumar.dpdns.org/blog/upi-fraud-how-the-money-actually-leaves
+19. **What Happens When You Click a Phishing Link (Aug 31, 2026):** You clicked. What the page already learned, how a real-time relay spends your one-time code, and an ordered checklist for the first thirty minutes.
+   https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link
+20. **How to Read a Data Breach Notification (Aug 31, 2026):** What accessed, acquired and encrypted passwords really mean in a breach notice, and what to do based on what actually leaked.
+   https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification
+21. **Surface, Deep, and Dark Web, Explained (Aug 31, 2026):** The surface, deep, and dark web explained: why the iceberg picture is wrong, how onion routing works, and what breach monitoring can and cannot tell you.
+   https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web
+22. **Why Your Phone Feels Hacked (Aug 31, 2026):** Why a hot, fast-draining phone is almost never hacked, why it is not listening to you, the six signals that do matter, and the checks to run on Android and iOS.
+   https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not
+23. **What Deepfake Detection Can and Cannot Do (Aug 31, 2026):** Why an AI detector’s confidence percentage is not evidence, what a forensic examiner actually looks at, and what C2PA provenance genuinely fixes.
+   https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do
+24. **What Consent Actually Means Under DPDP (Aug 31, 2026):** What India’s DPDP Act 2023 actually requires of a small company: the consent standard, the notice and its languages, the rights, and the penalty schedule.
+   https://krunalkumar.dpdns.org/blog/what-consent-actually-means-under-dpdp
+25. **What a Security Review Actually Finds (Aug 31, 2026):** The eight findings a security review of a small SaaS or internal tool keeps turning up, why each happens, and why a clean report is not a clean bill of health.
+   https://krunalkumar.dpdns.org/blog/what-a-security-review-actually-finds
+26. **What an Auditor Wants From Security Training (Aug 31, 2026):** What ISO/IEC 27001 Annex A 6.3 asks for, how SOC 2 assessors map the same evidence, where DPDP sits, and the training records that survive a review.
+   https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training
+27. **n8n vs Make vs Zapier, Compared (Aug 31, 2026):** n8n, Make, and Zapier compared by what actually decides it: where the workflow runs, who is liable for the data, and what each pricing meter really counts.
+   https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison
+28. **Why Your Automation Broke (Aug 31, 2026):** An automation that ran for a year does not stop for mysterious reasons. The eight causes that account for it, and the guard that catches each one early.
+   https://krunalkumar.dpdns.org/blog/why-your-automation-broke
+29. **The Real Cost of a Manual Process (Aug 31, 2026):** How to cost a manual process properly: minutes × frequency × loaded hourly rate, the four costs that never make the estimate, and a payback formula.
+   https://krunalkumar.dpdns.org/blog/the-real-cost-of-a-manual-process
+30. **How to Read a Job Description (Aug 31, 2026):** How to read a job posting honestly: which requirements are load-bearing, what fast-paced and wear many hats really mean, and what a missing salary tells you.
+   https://krunalkumar.dpdns.org/blog/how-to-read-a-job-description
+31. **The Interview Questions I Ask (Aug 31, 2026):** The five questions I keep asking in technical interviews, what each one is really testing, and the signals that only look like signal.
+   https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask
+32. **The Mentee Mistakes That Cost the Most Time (Aug 31, 2026):** The habits that cost people months while learning to build software — tutorial loops, restarts, roadmap hunting, silence when stuck — and what to do instead.
+   https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time
+33. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom — blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
    https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up
-17. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
+34. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
    https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software
-18. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+35. **Finding the Right Career (Aug 27, 2026):** Follow your passion is bad advice. A more honest method: three things that must overlap, testing instead of deciding, and what to ignore.
+   https://krunalkumar.dpdns.org/blog/finding-the-right-career
+36. **Passwords and Passkeys: What Protects You (Aug 27, 2026):** Why your password is rarely the weak point, what a passkey actually is, what it fixes, what it does not, and a setup you can finish this week.
+   https://krunalkumar.dpdns.org/blog/passwords-passkeys-and-what-actually-protects-you
+37. **Scope the Work Before You Quote It (Aug 27, 2026):** Most bad projects are not underpriced, they are under-scoped. Five questions to answer before you send a number, and how to change scope without resentment.
+   https://krunalkumar.dpdns.org/blog/scoping-work-before-you-quote-it
+38. **Types of Love, and Choosing Someone to Marry (Aug 27, 2026):** The different things we call love, telling infatuation from the real thing, what predicts a lasting marriage, and the questions to ask before you commit.
+   https://krunalkumar.dpdns.org/blog/types-of-love-and-choosing-a-life-partner
+39. **The Life of the Buddha, Without the Mythology (Aug 27, 2026):** Who Siddhattha Gotama actually was, what the earliest texts say, where the familiar legend was added later, and what he taught in forty-five years of walking.
+   https://krunalkumar.dpdns.org/blog/the-life-of-the-buddha
+40. **What Happens After We Die (Aug 27, 2026):** What the major traditions actually claim about death, where they disagree, what near-death experiences do and do not show, and living with an open question.
+   https://krunalkumar.dpdns.org/blog/what-happens-after-we-die
+41. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
    https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick
-19. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
+42. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
    https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks
-20. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
+43. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
    https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website
-21. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
+44. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
    https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted
-22. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
+45. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
    https://krunalkumar.dpdns.org/blog/types-of-cyberattacks
-23. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
+46. **Security Compliance, Explained (Aug 10, 2026):** Practical guide comparing GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2.
    https://krunalkumar.dpdns.org/blog/security-compliance-explained
-24. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
+47. **India's IT Law, Explained (Aug 10, 2026):** Legal analysis of the IT Act 2000 (Sections 43–79), CERT-In 6-hour reporting directions, and the Digital Personal Data Protection (DPDP) Act 2023.
    https://krunalkumar.dpdns.org/blog/india-it-act-explained
-25. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
+48. **How Cybercrime Cases Are Solved (Aug 10, 2026):** Digital forensics workflow: triage, disk/RAM imaging, hash verification, chain of custody, and courtroom evidence standards.
    https://krunalkumar.dpdns.org/blog/how-cybercrime-cases-are-solved
-26. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
+49. **Which AI Tool for Which Job (Aug 7, 2026):** Practitioner matrix categorizing LLMs and AI tools across chat, deep research, coding, slides, and automation.
    https://krunalkumar.dpdns.org/blog/which-ai-tool-for-which-job
-27. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
+50. **I Open-Sourced My AI SDR (Aug 3, 2026):** Architecture breakdown of CleverResponder for Instantly and SmartLead reply handling.
    https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr
-28. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
+51. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
    https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by
-29. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
+52. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
    https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai
-30. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
+53. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
    https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs
-31. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
+54. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
    https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship
-32. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
+55. **Standing Out in an Internship Interview (June 24, 2026):** Preparation advice from the reviewer's side: what actually impresses, the mistakes that sink candidates, and smart questions to ask.
    https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview
-33. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
+56. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
    https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it
-34. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
+57. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
    https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development
-35. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
+58. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
    https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb
-36. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
+59. **Automating Email Replies with n8n (May 18, 2026):** Five-stage pipeline: Trigger -> Fetch & Parse -> Intent Classification -> Contextual Draft -> Human Approval / CRM Logging.
    https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n
 
 ---
@@ -242,7 +288,7 @@ hiss that thickens, and until beds existed their mute button was wired to
 nothing a visitor could hear. The seventeen terminal games add a character-
 grid layer on top of that, so they are drawn as text cells rather than as
 sprites. Because there is one engine, a fix to focus handling or canvas
-scaling applies to all sixty-seven at once.
+scaling applies to every game at once.
 
 The shell binds only the arrow keys, Space, Enter and Escape. No game binds a
 letter key, which is the constraint that lets the typing games and the shell
@@ -412,9 +458,13 @@ that runs entirely in the browser.
 
 ## Peer-to-peer chat (/labs/chat)
 
-One of only two labs that opens a network connection — the browser-leak page
-below makes a STUN request for the same WebRTC reason. Every other tool runs
-entirely inside the tab with no requests of any kind; this one connects two
+The one lab that opens a peer-to-peer connection. It is not alone in reaching
+the network: the five lookup tools in the Network lookup section below (DNS
+lookup, the email security audit, certificate transparency, RDAP and the
+password breach check) query their vendors directly, the API tester sends
+whatever request the visitor composes, and the browser-leak page makes a STUN
+request for the same WebRTC reason this page does. Every other tool runs
+entirely inside the tab with no requests of any kind. This one connects two
 browsers directly to each other, and says so prominently before anything else.
 
 - **No server.** Two browsers exchange a short code by whatever channel the two
@@ -472,6 +522,12 @@ popular online equivalent does exactly that.
 - /labs/rainbow-tables — Salt and rainbow tables. Builds a precomputed table live, breaks unsalted hashes with it, then adds a salt and shows it become worthless. Times a fast hash against a slow one in the tab.
 - /labs/timing-attack — Timing side-channel. Recovers a secret byte by byte from measured medians against a naive comparison, and fails against a constant-time one. Reports the browser’s own timer resolution rather than assuming it.
 - /labs/firewall-rules — Firewall rule simulator. Walks a packet through an iptables or nftables chain rule by rule, detects shadowed rules, models stateful matching, and explains DROP against REJECT.
+- /labs/phishing-dissector — Phishing email dissector. Paste a suspicious email and see why it is or is not phishing: spoofed display names, lookalike and punycode domains, link text against destination.
+- /labs/totp — TOTP generator & verifier. Generates and verifies TOTP two-factor codes with every step shown: counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included.
+- /labs/passkeys — Passkey & WebAuthn explorer. Creates a real passkey with the browser's own WebAuthn API, then reads every byte it produced: the CBOR attestation object, AAGUID and COSE public key.
+- /labs/osint-self-check — OSINT self-check. Paste your own bio, handle, out-of-office or CV and see what a stranger could work out, and which password reset each detail helps answer. No uploads.
+- /labs/threat-model — STRIDE threat modelling tool. Describe a system and it proposes the STRIDE threats for each element. Accept, reject or rewrite each one, attach a mitigation, print the model.
+- /labs/upi-fraud — UPI & payment fraud explainer. Decide seven times whether a payment screen is taking money or giving it, with the tell shown afterwards. Then the six UPI scam scripts that reach India.
 
 ## Network lookup tools
 
@@ -490,7 +546,7 @@ There is no proxy — the visitor's browser contacts the vendor directly.
 
 ## Digital forensics tools
 
-Six file-forensics tools at /labs/<name>, on the same offline shell as the
+File-forensics tools at /labs/<name>, on the same offline shell as the
 security tools: you drop a file and it is parsed in your tab, never uploaded.
 They read real container and dump formats rather than guessing.
 
@@ -501,6 +557,10 @@ They read real container and dump formats rather than guessing.
 - /labs/memory-strings — Memory string extractor. Carves printable ASCII and UTF-16 strings from a raw memory or process dump, with length filtering and pattern highlighting for URLs, keys and paths.
 - /labs/registry-viewer — Windows registry viewer. Parses a raw Windows registry hive file into its key/value tree, decoding every value type, without a Windows machine.
 - /labs/incident-timeline — Incident timeline builder. Merges logs in several formats and timezones into one UTC timeline, flags clock skew, and separates genuine drift from a timezone set wrong. Exports Markdown or CSV.
+- /labs/media-forensics — Media forensics. Error level analysis, noise-floor mapping, copy-move detection and C2PA provenance on a dropped photo, with plain language on what each signal proves — signals, not verdicts.
+- /labs/malware-triage — Malware triage. Static triage of a Windows PE, ELF or Mach-O binary in the browser: imports read as capabilities, packer indicators, and an EICAR test-file generator.
+- /labs/log-analyser — Log file analyser. Paste or drop a log file and get findings locally: brute force and password spray told apart, a success after a run of failures, scanner probes.
+- /labs/pdf-tools — PDF toolkit. Merge, split, reorder, rotate and delete PDF pages, read the structure a PDF is made of, and save a copy with the metadata stripped. Nothing is uploaded.
 
 ## Interactive visualisers
 
@@ -529,6 +589,17 @@ All run entirely client-side.
 - /labs/ieee754 — IEEE-754 explorer. Bit layout with the exact decimal value the bits hold, 0.1 + 0.2 stepped through the rounding, denormals, NaN payloads, and Kahan summation against accumulated error.
 - /labs/concurrency — Concurrency primitives. One shared counter solved four ways, with the visitor driving the scheduler to cause a lost update deliberately, plus deadlock via lock ordering.
 - /labs/cap-theorem — CAP theorem sandbox. Five nodes, a network you can partition, CP or AP behaviour, and quorum arithmetic (R+W>N) evaluated live. Covers PACELC and what CAP does not claim.
+- /labs/periodic-table — Periodic table & element explorer. All 118 elements, each with a drawn swatch of what the substance really looks like, a shell diagram, and the full physical data. Colour by category, block or state.
+- /labs/web-layers — Surface, deep and dark web. Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Steps a request through a three-relay Tor circuit.
+- /labs/git-objects — Git object explorer. A working git object store in the browser: run add, commit, branch, merge, rebase and reflog against a toy repo and watch real blobs and trees appear.
+- /labs/tls-handshake — TLS handshake explorer. Steps a TLS 1.3 handshake message by message next to TLS 1.2, shows which messages are encrypted from what point, and watches HKDF derive the traffic secrets.
+- /labs/ransomware-anatomy — Ransomware anatomy. Steps a ransomware incident through nine stages, watches a simulated file tree get locked, then switches controls on to see where each one stops the chain.
+- /labs/wifi-security — Wi-Fi security explained. WEP to WPA3 side by side, the WPA2 four-way handshake and SAE drawn out input by input, and how an evil twin collects credentials on public wifi.
+- /labs/compiler — Compiler & VM visualiser. Takes a small language from source to tokens to a syntax tree to bytecode, then steps the stack machine that runs it, with the call frames visible.
+- /labs/big-o — Big-O, measured. Nine algorithms from O(1) to O(2^n), timed in your own browser and plotted on log-log axes where the slope is the exponent, with a fit naming the class.
+- /labs/db-index — Database index visualiser. See why an index makes a query fast: a live B+tree that splits and merges, and a 100,000-row table where the pages each query reads are counted.
+- /labs/http-versions — HTTP version race. HTTP/1.1, HTTP/2 and HTTP/3 raced over one simulated link. Set the latency, bandwidth and packet loss, then watch head-of-line blocking freeze HTTP/2.
+- /labs/docker-layers — Docker layer explorer. Paste a Dockerfile and see where the gigabytes went, layer by layer, including the files a later RUN deleted that are still sitting in the image.
 
 ## Everyday tools
 
@@ -545,12 +616,20 @@ the page says so rather than printing a confident number.
 - /labs/diff-merge — Diff and three-way merge. Side-by-side and unified views with word and character highlighting, then a base/mine/theirs merge resolved by hand. Whitespace toggle, CRLF made visible, unified patch export.
 - /labs/mojibake — Mojibake repair. Diagnoses broken text (UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities) and says which damage is reversible and which has lost data for good.
 - /labs/ansi-escapes — ANSI escape explainer. Decodes escape sequences in pasted text and builds them in the other direction. Covers why colour breaks in a pipe, NO_COLOR, and why escapes in untrusted log output are a security problem.
+- /labs/invoice-maker — GST invoice & quotation maker. Makes a GST invoice or a quotation: CGST plus SGST or IGST decided from the place of supply, rate-wise tax summary, amount in words. Prints to A4, and its exports are what /labs/gst-return reads.
+- /labs/unicode — Unicode inspector. Takes any string apart code point by code point: invisible characters shown in place, homoglyph and Trojan Source detection, NFC/NFD/NFKC/NFKD compared.
+- /labs/contrast — Colour contrast checker. WCAG 2.x contrast with every step of the arithmetic shown, APCA alongside it, colour-blindness simulation, and a smallest-change fixer in OKLCH.
+- /labs/salary-breakdown — CTC to in-hand salary breakdown (India). Turns an Indian CTC into a monthly in-hand figure with every step shown: component split, PF, gratuity, professional tax by state, and both tax regimes.
+- /labs/emi — Loan EMI and prepayment calculator. An EMI calculator that keeps going: the full amortisation schedule, prepayment compared both ways, and what a rate rise does to your tenure.
+- /labs/image-tools — Image compressor, converter and resizer. JPEG, PNG, WebP and AVIF in the browser, with a before/after split showing the real byte counts. No uploads.
+- /labs/typing-certificate — Typing test certificate. A timed typing test — one, three or five minutes — ending in a printable A4 certificate honest enough to say on its face that it proves nothing.
+- /labs/qr — QR code generator & inspector. Build a QR code, or decode one from a photo and read what it would do before you scan it: the URL, and the payee and amount inside a UPI string.
 
 ## Language playgrounds, terminals & HackLab
 
 The rest of Labs. Real language runtimes compiled to WebAssembly and vendored
 locally (no CDN), full operating systems under x86 emulation, and a deliberately
-vulnerable XSS playground. Every playground below is a genuine compiler or
+vulnerable practice app. Every playground below is a genuine compiler or
 interpreter, not a sandbox that fakes output; the size given is the first-run
 download, cached after that. They are listed by the year each language first
 appeared, which is the order the picker and the hub use.
@@ -570,7 +649,7 @@ appeared, which is the order the picker and the hub use.
 - /labs/leak — What your browser leaks. The public and local IP addresses any page can read out of WebRTC without a permission prompt, plus graphics card, time zone, CPU cores and a canvas fingerprint that survives clearing cookies, each with what it gives away and what can be done about it. Everything is computed in the tab with one exception the page states in print: reading the public IP means asking a public STUN server — Google's and Cloudflare's are both listed — which is a real request.
 - /labs/api — HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
 - /labs/typing — Typing speed test. WPM and accuracy over configurable text, entirely offline.
-- /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks (reflected and stored XSS against a deliberately vulnerable guestbook), with its own strict CSP isolating it from the rest of the site. For learning the offensive side in a place where breaking things is the point.
+- /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks: dozens of challenges spanning SQL injection against a live SQLite engine, reflected and DOM XSS in an opaque-origin frame, path traversal, command injection, IDOR, SSRF, JWT and 2FA weaknesses and more, each pairing the exploit with its real-world fix. Every target is a throwaway in-memory fake — there is no server to attack — and a strict CSP isolates it from the rest of the site. For learning the offensive side in a place where breaking things is the point.
 
 ## Reading the site: search and themes
 

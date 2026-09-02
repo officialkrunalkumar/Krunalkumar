@@ -317,7 +317,7 @@
           </details>
           <details class="lab-faq">
             <summary>How is the XSS challenge safe if the script really runs?</summary>
-            <div>Two ways. The payload runs in a throwaway guestbook page served with a strict connect-src none policy, so it cannot fetch, beacon or websocket a stolen value out - it can only message it back to the challenge, which is how the solve is detected. And what it steals is a hardcoded fake token: this whole site is static, with no accounts, no secrets and no real user data, so even a flawless exploit walks away with a string that was never worth anything. That harmlessness, not any single sandbox trick, is what makes it safe.</div>
+            <div>Two ways. The payload runs in a <a href="/labs/hacklab-guestbook">throwaway guestbook page</a> served with a strict connect-src none policy, so it cannot fetch, beacon or websocket a stolen value out - it can only message it back to the challenge, which is how the solve is detected. And what it steals is a hardcoded fake token: this whole site is static, with no accounts, no secrets and no real user data, so even a flawless exploit walks away with a string that was never worth anything. That harmlessness, not any single sandbox trick, is what makes it safe.</div>
           </details>
           <details class="lab-faq">
             <summary>Do I need to know how to code?</summary>

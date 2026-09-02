@@ -292,10 +292,20 @@
             browser settings, browse in private mode, use a content blocker, or install
             <a class="text-link" href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out add-on</a> —
             the site works exactly the same without them, and nothing on it is gated behind accepting them.
-            Separately, the site stores a few things in your browser's local storage — your theme
-            choice, and in the labs your saved code and downloaded runtimes. Those never leave your
-            machine and are not cookies; the labs have a button that clears them. The two document makers
-            are deliberately not on that list: the resume or biodata you type stays in the page's memory
+            Separately, the site stores a number of things in your browser's local storage, and the
+            honest list is longer than "your theme choice". The theme, yes. In the labs: your saved
+            code and downloaded runtimes, the flags that remember you pressed Run, which HackLab
+            challenges you have solved, your typing-test history, and the threat models and demo
+            passkeys you build in those two tools. In the games: your best scores, plus the switch
+            that turns score-saving off. Elsewhere: the sound on/off and volume for the Buddha and
+            party pages, and small "seen this hint" flags. And the one worth pausing on — the invoice
+            maker saves a draft of your invoice, which can hold names, addresses and payment details
+            you typed; it stays on this device until you clear it. A few short-lived flags (the paused
+            background animation, Mayuri's greeting, a dismissed chat bubble) live in session storage
+            instead and vanish when the tab closes. None of it ever leaves your machine and none of it
+            is a cookie; each lab and the games hub have a button that clears their own keys, and your
+            browser's "clear site data" wipes the lot. The resume and biodata makers are deliberately
+            absent from that list: what you type there stays in the page's memory
             for that one session and is never written to this device, so closing or reloading the tab
             clears it. Download data (.json) is how you keep a copy, and you choose when.
           </p>

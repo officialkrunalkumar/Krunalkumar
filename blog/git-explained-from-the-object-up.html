@@ -321,7 +321,9 @@
               <p>
                 Then there is the safety net under all of it. <code>git reflog</code> is git's private diary of
                 every place <code>HEAD</code> has been — every commit, switch, reset, rebase, and merge — kept
-                for about ninety days even for commits nothing points at any more. Ran <code>reset --hard</code>
+                for about ninety days by default — thirty for entries the branch tip can no longer
+                reach, which is precisely the orphaned-commit case, so recover sooner rather than
+                later. Ran <code>reset --hard</code>
                 on the wrong branch and watched a day's work vanish? <code>git reflog</code>, find the hash from
                 twenty minutes ago, <code>git reset --hard</code> back to it. <strong>In a committed repository
                 it is genuinely difficult to lose work permanently — the disasters people fear are mostly

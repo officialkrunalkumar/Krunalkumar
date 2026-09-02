@@ -94,7 +94,15 @@ const WORKERS = Number(process.env.LABGATE_WORKERS) || 4;
    and labs/mojibake both print it as genuine subject matter. */
 const SENTINELS = [
   'is not defined', 'is not a function',
-  'Cannot read properties', 'Cannot set property',
+  /* Both wordings of V8's set-on-nullish error, because Chrome changed the
+     message in 2021: "Cannot set property 'x' of undefined" became "Cannot
+     set properties of undefined". The singular is NOT a substring of the
+     plural — 'property' vs 'properties' diverge at the final letter — so the
+     old sentinel alone was silently blind to every such crash in the very
+     browsers this gate launches. The read-side pair never had the gap only
+     because it was written as the modern 'Cannot read properties'. The old
+     wording stays: this gate drives whatever browser the machine has. */
+  'Cannot read properties', 'Cannot set property', 'Cannot set properties',
   '[object Object]', 'undefined is not'
 ];
 

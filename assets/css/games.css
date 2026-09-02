@@ -139,7 +139,20 @@
 /* The fallback under the canvas: a big monospace glyph on the game's own
    tint. Visible when JS is off, when the canvas context fails, and for the
    split second before the thumbnail paints — which is why it is positioned
-   behind rather than swapped in, so there is never an empty frame. */
+   behind rather than swapped in, so there is never an empty frame.
+
+   The ground and glyph colours are hard-coded, not tokens, and the tiles
+   deliberately stay dark in light mode. The hub.js painters fill their
+   canvases with a fixed #020617 before drawing, so every painted thumbnail
+   is a dark tile in both themes; the 22 painter-less cards and the 'More in
+   the arcade' rail on every game page sit right next to them. When this
+   rule used rgb(var(--deep-rgb) / 0.9), --deep-rgb flipped to a pale blue
+   in light theme and those glyph tiles washed out into what read as failed
+   image loads beside the dark canvases. Matching the painters' ground —
+   opaquely, so the theme-flipping .game-thumb well cannot bleed through —
+   keeps the wall of thumbnails one colour family in both themes; the glyph
+   itself is pinned to the DARK theme's accent because the light theme's
+   accent is a dark blue that would vanish on this ground. */
 .game-thumb-glyph {
   position: absolute;
   inset: 0;
@@ -148,10 +161,10 @@
   font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
   font-size: 2.4rem;
   font-weight: 700;
-  color: rgb(var(--accent-rgb) / 0.55);
+  color: rgb(125 211 252 / 0.7);
   background:
-    radial-gradient(120% 90% at 50% 0%, rgb(var(--accent-rgb) / 0.16), transparent 70%),
-    rgb(var(--deep-rgb) / 0.9);
+    radial-gradient(120% 90% at 50% 0%, rgb(125 211 252 / 0.16), transparent 70%),
+    #020617;
   user-select: none;
 }
 
@@ -226,7 +239,11 @@
   color: rgb(var(--game-tint) / 0.7);
   background:
     radial-gradient(120% 90% at 50% 0%, rgb(var(--game-tint) / 0.18), transparent 70%),
-    rgb(var(--deep-rgb) / 0.9);
+    /* Same hard-coded dark ground as the base rule above: glyph tiles stay
+       dark in light mode to match the #020617 the canvas painters use. The
+       tint hues themselves are already fixed values chosen to read on a
+       dark ground, so only the flipping --deep-rgb needed pinning here. */
+    #020617;
 }
 
 .game-card[data-cat]::before {

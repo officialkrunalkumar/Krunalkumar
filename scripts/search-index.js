@@ -39,9 +39,11 @@ const ORIGIN_SUFFIX = ' | Krunalkumar Shah';
    have quietly removed text that used to be findable.
 
    2500 is the smallest value where no page loses anything it had before.
-   Together with the FAQ text appended below it, the index is about 80 KB on
-   the wire — paid only by visitors who actually open the search overlay,
-   since site-search.js fetches this file on first use, never on page load. */
+   Together with the FAQ text appended below it, the index has grown with the
+   site to about a third of a MB gzipped (roughly 1 MB raw) as of 2026-09 —
+   a cost paid only by visitors who actually open the search overlay, since
+   site-search.js fetches this file on first use, never on page load, and one
+   that keeps rising as pages are added. */
 const BODY_CAP = 2500;
 
 /* Extra room for the FAQ text appended after BODY_CAP. Questions come first,

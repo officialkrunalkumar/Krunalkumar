@@ -1,6 +1,6 @@
 /* ==========================================================================
-   sw.js — a deliberately small service worker: Labs runtimes, plus offline
-   copies of the two document makers and the blog. Nothing else.
+   sw.js — a deliberately small service worker: Labs runtimes, a tiny offline
+   shell, and a cache of whatever this visitor has actually opened.
    --------------------------------------------------------------------------
    Why this exists at all: without it, the ~90 MB of WebAssembly under
    /assets/vendor/ lands in the browser's HTTP cache, and the HTTP cache is
@@ -17,42 +17,55 @@
    exactly this cache and nothing else — the browser's origin model means it
    cannot reach another site's data even in principle.
 
-   SCOPE IS STILL THE WHOLE POINT. The fetch handler touches exactly five
-   kinds of request — the vendor runtimes, the doc makers, navigations, the
-   blog, and the games — and returns early for everything else, so the rest of the
-   site — every page, its CSS, its JS, analytics — behaves exactly as if no
-   worker existed. A service worker that quietly caches a whole site's HTML
-   is a support nightmare (the "why does the old page keep coming back" kind),
-   and this one still refuses to be that.
+   THE CACHING POLICY, decided by the site owner (2026-09). Three branches,
+   and every request falls into exactly one:
 
-   The third kind: navigations, added when the site became installable. They
-   are NETWORK-ONLY — never cached, never served stale — but when the fetch
-   itself fails (the installed app opened in airplane mode), a small precached
-   /offline page answers instead of the browser's raw error inside a
-   chromeless standalone window. Someone who could reach the network can never
-   see it, so the no-stale-pages rule above still holds in full.
+   1. INSTALL PRECACHES THE OFFLINE SHELL ONLY: /offline, the script that
+      builds its lists, and the icon it links — a few tens of KB, enumerated
+      in SHELL_URLS below. This worker used to precache far more: two
+      hand-kept lists (DOC_URLS and BLOG_URLS) naming the two document
+      makers, the entire blog and all of its art — about 4.5 MB raw dropped
+      on every first-time visitor in the background, invited or not. Both
+      lists are gone, deliberately, because hand-kept precache lists drift:
+      the blog list quietly fell 49 images behind the posts it promised, and
+      fixing that took a build gate, a generator, and a growing per-install
+      download that only ever got bigger with each post. A cache that holds
+      only what was actually fetched cannot drift by construction, and the
+      first-visit background download drops from ~4.5 MB to those tens of KB.
 
-   The one carve-out I have allowed since: the resume maker and the marriage
-   biodata maker. Those two pages promise, in print, that they work offline —
-   their entire pitch is that no server is needed, and people build real
-   documents in them that they expect to reopen on a train. So their exact
-   files (enumerated below, nothing wildcarded) are precached and served
-   NETWORK-FIRST: while you are online you always get the live copy straight
-   from the network, and the cache is silently refreshed behind it; only when
-   the network actually fails does the last good copy step in. Network-first
-   is what keeps this compatible with the paragraph above — a stale page can
-   never be shown to a visitor who could have fetched a fresh one. Cache-first
-   HTML is the support nightmare; a cache that is only ever a fallback is not.
+   2. EVERYTHING ELSE SAME-ORIGIN IS CACHED ON USE, network-first. A page you
+      open, the stylesheets and scripts and images it pulls in — each is kept
+      the moment it is successfully fetched, so what a visitor has opened
+      works offline and what they never opened does not. Network-first is
+      what keeps this honest: while you are online every response comes live
+      from the network, byte-identical to having no worker at all, and the
+      cached copy is silently refreshed behind it; only when the fetch itself
+      fails does the last good copy answer. A stale page can never be shown
+      to a visitor who could have fetched a fresh one — cache-first HTML is
+      the "why does the old page keep coming back" support nightmare, and a
+      cache that is only ever a fallback is not. The games section already
+      worked exactly this way; this branch is that pattern applied to the
+      whole site instead of a third hand-kept list saying which paths deserve
+      it.
 
-   The second carve-out, on the same terms: the blog. Twenty-seven articles,
-   their art, and the blog stylesheet and scripts — about 1.2 MB precached on install,
-   served network-first exactly like the doc makers. The size question was
-   asked and measured rather than assumed: the whole archive is 2% of what
-   one visit to /labs/c downloads for its clang toolchain, so the metering a
-   cache-on-read scheme would need costs more complexity than the bytes are
-   worth. What it buys is the reason to install the app at all — an archive
-   that stays readable on a plane. Still enumerated, still never wildcarded:
-   a new post must join BLOG_URLS or it simply is not there offline.
+      A CANCELLED PROMISE, stated so nobody restores it by accident: the
+      resume maker and the marriage biodata maker used to be precached so
+      they worked offline whether or not you had ever opened them, because
+      their pages said so in print. The owner cancelled that promise when the
+      precache lists went. They now work offline exactly like every other
+      page — after one live visit — and any copy still claiming more is prose
+      to fix, not a list to reintroduce here. This was a decision, not an
+      oversight.
+
+   3. LAB RUNTIMES (/assets/vendor/) ARE UNTOUCHED BY ALL OF THE ABOVE:
+      cache-first in a fingerprint-versioned cache, fetched on demand, never
+      precached. The rationale lives on the constants below.
+
+   Navigations that miss both the network and the cache — a page this device
+   never opened, requested in airplane mode — get the precached /offline
+   document instead of the browser's raw error inside a chromeless standalone
+   window. That page reads Cache Storage and lists what genuinely works, so
+   the offline experience describes itself instead of promising.
 
    It also has to be a service worker rather than a fetch wrapper, because the
    requests needing interception are not ours to wrap: Pyodide fetches its own
@@ -83,266 +96,56 @@ var VENDOR_FINGERPRINT = '62cee07e74bdd978';
 var CACHE = 'lab-runtimes-' + VENDOR_FINGERPRINT;
 var PREFIX = '/assets/vendor/';
 
-// Bump this one when the doc-maker file list changes, or to force every
-// visitor onto fresh copies after a layout rework. Old versions are deleted
-// on activate, same as the runtimes cache.
-// v2: /offline joined the list when the site became installable.
-var DOC_CACHE = 'doc-makers-v2';
+// Set once the first vendor cache.put() rejects — in practice that means the
+// browser refused the write, and for files this size the refusal is almost
+// always storage quota. One console.warn per worker lifetime is the whole
+// point of the flag: enough to make the failure findable in devtools, without
+// repeating it for every one of the dozens of files a runtime pulls in.
+var vendorPutWarned = false;
 
-// The complete, hand-enumerated set of files the two document makers need to
-// render and function with no network at all. Read straight off the two page
-// sources — if a page grows a new stylesheet or script, it must be added here
-// or offline quietly breaks. Clean URLs (no .html) because that is what the
-// browser actually requests on this host, and what include-partials.js fetches.
-var DOC_URLS = [
-  // The pages themselves.
-  '/labs/resume-maker',
-  '/labs/biodata-maker',
-  // The wish generator and the two cards it builds. The generator is pure
-  // string building, so it genuinely works with no network — and precaching
-  // the two cards as well means its live preview keeps working offline too,
-  // rather than showing an empty frame.
-  '/labs/wish-generator',
-  '/birthday',
-  '/festival',
-  // Their stylesheets: sitewide, labs-shared, and one per tool.
-  '/assets/css/main.css',
-  '/assets/css/labs.css',
-  '/assets/css/resume-maker.css',
-  '/assets/css/biodata-maker.css',
-  '/assets/css/wish-generator.css',
-  // The cards load ONLY this one — no main.css, no labs.css. They are
-  // chromeless by design, which is also what makes them cheap to precache.
-  '/assets/css/celebrate.css',
-  // Sitewide scripts both pages load in <head>/<body>.
-  '/assets/js/boot.js',
-  '/assets/js/theme.js',
-  '/assets/js/include-partials.js',
-  '/assets/js/site-search.js',
-  '/assets/js/particle-bg.js',
-  // The tools themselves.
-  '/assets/js/labs/tools/resume-maker.js',
-  '/assets/js/labs/tools/biodata-maker.js',
-  '/assets/js/labs/tools/wish-generator.js',
-  // The wish machinery. festival-data.js is shared by the generator and the
-  // festival card, which is exactly why it is one file rather than two.
-  '/assets/js/festival-data.js',
-  '/assets/js/celebrate-guard.js',
-  '/assets/js/celebrate.js',
-  '/assets/js/birthday.js',
-  '/assets/js/festival.js',
-  // include-partials.js swaps the static chrome for these at runtime.
-  '/partials/header',
-  '/partials/footer',
-  // Icons, manifest, and the two images the pages actually paint (the footer
-  // logo arrives via the footer partial).
-  '/favicon.ico',
-  '/favicon.svg',
-  '/site.webmanifest',
-  '/assets/images/apple-touch-icon.png',
-  // The navigation fallback for the installed app. Self-contained by design —
-  // precaching this one document is enough to keep an offline launch branded
-  // instead of showing the browser's network-error page.
+// The offline shell. Bump the version when SHELL_URLS changes or /offline is
+// reworked; old versions are deleted on activate, same as the runtimes cache.
+var SHELL_CACHE = 'offline-shell-v1';
+
+// The COMPLETE install-time precache: the /offline document and exactly the
+// static assets it references, nothing more. This is the one enumerated list
+// this worker still carries, and it stays this short on purpose — three
+// files a build gate (scripts/build.js, "sw precache gate") holds to two
+// invariants: every entry here resolves to a real file, and every asset
+// /offline references appears here. A list of three that a machine checks is
+// the opposite of the 200-entry lists this file used to hold, which no
+// machine could keep honest without generating them.
+var SHELL_URLS = [
+  // The navigation fallback itself. Self-contained by design — inline CSS,
+  // inline SVG — so precaching it plus the two files below is enough to keep
+  // an offline launch branded instead of showing the browser's error page.
+  '/offline',
   // The offline page's own script. It builds that page's lists from what is
   // really in these caches, so it has to be here or the page can only fall
   // back to claiming nothing.
   '/assets/js/offline.js',
-  '/offline'
+  // The one asset /offline links from its markup: its icon.
+  '/favicon.svg'
 ];
 
-// O(1) membership test for the fetch handler; the array above is for install.
-var DOC_SET = {};
-DOC_URLS.forEach(function (u) { DOC_SET[u] = true; });
+// Everything cached on use lands here: pages, stylesheets, scripts, images —
+// whatever a visit actually fetched. Bump the version to force every visitor
+// onto a cold cache after a rework; it refills as they browse, which is the
+// whole point of on-use caching — losing this cache costs nobody anything
+// they cannot get back by doing what filled it the first time.
+var PAGE_CACHE = 'pages-v1';
 
-// Bump this when the article list or the blog assets change; old versions are
-// deleted on activate, same as the two caches above.
-var BLOG_CACHE = 'blog-offline-v1';
-
-// The blog, precached whole and served NETWORK-FIRST — the same contract the
-// doc makers get, for the same reason: while you are online this is identical
-// to having no worker, and the copy below only ever answers a fetch that
-// actually failed. So the no-stale-pages rule at the top still holds.
-//
-// Precached on install rather than on read. The whole archive is about 1.2 MB —
-// ~952 KB of HTML, ~151 KB of art, ~42 KB of CSS and JS — against the 58 MB a
-// single visit to /labs/c already downloads, so metering it per article would
-// have cost more in machinery than it could ever save in bytes. Enumerated,
-// never wildcarded, exactly like DOC_URLS: a new post has to be added here or
-// it simply is not available offline, which is the failure everyone prefers.
-var BLOG_URLS = [
-  // The index and every article.
-  '/blog',
-  '/blog/ai-driven-human-assisted',
-  '/blog/automating-email-replies-with-n8n',
-  '/blog/character-over-career-the-choices-i-live-by',
-  '/blog/digital-arrest-scam-explained',
-  '/blog/how-cybercrime-cases-are-solved',
-  '/blog/how-i-vibe-coded-my-website',
-  '/blog/how-sim-swap-works',
-  '/blog/how-to-read-a-job-description',
-  '/blog/how-to-stand-out-in-an-internship-interview',
-  '/blog/how-to-succeed-in-software-development',
-  '/blog/i-open-sourced-my-ai-sdr',
-  '/blog/india-it-act-explained',
-  '/blog/my-career-story-from-classroom-to-research-and-ai',
-  '/blog/n8n-make-or-zapier-an-honest-comparison',
-  '/blog/reading-a-data-breach-notification',
-  '/blog/security-compliance-explained',
-  '/blog/smart-feedback-how-to-give-and-receive-it',
-  '/blog/surface-web-deep-web-and-dark-web',
-  '/blog/the-four-ms-every-business-needs',
-  '/blog/the-interview-questions-i-ask',
-  '/blog/the-mentee-mistakes-that-cost-the-most-time',
-  '/blog/the-real-cost-of-a-manual-process',
-  '/blog/the-resume-builder-paywall-trick',
-  '/blog/types-of-cyberattacks',
-  '/blog/upi-fraud-how-the-money-actually-leaves',
-  '/blog/what-a-marriage-biodata-leaks',
-  '/blog/what-a-security-review-actually-finds',
-  '/blog/what-an-auditor-actually-wants-from-security-training',
-  '/blog/what-consent-actually-means-under-dpdp',
-  '/blog/what-deepfake-detection-can-and-cannot-do',
-  '/blog/what-happens-when-you-click-a-phishing-link',
-  '/blog/what-is-a-fork-bomb',
-  '/blog/what-running-internship-cohorts-taught-me-about-mentorship',
-  '/blog/which-ai-tool-for-which-job',
-  '/blog/scoping-work-before-you-quote-it',
-  '/blog/passwords-passkeys-and-what-actually-protects-you',
-  '/blog/finding-the-right-career',
-  '/blog/the-life-of-the-buddha',
-  '/blog/types-of-love-and-choosing-a-life-partner',
-  '/blog/what-happens-after-we-die',
-  '/blog/what-66-games-taught-me-about-software',
-  '/blog/git-explained-from-the-object-up',
-  '/blog/why-your-automation-broke',
-  '/blog/why-your-phone-feels-hacked-and-probably-is-not',
-  // Blog-only stylesheet and scripts. main.css, labs.css, boot.js, theme.js,
-  // include-partials.js, site-search.js, particle-bg.js, the partials and the
-  // icons are already on DOC_URLS above, so they are deliberately not repeated
-  // here — the fetch handler routes each path to whichever cache holds it.
-  '/assets/css/blog.css',
-  '/assets/js/blog-index.js',
-  '/assets/js/blog-toc.js',
-  '/assets/js/blog-share.js',
-  // Cover art and in-article diagrams, read straight off the post sources.
-  '/assets/images/blog/git-object-cover.svg',
-  '/assets/images/blog/games-lessons-cover.svg',
-  '/assets/images/blog/scoping-work-cover.svg',
-  '/assets/images/blog/passkeys-cover.svg',
-  '/assets/images/blog/finding-career-cover.svg',
-  '/assets/images/blog/buddha-life-cover.svg',
-  '/assets/images/blog/love-partner-cover.svg',
-  '/assets/images/blog/after-death-cover.svg',
-  '/assets/images/blog/ai-driven-cover.svg',
-  '/assets/images/blog/ai-driven-matrix.svg',
-  '/assets/images/blog/ai-sdr-cover.svg',
-  '/assets/images/blog/ai-tools-cover.svg',
-  '/assets/images/blog/attack-types-cover.svg',
-  '/assets/images/blog/automating-email-replies-with-n8n-diagram1.svg',
-  '/assets/images/blog/biodata-leaks-cover.svg',
-  '/assets/images/blog/career-story-cover.svg',
-  '/assets/images/blog/character-over-career-the-choices-i-live-by-diagram1.svg',
-  '/assets/images/blog/compliance-cover.svg',
-  '/assets/images/blog/cybercrime-case-cover.svg',
-  '/assets/images/blog/fork-bomb-cover.svg',
-  '/assets/images/blog/four-ms-cover.svg',
-  '/assets/images/blog/four-steps-cover.svg',
-  '/assets/images/blog/how-cybercrime-cases-are-solved-diagram1.svg',
-  '/assets/images/blog/how-to-stand-out-in-an-internship-interview-diagram1.svg',
-  '/assets/images/blog/how-to-succeed-in-software-development-diagram1.svg',
-  '/assets/images/blog/india-it-act-explained-diagram1.svg',
-  '/assets/images/blog/india-it-cover.svg',
-  '/assets/images/blog/instantly-workflow.svg',
-  '/assets/images/blog/interview-cover.svg',
-  '/assets/images/blog/left-side-cover.svg',
-  '/assets/images/blog/mentorship-cover.svg',
-  '/assets/images/blog/my-career-story-from-classroom-to-research-and-ai-diagram1.svg',
-  '/assets/images/blog/n8n-automation-cover.svg',
-  '/assets/images/blog/resume-paywall-cover.svg',
-  '/assets/images/blog/security-compliance-explained-diagram1.svg',
-  '/assets/images/blog/smart-feedback-cover.svg',
-  '/assets/images/blog/smart-feedback-how-to-give-and-receive-it-diagram1.svg',
-  '/assets/images/blog/smartlead-workflow.svg',
-  '/assets/images/blog/the-four-ms-every-business-needs-diagram1.svg',
-  '/assets/images/blog/the-resume-builder-paywall-trick-diagram1.svg',
-  '/assets/images/blog/types-of-cyberattacks-diagram1.svg',
-  '/assets/images/blog/vibe-coded-cover.svg',
-  '/assets/images/blog/vibe-coded-loop.svg',
-  '/assets/images/blog/what-is-a-fork-bomb-diagram1.svg',
-  '/assets/images/blog/what-running-internship-cohorts-taught-me-about-mentorship-diagram1.svg',
-  '/assets/images/blog/which-ai-tool-for-which-job-diagram1.svg',
-  '/assets/images/blog/which-ai-tool-for-which-job-diagram2.svg',
-  '/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg',
-  '/assets/images/blog/which-ai-tool-for-which-job-diagram4.svg',
-  '/blog/first-week-of-an-automation-engagement',
-  '/assets/images/blog/automation-first-week-cover.svg',
-  '/blog/how-to-brief-a-security-consultant',
-  '/assets/images/blog/security-brief-cover.svg',
-  '/blog/how-to-read-a-privacy-policy-in-five-minutes',
-  '/assets/images/blog/privacy-policy-cover.svg',
-  '/blog/the-hubspot-mistakes-that-cost-the-most-to-undo',
-  '/assets/images/blog/hubspot-mistakes-cover.svg',
-  '/blog/the-password-advice-that-stopped-being-true',
-  '/assets/images/blog/password-advice-cover.svg',
-  '/blog/what-ai-agent-means-once-you-maintain-one',
-  '/assets/images/blog/ai-agent-maintain-cover.svg',
-  '/blog/what-happens-to-your-accounts-when-you-die',
-  '/assets/images/blog/accounts-after-death-cover.svg',
-  '/blog/what-your-browser-tells-every-site',
-  '/assets/images/blog/browser-tells-cover.svg',
-  '/blog/why-i-quote-fixed-price',
-  '/assets/images/blog/fixed-price-cover.svg',
-  '/blog/why-we-dont-store-your-password-is-usually-false',
-  '/assets/images/blog/password-storage-cover.svg',
-  '/blog/what-a-vpn-does-and-does-not-do',
-  '/assets/images/blog/vpn-cover.svg',
-  '/blog/what-build-gate-failures-taught-me-about-ci',
-  '/assets/images/blog/build-gates-cover.svg',
-  '/blog/when-a-static-site-outgrows-being-static',
-  '/assets/images/blog/static-outgrows-cover.svg',
-  '/blog/why-every-number-on-this-site-is-counted',
-  '/assets/images/blog/counted-numbers-cover.svg',
-  '/blog/writing-comments-that-survive',
-  '/assets/images/blog/comments-survive-cover.svg'
-];
-
-var BLOG_SET = {};
-BLOG_URLS.forEach(function (u) { BLOG_SET[u] = true; });
-
-// The arcade. Unlike the two lists above this is matched by PREFIX, and the
-// difference is deliberate.
-//
-// DOC_URLS and BLOG_URLS are enumerated because both are precached on
-// install: the promise there is "it works even if you have never opened it",
-// and a promise like that has to name what it covers. /games cannot make that
-// promise honestly. There are dozens of game pages and the number only grows,
-// so precaching them would mean every visitor to any page on this site paying
-// a multi-megabyte download for an arcade they may never open — on mobile
-// data, uninvited. That is exactly the behaviour the labs section refuses to
-// have, and it would be worse here because a game is not why most people came.
-//
-// So games are cached on USE instead. Open one and it stays: the page, the
-// shared stylesheet, the shell and that game's own module all match the rules
-// below, so they are kept the moment they are first fetched, and the game
-// works with no network from then on. Nothing is downloaded for a game
-// nobody has played. /offline says exactly this rather than implying more.
-var GAME_CACHE = 'games-v1';
-
-function isGamePath(pathname) {
-  if (pathname === '/games' || pathname.indexOf('/games/') === 0) return true;
-  if (pathname.indexOf('/assets/js/games/') === 0) return true;
-  if (pathname === '/assets/css/games.css') return true;
-  return false;
-}
-
-// Which network-first cache owns a path, or null if the fetch handler should
-// leave the request alone. One lookup keeps the lists from growing separate
-// copies of the same fetch logic.
-function netFirstCacheFor(pathname) {
-  if (DOC_SET[pathname]) return DOC_CACHE;
-  if (BLOG_SET[pathname]) return BLOG_CACHE;
-  if (isGamePath(pathname)) return GAME_CACHE;
-  return null;
+// The one page the on-use cache must NEVER store. The hack-lab guestbook is
+// a deliberately-vulnerable sandbox document, and vercel.json serves it with
+// Cache-Control: no-store precisely so no copy of it outlives the exercise.
+// A PAGE_CACHE entry would quietly undo that header: the vulnerable document
+// would keep answering from this cache after the server copy was patched or
+// taken down, turning a scoped sandbox into a persistent one. Every write
+// into PAGE_CACHE checks this predicate so the exclusion cannot be forgotten
+// on one branch.
+function isGuestbook(pathname) {
+  return pathname === '/labs/hacklab-guestbook' ||
+    pathname.indexOf('/labs/hacklab-guestbook/') === 0;
 }
 
 // A Response that arrived via a redirect cannot legally answer a navigation
@@ -362,41 +165,44 @@ function stripRedirect(response) {
 self.addEventListener('install', function (event) {
   // The runtimes are still NOT precached: they are fetched on demand, and
   // precaching 90 MB on first page view is exactly what the lazy loading is
-  // designed to avoid. Only the two enumerated lists go in now — the doc-maker
-  // files, a few hundred KB, and the blog at about 1.2 MB. Both are the price of
-  // a "works offline" promise those pages make in print.
-  event.waitUntil(
-    Promise.all([
-      precache(DOC_CACHE, DOC_URLS),
-      precache(BLOG_CACHE, BLOG_URLS)
-    ])
-  );
+  // designed to avoid. Only the offline shell goes in — three files, a few
+  // tens of KB, the smallest set that keeps an airplane-mode launch of the
+  // installed app on a branded page instead of a browser error.
+  event.waitUntil(precache(SHELL_CACHE, SHELL_URLS));
   self.skipWaiting();
 });
 
-// Shared by both precached sets. Deliberately not cache.addAll(): addAll is
-// all-or-nothing, so one 404 (say, an icon missing on a local preview) would
-// fail the entire install and take the vendor caching down with it. Each file
-// is fetched on its own and a miss is simply skipped — that URL falls back to
-// plain network behaviour until a later install catches it.
+// Deliberately not cache.addAll(), but STRICT all the same: each file is
+// fetched on its own (addAll gives no way to say WHICH url failed), and any
+// failure — a rejected fetch or a non-200 — rejects the whole install. That
+// strictness matters because install runs exactly once per worker version: a
+// worker that activated with a partial shell would keep that hole until the
+// next deploy, silently breaking the offline fallback. A failed install, by
+// contrast, is retried by the browser on a later navigation or update check,
+// so a transient network blip costs a retry instead of the shell. Three tiny
+// files make the all-or-nothing bet cheap; a 404 here (say, an icon missing
+// on a local preview) is a real bug the build gate should have caught, and
+// failing loudly is the correct answer to it.
 function precache(name, urls) {
   return caches.open(name).then(function (cache) {
     return Promise.all(urls.map(function (u) {
       // {cache: 'no-cache'} forces a conditional request to the server.
-      // Without it, /assets/(js|css) and /partials/ answers could come
-      // silently from the browser's HTTP cache — fresh for an hour, usable
-      // for a day under stale-while-revalidate — and an install landing
-      // right after a deploy would freeze new HTML beside a stale tool
-      // script as the offline pair. Roughly 85 conditional GETs across both
-      // lists, once per install.
+      // Without it, the answers could come silently from the browser's HTTP
+      // cache — fresh for an hour, usable for a day under
+      // stale-while-revalidate — and an install landing right after a deploy
+      // would freeze a stale copy as the offline shell. Three conditional
+      // GETs, once per install; the old lists made this ~210.
       return fetch(u, { cache: 'no-cache' }).then(function (response) {
         if (response && response.status === 200 && response.type === 'basic') {
           return stripRedirect(response).then(function (clean) {
             return cache.put(u, clean);
           });
         }
-        return null;
-      }).catch(function () { return null; });
+        // Reject rather than skip: see the strictness rationale above.
+        throw new Error('sw.js: shell precache got ' +
+          (response ? response.status + '/' + response.type : 'no response') +
+          ' for ' + u);
+      });
     }));
   });
 }
@@ -406,25 +212,72 @@ self.addEventListener('activate', function (event) {
     caches.keys()
       .then(function (names) {
         return Promise.all(names.map(function (name) {
-          // Only ever touch caches this worker owns: the two prefixes below
-          // and nothing else, so any future cache another feature creates
+          // Only ever touch caches this worker owns: the prefixes below and
+          // nothing else, so any future cache another feature creates
           // survives this cleanup untouched.
+          //
+          // Known trade-off, accepted: deleting the old runtimes cache the
+          // moment the new worker activates means a page from the PREVIOUS
+          // deploy that is still open can see its runtime swap mid-session —
+          // its next vendor fetch misses and refills under the new
+          // fingerprint. Documented rather than fixed, because the fix is
+          // keeping two full multi-hundred-MB runtime caches alive side by
+          // side, and that costs every device real disk for a mixed session
+          // that is rare and ends at the next reload anyway.
           if (name.indexOf('lab-runtimes-') === 0 && name !== CACHE) {
             return caches.delete(name);
           }
-          if (name.indexOf('doc-makers-') === 0 && name !== DOC_CACHE) {
+          if (name.indexOf('offline-shell-') === 0 && name !== SHELL_CACHE) {
             return caches.delete(name);
           }
-          if (name.indexOf('blog-offline-') === 0 && name !== BLOG_CACHE) {
+          if (name.indexOf('pages-') === 0 && name !== PAGE_CACHE) {
             return caches.delete(name);
           }
-          if (name.indexOf('games-') === 0 && name !== GAME_CACHE) {
-            return caches.delete(name);
-          }
+          // The three caches the PREVIOUS policy kept: the precached doc
+          // makers, the precached blog, and the on-use games cache. All three
+          // are retired — the first two because their install-time lists were
+          // abolished (see the header), the games cache because its on-use
+          // pattern became the sitewide PAGE_CACHE above. Dropping them costs
+          // a returning visitor their old offline copies once; everything
+          // they actually open refills PAGE_CACHE on use, which is the deal
+          // the new policy makes everywhere.
+          if (name.indexOf('doc-makers-') === 0) return caches.delete(name);
+          if (name.indexOf('blog-offline-') === 0) return caches.delete(name);
+          if (name.indexOf('games-') === 0) return caches.delete(name);
           return null;
         }));
       })
       .then(function () { return self.clients.claim(); })
+      // Backfill the on-use cache with the pages that are ALREADY open. The
+      // very first page of a first-ever visit is fetched before any worker
+      // exists to see it, so on-use caching alone never stores it — the one
+      // page the visitor has provably opened would be the one page that does
+      // not work offline. Re-fetching each claimed window's current URL here
+      // closes that "works offline after the first visit" gap for the
+      // landing page itself. Same success checks as the on-use branch (200 +
+      // 'basic', redirects flattened, guestbook excluded, keyed by
+      // pathname); failures are simply ignored, because this is best-effort
+      // backfill of pages the visitor can refill by reloading.
+      .then(function () {
+        return self.clients.matchAll({ type: 'window' }).then(function (wins) {
+          return caches.open(PAGE_CACHE).then(function (cache) {
+            return Promise.all(wins.map(function (win) {
+              var url;
+              try { url = new URL(win.url); } catch (err) { return null; }
+              if (url.origin !== self.location.origin) return null;
+              if (isGuestbook(url.pathname)) return null;
+              return fetch(url.pathname).then(function (response) {
+                if (response && response.status === 200 && response.type === 'basic') {
+                  return stripRedirect(response).then(function (clean) {
+                    return cache.put(url.pathname, clean);
+                  });
+                }
+                return null;
+              }).catch(function () { return null; });
+            }));
+          });
+        }).catch(function () {});
+      })
   );
 });
 
@@ -457,7 +310,21 @@ self.addEventListener('fetch', function (event) {
             // Only store complete, successful responses. A 206 or an opaque
             // response would poison the cache with something unusable.
             if (response && response.status === 200 && response.type === 'basic') {
-              cache.put(request, response.clone());
+              // put() rejects when Cache Storage will not take the bytes —
+              // quota, usually, and these are the largest files on the site.
+              // Left unhandled, that rejection is both invisible and
+              // expensive: the cache never fills, so every visit re-downloads
+              // the runtime in full, and the {cache:'reload'} above means not
+              // even the HTTP cache softens it. The page already has its
+              // response either way, so degrade quietly — but warn once (see
+              // vendorPutWarned) so "why does Python download every time" is
+              // answerable from the console instead of being a mystery.
+              cache.put(request, response.clone()).catch(function (err) {
+                if (!vendorPutWarned) {
+                  vendorPutWarned = true;
+                  console.warn('sw.js: vendor cache write failed (storage quota?); runtimes will be re-fetched from the network on each visit.', err);
+                }
+              });
             }
             return response;
           });
@@ -467,46 +334,55 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
-  var netFirst = netFirstCacheFor(url.pathname);
-  if (netFirst) {
-    // NETWORK-FIRST, and only for the exact URLs on the doc-maker list.
-    // The order matters: try the network, and on success refresh the cached
-    // copy and hand the live response to the page — so while online this
-    // path is byte-identical to having no worker at all, never stale. Only
-    // when fetch itself rejects (offline, DNS gone, server unreachable) does
-    // the last good copy answer instead. Keyed by pathname, not the full
-    // request, so a ?utm= visit still finds the precached entry.
-    event.respondWith(
-      fetch(request).then(function (response) {
-        if (response && response.status === 200 && response.type === 'basic') {
-          var copy = response.clone();
-          // Refresh in the background; a cache write failure must never
-          // break the page, so it is swallowed.
-          event.waitUntil(
-            caches.open(netFirst).then(function (cache) {
-              return stripRedirect(copy).then(function (clean) {
-                return cache.put(url.pathname, clean);
-              });
-            }).catch(function () {})
-          );
-        }
-        return response;
-      }).catch(function () {
-        return caches.open(netFirst).then(function (cache) {
-          return cache.match(url.pathname);
-        }).then(function (hit) {
-          if (hit) return hit;
-          // A miss here means offline for a page this device never stored —
-          // a game nobody opened, a post written since the last visit. That
-          // request is handled up here rather than by the navigate branch
-          // below, because these paths match a net-first list first, so
-          // without this line they produced the browser's own "site cannot be
-          // reached" screen while /offline sat precached and unused two
-          // branches away. Only navigations get the document: an uncached
-          // SCRIPT must still fail as a script, since answering it with HTML
-          // would turn a missing file into a syntax error.
+  // Every other same-origin GET: NETWORK-FIRST, CACHED ON USE. This is the
+  // whole of policy point 2 in the header. The order matters: try the
+  // network, and on success refresh the cached copy and hand the live
+  // response to the page — so while online this path is byte-identical to
+  // having no worker at all, never stale. Only when fetch itself rejects
+  // (offline, DNS gone, server unreachable) does the last good copy answer.
+  // Keyed by pathname, not the full request, so a ?utm= visit refreshes and
+  // finds the same entry a plain one does.
+  //
+  // Only complete first-party successes are stored — the same 200 + 'basic'
+  // guard the vendor branch uses — so a 404, a 206 range slice or an opaque
+  // response can never become this device's permanent copy of a page.
+  event.respondWith(
+    fetch(request).then(function (response) {
+      // isGuestbook: the sandbox page is served no-store and must not gain a
+      // service-worker copy either — see the predicate's comment.
+      if (response && response.status === 200 && response.type === 'basic' &&
+          !isGuestbook(url.pathname)) {
+        var copy = response.clone();
+        // Refresh in the background; a cache write failure must never
+        // break the page, so it is swallowed.
+        event.waitUntil(
+          caches.open(PAGE_CACHE).then(function (cache) {
+            return stripRedirect(copy).then(function (clean) {
+              return cache.put(url.pathname, clean);
+            });
+          }).catch(function () {})
+        );
+      }
+      return response;
+    }).catch(function () {
+      return caches.open(PAGE_CACHE).then(function (cache) {
+        return cache.match(url.pathname);
+      }).then(function (hit) {
+        if (hit) return hit;
+        // Not in the on-use cache — but the offline shell's own three files
+        // live in SHELL_CACHE, and /offline must be reachable by typing its
+        // URL even on a device that has never visited it while online.
+        return caches.open(SHELL_CACHE).then(function (shell) {
+          return shell.match(url.pathname);
+        }).then(function (shellHit) {
+          if (shellHit) return shellHit;
+          // Offline, and this device never stored the file — a page nobody
+          // opened, a post written since the last visit. Only navigations
+          // get the /offline document: an uncached SCRIPT must still fail
+          // as a script, since answering it with HTML would turn a missing
+          // file into a syntax error.
           if (request.mode === 'navigate') {
-            return caches.open(DOC_CACHE).then(function (docs) {
+            return caches.open(SHELL_CACHE).then(function (docs) {
               return docs.match('/offline');
             }).then(function (page) {
               return page || Response.error();
@@ -514,35 +390,9 @@ self.addEventListener('fetch', function (event) {
           }
           return Response.error();
         });
-      })
-    );
-    return;
-  }
-
-  if (request.mode === 'navigate') {
-    // NETWORK-ONLY with a fallback, never a cache. While the network works
-    // this is byte-identical to having no worker: the live response, straight
-    // through, nothing stored. Only when fetch itself rejects — the installed
-    // app opened in airplane mode, DNS gone — does the precached /offline
-    // document answer, so a standalone window shows a branded page with a
-    // way back instead of the browser's error screen. A cache miss here
-    // (offline before the first install finished) falls through to
-    // Response.error(), which reproduces the plain failure the page would
-    // have seen anyway. No init dict on this fetch: reconstructing a
-    // navigation-mode Request with one throws.
-    event.respondWith(
-      fetch(request).catch(function () {
-        return caches.open(DOC_CACHE).then(function (cache) {
-          return cache.match('/offline');
-        }).then(function (hit) {
-          return hit || Response.error();
-        });
-      })
-    );
-    return;
-  }
-
-  // Everything else: untouched, exactly as before.
+      });
+    })
+  );
 });
 
 /* The page asks for a size report or a purge through postMessage, because it

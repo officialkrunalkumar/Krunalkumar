@@ -1,8 +1,30 @@
 /* ==========================================================================
-   labs.css — the /labs code playgrounds and the /linux terminal
+   labs.css — every /labs page (playgrounds, tools, games) and /linux
    --------------------------------------------------------------------------
    Everything here runs on top of main.css, which owns the page chrome
-   (header, footer, buttons, cards). This file only styles the lab shell.
+   (header, footer, buttons, cards). This file started as just the lab
+   shell; it is now two things stacked in one file:
+
+     - The first ~1,140 lines are the shared shell every lab reuses: the
+       two-pane layout, toolbar, editor, terminal, consent gate, storage
+       popover, hub grid, and the responsive/print/reduced-motion rules
+       (sections 1-8 below).
+     - Everything after the "Security & digital forensics tools" banner is
+       per-tool sections — one headed block per lab that needs more than the
+       shell — appended in the order the labs were built. Find a lab's rules
+       by searching for its /labs/ slug; most blocks scope themselves under
+       the lab's root id for exactly that reason.
+
+   That makes this one render-blocking file of ~321KB raw / ~75KB gzipped
+   as committed, comments included; the deploy strips comments, cutting it
+   to roughly 200KB raw / 32KB gzipped — the wire cost a visitor actually
+   pays. Splitting the per-tool tails into per-page files was considered
+   and deferred on purpose: one file means one request, cached once and then
+   warm across the hub and all 112 tool pages, whereas a split would trade a
+   smaller first paint on one page for a cold fetch on every page after it.
+   Revisit if that ~32KB first-visit wire cost ever outweighs the warm
+   cache — until then, new per-tool rules go at the end of this file under
+   their own banner.
 
    The terminal panes deliberately reuse the palette from terminal.html —
    #020617 ground, #86efac phosphor green, Cascadia Code — so the labs read
@@ -11,7 +33,7 @@
    terminal is a fixed "screen" that must NOT follow the page if main.css's
    --bg-base is ever lightened (see the long note in main.css §1).
 
-   Contents:
+   Contents (shared shell):
      1. Lab shell & layout
      2. Toolbar (language picker, run/stop, storage, persist)
      3. Editor pane
@@ -20,6 +42,7 @@
      6. Storage popover
      7. Language grid (hub page)
      8. Responsive & reduced motion
+     …then the per-tool sections, each under its own banner.
    ========================================================================== */
 
 /* ==========================================================================
@@ -1156,6 +1179,14 @@ pre.lab-example:hover .lab-copy,
   background: rgb(var(--deep-rgb) / 0.5);
 }
 .lab-pane-input > div { display: contents; }
+/* `display: contents` is still an author `display`, and any author display
+   silently outranks the UA sheet's [hidden] { display: none } — the same trap
+   already patched for `.lab-toolbar [hidden]`, `.lab-drop[hidden]` and the QR
+   lab's two halves. Without this opt-out a wrapper hidden by mode (the hash
+   lab's #pane-file / #pane-key) still dissolves into the pane, its children
+   join the column flex anyway, and the visible textarea is squeezed down to a
+   one-line strip by controls that were supposed to be gone. */
+.lab-pane-input > div[hidden] { display: none; }
 
 /* Text areas and fields ---------------------------------------------------- */
 .lab-toolinput {
@@ -1195,6 +1226,13 @@ pre.lab-example:hover .lab-copy,
   margin: 1rem;
   font-size: 1rem;
   padding: 0.8rem 0.9rem;
+  /* The base .lab-toolfield's `flex: 1 1 14rem` was written for the row-flex
+     .lab-fieldrow, where growing means width. Every -lg field instead sits
+     directly in the column-flex .lab-pane-input (subnet, dns, rdap, ct-log,
+     breach-check, email-security, password, timestamp), where that same grow
+     becomes HEIGHT and a one-line input balloons to fill the ~460px pane.
+     Same specificity as the base rule, later in the file, so this wins. */
+  flex: 0 0 auto;
 }
 
 .lab-fieldrow {

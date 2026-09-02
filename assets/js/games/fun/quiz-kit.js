@@ -41,6 +41,9 @@
     this.spec = spec;
     this.index = 0;
     this.answers = [];
+    /* A Quiz's first render is the page arriving, not the player doing
+       anything — see the note where render() focuses an option. */
+    this._firstRender = true;
     this.build();
   }
 
@@ -74,6 +77,14 @@
     this.host.appendChild(this.nav);
 
     this.output = el('div', 'quiz-result');
+    /* The result must be ANNOUNCED, not just shown: finish() hides the
+       container holding the focused option, and without a live region the
+       ending happens in silence for a screen reader. Declared here, while
+       the node is still empty, because a live region only announces what
+       CHANGES after it becomes one — made live at finish time, the result
+       already inside it would say nothing. */
+    this.output.setAttribute('role', 'status');
+    this.output.setAttribute('aria-live', 'polite');
     this.output.hidden = true;
     this.host.appendChild(this.output);
   };
@@ -124,8 +135,17 @@
       })(q.options[i], i);
     }
 
+    /* Focus follows the question — answering moves the keyboard onto the
+       next question's options without a Tab in between. EXCEPT on the very
+       first render, which is the page loading and nobody asking: the five
+       autoStart quizzes were stealing focus from the address bar or the
+       heading a screen reader had just started, the same load-time theft
+       the shell's noFocus overlay refuses. Skipping only the first render
+       loses nothing for a player-initiated restart, because the shell's
+       takeFocus() lands on this radiogroup right after reset() rebuilds it. */
     var first = this.options.querySelector('.is-picked') || this.options.querySelector('.quiz-option');
-    if (first) { try { first.focus({ preventScroll: true }); } catch (e) {} }
+    if (first && !this._firstRender) { try { first.focus({ preventScroll: true }); } catch (e) {} }
+    this._firstRender = false;
 
     if (this.g) this.g.stat('question', (this.index + 1) + '/' + total);
   };
@@ -212,6 +232,14 @@
     var self = this;
     again.addEventListener('click', function () { self.restart(); });
     this.output.appendChild(again);
+
+    /* The option that held focus has just been hidden, which drops focus
+       to <body>: the keyboard is nowhere and a screen reader says nothing
+       about where it went. Land it on the result title instead. tabindex
+       "-1" makes the heading focusable by script without adding a tab stop
+       for anyone else, and preventScroll keeps the page where it is. */
+    h.setAttribute('tabindex', '-1');
+    try { h.focus({ preventScroll: true }); } catch (e) { h.focus(); }
 
     if (this.g) {
       this.g.beep(880, 0.12, 'sine');

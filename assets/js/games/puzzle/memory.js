@@ -26,7 +26,10 @@
    g.best. Everything downstream — the comparison, the write, the "New best"
    badge on the end screen — then keeps working and stays correct, which it
    would not if this file kept its own records beside a shell record that
-   compared a six-pair run against a fifteen-pair one.
+   compared a six-pair run against a fifteen-pair one. The one deliberate
+   exception is the plain 'memory.best' key: the hub card on /games reads
+   it and knows nothing of sizes, so a best on the default (medium) board
+   is mirrored there too — see the ended hook.
    ========================================================================== */
 
 (function () {
@@ -417,6 +420,22 @@
           if (document.activeElement !== boardEl) return;
           var first = nextPlayable(cards.length - 1);
           if (first >= 0) { try { buttons[first].focus({ preventScroll: true }); } catch (err) { buttons[first].focus(); } }
+        },
+
+        /* THE HUB CARD READS THE PLAIN KEY. /games shows each game's best
+           by reading 'game.<slug>.best' — it knows nothing about board
+           sizes — and retargetBest() means the shell only ever writes
+           'memory.<size>.best', so without this the card said "nothing yet"
+           forever. The default (medium) board doubles as the headline
+           record: a best set there is mirrored to the plain 'memory.best'
+           the hub expects, alongside the per-size key the shell just
+           wrote. Only mirrored when it actually beats what the plain key
+           holds (lower is better here), so a legacy record written before
+           bests went per-size is never replaced by a worse score. */
+        ended: function (finalScore, isBest) {
+          if (!isBest || size !== 'medium') return;
+          var plain = Number(GameShell.read('memory.best', 0)) || 0;
+          if (!plain || finalScore < plain) GameShell.write('memory.best', finalScore);
         },
 
         update: function (dt) {

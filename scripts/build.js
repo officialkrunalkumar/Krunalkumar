@@ -62,8 +62,8 @@
    It then checks its own output — critical files present, above a size floor,
    enough HTML pages on disk, every JSON-LD block parseable, the sitemap and
    the pages agreeing about what exists, the static header/footer each page
-   ships matching the partials they get swapped for, and sw.js's offline
-   precache list covering what the doc-maker pages actually load — and throws
+   ships matching the partials they get swapped for, and sw.js's offline-shell
+   precache resolving on disk and covering what /offline loads — and throws
    if anything looks wrong. Vercel keeps serving the previous deployment when
    a build exits non-zero, so failing the deploy is always safer than
    publishing the damage. Every step reports what it did, so a deploy log
@@ -94,7 +94,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { execFileSync, spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 /* --------------------------------------------------------------------------
@@ -825,9 +825,20 @@ const LLMS_COUNT_RULES = [
     [/(The )\d+( games, in)/, 'games'],
     /* Group 1 is the text BEFORE the figure, never the figure itself — the
        replacement is '$1' + value + '$2', so a rule that captures the old word
-       emits both and you get "ElevenEleven language playgrounds". */
-    [/(\): )[A-Za-z]+( language playgrounds)/, 'languages:Word'],
-    [/(, )[a-z]+( real machines)/, 'machines:word'],
+       emits both and you get "ElevenEleven language playgrounds".
+
+       \d+ alongside the word form, for the same reason the games rule in
+       llms-full.txt below carries it: a rewrite rule must be able to re-match
+       its own output or it fires exactly once. formatCount() emits digits for
+       any count past twelve (and for a hyphenless mismatch like a renamed
+       NUMBER_WORDS entry, whatever it emits is what must be matched next
+       time) — so a word-only pattern would rewrite "Eleven" to "13" once and
+       then report the phrase "no longer present" on every later deploy while
+       the figure quietly froze. The hyphen is in the class because a future
+       spelled-out form above twenty ("twenty-one") is one word to a reader
+       and two to [A-Za-z]+. */
+    [/(\): )(?:\d+|[A-Za-z-]+)( language playgrounds)/, 'languages:Word'],
+    [/(, )(?:\d+|[a-z-]+)( real machines)/, 'machines:word'],
   ]],
   ['llms-full.txt', [
     [/(index covering all )\d+( pages)/, 'pages'],
@@ -845,8 +856,17 @@ const LLMS_COUNT_RULES = [
        Linux builder — .gitattributes pins only labs/*.html and glossary.html —
        so a bare \n matched nothing locally and would have matched on Vercel.
        A rule that works on exactly one of the two machines is the worst kind
-       of gate: it looks fine wherever you happen to be standing. */
-    [/(## Games \(\/games\)\r?\n\r?\n)[A-Za-z-]+( games, in seven categories)/, 'games:Word'],
+       of gate: it looks fine wherever you happen to be standing.
+
+       \d+ alongside the word form, because a rewrite rule must be able to
+       re-match its own output or it fires exactly once. With 88 games,
+       formatCount('Word') is past the spelled-out ceiling and emits digits —
+       so a word-only pattern would match the hand-typed "Sixty-seven" one
+       last time, write "88", and then never see the phrase again: every
+       later deploy would report it "no longer present" while the figure
+       quietly froze. A count above the word ceiling is the permanent case
+       here, not the edge. */
+    [/(## Games \(\/games\)\r?\n\r?\n)(?:\d+|[A-Za-z-]+)( games, in seven categories)/, 'games:Word'],
   ]],
 ];
 
@@ -1072,6 +1092,25 @@ function fileToUrl(rel) {
   return '/' + stripped;
 }
 
+/* Does the page's own <head> ask crawlers not to index it? Scans every <meta>
+   tag rather than one attribute-ordered regex, because name-before-content is
+   only a house convention — a hand-edited page writing content first would
+   slip past a single pattern and this check exists to catch hand edits.
+   Comments are stripped first for the same reason jsonLdErrors strips them: a
+   deliberately commented-out meta is dead text, not a declaration. The value
+   test wants noindex as its own token, so "index,follow" (which merely
+   CONTAINS "index") and hypothetical "nonoindex" both stay clean. */
+function pageDeclaresNoindex(html) {
+  const src = stripHtmlComments(html);
+  for (const m of src.matchAll(/<meta\b[^>]*>/gi)) {
+    const name = (m[0].match(/name\s*=\s*["']([^"']+)["']/i) || [])[1];
+    if (!name || name.trim().toLowerCase() !== 'robots') continue;
+    const content = (m[0].match(/content\s*=\s*["']([^"']*)["']/i) || [])[1] || '';
+    if (/(^|[\s,])noindex([\s,]|$)/i.test(content)) return true;
+  }
+  return false;
+}
+
 function doSitemapParity(root) {
   root = root || ROOT;
   log('');
@@ -1103,8 +1142,24 @@ function doSitemapParity(root) {
     }
   }
   for (const loc of locs) {
-    if (!urlToFile(loc, root)) {
+    const rel = urlToFile(loc, root);
+    if (!rel) {
       problems.push('sitemap <loc> has no file behind it: ' + loc);
+      continue;
+    }
+    /* A URL that resolves is not enough — the page behind it must also WANT
+       to be indexed. /labs/hacklab-guestbook shipped exactly this way: the
+       page was noindex three times over (a robots meta on the page, an
+       X-Robots-Tag header in vercel.json, and a NOINDEX_PAGES entry above
+       that keeps it out of the search index), and the sitemap listed it
+       anyway — telling every crawler "please index this" about a page that
+       answers "please don't". The one-sided contradiction is worse than an
+       omission: Search Console reports it as an error against the sitemap,
+       and which signal a crawler honours is its choice, not ours. So a
+       listed page whose own markup declares noindex fails the deploy. */
+    if (pageDeclaresNoindex(fs.readFileSync(path.join(root, rel), 'utf8'))) {
+      problems.push('sitemap lists a noindex page: ' + loc + '  (' + rel +
+                    ' carries a robots noindex meta — delist one or the other)');
     }
   }
 
@@ -1113,7 +1168,8 @@ function doSitemapParity(root) {
     problems.forEach((p) => log('    - ' + p));
     throw new Error('sitemap parity gate: ' + problems.length + ' mismatch(es) — refusing to publish');
   }
-  log('  ' + indexable.length + ' indexable pages all listed, ' + locs.length + ' sitemap URLs all resolve');
+  log('  ' + indexable.length + ' indexable pages all listed, ' + locs.length +
+      ' sitemap URLs all resolve and none declare noindex');
 }
 
 /* --------------------------------------------------------------------------
@@ -1270,39 +1326,54 @@ function doChromeParity(root) {
 /* --------------------------------------------------------------------------
    7b. Service-worker precache gate
    --------------------------------------------------------------------------
-   sw.js promises the resume maker and the biodata maker work offline, backed
-   by DOC_URLS — a hand-enumerated file list whose own comment admits the
-   failure mode: "if a page grows a new stylesheet or script, it must be
-   added here or offline quietly breaks." That is the identical hand-sync
-   promise the search index and the llms counts used to run on, and it broke
-   the identical way. So the list is now held to the pages: every stylesheet
-   and script the two documents load must appear in DOC_URLS (as the clean
-   URL the browser actually requests), and every DOC_URLS entry must resolve
-   to a real file. Extra precached entries (icons, partials, /offline) are
-   fine — the gate only refuses a page dependency the list is missing.
-   -------------------------------------------------------------------------- */
-const SW_PRECACHED_PAGES = [
-  'labs/resume-maker.html',
-  'labs/biodata-maker.html',
-  'labs/wish-generator.html',
-  'fun/birthday.html',
-  'fun/festival.html',
-  /* Added when /offline stopped being a JS-free page. It now loads
-     offline.js to build its lists from the real cache, and a precached page
-     whose script is NOT precached is the worst version of this bug: the page
-     appears, and the part that makes its promises true silently does not. */
-  'offline.html',
-];
+   The install-time precache is now the OFFLINE SHELL ONLY: sw.js SHELL_URLS
+   names /offline and exactly the static assets that page references — a few
+   tens of KB. Everything else on the site is cached ON USE by the worker's
+   network-first fetch branch, so there is no longer any hand-kept list of
+   pages and assets for this gate to hold in sync with the pages. That is the
+   point of the policy change: the old DOC_URLS/BLOG_URLS lists drifted (49
+   blog images shipped un-precached before an earlier version of this gate
+   caught up with them), and a cache filled by real fetches cannot drift by
+   construction. The doc-maker "works offline before you ever open it"
+   promise was cancelled by the site owner as part of that change — see the
+   policy header in sw.js — so its coverage checks are gone deliberately, not
+   lost.
 
-function pageAssetUrls(html) {
+   What remains mechanical stays enforced, both halves of shell parity:
+
+     - every SHELL_URLS entry must resolve to a real file on disk. sw.js's
+       install skips a fetch miss on purpose (one 404 must not take the
+       vendor caching down), which is exactly why the BUILD must refuse it:
+       a reintroduced or mistyped precache entry would otherwise be skipped
+       silently at install, forever.
+     - every asset offline.html references must be in SHELL_URLS. /offline
+       is served precisely when nothing else can be fetched, so a dependency
+       missing from the precache is a broken file on the one page whose
+       whole job is to still work.
+   -------------------------------------------------------------------------- */
+
+/* The URLs offline.html makes the browser fetch. Deliberately wider than
+   stylesheets-and-scripts — that scope is how 49 blog images once shipped
+   un-precached under the old policy, because "the page's dependencies" had
+   been defined as "the tags somebody thought of". So: <link>s whose rel
+   actually triggers a request (stylesheet, icon, manifest, preload — a
+   canonical or alternate link is metadata and never fetched), every script
+   src, and every img src. offline.html is self-contained by design (inline
+   CSS, inline SVG), so today this returns its icon and its one script; the
+   day someone adds more, the gate demands the precache grow with it. */
+function offlineShellAssetUrls(html) {
   const src = stripHtmlComments(html);
   const urls = [];
   for (const tag of src.matchAll(/<link\s[^>]*>/g)) {
-    if (!/rel\s*=\s*"stylesheet"/.test(tag[0])) continue;
+    const rel = tag[0].match(/rel\s*=\s*"([^"]*)"/);
+    if (!rel || !/(stylesheet|icon|manifest|preload)/i.test(rel[1])) continue;
     const href = tag[0].match(/href\s*=\s*"([^"]*)"/);
     if (href) urls.push(href[1]);
   }
   for (const tag of src.matchAll(/<script\s[^>]*src\s*=\s*"([^"]*)"[^>]*>/g)) {
+    urls.push(tag[1]);
+  }
+  for (const tag of src.matchAll(/<img\s[^>]*\ssrc\s*=\s*"([^"]*)"/g)) {
     urls.push(tag[1]);
   }
   return urls.map((u) => u.split('?')[0].split('#')[0]).filter((u) => u.startsWith('/'));
@@ -1323,85 +1394,49 @@ function doSwPrecacheParity(root) {
   log('');
   log('sw precache gate');
   const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
-  const docListed = swUrlList(sw, 'DOC_URLS');
-  const blogListed = swUrlList(sw, 'BLOG_URLS');
-  // A blog page loads main.css, boot.js and the rest, which live on DOC_URLS.
-  // Coverage is therefore checked against the union — the worker routes each
-  // path to whichever cache holds it, so where an asset is listed is
-  // irrelevant as long as it is listed once.
-  const allListed = new Set([...docListed, ...blogListed]);
+  const listed = swUrlList(sw, 'SHELL_URLS');
 
   const problems = [];
-  let covered = 0;
 
-  const checkPage = (rel, ownList, listName) => {
-    const pageUrl = fileToUrl(rel);
-    if (!ownList.has(pageUrl)) {
-      problems.push('sw.js ' + listName + ' is missing the page itself: ' + pageUrl);
+  /* Existence, checked first because it is the failure sw.js cannot catch:
+     its install deliberately skips a URL that 404s rather than failing (one
+     missing icon must not take the vendor caching down), so a precache entry
+     with no file behind it — a typo, or a list quietly growing back toward
+     the abolished policy — would be skipped silently at every install,
+     forever. The build is the only place that refusal can live. */
+  for (const u of listed) {
+    if (!urlToFile(u, root)) {
+      problems.push('sw.js SHELL_URLS entry has no file behind it: ' + u +
+                    ' — install would skip it silently, so the build refuses instead');
     }
-    for (const u of pageAssetUrls(fs.readFileSync(path.join(root, rel), 'utf8'))) {
-      if (allListed.has(u)) { covered += 1; continue; }
-      problems.push(rel + ' loads ' + u + ' but sw.js does not precache it — offline would quietly break');
-    }
-  };
-
-  for (const rel of SW_PRECACHED_PAGES) checkPage(rel, docListed, 'DOC_URLS');
-
-  // The blog set is DERIVED, not enumerated here: every article on disk must
-  // be in BLOG_URLS. This is the check the doc-maker half cannot have — its
-  // pages are a fixed list, whereas a new post appears simply by being
-  // written, and sw.js says plainly that one missing from BLOG_URLS "simply
-  // is not there offline". That is the exact silent failure this gate exists
-  // to convert into a refusal to publish.
-  const blogDir = path.join(root, 'blog');
-  const posts = fs.readdirSync(blogDir).filter((f) => f.endsWith('.html'));
-  for (const f of posts) checkPage(path.join('blog', f).replace(/\\/g, '/'), blogListed, 'BLOG_URLS');
-
-  for (const u of docListed) {
-    if (!urlToFile(u, root)) problems.push('sw.js DOC_URLS entry has no file behind it: ' + u);
-  }
-  for (const u of blogListed) {
-    if (!urlToFile(u, root)) problems.push('sw.js BLOG_URLS entry has no file behind it: ' + u);
   }
 
-  /* --------------------------------------------------------------------
-     /offline may not link to anything it cannot actually serve.
+  /* The shell must contain its own front door: without /offline in the
+     precache there is no navigation fallback at all, and every other entry
+     exists only to serve that page. */
+  if (!listed.has('/offline')) {
+    problems.push('sw.js SHELL_URLS does not include /offline — no navigation fallback without it');
+  }
 
-     This is the gate that turns that page's promise into something
-     mechanical. /offline is the page a visitor reaches precisely BECAUSE
-     the network is gone, so a link there that is not in the precache does
-     not degrade — it produces the browser's own "site cannot be reached"
-     error, which is the single most useless thing that page could do.
-
-     It had exactly that bug: a hand-written list of six games under the
-     heading "Games you have played", fixed at build time, naming games the
-     visitor had never opened. Every one was a dead end. The list is now
-     built at runtime from Cache Storage by assets/js/offline.js, and what
-     little remains hard-coded in the markup is checked here.
-
-     Anchors only, and same-origin only: "/" is allowed as the retry link
-     because a failed retry is the honest answer to "try again", not a
-     broken promise.
-     -------------------------------------------------------------------- */
-  const offlineRel = 'offline.html';
-  const offlineAbs = path.join(root, offlineRel);
-  if (fs.existsSync(offlineAbs)) {
-    const src = stripHtmlComments(fs.readFileSync(offlineAbs, 'utf8'));
-    const hrefs = [];
-    for (const tag of src.matchAll(/<a\s[^>]*href\s*=\s*"([^"]*)"/g)) hrefs.push(tag[1]);
-    const linked = new Set(
-      hrefs
-        .map((h) => h.split('?')[0].split('#')[0])
-        .filter((h) => h.startsWith('/') && h !== '/')
-    );
-    for (const href of linked) {
-      if (docListed.has(href) || blogListed.has(href)) continue;
-      problems.push(
-        'offline.html links to ' + href + ' but sw.js precaches neither it nor a redirect to it' +
-        ' — that link is dead in the one situation the page exists for'
-      );
+  /* Offline-shell parity, the other direction: every asset /offline makes
+     the browser fetch must be in the precache, because that page is served
+     precisely when nothing else can be fetched — a missing dependency there
+     is a broken file on the one page whose whole job is to still work. The
+     page's LINKS are deliberately not gated any more: under on-use caching
+     what they lead to depends on what this device has stored, and
+     assets/js/offline.js already prunes them against the real cache at
+     load, which is the only place that question can be answered. */
+  let assets = [];
+  const offlineAbs = path.join(root, 'offline.html');
+  if (!fs.existsSync(offlineAbs)) {
+    problems.push('offline.html is missing — the shell precache has nothing to serve');
+  } else {
+    assets = offlineShellAssetUrls(fs.readFileSync(offlineAbs, 'utf8'));
+    for (const u of assets) {
+      if (listed.has(u)) continue;
+      problems.push('offline.html references ' + u + ' but sw.js SHELL_URLS does not precache it — ' +
+                    'the shell would render broken in the one situation it exists for');
     }
-    log('  offline.html links to ' + linked.size + ' page(s), all precached');
   }
 
   if (problems.length) {
@@ -1409,8 +1444,24 @@ function doSwPrecacheParity(root) {
     problems.forEach((p) => log('    - ' + p));
     throw new Error('sw precache gate: ' + problems.length + ' mismatch(es) — refusing to publish');
   }
-  log('  ' + covered + ' page assets all precached; ' + docListed.size + ' DOC_URLS and ' +
-      blogListed.size + ' BLOG_URLS entries all resolve (' + posts.length + ' blog pages checked)');
+
+  /* The bytes the install event downloads, logged and nothing more. Under
+     the shell-only policy this line should read as a few TENS OF KILOBYTES —
+     abolishing the old install-time lists took the first-visit background
+     download from ~4.5 MB to this figure, and that drop is most of what the
+     policy change bought. So a jump here is somebody reintroducing
+     install-time precaching: a policy question for whoever reads the deploy
+     log, deliberately NOT a threshold — a gate that fails on a number nobody
+     chose gets its number raised, not read. */
+  let precacheBytes = 0;
+  for (const u of listed) {
+    const f = urlToFile(u, root);
+    if (f) precacheBytes += fs.statSync(path.join(root, f)).size;
+  }
+  log('  ' + listed.size + ' shell entries all resolve; ' + assets.length +
+      ' offline.html asset reference(s) all precached');
+  log('  install precache total: ' + precacheBytes + ' bytes (' +
+      (precacheBytes / 1024).toFixed(1) + ' KB) — the offline shell only; everything else caches on use');
 }
 
 /* --------------------------------------------------------------------------
@@ -1840,6 +1891,63 @@ function doGeneratedPages() {
   }
 }
 
+/* --------------------------------------------------------------------------
+   7d. Games page freshness
+   --------------------------------------------------------------------------
+   games/*.html is generated by scripts/games.js from the manifest, but unlike
+   the glossary the generator is run BY HAND and the pages are committed —
+   doGeneratedPages() above deliberately does not regenerate them. That left
+   a gap the glossary does not have: edit games-data.js, forget the run, and
+   the deploy ships pages that contradict the manifest they claim to be built
+   from, with every other gate green. The share-image comment above tells the
+   story of sixty-six game pages shipping wrong in a way "invisible in the
+   deploy log"; this is the same generator given the same treatment.
+
+   The gate runs the generator's own --check — the one mode that writes
+   nothing — and refuses the deploy if it reports it would add or update
+   anything. Deliberately a refusal, not a regeneration: the committed pages
+   are the real pages, and a build that silently rewrote them here would
+   publish HTML that exists nowhere in the repository. The fix is one command
+   away and the failure says which command.
+
+   games.js --check exits 0 whether or not it found drift — its contract is
+   a report, not a verdict — so the summary line has to be parsed. Parsing
+   is anchored on "would add N, would update M", and a run whose output does
+   not contain that line fails the deploy too: a gate that cannot find the
+   number it exists to read must not certify it as zero.
+   -------------------------------------------------------------------------- */
+function doGamesFreshness() {
+  log('');
+  log('games freshness gate');
+  const abs = path.join(__dirname, 'games.js');
+  if (!fs.existsSync(abs)) { log('  SKIP  games.js not found'); return; }
+  const run = spawnSync(process.execPath, [abs, '--check'], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  const out = (run.stdout || '') + (run.stderr || '');
+  if (run.status !== 0) {
+    log('  FAILED  games.js --check exited ' + run.status + ':');
+    out.trim().split('\n').filter(Boolean).forEach((l) => log('    ' + l));
+    throw new Error('games freshness gate: games.js --check failed — not publishing');
+  }
+  const m = out.match(/would add (\d+), would update (\d+), unchanged (\d+)/);
+  if (!m) {
+    throw new Error('games freshness gate: could not find "would add N, would update M" in ' +
+                    'games.js --check output — its report format changed, fix the parse here');
+  }
+  const added = Number(m[1]);
+  const changed = Number(m[2]);
+  if (added || changed) {
+    log('  FAILED:');
+    out.trim().split('\n').filter(Boolean).forEach((l) => log('    ' + l));
+    throw new Error('games freshness gate: committed games/ pages are behind the manifest (' +
+                    added + ' to add, ' + changed + ' to update) — run `node scripts/games.js` ' +
+                    'and commit before publishing');
+  }
+  log('  ' + m[3] + ' committed pages match what scripts/games.js would generate');
+}
+
 function doGamesManifestParity() {
   const root = ROOT;
   const { GAMES } = require(path.join(ROOT, 'scripts/games-data.js'));
@@ -1861,13 +1969,43 @@ function doGamesManifestParity() {
 
      Each looked correct in whichever file you happened to open. This gate
      compares the two and refuses the deploy when they disagree, for the
-     fields where the difference is behaviour rather than presentation. */
+     fields where the difference is behaviour rather than presentation.
+
+     "Compares" means the VALUES, not just the names. The first version of
+     this gate only checked that the module MENTIONS the field somewhere, so
+     a manifest saying bestOrder: 'low' over a module writing bestOrder:
+     'high' sailed through — the exact tux-racer bug the field joined the
+     list for, one rename away from recurring. Where the module writes the
+     value as a literal (null, true/false, a quoted string, a number — which
+     today is every one of them) the two values are extracted and compared;
+     a module value that is an expression instead cannot be read without
+     executing the module, so for that one occurrence the gate falls back to
+     the old mention-check and SAYS SO in the log rather than implying the
+     value was verified. */
   /* bestOrder joined this list after tux-racer was found keeping the SLOWEST
      run as its record: the module set bestKey but not bestOrder, so the
      shell's default of 'higher is better' was applied to a lap time in
      seconds. The manifest had said 'low' all along, where nothing read it. */
   const RUNTIME_FIELDS = ['bestKey', 'bestOrder', 'tapAction', 'tapKey'];
+
+  /* Read one field value the way the module wrote it. Returns a one-element
+     array holding the value for the literal shapes the modules actually use
+     (null, booleans, simple quoted strings, numbers), and null for anything
+     else — an identifier, a call, a string with escapes — meaning "this is
+     computed, only presence can be checked". The array wrapper exists so a
+     literal null is distinguishable from "not a literal". */
+  function readFieldLiteral(token) {
+    if (token === 'null') return [null];
+    if (token === 'true') return [true];
+    if (token === 'false') return [false];
+    const s = token.match(/^'([^'\\]*)'$/) || token.match(/^"([^"\\]*)"$/);
+    if (s) return [s[1]];
+    if (/^-?\d+(?:\.\d+)?$/.test(token)) return [Number(token)];
+    return null;
+  }
+
   const drift = [];
+  let mentionOnly = 0;
   for (const g of GAMES) {
     const modPath = path.join(root, 'assets/js/games', g.script);
     if (!fs.existsSync(modPath)) continue;
@@ -1889,26 +2027,68 @@ function doGamesManifestParity() {
          "s" — so it matched nothing, the gate reported all 52 games as
          broken, and the 52 it named were the ones that were already correct.
          A gate whose own pattern is wrong is worse than no gate: it sends you
-         to fix code that was never broken. */
+         to fix code that was never broken.
+
+         Literals are not immunity, though: the bestOrder line below shipped
+         as /bestOrders*:/ — a missing backslash, so s* meant "any number of
+         letter-s characters", not optional whitespace. It passed anyway,
+         because every module today writes `bestOrder:` with the colon flush
+         against the name, which zero esses happens to match. That is the
+         quietest kind of broken: the first module formatted `bestOrder :`
+         would be falsely named as never setting the field, and a module
+         misspelling it `bestOrders:` would falsely satisfy the gate — the
+         exact divergence-goes-unread bug the field is on this list for.
+
+         The capture group takes everything up to the delimiter that ends a
+         property value, and readFieldLiteral() decides whether that token is
+         a value it can compare. A value it cannot read (an expression, a
+         string that runs past the comma) degrades that occurrence to the
+         presence check, never to a guess. */
       const FIELD_RE = {
-        bestKey: /[^A-Za-z0-9_$]bestKey\s*:/,
-        bestOrder: /[^A-Za-z0-9_$]bestOrders*:/,
-        tapAction: /[^A-Za-z0-9_$]tapAction\s*:/,
-        tapKey: /[^A-Za-z0-9_$]tapKey\s*:/,
+        bestKey: /[^A-Za-z0-9_$]bestKey\s*:\s*([^,\r\n}]*)/g,
+        bestOrder: /[^A-Za-z0-9_$]bestOrder\s*:\s*([^,\r\n}]*)/g,
+        tapAction: /[^A-Za-z0-9_$]tapAction\s*:\s*([^,\r\n}]*)/g,
+        tapKey: /[^A-Za-z0-9_$]tapKey\s*:\s*([^,\r\n}]*)/g,
       };
       const re = FIELD_RE[field];
-      if (!re.test(src)) {
+      const found = [];   // the literal values the module writes for this field
+      let occurrences = 0;
+      let m;
+      while ((m = re.exec(src)) !== null) {
+        occurrences += 1;
+        const lit = readFieldLiteral(m[1].trim());
+        if (lit) found.push(lit[0]);
+      }
+      if (occurrences === 0) {
         drift.push(g.slug + ': manifest sets ' + field + '=' + JSON.stringify(g[field]) +
                    ' but ' + g.script + ' never does — the manifest value is never read at runtime');
+      } else if (found.length === 0) {
+        /* Mentioned, but never as a readable literal — the value is computed,
+           so only its presence has been verified. Logged instead of silently
+           passing, so the deploy log never claims a comparison that did not
+           happen. */
+        mentionOnly += 1;
+        log('  NOTE  ' + g.slug + ': ' + field + ' in ' + g.script + ' is computed, not a ' +
+            'literal — the gate verified only that the module sets it, not the value');
+      } else if (found.indexOf(g[field]) === -1) {
+        /* ANY matching occurrence passes, rather than insisting on the first:
+           these field names also appear in comments quoting old code, and a
+           gate misled by a comment would send you to fix a module that is
+           right — the false alarm the FIELD_RE comment above warns about. */
+        drift.push(g.slug + ': manifest sets ' + field + '=' + JSON.stringify(g[field]) +
+                   ' but ' + g.script + ' writes ' +
+                   found.map((v) => JSON.stringify(v)).join(' / ') +
+                   ' — only the module is read at runtime, so the manifest is lying');
       }
     }
   }
   if (drift.length) {
     log('  FAILED:');
     drift.forEach((d) => log('    - ' + d));
-    throw new Error('games manifest gate: ' + drift.length + ' field(s) set only in the manifest');
+    throw new Error('games manifest gate: ' + drift.length + ' field(s) where manifest and module disagree');
   }
-  log('  ' + GAMES.length + ' games: runtime fields agree between manifest and module');
+  log('  ' + GAMES.length + ' games: runtime field values agree between manifest and module' +
+      (mentionOnly ? ' (' + mentionOnly + ' computed value(s) presence-checked only)' : ''));
 }
 
 /* --------------------------------------------------------------------------
@@ -1989,6 +2169,7 @@ function main() {
   doSitemapParity();
   doChromeParity();
   doSwPrecacheParity();
+  doGamesFreshness();
   doGamesManifestParity();
   doShareImages();
   doVendorPairing();

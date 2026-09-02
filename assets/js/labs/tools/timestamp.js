@@ -55,8 +55,14 @@
   function convert(value, epoch) {
     if (canBig && typeof value === 'bigint') {
       var ms = BigInt(epoch.base) + (value * BigInt(epoch.mul)) / BigInt(epoch.div);
-      // Outside this range Date is invalid anyway, and Number() would be lossy.
-      if (ms > 8640000000000000n || ms < -8640000000000000n) return new Date(NaN);
+      /* Outside this range Date is invalid anyway, and Number() would be
+         lossy. The bound is BigInt('...') rather than an 8640000000000000n
+         literal on purpose: a literal is a parse-time SyntaxError, so it would
+         kill this entire file in precisely the no-BigInt browsers the canBig
+         fallback exists for. The constructor call only ever executes on the
+         canBig path, which an old parser tolerates and never reaches. */
+      var limit = BigInt('8640000000000000');
+      if (ms > limit || ms < -limit) return new Date(NaN);
       return new Date(Number(ms));
     }
     return new Date(epoch.base + Number(value) * epoch.mul / epoch.div);
@@ -114,7 +120,12 @@
     var hour = (time >> 11) & 0x1f;
     var min = (time >> 5) & 0x3f;
     var sec = (time & 0x1f) * 2;
-    if (month < 1 || month > 12 || day < 1 || day > 31 || hour > 23) return null;
+    /* The minute field is 6 bits (up to 63) and the doubled second field
+       reaches 62, so both can encode times that do not exist — a value whose
+       low half says 12:61:60 is not a DOS timestamp any more than one whose
+       date half says month 14. Disqualify them the same way. */
+    if (month < 1 || month > 12 || day < 1 || day > 31 ||
+        hour > 23 || min > 59 || sec > 59) return null;
     return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0') +
            ' ' + String(hour).padStart(2, '0') + ':' + String(min).padStart(2, '0') +
            ':' + String(sec).padStart(2, '0');

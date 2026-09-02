@@ -285,11 +285,15 @@
                 would look.
               </p>
               <p>
-                The <strong>service-worker precache gate</strong> holds a hand-written file list equal to
+                The <strong>service-worker precache gate</strong> held a hand-written file list equal to
                 what the pages actually load. That list's own comment had already admitted the failure mode
                 before the gate existed &mdash; <em>&ldquo;if a page grows a new stylesheet or script, it
                 must be added here or offline quietly breaks&rdquo;</em> &mdash; which is a remarkable thing
-                to write down and then leave to discipline. The gate turns that sentence into a refusal.
+                to write down and then leave to discipline. The gate turned that sentence into a refusal.
+                The eventual fix went one step further: the content list was retired for caching pages as
+                a visitor opens them, which removes the failure mode rather than policing it, and the gate
+                now holds the one short list left &mdash; the offline page and its own files &mdash; equal
+                to what that page references.
               </p>
               <p>
                 The <strong>static chrome gate</strong> is the starkest of the three. Every page ships a full

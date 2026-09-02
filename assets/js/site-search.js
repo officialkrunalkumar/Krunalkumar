@@ -6,7 +6,9 @@
    this repository has been wrong at some point. The index
    lives at /assets/data/search-index.json, generated from the pages
    themselves, and is fetched once on first use — not on page load, because
-   most visits never search and ~80 KB on the wire is not worth spending on them.
+   most visits never search, and the index has grown to about a third of a MB
+   gzipped (roughly 1 MB raw) as of 2026-09. It only grows with the site, so
+   the case for lazy-loading gets stronger with every page added.
 
    Scoring, in descending weight: a hit in the title beats a hit in the
    description, which beats a hit in the body. Every word of the query has to
@@ -81,7 +83,6 @@
     lastFocused = document.activeElement;
     overlay.hidden = false;
     document.documentElement.style.overflow = 'hidden';
-    load();
     var i = $in();
     if (i) { i.value = ''; i.focus(); }
     var p = $panel();
@@ -94,6 +95,10 @@
     // Same reuse problem as the aria state above: without this the region
     // still holds the last session's count, which is read out on reopen.
     announce('');
+    // After the panel reset, not before: load() paints its "Loading…" line
+    // into the panel when the fetch actually starts, and clearing the panel
+    // afterwards would wipe that line while the network is still working.
+    load();
   }
 
   function close() {
@@ -159,15 +164,41 @@
   var lastQuery = '';
   var active = -1;
 
+  /* The index is a third of a MB gzipped, so on a slow connection the gap
+     between opening search and results being possible is seconds long. These
+     paint a single line into the panel while the fetch is in flight — dead
+     air in a dialog reads as broken. The line only exists between fetch start
+     and settle, so nothing else ever has to check for it: on success render()
+     owns the panel again, and on failure the line becomes the same
+     "Search index unavailable." message render() would show. */
+  function showLoading() {
+    var p = $panel();
+    if (!p) return;
+    var msg = document.createElement('p');
+    msg.className = 'site-search-none';
+    msg.id = 'site-search-loading';
+    msg.textContent = 'Loading the search index…';
+    p.innerHTML = '';
+    p.appendChild(msg);
+  }
+
+  function settleLoading(failed) {
+    var msg = document.getElementById('site-search-loading');
+    if (!msg) return;
+    if (failed) msg.textContent = 'Search index unavailable.';
+    else if (msg.parentNode) msg.parentNode.removeChild(msg);
+  }
+
   function load() {
     if (index) return Promise.resolve(index);
     if (loading) return loading;
+    showLoading();
     loading = fetch('/assets/data/search-index.json')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
       })
-      .then(function (d) { index = d.pages || []; return index; })
+      .then(function (d) { index = d.pages || []; settleLoading(false); return index; })
       .catch(function () {
         // Leave `index` null and drop the cached promise, so the NEXT attempt
         // refetches. Assigning [] here looked harmless but [] is truthy, so the
@@ -175,6 +206,7 @@
         // focusin, so a momentary blip is enough — into search being dead for
         // the rest of the page's life.
         loading = null;
+        settleLoading(true);
         return [];
       });
     return loading;
@@ -286,8 +318,12 @@
       a.href = r.page.u;
       a.id = HIT_ID + i;
       a.addEventListener('click', function () {
+        // Deliberately no parameters. The privacy page is the contract: it
+        // promises analytics learns only the NUMBER of results, never what
+        // was typed — and the destination someone chose is what they typed,
+        // one click removed. That a result was clicked is the whole report.
         if (typeof window.gtag === 'function') {
-          window.gtag('event', 'search_result_click', { destination: r.page.u });
+          window.gtag('event', 'search_result_click');
         }
       });
       a.className = 'site-search-hit';

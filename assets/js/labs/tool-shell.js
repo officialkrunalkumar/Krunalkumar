@@ -349,6 +349,20 @@
         try { localStorage.setItem(PREFIX + 'consent', 'yes'); } catch (err) {}
         el.setAttribute('data-consent', 'granted');
         setInert(false);
+        /* Agreeing hides the gate — and with it the button that held focus.
+           A hidden element cannot keep focus, so the browser silently dumps
+           it on <body>, and a keyboard or screen reader user has to tab back
+           through the whole page to reach the tool they just unlocked. Hand
+           focus to the tool's natural starting point instead: the main input
+           where the page has one, else the Run button. preventScroll because
+           the gate sat over the tool, so the viewport is already in the right
+           place; try/catch because old browsers throw on the options object
+           and a focus nicety must never break the unlock itself. */
+        var first = document.getElementById('tool-text') ||
+                    document.getElementById('tool-run');
+        if (first) {
+          try { first.focus({ preventScroll: true }); } catch (err) {}
+        }
       });
       no && no.addEventListener('click', function () { window.location.href = '/'; });
     },

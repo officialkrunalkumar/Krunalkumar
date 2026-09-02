@@ -76,8 +76,27 @@
       if (padding && padding.checked) headers['Add-Padding'] = 'true';
 
       return LabNet.request({ url: ENDPOINT + prefix, headers: headers, out: out })
-        .then(function (r) { return r.res.text(); })
-        .then(function (body) { report(body, suffix, password, !!(padding && padding.checked)); });
+        .then(function (r) {
+          /* The status check has to come before the body is parsed. report()
+             counts "hash:count" lines and treats zero matches as the green
+             NOT FOUND — so an HIBP error page, which contains no such lines,
+             would parse as a clean corpus miss and print an authoritative
+             all-clear for a password the check never actually ran against.
+             For a safety tool that is the worst possible failure mode, so a
+             non-2xx gets an error that says, unmistakably, that no check
+             happened. */
+          if (!r.res.ok) {
+            out.line('');
+            out.err('HTTP ' + r.res.status + ' — ' + VENDOR + ' did not answer the query.');
+            out.err('The check could NOT be completed. This is not "not found":');
+            out.err('the password was never compared against the breach corpus,');
+            out.err('so nothing can be concluded either way. Try again shortly.');
+            return;
+          }
+          return r.res.text().then(function (body) {
+            report(body, suffix, password, !!(padding && padding.checked));
+          });
+        });
     }).catch(function (err) {
       LabNet.explainFailure(out, err, VENDOR);
     });

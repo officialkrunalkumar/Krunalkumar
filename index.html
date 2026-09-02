@@ -42,11 +42,11 @@
          extraction does) received contradictory facts about one person and had to pick.
 
          Now every property that describes the PERSON rather than a page — description,
-         knowsAbout, alternateName, hasCredential, sameAs — is asserted here and nowhere else.
+         knowsAbout, alternateName, hasCredential — is asserted here and nowhere else.
          Other pages restate only identity (@id, name, url) and their own page-local facts, such
          as about.html's mainEntityOfPage. Properties still repeated elsewhere (jobTitle, image,
-         alumniOf) are byte-identical everywhere, so they merge to one value; if one of them ever
-         needs to differ per page, it belongs here instead, not in two versions.
+         alumniOf, sameAs) are byte-identical everywhere, so they merge to one value; if one of
+         them ever needs to differ per page, it belongs here instead, not in two versions.
 
          Adding a describing property to another page reintroduces the fault. Add it here. -->
     <script type="application/ld+json">
@@ -57,7 +57,7 @@
         "url": "https://krunalkumar.dpdns.org/",
         "name": "Krunalkumar Shah",
         "dateCreated": "2024-05-24T00:00:00+05:30",
-        "dateModified": "2026-08-19T00:00:00+05:30",
+        "dateModified": "2026-09-02T00:00:00+05:30",
         "mainEntity": {
           "@type": "Person",
           "@id": "https://krunalkumar.dpdns.org/#person",

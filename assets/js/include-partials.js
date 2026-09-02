@@ -97,6 +97,17 @@
         var template = document.createElement('template');
         template.innerHTML = html.trim();
         var element = template.content.querySelector(name);
+        // Finding the right element NAME is not proof this is our partial: a
+        // captive portal or rewriting proxy that answers 200 with its own page
+        // can perfectly well use a semantic <header> or <footer>, and swapping
+        // the site chrome for that markup is worse than leaving the static
+        // copy in place. So also demand a marker only our own partials carry —
+        // the .brand home link in header.html, the .footer-grid layout in
+        // footer.html — and treat its absence exactly like no element at all.
+        if (element &&
+            !element.querySelector(name === 'header' ? 'a.brand' : '.footer-grid')) {
+          element = null;
+        }
         if (element) {
           var selector = focusSelector(mount);
           mount.replaceWith(element);
@@ -104,8 +115,9 @@
             restoreFocus(element, selector);
           }
         } else {
-          // A 200 response with no matching element (captive portal, rewriting
-          // proxy) is a failure too — restore the static mobile nav.
+          // A 200 response with no matching element, or one missing our
+          // marker (captive portal, rewriting proxy) is a failure too —
+          // restore the static mobile nav.
           document.documentElement.classList.add('partials-failed');
         }
       })

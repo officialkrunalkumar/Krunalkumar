@@ -134,6 +134,7 @@
     rgba(255, 230, 189, 0.9) 0deg 2deg,
     transparent 2deg 11deg
   );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 55%);
   mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 55%);
   animation: b-rays-turn 240s linear infinite;
 }

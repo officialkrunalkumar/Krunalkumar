@@ -140,8 +140,9 @@ const HUB = {
       h: 'Because the same claim is being tested',
       p: 'Every lab on this site says the same thing: the work happens on your machine and nothing is sent ' +
         'anywhere. A game is a harder version of that promise, not an easier one &mdash; free games are the most ' +
-        'reliably ad-infested corner of the web, and the usual price is a tracker on every click. These have ' +
-        'no third-party script at all, which you can check in your own network tab.',
+        'reliably ad-infested corner of the web, and the usual price is a tracker on every click. The games ' +
+        'themselves are first-party and self-contained; the only third-party request is the same analytics ' +
+        'script every page on this site loads, and your own network tab will show you that and nothing else.',
     },
     {
       h: 'Because a browser is a real machine',
@@ -192,8 +193,9 @@ const HUB = {
     },
     {
       q: 'Is anything uploaded when I play?',
-      a: 'No. Nothing you do in a game leaves your browser. There is no score submission, no telemetry from the ' +
-        'games, and no third-party script on any of these pages.',
+      a: 'No. Nothing you do in a game leaves your browser. There is no score submission and no telemetry from ' +
+        'the games; the only third-party script on the page is the same analytics tag the rest of the site ' +
+        'loads, and it runs whether you play or not. Your network tab will show you exactly that.',
     },
   ],
 };
