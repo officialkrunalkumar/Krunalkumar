@@ -123,12 +123,11 @@ function isFile(p) {
    the rule is skipped and named at startup. Same stance as build.js, for the
    same reason: a confidently wrong local answer costs more than a missing one.
 
-   The policies go out verbatim, `upgrade-insecure-requests` included, even
-   though this server speaks http. That directive is defined to leave a
-   potentially-trustworthy URL alone, and http://localhost is potentially
-   trustworthy, so it is a no-op here rather than a hazard — and editing
-   directives out of a CSP is precisely how a dev server stops telling you
-   about the violation you are about to ship.
+    The policies go out verbatim except for `upgrade-insecure-requests` when
+    this plain-http server is used. A LAN IP is not treated like localhost by
+    every mobile browser, so that directive upgrades the page's own CSS and JS
+    to https:// where this server cannot answer. Production remains responsible
+    for the original policy; local HTTP must keep its same-origin assets HTTP.
    -------------------------------------------------------------------------- */
 const UNSUPPORTED = /[:{]|(^|[^.])\*/;
 const notes = [];
@@ -280,6 +279,11 @@ const server = http.createServer((req, res) => {
      https://krunalkumar.dpdns.org/nope-does-not-exist comes back 404 carrying
      the full set, so the security headers are not conditional on a hit. */
   const sent = headersFor(pathname);
+  if (sent['Content-Security-Policy']) {
+    sent['Content-Security-Policy'] = sent['Content-Security-Policy']
+      .replace(/;?\s*upgrade-insecure-requests\s*;?/i, ';')
+      .replace(/^\s*;|;\s*$/g, '');
+  }
 
   /* Redirects are the exception, and it is a measured one rather than a guess:
      both /linux and /about.html answer on the live site with a Location and

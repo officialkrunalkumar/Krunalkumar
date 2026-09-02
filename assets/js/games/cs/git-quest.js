@@ -360,6 +360,14 @@
         afterEl.textContent = value.slice(caret);
       }
 
+      function keepCaretAtEnd() {
+        if (!input) return;
+        var end = input.value.length;
+        if (input.selectionStart !== end || input.selectionEnd !== end) {
+          input.setSelectionRange(end, end);
+        }
+      }
+
       function paintMission() {
         var m = MISSIONS[mission];
         if (!kickEl) return;
@@ -1673,6 +1681,7 @@
       function focusInput() {
         if (!input) return;
         try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+        keepCaretAtEnd();
       }
 
       /* ---------------- DOM ---------------- */
@@ -1722,9 +1731,16 @@
         host.appendChild(input);
 
         input.addEventListener('keydown', onKey);
-        input.addEventListener('input', paintLine);
+        input.addEventListener('beforeinput', keepCaretAtEnd);
+        input.addEventListener('input', function () {
+          keepCaretAtEnd();
+          paintLine();
+        });
         input.addEventListener('keyup', paintLine);
-        input.addEventListener('click', paintLine);
+        input.addEventListener('click', function () {
+          keepCaretAtEnd();
+          paintLine();
+        });
 
         /* Click refocuses; a drag that selected something keeps its
            selection — hashes printed by log and reflog get copied and
