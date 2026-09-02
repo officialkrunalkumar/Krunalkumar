@@ -1155,7 +1155,29 @@
     // bottom of this block), back on when the window closes or she is opened,
     // and never removed under reduced motion.
     greet.hidden = true;
-    greet.innerHTML = '<span>Hi, I am </span>' +
+    // The salutation follows the VISITOR'S clock, not IST. The owner first
+    // asked for IST, but the visitors are global, and a greeting pinned to one
+    // timezone says "Good morning" to somebody reading at their 9pm — which
+    // lands as a bug, not a warmth. new Date().getHours() is the reader's own
+    // wall clock, the only clock a greeting can be right on.
+    //
+    // TWO LINES, and that is the owner's design, arrived at the honest way:
+    // "Good afternoon, I am Mayuri!" measured 301-333px on one line against
+    // the ~300px a 320px phone leaves, so a first pass shortened the words —
+    // and "Morning!" alone read clipped, like she was in a hurry. Splitting
+    // instead keeps the full salutation AND the classic hello, and the widest
+    // line is now "Hi, I am Mayuri!" (~141px), untouchable by any viewport.
+    // Late night (22:00-04:59) says "Up late?" — time-true where "Good
+    // evening" at 2am would be false, and warmer than dropping the line.
+    const hour = new Date().getHours();
+    let daypart = 'Up late?';
+    if (hour >= 5 && hour <= 11) daypart = 'Good morning';
+    else if (hour >= 12 && hour <= 16) daypart = 'Good afternoon';
+    else if (hour >= 17 && hour <= 21) daypart = 'Good evening';
+    // Only the salutation line varies. The .mayuri-name span is untouched on
+    // purpose: the ring and glow styling in main.css key off that class.
+    greet.innerHTML = '<span class="mayuri-daypart">' + daypart + '</span><br>' +
+      '<span>Hi, I am </span>' +
       '<span class="mayuri-name">Mayuri!</span>';
 
     // ---- the panel --------------------------------------------------------
@@ -1266,6 +1288,25 @@
     dock.addEventListener('animationend', () => {
       dock.classList.remove('is-cheering');
       dock.classList.remove('is-waving');
+    });
+
+    // A finished game run that set a new personal best. game-shell.js fires
+    // this document-level event and knows nothing about who listens — she
+    // reacts to the EVENT, not to the game, so the engine never learns the
+    // site chrome exists. The cheer is exactly the tap cheer above — remove,
+    // force a reflow, re-add — and the animationend handler above already
+    // takes the class off. Guards, belt-and-braces as everywhere else in
+    // this file: waHidden is the live dismissal flag (the ×, the `b`
+    // shortcut and sessionStorage all feed it), and with it set she is off
+    // screen with nobody to cheer at; prefersReducedMotion is re-checked at
+    // fire time like every other motion callback here, even though the CSS
+    // gates the hop keyframe too. The dock itself cannot be missing — it is
+    // built unconditionally a few lines up in this same closure.
+    document.addEventListener('ks:game-newbest', () => {
+      if (waHidden || prefersReducedMotion) return;
+      dock.classList.remove('is-cheering');
+      void dock.offsetWidth;            // restart the animation
+      dock.classList.add('is-cheering');
     });
 
     /* She looks around while she waits. Random intervals and random targets,

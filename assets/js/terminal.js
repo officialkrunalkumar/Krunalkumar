@@ -5,6 +5,11 @@
   var output = document.getElementById('output');
   var cmd = document.getElementById('cmd');
   var promptRow = document.querySelector('.prompt-row');
+  // scrollIntoView({block:'nearest'}) aligns the row's border-box exactly to
+  // the viewport edge, which left its last few pixels clipped under the fold.
+  // scroll-margin is the designed knob for that: 'nearest' now stops 28px
+  // early and the whole row plus a breath of space is visible.
+  if (promptRow) promptRow.style.scrollMarginBottom = '28px';
   var busy = false;
   var history = [];
   var historyIndex = -1;
@@ -18,7 +23,20 @@
   // who has scrolled up to reread the head of a long listing must be able to
   // stay there while more lines arrive below.
   function nearBottom() {
-    return document.documentElement.scrollHeight - window.scrollY - window.innerHeight < 160;
+    /* Distance to the LIVE EDGE — the prompt, or the newest line — not to the
+       document bottom. The old check measured against scrollHeight, and body
+       carries 40vh of bottom padding: the moment output first outgrew the
+       viewport, the reader was suddenly "40vh from the bottom", the 160px
+       stickiness threshold tripped, and following disarmed for the rest of
+       the session. Measuring where the newest content actually IS relative to
+       the viewport is immune to padding: within 160px below the fold (or on
+       screen) means the reader is riding the output; far below means they
+       scrolled up on purpose and must be left alone. */
+    var target = promptRow && promptRow.style.display !== 'none'
+      ? promptRow
+      : output.lastElementChild;
+    if (!target) return true;
+    return target.getBoundingClientRect().top < window.innerHeight + 160;
   }
 
   function print(html, cls) {
@@ -98,6 +116,8 @@
     print('  <span class="cyan">cat</span> &lt;file&gt;    read a file');
     print('  <span class="cyan">man forkbomb</span>  a warning label');
     print('  <span class="cyan">hack</span>          do the Hollywood thing');
+    print('  <span class="cyan">mayuri</span>        call the assistant over');
+    print('  <span class="cyan">magic</span>         the hidden touches, documented');
     print('  <span class="cyan">sudo</span> ...       try your luck');
     print('  <span class="cyan">clear</span>         wipe the screen');
     print('  <span class="cyan">exit</span>          back to the normal site');
@@ -137,7 +157,8 @@
   // Documents the background controls that live on every other page. Unlisted
   // in help, like forkbomb — the console hint on those pages points here, and
   // finding it is the point.
-  /* Unlisted, like forkbomb and magic. The page it points at is noindex and
+  /* Unlisted (magic graduated to the help list at the owner's request; this
+     one stays hidden). The page it points at is noindex and
      appears in no menu, so this command is the only door to it. */
   function cmdEinstein() {
     print('EINSTEIN(1)                    Unlisted Pages                   EINSTEIN(1)', 'dim');
@@ -187,6 +208,7 @@
     print('     included — and Mayuri, bottom right, dances along. She works');
     print('     here; staff dance at parties. Six more taps end it. Nothing is');
     print('     saved; the morning after is only ever a reload away.');
+    print('     She also answers to her name &mdash; typing <span class="cyan">mayuri</span> here summons her.');
     print('');
     print('     On <a href="/buddha">the still page</a>, press <span class="cyan">m</span>. The breath words —');
     print('     breathe in, breathe out — come out from under the figure and keep');
@@ -245,6 +267,235 @@
     print('');
     print('<span class="white">BUGS</span>');
     print('     Does not work here; no starfield to bother. Try <a href="/">the home page</a>.');
+  }
+
+  // --- mayuri, summoned -----------------------------------------------------
+  // Typing her name puts the site's assistant centre-stage, BIG. No chat —
+  // just her, a close ×, and a few behaviours: eyes that follow the pointer,
+  // a smile on tap, a glow on double tap, a dance on triple tap (or `d`).
+  //
+  // The artwork is deliberately NOT duplicated here. particle-bg.js owns the
+  // one canonical SVG and builds it into the corner dock; the stage clones
+  // that node, so any redraw of her face lands here for free. When there is
+  // no dock to clone — a page that never ran particle-bg.js, or partials that
+  // failed before the corner was built — she is simply "away": one graceful
+  // line instead of a broken overlay. (Dismissing her with the × does not
+  // remove the dock, only hides it, so a dismissed corner still clones fine.)
+  var mayuriStage = null;  // the open stage element, or null
+  var mayuriCleanups = []; // listener/timer removers, run on close
+
+  function closeMayuriStage() {
+    if (!mayuriStage) return;
+    // The terminal page is long-lived and she can be summoned again and
+    // again: every listener the stage added is removed with it, or a
+    // summon-close-summon loop would stack document-level handlers forever.
+    for (var i = 0; i < mayuriCleanups.length; i += 1) mayuriCleanups[i]();
+    mayuriCleanups = [];
+    if (mayuriStage.parentNode) mayuriStage.parentNode.removeChild(mayuriStage);
+    mayuriStage = null;
+  }
+
+  // Her styling lives in its own on-demand stylesheet, because this page
+  // deliberately never loads main.css. Injected once; the id is the guard.
+  function ensureMayuriCss() {
+    if (document.getElementById('mayuri-stage-css')) return;
+    var link = document.createElement('link');
+    link.id = 'mayuri-stage-css';
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/mayuri-stage.css';
+    document.head.appendChild(link);
+  }
+
+  function cmdMayuri() {
+    if (mayuriStage) {
+      print('She is already here. <span class="dim">(Escape or the &times; sends her back.)</span>');
+      return;
+    }
+    ensureMayuriCss();
+    // This page loads neither main.css nor particle-bg.js, so there is no
+    // corner dock to clone from. Her artwork is borrowed from /offline
+    // instead, which inlines her fully and is precached by the service
+    // worker — she is reachable even with the network gone, which is the
+    // right property for an assistant who claims to always be around.
+    var dockSvg = document.querySelector('.mayuri-dock .mayuri-avatar svg');
+    if (dockSvg) { buildMayuriStage(dockSvg); return; }
+    fetch('/offline').then(function (r) {
+      if (!r.ok) throw new Error('offline page unavailable');
+      return r.text();
+    }).then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var svg = doc.querySelector('svg.mayuri-face');
+      if (!svg) throw new Error('no avatar in offline page');
+      if (mayuriStage) return; // summoned twice while the fetch was in flight
+      buildMayuriStage(document.importNode(svg, true));
+    })['catch'](function () {
+      print('She seems to be away from her desk.', 'dim');
+    });
+  }
+
+  function buildMayuriStage(dockSvg) {
+    track('easter_egg_mayuri_summoned');
+    print('Calling her over&hellip; <span class="dim">tap her, tap her twice, tap her thrice. Escape sends her back;</span>');
+    print('<span class="dim">the prompt keeps working underneath her.</span>');
+
+    // The stage: a full-viewport fixed layer whose ROOT ignores the pointer
+    // (main.css) so the terminal keeps taking commands underneath; only her
+    // figure and the × accept clicks. She arrives waving (is-waving).
+    var stage = document.createElement('div');
+    stage.className = 'mayuri-stage is-waving';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'mayuri-stage-close';
+    closeBtn.setAttribute('aria-label', 'Send Mayuri back');
+    closeBtn.innerHTML = '&times;';
+
+    var figure = document.createElement('div');
+    figure.className = 'mayuri-stage-figure';
+    var svg = dockSvg.ownerDocument === document && dockSvg.parentNode
+      ? dockSvg.cloneNode(true)   // the live dock stays where it is
+      : dockSvg;                  // an imported/orphan node is ours already
+    // Tag the pupil parts of the RESTING eyes — the dark ellipses and their
+    // white catchlights — so the gaze can move just them. The brows and
+    // lashes are <path>s and deliberately not matched: eyes that follow are
+    // pupils travelling inside a still eye, not the whole feature sliding.
+    var pupilParts = svg.querySelectorAll('.mayuri-eyes ellipse, .mayuri-eyes circle');
+    for (var pi = 0; pi < pupilParts.length; pi += 1) {
+      pupilParts[pi].setAttribute('class', (pupilParts[pi].getAttribute('class') || '') + ' mayuri-pupil');
+    }
+    figure.appendChild(svg);
+
+    // Hover shows love: hearts drift up around her while the pointer rests
+    // on the figure. Class-driven so reduced-motion can still show a single
+    // still heart instead of the float.
+    // Hover makes her smile; the hearts moved to the single tap. The class
+    // holds while the pointer rests on her and lifts when it leaves.
+    var onEnter = function () { stage.classList.add('is-smiling'); };
+    var onLeave = function () { stage.classList.remove('is-smiling'); };
+    figure.addEventListener('mouseenter', onEnter);
+    figure.addEventListener('mouseleave', onLeave);
+    mayuriCleanups.push(function () {
+      figure.removeEventListener('mouseenter', onEnter);
+      figure.removeEventListener('mouseleave', onLeave);
+    });
+
+    stage.appendChild(closeBtn);
+    stage.appendChild(figure);
+    document.body.appendChild(stage);
+    mayuriStage = stage;
+
+    // The arrival wave is one-shot: the class rides out on animationend
+    // rather than a timer, so it ends exactly when the keyframes do (and a
+    // reduced-motion visitor, whose wave never runs, just keeps a class that
+    // styles nothing).
+    function onWaveEnd(event) {
+      if (event.animationName === 'mayuri-wave') stage.classList.remove('is-waving');
+    }
+    svg.addEventListener('animationend', onWaveEnd);
+    mayuriCleanups.push(function () { svg.removeEventListener('animationend', onWaveEnd); });
+
+    // EYES FOLLOW THE MOUSE. The offset is written as custom properties, not
+    // an inline transform: the blink animation owns the transform property
+    // while it plays and would flatten any inline value, so main.css gives
+    // the gaze lands on the PUPILS (children of the eyes group), so the
+    // blink's transform on the group and the pupils' own translate compose
+    // in the tree instead of fighting over one property. It is the same
+    // trick .mayuri-head plays with --look-x/--look-y. Cheap per move: one
+    // rect read on an already-throttled event, two var writes.
+    function onMove(event) {
+      var rect = svg.getBoundingClientRect();
+      var dx = event.clientX - (rect.left + rect.width / 2);
+      var dy = event.clientY - (rect.top + rect.height / 2);
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      // Clamped to a 2.5px radius — pupils barely travel — and eased in over
+      // the first ~100px so a cursor crossing her face does not snap them.
+      var r = Math.min(1.3, dist / 60);
+      svg.style.setProperty('--gaze-x', (dx / dist * r).toFixed(2) + 'px');
+      svg.style.setProperty('--gaze-y', (dy / dist * r).toFixed(2) + 'px');
+    }
+    // Back to centre when the pointer leaves the page — eyes pinned at a
+    // corner with nobody there read as her staring at the door.
+    function onLeave() {
+      svg.style.setProperty('--gaze-x', '0px');
+      svg.style.setProperty('--gaze-y', '0px');
+    }
+    document.addEventListener('mousemove', onMove);
+    document.documentElement.addEventListener('mouseleave', onLeave);
+    mayuriCleanups.push(function () {
+      document.removeEventListener('mousemove', onMove);
+      document.documentElement.removeEventListener('mouseleave', onLeave);
+    });
+
+    // TAPS. One timer collects a burst (each click within ~350ms of the last)
+    // and dispatches on the count when the burst ends: 1 → smile, 2 → glow
+    // toggle, 3+ → dance. Deferring the single-tap smile by that ~360ms
+    // window is exactly what keeps it out of the double-tap's way — a second
+    // click lands inside the window and grows the burst instead of smiling
+    // first and glowing after.
+    var tapCount = 0;
+    var tapTimer = null;
+    var smileTimer = null;
+    function onTap(event) {
+      // Do not let the click bubble to the body handler that refocuses the
+      // prompt: after playing with her, focus stays off the input, which is
+      // what makes the `d` shortcut below reachable at all.
+      event.stopPropagation();
+      // A double-click also runs the browser's text selection, and the SVG
+      // carries real <text> (the KS_ shirt mark) — she lit up blue like a
+      // paragraph. user-select:none in the CSS is the main guard; killing the
+      // multi-click default here is the belt for browsers that select anyway.
+      if (event.detail > 1 && event.preventDefault) event.preventDefault();
+      if (stage.classList.contains('is-dancing')) {
+        // A tap mid-dance stops the dance, immediately — making her wait out
+        // the burst window before obeying reads as being ignored.
+        stage.classList.remove('is-dancing');
+        tapCount = 0;
+        if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; }
+        return;
+      }
+      tapCount += 1;
+      if (tapTimer) clearTimeout(tapTimer);
+      tapTimer = setTimeout(function () {
+        var n = tapCount;
+        tapCount = 0;
+        tapTimer = null;
+        if (n === 1) {
+          // A burst of hearts for ~1.8s (the CSS float), then back to calm.
+          // Deferred by the burst window above so a double-tap never shows a
+          // stray heart before the glow.
+          stage.classList.add('is-loved');
+          if (smileTimer) clearTimeout(smileTimer);
+          smileTimer = setTimeout(function () { stage.classList.remove('is-loved'); }, 1800);
+        } else if (n === 2) {
+          // Persistent until double-tapped off.
+          stage.classList.toggle('is-glowing');
+        } else {
+          stage.classList.add('is-dancing');
+        }
+      }, 360);
+    }
+    figure.addEventListener('click', onTap);
+    mayuriCleanups.push(function () {
+      figure.removeEventListener('click', onTap);
+      if (tapTimer) clearTimeout(tapTimer);
+      if (smileTimer) clearTimeout(smileTimer);
+    });
+
+    // Escape closes from anywhere, even mid-command. `d` toggles the dance,
+    // but only when the key is NOT headed into the prompt — otherwise typing
+    // `date` would choreograph her on the first letter.
+    function onKey(event) {
+      if (event.key === 'Escape') { closeMayuriStage(); return; }
+      if ((event.key === 'd' || event.key === 'D') && event.target !== cmd) {
+        stage.classList.toggle('is-dancing');
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    mayuriCleanups.push(function () { document.removeEventListener('keydown', onKey); });
+
+    function onClose(event) { event.stopPropagation(); closeMayuriStage(); }
+    closeBtn.addEventListener('click', onClose);
+    mayuriCleanups.push(function () { closeBtn.removeEventListener('click', onClose); });
   }
 
   function cmdHack(done) {
@@ -325,6 +576,7 @@
     },
     magic: function (a, done) { cmdMagic(); done(); },
     einstein: function (a, done) { cmdEinstein(); done(); },
+    mayuri: function (a, done) { cmdMayuri(); done(); },
     forkbomb: function (a, done) { forkBomb(done); },
     hack: function (a, done) { cmdHack(done); },
     sudo: function (a, done) {
@@ -371,7 +623,7 @@
     if (input.replace(/\s+/g, '').indexOf(':(){:|:&};:') !== -1) {
       busy = true;
       promptRow.style.display = 'none';
-      forkBomb(function () { busy = false; promptRow.style.display = ''; cmd.focus({ preventScroll: !nearBottom() }); });
+      forkBomb(function () { busy = false; promptRow.style.display = ''; if (nearBottom()) promptRow.scrollIntoView({ block: 'nearest' }); cmd.focus({ preventScroll: true }); });
       return;
     }
 
@@ -392,12 +644,15 @@
     // No command may leave the terminal wedged: if a handler throws, put
     // the prompt back instead of stranding the hidden-busy state.
     try {
-      handler(arg, function () { busy = false; promptRow.style.display = ''; cmd.focus({ preventScroll: !nearBottom() }); });
+      handler(arg, function () { busy = false; promptRow.style.display = ''; if (nearBottom()) promptRow.scrollIntoView({ block: 'nearest' }); cmd.focus({ preventScroll: true }); });
     } catch (error) {
       busy = false;
       promptRow.style.display = '';
-      print('bash: ' + esc(name) + ': unexpected error', 'warn');
-      cmd.focus();
+      // focus() alone is a no-op here - the input never lost focus, the
+      // visitor just pressed Enter in it - so the restored prompt must be
+      // scrolled to explicitly, and focus told not to compete.
+      if (nearBottom()) promptRow.scrollIntoView({ block: 'nearest' });
+      cmd.focus({ preventScroll: true });
     }
   }
 

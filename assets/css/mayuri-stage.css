@@ -1,0 +1,308 @@
+/* ==========================================================================
+   mayuri-stage.css — Mayuri, summoned, on /terminal only.
+   --------------------------------------------------------------------------
+   Loaded on demand by terminal.js the first time somebody types `mayuri`.
+   This is a separate file, not a main.css section, because /terminal never
+   loads main.css by design (its own comment says so) — which means NOTHING
+   from main.css exists here: no tokens, no keyframes, no base face states.
+   Everything the stage needs is therefore self-contained below:
+     - literal token fallbacks on .mayuri-stage (with a light-theme override,
+       since boot.js still stamps data-theme on this page);
+     - private copies of the wave and dance keyframes (same names are safe:
+       no page loads both this file and main.css);
+     - the happy-face groups' hidden base state, which main.css normally
+       provides — without it BOTH faces render at once on the clone.
+   ========================================================================== */
+
+.mayuri-stage {
+  --deep-rgb: 2 6 23;
+  --accent-rgb: 125 211 252;
+  --stage-ink: #e6edf8;
+  --stage-sheet: 18 27 44;
+}
+
+:root[data-theme="light"] .mayuri-stage {
+  --deep-rgb: 203 216 232;
+  --accent-rgb: 2 132 199;
+  --stage-ink: #0f172a;
+  --stage-sheet: 245 248 252;
+}
+
+/* Without main.css, the clone's happy-face groups have no hidden base state
+   and both expressions paint at once. Same values the corner uses. */
+.mayuri-stage .mayuri-eyes-happy,
+.mayuri-stage .mayuri-mouth-happy {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.mayuri-stage .mayuri-eyes,
+.mayuri-stage .mayuri-mouth {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+@keyframes mayuri-wave {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-11deg); }
+  32%  { transform: rotate(9deg); }
+  49%  { transform: rotate(-8deg); }
+  66%  { transform: rotate(6deg); }
+  83%  { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes mayuri-dance {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  25%      { transform: rotate(0deg) translateY(-4px); }
+  50%      { transform: rotate(6deg) translateY(0); }
+  75%      { transform: rotate(0deg) translateY(-4px); }
+}
+
+/* --------------------------------------------------------------------------
+   Mayuri, summoned — the /terminal `mayuri` command
+   --------------------------------------------------------------------------
+   Typing her name in the hidden terminal puts her centre-stage, BIG. The SVG
+   is the dock's own, cloned by terminal.js rather than drawn a third time, so
+   every rule below rides on the same group names the corner uses
+   (.mayuri-eyes, .mayuri-head, the happy-face pair) and reuses the dock's
+   wave/dance keyframes verbatim. The stage is an overlay in name only: its
+   root ignores the pointer, so the terminal underneath keeps taking commands,
+   and only her figure and the × accept clicks.
+   -------------------------------------------------------------------------- */
+
+.mayuri-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 90; /* above the corner dock and back-to-top (both 40) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* the root must not eat the page — see above */
+  /* The glow's violet half. Her feather's blue-violet works on a dark
+     ground but washes out on white, so the light theme swaps in a deeper
+     note below; the keyframes re-resolve the var every frame, which is what
+     lets one set of glow keyframes serve both themes. */
+  --stage-violet: 139 92 246;
+}
+
+:root[data-theme="light"] .mayuri-stage {
+  --stage-violet: 109 40 217;
+}
+
+/* A soft radial dim, not a solid sheet: the terminal text must stay readable
+   at the edges while the middle recedes enough for her to pop. --deep-rgb is
+   defined in both themes — near-black in dark, a pale slate in light — so the
+   veil darkens a dark page and frosts a light one instead of vanishing. */
+.mayuri-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(closest-side at 50% 50%,
+    rgb(var(--deep-rgb) / 0.55),
+    rgb(var(--deep-rgb) / 0) 80%);
+}
+
+.mayuri-stage-figure {
+  /* She is a character, not copy. Without this a double-tap ran the browser's
+     word selection on the KS_ shirt <text> and she lit up like a paragraph. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  width: min(60vmin, 420px);
+  height: min(60vmin, 420px);
+  pointer-events: auto;
+  cursor: pointer;
+  /* A gentle idle bob so she never looks frozen between behaviours. It runs
+     on this box while wave/dance run on the SVG inside it, so the transforms
+     compose instead of overwriting each other. */
+  animation: mayuri-stage-bob 4.2s ease-in-out infinite;
+}
+
+/* The clone is the dock's svg (class .mayuri-face), but sizing by element
+   keeps the stage working even if that class ever changes. */
+.mayuri-stage-figure svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes mayuri-stage-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* The × — .whatsapp-float-close is corner-pinned and dock-sized, so the stage
+   grows its own, on the stage's top-right where every overlay keeps one. */
+.mayuri-stage-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--line-25);
+  border-radius: 999px;
+  background: var(--sheet-80);
+  color: var(--ink-3);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.mayuri-stage-close:hover,
+.mayuri-stage-close:focus-visible {
+  color: var(--ink);
+}
+
+/* Her gaze - on the PUPILS, per the owner: "her eyes follow mouse". The
+   blink animation owns the eyes GROUP's transform, and an animated property
+   ignores transitions - gaze writes there teleported on every mousemove. The
+   pupils are the group's children with their own transform, so gaze and blink
+   compose through the tree: lids squash the whole eye while the pupils inside
+   glide toward the cursor through an eased transition. terminal.js tags the
+   dark ellipses and catchlights .mayuri-pupil at clone time and writes
+   --gaze-x/--gaze-y on the svg; the vars inherit down. */
+.mayuri-stage .mayuri-pupil {
+  transform: translate(var(--gaze-x, 0px), var(--gaze-y, 0px));
+  transition: transform 0.16s ease-out;
+}
+
+.mayuri-stage .mayuri-eyes {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: mayuri-stage-blink 5.4s ease-in-out infinite;
+}
+
+@keyframes mayuri-stage-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 96.5%    { transform: scaleY(0.08); }
+}
+
+/* Tap → smile: the same two-drawing cross-fade the dock's is-cheering uses,
+   scoped to the stage (terminal.js holds the class for ~1.4s). The blink
+   pauses while the happy face is up, exactly as in the corner. The dance
+   borrows the face too — nobody dances with a resting expression. */
+.mayuri-stage.is-smiling .mayuri-eyes,
+.mayuri-stage.is-dancing .mayuri-eyes,
+.mayuri-stage.is-smiling .mayuri-mouth,
+.mayuri-stage.is-dancing .mayuri-mouth {
+  opacity: 0;
+  animation: none;
+}
+
+.mayuri-stage.is-smiling .mayuri-eyes-happy,
+.mayuri-stage.is-dancing .mayuri-eyes-happy,
+.mayuri-stage.is-smiling .mayuri-mouth-happy,
+.mayuri-stage.is-dancing .mayuri-mouth-happy {
+  opacity: 1;
+}
+
+/* Arrival wave and the dance, reusing the dock's keyframes. Dance is listed
+   after wave so it wins if a very fast triple-tap lands while she is still
+   waving. Same dance pivot as the dock: near the chin line, so the sway
+   reads from the body rather than the whole figure tipping over. */
+.mayuri-stage.is-waving .mayuri-face {
+  animation: mayuri-wave 1.5s ease-in-out;
+}
+
+.mayuri-stage.is-dancing .mayuri-face {
+  transform-origin: 50% 88%;
+  animation: mayuri-dance 0.62s ease-in-out infinite;
+}
+
+/* Double tap → glow, persistent until double-tapped off. Cyan from the
+   accent tokens (sky in dark, deep sea-blue in light, so it reads on both
+   grounds) over the violet var set on the stage. The base rule keeps a
+   STATIC glow and the animation only breathes the radius — which is what
+   lets reduced-motion stop the pulse and keep the state visible. The
+   animation list must restate the bob: the shorthand here replaces the
+   figure's base animation entirely. */
+.mayuri-stage.is-glowing .mayuri-stage-figure {
+  filter:
+    drop-shadow(0 0 18px rgb(var(--accent-rgb) / 0.65))
+    drop-shadow(0 0 46px rgb(var(--stage-violet) / 0.4));
+  animation:
+    mayuri-stage-bob 4.2s ease-in-out infinite,
+    mayuri-stage-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes mayuri-stage-glow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 14px rgb(var(--accent-rgb) / 0.55))
+      drop-shadow(0 0 36px rgb(var(--stage-violet) / 0.32));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 26px rgb(var(--accent-rgb) / 0.8))
+      drop-shadow(0 0 60px rgb(var(--stage-violet) / 0.5));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* She holds still: no bob, no wave, no dance, no pulsing glow. The gaze
+     stays — it only moves when the visitor moves — via the base transform on
+     .mayuri-stage .mayuri-eyes, which takes over from the stopped blink. The
+     glow keeps its static drop-shadow from the base is-glowing rule; the
+     swell was the motion, and the swell is what stops. This block repeats the
+     stage selectors at full specificity because the corner's reduced-motion
+     block above writes plain `.mayuri-eyes { animation: none }` — one class,
+     which the two-class stage rules would out-rank no matter the order. */
+  .mayuri-stage-figure,
+  .mayuri-stage.is-glowing .mayuri-stage-figure,
+  .mayuri-stage.is-waving .mayuri-face,
+  .mayuri-stage.is-dancing .mayuri-face,
+  .mayuri-stage .mayuri-eyes {
+    animation: none;
+  }
+  .mayuri-stage .mayuri-pupil { transition: none; }
+}
+
+/* Hover shows love. Two hearts on the figure's pseudo-elements, drifting up
+   on offset clocks so they never move as a pair; a third would need a child
+   element, and two reads as affection already. Hidden until .is-loved, which
+   terminal.js pulses for ~1.8s on a single tap (hover smiles instead). */
+.mayuri-stage-figure::before,
+.mayuri-stage-figure::after {
+  content: '❤';
+  position: absolute;
+  font-size: 1.6rem;
+  color: #f472b6;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0 10px rgb(244 114 182 / 0.6);
+}
+
+.mayuri-stage-figure::before { left: 12%; bottom: 55%; }
+.mayuri-stage-figure::after  { right: 10%; bottom: 62%; font-size: 1.15rem; }
+
+.mayuri-stage.is-loved .mayuri-stage-figure::before {
+  animation: mayuri-stage-heart 1.6s ease-out infinite;
+}
+.mayuri-stage.is-loved .mayuri-stage-figure::after {
+  animation: mayuri-stage-heart 1.6s ease-out 0.55s infinite;
+}
+
+/* Being loved also makes her smile — the same cross-fade the tap uses. */
+.mayuri-stage.is-loved .mayuri-eyes,
+.mayuri-stage.is-loved .mayuri-mouth { opacity: 0; }
+.mayuri-stage.is-loved .mayuri-eyes-happy,
+.mayuri-stage.is-loved .mayuri-mouth-happy { opacity: 1; }
+
+@keyframes mayuri-stage-heart {
+  0%   { opacity: 0; transform: translateY(0) scale(0.7); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-64px) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* One still heart, no float — affection without motion. */
+  .mayuri-stage.is-loved .mayuri-stage-figure::before {
+    animation: none;
+    opacity: 1;
+    transform: translateY(-18px);
+  }
+  .mayuri-stage.is-loved .mayuri-stage-figure::after { animation: none; opacity: 0; }
+}

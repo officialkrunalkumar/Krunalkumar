@@ -3136,6 +3136,16 @@ footer {
   }
 }
 
+/* The salutation line above the hello — smaller and quieter than the name,
+   so the bubble reads salutation -> hello -> name in rising emphasis. Same
+   ink and halo treatment as the rest of the greeting; only the scale differs. */
+.mayuri-daypart {
+  font-size: 0.84em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+}
+
 /* "Mayuri" only. The rest of the sentence keeps the flat colour and its own
    softer treatment, so the name is the thing your eye lands on. */
 .mayuri-name {
@@ -3382,6 +3392,13 @@ body.wa-dismissed .back-to-top {
   right: 1.2rem;
   bottom: 1.2rem;
 }
+
+/* Mayuri's centre-stage appearance for the /terminal `mayuri` command lives
+   in its own stylesheet, assets/css/mayuri-stage.css, loaded on demand by
+   terminal.js. It is NOT part of this file because /terminal deliberately
+   never loads main.css (the page has its own chromeless look) — the stage
+   sheet therefore carries its own token fallbacks and private copies of the
+   wave/dance keyframes. */
 
 /* Pause control for the animated particle background (WCAG 2.2.2) — injected
    by particle-bg.js. Lives in the bottom-left corner so it never collides with

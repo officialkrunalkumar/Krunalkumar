@@ -1540,6 +1540,28 @@
         /* The strip under the game shows the same number, so it has to
            move at the same moment the HUD cell does. */
         if (this._refreshDataStrip) this._refreshDataStrip();
+        /* Tell the page. 'ks:game-newbest' exists so the site chrome —
+           Mayuri, the corner assistant built by particle-bg.js — can react
+           to a new best without the game engine ever knowing she exists:
+           one-way, fire-and-forget, nothing here waits on a listener or
+           reads anything back, and a page with no listener loses nothing.
+           This file is ES5 and over() must never throw halfway through a
+           game-over, so the CustomEvent constructor (which old engines
+           reject as a plain function call) is tried first and the ancient
+           createEvent/initCustomEvent path is the fallback; if even that
+           fails, the best is already written above and only the cheer is
+           forfeited. */
+        try {
+          document.dispatchEvent(new CustomEvent('ks:game-newbest', {
+            detail: { slug: this.slug }
+          }));
+        } catch (e) {
+          try {
+            var bestEvt = document.createEvent('CustomEvent');
+            bestEvt.initCustomEvent('ks:game-newbest', false, false, { slug: this.slug });
+            document.dispatchEvent(bestEvt);
+          } catch (e2) { /* no CustomEvent support at all — see above */ }
+        }
       }
     }
 

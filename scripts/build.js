@@ -183,6 +183,7 @@ const CSS_FILES = [
      applied is not a rule, so it is enforced below by cssCoverage() rather
      than asked for here. This comment stays as the reason that gate exists. */
   'assets/css/games.css',
+  'assets/css/mayuri-stage.css',
 ];
 
 /* --------------------------------------------------------------------------
