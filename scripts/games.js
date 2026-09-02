@@ -101,7 +101,17 @@ function plain(s) {
    without it.
    -------------------------------------------------------------------------- */
 function readPartial(rel) {
+  /* CRLF is normalized away HERE, at the read, and this line is load-bearing.
+     These bytes are stamped verbatim into every generated page, and the
+     freshness gate compares those pages byte-for-byte against the committed
+     tree — so if a Windows checkout hands this function a CRLF partial, every
+     generated page differs from what a Linux builder generates and the deploy
+     fails on pages nobody edited. That is not hypothetical: it happened, from
+     a partial that had been checked out CRLF before the -text pins existed.
+     Normalizing at the single entry point makes the output identical on every
+     platform regardless of what the checkout looks like. */
   return fs.readFileSync(path.join(ROOT, 'partials', rel), 'utf8')
+    .replace(/\r\n/g, '\n')
     .replace(/^<!--[\s\S]*?-->\s*/, '');
 }
 

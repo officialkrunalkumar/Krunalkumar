@@ -1941,9 +1941,21 @@ function doGamesFreshness() {
   if (added || changed) {
     log('  FAILED:');
     out.trim().split('\n').filter(Boolean).forEach((l) => log('    ' + l));
+    /* Name the files in the THROWN message, not only in the log above it —
+       Vercel surfaces the exception text prominently and the log lines get
+       buried, and the one time this gate fired for real, the missing filename
+       cost the whole diagnosis. The likeliest cause when it fires on the
+       builder but not locally is line endings: the generator output depends on
+       partials bytes, and a CRLF checkout produced different pages than the
+       LF builder until readPartial() started normalizing. */
+    const stale = out.split('\n')
+      .filter((l) => /^\s*[~+]\s/.test(l))
+      .map((l) => l.trim())
+      .join(', ') || 'run games.js --check locally to list them';
     throw new Error('games freshness gate: committed games/ pages are behind the manifest (' +
-                    added + ' to add, ' + changed + ' to update) — run `node scripts/games.js` ' +
-                    'and commit before publishing');
+                    added + ' to add, ' + changed + ' to update): ' + stale +
+                    ' — run `node scripts/games.js` and commit before publishing. If this ' +
+                    'passes locally but fails here, suspect CRLF vs LF in the compared files.');
   }
   log('  ' + m[3] + ' committed pages match what scripts/games.js would generate');
 }

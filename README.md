@@ -818,6 +818,28 @@ check it against the specification by hand.
   move focus somewhere sensible first, or keyboard and screen-reader users silently fall to
   `<body>` and the single-letter shortcuts start eating their keystrokes. Grep `hadFocus` in
   `particle-bg.js` for the house pattern.
+- **Windows and Linux disagree about line endings, and the gates compare bytes.** This failed a
+  real deploy: a partial checked out with CRLF on Windows was stamped into a generated page, the
+  page was committed with those bytes, and the Linux builder — whose checkout was LF — generated
+  a different file and refused to publish. Three defences now exist, keep all three: generators
+  normalize `
+` at the read (`readPartial` in `scripts/games.js`), the byte-compared trees are
+  pinned `-text` in `.gitattributes`, and the committed files themselves are LF. If a gate ever
+  passes locally but fails on the builder, suspect line endings first.
+- **The working tree can lie to the gauntlet — verify the commit, not the checkout.** Local state
+  (editor line endings, uncommitted smudge, generated files made from local bytes) can make every
+  gate pass while the committed bytes fail on the builder. Before pushing anything that touches a
+  generator, a gate, `.gitattributes`, or `partials/`, run the checks in a clean worktree of the
+  exact commit:
+
+  ```bash
+  git worktree add /tmp/predeploy HEAD
+  cd /tmp/predeploy && npm run check && node scripts/games.js --check
+  cd - && git worktree remove /tmp/predeploy
+  ```
+
+  That is the builder's view of your commit. If it disagrees with your working tree, the working
+  tree is the one that is wrong.
 - **Documented decisions are load-bearing.** The long comments are not description, they are the
   reasons — several encode measurements ("this was tried, it failed like so"). If your change makes
   a nearby comment false, updating it is part of the change, and if a comment says a thing was
