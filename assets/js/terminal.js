@@ -184,8 +184,9 @@
     print('<span class="white">ELSEWHERE</span>');
     print('     Tap the portrait on <a href="/">the home page</a> six times, quickly.');
     print('     The name in the navbar becomes a dance floor — fire crackers');
-    print('     included. Six more taps end the party. Nothing is saved; the');
-    print('     morning after is only ever a reload away.');
+    print('     included — and Mayuri, bottom right, dances along. She works');
+    print('     here; staff dance at parties. Six more taps end it. Nothing is');
+    print('     saved; the morning after is only ever a reload away.');
     print('');
     print('     On <a href="/buddha">the still page</a>, press <span class="cyan">m</span>. The breath words —');
     print('     breathe in, breathe out — come out from under the figure and keep');

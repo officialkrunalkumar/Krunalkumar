@@ -2881,6 +2881,38 @@ footer {
   100% { transform: rotate(0deg); }
 }
 
+/* 🥚 Six taps on the homepage portrait put the wordmark into dance mode, and
+   Mayuri joins in — she is staff, and staff dance at parties. A sway from the
+   hips with a small bounce on the off-beats, looping for as long as the mode
+   is on; the class comes from particle-bg.js's setDancing alongside
+   brand-dancing. Her happy face rides along via the same cross-fade the tap
+   uses, because nobody dances with a resting face. */
+.mayuri-dock.is-dancing .mayuri-avatar {
+  transform-origin: 50% 88%;
+  animation: mayuri-dance 0.62s ease-in-out infinite;
+}
+
+.mayuri-dock.is-dancing .mayuri-eyes,
+.mayuri-dock.is-dancing .mayuri-mouth {
+  opacity: 0;
+}
+
+.mayuri-dock.is-dancing .mayuri-eyes-happy,
+.mayuri-dock.is-dancing .mayuri-mouth-happy {
+  opacity: 1;
+}
+
+/* Same 0.62s period as the hop, so a tap mid-dance changes the move without
+   changing the tempo. The pivot sits near her chin line (the avatar box is
+   mostly hair), which makes the sway read from the body rather than the whole
+   medallion tipping over. */
+@keyframes mayuri-dance {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  25%      { transform: rotate(0deg) translateY(-4px); }
+  50%      { transform: rotate(6deg) translateY(0); }
+  75%      { transform: rotate(0deg) translateY(-4px); }
+}
+
 @keyframes mayuri-hop {
   0%   { transform: translateY(0) scale(1, 1); }
   22%  { transform: translateY(2px) scale(1.1, 0.9); }
@@ -3337,6 +3369,7 @@ body.wa-dismissed .mayuri-wrap {
   .mayuri-mouth { animation: none; }
   .mayuri-dock.is-cheering .mayuri-avatar,
   .mayuri-dock.is-waving .mayuri-avatar,
+  .mayuri-dock.is-dancing .mayuri-avatar,
   .mayuri-dock.is-cheering::after { animation: none; }
   .mayuri-head { transition: none; }
   .mayuri-eyes, .mayuri-mouth,

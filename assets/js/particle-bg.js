@@ -1485,6 +1485,13 @@
       function setDancing(next) {
         dancing = next;
         brand.classList.toggle('brand-dancing', dancing);
+        // Mayuri dances too — queried at toggle time rather than captured,
+        // because her widget is built in a different closure and may have been
+        // dismissed (no dock, nothing to do). The egg is already skipped
+        // entirely under prefers-reduced-motion, and the CSS block guards the
+        // animation besides, so this needs no motion check of its own.
+        const mayuriDock = document.querySelector('.mayuri-dock');
+        if (mayuriDock) mayuriDock.classList.toggle('is-dancing', dancing);
         if (dancing) {
           // Random hue jumps, out of step with the CSS hue spin, so the colors
           // never settle into a predictable sweep.
