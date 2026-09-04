@@ -199,6 +199,64 @@
   opacity: 1;
 }
 
+/* ---- hurt, on the stage too ---------------------------------------------
+   The conduct record is site-wide, so the terminal's `mayuri` command has to
+   respect it: she was summoned centre-stage, full size, grinning and dancing
+   on command, by somebody the corner widget had refused to speak to. The
+   stage clones her artwork from /offline, which is why the sad and unhappy
+   groups had to be added there as well.
+
+   These come LAST and repeat the smiling and dancing selectors with the mood
+   class, so no tap can put a grin back on. terminal.js also declines to add
+   is-smiling or is-dancing at all while she is hurt, which is the real fix —
+   this is the belt to that braces. */
+.mayuri-stage .mayuri-eyes-sad,
+.mayuri-stage .mayuri-mouth-sad,
+.mayuri-stage .mayuri-eyes-unhappy,
+.mayuri-stage .mayuri-mouth-unhappy {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.mayuri-stage.is-sad .mayuri-eyes,
+.mayuri-stage.is-sad .mayuri-mouth,
+.mayuri-stage.is-sad .mayuri-eyes-happy,
+.mayuri-stage.is-sad .mayuri-mouth-happy,
+.mayuri-stage.is-sad.is-smiling .mayuri-eyes-happy,
+.mayuri-stage.is-sad.is-smiling .mayuri-mouth-happy,
+.mayuri-stage.is-sad.is-dancing .mayuri-eyes-happy,
+.mayuri-stage.is-sad.is-dancing .mayuri-mouth-happy,
+.mayuri-stage.is-unhappy .mayuri-eyes,
+.mayuri-stage.is-unhappy .mayuri-mouth,
+.mayuri-stage.is-unhappy .mayuri-eyes-happy,
+.mayuri-stage.is-unhappy .mayuri-mouth-happy,
+.mayuri-stage.is-unhappy.is-smiling .mayuri-eyes-happy,
+.mayuri-stage.is-unhappy.is-smiling .mayuri-mouth-happy {
+  opacity: 0;
+  animation: none;
+}
+
+.mayuri-stage.is-sad .mayuri-eyes-sad,
+.mayuri-stage.is-sad .mayuri-mouth-sad {
+  opacity: 1;
+}
+
+.mayuri-stage.is-unhappy:not(.is-sad) .mayuri-eyes-unhappy,
+.mayuri-stage.is-unhappy:not(.is-sad) .mayuri-mouth-unhappy {
+  opacity: 1;
+}
+
+/* She does not wave hello, glow or dance while hurt either. The wave is the
+   arrival flourish; arriving cheerfully for somebody who has not apologised
+   is the whole thing this is meant to prevent. */
+.mayuri-stage.is-sad .mayuri-face,
+.mayuri-stage.is-unhappy .mayuri-face,
+.mayuri-stage.is-sad.is-waving .mayuri-face,
+.mayuri-stage.is-unhappy.is-waving .mayuri-face,
+.mayuri-stage.is-sad.is-dancing .mayuri-face {
+  animation: none;
+}
+
 /* Arrival wave and the dance, reusing the dock's keyframes. Dance is listed
    after wave so it wins if a very fast triple-tap lands while she is still
    waving. Same dance pivot as the dock: near the chin line, so the sway

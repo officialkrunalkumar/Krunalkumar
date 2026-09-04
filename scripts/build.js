@@ -224,6 +224,13 @@ function cssCoverage() {
 const JS_FILES = [
   'assets/js/boot.js',
   'assets/js/particle-bg.js',
+  /* Mayuri's retrieval brain. Listed the day it was written, for the reason
+     the CSS list above spells out: a file missing from here is not merely
+     un-stripped, it also never goes through the parse-and-reparse check
+     below, so it is a file a bad edit could corrupt without the build
+     noticing. It is worth stripping on its own merits too — the reasoning in
+     it runs to about a third of the file. */
+  'assets/js/mayuri-chat.js',
 ];
 
 let totalBefore = 0;
@@ -793,6 +800,24 @@ function doSearchIndex() {
   // The return value carries the freshly computed page count, which is the
   // number the llms rewrite below wants — fresh in --check mode too, since
   // buildIndex always regenerates in memory and only gates the write.
+  return buildIndex({ check: CHECK, log: log });
+}
+
+/* --------------------------------------------------------------------------
+   3b. Mayuri's answer corpus
+   --------------------------------------------------------------------------
+   The same argument as the search index one step above: a committed artefact
+   generated from the pages will drift the moment somebody edits an FAQ, and
+   Mayuri's drift is worse than the search box's. A stale search index gives a
+   slightly wrong excerpt; a stale answer corpus has her state an old answer
+   as current, in a chat bubble, to somebody who asked. So it is rebuilt every
+   deploy, and mayuri-index.js throws rather than write a collapsed corpus —
+   an empty one would not error at runtime, it would just have her fall back
+   to "message my boss" for everything, which looks like a decision.
+   -------------------------------------------------------------------------- */
+function doMayuriIndex() {
+  log('');
+  const { buildIndex } = require('./mayuri-index.js');
   return buildIndex({ check: CHECK, log: log });
 }
 
@@ -2177,6 +2202,7 @@ function main() {
   doGeneratedPages();
   doSitemap();
   const index = doSearchIndex();
+  doMayuriIndex();
   doLlmsCounts(index);
   doJsonLd();
   doSitemapParity();

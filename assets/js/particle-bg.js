@@ -1070,6 +1070,49 @@
         '<path d="M30 43.6q2-1.5 4 0c-.4 1.7-1.4 2.4-2 2.4s-1.6-.7-2-2.4z" fill="#f19aa2"/>' +
         '<path d="M27.9 39.9h8.2" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>' +
       '</g>' +
+      /* The third face: hurt. Shown when somebody has been abusive and held
+         there until they apologise.
+
+         A full replacement group rather than an overlay, exactly like the happy
+         pair — drawing sad brows on top of the ordinary ones left two sets of
+         eyebrows fighting each other at 54px. What carries the expression is
+         the brow, not the mouth: the inner ends lift and the outer ends fall,
+         which is the one shape a face cannot make on purpose and everybody
+         reads instantly. The mouth is the warm arc inverted, and nothing else
+         changes — no tear, no colour shift. She is disappointed, not
+         devastated, and the restraint is what keeps it from reading as a
+         cartoon sulk. */
+      '<g class="mayuri-eyes-sad">' +
+        '<ellipse cx="26.9" cy="34.2" rx="2.45" ry="2.75" fill="#2e2036"/>' +
+        '<ellipse cx="37.1" cy="34.2" rx="2.45" ry="2.75" fill="#2e2036"/>' +
+        '<circle cx="27.6" cy="33.3" r="0.85" fill="#ffffff"/>' +
+        '<circle cx="37.8" cy="33.3" r="0.85" fill="#ffffff"/>' +
+        '<path d="M23.9 31.5q2.9 .1 5.8-1.9" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M40.1 31.5q-2.9 .1-5.8-1.9" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
+      '<g class="mayuri-mouth-sad">' +
+        '<path d="M28.9 42.6q3.1-2.9 6.2 0" stroke="#c4636a" stroke-width="1.7" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
+      /* And a fourth: unimpressed. Worn for the first warning, where "sad" is
+         too much — she has been spoken to rudely once and is telling you so,
+         not grieving about it.
+
+         The difference from the sad face is entirely in the brows, and it is
+         the opposite tilt: sad lifts the INNER ends, annoyance drops them. The
+         mouth is a flat line rather than a frown, because a level mouth reads
+         as withheld approval where a downturned one reads as hurt. Two shapes,
+         four pixels apart, and everybody reads them correctly. */
+      '<g class="mayuri-eyes-unhappy">' +
+        '<ellipse cx="26.9" cy="33.9" rx="2.5" ry="2.6" fill="#2e2036"/>' +
+        '<ellipse cx="37.1" cy="33.9" rx="2.5" ry="2.6" fill="#2e2036"/>' +
+        '<circle cx="27.6" cy="33.1" r="0.88" fill="#ffffff"/>' +
+        '<circle cx="37.8" cy="33.1" r="0.88" fill="#ffffff"/>' +
+        '<path d="M23.9 30.3q2.9 .2 5.8 1.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M40.1 30.3q-2.9 .2-5.8 1.5" stroke="#2e2036" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
+      '<g class="mayuri-mouth-unhappy">' +
+        '<path d="M29.1 41.6h5.8" stroke="#c4636a" stroke-width="1.7" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
       // A peacock feather in her hair: mayuri is the peahen, so the name and the
       // picture say the same thing.
       '<g transform="translate(47.5 18) rotate(22)">' +
@@ -1083,52 +1126,34 @@
     const WA_ICON =
       '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
 
-    // Where each answer goes. The lab and contact forms both compose a
-    // WhatsApp message on submit (see "WhatsApp forms" in the README), so
-    // every route here ends in the same inbox — the form just arrives with the
-    // context already filled in, which a cold "hello" does not.
-    // Four labels, nothing else. Each carried a line of explanation under it
-    // and together they turned a menu into a paragraph — by the time somebody
-    // has read four descriptions they could have clicked the right one twice.
-    // Where each goes is the label's job to say.
-    /* Never ?from=mayuri. That parameter already means something on the lab
+    /* Which report form this page belongs to, if any. This used to be the
+       backbone of a four-item route menu; the menu is gone and the fact is
+       not, because the chat's fallback still wants it — "report a bug" answered
+       on /labs/jwt should offer that lab's form, not a generic one.
+
+       Never ?from=mayuri. That parameter already means something on the lab
        report form — it names the LAB a report came from, and the form prints
        "Reporting from the <name> playground." — so inventing a value for
        attribution would have invented a playground that does not exist.
 
-       But on a lab or game page there IS a real slug to pass, and she takes it
-       from the page's OWN report button rather than parsing location.pathname.
-       That button is the page's own statement of which lab it is, written by
-       the generator and kept correct by it; a pathname parse would re-derive
-       the same fact independently and start disagreeing the day a URL and a
-       slug stop matching. Reading what the page already says cannot drift.
+       The slug comes from the page's OWN report button rather than from
+       parsing location.pathname. That button is the page's own statement of
+       which lab it is, written by the generator and kept correct by it; a
+       pathname parse would re-derive the same fact independently and start
+       disagreeing the day a URL and a slug stop matching. Reading what the
+       page already says cannot drift.
 
        Where there is no such button — the two hubs, a blog post, the home
-       page — the routes stay generic and the form simply opens unlabelled,
-       which is honest: she genuinely does not know which one you mean. */
+       page — this is empty and the fallback simply offers the person without
+       a form, which is honest: she genuinely does not know which one you mean. */
     const own = (() => {
       const a = document.querySelector('a[href*="#lab-feedback"][href*="from="]');
       return a ? a.getAttribute('href') : '';
     })();
     // Game pages carry the same link with &area=games; that is what tells the
-    // form to say "game" instead of "playground", and which of the two routes
-    // below is the one that actually knows where it is.
+    // form to say "game" instead of "playground", and it is what decides the
+    // wording of the report offer in the chat fallback.
     const ownIsGame = own.indexOf('area=games') !== -1;
-    const knowsLab = !!own && !ownIsGame;
-    const knowsGame = !!own && ownIsGame;
-
-    const ROUTES = [
-      {
-        label: knowsLab ? 'A question about this lab' : 'A question about a lab',
-        href: knowsLab ? own : '/labs#lab-feedback'
-      },
-      {
-        label: knowsGame ? 'Something about this game' : 'Something about a game',
-        href: knowsGame ? own : '/games#games-feedback'
-      },
-      { label: 'Internships and mentoring', href: '/internships' },
-      { label: 'Work, hiring, or anything else', href: '/contact#contact-form' }
-    ];
 
     const wrap = document.createElement('div');
     wrap.className = 'mayuri-wrap';
@@ -1188,29 +1213,55 @@
     panel.setAttribute('aria-label', 'Mayuri — how can I help');
     panel.hidden = true;
 
-    let routeHtml = '';
-    for (let i = 0; i < ROUTES.length; i++) {
-      routeHtml +=
-        '<a class="mayuri-route" href="' + ROUTES[i].href + '">' +
-          ROUTES[i].label +
-        '</a>';
-    }
+    /* TWO DOORS, not four routes. The four were a menu of forms — a question
+       about a lab, about a game, internships, everything else — and every one
+       of them ended in the same place: a form somebody else reads later. They
+       are kept below as the chat's own suggestions, where they are useful
+       precisely when she has failed, rather than being the whole offer.
 
+       What replaces them is a question and a person: ask me, or go straight to
+       him. The `own` slug logic above still earns its keep — the chat uses it
+       to route "report a bug in this lab" at the lab you are standing in. */
     panel.innerHTML =
       '<div class="mayuri-panel-head">' +
         '<span class="mayuri-avatar mayuri-avatar-lg">' + AVATAR + '</span>' +
         '<div>' +
           '<p class="mayuri-hello">Hi, I am Mayuri, personal assistant of Krunalkumar. ' +
             'I am here to help.</p>' +
-          '<p class="mayuri-sub">Pick what this is about and I will take you to the ' +
-            'right place. A real person answers.</p>' +
+          '<p class="mayuri-sub">Ask me about anything on this site. If I do not know, ' +
+            'I will hand you straight to him.</p>' +
         '</div>' +
         '<button class="mayuri-panel-close" type="button" aria-label="Close">&times;</button>' +
       '</div>' +
-      '<div class="mayuri-routes">' + routeHtml + '</div>' +
-      '<a class="mayuri-wa" href="' + WA_HREF + '" target="_blank" rel="noopener">' +
-        WA_ICON + '<span>Message my boss directly</span>' +
-      '</a>';
+      '<div class="mayuri-menu">' +
+        '<button class="mayuri-route mayuri-route-chat" type="button">' +
+          '<span class="mayuri-route-label">Chat with me</span>' +
+          /* Was a list of categories — labs, games, terms, what he does — which
+             read as a filing cabinet and, worse, as a limit on what she would
+             take. She will have a go at anything; the honest invitation is the
+             short one. */
+          '<span class="mayuri-route-note">Ask me anything</span>' +
+        '</button>' +
+        '<a class="mayuri-wa" href="' + WA_HREF + '" target="_blank" rel="noopener">' +
+          WA_ICON + '<span>Message my boss directly</span>' +
+        '</a>' +
+      '</div>' +
+      '<div class="mayuri-chat" hidden>' +
+        '<div class="mayuri-chat-bar">' +
+          '<button class="mayuri-chat-back" type="button">&larr; Back</button>' +
+          '<button class="mayuri-chat-reset" type="button">Start over</button>' +
+        '</div>' +
+        '<div class="mayuri-log" role="log" aria-live="polite" aria-atomic="false"></div>' +
+        '<form class="mayuri-form">' +
+          '<label class="sr-only" for="mayuri-input">Ask Mayuri a question</label>' +
+          '<input class="mayuri-input" id="mayuri-input" type="text" autocomplete="off" ' +
+            'placeholder="Ask me anything about this site…">' +
+          '<button class="mayuri-send" type="submit">Ask</button>' +
+        '</form>' +
+        '<a class="mayuri-chat-boss" href="' + WA_HREF + '" target="_blank" rel="noopener">' +
+          'Rather talk to a person? Message my boss directly' +
+        '</a>' +
+      '</div>';
 
     // ---- the button -------------------------------------------------------
     const button = document.createElement('button');
@@ -1243,6 +1294,10 @@
       // focus to <body>, so by the time the refocus decision below runs the
       // answer to "was focus in here?" would already be gone.
       const hadFocus = wrap.contains(document.activeElement);
+      /* Closing her cancels any pending redirect. Without this, asking to be
+         taken somewhere and then shutting the panel still moved the page a
+         couple of seconds later, with nothing on screen to explain why. */
+      if (!next) cancelNavTimers();
       open = next;
       panel.hidden = !open;
       wrap.classList.toggle('is-open', open);
@@ -1278,7 +1333,7 @@
     // the first hop then restarts it cleanly instead of doing nothing
     // because the class was still on.
     button.addEventListener('click', () => {
-      if (!prefersReducedMotion) {
+      if (!prefersReducedMotion && !dock.classList.contains('is-sad')) {
         dock.classList.remove('is-cheering');
         void dock.offsetWidth;            // restart the animation
         dock.classList.add('is-cheering');
@@ -1303,7 +1358,9 @@
     // gates the hop keyframe too. The dock itself cannot be missing — it is
     // built unconditionally a few lines up in this same closure.
     document.addEventListener('ks:game-newbest', () => {
-      if (waHidden || prefersReducedMotion) return;
+      /* Not while she is hurt. The CSS already refuses the grin and the hop,
+         but a cheer she cannot perform should not be started either. */
+      if (waHidden || prefersReducedMotion || dock.classList.contains('is-sad')) return;
       dock.classList.remove('is-cheering');
       void dock.offsetWidth;            // restart the animation
       dock.classList.add('is-cheering');
@@ -1334,14 +1391,487 @@
     }
     panel.querySelector('.mayuri-panel-close').addEventListener('click', () => setOpen(false));
 
+    /* ---- the chat ---------------------------------------------------------
+       The brain lives in assets/js/mayuri-chat.js and the corpus it reads is a
+       202 KB gzipped JSON. Neither is touched until somebody actually presses
+       "Chat with me" — the same rule site-search.js follows for its own index,
+       and the reason this feature costs nothing on a page nobody chats on.
+
+       Everything written into the log goes in as textContent. The corpus is
+       stripped of markup at build time and it is all Krunalkumar's own prose,
+       so this is belt and braces rather than a live risk — but a panel that
+       renders strings from a fetched file has no business using innerHTML, and
+       the day someone adds a field to the index is not the day to discover
+       that. */
+    const menuView = panel.querySelector('.mayuri-menu');
+    const chatView = panel.querySelector('.mayuri-chat');
+    const chatLog = panel.querySelector('.mayuri-log');
+    const chatForm = panel.querySelector('.mayuri-form');
+    const chatInput = panel.querySelector('.mayuri-input');
+    let brainState = 'idle';   // idle | loading | ready | failed
+
+    /* How long she waits before moving the page. Short enough not to feel like
+       a hang, long enough to read the line and press Cancel. One constant, so
+       it is one edit if it should be longer. */
+    const NAV_DELAY = 2500;
+    /* Pending redirects, cancelled when she is closed — see setOpen. */
+    const navTimers = [];
+    function cancelNavTimers() {
+      while (navTimers.length) clearTimeout(navTimers.pop());
+    }
+
+    function bubble(who, text) {
+      const row = document.createElement('div');
+      row.className = 'mayuri-msg is-' + who;
+      const body = document.createElement('p');
+      body.className = 'mayuri-msg-text';
+      body.textContent = text;
+      row.appendChild(body);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      return row;
+    }
+
+    function addLinks(row, links) {
+      if (!links || !links.length) return;
+      const bar = document.createElement('div');
+      bar.className = 'mayuri-msg-links';
+      links.forEach((l) => {
+        const a = document.createElement('a');
+        a.className = 'mayuri-msg-link';
+        a.href = l.href;
+        a.textContent = l.label;
+        bar.appendChild(a);
+      });
+      row.appendChild(bar);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    /* Suggested follow-ups. They are buttons rather than links because they
+       ask the next question here instead of navigating away — which is the
+       whole point of the glossary's cross-references being in the index. */
+    function addChips(row, chips) {
+      if (!chips || !chips.length) return;
+      const bar = document.createElement('div');
+      bar.className = 'mayuri-msg-chips';
+      chips.forEach((c) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mayuri-chip';
+        b.textContent = c;
+        b.addEventListener('click', () => { chatInput.value = c; submitQuestion(); });
+        bar.appendChild(b);
+      });
+      row.appendChild(bar);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    /* The fallback, and the reason the whole thing is honest. When she has
+       nothing, she says so and puts a person one tap away — she never
+       guesses. On a security consultant's site a confident wrong answer costs
+       more than an admission. */
+    function addBossOffer(row, label) {
+      const bar = document.createElement('div');
+      bar.className = 'mayuri-msg-links';
+      const a = document.createElement('a');
+      a.className = 'mayuri-msg-link is-boss';
+      a.href = WA_HREF;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = label || 'Message my boss directly';
+      bar.appendChild(a);
+      /* On a lab or game page the report form is a better destination than a
+         generic contact link, and `own` is the page's own statement of which
+         one it is — the same value the four old routes used. */
+      if (own) {
+        const r = document.createElement('a');
+        r.className = 'mayuri-msg-link';
+        r.href = own;
+        r.textContent = ownIsGame ? 'Report something about this game' : 'Report something about this lab';
+        bar.appendChild(r);
+      }
+      row.appendChild(bar);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    /* She thinks before she speaks.
+       ------------------------------------------------------------------------
+       Retrieval is effectively instant — a linear pass over 1,723 entries is
+       under a millisecond — and an answer that appears in the same frame as
+       the question reads as a lookup table rather than a reply. The pause is
+       not fake work; it is the beat that makes a conversation legible, and it
+       also stops a long answer from landing before the eye has left the input.
+
+       Scaled by answer length and clamped: a one-line definition should not
+       sit behind the same wait as a paragraph, and nothing should wait longer
+       than about a second. Under prefers-reduced-motion the dots do not bounce
+       — but the pause stays, because the pause is pacing, not animation, and a
+       reply with no indicator at all would look like a dropped message. */
+    function typeThen(textLen, done) {
+      const row = document.createElement('div');
+      row.className = 'mayuri-msg is-bot';
+      const bub = document.createElement('p');
+      bub.className = 'mayuri-msg-text mayuri-typing';
+      if (prefersReducedMotion) {
+        bub.classList.add('is-static');
+        bub.textContent = 'Typing…';
+      } else {
+        /* A static literal, never anything from the corpus. */
+        bub.innerHTML = '<i></i><i></i><i></i>';
+      }
+      /* Hidden from assistive tech: the answer itself lands in the same polite
+         live region a moment later, and announcing "typing" before every reply
+         is noise rather than information. */
+      row.setAttribute('aria-hidden', 'true');
+      row.appendChild(bub);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      const wait = Math.min(1150, Math.max(420, 320 + textLen * 5));
+      setTimeout(() => { row.remove(); done(); }, wait);
+    }
+
+    /* Locked. The input STAYS — that is the whole point, since an apology has
+       to be typeable — but the placeholder becomes the instruction and the
+       door on the menu is marked. Hiding the field would have made the
+       apology impossible and the lock permanent.
+
+       Session-scoped by construction: the engine's flag lives in a closure
+       that dies with the page, so a reload is a clean slate. Deliberate — see
+       the note on ABUSE in mayuri-chat.js for the trade being made.
+
+       The two doors get different treatment, and only one of them changes: the
+       route to a human is never taken away. Somebody who has been rude to an
+       assistant may still have a legitimate reason to reach Krunalkumar, and
+       that is his call to make, not this widget's. */
+    /* The face is its own state, separate from the lock, because the two do not
+       coincide: she is hurt from the FIRST warning, while the chat is still
+       open. Tying the expression to the lock left her smiling politely through
+       the warning, which made the warning look like a formality.
+
+       On the WRAP as well as the dock: she is drawn twice — the corner button
+       and the panel header — and the panel is a sibling of the dock, not a
+       child, so a dock-only class left the big face you are actually looking at
+       still smiling while she refused to talk. The dock keeps its own copy
+       because the animation kill and the dance guard are scoped to it. */
+    /* Three moods, one function, so the states cannot overlap: setting one
+       clears the others by construction rather than by remembering to.
+       'unhappy' is the first warning — spoken to rudely once and saying so —
+       and 'sad' is the lock. */
+    function setMood(mood) {
+      const sad = mood === 'sad';
+      const unhappy = mood === 'unhappy';
+      wrap.classList.toggle('is-sad', sad);
+      wrap.classList.toggle('is-unhappy', unhappy);
+      dock.classList.toggle('is-sad', sad);
+      dock.classList.toggle('is-unhappy', unhappy);
+      if (sad || unhappy) {
+        dock.classList.remove('is-cheering');
+        dock.classList.remove('is-waving');
+        dock.classList.remove('is-dancing');
+      }
+    }
+
+    function setLocked(on) {
+      const door = panel.querySelector('.mayuri-route-chat');
+      const note = panel.querySelector('.mayuri-route-note');
+      if (on) setMood('sad');
+      door.classList.toggle('is-locked', on);
+      /* aria-disabled, NOT the disabled attribute: a disabled button cannot be
+         clicked or focused, and clicking it is exactly how somebody gets back
+         to the field to apologise. It reads as unavailable and still works. */
+      door.setAttribute('aria-disabled', on ? 'true' : 'false');
+      note.textContent = on ? 'Apologise to carry on' : 'Ask me anything';
+      chatInput.placeholder = on
+        ? 'Type sorry here to continue chatting with me'
+        : 'Ask me anything about this site…';
+      panel.querySelector('.mayuri-chat-reset').hidden = on;
+    }
+
+    function answer(r) {
+      if (r.kind === 'empty') return;
+      if (r.kind === 'abuse' || r.kind === 'abuse-lock' || r.kind === 'locked') {
+        /* The warning sets the face without setting the lock — she is hurt but
+           still listening, which is what a warning means. */
+        if (r.sad === true) setMood(r.locked ? 'sad' : 'unhappy');
+        const row = bubble('bot', r.text);
+        if (r.locked) { setLocked(true); if (r.kind === 'abuse-lock') addBossOffer(row); }
+        return;
+      }
+      if (r.kind === 'forgiven') {
+        setLocked(false);
+        setMood('normal');
+        const row = bubble('bot', r.text);
+        addChips(row, r.chips);
+        return;
+      }
+      /* Said goodbye. She answers, then shows herself out — the pause is long
+         enough to read the line and short enough not to feel like a hang. The
+         conversation is discarded rather than parked, so opening her again is
+         a clean start: somebody who ended a conversation and comes back later
+         is starting a new one, and being handed yesterday's transcript is
+         both odd and a small privacy leak on a shared machine. */
+      if (r.kind === 'farewell') {
+        bubble('bot', r.text);
+        setTimeout(() => {
+          setOpen(false);
+          chatLog.textContent = '';
+          chatStarted = false;
+          leaveChat();
+          if (window.MayuriChat) window.MayuriChat.reset();
+        }, 1900);
+        return;
+      }
+      /* Asked to be taken somewhere, so go — she does not hand over a button
+         and wait to be pressed. The pause is long enough to read the sentence
+         and to change your mind, and Cancel is there because a chat window
+         that moves the page out from under you with no way to stop it is a
+         trap, not a convenience.
+
+         location.assign rather than replace: the back button must still work,
+         or she has quietly eaten the visitor's history. */
+      if (r.kind === 'navigate' && r.url) {
+        const row = bubble('bot', r.text);
+        const bar = document.createElement('div');
+        bar.className = 'mayuri-msg-links';
+        const stay = document.createElement('button');
+        stay.type = 'button';
+        stay.className = 'mayuri-chip';
+        stay.textContent = 'Cancel, stay here';
+        const now = document.createElement('a');
+        now.className = 'mayuri-msg-link';
+        now.href = r.url;
+        now.textContent = 'Go now';
+        bar.appendChild(now);
+        bar.appendChild(stay);
+        row.appendChild(bar);
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        const trip = setTimeout(() => { window.location.assign(r.url); }, NAV_DELAY);
+        stay.addEventListener('click', () => {
+          clearTimeout(trip);
+          stay.disabled = true;
+          stay.textContent = 'Staying here';
+          bubble('bot', 'Of course — we will stay. What else can I help with?');
+        });
+        /* Closing her is also a change of mind: a timer that fires after the
+           panel is gone would move the page for no visible reason. */
+        navTimers.push(trip);
+        return;
+      }
+      if (r.confident) {
+        const row = bubble('bot', (r.title ? r.title + ' — ' : '') + r.text);
+        addLinks(row, r.links);
+        if (r.offerBoss) addBossOffer(row, 'Ask Krunalkumar directly');
+        addChips(row, r.chips);
+        return;
+      }
+      /* Two shades of "no", because they are different situations and telling
+         them apart is most of being useful: "close, but I am not sure" still
+         has pages worth offering, while "I genuinely do not have this" should
+         not pretend otherwise. Both end at the same place — a person — because
+         that is the honest end of a retrieval system's competence.
+
+         NEITHER MENTIONS HOW SHE WORKS. These used to say the question was
+         "outside what Krunalkumar has written here", which is true and is also
+         not how an assistant talks: it explains her own machinery to somebody
+         who asked about a subject, and it quietly blames the boss for not
+         having written enough. An assistant says she does not have the
+         information and fetches someone who does. */
+      const row = bubble('bot',
+        r.kind === 'weak'
+          ? 'I am not sure I have the right answer for that. These are the closest things I can find — ' +
+            'or I can pass you to my boss and you can ask him directly.'
+          : 'I do not have this information, sorry. Let me redirect you to my boss — ' +
+            'you can ask him directly and he will know.');
+      addLinks(row, r.links);
+      addBossOffer(row);
+    }
+
+    /* Ask, then show the answer after the pause. The lookup happens first and
+       the result is held — computing it after the timer would make the wait a
+       floor on top of the work rather than the whole of it, and would leave
+       the door open to a slow frame landing the reply late. */
+    function answerAfterPause(r) {
+      if (r.kind === 'empty') return;
+      typeThen(String(r.text || '').length, () => answer(r));
+    }
+
+    function submitQuestion() {
+      const q = chatInput.value.trim();
+      if (!q) return;
+      bubble('me', q);
+      chatInput.value = '';
+      if (brainState === 'ready') { answerAfterPause(window.MayuriChat.ask(q)); return; }
+      if (brainState === 'failed') {
+        typeThen(90, () => {
+          const row = bubble('bot', 'I could not load what I know — the connection dropped. Krunalkumar is still reachable.');
+          addBossOffer(row);
+        });
+        return;
+      }
+      /* Asked while the corpus is still downloading: hold the question and
+         answer it the moment the index lands, rather than dropping it or
+         making them ask twice. */
+      const waiting = bubble('bot', 'One moment — reading what I know…');
+      loadBrain().then(() => {
+        waiting.remove();
+        /* No second pause here: the corpus download was the wait, and adding
+           the conversational beat on top of it would read as a stall. */
+        answer(window.MayuriChat.ask(q));
+      }).catch(() => {
+        waiting.remove();
+        const row = bubble('bot', 'I could not load what I know. Krunalkumar is still reachable.');
+        addBossOffer(row);
+      });
+    }
+
+    let brainPromise = null;
+    function loadBrain() {
+      if (brainPromise) return brainPromise;
+      brainState = 'loading';
+      brainPromise = new Promise((resolve, reject) => {
+        if (window.MayuriChat) { resolve(); return; }
+        const s = document.createElement('script');
+        s.src = '/assets/js/mayuri-chat.js';
+        s.onload = () => (window.MayuriChat ? resolve() : reject(new Error('no MayuriChat')));
+        s.onerror = () => reject(new Error('script failed'));
+        document.head.appendChild(s);
+      })
+        .then(() => window.MayuriChat.load())
+        .then(() => { brainState = 'ready'; })
+        .catch((e) => {
+          brainState = 'failed';
+          /* Cleared so a later question retries instead of inheriting a
+             rejected promise for the rest of the visit. */
+          brainPromise = null;
+          throw e;
+        });
+      return brainPromise;
+    }
+
+    /* Two bubbles, not one. The warm line and the offer of help are what a
+       person says first; the caveat about where her answers come from is
+       useful but it is not a greeting, and bolting it onto "good afternoon"
+       made the opening read as terms and conditions. So she says hello, and
+       the small print sits underneath in its own quieter line.
+
+       The time of day comes from MayuriChat when it has loaded — which it
+       usually has not yet, since the corpus download starts in the same
+       breath — so there is a local copy of the same rule for the first paint.
+       Same four bands; if you change one, change both. */
+    function localDaypart() {
+      const h = new Date().getHours();
+      if (h < 5) return 'Hello';
+      if (h < 12) return 'Good morning';
+      if (h < 17) return 'Good afternoon';
+      if (h < 22) return 'Good evening';
+      return 'Hello';
+    }
+
+    function greetInChat() {
+      const hello = (window.MayuriChat && window.MayuriChat.greeting)
+        ? window.MayuriChat.greeting()
+        : localDaypart() + '! I am Mayuri, Krunalkumar’s assistant. How can I help you today?';
+      bubble('bot', hello);
+      const row = bubble('bot',
+        'Ask me about his work, the labs and games, or anything on this site. ' +
+        'If I do not have the answer, I will pass you straight to him.');
+      addChips(row, ['What is a fork bomb?', 'Do you offer internships?', 'What does Krunalkumar do?']);
+    }
+
+    let chatStarted = false;
+    function enterChat() {
+      menuView.hidden = true;
+      chatView.hidden = false;
+      panel.classList.add('is-chatting');
+      if (!chatStarted) {
+        chatStarted = true;
+        /* Opening for the first time with an offence already on record — a
+           previous visit, closed without apologising. She does not pretend it
+           did not happen and she does not re-greet warmly; she says where
+           things stand and what clears it. */
+        if (panel.querySelector('.mayuri-route-chat').classList.contains('is-locked')) {
+          bubble('bot',
+            'Hello again. You were abusive to me last time, so I am not able to chat. ' +
+            'Say sorry and we can carry on.');
+        } else {
+          greetInChat();
+        }
+        loadBrain().catch(() => {});
+      } else if (window.MayuriChat && window.MayuriChat.isLocked && window.MayuriChat.isLocked()) {
+        /* Came back through a locked door mid-visit. Say the one thing there is
+           to say rather than re-greeting as though nothing happened. */
+        bubble('bot', 'Type sorry here to continue chatting with me.');
+      }
+      /* Focus the field, not the panel: unlike the old menu — where landing on
+         a route made it look chosen — the only thing to do here IS type. */
+      chatInput.focus();
+    }
+
+    /* Back keeps the conversation and returns to the two doors; Start over
+       throws the conversation away. Two controls because they are two
+       different wishes — "I actually wanted the other button" and "forget all
+       that, let me begin again" — and one control doing both would silently
+       destroy a conversation somebody only meant to step out of. */
+    function leaveChat() {
+      chatView.hidden = true;
+      menuView.hidden = false;
+      panel.classList.remove('is-chatting');
+      panel.querySelector('.mayuri-route-chat').focus();
+    }
+
+    function startOver() {
+      chatLog.textContent = '';
+      chatInput.value = '';
+      /* The engine's one-slot topic memory has to go too, or the first
+         question after a reset could still be resolved against the topic of
+         the conversation that was just discarded. */
+      if (window.MayuriChat) window.MayuriChat.reset();
+      greetInChat();
+      chatInput.focus();
+    }
+
+    panel.querySelector('.mayuri-route-chat').addEventListener('click', enterChat);
+    panel.querySelector('.mayuri-chat-back').addEventListener('click', leaveChat);
+    panel.querySelector('.mayuri-chat-reset').addEventListener('click', startOver);
+
+    /* The conduct record is read HERE as well as in mayuri-chat.js, and the
+       duplicated key name is deliberate. The brain is not loaded until
+       somebody presses "Chat with me", so asking it would mean she looked
+       perfectly cheerful on arrival and only remembered being sworn at once
+       the chat opened — which is the wrong way round. This costs one
+       localStorage read on page load and lets the face be right immediately.
+
+       'mayuriConduct' must match CONDUCT_KEY in mayuri-chat.js. That file owns
+       the rule and the writing; this is a read-only glance so the corner looks
+       correct before the rule has loaded. */
+    (function () {
+      let recorded = null;
+      try { recorded = localStorage.getItem('mayuriConduct'); } catch (e) { recorded = null; }
+      const n = parseInt(recorded, 10);
+      if (isFinite(n) && n > 0) setLocked(true);
+    })();
+    chatForm.addEventListener('submit', (e) => { e.preventDefault(); submitQuestion(); });
+
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && open) setOpen(false);
     });
 
-    // Click-away. Checked against the whole wrap so a click on the button or
-    // inside the panel does not immediately close what it just opened.
+    /* Click-away, and NOT while a conversation is open. Checked against the
+       whole wrap so a click on the button or inside the panel does not
+       immediately close what it just opened.
+
+       A menu should close when you click past it — that is what a menu is. A
+       conversation should not: half a typed question and three answers worth
+       reading are destroyed by one stray click on the page behind, and the
+       page behind is full of things worth clicking. So the click-away holds
+       for the two-door menu and stops applying the moment the chat is open,
+       which leaves the × as the way out — plus Escape, which stays because it
+       is a deliberate keypress rather than a slip, and because a dialog that
+       swallows Escape is a dialog a keyboard cannot leave. */
     document.addEventListener('click', (event) => {
-      if (open && !wrap.contains(event.target)) setOpen(false);
+      if (!open || panel.classList.contains('is-chatting')) return;
+      if (!wrap.contains(event.target)) setOpen(false);
     });
 
     // ---- dismissal, unchanged from the bubble this replaced ---------------
@@ -1412,7 +1942,15 @@
           // prefersReducedMotion is re-checked at fire time: the OS switch can
           // flip during the 1.6s delay, and a greeting that slides in is
           // exactly what it forbids.
+          //
+          // And no cheery hello for somebody who left without apologising.
+          // "Hi, I am Mayuri!" waving in beside a sad face, from a character
+          // who will refuse to speak the moment she is asked anything, is the
+          // worst of both — she is either upset or she is not. Sad face,
+          // nothing else. Re-read here rather than captured because the class
+          // can be cleared by an apology inside this same 1.6s window.
           if (waHidden || open || prefersReducedMotion) return;
+          if (wrap.classList.contains('is-sad')) return;
           dock.classList.add('is-waving');
           // Unhide BEFORE the visible class goes on: the role=status live
           // region announces content that appears inside it, and content
@@ -1522,7 +2060,17 @@
         // entirely under prefers-reduced-motion, and the CSS block guards the
         // animation besides, so this needs no motion check of its own.
         const mayuriDock = document.querySelector('.mayuri-dock');
-        if (mayuriDock) mayuriDock.classList.toggle('is-dancing', dancing);
+        /* She sits this one out if she has been abused. The masthead egg still
+           fires — the keylines and the cursor are the wordmark's business, not
+           hers — but she takes no part in it: dancing while refusing to speak
+           to somebody would read as not having minded. The class is withheld
+           rather than only styled away so nothing else keyed to is-dancing can
+           bring her along either. */
+        if (mayuriDock && !mayuriDock.classList.contains('is-sad')) {
+          mayuriDock.classList.toggle('is-dancing', dancing);
+        } else if (mayuriDock) {
+          mayuriDock.classList.remove('is-dancing');
+        }
         if (dancing && !reported) {
           reported = true;
           if (typeof gtag === 'function') gtag('event', 'easter_egg_dance');

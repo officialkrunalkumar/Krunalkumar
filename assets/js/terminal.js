@@ -333,16 +333,49 @@
     });
   }
 
+  /* Her mood is site-wide, and this page has to honour it.
+     --------------------------------------------------------------------------
+     The corner assistant records abuse in localStorage under 'mayuriConduct'
+     (see the note on CONDUCT_KEY in assets/js/mayuri-chat.js) and refuses to
+     chat until an apology clears it. This page never loads that script, so
+     without this she could be told to get lost in the corner of one tab and
+     then summoned here, centre-stage and full size, to grin and dance on
+     command for the same person. The record is read directly — one
+     localStorage glance, no dependency on a script this page does not want.
+
+     'mayuriConduct' must match CONDUCT_KEY in mayuri-chat.js. That file owns
+     the writing; this is a read.
+
+     1 is a warning and 2 or more is a lock, matching the corner: unhappy for
+     the first, hurt for the second. */
+  function mayuriMood() {
+    var raw = null;
+    try { raw = localStorage.getItem('mayuriConduct'); } catch (e) { return ''; }
+    var n = parseInt(raw, 10);
+    if (!isFinite(n) || n < 1) return '';
+    return n >= 2 ? 'is-sad' : 'is-unhappy';
+  }
+
   function buildMayuriStage(dockSvg) {
     track('easter_egg_mayuri_summoned');
-    print('Calling her over&hellip; <span class="dim">tap her, tap her twice, tap her thrice. Escape sends her back;</span>');
-    print('<span class="dim">the prompt keeps working underneath her.</span>');
+    var mood = mayuriMood();
+    if (mood) {
+      // No invitation to play, and no arrival wave. The line says why she is
+      // like this, because a sad figure appearing with no explanation reads as
+      // a rendering fault rather than a consequence.
+      print('She comes over, but she will not look at you.', 'dim');
+      print('<span class="dim">You were rude to her. Apologise in the chat on any other page and she will cheer up.</span>');
+    } else {
+      print('Calling her over&hellip; <span class="dim">tap her, tap her twice, tap her thrice. Escape sends her back;</span>');
+      print('<span class="dim">the prompt keeps working underneath her.</span>');
+    }
 
     // The stage: a full-viewport fixed layer whose ROOT ignores the pointer
     // (main.css) so the terminal keeps taking commands underneath; only her
-    // figure and the × accept clicks. She arrives waving (is-waving).
+    // figure and the × accept clicks. She arrives waving (is-waving) — unless
+    // she is hurt, in which case she arrives and just stands there.
     var stage = document.createElement('div');
-    stage.className = 'mayuri-stage is-waving';
+    stage.className = 'mayuri-stage' + (mood ? ' ' + mood : ' is-waving');
 
     var closeBtn = document.createElement('button');
     closeBtn.type = 'button';
@@ -370,7 +403,8 @@
     // still heart instead of the float.
     // Hover makes her smile; the hearts moved to the single tap. The class
     // holds while the pointer rests on her and lifts when it leaves.
-    var onEnter = function () { stage.classList.add('is-smiling'); };
+    // No smile for a hover either, while she is hurt.
+    var onEnter = function () { if (!mood) stage.classList.add('is-smiling'); };
     var onLeave = function () { stage.classList.remove('is-smiling'); };
     figure.addEventListener('mouseenter', onEnter);
     figure.addEventListener('mouseleave', onLeave);
@@ -445,6 +479,11 @@
       // paragraph. user-select:none in the CSS is the main guard; killing the
       // multi-click default here is the belt for browsers that select anyway.
       if (event.detail > 1 && event.preventDefault) event.preventDefault();
+      // Hearts, a glow and a dance are all affection, and none of it is
+      // available to somebody who has not apologised. Refused at the source
+      // rather than only styled away, so no class she is not entitled to is
+      // ever set on her.
+      if (mood) return;
       if (stage.classList.contains('is-dancing')) {
         // A tap mid-dance stops the dance, immediately — making her wait out
         // the burst window before obeying reads as being ignored.
@@ -486,7 +525,11 @@
     // `date` would choreograph her on the first letter.
     function onKey(event) {
       if (event.key === 'Escape') { closeMayuriStage(); return; }
-      if ((event.key === 'd' || event.key === 'D') && event.target !== cmd) {
+      // The dance shortcut is refused for the same reason the taps are: she
+      // does not perform for somebody who has not apologised. The CSS also
+      // kills the keyframes while she is hurt, but a class she is not
+      // entitled to should never be set in the first place.
+      if ((event.key === 'd' || event.key === 'D') && event.target !== cmd && !mood) {
         stage.classList.toggle('is-dancing');
       }
     }

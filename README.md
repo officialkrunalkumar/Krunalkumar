@@ -310,11 +310,190 @@ the step above and clips. Put breakpoints between common device widths, not on t
 
 
 **Mayuri** is the assistant in the bottom-right corner, built in `particle-bg.js` where the plain
-WhatsApp bubble used to be. She is a **signpost, not a chatbot**, and the copy is written to
-promise exactly that: four routes to the right form, plus a real WhatsApp conversation. Nothing
-answers a question. She reuses `.whatsapp-float-close` and `body.wa-dismissed` unchanged, so the ×,
-the `w` shortcut and back-to-top reclaiming the corner all behave as before, and the analytics
-listener still books the panel's WhatsApp link as `whatsapp_link_click` because it matches on href.
+WhatsApp bubble used to be. She reuses `.whatsapp-float-close` and `body.wa-dismissed` unchanged, so
+the ×, the `w` shortcut and back-to-top reclaiming the corner all behave as before, and the
+analytics listener still books the panel's WhatsApp link as `whatsapp_link_click` because it matches
+on href.
+
+**She answers questions now, and the four routes are gone.** She was a signpost — four labels
+pointing at forms, and the note here used to say "nothing answers a question". The panel now offers
+two things: *Chat with me*, and *Message my boss directly*. The four routes had all ended in the
+same inbox anyway; the lab/game slug logic they were built on survives, because the chat's fallback
+uses it to offer *this* lab's report form rather than a generic one.
+
+**She is retrieval, not a model, and the distinction is the whole design.** Nothing generates text.
+Every sentence she can say was written by hand somewhere on this site, collected by
+`scripts/mayuri-index.js` into `assets/data/mayuri-index.json` (~640 KB raw, ~200 KB gzipped) from
+three sources: the **1,267 FAQ pairs** in the `FAQPage` JSON-LD across 234 pages, the **179 glossary
+terms**, and a title/description card per page. The FAQ pairs do the heavy lifting because they are
+already questions — that turns "answer this" into "which of these 1,267 questions is being asked",
+which is ranked retrieval rather than comprehension. The glossary is what makes an answer feel
+intelligent: each term carries the lab that demonstrates it and the post that explains it, so one
+definition becomes three places to go. That is a foreign key, not intelligence, and it reads better
+than either.
+
+A browser **can** run a real model — the CSP already allows `'wasm-unsafe-eval'` for the labs — and
+it was considered and rejected twice over. Weight: the smallest coherent chat model is ~400 MB
+against an offline shell of 36 KB, on a site that deliberately threw away a 4.5 MB precache for
+being too heavy, and `connect-src 'self'` means self-hosting every shard. And accuracy, which is the
+real objection: a small model knows nothing about this site, so asked which lab decodes a JWT it
+produces a fluent guess. Retrieval gets that right every time and can admit when it has nothing.
+
+**The confidence floor is the most important number in `mayuri-chat.js`.** Below it she says she does
+not know and offers the human — she never guesses, because on a security consultant's site a
+confident wrong answer costs more than an admission. It measures **coverage**: the share of the
+visitor's own content words that appear in the winning entry, with a floor of two words. Both halves
+were learned the hard way. A ratio alone let "what is the capital of france" match a password-meter
+FAQ on the single word "capital" and answer it at full confidence. And an earlier `isFollowUp` that
+treated a bare "how" as an ellipsis marker carried the previous topic into "how do I crack a hash"
+and confidently answered *fork bomb*. There is a labelled eval of 45 queries — 9 of them things she
+must refuse — and changes to the scoring should be measured against it rather than eyeballed;
+`MayuriChat.debug(q)` returns the ranked hits with scores for exactly that.
+
+Two smaller traps worth keeping: the stemmer must not strip the `s` from "cross" (it did, and "cross
+site scripting" was answered by an air-hockey FAQ about crossing the halfway line), and the
+navigational-word list must stay tiny — it once held `site`, `open`, `read`, `use` and `work`, every
+one of which is topical here.
+
+Everything renders through `textContent`. The corpus is stripped of markup at build time and it is
+all Krunalkumar's own prose, so that is belt and braces rather than a live risk — but a panel that
+renders strings from a fetched file has no business using `innerHTML`.
+
+**"Do you offer X" is answered from pages, not FAQs**, and the bug that forced this is worth
+keeping. Asked *"do you offer internships"* she replied *"That is your college's decision — every
+institution applies its own internship policy"*, which answers a question nobody asked. The corpus
+has no FAQ for existence, because existence is answered by the page existing; the FAQs on a topic
+are all about its **details**. So there is an `exists` intent that leads with page cards, pushes the
+detail FAQs down into follow-up chips, discounts blog posts (an article *about* a thing is not the
+thing — an interview-advice post was outranking `/internships`), and strips the question's verb,
+since "do you **offer** internships" is asking about internships and leaving "offer" in halved the
+coverage. Internships are also carved out of the commercial intent, because "are you hiring interns"
+was being answered with a quote for consulting work.
+
+**Three scoring rules earn their place, all three found by failures.** *Coordination*: an entry
+matching every word beats one matching half — without it `/labs/csp-playground` won "do you offer
+security reviews" on the single word "Content-**Security**-Policy", ahead of `/services`, whose
+description literally lists "security reviews". *Question fit*: an FAQ whose own question is far
+more specific than what was asked is held back, because overlap was only ever measured one way and
+"Will my college accept this internship for credit?" was matching a broad question with three words
+nobody said. *Category nouns* are stripped in existence questions — "programme" prefix-matched
+"programmers" in a typing lab and won on score.
+
+**She pauses before answering.** Retrieval is under a millisecond and a reply in the same frame
+reads as a lookup table, so there is a typing indicator for 420–1150ms scaled by answer length. The
+lookup runs *first* and the result is held, so the pause is the whole wait rather than a floor on
+top of it. Under `prefers-reduced-motion` the dots do not bounce but the pause stays — it is pacing,
+not decoration, and a reply with no indicator looks like a dropped message.
+
+**The click-away does not apply while a conversation is open.** A menu should close when you click
+past it; a conversation should not, because half a typed question and three answers worth reading
+are destroyed by one stray click on a page full of things worth clicking. So the × and Escape are
+the ways out of the chat — Escape stays because it is a deliberate keypress rather than a slip, and
+a dialog that swallows it is one a keyboard cannot leave.
+
+**She never explains her own machinery.** The fallbacks used to say a question was "outside what
+Krunalkumar has written here" — true, and not how an assistant talks: it lectures somebody who
+asked about a subject, and it quietly blames the boss for not having written enough. She says *"I do
+not have this information, sorry. Let me redirect you to my boss — you can ask him directly."* The
+one exception is being asked directly whether she is an AI, where explaining the machinery **is**
+the honest answer.
+
+**Abuse locks the chat, and an apology unlocks it.** Two strikes: a firm line, then the chat locks
+with the way back stated. Insults aimed at Krunalkumar count the same as insults aimed at her. Only
+an apology moves from there — "sorry" anywhere in the sentence counts, and so does "my bad", because
+the point is the acknowledgement and a visitor who has apologised and is still refused has been
+trapped by a regex.
+
+**The filter is tested against the site's own 1,267 questions**, which is the only honest way to
+tune one: every FAQ question and every glossary term is fired at it, and any hit is a false positive
+by definition. That sweep is what caught *"what is UPI fraud"* and *"what is a fraud detection
+system"* — `fraud` and `scam` were on the hard list, and they are **subjects here**, so a real
+question about a real blog post was met with a demand for an apology. It also caught one of my own
+phrases: *"Are tutorials always a waste of time?"* is a site FAQ, so that phrase now requires a
+possessive — a general observation is not an insult, "a waste of *my* time" is.
+
+Five decisions in there are deliberate. Matching is **whole-word**, and the list stays narrow: on a
+site about attacks and exploits, *kill*, *attack*, *hell* and *garbage* all appear in legitimate
+questions ("kill a process", "attack surface", "garbage collection"). The **phrases** are the
+reliable half — "shut up", "you suck", "know nothing" have no innocent reading, so they need no
+pointed test. The **pointed list stops at people**: adding *site* or *website* would catch "this
+site is garbage" and also break "how do I spot a fake website", which is a phishing question this
+site answers — so that insult is missed on purpose. The input **stays enabled** while locked and the menu door is
+`aria-disabled` rather than `disabled`, because clicking it is how the apology gets typed — a
+disabled button would make the lock permanent by accident. And the route to a **human is never
+withdrawn**: someone who was rude to an assistant may still have a real reason to reach
+Krunalkumar, and that is his call, not this widget's. Strikes survive *Start over*, or the lock
+would be one button press from meaningless.
+
+**The gate is `localStorage`, and it is the only thing on this site that outlives the visit.**
+`particle-bg.js` keeps the paused background, the hidden controls and the greeting in
+`sessionStorage` on the stated principle that nothing it remembers should follow anybody around.
+This breaks that rule deliberately, because a session-scoped lock is not a lock: closing the tab
+cleared it, so the sanction lasted exactly as long as the patience needed to press reload, and the
+honest name for it was "a pause". The record lives at **`mayuriConduct`** — one integer, `1` for
+warned and `2` or more for locked — and **only an apology removes it.** Not time, not a reload, not
+a new tab. Any recorded strike locks a *new* session, so leaving without apologising means coming
+back to the same closed door; within one conversation a first offence is only a warning, because
+people do misjudge a tone and correct themselves. If it cannot write — private mode, storage off,
+quota — everything still works and simply forgets afterwards, which is the right failure direction:
+a gate that cannot persist should not also refuse to function.
+
+**The key is read in three places and written in one.** `mayuri-chat.js` owns the rule and the
+writing. `particle-bg.js` reads it at page load, because the brain is not fetched until somebody
+presses *Chat with me* and she would otherwise arrive smiling and only remember being sworn at once
+the chat opened. `terminal.js` reads it for the same reason. All three spell `mayuriConduct`
+literally, so if that name changes it changes in three files.
+
+**She has four faces, and the mood is site-wide.** Normal, happy, **unimpressed** (the first
+warning — brows angled *down*, mouth flat) and **hurt** (the lock — brows lifted at the inner ends,
+mouth turned down). The two new ones are full replacement groups like the happy pair, because
+drawing sad brows over the ordinary ones left two sets fighting each other at 54px. Three traps are
+worth keeping. The mood class goes on **`.mayuri-wrap`, not `.mayuri-dock`**: she is drawn twice,
+and the panel header is a *sibling* of the dock, so a dock-scoped selector left the big face you are
+actually looking at still smiling while she refused to speak. Every rule that hides a face needs
+`animation: none`, because `.mayuri-mouth` runs `mayuri-smile` and `.mayuri-eyes` runs
+`mayuri-blink`, and a running animation owns its properties. And `getComputedStyle(...).opacity` on
+an SVG `<g>` reported `0` for a group that was plainly visible on screen — several debugging passes
+went into that phantom before a screenshot settled it, so **trust the pixels for SVG**.
+
+While she is hurt she also does not move: no hop, no cheer on a new game best, no dance. The
+masthead easter egg still fires when the portrait is tapped six times — that is the wordmark's
+business — but she takes no part in it, and the class is withheld rather than merely styled away.
+The page-load hello is suppressed too: "Hi, I am Mayuri!" waving in beside a sad face, from someone
+who will refuse the next question, is the worst of both.
+
+**The terminal honours it as well**, which is much of the point of putting the record in storage.
+Its `mayuri` command clones her artwork from `/offline` and styles her from `mayuri-stage.css`,
+loading neither `main.css` nor `particle-bg.js` — so without this she could be told to get lost in
+one tab and then summoned centre-stage in another to grin and dance on command. The hover smile,
+the single-tap hearts, the double-tap glow, the triple-tap dance and the undocumented `d` shortcut
+are all refused at the source while she is hurt, and the terminal prints why rather than showing an
+unexplained sad figure. This is why the sad and unimpressed groups had to be added to `offline.html`
+too: it is the clone source.
+
+**"Bye" is honoured, and it closes the chat.** She says goodbye warmly, waits long enough to be
+read, then shows herself out and discards the conversation, so opening her again is a clean start —
+somebody returning later is starting a new conversation, and handing them the old transcript is both
+odd and a small privacy leak on a shared machine. A goodbye works even while locked and does **not**
+clear the record: being allowed to leave gracefully costs nothing, being forgiven for leaving would
+cost the whole gate.
+
+**"Take me to X" moves the page, and navigation is name resolution rather than ranked retrieval.**
+That distinction is the whole feature. The first version handed "go to labs" to the same BM25 scorer
+everything else uses, and it answered `/glossary` — whose h1 is *"The words, and where to **go** and
+see them"*, with "go" still in the query. Asking to be taken somewhere is asking for a page **by
+name**, so `resolveDestination()` matches only name-shaped fields: the URL's last segment, the title
+up to its dash, and the h1. Body text is irrelevant here and actively harmful. The slug is the
+strongest signal — `/labs` is "labs", `/labs/c` is "c" — and category nouns are dropped from the
+request, which is why "go to **c language**" lands on `/labs/c` without anybody maintaining a table
+of synonyms. A hub outranks a page inside it on a tie, so "games" is `/games` rather than whichever
+game happened to score. The floor is "every word of the name was found", because guessing wrong here
+does not merely mislead somebody, it *moves* them. The intent is checked **early**, ahead of exists,
+commercial and contact: those match on subject words, and "go to contact" was being read as a
+question about how to get in touch. A bare "open" is deliberately not a navigation verb, since
+"open redirect" is a glossary term. She then waits `NAV_DELAY` (2.5s) and calls `location.assign` —
+assign, not replace, so the back button still works — with a **Cancel** beside it, and closing the
+panel cancels any pending redirect so the page never moves for no visible reason.
 
 Three things there are easy to get wrong. `.mayuri-wrap` is `pointer-events: none` — it is as wide
 as the greeting bubble even while that bubble is invisible (opacity hides it but keeps its space),
@@ -325,15 +504,16 @@ from JS into `--look-x/y/r` rather than from keyframes, because a repeating glan
 within about three cycles; the head is a `<g>` pivoting on the base of the neck, so it turns rather
 than slides, and the timer skips while `document.hidden`.
 
-Her four routes lead to forms, and none of them carries `?from=`. That parameter already means
+The report links she offers in her fallback carry no `?from=mayuri`. That parameter already means
 something on the lab report form — it names the LAB a report came from, and the form prints
 *"Reporting from the &lt;name&gt; playground."* — so a `?from=mayuri` added for attribution would
 have invented a playground that does not exist.
 
-The games route is `/games#games-feedback`, which is the games hub's **own** form rather than the
-labs one. The per-game pages still link to `/labs?from=<slug>&area=games#lab-feedback`, because
-they know which game they are and that attribution is worth keeping; Mayuri does not, which is
-exactly who the hub form is for. Two forms now exist, so `#form-status` matters more than it
+`/games#games-feedback` is the games hub's **own** form rather than the labs one. The per-game pages
+link to `/labs?from=<slug>&area=games#lab-feedback`, because they know which game they are and that
+attribution is worth keeping — and that link is precisely what Mayuri reads to offer the right
+report form in her fallback. Away from a lab or game page there is no slug to read, so she offers
+the person instead of guessing at a form. Two forms exist, so `#form-status` matters more than it
 looks: `wa-form.js` finds it with `getElementById`, not scoped to the form, so the two must never
 share a page. `lab-feedback.js` is loaded only on `/labs` for the same reason.
 
@@ -394,8 +574,8 @@ URLs.
 
 Vercel clones the repo into a throwaway container, runs the script there, uploads the result and
 discards the container. Nothing is written back to git. It performs two transformations — plus
-regenerating the derived files it keeps in step, `assets/data/search-index.json`, `llms.txt`,
-`llms-full.txt` and the colophon figures — and deliberately nothing else, then checks its own
+regenerating the derived files it keeps in step, `assets/data/search-index.json`,
+`assets/data/mayuri-index.json`, `llms.txt`, `llms-full.txt` and the colophon figures — and deliberately nothing else, then checks its own
 output before letting the deploy succeed:
 
 1. **Strips CSS and JS comments.** ~570 KB of stylesheet across thirteen files loses roughly forty
@@ -417,8 +597,8 @@ every comment, visitors get the smaller file.
 
 **Writing is gated on proving you are the build container.** The write pass deletes the comments
 out of `assets/css/*.css` and `assets/js/*.js` — the documentation several sections of this README
-are downstream of — and rewrites `sitemap.xml`, `assets/data/search-index.json`, `llms.txt`,
-`llms-full.txt` and the colophon figures. Commit that and the comment-stripped files become the
+are downstream of — and rewrites `sitemap.xml`, `assets/data/search-index.json`,
+`assets/data/mayuri-index.json`, `llms.txt`, `llms-full.txt` and the colophon figures. Commit that and the comment-stripped files become the
 canonical sources, with nothing left to restore them from but git history. A warning in the README
 did not survive muscle memory (an accidental bare run stripped eleven stylesheets and two scripts),
 so the default is inverted: writing requires `--write` (passed by `vercel.json`'s buildCommand) or
