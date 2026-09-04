@@ -44,6 +44,7 @@
   'use strict';
 
   var STORE_KEY = 'lab.hacklab.solved';
+  var HINT_KEY = 'lab.hacklab.hints';
   var host = document.getElementById('hacklab');
   if (!host) return;
 
@@ -56,6 +57,31 @@
     try { localStorage.setItem(STORE_KEY, JSON.stringify(map)); } catch (e) {}
   }
   var solved = loadSolved();
+
+  /* How many hints each challenge has given up, by id. This has to persist
+     for the score to mean anything: charge for a hint, let the visitor
+     reload, and a count held only in memory would quietly hand the points
+     back. It is also what lets a hint already paid for stay on screen next
+     visit instead of being charged for twice — see the hint block in open().
+
+     THE SCORE ITSELF IS NEVER STORED. It is derived from these two maps every
+     time it is drawn, which is the whole reason there is no third key: a
+     stored total is a number that can disagree with the facts behind it, and
+     the reset button would have to remember to zero it. Derived, reset clears
+     two keys and the score is zero by arithmetic.
+
+     Both live under the `lab.` prefix, so the storage listing and the "clear
+     everything" sweep in lab-app.js pick them up without being told. */
+  function loadHints() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(HINT_KEY));
+      return (raw && typeof raw === 'object') ? raw : {};
+    } catch (e) { return {}; }
+  }
+  function saveHints(map) {
+    try { localStorage.setItem(HINT_KEY, JSON.stringify(map)); } catch (e) {}
+  }
+  var hintsUsed = loadHints();
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -2624,6 +2650,176 @@
 
   function levelLabel(n) { return n === 1 ? 'Starter' : n === 2 ? 'Intermediate' : 'Advanced'; }
 
+  /* ---- score and rank ---------------------------------------------------
+     A challenge is worth points by its difficulty, and a hint costs some of
+     them. The hint economy is lifted deliberately from /games/ctf-arcade,
+     because two scoring systems on one site that disagree about what a hint
+     costs would be worse than either: reading a hint is charged only against
+     a challenge you go on to SOLVE, since an unsolved challenge scores zero
+     either way. So a hint is, at worst, free — which is the point. Charging
+     the moment a hint is displayed teaches people to sit and stare rather
+     than ask, and staring is not the skill being taught here.
+
+     The floor matters as much as the cost. Four hints at 15% each hits the
+     60% cap exactly, so even a challenge you needed every hint for still pays
+     40% of its value. Nothing here can score zero for a landed exploit.
+
+     Rank thresholds are a FRACTION of the maximum rather than absolute point
+     counts, and that is not tidiness: challenges get added to this file (it
+     has grown from six to forty-two), and absolute thresholds would silently
+     demote every returning visitor the moment the denominator moved. */
+  var LEVEL_POINTS = { 1: 100, 2: 200, 3: 300 };
+  var HINT_PENALTY = 0.15;
+  var PENALTY_CAP = 0.6;
+
+  function basePoints(c) { return LEVEL_POINTS[c.level] || 100; }
+
+  function hintCount(c) {
+    var n = hintsUsed[c.id];
+    return (typeof n === 'number' && n > 0) ? n : 0;
+  }
+
+  function penaltyFor(c) { return Math.min(hintCount(c) * HINT_PENALTY, PENALTY_CAP); }
+
+  function earnedPoints(c) {
+    if (!solved[c.id]) return 0;
+    return Math.round(basePoints(c) * (1 - penaltyFor(c)));
+  }
+
+  /* What the NEXT hint on this challenge actually costs, computed as the
+     difference between the penalty before and after. Written this way rather
+     than as a flat percentage so it reports 0 once the cap is reached, which
+     is the honest number to put on the button. */
+  function nextHintCost(c, used) {
+    var before = Math.min(used * HINT_PENALTY, PENALTY_CAP);
+    var after = Math.min((used + 1) * HINT_PENALTY, PENALTY_CAP);
+    return Math.round(basePoints(c) * (after - before));
+  }
+
+  function maxScore() {
+    return CHALLENGES.reduce(function (t, c) { return t + basePoints(c); }, 0);
+  }
+  function totalScore() {
+    return CHALLENGES.reduce(function (t, c) { return t + earnedPoints(c); }, 0);
+  }
+
+  /* Recon's threshold is "any points at all", not 1% — and that correction is
+     worth keeping the reason for. At 1% of the maximum it took 97 points, but
+     the cheapest thing on offer is a 100-point Starter, and a Starter solved
+     with all four hints pays the 40% floor: 40 points. So it was possible to
+     land a real exploit, score for it, and still be told you were an
+     Onlooker. Landing anything has to get you off the bottom rung. */
+  var RANKS = [
+    { at: 0,      name: 'Onlooker' },
+    { at: 0.0001, name: 'Recon' },
+    { at: 0.15,   name: 'Apprentice' },
+    { at: 0.30,   name: 'Analyst' },
+    { at: 0.50,   name: 'Breaker' },
+    { at: 0.70,   name: 'Pentester' },
+    { at: 0.85,   name: 'Appsec engineer' },
+    { at: 1,      name: 'Appsec lead' }
+  ];
+
+  function rankIndex(score, max) {
+    var frac = max ? score / max : 0;
+    var idx = 0;
+    for (var i = 0; i < RANKS.length; i++) if (frac >= RANKS[i].at) idx = i;
+    return idx;
+  }
+
+  /* 1340 -> "1,340". Hand-rolled because toLocaleString's grouping depends on
+     the visitor's locale, and a score that reads "1.340" to a German browser
+     next to an English label is a worse bug than no grouping at all. */
+  function fmtPoints(n) {
+    var s = String(n);
+    var out = '';
+    var k = 0;
+    for (var i = s.length - 1; i >= 0; i--) {
+      out = s.charAt(i) + out;
+      k++;
+      if (k % 3 === 0 && i > 0) out = ',' + out;
+    }
+    return out;
+  }
+
+  /* Revives .hl-progress-bar, which has been sitting in labs.css complete
+     with its gradient and width transition and used by nothing at all. */
+  function progressBar(done, total) {
+    var wrap = el('div', 'hl-progress-bar');
+    var fill = el('i');
+    fill.style.width = (total ? Math.round((done / total) * 100) : 0) + '%';
+    wrap.appendChild(fill);
+    wrap.setAttribute('role', 'progressbar');
+    wrap.setAttribute('aria-valuemin', '0');
+    wrap.setAttribute('aria-valuemax', String(total));
+    wrap.setAttribute('aria-valuenow', String(done));
+    return wrap;
+  }
+
+  function buildHud() {
+    var score = totalScore();
+    var max = maxScore();
+    var idx = rankIndex(score, max);
+    var next = RANKS[idx + 1];
+
+    var hud = el('div', 'hl-hud');
+
+    var top = el('div', 'hl-hud-top');
+    var sc = el('p', 'hl-hud-score');
+    sc.appendChild(el('strong', null, fmtPoints(score)));
+    sc.appendChild(document.createTextNode(' / ' + fmtPoints(max) + ' pts'));
+    top.appendChild(sc);
+    top.appendChild(el('p', 'hl-hud-rank', RANKS[idx].name));
+    hud.appendChild(top);
+    hud.appendChild(progressBar(score, max));
+
+    /* Three rows, by difficulty — NOT by category, and that is a data
+       decision rather than a layout one. There are 38 distinct categories
+       across 42 challenges, most of them holding exactly one, so a
+       per-category breakdown would be a column of "1/1" telling nobody
+       anything. Difficulty is the axis with enough in each bucket to read as
+       progress. */
+    /* This label is load-bearing, not decoration. The block above counts
+       POINTS and the block below counts CHALLENGES, and the first version
+       labelled neither — so "57 more for Recon" (points) sat directly under
+       "3 / 23 / 16" (challenges) with nothing to say they were different
+       units, and the only reasonable reading was to try to reconcile the two.
+       Every number in this panel now carries its unit. */
+    var rows = el('div', 'hl-hud-levels');
+    rows.appendChild(el('p', 'hl-hud-levels-label', 'Challenges solved, by difficulty'));
+    [1, 2, 3].forEach(function (lv) {
+      var group = CHALLENGES.filter(function (c) { return (c.level || 1) === lv; });
+      if (!group.length) return;
+      var done = group.filter(function (c) { return solved[c.id]; }).length;
+      var row = el('div', 'hl-hud-level');
+      row.appendChild(el('span', 'hl-hud-level-name', levelLabel(lv)));
+      row.appendChild(progressBar(done, group.length));
+      row.appendChild(el('span', 'hl-hud-level-count', done + '/' + group.length));
+      rows.appendChild(row);
+    });
+    hud.appendChild(rows);
+
+    var clean = CHALLENGES.filter(function (c) { return solved[c.id] && !hintCount(c); }).length;
+    if (clean) {
+      hud.appendChild(el('p', 'hl-hud-clean',
+        clean + (clean === 1 ? ' challenge' : ' challenges') + ' solved with no hint'));
+    }
+
+    if (next) {
+      var need = Math.ceil(next.at * max) - score;
+      /* At zero the arithmetic is technically "1 pt to Recon", which is a
+         silly thing to tell someone who has not started. Say the actual
+         entry condition instead. */
+      if (score <= 0) {
+        hud.appendChild(el('p', 'hl-hud-next', 'Solve anything to reach ' + next.name));
+      } else if (need > 0) {
+        hud.appendChild(el('p', 'hl-hud-next',
+          fmtPoints(need) + ' pts to ' + next.name));
+      }
+    }
+    return hud;
+  }
+
   /* Order the challenges easy -> hard so the unlock chain is a difficulty ramp.
      Array.prototype.sort is stable in every engine this site supports, so
      challenges of the same level keep their authored order. */
@@ -2652,6 +2848,7 @@
     /* The persistent element survives the wipe above by being re-seated. */
     if (fsBtn) head.appendChild(fsBtn);
     listNode.appendChild(head);
+    listNode.appendChild(buildHud());
 
     CHALLENGES.forEach(function (c, idx) {
       var unlocked = isUnlocked(idx) || solved[c.id];
@@ -2663,7 +2860,10 @@
       top.appendChild(el('span', 'hl-list-level', levelLabel(c.level)));
       item.appendChild(top);
       item.appendChild(el('span', 'hl-list-title', unlocked ? c.title : 'Locked'));
-      if (solved[c.id]) item.appendChild(el('span', 'hl-list-check', '✓ solved'));
+      if (solved[c.id]) {
+        item.appendChild(el('span', 'hl-list-check',
+          '✓ solved  ·  ' + earnedPoints(c) + '/' + basePoints(c) + ' pts'));
+      }
       else if (!unlocked) {
         item.appendChild(el('span', 'hl-list-lock', '🔒 solve “' + CHALLENGES[idx - 1].title + '” to unlock'));
         item.disabled = true;
@@ -2697,6 +2897,9 @@
     back.addEventListener('click', function () { showDetail(false); listNode.scrollTop = 0; });
     header.appendChild(back);
     header.appendChild(el('span', 'hl-detail-cat', c.category + '  ·  ' + levelLabel(c.level)));
+    header.appendChild(el('span', 'hl-detail-worth', solved[c.id]
+      ? 'Scored ' + earnedPoints(c) + ' of ' + basePoints(c) + ' pts'
+      : 'Worth ' + basePoints(c) + ' pts'));
     header.appendChild(el('h2', null, c.title));
     header.appendChild(el('p', 'hl-brief', c.brief));
     var obj = el('p', 'hl-objective');
@@ -2724,12 +2927,31 @@
          reading a hint or a payload that did not land cannot get here. */
       if (window.KSLab) window.KSLab.used('solve');
       var wasSolved = !!solved[c.id];
+      /* Both ranks are measured against the same denominator, and the score
+         either side of the same mutation, so the comparison below is about
+         this solve and nothing else. */
+      var maxNow = maxScore();
+      var rankBefore = rankIndex(totalScore(), maxNow);
       solved[c.id] = true;
       saveSolved(solved);
+      var rankAfter = rankIndex(totalScore(), maxNow);
+
       var banner = el('div', 'hl-win');
-      banner.appendChild(el('strong', null, 'Solved. '));
-      banner.appendChild(document.createTextNode('That is the vulnerability. Now the important half:'));
+      banner.appendChild(el('strong', null, wasSolved
+        ? 'Solved again. '
+        : 'Solved  +' + earnedPoints(c) + ' pts. '));
+      /* Say what the hints cost, but only when they cost something — on a
+         clean solve the sentence would just be noise. */
+      var pen = penaltyFor(c);
+      banner.appendChild(document.createTextNode(
+        (!wasSolved && pen > 0)
+          ? 'Worth ' + basePoints(c) + ', less ' + Math.round(pen * 100) +
+            '% for hints. Now the important half:'
+          : 'That is the vulnerability. Now the important half:'));
       stage.appendChild(banner);
+      if (!wasSolved && rankAfter > rankBefore) {
+        stage.appendChild(el('p', 'hl-rankup', 'New rank: ' + RANKS[rankAfter].name));
+      }
       revealFix();
       buildList();
       // Point them at the challenge this just unlocked (if any).
@@ -2753,30 +2975,66 @@
       stage.appendChild(el('p', 'hl-result is-err', 'This challenge failed to load: ' + e));
     }
 
-    /* progressive hints */
+    /* progressive hints, which now cost points ------------------------------
+       `shown` starts at the number this challenge has already given up, and
+       those hints are re-rendered on open. Two reasons, and neither is
+       cosmetic: a hint you paid for on Tuesday should still be readable on
+       Wednesday, and starting from zero would re-charge for it the moment you
+       clicked again. Re-reading is free; only ground you have not bought yet
+       costs anything. */
     var hintWrap = el('div', 'hl-hints');
     hintWrap.appendChild(el('h3', null, 'Stuck?'));
     var shown = 0;
     var hintList = el('div', 'hl-hint-list');
     var hintBtn = el('button', 'hl-btn hl-btn-ghost', 'Show a hint');
-    hintBtn.addEventListener('click', function () {
-      if (shown < c.hints.length) {
-        var h = el('p', 'hl-hint');
-        h.appendChild(el('strong', null, 'Hint ' + (shown + 1) + '. '));
-        h.appendChild(document.createTextNode(c.hints[shown]));
-        hintList.appendChild(h);
-        shown++;
-      }
+
+    function addHintRow(i) {
+      var h = el('p', 'hl-hint');
+      h.appendChild(el('strong', null, 'Hint ' + (i + 1) + '. '));
+      h.appendChild(document.createTextNode(c.hints[i]));
+      hintList.appendChild(h);
+    }
+
+    function revealSolution() {
+      if (hintList.querySelector('.hl-solution')) return;
+      var sol = el('details', 'hl-solution');
+      sol.appendChild(el('summary', null, 'Show the full solution'));
+      sol.appendChild(el('pre', null, c.solution));
+      hintList.appendChild(sol);
+    }
+
+    function syncHintBtn() {
       if (shown >= c.hints.length) {
         hintBtn.disabled = true;
         hintBtn.textContent = 'No more hints';
-        var sol = el('details', 'hl-solution');
-        sol.appendChild(el('summary', null, 'Show the full solution'));
-        sol.appendChild(el('pre', null, c.solution));
-        hintList.appendChild(sol);
-      } else {
-        hintBtn.textContent = 'Show another hint (' + shown + '/' + c.hints.length + ')';
+        revealSolution();
+        return;
       }
+      var cost = nextHintCost(c, Math.max(shown, hintCount(c)));
+      var label = shown
+        ? 'Show another hint (' + shown + '/' + c.hints.length + ')'
+        : 'Show a hint';
+      hintBtn.textContent = label + (cost > 0 ? '  −' + cost + ' pts' : '  no further cost');
+    }
+
+    var already = Math.min(hintCount(c), c.hints.length);
+    for (var hi = 0; hi < already; hi++) { addHintRow(hi); }
+    shown = already;
+    syncHintBtn();
+
+    hintBtn.addEventListener('click', function () {
+      if (shown >= c.hints.length) return;
+      addHintRow(shown);
+      shown++;
+      /* Only ever ratchet upward. Without the comparison, opening a solved
+         challenge and clicking through its hints again would keep rewriting
+         the count and could charge for the same ground twice. */
+      if (shown > hintCount(c)) {
+        hintsUsed[c.id] = shown;
+        saveHints(hintsUsed);
+        buildList();
+      }
+      syncHintBtn();
     });
     hintWrap.appendChild(hintBtn);
     hintWrap.appendChild(hintList);
@@ -2867,6 +3125,11 @@
     resetBtn.addEventListener('click', function () {
       solved = {};
       saveSolved(solved);
+      /* The hint counts go too. Leaving them would reset the solves but keep
+         every hint charge, so a visitor starting over would be scored against
+         hints they can no longer see — a permanent penalty for a clean slate. */
+      hintsUsed = {};
+      saveHints(hintsUsed);
       buildList();
       if (current) open(current);
     });

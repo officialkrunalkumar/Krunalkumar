@@ -1497,6 +1497,49 @@ pre.lab-example:hover .lab-copy,
   .hl-detail { border-left: 0; }
   .hl-back { display: inline-flex; }
 }
+
+/* Fullscreen — release the viewport caps that exist for the embedded case.
+   --------------------------------------------------------------------------
+   THREE elements above cap themselves at min(82vh, 900px): the layout and
+   both panes. That is right on the page, where the lab is one section among
+   several and must not grow without limit. In fullscreen it is exactly wrong.
+   .lab:fullscreen becomes a height:100vh flex column, and a 900px-capped grid
+   inside a 1440px-tall one leaves ~540px of the #020617 fullscreen ground
+   below the content — the "lots of black space at the end". The 900px arm
+   bites hardest on the big screens people actually go fullscreen on.
+
+   Both panes need releasing too, not just the layout: .hl-list carries its
+   own copy of the cap deliberately (see its comment — it guarantees the
+   scroll even if grid stretch misbehaves), so lifting only the parent would
+   still have left the rail short.
+
+   flex/min-height are what make the grid claim the freed space rather than
+   just being allowed to; overflow stays hidden on the layout and auto on the
+   panes so the scrolling still happens inside the rails. That also restores
+   an internal scroll under 720px, where the media query above turns it off
+   for the page-embedded phone layout — correct there, but in fullscreen it
+   would clip whatever ran past 100vh with no way to reach it.
+
+   TWO RULES, NOT ONE SELECTOR LIST. An unrecognised selector invalidates the
+   entire list it appears in, so pairing :fullscreen with :-webkit-full-screen
+   would lose both wherever either is unknown. Written separately they degrade
+   one at a time. */
+.lab:fullscreen .hl-layout {
+  max-height: none; height: auto; min-height: 0;
+  flex: 1 1 auto; overflow: hidden;
+}
+.lab:fullscreen .hl-list,
+.lab:fullscreen .hl-detail {
+  max-height: none; min-height: 0; overflow-y: auto;
+}
+.lab:-webkit-full-screen .hl-layout {
+  max-height: none; height: auto; min-height: 0;
+  flex: 1 1 auto; overflow: hidden;
+}
+.lab:-webkit-full-screen .hl-list,
+.lab:-webkit-full-screen .hl-detail {
+  max-height: none; min-height: 0; overflow-y: auto;
+}
 .hl-list-head { margin-bottom: 0.4rem; }
 .hl-list-head h2 { margin: 0; font-size: 1.05rem; letter-spacing: -0.01em; }
 .hl-progress { margin: 0.25rem 0 0; font-size: 0.78rem; font-weight: 600; color: var(--accent-1); }
@@ -1508,6 +1551,79 @@ pre.lab-example:hover .lab-copy,
   display: block; height: 100%; border-radius: 3px;
   background: linear-gradient(90deg, var(--accent-2), #4ade80);
   transition: width 0.4s ease;
+}
+
+/* Score and rank, at the top of the challenge sidebar.
+   --------------------------------------------------------------------------
+   The bars are .hl-progress-bar, which was already sitting above this rule
+   fully styled and used by nothing at all — it predates the score and was
+   presumably written for the "N of 42 solved" line, which ended up as plain
+   text. Reviving it beat adding a second bar that looked almost the same. */
+.hl-hud {
+  margin: 0 0 0.7rem;
+  padding: 0.6rem 0.7rem 0.7rem;
+  background: rgb(var(--accent-rgb) / 0.06);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 10px;
+}
+.hl-hud-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 0.5rem; margin-bottom: 0.45rem;
+}
+.hl-hud-score { margin: 0; font-size: 0.76rem; color: var(--ink-4); }
+.hl-hud-score strong {
+  font-size: 1.15rem; font-weight: 800; color: var(--accent-1);
+  letter-spacing: -0.01em;
+}
+/* The rank is the one label here that should read as an award rather than a
+   statistic, so it is the only thing in the block with a filled chip. */
+.hl-hud-rank {
+  margin: 0; padding: 0.15rem 0.45rem; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
+  text-transform: uppercase; white-space: nowrap;
+  color: #052e16; background: linear-gradient(90deg, var(--accent-1), #4ade80);
+}
+.hl-hud-levels { margin-top: 0.55rem; display: grid; gap: 0.3rem; }
+/* Separates the points half of the panel from the challenge-count half. The
+   rule above it is the divider; without both, the two number systems read as
+   one list. */
+.hl-hud-levels-label {
+  margin: 0 0 0.1rem; padding-top: 0.45rem;
+  border-top: 1px solid rgb(var(--accent-rgb) / 0.14);
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink-4);
+}
+/* Fixed first column so the three bars start on the same line and read as one
+   chart; auto last column so the counts stay hard right. */
+.hl-hud-level {
+  display: grid; grid-template-columns: 5.2rem 1fr auto;
+  align-items: center; gap: 0.45rem;
+}
+.hl-hud-level-name { font-size: 0.68rem; font-weight: 600; color: var(--ink-4); }
+.hl-hud-level .hl-progress-bar { margin-top: 0; height: 4px; }
+.hl-hud-level-count {
+  font-size: 0.66rem; font-weight: 600; color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.hl-hud-clean, .hl-hud-next {
+  margin: 0.45rem 0 0; font-size: 0.68rem; font-weight: 600; line-height: 1.4;
+}
+.hl-hud-clean { color: #4ade80; }
+.hl-hud-next { color: var(--ink-4); }
+
+/* What the open challenge is worth, on the detail header's meta line. */
+.hl-detail-worth {
+  display: inline-block; margin-left: 0.5rem;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
+  text-transform: uppercase; color: var(--accent-1);
+}
+
+/* The rank-up line, shown once inside the win banner's stage. */
+.hl-rankup {
+  margin: 0.5rem 0 0; padding: 0.45rem 0.7rem;
+  font-size: 0.82rem; font-weight: 700;
+  color: #052e16; background: linear-gradient(90deg, var(--accent-1), #4ade80);
+  border-radius: 8px;
 }
 
 .hl-list-item {
