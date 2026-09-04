@@ -2668,17 +2668,23 @@ const GAMES = [
       {
         h: 'This is the recon end of a CTF, and only that end',
         p: 'A real competition has web exploitation, binary exploitation, reversing and forensics in it, and those ' +
-          'need tooling and a machine you are allowed to break. What this ladder covers is the part every category ' +
-          'starts with: looking at an artefact and working out what it is. The <a href="/labs/encoding">encoder</a>, ' +
-          'the <a href="/labs/cipher">cipher playground</a>, the <a href="/labs/exif">EXIF viewer</a> and the ' +
-          '<a href="/labs/url-inspector">URL inspector</a> in Labs are the same jobs without a scoreboard.',
+          'need tooling and a machine you are allowed to break. There is one on this site: ' +
+          '<a class="text-link" href="/labs/hacklab">HackLab</a> is forty-two challenges against a deliberately ' +
+          'vulnerable app, where the SQL injection executes on a real SQLite engine and the cross-site scripting ' +
+          'genuinely fires inside a sandboxed frame. Come back here for the recon, go there to exploit something. ' +
+          'What this ladder covers is the part every category starts with: looking at an artefact and working out ' +
+          'what it is. The <a class="text-link" href="/labs/encoding">encoder</a>, the ' +
+          '<a class="text-link" href="/labs/cipher">cipher playground</a>, the ' +
+          '<a class="text-link" href="/labs/exif">EXIF viewer</a> and the ' +
+          '<a class="text-link" href="/labs/url-inspector">URL inspector</a> in Labs are the same jobs without a ' +
+          'scoreboard.',
       },
     ],
     faq: [
       { q: 'What format should the answer be in?', a: 'The whole flag, from CTF{ to the closing brace. Spaces around it and the wrong case are both forgiven; leaving the braces off is not, because the wrapper is part of the flag in every competition you will enter.' },
       { q: 'Do I need any tools to solve these?', a: 'No. Every challenge can be done by hand, and each explanation links to the lab that does the same job if you would rather not. Nothing is timed, so take as long as you like over one.' },
       { q: 'Are the answers hidden from me?', a: 'Not really — the flags are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a practice ladder rather than a competition, so there is nothing to protect and no reason to pretend otherwise.' },
-      { q: 'Is this a real capture the flag?', a: 'It is one slice of one. Real events add exploitation, reversing and forensics, which need a target you have permission to attack. This covers recognising and undoing encodings, which is where almost every challenge begins.' },
+      { q: 'Is this a real capture the flag?', a: 'It is one slice of one. Real events add exploitation, reversing and forensics, which need a target you have permission to attack — and there is one on this site: <a class="text-link" href="/labs/hacklab">HackLab</a> holds forty-two of those, from SQL injection on a live engine through JWT forgery, SSRF and path traversal, each with hints, the full solution and the real-world fix. This ladder covers recognising and undoing encodings, which is where almost every challenge begins.' },
       { q: 'Does anything I type leave the browser?', a: 'No. There are no network calls in the game at all, and the only thing stored is your best score, in this browser on this device.' },
     ],
     related: ['phishing-or-not', 'subnet-sprint', 'password-duel'],
