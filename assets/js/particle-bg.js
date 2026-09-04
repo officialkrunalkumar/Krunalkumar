@@ -1476,52 +1476,42 @@
   // Header and footer are injected at runtime by assets/js/include-partials.js,
   // so everything that touches them initializes after 'partials:loaded' fires.
   function initSiteChrome() {
-    // Fresh gradient color for the brand name on every page load.
+    // The brand name is a fixed colour in CSS and nothing here touches it.
+    // This used to set --brand-hue to Math.random() * 360 on every page load,
+    // which is why the wordmark was lime on one visit and olive on the next
+    // and only rarely the sky blue the rest of the palette is built from. A
+    // brand colour picked at random is not a brand colour; see the masthead
+    // block in main.css for what replaced the gradient.
     const brand = document.querySelector('.brand');
-    if (brand) {
-      brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
-    }
 
-    // 🥚 Six quick taps on the homepage portrait put the brand name into dance
-    // mode: the gradient bounces direction, the hue jumps at random, the name
-    // wiggles, and firecracker sparks burst around it. Six more taps calm it
-    // down. Deliberately stores nothing (unlike the background controls): a
-    // reload always resets it, like a wink should. Skipped entirely under
-    // prefers-reduced-motion — a party trick must never override that choice.
+    // 🥚 Six quick taps on the homepage portrait light the masthead up: the
+    // keylines either side of the name start glowing and streaming, and the
+    // cursor in the ks_ mark blinks through colours. That is the whole egg.
+    // The NAME ITSELF DOES NOT MOVE — an earlier version wiggled the lockup
+    // and a tilting header just looks broken. Six more taps calm it down.
+    // Deliberately stores nothing (unlike the background controls): a reload
+    // always resets it, like a wink should.
+    //
+    // IT IS ALL CSS NOW. This used to run a 260ms interval that threw
+    // firecracker sparks over the header and jumped a --brand-hue at random;
+    // both are gone, and with them the last timer. What is left is a class
+    // toggle, so there is nothing to tick, nothing to clean up, and no way for
+    // the egg to leak work into a backgrounded tab — the sparks needed a
+    // document.hidden guard precisely because a hidden tab fires timers but
+    // never completes animations, so their animationend cleanup never ran and
+    // they piled up unbounded. Turning it off costs nothing but removing a
+    // class. (.fx-spark and its keyframes stay in main.css: verify.js has its
+    // own copy of that burst for the certificate celebration.)
+    //
+    // Skipped entirely under prefers-reduced-motion — this is the only guard
+    // for it, so the CSS carries none of its own: not binding the handler
+    // means .brand-dancing is never set and none of those rules can apply.
     const heroPortrait = document.querySelector('.hero-card img[src*="Krunal"]');
     if (brand && heroPortrait && !prefersReducedMotion) {
-      const SPARK_COLORS = ['#7dd3fc', '#a855f7', '#4ade80', '#fbbf24', '#f87171', '#f8fafc'];
       let taps = 0;
       let lastTap = 0;
       let dancing = false;
-      let danceTimer = null;
       let reported = false;
-
-      function throwSparks() {
-        // Rect is re-read every burst so sparks track the sticky header as the
-        // page scrolls (position: fixed shares the viewport coordinate space).
-        //
-        // Skip while the tab is hidden: a background tab still fires the timer
-        // but never completes CSS animations, so the animationend cleanup below
-        // never runs and the sparks would pile up unbounded until the tab is
-        // seen again. No sparks are visible there anyway.
-        if (document.hidden) return;
-        const rect = brand.getBoundingClientRect();
-        for (let i = 0; i < 4; i += 1) {
-          const spark = document.createElement('span');
-          spark.className = 'fx-spark';
-          spark.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
-          spark.style.left = (rect.left + Math.random() * rect.width) + 'px';
-          spark.style.top = (rect.top + Math.random() * rect.height) + 'px';
-          const angle = Math.random() * Math.PI * 2;
-          const distance = 30 + Math.random() * 70;
-          // Slight upward bias: firecrackers pop up more than they fall.
-          spark.style.setProperty('--dx', (Math.cos(angle) * distance) + 'px');
-          spark.style.setProperty('--dy', (Math.sin(angle) * distance - 24) + 'px');
-          spark.addEventListener('animationend', () => spark.remove());
-          document.body.appendChild(spark);
-        }
-      }
 
       function setDancing(next) {
         dancing = next;
@@ -1533,22 +1523,9 @@
         // animation besides, so this needs no motion check of its own.
         const mayuriDock = document.querySelector('.mayuri-dock');
         if (mayuriDock) mayuriDock.classList.toggle('is-dancing', dancing);
-        if (dancing) {
-          // Random hue jumps, out of step with the CSS hue spin, so the colors
-          // never settle into a predictable sweep.
-          danceTimer = setInterval(() => {
-            brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
-            throwSparks();
-          }, 260);
-          if (!reported) {
-            reported = true;
-            if (typeof gtag === 'function') gtag('event', 'easter_egg_dance');
-          }
-        } else {
-          clearInterval(danceTimer);
-          danceTimer = null;
-          // Leave the name on a fresh random hue as a parting souvenir.
-          brand.style.setProperty('--brand-hue', Math.floor(Math.random() * 360));
+        if (dancing && !reported) {
+          reported = true;
+          if (typeof gtag === 'function') gtag('event', 'easter_egg_dance');
         }
       }
 

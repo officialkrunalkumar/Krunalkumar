@@ -15,7 +15,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 
 | Page                  | Purpose                                                                    |
 | --------------------- | -------------------------------------------------------------------------- |
-| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait toggle "dance mode" — the brand name's gradient animations speed up (wired in `particle-bg.js`; nothing stored, reload resets, inert under reduced motion) |
+| `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. 🥚 Six quick taps on the hero portrait light the masthead up — the keylines either side of the name start glowing and streaming, and the cursor in the `ks_` mark blinks through four colours. That is all of it: **the name itself never moves** (an earlier version wiggled the whole lockup, and a tilting header reads as broken) and nothing is thrown over the header (it used to burst sparks on a 260ms interval). **The egg is now pure CSS** — a class toggle with no timer, so there is nothing to tick and no way for it to leak work into a backgrounded tab, which the sparks needed an explicit `document.hidden` guard to avoid (wired in `particle-bg.js`; nothing stored, reload resets, inert under reduced motion — the JS simply does not bind the handler, which is the only guard and why the CSS carries none) |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
 | `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 50 repositories     |
@@ -247,24 +247,66 @@ The value is now `camera=(self), microphone=(self)`. Had this event existed, GA 
 
 ### Visual layer
 
-**The arrows either side of the wordmark** are `.brand::before` / `::after` in `main.css`, and they
-are pseudo-elements rather than markup for a specific reason: every page carries a static copy of
-the header for the no-JS case, and the static chrome gate in `build.js` compares those copies
-against `partials/`. Real elements would have meant editing 288 pages or drifting from the partial.
-Colour is a background and shape is a mask, so the SVG carries no colour of its own and `--brand-l`
-keeps working in light mode. `::before` is the same rule mirrored with `scaleX(-1)`, which is why
-one set of chevrons points at the name from both sides.
+**The masthead** is a monogram, a still wordmark and two keylines, and all three are pseudo-elements
+rather than markup for a specific reason: every page carries a static copy of the header for the
+no-JS case, the static chrome gate in `build.js` compares those copies against `partials/`, and
+`include-partials.js` swaps one for the other at runtime — so markup only the partial carried would
+flash and shift the bar on all 288 pages. Three slots, and the whole budget is spent:
+`.brand::before` / `::after` are the keylines, `.brand-label::before` is the `ks_` mark. Anything
+the masthead needs next has to reuse one of these or go into the partial *and* every static copy
+together.
 
-Three loops run on three clocks that are deliberately not multiples of each other: the arrows march
-into the name, a shine chases them, and the hue turns through a full circle. The hue is the one
-that matters. Two earlier versions animated position only — a wave that travelled, then a wave that
-travelled and rose and fell — and both were measured in a real browser doing exactly what they were
-told while still being reported as "no animation at all". Constant-velocity travel is motion the
-eye stops seeing almost immediately; a colour change is not. Note that `hue-rotate` and the glow
-share one `filter`, so they must live in ONE keyframe set — two animations on the same property
-means the later one silently wins and the first appears not to run. An even earlier version scaled
-the mask vertically to make a wave swell; don't reintroduce that idea, as squashing a mask pinches
-the thin parts of a stroke below a pixel and the line visibly breaks apart and heals twice a cycle.
+**The mark is drawn in CSS, not loaded from `favicon.svg`**, even though that is the same mark. An
+SVG used as a `background-image` renders in an isolated context with no access to the page's fonts,
+so the `<text>` in that file does not paint at all — loading it gives an empty rounded box. `content:
+"ks"` is real page text and just works; the green cursor is a second background layer rather than a
+third pseudo-element, because there is no third pseudo-element to spend.
+
+**What was here before, so nobody rebuilds it.** The name used to be a rainbow gradient whose hue
+`particle-bg.js` randomised on *every page load*, with a `hue-rotate` turning a full circle every
+18s on top, flanked by two arrows that flew inward along a wave of travelling pips under two
+animated drop-shadow blooms. The arrows were defended in this file on the grounds that "a 1px line
+in one colour cannot hold its own beside an animated rainbow wordmark on a starfield", and that was
+true — but it was the wrong conclusion. The wordmark was the thing that should not have been an
+animated rainbow: the site shipped a brand colour that was lime on one visit and olive on the next
+and only rarely the sky blue (`--accent-1` / `--accent-2`) the palette is actually built from, while
+the button block in `main.css` was already stating the rule in capitals ("ONE FAMILY, NOT A
+RAINBOW"). With the name still, the flanks have nothing left to compete with and a hairline is
+enough. **Do not add the glow back to "balance" the keylines.** Nothing in the masthead animates now,
+which is also why it no longer carries a `prefers-reduced-motion` block of its own.
+
+**The glow lives in the easter egg now, not in the resting state.** Six taps on the hero portrait
+adds `.brand-dancing`, and that is where the keylines go to 2px, pick up a colour band that streams
+outward from the name, and start pulsing a bloom. Spending the glow on the egg is the point: at rest
+the masthead is quiet, so the light reads as a reward rather than as the page's default volume. Two
+mechanics are worth knowing before editing it. First, the fade-outward gradient **moves from
+`background` to `mask`** in the lit state — the fade is painted as the background at rest, which
+leaves nothing free to travel, so putting the shape in the mask frees the background to carry a
+scrolling band. That is the same mask-decides-shape / background-decides-colour split the old arrows
+used. Second, **every colour in the lit state is a token**, and the bloom ones are not stylistic: a
+running animation's `filter` beats any normal declaration in the cascade, so a light-theme `filter:`
+override loses on every frame. `var()` inside `@keyframes` resolves against the element the animation
+runs on, which makes redefining the tokens on the pseudo-element the only handle a theme has. Skip
+that and the egg carries dark-mode pastels onto a white bar and visibly does nothing.
+
+**The `ks_` cursor blinks through colours via one custom property.** `--ks-cursor` is registered with
+`@property` as a `<color>` so it animates as a colour rather than an unknown token, and the keyframes
+touch nothing else — which is what lets one keyframe set serve both themes, since the tile fill and
+the blink palette are separate tokens the light block re-points. `steps(1, end)` is load-bearing:
+without it a registered colour interpolates and the cursor cross-fades through mud instead of
+switching. Without `@property` at all it still blinks — unregistered custom properties animate
+discretely — so this is an upgrade, not a dependency.
+
+**Mobile drops the uppercasing, and that is what pays for the mark.** The tile costs about 30px of a
+bar that had none to spare; mixed case is roughly 8% narrower for the same string at the same size,
+so removing `text-transform: uppercase` gives back more than the tile takes and the step-down ladder
+is one notch gentler than the one it replaced. `text-overflow: ellipsis` came off with it — the
+label is an inline-flex box now, which is atomic, so no browser can place an ellipsis inside it. The
+ladder is instead sized so truncation never happens, verified down to 320px. Its smallest step sits
+at `max-width: 340px` rather than 330 because **`max-width: 330px` does not reliably match a 330px
+screen**: a fractional `devicePixelRatio` (measured 2.0000000298) makes the layout viewport
+330.0000xx px, the query fails on exactly the width it was written for, and the name falls back to
+the step above and clips. Put breakpoints between common device widths, not on them.
 
 
 **Mayuri** is the assistant in the bottom-right corner, built in `particle-bg.js` where the plain

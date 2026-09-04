@@ -181,213 +181,92 @@ img {
 }
 
 .brand {
-  --brand-hue: 199;
-  --brand-l: 70%;
   font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--ink);
-  /* Anchors the two signal traces below. Nothing else depends on it. */
+  /* Anchors the two keylines below. Nothing else depends on it. */
   position: relative;
 }
 
 /* --------------------------------------------------------------------------
-   Signal traces — the light either side of the name.
+   The masthead — a monogram, a still wordmark, and two keylines.
    --------------------------------------------------------------------------
-   On a wide screen the nav wraps: the name sits centred on the first row and
-   the links take the second, leaving roughly five hundred pixels of empty
-   header either side of it. This fills that span with a lit wave and a comet
-   running out along it.
+   WHAT THIS REPLACED, AND WHY IT IS NOT COMING BACK. The name used to be a
+   rainbow gradient whose hue particle-bg.js randomised on every page load and
+   whose filter then turned a full circle every 18s, flanked by two glowing
+   arrows that flew inward along a wave of travelling pips. The arrows were
+   defended here on the grounds that "a 1px line in one colour cannot hold its
+   own beside an animated rainbow wordmark on a starfield", and that was true.
+   It was also the wrong conclusion: the wordmark was the thing that should
+   not have been an animated rainbow. Every load picked a different brand
+   colour — lime one visit, olive the next, and only rarely the sky blue
+   (--accent-1 / --accent-2) this entire file is built from. The button block
+   further down already states the rule in capitals ("ONE FAMILY, NOT A
+   RAINBOW"); the header was the one place it had never been applied.
 
-   IT GLOWS, AND THAT IS THE WHOLE POINT. Six variants came before this — a
-   circuit trace, a heartbeat, chevrons, a constellation, a binary stream, a
-   plain sine — all drawn as thin single-hue strokes, and every one of them
-   disappeared. A 1px line in one colour cannot hold its own beside an animated
-   rainbow wordmark on a starfield; it reads as a scratch on the screen. What
-   works next to light is more light. So: a thicker stroke, the site's whole
-   palette across it instead of one hue, a bloom underneath, and a bright head
-   travelling out from the name.
+   With the name still, the flanks no longer have to compete for attention, so
+   a hairline is enough. Do NOT reintroduce the glow to "balance" them — there
+   is nothing left to balance against, and the reasoning that asked for it
+   died with the gradient.
 
-   PSEUDO-ELEMENTS, NOT MARKUP. Every page carries a static copy of the header
-   for the no-JS case, and the build's static chrome gate compares those copies
-   against partials/. Real elements would have meant editing 288 pages or
-   drifting from the partial; ::before and ::after are invisible to both, so
-   this costs no markup, no request, and nothing the gate can disagree with.
+   PSEUDO-ELEMENTS, NOT MARKUP, and that constraint has not changed. Every
+   page carries a static copy of this header for the no-JS case, the chrome
+   gate in build.js compares the two, and include-partials.js swaps one for
+   the other at runtime — so markup that only the partial carried would flash
+   and shift the bar on every page in the site. Three pseudo-element slots
+   came free when the gradient and the arrows went, and all three are spent:
 
-   THREE THINGS STACKED. The background paints the colour and the comet, the
-   mask cuts it to a wave, and drop-shadow blooms whatever survives — so the
-   glow follows the wave's shape rather than sitting behind it as a rectangle,
-   which is what a box-shadow would have given.
+     .brand::before / ::after   the two keylines
+     .brand-label::before       the ks_ monogram
+
+   That is the whole budget. Anything the masthead needs next has to reuse one
+   of these, or go into partials/header.html AND all the static copies
+   together.
    -------------------------------------------------------------------------- */
+
+/* The keylines. On a wide screen the nav wraps — the name sits centred on the
+   first row and the links take the second — which leaves roughly five hundred
+   pixels of empty bar either side of it. Deleting the arrows outright left the
+   name floating in that gap; these fill it without asking to be looked at.
+
+   They fade OUTWARD from the name: the gradient runs transparent-to-opaque
+   left-to-right and ::after is the same rule mirrored, so both are densest
+   where they meet the wordmark and dissolve at the far end. That direction is
+   the whole effect — a line that is solid at its outer edge reads as a rule
+   somebody forgot to finish.
+
+   --line-rgb is the site's hairline token (slate on dark, a darker slate on
+   light), so this one rule serves both themes and the light block below needs
+   to say nothing about it. */
 .brand::before,
 .brand::after {
   content: '';
   position: absolute;
   top: 50%;
-  height: 26px;
-  margin-top: -13px;
-  width: clamp(2.5rem, 22vw, 21rem);
+  margin-top: -0.5px;
+  height: 1px;
+  width: clamp(2rem, 15vw, 14rem);
   pointer-events: none;
-
-  /* The same idea as the dharmachakra breaker on /fun/buddha: an arrow that
-     draws itself inward and lands on the mark, rather than decoration parked
-     either side of it. Buddha builds it from TWO elements - the line is a
-     ::before and the chevron a separate ::after - because that version scales
-     the line, and anything nested inside a scaled box is stretched with it.
-
-     Here there is only one pseudo-element per side to spend, because the
-     header's static no-JS copy is duplicated across 288 pages and the chrome
-     gate compares them against partials/. So the arrow lives entirely in the
-     MASK as two layers, which union by default: a chevron head that flies in,
-     and a tapered shaft that lengthens behind it. Growing a mask LAYER is safe
-     where scaling the element is not - the shaft is a plain bar, so stretching
-     it horizontally only makes it longer, and the head is never scaled at all,
-     just moved. */
-  -webkit-mask-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='26' viewBox='0 0 17 26'%3E%3Cpath d='M13.5 5.5L5 13l8.5 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='26' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,13 q5.0,-4.4 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0' fill='none' stroke='url(%23s)' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
-          mask-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='26' viewBox='0 0 17 26'%3E%3Cpath d='M13.5 5.5L5 13l8.5 7.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='26' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,13 q5.0,-4.4 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0' fill='none' stroke='url(%23s)' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
-  -webkit-mask-repeat: no-repeat, no-repeat;
-          mask-repeat: no-repeat, no-repeat;
-  /* The RESTING state - arrow landed, full length. The animation overrides
-     these while it plays, so `animation: none` under reduced motion lands on a
-     complete arrow rather than on whatever frame zero happened to be. */
-  -webkit-mask-size: 17px 26px, 100% 26px;
-          mask-size: 17px 26px, 100% 26px;
-  -webkit-mask-position: 0% center, 100% center;
-          mask-position: 0% center, 100% center;
-
-  /* Colour flows; the mask decides the shape. Two layers, and the top one is
-     the dots: bright pips running down the wire toward the name, which is what
-     keeps the arrow alive now that it only draws itself once. They are sized to
-     cover the wave's full swing (about 3.5px either side of centre) - a pip
-     narrower than that would blink out wherever the wave was at a crest.
-
-     They are BACKGROUND, not a third mask layer, and that is not a style
-     choice. mask-position is already spoken for by the flight animation, and
-     two animations on one property do not blend - the later one in the list
-     wins outright and would have thrown the flight away. Background position
-     is free, so the dots ride there and the mask clips them to the shaft.
-
-     The stops are symmetric so each tile meets itself and neither layer ever
-     shows a seam. The taper lives in the mask, not here, which is why the
-     stream can be a flat repeating band. */
-  background-image:
-    radial-gradient(circle 4.5px at 17px 50%,
-      rgba(255, 255, 255, 0.98) 0 2.6px, rgba(255, 255, 255, 0) 4.5px),
-    linear-gradient(90deg,
-      #67e8f9 0%, #818cf8 25%, #f472b6 50%, #818cf8 75%, #67e8f9 100%);
-  background-repeat: repeat-x, repeat-x;
-  background-size: 34px 100%, 240px 100%;
-  background-position: 0 center, 0 center;
-
-  /* The glow colours are tokens for one reason: they also live inside the
-     brand-hue keyframes, and a running animation's `filter` beats any normal
-     declaration in the cascade — a light-theme `filter:` override would simply
-     lose on every frame. var() inside keyframes resolves against the element
-     the animation runs on, so redefining these four on the pseudo-element is
-     the only handle a theme has on the animated glow. */
-  --trace-glow-1: hsla(199, 95%, 65%, 0.55);
-  --trace-glow-1-lit: hsla(199, 100%, 72%, 0.9);
-  --trace-glow-2: hsla(265, 90%, 70%, 0.32);
-  --trace-glow-2-lit: hsla(265, 95%, 74%, 0.55);
-
-  /* The arrow is drawn ONCE, on arrival, and then stays - `both` holds the
-     final keyframe so it never resets. All the continuing motion is in the
-     colour: the gradient streams along the shaft, and the hue turns underneath
-     it. A shape that redraws itself every few seconds competes with the page
-     for attention; a shape that arrives and then just glows does not. */
-  animation:
-    brand-arrow 1.5s cubic-bezier(0.22, 0.78, 0.3, 1) both,
-    brand-stream 2.2s linear infinite,
-    brand-hue 7s linear infinite;
-}
-/* The flight, played once. The head travels from the far edge to the wordmark
-   while the shaft lengthens behind it at exactly the same rate, so the two stay
-   joined - at any moment the head sits on the shaft's leading edge. It used to
-   fade and fly again on a loop; landing and staying is both calmer and closer
-   to what buddha's arrow does, which arrives at the wheel and belongs there. */
-@keyframes brand-arrow {
-  0% {
-    opacity: 0;
-    -webkit-mask-size: 17px 26px, 0% 26px;
-            mask-size: 17px 26px, 0% 26px;
-    -webkit-mask-position: 100% center, 100% center;
-            mask-position: 100% center, 100% center;
-  }
-  14% { opacity: 1; }
-  100% {
-    opacity: 1;
-    -webkit-mask-size: 17px 26px, 100% 26px;
-            mask-size: 17px 26px, 100% 26px;
-    -webkit-mask-position: 0% center, 100% center;
-            mask-position: 0% center, 100% center;
-  }
-}
-
-/* Colour streaming toward the name, on its own clock. This is what keeps
-   moving while the arrow holds, and it is why the pause between flights does
-   not read as the animation having stopped. */
-/* One animation, two layers, two speeds. The dots cross three of their 34px
-   tiles while the colour crosses one of its 240px ones, so the pips visibly
-   overtake the wash they are travelling through. Both distances are whole
-   multiples of their own tile, which is what makes the loop seamless - land on
-   a fraction and the pattern jumps every cycle. */
-@keyframes brand-stream {
-  from { background-position: 0 center, 0 center; }
-  to   { background-position: -102px center, -240px center; }
-}
-
-
-/* Hue turns through a full circle; brightness swells at the halfway point.
-   Both live in one keyframe set because they animate the SAME property, and two
-   animations on one property means the later one silently wins. */
-@keyframes brand-hue {
-  0% {
-    filter: drop-shadow(0 0 5px var(--trace-glow-1))
-            drop-shadow(0 0 12px var(--trace-glow-2)) hue-rotate(0deg);
-  }
-  50% {
-    filter: drop-shadow(0 0 9px var(--trace-glow-1-lit))
-            drop-shadow(0 0 22px var(--trace-glow-2-lit)) hue-rotate(180deg);
-  }
-  100% {
-    filter: drop-shadow(0 0 5px var(--trace-glow-1))
-            drop-shadow(0 0 12px var(--trace-glow-2)) hue-rotate(360deg);
-  }
+  background: linear-gradient(90deg,
+    rgb(var(--line-rgb) / 0) 0%,
+    rgb(var(--line-rgb) / 0.42) 100%);
 }
 
 .brand::before {
   right: 100%;
   margin-right: 1.15rem;
-  transform: scaleX(-1);
 }
 
 .brand::after {
   left: 100%;
   margin-left: 1.15rem;
+  transform: scaleX(-1);
 }
 
-/* There is no comet any more. The trace used to carry a third background
-   layer — a bright 74px ellipse that crossed the wire once per cycle — and it
-   went when the one-shot arrow flight took over the job of "a bright head
-   travelling out from the name". What remains is exactly the two layers the
-   base rule paints: the pips and the colour wash, each looping on a whole
-   multiple of its own tile (see brand-stream), which is what keeps the scroll
-   seamless instead of snapping back. */
-
-/* Only brightness breathes; geometry holds still. An earlier version scaled
-   the MASK vertically to make the wave swell, and it looked wrong for a
-   concrete reason: squashing the mask pinches the thin parts of the stroke
-   below a pixel, so the line visibly broke into pieces and healed again twice
-   a cycle. The swell lives in brand-hue's drop-shadows instead. */
-
 /* Below the wrap point the name is no longer centred — it sits hard left with
-   the burger beside it, so a trace would run off the edge of the screen and
-   point at nothing. */
+   the burger beside it, so a keyline would run off the edge of the screen. */
 @media (max-width: 900px) {
   .brand::before,
   .brand::after {
@@ -395,139 +274,237 @@ img {
   }
 }
 
-/* Still, but not gone. The arrow stands at full length with its head landed on
-   the wordmark, exactly as buddha's does under this setting - it is shape as
-   much as motion, and removing it would take away part of the design rather
-   than part of the movement. The base rule already declares that resting
-   state, so stopping the animations is the whole fix. The glow is kept for the
-   same reason: it is how the arrow looks, not how it moves. */
-@media (prefers-reduced-motion: reduce) {
-  .brand::before,
-  .brand::after {
-    animation: none;
-    /* Only the colour band, no pips: a frozen row of dots reads as a dashed
-       line somebody forgot to finish, where the plain gradient reads as a
-       finished object. */
-    background-image:
-      linear-gradient(90deg,
-        #67e8f9 0%, #818cf8 25%, #f472b6 50%, #818cf8 75%, #67e8f9 100%);
-    background-size: 240px 100%;
-    /* The dim-state tokens, so this static glow follows the theme the same
-       way the animated one does. */
-    filter: drop-shadow(0 0 5px var(--trace-glow-1))
-            drop-shadow(0 0 13px var(--trace-glow-2));
-  }
-}
+/* Nothing in this masthead animates, so there is no prefers-reduced-motion
+   block for it any more. The one that used to live here stopped the arrow
+   flight and swapped the travelling pips for a plain band; both are gone. The
+   only motion left anywhere near the brand is the dance easter egg, which
+   particle-bg.js already refuses to start under that setting. */
 
-/* inline-block because inline elements are not transformable: .brand-label is
-   a non-replaced inline <span>, and the transforms spec has every browser
-   ignore a transform on such a box outright — so the brand-dance wiggle below
-   silently never moved a pixel. Making the span inline-block costs no layout
-   (it is the link's only content) and turns the transform on. It lives in the
-   BASE rule, not the @supports block, so the box stays transformable whether
-   or not the browser can do clipped gradient text. */
+/* inline-FLEX because ::before is how the monogram gets drawn. As a flex item
+   the tile sits on the row beside the name, centres against it with
+   align-items, and takes `gap` — none of which an inline box gives you, where
+   the pseudo-element would run in with the text and need margins and a
+   vertical-align guess instead.
+
+   INLINE because the wordmark is still a phrase inside a link, and the two-row
+   masthead centres it by text alignment.
+
+   This rule used to carry a long note about transformability: the egg once
+   wiggled the lockup, an inline box cannot be transformed, and that had
+   silently eaten the wiggle. The wiggle is gone — the egg moves light now, not
+   the name — so that reasoning went with it. Kept as a footnote only because
+   the conclusion would be re-derived the moment anyone tries to animate this
+   element again: a plain `inline` box will ignore a transform outright. */
 .brand-label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  /* On .brand-label, the span inside the link - NOT on .brand itself, and the
-     difference matters the moment dance mode runs.
+/* The ks_ monogram — the same mark as favicon.svg, which until now was the
+   only place on the site it existed. Redrawn in CSS rather than simply loaded
+   from that file, and that is not a preference: an SVG used as a
+   background-image renders in an isolated context with no access to the
+   page's fonts, so the <text> in favicon.svg does not paint at all. Loading
+   it gives an empty rounded box. `content` is real page text and just works.
 
-     background-clip: text paints the background on this box and clips it to
-     this box's glyphs. Put the paint on the link and the wiggle on a span
-     inside it and the two come apart: the letters move, the paint does not
-     follow, and with -webkit-text-fill-color: transparent underneath there is
-     nothing else to see - the name would blink out for the length of the egg.
-     Paint and motion have to sit on the same element.
+   Two background layers, painted in order: the green cursor block, then the
+   tile fill beneath it. The cursor is a flat gradient sized and positioned
+   into place rather than a third pseudo-element, because per the budget above
+   there is no third pseudo-element to spend.
 
-     Moving it here also gets the arrows out of the way. They are pseudo-
-     elements of .brand, and a transform on .brand carries them with it; at up
-     to 21rem long, a 1.5deg rotation swung their far ends about 9px, which is
-     the flapping. The wiggle now lands on the span, which they are not
-     inside. */
-  .brand-label {
-    /* Lightness is a token because the stops are painted straight onto the
-       page: background-clip:text means `color` is ignored, so a light theme
-       cannot fix this the usual way. At 70% these pastels sat around 1.2:1 on
-       white — the name was legible only where the dark middle stop passed
-       under it. See --brand-l in the light block. */
-    background: linear-gradient(
-      90deg,
-      hsl(var(--brand-hue), 92%, var(--brand-l)),
-      hsl(calc(var(--brand-hue) + 70), 92%, var(--brand-l)),
-      var(--ink),
-      hsl(var(--brand-hue), 92%, var(--brand-l))
-    );
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
-    animation: brand-flow 4s linear infinite, brand-hue-cycle 18s linear infinite;
-  }
+   text-transform and letter-spacing are reset because .brand sets uppercase
+   and 0.07em for the wordmark. The mark is deliberately lowercase and tight —
+   it is a shell prompt, not an abbreviation.
 
-  /* 🥚 Dance mode (six taps on the homepage portrait — particle-bg.js).
-     The flow runs fast AND alternates direction so the gradient bounces
-     instead of marching left-to-right; the hue filter spins quickly while
-     JS also jumps --brand-hue at random, so the colors never settle; and a
-     wiggle rides on top. Transform-only, so header layout never shifts. */
-  .brand.brand-dancing .brand-label {
-    animation:
-      brand-flow 0.7s ease-in-out infinite alternate,
-      brand-hue-cycle 2.2s linear infinite,
-      brand-dance 0.5s ease-in-out infinite;
-  }
+   text-shadow: none because the global body shadow smears 15px monospace
+   inside a 34px tile. The wordmark beside it keeps that shadow, like every
+   other piece of bold text on the site. */
+.brand-label::before {
+  content: "ks";
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding-left: 0.3rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.32);
+  border-radius: 0.6rem;
+  font-family: Consolas, "Cascadia Mono", ui-monospace, monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--accent-1);
+  text-shadow: none;
+
+  /* Three tokens rather than three literals, and the reason is the easter egg
+     below: it blinks the cursor through a run of colours, and it can only do
+     that by animating ONE property. With the colours inline, the keyframes
+     would have had to restate the whole two-layer background-image on every
+     step — including the tile fill, which differs per theme, so the egg would
+     have needed a duplicate keyframe set for light mode that painted the dark
+     tile by mistake. Pulling the cursor out means the keyframes touch
+     --ks-cursor and nothing else, and the light block below re-points all
+     three in four lines. */
+  --ks-cursor: #86efac;
+  --ks-tile-a: #1e3a5f;
+  --ks-tile-b: #132033;
+  /* The egg's blink palette, tokens for the same reason as the cursor itself.
+     These four are read from inside @keyframes brand-egg-cursor, so the egg
+     gets one keyframe set for both themes and the light block re-points them
+     to versions that survive a pale tile — the dark set is pastel, and pastel
+     on #e8f4fd is a blink nobody can see. */
+  --ks-egg-1: #86efac;
+  --ks-egg-2: #67e8f9;
+  --ks-egg-3: #f472b6;
+  --ks-egg-4: #fbbf24;
+  background-image:
+    linear-gradient(var(--ks-cursor), var(--ks-cursor)),
+    linear-gradient(150deg, var(--ks-tile-a), var(--ks-tile-b));
+  background-size: 0.42rem 0.16rem, 100% 100%;
+  background-position: 1.42rem 1.3rem, 0 0;
+  background-repeat: no-repeat, no-repeat;
 }
 
-/* The arrows do not join in - they answer. Outside the @supports block because
-   none of this needs background-clip, and the egg should still read on a
-   browser that cannot do clipped text.
+/* Registered so --ks-cursor animates as a COLOUR rather than as an unknown
+   token. Unregistered custom properties animate discretely — they flip at the
+   halfway point of each interval — which for a blink is very nearly the same
+   thing, so this is an upgrade and not a dependency: without @property the egg
+   still blinks, it just cannot be asked to fade. Declared after the rule that
+   sets the initial value so the two cannot disagree. */
+@property --ks-cursor {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #86efac;
+}
 
-   The name wiggles; the arrows get URGENT instead. The single arrival becomes a
-   repeating one, so they fire at the name over and over; the colour and the
-   pips run at four times their normal rate; and the hue spins fast enough to
-   keep pace with the random jumps JS is making to --brand-hue. Speed rather
-   than displacement, so nothing in the header moves out of place. */
+/* --------------------------------------------------------------------------
+   🥚 Dance mode — six taps on the homepage portrait (particle-bg.js).
+   --------------------------------------------------------------------------
+   THE NAME DOES NOT MOVE, and that is the design rather than an omission. An
+   earlier version of this egg wiggled the whole lockup — rotate(±1.5deg) plus
+   a 2px hop — and a header that tilts is a header that looks broken to anyone
+   who did not just tap a photo six times. The light moves instead: the
+   keylines either side of the wordmark come alive, and the cursor in the
+   monogram starts blinking through colours. Everything animated here is
+   either side of the name or inside the mark; the wordmark itself holds
+   perfectly still, so nothing in the bar shifts by a pixel and the layout is
+   untouchable.
+
+   This is also where the glow the arrows used to carry all the time finally
+   belongs. In the resting state the keylines are 1px and quiet, on purpose;
+   spending the glow on the egg means it reads as a reward rather than as the
+   default state of the page.
+
+   Under prefers-reduced-motion the egg never starts: particle-bg.js does not
+   bind the tap handler at all, so none of these rules can ever apply. That is
+   the guard, and it is deliberately in one place rather than restated here.
+   -------------------------------------------------------------------------- */
+
+/* The keylines, lit. Two things change shape here and one of them is subtle:
+   the fade-outward gradient MOVES FROM background TO mask. It has to. In the
+   resting state the fade is painted as the background, which leaves nothing to
+   travel; putting the fade in the mask frees the background to carry a colour
+   band that scrolls, and the mask then clips it to the same dissolving shape.
+   Exactly the split the old arrows used — mask decides the shape, background
+   decides the colour — reused for the one state that still needs it.
+
+   ::after is mirrored with scaleX(-1) by the base rule, and the mirror takes
+   the mask with it, so both sides dissolve away from the wordmark just as
+   they do at rest. The band travels outward from the name on both sides for
+   the same reason: light radiating from the mark reads as celebration, where
+   light converging on it reads as the old arrows demanding attention. */
 .brand.brand-dancing::before,
 .brand.brand-dancing::after {
+  height: 2px;
+  margin-top: -1px;
+  background-image: linear-gradient(90deg,
+    var(--egg-band-1) 0%, var(--egg-band-2) 25%, var(--egg-band-3) 50%,
+    var(--egg-band-2) 75%, var(--egg-band-1) 100%);
+  background-size: 220px 100%;
+  background-repeat: repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 1) 100%);
+          mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 1) 100%);
+
+  /* The band and the bloom are BOTH tokens, and the bloom ones are not a
+     style preference — they are the only handle a theme has on this glow. A
+     running animation's `filter` beats any normal declaration in the cascade,
+     so a light-theme `filter:` override would lose on every single frame.
+     var() inside @keyframes resolves against the element the animation runs
+     on, which makes redefining these four on the pseudo-element the one thing
+     that works. The arrows this replaced learned that the hard way; the note
+     survived them because the trap has not gone anywhere.
+
+     The band needs theming for the plainer reason: these are pastels around
+     70% lightness, which is exactly where a colour disappears on a white bar. */
+  --egg-band-1: #67e8f9;
+  --egg-band-2: #818cf8;
+  --egg-band-3: #f472b6;
+  --egg-glow-1: hsla(199, 95%, 65%, 0.55);
+  --egg-glow-1-lit: hsla(199, 100%, 72%, 0.9);
+  --egg-glow-2: hsla(265, 90%, 70%, 0.3);
+  --egg-glow-2-lit: hsla(265, 95%, 74%, 0.55);
+
   animation:
-    brand-arrow 1.1s cubic-bezier(0.22, 0.78, 0.3, 1) infinite,
-    brand-stream 0.55s linear infinite,
-    brand-hue 1.1s linear infinite;
+    brand-egg-shine 0.9s linear infinite,
+    brand-egg-glow 1.5s ease-in-out infinite;
 }
 
-/* Gradient tiles seamlessly (first and last stops match), so sliding it by
-   exactly one tile width per cycle loops without a visible jump. */
-@keyframes brand-flow {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 150% 50%;
-  }
+/* One whole tile per cycle (220px, matching background-size), which is what
+   makes the scroll seamless — land on a fraction and the band visibly jumps
+   every time it loops. The first and last stops match for the same reason. */
+@keyframes brand-egg-shine {
+  from { background-position: 0 center; }
+  to   { background-position: -220px center; }
 }
 
-@keyframes brand-hue-cycle {
-  to {
-    filter: hue-rotate(360deg);
-  }
-}
-
-@keyframes brand-dance {
+/* Hue and bloom share ONE keyframe set because they are both `filter`, and two
+   animations on the same property do not blend — the later one in the list
+   wins outright and the first silently never runs. This cost somebody a
+   debugging session once already; see the note in the README. */
+@keyframes brand-egg-glow {
   0%, 100% {
-    transform: rotate(-1.5deg) translateY(0);
+    filter: drop-shadow(0 0 4px var(--egg-glow-1))
+            drop-shadow(0 0 10px var(--egg-glow-2));
   }
   50% {
-    transform: rotate(1.5deg) translateY(-2px);
+    filter: drop-shadow(0 0 8px var(--egg-glow-1-lit))
+            drop-shadow(0 0 20px var(--egg-glow-2-lit));
   }
 }
 
-/* Firecracker sparks — shared by dance mode (particle-bg.js) and the
-   verify page's success celebration (verify.js). Each spark gets a random
-   color and a random flight vector in --dx/--dy, and removes itself when
-   its animation ends. */
+/* The cursor blinks, and it blinks in colour. Four hues with a beat of nothing
+   between them, which is what makes it read as a terminal cursor having fun
+   rather than as a light that cannot decide — a real cursor is on, then off.
+   steps(1, end) is load-bearing: without it a registered <color> property
+   would interpolate and the cursor would smoothly cross-fade through mud
+   instead of switching cleanly.
+
+   Only --ks-cursor is touched, so the tile fill underneath is whatever the
+   current theme set and this works unchanged in light mode. */
+@keyframes brand-egg-cursor {
+  0%,   100% { --ks-cursor: var(--ks-egg-1); }
+  12.5%      { --ks-cursor: transparent; }
+  25%        { --ks-cursor: var(--ks-egg-2); }
+  37.5%      { --ks-cursor: transparent; }
+  50%        { --ks-cursor: var(--ks-egg-3); }
+  62.5%      { --ks-cursor: transparent; }
+  75%        { --ks-cursor: var(--ks-egg-4); }
+  87.5%      { --ks-cursor: transparent; }
+}
+
+.brand.brand-dancing .brand-label::before {
+  animation: brand-egg-cursor 2.4s steps(1, end) infinite;
+}
+
+/* Firecracker sparks — the verify page's success celebration (verify.js),
+   and nothing else any more. The masthead egg used to throw these over the
+   header too; it does not, and this block stayed because verify.js builds
+   its own burst on the same class. Each spark gets a random colour and a
+   random flight vector in --dx/--dy, and removes itself when its animation
+   ends. Do not delete it as dead brand code — grep verify.js first. */
 .fx-spark {
   position: fixed;
   width: 6px;
@@ -1080,6 +1057,50 @@ main {
   text-transform: uppercase;
   font-weight: 800;
   color: var(--accent);
+}
+
+/* The hero's eyebrow is the one that is not a two-word section label.
+   --------------------------------------------------------------------------
+   SCOPED TO .hero-copy ON PURPOSE. There are 593 .eyebrow elements across 187
+   pages and every other one of them is a short label — "In their words",
+   "Selected work", "Certifications" — which 0.25em suits exactly. Widening the
+   component to fit the hero would have loosened all 592 of the others to fix
+   one, so this stays a descendant rule and the component is untouched.
+
+   The hero's is a five-domain list, and 0.25em could not hold it on one line:
+   at 53 characters that tracking alone contributes about 170px, and the copy
+   column is 557px at 1024px wide. It wrapped to two lines on every real
+   desktop width and three on a phone, which is where a label stops reading as
+   a label and starts looking like a sentence set in the wrong style. 0.18em is
+   the widest value that fits — measured at 1024 / 1280 / 1440, one line at all
+   three — and is still unmistakably letterspaced.
+
+   Below about 700px the column is too narrow for any five-item list, so it
+   wraps to two lines by design; text-wrap: balance splits it evenly instead of
+   leaving one orphaned domain on the second line. Ignored by browsers that do
+   not support it, which simply get the default greedy wrap. */
+.hero-copy .eyebrow {
+  letter-spacing: 0.18em;
+  text-wrap: balance;
+}
+
+/* One narrow step, because two lines is the budget and 0.18em spends it by
+   about 345px: measured, the list holds two lines down to 350 and goes to
+   three at 340. Size buys more here than tracking does — at this width
+   dropping tracking alone needs 0.08em to save the line, which is so tight
+   the label stops looking letterspaced at all, where a small size reduction
+   plus 0.14em gets there and still reads as a label.
+
+   345px sits in the gap between 340 and 350 rather than on either, for the
+   reason the brand ladder further down spells out: a fractional
+   devicePixelRatio makes the layout viewport a hair wider than its nominal
+   width, so a query written on a common device width can fail on exactly that
+   device. */
+@media (max-width: 345px) {
+  .hero-copy .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
 }
 
 h1,
@@ -4336,13 +4357,43 @@ html:not(.js) .search-open {
   .nav-toggle { order: 2; }
 
   /* Without min-width:0 a flex item refuses to shrink below its content, so
-     the long name would push the icons off the bar rather than truncate. */
+     the long name would push the icons off the bar rather than truncate.
+
+     THE UPPERCASING COMES OFF HERE, and that is what buys the room. The
+     monogram takes about 30px of a bar that had none to spare, and the old
+     answer to a tight bar was to step the font size down until the name fit —
+     four times, ending at 0.78rem. Mixed case is roughly 8% narrower than the
+     same string in caps at the same size, so dropping `uppercase` gives back
+     more than the tile costs and the ladder below can be gentler than the one
+     it replaced. It also stops the name reading as a logotype competing with
+     the mark beside it: on a phone the tile is the logo and the name is a
+     name.
+
+     overflow: hidden stays as a floor, but text-overflow does not: the label
+     is now an inline-flex box, which is atomic, so a browser cannot place an
+     ellipsis inside it — it would clip silently either way. The ladder below
+     is sized so it does not come to that down to 320px. */
   .brand {
     min-width: 0;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-    padding-right: 0.6rem;   /* the ellipsis should not touch the first icon */
+    text-transform: none;
+    letter-spacing: 0.01em;
+    padding-right: 0.6rem;   /* the name should not touch the first icon */
+  }
+
+  .brand-label {
+    gap: 0.45rem;
+  }
+
+  .brand-label::before {
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 0.5rem;
+    padding-left: 0.26rem;
+    font-size: 0.85rem;
+    background-size: 0.38rem 0.15rem, 100% 100%;
+    background-position: 1.24rem 1.14rem, 0 0;
   }
 
   .search-open, .theme-toggle { width: 2.5rem; height: 2.5rem; }
@@ -4581,36 +4632,64 @@ html:not(.js) .search-open {
   transition: none !important;
 }
 
-/* The one-row phone layout runs to 640px, and the full 1.25rem brand only
-   fits from about 530px up — large phones (430-480px) were clipping the name
-   at the default size because this band stopped at 420. */
-@media (max-width: 530px) {
-  .brand { font-size: 1.02rem; letter-spacing: 0; }
-}
+/* The phone ladder — the name steps down as the bar runs out of room, and now
+   the monogram steps down with it so the lockup keeps its proportions instead
+   of the tile slowly swallowing the name.
 
-/* 375px — the single most common phone width — sat just inside the 530 band
-   and still needed about 3px more than it had, so the name lost its last
-   letter. One step down covers 361-384.
+   The whole ladder is one step gentler than the version it replaced, because
+   the ≤640px block above drops the uppercasing and mixed case is about 8%
+   narrower for the same string at the same size. What has to fit is two 40px
+   icons, a 44px hamburger, the tile, the gap and sixteen characters.
 
    Sized with headroom rather than to the millimetre: a phone gives the full
    375px because its scrollbar is an overlay, but a 375px-wide desktop window
    spends about 15px on a classic scrollbar, and a value that only just fits
-   the phone case truncates in the other one. */
-@media (max-width: 384px) {
-  .brand { font-size: 0.9rem; }
+   the phone case truncates in the other one. Measured at 320 / 330 / 360 /
+   375 / 384 / 430 / 530 — re-measure at those widths if these are retuned. */
+@media (max-width: 530px) {
+  .brand { font-size: 1.02rem; }
 }
-/* Below 360px the bar runs out of room: two 40px icons and a 44px hamburger
-   leave about 144px for a sixteen-character name, and it was truncating to
-   "Krunalkumar Sha…". Trimming the nav's side padding gives back 16px and the
-   name steps down to meet it, which keeps it whole rather than clipped. */
+
+@media (max-width: 384px) {
+  .brand { font-size: 0.94rem; }
+  .brand-label { gap: 0.4rem; }
+  .brand-label::before {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.8rem;
+    background-position: 1.14rem 1.04rem, 0 0;
+  }
+}
+
+/* Below 360px the bar is genuinely short of room, so it gives some back:
+   trimming the nav's side padding frees about 16px, and the name and mark meet
+   it from the other side. */
 @media (max-width: 360px) {
   .nav { padding-left: 1rem; padding-right: 1rem; }
   .nav-tools { margin-right: 0.35rem; }
-  .brand { font-size: 0.86rem; }
+  .brand { font-size: 0.88rem; }
 }
 
-@media (max-width: 330px) {
+/* 340, not the 330 this step sat on for a long time, and the extra 10px is
+   not slack — it is there because `max-width: 330px` does not reliably match
+   a 330px-wide screen. Fractional device pixel ratios (measured: 2.0000000298)
+   make the layout viewport 330.0000xx px, which is wider than 330, so the
+   query failed on exactly the width it was written for and the name fell back
+   to the 360 step and clipped. Landing the boundary between two common device
+   widths rather than on one of them is the fix; the same reasoning would apply
+   to the steps above if any of them are ever found doing this. */
+@media (max-width: 340px) {
   .brand { font-size: 0.78rem; }
+  .brand-label { gap: 0.3rem; }
+  .brand-label::before {
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 0.4rem;
+    padding-left: 0.18rem;
+    font-size: 0.7rem;
+    background-size: 0.3rem 0.12rem, 100% 100%;
+    background-position: 0.97rem 0.89rem, 0 0;
+  }
 }
 
 /* ==========================================================================
@@ -4698,60 +4777,52 @@ html:not(.js) .search-open {
 :root[data-theme="light"] .footer-msme,
 :root[data-theme="light"] footer#contact small { color: #475569; }
 
-/* The brand is gradient text clipped to the glyphs; on a light bar its dark
-   stops would disappear, so it gets a darker ramp. */
+/* The wordmark is solid ink now rather than clipped gradient text, so the
+   --brand-hue / --brand-l pair that used to live here is gone with it: there
+   is no rotating hue left to hold a single lightness value for, and the
+   contrast sum that produced 24% went with the rotation. This is the same
+   #0b1220 the footer name takes, one step darker than --ink, so the two
+   mastheads match. */
 :root[data-theme="light"] .brand {
-  --brand-hue: 205;
-  /* The 18s hue-rotate means this one value has to hold for every hue, and
-     hues are not equally dark at equal lightness: at 34% the blue phase is a
-     comfortable 6.2:1 on white while the yellow phase is 2.6:1.
-
-     The size matters too. On a desktop the name is 20-24px bold, which counts
-     as large text and needs only 3:1 — 30% cleared that. On a phone it steps
-     down to about 15px, which is ordinary text at 4.5:1, and 30% failed there
-     at 3.5:1. 24% puts the worst phase (yellow) at 4.85:1, so the name holds
-     at every size and every point in the rotation. */
-  --brand-l: 24%;
   color: #0b1220;
 }
 
-/* The signal traces either side of the name hard-code their paint for the
-   dark bar: white pips, pastel stops around 70% lightness, a pale-cyan bloom.
-   Every one of those is light-on-light here — on the white header the trace
-   all but disappeared, and the two arrowheads with it. Same structure as the
-   base rule — two background layers, pips above the gradient — so the
-   brand-stream animation keeps sliding both and the mask keeps clipping them;
-   only the paint changes. The stops are the same three hues pulled down to
-   ~40-45% lightness (the pastels sat near 70%, which is where they vanish on
-   white), the pips flip from white to the ink navy, and the glow tokens drop
-   to dark versions of the same hues at a slightly lower alpha — a pale bloom
-   around a dark stroke reads as a smudge on white, where a dark one reads as
-   weight. */
-:root[data-theme="light"] .brand::before,
-:root[data-theme="light"] .brand::after {
-  background-image:
-    radial-gradient(circle 4.5px at 17px 50%,
-      rgba(11, 18, 32, 0.95) 0 2.6px, rgba(11, 18, 32, 0) 4.5px),
-    linear-gradient(90deg,
-      #0891b2 0%, #4f46e5 25%, #db2777 50%, #4f46e5 75%, #0891b2 100%);
-  --trace-glow-1: hsla(199, 95%, 34%, 0.45);
-  --trace-glow-1-lit: hsla(199, 100%, 30%, 0.7);
-  --trace-glow-2: hsla(265, 90%, 40%, 0.28);
-  --trace-glow-2-lit: hsla(265, 95%, 42%, 0.5);
+/* The keylines need nothing here — they are painted from --line-rgb, which
+   the light block above already redefines. The monogram does need this: its
+   tile fill and cursor are literal colours chosen against a navy bar, and
+   both are light-on-light on a white one. The fill inverts to a pale sky
+   wash, the cursor drops to a dark green that still reads as a cursor
+   rather than a smudge, and the "ks" itself follows --accent-1 on its own. */
+/* The lit keylines, for a white bar. Untouched, the egg carried the dark
+   theme's pastels and a pale-cyan bloom onto white and very nearly vanished —
+   only the pink middle stop showed at all, so tapping the portrait six times
+   in light mode looked like nothing had happened. Same three hues pulled down
+   to ~40-45% lightness, and the bloom inverted to a dark one: a pale glow
+   around a dark stroke reads as a smudge on white, where a dark glow reads as
+   weight. Every value here is a token the base rule declared, for the cascade
+   reason spelled out there. */
+:root[data-theme="light"] .brand.brand-dancing::before,
+:root[data-theme="light"] .brand.brand-dancing::after {
+  --egg-band-1: #0891b2;
+  --egg-band-2: #4f46e5;
+  --egg-band-3: #db2777;
+  --egg-glow-1: hsla(199, 95%, 34%, 0.45);
+  --egg-glow-1-lit: hsla(199, 100%, 30%, 0.7);
+  --egg-glow-2: hsla(265, 90%, 40%, 0.28);
+  --egg-glow-2-lit: hsla(265, 95%, 42%, 0.5);
 }
 
-/* Under reduced motion the traces drop their pips — see the block near the
-   base rule: a frozen row of dots reads as a dashed line somebody forgot to
-   finish. That block loses to the light override above on specificity, which
-   would quietly bring the dots back for exactly the visitors who asked for
-   stillness — so the pip-less form is restated at the winning specificity. */
-@media (prefers-reduced-motion: reduce) {
-  :root[data-theme="light"] .brand::before,
-  :root[data-theme="light"] .brand::after {
-    background-image:
-      linear-gradient(90deg,
-        #0891b2 0%, #4f46e5 25%, #db2777 50%, #4f46e5 75%, #0891b2 100%);
-  }
+:root[data-theme="light"] .brand-label::before {
+  --ks-cursor: #15803d;
+  --ks-tile-a: #e8f4fd;
+  --ks-tile-b: #d5e7f6;
+  /* The egg blink, darkened to survive the pale tile. Same four hues, pulled
+     down to where they read as colour on #e8f4fd instead of as a faint
+     shimmer — the dark theme's pastels are near-invisible here. */
+  --ks-egg-1: #15803d;
+  --ks-egg-2: #0e7490;
+  --ks-egg-3: #be185d;
+  --ks-egg-4: #b45309;
 }
 
 /* Buttons: the primary is accent-filled and fine, but the secondary was a
