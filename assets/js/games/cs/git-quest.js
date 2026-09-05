@@ -356,16 +356,61 @@
         var value = input.value;
         var caret = input.selectionStart;
         if (caret == null || caret > value.length) caret = value.length;
+        caretAt = caret;
         typedEl.textContent = value.slice(0, caret);
         afterEl.textContent = value.slice(caret);
       }
 
-      function keepCaretAtEnd() {
+      /* ------------------------------------------------------------------
+         WHERE THE CARET WAS, REMEMBERED.
+
+         The line lives in an off-screen <input> and is drawn as two spans
+         with a block between them, so the caret a player sees is wherever
+         input.selectionStart happens to be. That makes FOCUS the weak point.
+         A browser is entitled to drop the caret at position 0 when an input
+         is focused programmatically, and mobile Safari reliably does — while
+         this terminal focuses the input from a tap on the screen, from the
+         Commands and Hint buttons, and again after every command it runs.
+         The caret jumped to the front of the line, and the next character
+         typed went in front of everything already there.
+
+         Git quest met this first and answered it by pinning the caret to the
+         end and never letting it move again (b196d34). That did stop the
+         jump. It also cost the thing a command line is for — going back into
+         the middle of a line to repair a typo — and it fought the game's own
+         code: complete() inserts at the caret and sets the selection to
+         match, and the pin threw that away on the very next keystroke.
+
+         Remembering the position stops the same jump and leaves left, right,
+         home and end doing what they do in a shell.
+
+         paintLine is where the reading happens, because paintLine already
+         reads the caret and is already called after every edit — typing,
+         Enter, Escape, history recall, completion. One line there keeps the
+         memory current everywhere, with no second bookkeeping path to forget
+         to update.
+         ------------------------------------------------------------------ */
+      var caretAt = 0;
+
+      function restoreCaret() {
         if (!input) return;
         var end = input.value.length;
-        if (input.selectionStart !== end || input.selectionEnd !== end) {
-          input.setSelectionRange(end, end);
+        var at = caretAt > end ? end : caretAt;   // the line may have shrunk
+        if (input.selectionStart !== at || input.selectionEnd !== at) {
+          input.setSelectionRange(at, at);
         }
+      }
+
+      /* A second chance, for the browsers that move the caret a beat AFTER
+         focus rather than during it — which is why the original fix reached
+         for beforeinput as well as focus. Only while the selection is
+         collapsed, though: a player who has selected the line and started
+         typing over it means to replace it, and putting a caret back would
+         throw that selection away. */
+      function restoreCaretOnInput() {
+        if (!input) return;
+        if (input.selectionStart !== input.selectionEnd) return;
+        restoreCaret();
       }
 
       function paintMission() {
@@ -1681,7 +1726,7 @@
       function focusInput() {
         if (!input) return;
         try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
-        keepCaretAtEnd();
+        restoreCaret();
       }
 
       /* ---------------- DOM ---------------- */
@@ -1731,16 +1776,10 @@
         host.appendChild(input);
 
         input.addEventListener('keydown', onKey);
-        input.addEventListener('beforeinput', keepCaretAtEnd);
-        input.addEventListener('input', function () {
-          keepCaretAtEnd();
-          paintLine();
-        });
+        input.addEventListener('beforeinput', restoreCaretOnInput);
+        input.addEventListener('input', paintLine);
         input.addEventListener('keyup', paintLine);
-        input.addEventListener('click', function () {
-          keepCaretAtEnd();
-          paintLine();
-        });
+        input.addEventListener('click', paintLine);
 
         /* ----------------------------------------------------------------
            The safety net. Everything above rests on one hidden <input>
@@ -1782,9 +1821,19 @@
           if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
           focusInput();
           event.preventDefault();
-          if (event.key === 'Backspace') input.value = input.value.slice(0, -1);
-          else input.value += event.key;
-          keepCaretAtEnd();
+          var at = input.selectionStart;
+          if (at == null || at > input.value.length) at = input.value.length;
+          if (event.key === 'Backspace') {
+            if (!at) return;
+            input.value = input.value.slice(0, at - 1) + input.value.slice(at);
+            at--;
+          } else {
+            input.value = input.value.slice(0, at) + event.key + input.value.slice(at);
+            at++;
+          }
+          /* At the caret, not on the end — same as shell quest, and the same
+             reason: this terminal draws the line either side of the caret. */
+          input.setSelectionRange(at, at);
           paintLine();
           tick();
         });
