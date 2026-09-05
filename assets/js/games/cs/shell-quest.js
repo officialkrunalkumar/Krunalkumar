@@ -1020,8 +1020,9 @@
          insertion that has already been aimed, which is measurable and was
          measured. So the caret has to be correct in the field before the next
          key arrives, which means writing it back on every input event. That
-         is the whole fix, and it is what b196d34 was doing when it pinned the
-         caret to the end there.
+         is the whole fix, and it is what git quest's b196d34 was doing when
+         it pinned that terminal's caret to the end. (This file never had the
+         pin; the history of it lives in git-quest.js.)
 
          The attempt between the two remembered the caret instead of pinning
          it, and read it back out of selectionStart. On a keyboard that was
@@ -1032,8 +1033,8 @@
          Inserting text can never leave a caret at 0 — whatever you type, the
          caret ends up after it. A field that reports 0 immediately after the
          line got longer has told us it cannot be believed, and from there the
-         caret lives at the end of the line: b196d34's behaviour exactly, and
-         exactly what a phone needs. It is a one-way trip, so a device is
+         caret lives at the end of the line: what git quest shipped in b196d34
+         and exactly what a phone needs. It is a one-way trip, so a device is
          never asked to prove itself twice.
 
          The length is tracked here rather than taken from beforeinput,
@@ -1067,10 +1068,22 @@
         }
       }
 
-      function onInput() {
+      function onInput(event) {
         if (!input) return;
         var len = input.value.length;
-        if (caretTrusted && len > lastLen && input.selectionStart === 0) {
+        /* The phone's signature, and ONLY that: the line grew, the caret is
+           collapsed at 0, and this was ordinary typing. An undo puts the
+           restored text back SELECTED — selectionStart 0 but selectionEnd at
+           the end of it — and a paste or a drop at the front of a line lands
+           the caret after what came in. Neither is allowed to flip the trust:
+           Ctrl+A, Backspace, Ctrl+Z on a keyboard used to pin the caret for
+           the rest of the session and kill the mid-line editing this file
+           promises to keep. */
+        var type = event && event.inputType ? event.inputType : '';
+        var ordinary = type.indexOf('history') !== 0 &&
+                       type !== 'insertFromPaste' && type !== 'insertFromDrop';
+        if (caretTrusted && ordinary && len > lastLen &&
+            input.selectionStart === 0 && input.selectionEnd === 0) {
           caretTrusted = false;
         }
         if (caretTrusted) {
@@ -1083,12 +1096,14 @@
         paintLine();
       }
 
-      /* Keys that move the caret without changing the line. Read back only
-         while the field is worth believing; a phone sends none of these. */
-      var CARET_KEYS = { ArrowLeft: 1, ArrowRight: 1, Home: 1, End: 1 };
-
-      function onKeyUp(event) {
-        if (caretTrusted && input && event && event.key && CARET_KEYS[event.key]) {
+      /* Read the caret back on every keyup while the field is worth
+         believing. This was once limited to the four keys that move a caret
+         on a PC keyboard, which missed the ones that move it on a Mac —
+         Ctrl+A, Ctrl+E, Ctrl+B, Ctrl+F — and left Tab completing the wrong
+         word. When the field is trusted the read is truthful, and when it is
+         not the branch is skipped anyway, so the limit bought nothing. */
+      function onKeyUp() {
+        if (caretTrusted && input) {
           var at = input.selectionStart;
           if (at != null) caretAt = at;
         }
@@ -1290,8 +1305,15 @@
           var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
           if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
           if (t && t.isContentEditable) return;
-          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
-          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          if ((tag === 'button' || tag === 'summary') && (event.key === ' ' || event.key === 'Enter')) return;
+          /* Enter on a focused link follows the link; that one is the link's. */
+          if (tag === 'a' && event.key === 'Enter') return;
+          /* Enter is taken from anywhere else, so an answer typed and then
+             stranded by a stray click can still be submitted without first
+             typing another character or clicking the board. */
+          if (event.key !== 'Backspace' && event.key !== 'Enter' &&
+              (!event.key || event.key.length !== 1)) return;
+          if (event.key === 'Enter') { focusInput(); onKey(event); return; }
           focusInput();
           event.preventDefault();
           clampCaret();

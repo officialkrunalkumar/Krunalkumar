@@ -270,6 +270,27 @@
           if (phase === 'solved') { nextWord(); return; }
           guess(k);
         });
+
+        /* And the net beneath it. Once focus has dropped to <body> — a
+           click on the stat line, the article, anything not focusable — the
+           listener above never fires again, while the shell's own fallback
+           replays only the arrows and Space. So the on-screen grid still
+           steered and the letters did nothing, which reads as a game that
+           is half alive. The same three guards the shell's fallback uses: a
+           live run, focus on <body>, the playfield on screen. */
+        document.addEventListener('keydown', function (event) {
+          if (g.state !== 'playing') return;
+          if (document.activeElement !== document.body) return;
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+          var k = event.key;
+          if (!k || k.length !== 1 || !/[a-z]/i.test(k)) return;
+          var stage = g.stage || g.canvas || g.el;
+          var box = stage.getBoundingClientRect();
+          if (!(box.bottom > 0 && box.top < (window.innerHeight || 0))) return;
+          event.preventDefault();
+          if (phase === 'solved') { nextWord(); return; }
+          guess(k);
+        });
       }
 
       function drawGallows(term) {

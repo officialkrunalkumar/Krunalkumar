@@ -222,6 +222,11 @@
           var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
           if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
           if (t && t.isContentEditable) return;
+          /* Space and Enter on a focused button are that button's own
+             activation. Taking them here as well counted a space the player
+             never typed at the passage. The seven nets modelled on this one
+             all carry this guard; now so does the original. */
+          if ((tag === 'button' || tag === 'summary') && (event.key === ' ' || event.key === 'Enter')) return;
 
           if (event.key === 'Backspace' || (event.key && event.key.length === 1)) {
             if (input) {

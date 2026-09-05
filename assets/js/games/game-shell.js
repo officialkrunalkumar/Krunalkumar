@@ -1394,7 +1394,7 @@
 
      UNLESS THE GAME HAS ALREADY PUT FOCUS IN A FIELD OF ITS OWN. The
      typed games — typing trainer, typespeed, shell quest, arithmetic,
-     subnet sprint, ctf arcade, memory span, name in binary — all create
+     subnet sprint, ctf arcade, memory span, git quest — all create
      a real <input> and focus it from reset(), which runs immediately
      before this. Focusing the board here took it straight back, so the
      first thing the player typed went nowhere.
@@ -1446,7 +1446,7 @@
        tabbed away mid-run and came back — the case that matters most. A query
        has no such state to be missing.
 
-       '.typing-catch' is the shared class the seven typed games already give
+       '.typing-catch' is the shared class the typed games already give
        their hidden input, so nothing needs a per-game hook. It is deliberately
        matched on the game root and not on the stage: the terminal games append
        theirs to g.el, beside the stage rather than inside it. */

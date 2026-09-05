@@ -445,6 +445,13 @@
     // reference on the next line.
     var ae = document.activeElement;
     if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable)) return;
+    /* A game being played owns its keyboard — the same guard particle-bg.js
+       puts on its letter shortcuts. The typed games take every printable
+       key from anywhere on the page while a run is live, and '/' is a real
+       character in a shell command, so without this the first '/' of
+       `/bin/ls` opened the search box AND landed on the command line, with
+       everything after it typed behind a modal. */
+    if (document.querySelector('.game[data-state="playing"]')) return;
     e.preventDefault();
     open();
   });

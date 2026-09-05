@@ -57,8 +57,9 @@
 
       /* rawInput means the shell binds nothing, so this needs its own way
          to receive keys — and on a phone, its own way to raise a keyboard.
-         An off-screen <input> does both; a document keydown listener does
-         neither. */
+         An off-screen <input> does both. A document keydown listener can
+         receive keys but cannot raise a keyboard, so it is the second path
+         here rather than the first: the safety net below. */
       function attachInput() {
         if (input || !g.el) return;
         input = document.createElement('input');
@@ -109,8 +110,14 @@
           var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
           if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
           if (t && t.isContentEditable) return;
-          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
-          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          if ((tag === 'button' || tag === 'summary') && (event.key === ' ' || event.key === 'Enter')) return;
+          /* Enter on a focused link follows the link; that one is the link's. */
+          if (tag === 'a' && event.key === 'Enter') return;
+          /* Enter is taken from anywhere else, so an answer typed and then
+             stranded by a stray click can still be submitted without first
+             typing another character or clicking the board. */
+          if (event.key !== 'Backspace' && event.key !== 'Enter' &&
+              (!event.key || event.key.length !== 1)) return;
           /* Hand the field its focus back, so the next key takes the normal
              path and a phone keyboard that was already up stays up. */
           focusInput();

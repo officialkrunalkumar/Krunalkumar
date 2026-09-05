@@ -253,6 +253,25 @@
           if (e.key >= '1' && e.key <= '9') { e.preventDefault(); place(Number(e.key)); return; }
           if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') { e.preventDefault(); place(0); }
         });
+
+        /* The net beneath it. Once focus has dropped to <body> the listener
+           above never fires again, while the shell's own fallback still
+           replays the arrows — so the highlight kept moving and no digit
+           could be placed until the board was clicked. Same three guards as
+           the shell's fallback: a live run, focus on <body>, board on screen. */
+        document.addEventListener('keydown', function (e) {
+          if (g.state !== 'playing') return;
+          if (document.activeElement !== document.body) return;
+          if (e.ctrlKey || e.metaKey || e.altKey) return;
+          var digit = e.key >= '1' && e.key <= '9' && e.key.length === 1;
+          var clear = e.key === 'Backspace' || e.key === 'Delete' || e.key === '0';
+          if (!digit && !clear) return;
+          var stage = g.stage || g.canvas || g.board || g.el;
+          var box = stage.getBoundingClientRect();
+          if (!(box.bottom > 0 && box.top < (window.innerHeight || 0))) return;
+          e.preventDefault();
+          place(digit ? Number(e.key) : 0);
+        });
       }
 
       return {

@@ -19,9 +19,9 @@
    generates. Every division asked here divides exactly.
 
    rawInput, because the shell binds no letter or digit keys at all. Input
-   arrives through an off-screen <input> rather than a document listener:
-   it is also what raises the keyboard on a phone, and inputmode numeric
-   makes that keyboard a keypad.
+   arrives through an off-screen <input> first, with a document listener as
+   the net behind it (see attachInput): the <input> is also what raises the
+   keyboard on a phone, and inputmode numeric makes that keyboard a keypad.
    ========================================================================== */
 
 (function () {
@@ -271,8 +271,14 @@
           var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
           if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
           if (t && t.isContentEditable) return;
-          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
-          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          if ((tag === 'button' || tag === 'summary') && (event.key === ' ' || event.key === 'Enter')) return;
+          /* Enter on a focused link follows the link; that one is the link's. */
+          if (tag === 'a' && event.key === 'Enter') return;
+          /* Enter is taken from anywhere else, so an answer typed and then
+             stranded by a stray click can still be submitted without first
+             typing another character or clicking the board. */
+          if (event.key !== 'Backspace' && event.key !== 'Enter' &&
+              (!event.key || event.key.length !== 1)) return;
           /* Hand the field its focus back, so every key after this one
              takes the normal path and a phone keyboard already up stays up. */
           focusInput();

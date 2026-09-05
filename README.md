@@ -107,7 +107,7 @@ the addresses shared with people stay one word long.
 ├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
 ├── package.json                  Zero dependencies. Names eight scripts — `npm run build` / `npm run check` (both are scripts/build.js), `npm run dev` (scripts/dev-server.js), `npm run glossary` / `npm run glossary:backlinks`, `npm run og-cards`, `npm run check:labs` and `npm run check:forms` — and pins `engines` to Node 24.x. `build` is Vercel's to run — locally it demotes itself to `check`
 ├── .gitignore                    node_modules/, package-lock.json, .vercel/ — package.json makes these possible, none of them belong in the repo
-└── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (no-cache for /assets/data) + noindex on the resume PDF, /partials, and /assets/data
+└── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (an hour plus a day of stale-while-revalidate for /assets/data, which verify.js bypasses with cache: 'no-cache') + noindex on the resume PDF, /partials, and /assets/data
 ```
 
 ---

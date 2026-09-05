@@ -245,6 +245,42 @@
         host.appendChild(keysEl);
 
         host.addEventListener('keydown', onKey);
+
+        /* ----------------------------------------------------------------
+           The safety net. The board reads a physical keyboard only while it
+           has focus, and it loses that to a click on Today's word, Sound,
+           Fullscreen or anywhere in the article — after which every letter
+           typed was dropped until the grid was clicked again. It also had
+           nothing on load: autoStart runs without a gesture and the shell
+           rightly refuses to take focus on page load, so the first thing a
+           desktop player typed went nowhere.
+
+           The typed games carry this same net; this one differs in two ways.
+           There is no hidden field (the header says why), so it is the board
+           that is refocused. And because there is no field, the net has to
+           be sure the visitor is looking at the game and not scrolling the
+           article beneath it, so it also requires the board to be on screen
+           — the guard game-shell.js puts on its own fall-through.
+           ---------------------------------------------------------------- */
+        document.addEventListener('keydown', function (event) {
+          if (g.state !== 'playing') return;
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+          var t = event.target;
+          if (t && host.contains(t)) return;           // the board's own listener has it
+          var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+          if (t && t.isContentEditable) return;
+          if ((tag === 'button' || tag === 'summary') && (event.key === ' ' || event.key === 'Enter')) return;
+          if (tag === 'a' && event.key === 'Enter') return;
+          var k = event.key;
+          if (k !== 'Backspace' && k !== 'Enter' &&
+              (!k || k.length !== 1 || !/[a-z]/i.test(k))) return;
+          var box = host.getBoundingClientRect();
+          if (!(box.bottom > 0 && box.top < (window.innerHeight || 0))) return;
+          try { host.focus({ preventScroll: true }); } catch (err) { host.focus(); }
+          onKey(event);
+        });
+
         /* Clicking the grid hands focus back to the board so a physical
            keyboard keeps working after somebody has used the mouse. */
         host.addEventListener('pointerdown', function (event) {
