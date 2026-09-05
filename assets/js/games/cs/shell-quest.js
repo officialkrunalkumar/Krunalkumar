@@ -997,63 +997,102 @@
       function paintLine() {
         if (!input) return;
         var value = input.value;
-        var caret = input.selectionStart;
-        if (caret == null || caret > value.length) caret = value.length;
-        caretAt = caret;
-        typedEl.textContent = value.slice(0, caret);
-        afterEl.textContent = value.slice(caret);
+        clampCaret();
+        lastLen = value.length;
+        typedEl.textContent = value.slice(0, caretAt);
+        afterEl.textContent = value.slice(caretAt);
       }
 
       /* ------------------------------------------------------------------
-         WHERE THE CARET WAS, REMEMBERED.
+         THE CARET, AND WHY IT IS WRITTEN BACK AFTER EVERY KEYSTROKE.
 
-         The line lives in an off-screen <input> and is drawn as two spans
-         with a block between them, so the caret a player sees is wherever
-         input.selectionStart happens to be. That makes FOCUS the weak point.
-         A browser is entitled to drop the caret at position 0 when an input
-         is focused programmatically, and mobile Safari reliably does — while
-         this terminal focuses the input from a tap on the screen, from the
-         Commands and Hint buttons, and again after every command it runs.
-         The caret jumped to the front of the line, and the next character
-         typed went in front of everything already there.
+         The line is edited in an off-screen <input> and drawn as two spans
+         either side of a caret block, so all of this rests on knowing where
+         the caret is. On a phone the field will not reliably say: after a
+         soft keyboard inserts a character, selectionStart reads 0. A caret at
+         0 means the next character goes in FRONT of the last one, so typing
+         g, i, t produced "tig".
 
-         Git quest met this first and answered it by pinning the caret to the
-         end and never letting it move again (b196d34). That did stop the
-         jump. It also cost the thing a command line is for — going back into
-         the middle of a line to repair a typo — and it fought the game's own
-         code: complete() inserts at the caret and sets the selection to
-         match, and the pin threw that away on the very next keystroke.
+         THE ONE MOMENT THAT MATTERS is the end of a keystroke. Whatever the
+         browser has done to the caret by then, the next keystroke inserts
+         wherever the field's caret is sitting, and nothing done later can
+         move it — setting a selection during beforeinput does NOT retarget an
+         insertion that has already been aimed, which is measurable and was
+         measured. So the caret has to be correct in the field before the next
+         key arrives, which means writing it back on every input event. That
+         is the whole fix, and it is what b196d34 was doing when it pinned the
+         caret to the end there.
 
-         Remembering the position stops the same jump and leaves left, right,
-         home and end doing what they do in a shell.
+         The attempt between the two remembered the caret instead of pinning
+         it, and read it back out of selectionStart. On a keyboard that was
+         right. On a phone it read the 0, believed it, and wrote nothing back
+         — so the field kept its caret at 0, and "tig" came back.
 
-         paintLine is where the reading happens, because paintLine already
-         reads the caret and is already called after every edit — typing,
-         Enter, Escape, history recall, completion. One line there keeps the
-         memory current everywhere, with no second bookkeeping path to forget
-         to update.
+         So: believe the field while it earns it, and stop when it does not.
+         Inserting text can never leave a caret at 0 — whatever you type, the
+         caret ends up after it. A field that reports 0 immediately after the
+         line got longer has told us it cannot be believed, and from there the
+         caret lives at the end of the line: b196d34's behaviour exactly, and
+         exactly what a phone needs. It is a one-way trip, so a device is
+         never asked to prove itself twice.
+
+         The length is tracked here rather than taken from beforeinput,
+         because beforeinput is not guaranteed to arrive — execCommand drives
+         an input event without one, and so do some engines. Anything that
+         changes the line calls paintLine, so recording it there is the one
+         place that cannot be missed.
+
+         The trade is honest: a keyboard, where the field is truthful, keeps
+         mid-line editing and mid-line completion. A phone, where it is not,
+         gets the version that works.
          ------------------------------------------------------------------ */
       var caretAt = 0;
+      var caretTrusted = true;
+      var lastLen = 0;
 
-      function restoreCaret() {
+      function clampCaret() {
+        var end = input ? input.value.length : 0;
+        if (caretAt == null || caretAt < 0) caretAt = 0;
+        if (caretAt > end) caretAt = end;
+      }
+
+      /* Tell the field where the caret is. Guarded, because setting a
+         selection that is already right is what upsets an IME
+         mid-composition, and this runs on the way out of every keystroke. */
+      function syncCaret() {
         if (!input) return;
-        var end = input.value.length;
-        var at = caretAt > end ? end : caretAt;   // the line may have shrunk
-        if (input.selectionStart !== at || input.selectionEnd !== at) {
-          input.setSelectionRange(at, at);
+        clampCaret();
+        if (input.selectionStart !== caretAt || input.selectionEnd !== caretAt) {
+          input.setSelectionRange(caretAt, caretAt);
         }
       }
 
-      /* A second chance, for the browsers that move the caret a beat AFTER
-         focus rather than during it — which is why the original fix reached
-         for beforeinput as well as focus. Only while the selection is
-         collapsed, though: a player who has selected the line and started
-         typing over it means to replace it, and putting a caret back would
-         throw that selection away. */
-      function restoreCaretOnInput() {
+      function onInput() {
         if (!input) return;
-        if (input.selectionStart !== input.selectionEnd) return;
-        restoreCaret();
+        var len = input.value.length;
+        if (caretTrusted && len > lastLen && input.selectionStart === 0) {
+          caretTrusted = false;
+        }
+        if (caretTrusted) {
+          var at = input.selectionStart;
+          caretAt = at == null ? len : at;
+        } else {
+          caretAt = len;
+        }
+        syncCaret();
+        paintLine();
+      }
+
+      /* Keys that move the caret without changing the line. Read back only
+         while the field is worth believing; a phone sends none of these. */
+      var CARET_KEYS = { ArrowLeft: 1, ArrowRight: 1, Home: 1, End: 1 };
+
+      function onKeyUp(event) {
+        if (caretTrusted && input && event && event.key && CARET_KEYS[event.key]) {
+          var at = input.selectionStart;
+          if (at != null) caretAt = at;
+        }
+        paintLine();
       }
 
       function paintBrief() {
@@ -1072,8 +1111,8 @@
          shell grammar, and this is not one. */
       function complete() {
         var value = input.value;
-        var caret = input.selectionStart;
-        if (caret == null) caret = value.length;
+        clampCaret();
+        var caret = caretAt;
         var before = value.slice(0, caret);
         var start = before.lastIndexOf(' ') + 1;
         var frag = before.slice(start);
@@ -1119,7 +1158,8 @@
         if (names.length === 1 && insert.charAt(insert.length - 1) !== '/') insert += ' ';
         input.value = value.slice(0, replaceFrom) + insert + value.slice(caret);
         var pos = replaceFrom + insert.length;
-        input.setSelectionRange(pos, pos);
+        caretAt = pos;
+        syncCaret();
         paintLine();
         return true;
       }
@@ -1138,6 +1178,7 @@
           event.preventDefault();
           var value = input.value;
           input.value = '';
+          caretAt = 0;
           paintLine();
           run(value);
           paintLine();
@@ -1150,6 +1191,7 @@
         if (event.key === 'Escape') {
           event.preventDefault();
           input.value = '';
+          caretAt = 0;
           paintLine();
           return;
         }
@@ -1158,7 +1200,8 @@
           if (!history.length) return;
           histAt = Math.max(0, histAt - 1);
           input.value = history[histAt];
-          input.setSelectionRange(input.value.length, input.value.length);
+          caretAt = input.value.length;
+          syncCaret();
           paintLine();
           return;
         }
@@ -1167,7 +1210,8 @@
           if (!history.length) return;
           histAt = Math.min(history.length, histAt + 1);
           input.value = histAt >= history.length ? '' : history[histAt];
-          input.setSelectionRange(input.value.length, input.value.length);
+          caretAt = input.value.length;
+          syncCaret();
           paintLine();
         }
       }
@@ -1175,7 +1219,7 @@
       function focusInput() {
         if (!input) return;
         try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
-        restoreCaret();
+        syncCaret();
       }
 
       function build() {
@@ -1206,10 +1250,9 @@
         host.appendChild(input);
 
         input.addEventListener('keydown', onKey);
-        input.addEventListener('beforeinput', restoreCaretOnInput);
-        input.addEventListener('input', paintLine);
-        input.addEventListener('keyup', paintLine);
-        input.addEventListener('click', paintLine);
+        input.addEventListener('input', onInput);
+        input.addEventListener('keyup', onKeyUp);
+        input.addEventListener('click', onKeyUp);
 
         /* ----------------------------------------------------------------
            The safety net. Everything above rests on one hidden <input>
@@ -1251,8 +1294,8 @@
           if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
           focusInput();
           event.preventDefault();
-          var at = input.selectionStart;
-          if (at == null || at > input.value.length) at = input.value.length;
+          clampCaret();
+          var at = caretAt;
           if (event.key === 'Backspace') {
             if (!at) return;
             input.value = input.value.slice(0, at - 1) + input.value.slice(at);
@@ -1264,7 +1307,8 @@
           /* At the caret rather than on the end, because this terminal lets
              the caret sit mid-line and paintLine draws the line either side
              of it. Appending would throw the character past the tail. */
-          input.setSelectionRange(at, at);
+          caretAt = at;
+          syncCaret();
           paintLine();
         });
         /* A CLICK HANDS THE KEYBOARD BACK; A DRAG IS LEFT TO SELECT.
