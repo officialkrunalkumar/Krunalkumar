@@ -1742,6 +1742,53 @@
           paintLine();
         });
 
+        /* ----------------------------------------------------------------
+           The safety net. Everything above rests on one hidden <input>
+           keeping focus, and focus is the least reliable thing on a page —
+           a click on the sound toggle, on the fullscreen button beside it,
+           or anywhere in the article below the board takes it away. And
+           rawInput switches OFF the shell's own fall-through listener, the
+           thing that answers keys for every other game once focus has
+           dropped to <body>, so after one stray click nothing here was
+           listening at all. The run carried on regardless.
+
+           The typing trainer has carried this net for a while and its
+           comment says why: a game played by typing must not be one click
+           away from ignoring what is typed at it.
+
+           The insertion below is what this one needs and the buffer games do
+           not: here the field's own value is the command line, so ordinary
+           characters are left to the browser to put in. It will not put in
+           one that was delivered to another element — and giving the field
+           focus first risks it deciding it will after all, and typing the
+           character twice. preventDefault settles the question, and exactly
+           one character goes in by hand. Everything after it reaches the
+           field normally.
+
+           Narrow enough that it cannot take anyone else's keys: only during
+           a run, never out of a form field or the site search, and Space and
+           Enter are left to a focused button, so one press cannot both
+           activate that button and land here as well.
+           ---------------------------------------------------------------- */
+        document.addEventListener('keydown', function (event) {
+          if (g.state !== 'playing') return;
+          if (event.target === input) return;
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+          var t = event.target;
+          var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+          if (t && t.isContentEditable) return;
+          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
+          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          focusInput();
+          event.preventDefault();
+          if (event.key === 'Backspace') input.value = input.value.slice(0, -1);
+          else input.value += event.key;
+          keepCaretAtEnd();
+          paintLine();
+          tick();
+        });
+
         /* Click refocuses; a drag that selected something keeps its
            selection — hashes printed by log and reflog get copied and
            typed back, so selection is load-bearing here. Same rule and

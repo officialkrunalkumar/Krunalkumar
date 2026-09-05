@@ -71,28 +71,75 @@
         input.setAttribute('aria-label', 'Type the words shown on screen');
         g.el.appendChild(input);
 
-        input.addEventListener('keydown', function (event) {
-          if (event.ctrlKey || event.metaKey || event.altKey) return;
-          if (event.key === 'Escape') { event.preventDefault(); finish(); return; }
-          if (g.state !== 'playing') {
-            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); g.start(); }
-            return;
-          }
-          if (event.key === 'Backspace') { event.preventDefault(); buffer = buffer.slice(0, -1); return; }
-          if (event.key === ' ' || event.key === 'Enter') { event.preventDefault(); buffer = ''; return; }
-          if (event.key.length !== 1) return;
-          event.preventDefault();
-          type(event.key);
-        });
+        input.addEventListener('keydown', onKey);
         input.addEventListener('input', function () {
           var v = input.value; input.value = '';
           for (var i = 0; i < v.length; i++) type(v.charAt(i));
         });
 
+        /* ----------------------------------------------------------------
+           The safety net, and the reason this game was unplayable.
+
+           Everything above rests on one hidden <input> keeping focus, and
+           focus is the least reliable thing on a page. A click on the sound
+           toggle, on the fullscreen button beside it, or anywhere in the
+           article below the board moves it — and rawInput switches OFF the
+           shell's own fall-through listener, the thing that answers keys for
+           every other game once focus has dropped to <body>. So nothing was
+           left listening at all. The run carried on regardless: words kept
+           arriving, lives kept draining, and not one keystroke counted until
+           the player thought to click the board again.
+
+           The typing trainer already carries this net and its comment says
+           why — a typing game that ignores typing is the worst failure it
+           has available. This is the same net. Typespeed, whose toolbar puts
+           a fullscreen button one click from the board on a game the page
+           itself calls 76 columns wide, needed it more.
+
+           Narrow enough that it cannot eat anyone else's keys: only during a
+           run, never out of a form field or the site search, and Space and
+           Enter are left to a focused button so that one press cannot both
+           activate Pause and clear the buffer.
+           ---------------------------------------------------------------- */
+        document.addEventListener('keydown', function (event) {
+          if (g.state !== 'playing') return;
+          if (event.target === input) return;
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+          var t = event.target;
+          var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+          if (t && t.isContentEditable) return;
+          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
+          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          /* Hand the field its focus back, so the next key takes the normal
+             path and a phone keyboard that was already up stays up. */
+          focusInput();
+          onKey(event);
+        });
+
         /* Tapping the playfield focuses the catcher, which is also what
-           opens the keyboard on a touchscreen. */
+           opens the keyboard on a touchscreen. Through focusInput, for its
+           preventScroll: the catcher sits at left: -9999px, and focusing it
+           without that asks the browser to scroll the page sideways to show
+           the player something they are not meant to see. */
         var stage = g.el.querySelector('.game-stage');
-        if (stage) stage.addEventListener('pointerdown', function () { input.focus(); });
+        if (stage) stage.addEventListener('pointerdown', focusInput);
+      }
+
+      /* One handler for both ways in, so a key arriving through the net
+         obeys exactly the rules a key typed into the field does. */
+      function onKey(event) {
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+        if (event.key === 'Escape') { event.preventDefault(); finish(); return; }
+        if (g.state !== 'playing') {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); g.start(); }
+          return;
+        }
+        if (event.key === 'Backspace') { event.preventDefault(); buffer = buffer.slice(0, -1); return; }
+        if (event.key === ' ' || event.key === 'Enter') { event.preventDefault(); buffer = ''; return; }
+        if (event.key.length !== 1) return;
+        event.preventDefault();
+        type(event.key);
       }
 
       function focusInput() {

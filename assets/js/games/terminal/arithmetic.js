@@ -233,19 +233,7 @@
         input.setAttribute('aria-label', 'Type the answer to the sum');
         g.el.appendChild(input);
 
-        input.addEventListener('keydown', function (event) {
-          if (event.ctrlKey || event.metaKey || event.altKey) return;
-          if (event.key === 'Escape') { event.preventDefault(); finish(); return; }
-          if (g.state !== 'playing') {
-            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); g.start(); }
-            return;
-          }
-          if (event.key === 'Enter') { event.preventDefault(); submit(); return; }
-          if (event.key === 'Backspace') { event.preventDefault(); typed = typed.slice(0, -1); return; }
-          if (event.key.length !== 1) return;
-          event.preventDefault();
-          handle(event.key);
-        });
+        input.addEventListener('keydown', onKey);
 
         /* Android soft keyboards routinely fire input without a usable
            keydown, so the value is drained here as well and the field is
@@ -256,8 +244,59 @@
           for (var i = 0; i < v.length; i++) handle(v.charAt(i));
         });
 
+        /* ----------------------------------------------------------------
+           The safety net. Everything above rests on one hidden <input>
+           keeping focus, and focus is the least reliable thing on a page —
+           a click on the sound toggle, on the fullscreen button beside it,
+           or anywhere in the article below the board takes it away. And
+           rawInput switches OFF the shell's own fall-through listener, the
+           thing that answers keys for every other game once focus has
+           dropped to <body>, so after one stray click nothing here was
+           listening at all. The run carried on regardless.
+
+           The typing trainer has carried this net for a while and its
+           comment says why: a game played by typing must not be one click
+           away from ignoring what is typed at it.
+
+           Narrow enough that it cannot take anyone else's keys: only during
+           a run, never out of a form field or the site search, and Space and
+           Enter are left to a focused button, so one press cannot both
+           activate that button and land here as well.
+           ---------------------------------------------------------------- */
+        document.addEventListener('keydown', function (event) {
+          if (g.state !== 'playing') return;
+          if (event.target === input) return;
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+          var t = event.target;
+          var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+          if (t && t.isContentEditable) return;
+          if (tag === 'button' && (event.key === ' ' || event.key === 'Enter')) return;
+          if (event.key !== 'Backspace' && (!event.key || event.key.length !== 1)) return;
+          /* Hand the field its focus back, so every key after this one
+             takes the normal path and a phone keyboard already up stays up. */
+          focusInput();
+          onKey(event);
+        });
+
         var stage = g.el.querySelector('.game-stage');
         if (stage) stage.addEventListener('pointerdown', focusInput);
+      }
+
+      /* One handler for both ways in, so a key arriving through the net
+         obeys exactly the rules a key typed into the field does. */
+      function onKey(event) {
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+        if (event.key === 'Escape') { event.preventDefault(); finish(); return; }
+        if (g.state !== 'playing') {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); g.start(); }
+          return;
+        }
+        if (event.key === 'Enter') { event.preventDefault(); submit(); return; }
+        if (event.key === 'Backspace') { event.preventDefault(); typed = typed.slice(0, -1); return; }
+        if (event.key.length !== 1) return;
+        event.preventDefault();
+        handle(event.key);
       }
 
       function handle(ch) {
