@@ -132,19 +132,19 @@
         </div>
         <div class="colo-stats">
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="pages">183</span>
+            <span class="colo-num" data-colophon="pages">288</span>
             <span class="colo-label">HTML pages</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="labs">62</span>
+            <span class="colo-num" data-colophon="labs">111</span>
             <span class="colo-label">browser labs</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="games">66</span>
+            <span class="colo-num" data-colophon="games">88</span>
             <span class="colo-label">games</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="posts">25</span>
+            <span class="colo-num" data-colophon="posts">59</span>
             <span class="colo-label">articles</span>
           </div>
           <div class="colo-stat">
@@ -152,16 +152,16 @@
             <span class="colo-label">dependencies</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="js">166</span>
+            <span class="colo-num" data-colophon="js">240</span>
             <span class="colo-label">scripts, all mine</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="commits">165</span>
+            <span class="colo-num" data-colophon="commits">199</span>
             <span class="colo-label">commits</span>
           </div>
         </div>
         <p class="colo-updated">
-          Counted on <span data-colophon="updated">2026-08-28</span>.
+          Counted on <span data-colophon="updated">2026-09-06</span>.
         </p>
       </section>
 
@@ -173,9 +173,12 @@
         <p>
           There is no framework here, no bundler and no build step in the usual sense. Every page is an
           <code>.html</code> file you could open in a text editor, and the file you see in the repository is
-          the file the browser is served. <code>package.json</code> exists to name two scripts and a Node
-          version floor; it has <strong><span data-colophon="deps">0</span> dependencies</strong>, and
-          nothing generated is committed.
+          the file the browser is served. <code>package.json</code> exists to name
+          <span data-colophon="npmscripts">8</span> scripts and a Node version floor; it has
+          <strong><span data-colophon="deps">0</span> dependencies</strong>, so there is no lockfile and no
+          <code>node_modules</code> to commit. What the deploy generates — the sitemap dates, the search
+          index, the figures on this page — <em>is</em> committed, on purpose: it means the repository copy
+          is still right when nobody has built it.
         </p>
         <p>
           That is a constraint rather than a boast. A site that outlives its framework is a site you can still
@@ -225,15 +228,15 @@
         </p>
         <div class="colo-stats colo-stats--wide">
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="cssbefore">465 KB</span>
+            <span class="colo-num" data-colophon="cssbefore">893 KB</span>
             <span class="colo-label">CSS in the repository</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="cssafter">244 KB</span>
+            <span class="colo-num" data-colophon="cssafter">497 KB</span>
             <span class="colo-label">CSS on the wire</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="csspct">48%</span>
+            <span class="colo-num" data-colophon="csspct">44%</span>
             <span class="colo-label">stripped at deploy</span>
           </div>
         </div>
@@ -252,8 +255,8 @@
           <h2>The reasoning lives in the repository</h2>
         </div>
         <p>
-          The README runs to <strong><span data-colophon="readme">1,510</span> lines</strong>, and the
-          stylesheets carry roughly <strong><span data-colophon="csscomments">3,317</span> lines</strong> of
+          The README runs to <strong><span data-colophon="readme">2,014</span> lines</strong>, and the
+          stylesheets carry roughly <strong><span data-colophon="csscomments">5,960</span> lines</strong> of
           comments. They do not describe what the code does — you can read that. They carry the measurement,
           the rejected alternative, and what breaks if you change it back.
         </p>

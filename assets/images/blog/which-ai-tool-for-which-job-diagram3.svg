@@ -1,12 +1,12 @@
 <svg width="760" height="415" viewBox="0 0 760 415" role="img" aria-labelledby="d-which-ai-tool-for-which-job-diagram3" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <title id="d-which-ai-tool-for-which-job-diagram3">How far each category's free tier carries you, longest first: automation almost never stops because you can self-host; meeting notes stop at team features; general chat stops at long sessions; coding stops at agent mode; images stop at licensing; research stops at deep research runs; slides stop when credits run dry; voice stops at commercial use; video stops almost immediately</title>
+  <title id="d-which-ai-tool-for-which-job-diagram3">How far each category's free tier carries you, longest first: automation almost never stops because you can self-host; coding now stops only when you want someone else to host the agent; meeting notes stop at team features; general chat stops at long sessions; images stop at licensing; research stops at deep research runs; slides stop when credits run dry; voice stops at commercial use; video stops almost immediately</title>
                   <text x="30" y="42" fill="#1e77a4" font-size="15" font-weight="800" letter-spacing="2">HOW FAR THE FREE TIER CARRIES YOU</text>
                   <line x1="190" y1="66" x2="190" y2="392" stroke="#6b7a90" stroke-width="2"/>
                   <g font-size="14" font-weight="700" fill="#6b7a90" text-anchor="end">
                     <text x="178" y="93">Automation</text>
-                    <text x="178" y="129">Meeting notes</text>
-                    <text x="178" y="165">General chat</text>
-                    <text x="178" y="201">Coding</text>
+                    <text x="178" y="129">Coding</text>
+                    <text x="178" y="165">Meeting notes</text>
+                    <text x="178" y="201">General chat</text>
                     <text x="178" y="237">Images</text>
                     <text x="178" y="273">Research</text>
                     <text x="178" y="309">Slides</text>
@@ -15,9 +15,9 @@
                   </g>
                   <g fill="#1e77a4">
                     <rect x="190" y="80" width="361" height="16" rx="4"/>
-                    <rect x="190" y="116" width="304" height="16" rx="4"/>
-                    <rect x="190" y="152" width="247" height="16" rx="4"/>
-                    <rect x="190" y="188" width="209" height="16" rx="4"/>
+                    <rect x="190" y="116" width="330" height="16" rx="4"/>
+                    <rect x="190" y="152" width="304" height="16" rx="4"/>
+                    <rect x="190" y="188" width="247" height="16" rx="4"/>
                     <rect x="190" y="224" width="152" height="16" rx="4"/>
                     <rect x="190" y="260" width="144" height="16" rx="4"/>
                     <rect x="190" y="296" width="114" height="16" rx="4"/>
@@ -26,9 +26,9 @@
                   </g>
                   <g font-size="13" font-weight="600" fill="#64748b">
                     <text x="563" y="93">barely stops — self-host</text>
-                    <text x="506" y="129">team features</text>
-                    <text x="449" y="165">long sessions</text>
-                    <text x="411" y="201">agent mode</text>
+                    <text x="532" y="129">hosted agents</text>
+                    <text x="506" y="165">team features</text>
+                    <text x="449" y="201">long sessions</text>
                     <text x="354" y="237">licensing</text>
                     <text x="346" y="273">deep research runs</text>
                     <text x="316" y="309">credits run dry</text>

@@ -249,7 +249,7 @@ Three instruments sharing one mixer, all in the browser.
 
 ## Games (/games)
 
-Sixty-seven games, in seven categories, all of them running entirely in the
+88 games, in seven categories, all of them running entirely in the
 visitor's browser. There are no ads, no sign-up, no accounts and no network
 traffic once a game has been opened once. The categories are arcade, puzzle,
 terminal (seventeen ports of Linux terminal games), board, cs (games aimed at
@@ -654,7 +654,7 @@ appeared, which is the order the picker and the hub use.
 ## Reading the site: search and themes
 
 **Search.** Every page has a search button in the header. It runs against a prebuilt
-index covering all 172 pages and opens a full-screen panel, on a phone and a laptop
+index covering all 277 pages and opens a full-screen panel, on a phone and a laptop
 alike. The index ships with the site and the matching happens in the tab, so no
 search query is ever sent anywhere. Analytics is told only that a search ran and how
 many results it returned — a zero-result count shows where the site is missing

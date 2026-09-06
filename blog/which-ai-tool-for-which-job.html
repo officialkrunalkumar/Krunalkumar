@@ -27,7 +27,7 @@
     <meta property="og:image:alt" content="A grid of job categories mapped to the AI tools that fit them" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta property="article:published_time" content="2026-08-07T09:00:00+05:30" />
-    <meta property="article:modified_time" content="2026-08-07T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-09-06T09:00:00+05:30" />
     <meta property="article:author" content="https://krunalkumar.dpdns.org/about" />
     <meta property="article:section" content="AI tools" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -46,7 +46,7 @@
         "description": "A job-first guide to the AI tool landscape — chat assistants, research, slides, design, video, voice, meeting notes, coding, and automation — including what each free tier gives you and the point at which it stops being enough.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/which-ai-tool-for-which-job.jpg",
         "datePublished": "2026-08-07",
-        "dateModified": "2026-08-07",
+        "dateModified": "2026-09-06",
         "articleSection": "AI tools",
         "author": {
           "@type": "Person",
@@ -152,7 +152,14 @@
             job, not by brand. For each one: what it's genuinely good at, what the free tier gives you, and the exact
             point where free stops being enough.
           </p>
-          <p class="post-meta">Published 7 August 2026 · 18 min read · by Krunalkumar Shah</p>
+          <!-- Revised 6 September 2026 after a re-check of the coding-agent market, which moved
+               more in one month than the rest of this page did in three: Roo Code archived itself,
+               Windsurf became Devin Desktop, Devin's price fell from $500 to $20, and the
+               open-source harnesses stopped being science projects. A reader who bookmarked the
+               August version deserves to see that the coding section is not the one they read, so
+               both dates now carry a machine-readable time element matching the JSON-LD
+               dateModified and article:modified_time exactly. -->
+          <p class="post-meta">Published <time datetime="2026-08-07">7 August 2026</time> · Updated <time datetime="2026-09-06">6 September 2026</time> · 24 min read · by Krunalkumar Shah</p>
         </section>
 
         <figure class="post-cover">
@@ -182,10 +189,12 @@
             <div class="post-body">
               <div class="post-callout">
                 <p>
-                  <strong>On prices and limits.</strong> Everything below was checked in August 2026. This category
-                  moves faster than any blog can keep up with — plans get renamed, free quotas get cut, and new tiers
-                  appear every few weeks. Treat the numbers here as the shape of the market, not a quote. Always confirm
-                  on the vendor's own pricing page before you pay.
+                  <strong>On prices and limits.</strong> Everything below was re-checked on 6 September 2026. This
+                  category moves faster than any blog can keep up with — plans get renamed, free quotas get cut, tools
+                  get acquired and renamed, and new tiers appear every few weeks. The coding section in particular is
+                  substantially rewritten from the August version, because that is where nearly all of the movement
+                  was. Treat the numbers here as the shape of the market, not a quote. Always confirm on the vendor's
+                  own pricing page before you pay.
                 </p>
               </div>
 
@@ -426,33 +435,195 @@
               <h2 id="coding-and-building">Coding and building</h2>
               <p>
                 The category where AI has changed the actual work the most, and where I have the strongest opinions,
-                because this is what I do.
+                because this is what I do. It is also the category that has moved fastest since I first published this
+                page, which is why it is the part I have rewritten. Two things happened over the summer: the
+                open-source agents caught up with the paid ones further than I expected, and a couple of names people
+                still recommend quietly stopped being maintained.
+              </p>
+              <p>
+                There are six distinct things being sold here, and most overspending comes from confusing them. In
+                rough order of how much autonomy you hand over:
+              </p>
+
+              <h3>Autocomplete, in the editor you already use</h3>
+              <p>
+                <strong>GitHub Copilot</strong> is still the best value on this entire page. Free gives you roughly
+                2,000 completions and 50 chat messages a month; Pro is $10/mo. Since June 2026 the paid plans meter
+                through AI Credits rather than counting requests, and inline completions no longer draw on that pool at
+                all — only chat, agent mode, code review, and the CLI do. Pro also includes the cloud coding agent that
+                picks up a GitHub issue and works toward a pull request. If you write code occasionally, start here and
+                quite possibly stop here.
+              </p>
+
+              <h3>Editors built around an agent</h3>
+              <ul>
+                <li>
+                  <strong>Cursor</strong> — still what I recommend to someone who wants one thing that works. Hobby is
+                  free, Pro is $20/mo, and since late July 2026 there is an India-only <strong>Start</strong> plan at
+                  ₹649/mo tax inclusive: a fixed model set, medium effort, no on-demand spend. If you are in India and
+                  the $20 was the actual blocker, that is the most useful thing to come out of this category all year.
+                </li>
+                <li>
+                  <strong>Google Antigravity</strong> — Google's agent-first environment, where the agent works across
+                  the editor, the terminal, and a real browser rather than just the file you have open. Free while it is
+                  in preview, which is the appeal. But it is metered, Google has tightened those quotas more than once,
+                  and there is still no stable standalone paid tier. Excellent to learn on; I would not plan a team
+                  rollout around a preview whose limits keep moving.
+                </li>
+                <li>
+                  <strong>Kiro</strong> — the spec-driven one: you write the requirement, it produces the
+                  implementation and the tests. Free gives you 50 credits a month and a full feature build runs roughly
+                  15–25 of them, so free is two or three features — a real trial, not a daily driver. Paid starts at
+                  $20/mo for 1,000 credits.
+                </li>
+                <li>
+                  <strong>Junie</strong> — the right answer if you live in JetBrains IDEs, because it reads the project
+                  the way the IDE already does. It has no price of its own; it draws on JetBrains AI credits, and the
+                  free AI tier is small enough to count as a demo. The Junie CLI with your own API key skips the credit
+                  system entirely and is usually cheaper for heavy use than the subscription that nominally covers it.
+                </li>
+              </ul>
+              <p>
+                One correction, because people still recommend it by the old name: <strong>Windsurf</strong> is not a
+                separate product to evaluate any more. After Cognition acquired it, an over-the-air update in June 2026
+                turned it into <strong>Devin Desktop</strong>, and Cascade — the agent that made Windsurf worth
+                using — reached end of life on 1 July 2026. Plans and settings carried across, so existing users are
+                fine. Any list still presenting Windsurf as its own tool to weigh up is describing something that
+                stopped existing three months ago.
+              </p>
+
+              <h3>Terminal agents you pay for</h3>
+              <p>
+                This is the mode I actually work in: an agent that reads the repository, edits across many files, runs
+                the tests, reads the failures, and iterates. It is a genuinely different job from autocomplete, and the
+                one worth paying for if you code most days.
               </p>
               <ul>
                 <li>
-                  <strong>GitHub Copilot</strong> — best value for autocomplete-style assistance inside the editor you
-                  already use. There's a real free tier (a couple of thousand completions a month), and Pro is $10/mo,
-                  which is the cheapest genuinely useful paid AI subscription on this entire page.
+                  <strong>Claude Code</strong> — my daily driver. Not sold separately: it is included in Claude Pro
+                  ($20/mo) and both Max tiers ($100 and $200/mo), drawing on the same usage windows as chat, which is
+                  what makes Max unusually good value if you code daily. There is no free route — the free Claude plan
+                  does not include it at all.
                 </li>
                 <li>
-                  <strong>Cursor</strong> — an editor built around AI rather than an editor with AI bolted on.
-                  Multi-file edits, codebase-wide refactoring, and agent mode are noticeably ahead of plain autocomplete.
-                  $20/mo, with higher tiers for heavy use. Worth the premium over Copilot if you work across whole
-                  codebases rather than single files.
+                  <strong>OpenAI Codex</strong> — the same shape, bundled the same way, on a ladder that lines up
+                  almost exactly: free, $8, $20, then $100 and $200 tiers. Unlike Claude Code it does have a free rung.
+                  Rate-capped hard, but enough to find out whether you like working this way before you pay for it.
                 </li>
                 <li>
-                  <strong>Claude Code</strong> and <strong>OpenAI Codex</strong> — terminal-based agents that read your
-                  repository, make changes across many files, run tests, and iterate. This is a different mode of working
-                  from autocomplete, and the one I use most. Claude Code is included in the Claude Pro and Max
-                  subscriptions rather than billed separately, which makes Max unusually good value if you code daily.
-                </li>
-                <li>
-                  <strong>v0, Lovable, Bolt, and Replit</strong> — prompt-to-app builders. Genuinely excellent for
-                  prototypes, landing pages, and internal tools; genuinely risky as the foundation of a real product,
-                  because the generated code becomes yours to maintain and you may not understand it. Use them to find
-                  out whether an idea is worth building, then build it properly.
+                  <strong>Gemini CLI</strong> — open source, free tier with usage limits, and the natural pick if your
+                  work already sits in Google Cloud.
                 </li>
               </ul>
+
+              <h3>Terminal agents you don't</h3>
+              <p>
+                This is the change I would most want an August reader to come back for. When I wrote that agent mode is
+                the thing you pay for, that was true. It is now much less true. The open-source harnesses have become
+                real tools rather than demos, and the deal they offer is different in kind: you bring your own API key
+                and pay per token instead of paying a subscription. For intermittent use that is dramatically cheaper,
+                and for a solo developer on a tight budget it is the difference between having an agent and not.
+              </p>
+              <ul>
+                <li>
+                  <strong>OpenCode</strong> — what I would try first. MIT-licensed, works against dozens of model
+                  providers, and by a distance the largest community in the category. If you want the Claude Code way
+                  of working without the subscription, this is the closest thing to it.
+                </li>
+                <li>
+                  <strong>DeepSeek Harness</strong> — released in August 2026 and the largest launch of the year by
+                  some margin. MIT-licensed, and built on one idea: everything is a plugin, including the model
+                  adapter, the sandbox, and the agent loop itself. It also gives you a full trace of which plugin
+                  triggered which tool call, which is more auditability than most commercial tools offer. It is still a
+                  developer preview with breaking changes promised, so it is worth watching closely and not worth
+                  building a team process on this quarter.
+                </li>
+                <li>
+                  <strong>Pi</strong> — the minimalist bet, from Mario Zechner and Armin Ronacher. Its system prompt
+                  runs under a thousand tokens where most harnesses spend seven to ten thousand, on the argument that
+                  current models already know how to behave like coding agents and most of the scaffolding is dead
+                  weight. Cheaper per task as a direct consequence, which is the whole point.
+                </li>
+                <li>
+                  <strong>Cline</strong> — the pick if you want the agent inside VS Code with an explicit approval on
+                  every individual change. That approval step reads as friction right up until the first time it stops
+                  something.
+                </li>
+                <li>
+                  <strong>OpenHands</strong> and <strong>Goose</strong> — both mature, both extensible, both free to
+                  self-host with paid cloud options if you would rather not. Goose now sits under foundation governance
+                  rather than inside a single company, which is worth something if you are picking a tool to depend on
+                  for years rather than months.
+                </li>
+                <li>
+                  <strong>Kilo Code</strong> — MIT-licensed, actively developed, and the place Roo Code users went.
+                  See the maintenance note below for why that sentence matters.
+                </li>
+              </ul>
+              <p>
+                Be honest with yourself about what "free" means here, though. These are free as in software, not free as
+                in no bill: the harness costs nothing and the tokens still cost money. What you are really buying with a
+                Claude Code or Codex subscription is a predictable monthly number and someone else's problem when the
+                billing gets confusing. That is worth $20 to a lot of people and worth nothing to the rest.
+              </p>
+
+              <h3>Agents that work without you watching</h3>
+              <ul>
+                <li>
+                  <strong>Devin</strong> — worth a second look if you wrote it off, because the thing everyone
+                  remembers about it is no longer true. It launched at $500/mo per seat with no free tier. It now has a
+                  free tier, Pro at $20/seat/mo, and Max at $200. Billing is in Agent Compute Units, where one ACU is
+                  roughly fifteen minutes of autonomous work — a more honest unit than most, because it prices the
+                  thing you are actually consuming.
+                </li>
+                <li>
+                  <strong>GitHub Copilot coding agent</strong> — takes an issue and works toward a pull request, inside
+                  the review process you already have. The least exciting option here and probably the most deployable,
+                  precisely because the output arrives as a PR that a human approves.
+                </li>
+                <li>
+                  <strong>Amazon Q Developer</strong> — the AWS-shaped one. The free tier is a real perpetual plan with
+                  around 50 agentic requests a month; Pro is $19/user/month and adds data isolation, IP indemnity, and
+                  SSO. Its advantage is that it knows your AWS account, not that it writes better code, so it is worth
+                  exactly as much as your problems are AWS problems.
+                </li>
+              </ul>
+
+              <h3>Prompt-to-app builders</h3>
+              <p>
+                <strong>v0, Lovable, Bolt, and Replit</strong> — genuinely excellent for prototypes, landing pages, and
+                internal tools; genuinely risky as the foundation of a real product, because the generated code becomes
+                yours to maintain and you may not understand it. Use them to find out whether an idea is worth
+                building, then build it properly.
+              </p>
+
+              <h3>Check the thing is still alive</h3>
+              <p>
+                This advice is new, and it is here because updating this page is what taught it to me. Two tools that
+                still appear on current "best AI coding agent" lists are not being maintained:
+              </p>
+              <ul>
+                <li>
+                  <strong>Roo Code</strong> is finished. The team announced the shutdown in April 2026 and archived the
+                  repository on 15 May 2026 to go all-in on a cloud product called Roomote. The extension still
+                  installs and still works under its Apache-2.0 licence, but nothing is being fixed any more —
+                  including security issues. <strong>Kilo Code</strong> is the actively maintained fork, shares the git
+                  history, and reads existing Roo configuration, so moving across costs almost nothing.
+                </li>
+                <li>
+                  <strong>Aider</strong> is the more delicate case. It is the original terminal pair programmer and
+                  still the most refined thing going for git-native, diff-based editing — but its repository has not
+                  taken a commit since 22 May 2026, with getting on for two thousand open issues. Nobody has announced
+                  anything and the licence is permissive, so this is not Roo Code. It is a stalled project, which is a
+                  real risk for a tool that sits between you and your git history.
+                </li>
+              </ul>
+              <p>
+                So: before you adopt any open-source agent, spend thirty seconds on its repository. Look at the date of
+                the last commit, and whether the archived banner is showing. Star counts tell you what was popular six
+                months ago; the last-commit date tells you whether anyone is still home. That one check is worth more
+                than any comparison table, this one included.
+              </p>
               <p>
                 The thing I tell everyone I mentor: these tools raise your ceiling, not your floor. They make a good
                 engineer much faster and a confused one much more confidently wrong. Learning to read the output
@@ -491,6 +662,33 @@
                 <a href="/blog/i-open-sourced-my-ai-sdr">my AI SDR post</a> if you'd rather read code than prose.
               </p>
 
+              <h3>Personal agents you host yourself</h3>
+              <p>
+                This barely existed as a category when I first wrote this page, and now has two serious entries. The
+                idea is different from n8n: instead of a workflow you draw, you get a general assistant with tools,
+                running on hardware you control, reachable from the chat apps you already use.
+              </p>
+              <ul>
+                <li>
+                  <strong>OpenClaw</strong> — MIT-licensed and self-hosted, connecting to WhatsApp, Telegram, Slack,
+                  Discord, Signal and a long tail of others, against whichever model you point it at. Free in the sense
+                  that matters: no seats and no per-task billing. You pay for a server and your own model usage.
+                </li>
+                <li>
+                  <strong>Hermes Agent</strong> — Nous Research's version, out since February 2026, whose
+                  distinguishing feature is that it writes its own reusable skills from tasks it has finished and
+                  searches its own past sessions for context. Also free, also model-agnostic, also self-hosted.
+                </li>
+              </ul>
+              <p>
+                Both are genuinely interesting, and both want access to your real accounts — which is the part to think
+                about before the part about which model. A personal agent holding your WhatsApp and a shell is a large
+                amount of trust to place in a prompt, and prompt injection is a real failure mode rather than a
+                theoretical one: anything it reads, someone else may have written. I run this kind of thing with a
+                scoped API key, on a machine that is not my laptop, with anything irreversible behind an approval
+                step — the same discipline I would apply to a client automation, for the same reasons.
+              </p>
+
               <h2 id="what-i-actually-pay-for">What I actually pay for</h2>
               <p>
                 Lists are cheap, so here's the disclosure. Out of everything above, I pay for a small number of things
@@ -517,9 +715,9 @@
 
               <figure class="post-figure post-figure-wide">
                 <a href="/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg" target="_blank" rel="noopener">
-                  <img src="/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg" alt="How far each category's free tier carries you, longest first: automation almost never stops because you can self-host; meeting notes stop at team features; general chat stops at long sessions; coding stops at agent mode; images stop at licensing; research stops at deep research runs; slides stop when credits run dry; voice stops at commercial use; video stops almost immediately" width="760" height="415" loading="lazy" decoding="async" />
+                  <img src="/assets/images/blog/which-ai-tool-for-which-job-diagram3.svg" alt="How far each category's free tier carries you, longest first: automation almost never stops because you can self-host; coding now stops only when you want someone else to host the agent; meeting notes stop at team features; general chat stops at long sessions; images stop at licensing; research stops at deep research runs; slides stop when credits run dry; voice stops at commercial use; video stops almost immediately" width="760" height="415" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Bar length is how far free realistically gets you; the label is what stops it. Free is generous where compute is cheap and tight where it is expensive — and tightest of all on commercial rights. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Bar length is how far free realistically gets you; the label is what stops it. Free is generous where compute is cheap and tight where it is expensive — and tightest of all on commercial rights. Coding moved up a place this month: self-hosting an open-source agent does for coding roughly what self-hosting n8n does for automation. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <!-- tabindex/role/aria-labelledby: this div is the scroll container, and
@@ -528,7 +726,7 @@
                    caption already names it, so it is borrowed rather than duplicated. -->
               <div class="post-table-wrap" tabindex="0" role="region" aria-labelledby="table-caption-whichaitoolforwhic">
                 <table class="post-table">
-                  <caption id="table-caption-whichaitoolforwhic">What free actually gets you, and what pushes you over the line. Checked August 2026.</caption>
+                  <caption id="table-caption-whichaitoolforwhic">What free actually gets you, and what pushes you over the line. Re-checked 6 September 2026.</caption>
                   <thead>
                     <tr>
                       <th scope="col">Job</th>
@@ -574,8 +772,8 @@
                     </tr>
                     <tr>
                       <td>Coding</td>
-                      <td>GitHub Copilot Free (~2,000 completions/month)</td>
-                      <td>Agent-style, multi-file work. Autocomplete is cheap; agents are what you pay for.</td>
+                      <td>GitHub Copilot Free (~2,000 completions/month); OpenCode, Pi or Cline with your own API key</td>
+                      <td>Later than it did in August. The open-source harnesses moved agent mode into the free column — free as in software, not free as in no token bill. What you now pay for is a predictable monthly number.</td>
                     </tr>
                     <tr>
                       <td>Automation</td>
@@ -588,7 +786,7 @@
 
               <p>
                 Read that table one more time and notice the pattern. Free tiers are generous exactly where compute is
-                cheap (text) and stingy exactly where it's expensive (video, deep research, agents). They're also
+                cheap (text) and stingy exactly where it's expensive (video, deep research, hosted agents). They're also
                 generous on <em>capability</em> and stingy on <em>volume and rights</em>. Which means the question "is
                 the free tier good?" has a consistent answer: <strong>yes, for learning whether you need the paid one</strong>.
                 That is what free tiers are for, and it's a completely legitimate way to use them.

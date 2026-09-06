@@ -1650,11 +1650,19 @@ function colophonFacts(pages, committed) {
   facts.js = String(walkFiles(path.join(ROOT, 'assets/js'), (f) => f.endsWith('.js')).length);
 
   let deps = 0;
+  /* Both figures come off one read of package.json. The script count is here
+     because the colophon had "two scripts" typed into it while the file named
+     eight — a hand-typed number going stale under a hero paragraph promising
+     every number on the page is counted, which is the exact failure this pass
+     exists to abolish. Counting it costs one line. */
+  let npmscripts = 0;
   try {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
     deps = Object.keys(pkg.dependencies || {}).length + Object.keys(pkg.devDependencies || {}).length;
+    npmscripts = Object.keys(pkg.scripts || {}).length;
   } catch (e) { deps = 0; }
   facts.deps = String(deps);
+  if (npmscripts) facts.npmscripts = String(npmscripts);
 
   const kb = (n) => Math.round(n / 1024) + ' KB';
   facts.cssbefore = kb(totalBefore);
