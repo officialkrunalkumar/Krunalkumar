@@ -88,11 +88,12 @@ var VENDOR_FINGERPRINT = '62cee07e74bdd978';
 // same name, so an ordinary deploy costs nobody a re-download. Old
 // lab-runtimes-* caches are deleted on activate.
 //
-// The miss path below fetches with {cache: 'reload'} so a new name genuinely
-// reaches the server: the vendor URLs carry no version in their path and are
-// served with a one-year immutable Cache-Control, so a plain fetch would be
-// answered by the browser's HTTP cache and quietly re-cache the OLD bytes
-// under the new name.
+// The miss path below asks for the bytes under a VERSIONED url —
+// ...pyodide.asm.wasm?v=<fingerprint> — because the vendor paths carry no
+// version of their own and are served with a one-year immutable
+// Cache-Control. A bare fetch would be answered from the browser's HTTP
+// cache and could re-freeze the OLD bytes under the new name; a query the
+// fingerprint owns cannot, because a bump changes the url.
 var CACHE = 'lab-runtimes-' + VENDOR_FINGERPRINT;
 var PREFIX = '/assets/vendor/';
 
@@ -291,43 +292,80 @@ self.addEventListener('fetch', function (event) {
 
   if (url.pathname.indexOf(PREFIX) === 0) {
     // Cache-first: a hit is always the fastest answer, and this cache is the
-    // authoritative copy — which is exactly why the miss path fetches with
-    // {cache: 'reload'}. The vendor paths carry no version and are served
-    // with a one-year immutable Cache-Control, so a plain fetch after a CACHE
-    // bump would be answered by the browser's HTTP cache and re-freeze the
-    // old runtime bytes; 'reload' goes to the server every time this cache
-    // needs filling. First-ever downloads hit the network either way, so the
-    // only extra cost lands on a refill after a bump or a user purge — both
-    // moments where fresh bytes are the point.
+    // authoritative copy. What matters is the MISS path, which used to fetch
+    // with {cache: 'reload'} — deliberately bypassing the browser's HTTP
+    // cache. The reasoning was sound and the cost was not: vendor urls carry
+    // no version and are immutable for a year, so a bare fetch after a
+    // fingerprint bump could be answered from the HTTP cache and re-freeze
+    // the OLD runtime under the new name. True. But it made EVERY miss a full
+    // multi-megabyte download from the network, with a perfectly good
+    // immutable copy sitting in the HTTP cache unused — and a miss is not a
+    // rare event. A quota-rejected put (see below) makes every visit a miss.
+    // So does a first visit that registered the worker but was not yet
+    // controlled when the runtime was fetched, since a dedicated Worker
+    // inherits its controller at creation and keeps it for life. "Python
+    // downloads every single time" was the report, and this line was why.
+    //
+    // Versioning the request instead keeps both properties. ?v=<fingerprint>
+    // is a url the HTTP cache can answer, so a refill costs nothing; and a
+    // bump changes that url, so stale bytes cannot be served under a new
+    // cache name. Vercel matches its header rules on the path, so the
+    // versioned url comes back with the same bytes and the same immutable
+    // Cache-Control (checked, both forms, live). The entry is stored under
+    // the ORIGINAL request, so the cache.match above is unaffected — and
+    // runtimes already cached under this fingerprint keep hitting, so
+    // shipping this re-downloads nothing for anybody.
+    //
+    // One accepted cost: a browser that fetches some runtimes uncontrolled
+    // (bare url) and some through the worker (?v=) can hold both forms in its
+    // HTTP cache. Same bytes twice, in a cache the browser evicts on its own.
     event.respondWith(
       caches.open(CACHE).then(function (cache) {
         return cache.match(request).then(function (hit) {
           if (hit) return hit;
-          // request.url rather than the Request object: rebuilding a Request
-          // with an init dict is rejected for some request modes, and a fresh
+          // A string rather than the Request object: rebuilding a Request with
+          // an init dict is rejected for some request modes, and a fresh
           // same-origin GET is all a static file needs.
-          return fetch(request.url, { cache: 'reload' }).then(function (response) {
-            // Only store complete, successful responses. A 206 or an opaque
-            // response would poison the cache with something unusable.
-            if (response && response.status === 200 && response.type === 'basic') {
-              // put() rejects when Cache Storage will not take the bytes —
-              // quota, usually, and these are the largest files on the site.
-              // Left unhandled, that rejection is both invisible and
-              // expensive: the cache never fills, so every visit re-downloads
-              // the runtime in full, and the {cache:'reload'} above means not
-              // even the HTTP cache softens it. The page already has its
-              // response either way, so degrade quietly — but warn once (see
-              // vendorPutWarned) so "why does Python download every time" is
-              // answerable from the console instead of being a mystery.
-              cache.put(request, response.clone()).catch(function (err) {
-                if (!vendorPutWarned) {
-                  vendorPutWarned = true;
-                  console.warn('sw.js: vendor cache write failed (storage quota?); runtimes will be re-fetched from the network on each visit.', err);
-                }
-              });
-            }
+          var versioned = request.url + (url.search ? '&' : '?') +
+                          'v=' + VENDOR_FINGERPRINT;
+
+          // Only store complete, successful responses. A 206 or an opaque
+          // response would poison the cache with something unusable.
+          function usable(response) {
+            return !!response && response.status === 200 && response.type === 'basic';
+          }
+
+          function keep(response) {
+            // put() rejects when Cache Storage will not take the bytes —
+            // quota, usually, and these are the largest files on the site.
+            // Left unhandled, that rejection is both invisible and expensive:
+            // the cache never fills, so every visit is a miss. That is no
+            // longer a re-download now the miss path can be answered by the
+            // HTTP cache, but it is still worth one warning, because a
+            // runtime cache that never fills also means no offline runs.
+            cache.put(request, response.clone()).catch(function (err) {
+              if (!vendorPutWarned) {
+                vendorPutWarned = true;
+                console.warn('sw.js: vendor cache write failed (storage quota?); runtimes will not be available offline.', err);
+              }
+            });
             return response;
-          });
+          }
+
+          // Exactly the old behaviour, kept as a fallback rather than a
+          // replacement: if anything between here and the file refuses the
+          // query-string form, the runtime still has to load. This costs one
+          // extra request in that case and nothing at all otherwise, which is
+          // the right trade for a path whose failure mode is a dead lab.
+          function bare() {
+            return fetch(request.url, { cache: 'reload' }).then(function (response) {
+              return usable(response) ? keep(response) : response;
+            });
+          }
+
+          return fetch(versioned).then(function (response) {
+            return usable(response) ? keep(response) : bare();
+          }, bare);
         });
       })
     );

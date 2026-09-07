@@ -930,7 +930,20 @@
     if (el.engine) el.engine.textContent = meta.engine;
     el.stdinPane.hidden = !meta.stdin;
 
-    initEditor(store.get('code.' + id, meta.sample));
+    /* Three possible programs, in priority order: one carried in by a shared
+       link, this device's pinned copy, then the starter sample.
+
+       The link cannot be read synchronously — its payload is deflated, and
+       DecompressionStream is a stream — so lab-share.js sets .hasIncoming
+       (a cheap look at location.hash) before this runs and fills the editor a
+       few milliseconds later. Opening empty for those milliseconds is the
+       point: painting the sample or, worse, the visitor's own pinned program
+       and then swapping it for someone else's reads as a glitch. If the decode
+       fails, lab-share.js calls LabApp.loadOwnCode() and this ends up exactly
+       where it would have been. */
+    var incoming = !!(window.LabShare && window.LabShare.hasIncoming);
+    var own = store.get('code.' + id, null);
+    initEditor(incoming ? '' : (own === null ? meta.sample : own));
     clearTerminal();
     // "to download" rather than a bare size: meta.size is the over-the-wire
     // figure, and "~19 MB first run" read to more than one person as the size
@@ -942,7 +955,16 @@
     // it a download. The worker-reuse comment further down fixed the same lie
     // for the mid-run status; the idle status was never given the same
     // treatment. So ask before claiming.
-    if (!meta.dir) {
+    if (incoming) {
+      /* A shared link owns the status line from here until lab-share.js
+         reports how it went. The alternative was a race it kept losing: the
+         cached-runtime probe below resolves a few milliseconds later and
+         would overwrite "Loaded from a shared link" with "Ready — Python is
+         cached on this device", which is true, unhelpful, and hides the one
+         thing this visitor needs to know about the program in front of them.
+         They will see the download status on Run in any case. */
+      setStatus('Opening a shared link…', 'is-busy');
+    } else if (!meta.dir) {
       // JavaScript: the engine is already in the browser. Quoting "0 KB to
       // download" for it was never wrong, only strange.
       setStatus('Ready — runs natively, nothing to download');
@@ -965,8 +987,15 @@
     // store.get returns its fallback when the key is absent, and the fallback
     // defaults to undefined — so comparing against null marked every language
     // as already pinned, and the first click then *deleted* instead of saving.
+    //
+    // A shared link always arrives unpinned, even when this device has a
+    // pinned program of its own. jar.onUpdate writes to storage whenever the
+    // pin reads pressed, so leaving it pressed meant the first keystroke in
+    // somebody else's code silently overwrote the visitor's own saved work.
+    // Unpinned, their copy stays on disk and one press of the pin adopts this
+    // one instead.
     el.persist.setAttribute('aria-pressed',
-      store.get('code.' + id, null) === null ? 'false' : 'true');
+      (!incoming && own !== null) ? 'true' : 'false');
   }
 
   // All eleven languages, not the seven this used to list: php, ruby, perl and
@@ -1109,6 +1138,51 @@
       if (event.persisted && el.select.value !== current) el.select.value = current;
     });
   }
+
+  /* ========================================================================
+     10. Hooks for lab-share.js
+     --------------------------------------------------------------------
+     The editor, the terminal and the storage helpers are all closed over in
+     here, and lab-share.js needs a few of them: the program to put in a link,
+     somewhere to put a program that arrives in one, and the two notice
+     channels so a link reports itself the same way a run does. Kept to the
+     narrowest surface that does the job rather than exposing `jar` and `store`
+     wholesale — everything below is a question or an instruction about the
+     panel, not a handle on its internals.
+     ======================================================================== */
+
+  window.LabApp = {
+    lang: function () { return current; },
+    busy: function () { return running; },
+
+    getCode: function () { return jar ? jar.toString() : el.editor.textContent; },
+    setCode: function (code) { initEditor(code); },
+
+    getStdin: function () { return el.stdin ? el.stdin.value : ''; },
+    setStdin: function (text) { if (el.stdin) el.stdin.value = text; },
+
+    status: setStatus,
+    note: function (text) { write(text, 't-info'); },
+
+    hasOwnCode: function () { return store.get('code.' + current, null) !== null; },
+
+    /* Let go of the pin without touching what is behind it. jar.onUpdate saves
+       to storage on every keystroke while the pin reads pressed, so code that
+       arrived from somewhere else has to release it or the reader's first
+       keystroke overwrites their own saved program with a stranger's. The
+       saved copy itself is deliberately left alone: releasing the pin is not
+       a request to delete anything. */
+    unpin: function () { el.persist.setAttribute('aria-pressed', 'false'); },
+
+    /* Undo an opening that was left blank for an incoming link — used when
+       the link turns out to be unreadable, so the panel lands exactly where
+       applyLanguage would have put it. */
+    loadOwnCode: function () {
+      var own = store.get('code.' + current, null);
+      initEditor(own === null ? LAB_RUNTIMES[current].sample : own);
+      el.persist.setAttribute('aria-pressed', own === null ? 'false' : 'true');
+    }
+  };
 
   LabCache.register();
   initGate();

@@ -266,6 +266,35 @@
           <button class="lab-btn lab-btn-stop" type="button" id="lab-stop" disabled>&#9632; Stop</button>
           <span class="lab-status" id="lab-status">Ready</span>
           <span class="spacer"></span>
+          <div class="lab-share">
+            <button class="lab-btn lab-btn-icon" type="button" id="lab-share"
+                    aria-expanded="false" aria-controls="lab-share-panel"
+                    title="Share this code as a link"
+                    aria-label="Share this code as a link">&#128279;</button>
+            <div class="lab-share-panel" id="lab-share-panel" hidden>
+              <h3>Share this code as a link</h3>
+              <p class="lab-storage-note">
+                The link carries the program itself, inside the part of a URL that
+                browsers never send to a server &mdash; so there is no copy here to
+                expire. A time limit asks the page that opens it to refuse after that
+                long: it cannot unsend a message, and whoever opened the link in time
+                keeps what they read.
+              </p>
+              <div class="lab-share-times">
+                <button class="lab-btn" type="button" data-share-mins="10">10 minutes</button>
+                <button class="lab-btn" type="button" data-share-mins="60">1 hour</button>
+                <button class="lab-btn" type="button" data-share-mins="1440">1 day</button>
+                <button class="lab-btn" type="button" data-share-mins="0">No limit</button>
+              </div>
+              <div class="lab-share-custom">
+                <label for="lab-share-mins">Or stop after</label>
+                <input class="lab-share-input" id="lab-share-mins" type="number"
+                       min="1" step="1" placeholder="30" inputmode="numeric" />
+                <span>minutes</span>
+                <button class="lab-btn" type="button" id="lab-share-custom">Copy link</button>
+              </div>
+            </div>
+          </div>
           <button class="lab-btn lab-btn-icon" type="button" id="lab-persist" aria-pressed="false"
                   title="Remember my code on this device" aria-label="Remember my code on this device">&#128204;</button>
           <button class="lab-btn lab-btn-icon" type="button" id="lab-reset"
@@ -572,6 +601,7 @@ for my $p (@people) {
     <script defer src="/assets/js/labs/lab-cache.js"></script>
     <script defer src="/assets/js/labs/lab-runtimes.js"></script>
     <script defer src="/assets/js/labs/lab-fail.js"></script>
+    <script defer src="/assets/js/labs/lab-share.js"></script>
     <script defer src="/assets/js/labs/lab-app.js"></script>
     <script defer src="/assets/js/labs/lab-copy.js"></script>
   </body>

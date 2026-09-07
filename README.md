@@ -1519,7 +1519,18 @@ Languages are ordered by the year each first appeared, and every registry entry 
    size, Prism grammar, execution mode and the starter program. Adding a language means an entry
    here plus a branch in `lab-worker.js`; nothing else in the UI changes.
 2. `lab-app.js` owns the page: editor (CodeJar + Prism), terminal pane, consent gate, storage
-   meter, watchdog, and the language picker, which swaps language via `pushState` without a reload.
+   meter, watchdog, and the language picker — which **navigates**, rather than swapping the
+   language in place. It used to `pushState` the new `/labs/<slug>` and re-skin the panel, which
+   left everything else on the page describing the language the visitor had just left: the `h1`
+   above the editor, the "How to run X online" prose, the worked examples, the FAQ, the
+   breadcrumb, and — worst for search — `<link rel=canonical>`, which then pointed a Python URL
+   at the JavaScript page. Only the panel and the tab title ever caught up. Every target is a
+   real pre-rendered page with its own correct copy, and the runtimes are service-worker cached,
+   so the load costs one document and nothing else. There is deliberately no `popstate`
+   listener, since nothing pushes state any more; the one case that still needs help is a Back
+   into the bfcache, which replays the DOM without re-running any script, so a `pageshow`
+   handler resets the picker — otherwise `/labs/python` came back showing "Ruby" above a Python
+   editor.
 3. Execution happens in a Worker, never on the main thread:
    - **WASM runtimes** (Python, SQL, Lua) go to `lab-worker.js`.
    - **JavaScript** becomes the *source of a Blob Worker*. That is deliberate: the CSP allows
@@ -1545,6 +1556,99 @@ Input is supplied up-front in the Input panel rather than read interactively. Bl
 Worker need `SharedArrayBuffer` + `Atomics.wait`, which needs COOP/COEP headers, which would break
 the embedded analytics. Pre-supplied stdin is how most online compilers work anyway and costs no
 headers at all.
+
+### Sharing a program by link (`lab-share.js`)
+
+The 🔗 in the toolbar copies a link that **carries the program itself**. It exists because two
+people looking at one problem had no way to move code between machines: no accounts, no saved
+workspaces and no server to post a snippet to, so the only route was selecting it by hand and
+pasting it into a chat window, which mangles indentation and is miserable on a phone.
+
+**The payload rides in the fragment, never the query string.** Everything after the `#` is
+stripped by the browser before the request leaves: it is not in the URL Vercel receives, not in
+an access log, not in a CDN cache key, not in a `Referer`. A `?c=...` would be in all four. That
+is what lets this feature exist on pages whose consent gate promises nothing is uploaded, logged
+or stored by us — every link is built and read entirely inside the two browsers. Any future
+share button anywhere on this site should copy the mechanism for the same reason, and the invoice
+maker's deliberate refusal to have one at all is the other half of the same rule.
+
+| Key | Encoding |
+| --- | --- |
+| `s1=` | `deflate-raw` via `CompressionStream`, then base64url — what it writes |
+| `s0=` | base64url of the plain JSON — browsers without `CompressionStream` |
+
+A reader accepts both; the digit is the *encoding*, not a version of the tool, so old links keep
+opening when a new one is added. `CompressionStream` is native everywhere these labs run and
+needs no CSP change, which a compression library from a CDN would. Measured on 60 lines of real
+source: 3,951 URL characters as plain base64, 1,835 deflated first. The envelope is
+`{l, c, i, e}` — language, code, stdin, and an optional expiry in epoch seconds.
+
+**Length.** `MAX_LINK` is 8,000 encoded characters: 265–371 lines of ordinary code, roughly 15 KB
+of source, or 119 lines of text that will not compress at all. Nothing in the pipe requires that
+bound — browsers carry far longer URLs and the server never sees the fragment. It is there for
+the chat app in the middle, because a link truncated in transit decodes to nothing at the far
+end, and a refusal that says why is a better outcome than that.
+
+**Expiry is hygiene, not a security property, and the panel says so in those words.** With no
+server, an expiry is this page declining to open a link, not the code being recalled: it cannot
+unsend a chat message, whoever opened it in time already has what they read, and a determined
+reader could decode the fragment by hand or set their clock back. Real enforcement needs a relay
+server, and a relay server means the code genuinely leaves the machine — the same reason live
+collaboration is not on offer here either. The floor is one minute and there is **no ceiling**: an
+earlier version capped the typed value at a week, which made no sense sitting beside a "No limit"
+button. Either a long life is allowed or it is not. `No limit` writes no `e` at all, so the link
+is shorter and the reader has nothing to check.
+
+#### The load-order contract, which is easy to break
+
+`lab-share.js` is deferred **before** `lab-app.js`, and that order is load-bearing. A link's
+payload is deflated, so reading it is asynchronous, but the editor is built during `lab-app.js`'s
+boot — several milliseconds earlier. So `lab-share.js` answers one question synchronously from
+`location.hash` alone, `window.LabShare.hasIncoming`, and `applyLanguage` opens the editor
+**empty** when it is true. Painting the starter sample — or worse, the reader's own pinned
+program — and then swapping in a stranger's code reads as a glitch on a fast machine and a bug on
+a slow one. If the decode then fails, `LabApp.loadOwnCode()` puts the panel exactly where it
+would have been.
+
+Two traps, both of which shipped broken once and were caught by driving a browser:
+
+- **`readyState === 'loading'` is the wrong guard for a deferred script.** A deferred script
+  always runs at `'interactive'`, so that familiar check skipped the `DOMContentLoaded` wait,
+  `LabApp` was undefined, and a shared link silently did nothing while the rest of the page looked
+  perfectly healthy.
+- **A link pasted into an already-open tab never reloads the document.** The browser sees one URL
+  and two fragments and fires `hashchange` — which is the *likeliest* way a link gets opened: the
+  reader is already on `/labs/python` and pastes what they were sent. Hence the `hashchange`
+  listener. Note the pin release has to live in `arrive()` and not only in `applyLanguage`,
+  because that path never goes near boot: the first version left the pin pressed over someone
+  else's code, so the reader's next keystroke would have overwritten their own saved program.
+
+#### What arriving code is and is not allowed to do
+
+- **It never runs.** The program lands in the editor to be read; Run stays one deliberate press
+  away.
+- **It arrives unpinned.** `jar.onUpdate` writes to storage on every keystroke while the pin
+  reads pressed, so a link releases it — and deliberately leaves the saved copy alone, because
+  releasing the pin is not a request to delete anything. The terminal note says the saved program
+  is untouched and that reloading without the link brings it back.
+- **The fragment is dropped once the program is in the editor**, via `replaceState`, for the same
+  reason the wish maker drops its query: left in the address bar it becomes the thing that gets
+  screenshotted, put in history, or reloaded — and a reload would silently discard whatever the
+  reader had typed since. A link that could not be read, or one that has expired, keeps its
+  fragment on purpose, so a reload repeats the explanation instead of quietly showing the reader
+  their own code with nothing said.
+- **A link is self-describing.** A `payload.l` naming another language `location.replace`s to
+  that language's page carrying the same fragment. It cannot loop: the target sees `payload.l`
+  equal to its own language.
+- **Decompression is capped at 256 KB and abandoned mid-stream past it.** A fragment is
+  attacker-supplied by definition, and 30 bytes of deflate can claim to be a gigabyte of zeros.
+
+`lab-app.js` exposes exactly what this needs as `window.LabApp` — `lang`, `busy`, `getCode`,
+`setCode`, `getStdin`, `setStdin`, `status`, `note`, `hasOwnCode`, `unpin`, `loadOwnCode` —
+rather than handing out `jar` and `store` wholesale: every entry is a question or an instruction
+about the panel, not a handle on its internals. The button and its panel sit in the toolbar of
+all eleven playground pages, and a page carrying the button without the panel still works — it
+copies a link that never expires.
 
 ### `/labs/linux`
 

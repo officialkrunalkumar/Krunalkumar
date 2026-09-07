@@ -104,7 +104,12 @@
    2. Toolbar
    ========================================================================== */
 
+/* position: relative because the share panel is anchored to this ROW, not to
+   its own button — see .lab-share below for why it has to be. Nothing else in
+   here is absolutely positioned, and the consent gate is a sibling of the
+   toolbar rather than a child, so this changes no other geometry. */
 .lab-toolbar {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -185,6 +190,17 @@
   border-color: #14b8a6;
   color: #ecfdf5;
 }
+
+/* Share reports itself on the icon as well as on the status line beside it.
+   The line is 0.76rem monospace and sits behind the run commentary, which is
+   exactly what someone mid-edit does not read; the button they just pressed
+   is where they are already looking. Amber rather than red for the failures,
+   because none of them lose the code — matching .lab-copy.is-err, which made
+   the same call for the same reason. No aria-pressed here: this is a one-shot
+   action, not a toggle, so it cannot collide with the rule above.
+   The status line carries the words; the colour is only the summary. */
+.lab-btn-icon.is-ok  { border-color: #4ade80; color: #4ade80; }
+.lab-btn-icon.is-err { border-color: #fbbf24; color: #fbbf24; }
 
 .lab-status {
   font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
@@ -401,7 +417,23 @@
 
 .lab-storage { position: relative; }
 
-.lab-storage-panel {
+/* The storage panel can hang off its own button because that button is the
+   last thing in the row: its panel opens leftward from the far right edge and
+   always lands on screen. The share button sits at the HEAD of the icon
+   cluster, and the same rule put 86px of a 304px panel off the left edge of a
+   375px phone — measured, not guessed. So this one stays static and the panel
+   anchors to the toolbar instead, which is exactly as wide as the lab and
+   cannot be narrower than the panel. Dropping below the whole toolbar rather
+   than below one button is a bonus on a phone, where the row wraps to three
+   lines and a button-anchored panel would cover the other two. */
+.lab-share { position: static; }
+
+/* Matches the toolbar's own side padding, so the panel lines up with the right
+   edge of the last icon exactly as the storage panel does. */
+.lab-share-panel { right: 0.85rem; }
+
+.lab-storage-panel,
+.lab-share-panel {
   position: absolute;
   right: 0;
   top: calc(100% + 0.5rem);
@@ -414,8 +446,10 @@
   box-shadow: 0 16px 34px rgba(2, 6, 23, 0.55);
 }
 
-.lab-storage-panel[hidden] { display: none; }
-.lab-storage-panel h3 { margin: 0 0 0.6rem; font-size: 0.9rem; color: var(--ink); }
+.lab-storage-panel[hidden],
+.lab-share-panel[hidden] { display: none; }
+.lab-storage-panel h3,
+.lab-share-panel h3 { margin: 0 0 0.6rem; font-size: 0.9rem; color: var(--ink); }
 
 .lab-storage-row {
   display: flex;
@@ -440,6 +474,41 @@
 .lab-storage-bar i { display: block; height: 100%; background: linear-gradient(90deg, #14b8a6, var(--accent-1)); }
 
 .lab-storage-note { margin: 0.65rem 0 0.8rem; font-size: 0.75rem; line-height: 1.6; color: var(--ink-4); }
+
+/* The share panel's two rows: the presets, then the custom minutes field.
+   Wrapping rather than a grid, because "10 minutes" and "No limit" are
+   different widths and a grid would pad them all to the widest — four
+   buttons of equal width read as a segmented control, which this is not. */
+.lab-share-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.lab-share-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+}
+
+.lab-share-times .lab-btn,
+.lab-share-custom .lab-btn { font-size: 0.8rem; padding: 0.35rem 0.6rem; }
+
+.lab-share-input {
+  font: inherit;
+  font-size: 0.8rem;
+  width: 4.2rem;
+  padding: 0.3rem 0.45rem;
+  color: var(--ink);
+  background: var(--surf-1);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 6px;
+}
+
 
 /* The meter icon reads as a ring that fills with usage. */
 .lab-meter-ring { transform: rotate(-90deg); }
@@ -1145,7 +1214,9 @@ pre.lab-example:hover .lab-copy,
   .lab-select { flex: 1 1 100%; }
   .lab-status { flex: 1 1 100%; white-space: normal; }
   .lab-gate-card { padding: 1.1rem; }
-  .lab-storage-panel { width: min(19rem, 88vw); }
+  .lab-storage-panel,
+  .lab-share-panel { width: min(19rem, 88vw); }
+  .lab-share-panel { right: 0.6rem; }   /* the toolbar's padding at this width */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1156,7 +1227,8 @@ pre.lab-example:hover .lab-copy,
 
 /* Printing a playground is meaningless — keep the code, drop the chrome. */
 @media print {
-  .lab-toolbar, .lab-gate, .lab-storage-panel, .lab-stdin { display: none !important; }
+  .lab-toolbar, .lab-gate, .lab-storage-panel, .lab-share-panel,
+  .lab-stdin { display: none !important; }
   .lab { border-color: #999; box-shadow: none; }
 }
 
