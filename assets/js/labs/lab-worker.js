@@ -115,6 +115,7 @@ function status(text) { post({ type: 'status', text: text }); }
    sw.js knows — and it needs the answer for one reason: to stop announcing a
    download that is not going to happen. */
 var runtimeCached = false;
+var runtimeBytes = 0;     // unpacked size of this runtime, from LAB_RUNTIMES
 var loadLabel = null;
 
 /* Every runtime used to post a hardcoded "Downloading CPython (~12 MB, cached
@@ -123,10 +124,18 @@ var loadLabel = null;
    counter below only ever watched clang. Both halves of that are fixed: this
    says what is actually about to happen, and the fetch wrapper further down
    makes the bar appear for whatever really arrives. */
+/* The cached wording says what the wait is FOR, because "from cache" on its
+   own promised something it cannot deliver: the download is gone, but a
+   WebAssembly runtime still has to be compiled and initialised on every page
+   load, and for CPython that is the larger half of the wait. Measured on
+   localhost, where the fetch is effectively free: 2.4 to 3.7 seconds. A second
+   run that says "cached" and still takes three seconds is not a broken cache,
+   and this line should not let anyone think it is. */
 function announce(label, size) {
   loadLabel = label;
-  status(runtimeCached ? 'Starting ' + label + ' from cache…'
-                       : 'Downloading ' + label + ' (' + size + ', cached after this)…');
+  status(runtimeCached
+    ? 'Starting ' + label + ' from cache — no download, but it must still be compiled…'
+    : 'Downloading ' + label + ' (' + size + ', cached after this)…');
 }
 
 /* The load/run boundary, announced once per run.
@@ -336,7 +345,7 @@ var CLANG_UNPACKED = { 'clang.wasm': 31214472, 'lld.wasm': 19490094 };
 var dl = null;   // the download being reported right now, or null for none
 
 function dlBegin(label, names, unpacked) {
-  dl = { label: label, files: {}, seen: 0, last: 0 };
+  dl = { label: label, files: {}, seen: 0, last: 0, knownTotal: runtimeBytes };
   names.forEach(function (name) {
     dl.files[name] = { got: 0, wire: 0, unpacked: (unpacked && unpacked[name]) || 0 };
   });
@@ -360,10 +369,11 @@ function dlPost(force) {
 
   var names = Object.keys(dl.files);
   var raw = 0, wireTotal = 0, unpackedTotal = 0;
-  var allWire = true, allUnpacked = true;
+  var allWire = true, allUnpacked = true, anyDiscovered = false;
   names.forEach(function (name) {
     var f = dl.files[name];
     raw += f.got;
+    if (f.discovered) anyDiscovered = true;
     if (f.wire > 0) wireTotal += f.wire; else allWire = false;
     if (f.unpacked > 0) unpackedTotal += f.unpacked; else allUnpacked = false;
   });
@@ -374,9 +384,21 @@ function dlPost(force) {
   var loaded = raw;
   var total = 0;
 
+  /* A file the fetch wrapper discovered carries no sizes of its own, and its
+     Content-Length is the COMPRESSED length while the bytes counted above are
+     decoded ones. Measuring one against the other is what filled the bar to
+     100% at roughly half of a Brotli download and then froze it there — the
+     "bar does not fill, it just sits" report. The runtime's unpacked total is
+     the honest denominator for a decoded count, and it comes from the same
+     LAB_RUNTIMES entry the page quotes its sizes from. clang is untouched: it
+     registers its two modules up front with both figures, so nothing there is
+     discovered and the precise path below still runs. */
+  if (anyDiscovered && dl.knownTotal > 0) {
+    total = dl.knownTotal;
+    loaded = Math.min(total, raw);
+  } else if (dl.seen === names.length) {
   // Only once every response has actually been seen. Measuring against half
   // the files would draw a bar that reaches the end and then keeps going.
-  if (dl.seen === names.length) {
     if (allWire) {
       total = wireTotal;
       loaded = 0;
@@ -515,12 +537,17 @@ if (nativeFetch) {
     return pending.then(function (response) {
       try {
         if (!response || !response.ok) return response;
+        // Nothing is being downloaded, so nothing should draw a download bar.
+        // The bytes still move — out of Cache Storage, through this fetch — and
+        // counting them drew a full bar in the same second as a status line
+        // saying "from cache": two answers to one question.
+        if (runtimeCached) return response;
         var name = url.split('?')[0].split('/').pop();
         if (!dl) dlBegin(loadLabel || 'the runtime', [], null);
         var known = dl.files[name];
         // clang registers its files up front and taps them itself.
         if (known && (known.wire || known.unpacked)) return response;
-        if (!known) dl.files[name] = { got: 0, wire: 0, unpacked: 0 };
+        if (!known) dl.files[name] = { got: 0, wire: 0, unpacked: 0, discovered: true };
         return tapResponse(response, name);
       } catch (err) {
         return response;
@@ -1030,6 +1057,7 @@ async function transpile(code) {
 self.onmessage = async function (event) {
   var msg = event.data || {};
   runtimeCached = !!msg.cached;
+  runtimeBytes = msg.bytes || 0;
   loadLabel = null;
   stdinLines = String(msg.stdin || '').replace(/\r\n/g, '\n').split('\n');
   stdinCursor = 0;

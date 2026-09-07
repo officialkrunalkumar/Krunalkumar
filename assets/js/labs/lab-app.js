@@ -419,17 +419,19 @@
       progressFill.style.width = pct.toFixed(1) + '%';
       progressText.textContent = readout;
       progressEl.setAttribute('aria-valuenow', String(Math.round(pct)));
-      progressEl.setAttribute('aria-valuetext', readout + ' downloaded');
+      // Present tense: this element only exists while bytes are still
+      // arriving, and "downloaded" read as though the wait were over.
+      progressEl.setAttribute('aria-valuetext', readout + ' downloaded so far');
     } else {
       // The worker could not learn a size — no Content-Length, or a browser
       // with no readable stream to count. A percentage would be invented, so
       // show the one figure that is true: bytes so far. It keeps climbing,
       // which is the entire question a stuck-looking page raises.
       progressFill.style.width = '0%';
-      progressText.textContent = loaded ? humanBytes(loaded) + ' downloaded…' : 'Starting…';
+      progressText.textContent = loaded ? humanBytes(loaded) + ' so far…' : 'Starting…';
       progressEl.removeAttribute('aria-valuenow');   // absent = indeterminate
       progressEl.setAttribute('aria-valuetext',
-        loaded ? humanBytes(loaded) + ' downloaded' : 'Starting');
+        loaded ? humanBytes(loaded) + ' downloaded so far' : 'Starting');
     }
   }
 
@@ -730,10 +732,17 @@
     }
     if (meta.mode === 'jsblob') {
       // TypeScript: compile in the generic worker, then run the emitted JS.
-      worker.postMessage({ type: 'transpile', code: code, cached: runtimeCached });
+      worker.postMessage({ type: 'transpile', code: code,
+                           cached: runtimeCached, bytes: meta.bytes });
     } else {
+      // bytes is the runtime's UNPACKED size, and it is the only total the
+      // worker can trust for a bar. Content-Length on a Brotli response is the
+      // COMPRESSED length while the bytes being counted are decoded ones, so
+      // measuring one against the other filled the bar at about half the
+      // download and left it sitting at 100% for the rest.
       worker.postMessage({ type: 'run', lang: current, code: code,
-                           stdin: el.stdin.value, cached: runtimeCached });
+                           stdin: el.stdin.value, cached: runtimeCached,
+                           bytes: meta.bytes });
     }
   }
 
@@ -898,6 +907,15 @@
           // longer exists, so they go with it.
           LAB_LIST.forEach(function (m) { store.remove('rt.' + m.id); });
           runtimeCached = false;   // the cache this claimed is gone
+          /* And the live worker goes too, because it is holding the very thing
+             that was just removed. A Worker keeps its instantiated runtime in
+             memory, so without this the next Run answered out of RAM: no fetch,
+             no download status, nothing in the cache afterwards — while the
+             line below had just promised the next run would fetch them again,
+             and the storage panel said none were downloaded. Terminating makes
+             the button mean what it says: the next run starts from nothing.
+             Costs a re-download, which is what pressing it asked for. */
+          killWorker();
           clearRuntimes.disabled = false;
           clearRuntimes.textContent = 'Remove downloaded runtimes';
           refreshMeter();
