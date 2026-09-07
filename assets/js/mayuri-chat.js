@@ -467,6 +467,345 @@
     return 'Hello';
   }
 
+  /* ======================================================================
+     Two answers Mayuri works out rather than looks up.
+     ----------------------------------------------------------------------
+     Everything else she says comes from the corpus: a question goes in, a
+     ranked passage of Krunalkumar’s own writing comes out. These two
+     cannot, because the answer does not exist until it is asked — the time
+     changes every minute and nobody has written down what 17 × 23 is. They
+     are computed, and they are the only two that are.
+     ====================================================================== */
+
+  /* THE CLOCK IS NOT ARITHMETIC ON A TABLE OF OFFSETS, which is the obvious
+     way to do it and is wrong for a third of the year. The United States is
+     UTC-6 in Chicago in January and UTC-5 in July, and a hardcoded -6 would
+     be an hour out from March to November — every year, for eight months of
+     it. Handing an IANA zone name to Intl.DateTimeFormat makes the browser
+     use the same tz database the operating system trusts, which knows when
+     each country moves its clocks and, when they change the rule, gets the
+     correction with the browser update. It also produces the right
+     abbreviation without a second table: CST in winter, CDT in summer.
+
+     The list is short on purpose. It covers where the people who write to
+     Krunalkumar actually are, and anything outside it is answered honestly
+     with a pointer at the meeting planner, which does the whole world. */
+  var PLACES = [
+    { keys: ['india', 'indian', 'ist', 'bharat', 'delhi', 'mumbai', 'bombay', 'bengaluru',
+             'bangalore', 'kolkata', 'calcutta', 'chennai', 'hyderabad', 'pune', 'surat',
+             'ahmedabad', 'gujarat', 'noida', 'gurgaon', 'gurugram'],
+      name: 'India', zones: [['', 'Asia/Kolkata']] },
+
+    /* Four zones, because "what is the time in the US" has four answers and
+       picking one would be a guess about which coast the asker meant. */
+    { keys: ['us', 'usa', 'u s a', 'america', 'american', 'united states', 'states'],
+      name: 'the United States',
+      zones: [['Eastern', 'America/New_York'], ['Central', 'America/Chicago'],
+              ['Mountain', 'America/Denver'], ['Pacific', 'America/Los_Angeles']] },
+
+    { keys: ['uk', 'britain', 'british', 'england', 'london', 'scotland', 'wales'],
+      name: 'the UK', zones: [['', 'Europe/London']] },
+    { keys: ['uae', 'dubai', 'abu dhabi', 'emirates'],
+      name: 'the UAE', zones: [['', 'Asia/Dubai']] },
+    { keys: ['singapore', 'sg'], name: 'Singapore', zones: [['', 'Asia/Singapore']] },
+    { keys: ['japan', 'tokyo', 'jst'], name: 'Japan', zones: [['', 'Asia/Tokyo']] },
+    { keys: ['china', 'beijing', 'shanghai'], name: 'China', zones: [['', 'Asia/Shanghai']] },
+    { keys: ['germany', 'berlin', 'france', 'paris', 'netherlands', 'amsterdam', 'spain',
+             'madrid', 'italy', 'rome', 'europe', 'eu', 'cet'],
+      name: 'central Europe', zones: [['', 'Europe/Berlin']] },
+    { keys: ['canada', 'toronto', 'ontario'], name: 'Toronto', zones: [['', 'America/Toronto']] },
+    { keys: ['vancouver', 'bc'], name: 'Vancouver', zones: [['', 'America/Vancouver']] },
+    { keys: ['australia', 'sydney', 'melbourne'], name: 'Sydney', zones: [['', 'Australia/Sydney']] },
+    { keys: ['new zealand', 'auckland'], name: 'Auckland', zones: [['', 'Pacific/Auckland']] },
+    { keys: ['new york', 'nyc', 'ny', 'boston', 'miami', 'atlanta', 'est', 'edt'],
+      name: 'New York', zones: [['', 'America/New_York']] },
+    { keys: ['chicago', 'texas', 'dallas', 'houston', 'austin', 'cst', 'cdt'],
+      name: 'Chicago', zones: [['', 'America/Chicago']] },
+    { keys: ['denver', 'colorado', 'arizona', 'phoenix', 'mst', 'mdt'],
+      name: 'Denver', zones: [['', 'America/Denver']] },
+    { keys: ['california', 'san francisco', 'sf', 'los angeles', 'la', 'seattle', 'silicon valley',
+             'pst', 'pdt'],
+      name: 'California', zones: [['', 'America/Los_Angeles']] },
+    { keys: ['pakistan', 'karachi', 'lahore'], name: 'Pakistan', zones: [['', 'Asia/Karachi']] },
+    { keys: ['bangladesh', 'dhaka'], name: 'Bangladesh', zones: [['', 'Asia/Dhaka']] },
+    { keys: ['nepal', 'kathmandu'], name: 'Nepal', zones: [['', 'Asia/Kathmandu']] },
+    { keys: ['sri lanka', 'colombo'], name: 'Sri Lanka', zones: [['', 'Asia/Colombo']] },
+    { keys: ['utc', 'gmt', 'zulu'], name: 'UTC', zones: [['', 'UTC']] }
+  ];
+
+  /* Countries whose name is not already a zone the runtime accepts. The tz
+     database carries backward-compatibility links for a surprising number of
+     them — Egypt, Japan, Turkey, Iran, Israel, Cuba, Poland, Portugal,
+     Singapore, Iceland and more all resolve as they stand, which is checked
+     at the bottom of zoneFor and costs nothing — so this list is only the
+     ones that do not, and it stops well short of every country on earth
+     because the city sweep below catches most of the rest. */
+  var COUNTRIES = {
+    nigeria: 'Africa/Lagos', kenya: 'Africa/Nairobi', ghana: 'Africa/Accra',
+    ethiopia: 'Africa/Addis_Ababa', tanzania: 'Africa/Dar_es_Salaam',
+    morocco: 'Africa/Casablanca', algeria: 'Africa/Algiers', tunisia: 'Africa/Tunis',
+    'south africa': 'Africa/Johannesburg', brazil: 'America/Sao_Paulo',
+    russia: 'Europe/Moscow', mexico: 'America/Mexico_City', argentina: 'America/Argentina/Buenos_Aires',
+    chile: 'America/Santiago', colombia: 'America/Bogota', peru: 'America/Lima',
+    germany: 'Europe/Berlin', france: 'Europe/Paris', italy: 'Europe/Rome',
+    spain: 'Europe/Madrid', netherlands: 'Europe/Amsterdam', holland: 'Europe/Amsterdam',
+    sweden: 'Europe/Stockholm', norway: 'Europe/Oslo', denmark: 'Europe/Copenhagen',
+    finland: 'Europe/Helsinki', ireland: 'Europe/Dublin', greece: 'Europe/Athens',
+    switzerland: 'Europe/Zurich', austria: 'Europe/Vienna', belgium: 'Europe/Brussels',
+    'czech republic': 'Europe/Prague', czechia: 'Europe/Prague', hungary: 'Europe/Budapest',
+    romania: 'Europe/Bucharest', ukraine: 'Europe/Kyiv',
+    thailand: 'Asia/Bangkok', vietnam: 'Asia/Ho_Chi_Minh', malaysia: 'Asia/Kuala_Lumpur',
+    indonesia: 'Asia/Jakarta', philippines: 'Asia/Manila', 'south korea': 'Asia/Seoul',
+    korea: 'Asia/Seoul', china: 'Asia/Shanghai', taiwan: 'Asia/Taipei',
+    'saudi arabia': 'Asia/Riyadh', saudi: 'Asia/Riyadh', qatar: 'Asia/Qatar',
+    kuwait: 'Asia/Kuwait', oman: 'Asia/Muscat', bahrain: 'Asia/Bahrain',
+    jordan: 'Asia/Amman', lebanon: 'Asia/Beirut', iraq: 'Asia/Baghdad',
+    afghanistan: 'Asia/Kabul', myanmar: 'Asia/Yangon', burma: 'Asia/Yangon',
+    maldives: 'Indian/Maldives', mauritius: 'Indian/Mauritius', fiji: 'Pacific/Fiji'
+  };
+
+  /* Every zone the runtime knows, keyed by the part people say. "Africa/Cairo"
+     becomes "cairo", "America/Argentina/Buenos_Aires" becomes "buenos aires"
+     as well as "argentina". Built once, on the first time question, because
+     418 zones is not work to do at load for a feature most visitors never
+     touch — and skipped entirely on a browser too old to enumerate them,
+     where the curated list still answers. */
+  var cityIndex = null;
+  function cities() {
+    if (cityIndex) return cityIndex;
+    cityIndex = {};
+    if (typeof Intl === 'undefined' || typeof Intl.supportedValuesOf !== 'function') return cityIndex;
+    var all;
+    try { all = Intl.supportedValuesOf('timeZone'); } catch (err) { return cityIndex; }
+    for (var i = 0; i < all.length; i++) {
+      var parts = all[i].split('/');
+      for (var p = 1; p < parts.length; p++) {
+        var key = parts[p].replace(/_/g, ' ').toLowerCase();
+        // First one wins: Asia/Kolkata should not be reassigned by a later
+        // zone that happens to share a segment.
+        if (!cityIndex[key]) cityIndex[key] = all[i];
+      }
+    }
+    return cityIndex;
+  }
+
+  function usableZone(tz) {
+    try {
+      new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric' }).format(new Date());
+      return true;
+    } catch (err) { return false; }
+  }
+
+  /* Four passes, cheapest and most specific first. The curated list owns the
+     places with more than one answer (the United States) and the ways people
+     abbreviate (uk, uae, pst); everything after it is the database answering
+     for itself, which is why "egypt", "nairobi" and "buenos aires" work
+     without anyone having typed them here. */
+  function zoneFor(where) {
+    var w = String(where || '').trim().toLowerCase().replace(/^(the|in)\s+/, '');
+    if (!w) return null;
+
+    var curated = placeFor(w);
+    if (curated) return curated;
+
+    if (COUNTRIES[w] && usableZone(COUNTRIES[w])) {
+      return { name: title(w), zones: [['', COUNTRIES[w]]] };
+    }
+
+    var byCity = cities()[w];
+    if (byCity) return { name: title(w), zones: [['', byCity]] };
+
+    /* Last: the name as a zone in its own right. This is what makes "egypt"
+       and "japan" work with nothing written down for them — the tz database
+       kept those as links when the zones were renamed after cities. */
+    var direct = w.replace(/\s+/g, '_').replace(/(^|_)([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); });
+    if (usableZone(direct)) return { name: title(w), zones: [['', direct]] };
+
+    return null;
+  }
+
+  function title(w) {
+    return w.replace(/(^|[\s-])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); });
+  }
+
+  function placeFor(where) {
+    for (var i = 0; i < PLACES.length; i++) {
+      var keys = PLACES[i].keys;
+      for (var k = 0; k < keys.length; k++) {
+        // Whole words only, so "la" does not match "lahore" and "sg" does
+        // not match "sgt".
+        if (new RegExp('(^|\\s)' + keys[k].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|\\s)').test(where)) {
+          return PLACES[i];
+        }
+      }
+    }
+    return null;
+  }
+
+  /* CLDR does not agree with itself about zone abbreviations, and which one
+     you get depends on the locale you ask in. en-GB answers "GMT-7" for the
+     American zones, which is correct and is not what anybody calls it; en-US
+     answers "PDT". Ask both and take the first that is a NAME rather than an
+     offset, keeping an offset only as the fallback for zones that genuinely
+     have no short name in either.
+
+     India is the one override. CLDR gives "GMT+5:30" in both locales, while
+     every person asking this question calls it IST. The letters are
+     ambiguous in the abstract — Irish and Israel Standard Time have the same
+     three — but they are printed under the words "In India, right now", and
+     the audience for this site is in the one that means +5:30.
+
+       Both spellings of the Indian zone are listed because they are both
+     live: the tz database renamed Calcutta to Kolkata in 2008 and kept the
+     old name as a link, and Windows still reports Asia/Calcutta through
+     resolvedOptions() on machines set to India — which is exactly the
+     machine most likely to ask this. Keying only the new spelling printed
+     GMT+5:30 to the people it was written for. */
+  var ABBR = { 'Asia/Kolkata': 'IST', 'Asia/Calcutta': 'IST' };
+
+  function zoneAbbr(d, tz) {
+    if (ABBR[tz]) return ABBR[tz];
+    var locales = ['en-US', 'en-GB'];
+    var fallback = '';
+    for (var l = 0; l < locales.length; l++) {
+      try {
+        var parts = new Intl.DateTimeFormat(locales[l], {
+          timeZone: tz, timeZoneName: 'short', hour: 'numeric'
+        }).formatToParts(d);
+        for (var i = 0; i < parts.length; i++) {
+          if (parts[i].type !== 'timeZoneName') continue;
+          var v = parts[i].value;
+          if (!/^(?:GMT|UTC)/i.test(v)) return v;
+          if (!fallback) fallback = v;
+        }
+      } catch (err) { /* try the other locale */ }
+    }
+    return fallback;
+  }
+
+  /* One reading of one clock. Every field comes from Intl so the tz database
+     decides the offset, the abbreviation and whether it is even the same day
+     over there — which it often is not, and is the detail people are
+     usually asking about. */
+  function clockIn(tz) {
+    var d = new Date();
+    try {
+      var time = new Intl.DateTimeFormat('en-GB', {
+        timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true
+      }).format(d);
+      var day = new Intl.DateTimeFormat('en-GB', {
+        timeZone: tz, weekday: 'long', day: 'numeric', month: 'long'
+      }).format(d);
+      var abbr = zoneAbbr(d, tz);
+      return { time: time.replace(/\s?(am|pm)/i, function (m) { return m.toLowerCase(); }), day: day, abbr: abbr };
+    } catch (err) {
+      /* A browser without the zone in its database, or without Intl at all.
+         Saying so is better than printing the wrong hour with confidence. */
+      return null;
+    }
+  }
+
+  /* ARITHMETIC WITHOUT eval(). Not a preference: the site’s CSP allows
+     \'wasm-unsafe-eval\' and nothing else, so eval and new Function are both
+     blocked in the browser and the answer would be an exception. This is a
+     plain recursive descent over the four operations, powers, brackets and a
+     unary sign — about forty lines, no dependency, and it cannot execute
+     anything because it never builds code, only numbers.
+
+     It returns null for anything it does not fully understand, and the
+     caller treats null as "not a sum" and carries on to the search. That is
+     what keeps "python 3" and "version 2 of the api" out of the calculator. */
+  function calc(src) {
+    var s = String(src).replace(/[×x]/gi, '*').replace(/[÷]/g, '/').replace(/,/g, '');
+    var i = 0;
+    var bad = false;
+
+    function ws() { while (i < s.length && s.charAt(i) === ' ') i++; }
+    function eat(ch) { ws(); if (s.charAt(i) === ch) { i++; return true; } return false; }
+
+    function atom() {
+      ws();
+      if (eat('(')) {
+        var v = sum();
+        if (!eat(')')) bad = true;
+        return v;
+      }
+      var m = /^\d+(?:\.\d+)?|^\.\d+/.exec(s.slice(i));
+      if (!m) { bad = true; return 0; }
+      i += m[0].length;
+      return parseFloat(m[0]);
+    }
+
+    function unary() {
+      ws();
+      if (eat('-')) return -unary();
+      if (eat('+')) return unary();
+      return atom();
+    }
+
+    /* Right associative, so 2^3^2 is 512 and not 64 — the same way a
+       calculator and every maths textbook read it. */
+    function power() {
+      var base = unary();
+      ws();
+      if (eat('^')) return Math.pow(base, power());
+      return base;
+    }
+
+    function product() {
+      var v = power();
+      for (;;) {
+        ws();
+        if (eat('*')) v *= power();
+        else if (eat('/')) v /= power();
+        else if (eat('%')) v %= power();
+        else return v;
+      }
+    }
+
+    function sum() {
+      var v = product();
+      for (;;) {
+        ws();
+        if (eat('+')) v += product();
+        else if (eat('-')) v -= product();
+        else return v;
+      }
+    }
+
+    var out = sum();
+    ws();
+    if (bad || i < s.length) return null;          // trailing junk it could not read
+    if (typeof out !== 'number' || !isFinite(out)) return null;
+    return out;
+  }
+
+  /* The expression as the asker wrote it, minus the ways people wrap one in
+     a sentence. Returns null when what is left is not arithmetic — which is
+     nearly everything, so this runs before the corpus and costs a regex. */
+  function sumIn(src) {
+    // Raw text arrives here, capitals and all: lowercase a copy for the
+    // leading-verb strip, and leave every operator alone.
+    var t = String(src == null ? '' : src).toLowerCase().replace(/^(?:can you |could you |please |plz )?(?:do|calc|calculate|compute|solve|evaluate|work out|what(?:\'?s| is)|whats|how much is|answer)\s+/, '');
+    t = t.replace(/[?=.\s]+$/, '').trim();
+    if (!t || !/[-+*\/%^×÷]/.test(t)) return null;    // a bare number is not a sum
+    if (!/^[-+*\/%^()., \d×÷x]+$/i.test(t)) return null;  // letters mean it is a question
+    if (!/\d/.test(t)) return null;
+    var v = calc(t);
+    if (v === null) return null;
+    return { expr: t, value: v };
+  }
+
+  /* Twelve significant figures, then the trailing zeros go. Enough that
+     1/3 reads as a third and not as 0.3, few enough that 0.1 + 0.2 comes
+     back as 0.3 rather than as the famous 0.30000000000000004 — which is a
+     true fact about doubles and a wrong answer to the question asked. */
+  function niceNumber(n) {
+    if (Math.abs(n) >= 1e15 || (n !== 0 && Math.abs(n) < 1e-6)) return String(n);
+    var r = Number(n.toPrecision(12));
+    return String(r);
+  }
+
   function intentOf(q) {
     var s = normalize(q);
     if (!s) return 'empty';
@@ -480,6 +819,36 @@
     if (/^(thanks|thank you|ta|cheers|nice|cool|great|ok|okay)\b/.test(s) && s.length < 22) return 'thanks';
     if (/\b(who are you|what are you|your name|are you (a )?(bot|ai|human|real))\b/.test(s)) return 'identity';
 
+    /* Two questions with computed answers, tested before anything that
+       matches on subject words.
+
+       THE CLOCK. "time" on its own is a trap: "time complexity" is a
+       glossary term, and "response time" and "turnaround time" are both FAQ
+       subjects. So the noun has to END the question, or be followed by a
+       place — which is exactly what separates "what is the time" from
+       "what is time complexity", and it is why these are anchored at both
+       ends rather than searched for in the middle. */
+    var tq = s.replace(/[?.!]+$/, '').trim();
+    if (/^(?:what(?:\'?s| is)?\s+)?(?:the\s+)?(?:current\s+|local\s+)?(?:time|date)(?:\s+(?:now|today|here|right now))?$/.test(tq) ||
+        /^what (?:time|day|date) is it(?:\s+(?:now|today|here))?$/.test(tq) ||
+        /^(?:what(?:\'?s| is)?\s+)?(?:the\s+)?today\'?s? date$/.test(tq) ||
+        /^what day is (?:it|today)$/.test(tq) ||
+        /^(?:time|date) (?:now|today|here)$/.test(tq) ||
+        /^(?:what(?:\'?s| is)?\s+)?(?:the\s+)?(?:current\s+|local\s+)?(?:time|date)\s+(?:in|at|over in)\s+[a-z][a-z .\'-]*$/.test(tq)) {
+      return 'time';
+    }
+
+    /* THE SUM. Claimed only when the whole message parses as arithmetic, so
+       the test IS the parse: "5+5" and "what is 2*(3+4)^2" are claimed,
+       "python 3" and "http 2 vs 3" are not, because they hold letters and
+       never reach the parser.
+
+       On the RAW question, not the normalized one. normalize() keeps only
+       letters, digits, + and # — so "2*(3+4)^2" reaches it as "2 3+4 2",
+       with every operator that matters already deleted. The first version of
+       this read the normalized string and could therefore only ever add. */
+    if (sumIn(q)) return 'math';
+
     /* "Take me there" rather than "where is it", and checked EARLY — ahead of
        exists, commercial and contact. Those all match on subject words, and a
        request to be moved is about the verb: "go to contact" was being read as
@@ -487,11 +856,24 @@
        question about whether internships exist. The phrasing here is
        unambiguous, so it gets first refusal.
 
-       The verb list is anchored and deliberately excludes a bare "open":
-       "open redirect" is a security term with its own glossary entry, and
-       "open" as a navigation verb would hijack it. "open the" is safe because
-       no term begins that way. */
+       The verb list is anchored. It carried "open the" but not a bare
+       "open", because "open redirect" is a security term with a glossary
+       entry of its own and a navigation verb would have hijacked it. That
+       cost more than it saved: "open python", "open sunflower" is how people
+       actually ask, and they got a search result instead of the page. */
     if (/^(go to|goto|go into|take me to|take me|bring me to|navigate to|send me to|open the|jump to|redirect me to)\b/.test(s)) return 'navigate';
+
+    /* Bare "open" — with the two subjects it would otherwise swallow named
+       right here. They are the only ones: grepping every js, html and json
+       on the site for a word following "open" turns up "open redirect" and
+       "open source" and nothing else, so a lookahead is enough and a
+       maintained exception list is not. The plural is covered because "open
+       redirects" is the same question asked twice over.
+
+       Something has to FOLLOW the verb. A bare "open" on its own names no
+       destination, and sending it down this path would answer a question
+       nobody asked with a page nobody chose. */
+    if (/^open(?: up)? +(?!redirects?\b|sources?\b)\S/.test(s)) return 'navigate';
     if (/\b(take|bring) me to\b/.test(s)) return 'navigate';
     /* "Do you offer X" is a question about EXISTENCE, and it has to be caught
        before anything else claims it. The corpus has no FAQ answering "do you
@@ -1038,6 +1420,88 @@
         links: [], chips: ['What is a fork bomb?', 'Which lab decodes a JWT?', 'What does Krunalkumar do?']
       };
     }
+    if (intent === 'time') {
+      /* normalize() again rather than reaching for the copy intentOf made:
+         ask() is handed the raw question and nothing else, and threading a
+         second argument through for one caller would be a worse trade than
+         a regex on a string this short. */
+      var tq = normalize(rawQuery).replace(/[?.!]+$/, '').trim();
+      var where = /\b(?:in|at|over in)\s+([a-z][a-z .\'-]*)$/.exec(tq);
+      var here = clockIn(Intl && Intl.DateTimeFormat
+        ? new Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC');
+
+      if (!where) {
+        /* No place named: their own clock, with the day and date, because
+           "what is the time" from someone checking a deadline wants to know
+           which day it is here too. */
+        if (!here) {
+          return { confident: false, kind: 'canned', links: [], chips: [],
+            text: 'Your browser will not tell me its clock, so I would only be guessing.' };
+        }
+        return {
+          confident: true, kind: 'canned',
+          text: 'It is ' + here.time + (here.abbr ? ' ' + here.abbr : '') + ' on ' + here.day + '.\n' +
+                'That is your device\'s own clock — I have no server to ask.',
+          links: [{ label: 'Compare zones in the meeting planner', href: '/labs/timezones' }],
+          chips: ['What is the time in US?', 'What is the time in UK?']
+        };
+      }
+
+      var place = zoneFor(where[1].trim());
+      if (!place) {
+        return {
+          confident: false, kind: 'canned',
+          text: 'I could not find a zone for “' + where[1].trim() + '”. A country or a big city usually works — or the meeting planner takes any of them.',
+          links: [{ label: 'Open the timezone meeting planner', href: '/labs/timezones' }],
+          chips: ['What is the time in US?', 'What is the time now?']
+        };
+      }
+
+      var lines = [];
+      for (var z = 0; z < place.zones.length; z++) {
+        var c = clockIn(place.zones[z][1]);
+        if (!c) continue;
+        var label = place.zones[z][0];
+        lines.push((label ? label + '  ' : '') + c.time + (c.abbr ? ' ' + c.abbr : '') +
+                   '  ·  ' + c.day);
+      }
+      if (!lines.length) {
+        return { confident: false, kind: 'canned', links: [], chips: [],
+          text: 'This browser does not carry the timezone data I would need for that.' };
+      }
+
+      /* The reader's own clock is the useful half of the answer — the question
+         behind "what is the time in California" is nearly always "can I call
+         them now". It is dropped when it would only repeat a line already
+         printed, which is what asking about your own country does. */
+      var mine = here ? here.time + (here.abbr ? ' ' + here.abbr : '') : '';
+      var sameClock = !!here && lines.join('\n').indexOf(mine) !== -1;
+
+      return {
+        confident: true, kind: 'canned',
+        text: 'In ' + place.name + ', right now:\n' + lines.join('\n') +
+              (here && !sameClock ? '\nYou are on ' + mine + '.' : ''),
+        links: [{ label: 'Compare zones in the meeting planner', href: '/labs/timezones' }],
+        chips: ['What is the time now?', 'What is the time in India?']
+      };
+    }
+
+    if (intent === 'math') {
+      var sum = sumIn(rawQuery);
+      /* intentOf already parsed it once. If it will not parse now the input
+         changed underneath us, which cannot happen — but answering with a
+         wrong number would be worse than admitting it. */
+      if (!sum) {
+        return { confident: false, kind: 'canned', links: [], chips: [],
+          text: 'I could not read that as a sum.' };
+      }
+      return {
+        confident: true, kind: 'canned',
+        text: sum.expr + ' = ' + niceNumber(sum.value),
+        links: [], chips: []
+      };
+    }
+
     if (intent === 'thanks') {
       return { confident: true, kind: 'canned', text: 'Any time. Ask me something else, or go straight to Krunalkumar.', links: [], chips: [] };
     }

@@ -81,7 +81,7 @@
 // nothing to bump by hand and no way to forget. The value committed here is
 // the last deploy's, so the repo copy still reads as a real hash rather than
 // a placeholder.
-var VENDOR_FINGERPRINT = '62cee07e74bdd978';
+var VENDOR_FINGERPRINT = 'ecb4ba85c92818ad';
 
 // The runtime cache, named after the bytes it holds. A vendor change yields a
 // new name and returning visitors are refilled; an unchanged tree yields the

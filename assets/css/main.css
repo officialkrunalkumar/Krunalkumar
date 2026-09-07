@@ -3583,6 +3583,12 @@ footer {
      name, a URL in a sentence. Without this they widen the panel instead of
      wrapping. */
   overflow-wrap: anywhere;
+  /* pre-line so the two computed answers can use a line per reading — four
+     US zones as four lines rather than one run-on sentence. Safe for
+     everything else: not one of the 278 indexed answers contains a
+     newline, so nothing that exists today renders differently, and the
+     collapsing of runs of spaces is unchanged. */
+  white-space: pre-line;
 }
 
 .mayuri-msg.is-bot .mayuri-msg-text {
