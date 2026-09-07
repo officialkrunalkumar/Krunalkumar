@@ -77,6 +77,17 @@
       year: 2012,
       bytes: 9558452,
       dir: 'typescript',
+      /* The one file that proves this runtime is REALLY cached, as a path
+         under /assets/vendor/. Asking "is anything from this directory
+         cached" was the old test, and one 300 KB helper out of a 12 MB
+         runtime answered yes: the panel then said "Python is cached on this
+         device" while the next Run said "Downloading CPython (~12 MB)".
+         Name the payload instead — the .wasm that everything else is
+         scaffolding for. If a vendored file is ever renamed (php's is a
+         content hash) the lookup simply misses, and a miss over-warns about
+         a download rather than promising an instant start, which is the
+         safe direction to be wrong in. */
+      cacheMarker: 'typescript/typescript.js',
       prism: 'typescript',
       mode: 'jsblob',
       stdin: true,
@@ -108,6 +119,7 @@
       year: 1991,
       bytes: 12262929,
       dir: 'pyodide',
+      cacheMarker: 'pyodide/pyodide.asm.wasm',
       prism: 'python',
       mode: 'worker',
       stdin: true,
@@ -147,6 +159,7 @@
       year: 1972,
       bytes: 60373055,
       dir: 'clang',
+      cacheMarker: 'clang/clang.wasm',
       prism: 'c',
       mode: 'worker',
       stdin: true,
@@ -191,6 +204,7 @@
       year: 1985,
       bytes: 60373055,
       dir: 'clang',
+      cacheMarker: 'clang/clang.wasm',
       prism: 'cpp',
       mode: 'worker',
       stdin: true,
@@ -239,6 +253,7 @@
       year: 1974,
       bytes: 708594,
       dir: 'sqljs',
+      cacheMarker: 'sqljs/sql-wasm.wasm',
       prism: 'sql',
       mode: 'worker',
       stdin: false,
@@ -278,6 +293,7 @@
       year: 1993,
       bytes: 423233,
       dir: 'wasmoon',
+      cacheMarker: 'wasmoon/glue.wasm',
       prism: 'lua',
       mode: 'worker',
       stdin: true,
@@ -309,6 +325,7 @@
       size: '~5.5 MB',  // the wire figure (17 MB unpacked) — see the note on the C entry above
       bytes: 16844056,
       dir: 'pglite',
+      cacheMarker: 'pglite/pglite.wasm',
       year: 1996,
       prism: 'sql',
       mode: 'worker',
@@ -351,6 +368,7 @@
       size: '~5 MB',    // the wire figure (17 MB unpacked) — see the note on the C entry above
       bytes: 16822206,
       dir: 'ruby',
+      cacheMarker: 'ruby/ruby.wasm',
       year: 1995,
       prism: 'ruby',
       mode: 'worker',
@@ -391,6 +409,7 @@
       size: '~3.8 MB',  // the wire figure (16 MB unpacked) — see the note on the C entry above
       bytes: 16073263,
       dir: 'perl',
+      cacheMarker: 'perl/emperl.wasm',
       year: 1987,
       prism: 'perl',
       mode: 'worker',
@@ -427,6 +446,7 @@
       size: '~3.5 MB',  // the wire figure (14 MB unpacked) — see the note on the C entry above
       bytes: 14210763,
       dir: 'php',
+      cacheMarker: 'php/e31ec3faf3e2323a2b4a448342b50307765b8217.wasm',
       year: 1994,
       prism: 'php',
       mode: 'worker',

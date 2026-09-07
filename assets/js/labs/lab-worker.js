@@ -109,6 +109,26 @@ var stdinCursor = 0;
 function post(msg) { self.postMessage(msg); }
 function status(text) { post({ type: 'status', text: text }); }
 
+/* What the page believes about the cache, restated on every message: is the
+   file that IS this runtime already in the service worker's cache? The worker
+   cannot answer that itself — the cache's name carries a fingerprint only
+   sw.js knows — and it needs the answer for one reason: to stop announcing a
+   download that is not going to happen. */
+var runtimeCached = false;
+var loadLabel = null;
+
+/* Every runtime used to post a hardcoded "Downloading CPython (~12 MB, cached
+   after this)…" before fetching anything at all — on a warm start as readily
+   as a cold one, and with no progress bar to corroborate it, because the byte
+   counter below only ever watched clang. Both halves of that are fixed: this
+   says what is actually about to happen, and the fetch wrapper further down
+   makes the bar appear for whatever really arrives. */
+function announce(label, size) {
+  loadLabel = label;
+  status(runtimeCached ? 'Starting ' + label + ' from cache…'
+                       : 'Downloading ' + label + ' (' + size + ', cached after this)…');
+}
+
 /* The load/run boundary, announced once per run.
 
    Everything before this point is fetching and instantiating a runtime — up to
@@ -122,7 +142,10 @@ function status(text) { post({ type: 'status', text: text }); }
 
    Compilation and type-checking count as run, not load: they are work the
    program's own source is responsible for. */
-function execPhase(text) { post({ type: 'exec', text: text }); }
+/* Also the end of the download, by definition: everything after this point is
+   the visitor's program. One call site for nine runtimes, so no path can leave
+   the bar on screen — dlEnd() is a no-op when nothing is being reported. */
+function execPhase(text) { dlEnd(); post({ type: 'exec', text: text }); }
 function labOut(text, cls) { post({ type: 'out', text: String(text), cls: cls || 't-out' }); }
 
 /* Hand the next line of the Input panel to a runtime asking for stdin.
@@ -137,7 +160,7 @@ function readLine() {
    -------------------------------------------------------------------------- */
 async function pythonRuntime() {
   if (loaded.python) return loaded.python;
-  status('Downloading CPython (~12 MB, cached after this)…');
+  announce('CPython', '~12 MB');
   importScripts(VENDOR + 'pyodide/pyodide.js');
   var py = await loadPyodide({
     indexURL: VENDOR + 'pyodide/',
@@ -196,7 +219,7 @@ async function runPython(code) {
    -------------------------------------------------------------------------- */
 async function sqlRuntime() {
   if (loaded.sql) return loaded.sql;
-  status('Downloading SQLite (~700 KB, cached after this)…');
+  announce('SQLite', '~700 KB');
   importScripts(VENDOR + 'sqljs/sql-wasm.js');
   loaded.sql = await initSqlJs({ locateFile: function (f) { return VENDOR + 'sqljs/' + f; } });
   return loaded.sql;
@@ -249,7 +272,7 @@ async function runSql(code) {
    -------------------------------------------------------------------------- */
 async function runLua(code) {
   if (!loaded.luaFactory) {
-    status('Downloading Lua (~420 KB, cached after this)…');
+    announce('Lua', '~420 KB');
     importScripts(VENDOR + 'wasmoon/index.js');
     loaded.luaFactory = new wasmoon.LuaFactory(VENDOR + 'wasmoon/glue.wasm');
   }
@@ -454,6 +477,58 @@ function fetchTapped(url, name) {
   });
 }
 
+/* clang is the only runtime this file fetches by hand, which is why it was the
+   only one with a progress bar: every other loader — pyodide, pglite, ruby.wasm,
+   emperl, php — fetches its own payload internally, and "no bar ever appears"
+   was the result on nine of eleven languages. fetch is the one interception
+   point they all share.
+
+   Deliberately conservative. It only looks at /assets/vendor/ URLs, only while
+   a load is in progress or about to be, and it hands back the untouched
+   response on any surprise — the readout can be lost, the download cannot.
+   Files clang has already registered pass straight through, so its precise
+   bar (which knows both the wire and unpacked sizes) is unaffected; a
+   discovered file has neither, which dlPost renders as an honest
+   bytes-so-far bar with no total rather than a made-up percentage.
+
+   importScripts() is not covered — it is not fetch — but that only ever loads
+   the small JS shims, never the megabytes. */
+var nativeFetch = (typeof self.fetch === 'function') ? self.fetch.bind(self) : null;
+
+if (nativeFetch) {
+  self.fetch = function (input, init) {
+    // Three shapes, because pyodide uses all three: a plain string, a Request
+    // (which has .url), and — for the two files that matter most,
+    // pyodide.asm.wasm and python_stdlib.zip — a URL object, which has href
+    // and no .url at all. Reading only .url left those two arriving as '',
+    // so they went uncounted and the bar reported 107 KB of a 5.5 MB load.
+    var url = '';
+    try {
+      if (typeof input === 'string') url = input;
+      else if (input && typeof input.url === 'string') url = input.url;
+      else url = String(input || '');
+    } catch (err) { url = ''; }
+
+    var pending = nativeFetch(input, init);
+    if (url.indexOf('/assets/vendor/') === -1) return pending;
+
+    return pending.then(function (response) {
+      try {
+        if (!response || !response.ok) return response;
+        var name = url.split('?')[0].split('/').pop();
+        if (!dl) dlBegin(loadLabel || 'the runtime', [], null);
+        var known = dl.files[name];
+        // clang registers its files up front and taps them itself.
+        if (known && (known.wire || known.unpacked)) return response;
+        if (!known) dl.files[name] = { got: 0, wire: 0, unpacked: 0 };
+        return tapResponse(response, name);
+      } catch (err) {
+        return response;
+      }
+    });
+  };
+}
+
 /* --------------------------------------------------------------------------
    C and C++ — a real clang, not an interpreter.
    --------------------------------------------------------------------------
@@ -585,7 +660,7 @@ async function runClang(code, lang) {
    -------------------------------------------------------------------------- */
 async function pgliteDb() {
   if (loaded.pglite) return loaded.pglite;
-  status('Downloading PostgreSQL (~17 MB, cached after this)…');
+  announce('PostgreSQL', '~17 MB');
   var mod = await import(VENDOR + 'pglite/index.js');
   var PGlite = mod.PGlite || (mod.default && mod.default.PGlite);
   if (!PGlite) throw new Error('PGlite failed to load.');
@@ -632,7 +707,7 @@ async function runPostgres(code) {
    -------------------------------------------------------------------------- */
 async function rubyVm() {
   if (loaded.rubyMod) return loaded.rubyMod;
-  status('Downloading Ruby (~17 MB, cached after this)…');
+  announce('Ruby', '~17 MB');
   // The UMD build, loaded from our own origin — an ESM import from a CDN
   // would mean a third party serving code on every Ruby run, which is exactly
   // what the privacy claim on these pages rules out.
@@ -701,7 +776,7 @@ function perlPushLine(text) {
 
 async function runPerl(code) {
   if (!loaded.perlReady) {
-    status('Downloading Perl (~16 MB, cached after this)…');
+    announce('Perl', '~16 MB');
     self.Module = {
       noInitialRun: true,
       locateFile: function (path) { return VENDOR + 'perl/' + path; },
@@ -784,7 +859,7 @@ function stubDocumentForEmscripten() {
 
 async function runPhp(code) {
   if (!loaded.php) {
-    status('Downloading PHP (~14 MB, cached after this)…');
+    announce('PHP', '~14 MB');
     stubDocumentForEmscripten();
     var mod = await import(VENDOR + 'php/PhpWeb.mjs');
     var instance = new mod.PhpWeb({ persist: false });
@@ -868,7 +943,7 @@ async function loadTsLibs() {
 
 async function transpile(code) {
   if (!loaded.ts) {
-    status('Downloading the TypeScript compiler (~9 MB, cached after this)…');
+    announce('the TypeScript compiler', '~9 MB');
     importScripts(VENDOR + 'typescript/typescript.js');
     loaded.ts = ts;
   }
@@ -954,6 +1029,8 @@ async function transpile(code) {
    -------------------------------------------------------------------------- */
 self.onmessage = async function (event) {
   var msg = event.data || {};
+  runtimeCached = !!msg.cached;
+  loadLabel = null;
   stdinLines = String(msg.stdin || '').replace(/\r\n/g, '\n').split('\n');
   stdinCursor = 0;
 

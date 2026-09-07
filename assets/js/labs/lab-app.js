@@ -91,6 +91,10 @@
   var worker = null;
   var workerLang = null;   // which language the live worker has loaded
   var running = false;
+  // Whether this language's runtime is already in the service worker's cache.
+  // Answered once per language below, then handed to the worker on every run
+  // so its own status line can stop claiming a download that will not happen.
+  var runtimeCached = false;
 
   function setStatus(text, cls) {
     // #lab-status is a live region (see initStatusLive). Rewriting it with the
@@ -726,9 +730,10 @@
     }
     if (meta.mode === 'jsblob') {
       // TypeScript: compile in the generic worker, then run the emitted JS.
-      worker.postMessage({ type: 'transpile', code: code });
+      worker.postMessage({ type: 'transpile', code: code, cached: runtimeCached });
     } else {
-      worker.postMessage({ type: 'run', lang: current, code: code, stdin: el.stdin.value });
+      worker.postMessage({ type: 'run', lang: current, code: code,
+                           stdin: el.stdin.value, cached: runtimeCached });
     }
   }
 
@@ -892,6 +897,7 @@
           // The "which languages have run" flags describe a cache that no
           // longer exists, so they go with it.
           LAB_LIST.forEach(function (m) { store.remove('rt.' + m.id); });
+          runtimeCached = false;   // the cache this claimed is gone
           clearRuntimes.disabled = false;
           clearRuntimes.textContent = 'Remove downloaded runtimes';
           refreshMeter();
@@ -923,6 +929,7 @@
      initToolbar for why. */
   function applyLanguage(id) {
     current = id;
+    runtimeCached = false;   // unknown for the new language until the probe below
     var meta = LAB_RUNTIMES[id];
     lab.setAttribute('data-lang', id);
     el.select.value = id;
@@ -976,10 +983,20 @@
       // `has` is guarded rather than assumed: sw.js caches this site's own JS,
       // so a returning visitor can be running a lab-cache.js from before this
       // function existed until the new worker takes over.
-      if (LabCache && LabCache.has) {
-        LabCache.has(meta.dir).then(function (r) {
+      //
+      // The question asked here used to be has(meta.dir) — is ANY file from
+      // this runtime's directory cached — and one small helper out of a 12 MB
+      // runtime answered yes. The panel then said "Python is cached on this
+      // device, so it starts straight away" and the very next Run said
+      // "Downloading CPython (~12 MB)", because the two lines were produced by
+      // rules that never consulted each other. cacheMarker names the file that
+      // IS the runtime, and its answer now drives both: this line, and the
+      // worker's wording, which travels in the run message.
+      if (LabCache && LabCache.hasFile && meta.cacheMarker) {
+        LabCache.hasFile(meta.cacheMarker).then(function (r) {
           // The visitor may have changed language while the worker answered.
           if (current !== id || !r || !r.cached) return;
+          runtimeCached = true;
           setStatus('Ready — ' + meta.name + ' is cached on this device, so it starts straight away');
         });
       }

@@ -477,6 +477,28 @@ self.addEventListener('message', function (event) {
      cache, so it says yes for Python when only Ruby was ever fetched.
      Matching on the directory prefix rather than a named file means a runtime
      whose file list changes upstream still reports correctly. */
+  /* -> { cached } for ONE FILE, named by its path under /assets/vendor/.
+     This is the question the panel actually wants answered, and the
+     directory test below is the question it used to ask: `some` is true
+     the moment ANY file from a runtime is present, so one small helper out
+     of a 12 MB runtime made the page announce the whole thing was cached.
+     Asked here rather than from the page because CACHE's name carries the
+     vendor fingerprint, and only this file knows it. */
+  if (data.type === 'lab-cache-has-file') {
+    var path = String(data.path || '');
+    if (!path) { reply({ cached: false }); return; }
+    caches.open(CACHE).then(function (cache) {
+      return cache.match(PREFIX + path);
+    }).then(function (hit) {
+      reply({ cached: !!hit });
+    }).catch(function () { reply({ cached: false }); });
+    return;
+  }
+
+  /* Superseded by the handler above and kept for one reason: a visitor
+     whose cached copy of lab-cache.js predates it will still ask this,
+     and an unanswered message costs them a 3s stall before the fallback.
+     It over-claims by design — see above — so nothing new should use it. */
   if (data.type === 'lab-cache-has') {
     var dir = String(data.dir || '');
     if (!dir) { reply({ cached: false }); return; }

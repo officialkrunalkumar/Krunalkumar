@@ -63,6 +63,16 @@
       return ask({ type: 'lab-cache-stats' }, { files: 0, bytes: 0, unavailable: true });
     },
 
+    /* -> { cached } for ONE FILE, named by its path under /assets/vendor/
+       (e.g. 'pyodide/pyodide.asm.wasm'). Use this, not has(): it asks
+       whether the file that IS the runtime is cached, where has() answers
+       yes for any file from the same directory. The fallback is `false`
+       for the same reason as below — over-warning about a download beats
+       promising a start that then takes twenty seconds. */
+    hasFile: function (path) {
+      return ask({ type: 'lab-cache-has-file', path: path }, { cached: false, unavailable: true });
+    },
+
     /* -> { cached } for ONE runtime, named by its directory under
        /assets/vendor/ (e.g. 'pyodide'). stats() cannot answer this — it totals
        the cache, so it reports a hit for every language once any one of them
