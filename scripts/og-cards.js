@@ -566,6 +566,12 @@ function wrapTitle(title, max) {
 const LAB_KIND = {
   /* the labs added in the security / developer / practical batch */
   'incident-timeline':     ['labClock', 'Forensics'],
+  'header-grader':         ['labShield', 'Security tool'],
+  'threat-hunt':          ['labSort', 'Exercise'],
+  'kerberos-flow':        ['labNetwork', 'Simulator'],
+  'saml-response':        ['labShield', 'Security tool'],
+  'ssh-keys':             ['labKeys', 'Free tool'],
+  'oauth-flow':            ['labShield', 'Simulator'],
   /* the labs added in the security / developer / practical batch */
   'dmarc-builder':         ['labMail', 'Security tool'],
   'sbom-inspector':        ['labFile', 'Security tool'],

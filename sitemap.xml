@@ -1304,6 +1304,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/games/fingerprint</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/games/birthday-facts</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -1437,6 +1443,36 @@
   </url>
   <url>
     <loc>https://krunalkumar.dpdns.org/labs/header-grader</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/threat-hunt</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/kerberos-flow</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/saml-response</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/ssh-keys</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/oauth-flow</loc>
     <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

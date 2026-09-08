@@ -9,3 +9,6 @@ package-lock.json
 # Editor / OS noise
 .DS_Store
 Thumbs.db
+
+# Claude Code local state (launch config for the dev-server preview)
+.claude/

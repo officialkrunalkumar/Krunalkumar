@@ -816,6 +816,31 @@
             <p class="lab-card-desc">Paste the response headers you actually got and get a weighted grade across eight of them, with a reason for every mark lost. It grades a paste rather than fetching a URL, so it works on staging.</p>
             <span class="lab-card-engine">Eight checks &middot; nothing fetched</span>
           </a>
+          <a class="lab-card" href="/labs/threat-hunt">
+            <h3 class="lab-card-name">Threat hunt</h3>
+            <p class="lab-card-desc">A fresh domain every run, one night of authentication events, and one human account compromised before the others. The log starts hidden and every question you ask is counted.</p>
+            <span class="lab-card-engine">Five questions &middot; a new domain each run</span>
+          </a>
+          <a class="lab-card" href="/labs/kerberos-flow">
+            <h3 class="lab-card-name">Kerberos flow and attacks</h3>
+            <p class="lab-card-desc">Walk the AS and TGS exchange, then run Kerberoasting, AS-REP roasting, Golden and Silver tickets, pass-the-ticket and delegation abuse &mdash; each with what actually fixes it.</p>
+            <span class="lab-card-engine">Six attacks &middot; RC4 vs AES256</span>
+          </a>
+          <a class="lab-card" href="/labs/saml-response">
+            <h3 class="lab-card-name">SAML response dissector</h3>
+            <p class="lab-card-desc">Paste a SAMLResponse and see the envelope, subject, validity window and attributes &mdash; plus what is actually signed, with checks for signature wrapping and the NameID comment trick.</p>
+            <span class="lab-card-engine">Signature structure &middot; nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/ssh-keys">
+            <h3 class="lab-card-name">SSH key inspector</h3>
+            <p class="lab-card-desc">Paste a public key and get both fingerprints, the real key size, and the type recorded inside the blob rather than the label on the line. Reads a whole authorized_keys file, and refuses a private key.</p>
+            <span class="lab-card-engine">Both fingerprints &middot; nothing uploaded</span>
+          </a>
+          <a class="lab-card" href="/labs/oauth-flow">
+            <h3 class="lab-card-name">OAuth 2.0 flow simulator</h3>
+            <p class="lab-card-desc">Walk the authorization code flow with real PKCE values, then run five attacks against it and watch which check refuses each one. Or paste your own authorize URL and have it audited.</p>
+            <span class="lab-card-engine">Five attacks &middot; real S256 challenge</span>
+          </a>
           <a class="lab-card" href="/labs/rainbow-tables">
             <h3 class="lab-card-name">Salt and rainbow tables</h3>
             <p class="lab-card-desc">Build a table, break unsalted hashes with it, add a salt and watch it become worthless. Then time a fast hash against a slow one.</p>

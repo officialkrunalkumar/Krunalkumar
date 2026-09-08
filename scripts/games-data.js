@@ -4036,6 +4036,88 @@ const GAMES = [
   },
 
   {
+    slug: 'fingerprint',
+    cat: 'cs',
+    name: 'Fingerprint',
+    glyph: '&#9783;',
+    script: 'cs/fingerprint.js',
+    board: true, pad: 'none', bestKey: 'fingerprint',
+    engine: 'Sixty seconds &middot; pairs that get closer',
+    title: 'Fingerprint — Can You Actually Tell Two SSH Keys Apart?',
+    ogTitle: 'Your SSH client asks you this. Can you do it?',
+    description: 'Two SSH key fingerprints, same or different, for sixty seconds. The pairs close ' +
+      'until they differ by one confusable character. Most people cannot do it.',
+    short: 'Two fingerprints. Same or different? Sixty seconds.',
+    h1: 'Fingerprint',
+    hero: 'Every SSH client asks you to compare a fingerprint the first time you connect somewhere, ' +
+      'and essentially nobody does &mdash; they type yes. The usual explanation is laziness. It is not: ' +
+      'comparing two 43-character base64 strings by eye is a task humans are measurably bad at, and ' +
+      'sixty seconds here is a faster way to find that out about yourself than being told.',
+    facts: ['Sixty seconds a round', 'Pairs get closer as you score',
+      'Ends on single confusable characters', 'Shows you the one you missed'],
+    hud: [
+      { key: 'score', label: 'Correct', accent: true, init: '0' },
+      { key: 'streak', label: 'Streak', init: '0' },
+      { key: 'time', label: 'Seconds', init: '60' },
+    ],
+    keys: [{ k: 'S  &larr;', d: 'The two are the same' }, { k: 'D  &rarr;', d: 'They are different' }],
+    touch: 'Two buttons under the fingerprints: Same and Different.',
+    infoHeading: 'Why this is harder than it looks',
+    info: [
+      {
+        h: 'The difficulty ramp is the argument',
+        p: 'Early pairs differ in six places and everybody gets those. Past a score of twenty the pairs ' +
+          'differ in one character, and that character comes from a confusable set &mdash; I against l, ' +
+          '0 against O, 5 against S, u against v, hyphen against underscore. Accuracy falls off a cliff ' +
+          'somewhere in there. Where it falls for you is the finding.',
+      },
+      {
+        h: 'Both strings stay on screen',
+        p: 'This measures comparison, not memory, because comparison is the real task &mdash; the ' +
+          'fingerprint is in your terminal and the known-good one is in a wiki tab. The clock is there ' +
+          'instead, because unlimited time turns it into a character-by-character audit that anybody can ' +
+          'pass and nobody performs at 03:00 with a deploy blocked.',
+      },
+      {
+        h: 'What to do instead of squinting',
+        p: 'Paste and compare the whole string rather than reading it. Better, distribute known host keys ' +
+          'through configuration management so the prompt never appears. Better still, use an SSH ' +
+          'certificate authority, so a host is trusted because it carries a signature rather than because ' +
+          'a tired human decided two lines of base64 looked alike.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Are these real SSH fingerprints?',
+        a: 'They are formed exactly like real ones — 43 characters of base64url, the length of a SHA-256 ' +
+          'digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from ' +
+          'real keys, because a real key would imply a real host. The SSH key inspector in Labs computes ' +
+          'genuine ones from a key you paste.',
+      },
+      {
+        q: 'Why does half of every round look identical?',
+        a: 'Because the pairs are an even split between matching and differing. Any other ratio and a ' +
+          'player who always answers "different" beats a player who actually looks, which would make the ' +
+          'score meaningless and the lesson backwards.',
+      },
+      {
+        q: 'Is a low score bad?',
+        a: 'No, it is the expected result and it is the reason the game exists. You are looking for a ' +
+          'difference, you know one might be there, and you are doing it as a game — none of which is true ' +
+          'of somebody accepting a host key at three in the morning. If you struggled here, you would ' +
+          'certainly have typed yes there.',
+      },
+      {
+        q: 'Where is my best score kept?',
+        a: 'localStorage on this device, under game.fingerprint.best, and nowhere else. There is no ' +
+          'account and no leaderboard, so this browser is the only place it exists — and the data strip on ' +
+          'this page will show you the key and clear it.',
+      },
+    ],
+    related: ['password-duel', 'reaction-time', 'aim-trainer'],
+  },
+
+  {
     slug: 'which-attack',
     cat: 'fun',
     name: 'Which cyberattack are you',
