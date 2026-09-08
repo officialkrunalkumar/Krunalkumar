@@ -87,6 +87,86 @@
        the question of what there is to reset. */
     var reset = box.querySelector('[data-reset]');
     if (reset) reset.hidden = hit === 0;
+
+    var cert = box.querySelector('[data-cert]');
+    if (cert) cert.hidden = hit < links.length;
+  }
+
+  /* --------------------------------------------------------------------
+     The certificate.
+
+     Printed, not downloaded. A canvas rendered to a PNG would need a
+     download attribute, and the honest artefact for something you finished
+     is a sheet of paper rather than a file in a downloads folder — which is
+     the same conclusion labs/typing-certificate reached.
+
+     AND IT SAYS ON ITS FACE THAT IT PROVES NOTHING. Nobody invigilated this.
+     The ticks come from clicking links on a page that trusts you, on a site
+     with no accounts. A certificate that implied otherwise would be the one
+     dishonest thing on the site, and the typing certificate already set the
+     precedent for saying so in the printed copy rather than in a footnote
+     somebody can crop off.
+     -------------------------------------------------------------------- */
+
+  function certificate(box) {
+    var name = box.querySelector('.lab-path-name');
+    var links = box.querySelectorAll('.lab-steps a[data-step]');
+    var sheet = document.createElement('div');
+    sheet.className = 'pathcert';
+
+    var h = document.createElement('p');
+    h.className = 'pathcert-kicker';
+    h.textContent = 'krunalkumar.dpdns.org / labs';
+    sheet.appendChild(h);
+
+    var t = document.createElement('h2');
+    t.className = 'pathcert-title';
+    t.textContent = name ? name.textContent : 'Lab path';
+    sheet.appendChild(t);
+
+    var sub = document.createElement('p');
+    sub.className = 'pathcert-sub';
+    sub.textContent = 'All ' + links.length + ' labs opened and worked through';
+    sheet.appendChild(sub);
+
+    var ul = document.createElement('ol');
+    ul.className = 'pathcert-list';
+    for (var i = 0; i < links.length; i++) {
+      var li = document.createElement('li');
+      li.textContent = links[i].textContent;
+      ul.appendChild(li);
+    }
+    sheet.appendChild(ul);
+
+    var when = document.createElement('p');
+    when.className = 'pathcert-date';
+    /* Locale-formatted rather than ISO: this is the one string on the site a
+       person prints and puts on a desk. */
+    when.textContent = new Date().toLocaleDateString(undefined,
+      { year: 'numeric', month: 'long', day: 'numeric' });
+    sheet.appendChild(when);
+
+    var honest = document.createElement('p');
+    honest.className = 'pathcert-honest';
+    honest.textContent = 'This is a record of self-directed practice, not an issued credential. ' +
+      'Nobody invigilated it and no account was checked — the ticks were kept by the browser this ' +
+      'was printed from. It says what you read, which is worth something, and nothing more.';
+    sheet.appendChild(honest);
+
+    document.body.appendChild(sheet);
+    document.body.classList.add('is-printing-cert');
+
+    function done() {
+      document.body.classList.remove('is-printing-cert');
+      if (sheet.parentNode) sheet.parentNode.removeChild(sheet);
+      window.removeEventListener('afterprint', done);
+    }
+    window.addEventListener('afterprint', done);
+    /* Safari has historically not fired afterprint. The timeout is the
+       backstop so the page is never left with a stray sheet in the DOM. */
+    window.setTimeout(done, 20000);
+
+    window.print();
   }
 
   function mark(box, slug) {
@@ -104,6 +184,11 @@
 
       box.addEventListener('click', function (e) {
         var t = e.target;
+
+        if (t && t.hasAttribute && t.hasAttribute('data-cert')) {
+          certificate(box);
+          return;
+        }
 
         if (t && t.hasAttribute && t.hasAttribute('data-reset')) {
           try { localStorage.removeItem(PREFIX + box.getAttribute('data-path')); } catch (err) { /* ignore */ }

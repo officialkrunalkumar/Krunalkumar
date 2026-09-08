@@ -951,6 +951,7 @@
     <script defer src="/assets/js/site-search.js"></script>
     <script defer src="/assets/js/theme.js"></script>
     <script defer src="/assets/js/glossary.js"></script>
+    <script defer src="/assets/js/glossary-graph.js"></script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
@@ -1013,6 +1014,25 @@
           demonstrates it, a link straight to the thing itself. A definition tells you what a buffer
           overflow is; watching a string walk over a return address tells you why it matters. Jump by
           letter, filter by subject, or search.
+        </p>
+      </section>
+
+      <section class="section-card" id="glossary-graph-section" hidden>
+        <div class="section-heading">
+          <h2>The shape of it</h2>
+          <p>
+            Every term below that points at another one, drawn as a link. Colour is the category; a term with
+            many lines running into it is one the rest of the glossary keeps needing. Click any dot to jump to
+            its entry. Built from the list on this page rather than from a separate file, so it cannot describe
+            a glossary this page does not have.
+          </p>
+        </div>
+        <canvas id="glossary-graph" class="ggraph" width="900" height="520"
+                aria-label="A map of the glossary: each dot is a term, each line a cross-reference between two terms. The same information is in the alphabetical list below."></canvas>
+        <p class="ggraph-caption" id="ggraph-caption"></p>
+        <p class="ggraph-readout" id="ggraph-readout" role="status" aria-live="polite"></p>
+        <p class="ggraph-controls">
+          <button class="btn btn-secondary" type="button" id="ggraph-shake">Rearrange</button>
         </p>
       </section>
 

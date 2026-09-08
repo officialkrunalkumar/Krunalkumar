@@ -129,6 +129,7 @@
 
       var deckSel = document.getElementById('game-deck');
       var catSel = document.getElementById('game-cat');
+      var exportBtn = document.getElementById('game-export');
 
       var raw = { terms: [], faq: [] };
 
@@ -272,6 +273,8 @@
           return;
         }
 
+        if (mode === 'exam') { renderExam(board); return; }
+
         if (!queue.length) {
           var c = counts();
           var head = el('div', 'quiz-result');
@@ -387,15 +390,214 @@
          Controls and data
          -------------------------------------------------------------- */
 
+      /* ==================================================================
+         Exam mode
+
+         WHY IT IS MULTIPLE CHOICE AND STUDY MODE IS NOT. Study mode asks you
+         to grade yourself, which is right for revision — the honest answer
+         to "did you know that" is one only you have — and useless as a test,
+         because nobody screening a candidate wants a score the candidate
+         chose. So an exam runs the other way round: it shows the definition
+         and asks which term it defines, with three wrong answers drawn from
+         the same category so they are plausible rather than absurd.
+
+         TERMS ONLY. The FAQ deck's answers run to a paragraph, and four
+         paragraphs as options is a reading test rather than a recall test.
+         The control disables itself on that deck instead of degrading.
+
+         AN EXAM DOES NOT TOUCH YOUR SCHEDULE. Getting one wrong under time
+         pressure is not the same signal as failing it in revision, and
+         letting the exam reshuffle the Leitner boxes would corrupt weeks of
+         study with one bad five minutes.
+         ================================================================== */
+
+      var mode = 'study';
+      var exam = null;
+
+      function buildExam() {
+        var pool = cards.slice();
+        g.shuffle(pool);
+        var picked = pool.slice(0, Math.min(SESSION, pool.length));
+        var qs = [];
+
+        for (var i = 0; i < picked.length; i++) {
+          var card = picked[i];
+
+          /* Distractors from the same category where there are enough of
+             them, otherwise from the whole deck. A four-option question with
+             two options repeated is worse than one with a distractor from
+             another field. */
+          var sameCat = [];
+          for (var j = 0; j < cards.length; j++) {
+            if (cards[j] !== card && cards[j].cat === card.cat) sameCat.push(cards[j]);
+          }
+          var from = sameCat.length >= 3 ? sameCat : cards;
+          var bag = [];
+          for (var k = 0; k < from.length; k++) if (from[k] !== card) bag.push(from[k]);
+          g.shuffle(bag);
+
+          var options = [card.prompt];
+          for (var m = 0; m < bag.length && options.length < 4; m++) {
+            if (options.indexOf(bag[m].prompt) === -1) options.push(bag[m].prompt);
+          }
+          g.shuffle(options);
+
+          qs.push({ card: card, options: options, chosen: null });
+        }
+
+        exam = { qs: qs, at: 0, score: 0, started: Date.now(), ended: 0 };
+      }
+
+      function answerExam(pick) {
+        var q = exam.qs[exam.at];
+        if (!q || q.chosen !== null) return;
+        q.chosen = pick;
+        if (pick === q.card.prompt) { exam.score++; g.beep(660, 0.05); }
+        else g.beep(200, 0.07);
+        exam.at++;
+        if (exam.at >= exam.qs.length) exam.ended = Date.now();
+        render();
+      }
+
+      function renderExam(c) {
+        if (!exam) buildExam();
+
+        if (exam.ended) {
+          var secs = Math.round((exam.ended - exam.started) / 1000);
+          var pct = Math.round((exam.score / exam.qs.length) * 100);
+          var res = el('div', 'quiz-result');
+          res.appendChild(el('div', 'quiz-result-title',
+            exam.score + ' of ' + exam.qs.length + ' — ' + pct + '%'));
+          res.appendChild(el('p', 'quiz-result-body',
+            'Finished in ' + (secs < 60 ? secs + ' seconds' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's') +
+            '. Nothing about this was recorded and your revision schedule is untouched.'));
+
+          var wrong = [];
+          for (var i = 0; i < exam.qs.length; i++) {
+            if (exam.qs[i].chosen !== exam.qs[i].card.prompt) wrong.push(exam.qs[i].card.prompt);
+          }
+          if (wrong.length) {
+            res.appendChild(el('p', 'quiz-disclaimer', 'Missed: ' + wrong.join(', ')));
+          }
+
+          var again = el('button', 'game-btn', 'Sit another');
+          again.type = 'button';
+          again.addEventListener('click', function () { buildExam(); render(); });
+          var nav = el('div', 'quiz-nav');
+          nav.appendChild(again);
+          res.appendChild(nav);
+          board.appendChild(res);
+          return;
+        }
+
+        var q = exam.qs[exam.at];
+        var prog = el('div', 'quiz-progress');
+        var bar = el('div', 'quiz-progress-bar');
+        bar.style.width = Math.round((exam.at / exam.qs.length) * 100) + '%';
+        prog.appendChild(bar);
+        board.appendChild(prog);
+
+        board.appendChild(el('p', 'quiz-count',
+          'Question ' + (exam.at + 1) + ' of ' + exam.qs.length + ' · ' + exam.score + ' right so far'));
+        board.appendChild(el('p', 'quiz-result-body', q.card.answer));
+        board.appendChild(el('p', 'quiz-question', 'Which term is this?'));
+
+        var opts = el('div', 'quiz-options');
+        for (var o = 0; o < q.options.length; o++) {
+          (function (label) {
+            var b = el('button', 'quiz-option', label);
+            b.type = 'button';
+            b.addEventListener('click', function () { answerExam(label); });
+            opts.appendChild(b);
+          })(q.options[o]);
+        }
+        board.appendChild(opts);
+        if (opts.firstChild) opts.firstChild.focus();
+      }
+
       function reload() {
         build();
-        fill();
+        if (mode === 'exam') buildExam(); else fill();
         stats();
         render();
       }
 
-      if (deckSel) deckSel.addEventListener('change', reload);
+      /* deckSel is bound further down by syncMode, which decides whether the
+         exam control is still valid before reloading. Binding reload here as
+         well would run the whole rebuild twice on every deck change. */
       if (catSel) catSel.addEventListener('change', reload);
+
+      /* ------------------------------------------------------------------
+         Export to Anki.
+
+         TAB-SEPARATED TEXT, NOT .apkg. An Anki package is a zip containing a
+         SQLite database, and building one in the browser means shipping a
+         zip writer and a SQLite writer to a site with no dependencies — for
+         a format Anki's own importer does not require. It reads plain text
+         with one field per tab natively, which is three lines of code here
+         and one dialog there.
+
+         Fields are scrubbed rather than escaped. A tab would start a third
+         field and a newline would start a second card, so both become
+         spaces; nothing else is touched, because the importer treats a
+         field as HTML and these definitions contain none.
+
+         It exports the deck currently on screen, filter included. Exporting
+         all 1,450 regardless would ignore the two controls sitting directly
+         above the button, which is the sort of thing that makes people
+         check whether it worked.
+         ------------------------------------------------------------------ */
+      function scrub(s) {
+        return String(s).replace(/[\t\r\n]+/g, ' ').trim();
+      }
+
+      function exportDeck() {
+        if (!cards.length) return;
+        var lines = [];
+        for (var i = 0; i < cards.length; i++) {
+          lines.push(scrub(cards[i].prompt) + '\t' + scrub(cards[i].answer));
+        }
+
+        var which = deckSel ? deckSel.value : 'terms';
+        var cat = catSel && !catSel.disabled ? catSel.value : 'all';
+        var name = 'recall-' + which + (cat !== 'all' ? '-' + cat : '') + '.txt';
+
+        /* A BOM, because Anki on Windows still guesses the encoding of a
+           text file without one and gets it wrong on the first accented
+           character. */
+        var blob = new Blob(['﻿' + lines.join('\n') + '\n'],
+          { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        /* Revoked on a timer rather than immediately: Safari has cancelled
+           the download of a URL revoked in the same tick. */
+        window.setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+
+        g.announce(lines.length + ' cards exported as ' + name);
+        g.pluck(700, 0.14);
+      }
+
+      if (exportBtn) exportBtn.addEventListener('click', exportDeck);
+
+      var modeSel = document.getElementById('game-mode');
+      function syncMode() {
+        var wantExam = modeSel && modeSel.value === 'exam';
+        var faq = deckSel && deckSel.value === 'faq';
+        mode = (wantExam && !faq) ? 'exam' : 'study';
+        /* Said out loud rather than silently ignored: a control that reads
+           "exam" while the page runs study mode is a bug the visitor has to
+           discover. */
+        if (modeSel) modeSel.disabled = faq;
+        if (wantExam && faq) g.announce('Exam mode needs the glossary deck — the FAQ answers are too long to use as options.');
+        reload();
+      }
+      if (modeSel) modeSel.addEventListener('change', syncMode);
+      if (deckSel) deckSel.addEventListener('change', syncMode);
 
       fetch(INDEX_URL)
         .then(function (r) {

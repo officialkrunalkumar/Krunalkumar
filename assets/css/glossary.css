@@ -238,3 +238,36 @@
     break-inside: avoid;
   }
 }
+
+/* ---- The glossary as a graph ----------------------------------------------
+   Built by glossary-graph.js from the entries below it. The section starts
+   hidden in the markup and that file reveals it, so a visitor without
+   JavaScript never sees a heading promising a diagram above an empty box. */
+.ggraph {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.4rem 0 0.2rem;
+  border-radius: 12px;
+  background: rgb(var(--deep-rgb) / 0.35);
+  touch-action: manipulation;
+}
+
+/* Written by glossary-graph.js once it knows how many terms fitted. It says
+   which terms are missing and why, so it is part of the picture rather than a
+   note about it — same weight as the readout, above it. */
+.ggraph-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.ggraph-readout {
+  min-height: 1.4rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  color: var(--ink-3);
+}
+
+.ggraph-controls { margin: 0.5rem 0 0; }

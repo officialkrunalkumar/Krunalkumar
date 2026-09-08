@@ -6046,3 +6046,57 @@ html:not(.js) .search-open {
 @media (prefers-reduced-motion: reduce) {
   .tap-hint { transition: opacity 0.2s ease; transform: translate(-50%, 0); }
 }
+
+/* ---- Changelog ------------------------------------------------------------
+   The generated half of /changelog. Month headings rather than a flat list,
+   because two hundred entries in one column is a log and not a page. The date
+   is monospaced and dimmed so the eye runs down the subjects, which are the
+   part worth reading, rather than down the dates. */
+.changelog-month {
+  margin: 1.6rem 0 0.6rem;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+.changelog-month:first-of-type { margin-top: 0.6rem; }
+
+.changelog-count {
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--ink-3);
+  background: rgb(var(--accent-rgb) / 0.12);
+  border-radius: 20px;
+}
+
+.changelog-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.changelog-list li {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.08);
+}
+
+.changelog-list li:last-child { border-bottom: 0; }
+
+.changelog-date {
+  flex: 0 0 auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  padding-top: 0.1rem;
+}
+
+@media (max-width: 560px) {
+  .changelog-list li { flex-direction: column; gap: 0.1rem; }
+}

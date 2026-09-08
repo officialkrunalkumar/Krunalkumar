@@ -1171,7 +1171,62 @@ pre.lab-example:hover .lab-copy,
 .lab-path .lab-steps li.is-done { opacity: 0.62; }
 .lab-path .lab-steps li.is-done::marker { content: '✓ '; }
 
-.lab-path [data-reset] { margin-top: 0.5rem; }
+.lab-path [data-reset],
+.lab-path [data-cert] { margin-top: 0.5rem; margin-right: 0.5rem; }
+
+/* The printed certificate. Off-screen rather than display:none, because a
+   sheet that has never been laid out prints with collapsed measurements in
+   some engines — it has to have been a real box before the print stylesheet
+   promotes it. */
+.pathcert { position: absolute; left: -9999px; top: 0; width: 180mm; }
+
+@media print {
+  /* Everything except the sheet, gone. Same shape as the invoice maker's
+     print rules, and for the same reason: a certificate with a site header
+     and a cookie note printed above it is not a certificate. */
+  body.is-printing-cert > :not(.pathcert) { display: none !important; }
+
+  body.is-printing-cert { margin: 0; padding: 0; background: #fff; }
+
+  body.is-printing-cert .pathcert {
+    position: static;
+    left: auto;
+    width: auto;
+    min-height: 250mm;
+    padding: 26mm 22mm;
+    color: #10151f;
+    background: #fff;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  .pathcert-kicker {
+    margin: 0 0 18mm;
+    font-family: 'Cascadia Code', Consolas, monospace;
+    font-size: 9pt;
+    letter-spacing: 0.06em;
+    color: #5b6470;
+  }
+
+  .pathcert-title { margin: 0 0 3mm; font-size: 26pt; font-weight: 400; }
+  .pathcert-sub { margin: 0 0 14mm; font-size: 12pt; color: #444c5a; }
+
+  .pathcert-list { margin: 0 0 16mm; padding-left: 6mm; font-size: 11pt; line-height: 1.9; }
+
+  .pathcert-date { margin: 0 0 22mm; font-size: 11pt; }
+
+  /* Smaller than the body and set apart, but printed on the same sheet and
+     above the fold of a folded A4 — it is a disclaimer, not fine print. */
+  .pathcert-honest {
+    margin: 0;
+    padding-top: 5mm;
+    border-top: 0.4mm solid #c8cfd9;
+    font-size: 9.5pt;
+    line-height: 1.6;
+    color: #4a5262;
+  }
+
+  .pathcert, .pathcert * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 
 .lab-example {
   margin: 0.7rem 0 0;

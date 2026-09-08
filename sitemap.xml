@@ -914,6 +914,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/changelog</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/buddha</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -1428,6 +1434,12 @@
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://krunalkumar.dpdns.org/labs/header-grader</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://krunalkumar.dpdns.org/labs/diff-merge</loc>

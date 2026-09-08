@@ -4350,6 +4350,9 @@ const GAMES = [
       '<select class="game-select" autocomplete="off" id="game-deck"><option value="terms" selected>Glossary terms</option><option value="faq">FAQ answers</option></select>',
       '<label class="sr-only" for="game-cat">Category</label>',
       '<select class="game-select" autocomplete="off" id="game-cat"><option value="all" selected>All categories</option><option value="security">Security</option><option value="crypto">Crypto</option><option value="network">Network</option><option value="forensics">Forensics</option><option value="systems">Systems</option><option value="dev">Dev</option><option value="compliance">Compliance</option><option value="career">Career</option></select>',
+      '<label class="sr-only" for="game-mode">Mode</label>',
+      '<select class="game-select" autocomplete="off" id="game-mode"><option value="study" selected>Study</option><option value="exam">Exam</option></select>',
+      '<button class="game-btn" type="button" id="game-export" title="Download this deck as a tab-separated file Anki can import">Export to Anki</button>',
     ],
     keys: [
       { k: 'Space', d: 'Show the answer' },

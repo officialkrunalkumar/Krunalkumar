@@ -925,6 +925,8 @@ const CARDS = [
     lines: ['Security, systems', 'and code terms'], sub: 'Every word, linked to the lab that shows it' },
   { id: 'colophon', dest: 'assets/images/og-colophon.jpg', eyebrow: 'Colophon',
     lines: ['How this site', 'is built'], sub: 'Hand-written HTML · zero dependencies' },
+  { id: 'changelog', dest: 'assets/images/og-changelog.jpg', eyebrow: 'Changelog',
+    lines: ['What changed,', 'and when'], sub: 'Generated from the git history, not written' },
   { id: 'privacy',  dest: 'assets/images/og-privacy.jpg',  eyebrow: 'Privacy',
     lines: ['Privacy policy'], sub: 'What is collected, and what never leaves your device' },
   { id: 'terms',    dest: 'assets/images/og-terms.jpg',    eyebrow: 'Terms',
