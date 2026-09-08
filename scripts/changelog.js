@@ -152,15 +152,24 @@ function main() {
   }
   /* Reported, not fatal — unlike glossary.js, which throws on drift.
 
-     The difference is what causes it. The glossary only drifts when somebody
-     edits the term list and forgets to run the generator, which is a mistake
-     worth blocking a deploy over. This page drifts every single time anything
-     is committed, including by the commit that regenerates it, so a strict
-     check would fail `npm run check` permanently and for no fault. The deploy
-     rebuilds it from the container's own git history, so a stale committed
-     copy never reaches a visitor. */
+     The glossary only drifts when somebody edits the term list and forgets to
+     run the generator, which is a mistake worth blocking a deploy over. This
+     page drifts every time anything is committed, including by the commit
+     that regenerates it, so it is permanently one entry behind by
+     construction and a strict check would fail for no fault.
+
+     WHY THIS IS NOT BUILT IN THE CONTAINER, which was tried and reverted.
+     Adding it to build.js's doGeneratedPages looked obviously right — the
+     search index is rebuilt there for exactly this reason. But Vercel clones
+     shallow, the first deploy read ten commits and published "10 changes
+     across 1 months", and nothing failed because ten is not zero. Moving
+     deepenHistory() ahead of that step did not save it either: the unshallow
+     fetch does not reliably succeed in that container, which is why
+     build.js's own commit count is willing to publish a "203+" with a plus
+     sign on it. A changelog cannot round. So the committed page is the
+     artefact, generated here where the whole history exists. */
   if (check) {
-    console.log('changelog\n  committed copy is behind; the deploy will rebuild it with ' +
+    console.log('changelog\n  committed copy is behind by design; run npm run changelog for ' +
       commits.length + ' entries');
     return;
   }
