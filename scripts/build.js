@@ -2213,6 +2213,14 @@ function main() {
   }
   doCss();
   doJs();
+  /* Before doGeneratedPages, not lazily inside doSitemap as it used to be.
+     changelog.js shells out to `git log`, and Vercel clones shallow: on the
+     first deploy after the changelog joined that step it read ten commits,
+     published "10 changes across 1 months", and nothing failed — the page was
+     wrong rather than absent. Deepening here costs nothing (the build already
+     does it for the sitemap dates, and the result is memoised) and means any
+     generator that reads history sees all of it. */
+  deepenHistory();
   doGeneratedPages();
   doSitemap();
   const index = doSearchIndex();

@@ -125,6 +125,25 @@ function main() {
     throw new Error('changelog.js: git returned no usable commits — refusing to publish an empty changelog');
   }
 
+  /* REFUSE TO SHRINK THE PAGE.
+
+     A changelog only ever grows. If this run produces fewer entries than the
+     committed page already shows, the history is truncated rather than the
+     history being short — which is exactly what happened the first time this
+     ran inside Vercel's build container: a shallow clone gave ten commits,
+     and the deploy cheerfully published "10 changes across 1 months" because
+     ten is not zero and nothing was watching for it.
+
+     Comparing against the page itself needs no hard-coded floor to go stale.
+     Deleting history deliberately means regenerating from a repository that
+     genuinely has less of it, which is rare enough to deserve the failure. */
+  const already = (src.match(/<li><span class="changelog-date">/g) || []).length;
+  if (already && commits.length < already) {
+    throw new Error('changelog.js: git gave ' + commits.length + ' commits but the committed page ' +
+      'already lists ' + already + '. That is a truncated history — a shallow clone, most likely — ' +
+      'and publishing it would delete real entries. Refusing.');
+  }
+
   const next = src.slice(0, a + START.length) + '\n' + render(commits) + '\n        ' + src.slice(b);
 
   if (next === src) {
