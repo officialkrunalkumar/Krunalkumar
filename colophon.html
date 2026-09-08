@@ -46,6 +46,44 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How is this site built?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Hand-written HTML with no framework, no bundler and no npm dependencies at runtime. The colophon sets out what it runs on, what it deliberately does without, and why, with every figure counted at deploy time rather than typed." }
+          },
+          {
+            "@type": "Question",
+            "name": "What framework does this site use?",
+            "acceptedAnswer": { "@type": "Answer", "text": "None. There is no React, no static-site generator and no build framework — the pages are HTML, served as committed. A build step runs on deploy to strip CSS comments, rebuild the search index and check its own output, but it generates no pages that are not already in the repository." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the tech stack?",
+            "acceptedAnswer": { "@type": "Answer", "text": "HTML, CSS and vanilla JavaScript, served as committed, hosted on Vercel. No framework, no bundler, no runtime dependencies. The only build step strips CSS comments, rebuilds the search index and checks its own output before a deploy is allowed to succeed." }
+          },
+          {
+            "@type": "Question",
+            "name": "How many dependencies does this site have?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Zero at runtime. The colophon carries the current count, recomputed on every deploy so it cannot go stale." }
+          },
+          {
+            "@type": "Question",
+            "name": "What changed on this site recently?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The changelog lists every commit, grouped by month and generated from the git history." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can the build refuse to publish?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it does. Eight separate gates check the output before a deploy is allowed to succeed — sitemap parity, share images, static chrome, the service worker precache, structured data, generated-page freshness, the games manifest, and a fingerprint over every vendored file. If any of them fails the build throws instead of writing, and the previous deployment keeps serving." }
+          }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://krunalkumar.dpdns.org/" },
@@ -121,7 +159,9 @@
           A colophon is the note at the back of a book saying how it was made — the typeface, the paper, the
           press. This is that note for this site: what it runs on, what it deliberately does without, and why.
           Every number on this page is counted at deploy time rather than typed, so none of it can quietly go
-          out of date.
+          out of date. If you want what it has been <em>doing</em> rather than what it is, the
+          <a class="text-link" href="/changelog">changelog</a> is generated from the git history on the same
+          principle.
         </p>
       </section>
 
@@ -360,6 +400,47 @@
         <div class="hero-actions">
           <a class="btn btn-primary" href="/blog/how-i-vibe-coded-my-website">Read the method</a>
           <a class="btn btn-secondary" href="/labs">See what it produced</a>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>How is this site built?</summary>
+            <p>Hand-written HTML with no framework, no bundler and no npm dependencies at runtime. Everything
+            above sets out what it runs on, what it deliberately does without, and why — with every figure
+            counted at deploy time rather than typed.</p>
+          </details>
+          <details>
+            <summary>What framework does this site use?</summary>
+            <p>None. No React, no static-site generator, no build framework — the pages are HTML, served as
+            committed. A build step runs on deploy to strip CSS comments, rebuild the search index and check
+            its own output, but it generates no pages that are not already in the repository.</p>
+          </details>
+          <details>
+            <summary>What is the tech stack?</summary>
+            <p>HTML, CSS and vanilla JavaScript, served as committed, hosted on Vercel. No framework, no bundler,
+            no runtime dependencies — the build step only strips CSS comments, rebuilds the search index and
+            checks its own output.</p>
+          </details>
+          <details>
+            <summary>How many dependencies does this site have?</summary>
+            <p>Zero at runtime — the figure above is recomputed on every deploy, so it cannot go stale.</p>
+          </details>
+          <details>
+            <summary>What changed on this site recently?</summary>
+            <p>The <a class="text-link" href="/changelog">changelog</a> lists every commit, grouped by month
+            and generated from the git history.</p>
+          </details>
+          <details>
+            <summary>Can the build refuse to publish?</summary>
+            <p>Yes, and it does. The eight gates above check the output before a deploy is allowed to succeed.
+            If any of them fails the build throws instead of writing, and the previous deployment keeps
+            serving.</p>
+          </details>
         </div>
       </section>
     </main>
