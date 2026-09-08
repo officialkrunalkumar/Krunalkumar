@@ -131,9 +131,19 @@ function main() {
     console.log('changelog\n  ' + commits.length + ' entries, already current');
     return;
   }
+  /* Reported, not fatal — unlike glossary.js, which throws on drift.
+
+     The difference is what causes it. The glossary only drifts when somebody
+     edits the term list and forgets to run the generator, which is a mistake
+     worth blocking a deploy over. This page drifts every single time anything
+     is committed, including by the commit that regenerates it, so a strict
+     check would fail `npm run check` permanently and for no fault. The deploy
+     rebuilds it from the container's own git history, so a stale committed
+     copy never reaches a visitor. */
   if (check) {
-    console.log('changelog\n  FAILED: changelog.html is stale — run node scripts/changelog.js');
-    process.exit(1);
+    console.log('changelog\n  committed copy is behind; the deploy will rebuild it with ' +
+      commits.length + ' entries');
+    return;
   }
   fs.writeFileSync(PAGE, next);
   console.log('changelog\n  wrote ' + commits.length + ' entries');

@@ -1905,6 +1905,12 @@ function doGeneratedPages() {
   const scripts = [
     ['glossary.js', 'glossary'],
     ['glossary-backlinks.js', 'lab vocabulary blocks'],
+    /* Regenerated here for the same reason the search index is: the page is
+       built from git, so it goes stale the moment anything is committed —
+       including the commit that regenerates it. Building it in the container
+       means a deploy can never serve a changelog that is missing the deploy
+       it is part of. The committed copy is just the last deploy's output. */
+    ['changelog.js', 'changelog'],
   ];
   for (const [file, label] of scripts) {
     const abs = path.join(__dirname, file);
