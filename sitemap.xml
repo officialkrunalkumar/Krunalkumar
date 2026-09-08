@@ -1100,6 +1100,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://krunalkumar.dpdns.org/games/recall</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://krunalkumar.dpdns.org/games/air-hockey</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>

@@ -97,7 +97,7 @@
               </svg>
             </button>
             <button class="search-open" id="search-open" type="button"
-                    aria-label="Search the site" title="Search  /">
+                    aria-label="Search the site" title="Search  Ctrl K">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -251,6 +251,81 @@
 
       <section class="section-card">
         <div class="section-heading">
+          <p class="eyebrow">What it actually checks</p>
+          <h2>Eight ways the build can refuse</h2>
+        </div>
+        <p>
+          The paragraph above says the deploy is allowed to fail. This is the list, because a claim like that
+          is worth nothing without one. Each of these is a separate gate that throws rather than writes, and
+          every one of them has caught something real:
+        </p>
+        <p>
+          <strong>Sitemap parity</strong> — every one of the
+          <strong><span data-colophon="pages">291</span> pages</strong> on disk must have an entry, and every
+          entry must have a page. A new page that nobody links to is invisible; a stale entry sends crawlers to
+          a 404. <strong>Share image</strong> — every <code>og:image</code> a page declares must exist as a
+          file, or the link posts into a chat window with a blank rectangle where the card should be.
+          <strong>Static chrome</strong> — the header and footer baked into every page as the no-JavaScript
+          fallback must still match <code>partials/</code>. A nav link added to the partial but not the copies
+          is invisible to exactly the people browsing without JavaScript.
+        </p>
+        <p>
+          <strong>Service worker precache</strong> — every file the offline shell names must resolve, because a
+          precache listing something that moved fails the install and takes offline support down with it.
+          <strong>Structured data</strong> — every JSON-LD block on the site must parse. <strong>Games
+          freshness</strong> — all <strong><span data-colophon="games">90</span></strong> generated game pages
+          must match, byte for byte, what the generator would write today. <strong>Games manifest</strong> —
+          the runtime values inside each game module must agree with the manifest that describes it, so a page
+          cannot advertise a control the code does not have.
+        </p>
+        <p>
+          And the eighth: a single <strong>fingerprint over every vendored file</strong>, recorded in the
+          service worker and recomputed on each deploy. Nothing here comes from npm at runtime —
+          <strong><span data-colophon="deps">0</span> dependencies</strong> — but the repository does carry
+          vendored copies of a few large tools, and a vendored file is exactly the kind of thing that can
+          change without anyone noticing. If the hash moves and the recorded one did not, the build stops. It
+          is a small supply-chain check, and it is the one most sites cannot make about themselves at all.
+        </p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <p class="eyebrow">Not a claim</p>
+          <h2>Measure this page yourself</h2>
+        </div>
+        <p>
+          Everything above is a number this site publishes about itself, which is exactly the kind of number
+          you should not have to take on trust. So these four are not published by anything — your browser
+          measured them, on this page, on this visit, a moment ago. Reload and they change. Nothing is sent
+          anywhere; the figures never leave the tab they were taken in.
+        </p>
+        <div class="colo-stats colo-stats--wide" id="measure-stats">
+          <div class="colo-stat">
+            <span class="colo-num" data-measure="lcp">—</span>
+            <span class="colo-label">largest paint</span>
+          </div>
+          <div class="colo-stat">
+            <span class="colo-num" data-measure="cached">—</span>
+            <span class="colo-label">served from cache</span>
+          </div>
+          <div class="colo-stat">
+            <span class="colo-num" data-measure="wire">—</span>
+            <span class="colo-label">over the wire</span>
+          </div>
+          <div class="colo-stat">
+            <span class="colo-num" data-measure="ttfb">—</span>
+            <span class="colo-label">time to first byte</span>
+          </div>
+        </div>
+        <p id="measure-note">
+          On a first visit the cache figure will be low and the bytes high, because nothing has been stored
+          yet. Come back to this page after browsing a little and both should move a long way — that
+          difference is the service worker doing the only job it has.
+        </p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
           <p class="eyebrow">Why it reads like this</p>
           <h2>The reasoning lives in the repository</h2>
         </div>
@@ -358,5 +433,6 @@
     </footer>
 
     <script src="/assets/js/particle-bg.js" defer></script>
+    <script defer src="/assets/js/colophon-measure.js"></script>
   </body>
 </html>

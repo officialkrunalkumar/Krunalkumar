@@ -4315,6 +4315,81 @@ const GAMES = [
   },
 
   {
+    slug: 'recall',
+    cat: 'fun',
+    name: 'Recall',
+    glyph: '&#8635;',
+    script: 'fun/recall.js',
+    board: true, pad: 'none', bestKey: null,
+    tapAction: false,
+    engine: 'Leitner boxes &middot; 1,450 cards from this site',
+    title: 'Recall — Spaced Repetition Over 1,450 Security Definitions',
+    ogTitle: 'The ones you keep missing come back sooner',
+    description: 'Flashcards built from the glossary and the FAQ answers already written across this site. ' +
+      'Five Leitner boxes, so a card you get right drifts out to three weeks and a card you fail comes back ' +
+      'tomorrow. Progress stays in your browser.',
+    short: 'Flashcards from the glossary. They come back.',
+    h1: 'Recall',
+    hero: 'Every card here is a definition or an answer already written somewhere on this site &mdash; 179 glossary ' +
+      'terms and 1,271 FAQ answers, the same ones the corner assistant reads from. Grade yourself and the ' +
+      'schedule does the rest: get one right and it drifts out towards three weeks, miss it and it is back ' +
+      'tomorrow. Nothing is uploaded, and the only thing kept is which box each card is in.',
+    facts: [
+      '1,450 cards, none newly written',
+      'Five boxes, 1 to 21 days',
+      'Filter the glossary by category',
+      'Progress stays on this device',
+    ],
+    hud: [
+      { key: 'due', label: 'Due now', accent: true, init: '—' },
+      { key: 'deck', label: 'In deck', init: '—' },
+      { key: 'learned', label: 'Learned', init: '—' },
+    ],
+    controls: [
+      '<label class="sr-only" for="game-deck">Deck</label>',
+      '<select class="game-select" autocomplete="off" id="game-deck"><option value="terms" selected>Glossary terms</option><option value="faq">FAQ answers</option></select>',
+      '<label class="sr-only" for="game-cat">Category</label>',
+      '<select class="game-select" autocomplete="off" id="game-cat"><option value="all" selected>All categories</option><option value="security">Security</option><option value="crypto">Crypto</option><option value="network">Network</option><option value="forensics">Forensics</option><option value="systems">Systems</option><option value="dev">Dev</option><option value="compliance">Compliance</option><option value="career">Career</option></select>',
+    ],
+    keys: [
+      { k: 'Space', d: 'Show the answer' },
+      { k: 'Tab', d: 'Move between the four grades' },
+    ],
+    touch: 'Tap to reveal, then tap how well you knew it. The two pickers above choose the deck and the category.',
+    infoHeading: 'How the scheduling works',
+    info: [
+      {
+        h: 'Five boxes, and the interval triples',
+        p: 'A new card sits in box one and is due immediately. Answer it well and it moves up; the boxes come ' +
+          'back after 0, 1, 3, 7 and 21 days. Miss one and it drops straight to box one regardless of how long ' +
+          'it had been climbing, because a card you just failed is a card you do not know, whatever last month ' +
+          'suggested.',
+      },
+      {
+        h: 'Why not the algorithm Anki uses',
+        p: 'SM-2 keeps a per-card ease factor and tunes it by fractions on every answer. It is genuinely better ' +
+          'for language pairs reviewed over years. This is 1,450 definitions on a consultancy&rsquo;s site, and ' +
+          'Leitner keeps one small integer per card, is explicable in a sentence, and cannot drift into the ' +
+          'pathological scheduling a mistuned ease factor produces.',
+      },
+      {
+        h: 'Cards are keyed by their wording',
+        p: 'The card index is rebuilt on every deploy by walking pages in directory order, so a card&rsquo;s ' +
+          'position in that file is not stable &mdash; add one FAQ to one page and everything after it shifts. ' +
+          'Schedules are therefore keyed on a hash of the question itself. Your progress follows the card, an ' +
+          'edited question correctly reads as a new one, and nothing silently inherits someone else&rsquo;s box.',
+      },
+    ],
+    faq: [
+      { q: 'Where do the cards come from?', a: 'The glossary and every FAQ block on the site, collected into one index for the corner assistant. Nothing here was written for this page — it is the same prose, asked back at you.' },
+      { q: 'Does it work offline?', a: 'Yes, once the index has been cached. It is the same file the assistant fetches, so if you have used either on this device it is already there.' },
+      { q: 'Where is my progress stored?', a: 'localStorage on this device, under game.recall.sched, and nowhere else. There is no account and no sync, so this browser is the only place it exists — and the data strip on this page will show you the keys and clear them.' },
+      { q: 'Can I study just cryptography?', a: 'Yes, on the glossary deck — the category picker narrows it to any of the eight. The FAQ deck carries no categories, so the picker switches off there rather than pretending to filter.' },
+    ],
+    related: ['cyber-hygiene', 'which-attack', 'memory-span'],
+  },
+
+  {
     slug: 'cyber-hygiene',
     cat: 'fun',
     name: 'How hackable are you',

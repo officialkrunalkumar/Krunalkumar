@@ -455,4 +455,28 @@
     e.preventDefault();
     open();
   });
+
+  /* Ctrl-K / Cmd-K, the shortcut every editor and half the web now share.
+     Three differences from the '/' handler above, each deliberate:
+
+       - It fires from inside a text field. '/' cannot, because '/' is a
+         character somebody may be trying to type; a modifier chord is not,
+         so the usual palette behaviour of opening from anywhere applies.
+       - It toggles. Pressing the same chord that opened a palette is how
+         people close one, and Escape stays as the other way out.
+       - It still yields to a live game. That guard is not paranoia: the
+         terminal games emulate a shell, and Ctrl-K is kill-to-end-of-line
+         in readline, so taking it globally would break a real keystroke in
+         seventeen of them.
+
+     preventDefault is unconditional past those guards because Firefox binds
+     Ctrl-K to its own search bar, and a shortcut that opens the browser
+     chrome half the time is worse than no shortcut. */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'k' && e.key !== 'K') return;
+    if (!(e.ctrlKey || e.metaKey) || e.altKey) return;
+    if (document.querySelector('.game[data-state="playing"]')) return;
+    e.preventDefault();
+    if (overlay && !overlay.hidden) close(); else open();
+  });
 }());

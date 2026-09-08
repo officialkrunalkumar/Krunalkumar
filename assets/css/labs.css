@@ -1122,6 +1122,57 @@ pre.lab-example:hover .lab-copy,
 .lab-steps li { margin-bottom: 0.5rem; padding-left: 0.2rem; }
 .lab-steps li::marker { color: var(--accent-1); font-weight: 700; }
 
+/* The five routes through the labs. A <details> per path, so the section
+   collapses to five lines for anyone who does not want a course, and needs
+   no JavaScript to open. lab-paths.js only adds the ticks. */
+.lab-path {
+  margin-top: 0.9rem;
+  padding: 0.85rem 1.05rem;
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 12px;
+}
+
+/* min-height is the touch target, not decoration: the row is 29px of text on
+   a phone, and a control that opens a twelve-step course should not need a
+   precise tap. flex-wrap lets the step count drop below a long path name
+   rather than squeezing it — "How the internet actually works" plus "9 steps"
+   does not fit on one line at 375px, and wrapping reads better than two
+   truncated halves. */
+.lab-path > summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+  min-height: 2.75rem;
+  align-content: center;
+  cursor: pointer;
+  list-style-position: outside;
+}
+
+.lab-path-name { font-weight: 600; color: var(--ink-1); }
+.lab-path-count { font-size: 0.82rem; color: var(--ink-3); white-space: nowrap; }
+
+.lab-path-bar {
+  height: 4px;
+  margin: 0.7rem 0 0.9rem;
+  border-radius: 3px;
+  background: rgb(var(--accent-rgb) / 0.14);
+  overflow: hidden;
+}
+
+/* Width is set inline by lab-paths.js; zero by default so a path with no
+   progress shows an empty track rather than a full one before script runs. */
+.lab-path-fill { width: 0; height: 100%; background: var(--accent-1); }
+
+/* A finished step stays legible — dimmed and ticked, never struck through.
+   These are things worth re-reading, not items cleared off a list. */
+.lab-path .lab-steps li.is-done { opacity: 0.62; }
+.lab-path .lab-steps li.is-done::marker { content: '✓ '; }
+
+.lab-path [data-reset] { margin-top: 0.5rem; }
+
 .lab-example {
   margin: 0.7rem 0 0;
   padding: 0.85rem 1rem;

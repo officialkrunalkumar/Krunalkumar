@@ -96,7 +96,7 @@
               </svg>
             </button>
             <button class="search-open" id="search-open" type="button"
-                    aria-label="Search the site" title="Search  /">
+                    aria-label="Search the site" title="Search  Ctrl K">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -339,6 +339,30 @@
 
       <section class="section-card">
         <div class="section-heading">
+          <h2>Delete what this site stored</h2>
+          <p>
+            This site installs a service worker the first time you visit and caches pages as you open them.
+            That is what lets the labs and the games work with no network at all &mdash; and it also means one
+            accidental visit leaves a worker and a cache on your device that you never asked for. The button
+            below removes all of it: every stored key, every cached page, and the worker itself. The next load
+            starts over as a first-time visit, and everything works normally again.
+          </p>
+          <p>
+            It reaches this site and nothing else. A page has no way to read or delete another site&rsquo;s
+            storage, so nothing outside krunalkumar.dpdns.org is touched and neither is the rest of your
+            browser &mdash; that is a rule of the browser rather than a promise of mine, which is the better
+            kind. The single thing kept back is your choice to switch game storage off, if you made one:
+            clearing that would quietly turn storage back on for the one person who had turned it off.
+          </p>
+          <p>
+            <button class="btn btn-secondary" type="button" id="purge-run">Delete this site&rsquo;s data</button>
+          </p>
+          <p id="purge-out" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
           <h2>Grievance redressal</h2>
           <p>
             The DPDP Act asks every data fiduciary to publish a <em>named</em> person who answers complaints
@@ -457,5 +481,6 @@
     </footer>
 
     <script src="/assets/js/particle-bg.js" defer></script>
+    <script src="/assets/js/site-purge.js" defer></script>
   </body>
 </html>

@@ -329,7 +329,7 @@
               </svg>
             </button>
             <button class="search-open" id="search-open" type="button"
-                    aria-label="Search the site" title="Search  /">
+                    aria-label="Search the site" title="Search  Ctrl K">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -416,6 +416,118 @@
           pane, the pin, fullscreen and the storage panel work the same way in every lab here, including the
           ones added since this was recorded.
         </p>
+      </section>
+
+      <section class="section-card" id="lab-paths">
+        <div class="section-heading">
+          <h2>Follow a path</h2>
+          <p>
+            A hundred and thirteen labs in alphabetical order is a reference, not a course. These are five
+            routes through them, each ordered so that every lab uses something the one before it taught. Open a
+            step and it is marked off; the ticks live in this browser and nowhere else, and the reset below each
+            path clears its own.
+          </p>
+        </div>
+
+        <details class="lab-path" data-path="web">
+          <summary>
+            <span class="lab-path-name">Web security</span>
+            <span class="lab-path-count" data-count>12 steps</span>
+          </summary>
+          <div class="lab-path-bar"><div class="lab-path-fill" data-fill></div></div>
+          <ol class="lab-steps">
+            <li><a href="/labs/url-inspector" data-step>What a URL actually contains</a> — where every attack starts</li>
+            <li><a href="/labs/encoding" data-step>Encoding</a> — percent, base64, and why they are not encryption</li>
+            <li><a href="/labs/cookie-inspector" data-step>Cookies</a> — flags that decide who can read them</li>
+            <li><a href="/labs/jwt" data-step>JWT</a> — a token you can read, and why that is fine</li>
+            <li><a href="/labs/csp-playground" data-step>Content Security Policy</a> — write one, then break it</li>
+            <li><a href="/labs/web-layers" data-step>Web layers</a> — what sits between the browser and the app</li>
+            <li><a href="/labs/password" data-step>Passwords</a> — what makes one survive a leak</li>
+            <li><a href="/labs/hash" data-step>Hashing</a> — the primitive underneath the last step</li>
+            <li><a href="/labs/passkeys" data-step>Passkeys</a> — what replaces all of it</li>
+            <li><a href="/labs/buffer-overflow" data-step>Buffer overflow</a> — the bug class that started the field</li>
+            <li><a href="/labs/hacklab" data-step>HackLab</a> — break a deliberately weak app</li>
+            <li><a href="/labs/threat-model" data-step>Threat model</a> — put it together into a plan</li>
+          </ol>
+          <button class="lab-btn" type="button" data-reset>Reset this path</button>
+        </details>
+
+        <details class="lab-path" data-path="internet">
+          <summary>
+            <span class="lab-path-name">How the internet actually works</span>
+            <span class="lab-path-count" data-count>9 steps</span>
+          </summary>
+          <div class="lab-path-bar"><div class="lab-path-fill" data-fill></div></div>
+          <ol class="lab-steps">
+            <li><a href="/labs/dns" data-step>DNS</a> — turning a name into an address</li>
+            <li><a href="/labs/subnet" data-step>Subnetting</a> — what an address means</li>
+            <li><a href="/labs/http-versions" data-step>HTTP versions</a> — 1.1, 2 and 3 side by side</li>
+            <li><a href="/labs/tcp-congestion" data-step>TCP congestion</a> — why throughput looks like a sawtooth</li>
+            <li><a href="/labs/tls-handshake" data-step>The TLS handshake</a> — every message, in order</li>
+            <li><a href="/labs/cert-decoder" data-step>Certificates</a> — what the handshake was carrying</li>
+            <li><a href="/labs/ct-log" data-step>Certificate transparency</a> — who else has one for your name</li>
+            <li><a href="/labs/rdap" data-step>RDAP</a> — who owns the name and the address</li>
+            <li><a href="/labs/firewall-rules" data-step>Firewall rules</a> — deciding what gets through</li>
+          </ol>
+          <button class="lab-btn" type="button" data-reset>Reset this path</button>
+        </details>
+
+        <details class="lab-path" data-path="crypto">
+          <summary>
+            <span class="lab-path-name">Cryptography, from bytes up</span>
+            <span class="lab-path-count" data-count>9 steps</span>
+          </summary>
+          <div class="lab-path-bar"><div class="lab-path-fill" data-fill></div></div>
+          <ol class="lab-steps">
+            <li><a href="/labs/encoding" data-step>Encoding</a> — bytes before any of it means anything</li>
+            <li><a href="/labs/cipher" data-step>Classical ciphers</a> — the ideas, before the mathematics</li>
+            <li><a href="/labs/hash" data-step>Hashes</a> — one way, on purpose</li>
+            <li><a href="/labs/rainbow-tables" data-step>Rainbow tables</a> — why an unsalted hash is not enough</li>
+            <li><a href="/labs/hash-cracker" data-step>Cracking</a> — the same argument, at speed</li>
+            <li><a href="/labs/cryptography" data-step>Modern cryptography</a> — symmetric, asymmetric, and when to use which</li>
+            <li><a href="/labs/totp" data-step>TOTP</a> — a shared secret and a clock</li>
+            <li><a href="/labs/certificate-forge" data-step>Forging a certificate</a> — what a signature actually prevents</li>
+            <li><a href="/labs/timing-attack" data-step>Timing attacks</a> — correct code that still leaks</li>
+          </ol>
+          <button class="lab-btn" type="button" data-reset>Reset this path</button>
+        </details>
+
+        <details class="lab-path" data-path="email">
+          <summary>
+            <span class="lab-path-name">Email, phishing and exposure</span>
+            <span class="lab-path-count" data-count>6 steps</span>
+          </summary>
+          <div class="lab-path-bar"><div class="lab-path-fill" data-fill></div></div>
+          <ol class="lab-steps">
+            <li><a href="/labs/email-headers" data-step>Email headers</a> — the route a message really took</li>
+            <li><a href="/labs/email-security" data-step>SPF, DKIM, DMARC</a> — the three checks, and what each proves</li>
+            <li><a href="/labs/dmarc-builder" data-step>Build a DMARC record</a> — from reporting to rejection</li>
+            <li><a href="/labs/phishing-dissector" data-step>Dissect a phish</a> — apply all of it to a real one</li>
+            <li><a href="/labs/breach-check" data-step>Breach check</a> — what is already out there</li>
+            <li><a href="/labs/osint-self-check" data-step>OSINT on yourself</a> — what a stranger can assemble</li>
+          </ol>
+          <button class="lab-btn" type="button" data-reset>Reset this path</button>
+        </details>
+
+        <details class="lab-path" data-path="forensics">
+          <summary>
+            <span class="lab-path-name">Digital forensics</span>
+            <span class="lab-path-count" data-count>9 steps</span>
+          </summary>
+          <div class="lab-path-bar"><div class="lab-path-fill" data-fill></div></div>
+          <ol class="lab-steps">
+            <li><a href="/labs/file-inspector" data-step>File inspector</a> — what a file is, before its extension</li>
+            <li><a href="/labs/exif" data-step>EXIF</a> — what a photograph carries besides the photograph</li>
+            <li><a href="/labs/memory-strings" data-step>Strings</a> — the oldest trick that still works</li>
+            <li><a href="/labs/steganography" data-step>Steganography</a> — data hidden in plain pixels</li>
+            <li><a href="/labs/media-forensics" data-step>Media forensics</a> — deciding whether an image was edited</li>
+            <li><a href="/labs/har-analyzer" data-step>HAR analysis</a> — a browser session, reconstructed</li>
+            <li><a href="/labs/pcap-analyzer" data-step>Packet capture</a> — the same story one layer down</li>
+            <li><a href="/labs/log-analyser" data-step>Log analysis</a> — finding the one line that matters</li>
+            <li><a href="/labs/malware-triage" data-step>Malware triage</a> — everything above, under time pressure</li>
+          </ol>
+          <button class="lab-btn" type="button" data-reset>Reset this path</button>
+        </details>
       </section>
 
       <section class="section-card">
@@ -1341,6 +1453,7 @@ What is breaking / feedback:
 
     <script src="/assets/js/particle-bg.js" defer></script>
     <script defer src="/assets/js/labs/lab-feedback.js"></script>
+    <script defer src="/assets/js/labs/lab-paths.js"></script>
     <script src="/assets/js/wa-form.js" defer></script>
   </body>
 </html>

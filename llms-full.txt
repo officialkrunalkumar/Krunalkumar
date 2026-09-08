@@ -249,7 +249,7 @@ Three instruments sharing one mixer, all in the browser.
 
 ## Games (/games)
 
-89 games, in seven categories, all of them running entirely in the
+90 games, in seven categories, all of them running entirely in the
 visitor's browser. There are no ads, no sign-up, no accounts and no network
 traffic once a game has been opened once. The categories are arcade, puzzle,
 terminal (seventeen ports of Linux terminal games), board, cs (games aimed at
