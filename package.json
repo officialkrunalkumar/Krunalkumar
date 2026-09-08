@@ -5,7 +5,7 @@
   "description": "Static site for krunalkumar.dpdns.org. No dependencies and no bundler: the pages are hand-written HTML and are served exactly as they appear in this repository. The build step below runs only on Vercel and only rewrites two things — see scripts/build.js for what and why.",
   "scripts": {
     "build": "node scripts/build.js",
-    "check": "node scripts/build.js --check",
+    "check": "node scripts/build.js --check && node scripts/changelog.js --check",
     "dev": "node scripts/dev-server.js",
     "glossary": "node scripts/glossary.js",
     "glossary:backlinks": "node scripts/glossary-backlinks.js",

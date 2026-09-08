@@ -169,8 +169,20 @@ function main() {
      sign on it. A changelog cannot round. So the committed page is the
      artefact, generated here where the whole history exists. */
   if (check) {
-    console.log('changelog\n  committed copy is behind by design; run npm run changelog for ' +
-      commits.length + ' entries');
+    /* SAY HOW FAR BEHIND, not merely that it is behind.
+
+       This line prints at the end of every npm run check, and a line that
+       reads the same whether the page is fine or four months stale is a line
+       you stop seeing — which would leave this page exactly as unmaintained
+       as the hand-written changelog the header above argues against.
+
+       One behind is the floor and needs no action: the newest commit is
+       always the one that regenerated the page, so it cannot list itself.
+       More than one means real entries are missing. */
+    const behind = commits.length - already;
+    console.log('changelog\n  ' + (behind <= 1
+      ? 'current — one entry behind, which is the floor'
+      : behind + ' entries behind; run npm run changelog'));
     return;
   }
   fs.writeFileSync(PAGE, next);
