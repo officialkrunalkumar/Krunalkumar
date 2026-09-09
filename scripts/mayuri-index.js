@@ -231,7 +231,12 @@ function buildIndex(opts) {
   return { faq: faq.length, terms: terms.length, pages: pages.length, bytes: json.length, changed: changed };
 }
 
-module.exports = { buildIndex };
+/* faqFrom and plainText are exported for scripts/lab-exams.js, which builds the
+   learning-path exams out of the same FAQPage blocks this file harvests. It
+   needs the identical reading of them — same @graph walking, same tag
+   stripping, same entity decoding — so it borrows them rather than growing a
+   second parser that could disagree with this one about what an answer says. */
+module.exports = { buildIndex, faqFrom, plainText };
 
 if (require.main === module) {
   buildIndex({ check: process.argv.includes('--check') });

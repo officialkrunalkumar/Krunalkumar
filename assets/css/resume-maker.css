@@ -340,10 +340,14 @@
 }
 
 /* Shown only while the form is entirely empty, and never printed. */
+/* #5b6472, which is the muted colour this file already uses for .rm-s-headline,
+   .rm-s-dates, .rm-s-sub and .rm-s-note -- so the hint matches the sheet it
+   sits on instead of introducing a sixth grey. The #94a3b8 it replaces
+   measured 2.56:1 on the white sheet, on all five templates; this is 5.96. */
 .rm-empty-hint {
   padding: 90px 60px;
   text-align: center;
-  color: #94a3b8;
+  color: #5b6472;
   font-size: 15px;
 }
 

@@ -531,9 +531,22 @@
   padding: 0.7rem 0.9rem;
   font-size: 0.84rem;
   line-height: 1.5;
-  color: #fef3c7;
+  color: var(--warn-4);
   background: rgba(120, 53, 15, 0.55);
   border-bottom: 1px solid rgba(251, 191, 36, 0.5);
+}
+
+/* This banner is the one place in the amber family where the token was not
+   enough, because the FILL is the problem rather than the text. Amber-900 at
+   55% over a dark page is a deep brown; over a light page the same rgba
+   composites to a muddy mid-tone (~#ac8a79) that nothing reads well on —
+   amber-100 measured 2.84:1 on it, and the light --warn-4 lands at 2.25:1,
+   i.e. swapping the text alone made it worse. So in this theme the fill
+   becomes the pale amber wash the dark text expects (6.4:1), and the rule
+   that produced the mud is replaced rather than tinted. */
+:root[data-theme="light"] .lab-warn {
+  background: rgba(254, 243, 199, 0.9);
+  border-bottom-color: rgba(146, 64, 14, 0.35);
 }
 
 .lab-warn[hidden] { display: none; }
@@ -668,54 +681,9 @@
   border-radius: 999px;
 }
 
-/* --------------------------------------------------------------------------
-   "Try it" callout, used on content pages that link into Labs. Reads as a
-   pull-quote rather than a banner, because it follows text the reader chose.
-   -------------------------------------------------------------------------- */
-
-.lab-cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0;
-  padding: 1.1rem 1.25rem;
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.24), rgb(var(--sheet-rgb) / 0.72));
-  border: 1px solid rgba(74, 222, 128, 0.34);
-  border-left: 3px solid #4ade80;
-  border-radius: 12px;
-}
-
-.lab-cta-text {
-  /* 26rem, not 20rem. Blog posts now run the article in a 72ch column, and at
-     a 20rem basis the paragraph still shared the row with the button — leaving
-     the text ~360px wide, so it stacked into eight short ragged lines beside a
-     button with empty space above and below it. At 26rem the pair no longer
-     fits an article column and the button wraps to its own row, while the wider
-     lab pages still have room to keep them side by side. */
-  flex: 1 1 26rem;
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.65;
-  color: var(--ink-2);
-}
-
-.lab-cta-text strong { color: #86efac; }
-
-.lab-cta code {
-  padding: 0.1rem 0.35rem;
-  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
-  font-size: 0.86em;
-  background: rgba(2, 6, 23, 0.6);
-  border-radius: 4px;
-}
-
-.lab-cta .btn { flex: 0 0 auto; }
-
-@media (max-width: 560px) {
-  .lab-cta { padding: 0.95rem 1rem; }
-  .lab-cta .btn { width: 100%; text-align: center; }
-}
+/* The "Try it" callout (.lab-cta) moved to main.css §7b. It is used on 37 blog
+   posts plus /services, /internships and /research, none of which are labs —
+   they were loading all 203 KB of this file for it. See the note there. */
 
 /* --------------------------------------------------------------------------
    Typing speed test
@@ -1006,71 +974,12 @@ pre.lab-example:hover .lab-copy,
 
 /* ==========================================================================
    7. Language grid (hub page)
+   --------------------------------------------------------------------------
+   The grid and card themselves (.lab-grid, .lab-card and its parts) moved to
+   main.css §7b: /services and /internships render the same card grid without
+   being labs, and this file is too expensive to load for it. Everything below
+   is still lab-only.
    ========================================================================== */
-
-.lab-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 1rem;
-  margin: 1.6rem 0 2rem;
-  padding: 0;
-  list-style: none;
-}
-
-.lab-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.05rem 1.15rem;
-  background: var(--sheet-80);
-  border: 1px solid rgb(var(--accent-rgb) / 0.18);
-  border-radius: 12px;
-  text-decoration: none;
-  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
-}
-
-.lab-card:hover,
-.lab-card:focus-visible {
-  transform: translateY(-3px);
-  border-color: rgb(var(--accent-rgb) / 0.5);
-  background: var(--raise-85);
-}
-
-/* This is an <h3> so a screen reader can skim the 57 labs by heading instead of
-   tabbing through 57 links that each read a twenty-word paragraph. Being a
-   heading means it now inherits `h1,h2,h3 { margin: 0 0 1rem }` from
-   main.css:800 — and .lab-card is display:flex/column, where margins do not
-   collapse, so every card gained 1rem (22.4px) between its name and its
-   description. font/margin are reset here so the element is a heading
-   semantically and unchanged visually. */
-.lab-card-name {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.6rem;
-  margin: 0;
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: inherit;
-  color: var(--ink);
-}
-
-.lab-card-size {
-  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
-  font-size: 0.72rem;
-  font-weight: 400;
-  color: var(--accent-1);
-  white-space: nowrap;
-}
-
-.lab-card-desc { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--ink-3); }
-
-.lab-card-engine {
-  margin-top: 0.15rem;
-  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
-  font-size: 0.7rem;
-  color: var(--ink-4);
-}
 
 /* Inline "what this is" strip above the lab on language pages. */
 .lab-facts {
@@ -1172,7 +1081,168 @@ pre.lab-example:hover .lab-copy,
 .lab-path .lab-steps li.is-done::marker { content: '✓ '; }
 
 .lab-path [data-reset],
+.lab-path [data-exam],
 .lab-path [data-cert] { margin-top: 0.5rem; margin-right: 0.5rem; }
+
+/* --------------------------------------------------------------------------
+   The path exam
+   --------------------------------------------------------------------------
+   Twelve questions with four long options each is a lot of text in a
+   <details> that also holds the step list, so the paper gets a well of its
+   own to sit in and each question a card inside it. Without the separation
+   the legend of one question read as a sibling of the options of the last.
+   -------------------------------------------------------------------------- */
+
+.lab-path-issued {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ok);
+}
+
+.lab-exam {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1rem;
+  background: rgb(var(--deep-rgb) / 0.35);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 12px;
+}
+
+.lab-exam-head,
+.lab-exam-note {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+.lab-exam-form { margin: 0; }
+
+/* A fieldset is the right element for a radio group and brings a default
+   border, padding and min-width:min-content with it. The min-width is the one
+   that matters: left alone it lets a long option set the group's width and
+   push the whole path sideways on a phone. */
+.lab-exam-q {
+  min-width: 0;
+  margin: 0 0 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.14);
+  border-radius: 10px;
+  background: var(--sheet-60);
+}
+
+.lab-exam-qtext {
+  padding: 0 0.3rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.lab-exam-opt {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.lab-exam-opt:hover { background: rgb(var(--accent-rgb) / 0.08); }
+
+/* The radio is the indicator, not the target. It is 17px here — over the 13px
+   a browser gives one, and still under the 24px floor of WCAG 2.5.8, which is
+   fine because the target is the <label> row wrapping it: measured 967x57 on
+   a desktop and 209x142 at 390px, and elementFromPoint at the centre of that
+   row lands on the label. Growing the control itself to 24px would only make
+   a large target look clumsy. Do not remove the padding on .lab-exam-opt
+   without checking that row again — it is what the 24px is coming from. */
+.lab-exam-opt input[type='radio'] {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.2rem 0 0;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+.lab-exam-opttext {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.lab-exam-result {
+  margin: 0.7rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.lab-exam-result:empty { margin: 0; }
+.lab-exam-result.is-pass { color: var(--ok); }
+.lab-exam-result.is-fail { color: var(--err); }
+.lab-exam-result.is-warn { color: var(--warn); }
+
+.lab-exam-again { margin-top: 0.7rem; }
+
+.lab-exam-name { margin: 0.9rem 0 0; }
+
+.lab-exam-namelabel {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.lab-exam-nameinput {
+  width: min(22rem, 100%);
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--well-75);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  border-radius: 8px;
+}
+
+.lab-exam-nameinput:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 1px;
+}
+
+.lab-exam-issue { margin-top: 0.6rem; }
+
+.lab-exam-nameerr {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--err);
+}
+
+.lab-exam-nameerr:empty { margin: 0; }
+
+/* On a phone the paper sits four levels deep — section card, then the path,
+   then this panel, then the question card, then the option row — and each one
+   was taking a comfortable desktop padding with it. Measured at 390px the
+   option text had 209px to work with and ran to seven lines, so the padding
+   comes down here and gives back about 32px. 560px matches the breakpoint the
+   rest of this file uses. */
+@media (max-width: 560px) {
+  .lab-exam { padding: 0.7rem 0.55rem; }
+  .lab-exam-q { padding: 0.6rem 0.5rem; }
+  .lab-exam-qtext { padding: 0 0.15rem; }
+  .lab-exam-opt { padding: 0.45rem 0.3rem; gap: 0.45rem; }
+  /* The submit and the issue button go full width rather than sitting in a
+     column this narrow at their natural 127px. */
+  .lab-exam-submit,
+  .lab-exam-issue,
+  .lab-exam-again { width: 100%; justify-content: center; }
+}
+
+/* The paper is chrome, not content: printing the hub should not print an
+   exam somebody happens to have open. */
+@media print {
+  .lab-exam,
+  .lab-path-issued { display: none !important; }
+}
 
 /* The printed certificate. Off-screen rather than display:none, because a
    sheet that has never been laid out prints with collapsed measurements in
@@ -1199,20 +1269,60 @@ pre.lab-example:hover .lab-copy,
     font-family: Georgia, 'Times New Roman', serif;
   }
 
+  /* THE HEIGHT BUDGET. A4 is 297mm and this sheet must not spill onto a second
+     page, because a certificate whose second page holds three lines of
+     disclaimer is worse than no certificate.
+
+     Measured at true A4 width (794px at 96dpi -- NOT at a desktop viewport,
+     where the lines wrap less and the sheet reads ~35mm shorter than it
+     prints), the worst case is the 12-lab web path with a long name. Adding
+     the AWARDED TO / name block cost about 28mm and took that case to 299.3mm,
+     i.e. 2.3mm over, so the margins below were tightened by ~38mm in total and
+     the list line-height came down from 1.9 to 1.65. Now 261mm for 12 labs and
+     271mm with a 48-character name, leaving ~26mm of slack -- which is the
+     margin for Georgia not being installed and a fallback serif setting
+     slightly larger.
+
+     If you add another line to this sheet, re-measure at 794px wide with the
+     12-lab path, not on your monitor. */
   .pathcert-kicker {
-    margin: 0 0 18mm;
+    margin: 0 0 14mm;
     font-family: 'Cascadia Code', Consolas, monospace;
     font-size: 9pt;
     letter-spacing: 0.06em;
     color: #5b6470;
   }
 
-  .pathcert-title { margin: 0 0 3mm; font-size: 26pt; font-weight: 400; }
-  .pathcert-sub { margin: 0 0 14mm; font-size: 12pt; color: #444c5a; }
+  .pathcert-title { margin: 0 0 9mm; font-size: 26pt; font-weight: 400; }
 
-  .pathcert-list { margin: 0 0 16mm; padding-left: 6mm; font-size: 11pt; line-height: 1.9; }
+  /* "Awarded to" / the name / what for. The name is the largest thing on the
+     sheet after the path, and set in the serif the rest of the page uses
+     rather than a script face — this is a record, and a copperplate signature
+     font would be dressing it up as something it is not. */
+  .pathcert-lede {
+    margin: 0 0 2mm;
+    font-size: 10.5pt;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #5b6470;
+  }
 
-  .pathcert-date { margin: 0 0 22mm; font-size: 11pt; }
+  .pathcert-name {
+    margin: 0 0 4mm;
+    padding-bottom: 3mm;
+    border-bottom: 0.3mm solid #c8cfd9;
+    font-size: 22pt;
+    line-height: 1.25;
+    /* A long name must wrap on the sheet rather than run off it: the input
+       accepts 70 characters and some of them are long. */
+    overflow-wrap: anywhere;
+  }
+
+  .pathcert-sub { margin: 0 0 9mm; font-size: 12pt; color: #444c5a; }
+
+  .pathcert-list { margin: 0 0 11mm; padding-left: 6mm; font-size: 11pt; line-height: 1.65; }
+
+  .pathcert-date { margin: 0 0 13mm; font-size: 11pt; }
 
   /* Smaller than the body and set apart, but printed on the same sheet and
      above the fold of a folded A4 — it is a disclaimer, not fine print. */
@@ -1247,17 +1357,9 @@ pre.lab-example:hover .lab-copy,
 /* Belt and braces for the grid fix in main.css: the block must never be able
    to report a min-content width larger than its column. */
 .lab-example { max-width: 100%; min-width: 0; }
-.info-card, .lab-card { min-width: 0; }
-
-/* Example strings in prose are allowed to break anywhere. The url-inspector
-   quotes http://www.paypal.com@evil.example/login inline — no spaces, no
-   hyphens, no soft break opportunities — and that one unbreakable span was
-   widening the mobile layout viewport from 360 to 430px, shrinking the whole
-   page ~16% on phones. min-width: 0 above cannot help: the string still has
-   to render somewhere, so it must be allowed to wrap mid-token. This also
-   covers the other long example domains, which today only wrap because they
-   happen to contain a hyphen. */
-.info-card code { overflow-wrap: anywhere; }
+/* The .info-card / .lab-card min-width and the .info-card code wrap rule moved
+   to main.css §7b with the card — .info-card is a main.css component and both
+   rules were only ever augmenting it from here. */
 
 .lab-faq {
   border-bottom: 1px solid rgb(var(--accent-rgb) / 0.16);
@@ -1326,9 +1428,8 @@ pre.lab-example:hover .lab-copy,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lab-card,
+  /* .lab-card's half of this moved to main.css §7b with the card itself. */
   .lab-meter-ring .value { transition: none; }
-  .lab-card:hover, .lab-card:focus-visible { transform: none; }
 }
 
 /* Printing a playground is meaningless — keep the code, drop the chrome. */
@@ -3004,12 +3105,12 @@ html:not(.js) .lab-filter { display: none; }
   padding: 0.65rem 0.85rem 0.65rem calc(0.85rem - 3px);
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #fde68a;
+  color: var(--warn-3);
   background: rgba(251, 191, 36, 0.09);
   border-left: 3px solid #fbbf24;
   border-bottom: 1px solid rgba(251, 191, 36, 0.25);
 }
-.lab-mfnote strong { color: #fbbf24; font-weight: 600; }
+.lab-mfnote strong { color: var(--warn); font-weight: 600; }
 
 .lab-mfrow {
   display: grid;
@@ -3791,7 +3892,7 @@ html:not(.js) .lab-filter { display: none; }
 /* The four bytes dynamic truncation picked out. Underlined as well as
    coloured, so the highlight survives a colour-blind reader and a printout. */
 .totp-hex-pick {
-  color: #fbbf24;
+  color: var(--warn);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -5862,9 +5963,9 @@ html:not(.js) .lab-filter { display: none; }
   font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
   color: var(--ink);
 }
-.pk-v.is-ok   { color: #4ade80; }
-.pk-v.is-warn { color: #fbbf24; }
-.pk-v.is-err  { color: #f87171; }
+.pk-v.is-ok   { color: var(--ok); }
+.pk-v.is-warn { color: var(--warn); }
+.pk-v.is-err  { color: var(--err); }
 .pk-v.is-dim  { color: var(--ink-4); }
 /* The origin. Underlined as well as coloured so the emphasis survives a
    colour-blind reader and a printout, the same reasoning as the truncation
@@ -8569,10 +8670,16 @@ html:not(.js) .lab-filter { display: none; }
   border-radius: 999px;
   border: 1px solid currentColor;
 }
-.tz-chip-ok { color: #4ade80; background: rgba(74, 222, 128, 0.1); }
-.tz-chip-warn { color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
-.tz-chip-bad { color: #f87171; background: rgba(248, 113, 113, 0.1); }
+/* The 10% fills stay as they are: a tint that faint reads as a wash on either
+   ground, and the border is currentColor, so it follows the text token. */
+.tz-chip-ok { color: var(--ok); background: rgba(74, 222, 128, 0.1); }
+.tz-chip-warn { color: var(--warn); background: rgba(251, 191, 36, 0.1); }
+.tz-chip-bad { color: var(--err); background: rgba(248, 113, 113, 0.1); }
+/* Not a status — "this is tomorrow there" — so it has no token. It had the
+   same light-theme fault as the three above (violet-400 measured 2.37:1 on
+   the light card) and gets the same treatment one rule down. */
 .tz-chip-day { color: #a78bfa; background: rgba(167, 139, 250, 0.12); }
+:root[data-theme="light"] .tz-chip-day { color: #5b21b6; }
 
 .tz-msg { margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-4); }
 
@@ -8792,9 +8899,9 @@ html:not(.js) .lab-filter { display: none; }
   background: rgb(var(--deep-rgb) / 0.6);
   color: var(--ink-3);
 }
-#dmarcbuilder .dm-count.is-ok { border-color: rgba(74, 222, 128, 0.45); color: #86efac; }
-#dmarcbuilder .dm-count.is-near { border-color: rgba(251, 191, 36, 0.5); color: #fcd34d; }
-#dmarcbuilder .dm-count.is-over { border-color: rgba(248, 113, 113, 0.6); color: #fca5a5; }
+#dmarcbuilder .dm-count.is-ok { border-color: rgba(74, 222, 128, 0.45); color: var(--ok-2); }
+#dmarcbuilder .dm-count.is-near { border-color: rgba(251, 191, 36, 0.5); color: var(--warn-2); }
+#dmarcbuilder .dm-count.is-over { border-color: rgba(248, 113, 113, 0.6); color: var(--err-2); }
 
 #dmarcbuilder .dm-rows { list-style: none; margin: 0 0 0.7rem; padding: 0; }
 #dmarcbuilder .dm-row {

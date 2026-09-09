@@ -822,6 +822,26 @@ function doMayuriIndex() {
 }
 
 /* --------------------------------------------------------------------------
+   3c. The learning-path exams
+   --------------------------------------------------------------------------
+   Same argument again, one step further. The five path exams are built from
+   the FAQPage blocks on the labs those paths list, so the bank drifts the
+   moment a lab rewrites an answer — and a stale exam is worse than a stale
+   search excerpt or even a stale chat answer, because it marks a correct
+   answer wrong and then declines to issue a certificate to somebody who
+   earned one. Rebuilt every deploy, from the pages, like the rest.
+
+   It also fails the deploy if a path lists a lab that does not exist, which
+   the sitemap parity gate would not catch: a dead data-step link is a path
+   whose exam silently loses a lab's questions.
+   -------------------------------------------------------------------------- */
+function doLabExams() {
+  log('');
+  const { buildExams } = require('./lab-exams.js');
+  return buildExams({ check: CHECK, log: log });
+}
+
+/* --------------------------------------------------------------------------
    4. llms.txt / llms-full.txt page counts
    --------------------------------------------------------------------------
    Both files quote how many pages the search index covers and how many of
@@ -2211,6 +2231,7 @@ function main() {
   doSitemap();
   const index = doSearchIndex();
   doMayuriIndex();
+  doLabExams();
   doLlmsCounts(index);
   doJsonLd();
   doSitemapParity();

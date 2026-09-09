@@ -56,6 +56,54 @@
         ]
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the track I load uploaded anywhere?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, and there is nowhere to upload it to. The file is read straight off your disk with an object URL and routed through a MediaElementSource, so the audio never leaves the tab. This site is static - there is no server here that could receive it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are the drums samples?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, every one is synthesised. The kick is a sine that drops in pitch, the hats are filtered noise, and the clap is three noise bursts nine milliseconds apart - because one burst is a snare, and the smear of repeats is what the ear hears as hands. Nothing is downloaded and nothing needs licensing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does the oscilloscope show one trace rather than one per instrument?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Because the deck, the drum machine and the synth all feed a single gain stage, through a compressor, into one analyser. It is the same reason a pattern you program sits underneath a track rather than beside it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I record or export what I play?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. There is no recorder here, and adding one would mean either a file to download or a server to render it on, and this page has neither. It is built for playing over a track rather than producing one."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Space scrolls the page instead of starting the drum machine.",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Space only drives the sequencer once the sequencer has focus, so click or tab into it first. Everywhere else on the page Space stays what the browser makes it, which is scroll - taking that away from a page somebody is reading is worse than one extra click."
+            }
+          }
+        ]
+      }
+    </script>
     <script src="/assets/js/boot.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/labs.css" />
@@ -123,7 +171,7 @@
         </nav>
         <h1>Synth &amp; DJ desk</h1>
         <p class="hero-text">
-          Load a track from your own machine, then play over it. A sixteen-step drum machine, eight one-shot
+          Load a track from your own machine, then play over it. A sixteen-step drum machine, five one-shot
           pads and a playable synth all run through one mixer, so a pattern you build and a line you play land
           on top of whatever is on the deck. Every sound but your file is generated here — there are no samples
           to download and nothing to licence.
@@ -299,6 +347,32 @@
           pitch for the kick, filtered noise for the hats, and three noise bursts nine milliseconds apart for
           the clap, because one burst is a snare and the smear of repeats is what the ear hears as hands.
         </p>
+      </section>
+
+      <section class="section-card">
+        <div class="section-heading">
+          <h2>Questions people ask</h2>
+        </div>
+          <details class="lab-faq">
+            <summary>Is the track I load uploaded anywhere?</summary>
+            <div>No, and there is nowhere to upload it to. The file is read straight off your disk with an object URL and routed through a MediaElementSource, so the audio never leaves the tab. This site is static - there is no server here that could receive it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Are the drums samples?</summary>
+            <div>No, every one is synthesised. The kick is a sine that drops in pitch, the hats are filtered noise, and the clap is three noise bursts nine milliseconds apart - because one burst is a snare, and the smear of repeats is what the ear hears as hands. Nothing is downloaded and nothing needs licensing.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Why does the oscilloscope show one trace rather than one per instrument?</summary>
+            <div>Because the deck, the drum machine and the synth all feed a single gain stage, through a compressor, into one analyser. It is the same reason a pattern you program sits underneath a track rather than beside it.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I record or export what I play?</summary>
+            <div>No. There is no recorder here, and adding one would mean either a file to download or a server to render it on, and this page has neither. It is built for playing over a track rather than producing one.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Space scrolls the page instead of starting the drum machine.</summary>
+            <div>Space only drives the sequencer once the sequencer has focus, so click or tab into it first. Everywhere else on the page Space stays what the browser makes it, which is scroll - taking that away from a page somebody is reading is worse than one extra click.</div>
+          </details>
       </section>
 
       <section class="section-card lab-report">

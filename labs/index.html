@@ -427,6 +427,15 @@
             step and it is marked off; the ticks live in this browser and nowhere else, and the reset below each
             path clears its own.
           </p>
+          <p>
+            Open every step in a path and a <strong>twelve-question exam</strong> unlocks &mdash; drawn from the
+            labs&rsquo; own FAQs, ten right to pass, and a different set every attempt. Pass it and you can put a
+            name to a certificate and print it. Each path is issued once: the name is fixed when you print, so
+            the reset above clears the ticks but not a certificate already issued. It is a record of
+            self-directed practice and says so on its face &mdash; unproctored, in your own browser, with the
+            questions downloaded to it. The certificates that can be
+            <a class="text-link" href="/verify">verified</a> are the ones issued by hand.
+          </p>
         </div>
 
         <details class="lab-path" data-path="web">
@@ -449,8 +458,11 @@
             <li><a href="/labs/hacklab" data-step>HackLab</a> — break a deliberately weak app</li>
             <li><a href="/labs/threat-model" data-step>Threat model</a> — put it together into a plan</li>
           </ol>
-          <button class="lab-btn" type="button" data-cert hidden>Print a certificate</button>
+          <p class="lab-path-issued" data-issued hidden></p>
+          <button class="lab-btn" type="button" data-exam hidden>Take the exam</button>
+          <button class="lab-btn" type="button" data-cert hidden>Print your certificate</button>
           <button class="lab-btn" type="button" data-reset>Reset this path</button>
+          <div class="lab-exam" data-exam-panel hidden></div>
         </details>
 
         <details class="lab-path" data-path="internet">
@@ -470,8 +482,11 @@
             <li><a href="/labs/rdap" data-step>RDAP</a> — who owns the name and the address</li>
             <li><a href="/labs/firewall-rules" data-step>Firewall rules</a> — deciding what gets through</li>
           </ol>
-          <button class="lab-btn" type="button" data-cert hidden>Print a certificate</button>
+          <p class="lab-path-issued" data-issued hidden></p>
+          <button class="lab-btn" type="button" data-exam hidden>Take the exam</button>
+          <button class="lab-btn" type="button" data-cert hidden>Print your certificate</button>
           <button class="lab-btn" type="button" data-reset>Reset this path</button>
+          <div class="lab-exam" data-exam-panel hidden></div>
         </details>
 
         <details class="lab-path" data-path="crypto">
@@ -491,8 +506,11 @@
             <li><a href="/labs/certificate-forge" data-step>Forging a certificate</a> — what a signature actually prevents</li>
             <li><a href="/labs/timing-attack" data-step>Timing attacks</a> — correct code that still leaks</li>
           </ol>
-          <button class="lab-btn" type="button" data-cert hidden>Print a certificate</button>
+          <p class="lab-path-issued" data-issued hidden></p>
+          <button class="lab-btn" type="button" data-exam hidden>Take the exam</button>
+          <button class="lab-btn" type="button" data-cert hidden>Print your certificate</button>
           <button class="lab-btn" type="button" data-reset>Reset this path</button>
+          <div class="lab-exam" data-exam-panel hidden></div>
         </details>
 
         <details class="lab-path" data-path="email">
@@ -509,8 +527,11 @@
             <li><a href="/labs/breach-check" data-step>Breach check</a> — what is already out there</li>
             <li><a href="/labs/osint-self-check" data-step>OSINT on yourself</a> — what a stranger can assemble</li>
           </ol>
-          <button class="lab-btn" type="button" data-cert hidden>Print a certificate</button>
+          <p class="lab-path-issued" data-issued hidden></p>
+          <button class="lab-btn" type="button" data-exam hidden>Take the exam</button>
+          <button class="lab-btn" type="button" data-cert hidden>Print your certificate</button>
           <button class="lab-btn" type="button" data-reset>Reset this path</button>
+          <div class="lab-exam" data-exam-panel hidden></div>
         </details>
 
         <details class="lab-path" data-path="forensics">
@@ -530,8 +551,11 @@
             <li><a href="/labs/log-analyser" data-step>Log analysis</a> — finding the one line that matters</li>
             <li><a href="/labs/malware-triage" data-step>Malware triage</a> — everything above, under time pressure</li>
           </ol>
-          <button class="lab-btn" type="button" data-cert hidden>Print a certificate</button>
+          <p class="lab-path-issued" data-issued hidden></p>
+          <button class="lab-btn" type="button" data-exam hidden>Take the exam</button>
+          <button class="lab-btn" type="button" data-cert hidden>Print your certificate</button>
           <button class="lab-btn" type="button" data-reset>Reset this path</button>
+          <div class="lab-exam" data-exam-panel hidden></div>
         </details>
       </section>
 

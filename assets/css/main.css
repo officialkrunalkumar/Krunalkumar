@@ -75,6 +75,42 @@
   box-sizing: border-box;
 }
 
+/* `hidden` must actually hide, site-wide.
+
+   The UA sheet's [hidden] rule is `display: none` at the lowest possible
+   specificity, so ANY author `display` on the same element outranks it
+   silently — and a flex/grid child is exactly where someone reaches for
+   `display`. The element then keeps its box, its paint and its place in the
+   tab order while the markup and the JS both believe it is gone.
+
+   This was found three times before it was fixed once. games.css already
+   carried this same declaration, biodata-maker.css carried it scoped to
+   #biodatamaker, and labs.css carried it scoped to .lab-toolbar (with a note
+   explaining the trap) — three guards, none of which covered the pages that
+   were actually broken:
+
+     /labs/            .lab-btn { display: inline-flex } kept BOTH path
+                       buttons visible, clickable and focusable. lab-paths.js
+                       gates them with .hidden alone, so "Print a certificate"
+                       was reachable on all five learning paths with zero labs
+                       completed, and "Reset this path" offered to reset
+                       nothing. A printable certificate for work nobody did,
+                       on a site with a /verify page whose whole job is making
+                       those certificates mean something.
+     /labs/chat        "Stop camera" offered while the camera was off
+     /labs/image-tools five resize panels shown before an image was loaded
+     /labs/steganography  an empty preview <img>
+     /labs/wish-generator the preview iframe
+
+   Scoped guards cannot fix this class of bug, because the next one appears
+   wherever nobody has been yet. One unscoped rule can. !important is what
+   makes it hold against the author `display` it exists to beat; the scoped
+   copies elsewhere are now redundant but harmless, and are left where they
+   are so their notes stay next to the code they describe. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 
@@ -1410,6 +1446,164 @@ main [id] {
   border-radius: 18px;
   padding: 1.2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   7b. Lab callout & lab cards — the two Labs components used OFF the labs
+   --------------------------------------------------------------------------
+   These lived in labs.css, which is a 203 KB stylesheet (comments stripped,
+   what the browser actually gets) built for the 118 lab pages. Forty pages
+   that are NOT labs were loading the whole of it for these two components:
+   37 blog posts for the "Try it" callout, and /services, /internships and
+   /research for the callout plus the card grid. Measured with the CSSOM, a
+   blog post matched 12 of labs.css's 1,974 rules — 0.6% — and /services 14,
+   for 26 KB of render-blocking transfer (brotli) and 1,974 rules of style
+   recalculation on every one of those pages.
+
+   So the shared components moved here instead, where they cost those pages
+   nothing extra: main.css was already on every page. Nothing about the
+   components changed — same declarations, same order relative to each other.
+
+   Two things to know if you edit these:
+     - The light-theme override for .lab-cta-text strong is further down this
+       file, near the other light corrections, and is (0,2,1) — it does not
+       depend on being after these rules.
+     - blog.css narrows .post-body > .lab-cta for the article column at
+       (0,2,1), which likewise wins on specificity, not order.
+   The rest of the lab-* namespace is still in labs.css and belongs there.
+   ========================================================================== */
+
+/* "Try it" callout, used on content pages that link into Labs. Reads as a
+   pull-quote rather than a banner, because it follows text the reader chose. */
+.lab-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.24), rgb(var(--sheet-rgb) / 0.72));
+  border: 1px solid rgba(74, 222, 128, 0.34);
+  border-left: 3px solid #4ade80;
+  border-radius: 12px;
+}
+
+.lab-cta-text {
+  /* 26rem, not 20rem. Blog posts now run the article in a 72ch column, and at
+     a 20rem basis the paragraph still shared the row with the button — leaving
+     the text ~360px wide, so it stacked into eight short ragged lines beside a
+     button with empty space above and below it. At 26rem the pair no longer
+     fits an article column and the button wraps to its own row, while the wider
+     lab pages still have room to keep them side by side. */
+  flex: 1 1 26rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.lab-cta-text strong { color: #86efac; }
+
+.lab-cta code {
+  padding: 0.1rem 0.35rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.86em;
+  background: rgba(2, 6, 23, 0.6);
+  border-radius: 4px;
+}
+
+.lab-cta .btn { flex: 0 0 auto; }
+
+@media (max-width: 560px) {
+  .lab-cta { padding: 0.95rem 1rem; }
+  .lab-cta .btn { width: 100%; text-align: center; }
+}
+
+/* The card grid — the labs hub's own listing, and the "browse the labs" block
+   on /services and /internships. */
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.6rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.05rem 1.15rem;
+  background: var(--sheet-80);
+  border: 1px solid rgb(var(--accent-rgb) / 0.18);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.lab-card:hover,
+.lab-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgb(var(--accent-rgb) / 0.5);
+  background: var(--raise-85);
+}
+
+/* This is an <h3> so a screen reader can skim the 57 labs by heading instead of
+   tabbing through 57 links that each read a twenty-word paragraph. Being a
+   heading means it now inherits `h1,h2,h3 { margin: 0 0 1rem }` from
+   §5 above — and .lab-card is display:flex/column, where margins do not
+   collapse, so every card gained 1rem (22.4px) between its name and its
+   description. font/margin are reset here so the element is a heading
+   semantically and unchanged visually. */
+.lab-card-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: inherit;
+  color: var(--ink);
+}
+
+.lab-card-size {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--accent-1);
+  white-space: nowrap;
+}
+
+.lab-card-desc { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--ink-3); }
+
+.lab-card-engine {
+  margin-top: 0.15rem;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, Menlo, monospace;
+  font-size: 0.7rem;
+  color: var(--ink-4);
+}
+
+/* Belt and braces for the grid fix above: the card must never be able to
+   report a min-content width larger than its column. */
+.info-card,
+.lab-card { min-width: 0; }
+
+/* Example strings in prose are allowed to break anywhere. The url-inspector
+   quotes http://www.paypal.com@evil.example/login inline — no spaces, no
+   hyphens, no soft break opportunities — and that one unbreakable span was
+   widening the mobile layout viewport from 360 to 430px, shrinking the whole
+   page ~16% on phones. min-width: 0 above cannot help: the string still has
+   to render somewhere, so it must be allowed to wrap mid-token. This also
+   covers the other long example domains, which today only wrap because they
+   happen to contain a hyphen. */
+.info-card code { overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-card { transition: none; }
+  .lab-card:hover,
+  .lab-card:focus-visible { transform: none; }
 }
 
 /* --------------------------------------------------------------------------
@@ -4800,13 +4994,21 @@ html:not(.js) .search-open {
    Rather than hand-edit those, the recurring ones became the tokens below and
    each has a value per theme.
 
-   Three things deliberately do NOT change:
+   Two things deliberately do NOT change:
      - Terminal panes, the editor and syntax highlighting stay dark. A terminal
        that turns white is not a light theme, it is a broken terminal, and every
        real editor keeps its canvas dark under a light UI.
-     - Status colours (red, green, amber) stay as they are; they read on either
-       ground and remapping them would make errors less obvious, not more.
      - /buddha keeps its own palette. It is a dawn scene, not chrome.
+
+   Status colours (red, green, amber) used to be a third entry here, on the
+   grounds that they read on either ground and remapping them would make errors
+   less obvious. Measured, the opposite was true — the pale 300/400-level
+   ambers and greens dropped to 1.0–1.5:1 on light surfaces, taking the
+   /labs/media-forensics safety disclaimer with them. They are now tokenised
+   per theme (--ok / --warn / --err, below), which keeps the hue and restores
+   the intent that entry was protecting. Status colours INSIDE the always-dark
+   panes are still literal hex and still unthemed, which is the part of the old
+   note that was right.
 
    No theme is forced. Without a stored choice the site follows the operating
    system, which is what prefers-color-scheme is for.
@@ -4853,6 +5055,19 @@ html:not(.js) .search-open {
   --line-22: rgb(var(--line-rgb) / 0.22);
   --line-18: rgb(var(--line-rgb) / 0.18);
   --line-15: rgb(var(--line-rgb) / 0.15);
+
+  /* Status colours — ok / warn / err, in the shade levels the site actually
+     uses, numbered like the --ink scale (bare = strongest, -2 .. -4 = paler).
+     Every value here is the literal hex these states already used, so the dark
+     theme is unchanged; the point of the tokens is the light values below. */
+  --ok: #4ade80;
+  --ok-2: #86efac;
+  --warn: #fbbf24;
+  --warn-2: #fcd34d;
+  --warn-3: #fde68a;
+  --warn-4: #fef3c7;
+  --err: #f87171;
+  --err-2: #fca5a5;
 }
 
 :root[data-theme="light"] {
@@ -4907,6 +5122,45 @@ html:not(.js) .search-open {
   --line-22: rgba(71, 85, 105, 0.2);
   --line-18: rgba(71, 85, 105, 0.17);
   --line-15: rgba(71, 85, 105, 0.14);
+
+  /* Status colours, light theme.
+
+     The note at the top of this section used to say status colours stay as
+     they are because "they read on either ground". Measured, they do not: the
+     dark theme's greens and ambers are 300–400 level, which is near-white, and
+     on a light surface they vanish. Worst measured in light theme, before
+     these values:
+
+       .lab-mfnote      1.06:1   the "this tool does not decide whether an
+                                 image is real" disclaimer on /labs/media-forensics
+       .dm-count.is-ok  1.02:1   the DNS-lookup budget on /labs/dmarc-builder
+       .totp-hex-pick   1.47:1   the selected HMAC byte on /labs/totp
+       .tz-chip-ok      1.46:1   "Inside working hours" on /labs/timezones
+       .pk-v.is-ok      1.37:1   "yes" on /labs/passkeys
+
+     So the intent behind that note — an error must stay obvious — is exactly
+     what the old values broke. These keep the hue unmistakably green / amber /
+     red and move it down to the 700–800 level, which clears 4.5:1 on every
+     light surface the site has: the page (#f5f8fc), --sheet (white), --well
+     (#e9f0f9) and the amber-tinted warn panel (~#edede7, the darkest of them,
+     where these measure 6.0 / 6.1 / 5.6:1).
+
+     All four warn levels collapse to one value here, and both ok/err levels
+     do too. On a light ground there is no paler-but-still-readable shade to
+     map them to, so the shade hierarchy cannot survive the flip; where it was
+     carrying meaning — .lab-mfnote body vs its <strong> — font-weight already
+     carries it, which is why that reads correctly in this theme.
+
+     --err matches the #b91c1c that .lab-viz-error already picked for the same
+     job further down this file. */
+  --ok: #166534;
+  --ok-2: #166534;
+  --warn: #92400e;
+  --warn-2: #92400e;
+  --warn-3: #92400e;
+  --warn-4: #92400e;
+  --err: #b91c1c;
+  --err-2: #b91c1c;
 }
 
 /* Light is opt-in only.
@@ -4946,18 +5200,27 @@ html:not(.js) .search-open {
    resolves them exactly as it does in the dark theme, so one block covers the
    whole family instead of a rule per class.
 
-   Family 2 — .lab-stdin, .typing-input, .api-url, .api-field. The same
-   problem, one step smaller. Family 1 owns the ground AND the text, because
-   those panes are pure terminal. These surfaces are different: each one
-   hardcodes its own dark fill (#0b1220 for the stdin and typing boxes,
-   #020617 for the API panes) but colours its text with a token — so in light
-   theme the fill stayed dark while the ink flipped to near-black and the text
-   disappeared into it. Measured before this block, in light theme:
+   Family 2 — .lab-stdin, .typing-input, .api-url, .api-field, .it-stage,
+   .lab-mfstage. The same problem, one step smaller. Family 1 owns the ground
+   AND the text, because those panes are pure terminal. These surfaces are
+   different: each one hardcodes its own dark fill (#0b1220 for the stdin and
+   typing boxes, #020617 for the API panes and both image stages) but colours
+   its text with a token — so in light theme the fill stayed dark while the ink
+   flipped to near-black and the text disappeared into it. Measured before this
+   block, in light theme:
 
      .lab-stdin       1.81:1     (14 REPL labs — the box you type input into)
      .typing-input    1.28:1
      .api-url         1.38:1
      .api-field       1.38:1
+     .it-stage        1.01:1     (/labs/image-tools — the "1:1 pixels" and
+                                  "Split" controls under the preview)
+     .lab-mfstage     3.17:1     (/labs/media-forensics — .lab-mfcap, the
+                                  caption telling you to drop an image in)
+
+   The two stages are deliberately dark in both themes for the same reason a
+   lightbox is: you judge an image against a neutral dark ground, not against
+   the page. That is why they belong here rather than being converted.
 
    Family 3 — .bg-settings-panel, .bg-hint-toast. The background-settings
    popover and its hint toast paint themselves with literal dark fills —
@@ -4997,6 +5260,8 @@ html:not(.js) .search-open {
 :root[data-theme="light"] .hl-solution pre,
 :root[data-theme="light"] .api-url,
 :root[data-theme="light"] .api-field,
+:root[data-theme="light"] .it-stage,
+:root[data-theme="light"] .lab-mfstage,
 :root[data-theme="light"] .bg-settings-panel,
 :root[data-theme="light"] .bg-hint-toast {
   --accent-1: #7dd3fc;
@@ -5008,6 +5273,21 @@ html:not(.js) .search-open {
   --ink-3: #cbd5e1;
   --ink-4: #94a3b8;
   --ink-5: #f1f5f9;
+  /* The status tokens are pinned for the same reason as the ink scale: their
+     light values are 700–800 level, which is correct on a light surface and
+     wrong on these, where the ground stays #020617. Nothing inside these
+     panes reaches for them today — the terminal's own t-ok/t-warn/t-err are
+     still literal hex, deliberately, because a pane that never changes ground
+     does not need a themed colour — but a tokenised status element dropped in
+     here later should resolve to the dark value, not inherit a near-black one. */
+  --ok: #4ade80;
+  --ok-2: #86efac;
+  --warn: #fbbf24;
+  --warn-2: #fcd34d;
+  --warn-3: #fde68a;
+  --warn-4: #fef3c7;
+  --err: #f87171;
+  --err-2: #fca5a5;
 }
 
 /* Held for the single frame in which theme.js swaps data-theme.
@@ -5911,12 +6191,87 @@ html:not(.js) .search-open {
 
 /* "Starting the visualiser…" — the line that stays on screen if a widget never
    loads, so it is the one message a stuck visitor actually needs to read. It
-   lives inside the mount, whose ground is pinned dark in this theme, and it
-   carries a class so the :not([class]) rescue above does not reach it. Its
-   --ink-4 went dark on a dark ground: 2.94:1. Pinned back to the dark-theme
-   ink, which is what its background expects. */
+   carries a class, so the :not([class]) rescue above deliberately does not
+   reach it and it needs saying here.
+
+   Thirteen mounts host this message and they do NOT share a ground, which is
+   what a fixed colour here keeps getting wrong. Nine are pinned to an opaque
+   #0b1220 — four by the rule above, five more by the same idiom in labs.css
+   (.lab-cap-mount, .lab-concurrency-mount, .lab-dbindex-mount,
+   .lab-emi-mount, .lab-ieee754-mount) — and four set no background at all
+   (.lab-bigo-mount, .lab-regexautomata-mount, .lab-docker-mount,
+   .lab-git-mount), inheriting .lab, which is light in this theme.
+
+   Pinning the dark-theme #94a3b8 for all thirteen put pale grey on a light
+   card: 2.26:1 on /labs/big-o and /labs/regex-automata. Enumerating the dark
+   ones instead just moves the staleness — the list lives in two files and a
+   new viz lab would silently pick the wrong branch.
+
+   So it takes the mount's own ink, which every one of those rules already
+   declares correctly for its own ground, and which is the same `color:
+   inherit` the :not([class]) rescue above uses for exactly this reason. Dark
+   mounts hand it #e2e8f0 (7.4:1), light mounts hand it .lab's navy (12.6:1),
+   and a mount that changes ground later brings this line with it. It reads a
+   step louder than the var(--ink-4) it had in the dark theme, which is the
+   right direction for the one message a visitor sees when a lab is broken. */
 :root[data-theme="light"] .lab-proc-fallback {
-  color: #94a3b8;
+  color: inherit;
+}
+
+/* Selected pills, light theme.
+
+   Three controls across three files mark their chosen state the same way:
+   fill with var(--accent), then set a near-black text colour by hand
+   (#0b1220 on the two makers, #0a1a28 on the glossary chip). That works in
+   the dark theme, where --accent is a pale sky blue. In this one --accent
+   inverts to a mid navy and near-black-on-navy measured 3.2:1 on the maker
+   pills and 4.3:1 on the glossary chip — and white would not have rescued
+   the chip either, since white on its --accent-dark fill is only 4.1:1.
+
+   So the fill is pinned as well as the ink, to the same #02598a that
+   .btn-primary uses for exactly this job. White on it is 7.5:1. The dark
+   theme is left alone: pale fill, dark ink, which is already correct. */
+:root[data-theme="light"] .inv-pill[aria-pressed="true"],
+:root[data-theme="light"] .rm-tpl[aria-pressed="true"],
+:root[data-theme="light"] .glossary-filter.is-active {
+  background: #02598a;
+  border-color: #02598a;
+  color: #ffffff;
+}
+
+/* The games' primary action keeps its teal fill in both themes — it is a
+   hardcoded #0f766e, not a token — but took its text from var(--ink), which
+   flips. Near-black on that teal measured 3.1:1 (/games/ludo and
+   /games/snakes-ladders, the "Roll" button). White is 5.5:1 and is what the
+   dark theme was already resolving to. */
+:root[data-theme="light"] .game-btn-primary {
+  color: #ffffff;
+}
+
+/* Two readouts sit on the --deep sunken fill, which is the darkest light
+   surface the palette has, and both landed just under AA on it: the TOTP
+   window's timestamp range (var(--ink-4), 4.37:1) and the note beneath it
+   (var(--accent-1), 4.07:1), plus the selected DMARC tab title on the same
+   fill (4.19:1). One step darker each rather than lightening --deep, which is
+   a background in 63 places in labs.css alone and would have been a palette
+   change to fix three captions. */
+:root[data-theme="light"] .totp-window-range {
+  color: var(--ink-3);
+}
+:root[data-theme="light"] .totp-window-tag,
+:root[data-theme="light"] #dmarcbuilder .dm-tab[aria-selected="true"] {
+  color: #075985;
+}
+
+/* A <code> pill inside a callout's lead <strong> inherits the #806600 set
+   below for that strong, but adds its own accent-tinted background, which
+   darkens the ground from the callout's rgb(245,243,235) to rgb(215,227,226).
+   The colour verified at 4.95:1 against the callout therefore lands at 4.19:1
+   against the pill — /blog/git-explained-from-the-object-up, `git reset`.
+   Only the nested case needs it; a bare <code> in a callout takes the body
+   ink and is fine. */
+:root[data-theme="light"] .post-callout strong code {
+  color: #6b5600;
 }
 
 /* ==========================================================================

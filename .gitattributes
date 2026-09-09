@@ -38,3 +38,15 @@ labs/*.html -text
 # pages nobody edited. Pin both so every checkout agrees.
 games/*.html -text
 partials/*.html -text
+
+# assets/data/lab-exams.json is that same contract once more, and the first
+# multi-line generated JSON in the tree. scripts/lab-exams.js rebuilds the whole
+# question bank in memory and compares it to the committed copy with a plain
+# string equality, so a CRLF checkout is a difference that exists in no commit,
+# shows up on Windows only, and cannot be fixed by regenerating.
+#
+# The other two generated JSONs escaped this by accident rather than by design:
+# mayuri-index.json and search-index.json are written on a single line, so there
+# is no newline in them for autocrlf to convert. This one is indented, so it has
+# 1512 of them.
+assets/data/lab-exams.json -text

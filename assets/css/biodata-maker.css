@@ -320,9 +320,28 @@
 
 /* What you see before anything is typed. Screen only — an empty sheet prints
    empty, but on screen a wordless white rectangle looks broken. */
+/* THE EMPTY-STATE HINT TAKES EACH TEMPLATE'S OWN CAPTION COLOUR.
+
+   It used to be a flat #94a3b8 with a per-template tint over it, and every one
+   of those tints failed WCAG AA on the sheet it was printed on — measured
+   2.42:1 on kumkum, 2.16 on ivory, 1.98 on lotus, 2.54 on sada, and 4.03 on
+   royal. That is the one line telling a first-time visitor what to do, so it
+   was the worst text on the page to lose.
+
+   Rather than invent five replacements, each template now reuses the
+   .bm-row-label colour it already defines for field captions: a colour the
+   design has accepted on that exact sheet, in that template's palette. Note
+   that royal's is a LIGHT gold, because royal's sheet is #172237 and the only
+   template whose paper is dark -- which is why a single darker grey would have
+   fixed four templates and broken the fifth. Now 9.8 / 6.6 / 5.5 / 7.8 / 10.2.
+
+   Only the colour is borrowed; the hint keeps its own size and centring, and
+   the print rules further down still hide it entirely. */
 .bm-empty-hint {
   text-align: center;
-  color: #94a3b8;
+  /* Fallback for a sheet with no data-tpl match; every template overrides it
+     below. Dark enough for the white and cream grounds the templates use. */
+  color: #4b5563;
   font-size: 15px;
   margin-top: 220px;
 }
@@ -356,7 +375,7 @@
   border-bottom: 1px solid #d6b25e;
 }
 .bm-sheet[data-tpl='kumkum'] .bm-row-label { color: #6b2b20; }
-.bm-sheet[data-tpl='kumkum'] .bm-empty-hint { color: #b99c7a; }
+.bm-sheet[data-tpl='kumkum'] .bm-empty-hint { color: #6b2b20; }
 
 /* ---- Ivory — cream paper, antique gold thin double border, warm brown
    serif. Photo is a plain rectangle at top-RIGHT; the head row goes
@@ -388,7 +407,7 @@
   border-bottom: 1px double #c9b06a;
 }
 .bm-sheet[data-tpl='ivory'] .bm-row-label { color: #6d5535; }
-.bm-sheet[data-tpl='ivory'] .bm-empty-hint { color: #bba97f; }
+.bm-sheet[data-tpl='ivory'] .bm-empty-hint { color: #6d5535; }
 
 /* ---- Lotus — blush pastels, floral flourish in two corners only (the SVG
    pair the JS injects), rounded photo top-centre, soft rose headings. ---- */
@@ -426,7 +445,7 @@
   border-radius: 2px;
 }
 .bm-sheet[data-tpl='lotus'] .bm-row-label { color: #8a5265; }
-.bm-sheet[data-tpl='lotus'] .bm-empty-hint { color: #d4a4b2; }
+.bm-sheet[data-tpl='lotus'] .bm-empty-hint { color: #8a5265; }
 
 /* ---- Royal — the one dark-paper template. Deep indigo field, gold ink,
    circular gold-ringed photo. The background must survive printing, hence
@@ -457,7 +476,7 @@
 .bm-sheet[data-tpl='royal'] .bm-row-label { color: #cdb371; }
 .bm-sheet[data-tpl='royal'] .bm-row-value { color: #efe6c6; }
 .bm-sheet[data-tpl='royal'] .bm-para { color: #efe6c6; }
-.bm-sheet[data-tpl='royal'] .bm-empty-hint { color: #8a814f; }
+.bm-sheet[data-tpl='royal'] .bm-empty-hint { color: #cdb371; }
 
 /* ---- Sada — plain. Black on white, one thin rule under the name, wide
    margins, system serif-free stack. The ink-friendly one: no fills, no
@@ -486,7 +505,7 @@
   font-size: 12.5px;
 }
 .bm-sheet[data-tpl='sada'] .bm-row-label { color: #374151; font-weight: 500; }
-.bm-sheet[data-tpl='sada'] .bm-empty-hint { color: #9ca3af; }
+.bm-sheet[data-tpl='sada'] .bm-empty-hint { color: #374151; }
 
 /* ==========================================================================
    5b. Sheet — printed-label languages

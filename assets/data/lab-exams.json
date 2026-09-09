@@ -1,0 +1,1512 @@
+{
+ "ask": 12,
+ "pass": 10,
+ "paths": {
+  "web": {
+   "name": "Web security",
+   "steps": 12,
+   "pool": [
+    {
+     "q": "Does this open or visit the link?",
+     "a": "No, never. It is parsed as text. No request is made, so the site owner has no idea you looked - which matters, because loading a phishing URL confirms to the…",
+     "lab": "url-inspector",
+     "title": "URL & Phishing Link Inspector"
+    },
+    {
+     "q": "Can it tell me where a shortened link goes?",
+     "a": "No, and that is deliberate. Resolving a bit.ly link means requesting it, which is the one thing this tool will not do. It will tell you that the link is…",
+     "lab": "url-inspector",
+     "title": "URL & Phishing Link Inspector"
+    },
+    {
+     "q": "What is a homograph attack?",
+     "a": "Registering a domain that uses characters from another script which look identical to Latin letters, so the name renders like a well-known site while being a…",
+     "lab": "url-inspector",
+     "title": "URL & Phishing Link Inspector"
+    },
+    {
+     "q": "Is https enough to trust a link?",
+     "a": "No. HTTPS means the connection is encrypted, not that the site is honest. Most phishing sites use HTTPS, because certificates are free and take a minute to…",
+     "lab": "url-inspector",
+     "title": "URL & Phishing Link Inspector"
+    },
+    {
+     "q": "Is anything I paste logged?",
+     "a": "No. The analysis happens in your browser and nothing is stored or transmitted.",
+     "lab": "url-inspector",
+     "title": "URL & Phishing Link Inspector"
+    },
+    {
+     "q": "Is base64 a form of encryption?",
+     "a": "No. It is an encoding with no key, and anyone can reverse it instantly - this page does it in one click. Never use it to protect anything.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Is my data sent to a server?",
+     "a": "No. Every conversion is arithmetic performed in your browser. There is no server behind this page.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "What is the difference between Base64 and Base64url?",
+     "a": "The last two characters of the alphabet. Standard base64 uses + and /, base64url uses - and _ so the result is safe in a URL without further escaping…",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Why does my base64 fail to decode?",
+     "a": "Usually because the length is not a multiple of four, the padding was stripped, or it is actually base64url. The detector line above the result will tell you…",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "What is Base58 for?",
+     "a": "It is base64 with the visually confusable characters removed - no 0, O, I or l - which is why Bitcoin addresses and some short links use it.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Is anything I paste uploaded?",
+     "a": "No. The header is parsed in your browser and nothing is sent anywhere — there is no server here to send it to. That matters more than usual for this tool…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "Why would a browser reject a cookie without telling me?",
+     "a": "Because the specification says to ignore, not to warn. A __Host- cookie with a Domain attribute, a __Secure- cookie without Secure, SameSite=None without…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "Does SameSite=Lax mean I can drop my CSRF token?",
+     "a": "No, and this is worth being precise about. Lax still permits top-level cross-site GET navigation, so any state-changing GET is still exposed. It is a browser…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "What does Partitioned do to an embedded widget?",
+     "a": "It gives the widget a separate cookie jar per embedding site. Anything the widget remembers about one site keeps working. Anything that depended on recognising…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "Max-Age or Expires — which one wins?",
+     "a": "Max-Age, always. It wins regardless of which appeared first in the header and regardless of which date is later; Expires is only consulted when Max-Age is…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "What can this tool not tell me?",
+     "a": "A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot…",
+     "lab": "cookie-inspector",
+     "title": "Set-Cookie header inspector"
+    },
+    {
+     "q": "Is my token sent anywhere?",
+     "a": "No. The token is decoded and verified in your browser using the built-in WebCrypto API. There is no server in this tool and no network request carries the…",
+     "lab": "jwt",
+     "title": "JWT Decoder & Verifier"
+    },
+    {
+     "q": "Can it verify RS256 or ES256 tokens?",
+     "a": "Signature verification here covers HS256, HS384 and HS512, which use a shared secret. RS and ES algorithms are verified with a public key rather than a secret…",
+     "lab": "jwt",
+     "title": "JWT Decoder & Verifier"
+    },
+    {
+     "q": "Why does it say my token is expired when the app still works?",
+     "a": "Expiry is compared against your device clock. If your clock is wrong, so is the answer. Servers also commonly allow a small amount of clock skew.",
+     "lab": "jwt",
+     "title": "JWT Decoder & Verifier"
+    },
+    {
+     "q": "Is a JWT encrypted?",
+     "a": "No. A standard JWT is signed, not encrypted, and its payload is readable by anyone holding it. If you need the contents hidden, that is JWE, which is a…",
+     "lab": "jwt",
+     "title": "JWT Decoder & Verifier"
+    },
+    {
+     "q": "What should I do if I pasted a real token into another site?",
+     "a": "Treat it as compromised and invalidate the session. Anything with a long expiry and no revocation path is worth rotating.",
+     "lab": "jwt",
+     "title": "JWT Decoder & Verifier"
+    },
+    {
+     "q": "Does my policy or my markup get uploaded anywhere?",
+     "a": "No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind — not to check a URL, not to fetch a script, not to look…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "Is the markup I paste actually parsed, or just pattern-matched?",
+     "a": "Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "Why does it say a directive is unknown when I copied it from a blog post?",
+     "a": "Most likely it was removed from the specification, or it was a typo in the post. Either way the outcome is the point: a browser ignores a directive name it…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "Does it tell me what my browser would really do?",
+     "a": "It implements the source-matching rules from CSP Level 3 that decide real policies: scheme, host with a leading wildcard, port, path prefix, 'self', scheme…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "Why is script-src 'self' not enough on its own?",
+     "a": "Because 'self' means your whole origin, not your intended files. One JSONP endpoint, one open redirect that reaches one, one user-writable path, and an…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "What are the four policies in the dropdown?",
+     "a": "The real Content-Security-Policy headers this site ships, one per path rule, copied out of its vercel.json. Loading one prints what it is protecting and why…",
+     "lab": "csp-playground",
+     "title": "Content-Security-Policy tester"
+    },
+    {
+     "q": "Is the deep web the same as the dark web?",
+     "a": "No, and the difference is not a matter of degree. The deep web is everything a search engine cannot index - your webmail, your bank statements, a shared…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Does this tool visit the URL I type?",
+     "a": "No. It reads the string on your own machine and makes no request of any kind. That is also its main limitation: a robots.txt rule, a noindex header and a login…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Are the .onion addresses on this page real?",
+     "a": "No, and they cannot be made real. A version 3 onion address is 56 base32 characters derived from a public key; the illustrative strings here contain hyphens…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Is the dark web really most of the internet?",
+     "a": "No. The claim people are half-remembering is about the deep web, which is genuinely far larger than the indexed surface web, and even there the famous figures…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Does Tor make you anonymous?",
+     "a": "It breaks the link between your address and the destination inside the network, which is a real and useful property. It does not defeat an adversary who can…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Why does the tool call a page on this very site deep web?",
+     "a": "Because this site's robots.txt disallows /partials/, /assets/data/ and /scripts/. Those paths have no login and no secret; they are served instantly to anyone…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Why do the percentages show ranges rather than numbers?",
+     "a": "Because the published studies disagree with each other by tens of percentage points, depending on how the crawl was seeded, how long it ran, whether dead…",
+     "lab": "web-layers",
+     "title": "Web Layers"
+    },
+    {
+     "q": "Is my password sent anywhere?",
+     "a": "No. It is analysed by JavaScript in your browser as you type. There is no server, no logging and no network request. A password strength checker with a server…",
+     "lab": "password",
+     "title": "Password Strength Checker & Generator"
+    },
+    {
+     "q": "Does it check whether my password was in a data breach?",
+     "a": "No, deliberately. Every breach-check service needs to receive something derived from your password. Doing that well requires k-anonymity and a network call…",
+     "lab": "password",
+     "title": "Password Strength Checker & Generator"
+    },
+    {
+     "q": "Why does my password score lower than on other sites?",
+     "a": "Because most meters score composition - did you include a capital and a symbol - rather than entropy. This one subtracts for dictionary words, keyboard runs…",
+     "lab": "password",
+     "title": "Password Strength Checker & Generator"
+    },
+    {
+     "q": "Is the generator actually random?",
+     "a": "It uses crypto.getRandomValues, the browser cryptographic random source. It does not use Math.random, which is predictable and must never pick a password.",
+     "lab": "password",
+     "title": "Password Strength Checker & Generator"
+    },
+    {
+     "q": "How long should a password be?",
+     "a": "For something protecting real value, 16 characters random or five random words. For your password manager master password, longer, and never reused anywhere.",
+     "lab": "password",
+     "title": "Password Strength Checker & Generator"
+    },
+    {
+     "q": "Is my file uploaded when I hash it?",
+     "a": "No. The file is read straight off your disk by the browser and hashed in a Web Worker in this tab. There is no server in this tool, and no request carrying…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Which hash should I use?",
+     "a": "SHA-256 for anything new. It is fast, widely supported and has no known practical attack. Use SHA-512 if you want more margin. Do not use MD5 or SHA-1 for…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Can I hash a password with this?",
+     "a": "You can, but you should not store the result. Passwords need a slow, salted algorithm such as bcrypt, scrypt or Argon2id. A fast hash like SHA-256 is exactly…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "What is the largest file I can hash?",
+     "a": "There is no limit. Up to 256 MB the file is read in one piece and handed to the browser's own hash implementations, which are around sixteen times faster; past…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Does this work offline?",
+     "a": "Text mode does, as soon as the page has loaded. Hashing a file fetches one small background script the first time you do it, so do that once while you are…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Is anything about my passkey sent to a server?",
+     "a": "No, and there is no server here to send it to. The challenge is generated in this page, the public key is kept in this browser's localStorage, and the…",
+     "lab": "passkeys",
+     "title": "Passkey & WebAuthn Explorer"
+    },
+    {
+     "q": "Is this a real passkey or a simulation?",
+     "a": "Real. The page calls navigator.credentials.create and navigator.credentials.get, your own authenticator answers, and every structure on screen is decoded from…",
+     "lab": "passkeys",
+     "title": "Passkey & WebAuthn Explorer"
+    },
+    {
+     "q": "Can I use this passkey to sign in to something else?",
+     "a": "No. It is scoped to this site's RP ID, so no other site will ever be offered it. It also protects nothing here, because there is no account behind it and no…",
+     "lab": "passkeys",
+     "title": "Passkey & WebAuthn Explorer"
+    },
+    {
+     "q": "Why did the AAGUID come back as all zeroes?",
+     "a": "Because the authenticator declined to identify its model, which is the normal and privacy preserving answer. An identifier for the make and model attached to…",
+     "lab": "passkeys",
+     "title": "Passkey & WebAuthn Explorer"
+    },
+    {
+     "q": "What do the BE and BS flags actually change for me?",
+     "a": "They tell you where the private key lives. BE set means the credential is the kind that can be synced to an account; BS set means it currently is. A synced…",
+     "lab": "passkeys",
+     "title": "Passkey & WebAuthn Explorer"
+    },
+    {
+     "q": "Is this a real exploit?",
+     "a": "No. It is a diagram of one. The stack is an array of bytes at pretend addresses, the overflow is a write past the end of that array, and “jump to shellcode”…",
+     "lab": "buffer-overflow",
+     "title": "Stack Buffer Overflow Visualiser"
+    },
+    {
+     "q": "Why does the copy write upward into the return address?",
+     "a": "Because that is the real memory layout. The stack grows toward lower addresses, so a local buffer is at the lowest addresses of the frame and the saved return…",
+     "lab": "buffer-overflow",
+     "title": "Stack Buffer Overflow Visualiser"
+    },
+    {
+     "q": "Do buffer overflows still matter in 2026?",
+     "a": "Yes. They are less common in memory-safe languages, but C and C++ still run most operating systems, browsers and embedded devices, and memory-safety bugs…",
+     "lab": "buffer-overflow",
+     "title": "Stack Buffer Overflow Visualiser"
+    },
+    {
+     "q": "What actually stops these?",
+     "a": "Layered mitigations raise the cost: stack canaries, non-executable memory (NX/DEP) and address randomisation (ASLR), plus compiler and hardware features beyond…",
+     "lab": "buffer-overflow",
+     "title": "Stack Buffer Overflow Visualiser"
+    },
+    {
+     "q": "Is anything uploaded?",
+     "a": "No. The whole model runs in your tab and there is no network request. It is a teaching diagram of a vulnerability class, built for defenders and students, not…",
+     "lab": "buffer-overflow",
+     "title": "Stack Buffer Overflow Visualiser"
+    },
+    {
+     "q": "Is this legal and safe to use?",
+     "a": "Yes. Every target is a throwaway built in your own browser tab - a fresh in-memory SQLite database, a sandboxed iframe, in-memory fakes. There is no server…",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "Is the SQL injection real or simulated?",
+     "a": "Real. It runs against sql.js - the same actual SQLite engine as the SQL lab - and your injection genuinely executes. The difference from attacking a real site…",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "How is the XSS challenge safe if the script really runs?",
+     "a": "Two ways. The payload runs in a throwaway guestbook page served with a strict connect-src none policy, so it cannot fetch, beacon or websocket a stolen value…",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "Do I need to know how to code?",
+     "a": "A little helps, but each challenge shows you the vulnerable query or command as you type, gives progressive hints, and reveals the full solution if you want…",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "Does breaking the challenge teach me anything defensive?",
+     "a": "That is the actual point. Every challenge ends with the real-world fix - parameterised queries, output encoding, argument vectors instead of shell strings…",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "Is my progress saved?",
+     "a": "Yes, in your browser's local storage on this device only. Nothing is sent anywhere, and you can reset it any time with the button in the challenge list.",
+     "lab": "hacklab",
+     "title": "HackLab"
+    },
+    {
+     "q": "Does a threat model like this prove anything?",
+     "a": "No. It is a thinking tool and a record of a conversation, not a certification, an audit or a test. It says what a group of people thought could go wrong on a…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "Why STRIDE and not something else?",
+     "a": "Because it is the easiest framework to start with and the hardest to argue with. Six categories, a fixed mapping from element types to categories, and no…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "Where is my work saved?",
+     "a": "In this browser, on this device, under the localStorage key lab.threat-model. It is not sent anywhere and it is not readable by any other site. A private…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "How does the tool decide which threats apply?",
+     "a": "It applies the classic STRIDE-per-element table and nothing more. External entities can be spoofed and can repudiate. Processes are exposed to all six. Data…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "Why are likelihood and impact only three levels?",
+     "a": "Because more levels invite a precision nobody has. Low, medium and high are judgements a room can actually agree on, and their product gives six distinct risk…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "Can I bring last quarter's model back?",
+     "a": "Yes. Export JSON writes a plain file, and Import JSON reads it back with every decision, rating, mitigation and rejection reason intact. The file is readable…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    },
+    {
+     "q": "Is anything I type uploaded?",
+     "a": "No. There is no server involved. A threat model is a list of a system's weak points and their owner's names, which is one of the least sensible things anyone…",
+     "lab": "threat-model",
+     "title": "STRIDE Threat Modelling Tool"
+    }
+   ]
+  },
+  "internet": {
+   "name": "How the internet actually works",
+   "steps": 9,
+   "pool": [
+    {
+     "q": "Does this use a proxy or a server of yours?",
+     "a": "No. Your browser makes the request directly to Google or Cloudflare. Nothing is relayed through me and I never see the query.",
+     "lab": "dns",
+     "title": "DNS Lookup"
+    },
+    {
+     "q": "Why can a web page not do a normal DNS lookup?",
+     "a": "Because DNS runs over UDP port 53 and browsers have no raw socket access. DNS-over-HTTPS exists precisely to make DNS reachable from environments like this one.",
+     "lab": "dns",
+     "title": "DNS Lookup"
+    },
+    {
+     "q": "Which resolver should I pick?",
+     "a": "Either works. Cloudflare states it does not log the querying IP to disk and purges logs quickly; Google retains some data. If you have a preference, the picker…",
+     "lab": "dns",
+     "title": "DNS Lookup"
+    },
+    {
+     "q": "Is the result cached?",
+     "a": "The resolver serves from its cache, so a TTL you see may be counting down from a lookup somebody else caused. Values fresh from the authoritative server show…",
+     "lab": "dns",
+     "title": "DNS Lookup"
+    },
+    {
+     "q": "Why does the same domain give different answers?",
+     "a": "Large sites use geographic and load-based routing, so the answer legitimately depends on which resolver asked and from where.",
+     "lab": "dns",
+     "title": "DNS Lookup"
+    },
+    {
+     "q": "What does /24 mean?",
+     "a": "The first 24 bits are the network portion, leaving 8 bits for hosts - 256 addresses, of which 254 are usable. It is equivalent to the subnet mask 255.255.255.0.",
+     "lab": "subnet",
+     "title": "Subnet & CIDR Calculator"
+    },
+    {
+     "q": "Why does a /24 have 254 usable hosts and not 256?",
+     "a": "The first address identifies the network and the last is the broadcast address. Neither can be assigned to a host.",
+     "lab": "subnet",
+     "title": "Subnet & CIDR Calculator"
+    },
+    {
+     "q": "Does this support IPv6?",
+     "a": "Not currently. IPv6 subnetting is simpler in practice - the prefix is almost always /64 for a LAN - and the address arithmetic needs 128-bit maths that this…",
+     "lab": "subnet",
+     "title": "Subnet & CIDR Calculator"
+    },
+    {
+     "q": "Does it look up who owns the address?",
+     "a": "No. There are no WHOIS, geolocation or reputation lookups, because each of those tells a third party which address you are investigating. The classification…",
+     "lab": "subnet",
+     "title": "Subnet & CIDR Calculator"
+    },
+    {
+     "q": "What is 169.254.x.x?",
+     "a": "A link-local address, assigned by the machine itself when DHCP failed. Seeing one usually means the device never got a lease.",
+     "lab": "subnet",
+     "title": "Subnet & CIDR Calculator"
+    },
+    {
+     "q": "Is this a real network connection?",
+     "a": "No. It is a simulation running as arithmetic in your browser. No socket is opened, no packet is sent, and the only real HTTP involved is the request that…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Why does HTTP/2 fall apart when I raise the loss slider?",
+     "a": "Because HTTP/2 multiplexed its streams on top of a single TCP connection, and TCP delivers one ordered byte stream. When a segment goes missing, TCP will not…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Is HTTP/3 always faster?",
+     "a": "No, and this lab will show you that if you look. On a clean link HTTP/3 is ahead by about one round trip of handshake and very little else. Under loss it is…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Why does HTTP/1.1 sometimes beat HTTP/2 here?",
+     "a": "Because six connections have six congestion windows and six independent recoveries, and one connection has one. Under loss that is a large advantage, and it is…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Are the HPACK byte counts real?",
+     "a": "Yes, with one stated exception. The encoder uses the real RFC 7541 static table indices, real integer prefix encoding, and a dynamic table with real entry…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "How accurate is the simulation?",
+     "a": "It is calibrated to show the mechanism, not to predict your numbers. A lost packet stops the affected scope dead for one round trip, which overstates the cost…",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Is anything uploaded?",
+     "a": "No. Every round trip and every byte counted here is computed locally, and the page makes no network request of its own.",
+     "lab": "http-versions",
+     "title": "HTTP Version Race"
+    },
+    {
+     "q": "Are the sequence numbers real?",
+     "a": "Yes. The handshake tracks genuine seq/ack arithmetic - a SYN or FIN consumes one sequence number, data advances the sequence by its length, and each…",
+     "lab": "tcp-congestion",
+     "title": "TCP Visualiser"
+    },
+    {
+     "q": "Which congestion-control algorithm is this?",
+     "a": "TCP Reno: slow start, congestion avoidance, fast retransmit and fast recovery. It is the classic textbook algorithm and the ancestor of what most systems still…",
+     "lab": "tcp-congestion",
+     "title": "TCP Visualiser"
+    },
+    {
+     "q": "Why does the window collapse to 1 on a timeout but only halve on duplicate ACKs?",
+     "a": "Because they signal different things. Duplicate ACKs mean packets are still arriving, so the path is working and a gentle cut is enough. A timeout means the…",
+     "lab": "tcp-congestion",
+     "title": "TCP Visualiser"
+    },
+    {
+     "q": "Does this lab talk to a server or read my real TLS traffic?",
+     "a": "Neither. There is no TLS client in this page and it opens no connection of any kind. It is a model of the protocol built from the specification, so it can show…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Why is the certificate encrypted in TLS 1.3 but not in TLS 1.2?",
+     "a": "Because TLS 1.3 splits the server response in two. ServerHello carries only what is needed to derive keys, and the moment it lands both sides can compute the…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "If TLS 1.3 encrypts so much, why can my ISP still see which sites I visit?",
+     "a": "Because the server name extension in the ClientHello is plaintext, and it has to be: the server needs to know which certificate to present before there is any…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Are the keys on the key schedule tab real?",
+     "a": "The arithmetic is real and the inputs are not. Every value is HMAC-SHA-256 computed in your browser exactly as RFC 8446 section 7.1 specifies, and the…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Is 0-RTT safe to turn on?",
+     "a": "It is a trade, and the honest answer is that it depends on what the first request does. Early data is replayable, because nothing fresh from the server covers…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Why does TLS 1.3 still send a ChangeCipherSpec that does nothing?",
+     "a": "Middlebox compatibility. Enough deployed equipment had learned the exact shape of a TLS 1.2 handshake that a connection which did not look like one got…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Is TLS 1.2 broken?",
+     "a": "No, and saying so would be the kind of overstatement this site tries to avoid. A TLS 1.2 connection with an ECDHE key exchange, an AEAD cipher suite and the…",
+     "lab": "tls-handshake",
+     "title": "TLS Handshake Explorer"
+    },
+    {
+     "q": "Do I need OpenSSL to use this?",
+     "a": "No, that is the point. Paste the PEM block and it is parsed in your browser. OpenSSL is still the better tool when you have it - this is for when you do not.",
+     "lab": "cert-decoder",
+     "title": "SSL/TLS Certificate Decoder"
+    },
+    {
+     "q": "Is my certificate uploaded?",
+     "a": "No. It is base64-decoded and parsed in the page. A public certificate is not secret, but a certificate from an internal PKI leaks your internal hostnames, and…",
+     "lab": "cert-decoder",
+     "title": "SSL/TLS Certificate Decoder"
+    },
+    {
+     "q": "Can it check whether the certificate is trusted?",
+     "a": "No. Chain validation and revocation checking both need network lookups. This reads what the certificate contains and whether it is currently within its…",
+     "lab": "cert-decoder",
+     "title": "SSL/TLS Certificate Decoder"
+    },
+    {
+     "q": "What if I paste a private key by mistake?",
+     "a": "The tool detects it, refuses to parse it, and says so. Nothing is transmitted either way - this page has no network code - but treat any private key that has…",
+     "lab": "cert-decoder",
+     "title": "SSL/TLS Certificate Decoder"
+    },
+    {
+     "q": "How do I get a certificate from a live site?",
+     "a": "Either export it from the padlock icon in your browser, or run: openssl s_client -connect example.com:443 </dev/null | openssl x509 -outform PEM",
+     "lab": "cert-decoder",
+     "title": "SSL/TLS Certificate Decoder"
+    },
+    {
+     "q": "Is searching CT logs legal?",
+     "a": "Yes. Certificate Transparency logs are public infrastructure, published deliberately so that anyone can audit certificate issuance. Reading them is the…",
+     "lab": "ct-log",
+     "title": "Certificate Transparency Log Search"
+    },
+    {
+     "q": "Does this scan or probe the domain?",
+     "a": "No. Not a single packet is sent to the domain. Everything comes from the log, which is why this leaves no trace in the target’s server logs.",
+     "lab": "ct-log",
+     "title": "Certificate Transparency Log Search"
+    },
+    {
+     "q": "Why does it use Cert Spotter rather than crt.sh?",
+     "a": "crt.sh is better known but was timing out on every request while this was built. Cert Spotter is reliable and sends the CORS headers a browser needs.",
+     "lab": "ct-log",
+     "title": "Certificate Transparency Log Search"
+    },
+    {
+     "q": "I found a subdomain that should not be public. What now?",
+     "a": "It cannot be unpublished - the log is append-only. What you can do is make sure the host behind it is properly secured, and use a wildcard certificate in…",
+     "lab": "ct-log",
+     "title": "Certificate Transparency Log Search"
+    },
+    {
+     "q": "Why do I see certificates I never requested?",
+     "a": "Most likely your CDN or hosting provider issued them on your behalf. If genuinely unexplained, that is precisely the mis-issuance CT was designed to surface.",
+     "lab": "ct-log",
+     "title": "Certificate Transparency Log Search"
+    },
+    {
+     "q": "What is RDAP and why not just use WHOIS?",
+     "a": "RDAP is the ICANN-mandated replacement: same registry data, structured JSON, over HTTPS, with proper internationalisation and access control. WHOIS is an…",
+     "lab": "rdap",
+     "title": "RDAP Domain Lookup"
+    },
+    {
+     "q": "Does this go through a proxy?",
+     "a": "No. Your browser requests rdap.org, which redirects to the registry authoritative for that TLD, and your browser follows the redirect directly. I never see the…",
+     "lab": "rdap",
+     "title": "RDAP Domain Lookup"
+    },
+    {
+     "q": "Why does it fail for some domains?",
+     "a": "Either the TLD has no RDAP service, or its registry omits the CORS headers a browser needs. Both are common with country-code TLDs, and the browser will not…",
+     "lab": "rdap",
+     "title": "RDAP Domain Lookup"
+    },
+    {
+     "q": "Why is the registrant hidden?",
+     "a": "GDPR. Registries redact personal contact data for registrants in scope, so you usually see the registrar and little else.",
+     "lab": "rdap",
+     "title": "RDAP Domain Lookup"
+    },
+    {
+     "q": "Can I check whether a domain is available?",
+     "a": "Indirectly - a 404 usually means unregistered. A registrar’s search is the reliable way, and note that some registrars have historically front-run availability…",
+     "lab": "rdap",
+     "title": "RDAP Domain Lookup"
+    },
+    {
+     "q": "Is my ruleset uploaded?",
+     "a": "No. It is parsed and simulated in your browser and nothing is sent anywhere — there is no server here to send it to. That matters more than usual for this one…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    },
+    {
+     "q": "Which parts of iptables and nftables does it read?",
+     "a": "From iptables-save: the filter table, chain declarations and policies, -A and -I, -p, -s, -d, -i, -o, --sport, --dport, multiport, -m state and -m conntrack…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    },
+    {
+     "q": "It says a rule can never match, but that rule clearly works on my host.",
+     "a": "Two likely reasons, and both are printed. If the rule carries a match this model does not implement — --tcp-flags, a rate limit, an ipset, an ICMP type — the…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    },
+    {
+     "q": "Why is my second packet still NEW?",
+     "a": "Because ESTABLISHED means the flow has been seen in both directions, not that conntrack holds an entry for it. The kernel sets the seen-reply bit only once…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    },
+    {
+     "q": "Should I use DROP or REJECT?",
+     "a": "REJECT inside a network you run and DROP at the edge is the usual answer, and neither is a security control on its own. DROP makes a scan slow and makes your…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    },
+    {
+     "q": "What can this tool not tell me?",
+     "a": "A great deal. It is a simulator over a model, not netfilter. There is no NAT table, no mangle, no raw, no rate limiting, no ipset, no reverse-path filtering…",
+     "lab": "firewall-rules",
+     "title": "Firewall rule simulator"
+    }
+   ]
+  },
+  "crypto": {
+   "name": "Cryptography, from bytes up",
+   "steps": 9,
+   "pool": [
+    {
+     "q": "Is base64 a form of encryption?",
+     "a": "No. It is an encoding with no key, and anyone can reverse it instantly - this page does it in one click. Never use it to protect anything.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Is my data sent to a server?",
+     "a": "No. Every conversion is arithmetic performed in your browser. There is no server behind this page.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "What is the difference between Base64 and Base64url?",
+     "a": "The last two characters of the alphabet. Standard base64 uses + and /, base64url uses - and _ so the result is safe in a URL without further escaping…",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Why does my base64 fail to decode?",
+     "a": "Usually because the length is not a multiple of four, the padding was stripped, or it is actually base64url. The detector line above the result will tell you…",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "What is Base58 for?",
+     "a": "It is base64 with the visually confusable characters removed - no 0, O, I or l - which is why Bitcoin addresses and some short links use it.",
+     "lab": "encoding",
+     "title": "Encoder & Decoder"
+    },
+    {
+     "q": "Are these ciphers safe to use for real?",
+     "a": "Absolutely not. Every one of them is broken by the buttons on this page, without a key, in milliseconds. They are here for learning, for puzzles and for CTF…",
+     "lab": "cipher",
+     "title": "Classical Cipher Playground"
+    },
+    {
+     "q": "What is ROT13?",
+     "a": "A Caesar cipher with a shift of 13. Because the alphabet has 26 letters, applying it twice returns the original - it is its own inverse. It was used on old…",
+     "lab": "cipher",
+     "title": "Classical Cipher Playground"
+    },
+    {
+     "q": "How does it break a Vigenere cipher without the key?",
+     "a": "It finds the key length using the index of coincidence, then treats each column of the ciphertext as a separate Caesar cipher and solves each with frequency…",
+     "lab": "cipher",
+     "title": "Classical Cipher Playground"
+    },
+    {
+     "q": "How much text does the automatic break need?",
+     "a": "Caesar needs very little. Vigenere needs at least 40 letters, and works better with more - statistical attacks need enough text for the statistics to mean…",
+     "lab": "cipher",
+     "title": "Classical Cipher Playground"
+    },
+    {
+     "q": "Is my text uploaded?",
+     "a": "No. Everything runs in your browser with no server involved.",
+     "lab": "cipher",
+     "title": "Classical Cipher Playground"
+    },
+    {
+     "q": "Is my file uploaded when I hash it?",
+     "a": "No. The file is read straight off your disk by the browser and hashed in a Web Worker in this tab. There is no server in this tool, and no request carrying…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Which hash should I use?",
+     "a": "SHA-256 for anything new. It is fast, widely supported and has no known practical attack. Use SHA-512 if you want more margin. Do not use MD5 or SHA-1 for…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Can I hash a password with this?",
+     "a": "You can, but you should not store the result. Passwords need a slow, salted algorithm such as bcrypt, scrypt or Argon2id. A fast hash like SHA-256 is exactly…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "What is the largest file I can hash?",
+     "a": "There is no limit. Up to 256 MB the file is read in one piece and handed to the browser's own hash implementations, which are around sixteen times faster; past…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Does this work offline?",
+     "a": "Text mode does, as soon as the page has loaded. Hashing a file fetches one small background script the first time you do it, so do that once while you are…",
+     "lab": "hash",
+     "title": "Hash Generator & Verifier"
+    },
+    {
+     "q": "Is a rainbow table just a big lookup table?",
+     "a": "No, and conflating the two is the most common mistake here. A lookup table maps every digest straight to its plaintext. A rainbow table stores only the start…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Does salting make a password uncrackable?",
+     "a": "No. The salt is stored in the clear next to the hash, so an attacker targeting one account simply re-hashes the wordlist with that account’s salt, and a weak…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Why does the rainbow demo use MD5 and not SHA-256?",
+     "a": "The chain walk needs tens of thousands of fast, sequential hashes, and crypto.subtle is asynchronous, which makes that slow and awkward. MD5 is implemented…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Are the speed numbers a real benchmark?",
+     "a": "No. They are one browser, on one machine, on one day, and they move with JIT warm-up and thermal state. The SHA-256 rate is also throttled by per-call overhead…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Is my pasted hash uploaded anywhere?",
+     "a": "No. Everything runs in this browser tab. SHA-1 and SHA-256 go through the browser’s built-in crypto.subtle, which is local, and MD5 is implemented in the page…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Can this crack my real password hash?",
+     "a": "Only if the plaintext happens to be one of the few thousand common passwords in the built-in wordlist and the hash is unsalted. That is the point: weak…",
+     "lab": "rainbow-tables",
+     "title": "Salt and Rainbow Tables, Built Live"
+    },
+    {
+     "q": "Is anything uploaded?",
+     "a": "No. The password you type is hashed and cracked entirely in your browser, in a Web Worker. There is no server and no network request.",
+     "lab": "hash-cracker",
+     "title": "Live Password Hash Cracker"
+    },
+    {
+     "q": "Why does my strong password never crack?",
+     "a": "Because brute force scales exponentially with length and character set. That is the point - the tool shows the projected time for a strong password so you can…",
+     "lab": "hash-cracker",
+     "title": "Live Password Hash Cracker"
+    },
+    {
+     "q": "Which hashes can it crack?",
+     "a": "MD5, SHA-1 and SHA-256 - all fast hashes. Real password storage uses deliberately slow hashes (bcrypt, Argon2) precisely so this kind of guessing is millions…",
+     "lab": "hash-cracker",
+     "title": "Live Password Hash Cracker"
+    },
+    {
+     "q": "How fast is it?",
+     "a": "Millions of guesses per second in a modern browser - fast enough to make the lesson vivid, and slow compared to a GPU cracking rig, which does billions. Either…",
+     "lab": "hash-cracker",
+     "title": "Live Password Hash Cracker"
+    },
+    {
+     "q": "Does the Stop button really stop it?",
+     "a": "Yes. It terminates the worker immediately, which is why the cracking runs off the main thread in the first place.",
+     "lab": "hash-cracker",
+     "title": "Live Password Hash Cracker"
+    },
+    {
+     "q": "Is the arithmetic actually correct?",
+     "a": "Yes, and it is checked rather than claimed. AES is verified against the FIPS-197 Appendix B and C.1 vectors and the all-zero known-answer test; SHA-256 against…",
+     "lab": "cryptography",
+     "title": "Cryptography Visualiser"
+    },
+    {
+     "q": "Can I use this to encrypt something for real?",
+     "a": "No, and please do not. These are teaching implementations: no constant-time guarantees, no mode of operation, no padding, no key management. Use the WebCrypto…",
+     "lab": "cryptography",
+     "title": "Cryptography Visualiser"
+    },
+    {
+     "q": "Why does AES only encrypt one 16-byte block?",
+     "a": "Because that is what the AES cipher is. Encrypting anything longer needs a mode of operation - CBC, CTR, GCM - which is a separate decision with its own…",
+     "lab": "cryptography",
+     "title": "Cryptography Visualiser"
+    },
+    {
+     "q": "Why are the primes so small?",
+     "a": "So you can verify every step by hand and watch the attacks succeed. A real 2048-bit modulus would make the exchange identical in structure and impossible to…",
+     "lab": "cryptography",
+     "title": "Cryptography Visualiser"
+    },
+    {
+     "q": "Is my secret sent anywhere?",
+     "a": "No. The secret is decoded and the HMAC computed in this tab, and the QR is drawn on a canvas here rather than fetched from a chart service - which is how most…",
+     "lab": "totp",
+     "title": "TOTP Generator & Verifier"
+    },
+    {
+     "q": "Did you actually check this against the RFC test vectors?",
+     "a": "Yes, and the page runs them in front of you. The toolbar shows the result of the ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC…",
+     "lab": "totp",
+     "title": "TOTP Generator & Verifier"
+    },
+    {
+     "q": "Should I use this instead of an authenticator app?",
+     "a": "No. Use an authenticator app or a hardware key for accounts that matter. This page holds a secret in a text field so you can watch what happens to it, which is…",
+     "lab": "totp",
+     "title": "TOTP Generator & Verifier"
+    },
+    {
+     "q": "Why does the code here not match my phone?",
+     "a": "Almost always the clock. TOTP has no channel to correct a drifting device, so a phone half a minute out shows the next window's code - drag the skew slider and…",
+     "lab": "totp",
+     "title": "TOTP Generator & Verifier"
+    },
+    {
+     "q": "If TOTP can be phished, is it worth turning on?",
+     "a": "Yes. It removes the entire class of attacks that work on a password alone: credential stuffing, password reuse, and anything that falls out of a breach dump…",
+     "lab": "totp",
+     "title": "TOTP Generator & Verifier"
+    },
+    {
+     "q": "Are these real certificates?",
+     "a": "Yes. The keypair is generated by WebCrypto in your browser, and the certificate is signed with it and encoded as genuine ASN.1/DER. Paste the PEM into openssl…",
+     "lab": "certificate-forge",
+     "title": "Certificate & Digital Signature Builder"
+    },
+    {
+     "q": "Is my private key safe?",
+     "a": "The key never leaves your browser - there is no upload and no network request. That said, this is a learning tool: for a certificate that protects something…",
+     "lab": "certificate-forge",
+     "title": "Certificate & Digital Signature Builder"
+    },
+    {
+     "q": "Can I actually use a certificate from here?",
+     "a": "You can use it anywhere a self-signed certificate is appropriate - a local development server, a test environment, an internal tool - by adding it to the…",
+     "lab": "certificate-forge",
+     "title": "Certificate & Digital Signature Builder"
+    },
+    {
+     "q": "RSA or ECDSA - which should I pick?",
+     "a": "ECDSA P-256 for anything new: the keys and signatures are far smaller for the same security, which is why modern deployments prefer it. RSA-2048 is still…",
+     "lab": "certificate-forge",
+     "title": "Certificate & Digital Signature Builder"
+    },
+    {
+     "q": "The attack failed on my machine. Does that mean the bug is not real?",
+     "a": "No, and the tool is built to say so. What failed is the measurement. Your browser's clock is deliberately coarse, your machine is busy, and the signal being…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    },
+    {
+     "q": "Why does it compare thousands of times for a single sample?",
+     "a": "Because one comparison of a short string takes a few nanoseconds and the clock cannot see anything that small. Running the comparison hundreds of thousands of…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    },
+    {
+     "q": "Why the median rather than the average?",
+     "a": "Because one interruption is worth more than the entire signal. A garbage collection or a scheduler switch in the middle of one batch adds milliseconds to a…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    },
+    {
+     "q": "Is checking a password against a bcrypt hash vulnerable to this?",
+     "a": "Not in the way people expect. The comparison happens against the output of a deliberately slow hash, so the work is the same whatever you send and there is no…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    },
+    {
+     "q": "What is the actual fix?",
+     "a": "Compare in constant time, with a function that already exists: hmac.compare_digest in Python, crypto.timingSafeEqual in Node, subtle.ConstantTimeCompare in Go…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    },
+    {
+     "q": "Does the secret I type leave my browser?",
+     "a": "No. There is no server to send it to. The comparisons, the timing, the statistics and the plot all run in this tab, and nothing you type appears in your…",
+     "lab": "timing-attack",
+     "title": "Timing side-channel attack"
+    }
+   ]
+  },
+  "email": {
+   "name": "Email, phishing and exposure",
+   "steps": 6,
+   "pool": [
+    {
+     "q": "Where do I find the raw headers?",
+     "a": "Gmail: open the message, click the three-dot menu, choose \"Show original\". Outlook: File, Properties, then the Internet headers box. Apple Mail: View, Message…",
+     "lab": "email-headers",
+     "title": "Email Header Analyzer"
+    },
+    {
+     "q": "Are my headers uploaded?",
+     "a": "No. They are parsed in your browser. This matters more than usual here, because headers carry internal hostnames, IP addresses and recipient addresses - most…",
+     "lab": "email-headers",
+     "title": "Email Header Analyzer"
+    },
+    {
+     "q": "Does SPF pass mean the email is safe?",
+     "a": "No. It means the sending server was authorised for that domain. An attacker who registers a lookalike domain gets SPF, DKIM and DMARC passes on their own…",
+     "lab": "email-headers",
+     "title": "Email Header Analyzer"
+    },
+    {
+     "q": "Can Received headers be faked?",
+     "a": "The ones added by servers you trust cannot, but a sender can inject fake ones before the message reaches those servers. Only the hops added after the message…",
+     "lab": "email-headers",
+     "title": "Email Header Analyzer"
+    },
+    {
+     "q": "Why is the originating IP private?",
+     "a": "If the first hop shows a 10.x, 192.168.x or 172.16-31.x address, the message started inside a private network and the public IP appears at the next hop out.",
+     "lab": "email-headers",
+     "title": "Email Header Analyzer"
+    },
+    {
+     "q": "Does this send any email or touch their servers?",
+     "a": "No. It reads public DNS records, which is exactly what every receiving mail server does before accepting a message. Nothing is sent to the domain and no port…",
+     "lab": "email-security",
+     "title": "SPF, DKIM & DMARC Checker"
+    },
+    {
+     "q": "Why does it say DKIM not found for a domain I know uses DKIM?",
+     "a": "Because DKIM selectors cannot be enumerated. The tool guesses sixteen common selectors; a domain using a custom one will show nothing. This is a limitation of…",
+     "lab": "email-security",
+     "title": "SPF, DKIM & DMARC Checker"
+    },
+    {
+     "q": "What does p=none actually protect against?",
+     "a": "Nothing. It only asks receivers to send reports. It is the correct first step while you find your legitimate senders, but a domain left at p=none indefinitely…",
+     "lab": "email-security",
+     "title": "SPF, DKIM & DMARC Checker"
+    },
+    {
+     "q": "Is a passing audit a guarantee nobody can spoof the domain?",
+     "a": "It means direct spoofing of the exact domain is hard. It does nothing about lookalike domains, display-name spoofing, or compromised legitimate accounts.",
+     "lab": "email-security",
+     "title": "SPF, DKIM & DMARC Checker"
+    },
+    {
+     "q": "Can I audit a domain I do not own?",
+     "a": "Yes, and it is entirely legitimate: every record read here is public DNS that any mail server on the internet consults automatically.",
+     "lab": "email-security",
+     "title": "SPF, DKIM & DMARC Checker"
+    },
+    {
+     "q": "How is this different from the email security audit?",
+     "a": "That one checks, this one authors. The audit queries public DNS for a domain you name and grades what is already published there. This page never touches DNS…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "Why do I have to type in the lookup cost of an include?",
+     "a": "Because working it out honestly needs DNS, and this page has none. An include pulls in another record whose own terms count against your ten, so the true cost…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "Will it generate a DKIM key pair for me?",
+     "a": "No, and that is a refusal rather than an omission. A private key generated by a web page is a key that page has seen, and there is no way for you to check from…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "Can I paste the .gz file an aggregate report arrives as?",
+     "a": "No. Decompress it first and paste the XML from inside. The parsing is the hard part and the decompression is one command you already have, so the tool draws…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "Is any of this uploaded?",
+     "a": "No. There is no fetch and no XMLHttpRequest in the file, and no server behind the page to receive anything. That matters most for the report parser: an…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "If I build a record here, is my domain protected?",
+     "a": "Not until you publish it, and not by the record alone. The tool checks syntax, counts lookups from what you told it, and lays out a rollout — it cannot tell…",
+     "lab": "dmarc-builder",
+     "title": "SPF, DMARC and DKIM record builder"
+    },
+    {
+     "q": "Is anything I paste uploaded?",
+     "a": "No. The message is parsed in your browser and nothing is sent anywhere. That matters more here than almost anywhere else in Labs, because a phishing report…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Why is there no percentage or risk score?",
+     "a": "Because there is no calibration behind one. A number would imply that the checks were weighed against a measured population of real mail, and they were not. It…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Does a clean result mean the email is safe?",
+     "a": "No, and the tool says so in the output. A plain message from a real colleague's compromised mailbox, with a genuine signature and a genuine reply address…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Where do I get the raw message?",
+     "a": "Gmail: open the message, three-dot menu, Show original. Outlook: File, Properties, Internet headers, and copy the body separately. Apple Mail: View, Message…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Why does it not analyse the Received headers?",
+     "a": "Because that is a whole tool on its own and it already exists. The hop chain, the timing between hops and the originating IP are handled by the email header…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Why does a legitimate email trip several checks?",
+     "a": "Because ordinary bulk mail is built out of the same parts as a phishing email. A click-tracker is a redirect chain, a mailing provider puts a different domain…",
+     "lab": "phishing-dissector",
+     "title": "Phishing Email Dissector"
+    },
+    {
+     "q": "Is my password sent to the server?",
+     "a": "No. Your password is hashed in your browser and only the first five characters of that hash are transmitted. The full hash and the password itself never leave…",
+     "lab": "breach-check",
+     "title": "Password Breach Check"
+    },
+    {
+     "q": "Why SHA-1, which is broken?",
+     "a": "Because that is the protocol Have I Been Pwned defines, and it is not being relied on for security here - it is an index into a public dataset. Nothing is…",
+     "lab": "breach-check",
+     "title": "Password Breach Check"
+    },
+    {
+     "q": "What does the padding option do?",
+     "a": "It asks the server to pad the response with decoy entries so every reply is a similar size. Without it, someone watching your encrypted traffic could infer…",
+     "lab": "breach-check",
+     "title": "Password Breach Check"
+    },
+    {
+     "q": "Should I type my real password in?",
+     "a": "That is your call, and the design is what makes it defensible rather than any assurance from me. If you would rather not, check an old password you have…",
+     "lab": "breach-check",
+     "title": "Password Breach Check"
+    },
+    {
+     "q": "It says my password was found thousands of times. What do I do?",
+     "a": "Stop using it everywhere, starting with any account that matters, and turn on two-factor authentication. If you reused it across sites, change it on all of…",
+     "lab": "breach-check",
+     "title": "Password Breach Check"
+    },
+    {
+     "q": "Does this look anyone up?",
+     "a": "No. There is no fetch, no XHR, no remote image and no username probed against a site. Everything on this page is string matching and arithmetic in your own…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Can I check somebody else with this?",
+     "a": "Please do not. The tool cannot tell whose text you pasted, so nothing stops you technically, and that is exactly why the rule is written down rather than…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Why does it not tell me which accounts my username has?",
+     "a": "Because a tool that takes a handle and returns a list of that person's accounts is a stalking tool, whatever the intention of whoever wrote it. So this shows…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Does a clean result mean I am safe?",
+     "a": "No, and the output says so. This only knows the patterns in its own rule table. Plenty of real disclosure is an ordinary sentence with no pattern in it: the…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Why does it not read the EXIF in my photo itself?",
+     "a": "Because that tool already exists here and does it properly. This one walks the file's segments to tell you whether a metadata block is present, then sends you…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Is anything I paste or drop uploaded?",
+     "a": "No. There is no server to upload to and no request is made. Your photo is decoded from a blob URL, which is a local address for bytes already in the tab, and…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    },
+    {
+     "q": "Why is there no risk score?",
+     "a": "Because nothing here is calibrated against a measured population, so a number would be invented. It would also be the part people remembered instead of the…",
+     "lab": "osint-self-check",
+     "title": "OSINT Self-Check"
+    }
+   ]
+  },
+  "forensics": {
+   "name": "Digital forensics",
+   "steps": 9,
+   "pool": [
+    {
+     "q": "How does it know the file type?",
+     "a": "By the magic bytes - a short fixed signature at the start of the file. PDFs start with %PDF, PNGs with a 8-byte sequence ending in PNG, Windows executables…",
+     "lab": "file-inspector",
+     "title": "File Type Inspector & Hex Viewer"
+    },
+    {
+     "q": "Can it detect a renamed executable?",
+     "a": "Yes, and it warns explicitly when the extension disagrees with the signature. That is the single most useful thing this tool does.",
+     "lab": "file-inspector",
+     "title": "File Type Inspector & Hex Viewer"
+    },
+    {
+     "q": "Is the file uploaded anywhere?",
+     "a": "No. It is read locally with the FileReader API and analysed in the page. There is no server and no network request, which is what makes it safe to point at…",
+     "lab": "file-inspector",
+     "title": "File Type Inspector & Hex Viewer"
+    },
+    {
+     "q": "What does high entropy mean?",
+     "a": "Close to 8 bits per byte means the data is compressed, encrypted or already packed. It is normal for a ZIP or a JPEG. It is more interesting inside a document…",
+     "lab": "file-inspector",
+     "title": "File Type Inspector & Hex Viewer"
+    },
+    {
+     "q": "Will it open the file or run it?",
+     "a": "No. The bytes are read and analysed as data. Nothing is executed, and no embedded content is rendered.",
+     "lab": "file-inspector",
+     "title": "File Type Inspector & Hex Viewer"
+    },
+    {
+     "q": "Is my photo uploaded?",
+     "a": "No. The file is read locally and, if you strip it, re-encoded locally. No network request is made. A tool that asked you to upload a photo in order to remove…",
+     "lab": "exif",
+     "title": "EXIF Viewer & Metadata Remover"
+    },
+    {
+     "q": "Why does my photo show no EXIF?",
+     "a": "Either it never had any, or something already removed it. Screenshots have almost none, and most social networks strip metadata when you upload. Photos…",
+     "lab": "exif",
+     "title": "EXIF Viewer & Metadata Remover"
+    },
+    {
+     "q": "Does stripping metadata reduce quality?",
+     "a": "Very slightly. The image is re-encoded as JPEG at high quality, so there is one extra generation of compression. For sharing purposes the difference is…",
+     "lab": "exif",
+     "title": "EXIF Viewer & Metadata Remover"
+    },
+    {
+     "q": "Can I see where the photo was taken on a map?",
+     "a": "The coordinates are shown so you can paste them into any map. Nothing here contacts a mapping service, because that would tell a third party the location you…",
+     "lab": "exif",
+     "title": "EXIF Viewer & Metadata Remover"
+    },
+    {
+     "q": "Does it handle PNG and HEIC?",
+     "a": "It reads any image the browser can decode and can strip metadata from all of them. The full EXIF block that phones write lives in JPEG, so that is where the…",
+     "lab": "exif",
+     "title": "EXIF Viewer & Metadata Remover"
+    },
+    {
+     "q": "Is my dump uploaded?",
+     "a": "No. It is read and scanned in your browser with no network request. Memory dumps are among the most sensitive files there are, so local-only is essential.",
+     "lab": "memory-strings",
+     "title": "Memory Dump String & Artefact Extractor"
+    },
+    {
+     "q": "Why UTF-16 and not just ASCII?",
+     "a": "Because Windows stores most of its strings as UTF-16LE. A tool that only extracts ASCII misses the majority of the interesting text in a Windows memory dump -…",
+     "lab": "memory-strings",
+     "title": "Memory Dump String & Artefact Extractor"
+    },
+    {
+     "q": "What can it carve out?",
+     "a": "It reports embedded file signatures (PNG, JPEG, PDF, ZIP, PE executables and more) with their offsets, so you can see what is buried inside and where. It flags…",
+     "lab": "memory-strings",
+     "title": "Memory Dump String & Artefact Extractor"
+    },
+    {
+     "q": "How big a file can it take?",
+     "a": "Up to 512 MB. It processes in chunks and reports progress, and caps results per category, saying so when it truncates.",
+     "lab": "memory-strings",
+     "title": "Memory Dump String & Artefact Extractor"
+    },
+    {
+     "q": "What is the entropy map for?",
+     "a": "To show where the random-looking (compressed or encrypted) regions are. Encryption and compression both push entropy near 8 bits per byte, so a high-entropy…",
+     "lab": "memory-strings",
+     "title": "Memory Dump String & Artefact Extractor"
+    },
+    {
+     "q": "What is steganography?",
+     "a": "Hiding the existence of a message rather than its contents. Encryption makes a message unreadable; steganography makes it unnoticed. They solve different…",
+     "lab": "steganography",
+     "title": "Image Steganography"
+    },
+    {
+     "q": "Why must the output be a PNG?",
+     "a": "PNG is lossless, so the exact bit values survive. JPEG is lossy and recalculates pixel values during compression, which destroys the hidden data completely.",
+     "lab": "steganography",
+     "title": "Image Steganography"
+    },
+    {
+     "q": "Can this extract messages hidden by other tools?",
+     "a": "Only if they use the same scheme - last bit of each RGB channel, in order, with a 32-bit length header. Bit order and channel order vary between…",
+     "lab": "steganography",
+     "title": "Image Steganography"
+    },
+    {
+     "q": "Is the image uploaded?",
+     "a": "No. The pixels are read and rewritten in your browser, and the result comes back as a download.",
+     "lab": "steganography",
+     "title": "Image Steganography"
+    },
+    {
+     "q": "How much can I hide in one image?",
+     "a": "Roughly three bits per pixel, so about 375 KB per megapixel. The exact capacity for your image is shown when you load it.",
+     "lab": "steganography",
+     "title": "Image Steganography"
+    },
+    {
+     "q": "Can this tell me whether a photo is a deepfake?",
+     "a": "No, and neither can anything else that runs in a browser. It surfaces the signals a forensic examiner would look at and explains what each one does and does…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Why is there no score or confidence percentage?",
+     "a": "Because there is nothing honest to compute one from. A score implies the signals combine into a measurement of authenticity, and they do not: they measure…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Why does my untouched photo show signals?",
+     "a": "Because ordinary handling produces them. Cropping, resizing, a messaging app, a CMS thumbnailer, a phone camera's own processing, and simply opening and…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Why is there no face swapper in the playground?",
+     "a": "Because that tool's dominant real-world use is non-consensual imagery, with fraud second, and building it on the same page as a detector meant to fight it…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Does it verify Content Credentials or C2PA?",
+     "a": "It reports whether a manifest is present, and it does not check the signature. Verifying one needs a certificate chain and a trust list, which means a network…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "What does it do with video?",
+     "a": "It samples nine frames through a video element and a canvas, compares their fine-detail energy, and lets you run every still analysis on any one of them. It…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Why does the ELA map look bright all over my image?",
+     "a": "Sharp edges, saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken, and a screenshot or a re-saved file carries one…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Is my file uploaded?",
+     "a": "No. Every pixel is read in this tab, and the only file that leaves is one you ask to download. A tool that made you upload a photograph in order to check…",
+     "lab": "media-forensics",
+     "title": "Media Forensics"
+    },
+    {
+     "q": "Is my HAR uploaded anywhere?",
+     "a": "No. It is read with the browser FileReader API and analysed in the page. There is no server and no network request, which is exactly what makes it safe to…",
+     "lab": "har-analyzer",
+     "title": "HAR File Analyzer"
+    },
+    {
+     "q": "What does the redacted copy remove?",
+     "a": "Every secret it detected - Authorization and other credential headers, cookie values, bearer tokens, API keys, JWTs, private keys and Luhn-valid card numbers -…",
+     "lab": "har-analyzer",
+     "title": "HAR File Analyzer"
+    },
+    {
+     "q": "Can it miss a secret?",
+     "a": "Yes, and it says so. Detection is pattern- and name-based, so an opaque token in a field with an unrecognisable name is indistinguishable from any random…",
+     "lab": "har-analyzer",
+     "title": "HAR File Analyzer"
+    },
+    {
+     "q": "How do I export a HAR?",
+     "a": "Open your browser developer tools, go to the Network tab, reproduce the problem, then right-click the request list and choose \"Save all as HAR\" (or the export…",
+     "lab": "har-analyzer",
+     "title": "HAR File Analyzer"
+    },
+    {
+     "q": "What is the largest file it handles?",
+     "a": "Up to 64 MB. Larger captures start to strain the tab, since all the work happens on your own processor.",
+     "lab": "har-analyzer",
+     "title": "HAR File Analyzer"
+    },
+    {
+     "q": "Is my capture uploaded?",
+     "a": "No. It is parsed in your browser with the FileReader API and no network request. Captures contain credentials and internal detail, so local-only is the only…",
+     "lab": "pcap-analyzer",
+     "title": "PCAP Analyzer"
+    },
+    {
+     "q": "What formats does it read?",
+     "a": "Classic PCAP (both byte orders and the nanosecond variants) and PCAPNG. It dissects Ethernet, IPv4/IPv6, TCP, UDP, ICMP and ARP.",
+     "lab": "pcap-analyzer",
+     "title": "PCAP Analyzer"
+    },
+    {
+     "q": "Can it really recover passwords?",
+     "a": "For unencrypted protocols, yes - HTTP Basic auth, FTP, Telnet, SMTP/POP3/IMAP login. That is the point: it shows exactly what an attacker on the wire would…",
+     "lab": "pcap-analyzer",
+     "title": "PCAP Analyzer"
+    },
+    {
+     "q": "Can it read HTTPS traffic?",
+     "a": "No. TLS-encrypted payloads stay encrypted - it will show that the connection happened and to where, but not the contents. That is the whole reason HTTPS exists.",
+     "lab": "pcap-analyzer",
+     "title": "PCAP Analyzer"
+    },
+    {
+     "q": "How big a capture can it handle?",
+     "a": "Up to 128 MB, and it dissects the first 50,000 packets, saying so if it stops there.",
+     "lab": "pcap-analyzer",
+     "title": "PCAP Analyzer"
+    },
+    {
+     "q": "Is my log uploaded anywhere?",
+     "a": "No. The file is read with the browser FileReader API, or taken straight from the textarea, and every count is computed in the page. There is no server and no…",
+     "lab": "log-analyser",
+     "title": "Log File Analyser"
+    },
+    {
+     "q": "Why does it call one source brute force and another a spray?",
+     "a": "Because they are different attacks and they need different responses. Many attempts against one or two accounts is brute force: someone wants that account, and…",
+     "lab": "log-analyser",
+     "title": "Log File Analyser"
+    },
+    {
+     "q": "It flagged an account signing in from two places. Is that account compromised?",
+     "a": "Not on this evidence. All the tool can say is that one account authenticated successfully from two different addresses a few minutes apart. It has no idea…",
+     "lab": "log-analyser",
+     "title": "Log File Analyser"
+    },
+    {
+     "q": "Which formats does it read, and what if mine is not one of them?",
+     "a": "Linux auth.log and secure, nginx and Apache access logs, IIS W3C extended, Windows Security event exports as CSV, and generic syslog as a fallback. If the…",
+     "lab": "log-analyser",
+     "title": "Log File Analyser"
+    },
+    {
+     "q": "How big a log can it handle?",
+     "a": "Up to 16 MB or 200,000 lines, whichever comes first. Past that it stops and says so in the report rather than quietly analysing part of the file and presenting…",
+     "lab": "log-analyser",
+     "title": "Log File Analyser"
+    },
+    {
+     "q": "Does this run the file?",
+     "a": "No. It reads the bytes as data and prints what the structures say. Nothing is executed, emulated or unpacked, and no embedded content is rendered.",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Is this a sandbox?",
+     "a": "No, and it is not a substitute for one. Static triage tells you what a binary declares it can do. A packed sample declares almost nothing, and the only way to…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "How is this different from the file inspector?",
+     "a": "The file inspector answers what a file is - magic bytes, hex dump, strings, entropy, extension mismatch. This page starts one question later, once the answer…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Is my sample uploaded anywhere?",
+     "a": "No. It is read locally and parsed in the page. There is no server, no network request and no lookup against any threat-intelligence service. The hashes are…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Does it verify the code signature?",
+     "a": "No. It reads the certificate table and prints the subject, issuer and validity dates, and it says so in the report. It does not recompute the Authenticode…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Which formats does it parse?",
+     "a": "Windows PE in the most depth: headers, sections, imports, exports, resources and the certificate table. ELF and Mach-O are parsed far enough to identify and…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "What is the EICAR test file?",
+     "a": "Sixty-eight harmless ASCII characters defined by the European Institute for Computer Antivirus Research. Every antivirus product agrees to report it as if it…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Will the EICAR file harm my machine?",
+     "a": "No. It has no payload at all. It will, however, set off your own antivirus the moment it is written to disk, and on a managed machine that usually raises an…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    },
+    {
+     "q": "Can I edit the rules?",
+     "a": "Yes. The rule pane is editable and the built-in rules are there to be read and changed. The engine takes a small subset of YARA syntax: quoted and hex patterns…",
+     "lab": "malware-triage",
+     "title": "Malware Triage & EICAR Test File"
+    }
+   ]
+  }
+ }
+}

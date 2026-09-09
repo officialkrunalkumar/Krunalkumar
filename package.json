@@ -10,6 +10,7 @@
     "glossary": "node scripts/glossary.js",
     "glossary:backlinks": "node scripts/glossary-backlinks.js",
     "changelog": "node scripts/changelog.js",
+    "lab-exams": "node scripts/lab-exams.js",
     "og-cards": "node scripts/og-cards.js",
     "check:labs": "node scripts/check-labs.js",
     "check:forms": "node scripts/check-forms.js"

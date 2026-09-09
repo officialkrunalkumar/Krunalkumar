@@ -105,7 +105,7 @@ the addresses shared with people stay one word long.
 ├── llms.txt                      Curated link index for AI crawlers/assistants — update when adding pages or posts
 ├── llms-full.txt                 Full plain-text knowledge base (bio, career, research, projects, policies) for AI crawlers
 ├── robots.txt                    Crawl rules (incl. explicit AI-crawler allowlist) + sitemap pointer
-├── package.json                  Zero dependencies. Names eight scripts — `npm run build` / `npm run check` (both are scripts/build.js), `npm run dev` (scripts/dev-server.js), `npm run glossary` / `npm run glossary:backlinks`, `npm run og-cards`, `npm run check:labs` and `npm run check:forms` — and pins `engines` to Node 24.x. `build` is Vercel's to run — locally it demotes itself to `check`
+├── package.json                  Zero dependencies. Names ten scripts — `npm run build` / `npm run check` (both are scripts/build.js), `npm run dev` (scripts/dev-server.js), `npm run glossary` / `npm run glossary:backlinks`, `npm run changelog`, `npm run lab-exams`, `npm run og-cards`, `npm run check:labs` and `npm run check:forms` — and pins `engines` to Node 24.x. `build` is Vercel's to run — locally it demotes itself to `check`
 ├── .gitignore                    node_modules/, package-lock.json, .vercel/ — package.json makes these possible, none of them belong in the repo
 └── vercel.json                   Build command + output directory + clean URLs + security headers (strict CSP, HSTS, X-Frame-Options, nosniff, etc.) + Cache-Control for assets (an hour plus a day of stale-while-revalidate for /assets/data, which verify.js bypasses with cache: 'no-cache') + noindex on the resume PDF, /partials, and /assets/data
 ```
@@ -1333,6 +1333,52 @@ existing `og-lab-*.jpg` and edit the text, or regenerate the set from `git log` 
 ever wanted back.
 
 ## Labs (`/labs`)
+
+### Learning paths, the exam and the certificate
+
+The hub's **Follow a path** section holds five ordered routes through the labs — web security (12),
+how the internet works (9), cryptography (9), email and phishing (6), digital forensics (9) — each
+sequenced so every lab uses something the one before it taught. `assets/js/labs/lab-paths.js` owns
+all of it. A path has three states:
+
+1. **In progress.** Opening a step *from the path* ticks it. The ticks live in `localStorage` under
+   `lab.path.<name>` as a comma-joined slug list, and nowhere else — there is no instrumentation on
+   the lab pages themselves, so a visitor who never expands a path stores nothing. It undercounts on
+   purpose: open a lab from the grid instead and it does not tick.
+2. **All steps opened.** A **twelve-question exam** unlocks, ten right to pass.
+3. **Exam passed.** A name is taken once, and the certificate prints.
+
+**The exam bank is generated, not written.** Every lab already carries its own `FAQPage` JSON-LD —
+real comprehension questions, in the author's words, already validated by the deploy's JSON-LD gate
+— so `scripts/lab-exams.js` harvests those into `assets/data/lab-exams.json` (~74 KB, fetched lazily
+on the first "Take the exam" and not before). A lab that rewrites an answer rewrites its exam
+question in the same commit, so the bank cannot drift from the labs. It reuses `faqFrom` and
+`plainText` from `scripts/mayuri-index.js` rather than growing a second parser that could disagree
+about what an answer says. Wrong options come from **other labs in the same path**: same-lab answers
+would be harder but often circle the same fact, and an exam that fails somebody for picking a true
+statement is worse than an easy one. `scripts/build.js` rebuilds the bank every deploy and fails if a
+path lists a lab that does not exist. Sampling is deliberately *not* in the data file — the twelve
+questions and the four options are reshuffled in the browser on every attempt, so a retry is a
+different paper. The answer is never written into the DOM; the grader closes over the paper instead.
+
+**One name, once, per path.** Passing asks for a name and stores it with the date and the score under
+`lab.cert.<name>`. After that there is no name field and no second exam: the button reprints the
+sheet that was issued, from the record, so the name and date on a reprint are the ones on the
+original. **"Reset this path" clears the ticks and deliberately does not delete that record** — if it
+did, it would be a two-click way to reissue under a different name.
+
+**What it does not pretend to be.** There is no backend and no accounts, so the record lives in
+`localStorage` and the bank is a file the browser downloads: clearing site data or opening a private
+window starts over, and the answers are readable by anyone who looks. None of that is fixable
+client-side, so the sheet says on its face what it is — a record of self-directed practice, taken
+unproctored, against a downloaded question bank — which is the same line `/labs/typing-certificate`
+takes. The certificates `/verify` can check are the ones issued by hand from the private generator
+(see the `verify.html` row in **Pages**); a path sheet carries no ID and is not in
+`assets/data/certificates.json`, so the two systems never meet.
+
+`node scripts/lab-exams.js --check` reports what would change; without the flag it rewrites the bank.
+
+### Runtimes
 
 Eleven language playgrounds, three real operating systems, fifteen security and forensics
 tools, a typing test and an API tester, all executing **on the visitor's machine**.
