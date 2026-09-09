@@ -10002,3 +10002,21 @@ html:not(.js) .lab-filter { display: none; }
 
 .tt-accuse { margin-top: 0.35rem; }
 .tt-accuse .tt-choice { border-color: rgb(var(--accent-rgb) / 0.5); }
+
+/* The paths section tells a visitor that opening every step unlocks an exam and
+   a certificate. All three of those live in localStorage and need JavaScript,
+   so with scripting off the promise has to be withdrawn in writing rather than
+   left as three buttons that never appear. Sized as a note rather than the
+   full .lab-noscript panel: unlike a lab, this section still works without
+   JavaScript — the five <details> open natively and every step link resolves —
+   so what is missing is the remembering, not the content. */
+.lab-paths-noscript {
+  margin: 0 0 1.2rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  background: var(--sheet-60);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+}
