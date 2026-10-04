@@ -8,6 +8,7 @@
 - [About](https://krunalkumar.dpdns.org/about): Education (M.E. IT / Information Security, B.E. Computer Engineering), international career across 4 countries (India, USA, France, Taiwan), skill matrix, and community roles.
 - [Services](https://krunalkumar.dpdns.org/services): Scoped consulting offerings: AI workflow automation (n8n, Make, HubSpot), full-stack development, Linux/web cybersecurity hardening, personal malware/account recovery, corporate and team training, and technical writing.
 - [Projects](https://krunalkumar.dpdns.org/projects): Curated selection of 50 production automation and AI repositories, drawn from 80+ public repos (ChurnGPT 2.0, FNOL Claims Assistant, CleverResponder, HubSpot integrations).
+- [Project Planner](https://krunalkumar.dpdns.org/project-planner): A guided, client-side brief builder for service area, project context, goal, and timing. Visitors review and edit answers before continuing to Contact; no account or server-side answer storage. The brief travels in a temporary URL fragment, which Contact removes after prefilling the message field.
 - [Research](https://krunalkumar.dpdns.org/research): Academic paper "Security Against Fork Bomb Attack in Linux Based Systems" (IJRAT 2019, DOI: 10.32622/ijrat.74201911) detailing process resource quarantine mechanisms.
 - [Blog](https://krunalkumar.dpdns.org/blog): Index of all published articles on cybersecurity, AI automation, and engineering practice.
 - [Glossary](https://krunalkumar.dpdns.org/glossary): Plain-language definitions of about 180 security, cryptography, networking, forensics, systems and programming terms, each linked to the in-browser lab that demonstrates it or the article that explains it.
@@ -236,7 +237,7 @@ These are deliberately separated from the offline security tools above. They sti
 - [QR code generator & inspector](https://krunalkumar.dpdns.org/labs/qr): Builds a QR code, or decodes one from a photo and reads what it would do before you scan it — the URL, and the payee and amount inside a UPI string.
 
 ## Games — all offline-capable, none of them asking for anything
-- [Games hub](https://krunalkumar.dpdns.org/games): The 90 games, in seven categories, filterable. Every one runs entirely in the browser with no ads, no sign-up and no network after the first visit. Best scores are kept in this browser's own storage and the hub lists exactly what is stored, clears it, or switches storage off altogether.
+- [Games hub](https://krunalkumar.dpdns.org/games): The 91 games, in seven categories, filterable. Every one runs entirely in the browser with no ads, no sign-up and no network after the first visit. Best scores are kept in this browser's own storage and the hub lists exactly what is stored, clears it, or switches storage off altogether.
 - [Snake](https://krunalkumar.dpdns.org/games/snake): The Nokia one. Three speeds, optional wrap-around walls, arrow keys or a thumb pad.
 - [Tetris](https://krunalkumar.dpdns.org/games/tetris): Seven-bag randomiser, hold, hard drop, ghost piece.
 - [2048](https://krunalkumar.dpdns.org/games/2048): Slide and merge. The board is saved, so a half-finished game survives a reload.
@@ -331,14 +332,13 @@ out of the name typed into it.
 
 ## Reading the site
 - Every page carries a search button and a light/dark toggle in the header. Search runs against a
-  prebuilt index of all 278 pages and opens a full-screen panel; it is entirely client-side, so no
+  prebuilt index of all 288 pages and opens a full-screen panel; it is entirely client-side, so no
   query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in — the site stays dark unless the toggle
   is used, and the choice is remembered locally. Both themes are checked against the WCAG AA
   contrast floor across every page.
-- The 111 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
+- The 117 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
   so there is nothing to run without it. Each hides its controls and shows a <noscript> note rather
   than leaving dead buttons. Every other page is plain HTML and reads in full without JavaScript;
   the five carrying a form (contact, internships, the labs hub's feedback box, the games hub's
   feedback box, and verify) point to email instead — the first four drop the submit button,
   verify hides the whole lookup field.
-

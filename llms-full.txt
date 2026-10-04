@@ -17,6 +17,13 @@
   - Calendar Booking: https://calendar.app.google/x3SFLgyDeeLL7WjA8
   - Profiles: [LinkedIn](https://www.linkedin.com/in/realkrunalkumar) | [GitHub](https://github.com/officialkrunalkumar) | [Google Scholar](https://scholar.google.com/citations?user=dxFD3scAAAAJ&hl=en) | [Credly](https://www.credly.com/users/officialkrunalkumar/badges)
 
+### Project Planner
+- URL: https://krunalkumar.dpdns.org/project-planner
+- A guided, client-side questionnaire to help prospective clients describe the service area, project context, desired outcome, and ideal timing.
+- Visitors review and can edit the generated brief before continuing to the contact form; answers are not sent or saved by the planner itself.
+- The brief is passed to Contact in a temporary URL fragment. The contact page reads it into the message field and removes the fragment from the address bar. Sending it is a separate, explicit action by the visitor through the contact form.
+- The planner does not estimate prices, request passwords, or ask for confidential client data.
+
 ---
 
 ## 2. Academic Background & Career Timeline
@@ -249,7 +256,7 @@ Three instruments sharing one mixer, all in the browser.
 
 ## Games (/games)
 
-90 games, in seven categories, all of them running entirely in the
+91 games, in seven categories, all of them running entirely in the
 visitor's browser. There are no ads, no sign-up, no accounts and no network
 traffic once a game has been opened once. The categories are arcade, puzzle,
 terminal (seventeen ports of Linux terminal games), board, cs (games aimed at
@@ -660,7 +667,7 @@ appeared, which is the order the picker and the hub use.
 ## Reading the site: search and themes
 
 **Search.** Every page has a search button in the header. It runs against a prebuilt
-index covering all 278 pages and opens a full-screen panel, on a phone and a laptop
+index covering all 288 pages and opens a full-screen panel, on a phone and a laptop
 alike. The index ships with the site and the matching happens in the tab, so no
 search query is ever sent anywhere. Analytics is told only that a search ran and how
 many results it returned — a zero-result count shows where the site is missing
@@ -677,4 +684,3 @@ large text) on every page. Elements that are dark instruments by design — the
 terminals, the code editor, the visualiser canvases, HackLab's simulated corporate
 portal — keep their dark palette in both themes rather than being re-coloured, so
 they read the same either way.
-
