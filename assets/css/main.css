@@ -6503,6 +6503,32 @@ html:not(.js) .search-open {
   .project-item:active { transform: none; }
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 140ms ease-out both page-transition-out;
+}
+
+::view-transition-new(root) {
+  animation: 180ms ease-out both page-transition-in;
+}
+
+@keyframes page-transition-out {
+  to { opacity: 0; }
+}
+
+@keyframes page-transition-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 @media print {
   .btn-glow {
     background-image: none !important;
