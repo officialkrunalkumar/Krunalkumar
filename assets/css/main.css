@@ -576,11 +576,33 @@ img {
 }
 
 .nav-list a {
+  position: relative;
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
   color: var(--ink-2);
   font-weight: 600;
   transition: all 0.2s ease;
+}
+
+.nav-list .nav-link::after,
+.nav-dropdown-toggle::after {
+  content: '';
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.25rem;
+  left: 0.8rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.42);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s ease;
+}
+
+.nav-list .nav-link.active::after,
+.nav-dropdown.has-active .nav-dropdown-toggle::after {
+  transform: scaleX(1);
 }
 
 .nav-list a:hover {
@@ -765,6 +787,7 @@ img {
 }
 
 .nav-dropdown-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -822,6 +845,21 @@ img {
 .nav-dropdown-menu a {
   border-radius: 12px;
   padding: 0.55rem 0.8rem;
+}
+
+.nav-dropdown-menu .nav-link::after {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 0.3rem;
+  width: 2px;
+  height: 1.1rem;
+  transform: translateY(-50%) scaleY(0);
+  transform-origin: center top;
+}
+
+.nav-dropdown-menu .nav-link.active::after {
+  transform: translateY(-50%) scaleY(1);
 }
 
 @keyframes nav-fade-in {
@@ -4517,6 +4555,21 @@ footer a:hover {
     border-radius: 12px;
   }
 
+  .nav-list .nav-link::after {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 0.35rem;
+    width: 2px;
+    height: 1.2rem;
+    transform: translateY(-50%) scaleY(0);
+    transform-origin: center top;
+  }
+
+  .nav-list .nav-link.active::after {
+    transform: translateY(-50%) scaleY(1);
+  }
+
   .nav-dropdown {
     position: static;
     display: contents;
@@ -6433,6 +6486,11 @@ html:not(.js) .search-open {
 .btn-research { --glow-from: #5850ec; --glow-to: #4b44d0; --glow-rgb: 129 140 248; }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-list .nav-link::after,
+  .nav-dropdown-toggle::after {
+    transition: none;
+  }
+
   .btn,
   .btn-glow { transition: none; }
   .btn:hover,
