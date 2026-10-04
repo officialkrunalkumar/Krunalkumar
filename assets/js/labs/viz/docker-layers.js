@@ -1251,7 +1251,7 @@
         'Root in the container is root on the host kernel; a container escape, a mounted volume ' +
         'or a writable bind mount all become considerably worse from there.',
         'Create an unprivileged user and switch to it before CMD: ' +
-        'RUN adduser -S app && USER app. Note that USER has to be in the FINAL stage — one in ' +
+        'RUN adduser -S app && USER app. Note that USER has to be in the FINAL stage - one in ' +
         'an earlier stage does not carry over.',
         last.ins ? last.ins.line : 0));
     }
@@ -1571,7 +1571,7 @@
      Dockerfile actually reads. Offering "a file in src/" when nothing copies
      src/ would be noise. */
   function changeOptions(result) {
-    var opts = [{ label: 'Nothing — you rebuilt without changing anything', value: 'none',
+    var opts = [{ label: 'Nothing - you rebuilt without changing anything', value: 'none',
                   change: { type: 'none' } }];
     var seen = {};
     for (var s = 0; s < result.stages.length; s++) {
@@ -1982,7 +1982,7 @@
     var b = E('b', null, 'modelled estimate, not a build');
     lede.appendChild(b);
     lede.appendChild(document.createTextNode(
-      '. Nothing here runs Docker or opens a network connection — the numbers come from ' +
+      '. Nothing here runs Docker or opens a network connection - the numbers come from ' +
       'measured base-image and package sizes held in this file. They are close enough to make ' +
       'the right decision and wrong enough that you should never quote them.'));
     wrap.appendChild(lede);
@@ -2315,7 +2315,7 @@
     var self = this;
     var block = E('div', 'dk-stage');
     var head = E('div', 'dk-stage-head');
-    var title = 'Stage ' + stage.index + (stage.alias ? ' — ' + stage.alias : '');
+    var title = 'Stage ' + stage.index + (stage.alias ? ' - ' + stage.alias : '');
     head.appendChild(E('span', 'dk-stage-t', title));
     head.appendChild(E('span', 'dk-badge ' + (stage.shipped ? 'is-ship' : (stage.contributes ? 'is-feed' : 'is-drop')),
       stage.shipped ? 'ships' : (stage.contributes ? 'feeds the final image' : 'discarded')));
@@ -2377,7 +2377,7 @@
 
     if (layer.meta && !layer.size) {
       d.appendChild(E('p', null,
-        'Metadata only. This writes nothing to the filesystem — it changes the image ' +
+        'Metadata only. This writes nothing to the filesystem - it changes the image ' +
         'configuration, which travels with the image and is printed by docker inspect. ' +
         'It is still a cache step, so a change here invalidates everything below it.'));
     }
@@ -2389,7 +2389,7 @@
         var a = layer.adds[i];
         var li = E('li');
         li.appendChild(E('b', null, a.path));
-        li.appendChild(document.createTextNode(' — ' + fmtSize(a.size)));
+        li.appendChild(document.createTextNode(' - ' + fmtSize(a.size)));
         if (a.secret) li.appendChild(E('span', 'dk-white', '  · a credential'));
         if (a.note) li.appendChild(E('span', 'dk-note', '  · ' + a.note));
         ul.appendChild(li);
@@ -2410,7 +2410,7 @@
         var w = layer.whiteouts[i];
         var wli = E('li');
         wli.appendChild(E('b', null, w.path));
-        wli.appendChild(document.createTextNode(' — ' + fmtSize(w.size) + ', written by the layer ' +
+        wli.appendChild(document.createTextNode(' - ' + fmtSize(w.size) + ', written by the layer ' +
           'at line ' + w.layer.line + ', which is already committed. This layer only records ' +
           'that the file is no longer visible.'));
         wl.appendChild(wli);
@@ -2430,8 +2430,8 @@
     }
 
     d.appendChild(E('p', null, 'Modelled build time for this step: ' + fmtTime(layer.seconds) +
-      (layer.cacheState === 'cached' ? ' — skipped on the rebuild you selected in the Cache tab.'
-                                     : ' — spent on the rebuild you selected in the Cache tab.')));
+      (layer.cacheState === 'cached' ? ' - skipped on the rebuild you selected in the Cache tab.'
+                                     : ' - spent on the rebuild you selected in the Cache tab.')));
 
     if (layer.line) {
       var btn = E('button', 'dk-btn');
@@ -2463,7 +2463,7 @@
     var p1 = E('p', 'dk-p');
     p1.appendChild(document.createTextNode(
       'A layer is a diff, and a diff can only add. When a later layer deletes a file, it does ' +
-      'not reach into the earlier layer — that one is already committed and immutable, and it ' +
+      'not reach into the earlier layer - that one is already committed and immutable, and it ' +
       'may be shared with other images. All the delete can do is write a whiteout marker saying ' +
       'the file is no longer visible. The bytes stay, they still count towards the image size, ' +
       'and anyone holding the image can still read them.'));
@@ -2502,12 +2502,12 @@
       var cls = '', stateText;
       if (art.deletedBy) {
         cls = 'is-gone';
-        stateText = 'Deleted at line ' + art.deletedBy.line + ' — still in the layer, still extractable';
+        stateText = 'Deleted at line ' + art.deletedBy.line + ' - still in the layer, still extractable';
         wasted += art.size;
         extractable.push(art);
       } else if (art.shadowedBy) {
         cls = 'is-shadow';
-        stateText = 'Overwritten at line ' + art.shadowedBy.line + ' — the old copy is still in the layer';
+        stateText = 'Overwritten at line ' + art.shadowedBy.line + ' - the old copy is still in the layer';
         wasted += art.size;
         if (art.secret) extractable.push(art);
       } else {
@@ -2569,7 +2569,7 @@
         call.appendChild(E('p', null,
           'That runs offline, against a file. There is no server to ask for permission. If a ' +
           'credential has ever been in a layer of an image you pushed, treat it as public and ' +
-          'rotate it — squashing the image afterwards does not help anyone who already pulled it.'));
+          'rotate it - squashing the image afterwards does not help anyone who already pulled it.'));
       }
     }
     call.appendChild(E('p', null,
@@ -2595,7 +2595,7 @@
       'The cache rule is one sentence: a step is reused only if every step before it was reused ' +
       'and its own inputs are unchanged. For RUN the input is the command text. For COPY it is ' +
       'the command text plus a checksum of the files. That second clause is the whole reason ' +
-      'COPY package.json comes before COPY . . — and this is where you can measure it rather ' +
+      'COPY package.json comes before COPY . . - and this is where you can measure it rather ' +
       'than take my word for it.'));
     host.appendChild(p);
 
@@ -2650,7 +2650,7 @@
       var block = E('div', 'dk-stage');
       var head = E('div', 'dk-stage-head');
       head.appendChild(E('span', 'dk-stage-t', 'Stage ' + stage.index +
-        (stage.alias ? ' — ' + stage.alias : '')));
+        (stage.alias ? ' - ' + stage.alias : '')));
       block.appendChild(head);
       for (var L = 0; L < stage.layers.length; L++) {
         var layer = stage.layers[L];
@@ -2699,7 +2699,7 @@
     if (!result.findings.length) {
       host.appendChild(E('p', 'dk-empty',
         'Nothing flagged. That means nothing I check for is wrong here, which is not the same ' +
-        'as the image being right — I check for size waste, secrets in layers or in the image ' +
+        'as the image being right - I check for size waste, secrets in layers or in the image ' +
         'config, root, unpinned bases and a missing .dockerignore, and nothing else.'));
       return;
     }

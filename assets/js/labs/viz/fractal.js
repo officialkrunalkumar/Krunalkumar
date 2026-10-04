@@ -308,20 +308,20 @@
       elC.style.color = '#7dd3fc';
     } else {
       elC.textContent = SET_NAME[set] +
-                        '   ·   a different iteration rule, same idea — scroll to zoom, drag to pan';
+                        '   ·   a different iteration rule, same idea - scroll to zoom, drag to pan';
       elC.style.color = '#94a3b8';
     }
 
     // Honesty about the float32 floor, escalating as the clamp approaches. Zoom
     // stops at MIN_HH (~1.5e-6), so the strongest message fires just before it.
     if (halfHeight <= MIN_HH * 1.5) {
-      elNote.textContent = 'Maximum zoom — this is as deep as single-precision GPU maths resolves. The blockiness is float32 hitting its ~7-digit limit, not the fractal running out of detail. Going deeper needs double precision, which browsers do not expose on the GPU. Reset and explore elsewhere — there is infinite structure at every scale.';
+      elNote.textContent = 'Maximum zoom - this is as deep as single-precision GPU maths resolves. The blockiness is float32 hitting its ~7-digit limit, not the fractal running out of detail. Going deeper needs double precision, which browsers do not expose on the GPU. Reset and explore elsewhere - there is infinite structure at every scale.';
       elNote.style.color = '#f87171';
     } else if (halfHeight < 5e-5) {
       elNote.textContent = 'Detail is starting to soften: single-precision float on the GPU is nearing its ~7-digit limit. A little deeper is as far as it goes.';
       elNote.style.color = '#fbbf24';
     } else {
-      elNote.textContent = 'Computed on the GPU in a fragment shader. Coordinates are single-precision float32 (~7 digits), so the zoom bottoms out around ×10^6 — a real hardware limit, not a bug. The interesting structure is everywhere, not just deep.';
+      elNote.textContent = 'Computed on the GPU in a fragment shader. Coordinates are single-precision float32 (~7 digits), so the zoom bottoms out around ×10^6 - a real hardware limit, not a bug. The interesting structure is everywhere, not just deep.';
       elNote.style.color = '#94a3b8';
     }
   }

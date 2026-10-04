@@ -260,7 +260,7 @@
     if (a >= 60) return 'the practical floor for body text, 18 px at weight 400';
     if (a >= 45) return 'large or heavy text only, roughly 24 px at weight 400';
     if (a >= 30) return 'the absolute minimum for any text; not for reading';
-    if (a >= 15) return 'non-text only — borders, dividers, disabled states';
+    if (a >= 15) return 'non-text only - borders, dividers, disabled states';
     return 'not usable for anything that has to be seen';
   }
 
@@ -390,10 +390,10 @@
   /* ------------------------------------------------------------- targets */
 
   var TARGETS = [
-    { id: '4.5', value: 4.5, label: 'AA, normal text — 4.5:1' },
-    { id: '7', value: 7, label: 'AAA, normal text — 7:1' },
-    { id: '3', value: 3, label: 'AA, large text and UI — 3:1' },
-    { id: '4.5aaa', value: 4.5, label: 'AAA, large text — 4.5:1' }
+    { id: '4.5', value: 4.5, label: 'AA, normal text - 4.5:1' },
+    { id: '7', value: 7, label: 'AAA, normal text - 7:1' },
+    { id: '3', value: 3, label: 'AA, large text and UI - 3:1' },
+    { id: '4.5aaa', value: 4.5, label: 'AAA, large text - 4.5:1' }
   ];
 
   function targetByValue(id) {
@@ -476,7 +476,7 @@
                    pass ? 'Pass' : 'Fail');
     row.appendChild(badge);
     row.appendChild(el('span', 'cn-verdict-note',
-      fixed(ratio, 2) + ':1 against ' + threshold + ':1' + (note ? ' — ' + note : '')));
+      fixed(ratio, 2) + ':1 against ' + threshold + ':1' + (note ? ' - ' + note : '')));
     return row;
   }
 
@@ -536,7 +536,7 @@
     out.clear();
     out.heading('WCAG 2.x contrast ratio, computed in full');
     out.rule();
-    out.line('Step 1 — every channel to 0..1, then through the sRGB transfer');
+    out.line('Step 1 - every channel to 0..1, then through the sRGB transfer');
     out.line('function. It is piecewise: a straight line near black, a 2.4');
     out.line('power curve above it. The knee is at 0.04045.');
     out.line('');
@@ -549,7 +549,7 @@
     out.rule();
 
     var lf = luminance(fg), lb = luminance(bg);
-    out.line('Step 2 — relative luminance. The weights are the Rec. 709');
+    out.line('Step 2 - relative luminance. The weights are the Rec. 709');
     out.line('luminance coefficients: green carries most of the brightness');
     out.line('the eye sees, blue almost none.');
     out.line('');
@@ -566,7 +566,7 @@
     out.rule();
 
     var hi = Math.max(lf, lb), lo = Math.min(lf, lb);
-    out.line('Step 3 — the ratio. The 0.05 added to both sides is a flare');
+    out.line('Step 3 - the ratio. The 0.05 added to both sides is a flare');
     out.line('term: an allowance for light bouncing off the screen, which is');
     out.line('why pure black on pure white is 21:1 and not infinity.');
     out.line('');
@@ -580,7 +580,7 @@
     out.rule();
 
     var lc = apcaLc(fg, bg);
-    out.heading('APCA-W3 0.1.9 — for comparison, not for compliance');
+    out.heading('APCA-W3 0.1.9 - for comparison, not for compliance');
     out.line('');
     out.row('polarity', lb > lf ? 'dark text on a lighter background'
                                 : 'light text on a darker background');
@@ -617,7 +617,7 @@
 
     card.appendChild(el('p', 'cn-fixcard-note',
       'OKLCH lightness ' + fixed(fix.baseL, 3) + ' to ' + fixed(fix.L, 3) +
-      ' — a move of ' + fixed(fix.dL, 3) + '. Hue held at ' + fixed(fix.hue, 1) + ' degrees.'));
+      ' - a move of ' + fixed(fix.dL, 3) + '. Hue held at ' + fixed(fix.hue, 1) + ' degrees.'));
 
     if (fix.chroma < fix.baseChroma - 0.0005) {
       card.appendChild(el('p', 'cn-fixcard-note cn-fixcard-warn',
@@ -759,8 +759,8 @@
     var tokens = splitColors(paletteEl.value || '');
     if (!tokens.length) {
       paletteOutEl.appendChild(el('p', 'cn-block-note',
-        'Nothing pasted yet. Put a few colours in the box above — one per line, ' +
-        'or separated by commas — and every pairing gets checked.'));
+        'Nothing pasted yet. Put a few colours in the box above - one per line, ' +
+        'or separated by commas - and every pairing gets checked.'));
       return;
     }
 
@@ -845,7 +845,7 @@
     paletteOutEl.appendChild(wrap);
     paletteOutEl.appendChild(el('p', 'cn-block-note',
       'AAA is 7:1, AA is 4.5:1, and 3:1 carries large text and UI components ' +
-      'only. Read a row as the text colour and a column as what it sits on — ' +
+      'only. Read a row as the text colour and a column as what it sits on - ' +
       'though the matrix is symmetric, because the WCAG formula does not care ' +
       'which of the two is the text. That is one of the things APCA changes.'));
   }
@@ -894,7 +894,7 @@
       out.dim('number for a colour you never used.');
       verdictEl.textContent = '';
       verdictEl.appendChild(el('p', 'cn-block-note',
-        'No result — one of the two colours could not be read. The output pane ' +
+        'No result - one of the two colours could not be read. The output pane ' +
         'lists every form this field accepts.'));
       fixEl.textContent = '';
       simsEl.textContent = '';
@@ -906,7 +906,7 @@
 
     var bg = bgRead.rgb;
     if (bgRead.alpha < 1) {
-      setNote(bgNote, 'Alpha ignored — see the output', 'is-busy');
+      setNote(bgNote, 'Alpha ignored - see the output', 'is-busy');
     }
     var fg = fgRead.alpha < 1
       ? composite(fgRead, bg)

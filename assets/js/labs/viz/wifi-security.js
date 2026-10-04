@@ -62,7 +62,7 @@
       cipher: 'RC4 stream cipher, 40-bit or 104-bit key plus a 24-bit IV',
       integrity: 'CRC-32, which is a checksum and not a message authentication code',
       auth: 'One shared key for the whole network, typed as hex',
-      fixed: 'Nothing before it — it was the first attempt, and it was designed to be ' +
+      fixed: 'Nothing before it - it was the first attempt, and it was designed to be ' +
         'cheap enough to run on 1997 hardware rather than to resist an attacker.',
       leaks: [
         'The 24-bit initialisation vector is sent in the clear and is small enough that it ' +
@@ -85,7 +85,7 @@
       tone: 'red',
       cipher: 'RC4 again, but with a per-packet key mixed from the base key, the sender ' +
         'address and a 48-bit sequence counter',
-      integrity: 'Michael, a real MIC — but a deliberately weak one, so weak that the ' +
+      integrity: 'Michael, a real MIC - but a deliberately weak one, so weak that the ' +
         'standard bolts on a countermeasure: two MIC failures in a minute and the link shuts down',
       auth: 'A passphrase shared by everyone, or 802.1X',
       fixed: 'Almost everything structural about WEP: per-packet keys so no two frames share a ' +
@@ -111,7 +111,7 @@
       full: 'WPA2 with a pre-shared key, AES-CCMP',
       years: '2004 to now, with caveats',
       tone: 'amber',
-      cipher: 'AES-128 in CCM mode (CCMP) — a real block cipher, with no practical break ' +
+      cipher: 'AES-128 in CCM mode (CCMP) - a real block cipher, with no practical break ' +
         'against the cipher itself after twenty years of attention',
       integrity: 'CBC-MAC over the frame, part of CCM, genuinely authenticated',
       auth: 'One passphrase for the network. It becomes the PMK through PBKDF2 with the ' +
@@ -143,7 +143,7 @@
       full: 'WPA2 with 802.1X and EAP, against a RADIUS server',
       years: '2004 to now',
       tone: 'green',
-      cipher: 'The same AES-CCMP as WPA2-PSK — the cipher is not what changes here',
+      cipher: 'The same AES-CCMP as WPA2-PSK - the cipher is not what changes here',
       integrity: 'The same as WPA2-PSK',
       auth: 'Each user authenticates individually to a RADIUS server through EAP, and each ' +
         'session gets its own PMK. There is no shared passphrase anywhere',
@@ -163,7 +163,7 @@
       dead: 'Current, and the right answer for any organisation large enough to have a ' +
         'directory. WPA3-Enterprise tightens the cipher suite further.',
       verdict: 'ok',
-      verdictText: 'The correct answer for organisations — provided client certificate ' +
+      verdictText: 'The correct answer for organisations - provided client certificate ' +
         'validation is enforced rather than left to the person joining.'
     },
     {
@@ -179,7 +179,7 @@
       fixed: 'The offline guessing target, which was the last big structural problem. A ' +
         'listener who watches an SAE exchange end to end holds nothing they can test a ' +
         'password guess against, so every guess costs one live exchange with the access ' +
-        'point — which the access point can slow down, refuse and log. Forward secrecy comes ' +
+        'point - which the access point can slow down, refuse and log. Forward secrecy comes ' +
         'with it: the session key depends on random values chosen fresh each time, so learning ' +
         'the password later does not decrypt anything recorded earlier. Protected Management ' +
         'Frames become mandatory, which closes the old gap where the frames that manage a ' +
@@ -188,7 +188,7 @@
         'It is still one password for the network. Everyone who has it is on the network, and ' +
           'a password that has been shared with forty people is not a secret.',
         'Transition mode, where one SSID offers both WPA3 and WPA2 so older devices can still ' +
-          'join, leaves a WPA2 handshake available on that same network — and with it the ' +
+          'join, leaves a WPA2 handshake available on that same network - and with it the ' +
           'offline target that WPA3 exists to remove.',
         'The Dragonblood work in 2019 found side-channel and downgrade weaknesses in early ' +
           'implementations. They were fixed in firmware, and they are a standing reminder that ' +
@@ -247,7 +247,7 @@
         wire: 'Nothing is transmitted. Both ends do this arithmetic on their own.',
         body: 'PMK = PBKDF2-HMAC-SHA1(passphrase, SSID, 4096 iterations, 256 bits). The SSID ' +
           'is the salt, which is why the same passphrase on two differently-named networks ' +
-          'produces two different PMKs — and why a precomputed table only helps against the ' +
+          'produces two different PMKs - and why a precomputed table only helps against the ' +
           'network name it was built for.',
         known: []
       },
@@ -255,7 +255,7 @@
         dir: 'ap',
         actor: 'Access point → client',
         title: 'Message 1',
-        wire: 'ANonce — 32 random bytes, in the clear',
+        wire: 'ANonce - 32 random bytes, in the clear',
         body: 'The access point sends a nonce and nothing else. There is no MIC on this frame ' +
           'because no key has been derived yet, which is also why a client cannot tell from ' +
           'message 1 alone whether it is talking to the right access point.',
@@ -294,7 +294,7 @@
           'for broadcast and multicast traffic. This is the first frame that tells the client ' +
           'anything about who it is actually talking to.',
         known: ['A second MIC, over a different frame, testable the same way',
-          'The encrypted GTK — unreadable without the KEK']
+          'The encrypted GTK - unreadable without the KEK']
       },
       {
         dir: 'sta',
@@ -315,7 +315,7 @@
           'to the PRF are public: four of them travelled in the clear across those frames, and ' +
           'the fifth is a fixed string printed in the standard. The sixth is the PMK, and the PMK is only the ' +
           'passphrase and the network name. The security of the whole network reduces to how ' +
-          'hard that one passphrase is to guess — which is why a long random passphrase is not ' +
+          'hard that one passphrase is to guess - which is why a long random passphrase is not ' +
           'general advice here, it is the specific and only defence.',
         known: []
       }
@@ -331,9 +331,9 @@
             'does not have.', value: pmk },
         { label: '"Pairwise key expansion"', secret: false, at: 0,
           detail: 'A fixed string written into the standard. Public by definition.', value: null },
-        { label: 'AA — access point MAC', secret: false, at: 1,
+        { label: 'AA - access point MAC', secret: false, at: 1,
           detail: 'In the header of every frame the access point sends.', value: AP_MAC },
-        { label: 'SPA — client MAC', secret: false, at: 1,
+        { label: 'SPA - client MAC', secret: false, at: 1,
           detail: 'In the header of every frame the client sends.', value: STA_MAC },
         { label: 'ANonce, 32 bytes', secret: false, at: 1,
           detail: 'Sent in the clear in message 1.', value: aNonce },
@@ -371,7 +371,7 @@
         wire: 'Nothing is transmitted.',
         body: 'Both ends derive PWE, the password element, from the password and the two MAC ' +
           'addresses. In WPA3 this uses hash-to-element, which reaches the answer in constant ' +
-          'time — the older hunting-and-pecking loop took a variable number of tries and that ' +
+          'time - the older hunting-and-pecking loop took a variable number of tries and that ' +
           'timing difference was itself a leak. PWE is deterministic from the password, but on ' +
           'its own it never leaves either device.',
         known: []
@@ -413,7 +413,7 @@
         title: 'Confirm',
         wire: 'A confirm hash over the transcript, keyed with the KCK',
         body: 'Each side proves it reached the same K. A wrong password produces a different ' +
-          'PWE, a different K and a confirm that does not verify — and the access point simply ' +
+          'PWE, a different K and a confirm that does not verify - and the access point simply ' +
           'refuses, counts the failure and can slow the next attempt down. One guess, one ' +
           'exchange, on the network’s terms.',
         known: ['Two confirm hashes, each computed with a key derived from the shared secret']
@@ -424,7 +424,7 @@
         title: 'And then the four-way handshake runs anyway',
         wire: 'The same four frames as WPA2.',
         body: 'SAE replaces where the PMK comes from, not the rest of the protocol. The four-way ' +
-          'handshake still runs to derive the session keys — but it now runs on a PMK that was ' +
+          'handshake still runs to derive the session keys - but it now runs on a PMK that was ' +
           'produced from fresh random values rather than from the password alone, so its MICs ' +
           'are not a target. Same frames, entirely different meaning.',
         known: ['A four-way handshake whose MICs cannot be tested against a password guess']
@@ -435,7 +435,7 @@
         title: 'The result',
         wire: '',
         body: 'Two scalars, two elements, two confirms. To test one password guess against any ' +
-          'of it, you would have to recover a random value that was never sent — the discrete ' +
+          'of it, you would have to recover a random value that was never sent - the discrete ' +
           'logarithm problem, which is the same thing that keeps ordinary public-key ' +
           'cryptography standing up. So there is no offline test. Each guess has to be tried ' +
           'live against the access point, one at a time, where it can be rate-limited, refused ' +
@@ -449,15 +449,15 @@
       pmk: pmk, pwe: pwe, scalarA: scalarA, scalarB: scalarB,
       frames: frames,
       inputs: [
-        { label: 'PWE — the password element', secret: true, at: 0,
+        { label: 'PWE - the password element', secret: true, at: 0,
           detail: 'Derived from the password and both MAC addresses. Never transmitted.',
           value: pwe },
-        { label: 'private — random, per exchange', secret: true, at: 1,
+        { label: 'private - random, per exchange', secret: true, at: 1,
           detail: 'Chosen fresh, never sent, discarded afterwards.', value: null },
-        { label: 'mask — random, per exchange', secret: true, at: 1,
+        { label: 'mask - random, per exchange', secret: true, at: 1,
           detail: 'Chosen fresh, never sent. Blinds the password element.', value: null },
         { label: 'client scalar and element', secret: false, at: 2,
-          detail: 'Sent in the clear — and useless without the random values behind them.',
+          detail: 'Sent in the clear - and useless without the random values behind them.',
           value: scalarA },
         { label: 'access point scalar and element', secret: false, at: 2,
           detail: 'Also in the clear, also useless on its own.', value: scalarB },
@@ -465,7 +465,7 @@
           detail: 'Public, as always.', value: AP_MAC + ' / ' + STA_MAC }
       ],
       outputs: [
-        { label: 'K — the shared secret', detail: 'Computed identically by both ends, from ' +
+        { label: 'K - the shared secret', detail: 'Computed identically by both ends, from ' +
           'values a listener cannot reconstruct.' },
         { label: 'PMK, 256 bits', detail: 'Fresh for this session. Feeds the four-way handshake ' +
           'that follows.' },
@@ -491,7 +491,7 @@
       body: 'A café or airport network with no passphrase has no key, and with no key there ' +
         'is nothing for an access point to prove. The SSID is just a name being broadcast, and ' +
         'any radio can broadcast any name. Your device remembers the name, not the hardware.',
-      tell: 'There is no tell yet, and that is the honest starting point — at this stage ' +
+      tell: 'There is no tell yet, and that is the honest starting point - at this stage ' +
         'everything looks exactly as it should, because everything is exactly as it should be.',
       spot: 'you'
     },
@@ -502,7 +502,7 @@
         'enough to need two. It picks whichever is strongest and joins without asking you.',
       tell: 'Two entries with the same name and very different signal strength, or a network ' +
         'you joined yesterday that is suddenly far stronger than it was. Weak evidence on its ' +
-        'own — but worth noticing before you type anything.',
+        'own - but worth noticing before you type anything.',
       spot: 'twin'
     },
     {
@@ -517,7 +517,7 @@
     {
       title: 'A sign-in page appears',
       body: 'A page opens asking you to accept terms or sign in. This is exactly what a genuine ' +
-        'captive portal does — it is a normal, expected part of joining a public network — which ' +
+        'captive portal does - it is a normal, expected part of joining a public network - which ' +
         'is precisely why it is the chosen shape for this.',
       tell: 'Check the address bar rather than the page. A portal that has no certificate for ' +
         'the name it claims, or that sits on a bare IP address, or that triggers a certificate ' +
@@ -538,7 +538,7 @@
     {
       title: 'What you typed goes to whoever runs the radio',
       body: 'Credentials entered into that page reach the person operating it. If the password ' +
-        'is reused anywhere — and most are — the damage is not to your wireless connection, it ' +
+        'is reused anywhere - and most are - the damage is not to your wireless connection, it ' +
         'is to every account sharing that password.',
       tell: 'If you have already typed something, change that password from a different network ' +
         'and turn on a second factor. That is a much better use of the next ten minutes than ' +
@@ -552,7 +552,7 @@
         'has to interpret. What they can still see is which hosts you connect to, and what they ' +
         'can still do is show you a page that looks like a login for a site you use.',
       tell: 'Never click through a certificate warning on a network you just joined. Do not ' +
-        'sign into anything from a page the network handed you — open the site yourself, from ' +
+        'sign into anything from a page the network handed you - open the site yourself, from ' +
         'your own bookmark, and see whether it actually wants you to log in.',
       spot: 'you'
     }
@@ -587,7 +587,7 @@
     },
     {
       title: 'So the attack changes shape instead',
-      body: 'The usual next move is not a cleverer attack on the key — it is an open network ' +
+      body: 'The usual next move is not a cleverer attack on the key - it is an open network ' +
         'with the same name, or a name one character different, hoping you will join the one ' +
         'without a lock icon and not notice. The cryptography held; the naming did not.',
       tell: 'Look for the lock. A network you know has a passphrase appearing without one is ' +
@@ -608,7 +608,7 @@
     {
       title: 'And what actually closes it',
       body: 'A passphrase you do not hand out casually, WPA3 where the equipment supports it, ' +
-        'and Protected Management Frames — which WPA3 makes mandatory — so that the frames ' +
+        'and Protected Management Frames - which WPA3 makes mandatory - so that the frames ' +
         'controlling your connection cannot simply be forged by anything in range. Before ' +
         '802.11w those frames carried no protection at all, which is why moving a client from ' +
         'the real network to a look-alike used to be so much easier than it is now.',
@@ -659,7 +659,7 @@
       name: 'MAC address filtering',
       claim: 'Only devices on the allow list can connect.',
       truth: 'A MAC address is transmitted in the clear in the header of every single frame, ' +
-        'by every device, always — including on an encrypted network, because the header is ' +
+        'by every device, always - including on an encrypted network, because the header is ' +
         'not the part that gets encrypted. It is an identifier, not a secret. And it is a ' +
         'software setting on essentially every device made.',
       cost: 'Zero security, and a maintenance list somebody has to keep. It is an inventory ' +
@@ -691,7 +691,7 @@
     {
       name: 'A guest network',
       claim: 'Visitors go on a separate network, so they cannot reach anything of mine.',
-      truth: 'True, but only if the guest network is actually isolated — client isolation on, ' +
+      truth: 'True, but only if the guest network is actually isolated - client isolation on, ' +
         'no route to the internal subnet, no access to the router’s admin interface. A second ' +
         'SSID bridged onto the same LAN is a second door into the same room.',
       cost: 'Genuinely worth doing when it is configured properly, and it is the right home for ' +
@@ -704,7 +704,7 @@
       truth: 'On WPA2-PSK the passphrase is the only input to the PMK that an attacker has to ' +
         'guess, and the captured handshake gives them an unlimited, unobserved way to guess it. ' +
         'Everything else in the exchange is public. Length and randomness are the entire ' +
-        'defence — a dictionary word with digits on the end is not a long passphrase, it is a ' +
+        'defence - a dictionary word with digits on the end is not a long passphrase, it is a ' +
         'short one written awkwardly.',
       cost: 'The single highest-value change on this list, and it takes one minute.',
       score: 'help'
@@ -713,7 +713,7 @@
       name: 'WPA3, with transition mode off',
       claim: 'Turning WPA3 on is enough.',
       truth: 'Transition mode keeps a WPA2 handshake available on the same SSID so older ' +
-        'devices can still join — and that handshake is exactly the offline target WPA3 exists ' +
+        'devices can still join - and that handshake is exactly the offline target WPA3 exists ' +
         'to remove. With it on, the network is as guessable as it was before for anyone who ' +
         'simply asks for WPA2.',
       cost: 'Turn it off once nothing on the network still needs it, and check what breaks ' +
@@ -761,8 +761,8 @@
       name: 'Where a VPN genuinely helps',
       body: 'It moves the question of who can see your destination metadata from the café’s ' +
         'router to the VPN provider. If the local network is the thing you have a specific ' +
-        'reason to distrust — an unfamiliar network, a hotel that injects adverts into plain ' +
-        'HTTP, a network whose operator you would rather not hand a browsing history — that is ' +
+        'reason to distrust - an unfamiliar network, a hotel that injects adverts into plain ' +
+        'HTTP, a network whose operator you would rather not hand a browsing history - that is ' +
         'a real improvement. It also defeats DNS manipulation at the local hop, and gives ' +
         'remote workers a route into a corporate network, which is what most corporate VPNs are ' +
         'actually for.',
@@ -775,7 +775,7 @@
         'browser fingerprinting, which is how you are actually tracked. It does not protect a ' +
         'device that is already compromised, does not stop phishing or malware, and does not ' +
         'add anything to a session that HTTPS has already encrypted. And it does not remove ' +
-        'trust — it moves it, to a company whose logging policy you cannot audit and whose ' +
+        'trust - it moves it, to a company whose logging policy you cannot audit and whose ' +
         'advertising says whatever it likes.',
       weight: 'The "hackers on public wifi will steal your bank details" pitch describes a ' +
         'threat that HTTPS closed years ago. Sold hard, mostly because it is easy to picture.',
@@ -785,7 +785,7 @@
       name: 'The honest order to do things in',
       body: 'Keep the device and browser updated. Let HTTPS do its job and never click through ' +
         'a certificate warning. Do not sign into anything on a page the network handed you. Use ' +
-        'mobile data or your own hotspot for anything that genuinely matters — it is cheaper ' +
+        'mobile data or your own hotspot for anything that genuinely matters - it is cheaper ' +
         'than a VPN and strictly better. Turn off automatic joining for open networks, and ' +
         'forget the network when you leave. Then, if you have a specific reason to hide your ' +
         'destinations from the local network, add a VPN.',
@@ -796,19 +796,19 @@
   ];
 
   var PUBLIC_TABLE = [
-    ['Reading your banking session', 'Yes — this is what it is for', 'Also yes, redundantly',
+    ['Reading your banking session', 'Yes - this is what it is for', 'Also yes, redundantly',
       'HTTPS. It already handled this'],
     ['Changing a page in flight', 'Yes, where the site uses HTTPS', 'Yes for the local hop',
       'HTTPS, plus HSTS so there is no plain-HTTP first request'],
-    ['Seeing which sites you visit', 'No — DNS, SNI and the IP addresses give it away',
+    ['Seeing which sites you visit', 'No - DNS, SNI and the IP addresses give it away',
       'Yes, from the local network. The provider sees it instead',
       'Encrypted DNS, and a VPN if the local network is who you are hiding from'],
     ['Injecting adverts into plain HTTP', 'Yes, if the site is HTTPS at all', 'Yes',
       'HTTPS everywhere; the injection only works on what is left'],
-    ['A fake sign-in page on a portal', 'Partly — the address bar is the tell',
+    ['A fake sign-in page on a portal', 'Partly - the address bar is the tell',
       'No. You typed it in yourself', 'Not typing credentials into a page the network opened'],
     ['Malware already on your device', 'No', 'No', 'Updates, and not installing it'],
-    ['Tracking you across sites', 'No', 'No — cookies and logins do not care about your IP',
+    ['Tracking you across sites', 'No', 'No - cookies and logins do not care about your IP',
       'Browser settings and account hygiene, not the network'],
     ['Your ISP building a profile of you', 'No', 'Yes, for that hop',
       'A VPN. This is its strongest genuine use']
@@ -1007,7 +1007,7 @@
     var g = group('Reading this');
     g.appendChild(E('p', 'oa-hint',
       'Step forward one generation at a time. Each panel says what that generation fixed, what ' +
-      'it still leaks, and roughly when it stopped being adequate — which is usually years ' +
+      'it still leaks, and roughly when it stopped being adequate - which is usually years ' +
       'before anybody stopped deploying it.'));
     g.appendChild(E('p', 'oa-hint',
       'The dates are when each was usable in practice, not when the standard was ratified. ' +
@@ -1066,7 +1066,7 @@
   };
   GenerationsFamily.prototype.note = function (idx) {
     var gen = GENERATIONS[Math.min(idx, GENERATIONS.length - 1)];
-    return gen.name + ' — ' + gen.verdictText;
+    return gen.name + ' - ' + gen.verdictText;
   };
   GenerationsFamily.prototype.compare = function () {
     return {
@@ -1075,17 +1075,17 @@
         'Use it today'],
       rows: [
         { key: 'wep', cells: ['WEP', 'RC4 + CRC-32', 'One key for everyone',
-          'Not needed — the key falls out of ordinary traffic', 'No'] },
+          'Not needed - the key falls out of ordinary traffic', 'No'] },
         { key: 'wpa', cells: ['WPA / TKIP', 'RC4 + Michael', 'One passphrase',
           'Yes, plus weaknesses in the cipher itself', 'No'] },
         { key: 'wpa2', cells: ['WPA2-PSK', 'AES-CCMP', 'One passphrase',
-          'Yes — one exchange, unlimited guesses, nothing sent to the network',
+          'Yes - one exchange, unlimited guesses, nothing sent to the network',
           'Only with a long random passphrase'] },
-        { key: 'ent', cells: ['WPA2-Enterprise', 'AES-CCMP', 'None — per user',
+        { key: 'ent', cells: ['WPA2-Enterprise', 'AES-CCMP', 'None - per user',
           'No passphrase to guess, but a client that skips certificate checks can be fooled',
           'Yes, if client config is enforced'] },
         { key: 'wpa3', cells: ['WPA3-SAE', 'AES-CCMP / GCMP', 'One password',
-          'No — each guess costs one live exchange the access point can refuse',
+          'No - each guess costs one live exchange the access point can refuse',
           'Yes, with transition mode off'] }
       ]
     };
@@ -1108,8 +1108,8 @@
   }
   HandshakeFamily.prototype.algoOptions = function () {
     return [
-      { key: 'wpa2', label: 'WPA2 — the four-way handshake' },
-      { key: 'wpa3', label: 'WPA3 — SAE, the dragonfly exchange' }
+      { key: 'wpa2', label: 'WPA2 - the four-way handshake' },
+      { key: 'wpa3', label: 'WPA3 - SAE, the dragonfly exchange' }
     ];
   };
   HandshakeFamily.prototype.buildPanel = function (host, onChange) {
@@ -1137,7 +1137,7 @@
       'That ratio is the whole vulnerability, and it is why the passphrase carries the entire ' +
       'network.'));
     g2.appendChild(E('p', 'oa-hint',
-      'Then switch to SAE and watch the same panel. The values on the air stay public — they ' +
+      'Then switch to SAE and watch the same panel. The values on the air stay public - they ' +
       'are just no longer enough to test a guess against.'));
     host.appendChild(g2);
   };
@@ -1183,8 +1183,8 @@
     clear(this.deriveHost);
     var box = E('div', 'ws-derive');
     box.appendChild(E('p', 'ws-derive-title',
-      model.mode === 'wpa2' ? 'Deriving the PTK — every input, and who can see it'
-                            : 'Deriving the session key — every input, and who can see it'));
+      model.mode === 'wpa2' ? 'Deriving the PTK - every input, and who can see it'
+                            : 'Deriving the session key - every input, and who can see it'));
     model.inputs.forEach(function (input) {
       var row = E('div', 'ws-in' + (input.at > cur ? ' pending' : ''));
       row.appendChild(E('span', 'ws-in-tag ' + (input.secret ? 'sec' : 'pub'),
@@ -1207,7 +1207,7 @@
     box.appendChild(outs);
     box.appendChild(E('p', 'ws-illus',
       'The hex above is an illustrative fingerprint, not a key. This page performs no ' +
-      'cryptography and computes no real PMK, nonce or MIC — the values exist only so that ' +
+      'cryptography and computes no real PMK, nonce or MIC - the values exist only so that ' +
       'changing the network name visibly changes what depends on it. The structure, the sizes ' +
       'and the roles are the real ones.'));
     this.deriveHost.appendChild(box);
@@ -1227,7 +1227,7 @@
   HandshakeFamily.prototype.note = function (idx) {
     var model = this.model;
     var f = model.frames[Math.min(idx, model.frames.length - 1)];
-    return f.title + ' — ' + f.body;
+    return f.title + ' - ' + f.body;
   };
   HandshakeFamily.prototype.compare = function () {
     return {
@@ -1239,7 +1239,7 @@
         { key: 'cost', cells: ['What one password guess costs an attacker',
           'A fraction of a second on their own hardware', 'Not applicable',
           'One live exchange the access point can refuse'] },
-        { key: 'fs', cells: ['Forward secrecy', 'None — old recordings become readable',
+        { key: 'fs', cells: ['Forward secrecy', 'None - old recordings become readable',
           'Per session', 'Yes, from fresh random values'] },
         { key: 'sep', cells: ['Can one client derive another’s keys?',
           'Yes, if it knows the passphrase', 'No', 'No'] },
@@ -1284,7 +1284,7 @@
     var g2 = group('Try both');
     g2.appendChild(E('p', 'oa-hint',
       'Switch between the two modes. The interesting result is that a network with a ' +
-      'passphrase defends itself — the impostor cannot complete the handshake — so the attack ' +
+      'passphrase defends itself - the impostor cannot complete the handshake - so the attack ' +
       'moves to open networks and to naming instead. That is worth knowing before you join ' +
       'anything without a lock icon.'));
     host.appendChild(g2);
@@ -1341,7 +1341,7 @@
       portal.setAttribute('aria-hidden', 'true');
       var bar = E('div', 'ws-portal-bar');
       bar.appendChild(E('span', 'ws-portal-dot'));
-      bar.appendChild(E('span', 'ws-portal-url', 'http://192.0.2.1/login — no padlock, bare address'));
+      bar.appendChild(E('span', 'ws-portal-url', 'http://192.0.2.1/login - no padlock, bare address'));
       portal.appendChild(bar);
       var inner = E('div', 'ws-portal-in');
       inner.appendChild(E('p', 'ws-portal-title', 'Sign in to continue'));
@@ -1372,7 +1372,7 @@
   };
   EvilTwinFamily.prototype.note = function (idx) {
     var stage = this.stages[Math.min(idx, this.stages.length - 1)];
-    return stage.title + ' — ' + stage.tell;
+    return stage.title + ' - ' + stage.tell;
   };
   EvilTwinFamily.prototype.compare = function () {
     return {
@@ -1461,7 +1461,7 @@
   };
   RealityFamily.prototype.note = function (idx) {
     var r = this.rows[Math.min(idx, this.rows.length - 1)];
-    return r.name + ' — ' + (this.algoKey === 'public' ? r.weight : r.cost);
+    return r.name + ' - ' + (this.algoKey === 'public' ? r.weight : r.cost);
   };
   RealityFamily.prototype.compare = function () {
     return {

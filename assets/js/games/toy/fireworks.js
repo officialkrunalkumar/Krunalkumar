@@ -1013,7 +1013,7 @@
         var on = clock < finaleUntil;
         finaleBtn.setAttribute('aria-pressed', String(on));
         finaleBtn.title = on
-          ? 'Finale running — everything at once for a few more seconds'
+          ? 'Finale running - everything at once for a few more seconds'
           : 'Finale: empty the rack';
       }
 

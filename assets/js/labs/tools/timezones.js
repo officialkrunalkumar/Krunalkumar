@@ -682,7 +682,7 @@
       li.appendChild(timeLine);
 
       li.appendChild(mk('p', 'tz-read-date', longDate(f.a) +
-        (f.dayDelta ? ' — ' + dayPhrase(f.dayDelta) + cityOf(anchorId) : '')));
+        (f.dayDelta ? ' - ' + dayPhrase(f.dayDelta) + cityOf(anchorId) : '')));
 
       var zoneName = longName(f.zone.id, f.from);
       li.appendChild(mk('p', 'tz-read-zone',
@@ -694,7 +694,7 @@
 
       if (f.changes.length) {
         li.appendChild(mk('p', 'tz-read-warn',
-          'The clocks change during this slot here — ' +
+          'The clocks change during this slot here - ' +
           offsetLabel(f.changes[0].before) + ' becomes ' + offsetLabel(f.changes[0].after) +
           '. The meeting is still ' + minutesLabel(durationMin) + ' long in real time, but ' +
           'the local clock will not agree.'));
@@ -770,7 +770,7 @@
         var where = (tr.at > win.start && tr.at < win.end)
           ? 'inside this window' : 'at the very edge of this window';
         out.line('');
-        out.warn(z.id + ' — clocks change ' + where);
+        out.warn(z.id + ' - clocks change ' + where);
         // Labelled "offset" and not "at": the row carries the two offsets, and
         // "at UTC+00:00 becomes UTC+01:00" reads as though the first one were
         // the time the change happened. The times are the two rows below.
@@ -831,7 +831,7 @@
         out.row('closest it gets', clock(bs) + ' to ' +
           endClock(wall(best.to, offsetOf(bm, Math.max(best.from, best.to - 1))), bs) +
           '  in ' + cityOf(anchorId));
-        out.row('working then', best.count + ' of ' + zones.length + ' — ' + best.inside.join(', '));
+        out.row('working then', best.count + ' of ' + zones.length + ' - ' + best.inside.join(', '));
         out.row('outside their hours', best.outside.join(', '));
         out.dim('That is the least bad stretch on this grid, not a recommendation.');
         out.dim('Somebody named on that last line is being asked to work outside');
@@ -1057,7 +1057,7 @@
     out.ok('Saved proposed-meeting.ics with DTSTART ' + icsStamp(slotStart) + '.');
     out.dim('That is a UTC instant, so any calendar will render it in the correct');
     out.dim('local time for whoever opens it. Nothing was sent and no attendee');
-    out.dim('was added — the file is a draft on your machine.');
+    out.dim('was added - the file is a draft on your machine.');
   }
 
   /* ======================================================================
@@ -1198,7 +1198,7 @@
       var g = document.createElement('optgroup');
       g.label = group[0];
       group[1].forEach(function (item) {
-        var o = mk('option', '', item[0] + ' — ' + item[1]);
+        var o = mk('option', '', item[0] + ' - ' + item[1]);
         o.value = item[1];
         g.appendChild(o);
       });

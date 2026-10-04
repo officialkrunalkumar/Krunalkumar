@@ -229,7 +229,7 @@
             'not "' + ops[p].raw + '".');
         }
         if (kind === 'val' && t === 'mem') {
-          return fail(i, mnem + ' cannot read memory directly. LD it into a register first — that is what ' +
+          return fail(i, mnem + ' cannot read memory directly. LD it into a register first - that is what ' +
             'makes this a load/store machine.');
         }
         if (kind === 'val' && t === 'label') {
@@ -492,7 +492,7 @@
       mode: 'reg',
       sig: 'R0 holds n, anywhere from -9999 to 9999. Leave the size of n in R0, with the sign thrown away.',
       brief: 'The whole set is here from the start, so the first two levels are about the shape of the thing ' +
-        'rather than about cleverness. A conditional jump reads a flag somebody else set — usually CMP.',
+        'rather than about cleverness. A conditional jump reads a flag somebody else set - usually CMP.',
       starter: '; CMP a, b sets the flag to a minus b.\n' +
         '; JG jumps when the flag came out positive.\n',
       show: [0, 2],
@@ -512,7 +512,7 @@
       mode: 'reg',
       sig: 'R0 and R1 hold two numbers. Leave the smaller of them in R0. If they are equal, that value is the answer.',
       brief: 'Same shape as the first, pointing the other way. Watch which register you are comparing against ' +
-        'which — CMP R0, R1 and CMP R1, R0 set opposite flags and read identically at a glance.',
+        'which - CMP R0, R1 and CMP R1, R0 set opposite flags and read identically at a glance.',
       starter: '; JL jumps when the flag came out negative.\n',
       show: [0, 3],
       tests: [
@@ -553,7 +553,7 @@
       name: 'Count the set bits',
       mode: 'reg',
       sig: 'R0 holds n, from 0 to 65535. Leave the number of 1 bits in its binary form in R0.',
-      brief: 'There is no AND and no shift on this machine, so the bits have to be got at with MOD 2 and DIV 2 — ' +
+      brief: 'There is no AND and no shift on this machine, so the bits have to be got at with MOD 2 and DIV 2 - ' +
         'which is what a shift is, at six times the price. That price is the lesson: this is why every bit ' +
         'twiddling trick in the book exists.',
       starter: '; MOD 2 gives you the bottom bit. DIV 2 throws it away.\n' +
@@ -625,7 +625,7 @@
       sig: 'R0 holds n, from 2 to 1500. Leave 1 in R0 if n is prime and 0 if it is not.',
       brief: 'THIS IS THE LEVEL WHERE THE TWO NUMBERS DISAGREE. Trial division by everything below n is the ' +
         'shortest program there is. Stopping once the divisor squared has passed n costs two more instructions ' +
-        'and does a small fraction of the work — both figures are measured below rather than claimed here, so ' +
+        'and does a small fraction of the work - both figures are measured below rather than claimed here, so ' +
         'the size of the gap is the machine\'s answer and not mine. Par is the short one, because length is the ' +
         'score, but the cycle figure beside it is what a real processor would actually be paying.',
       starter: '; Try every divisor from 2 upwards.\n' +
@@ -656,7 +656,7 @@
       mode: 'mem',
       sig: 'R0 holds n, from 0 to 15. For each i from 1 to n, write a code into cell i-1: 0 when i divides by ' +
         '15, 1 when it divides by 3, 2 when it divides by 5, and 3 otherwise.',
-      brief: 'Fizzbuzz with the words taken out, because this machine has no strings — and what is left is the ' +
+      brief: 'Fizzbuzz with the words taken out, because this machine has no strings - and what is left is the ' +
         'part of fizzbuzz that was ever interesting, which is the order the tests go in. Check 15 first or the ' +
         'threes will swallow it. This is also the level where PUSH and POP pay: four registers is one short of ' +
         'what the obvious version wants.',
@@ -703,13 +703,13 @@
     'as <code>-3</code>, or a memory cell written <code>[6]</code> or <code>[R1]</code>. Only LD and ST take a ' +
     'memory operand: this is a load/store machine, so <code>ADD R0, [4]</code> is refused on purpose. Memory is ' +
     MEM_SIZE + ' cells and starts at zero. A label is a name with a colon after it, and everything after a ' +
-    '<code>;</code> is a comment. Labels and comments are free — only instructions are counted.</p>' +
+    '<code>;</code> is a comment. Labels and comments are free - only instructions are counted.</p>' +
     '<p class="asm-ref-note"><strong>The flag.</strong> One signed number, standing in for the zero and sign ' +
     'flags a real machine keeps apart. ADD, SUB, MUL, DIV, MOD, DJNZ and CMP all leave their result in it. ' +
     'MOV, LD, ST, PUSH and POP do not touch it.</p>' +
     '<p class="asm-ref-note"><strong>Why CALL is here and never used.</strong> None of the eight par programs ' +
     'calls a subroutine, because on programs this short the call and the return cost more than repeating the ' +
-    'body. That is not a flaw in the instruction — it is the same arithmetic that makes a compiler inline a ' +
+    'body. That is not a flaw in the instruction - it is the same arithmetic that makes a compiler inline a ' +
     'small function, and it is easier to believe once you have tried to golf with it.</p>';
 
   /* Measure a reference program: its length and what it costs on the hidden
@@ -1038,7 +1038,7 @@
 
       function paintLevel() {
         var lv = LEVELS[at];
-        el.title.textContent = 'Level ' + (at + 1) + ' of ' + LEVELS.length + ' — ' + lv.name;
+        el.title.textContent = 'Level ' + (at + 1) + ' of ' + LEVELS.length + ' - ' + lv.name;
         el.brief.textContent = lv.brief;
         el.sig.textContent = lv.sig;
         el.par.textContent = parLine();
@@ -1235,7 +1235,7 @@
             score: tally.sum,
             title: 'All eight written',
             message: tally.sum + ' instructions in total against a par of ' + parTotal() + ', costing ' +
-              tally.cycles + ' cycles. Length is the score here, so the lower number is the better one — ' +
+              tally.cycles + ' cycles. Length is the score here, so the lower number is the better one - ' +
               'and the cycle figure is the price you did not pay for it.'
           });
         }

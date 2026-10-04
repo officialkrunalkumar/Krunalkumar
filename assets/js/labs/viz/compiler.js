@@ -145,7 +145,7 @@
             if (esc === 'n') buf += '\n';
             else if (esc === 't') buf += '\t';
             else if (esc === '"' || esc === '\\') buf += esc;
-            else fail('lexer', '\\' + esc + ' is not an escape this language knows — it has \\n, \\t, \\" and \\\\',
+            else fail('lexer', '\\' + esc + ' is not an escape this language knows - it has \\n, \\t, \\" and \\\\',
                       i, line, i - lineStart + 1, 2);
             i += 2;
             continue;
@@ -263,7 +263,7 @@
       var body = [];
       while (!check('op', '}') && !check('eof')) body.push(statement());
       if (!check('op', '}')) {
-        at(peek(), 'this block is never closed — the "{" on line ' + start.line + ' has no "}"');
+        at(peek(), 'this block is never closed - the "{" on line ' + start.line + ' has no "}"');
       }
       p++;
       return mk('Block', start, { body: body });
@@ -457,8 +457,8 @@
 
   function nodeLabel(node) {
     switch (node.type) {
-      case 'Program': return 'program — ' + node.body.length + ' top-level statements';
-      case 'Block': return 'block { } — ' + node.body.length + ' statements';
+      case 'Program': return 'program - ' + node.body.length + ' top-level statements';
+      case 'Block': return 'block { } - ' + node.body.length + ' statements';
       case 'FnDecl': return 'fn ' + node.name + '(' + node.params.map(function (x) { return x.name; }).join(', ') + ')';
       case 'Let': return 'let ' + node.name;
       case 'Print': return 'print';
@@ -962,7 +962,7 @@
                  (target.arity === 1 ? '' : 's') + ', but was called with ' + argc);
             }
             if (frames.length >= MAX_CALL_DEPTH) {
-              rt('call stack overflow at ' + MAX_CALL_DEPTH + ' frames — a recursion with ' +
+              rt('call stack overflow at ' + MAX_CALL_DEPTH + ' frames - a recursion with ' +
                  'no reachable base case looks exactly like this');
             }
             frames.push({ fn: callee.fn, ip: 0, base: calleeAt + 1 });
@@ -1456,7 +1456,7 @@
   }
 
   function chunkTitle(f) {
-    if (f.index === 0) return 'chunk  main — the top-level script';
+    if (f.index === 0) return 'chunk  main - the top-level script';
     return 'chunk  fn ' + f.name + '(' + f.params.join(', ') + ')';
   }
 
@@ -1511,7 +1511,7 @@
     var width = String(lines.length).length;
 
     box.appendChild(E('p', 'cx-errhead',
-      stageName(e.stage) + ' error — line ' + e.line + ', column ' + e.col));
+      stageName(e.stage) + ' error - line ' + e.line + ', column ' + e.col));
 
     function srcRow(n, cls) {
       if (n < 0 || n >= lines.length) return;
@@ -1654,7 +1654,7 @@
     g.appendChild(E('p', 'oa-hint',
       'Numbers, strings, let, assignment, arithmetic with the usual precedence, comparisons, ' +
       'if / else, while, fn with parameters and recursion, print, and // comments. Functions are ' +
-      'declared at the top level and see only their own parameters and locals — there are no closures.'));
+      'declared at the top level and see only their own parameters and locals - there are no closures.'));
     host.appendChild(g);
 
     var g2 = group('Example programs');
@@ -1775,7 +1775,7 @@
       } else {
         this.tok.body.appendChild(E('p', 'cx-empty', 'The lexer stopped here, so there is no token stream.'));
       }
-      this.tree.body.appendChild(E('p', 'cx-empty', 'No tree — the parser never finished one.'));
+      this.tree.body.appendChild(E('p', 'cx-empty', 'No tree - the parser never finished one.'));
       this.code.body.appendChild(E('p', 'cx-empty', 'No bytecode. Nothing is emitted until the tree is complete.'));
       return;
     }
@@ -1882,7 +1882,7 @@
       case 'POP': return 'POP discards the top of the stack.';
       case 'GET_LOCAL':
         return 'GET_LOCAL ' + ins.a + ' copies slot ' + ins.a + ' of the current frame onto the ' +
-          'top of the stack. A local variable is not stored anywhere else — the slot IS the ' +
+          'top of the stack. A local variable is not stored anywhere else - the slot IS the ' +
           'variable, at a fixed offset from this frame’s base.';
       case 'SET_LOCAL':
         return 'SET_LOCAL ' + ins.a + ' writes the top of the stack into slot ' + ins.a +
@@ -1915,7 +1915,7 @@
       case 'CALL':
         return 'CALL ' + ins.a + ' pushes a new frame. The callee and its ' + ins.a + ' argument' +
           (ins.a === 1 ? '' : 's') + ' are already on the stack, and the new frame’s base is ' +
-          'set to the first argument — so slot 0 of the callee is that argument, with nothing copied.';
+          'set to the first argument - so slot 0 of the callee is that argument, with nothing copied.';
       case 'RET':
         return 'RET pops the return value, throws away everything this frame owned including the ' +
           'callee slot, and pushes the value where the callee used to be. The caller finds it ' +
@@ -1988,7 +1988,7 @@
     this.vm = vmOf(b);
     if (this.vm.fatal) {
       this.error = 'The virtual machine stopped unexpectedly: ' + this.vm.fatal +
-        '. That is a bug in this page rather than in your program — please tell me what you ran.';
+        '. That is a bug in this page rather than in your program - please tell me what you ran.';
       return 1;
     }
     if (this.vm.error) this.error = 'Runtime error: ' + this.vm.error.message;
@@ -2096,7 +2096,7 @@
       if (live) keepVisible(self.frames.body, el);
     });
     if (!entry.frames.length) {
-      this.frames.body.appendChild(E('p', 'cx-empty', 'No frames left — the program is over.'));
+      this.frames.body.appendChild(E('p', 'cx-empty', 'No frames left - the program is over.'));
     }
     this.frames.meta.textContent = entry.frames.length + ' deep';
 
@@ -2155,7 +2155,7 @@
 
     if (entry.error) {
       return 'The machine stopped: ' + entry.error.message + '. The call frames beside the stack ' +
-        'are the ones that were open at that instant, innermost last — which is exactly what a ' +
+        'are the ones that were open at that instant, innermost last - which is exactly what a ' +
         'stack trace in any language is printing when it prints one.';
     }
     if (entry.limit) {

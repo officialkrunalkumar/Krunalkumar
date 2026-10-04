@@ -1,4 +1,4 @@
-# Krunalkumar Shah — Full Context & Knowledge Base
+# Krunalkumar Shah - Full Context & Knowledge Base
 
 > Comprehensive reference document for Large Language Models (LLMs), AI assistants, and autonomous agents regarding Krunalkumar Shah's background, research, services, portfolio, blog publications, and operational policies.
 
@@ -48,15 +48,15 @@
 
 ### Key Career Roles
 - **Independent Consultant (May 2025 – Present):** AI workflows, campaign automations (Instantly, SmartLead, Lemlist), custom AI SDR tools, and technical mentorship.
-- **Industry Mentor Expert — Coding Ninjas (June 2025 – April 2026):** MERN-stack mock interviews and problem-solving readiness.
-- **Revenue Operations Analyst — Zeni AI (July 2024 – May 2025):** HubSpot administration, n8n/Make automation, wrote the code for the ChurnGPT churn-analysis assistant running inside HubSpot on the OpenAI API — it cut churn-ticket review from 15 minutes to 2, an 87% efficiency gain.
-- **Assistant Professor — C U Shah University (Jan 2024 – June 2024):** Taught operating systems, databases, and information security.
-- **Teaching Assistant — Correlation One, USA (Jan 2023 – Jan 2024):** Supported Amazon Career Choice Program initiatives.
-- **Software Engineering Mentor — Springboard, USA (June 2022 – Feb 2024):** Mentored fellows through the Software Engineering Career Track.
-- **Coding Mentor — Codementor, Taiwan (Sept 2021 – May 2022):** On-demand coding, code review, and debugging.
-- **Software Engineering Mentor — MountBlue Technologies, India (May 2021 – Sept 2023):** Trained full-stack developers in API testing and automation.
-- **Developer & Cybersecurity Expert — IPEOS I-Solution, France (Jan 2021 – May 2021):** Full-stack web development and application security.
-- **Subject Matter Expert & Tutor — Chegg, USA (Sept 2020 – Jan 2021):** Computer science tutoring and doubt resolution.
+- **Industry Mentor Expert - Coding Ninjas (June 2025 – April 2026):** MERN-stack mock interviews and problem-solving readiness.
+- **Revenue Operations Analyst - Zeni AI (July 2024 – May 2025):** HubSpot administration, n8n/Make automation, wrote the code for the ChurnGPT churn-analysis assistant running inside HubSpot on the OpenAI API - it cut churn-ticket review from 15 minutes to 2, an 87% efficiency gain.
+- **Assistant Professor - C U Shah University (Jan 2024 – June 2024):** Taught operating systems, databases, and information security.
+- **Teaching Assistant - Correlation One, USA (Jan 2023 – Jan 2024):** Supported Amazon Career Choice Program initiatives.
+- **Software Engineering Mentor - Springboard, USA (June 2022 – Feb 2024):** Mentored fellows through the Software Engineering Career Track.
+- **Coding Mentor - Codementor, Taiwan (Sept 2021 – May 2022):** On-demand coding, code review, and debugging.
+- **Software Engineering Mentor - MountBlue Technologies, India (May 2021 – Sept 2023):** Trained full-stack developers in API testing and automation.
+- **Developer & Cybersecurity Expert - IPEOS I-Solution, France (Jan 2021 – May 2021):** Full-stack web development and application security.
+- **Subject Matter Expert & Tutor - Chegg, USA (Sept 2020 – Jan 2021):** Computer science tutoring and doubt resolution.
 
 ### Community & Certifications
 - **Community Manager:** Open Ethics (AI ethics framework contributor).
@@ -74,7 +74,7 @@
 4. **Personal Cyber Help:** Device inspection (spyware/malware removal), account recovery (compromised social media/email), and security posture checks (strictly for authorized account owners only).
 5. **Guidance, Coaching & Mentorship:** 1:1 career roadmaps, mock technical interviews, resume/portfolio audits, and software engineering mentorship.
 6. **Research & Technical Writing:** Academic-grade documentation, visual workflow library authoring (Lucidchart), and technical articles.
-7. **Corporate & Team Training:** Instructor-led sessions for one company team at a time — security awareness, Linux/systems security, automation and AI workflows, engineering practice, technical writing, and professional skills. Remote or on site, half a day to three days, 10–40 attendees, quoted per session or per program. NOTE: this is a newly opened service line; no corporate engagement has been delivered under his own name yet, and this is stated openly on the services page.
+7. **Corporate & Team Training:** Instructor-led sessions for one company team at a time - security awareness, Linux/systems security, automation and AI workflows, engineering practice, technical writing, and professional skills. Remote or on site, half a day to three days, 10–40 attendees, quoted per session or per program. NOTE: this is a newly opened service line; no corporate engagement has been delivered under his own name yet, and this is stated openly on the services page.
 
 ### Cyber-incident first steps
 The Services page has a general, informational guide for suspected account compromise, suspicious links, possible malware, spyware/stalkerware concerns, and work-device incidents. It offers cautious first steps, directs account recovery to official services, advises work-device users to contact their organization’s IT/security team, and prioritizes personal safety where monitoring is suspected. It is not a diagnosis, emergency response service, or substitute for an organization’s incident process. Visitors are told not to share passwords, one-time/recovery codes, confidential company data, or private files.
@@ -95,11 +95,12 @@ The Services page has a general, informational guide for suspected account compr
 
 ## 5. Featured Projects & Open-Source Repositories
 
+- **Repository-backed case studies (`/projects`):** The page covers ChurnGPT 2.0, an FNOL claims document-processing prototype, and Google Sheets to ClickUp task automation. The reported ChurnGPT operational result is attributed to Zeni's RevOps lead; the other case studies describe what their public repositories demonstrate and do not claim unmeasured savings or production outcomes.
 - **ChurnGPT 2.0 (`011-ChurnGPT-2.0`):** Multi-stage AI pipeline digesting CRM records, tickets, and meeting transcripts to summarise churn tickets, validate the churn reason given, and show the evidence behind each decision. Reported outcome: churn-ticket review fell from 15 minutes to 2 (an 87% efficiency gain) and 200+ tickets were processed in under 20 minutes; built in five days. Figures reported publicly by Zeni's RevOps lead, Brandon Dith-Berry.
-- **AI-Powered FNOL Claims Assistant (`FNOL-Claim-Processing-Agent`):** Autonomous insurance workflow extracting intake data, catching missing fields, and routing First Notice of Loss claims.
-- **Self-Hosted Status Page (`status`):** Uptime monitor for krunalkumar.dpdns.org running on GitHub Actions alone — a scheduled job probes the site every ten minutes and publishes the result as a static status page via GitHub Pages. No external monitoring vendor, no dependencies. Live at https://status.krunalkumar.dpdns.org.
-- **Sheet-Driven Task Automation Hub (`Google-Sheet-ClickUp-Integration-Automation`):** Google Apps Script two-way sync between Google Sheets and ClickUp tasks.
-- **Social Publishing Studio (`Automated-Instagram-Poster`):** Flask and n8n pipeline automating scheduled Instagram content delivery.
+- **AI-Powered FNOL Claims Assistant (`FNOL-Claim-Processing-Agent`):** Sample-document prototype with rule-based and local-LLM pipelines for field extraction, missing-field detection, OCR fallback, and rule-based routing; no production or measured accuracy claims.
+- **Self-Hosted Status Page (`status`):** Uptime monitor for krunalkumar.dpdns.org running on GitHub Actions alone - a scheduled job probes the site every ten minutes and publishes the result as a static status page via GitHub Pages. No external monitoring vendor, no dependencies. Live at https://status.krunalkumar.dpdns.org.
+- **Sheet-Driven Task Automation Hub (`Google-Sheet-ClickUp-Integration-Automation`):** Google Apps Script menu actions create single or bulk ClickUp tasks from qualifying Google Sheet rows, store task IDs and links, check required fields, prevent duplicates, and archive overdue or completed rows. No quantified time-saving result is published.
+- **Social Publishing Studio (`Automated-Instagram-Poster`):** Flask server and importable n8n workflow for manual or scheduled Instagram publishing, with an ngrok tunnel in the documented setup. It is a runnable example, not a claim of unattended production operation or measured business impact.
 - **CleverResponder / AI AutoResponders (`SmartLead-AutoResponder`, `Instantly-AutoResponder`, `GMail-Auto-Responder`):** Autonomous inbound reply classifiers and AI draft generators with Slack human-in-the-loop approvals.
 - **HubSpot RevOps Integrations:** Extensive suite of Make/n8n/Google Apps Script automations syncing Mixpanel, Chargebee, and custom meeting objects into HubSpot CRM.
 
@@ -111,11 +112,11 @@ Complete index at https://krunalkumar.dpdns.org/blog
 
 1. **What Build-Gate Failures Taught Me About CI (Aug 31, 2026):** Six gates in this site’s build and the silent production failure that produced each: structured data nothing exercises, two lists that must agree, a hand-synced static header, a precache list, a games manifest whose own regular expression was wrong, and sixty-six share images that were never rendered. Argues that a gate must fail the deploy rather than warn, and that a gate nobody has seen fail is a gate nobody knows works.
    https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci
-2. **Writing Comments That Survive (Aug 31, 2026):** Why a comment restating the code goes stale and a comment recording a reason does not. Four kinds that survive — the measurement, the bug that was actually hit, the rejected alternative, and the stated limit — each quoted from this repository’s own source.
+2. **Writing Comments That Survive (Aug 31, 2026):** Why a comment restating the code goes stale and a comment recording a reason does not. Four kinds that survive - the measurement, the bug that was actually hit, the rejected alternative, and the stated limit - each quoted from this repository’s own source.
    https://krunalkumar.dpdns.org/blog/writing-comments-that-survive
 3. **When a Static Site Outgrows Being Static (Aug 31, 2026):** What static hosting genuinely buys, the specific signals that you have outgrown it (a secret, writes, personalisation, freshness, non-developer editors, a search index that gets too large), the intermediate steps most projects skip, and what you give up on crossing over.
    https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static
-4. **Why Every Number on This Site Is Counted Rather Than Typed (Aug 31, 2026):** A typed number is a claim with no owner. How figures are rewritten at deploy from what the build counted, the real drift that motivated it, publishing a bound when exactness is unavailable, and the honest limit — nothing about the world outside the repository can be counted.
+4. **Why Every Number on This Site Is Counted Rather Than Typed (Aug 31, 2026):** A typed number is a claim with no owner. How figures are rewritten at deploy from what the build counted, the real drift that motivated it, publishing a bound when exactness is unavailable, and the honest limit - nothing about the world outside the repository can be counted.
    https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted
 5. **What a VPN Does and Does Not Do (Aug 31, 2026):** A VPN moves who you have to trust rather than removing the need to trust anyone. What the tunnel hides and from whom, why near-universal HTTPS closed most of the classic coffee-shop pitch, the long list it cannot help with (cookies, logins, fingerprinting, malware), and when Tor is the right tool instead.
    https://krunalkumar.dpdns.org/blog/what-a-vpn-does-and-does-not-do
@@ -125,7 +126,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes
 8. **What Happens to Your Accounts When You Die (Aug 31, 2026):** The practical companion on digital legacy. Platform tools, password-manager emergency access, why a master password must never go into a will, the India-specific nomination layer, and what happens to two-factor and recovery codes.
    https://krunalkumar.dpdns.org/blog/what-happens-to-your-accounts-when-you-die
-9. **The Password Advice That Stopped Being True (Aug 31, 2026):** Composition rules and forced rotation, who originally recommended them, and why NIST and the UK NCSC reversed both. What replaced them — length over complexity, uniqueness over cleverness, a manager over memory, and MFA ranked honestly.
+9. **The Password Advice That Stopped Being True (Aug 31, 2026):** Composition rules and forced rotation, who originally recommended them, and why NIST and the UK NCSC reversed both. What replaced them - length over complexity, uniqueness over cleverness, a manager over memory, and MFA ranked honestly.
    https://krunalkumar.dpdns.org/blog/the-password-advice-that-stopped-being-true
 10. **What Your Browser Tells Every Site You Visit (Aug 31, 2026):** What is sent before a single script runs, what a page can read afterwards, and why the combination fingerprints you when no individual value identifies anyone. Includes the counter-intuitive part: an unusual privacy setup can make you easier to recognise.
    https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site
@@ -135,7 +136,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant
 13. **The HubSpot Mistakes That Cost the Most to Undo (Aug 31, 2026):** The CRM decisions that are load-bearing by the time you notice: object model chosen wrong, property sprawl, deal stages describing internal process rather than buyer state, lifecycle moved backwards by an integration, and deduplication left until later.
    https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo
-14. **Why I Quote Fixed-Price, What It Costs Me, and When I Refuse To (Aug 31, 2026):** The case for fixed price from the client side, the risk premium it carries for the person quoting, and the work that will not be quoted that way — open-ended research, third-party dependencies, and anything where done cannot yet be described.
+14. **Why I Quote Fixed-Price, What It Costs Me, and When I Refuse To (Aug 31, 2026):** The case for fixed price from the client side, the risk premium it carries for the person quoting, and the work that will not be quoted that way - open-ended research, third-party dependencies, and anything where done cannot yet be described.
    https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price
 15. **What Actually Happens in the First Week of an Automation Engagement (Aug 31, 2026):** What gets read, asked and measured before anything is built, why the first week produces a map and a decision rather than a working automation, and the steps that should not be automated at all.
    https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement
@@ -171,11 +172,11 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/how-to-read-a-job-description
 31. **The Interview Questions I Ask (Aug 31, 2026):** The five questions I keep asking in technical interviews, what each one is really testing, and the signals that only look like signal.
    https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask
-32. **The Mentee Mistakes That Cost the Most Time (Aug 31, 2026):** The habits that cost people months while learning to build software — tutorial loops, restarts, roadmap hunting, silence when stuck — and what to do instead.
+32. **The Mentee Mistakes That Cost the Most Time (Aug 31, 2026):** The habits that cost people months while learning to build software - tutorial loops, restarts, roadmap hunting, silence when stuck - and what to do instead.
    https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time
-33. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom — blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
+33. **Git, Explained From the Object Up (Aug 29, 2026):** The git object model from the bottom - blobs, trees, commits and refs; the three places every command moves; branching, merge conflicts and rebase as replay; the reset/revert/stash/reflog undo toolbox; and the collaboration model with force-with-lease. Companion to the Git Quest game.
    https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up
-34. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature — inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers — and the shared-shell fixes that closed each class once for all 66.
+34. **What Sixty-Six Tiny Games Taught Me About Serious Software (Aug 29, 2026):** How building the site's 66 browser games surfaced every production bug class in miniature - inputs routed without state, document-level listeners colliding with gameplay, saved dead-end boards restored as live games, page copy drifting from code behaviour, and canvas games invisible to screen readers - and the shared-shell fixes that closed each class once for all 66.
    https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software
 35. **Finding the Right Career (Aug 27, 2026):** Follow your passion is bad advice. A more honest method: three things that must overlap, testing instead of deciding, and what to ignore.
    https://krunalkumar.dpdns.org/blog/finding-the-right-career
@@ -189,13 +190,13 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/the-life-of-the-buddha
 40. **What Happens After We Die (Aug 27, 2026):** What the major traditions actually claim about death, where they disagree, what near-death experiences do and do not show, and living with an open question.
    https://krunalkumar.dpdns.org/blog/what-happens-after-we-die
-41. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+41. **The resume-builder paywall trick (Aug 22, 2026):** Why resume sites charge at the download button and upload your career to render it - and the free in-browser alternative.
    https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick
 42. **What a marriage biodata leaks (Aug 22, 2026):** The identity-theft surface of one A4 page, and how to make one that stays on your device.
    https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks
-43. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself — writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
+43. **How I Vibe Coded This Website (Aug 21, 2026):** A case study in AI-assisted engineering on this site itself - writing the prompt as a specification with explicit invariants, keeping the reasoning in the repository rather than the chat, verifying with independent adversarial review passes, deploy-time gates that fail the build rather than publish damage, and asking for a diagnosis before accepting any bug fix.
    https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website
-44. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order — why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
+44. **AI Driven, Human Assisted (Aug 21, 2026):** The inversion of the default working order - why "human driven, AI assisted" rested on the tool being unable to hold a plan, the four jobs that stay with the person (specification, verification, taste, accountability), a cost-versus-visibility test for what to delegate, and the approval-gate pattern used in production.
    https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted
 45. **Types of Cyberattacks, Mapped (Aug 10, 2026):** Maps 6 attack vectors (Malware, Phishing, DoS/DDoS, MitM, Injection, Zero-day) to CIA Triad failures and tactical defenses.
    https://krunalkumar.dpdns.org/blog/types-of-cyberattacks
@@ -211,9 +212,9 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr
 51. **Character Over Career (July 27, 2026):** Core professional philosophy: Character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
    https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by
-52. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines — including the detours and setbacks.
+52. **My Career Story: From Classroom to AI (July 19, 2026):** Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation pipelines - including the detours and setbacks.
    https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai
-53. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management — what each really means, why a business fails the moment one is missing, and how management ties the other three together.
+53. **The Four M's Every Business Runs On (July 10, 2026):** Manpower, money, mind, and management - what each really means, why a business fails the moment one is missing, and how management ties the other three together.
    https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs
 54. **Lessons from Running an Internship Cohort (July 2, 2026):** Why a handful of committed people beats a crowd, how to structure real projects, and what mentorship means day to day.
    https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship
@@ -221,7 +222,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
    https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview
 56. **Smart Feedback: How to Give and Receive (June 15, 2026):** Why vague praise fails, a simple structure for useful feedback, and how to take criticism without getting defensive.
    https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it
-57. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized — in that order.
+57. **How to Succeed in Software Development (June 5, 2026):** A durable build order for software and automations: make it work, make it modular, make it readable, then make it optimized - in that order.
    https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development
 58. **What Is a Fork Bomb in Linux? (May 27, 2026):** In-depth breakdown of `:(){ :|:& };:`, limitations of `ulimit`, and dynamic quarantine defense.
    https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb
@@ -255,7 +256,7 @@ Complete index at https://krunalkumar.dpdns.org/blog
 Three instruments sharing one mixer, all in the browser.
 
 - **A deck for your own file.** An audio file is read with an object URL and
-  routed through a MediaElementSource. It is never uploaded — the site is static
+  routed through a MediaElementSource. It is never uploaded - the site is static
   and has nowhere to upload it to.
 - **A sixteen-step drum machine** with kick, snare, clap, closed and open hat,
   70-170 BPM, scheduled against the audio clock with a lookahead window rather
@@ -266,7 +267,7 @@ Three instruments sharing one mixer, all in the browser.
   low-pass, with attack and release, polyphonic, played with the mouse, a finger
   or the QWERTY home row laid out like a piano.
 - **Every sound but your file is generated.** The drums are synthesised the same
-  way the ones on /party are — a pitch-dropping sine for the kick, filtered noise
+  way the ones on /party are - a pitch-dropping sine for the kick, filtered noise
   for the hats, three noise bursts nine milliseconds apart for the clap. There
   are no samples to download and nothing to licence.
 - One oscilloscope shows the summed output, so the deck and the synth are
@@ -328,7 +329,7 @@ DATA. Best scores and a few settings are kept in the browser's own
 localStorage under a "game." prefix. Nothing is sent anywhere and nothing
 identifies the visitor. The hub at /games lists every key that is stored with
 its value, clears all of it on one button, and can switch storage off
-entirely — which also deletes what is already there, on the grounds that a
+entirely - which also deletes what is already there, on the grounds that a
 switch which only stops future writes is a pause rather than an opt-out. One
 key survives, holding the word "off", because a preference to store nothing
 has to be remembered somewhere; the page says so rather than pretending
@@ -349,7 +350,7 @@ How the site is built, and the one page that maintains itself.
   file the browser is served.
 - **The deploy is allowed to refuse.** One script strips CSS comments, rewrites
   sitemap dates from git, rebuilds the search index, then verifies its own
-  output — critical files present and above a size floor, the ordered list of
+  output - critical files present and above a size floor, the ordered list of
   CSS selectors unchanged, braces balanced, page count above a floor. Any of
   those failing throws instead of writing, and the previous deployment keeps
   serving.
@@ -367,19 +368,19 @@ noindex and out of the sitemap, because everything on them arrives in the query 
 copy would show no name at all.
 
 Type a name, pick a look, copy a link. `/birthday?name=Riya&theme=starlit&from=Krunal` opens a
-full-screen animated card addressed to Riya. `theme` is optional and takes one of six — candlelight,
-confetti, balloons, starlit, blossom, neon — each pairing its own palette with its own decoration and
+full-screen animated card addressed to Riya. `theme` is optional and takes one of six - candlelight,
+confetti, balloons, starlit, blossom, neon - each pairing its own palette with its own decoration and
 particle behaviour, so "starlit" is gold on midnight with no confetti anywhere and "neon" is electric
 cyan on near-black. `from` is optional on both and adds a small attribution line, so a forwarded card
 still says who sent it. A missing or empty `name` is the only hard gate: it redirects to the generator.
 
-`/festival?name=Diwali` works the same way, except the festival IS the theme — there is no second dial,
+`/festival?name=Diwali` works the same way, except the festival IS the theme - there is no second dial,
 deliberately, because a theme picker would make it possible to send Yom Kippur in neon. 92 festivals
 are recognised across India and the subcontinent, the Islamic and Jewish calendars, East and Southeast
 Asia, Persia and Africa, the Western and global calendar, and six life events. Each carries the
 greeting people actually use rather than a mechanical "Happy X": Eid Mubarak, Shubh Navratri, Ganpati
 Bappa Morya, Saal Mubarak, Kai Po Che!, Shana Tova, Nowruz Mubarak, Onashamsakal. Days of mourning,
-atonement and remembrance — Yom Kippur, Muharram and Ashura, Qingming, Obon — are marked solemn in the
+atonement and remembrance - Yom Kippur, Muharram and Ashura, Qingming, Obon - are marked solemn in the
 dataset and rendered without festoon lights, without a breathing motif and in muted palettes; they are
 included rather than omitted precisely so that typing "ashura" cannot fall through to generic confetti.
 
@@ -403,7 +404,7 @@ visitor who asked for less motion gets the same settled scene rather than a blan
 The name is read from the URL and rendered with textContent only, never innerHTML. It is put through a
 sanitiser first that strips control characters, bidi overrides, zero-width characters and emoji, caps
 the length at 32 code points counted properly, and keeps only letters, marks, digits and the joiners
-that appear in real names — so Devanagari, Gujarati, Arabic and accented Latin names survive intact
+that appear in real names - so Devanagari, Gujarati, Arabic and accented Latin names survive intact
 while the page cannot be used to display arbitrary text under this domain's name.
 
 ## A still place (/buddha)
@@ -417,14 +418,14 @@ breath.
   Nikaya, Majjhima Nikaya, Itivuttaka, Udana, Sutta Nipata, Theragatha,
   Therigatha, Karaniya Metta Sutta.
 - **Every verse is cited.** This matters more than it looks: a large share of the
-  "Buddha quotes" in circulation are modern fabrications — "holding on to anger
+  "Buddha quotes" in circulation are modern fabrications - "holding on to anger
   is like grasping a hot coal", "what you think, you become", "peace comes from
   within" and "three things cannot be long hidden" among them. Everything shown
   here was checked against suttacentral.net or accesstoinsight.org.
 - **The breathing guide** runs 4 seconds in, 6 seconds out. The longer exhale is
   the part that settles a nervous system, and the halo and the figure breathe on
   the same cycle.
-- **The figure is inline SVG**, not a photograph — the site's Content Security
+- **The figure is inline SVG**, not a photograph - the site's Content Security
   Policy is `img-src 'self'`, so an off-origin image would be blocked, and vector
   stays sharp at any size. He breathes, the halo rays turn, the light in his
   hands twinkles, and every nine seconds he opens his eyes and grins for a second
@@ -439,7 +440,7 @@ breath.
   Bhupali in the evening, and a sustained Om that drops the flute entirely for a
   lower tonic and a formant-synthesised voice. Each is a real raga with a time of
   day attached to it, and each carries its own drone tuning, tanpura, scale, bowl
-  set and pacing — a slower setting is one whose silences are longer, not one
+  set and pacing - a slower setting is one whose silences are longer, not one
   that is quieter. Changing setting slides the drone to the new tonic rather than
   cutting. Pressing `m` toggles the breath words, unchanged.
 - **Fullscreen mode** hands the entire screen to the scene.
@@ -454,8 +455,8 @@ that runs entirely in the browser.
   and the DJ are inline SVG; the light beams, the mirror ball and its rotating
   rainbow cast are CSS gradients; the music is computed with the Web Audio API.
   There is no audio file to buffer and no track to licence.
-- **The room** is a floor with six dancers — two pairs drawn in profile so they
-  face each other — a DJ working both platters from behind the decks, PA stacks
+- **The room** is a floor with six dancers - two pairs drawn in profile so they
+  face each other - a DJ working both platters from behind the decks, PA stacks
   flanking the booth, and two tables in the front corners with four seated guests
   and two waiters carrying trays.
 - **Four tracks, cycled with the T key**, the same shortcut as the still page:
@@ -463,8 +464,8 @@ that runs entirely in the browser.
   (130). Each has its own key, chord movement, drum pattern, bass rhythm, lead
   motif and lead waveform.
 - **It is an arrangement, not a loop.** Each track runs a thirty-two bar
-  structure — intro, the bass entering, the full groove, a breakdown with the
-  drums pulled out, a riser and snare roll, then the drop — because a four-bar
+  structure - intro, the bass entering, the full groove, a breakdown with the
+  drums pulled out, a riser and snare roll, then the drop - because a four-bar
   loop is what makes generated music sound generated.
 - **The kit** is a sine kick that pitch-drops from 160 Hz to 47, a three-burst
   noise clap, closed and open hats, a shaker, a resonant sawtooth bass with a
@@ -473,8 +474,8 @@ that runs entirely in the browser.
 - **Nothing plays until the visitor presses the button.** Browsers require a
   gesture before audio, and the choice is remembered like the still page's.
 - **Photosensitivity is treated as a hard constraint.** Every light pulse is
-  locked to the beat, so at 124 BPM that is 2.07 flashes a second — below the
-  three-per-second ceiling in WCAG 2.3.1 — and the lights physically cannot
+  locked to the beat, so at 124 BPM that is 2.07 flashes a second - below the
+  three-per-second ceiling in WCAG 2.3.1 - and the lights physically cannot
   outrun the music. No full-area flash swings a large luminance step, and under
   `prefers-reduced-motion` the room holds still and nothing flashes at all.
 - **The controls withdraw** when nothing has happened for a few seconds, and come
@@ -493,7 +494,7 @@ entirely inside the tab with no requests of any kind. This one connects two
 browsers directly to each other, and says so prominently before anything else.
 
 - **No server.** Two browsers exchange a short code by whatever channel the two
-  people already share — a chat app, an email, a note —
+  people already share - a chat app, an email, a note -
   and after that the connection is direct. Nothing is stored, nothing passes
   through this site, and there is no account or database behind it.
 - **Why the code exists at all.** A browser cannot accept an incoming
@@ -519,46 +520,46 @@ browsers directly to each other, and says so prominently before anything else.
 
 Browser-based security tools at /labs/<name>. Each runs entirely in the
 visitor's tab with no network requests, no account and no history. This is not a
-privacy footnote but the design constraint: the inputs these tools take — evidence
-files, production JWTs, passwords, photographs with GPS in them, raw email headers —
+privacy footnote but the design constraint: the inputs these tools take - evidence
+files, production JWTs, passwords, photographs with GPS in them, raw email headers -
 are precisely the data that should never be uploaded to a third party, and every
 popular online equivalent does exactly that.
 
-- /labs/hash — Hash generator & verifier. MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification.
-- /labs/file-inspector — File type inspector & hex viewer. Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph.
-- /labs/jwt — JWT decoder & verifier. Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted.
-- /labs/exif — EXIF viewer & metadata remover. Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy.
-- /labs/email-headers — Email header analyzer. Parses the Received chain, reads SPF, DKIM and DMARC results, detects Reply-To spoofing and extracts the originating IP.
-- /labs/url-inspector — URL & phishing link inspector. Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
-- /labs/password — Password strength checker & generator. Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
-- /labs/cert-decoder — SSL/TLS certificate decoder. Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
-- /labs/certificate-forge — Certificate & digital signature builder. The decoder in reverse: generates a real RSA-2048 or ECDSA P-256 keypair with WebCrypto, then hand-encodes a self-signed X.509 certificate, a PKCS#10 CSR and a two-certificate chain of trust, with the ASN.1/DER shown byte by byte. Also signs messages and demonstrates tamper detection. The output is verified against a real X.509 parser and parses in openssl. Nothing is uploaded.
-- /labs/encoding — Encoder & decoder. Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
-- /labs/cipher — Classical cipher playground. Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
-- /labs/header-grader — HTTP security header grader. Paste the response headers you actually got and get a weighted grade across eight of them, with a reason for every mark lost. It grades a paste rather than fetching a URL, so it works on staging and on internal hosts.
-- /labs/oauth-flow — OAuth 2.0 flow simulator. Walks the authorization code flow with real PKCE values generated by WebCrypto, then runs five attacks against it — stolen code, login CSRF, loose redirect_uri, code replay and provider mix-up — showing which check refuses each. Also audits an authorize URL you paste.
-- /labs/ssh-keys — SSH public key inspector. Both fingerprints (SHA256 and MD5), the real modulus size, authorized_keys options, and the key type recorded inside the blob checked against the label on the line. Refuses a private key and says what to do about it.
-- /labs/saml-response — SAML response dissector. Decodes a SAMLResponse — base64, URL-encoded or DEFLATE-compressed — and reports the envelope, subject, validity window and attributes, plus which elements are actually signed, XML signature wrapping and the NameID comment trick. The signature is not verified and it says so.
-- /labs/kerberos-flow — Kerberos flow and attacks. Walks AS-REQ through AP-REP, then runs Kerberoasting, AS-REP roasting, Golden and Silver tickets, pass-the-ticket and unconstrained delegation — each with what actually fixes it. RC4 against AES256 side by side is the argument for disabling RC4.
-- /labs/threat-hunt — Threat hunt deduction exercise. A fresh domain of authentication events every run, with one human account compromised before the others. The log starts hidden and every question you ask is counted. No score — a debrief naming the shortest honest path.
-- /labs/steganography — Image steganography. Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
-- /labs/regex — Regex tester & ReDoS checker. Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns.
-- /labs/cvss — CVSS v3.1 calculator. The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
-- /labs/subnet — Subnet & CIDR calculator. IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification.
-- /labs/timestamp — Forensic timestamp converter. Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it.
-- /labs/dmarc-builder — SPF and DMARC record builder. Authors the records rather than checking them, with a live count against the RFC 7208 ten-lookup limit, a p=none to quarantine to reject rollout plan, DKIM selector guidance, and a DMARC aggregate report parser.
-- /labs/sbom-inspector — SBOM inspector. Reads a package-lock.json or requirements.txt for direct versus transitive counts, packages with install scripts, typosquat-lookalike names, licence mix and unpinned ranges. Exports CycloneDX.
-- /labs/cookie-inspector — Cookie inspector. Explains every Set-Cookie attribute, flags combinations a browser rejects outright, and covers __Host- prefixes, CHIPS and what SameSite does and does not do about CSRF.
-- /labs/csp-playground — CSP playground. Write a Content-Security-Policy, paste a page, see what would be blocked, including a nonce silently voiding ‘unsafe-inline’ and JSONP on your own origin defeating ‘self’.
-- /labs/rainbow-tables — Salt and rainbow tables. Builds a precomputed table live, breaks unsalted hashes with it, then adds a salt and shows it become worthless. Times a fast hash against a slow one in the tab.
-- /labs/timing-attack — Timing side-channel. Recovers a secret byte by byte from measured medians against a naive comparison, and fails against a constant-time one. Reports the browser’s own timer resolution rather than assuming it.
-- /labs/firewall-rules — Firewall rule simulator. Walks a packet through an iptables or nftables chain rule by rule, detects shadowed rules, models stateful matching, and explains DROP against REJECT.
-- /labs/phishing-dissector — Phishing email dissector. Paste a suspicious email and see why it is or is not phishing: spoofed display names, lookalike and punycode domains, link text against destination.
-- /labs/totp — TOTP generator & verifier. Generates and verifies TOTP two-factor codes with every step shown: counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included.
-- /labs/passkeys — Passkey & WebAuthn explorer. Creates a real passkey with the browser's own WebAuthn API, then reads every byte it produced: the CBOR attestation object, AAGUID and COSE public key.
-- /labs/osint-self-check — OSINT self-check. Paste your own bio, handle, out-of-office or CV and see what a stranger could work out, and which password reset each detail helps answer. No uploads.
-- /labs/threat-model — STRIDE threat modelling tool. Describe a system and it proposes the STRIDE threats for each element. Accept, reject or rewrite each one, attach a mitigation, print the model.
-- /labs/upi-fraud — UPI & payment fraud explainer. Decide seven times whether a payment screen is taking money or giving it, with the tell shown afterwards. Then the six UPI scam scripts that reach India.
+- /labs/hash - Hash generator & verifier. MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification.
+- /labs/file-inspector - File type inspector & hex viewer. Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph.
+- /labs/jwt - JWT decoder & verifier. Decodes a JSON Web Token, explains every claim, checks expiry and verifies HMAC signatures. The token is never transmitted.
+- /labs/exif - EXIF viewer & metadata remover. Reads the camera, timestamp, serial number and GPS coordinates inside a photo, then re-encodes a stripped copy.
+- /labs/email-headers - Email header analyzer. Parses the Received chain, reads SPF, DKIM and DMARC results, detects Reply-To spoofing and extracts the originating IP.
+- /labs/url-inspector - URL & phishing link inspector. Takes a suspicious link apart without ever requesting it: homograph characters, buried domains, nested encoding, open redirects.
+- /labs/password - Password strength checker & generator. Real entropy plus offline crack times against MD5, SHA-256, bcrypt and Argon2id. Generator uses crypto.getRandomValues.
+- /labs/cert-decoder - SSL/TLS certificate decoder. Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
+- /labs/certificate-forge - Certificate & digital signature builder. The decoder in reverse: generates a real RSA-2048 or ECDSA P-256 keypair with WebCrypto, then hand-encodes a self-signed X.509 certificate, a PKCS#10 CSR and a two-certificate chain of trust, with the ASN.1/DER shown byte by byte. Also signs messages and demonstrates tamper detection. The output is verified against a real X.509 parser and parses in openssl. Nothing is uploaded.
+- /labs/encoding - Encoder & decoder. Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
+- /labs/cipher - Classical cipher playground. Caesar, ROT13, Atbash, Vigenere and XOR - and automatic cryptanalysis that breaks all of them without a key.
+- /labs/header-grader - HTTP security header grader. Paste the response headers you actually got and get a weighted grade across eight of them, with a reason for every mark lost. It grades a paste rather than fetching a URL, so it works on staging and on internal hosts.
+- /labs/oauth-flow - OAuth 2.0 flow simulator. Walks the authorization code flow with real PKCE values generated by WebCrypto, then runs five attacks against it - stolen code, login CSRF, loose redirect_uri, code replay and provider mix-up - showing which check refuses each. Also audits an authorize URL you paste.
+- /labs/ssh-keys - SSH public key inspector. Both fingerprints (SHA256 and MD5), the real modulus size, authorized_keys options, and the key type recorded inside the blob checked against the label on the line. Refuses a private key and says what to do about it.
+- /labs/saml-response - SAML response dissector. Decodes a SAMLResponse - base64, URL-encoded or DEFLATE-compressed - and reports the envelope, subject, validity window and attributes, plus which elements are actually signed, XML signature wrapping and the NameID comment trick. The signature is not verified and it says so.
+- /labs/kerberos-flow - Kerberos flow and attacks. Walks AS-REQ through AP-REP, then runs Kerberoasting, AS-REP roasting, Golden and Silver tickets, pass-the-ticket and unconstrained delegation - each with what actually fixes it. RC4 against AES256 side by side is the argument for disabling RC4.
+- /labs/threat-hunt - Threat hunt deduction exercise. A fresh domain of authentication events every run, with one human account compromised before the others. The log starts hidden and every question you ask is counted. No score - a debrief naming the shortest honest path.
+- /labs/steganography - Image steganography. Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
+- /labs/regex - Regex tester & ReDoS checker. Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns.
+- /labs/cvss - CVSS v3.1 calculator. The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
+- /labs/subnet - Subnet & CIDR calculator. IPv4 ranges, masks in every notation, the binary breakdown, and RFC 1918 / CGNAT / reserved-range classification.
+- /labs/timestamp - Forensic timestamp converter. Reads a value under Unix, Windows FILETIME, WebKit, Apple Cocoa, HFS+ and MS-DOS epochs at once to identify which system wrote it.
+- /labs/dmarc-builder - SPF and DMARC record builder. Authors the records rather than checking them, with a live count against the RFC 7208 ten-lookup limit, a p=none to quarantine to reject rollout plan, DKIM selector guidance, and a DMARC aggregate report parser.
+- /labs/sbom-inspector - SBOM inspector. Reads a package-lock.json or requirements.txt for direct versus transitive counts, packages with install scripts, typosquat-lookalike names, licence mix and unpinned ranges. Exports CycloneDX.
+- /labs/cookie-inspector - Cookie inspector. Explains every Set-Cookie attribute, flags combinations a browser rejects outright, and covers __Host- prefixes, CHIPS and what SameSite does and does not do about CSRF.
+- /labs/csp-playground - CSP playground. Write a Content-Security-Policy, paste a page, see what would be blocked, including a nonce silently voiding ‘unsafe-inline’ and JSONP on your own origin defeating ‘self’.
+- /labs/rainbow-tables - Salt and rainbow tables. Builds a precomputed table live, breaks unsalted hashes with it, then adds a salt and shows it become worthless. Times a fast hash against a slow one in the tab.
+- /labs/timing-attack - Timing side-channel. Recovers a secret byte by byte from measured medians against a naive comparison, and fails against a constant-time one. Reports the browser’s own timer resolution rather than assuming it.
+- /labs/firewall-rules - Firewall rule simulator. Walks a packet through an iptables or nftables chain rule by rule, detects shadowed rules, models stateful matching, and explains DROP against REJECT.
+- /labs/phishing-dissector - Phishing email dissector. Paste a suspicious email and see why it is or is not phishing: spoofed display names, lookalike and punycode domains, link text against destination.
+- /labs/totp - TOTP generator & verifier. Generates and verifies TOTP two-factor codes with every step shown: counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included.
+- /labs/passkeys - Passkey & WebAuthn explorer. Creates a real passkey with the browser's own WebAuthn API, then reads every byte it produced: the CBOR attestation object, AAGUID and COSE public key.
+- /labs/osint-self-check - OSINT self-check. Paste your own bio, handle, out-of-office or CV and see what a stranger could work out, and which password reset each detail helps answer. No uploads.
+- /labs/threat-model - STRIDE threat modelling tool. Describe a system and it proposes the STRIDE threats for each element. Accept, reject or rewrite each one, attach a mitigation, print the model.
+- /labs/upi-fraud - UPI & payment fraud explainer. Decide seven times whether a payment screen is taking money or giving it, with the tell shown afterwards. Then the six UPI scam scripts that reach India.
 
 ## Network lookup tools
 
@@ -567,13 +568,13 @@ They are built on assets/js/labs/net-tool-shell.js, never tool-shell.js, whose h
 promises that nothing built on it opens a connection. Each names its vendor and what
 that vendor learns before any request fires; nothing fires on page load or on a
 keystroke; every request is echoed on screen; and a running request count is shown.
-There is no proxy — the visitor's browser contacts the vendor directly.
+There is no proxy - the visitor's browser contacts the vendor directly.
 
-- /labs/dns — DNS lookup. Queries Google or Cloudflare. A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there.
-- /labs/email-security — Email security audit. Queries Google Public DNS. Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone.
-- /labs/ct-log — Certificate transparency. Queries SSLMate Cert Spotter. Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target.
-- /labs/rdap — Domain registration (RDAP). Queries the authoritative registry. Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.
-- /labs/breach-check — Password breach check. Queries Have I Been Pwned. Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.
+- /labs/dns - DNS lookup. Queries Google or Cloudflare. A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there.
+- /labs/email-security - Email security audit. Queries Google Public DNS. Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone.
+- /labs/ct-log - Certificate transparency. Queries SSLMate Cert Spotter. Every certificate ever logged for a domain, and the subdomains printed on them - discovered without sending a single packet to the target.
+- /labs/rdap - Domain registration (RDAP). Queries the authoritative registry. Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path.
+- /labs/breach-check - Password breach check. Queries Have I Been Pwned. Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise.
 
 ## Digital forensics tools
 
@@ -581,17 +582,17 @@ File-forensics tools at /labs/<name>, on the same offline shell as the
 security tools: you drop a file and it is parsed in your tab, never uploaded.
 They read real container and dump formats rather than guessing.
 
-- /labs/har-analyzer — HAR analyzer. Parses a browser HAR capture: every request, timing waterfall, headers, cookies, sizes and a flag for anything sent in the clear or leaking credentials.
-- /labs/sqlite-browser — SQLite database browser. Opens a .sqlite/.db file with a real SQLite engine (sql.js), lists tables and schema, and runs read-only SQL against it — all in the browser.
-- /labs/archive-inspector — Archive inspector. Reads ZIP structure without extracting — ZIP only, which also covers the ZIP-based formats (.docx, .jar, .apk): entries, sizes, compression, timestamps and ZIP64, plus zip-bomb and path-traversal warnings.
-- /labs/pcap-analyzer — PCAP analyzer. Decodes a packet capture (pcap/pcapng): Ethernet/IP/TCP/UDP layers, conversations, DNS and HTTP, and plaintext credentials carved from the stream.
-- /labs/memory-strings — Memory string extractor. Carves printable ASCII and UTF-16 strings from a raw memory or process dump, with length filtering and pattern highlighting for URLs, keys and paths.
-- /labs/registry-viewer — Windows registry viewer. Parses a raw Windows registry hive file into its key/value tree, decoding every value type, without a Windows machine.
-- /labs/incident-timeline — Incident timeline builder. Merges logs in several formats and timezones into one UTC timeline, flags clock skew, and separates genuine drift from a timezone set wrong. Exports Markdown or CSV.
-- /labs/media-forensics — Media forensics. Error level analysis, noise-floor mapping, copy-move detection and C2PA provenance on a dropped photo, with plain language on what each signal proves — signals, not verdicts.
-- /labs/malware-triage — Malware triage. Static triage of a Windows PE, ELF or Mach-O binary in the browser: imports read as capabilities, packer indicators, and an EICAR test-file generator.
-- /labs/log-analyser — Log file analyser. Paste or drop a log file and get findings locally: brute force and password spray told apart, a success after a run of failures, scanner probes.
-- /labs/pdf-tools — PDF toolkit. Merge, split, reorder, rotate and delete PDF pages, read the structure a PDF is made of, and save a copy with the metadata stripped. Nothing is uploaded.
+- /labs/har-analyzer - HAR analyzer. Parses a browser HAR capture: every request, timing waterfall, headers, cookies, sizes and a flag for anything sent in the clear or leaking credentials.
+- /labs/sqlite-browser - SQLite database browser. Opens a .sqlite/.db file with a real SQLite engine (sql.js), lists tables and schema, and runs read-only SQL against it - all in the browser.
+- /labs/archive-inspector - Archive inspector. Reads ZIP structure without extracting - ZIP only, which also covers the ZIP-based formats (.docx, .jar, .apk): entries, sizes, compression, timestamps and ZIP64, plus zip-bomb and path-traversal warnings.
+- /labs/pcap-analyzer - PCAP analyzer. Decodes a packet capture (pcap/pcapng): Ethernet/IP/TCP/UDP layers, conversations, DNS and HTTP, and plaintext credentials carved from the stream.
+- /labs/memory-strings - Memory string extractor. Carves printable ASCII and UTF-16 strings from a raw memory or process dump, with length filtering and pattern highlighting for URLs, keys and paths.
+- /labs/registry-viewer - Windows registry viewer. Parses a raw Windows registry hive file into its key/value tree, decoding every value type, without a Windows machine.
+- /labs/incident-timeline - Incident timeline builder. Merges logs in several formats and timezones into one UTC timeline, flags clock skew, and separates genuine drift from a timezone set wrong. Exports Markdown or CSV.
+- /labs/media-forensics - Media forensics. Error level analysis, noise-floor mapping, copy-move detection and C2PA provenance on a dropped photo, with plain language on what each signal proves - signals, not verdicts.
+- /labs/malware-triage - Malware triage. Static triage of a Windows PE, ELF or Mach-O binary in the browser: imports read as capabilities, packer indicators, and an EICAR test-file generator.
+- /labs/log-analyser - Log file analyser. Paste or drop a log file and get findings locally: brute force and password spray told apart, a success after a run of failures, scanner probes.
+- /labs/pdf-tools - PDF toolkit. Merge, split, reorder, rotate and delete PDF pages, read the structure a PDF is made of, and save a copy with the metadata stripped. Nothing is uploaded.
 
 ## Interactive visualisers
 
@@ -602,35 +603,35 @@ share a chassis (assets/js/labs/viz/multi-shell.js) giving tabs, a transport
 core is tested against known-answer vectors in a Node harness under _labtools/.
 All run entirely client-side.
 
-- /labs/os-algorithms — Operating system algorithm visualiser. CPU scheduling (FCFS, SJF, SRTF, round robin, priority), page replacement (FIFO, LRU, OPT, clock, LFU), disk scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK), memory allocation (first/best/worst/next fit) and the Banker safety check — 22 algorithms stepped one time unit at a time with every algorithm compared on the same input. Reproduces Belady’s anomaly.
-- /labs/cryptography — Cryptography visualiser. AES-128 stepped through all 40 transformations with a live avalanche measurement, SHA-256 across its 64 compression rounds, and Diffie-Hellman, RSA and elliptic-curve key exchange with small checkable numbers plus a working brute-force attacker. Teaching implementations, verified against FIPS-197 and FIPS-180-4 test vectors.
-- /labs/regex-engine — Regex engine & ReDoS visualiser. A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length versus the linear state-machine engines. All three engines are differentially tested against JavaScript RegExp.
-- /labs/buffer-overflow — Stack buffer overflow visualiser. A stack overflow drawn byte by byte on a real downward-growing stack: a string copy overwrites the saved frame pointer and return address, control flow is hijacked to injected shellcode (a diagram, never executed), then a stack canary catches it. A defences panel shows what NX and ASLR stop and how each is bypassed.
-- /labs/tcp-congestion — TCP visualiser. The three-way handshake and four-way close with real sequence/acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery and timeout collapse, plotted as the classic sawtooth. Checked against RFC 793 examples.
-- /labs/word-cloud — Word cloud generator. Paste text and the most frequent words are sized biggest and packed pixel-tight into a shape: 65 drawn shapes, 271 emoji, any letter you type, or a picture of your own. Colour palettes, angle presets and font choices, downloadable as a PNG. Filler words removed automatically. A free, private, no-watermark alternative to wordart-style sites.
-- /labs/resume-maker — Resume maker. Fill a form, pick one of five templates (ATS-safe single column, dark sidebar, accent banner, elegant serif, compact), add an optional photo and accent colour, and print to A4 — the print dialog is the download button. Live preview, every field optional. No sign-up, no watermark, no upload — and nothing written to the device: the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept.
-- /labs/biodata-maker — Marriage biodata maker. A matrimonial biodata rendered from a form into one of five templates (traditional maroon-and-gold through minimal black-on-white), with an optional photo and a selectable invocation line. Personal, horoscope, education, family, contact and partner-preference sections; empty fields simply do not render. Prints to A4, nothing uploaded and nothing written to the device — the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept. Deliberate, since a biodata carries birth details, income and a home address.
-- /labs/processor-explorer — Inside a processor. Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D.
-- /labs/hash-cracker — Live hash cracker. Watch a weak password hash fall in real time with a guesses-per-second counter, wordlist then brute force against MD5/SHA-1/SHA-256, in a Web Worker so the page stays responsive and Stop works instantly.
-- /labs/algorithm-visualizer — Algorithm visualizer. Twenty-one algorithms: thirteen sorts, linear and binary search on a sorted array, and six pathfinders, animated and steppable, so O(n log n) beating O(n²) is shown rather than asserted. A Compare control runs any two of them side by side on identical input.
-- /labs/cpu-simulator — CPU & assembly simulator. Write assembly for a small clean instruction set and single-step it, watching registers, flags, memory and the stack change. A real two-pass assembler, no eval.
-- /labs/shader-playground — GLSL shader playground. Write a fragment shader and see it render live on the GPU, with time and mouse uniforms and compile errors reported with line numbers.
-- /labs/fractal-explorer — Fractal explorer. Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on the GPU, with several colour palettes; hover to pick a Julia constant.
-- /labs/regex-automata — Regex automata. Regex to Thompson NFA to DFA to minimised DFA, stepped one character at a time, with catastrophic backtracking plotted against linear-time DFA matching.
-- /labs/ieee754 — IEEE-754 explorer. Bit layout with the exact decimal value the bits hold, 0.1 + 0.2 stepped through the rounding, denormals, NaN payloads, and Kahan summation against accumulated error.
-- /labs/concurrency — Concurrency primitives. One shared counter solved four ways, with the visitor driving the scheduler to cause a lost update deliberately, plus deadlock via lock ordering.
-- /labs/cap-theorem — CAP theorem sandbox. Five nodes, a network you can partition, CP or AP behaviour, and quorum arithmetic (R+W>N) evaluated live. Covers PACELC and what CAP does not claim.
-- /labs/periodic-table — Periodic table & element explorer. All 118 elements, each with a drawn swatch of what the substance really looks like, a shell diagram, and the full physical data. Colour by category, block or state.
-- /labs/web-layers — Surface, deep and dark web. Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Steps a request through a three-relay Tor circuit.
-- /labs/git-objects — Git object explorer. A working git object store in the browser: run add, commit, branch, merge, rebase and reflog against a toy repo and watch real blobs and trees appear.
-- /labs/tls-handshake — TLS handshake explorer. Steps a TLS 1.3 handshake message by message next to TLS 1.2, shows which messages are encrypted from what point, and watches HKDF derive the traffic secrets.
-- /labs/ransomware-anatomy — Ransomware anatomy. Steps a ransomware incident through nine stages, watches a simulated file tree get locked, then switches controls on to see where each one stops the chain.
-- /labs/wifi-security — Wi-Fi security explained. WEP to WPA3 side by side, the WPA2 four-way handshake and SAE drawn out input by input, and how an evil twin collects credentials on public wifi.
-- /labs/compiler — Compiler & VM visualiser. Takes a small language from source to tokens to a syntax tree to bytecode, then steps the stack machine that runs it, with the call frames visible.
-- /labs/big-o — Big-O, measured. Nine algorithms from O(1) to O(2^n), timed in your own browser and plotted on log-log axes where the slope is the exponent, with a fit naming the class.
-- /labs/db-index — Database index visualiser. See why an index makes a query fast: a live B+tree that splits and merges, and a 100,000-row table where the pages each query reads are counted.
-- /labs/http-versions — HTTP version race. HTTP/1.1, HTTP/2 and HTTP/3 raced over one simulated link. Set the latency, bandwidth and packet loss, then watch head-of-line blocking freeze HTTP/2.
-- /labs/docker-layers — Docker layer explorer. Paste a Dockerfile and see where the gigabytes went, layer by layer, including the files a later RUN deleted that are still sitting in the image.
+- /labs/os-algorithms - Operating system algorithm visualiser. CPU scheduling (FCFS, SJF, SRTF, round robin, priority), page replacement (FIFO, LRU, OPT, clock, LFU), disk scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK), memory allocation (first/best/worst/next fit) and the Banker safety check - 22 algorithms stepped one time unit at a time with every algorithm compared on the same input. Reproduces Belady’s anomaly.
+- /labs/cryptography - Cryptography visualiser. AES-128 stepped through all 40 transformations with a live avalanche measurement, SHA-256 across its 64 compression rounds, and Diffie-Hellman, RSA and elliptic-curve key exchange with small checkable numbers plus a working brute-force attacker. Teaching implementations, verified against FIPS-197 and FIPS-180-4 test vectors.
+- /labs/regex-engine - Regex engine & ReDoS visualiser. A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length versus the linear state-machine engines. All three engines are differentially tested against JavaScript RegExp.
+- /labs/buffer-overflow - Stack buffer overflow visualiser. A stack overflow drawn byte by byte on a real downward-growing stack: a string copy overwrites the saved frame pointer and return address, control flow is hijacked to injected shellcode (a diagram, never executed), then a stack canary catches it. A defences panel shows what NX and ASLR stop and how each is bypassed.
+- /labs/tcp-congestion - TCP visualiser. The three-way handshake and four-way close with real sequence/acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip - slow start, congestion avoidance, fast recovery and timeout collapse, plotted as the classic sawtooth. Checked against RFC 793 examples.
+- /labs/word-cloud - Word cloud generator. Paste text and the most frequent words are sized biggest and packed pixel-tight into a shape: 65 drawn shapes, 271 emoji, any letter you type, or a picture of your own. Colour palettes, angle presets and font choices, downloadable as a PNG. Filler words removed automatically. A free, private, no-watermark alternative to wordart-style sites.
+- /labs/resume-maker - Resume maker. Fill a form, pick one of five templates (ATS-safe single column, dark sidebar, accent banner, elegant serif, compact), add an optional photo and accent colour, and print to A4 - the print dialog is the download button. Live preview, every field optional. No sign-up, no watermark, no upload - and nothing written to the device: the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept.
+- /labs/biodata-maker - Marriage biodata maker. A matrimonial biodata rendered from a form into one of five templates (traditional maroon-and-gold through minimal black-on-white), with an optional photo and a selectable invocation line. Personal, horoscope, education, family, contact and partner-preference sections; empty fields simply do not render. Prints to A4, nothing uploaded and nothing written to the device - the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept. Deliberate, since a biodata carries birth details, income and a home address.
+- /labs/processor-explorer - Inside a processor. Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D.
+- /labs/hash-cracker - Live hash cracker. Watch a weak password hash fall in real time with a guesses-per-second counter, wordlist then brute force against MD5/SHA-1/SHA-256, in a Web Worker so the page stays responsive and Stop works instantly.
+- /labs/algorithm-visualizer - Algorithm visualizer. Twenty-one algorithms: thirteen sorts, linear and binary search on a sorted array, and six pathfinders, animated and steppable, so O(n log n) beating O(n²) is shown rather than asserted. A Compare control runs any two of them side by side on identical input.
+- /labs/cpu-simulator - CPU & assembly simulator. Write assembly for a small clean instruction set and single-step it, watching registers, flags, memory and the stack change. A real two-pass assembler, no eval.
+- /labs/shader-playground - GLSL shader playground. Write a fragment shader and see it render live on the GPU, with time and mouse uniforms and compile errors reported with line numbers.
+- /labs/fractal-explorer - Fractal explorer. Zoom the Mandelbrot, Julia, Burning Ship and Tricorn sets smoothly on the GPU, with several colour palettes; hover to pick a Julia constant.
+- /labs/regex-automata - Regex automata. Regex to Thompson NFA to DFA to minimised DFA, stepped one character at a time, with catastrophic backtracking plotted against linear-time DFA matching.
+- /labs/ieee754 - IEEE-754 explorer. Bit layout with the exact decimal value the bits hold, 0.1 + 0.2 stepped through the rounding, denormals, NaN payloads, and Kahan summation against accumulated error.
+- /labs/concurrency - Concurrency primitives. One shared counter solved four ways, with the visitor driving the scheduler to cause a lost update deliberately, plus deadlock via lock ordering.
+- /labs/cap-theorem - CAP theorem sandbox. Five nodes, a network you can partition, CP or AP behaviour, and quorum arithmetic (R+W>N) evaluated live. Covers PACELC and what CAP does not claim.
+- /labs/periodic-table - Periodic table & element explorer. All 118 elements, each with a drawn swatch of what the substance really looks like, a shell diagram, and the full physical data. Colour by category, block or state.
+- /labs/web-layers - Surface, deep and dark web. Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Steps a request through a three-relay Tor circuit.
+- /labs/git-objects - Git object explorer. A working git object store in the browser: run add, commit, branch, merge, rebase and reflog against a toy repo and watch real blobs and trees appear.
+- /labs/tls-handshake - TLS handshake explorer. Steps a TLS 1.3 handshake message by message next to TLS 1.2, shows which messages are encrypted from what point, and watches HKDF derive the traffic secrets.
+- /labs/ransomware-anatomy - Ransomware anatomy. Steps a ransomware incident through nine stages, watches a simulated file tree get locked, then switches controls on to see where each one stops the chain.
+- /labs/wifi-security - Wi-Fi security explained. WEP to WPA3 side by side, the WPA2 four-way handshake and SAE drawn out input by input, and how an evil twin collects credentials on public wifi.
+- /labs/compiler - Compiler & VM visualiser. Takes a small language from source to tokens to a syntax tree to bytecode, then steps the stack machine that runs it, with the call frames visible.
+- /labs/big-o - Big-O, measured. Nine algorithms from O(1) to O(2^n), timed in your own browser and plotted on log-log axes where the slope is the exponent, with a fit naming the class.
+- /labs/db-index - Database index visualiser. See why an index makes a query fast: a live B+tree that splits and merges, and a 100,000-row table where the pages each query reads are counted.
+- /labs/http-versions - HTTP version race. HTTP/1.1, HTTP/2 and HTTP/3 raced over one simulated link. Set the latency, bandwidth and packet loss, then watch head-of-line blocking freeze HTTP/2.
+- /labs/docker-layers - Docker layer explorer. Paste a Dockerfile and see where the gigabytes went, layer by layer, including the files a later RUN deleted that are still sitting in the image.
 
 ## Everyday tools
 
@@ -639,22 +640,22 @@ the rest: everything runs in the visitor’s tab, nothing is uploaded, and where
 a result depends on a rule that changes with the finance act or varies by state,
 the page says so rather than printing a confident number.
 
-- /labs/qr-payloads — vCard, WiFi and UPI QR builder. Contact cards, WiFi join strings, calendar events, geo points and UPI intent URIs, with a pasted UPI URI read back in plain language. States plainly that every UPI QR is a request for you to pay: a pay QR and a receive QR look identical.
-- /labs/rent-vs-buy — Rent versus buy (India). Both paths over N years with the down payment and monthly difference invested, net worth plotted, the crossover year marked, optional old-regime tax treatment, and sensitivity sliders because two unknowable numbers dominate the answer.
-- /labs/gst-return — GST return working sheet. Reads invoices exported from /labs/invoice-maker, totals rate-wise, splits CGST/SGST from IGST, separates B2B from B2C and zero-rated exports, and catches invoice-number gaps, duplicates and GSTIN checksum failures. It files nothing.
-- /labs/timezones — Timezone meeting planner. A stacked hour grid across zones with working hours shaded and overlap highlighted, handling DST transitions, half-hour and quarter-hour offsets, and slots landing on a different calendar day.
-- /labs/indian-ids — Indian ID format checker. Aadhaar Verhoeff checksum, PAN structure, GSTIN check digit, IFSC, UPI VPA and vehicle registration. It checks format and checksum only, performs no lookup, and cannot tell you an ID is real.
-- /labs/diff-merge — Diff and three-way merge. Side-by-side and unified views with word and character highlighting, then a base/mine/theirs merge resolved by hand. Whitespace toggle, CRLF made visible, unified patch export.
-- /labs/mojibake — Mojibake repair. Diagnoses broken text (UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities) and says which damage is reversible and which has lost data for good.
-- /labs/ansi-escapes — ANSI escape explainer. Decodes escape sequences in pasted text and builds them in the other direction. Covers why colour breaks in a pipe, NO_COLOR, and why escapes in untrusted log output are a security problem.
-- /labs/invoice-maker — GST invoice & quotation maker. Makes a GST invoice or a quotation: CGST plus SGST or IGST decided from the place of supply, rate-wise tax summary, amount in words. Prints to A4, and its exports are what /labs/gst-return reads.
-- /labs/unicode — Unicode inspector. Takes any string apart code point by code point: invisible characters shown in place, homoglyph and Trojan Source detection, NFC/NFD/NFKC/NFKD compared.
-- /labs/contrast — Colour contrast checker. WCAG 2.x contrast with every step of the arithmetic shown, APCA alongside it, colour-blindness simulation, and a smallest-change fixer in OKLCH.
-- /labs/salary-breakdown — CTC to in-hand salary breakdown (India). Turns an Indian CTC into a monthly in-hand figure with every step shown: component split, PF, gratuity, professional tax by state, and both tax regimes.
-- /labs/emi — Loan EMI and prepayment calculator. An EMI calculator that keeps going: the full amortisation schedule, prepayment compared both ways, and what a rate rise does to your tenure.
-- /labs/image-tools — Image compressor, converter and resizer. JPEG, PNG, WebP and AVIF in the browser, with a before/after split showing the real byte counts. No uploads.
-- /labs/typing-certificate — Typing test certificate. A timed typing test — one, three or five minutes — ending in a printable A4 certificate honest enough to say on its face that it proves nothing.
-- /labs/qr — QR code generator & inspector. Build a QR code, or decode one from a photo and read what it would do before you scan it: the URL, and the payee and amount inside a UPI string.
+- /labs/qr-payloads - vCard, WiFi and UPI QR builder. Contact cards, WiFi join strings, calendar events, geo points and UPI intent URIs, with a pasted UPI URI read back in plain language. States plainly that every UPI QR is a request for you to pay: a pay QR and a receive QR look identical.
+- /labs/rent-vs-buy - Rent versus buy (India). Both paths over N years with the down payment and monthly difference invested, net worth plotted, the crossover year marked, optional old-regime tax treatment, and sensitivity sliders because two unknowable numbers dominate the answer.
+- /labs/gst-return - GST return working sheet. Reads invoices exported from /labs/invoice-maker, totals rate-wise, splits CGST/SGST from IGST, separates B2B from B2C and zero-rated exports, and catches invoice-number gaps, duplicates and GSTIN checksum failures. It files nothing.
+- /labs/timezones - Timezone meeting planner. A stacked hour grid across zones with working hours shaded and overlap highlighted, handling DST transitions, half-hour and quarter-hour offsets, and slots landing on a different calendar day.
+- /labs/indian-ids - Indian ID format checker. Aadhaar Verhoeff checksum, PAN structure, GSTIN check digit, IFSC, UPI VPA and vehicle registration. It checks format and checksum only, performs no lookup, and cannot tell you an ID is real.
+- /labs/diff-merge - Diff and three-way merge. Side-by-side and unified views with word and character highlighting, then a base/mine/theirs merge resolved by hand. Whitespace toggle, CRLF made visible, unified patch export.
+- /labs/mojibake - Mojibake repair. Diagnoses broken text (UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities) and says which damage is reversible and which has lost data for good.
+- /labs/ansi-escapes - ANSI escape explainer. Decodes escape sequences in pasted text and builds them in the other direction. Covers why colour breaks in a pipe, NO_COLOR, and why escapes in untrusted log output are a security problem.
+- /labs/invoice-maker - GST invoice & quotation maker. Makes a GST invoice or a quotation: CGST plus SGST or IGST decided from the place of supply, rate-wise tax summary, amount in words. Prints to A4, and its exports are what /labs/gst-return reads.
+- /labs/unicode - Unicode inspector. Takes any string apart code point by code point: invisible characters shown in place, homoglyph and Trojan Source detection, NFC/NFD/NFKC/NFKD compared.
+- /labs/contrast - Colour contrast checker. WCAG 2.x contrast with every step of the arithmetic shown, APCA alongside it, colour-blindness simulation, and a smallest-change fixer in OKLCH.
+- /labs/salary-breakdown - CTC to in-hand salary breakdown (India). Turns an Indian CTC into a monthly in-hand figure with every step shown: component split, PF, gratuity, professional tax by state, and both tax regimes.
+- /labs/emi - Loan EMI and prepayment calculator. An EMI calculator that keeps going: the full amortisation schedule, prepayment compared both ways, and what a rate rise does to your tenure.
+- /labs/image-tools - Image compressor, converter and resizer. JPEG, PNG, WebP and AVIF in the browser, with a before/after split showing the real byte counts. No uploads.
+- /labs/typing-certificate - Typing test certificate. A timed typing test - one, three or five minutes - ending in a printable A4 certificate honest enough to say on its face that it proves nothing.
+- /labs/qr - QR code generator & inspector. Build a QR code, or decode one from a photo and read what it would do before you scan it: the URL, and the payee and amount inside a UPI string.
 
 ## Language playgrounds, terminals & HackLab
 
@@ -665,22 +666,22 @@ interpreter, not a sandbox that fakes output; the size given is the first-run
 download, cached after that. They are listed by the year each language first
 appeared, which is the order the picker and the hub use.
 
-- /labs/c — C playground. Real clang compiled to WebAssembly and linked with lld, so structs, pointers, malloc and scanf behave as they do natively. The Input panel is wired to stdin. ~19 MB compressed on the first run.
-- /labs/sql — SQL playground. A real SQLite engine compiled to WebAssembly (sql.js). CREATE, INSERT and SELECT against an in-memory database, with results rendered as a table. ~700 KB.
-- /labs/cpp — C++ playground. The same clang toolchain as the C lab, with libc++ — vector, string, map, algorithm and templates all compile, and stdin works. ~19 MB compressed on the first run.
-- /labs/perl — Perl playground. Real Perl 5 compiled to WebAssembly (WebPerl), including the regular expression engine that made the language famous. ~16 MB.
-- /labs/python — Python playground. Genuine CPython compiled to WebAssembly (Pyodide), with the standard library and an input() that reads the Input panel. pip install is not available. ~12 MB.
-- /labs/lua — Lua playground. Real Lua 5.4 compiled to WebAssembly (Wasmoon) — tables, metatables, coroutines and io.read. At ~420 KB it starts almost instantly.
-- /labs/php — PHP playground. Real PHP 8.4 compiled to WebAssembly, with enums, match, readonly properties and the full array library. The opening <?php tag is added for you if you leave it out. ~14 MB.
-- /labs/javascript — JavaScript playground. The browser's own JS engine, in a Web Worker, so there is nothing at all to download; whatever is typed in the Input panel arrives as stdin. 0 KB.
-- /labs/ruby — Ruby playground. Real CRuby from the Ruby core team compiled to WebAssembly (ruby.wasm) — blocks, mixins and enumerables. ~17 MB.
-- /labs/postgres — PostgreSQL playground. The actual PostgreSQL server compiled to WebAssembly (PGlite), not a Postgres-compatible reimplementation, so the dialect, the types and the error messages match a real install. Window functions, CTEs and JSONB. ~17 MB.
-- /labs/typescript — TypeScript playground. The official tsc compiler doing real type checking, with type errors reported before anything executes; the emitted JavaScript then runs on the browser's own JS engine, reading the Input panel through stdin. ~9 MB.
+- /labs/c - C playground. Real clang compiled to WebAssembly and linked with lld, so structs, pointers, malloc and scanf behave as they do natively. The Input panel is wired to stdin. ~19 MB compressed on the first run.
+- /labs/sql - SQL playground. A real SQLite engine compiled to WebAssembly (sql.js). CREATE, INSERT and SELECT against an in-memory database, with results rendered as a table. ~700 KB.
+- /labs/cpp - C++ playground. The same clang toolchain as the C lab, with libc++ - vector, string, map, algorithm and templates all compile, and stdin works. ~19 MB compressed on the first run.
+- /labs/perl - Perl playground. Real Perl 5 compiled to WebAssembly (WebPerl), including the regular expression engine that made the language famous. ~16 MB.
+- /labs/python - Python playground. Genuine CPython compiled to WebAssembly (Pyodide), with the standard library and an input() that reads the Input panel. pip install is not available. ~12 MB.
+- /labs/lua - Lua playground. Real Lua 5.4 compiled to WebAssembly (Wasmoon) - tables, metatables, coroutines and io.read. At ~420 KB it starts almost instantly.
+- /labs/php - PHP playground. Real PHP 8.4 compiled to WebAssembly, with enums, match, readonly properties and the full array library. The opening <?php tag is added for you if you leave it out. ~14 MB.
+- /labs/javascript - JavaScript playground. The browser's own JS engine, in a Web Worker, so there is nothing at all to download; whatever is typed in the Input panel arrives as stdin. 0 KB.
+- /labs/ruby - Ruby playground. Real CRuby from the Ruby core team compiled to WebAssembly (ruby.wasm) - blocks, mixins and enumerables. ~17 MB.
+- /labs/postgres - PostgreSQL playground. The actual PostgreSQL server compiled to WebAssembly (PGlite), not a Postgres-compatible reimplementation, so the dialect, the types and the error messages match a real install. Window functions, CTEs and JSONB. ~17 MB.
+- /labs/typescript - TypeScript playground. The official tsc compiler doing real type checking, with type errors reported before anything executes; the emitted JavaScript then runs on the browser's own JS engine, reading the Input panel through stdin. ~9 MB.
 - OS terminals: /labs/linux, /labs/dos (FreeDOS) and /labs/bsd (OpenBSD), each a real operating system booted under x86 emulation (v86) in the tab.
-- /labs/leak — What your browser leaks. The public and local IP addresses any page can read out of WebRTC without a permission prompt, plus graphics card, time zone, CPU cores and a canvas fingerprint that survives clearing cookies, each with what it gives away and what can be done about it. Everything is computed in the tab with one exception the page states in print: reading the public IP means asking a public STUN server — Google's and Cloudflare's are both listed — which is a real request.
-- /labs/api — HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
-- /labs/typing — Typing speed test. WPM and accuracy over configurable text, entirely offline.
-- /labs/hacklab — HackLab. A safe, sandboxed target for practising web attacks: dozens of challenges spanning SQL injection against a live SQLite engine, reflected and DOM XSS in an opaque-origin frame, path traversal, command injection, IDOR, SSRF, JWT and 2FA weaknesses and more, each pairing the exploit with its real-world fix. Every target is a throwaway in-memory fake — there is no server to attack — and a strict CSP isolates it from the rest of the site. For learning the offensive side in a place where breaking things is the point.
+- /labs/leak - What your browser leaks. The public and local IP addresses any page can read out of WebRTC without a permission prompt, plus graphics card, time zone, CPU cores and a canvas fingerprint that survives clearing cookies, each with what it gives away and what can be done about it. Everything is computed in the tab with one exception the page states in print: reading the public IP means asking a public STUN server - Google's and Cloudflare's are both listed - which is a real request.
+- /labs/api - HTTP API tester. Compose and send real HTTP requests and inspect the response, the one place in the offline set that intentionally reaches the network the visitor points it at.
+- /labs/typing - Typing speed test. WPM and accuracy over configurable text, entirely offline.
+- /labs/hacklab - HackLab. A safe, sandboxed target for practising web attacks: dozens of challenges spanning SQL injection against a live SQLite engine, reflected and DOM XSS in an opaque-origin frame, path traversal, command injection, IDOR, SSRF, JWT and 2FA weaknesses and more, each pairing the exploit with its real-world fix. Every target is a throwaway in-memory fake - there is no server to attack - and a strict CSP isolates it from the rest of the site. For learning the offensive side in a place where breaking things is the point.
 
 ## Reading the site: search and themes
 
@@ -688,17 +689,17 @@ appeared, which is the order the picker and the hub use.
 index covering all 288 pages and opens a full-screen panel, on a phone and a laptop
 alike. The index ships with the site and the matching happens in the tab, so no
 search query is ever sent anywhere. Analytics is told only that a search ran and how
-many results it returned — a zero-result count shows where the site is missing
-something — never what was typed.
+many results it returned - a zero-result count shows where the site is missing
+something - never what was typed.
 
 **Themes.** A light/dark toggle sits beside it. The site is dark by default and
-light is opt-in — it deliberately does not follow the operating system setting,
+light is opt-in - it deliberately does not follow the operating system setting,
 because that would hand a light site to anyone with a light desktop without their
 asking. The choice is stored locally and applied before the first paint, so a
 returning visitor never sees the wrong theme flash.
 
 Both themes are held to the WCAG AA contrast floor (4.5:1 for body text, 3:1 for
-large text) on every page. Elements that are dark instruments by design — the
+large text) on every page. Elements that are dark instruments by design - the
 terminals, the code editor, the visualiser canvases, HackLab's simulated corporate
-portal — keep their dark palette in both themes rather than being re-coloured, so
+portal - keep their dark palette in both themes rather than being re-coloured, so
 they read the same either way.

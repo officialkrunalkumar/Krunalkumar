@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch a TLS handshake, message by message" />
     <meta name="twitter:description" content="Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, see exactly which messages are encrypted and from which point, click any ClientHello extension for its real bytes, and watch a genuine HKDF-Expand-Label key schedule derive the traffic secrets. Break it on purpose and read the exact alert the client sends. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-tls-handshake.jpg" />
-    <title>TLS Handshake Explorer — 1.3 beside 1.2 | Krunalkumar Shah</title>
+    <title>TLS Handshake Explorer - 1.3 beside 1.2 | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -221,13 +221,13 @@
           </ol>
         </nav>
         <h1>The TLS handshake, message by message</h1>
-        <p class="hero-text">Everyone knows the padlock means TLS. Far fewer people could say which message the encryption actually starts at &mdash; and most published diagrams put it in the wrong place. Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, take the ClientHello apart byte by byte, watch a real HKDF key schedule produce the traffic secrets, then break the handshake on purpose and read the exact alert the client sends back.</p>
+        <p class="hero-text">Everyone knows the padlock means TLS. Far fewer people could say which message the encryption actually starts at - and most published diagrams put it in the wrong place. Step a TLS 1.3 handshake one message at a time with TLS 1.2 running alongside, take the ClientHello apart byte by byte, watch a real HKDF key schedule produce the traffic secrets, then break the handshake on purpose and read the exact alert the client sends back.</p>
         <ul class="lab-facts">
           <li>TLS 1.3 and TLS 1.2, the same connection twice</li>
           <li>Which messages are encrypted, and from where</li>
           <li>Every ClientHello extension, with its real bytes</li>
           <li>HKDF-Expand-Label actually computed, not drawn</li>
-          <li>Expired, mismatched, downgraded &mdash; and the alert for each</li>
+          <li>Expired, mismatched, downgraded - and the alert for each</li>
           <li>0-RTT, and the replay risk it is paid for with</li>
         </ul>
       </section>
@@ -250,7 +250,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the model, the hashing, the key
+              This runs entirely inside your browser - the model, the hashing, the key
               schedule, all of it on your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -272,7 +272,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -290,7 +290,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-tls-mount">
-          <p class="lab-proc-fallback">Starting the TLS handshake explorer&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the TLS handshake explorer&hellip; if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -301,15 +301,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Encryption starts one message after ServerHello</h3>
-            <p>The usual picture puts a padlock next to &ldquo;Finished&rdquo;, as though the handshake negotiates in the open and only then closes the door. In TLS 1.3 that is wrong by four messages. Both sides can compute the handshake traffic secrets the instant ServerHello lands, because the key shares and the transcript are all they need &mdash; so EncryptedExtensions, the certificate, CertificateVerify and Finished are all already encrypted. Every row in the ladder carries the key it travels under, taken from the model rather than drawn on, so the two versions cannot quietly disagree with each other.</p>
+            <p>The usual picture puts a padlock next to &ldquo;Finished&rdquo;, as though the handshake negotiates in the open and only then closes the door. In TLS 1.3 that is wrong by four messages. Both sides can compute the handshake traffic secrets the instant ServerHello lands, because the key shares and the transcript are all they need - so EncryptedExtensions, the certificate, CertificateVerify and Finished are all already encrypted. Every row in the ladder carries the key it travels under, taken from the model rather than drawn on, so the two versions cannot quietly disagree with each other.</p>
           </article>
           <article class="info-card">
             <h3>The certificate is the row worth comparing</h3>
-            <p>In TLS 1.2 the certificate chain is plaintext. Anyone with a tap on the path learns which site you are talking to for free, whatever else they cannot read. TLS 1.3 moved it behind the handshake keys, which is one of the largest practical privacy changes in the protocol&rsquo;s history &mdash; and it is undercut in practice by the server name still travelling in the clear a message earlier. Switch modes with the same failure selected and watch that one row change colour.</p>
+            <p>In TLS 1.2 the certificate chain is plaintext. Anyone with a tap on the path learns which site you are talking to for free, whatever else they cannot read. TLS 1.3 moved it behind the handshake keys, which is one of the largest practical privacy changes in the protocol&rsquo;s history - and it is undercut in practice by the server name still travelling in the clear a message earlier. Switch modes with the same failure selected and watch that one row change colour.</p>
           </article>
           <article class="info-card">
             <h3>In TLS 1.3, even the failure is private</h3>
-            <p>Select the expired certificate and run it in both versions. In TLS 1.2 the alert leaves before any keys exist, so an observer sees a plaintext record saying fatal, certificate_expired &mdash; the failure and its reason are public. In TLS 1.3 handshake keys already exist by the time the client gives up, so the alert is encrypted inside a record that claims on the outside to be ordinary application data. The tool shows both, byte for byte.</p>
+            <p>Select the expired certificate and run it in both versions. In TLS 1.2 the alert leaves before any keys exist, so an observer sees a plaintext record saying fatal, certificate_expired - the failure and its reason are public. In TLS 1.3 handshake keys already exist by the time the client gives up, so the alert is encrypted inside a record that claims on the outside to be ordinary application data. The tool shows both, byte for byte.</p>
           </article>
           <article class="info-card">
             <h3>Some records are pure theatre</h3>
@@ -324,7 +324,7 @@
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
-            <h3>The handshake &mdash; and how to break it</h3>
+            <h3>The handshake - and how to break it</h3>
             <p>Step or play through the messages. Click any one to pin it, and the panel below gives you what it contains, what it is for, and what somebody watching the wire actually sees at that moment. The failure picker is the part worth spending time in: an expired certificate, a name that does not match, a forced downgrade and a cipher list with no overlap each stop the handshake where a real client would stop it and show the alert record byte by byte. One of those alerts is honestly ambiguous and the tool says so instead of inventing a rule.</p>
           </article>
           <article class="info-card">
@@ -333,11 +333,11 @@
           </article>
           <article class="info-card">
             <h3>The key schedule is arithmetic, not a picture</h3>
-            <p>Every secret is HMAC-SHA-256 computed in your browser as RFC 8446 section 7.1 specifies, over transcript hashes that are genuine SHA-256 digests of the sample messages this lab builds. The Early Secret and the derived value after it match the constants published in RFC 8448, which is the check that the label encoding is right. Edit the shared secret and watch every line below change completely. The inputs are samples and the page says so on every panel &mdash; the ladder is correct, and none of these numbers came from a real connection.</p>
+            <p>Every secret is HMAC-SHA-256 computed in your browser as RFC 8446 section 7.1 specifies, over transcript hashes that are genuine SHA-256 digests of the sample messages this lab builds. The Early Secret and the derived value after it match the constants published in RFC 8448, which is the check that the label encoding is right. Edit the shared secret and watch every line below change completely. The inputs are samples and the page says so on every panel - the ladder is correct, and none of these numbers came from a real connection.</p>
           </article>
           <article class="info-card">
             <h3>Round trips, including the one you can skip</h3>
-            <p>Set your own latency and see where the time actually goes: DNS, then TCP, then TLS, then the request. TLS 1.3 saves one round trip over 1.2 &mdash; unless the client&rsquo;s key-share guess was wrong, in which case HelloRetryRequest hands the saving straight back. 0-RTT removes the last one entirely and charges for it in replay risk and forward secrecy, both of which are spelled out rather than mentioned.</p>
+            <p>Set your own latency and see where the time actually goes: DNS, then TCP, then TLS, then the request. TLS 1.3 saves one round trip over 1.2 - unless the client&rsquo;s key-share guess was wrong, in which case HelloRetryRequest hands the saving straight back. 0-RTT removes the last one entirely and charges for it in replay risk and forward secrecy, both of which are spelled out rather than mentioned.</p>
           </article>
         </div>
       </section>
@@ -350,7 +350,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>It is a model, not a client</h3>
-            <p>There is no TLS implementation in this page and it opens no connection. It cannot test your server, cannot tell you which version a site negotiates, and cannot verify anybody&rsquo;s certificate. If you want to know what a real connection did, capture it and read the capture &mdash; the <a href="/labs/pcap-analyzer">PCAP analyzer</a> takes the file. If you want to know what is in a certificate you already have, that is the <a href="/labs/cert-decoder">certificate decoder</a>.</p>
+            <p>There is no TLS implementation in this page and it opens no connection. It cannot test your server, cannot tell you which version a site negotiates, and cannot verify anybody&rsquo;s certificate. If you want to know what a real connection did, capture it and read the capture - the <a href="/labs/pcap-analyzer">PCAP analyzer</a> takes the file. If you want to know what is in a certificate you already have, that is the <a href="/labs/cert-decoder">certificate decoder</a>.</p>
           </article>
           <article class="info-card">
             <h3>The secrets are samples, and deliberately so</h3>
@@ -421,7 +421,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/cert-decoder">
             <span class="lab-card-name">Certificate decoder</span>
-            <p class="lab-card-desc">What is actually inside the Certificate message &mdash; subject, SANs, validity, key usage, the whole chain.</p>
+            <p class="lab-card-desc">What is actually inside the Certificate message - subject, SANs, validity, key usage, the whole chain.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/ct-log">
@@ -441,7 +441,7 @@
           </a>
           <a class="lab-card" href="/labs/pcap-analyzer">
             <span class="lab-card-name">PCAP analyzer</span>
-            <p class="lab-card-desc">Drop a real capture and find the handshakes in it &mdash; the tool this one deliberately is not.</p>
+            <p class="lab-card-desc">Drop a real capture and find the handshakes in it - the tool this one deliberately is not.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/hash">

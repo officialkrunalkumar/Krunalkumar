@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger." />
+    <meta name="description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools - a frequency histogram, Kasiski, an IC readout and a crib dragger." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/cipher-escape" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Break one room to get into the next" />
-    <meta property="og:description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger." />
+    <meta property="og:description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools - a frequency histogram, Kasiski, an IC readout and a crib dragger." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/cipher-escape" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-cipher-escape.jpg" />
@@ -20,9 +20,9 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Break one room to get into the next" />
-    <meta name="twitter:description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger." />
+    <meta name="twitter:description" content="Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools - a frequency histogram, Kasiski, an IC readout and a crib dragger." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-cipher-escape.jpg" />
-    <title>Cipher Escape — Five Rooms, Five Ciphers</title>
+    <title>Cipher Escape - Five Rooms, Five Ciphers</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger.",
+        "description": "Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools - a frequency histogram, Kasiski, an IC readout and a crib dragger.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -61,7 +61,7 @@
                         "name": "Do I need to know any cryptography to start?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work — the Vigenere and the substitution — both have tools that do the arithmetic and leave you the judgement, which is the part worth having."
+                                "text": "No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work - the Vigenere and the substitution - both have tools that do the arithmetic and leave you the judgement, which is the part worth having."
                         }
                 },
                 {
@@ -69,7 +69,7 @@
                         "name": "Are the answers hidden from me?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Not really. The ciphertexts and the right settings are in the page's JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere — each one is produced by running that room's own decoder over its own ciphertext with the right key, which is the same code path your slider is using."
+                                "text": "Not really. The ciphertexts and the right settings are in the page's JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere - each one is produced by running that room's own decoder over its own ciphertext with the right key, which is the same code path your slider is using."
                         }
                 },
                 {
@@ -85,7 +85,7 @@
                         "name": "What if I get stuck in one room?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it — reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is \"Open this room for me\", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected."
+                                "text": "Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it - reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is \"Open this room for me\", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected."
                         }
                 },
                 {
@@ -190,7 +190,7 @@
           </ol>
         </nav>
         <h1>Cipher escape</h1>
-        <p class="hero-text">Five locked rooms, and the note inside each one tells you what the next lock needs. The first is a Caesar shift with twenty-five possible keys, so you find it by looking at all of them at once; the last is a repeating-key XOR that you break by dragging a guessed phrase along the bytes until the key falls out of them. Nothing is gated. The frequency histogram, the Kasiski counter, the index of coincidence, the shift slider and the crib dragger are open in every room from the first second, all of them computed live on whatever ciphertext is in front of you. They are not decoration and they are not hints &mdash; they are the game.</p>
+        <p class="hero-text">Five locked rooms, and the note inside each one tells you what the next lock needs. The first is a Caesar shift with twenty-five possible keys, so you find it by looking at all of them at once; the last is a repeating-key XOR that you break by dragging a guessed phrase along the bytes until the key falls out of them. Nothing is gated. The frequency histogram, the Kasiski counter, the index of coincidence, the shift slider and the crib dragger are open in every room from the first second, all of them computed live on whatever ciphertext is in front of you. They are not decoration and they are not hints - they are the game.</p>
         <ul class="game-facts">
           <li>Five ciphers, chained end to end</li>
           <li>Every tool computed live, nothing faked</li>
@@ -239,7 +239,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -277,7 +277,7 @@
           <li><kbd>←</kbd> <kbd>→</kbd> Move the shift, the rail count or the crib offset</li>
           <li><kbd>↑</kbd> <kbd>↓</kbd> Move between the five tools</li>
           <li><kbd>Enter</kbd> Go through a door once it has opened</li>
-          <li><kbd>Esc</kbd> Pause &mdash; there is no clock, so nothing is lost either way</li>
+          <li><kbd>Esc</kbd> Pause - there is no clock, so nothing is lost either way</li>
         </ul>
         <p class="game-touch">Drag a slider, or tap the &minus; and + buttons beside it if the drag fights the page. Type into the key fields and into the substitution table, which is one box per cipher letter. The five tool buttons swap the panel underneath them, and in the last room every offset the crib dragger likes is a tappable chip that moves the slider for you.</p>
         <div class="game-pad" data-pad="none"></div>
@@ -297,7 +297,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A chain, not a workbench</h3>
-            <p>The <a href="/labs/cipher">classical cipher playground</a> next door is the workbench: one box, every cipher, run it forwards and backwards as long as you like. That is the right shape for a tool and the wrong shape for learning the order things happen in. Nobody sits down to &ldquo;do a Vigenere&rdquo; &mdash; they sit down with a blob, work out what kind of thing it is, reach for the measurement that narrows it, and only then turn a key. So here each plaintext is the next room&rsquo;s briefing: room one says the second lock takes a six-letter keyword and that it was never written down, room two names the rail count, room three hands over twelve letters of crib, room four names the crib for the XOR. The chain is the reason to actually read a plaintext instead of glancing at it and moving on.</p>
+            <p>The <a href="/labs/cipher">classical cipher playground</a> next door is the workbench: one box, every cipher, run it forwards and backwards as long as you like. That is the right shape for a tool and the wrong shape for learning the order things happen in. Nobody sits down to &ldquo;do a Vigenere&rdquo; - they sit down with a blob, work out what kind of thing it is, reach for the measurement that narrows it, and only then turn a key. So here each plaintext is the next room&rsquo;s briefing: room one says the second lock takes a six-letter keyword and that it was never written down, room two names the rail count, room three hands over twelve letters of crib, room four names the crib for the XOR. The chain is the reason to actually read a plaintext instead of glancing at it and moving on.</p>
           </article>
           <article class="info-card">
             <h3>What each tool really does</h3>
@@ -305,11 +305,11 @@
           </article>
           <article class="info-card">
             <h3>None of this is encryption</h3>
-            <p>Said plainly, because the pages that skip this are the reason people put base64 in a cookie and call it secure. A Caesar has twenty-five keys. A rail fence has about ten shapes worth trying. A substitution has 403 septillion alphabets and falls over in ten minutes anyway, because the shuffle does not hide how often each letter is used. The XOR key at the end is five lowercase letters, which is about twelve million possibilities &mdash; a laptop tries all of them and checks each result while you are still reading this sentence. Every one of these was state of the art once and every one is now a puzzle. What actually replaced them is in the labs: <a href="/labs/cryptography">AES, RSA and the elliptic curves</a>, and <a href="/labs/hash">the hash functions</a> that do the other half of the job.</p>
+            <p>Said plainly, because the pages that skip this are the reason people put base64 in a cookie and call it secure. A Caesar has twenty-five keys. A rail fence has about ten shapes worth trying. A substitution has 403 septillion alphabets and falls over in ten minutes anyway, because the shuffle does not hide how often each letter is used. The XOR key at the end is five lowercase letters, which is about twelve million possibilities - a laptop tries all of them and checks each result while you are still reading this sentence. Every one of these was state of the art once and every one is now a puzzle. What actually replaced them is in the labs: <a href="/labs/cryptography">AES, RSA and the elliptic curves</a>, and <a href="/labs/hash">the hash functions</a> that do the other half of the job.</p>
           </article>
           <article class="info-card">
             <h3>The attacks outlived the ciphers</h3>
-            <p>The ciphers are museum pieces; the three techniques are not. A crib is a known-plaintext attack, and knowing what part of a message says is still how real systems are broken &mdash; it is why a modern cipher is designed to stay secure against an attacker who already has matching plaintext and ciphertext. Frequency analysis is what deterministic encryption leaks: encrypt a database column so that the same value always produces the same ciphertext and you have rebuilt room four at scale, whatever the algorithm underneath. And the XOR room is the many-time pad: a one-time pad is unbreakable exactly once, and reusing the key is the failure the crib dragger walks straight through. That failure has shipped in production, more than once.</p>
+            <p>The ciphers are museum pieces; the three techniques are not. A crib is a known-plaintext attack, and knowing what part of a message says is still how real systems are broken - it is why a modern cipher is designed to stay secure against an attacker who already has matching plaintext and ciphertext. Frequency analysis is what deterministic encryption leaks: encrypt a database column so that the same value always produces the same ciphertext and you have rebuilt room four at scale, whatever the algorithm underneath. And the XOR room is the many-time pad: a one-time pad is unbreakable exactly once, and reusing the key is the failure the crib dragger walks straight through. That failure has shipped in production, more than once.</p>
           </article>
         </div>
       </section>
@@ -320,11 +320,11 @@
         </div>
           <details class="lab-faq">
             <summary>Do I need to know any cryptography to start?</summary>
-            <div>No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work &mdash; the Vigenere and the substitution &mdash; both have tools that do the arithmetic and leave you the judgement, which is the part worth having.</div>
+            <div>No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work - the Vigenere and the substitution - both have tools that do the arithmetic and leave you the judgement, which is the part worth having.</div>
           </details>
           <details class="lab-faq">
             <summary>Are the answers hidden from me?</summary>
-            <div>Not really. The ciphertexts and the right settings are in the page's JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere &mdash; each one is produced by running that room's own decoder over its own ciphertext with the right key, which is the same code path your slider is using.</div>
+            <div>Not really. The ciphertexts and the right settings are in the page's JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere - each one is produced by running that room's own decoder over its own ciphertext with the right key, which is the same code path your slider is using.</div>
           </details>
           <details class="lab-faq">
             <summary>Is the Kasiski analysis real, or a picture of one?</summary>
@@ -332,7 +332,7 @@
           </details>
           <details class="lab-faq">
             <summary>What if I get stuck in one room?</summary>
-            <div>Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it &mdash; reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is "Open this room for me", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected.</div>
+            <div>Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it - reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is "Open this room for me", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected.</div>
           </details>
           <details class="lab-faq">
             <summary>How is the score worked out?</summary>

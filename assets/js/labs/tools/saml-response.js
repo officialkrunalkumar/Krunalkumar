@@ -247,7 +247,7 @@
     }
 
     if (!inResponseTo) {
-      warn('no InResponseTo — this is an unsolicited response',
+      warn('no InResponseTo - this is an unsolicited response',
         'Valid for IdP-initiated SSO, and it means nothing ties this response to ' +
         'a request your service provider made. Anyone who obtains one can replay ' +
         'it until it expires. Prefer SP-initiated flows, and reject unsolicited ' +
@@ -300,7 +300,7 @@
         warn('the Response is signed but the Assertion is not',
           'Legal, and a trap. If your service provider validates the signature on ' +
           'the Response and then reads the Assertion, an attacker who can get the ' +
-          'Response re-signed — or who exploits any wrapping weakness — controls ' +
+          'Response re-signed - or who exploits any wrapping weakness - controls ' +
           'the part you actually read. Sign the Assertion.');
       } else if (assertionSigned && !responseSigned) {
         good('the Assertion is signed',
@@ -449,7 +449,7 @@
         warn('the assertion window has closed',
           'Expected when you are reading a captured response later. If a live login ' +
           'is failing with an expired assertion, the clocks on your IdP and SP have ' +
-          'drifted — that is the usual cause and NTP is the usual fix.');
+          'drifted - that is the usual cause and NTP is the usual fix.');
       }
       if (nb && na - nb > 30 * 60 * 1000) {
         warn('the validity window is ' + Math.round((na - nb) / 60000) + ' minutes long',
@@ -457,7 +457,7 @@
           'and the specification suggests keeping it short.');
       }
     } else {
-      bad('no NotOnOrAfter — the assertion never expires',
+      bad('no NotOnOrAfter - the assertion never expires',
         'A bearer credential with no expiry can be replayed forever by anyone who ' +
         'captures it from a log, a proxy or a browser history.');
     }
@@ -539,13 +539,13 @@
       catch (e) {
         out.err('Could not finish reading that: ' + e.message);
         p('If it is a valid response, this is a bug in the tool rather than in ' +
-          'your SSO — the report link below reaches me.');
+          'your SSO - the report link below reaches me.');
       }
     }).catch(function (e) {
       if (e.message === 'not base64') {
         out.err('That is neither XML nor base64.');
         p('A SAMLResponse is a long base64 string. If you copied it out of a ' +
-          'browser form field it may still be URL-encoded, which is fine — paste ' +
+          'browser form field it may still be URL-encoded, which is fine - paste ' +
           'it as-is and this will decode it.');
       } else if (e.message === 'decoded, but not XML' || e.message === 'not deflate' ||
                  /DecompressionStream/.test(e.message)) {
@@ -574,11 +574,11 @@
         'redirect-binding value, or the raw XML. It works out which.');
       out.line('');
       p('You get the envelope, the subject, the validity window, the attributes, ' +
-        'and — the part other decoders skip — exactly WHAT is signed, plus checks ' +
+        'and - the part other decoders skip - exactly WHAT is signed, plus checks ' +
         'for signature wrapping and the NameID comment trick.');
       out.line('');
       pw('The signature is NOT verified: that needs the IdP certificate, which is ' +
-         'not in the response. Nothing is uploaded — a SAML response is a live ' +
+         'not in the response. Nothing is uploaded - a SAML response is a live ' +
          'credential carrying a real person\'s identity.');
     }
   });

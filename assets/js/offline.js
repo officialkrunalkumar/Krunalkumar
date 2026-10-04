@@ -250,13 +250,13 @@
       more.style.fontSize = '0.85rem';
       more.style.color = '#7b8aa6';
       more.textContent = '+ ' + (found.length - shown.length) +
-        ' more saved pages — everything you opened is kept, the list just stops here.';
+        ' more saved pages - everything you opened is kept, the list just stops here.';
       list.appendChild(more);
     }
 
     if (note) {
       if (!found.length) {
-        note.textContent = 'Nothing saved yet — pages you visit while online become available here. ' +
+        note.textContent = 'Nothing saved yet - pages you visit while online become available here. ' +
           'Nothing is ever downloaded uninvited.';
       } else {
         note.textContent = 'Saved because you opened them. Anything not listed has not been visited from ' +

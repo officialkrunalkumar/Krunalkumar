@@ -163,7 +163,7 @@
           attempts = 0;
         } else {
           attempts++;
-          feedback = 'Wrong — it was ' + seq.join('');
+          feedback = 'Wrong - it was ' + seq.join('');
           g.sweep(320, 130, 0.3);
           if (attempts >= 2) {
             /* Two failures at the same length ends it: the span is the last
@@ -173,10 +173,10 @@
               won: true,
               score: span,
               title: 'Span of ' + span,
-              message: span >= 9 ? 'Well above the usual range — seven plus or minus two is the classic figure.'
+              message: span >= 9 ? 'Well above the usual range - seven plus or minus two is the classic figure.'
                      : span >= 7 ? 'Right in the normal adult range.'
                      : span >= 5 ? 'A little under the usual range. Chunking helps: read them as pairs.'
-                     : 'Try again somewhere quieter — this one is very sensitive to distraction.'
+                     : 'Try again somewhere quieter - this one is very sensitive to distraction.'
             });
             return;
           }

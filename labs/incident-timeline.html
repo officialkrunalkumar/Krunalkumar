@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/incident-timeline" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Merge logs from four machines into one timeline" />
-    <meta property="og:description" content="Paste logs from as many machines as you have — Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch — normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded." />
+    <meta property="og:description" content="Paste logs from as many machines as you have - Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch - normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/incident-timeline" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-incident-timeline.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Merge logs from four machines into one timeline" />
-    <meta name="twitter:description" content="Paste logs from as many machines as you have — Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch — normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded." />
+    <meta name="twitter:description" content="Paste logs from as many machines as you have - Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch - normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-incident-timeline.jpg" />
     <title>Incident Timeline Builder | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
         "applicationCategory": "SecurityApplication",
         "applicationSubCategory": "Digital forensics and incident response",
         "operatingSystem": "Any modern web browser",
-        "description": "Paste logs from as many machines as you have — Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch — normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded.",
+        "description": "Paste logs from as many machines as you have - Apache, syslog, ISO 8601, Windows Event Log, JSON lines, epoch - normalise every line to UTC and read them as one ordered timeline. Flags clock skew, and separates genuine drift from a timezone you got wrong. Runs entirely in your browser; nothing is uploaded.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -95,7 +95,7 @@
                         "name": "Is anything uploaded?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no network call in this page at all. Incident logs carry hostnames, internal addresses and usernames, which is exactly the material you should not paste into a website you do not control — so this one does the work in your tab and keeps nothing."
+                                "text": "No. There is no network call in this page at all. Incident logs carry hostnames, internal addresses and usernames, which is exactly the material you should not paste into a website you do not control - so this one does the work in your tab and keeps nothing."
                         }
                 },
                 {
@@ -111,7 +111,7 @@
                         "name": "Does it detect the incident for me?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. It normalises, merges and orders, and flags the timing problems it can prove. Reading the result is still your job — it is a timeline builder, not a detection engine, and a tool that claimed otherwise would be selling you something."
+                                "text": "No. It normalises, merges and orders, and flags the timing problems it can prove. Reading the result is still your job - it is a timeline builder, not a detection engine, and a tool that claimed otherwise would be selling you something."
                         }
                 }
         ]
@@ -237,14 +237,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>It cannot tell you which clock is right</li>
                   <li>No lookups against any external system</li>
@@ -262,7 +262,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -287,7 +287,7 @@
                 <select class="lab-select" id="tool-sample" autocomplete="off">
                   <option value="">Load an example&hellip;</option>
                   <option value="checkout">A checkout outage across four machines</option>
-                  <option value="zone">Two hosts 5h30m apart &mdash; skew, or a zone?</option>
+                  <option value="zone">Two hosts 5h30m apart - skew, or a zone?</option>
                 </select>
               </label>
               <label class="tl-zone">
@@ -323,15 +323,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The zone is the one thing it must be told</h3>
-            <p>RFC 3164 syslog and a great many application logs carry no offset at all. Nothing in the bytes says whether <code>16:04:12</code> was Kolkata or California, so this asks you rather than guessing. That matters more than it sounds: get one source wrong and the whole timeline is wrong &mdash; quietly, consistently, and in a way that reads perfectly well.</p>
+            <p>RFC 3164 syslog and a great many application logs carry no offset at all. Nothing in the bytes says whether <code>16:04:12</code> was Kolkata or California, so this asks you rather than guessing. That matters more than it sounds: get one source wrong and the whole timeline is wrong - quietly, consistently, and in a way that reads perfectly well.</p>
           </article>
           <article class="info-card">
             <h3>Skew and a wrong timezone look identical, almost</h3>
-            <p>Two hosts disagreeing by exactly five hours and thirty minutes are not drifting apart; somebody labelled one of them wrong. Real skew is untidy &mdash; a few seconds, a few minutes, and growing. Suspiciously round offsets are called out separately for that reason, because the fix is a configuration change rather than an investigation.</p>
+            <p>Two hosts disagreeing by exactly five hours and thirty minutes are not drifting apart; somebody labelled one of them wrong. Real skew is untidy - a few seconds, a few minutes, and growing. Suspiciously round offsets are called out separately for that reason, because the fix is a configuration change rather than an investigation.</p>
           </article>
           <article class="info-card">
             <h3>Impossible orderings, once you say what pairs up</h3>
-            <p>A response before its request, or a logout before its login, is proof that a clock is wrong rather than that something strange happened. It cannot know which lines belong together, so you tell it with pairing rules &mdash; <code>&gt;&gt;</code> for one thing causing another, <code>==</code> for the same event seen twice on different machines.</p>
+            <p>A response before its request, or a logout before its login, is proof that a clock is wrong rather than that something strange happened. It cannot know which lines belong together, so you tell it with pairing rules - <code>&gt;&gt;</code> for one thing causing another, <code>==</code> for the same event seen twice on different machines.</p>
           </article>
           <article class="info-card">
             <h3>Unparsed lines are listed, never dropped</h3>
@@ -358,7 +358,7 @@
           </details>
           <details class="lab-faq">
             <summary>Is anything uploaded?</summary>
-            <div>No. There is no network call in this page at all. Incident logs carry hostnames, internal addresses and usernames, which is exactly the material you should not paste into a website you do not control &mdash; so this one does the work in your tab and keeps nothing.</div>
+            <div>No. There is no network call in this page at all. Incident logs carry hostnames, internal addresses and usernames, which is exactly the material you should not paste into a website you do not control - so this one does the work in your tab and keeps nothing.</div>
           </details>
           <details class="lab-faq">
             <summary>What do the exports contain?</summary>
@@ -366,7 +366,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does it detect the incident for me?</summary>
-            <div>No. It normalises, merges and orders, and flags the timing problems it can prove. Reading the result is still your job — it is a timeline builder, not a detection engine, and a tool that claimed otherwise would be selling you something.</div>
+            <div>No. It normalises, merges and orders, and flags the timing problems it can prove. Reading the result is still your job - it is a timeline builder, not a detection engine, and a tool that claimed otherwise would be selling you something.</div>
           </details>
       </section>
 
@@ -390,7 +390,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/log-analyser">
             <span class="lab-card-name">Log analyser</span>
-            <p class="lab-card-desc">Find the patterns in a single log file — bursts, rare events and the lines worth reading twice.</p>
+            <p class="lab-card-desc">Find the patterns in a single log file - bursts, rare events and the lines worth reading twice.</p>
             <span class="lab-card-engine">Parses in your browser</span>
           </a>
           <a class="lab-card" href="/labs/email-headers">

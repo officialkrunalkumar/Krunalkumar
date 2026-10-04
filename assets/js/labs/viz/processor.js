@@ -86,13 +86,13 @@
       blurb: 'The finished chip as it sits on a board: a silicon die sealed under a metal lid, wired out through hundreds of pins to power and to memory.' },
     { key: 'die', crumb: 'Die', title: 'Silicon die',
       blurb: 'Under the lid: one slab of silicon partitioned into cores, a shared cache, memory and I/O controllers, all stitched together by a ring bus.' },
-    { key: 'core', crumb: 'Core', title: 'CPU core — the pipeline',
-      blurb: 'One core, unrolled: instructions flow left to right through fetch, decode, rename, dispatch, execute and writeback — an assembly line for computation.' },
-    { key: 'exec', crumb: 'Execution', title: 'Execution unit — the ALU',
+    { key: 'core', crumb: 'Core', title: 'CPU core - the pipeline',
+      blurb: 'One core, unrolled: instructions flow left to right through fetch, decode, rename, dispatch, execute and writeback - an assembly line for computation.' },
+    { key: 'exec', crumb: 'Execution', title: 'Execution unit - the ALU',
       blurb: 'Inside "execute": an arithmetic logic unit. This 8-bit ripple-carry adder sums two operand buses, the carry rippling bit by bit from LSB to MSB.' },
-    { key: 'gate', crumb: 'Gate', title: 'Logic gate — CMOS NAND',
+    { key: 'gate', crumb: 'Gate', title: 'Logic gate - CMOS NAND',
       blurb: 'Every adder is built from logic gates. Here one NAND, shown as its symbol and its transistor schematic at once, its output tracking the truth table live.' },
-    { key: 'transistor', crumb: 'Transistor', title: 'Transistor — one MOSFET',
+    { key: 'transistor', crumb: 'Transistor', title: 'Transistor - one MOSFET',
       blurb: 'The bottom of it all: a single switch. Raise the gate and a channel forms so electrons flow source→drain; drop it and the channel pinches shut. Just a switch.' }
   ];
   var MAXZ = LEVELS.length - 1;
@@ -284,7 +284,7 @@
     leader(500, 305, 470, 600, C.dim);
     txt('Etched part marking', 300, 612, 12, C.dim, 'left');
     leader(320, 132, 210, 500, C.faint);
-    txt('Ball grid array (BGA) underneath — power + I/O pins', 210, 512, 11, C.faint, 'left');
+    txt('Ball grid array (BGA) underneath - power + I/O pins', 210, 512, 11, C.faint, 'left');
     leader(160, 215, 90, 130, C.cyan);
     txt('Memory bus ⇄ DRAM', 40, 120, 12, C.cyan, 'left', '600');
   }
@@ -333,7 +333,7 @@
     pulses([[550, 320], [600, 320]], C.amber, 3, 0.3, 3.5);
 
     ctx.textAlign = 'center';
-    txt('Ring bus — every block is one stop on the loop', 500, 600, 12, C.dim, 'center');
+    txt('Ring bus - every block is one stop on the loop', 500, 600, 12, C.dim, 'center');
     ctx.textAlign = 'left';
   }
 
@@ -465,7 +465,7 @@
     var onCol = C.green, offCol = C.faint;
 
     ctx.textAlign = 'center';
-    txt('LOGIC GATE — CMOS NAND', VW / 2, 70, 15, C.cyan, 'center', '700');
+    txt('LOGIC GATE - CMOS NAND', VW / 2, 70, 15, C.cyan, 'center', '700');
     txt('the "universal" gate: every other gate can be built from NANDs', VW / 2, 92, 12, C.dim, 'center');
     ctx.textAlign = 'left';
 
@@ -555,7 +555,7 @@
     var on = (Math.floor(flow / period) % 2) === 1;
 
     ctx.textAlign = 'center';
-    txt('MOSFET — one transistor, one switch', VW / 2, 70, 15, C.cyan, 'center', '700');
+    txt('MOSFET - one transistor, one switch', VW / 2, 70, 15, C.cyan, 'center', '700');
     ctx.textAlign = 'left';
 
     // p-type substrate (the body)
@@ -592,7 +592,7 @@
       wire([[chL, chY], [chR, chY]], C.green, 5); ctx.restore();
       pulses([[290, chY], [chL, chY], [chR, chY], [710, chY]], '#8ff0ff', 7, 0.5, 4);
       ctx.textAlign = 'center';
-      txt('channel formed — electrons flow  →  ON', 500, 470, 13, C.green, 'center', '700');
+      txt('channel formed - electrons flow  →  ON', 500, 470, 13, C.green, 'center', '700');
       ctx.textAlign = 'left';
     } else {
       // no channel: a visible gap, carriers stalled at the source
@@ -601,7 +601,7 @@
       ctx.fillStyle = '#3a4b63';
       for (var i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(300 + i * 16, chY, 4, 0, TAU); ctx.fill(); }
       ctx.textAlign = 'center';
-      txt('no channel — pinched off  →  OFF', 500, 470, 13, C.dim, 'center', '700');
+      txt('no channel - pinched off  →  OFF', 500, 470, 13, C.dim, 'center', '700');
       ctx.textAlign = 'left';
     }
 
@@ -1017,7 +1017,7 @@
       msg.className = 'lab-viz-error';
       msg.textContent = 'The processor explorer failed to start: ' +
         (err && err.message ? err.message : String(err)) +
-        '  —  please report this, it is a bug rather than something you did.';
+        '  -  please report this, it is a bug rather than something you did.';
       root.appendChild(msg);
     }
   }

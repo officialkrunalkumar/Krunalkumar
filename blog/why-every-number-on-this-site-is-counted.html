@@ -8,11 +8,11 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="A typed number is a claim with no owner" />
-    <meta property="og:description" content="A number typed into a sentence is a claim with nobody responsible for it. It was true the day it was written and nothing since has had an opinion. This is why every figure on this site is recounted at deploy time instead — the mechanism, the real drift it was built to stop, and the honest limit on what counting can fix." />
+    <meta property="og:description" content="A number typed into a sentence is a claim with nobody responsible for it. It was true the day it was written and nothing since has had an opinion. This is why every figure on this site is recounted at deploy time instead - the mechanism, the real drift it was built to stop, and the honest limit on what counting can fix." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-every-number-on-this-site-is-counted.jpg" />
@@ -26,7 +26,7 @@
     <meta property="article:section" content="Engineering" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="A typed number is a claim with no owner" />
-    <meta name="twitter:description" content="A number typed into a sentence is a claim with nobody responsible for it. It was true the day it was written and nothing since has had an opinion. This is why every figure on this site is recounted at deploy time instead — the mechanism, the real drift it was built to stop, and the honest limit on what counting can fix." />
+    <meta name="twitter:description" content="A number typed into a sentence is a claim with nobody responsible for it. It was true the day it was written and nothing since has had an opinion. This is why every figure on this site is recounted at deploy time instead - the mechanism, the real drift it was built to stop, and the honest limit on what counting can fix." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-every-number-on-this-site-is-counted.jpg" />
     <title>Why Every Number Here Is Counted | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -34,7 +34,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "A typed number is a claim with no owner",
-        "description": "Why hand-typed figures in prose go stale silently, how this site rewrites them from what the build just counted, the real cases of drift that motivated it, and where the technique cannot help — any fact about the world outside the repository.",
+        "description": "Why hand-typed figures in prose go stale silently, how this site rewrites them from what the build just counted, the real cases of drift that motivated it, and where the technique cannot help - any fact about the world outside the repository.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/why-every-number-on-this-site-is-counted.jpg",
         "datePublished": "2026-08-31",
         "dateModified": "2026-08-31",
@@ -91,7 +91,7 @@
                         "name": "Which numbers does this not cover?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Anything about the world outside the repository — clients, people mentored, years of experience. Those are still typed and still go stale at the same rate. The technique does not touch the numbers most likely to be wrong on a professional site."
+                                "text": "Anything about the world outside the repository - clients, people mentored, years of experience. Those are still typed and still go stale at the same rate. The technique does not touch the numbers most likely to be wrong on a professional site."
                         }
                 },
                 {
@@ -233,8 +233,8 @@
 
               <div class="post-body">
               <p>
-                Every figure on this site &mdash; how many pages, how many labs, how many games, how many
-                commits, how much CSS the build strips &mdash; is written into the page by the deploy, from
+                Every figure on this site - how many pages, how many labs, how many games, how many
+                commits, how much CSS the build strips - is written into the page by the deploy, from
                 what it just counted. None of them is typed.
                 That started as a fix for one embarrassing page and turned into a rule, because the failure
                 it prevents is worse than a wrong number.
@@ -255,7 +255,7 @@
                 A page that says &ldquo;62 labs&rdquo; when there are a hundred and eleven does not read as
                 out of date. It reads as <em>maintained</em>, because somebody clearly wrote a specific
                 figure there on purpose. The reader has no way to distinguish a number checked yesterday
-                from one checked two years ago, so they extend the same trust to both &mdash; and to the
+                from one checked two years ago, so they extend the same trust to both - and to the
                 sentences either side of it.
               </p>
               <p>
@@ -304,7 +304,7 @@
               </p>
               <p>
                 Two details make it usable rather than merely clever. Figures can render as words, because
-                the surrounding sentence is prose &mdash; &ldquo;Eleven language playgrounds&rdquo; reads
+                the surrounding sentence is prose - &ldquo;Eleven language playgrounds&rdquo; reads
                 better than &ldquo;11 language playgrounds&rdquo;, and a rewrite that turned every one into a
                 digit would be a downgrade disguised as automation. And where the number lives in a meta
                 description, where an element cannot go, the rule anchors on the words around the figure
@@ -314,7 +314,7 @@
               <p>
                 There is a third detail I find more interesting than the mechanism: <strong>count where the
                 truth is.</strong> The figure for how many comment lines the stylesheets carry has to be read
-                from git's copy of those files, not from the ones on disk &mdash; because by the time that
+                from git's copy of those files, not from the ones on disk - because by the time that
                 code runs, the build has already stripped the comments out. Counting the wrong artefact would
                 have produced a confident zero.
               </p>
@@ -331,7 +331,7 @@
               </p>
               <p>
                 The fix has three parts and the third is the one worth stealing. Deepen the history first,
-                then count for real. And when that cannot be done &mdash; no network, no credentials &mdash;
+                then count for real. And when that cannot be done - no network, no credentials -
                 publish a <em>floor</em> rather than either a lie or the fetch depth: the larger of what git
                 can currently see and what the page already claimed, marked with a plus sign so it reads as
                 &ldquo;at least this many&rdquo;.
@@ -350,7 +350,7 @@
               </p>
               <p>
                 It can do nothing at all about a claim regarding the world outside. How many clients, how
-                many people mentored, how many years of experience, how many projects delivered &mdash; every
+                many people mentored, how many years of experience, how many projects delivered - every
                 one of those is still typed by a human, still goes stale exactly as fast, and still has to be
                 checked by a person who remembers to. The mechanism does not touch the numbers most likely to
                 be wrong on a professional site, and I would rather say that plainly than let a page about
@@ -359,7 +359,7 @@
               <p>
                 There is a second limit worth naming. Some numbers should not be counted even when they can
                 be. A count of games in a page's prose is accurate at every deploy and still misleading,
-                because a total reads as a <em>finished</em> total &mdash; a claim about the section being
+                because a total reads as a <em>finished</em> total - a claim about the section being
                 complete rather than a measurement of how many things it holds today. Where a section is
                 still growing, the honest move is to drop the figure rather than automate it, which is why
                 some sentences here now say &ldquo;every card below&rdquo; instead of a number.
@@ -368,7 +368,7 @@
                 And one place the technique genuinely cannot reach: a recorded video. A figure spoken in a
                 walkthrough, or captured in a screen recording of an interface that displayed it, is baked
                 into the picture. No build step can rewrite that. The only options are re-recording it or
-                saying out loud, next to the video, that the number has moved on &mdash; which is what this
+                saying out loud, next to the video, that the number has moved on - which is what this
                 site does.
               </p>
               <h2 id="the-general-rule">The general rule</h2>
@@ -378,7 +378,7 @@
               <ul>
                 <li>
                   <strong>A number in prose is a hardcoded value.</strong> Treat it the way you would treat a
-                  magic number in code &mdash; something with a source, not something you typed.
+                  magic number in code - something with a source, not something you typed.
                 </li>
                 <li>
                   <strong>Derive it, or delete it.</strong> If you can compute it at build time, do. If you
@@ -422,7 +422,7 @@
               <li><a href="/blog/what-build-gate-failures-taught-me-about-ci">What build-gate failures taught me about CI</a></li>
               <li><a href="/blog/writing-comments-that-survive">Writing comments that survive</a></li>
               <li><a href="/blog/when-a-static-site-outgrows-being-static">When a static site outgrows being static</a></li>
-              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website - and the mechanism that made it hold</a></li>
             </ul>
           </nav>
 

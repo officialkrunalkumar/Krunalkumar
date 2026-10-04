@@ -216,7 +216,7 @@
           /* Exact roll to finish. An over-roll is simply not a legal move,
              so the token stays where it is — it does not bounce back off
              100, which is a different house rule and a worse one. */
-          message = NAMES[turn] + ' rolled ' + dice + ' — needs exactly ' + (100 - pos[turn]);
+          message = NAMES[turn] + ' rolled ' + dice + ' - needs exactly ' + (100 - pos[turn]);
           after(1, afterMove);
           return;
         }
@@ -251,7 +251,7 @@
           message = NAMES[turn] + ' climbs the ladder to ' + j.to;
         } else {
           g.sweep(660, 130, slideDur * 0.9);
-          message = NAMES[turn] + ' hits the snake on ' + j.from + ' — down to ' + j.to;
+          message = NAMES[turn] + ' hits the snake on ' + j.from + ' - down to ' + j.to;
         }
         syncControls();
       }
@@ -268,7 +268,7 @@
           /* A six earns another roll. There is no three-sixes forfeit here;
              see the page copy. */
           dice = 0;
-          message = NAMES[turn] + ' rolled a six — another roll';
+          message = NAMES[turn] + ' rolled a six - another roll';
           phase = 'idle';
           if (!myTurn()) aiT = 0.7;
         } else {
@@ -338,7 +338,7 @@
         then = null;
         aiT = 0;
         mover = -1;
-        message = mode === 'computer' ? 'You are Red — roll to start' : NAMES[0] + ' to roll';
+        message = mode === 'computer' ? 'You are Red - roll to start' : NAMES[0] + ' to roll';
         syncHud();
         syncControls();
       }

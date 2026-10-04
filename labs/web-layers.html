@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/web-layers" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Surface web, deep web, dark web — sorted out" />
+    <meta property="og:title" content="Surface web, deep web, dark web - sorted out" />
     <meta property="og:description" content="Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Step a request through a three-relay Tor circuit and see what each relay knows and what it does not. An architecture explainer, not an access guide. Runs entirely in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/web-layers" />
@@ -19,10 +19,10 @@
     <meta property="og:image:alt" content="Web Layers" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Surface web, deep web, dark web — sorted out" />
+    <meta name="twitter:title" content="Surface web, deep web, dark web - sorted out" />
     <meta name="twitter:description" content="Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Step a request through a three-relay Tor circuit and see what each relay knows and what it does not. An architecture explainer, not an access guide. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-web-layers.jpg" />
-    <title>Web Layers — Surface, Deep &amp; Dark | Krunalkumar Shah</title>
+    <title>Web Layers - Surface, Deep &amp; Dark | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -219,9 +219,9 @@
           </ol>
         </nav>
         <h1>Surface web, deep web, dark web</h1>
-        <p class="hero-text">Three words used constantly and defined the same way twice by nobody. They are not degrees of the same thing &mdash; they describe how you get in. Paste any address and watch the tool sort it and name the exact signal that decided it, step a request through a three-relay circuit and see what each relay knows, then look at what researchers have actually found on the other side against what the phrase makes people picture.</p>
+        <p class="hero-text">Three words used constantly and defined the same way twice by nobody. They are not degrees of the same thing - they describe how you get in. Paste any address and watch the tool sort it and name the exact signal that decided it, step a request through a three-relay circuit and see what each relay knows, then look at what researchers have actually found on the other side against what the phrase makes people picture.</p>
         <ul class="lab-facts">
-          <li>Paste a URL, get surface, deep or dark &mdash; with the reason</li>
+          <li>Paste a URL, get surface, deep or dark - with the reason</li>
           <li>A three-relay circuit, one hop at a time</li>
           <li>What each relay knows, and what it cannot know</li>
           <li>What Tor does not protect against, stated plainly</li>
@@ -247,7 +247,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the classifier, the diagram, all of it on
+              This runs entirely inside your browser - the classifier, the diagram, all of it on
               your own machine. Nothing is uploaded, nothing is fetched, and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -269,7 +269,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -287,7 +287,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-weblayers-mount">
-          <p class="lab-proc-fallback">Starting the web layers explainer… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the web layers explainer… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -303,25 +303,25 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Surface is what a crawler can follow a link to</h3>
-            <p>A page is surface web when a crawler can find a link to it, fetch it without credentials and store what comes back. That is the whole definition, and it is a statement about access rather than about content. It is also the smallest of the three layers by a long way &mdash; the visible internet is the part that happens to be reachable by following links, which is a much narrower thing than the part that exists.</p>
+            <p>A page is surface web when a crawler can find a link to it, fetch it without credentials and store what comes back. That is the whole definition, and it is a statement about access rather than about content. It is also the smallest of the three layers by a long way - the visible internet is the part that happens to be reachable by following links, which is a much narrower thing than the part that exists.</p>
           </article>
           <article class="info-card">
             <h3>Deep is everything you can reach and a crawler cannot</h3>
-            <p>Your webmail. Your bank statements. A shared document whose link nobody published. A library catalogue that only answers a form. A page a robots.txt rule excludes. None of it is hidden from you &mdash; it appears the moment you ask &mdash; and none of it is in any index. This is the overwhelming majority of what is out there, and calling it deep web makes it sound clandestine when it is mostly just your own life, logged in.</p>
+            <p>Your webmail. Your bank statements. A shared document whose link nobody published. A library catalogue that only answers a form. A page a robots.txt rule excludes. None of it is hidden from you - it appears the moment you ask - and none of it is in any index. This is the overwhelming majority of what is out there, and calling it deep web makes it sound clandestine when it is mostly just your own life, logged in.</p>
           </article>
           <article class="info-card">
             <h3>Dark is a different network, not a deeper part of this one</h3>
-            <p>A .onion address is not a website that is hard to find. It is a name that does not exist in DNS at all, resolvable only inside Tor, and the name is itself the public key &mdash; reaching the service and verifying it are the same act. That is the only thing that makes something dark web. It is an architectural fact about naming and routing, not a claim about what is being hosted.</p>
+            <p>A .onion address is not a website that is hard to find. It is a name that does not exist in DNS at all, resolvable only inside Tor, and the name is itself the public key - reaching the service and verifying it are the same act. That is the only thing that makes something dark web. It is an architectural fact about naming and routing, not a claim about what is being hosted.</p>
           </article>
           <article class="info-card">
             <h3>The measurement problem is the honest headline</h3>
-            <p>You cannot enumerate what you cannot address. Counts of onion sites come from crawls seeded with whatever address lists the researchers could get, run for however long the grant allowed, categorised by whoever was doing the reading &mdash; and they disagree with each other by tens of percentage points. Anyone quoting you a precise percentage of the dark web is telling you about their methodology, not about the world.</p>
+            <p>You cannot enumerate what you cannot address. Counts of onion sites come from crawls seeded with whatever address lists the researchers could get, run for however long the grant allowed, categorised by whoever was doing the reading - and they disagree with each other by tens of percentage points. Anyone quoting you a precise percentage of the dark web is telling you about their methodology, not about the world.</p>
           </article>
         </div>
         <div class="lab-cta">
-          <p class="lab-cta-text">This is the part you can poke. The <strong>narrative version</strong> &mdash; where the
+          <p class="lab-cta-text">This is the part you can poke. The <strong>narrative version</strong> - where the
             three words came from, what the famous iceberg picture is actually a misreading of, and what
-            any of it means in practice &mdash; is the article.</p>
+            any of it means in practice - is the article.</p>
           <a class="btn btn-primary" href="/blog/surface-web-deep-web-and-dark-web">Read the article</a>
         </div>
       </section>
@@ -337,7 +337,7 @@
           </article>
           <article class="info-card">
             <h3>The circuit shows knowledge, not geography</h3>
-            <p>Three relays, three separate keys, and no relay holding more than one of them. The guard knows your address and not your destination; the exit knows your destination and not your address; the middle knows neither and exists so that the other two never talk. Click any node and the panel spells out what that machine holds and what it cannot hold. Flip the HTTPS and sign-in switches and watch the last two columns change &mdash; neither of those is anything Tor controls.</p>
+            <p>Three relays, three separate keys, and no relay holding more than one of them. The guard knows your address and not your destination; the exit knows your destination and not your address; the middle knows neither and exists so that the other two never talk. Click any node and the panel spells out what that machine holds and what it cannot hold. Flip the HTTPS and sign-in switches and watch the last two columns change - neither of those is anything Tor controls.</p>
           </article>
           <article class="info-card">
             <h3>The onion-service mode is the symmetric case</h3>
@@ -353,7 +353,7 @@
       <section class="section-card">
         <div class="section-heading">
           <h2>What is genuinely down there, named</h2>
-          <p>Not a defence and not a whitewash &mdash; the criminal use is real and the tool says so. But a list of the legitimate uses is the part that usually goes missing.</p>
+          <p>Not a defence and not a whitewash - the criminal use is real and the tool says so. But a list of the legitimate uses is the part that usually goes missing.</p>
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
@@ -362,15 +362,15 @@
           </article>
           <article class="info-card">
             <h3>Mirrors that survive a national block</h3>
-            <p>BBC News launched an official onion mirror in 2019 so the site stays reachable from countries that block the ordinary domain. Software projects such as Debian run onion mirrors of their package archives so that installing software does not require trusting the network you happen to be on. Wikipedia is the one people assume is on this list and, as far as I can find, has no official onion service &mdash; worth saying rather than repeating.</p>
+            <p>BBC News launched an official onion mirror in 2019 so the site stays reachable from countries that block the ordinary domain. Software projects such as Debian run onion mirrors of their package archives so that installing software does not require trusting the network you happen to be on. Wikipedia is the one people assume is on this list and, as far as I can find, has no official onion service - worth saying rather than repeating.</p>
           </article>
           <article class="info-card">
             <h3>Most Tor use is not the dark web at all</h3>
-            <p>The great majority of Tor traffic is ordinary public websites reached through an exit relay &mdash; people reading the news from somewhere that filters it, or simply not wanting a browsing history attached to their address. Onion service traffic has sat in the low single digits as a share of the network&rsquo;s own traffic for years, by the Tor Project&rsquo;s own published metrics. The layer the whole phrase refers to is a rounding error in the network it lives on.</p>
+            <p>The great majority of Tor traffic is ordinary public websites reached through an exit relay - people reading the news from somewhere that filters it, or simply not wanting a browsing history attached to their address. Onion service traffic has sat in the low single digits as a share of the network&rsquo;s own traffic for years, by the Tor Project&rsquo;s own published metrics. The layer the whole phrase refers to is a rounding error in the network it lives on.</p>
           </article>
           <article class="info-card">
             <h3>And a large slice of it is criminals robbing each other</h3>
-            <p>Crawls consistently find that a substantial share of what looks like a criminal economy is phishing clones of other onion sites, built to intercept payments to the original. Another large share &mdash; often the single largest category &mdash; is simply dead: addresses that have gone offline and stayed on lists that circulate long after. What is left is real and serious, and it is smaller than the picture.</p>
+            <p>Crawls consistently find that a substantial share of what looks like a criminal economy is phishing clones of other onion sites, built to intercept payments to the original. Another large share - often the single largest category - is simply dead: addresses that have gone offline and stayed on lists that circulate long after. What is left is real and serious, and it is smaller than the picture.</p>
           </article>
         </div>
       </section>
@@ -413,7 +413,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a URL gets classified in a way you can argue with, I would genuinely like to see it &mdash; the checks are heuristics and heuristics are wrong somewhere.</p>
+          <p>If a URL gets classified in a way you can argue with, I would genuinely like to see it - the checks are heuristics and heuristics are wrong somewhere.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=web-layers#lab-feedback">Report a problem or send feedback</a>
@@ -434,7 +434,7 @@
           </a>
           <a class="lab-card" href="/labs/dns">
             <span class="lab-card-name">DNS lookup</span>
-            <p class="lab-card-desc">The naming system a .onion address deliberately sits outside of &mdash; queried live, over DoH.</p>
+            <p class="lab-card-desc">The naming system a .onion address deliberately sits outside of - queried live, over DoH.</p>
             <span class="lab-card-engine">Uses the network</span>
           </a>
           <a class="lab-card" href="/labs/breach-check">

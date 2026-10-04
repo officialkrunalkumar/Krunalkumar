@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Four cars, four quadrants, nobody moves" />
     <meta name="twitter:description" content="Four cars, four quadrant locks, and the Coffman conditions named as they happen. Try lights, a four-way stop and a roundabout, and watch a lane starve." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-traffic.jpg" />
-    <title>Traffic — Cause A Deadlock At A Junction</title>
+    <title>Traffic - Cause A Deadlock At A Junction</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -61,7 +61,7 @@
                         "name": "What are the four Coffman conditions?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning — deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third."
+                                "text": "Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning - deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third."
                         }
                 },
                 {
@@ -77,7 +77,7 @@
                         "name": "Which strategy is actually best?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked — deny hold-and-wait and it becomes as fast as anything here, which is the real lesson."
+                                "text": "None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked - deny hold-and-wait and it becomes as fast as anything here, which is the real lesson."
                         }
                 }
         ]
@@ -174,7 +174,7 @@
           </ol>
         </nav>
         <h1>Traffic</h1>
-        <p class="hero-text">Four cars reach a crossroads at the same moment. Each edges in, takes the quarter of the box directly ahead of it, and then finds the next quarter already held by the car on its right &mdash; who is waiting on the car in front of <em>them</em>. Nobody can reverse, so nobody moves again. That is not bad driving. It is a deadlock, with all four textbook conditions satisfied at once, drawn to scale in tarmac.</p>
+        <p class="hero-text">Four cars reach a crossroads at the same moment. Each edges in, takes the quarter of the box directly ahead of it, and then finds the next quarter already held by the car on its right - who is waiting on the car in front of <em>them</em>. Nobody can reverse, so nobody moves again. That is not bad driving. It is a deadlock, with all four textbook conditions satisfied at once, drawn to scale in tarmac.</p>
         <ul class="game-facts">
           <li>Four quadrants, four locks</li>
           <li>The wait-for graph, drawn on the road</li>
@@ -206,7 +206,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Mean wait</span>
-              <span class="game-stat-value" data-stat="wait">—</span>
+              <span class="game-stat-value" data-stat="wait">-</span>
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Max wait</span>
@@ -234,7 +234,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -272,7 +272,7 @@
           <li><kbd>Space</kbd> Deny or allow hold-and-wait</li>
           <li><kbd>Click</kbd> Send a car down that approach</li>
         </ul>
-        <p class="game-touch">Tap an arm of the junction to send a car down it &mdash; four taps, one per arm, and an uncontrolled junction locks on demand. The four sliders set how many cars a minute arrive on each approach; the dropdown picks the rule.</p>
+        <p class="game-touch">Tap an arm of the junction to send a car down it - four taps, one per arm, and an uncontrolled junction locks on demand. The four sliders set how many cars a minute arrive on each approach; the dropdown picks the rule.</p>
         <div class="game-pad" data-pad="none"></div>
         <div class="game-data">
           <p class="game-data-line">
@@ -290,15 +290,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The box is four locks, not one</h3>
-            <p>Split the junction into quadrants and drive on the right, and every straight-through movement needs exactly two of them in sequence: north takes the north-east then the south-east, east takes the south-east then the south-west, and so on round. Approach <code>a</code> wants quadrant <code>a</code> and then quadrant <code>a+1</code> &mdash; four drivers, four resources, each holding one and waiting on the next, in a ring. That shape was not invented to make a nice demo. It falls out of which side of the road people drive on.</p>
+            <p>Split the junction into quadrants and drive on the right, and every straight-through movement needs exactly two of them in sequence: north takes the north-east then the south-east, east takes the south-east then the south-west, and so on round. Approach <code>a</code> wants quadrant <code>a</code> and then quadrant <code>a+1</code> - four drivers, four resources, each holding one and waiting on the next, in a ring. That shape was not invented to make a nice demo. It falls out of which side of the road people drive on.</p>
           </article>
           <article class="info-card">
             <h3>Why the lights cannot deadlock</h3>
-            <p>Not because they detect anything &mdash; a fixed cycle has no idea what is in the box. Green only ever goes to two opposite movements, and those two use quadrant sets with nothing in common: north and south between them need all four, and never the same one. A phase that cannot produce a conflict cannot produce a cycle. What it costs is that green arrives on a timer rather than on demand, so push one arrival slider to the top and drag the green time down, and that arm starves while the light is busy serving an empty one. Its max wait is the number that says so.</p>
+            <p>Not because they detect anything - a fixed cycle has no idea what is in the box. Green only ever goes to two opposite movements, and those two use quadrant sets with nothing in common: north and south between them need all four, and never the same one. A phase that cannot produce a conflict cannot produce a cycle. What it costs is that green arrives on a timer rather than on demand, so push one arrival slider to the top and drag the green time down, and that arm starves while the light is busy serving an empty one. Its max wait is the number that says so.</p>
           </article>
           <article class="info-card">
-            <h3>Detected, not guessed &mdash; and livelock is a different failure</h3>
-            <p>The deadlock counter is not watching for a junction that merely looks jammed. Every frame the four quadrant holders are walked as a wait-for graph &mdash; this car waits on that one, which waits on the next &mdash; and a cycle in that graph is a deadlock by definition, which is the same test an operating system runs on its own. The roundabout cannot produce one, because a car there rolls back out rather than sitting on what it holds. What it can produce is livelock: a car takes a quadrant, loses the next, reverses out, and does it again five and six times over. Nothing is stuck; nothing is progressing either. Push all four sliders to the top on the roundabout and one arm will do exactly that for half a minute at a time.</p>
+            <h3>Detected, not guessed - and livelock is a different failure</h3>
+            <p>The deadlock counter is not watching for a junction that merely looks jammed. Every frame the four quadrant holders are walked as a wait-for graph - this car waits on that one, which waits on the next - and a cycle in that graph is a deadlock by definition, which is the same test an operating system runs on its own. The roundabout cannot produce one, because a car there rolls back out rather than sitting on what it holds. What it can produce is livelock: a car takes a quadrant, loses the next, reverses out, and does it again five and six times over. Nothing is stuck; nothing is progressing either. Push all four sliders to the top on the roundabout and one arm will do exactly that for half a minute at a time.</p>
           </article>
         </div>
       </section>
@@ -309,7 +309,7 @@
         </div>
           <details class="lab-faq">
             <summary>What are the four Coffman conditions?</summary>
-            <div>Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning — deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third.</div>
+            <div>Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning - deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third.</div>
           </details>
           <details class="lab-faq">
             <summary>How do I make it deadlock on purpose?</summary>
@@ -317,7 +317,7 @@
           </details>
           <details class="lab-faq">
             <summary>Which strategy is actually best?</summary>
-            <div>None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked — deny hold-and-wait and it becomes as fast as anything here, which is the real lesson.</div>
+            <div>None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked - deny hold-and-wait and it becomes as fast as anything here, which is the real lesson.</div>
           </details>
       </section>
 

@@ -278,11 +278,11 @@
     var h = ascii(host);
     return ext(0, 'server_name', [
       F('server_name_list length', b2(h.length + 3), 'one entry'),
-      F('name_type', [0], 'host_name(0) — the only type ever defined'),
+      F('name_type', [0], 'host_name(0) - the only type ever defined'),
       F('host_name length', b2(h.length), h.length + ' bytes'),
       F('host_name', h, host)
     ], {
-      summary: 'Which site you are asking for — in the clear',
+      summary: 'Which site you are asking for - in the clear',
       purpose: 'One IP address serves thousands of sites, so the server has to be told which ' +
         'certificate to present before it can present one. That is the whole job of SNI, and it ' +
         'is a genuine chicken-and-egg problem: the name has to travel before there is any key to ' +
@@ -317,7 +317,7 @@
       F('client_shares length', b2(36), 'one entry: group, length, key'),
       F('group', b2(0x001d), 'x25519 (0x001d)'),
       F('key_exchange length', b2(32), '32 bytes'),
-      F('key_exchange', SAMPLE_CLIENT_KEY, 'a fresh X25519 public key — sample value')
+      F('key_exchange', SAMPLE_CLIENT_KEY, 'a fresh X25519 public key - sample value')
     ], {
       summary: 'A public key sent before the server has said anything',
       purpose: 'This is the extension that removes a round trip. The client guesses which group the ' +
@@ -328,7 +328,7 @@
         'key later does not decrypt this session, because that key only signed, it never encrypted.',
       privacy: 'If the guess is wrong the server answers HelloRetryRequest naming a group it does ' +
         'support, the client sends a second ClientHello, and the handshake costs two round trips ' +
-        'after all — TLS 1.2 speed, from a 1.3 connection.'
+        'after all - TLS 1.2 speed, from a 1.3 connection.'
     });
   }
 
@@ -355,7 +355,7 @@
       F('rsa_pss_rsae_sha256', b2(0x0804), 'RSA-PSS, the required scheme in 1.3'),
       F('rsa_pss_rsae_sha384', b2(0x0805), 'RSA-PSS, larger digest'),
       F('rsa_pss_rsae_sha512', b2(0x0806), 'RSA-PSS, larger digest'),
-      F('rsa_pkcs1_sha256', b2(0x0401), 'legacy PKCS#1 v1.5 — certificates only in 1.3')
+      F('rsa_pkcs1_sha256', b2(0x0401), 'legacy PKCS#1 v1.5 - certificates only in 1.3')
     ], {
       summary: 'Which signatures the client can verify',
       purpose: 'The server needs this before it chooses a certificate, because a certificate signed ' +
@@ -385,7 +385,7 @@
 
   function extSct() {
     return ext(18, 'signed_certificate_timestamp', [], {
-      summary: 'Empty — it is a request, not a value',
+      summary: 'Empty - it is a request, not a value',
       purpose: 'An empty extension asking the server to include Certificate Transparency proofs. ' +
         'The server answers with SCTs either stapled here, embedded in the certificate itself, or ' +
         'delivered in the OCSP response. Chrome refuses a public certificate that arrives with ' +
@@ -408,12 +408,12 @@
 
   function extEarlyData() {
     return ext(42, 'early_data', [], {
-      summary: 'Empty — present only when the client is sending 0-RTT data',
+      summary: 'Empty - present only when the client is sending 0-RTT data',
       purpose: 'Its presence is the whole message: this ClientHello is followed immediately by ' +
         'application data encrypted under a key derived from the resumption secret, before the ' +
         'server has said a word.',
-      privacy: 'Early data has no forward secrecy — it is protected by the ticket’s secret, not ' +
-        'by a fresh exchange — and it is replayable. See the round-trips tab for what that costs.'
+      privacy: 'Early data has no forward secrecy - it is protected by the ticket’s secret, not ' +
+        'by a fresh exchange - and it is replayable. See the round-trips tab for what that costs.'
     });
   }
 
@@ -421,13 +421,13 @@
     return ext(41, 'pre_shared_key', [
       F('identities length', b2(14), 'one identity'),
       F('identity length', b2(8), '8 bytes'),
-      F('identity', hexToBytes('c0ffee0102030405'), 'the ticket the server issued last time — sample'),
+      F('identity', hexToBytes('c0ffee0102030405'), 'the ticket the server issued last time - sample'),
       F('obfuscated_ticket_age', hexToBytes('0000ea60'), 'age in ms plus the ticket’s own offset'),
       F('binders length', b2(33), 'one binder'),
       F('binder length', [32], '32 bytes'),
       F('binder', hexToBytes('112233445566778899aabbccddeeff00' +
         '112233445566778899aabbccddeeff00'),
-        'HMAC over this ClientHello up to here — sample')
+        'HMAC over this ClientHello up to here - sample')
     ], {
       summary: 'The resumption ticket, and proof the client holds its secret',
       purpose: 'This extension must be the last one in the message, and the reason is structural: ' +
@@ -444,22 +444,22 @@
        computed from what is actually here so the structure still adds up. */
     var payload = hexToBytes('6f70617175652d696e6e65722d68656c6c6f');
     return ext(0xfe0d, 'encrypted_client_hello', [
-      F('type', [0], 'outer(0) — this is the wrapper, not the real hello'),
+      F('type', [0], 'outer(0) - this is the wrapper, not the real hello'),
       F('kdf_id', b2(0x0001), 'HKDF-SHA256'),
       F('aead_id', b2(0x0001), 'AES-128-GCM'),
       F('config_id', [0x2a], 'which published key this was sealed to'),
       F('enc length', b2(32), '32 bytes'),
-      F('enc', SAMPLE_CLIENT_KEY, 'the HPKE encapsulated key — sample'),
-      F('payload length', b2(payload.length), 'truncated here — a real one is padded to a fixed size'),
-      F('payload', payload, 'the real ClientHello, encrypted — sample stand-in')
+      F('enc', SAMPLE_CLIENT_KEY, 'the HPKE encapsulated key - sample'),
+      F('payload length', b2(payload.length), 'truncated here - a real one is padded to a fixed size'),
+      F('payload', payload, 'the real ClientHello, encrypted - sample stand-in')
     ], {
       summary: 'The fix for SNI, when everything on the path supports it',
-      purpose: 'Encrypted Client Hello seals the entire real ClientHello — SNI, ALPN offer and all ' +
-        '— to a public key the server publishes in DNS as an HTTPS resource record, and carries it ' +
+      purpose: 'Encrypted Client Hello seals the entire real ClientHello - SNI, ALPN offer and all ' +
+        '- to a public key the server publishes in DNS as an HTTPS resource record, and carries it ' +
         'inside an outer ClientHello that names a shared front-end name instead. An observer learns ' +
         'that you contacted the front-end and nothing about which site behind it you wanted.',
       privacy: 'It is not magic and it is not universal. It needs the server, the browser and a DNS ' +
-        'lookup that itself does not leak the name — so it is usually paired with DNS over HTTPS. ' +
+        'lookup that itself does not leak the name - so it is usually paired with DNS over HTTPS. ' +
         'The real payload is padded to a fixed size, because a length is a fingerprint. This lab ' +
         'shows it as an extension you can switch on; the bytes are illustrative and the payload is ' +
         'truncated so the dump stays readable.'
@@ -468,7 +468,7 @@
 
   function extEms() {
     return ext(23, 'extended_master_secret', [], {
-      summary: 'Empty — a patch for a TLS 1.2 flaw',
+      summary: 'Empty - a patch for a TLS 1.2 flaw',
       purpose: 'Without it, TLS 1.2 derives the master secret from the two randoms alone, which let ' +
         'the triple-handshake attack splice two connections together. This extension binds the ' +
         'master secret to the full handshake transcript instead. TLS 1.3 does that unconditionally, ' +
@@ -478,7 +478,7 @@
 
   function extSessionTicket() {
     return ext(35, 'session_ticket', [], {
-      summary: 'Empty — the TLS 1.2 way to resume',
+      summary: 'Empty - the TLS 1.2 way to resume',
       purpose: 'RFC 5077 tickets. TLS 1.3 replaced this entirely with pre_shared_key and ' +
         'NewSessionTicket, which is why a 1.3 ClientHello does not carry it.'
     });
@@ -498,7 +498,7 @@
 
   function extRenegotiationInfo() {
     return ext(65281, 'renegotiation_info', [
-      F('renegotiated_connection length', [0], 'empty — this is a new connection')
+      F('renegotiated_connection length', [0], 'empty - this is a new connection')
     ], {
       summary: 'A marker saying "I have been patched"',
       purpose: 'CVE-2009-3555 let an attacker prefix data to a renegotiated TLS 1.2 session. The ' +
@@ -556,10 +556,10 @@
       },
       {
         key: 'random', kind: 'field', name: 'random',
-        parts: [F('random', SAMPLE_CLIENT_RANDOM, '32 bytes from the client — sample value')],
+        parts: [F('random', SAMPLE_CLIENT_RANDOM, '32 bytes from the client - sample value')],
         summary: '32 fresh random bytes',
-        purpose: 'Freshness. It goes into the transcript hash, so it makes every handshake — and ' +
-          'therefore every derived key — unique even between two identical connections. In TLS 1.2 ' +
+        purpose: 'Freshness. It goes into the transcript hash, so it makes every handshake - and ' +
+          'therefore every derived key - unique even between two identical connections. In TLS 1.2 ' +
           'the first four bytes used to be a timestamp, which leaked clock skew and is now random ' +
           'like the rest.'
       },
@@ -587,8 +587,8 @@
             return out;
           })()),
         summary: 'What the client is willing to encrypt with, best first',
-        purpose: 'A TLS 1.3 suite names only the AEAD and the hash — TLS_AES_128_GCM_SHA256 and ' +
-          'nothing else — because key exchange and authentication moved into extensions. A TLS 1.2 ' +
+        purpose: 'A TLS 1.3 suite names only the AEAD and the hash - TLS_AES_128_GCM_SHA256 and ' +
+          'nothing else - because key exchange and authentication moved into extensions. A TLS 1.2 ' +
           'suite names all four, which is why the old names are so long and why there were hundreds ' +
           'of them, including a great many nobody should ever have negotiated. The list is in ' +
           'preference order but the server chooses, and a sane server has its own order.'
@@ -608,8 +608,8 @@
         key: 'extensions_len', kind: 'field', name: 'extensions length',
         parts: [F('extensions length', b2(extBytes.length), extBytes.length + ' bytes of extensions')],
         summary: 'How much of this message is extensions',
-        purpose: 'In a modern ClientHello nearly all of it. Everything that makes TLS 1.3 work — the ' +
-          'version, the key share, the server name, the protocol — lives past this length field, in ' +
+        purpose: 'In a modern ClientHello nearly all of it. Everything that makes TLS 1.3 work - the ' +
+          'version, the key share, the server name, the protocol - lives past this length field, in ' +
           'structures that did not exist when the message was designed.'
       }
     ];
@@ -629,7 +629,7 @@
       ],
       summary: 'Four bytes that every handshake message starts with',
       purpose: 'One type byte and a 24-bit length. The transcript hash that the whole key schedule ' +
-        'depends on is taken over these handshake messages — type byte, length and body — and not ' +
+        'depends on is taken over these handshake messages - type byte, length and body - and not ' +
         'over the record headers around them, which is a distinction worth getting right before you ' +
         'try to reproduce a key schedule by hand.'
     };
@@ -641,11 +641,11 @@
       key: 'record', kind: 'field', name: 'record header',
       parts: [
         F('content_type', [22], 'handshake(22)'),
-        F('legacy_record_version', b2(0x0301), 'TLS 1.0 (0x0301) — another frozen field'),
+        F('legacy_record_version', b2(0x0301), 'TLS 1.0 (0x0301) - another frozen field'),
         F('length', b2(message.length), message.length + ' bytes')
       ],
       summary: 'The five bytes underneath everything',
-      purpose: 'Every TLS record has this header, and it is never encrypted — it cannot be, since ' +
+      purpose: 'Every TLS record has this header, and it is never encrypted - it cannot be, since ' +
         'the receiver needs the length to know where the record ends. That is why traffic analysis ' +
         'works on TLS at all: sizes and timings are visible even when content is not. The version ' +
         'here says TLS 1.0 for the same middlebox reasons as legacy_version.'
@@ -751,7 +751,7 @@
       inputs: [['salt', zeros(32)], ['IKM', psk]],
       out: early,
       why: 'Extract is HMAC with the salt as the key. It takes input that may not be uniformly ' +
-        'random — a Diffie-Hellman output, a ticket secret — and concentrates whatever entropy it ' +
+        'random - a Diffie-Hellman output, a ticket secret - and concentrates whatever entropy it ' +
         'has into a fixed-width pseudorandom key. With no PSK the input is zeros, and the Early ' +
         'Secret is a fixed constant that carries no secrecy at all. That is fine: it exists to keep ' +
         'the ladder the same shape whether or not you are resuming.'
@@ -812,7 +812,7 @@
       inputs: [['salt', derived1.out], ['IKM (X25519 output)', dhe]],
       out: handshake,
       why: 'Here is where the fresh key exchange enters the ladder. The ECDHE shared secret is the ' +
-        'output of X25519 over the two key_share values — the same 32 bytes on both sides, never ' +
+        'output of X25519 over the two key_share values - the same 32 bytes on both sides, never ' +
         'transmitted, computed independently. It is a sample value on this page and you can edit it: ' +
         'change one nibble and every line below changes completely, which is the avalanche property ' +
         'the whole construction rests on.'
@@ -861,7 +861,7 @@
       inputs: [['secret', sHs.out]],
       out: sHsIv.out,
       why: 'The per-record nonce is this IV exclusive-ORed with the record sequence number, which is ' +
-        'never transmitted — both sides just count. TLS 1.3 has no explicit nonce on the wire and no ' +
+        'never transmitted - both sides just count. TLS 1.3 has no explicit nonce on the wire and no ' +
         'way to reuse one by accident, which was a real and exploited failure mode in earlier ' +
         'constructions.'
     });
@@ -878,7 +878,7 @@
       why: 'This one is not a sample. The verify_data above is a genuine HMAC over the genuine ' +
         'SHA-256 of the sample handshake messages in this lab, so the value that is supposed to ' +
         'prove the transcript actually does. If anything earlier in the handshake had been altered ' +
-        'in flight, this HMAC would not match and the connection would abort — that is the whole ' +
+        'in flight, this HMAC would not match and the connection would abort - that is the whole ' +
         'mechanism, and it is why a downgrade cannot be smuggled through unnoticed.'
     });
 
@@ -901,7 +901,7 @@
       formula: 'HKDF-Extract(salt = derived, IKM = 32 zero bytes)',
       inputs: [['salt', derived2.out], ['IKM', zeros(32)]],
       out: master,
-      why: 'No new key material goes in here — the zeros are a placeholder kept so the ladder has a ' +
+      why: 'No new key material goes in here - the zeros are a placeholder kept so the ladder has a ' +
         'uniform shape at every stage. All of this secret’s strength came from the ECDHE ' +
         'exchange two steps up.'
     });
@@ -954,7 +954,7 @@
       out: res.out,
       why: 'The seed for every ticket the server issues afterwards. A ticket’s PSK is ' +
         'HKDF-Expand-Label of this secret with the ticket nonce as context, so two tickets from one ' +
-        'connection are independent. This is the value that makes the next handshake cheap — and, ' +
+        'connection are independent. This is the value that makes the next handshake cheap - and, ' +
         'if you enable 0-RTT, the value that early data’s security rests on.'
     });
 
@@ -984,16 +984,16 @@
   var WIRE = {
     plain: { label: 'in the clear', tone: 'open',
       seen: 'Anyone on the path reads this in full.' },
-    hsServer: { label: 'encrypted — server handshake key', tone: 'hs',
+    hsServer: { label: 'encrypted - server handshake key', tone: 'hs',
       seen: 'An observer sees an opaque record. In TLS 1.3 it is even labelled ' +
         'application_data(23) on the outside, so a middlebox cannot tell handshake from traffic.' },
-    hsClient: { label: 'encrypted — client handshake key', tone: 'hs',
+    hsClient: { label: 'encrypted - client handshake key', tone: 'hs',
       seen: 'Opaque, and indistinguishable on the wire from ordinary traffic.' },
-    appClient: { label: 'encrypted — client application key', tone: 'app',
+    appClient: { label: 'encrypted - client application key', tone: 'app',
       seen: 'Opaque. Only the size and the timing leak.' },
-    appServer: { label: 'encrypted — server application key', tone: 'app',
+    appServer: { label: 'encrypted - server application key', tone: 'app',
       seen: 'Opaque. Only the size and the timing leak.' },
-    appLegacy: { label: 'encrypted — TLS 1.2 session keys', tone: 'app',
+    appLegacy: { label: 'encrypted - TLS 1.2 session keys', tone: 'app',
       seen: 'Opaque, but the record still announces its content type in the clear.' },
     none: { label: 'nothing on the wire', tone: 'calc', seen: 'Nothing is transmitted.' }
   };
@@ -1016,7 +1016,7 @@
         inner: hexSpaced([2, code, 21]),
         note: 'The alert is itself encrypted, so an observer sees a 19-byte opaque record and cannot ' +
           'tell a failed certificate check from a successful one. The inner plaintext is level(2) ' +
-          'fatal, the description byte, then 21 — the real content type, which in TLS 1.3 is ' +
+          'fatal, the description byte, then 21 - the real content type, which in TLS 1.3 is ' +
           'appended inside rather than announced outside.'
       };
     }
@@ -1030,7 +1030,7 @@
   }
 
   var FAILURES = {
-    none: { label: 'nothing — a clean handshake' },
+    none: { label: 'nothing - a clean handshake' },
     nocipher: { label: 'the server supports none of the offered ciphers' },
     downgrade: { label: 'an attacker forces TLS 1.2' },
     expired: { label: 'the certificate expired last month' },
@@ -1073,13 +1073,13 @@
 
     if (fail === 'downgrade') {
       steps.push({
-        side: 'server', name: 'ServerHello — TLS 1.2, carrying the downgrade sentinel', wire: 'plain',
+        side: 'server', name: 'ServerHello - TLS 1.2, carrying the downgrade sentinel', wire: 'plain',
         rt: 1, flight: 2, kind: 'attack',
         body: 'no supported_versions extension · random ends 44 4f 57 4e 47 52 44 01',
         detail: 'The tampering happened one message earlier: something on the path stripped ' +
           'supported_versions out of the ClientHello, so the server never saw an offer of TLS 1.3 ' +
           'and answered honestly in 1.2. This is exactly the shape of the downgrade attacks that ' +
-          'worked against earlier versions, and the client cannot see the edit — its own copy of ' +
+          'worked against earlier versions, and the client cannot see the edit - its own copy of ' +
           'the ClientHello still says 1.3. What catches it is a sentinel: a TLS 1.3-capable server ' +
           'that ends up negotiating 1.2 must set the last eight bytes of its random to the ASCII ' +
           'string DOWNGRD followed by 0x01, and 0x00 for 1.1 or below. The client offered 1.3, so ' +
@@ -1087,7 +1087,7 @@
           'does not know to set it, which is why its absence proves nothing on its own.',
         teaches: 'The marker is inside the server random, and in TLS 1.2 the random is covered by ' +
           'the ServerKeyExchange signature. So the attacker cannot strip the sentinel back out ' +
-          'either — removing it breaks the signature that follows.'
+          'either - removing it breaks the signature that follows.'
       });
       steps.push({
         side: 'client', name: 'Alert: illegal_parameter(47)', wire: 'plain', rt: 1, flight: 3,
@@ -1108,7 +1108,7 @@
       body: 'chosen suite TLS_AES_128_GCM_SHA256 · 32-byte random · ' +
         'supported_versions=TLS 1.3 · key_share (its own X25519 public key)',
       detail: 'The last message on the wire that anybody can read. It carries the server’s ' +
-        'half of the key exchange and the chosen cipher suite, and nothing else — every other ' +
+        'half of the key exchange and the chosen cipher suite, and nothing else - every other ' +
         'server parameter was moved into EncryptedExtensions precisely so it would not be public.',
       teaches: 'After this message, plaintext stops. Not after Finished, which is where most ' +
         'diagrams put the lock.'
@@ -1121,7 +1121,7 @@
       detail: 'Both sides now compute the same 32-byte shared secret from their own private key and ' +
         'the other side’s public key. It is never transmitted and cannot be derived from what ' +
         'was. That secret plus the transcript hash of ClientHello and ServerHello runs through ' +
-        'HKDF to produce the handshake traffic secrets — one per direction. The key schedule ' +
+        'HKDF to produce the handshake traffic secrets - one per direction. The key schedule ' +
         'tab computes this for real.',
       teaches: 'Nothing crosses the wire in this step. It is the moment the connection becomes ' +
         'private, and it is invisible.'
@@ -1144,7 +1144,7 @@
         'establish keys',
       detail: 'The first encrypted message, and its existence is the point: in TLS 1.2 every server ' +
         'parameter was public, so an observer learned which protocol you settled on and much else ' +
-        'besides. TLS 1.3 split the server’s answer in two — the minimum needed to derive ' +
+        'besides. TLS 1.3 split the server’s answer in two - the minimum needed to derive ' +
         'keys goes in ServerHello, and everything else waits until there are keys to hide it under.',
       teaches: 'Encryption starts here, one message after ServerHello, and before the certificate.'
     });
@@ -1156,7 +1156,7 @@
       detail: 'The certificate chain, encrypted. In TLS 1.2 this was plaintext, which meant a ' +
         'passive observer got the identity of every site you visited for free even when SNI was ' +
         'absent. Encrypting it is one of the largest practical privacy wins in TLS 1.3, and it is ' +
-        'undone in practice by SNI still being in the clear — which is exactly why ECH matters. ' +
+        'undone in practice by SNI still being in the clear - which is exactly why ECH matters. ' +
         'What is inside the certificate is /labs/cert-decoder; how it got logged is /labs/ct-log.',
       teaches: 'The certificate is encrypted in TLS 1.3 and was not in TLS 1.2. Switch modes and ' +
         'watch this row change colour.'
@@ -1171,7 +1171,7 @@
         detail: isExpired
           ? 'The chain builds, the signatures verify, and the leaf expired last month. Validity ' +
             'dates are checked against the client’s own clock, which is why a device with a ' +
-            'wrong date sees every certificate on the internet as broken — a genuinely common ' +
+            'wrong date sees every certificate on the internet as broken - a genuinely common ' +
             'support call and not a security problem at all.'
           : 'The chain builds and the signatures verify, and the name does not match. Modern clients ' +
             'read subjectAltName only; the commonName field has been ignored for years, so a ' +
@@ -1187,10 +1187,10 @@
         alert: isExpired ? ALERTS.certificate_expired : ALERTS.bad_certificate,
         encrypted: true,
         body: isExpired ? 'fatal(2), certificate_expired(45)'
-                        : 'fatal(2), bad_certificate(42) — but stacks disagree',
+                        : 'fatal(2), bad_certificate(42) - but stacks disagree',
         detail: isExpired
           ? 'certificate_expired means what it says and every stack sends it for this case. Because ' +
-            'handshake keys already exist, the alert is encrypted — so unlike the TLS 1.2 ' +
+            'handshake keys already exist, the alert is encrypted - so unlike the TLS 1.2 ' +
             'version of this same failure, an observer cannot see why the connection died.'
           : 'There is no alert code that means "wrong hostname". OpenSSL maps the hostname ' +
             'verification failure to bad_certificate(42); other stacks send certificate_unknown(46), ' +
@@ -1205,7 +1205,7 @@
     steps.push({
       side: 'server', name: 'CertificateVerify', wire: 'hsServer', rt: 1, flight: 2,
       body: 'a signature over the transcript hash, made with the certificate’s private key',
-      detail: 'The certificate is a public document — anyone can copy one. This message is the ' +
+      detail: 'The certificate is a public document - anyone can copy one. This message is the ' +
         'proof of possession: a signature, with the private key, over a hash of every handshake ' +
         'byte so far. It is what makes the certificate mean anything, and it is why a stolen ' +
         'certificate file without its key is worthless. The signature also covers a fixed prefix of ' +
@@ -1218,7 +1218,7 @@
       side: 'server', name: 'Finished', wire: 'hsServer', rt: 1, flight: 2,
       body: 'HMAC(finished_key, transcript hash of everything above)',
       detail: 'One HMAC that covers the entire handshake. If a single byte of the ClientHello had ' +
-        'been altered in flight — a cipher suite removed, an extension stripped — the two ' +
+        'been altered in flight - a cipher suite removed, an extension stripped - the two ' +
         'sides would have different transcripts and this value would not match. It is the reason a ' +
         'downgrade cannot simply be edited into the conversation. The key schedule tab computes ' +
         'this exact HMAC over real bytes.',
@@ -1232,7 +1232,7 @@
       detail: 'The client builds a path from the leaf to a root it already trusts, checks the ' +
         'hostname against subjectAltName, checks validity dates against its own clock, verifies the ' +
         'CertificateVerify signature, and only then checks the Finished HMAC. Revocation, if it ' +
-        'happens at all, happens here too — usually from a locally cached list rather than a ' +
+        'happens at all, happens here too - usually from a locally cached list rather than a ' +
         'live OCSP query, because a live query is a privacy leak and a latency cost at once.',
       teaches: 'Trust comes from the root store on your machine. TLS does not supply it.'
     });
@@ -1262,7 +1262,7 @@
       detail: 'Sent after the handshake rather than during it, over application keys. Each ticket ' +
         'is bound to a PSK derived from the resumption master secret with the ticket nonce as ' +
         'context, so several tickets from one connection are independent of each other. If ' +
-        'max_early_data_size is present, this ticket permits 0-RTT next time — which is where ' +
+        'max_early_data_size is present, this ticket permits 0-RTT next time - which is where ' +
         'the replay problem comes from.',
       teaches: 'Resumption is set up after the connection is already working, not before.'
     });
@@ -1288,7 +1288,7 @@
         'primitives · server_name=' + host + ' · supported_groups · ' +
         'extended_master_secret · renegotiation_info',
       detail: 'A TLS 1.2 suite name spells out key exchange, authentication, cipher and MAC all at ' +
-        'once — ECDHE_RSA_WITH_AES_128_GCM_SHA256 — which is why there were hundreds of ' +
+        'once - ECDHE_RSA_WITH_AES_128_GCM_SHA256 - which is why there were hundreds of ' +
         'them and why so many were bad. There is no key_share here: the client has nothing to send ' +
         'yet, because it does not know which group the server will pick.',
       teaches: 'No key material in the first flight is precisely what costs the extra round trip.'
@@ -1299,7 +1299,7 @@
         side: 'server', name: 'Alert: handshake_failure(40)', wire: 'plain', rt: 1, flight: 2,
         kind: 'alert', alert: ALERTS.handshake_failure, encrypted: false,
         body: 'fatal(2), handshake_failure(40)',
-        detail: 'Same alert as TLS 1.3 and for the same reason — nothing in the offer ' +
+        detail: 'Same alert as TLS 1.3 and for the same reason - nothing in the offer ' +
           'intersects with what the server will accept.',
         teaches: 'Plaintext, as every TLS 1.2 alert before the ChangeCipherSpec is.'
       });
@@ -1308,13 +1308,13 @@
 
     if (fail === 'downgrade') {
       steps.push({
-        side: 'server', name: 'ServerHello — attacker forces an older version', wire: 'plain',
+        side: 'server', name: 'ServerHello - attacker forces an older version', wire: 'plain',
         rt: 1, flight: 2, kind: 'attack',
         body: 'server_version rewritten downward by something on the path',
         detail: 'This is the attack TLS 1.2 was historically weak against. The version is a plain ' +
           'field in ServerHello and there is no sentinel in the random for a 1.2-only server to ' +
           'set. What does protect a 1.2 connection is that the ServerKeyExchange signature covers ' +
-          'both randoms, and that the Finished messages cover the whole transcript — so ' +
+          'both randoms, and that the Finished messages cover the whole transcript - so ' +
           'tampering is caught, but only at the very end of the handshake rather than immediately.',
         teaches: 'TLS 1.3 detects this at ServerHello. TLS 1.2 detects it at Finished, several ' +
           'messages later.'
@@ -1345,8 +1345,8 @@
       side: 'server', name: 'Certificate', wire: 'plain', rt: 1, flight: 2,
       body: 'the full chain for ' + host + ', in the clear',
       detail: 'This is the row that matters most when comparing the two versions. In TLS 1.2 the ' +
-        'certificate is plaintext, so every passive observer — an ISP, a transparent proxy, ' +
-        'anyone with a tap — learns which site you are talking to even if SNI were somehow ' +
+        'certificate is plaintext, so every passive observer - an ISP, a transparent proxy, ' +
+        'anyone with a tap - learns which site you are talking to even if SNI were somehow ' +
         'absent. TLS 1.3 moved this behind the handshake keys.',
       teaches: 'Plaintext certificate. Compare this row against the same row in TLS 1.3 mode.'
     });
@@ -1355,7 +1355,7 @@
       side: 'server', name: 'ServerKeyExchange', wire: 'plain', rt: 1, flight: 2,
       body: 'the ECDHE curve and public key, signed with the certificate’s private key',
       detail: 'The message TLS 1.3 deleted. Because the client could not know the curve in advance, ' +
-        'the server had to name it here and sign it — the signature covers both randoms and ' +
+        'the server had to name it here and sign it - the signature covers both randoms and ' +
         'the parameters, which is what stops an attacker substituting its own. Static RSA key ' +
         'exchange had no message like this at all, which is exactly why it had no forward secrecy ' +
         'and why TLS 1.3 removed it.',
@@ -1408,7 +1408,7 @@
       body: 'one byte: 0x01',
       detail: 'In TLS 1.2 this record genuinely means something: everything after it from this ' +
         'sender is encrypted. TLS 1.3 kept the bytes and threw away the meaning.',
-      teaches: 'This is where encryption starts in TLS 1.2 — five messages later than in 1.3.'
+      teaches: 'This is where encryption starts in TLS 1.2 - five messages later than in 1.3.'
     });
 
     steps.push({
@@ -1431,7 +1431,7 @@
       body: 'PRF(master_secret, "server finished", hash of the handshake so far)',
       detail: 'Both Finished messages together are what make TLS 1.2 downgrade-resistant at all: ' +
         'they cover the transcript, so an edited ClientHello produces a mismatch. The weakness was ' +
-        'never that tampering went undetected — it was how much had already been sent in the ' +
+        'never that tampering went undetected - it was how much had already been sent in the ' +
         'clear by the time it was.',
       teaches: 'Handshake complete after two full round trips.'
     });
@@ -1499,7 +1499,7 @@
           'encrypted under a key derived from the resumption secret.'],
         ['First response arrives', 1, 'Zero TLS round trips before the request left. This is as ' +
           'fast as TLS gets.'],
-        ['The bill for that', 0, 'Replay. See below — it is not a footnote.']
+        ['The bill for that', 0, 'Replay. See below - it is not a footnote.']
       ],
       total: 'Zero TLS round trips, and two properties given up to get there.'
     },
@@ -1514,7 +1514,7 @@
           'exchange that 1.3 folds into the first.'],
         ['First response arrives', 1, 'Two TLS round trips before the request leaves.']
       ],
-      total: 'On a 100 ms link that is roughly 200 ms of TLS against 100 ms for 1.3 — before ' +
+      total: 'On a 100 ms link that is roughly 200 ms of TLS against 100 ms for 1.3 - before ' +
         'TCP, before DNS, and on every new connection.'
     }
   };
@@ -1522,8 +1522,8 @@
   var ZERO_RTT_RISK = [
     ['Early data is replayable', 'A 0-RTT request is not covered by anything fresh from the server, ' +
       'so an attacker who records the packet can send it again to the same server and it will be ' +
-      'accepted. RFC 8446 section 8 offers defences — single-use tickets, recording ClientHello ' +
-      'values, freshness windows — and states plainly that none of them is complete, ' +
+      'accepted. RFC 8446 section 8 offers defences - single-use tickets, recording ClientHello ' +
+      'values, freshness windows - and states plainly that none of them is complete, ' +
       'particularly across a cluster of servers that do not share state.'],
     ['So only idempotent requests belong in it', 'A repeated GET is usually harmless. A repeated ' +
       'POST that moves money is not. This is why browsers restrict what they will send as early ' +
@@ -1665,7 +1665,7 @@
       var offHex = '0000' + off.toString(16);
       lines.push(offHex.slice(offHex.length - 4) + '  ' + h.join(' ') + ' |' + a + '|');
     }
-    return lines.length ? lines.join('\n') : '(no bytes — this extension is empty, and that is the message)';
+    return lines.length ? lines.join('\n') : '(no bytes - this extension is empty, and that is the message)';
   }
 
   function fieldTable(parts) {
@@ -1732,8 +1732,8 @@
   }
   FlowFamily.prototype.algoOptions = function () {
     return [
-      { key: 'tls13', label: 'TLS 1.3 — one round trip' },
-      { key: 'tls12', label: 'TLS 1.2 — two round trips' }
+      { key: 'tls13', label: 'TLS 1.3 - one round trip' },
+      { key: 'tls12', label: 'TLS 1.2 - two round trips' }
     ];
   };
   FlowFamily.prototype.buildPanel = function (host, onChange) {
@@ -1764,7 +1764,7 @@
     var g3 = group('Reading the ladder');
     g3.appendChild(E('p', 'oa-hint',
       'Click any message to pin it. The badge on the right is the key that message is encrypted ' +
-      'under, taken from the model rather than drawn on — which is the part most handshake ' +
+      'under, taken from the model rather than drawn on - which is the part most handshake ' +
       'diagrams get wrong. Dashed rows put nothing on the wire at all.'));
     host.appendChild(g3);
   };
@@ -1835,7 +1835,7 @@
       ab.appendChild(E('p', 'tl-mono', rec.wire));
       ab.appendChild(E('p', null, s.encrypted
         ? 'Plaintext inside the AEAD: ' + rec.inner
-        : 'Body: ' + rec.inner + ' — level 2 is fatal, ' + s.alert.code + ' is ' +
+        : 'Body: ' + rec.inner + ' - level 2 is fatal, ' + s.alert.code + ' is ' +
           s.alert.name + '.'));
       ab.appendChild(E('p', null, rec.note));
       this.detailHost.appendChild(ab);
@@ -1851,23 +1851,23 @@
     var w = WIRE[s.wire] || WIRE.plain;
     var who = s.side === 'client' ? 'Client → server' :
       (s.side === 'server' ? 'Server → client' : 'Both sides, locally');
-    return who + ': ' + s.name + ' — ' + w.label + '. ' + (s.teaches || '');
+    return who + ': ' + s.name + ' - ' + w.label + '. ' + (s.teaches || '');
   };
   FlowFamily.prototype.compare = function () {
     return {
       title: 'TLS 1.2 and TLS 1.3 on the same connection',
       head: ['', 'TLS 1.2', 'TLS 1.3'],
       rows: [
-        { key: 'rtt', cells: ['Round trips before data', '2', '1 — 0 when resuming with early data'] },
+        { key: 'rtt', cells: ['Round trips before data', '2', '1 - 0 when resuming with early data'] },
         { key: 'enc', cells: ['Encryption starts at', 'ChangeCipherSpec, in flight 3',
           'immediately after ServerHello'] },
         { key: 'cert', cells: ['Certificate on the wire', 'plaintext', 'encrypted'] },
-        { key: 'sni', cells: ['Server name on the wire', 'plaintext', 'plaintext — ECH is the fix'] },
+        { key: 'sni', cells: ['Server name on the wire', 'plaintext', 'plaintext - ECH is the fix'] },
         { key: 'alert', cells: ['A failed certificate check', 'alert in the clear',
           'alert encrypted'] },
         { key: 'suite', cells: ['Cipher suite names', 'all four primitives, hundreds of suites',
           'AEAD and hash only, five suites'] },
-        { key: 'fs', cells: ['Forward secrecy', 'optional — static RSA was still legal',
+        { key: 'fs', cells: ['Forward secrecy', 'optional - static RSA was still legal',
           'mandatory, no non-ephemeral exchange exists'] },
         { key: 'down', cells: ['Downgrade caught at', 'Finished, at the end',
           'ServerHello, via the DOWNGRD sentinel'] },
@@ -1926,7 +1926,7 @@
     var g3 = group('Reading it');
     g3.appendChild(E('p', 'oa-hint',
       'Step through the fields, or click any chip to pin one. The hex dump is exactly the bytes of ' +
-      'the selected field — offsets are relative to that field, not to the whole message.'));
+      'the selected field - offsets are relative to that field, not to the whole message.'));
     host.appendChild(g3);
   };
   HelloFamily.prototype.buildStage = function (host) {
@@ -1968,7 +1968,7 @@
 
     clear(this.detailHost);
     var blk = blocks[focus];
-    var box = panel(blk.name + (blk.kind === 'extension' ? ' — extension ' + blk.code : ''),
+    var box = panel(blk.name + (blk.kind === 'extension' ? ' - extension ' + blk.code : ''),
       [blk.summary, blk.purpose]);
     this.detailHost.appendChild(box);
 
@@ -1990,7 +1990,7 @@
     tot.appendChild(E('p', 'tl-tag', 'the whole message'));
     tot.appendChild(E('p', null, 'This ClientHello is ' + this.hello.record.length +
       ' bytes as a record, ' + this.hello.message.length +
-      ' as a handshake message. Only the handshake message goes into the transcript hash — the ' +
+      ' as a handshake message. Only the handshake message goes into the transcript hash - the ' +
       'five-byte record header does not, which is the detail that defeats most attempts to ' +
       'reproduce a key schedule by hand.'));
     tot.appendChild(E('p', null, 'Offered suites: ' + this.hello.suites + '.'));
@@ -1998,7 +1998,7 @@
   };
   HelloFamily.prototype.note = function (idx) {
     var blk = this.hello.blocks[focused(this, idx, this.hello.blocks.length)];
-    return blk.name + ' — ' + blk.summary + ' (' + blk.bytes.length + ' bytes).';
+    return blk.name + ' - ' + blk.summary + ' (' + blk.bytes.length + ' bytes).';
   };
   HelloFamily.prototype.compare = function () {
     var blocks = this.hello.blocks;
@@ -2032,8 +2032,8 @@
   }
   ScheduleFamily.prototype.algoOptions = function () {
     return [
-      { key: 'full', label: 'Full handshake — no PSK' },
-      { key: 'psk', label: 'Resumption — PSK and 0-RTT branch' }
+      { key: 'full', label: 'Full handshake - no PSK' },
+      { key: 'psk', label: 'Resumption - PSK and 0-RTT branch' }
     ];
   };
   ScheduleFamily.prototype.buildPanel = function (host, onChange) {
@@ -2052,7 +2052,7 @@
     }, '32 bytes of hex'));
     g2.appendChild(E('p', 'oa-hint',
       'The 32 bytes X25519 produces on both sides. Edit one nibble and every value below changes ' +
-      'completely — that avalanche is what the construction is for. Fewer than 32 bytes is ' +
+      'completely - that avalanche is what the construction is for. Fewer than 32 bytes is ' +
       'padded with zeros so the page keeps working while you type.'));
     host.appendChild(g2);
 
@@ -2215,7 +2215,7 @@
     var g2 = group('What is being counted');
     g2.appendChild(E('p', 'oa-hint',
       'Only network round trips. Server processing, packet loss and TCP slow start are all real and ' +
-      'none of them is in these numbers — the point is the difference between the modes, not a ' +
+      'none of them is in these numbers - the point is the difference between the modes, not a ' +
       'prediction of your page load.'));
     host.appendChild(g2);
   };
@@ -2249,7 +2249,7 @@
       var head = E('div', 'tl-timehead');
       head.appendChild(E('span', 'tl-timename', r[0]));
       head.appendChild(E('span', 'tl-timecost',
-        r[1] === 0 ? 'free — rides an existing flight' : cost + ' ms'));
+        r[1] === 0 ? 'free - rides an existing flight' : cost + ' ms'));
       box.appendChild(head);
       var track = E('div', 'tl-track');
       var span = E('div', 'tl-span' + (r[1] === 0 ? ' tl-span-free' : ''));
@@ -2293,7 +2293,7 @@
       var a = E('a', null, l[1]);
       a.href = l[0];
       li.appendChild(a);
-      li.appendChild(document.createTextNode(' — ' + l[2]));
+      li.appendChild(document.createTextNode(' - ' + l[2]));
       ul.appendChild(li);
     });
     links.appendChild(ul);

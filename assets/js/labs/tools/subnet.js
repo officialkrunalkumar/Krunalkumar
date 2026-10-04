@@ -18,17 +18,17 @@
   var out = LabTool.out('tool-out');
 
   var SPECIAL = [
-    ['0.0.0.0/8',        'this network — a source-only address'],
-    ['10.0.0.0/8',       'private (RFC 1918) — not routable on the internet'],
-    ['100.64.0.0/10',    'carrier-grade NAT (RFC 6598) — your ISP’s, not yours'],
-    ['127.0.0.0/8',      'loopback — never leaves the machine'],
-    ['169.254.0.0/16',   'link-local (APIPA) — DHCP failed and it self-assigned'],
-    ['172.16.0.0/12',    'private (RFC 1918) — not routable on the internet'],
-    ['192.0.2.0/24',     'documentation (TEST-NET-1) — reserved for examples'],
-    ['192.168.0.0/16',   'private (RFC 1918) — not routable on the internet'],
+    ['0.0.0.0/8',        'this network - a source-only address'],
+    ['10.0.0.0/8',       'private (RFC 1918) - not routable on the internet'],
+    ['100.64.0.0/10',    'carrier-grade NAT (RFC 6598) - your ISP’s, not yours'],
+    ['127.0.0.0/8',      'loopback - never leaves the machine'],
+    ['169.254.0.0/16',   'link-local (APIPA) - DHCP failed and it self-assigned'],
+    ['172.16.0.0/12',    'private (RFC 1918) - not routable on the internet'],
+    ['192.0.2.0/24',     'documentation (TEST-NET-1) - reserved for examples'],
+    ['192.168.0.0/16',   'private (RFC 1918) - not routable on the internet'],
     ['198.18.0.0/15',    'benchmark testing (RFC 2544)'],
-    ['198.51.100.0/24',  'documentation (TEST-NET-2) — reserved for examples'],
-    ['203.0.113.0/24',   'documentation (TEST-NET-3) — reserved for examples'],
+    ['198.51.100.0/24',  'documentation (TEST-NET-2) - reserved for examples'],
+    ['203.0.113.0/24',   'documentation (TEST-NET-3) - reserved for examples'],
     ['224.0.0.0/4',      'multicast'],
     ['240.0.0.0/4',      'reserved for future use'],
     ['255.255.255.255/32', 'limited broadcast']
@@ -101,7 +101,7 @@
           var invCanon = invBits === 0 ? 0 : ((0xffffffff << (32 - invBits)) >>> 0);
           if (invCanon === inverted) {
             out.err('"' + maskText + '" is a wildcard mask, not a subnet mask.');
-            out.dim('Wildcard masks are the bitwise inverse — Cisco ACLs use them.');
+            out.dim('Wildcard masks are the bitwise inverse - Cisco ACLs use them.');
             out.dim('You probably meant /' + invBits + ' (' + toIp(invCanon) + ').');
           } else {
             out.err('"' + maskText + '" is not a contiguous subnet mask.');
@@ -123,7 +123,7 @@
       }
     } else {
       bits = 32;
-      out.dim('No prefix given — treating it as a single host (/32).');
+      out.dim('No prefix given - treating it as a single host (/32).');
       out.line('');
     }
 
@@ -161,7 +161,7 @@
 
     out.rule();
     out.heading('Binary');
-    out.dim('the mask is just a run of ones — everything left of the boundary is');
+    out.dim('the mask is just a run of ones - everything left of the boundary is');
     out.dim('the network, everything right of it is the host');
     out.line('');
     out.row('address', toBinary(ipInt));
@@ -185,7 +185,7 @@
         out.row(s[0], s[1], /private|loopback|link-local|CGNAT|carrier/.test(s[1]) ? 't-info' : 't-warn');
       });
     } else {
-      out.ok('Public address — globally routable.');
+      out.ok('Public address - globally routable.');
       out.dim('Nothing here queries WHOIS, geolocation or any reputation service.');
       out.dim('Those all report what you are investigating to a third party.');
     }
@@ -214,7 +214,7 @@
       document.getElementById('tool-text').addEventListener('input', function (e) {
         if (/\d\.\d/.test(e.target.value)) run();
       });
-      out.dim('Enter a CIDR block — 192.168.1.10/24, 10.0.0.0/8, 172.16.5.4/255.255.0.0');
+      out.dim('Enter a CIDR block - 192.168.1.10/24, 10.0.0.0/8, 172.16.5.4/255.255.0.0');
       out.dim('It updates as you type. Pure arithmetic, no lookups.');
     }
   });

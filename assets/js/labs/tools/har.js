@@ -142,7 +142,7 @@
 
     { tag: 'AWS-SECRET', label: 'AWS secret access key', sev: 3, scrub: true,
       re: /aws_?secret_?access_?key["'\s:=]+([A-Za-z0-9/+=]{40})/gi, group: 1,
-      note: 'Matched only next to its own parameter name — a bare 40-character blob is unidentifiable.' },
+      note: 'Matched only next to its own parameter name - a bare 40-character blob is unidentifiable.' },
 
     { tag: 'GOOGLE-KEY', label: 'Google API key', sev: 3, scrub: true,
       re: /\bAIza[0-9A-Za-z_\-]{35}\b/g,
@@ -153,7 +153,7 @@
        The xox?- prefix is distinctive enough on its own. */
     { tag: 'SLACK-TOKEN', label: 'Slack token', sev: 3, scrub: true,
       re: /\bxox[baprse]-[0-9A-Za-z\-]{10,}/g,
-      note: 'Slack revokes these automatically when it finds them in public — it cannot see your inbox.' },
+      note: 'Slack revokes these automatically when it finds them in public - it cannot see your inbox.' },
 
     { tag: 'SLACK-HOOK', label: 'Slack incoming webhook', sev: 2, scrub: true,
       re: /https:\/\/hooks\.slack\.com\/services\/[A-Za-z0-9_\-\/]{20,}/g,
@@ -169,7 +169,7 @@
 
     { tag: 'STRIPE-TEST', label: 'Stripe test secret key', sev: 1, scrub: true,
       re: /\b[sr]k_test_[A-Za-z0-9]{10,120}\b/g,
-      note: 'Test mode only — worth rotating, not worth an incident.' },
+      note: 'Test mode only - worth rotating, not worth an incident.' },
 
     { tag: 'STRIPE-PUB', label: 'Stripe publishable key', sev: 0, scrub: false,
       re: /\bpk_(?:live|test)_[A-Za-z0-9]{10,120}\b/g,
@@ -318,18 +318,18 @@
     ['connect.facebook.net', 'Meta Pixel'],
     ['facebook.net', 'Meta Pixel'],
     ['facebook.com', 'Meta'],
-    ['hotjar.com', 'Hotjar — session recording'],
-    ['hotjar.io', 'Hotjar — session recording'],
-    ['clarity.ms', 'Microsoft Clarity — session recording'],
-    ['fullstory.com', 'FullStory — session recording'],
-    ['logrocket.com', 'LogRocket — session recording'],
-    ['logrocket.io', 'LogRocket — session recording'],
-    ['mouseflow.com', 'Mouseflow — session recording'],
-    ['smartlook.com', 'Smartlook — session recording'],
-    ['luckyorange.com', 'Lucky Orange — session recording'],
-    ['crazyegg.com', 'Crazy Egg — heatmaps'],
-    ['segment.com', 'Segment — event pipeline'],
-    ['segment.io', 'Segment — event pipeline'],
+    ['hotjar.com', 'Hotjar - session recording'],
+    ['hotjar.io', 'Hotjar - session recording'],
+    ['clarity.ms', 'Microsoft Clarity - session recording'],
+    ['fullstory.com', 'FullStory - session recording'],
+    ['logrocket.com', 'LogRocket - session recording'],
+    ['logrocket.io', 'LogRocket - session recording'],
+    ['mouseflow.com', 'Mouseflow - session recording'],
+    ['smartlook.com', 'Smartlook - session recording'],
+    ['luckyorange.com', 'Lucky Orange - session recording'],
+    ['crazyegg.com', 'Crazy Egg - heatmaps'],
+    ['segment.com', 'Segment - event pipeline'],
+    ['segment.io', 'Segment - event pipeline'],
     ['mixpanel.com', 'Mixpanel'],
     ['amplitude.com', 'Amplitude'],
     ['heap.io', 'Heap'],
@@ -363,11 +363,11 @@
     ['yandex.ru', 'Yandex Metrica'],
     ['nr-data.net', 'New Relic RUM'],
     ['newrelic.com', 'New Relic RUM'],
-    ['sentry.io', 'Sentry — error reporting'],
-    ['bugsnag.com', 'Bugsnag — error reporting'],
+    ['sentry.io', 'Sentry - error reporting'],
+    ['bugsnag.com', 'Bugsnag - error reporting'],
     ['datadoghq.com', 'Datadog RUM'],
-    ['plausible.io', 'Plausible — cookieless'],
-    ['usefathom.com', 'Fathom — cookieless']
+    ['plausible.io', 'Plausible - cookieless'],
+    ['usefathom.com', 'Fathom - cookieless']
   ];
 
   function trackerName(host) {
@@ -492,7 +492,7 @@
         head = JSON.parse(new TextDecoder().decode(bytesFromBinary(atob(h))));
       } catch (e0) { head = null; }
       if (head && head.alg) {
-        lines.push('alg ' + head.alg + (String(head.alg).toLowerCase() === 'none' ? '  — unsigned!' : ''));
+        lines.push('alg ' + head.alg + (String(head.alg).toLowerCase() === 'none' ? '  - unsigned!' : ''));
       }
       var who = payload.sub || payload.email || payload.user_id || payload.uid ||
                 payload.preferred_username || payload.name;
@@ -502,9 +502,9 @@
       if (typeof payload.exp === 'number') {
         var when = new Date(payload.exp * 1000);
         var live = when.getTime() > Date.now();
-        lines.push('expires ' + when.toISOString() + (live ? '  — STILL VALID' : '  — already expired'));
+        lines.push('expires ' + when.toISOString() + (live ? '  - STILL VALID' : '  - already expired'));
       } else {
-        lines.push('no exp claim — this token does not expire on its own');
+        lines.push('no exp claim - this token does not expire on its own');
       }
     } catch (e) {
       return null;
@@ -607,7 +607,7 @@
       // password, and it is already on screen once too often.
       addSecret(rep, 'PASSWORD', 'Password submitted in a form', 3,
                 '(' + v.length + ' characters, not shown)',
-                'Sent in the clear inside the capture. Change it — redacting the file does not un-send it.',
+                'Sent in the clear inside the capture. Change it - redacting the file does not un-send it.',
                 where);
       return;
     }
@@ -618,7 +618,7 @@
     }
     if (SENSITIVE_NAME.test(n) && v.length >= 8) {
       addSecret(rep, 'NAMED-SECRET', 'Secret-named parameter: ' + clip(n, 40), 2, v,
-                'Flagged on the name, not the shape — whatever this value is, it is called a secret.', where);
+                'Flagged on the name, not the shape - whatever this value is, it is called a secret.', where);
     }
   }
 
@@ -696,7 +696,7 @@
                   'A session cookie is a login. Pasting it into a browser is the whole attack.', where);
       } else if (value.length >= 20) {
         addSecret(rep, 'COOKIE', 'Long cookie value: ' + clip(name, 40), 2, value,
-                  'Not named like a session cookie, but long enough to be one — worth a glance.', where);
+                  'Not named like a session cookie, but long enough to be one - worth a glance.', where);
       }
       scanSecrets(value, where, rep);
     });
@@ -843,7 +843,7 @@
                 user !== null
                   ? ['username: ' + clip(user, 60),
                      'password: ' + passLen + ' characters (decoded here, deliberately not shown)']
-                  : ['the base64 did not decode — it may be truncated']);
+                  : ['the base64 did not decode - it may be truncated']);
       return;
     }
     if (/^bearer$/i.test(scheme)) {
@@ -1032,7 +1032,7 @@
     var live = rep.secrets.filter(function (s) { return s.sev >= 2; });
 
     if (!rep.secrets.length) {
-      out.ok('SECRETS AND CREDENTIALS — nothing matched.');
+      out.ok('SECRETS AND CREDENTIALS - nothing matched.');
       out.line('');
       out.dim('That is a real result, not a guarantee. This looks for tokens with');
       out.dim('recognisable shapes and for fields named like secrets. A bespoke');
@@ -1042,10 +1042,10 @@
     }
 
     if (live.length) {
-      out.err('SECRETS AND CREDENTIALS — ' + rep.secrets.length + ' found, ' +
+      out.err('SECRETS AND CREDENTIALS - ' + rep.secrets.length + ' found, ' +
               live.length + ' that should be treated as live');
     } else {
-      out.warn('SECRETS AND CREDENTIALS — ' + rep.secrets.length + ' found');
+      out.warn('SECRETS AND CREDENTIALS - ' + rep.secrets.length + ' found');
     }
     out.line('');
     out.dim('Do not send this file until these are dealt with. Rotating a leaked');
@@ -1101,13 +1101,13 @@
     out.rule();
     var total = rep.emails.length + rep.cards.length + rep.phones.length;
     if (!total) {
-      out.ok('PERSONAL DATA — no email addresses, card numbers or phone numbers matched.');
+      out.ok('PERSONAL DATA - no email addresses, card numbers or phone numbers matched.');
       return;
     }
     out.warn('PERSONAL DATA');
     out.line('');
     out.dim('Hits in request fields are things the session sent. Hits in response');
-    out.dim('bodies are things the page displayed — often the site\'s own content,');
+    out.dim('bodies are things the page displayed - often the site\'s own content,');
     out.dim('sometimes another customer\'s record.');
 
     piiBlock('Card numbers (Luhn-valid, known brand)', rep.cards, 't-err');
@@ -1124,7 +1124,7 @@
   function piiBlock(title, list, cls) {
     if (!list.length) return;
     out.line('');
-    out.line('  ' + title + ' — ' + list.length + ' distinct', cls);
+    out.line('  ' + title + ' - ' + list.length + ' distinct', cls);
     var sorted = list.slice().sort(function (a, b) { return b.count - a.count; });
     for (var i = 0; i < sorted.length && i < SHOW_PII; i++) {
       var rec = sorted[i];
@@ -1139,7 +1139,7 @@
   function reportHosts(stats, ownDomain) {
     out.rule();
     var hosts = Object.keys(stats.hosts);
-    out.heading('HOSTS CONTACTED — ' + hosts.length);
+    out.heading('HOSTS CONTACTED - ' + hosts.length);
     if (ownDomain) out.row('first party', ownDomain);
     out.line('');
 
@@ -1174,7 +1174,7 @@
     if (recorders) {
       out.line('');
       out.warn(recorders + ' session-recording service' + (recorders === 1 ? '' : 's') + ' in this capture.');
-      out.dim('Those replay the page, not just the URL — whatever was on screen');
+      out.dim('Those replay the page, not just the URL - whatever was on screen');
       out.dim('during this session was sent to them as well, including anything');
       out.dim('this tool just found in the response bodies.');
     }
@@ -1278,7 +1278,7 @@
     out.line('');
     out.dim('entry.time is the whole life of the request including queueing and');
     out.dim('blocked time, which is why a fast server can still appear slow here.');
-    out.dim('ttfb is the wait phase alone — that one is the server.');
+    out.dim('ttfb is the wait phase alone - that one is the server.');
   }
 
   /* ---------------------------------------------------------------------- */
@@ -1300,12 +1300,12 @@
     setRedactEnabled(false);
 
     if (bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
-      out.err('This is a gzip file, not JSON. Decompress it first — nothing here');
+      out.err('This is a gzip file, not JSON. Decompress it first - nothing here');
       out.err('unpacks archives, deliberately.');
       return;
     }
     if (bytes.length >= 2 && bytes[0] === 0x50 && bytes[1] === 0x4b) {
-      out.err('This is a zip archive. Some browsers export HAR inside one —');
+      out.err('This is a zip archive. Some browsers export HAR inside one -');
       out.err('extract the .har and drop that.');
       return;
     }
@@ -1386,7 +1386,7 @@
     out.row('response bodies kept', stats.withBody + ' of ' + entries.length,
             stats.withBody ? 't-warn' : 't-ok');
     if (!stats.withBody) {
-      out.dim('    exported without content — headers and cookies only');
+      out.dim('    exported without content - headers and cookies only');
     }
     out.row('distinct cookie names', Object.keys(stats.cookieNames).length);
     if (stats.insecure) {
@@ -1395,7 +1395,7 @@
     if (stats.cached) out.row('served from cache', stats.cached);
     if (stats.statusless) {
       out.row('no response status', stats.statusless, 't-warn');
-      out.dim('    a response object with no status field — usually a half-written');
+      out.dim('    a response object with no status field - usually a half-written');
       out.dim('    capture, or an exporter that logs the request only');
     }
 
@@ -1416,7 +1416,7 @@
                 LabTool.humanBytes(BODY_SCAN_LIMIT) + '.');
       }
       if (rep.bodiesSkipped) {
-        out.dim('  ' + rep.bodiesSkipped + ' body/bodies skipped — binary content, or the ' +
+        out.dim('  ' + rep.bodiesSkipped + ' body/bodies skipped - binary content, or the ' +
                 LabTool.humanBytes(BODY_BUDGET) + ' total budget was used up.');
       }
       out.dim('  Redaction has no such cap: it rewrites every string in the file.');
@@ -1434,15 +1434,15 @@
     out.dim('then reach for redaction.');
     out.line('');
     if (rep.secrets.length) {
-      out.ok('Use the redaction button: it replaces every secret above — plus all');
+      out.ok('Use the redaction button: it replaces every secret above - plus all');
       out.ok('cookie values, Authorization headers, password fields and card');
-      out.ok('numbers — and hands back a .har you can attach.');
+      out.ok('numbers - and hands back a .har you can attach.');
     } else {
       out.dim('Redaction is still available, and still worth running: it blanks');
       out.dim('every cookie value and auth header whether or not it was flagged.');
     }
     out.line('');
-    out.dim('Email addresses are left intact in the redacted copy on purpose —');
+    out.dim('Email addresses are left intact in the redacted copy on purpose -');
     out.dim('they are usually the account the ticket is about, and removing them');
     out.dim('makes the file useless to the person you are asking for help.');
 
@@ -1641,7 +1641,7 @@
         // btoa only accepts latin1. Our replacements are ASCII so this should
         // not happen, but if the body was re-encoded oddly, drop it rather
         // than ship a body we could not verify.
-        content.text = btoa('[REDACTED BODY — could not be re-encoded safely]');
+        content.text = btoa('[REDACTED BODY - could not be re-encoded safely]');
         content.size = content.text.length;
         bump(tally, 'BODY-DROPPED');
       }
@@ -1682,7 +1682,7 @@
   function redact() {
     if (!state.text) {
       out.line('');
-      out.warn('Load a HAR first — there is nothing to redact.');
+      out.warn('Load a HAR first - there is nothing to redact.');
       return;
     }
     out.line('');
@@ -1690,7 +1690,7 @@
     out.heading('REDACTING');
     out.dim('Re-parsing the original text so the copy is built from the file as');
     out.dim('it was, not from anything shown above. On a large HAR this takes a');
-    out.dim('few seconds — every string in the file is rewritten, not a sample.');
+    out.dim('few seconds - every string in the file is rewritten, not a sample.');
 
     var root;
     try {
@@ -1704,7 +1704,7 @@
     var counter = { n: 0 };
     try {
       var log = isObj(root) && isObj(root.log) ? root.log : null;
-      if (!log) { out.err('No log object — nothing to redact.'); return; }
+      if (!log) { out.err('No log object - nothing to redact.'); return; }
       arr(log.entries).forEach(function (entry) { scrubEntry(entry, tally); });
       deepScrub(root, 0, tally, counter);
 
@@ -1713,11 +1713,11 @@
       log.comment = (str(log.comment) ? str(log.comment) + ' | ' : '') +
         'Redacted in-browser by the Labs HAR analyzer on ' + new Date().toISOString() +
         '. Credentials, cookie values, auth headers, password fields and card ' +
-        'numbers were replaced with [REDACTED...] markers. Best effort only — ' +
+        'numbers were replaced with [REDACTED...] markers. Best effort only - ' +
         'review before sharing.';
     } catch (err2) {
       out.err('Redaction failed: ' + (err2 && err2.message ? err2.message : err2));
-      out.dim('No file was produced. Nothing was sent anywhere either — this all');
+      out.dim('No file was produced. Nothing was sent anywhere either - this all');
       out.dim('happened in the tab.');
       return;
     }
@@ -1758,7 +1758,7 @@
     out.warn('Check the result before sending it. Redaction is pattern matching:');
     out.warn('an opaque session id in a field called "u" looks like every other');
     out.warn('random string, and this cannot tell them apart. It is a safety net,');
-    out.warn('not a guarantee — rotating what leaked is the guarantee.');
+    out.warn('not a guarantee - rotating what leaked is the guarantee.');
   }
 
   function setRedactEnabled(on) {
@@ -1797,7 +1797,7 @@
           } catch (err) {
             out.clear().err('That file could not be analysed: ' +
                             (err && err.message ? err.message : err));
-            out.dim('Nothing was uploaded — the failure happened in this tab.');
+            out.dim('Nothing was uploaded - the failure happened in this tab.');
             setRedactEnabled(false);
           }
         },
@@ -1807,7 +1807,7 @@
       out.dim('Drop the .har you were about to email to support.');
       out.dim('');
       out.dim('It is the browser Network tab saved as JSON, which means every');
-      out.dim('request header — Cookie, Authorization — and every Set-Cookie the');
+      out.dim('request header - Cookie, Authorization - and every Set-Cookie the');
       out.dim('server sent back. If it was exported with content, the response');
       out.dim('bodies are in there too. This reads all of it and tells you what');
       out.dim('you would be handing over, then offers a redacted copy.');

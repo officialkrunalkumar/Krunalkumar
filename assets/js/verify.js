@@ -19,7 +19,7 @@
   // readers speak only the words.
   const STATUS = {
     valid: { className: 'verify-status-valid', glyph: '✓', label: 'Valid certificate' },
-    pending: { className: 'verify-status-pending', glyph: '⏳', label: 'Pending verification — this record is awaiting final confirmation' },
+    pending: { className: 'verify-status-pending', glyph: '⏳', label: 'Pending verification - this record is awaiting final confirmation' },
     revoked: { className: 'verify-status-revoked', glyph: '✗', label: 'This certificate has been revoked' },
   };
   // Never default an unrecognised status to "valid" — on a verification
@@ -201,7 +201,7 @@
                real student credibility for something that is more often an
                administrative gap than a fraud. State the fact, then give both
                parties a way to resolve it. */
-            'Check the ID for typos — internship IDs look like KS-INT-2026-XXXXXX and mentorship IDs like KS-MEN-2026-XXXXXX. If you are holding this certificate and the ID is correct, email krunalkumar@krunalkumar.dpdns.org and I will confirm it directly. A missing record does not by itself mean a certificate is not genuine.'
+            'Check the ID for typos - internship IDs look like KS-INT-2026-XXXXXX and mentorship IDs like KS-MEN-2026-XXXXXX. If you are holding this certificate and the ID is correct, email krunalkumar@krunalkumar.dpdns.org and I will confirm it directly. A missing record does not by itself mean a certificate is not genuine.'
           );
         }
       })

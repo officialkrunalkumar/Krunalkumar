@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Block everything and you lose the game" />
     <meta name="twitter:description" content="Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-firewall-defence.jpg" />
-    <title>Firewall Defence — Rules Are The Towers</title>
+    <title>Firewall Defence - Rules Are The Towers</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -93,7 +93,7 @@
                         "name": "Can it actually be won?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. Six hundred is the maximum — sixty attacks blocked, nothing legitimate dropped — and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on."
+                                "text": "Yes. Six hundred is the maximum - sixty attacks blocked, nothing legitimate dropped - and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on."
                         }
                 }
         ]
@@ -190,7 +190,7 @@
           </ol>
         </nav>
         <h1>Firewall defence</h1>
-        <p class="hero-text">Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work &mdash; and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.</p>
+        <p class="hero-text">Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work - and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.</p>
         <ul class="game-facts">
           <li>Seven rule slots, read in order</li>
           <li>The first match decides, so position matters</li>
@@ -252,7 +252,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -292,7 +292,7 @@
           <li><kbd>Space</kbd> Release the wave, or add the rule you built</li>
           <li><kbd>Esc</kbd> Pause</li>
         </ul>
-        <p class="game-touch">Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too &mdash; tap it to flip the default between ACCEPT and DROP.</p>
+        <p class="game-touch">Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too - tap it to flip the default between ACCEPT and DROP.</p>
         <div class="game-pad" data-pad="none"></div>
         <div class="game-data">
           <p class="game-data-line">
@@ -314,11 +314,11 @@
           </article>
           <article class="info-card">
             <h3>First match wins, so where a rule sits is part of what it says</h3>
-            <p>The chain is read left to right and the first rule that matches decides the packet's fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source &mdash; and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.</p>
+            <p>The chain is read left to right and the first rule that matches decides the packet's fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source - and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.</p>
           </article>
           <article class="info-card">
             <h3>A rule nothing can reach is marked dead</h3>
-            <p>When every packet a rule could ever match is already decided by something above it, the rule is shadowed &mdash; it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.</p>
+            <p>When every packet a rule could ever match is already decided by something above it, the rule is shadowed - it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.</p>
           </article>
           <article class="info-card">
             <h3>Only state can separate a reply from a knock</h3>
@@ -326,7 +326,7 @@
           </article>
           <article class="info-card">
             <h3>What this leaves out, and where to do it properly</h3>
-            <p>Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple &mdash; source and destination and port and protocol together &mdash; so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about &mdash; a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.</p>
+            <p>Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple - source and destination and port and protocol together - so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about - a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.</p>
           </article>
         </div>
       </section>
@@ -353,7 +353,7 @@
           </details>
           <details class="lab-faq">
             <summary>Can it actually be won?</summary>
-            <div>Yes. Six hundred is the maximum &mdash; sixty attacks blocked, nothing legitimate dropped &mdash; and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.</div>
+            <div>Yes. Six hundred is the maximum - sixty attacks blocked, nothing legitimate dropped - and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.</div>
           </details>
       </section>
 

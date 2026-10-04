@@ -83,7 +83,7 @@
 
   var files = {
     'about.txt': [
-      'Krunalkumar Shah — researcher, engineer, cybersecurity professional.',
+      'Krunalkumar Shah - researcher, engineer, cybersecurity professional.',
       'Published a defense against fork bomb attacks in Linux (IJRAT, 2019).',
       'Former Assistant Professor. Builds AI & automation workflows for real teams.',
       'Registered cyber expert volunteer supporting law enforcement since 2020.',
@@ -135,7 +135,7 @@
     var key = arg.toLowerCase();
     var f = Object.prototype.hasOwnProperty.call(files, key) ? files[key] : undefined;
     if (f) { f.forEach(function (l) { print(l); }); }
-    else if (arg.indexOf('.secrets') === 0) { print('cat: .secrets/: Permission denied. <span class="dim">Nice try though — I respect it.</span>'); }
+    else if (arg.indexOf('.secrets') === 0) { print('cat: .secrets/: Permission denied. <span class="dim">Nice try though - I respect it.</span>'); }
     else { print('cat: ' + esc(arg) + ': No such file'); }
   }
 
@@ -175,7 +175,7 @@
     print('');
     print('     The citations are the point. Einstein is the most misattributed');
     print('     person on the internet, and the page names four famous lines he');
-    print('     never said &mdash; including the fish that cannot climb a tree.');
+    print('     never said - including the fish that cannot climb a tree.');
     print('');
     print('<span class="white">SEE ALSO</span>');
     print('     <a href="/buddha">/buddha</a>, which cites every verse for the same reason.');
@@ -186,7 +186,7 @@
     print('MAGIC(1)                    Background Controls                    MAGIC(1)', 'dim');
     print('');
     print('<span class="white">NAME</span>');
-    print('     the drifting dots — the starfield behind every page takes requests');
+    print('     the drifting dots - the starfield behind every page takes requests');
     print('');
     print('<span class="white">KEYS</span>');
     print('     <span class="cyan">.</span>    show or hide the controls <span class="dim">(hidden until you reveal them; the choice lasts the tab session)</span>');
@@ -200,28 +200,28 @@
     print('     Works on every page, so you can switch without scrolling back up');
     print('     to the header and losing your place. The choice is remembered, and');
     print('     pressing the key you are already on does nothing rather than');
-    print('     toggling — <span class="cyan">w</span> always means light, never &ldquo;the other one&rdquo;.');
+    print('     toggling - <span class="cyan">w</span> always means light, never &ldquo;the other one&rdquo;.');
     print('');
     print('<span class="white">ELSEWHERE</span>');
     print('     Tap the portrait on <a href="/">the home page</a> six times, quickly.');
-    print('     The name in the navbar becomes a dance floor — fire crackers');
-    print('     included — and Mayuri, bottom right, dances along. She works');
+    print('     The name in the navbar becomes a dance floor - fire crackers');
+    print('     included - and Mayuri, bottom right, dances along. She works');
     print('     here; staff dance at parties. Six more taps end it. Nothing is');
     print('     saved; the morning after is only ever a reload away.');
-    print('     She also answers to her name &mdash; typing <span class="cyan">mayuri</span> here summons her.');
+    print('     She also answers to her name - typing <span class="cyan">mayuri</span> here summons her.');
     print('');
-    print('     On <a href="/buddha">the still page</a>, press <span class="cyan">m</span>. The breath words —');
-    print('     breathe in, breathe out — come out from under the figure and keep');
+    print('     On <a href="/buddha">the still page</a>, press <span class="cyan">m</span>. The breath words -');
+    print('     breathe in, breathe out - come out from under the figure and keep');
     print('     time with him. Press it again and they withdraw. Nothing is saved,');
     print('     and a reload puts them away.');
     print('');
     print('     Press <span class="cyan">t</span> there too: the raga changes. Bhairavi at dawn,');
-    print('     Yaman at dusk, Bhupali, and a sustained Om with no flute at all —');
+    print('     Yaman at dusk, Bhupali, and a sustained Om with no flute at all -');
     print('     four settings, each a real raga with an hour attached to it. The');
     print('     drone slides to the new tonic rather than cutting.');
     print('');
     print('     On <a href="/party">the loud page</a>, press <span class="cyan">t</span>. The record');
-    print('     changes &mdash; four of them, each with its own tempo, key and drum');
+    print('     changes - four of them, each with its own tempo, key and drum');
     print('     pattern, all built in the browser rather than downloaded. Nothing');
     print('     is saved, and the room re-times itself to whatever is playing.');
     print('');
@@ -235,8 +235,8 @@
     print('     <span class="cyan">/birthday?name=[name]</span>');
     print('     <span class="cyan">/festival?name=[festival]</span>');
     print('');
-    print('     Birthday takes an optional <span class="cyan">&amp;theme=</span> — candlelight, confetti,');
-    print('     balloons, starlit, blossom or neon — and both take an optional');
+    print('     Birthday takes an optional <span class="cyan">&amp;theme=</span> - candlelight, confetti,');
+    print('     balloons, starlit, blossom or neon - and both take an optional');
     print('     <span class="cyan">&amp;from=</span> so a forwarded card still says who sent it.');
     print('');
     print('     <span class="dim">/birthday?name=Riya&amp;theme=starlit&amp;from=Krunal</span>');
@@ -257,7 +257,7 @@
     print('     somebody filled in. The Copy link button on the card keeps the whole');
     print('     link, which is the one worth forwarding.');
     print('');
-    print('     Build one at <a href="/labs/wish-generator">/labs/wish-generator</a> — name, look, preview, link.');
+    print('     Build one at <a href="/labs/wish-generator">/labs/wish-generator</a> - name, look, preview, link.');
     print('');
     print('<span class="white">NOTES</span>');
     print('     The keys go quiet the moment you click into a form, so the');
@@ -582,11 +582,11 @@
         print('');
         // #output is a live region — glyphs stay aria-hidden so screen
         // readers speak only the words.
-        print('<span aria-hidden="true">⚠</span> FORK RATE THRESHOLD EXCEEDED — 500 forks', 'alert');
+        print('<span aria-hidden="true">⚠</span> FORK RATE THRESHOLD EXCEEDED - 500 forks', 'alert');
         setTimeout(function () {
           print('<span aria-hidden="true">✓</span> Attack identified in 44 ms', 'ok');
           print('<span aria-hidden="true">✓</span> Offending process name recorded: <span class="cyan">:</span>', 'ok');
-          print('<span aria-hidden="true">✓</span> Resource quarantine engaged — system responsive', 'ok');
+          print('<span aria-hidden="true">✓</span> Resource quarantine engaged - system responsive', 'ok');
           print('');
           print('<span class="white">That was a live demo of my published research:</span>');
           print('“Security Against Fork Bomb Attack in Linux Based Systems” (IJRAT, 2019)');
@@ -729,10 +729,10 @@
   });
 
   // Boot banner
-  print('Last login: never — nobody was supposed to find this.', 'dim');
+  print('Last login: never - nobody was supposed to find this.', 'dim');
   print('');
   print('<span class="white">Welcome to the hidden terminal.</span> You are officially the curious type.');
-  print('This machine belongs to <span class="cyan">Krunalkumar Shah</span> — cybersecurity researcher.');
+  print('This machine belongs to <span class="cyan">Krunalkumar Shah</span> - cybersecurity researcher.');
   print('Type <span class="cyan">help</span> to look around. And whatever you do&hellip;');
   print('do <span class="alert">NOT</span> type <span class="white">:(){ :|:& };:</span>');
   print('');

@@ -171,7 +171,7 @@
     },
     {
       n: 'The vein chamber',
-      d: 'The quartz runs across the roof in a band as thick as your arm, and there is gold in it — wired ' +
+      d: 'The quartz runs across the roof in a band as thick as your arm, and there is gold in it - wired ' +
          'through the white rock in threads, and one knot of it the size of a walnut.',
       x: { south: 13, west: 17 },
       dark: true,

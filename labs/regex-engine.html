@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch a regex engine run - and watch it catastrophically fail" />
     <meta name="twitter:description" content="Parse a regular expression into a tree, build the NFA with Thompson construction, determinise it with subset construction, then step through a backtracking match and watch a ReDoS pattern go exponential. Every engine checked against JavaScript RegExp. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-regex-engine.jpg" />
-    <title>Regex Engine Visualiser — NFA, DFA, ReDoS | Krunalkumar Shah</title>
+    <title>Regex Engine Visualiser - NFA, DFA, ReDoS | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -201,9 +201,9 @@
           </ol>
         </nav>
         <h1>Inside a regular expression engine</h1>
-        <p class="hero-text">The regex tester elsewhere in Labs tells you whether a pattern matched. This one shows you the machine. Watch Thompson&rsquo;s construction turn a pattern into a state machine, watch subset construction flatten it into a table, then watch a backtracking engine explore one dead end at a time &mdash; until you hand it <code>(a+)+</code> and nineteen characters, and the step counter runs away.</p>
+        <p class="hero-text">The regex tester elsewhere in Labs tells you whether a pattern matched. This one shows you the machine. Watch Thompson&rsquo;s construction turn a pattern into a state machine, watch subset construction flatten it into a table, then watch a backtracking engine explore one dead end at a time - until you hand it <code>(a+)+</code> and nineteen characters, and the step counter runs away.</p>
         <ul class="lab-facts">
-          <li>A real parser &mdash; no RegExp under the hood</li>
+          <li>A real parser - no RegExp under the hood</li>
           <li>Thompson NFA, built fragment by fragment</li>
           <li>Subset construction into a DFA table</li>
           <li>Backtracking, stepped one attempt at a time</li>
@@ -229,7 +229,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -251,7 +251,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -263,7 +263,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-regex-mount">
-          <p class="lab-proc-fallback">Starting the regex engine visualiser… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the regex engine visualiser… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -274,7 +274,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Two ways to run the same machine</h3>
-            <p>Thompson&rsquo;s construction builds a state machine with at most two states per character of pattern, and the simulation tracks every state it could be in at once. That costs states times input, always. A backtracking engine instead follows one possibility at a time and rewinds when it fails &mdash; which is what makes backreferences and lookaround possible, and what makes the worst case exponential. Almost every language you use ships the second kind.</p>
+            <p>Thompson&rsquo;s construction builds a state machine with at most two states per character of pattern, and the simulation tracks every state it could be in at once. That costs states times input, always. A backtracking engine instead follows one possibility at a time and rewinds when it fails - which is what makes backreferences and lookaround possible, and what makes the worst case exponential. Almost every language you use ships the second kind.</p>
           </article>
           <article class="info-card">
             <h3>ReDoS is a real denial of service</h3>

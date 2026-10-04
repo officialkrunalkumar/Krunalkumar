@@ -36,17 +36,17 @@
     { name: 'Unix microseconds', base: 0,              mul: 1, div: 1000,
       note: 'some databases and packet captures' },
     { name: 'Windows FILETIME',  base: -11644473600000, mul: 1, div: 10000,
-      note: '100-nanosecond ticks since 1601 — NTFS, registry, event logs' },
+      note: '100-nanosecond ticks since 1601 - NTFS, registry, event logs' },
     { name: 'WebKit / Chrome',   base: -11644473600000, mul: 1, div: 1000,
-      note: 'microseconds since 1601 — Chrome History, Cookies, Login Data' },
+      note: 'microseconds since 1601 - Chrome History, Cookies, Login Data' },
     { name: 'Apple / Cocoa',     base: 978307200000,    mul: 1000, div: 1,
-      note: 'seconds since 2001 — macOS and iOS plists, Safari' },
+      note: 'seconds since 2001 - macOS and iOS plists, Safari' },
     { name: 'Apple Cocoa (ms)',  base: 978307200000,    mul: 1, div: 1,
       note: 'milliseconds since 2001' },
     { name: 'Mac HFS+',          base: -2082844800000,  mul: 1000, div: 1,
-      note: 'seconds since 1904 — HFS+ volumes' },
+      note: 'seconds since 1904 - HFS+ volumes' },
     { name: 'Symbian / UUID v1', base: -12219292800000, mul: 1, div: 10000,
-      note: '100-nanosecond ticks since 1582 — UUID timestamps' }
+      note: '100-nanosecond ticks since 1582 - UUID timestamps' }
   ];
 
   var canBig = typeof BigInt === 'function';
@@ -133,7 +133,7 @@
 
   function fromNumber(value) {
     out.heading('Reading ' + groupDigits(value) + ' under every epoch');
-    out.dim('the plausible ones are highlighted — that is usually enough to');
+    out.dim('the plausible ones are highlighted - that is usually enough to');
     out.dim('identify which system wrote the value');
     out.line('');
 
@@ -188,7 +188,7 @@
       out.dim('WebKit; one out of a macOS plist is Cocoa.');
     } else {
       out.warn('No epoch puts this value in a believable date range.');
-      out.dim('It may not be a timestamp at all — or it may be a counter, an');
+      out.dim('It may not be a timestamp at all - or it may be a counter, an');
       out.dim('offset, or a value that needs a different unit.');
     }
   }
@@ -222,7 +222,7 @@
   function run() {
     var text = document.getElementById('tool-text').value.trim();
     out.clear();
-    if (!text) { out.warn('Enter a timestamp — a number, or a date in any usual format.'); return; }
+    if (!text) { out.warn('Enter a timestamp - a number, or a date in any usual format.'); return; }
 
     // A bare integer (or hex) is ambiguous and gets the full epoch sweep.
     var hex = /^0x[0-9a-f]+$/i.test(text);

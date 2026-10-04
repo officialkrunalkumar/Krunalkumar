@@ -1316,7 +1316,7 @@
         confident: true, kind: 'farewell', endSession: true,
         text: locked
           ? 'Goodbye. Take care of yourself.'
-          : 'Goodbye, and thank you for stopping by! Take care — I am here whenever you need me.',
+          : 'Goodbye, and thank you for stopping by! Take care - I am here whenever you need me.',
         links: [], chips: []
       };
     }
@@ -1332,7 +1332,7 @@
       saveConduct();
       return {
         confident: true, kind: 'forgiven', sad: false,
-        text: 'Thank you, I appreciate that. No hard feelings — what can I help you with?',
+        text: 'Thank you, I appreciate that. No hard feelings - what can I help you with?',
         links: [],
         chips: ['What is a fork bomb?', 'Do you offer internships?', 'What does Krunalkumar do?']
       };
@@ -1353,7 +1353,7 @@
         saveConduct();
         return {
           confident: true, kind: 'forgiven', sad: false,
-          text: 'Thank you, that is kind of you. Let us begin again — how can I help?',
+          text: 'Thank you, that is kind of you. Let us begin again - how can I help?',
           links: [],
           chips: ['What is a fork bomb?', 'Do you offer internships?', 'What does Krunalkumar do?']
         };
@@ -1399,7 +1399,7 @@
       if (strikes === 1) {
         return {
           confident: true, kind: 'abuse', sad: true,
-          text: 'Please talk to me politely — this is your first warning. ' +
+          text: 'Please talk to me politely - this is your first warning. ' +
                 'Ask me anything and I will gladly help, but I will not continue if that carries on.',
           links: [], chips: []
         };
@@ -1408,14 +1408,14 @@
       return {
         confident: true, kind: 'abuse-lock', locked: true, sad: true,
         text: 'I did warn you. I will not be spoken to like that, so this chat is closed until you ' +
-              'apologise — say sorry and we can carry on. May God bless you.',
+              'apologise - say sorry and we can carry on. May God bless you.',
         links: [], chips: []
       };
     }
     if (intent === 'greet') {
       return {
         confident: true, kind: 'canned',
-        text: 'Hello. Ask me anything about this site — a lab, a game, a term, ' +
+        text: 'Hello. Ask me anything about this site - a lab, a game, a term, ' +
               'what Krunalkumar does. If I do not have the answer I will hand you straight to him.',
         links: [], chips: ['What is a fork bomb?', 'Which lab decodes a JWT?', 'What does Krunalkumar do?']
       };
@@ -1441,7 +1441,7 @@
         return {
           confident: true, kind: 'canned',
           text: 'It is ' + here.time + (here.abbr ? ' ' + here.abbr : '') + ' on ' + here.day + '.\n' +
-                'That is your device\'s own clock — I have no server to ask.',
+                'That is your device\'s own clock - I have no server to ask.',
           links: [{ label: 'Compare zones in the meeting planner', href: '/labs/timezones' }],
           chips: ['What is the time in US?', 'What is the time in UK?']
         };
@@ -1451,7 +1451,7 @@
       if (!place) {
         return {
           confident: false, kind: 'canned',
-          text: 'I could not find a zone for “' + where[1].trim() + '”. A country or a big city usually works — or the meeting planner takes any of them.',
+          text: 'I could not find a zone for “' + where[1].trim() + '”. A country or a big city usually works - or the meeting planner takes any of them.',
           links: [{ label: 'Open the timezone meeting planner', href: '/labs/timezones' }],
           chips: ['What is the time in US?', 'What is the time now?']
         };
@@ -1511,7 +1511,7 @@
         /* Straight about not being an AI, because being asked directly is the
            one moment where explaining the machinery is the honest answer
            rather than deflection. Everywhere else she just answers. */
-        text: 'I am Mayuri, Krunalkumar’s assistant. I am not an AI — I look your question up ' +
+        text: 'I am Mayuri, Krunalkumar’s assistant. I am not an AI - I look your question up ' +
               'in his own answers and notes for this site, and when I cannot find it I say so ' +
               'and pass you to him.',
         links: [], chips: []
@@ -1531,7 +1531,7 @@
       if (dest) {
         return {
           confident: true, kind: 'navigate', url: dest.url,
-          text: 'Okay — taking you to ' + dest.name + ' now.',
+          text: 'Okay - taking you to ' + dest.name + ' now.',
           links: [{ label: 'Go to ' + dest.name + ' now', href: dest.url }],
           chips: []
         };
@@ -1564,7 +1564,7 @@
         confident: true, kind: 'route',
         text: intent === 'commercial'
           ? 'Pricing depends on scope, and Krunalkumar quotes fixed-price once the work is scoped. ' +
-            'The services page explains how that works — or ask him directly.'
+            'The services page explains how that works - or ask him directly.'
           : 'The quickest route is a message to Krunalkumar himself.',
         links: intent === 'commercial'
           ? [{ label: 'How engagements work', href: '/services' }, { label: 'Contact form', href: '/contact#contact-form' }]

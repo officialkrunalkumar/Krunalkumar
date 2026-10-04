@@ -901,7 +901,7 @@
      the order of the RFC. */
   var STEPS = [
     ['secret', 'Shared secret, Base32',
-     'Agreed once at enrolment. After that it never travels again — which is the whole reason this works offline.'],
+     'Agreed once at enrolment. After that it never travels again - which is the whole reason this works offline.'],
     ['keybytes', 'Secret decoded to bytes',
      'Base32 is only a way to print bytes without ambiguous characters. HMAC works on the bytes.'],
     ['now', 'Unix time, from this device',
@@ -1083,7 +1083,7 @@
       '. The same text is in the field above it.');
     if (note) {
       note.textContent = 'Version ' + matrix.version + ', error correction M, mask ' +
-        matrix.mask + ' — drawn here in the page, not fetched from anywhere.';
+        matrix.mask + ' - drawn here in the page, not fetched from anywhere.';
     }
   }
 
@@ -1126,9 +1126,9 @@
        lesson: plenty of real deployments hand out a secret this short. */
     var bitLen = keyBytes.length * 8;
     if (bitLen < 128) {
-      setSecretStatus(keyBytes.length + ' bytes, ' + bitLen + ' bits — valid, but under the 128-bit minimum in RFC 4226', 'is-busy');
+      setSecretStatus(keyBytes.length + ' bytes, ' + bitLen + ' bits - valid, but under the 128-bit minimum in RFC 4226', 'is-busy');
     } else {
-      setSecretStatus(keyBytes.length + ' bytes, ' + bitLen + ' bits — valid Base32', 'is-ok');
+      setSecretStatus(keyBytes.length + ' bytes, ' + bitLen + ' bits - valid Base32', 'is-ok');
     }
 
     var nowMs = Date.now();
@@ -1178,7 +1178,7 @@
         (drift > 0 ? '+' : '−') + ' 1 accepts it. That tolerance is why one exists.';
     } else {
       note = 'The device is ' + Math.abs(drift) + ' steps ' + (drift > 0 ? 'ahead' : 'behind') +
-        '. Most servers give at most one step either side, so this code is refused — the usual fix is to correct the clock, not to widen the window.';
+        '. Most servers give at most one step either side, so this code is refused - the usual fix is to correct the clock, not to widen the window.';
     }
     el('totp-skewnote').textContent = note;
 
@@ -1321,7 +1321,7 @@
       if (selfTestResult.failures.length) {
         status.className = 'lab-status is-err';
         status.textContent = 'Self-test FAILED (' + selfTestResult.passed + '/' +
-          selfTestResult.total + ') — do not trust these codes';
+          selfTestResult.total + ') - do not trust these codes';
       } else {
         status.className = 'lab-status is-ok';
         status.textContent = selfTestResult.passed + '/' + selfTestResult.total +

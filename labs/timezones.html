@@ -113,7 +113,7 @@
                         "name": "Will the .ics land at the right time in someone else’s calendar?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist — the .ics is a draft that lands in your downloads folder and nowhere else."
+                                "text": "The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist - the .ics is a draft that lands in your downloads folder and nowhere else."
                         }
                 }
         ]
@@ -210,13 +210,13 @@
           </ol>
         </nav>
         <h1>Timezone meeting planner</h1>
-        <p class="hero-text">Pick a date, add the zones, and drag a slot across the day. Every offset is drawn to scale, the shared working window is computed rather than guessed, and a slot that lands on a different calendar day says so &mdash; because &ldquo;3pm Tuesday for you is 5:30am Wednesday for them&rdquo; is the mistake that actually costs meetings.</p>
+        <p class="hero-text">Pick a date, add the zones, and drag a slot across the day. Every offset is drawn to scale, the shared working window is computed rather than guessed, and a slot that lands on a different calendar day says so - because &ldquo;3pm Tuesday for you is 5:30am Wednesday for them&rdquo; is the mistake that actually costs meetings.</p>
         <ul class="lab-facts">
           <li>23 and 25-hour days, drawn to their real length</li>
           <li>India +05:30, Nepal +05:45, Chatham +12:45, to scale</li>
           <li>The shared working window, computed not guessed</li>
           <li>Skipped and repeated hours named out loud</li>
-          <li>Copy line and .ics &mdash; nothing is sent anywhere</li>
+          <li>Copy line and .ics - nothing is sent anywhere</li>
         </ul>
       </section>
 
@@ -239,14 +239,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No calendar integration &mdash; it reads and writes nothing</li>
+                  <li>No calendar integration - it reads and writes nothing</li>
                   <li>No free/busy, no attendee lookup, no invitations sent</li>
                   <li>No public holidays, no half-days, no lunch breaks</li>
                   <li>Working hours are what you type, which is a guess about people</li>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -315,7 +315,7 @@
             <div class="tz-overlay" id="tz-overlay">
               <div class="tz-bands" id="tz-bands"></div>
               <div class="tz-slot" id="tz-slot" role="slider" tabindex="0"
-                   aria-label="Proposed meeting slot &mdash; drag it, or use the arrow keys"
+                   aria-label="Proposed meeting slot - drag it, or use the arrow keys"
                    aria-valuemin="0" aria-valuemax="1440" aria-valuenow="600"
                    aria-valuetext="Add a zone to see the proposed time."></div>
             </div>
@@ -325,7 +325,7 @@
         <div class="tz-legend">
           <span class="tz-key"><i class="tz-key-work" aria-hidden="true"></i> Working hours, that zone</span>
           <span class="tz-key"><i class="tz-key-over" aria-hidden="true"></i> Working hours in every zone at once</span>
-          <span class="tz-key"><i class="tz-key-slot" aria-hidden="true"></i> The proposed slot &mdash; drag it</span>
+          <span class="tz-key"><i class="tz-key-slot" aria-hidden="true"></i> The proposed slot - drag it</span>
           <span class="tz-key"><i class="tz-key-night" aria-hidden="true"></i> 22:00 to 06:00 locally</span>
           <span class="tz-key">Dotted pink line: right now</span>
           <span class="tz-key">Amber tick: local midnight</span>
@@ -361,7 +361,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Where the offsets come from</h3>
-            <p>There is no timezone database in this page. It asks <code>Intl.DateTimeFormat</code> to render a known instant in a named zone, reads the wall clock back with <code>formatToParts</code>, and takes the difference &mdash; that difference is the offset. Your browser already ships the IANA rules to drive <code>Intl</code>, so this borrows them rather than carrying a copy that would go stale within a year. It also means a device with out-of-date system data will draw out-of-date transitions, and there is nothing this page can do about that.</p>
+            <p>There is no timezone database in this page. It asks <code>Intl.DateTimeFormat</code> to render a known instant in a named zone, reads the wall clock back with <code>formatToParts</code>, and takes the difference - that difference is the offset. Your browser already ships the IANA rules to drive <code>Intl</code>, so this borrows them rather than carrying a copy that would go stale within a year. It also means a device with out-of-date system data will draw out-of-date transitions, and there is nothing this page can do about that.</p>
           </article>
           <article class="info-card">
             <h3>Nothing is a grid of hour cells</h3>
@@ -373,7 +373,7 @@
           </article>
           <article class="info-card">
             <h3>The mistake this exists to stop</h3>
-            <p>Most scheduling errors are not about the hour. They are about the date: 20:00 in Mumbai is 02:30 the next morning in Auckland while New Zealand is on standard time, and 03:30 once it puts its clocks forward &mdash; the hour moves, the date does not, and an invitation that says only &ldquo;Wednesday&rdquo; is wrong for one of you either way. Any zone whose local date differs from the anchor zone&rsquo;s gets a labelled chip beside the time, the sentence underneath spells out how many calendar days apart they are, and the slot&rsquo;s own screen-reader text speaks the date in every zone on the grid.</p>
+            <p>Most scheduling errors are not about the hour. They are about the date: 20:00 in Mumbai is 02:30 the next morning in Auckland while New Zealand is on standard time, and 03:30 once it puts its clocks forward - the hour moves, the date does not, and an invitation that says only &ldquo;Wednesday&rdquo; is wrong for one of you either way. Any zone whose local date differs from the anchor zone&rsquo;s gets a labelled chip beside the time, the sentence underneath spells out how many calendar days apart they are, and the slot&rsquo;s own screen-reader text speaks the date in every zone on the grid.</p>
           </article>
         </div>
       </section>
@@ -404,7 +404,7 @@
           </details>
           <details class="lab-faq">
             <summary>Will the .ics land at the right time in someone else&rsquo;s calendar?</summary>
-            <div>The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist &mdash; the .ics is a draft that lands in your downloads folder and nowhere else.</div>
+            <div>The DTSTART is written as a UTC instant with a trailing Z, so a calendar application will render it in the correct local time for whoever opens it. That is the part this can get right. What it cannot do is send the file, add attendees, check whether anyone is free, or make the meeting exist - the .ics is a draft that lands in your downloads folder and nowhere else.</div>
           </details>
       </section>
 

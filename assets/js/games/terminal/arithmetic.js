@@ -185,7 +185,7 @@
           if (upStreak >= 3 && level < LEVELS.length - 1) { level++; upStreak = 0; }
         } else {
           wrong++;
-          feedback = 'No — ' + current.ans;
+          feedback = 'No - ' + current.ans;
           feedbackOk = false;
           remember(sum + typed + '   was ' + current.ans, false);
           g.beep(180, 0.08, 'square');

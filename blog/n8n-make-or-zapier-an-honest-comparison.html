@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="n8n, Make, or Zapier: An Honest Comparison" />
     <meta
@@ -103,7 +103,7 @@
             "name": "Can I self-host Make or Zapier?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. Both are hosted products only, and that is a deliberate part of what they sell — the uptime, the connector maintenance and the security posture are the product. What they offer instead is a choice of region: Make asks which data zone you want when you create the account, and Zapier has published data-residency options at the enterprise end of its pricing. Neither is a substitute for the data never leaving your own infrastructure, so if a contract requires that, the hosted tools are out before you compare a single feature."
+              "text": "No. Both are hosted products only, and that is a deliberate part of what they sell - the uptime, the connector maintenance and the security posture are the product. What they offer instead is a choice of region: Make asks which data zone you want when you create the account, and Zapier has published data-residency options at the enterprise end of its pricing. Neither is a substitute for the data never leaving your own infrastructure, so if a contract requires that, the hosted tools are out before you compare a single feature."
             }
           },
           {
@@ -127,7 +127,7 @@
             "name": "Which one should I use for AI agents?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "All three can call a model API, so the real question is whether you want the tool to orchestrate the agent or just to make the request. n8n has the deepest native tooling for this — model nodes, tool calling, memory and vector store nodes as ordinary parts of a workflow — which is why I built my open-source AI SDR on it. Zapier and Make both have perfectly good AI steps for the common case of classify this, then draft that. What usually decides it is not the feature list but where the prompt and the customer record are allowed to travel."
+              "text": "All three can call a model API, so the real question is whether you want the tool to orchestrate the agent or just to make the request. n8n has the deepest native tooling for this - model nodes, tool calling, memory and vector store nodes as ordinary parts of a workflow - which is why I built my open-source AI SDR on it. Zapier and Make both have perfectly good AI steps for the common case of classify this, then draft that. What usually decides it is not the feature list but where the prompt and the customer record are allowed to travel."
             }
           },
           {
@@ -135,7 +135,7 @@
             "name": "How do I stop an automation bill from surprising me?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Learn what one run costs in the tool's own unit before you scale it, because each tool counts a different thing: Zapier counts action steps, Make counts module executions including the trigger, and n8n Cloud counts whole executions. Then find the multiplier that is specific to your data rather than to your workflow — usually an array that arrives with a variable number of items — and work out the worst realistic day rather than the average one. Put a usage alert on the account, and write the expected monthly figure into the quote so nobody is surprised in month three."
+              "text": "Learn what one run costs in the tool's own unit before you scale it, because each tool counts a different thing: Zapier counts action steps, Make counts module executions including the trigger, and n8n Cloud counts whole executions. Then find the multiplier that is specific to your data rather than to your workflow - usually an array that arrives with a variable number of items - and work out the worst realistic day rather than the average one. Put a usage alert on the account, and write the expected monthly figure into the quote so nobody is surprised in month three."
             }
           },
           {
@@ -143,7 +143,7 @@
             "name": "What about Power Automate, Workato, or the others?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The same two questions decide those too. Power Automate is worth a serious look when the organisation already lives in Microsoft 365, for exactly the reason Apps Script is worth a look when it lives in Google — the data does not leave a boundary that has already been accepted. Workato and the enterprise integration platforms sell governance, audit trails and support contracts, which is what a large compliance department is actually buying. I have kept this article to the three I ship production work in, because a comparison written from a marketing page is not worth reading."
+              "text": "The same two questions decide those too. Power Automate is worth a serious look when the organisation already lives in Microsoft 365, for exactly the reason Apps Script is worth a look when it lives in Google - the data does not leave a boundary that has already been accepted. Workato and the enterprise integration platforms sell governance, audit trails and support contracts, which is what a large compliance department is actually buying. I have kept this article to the three I ship production work in, because a comparison written from a marketing page is not worth reading."
             }
           }
         ]
@@ -219,7 +219,7 @@
           <p class="eyebrow">Automation</p>
           <h1>n8n, Make, or Zapier: an honest comparison</h1>
           <p class="hero-text">
-            I build automation for a living — HubSpot, n8n, Make and Zapier, in production, for clients who notice when
+            I build automation for a living - HubSpot, n8n, Make and Zapier, in production, for clients who notice when
             it breaks. Most comparisons of these three are feature tables, and feature tables do not decide anything any
             more. The thing that decides it is where the workflow runs and who is liable when it goes wrong. Everything
             else is downstream of that.
@@ -270,7 +270,7 @@
                 </p>
               </blockquote>
               <p>
-                Zapier and Make are hosted products. There is no self-hosted edition, by design — the uptime and the
+                Zapier and Make are hosted products. There is no self-hosted edition, by design - the uptime and the
                 connector maintenance <em>are</em> what you are buying. That means your client's records pass through a
                 third party's infrastructure on every run, the run history sitting in that infrastructure contains the
                 actual field values rather than a summary of them, and the OAuth tokens for every system you connected
@@ -304,7 +304,7 @@
                 <a href="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram1.svg" alt="The same automation drawn three times: with Zapier and Make the workflow engine and the stored OAuth tokens sit inside the vendor's cloud, marked as infrastructure you do not control; with self-hosted n8n they sit inside a box marked as your own infrastructure, which removes a subprocessor and adds patching, backups and uptime to your responsibilities" width="1160" height="620" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Three copies of one flow. The only structural difference is which machine holds the logic and the credentials in the middle — and every other difference in this article follows from it. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Three copies of one flow. The only structural difference is which machine holds the logic and the credentials in the middle - and every other difference in this article follows from it. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
@@ -314,7 +314,7 @@
                 <li>
                   <strong>Execution history is a copy of the data, not a log about it.</strong> This is the one people
                   miss. Hosted tools keep run history so you can debug, and that history holds the real field values that
-                  passed through — the name, the address, the invoice line. If a run carries
+                  passed through - the name, the address, the invoice line. If a run carries
                   <a href="/glossary#term-pii">personal data</a>, that data now also lives in a vendor's log store for
                   whatever the retention window is on your plan. Check what that window is. On some plans it is a
                   setting; on others it is fixed.
@@ -323,7 +323,7 @@
                   <strong>The credential store is one place holding keys to everything.</strong> An automation account
                   usually ends up connected to the CRM, the mailbox, the file store and the billing system all at once.
                   Whoever can open that account can act as all of them. Scope every connection down to what the workflow
-                  needs and no more — <a href="/glossary#term-least-privilege">least privilege</a> is not a formality
+                  needs and no more - <a href="/glossary#term-least-privilege">least privilege</a> is not a formality
                   here, it is the difference between one compromised token and a full-company incident.
                 </li>
                 <li>
@@ -331,7 +331,7 @@
                   create the account, and moving afterwards means rebuilding in a new account rather than flipping a
                   switch. n8n Cloud offers a region choice too. Zapier's public position has historically been its own
                   infrastructure with residency options at the enterprise end of the pricing. Verify the current answer
-                  before you promise anything to a client — this is exactly the kind of detail that changes between when
+                  before you promise anything to a client - this is exactly the kind of detail that changes between when
                   I write this and when you read it.
                 </li>
               </ul>
@@ -385,8 +385,8 @@
                 </li>
                 <li>
                   <strong>The two-to-five step integration.</strong> Form submission creates a CRM record and posts to
-                  Slack. New invoice files a copy in Drive and messages the accountant. For this job — which is most jobs
-                  — Zapier is the best of the three and the argument is over.
+                  Slack. New invoice files a copy in Drive and messages the accountant. For this job - which is most jobs
+                  - Zapier is the best of the three and the argument is over.
                 </li>
               </ul>
               <p><strong>Where it falls over:</strong></p>
@@ -402,7 +402,7 @@
                 </li>
                 <li>
                   <strong>Real transformations.</strong> The moment reshaping the data gets genuinely hard, you end up in
-                  a Code step — which means you have written code in a text box, with no local editor, no dependency
+                  a Code step - which means you have written code in a text box, with no local editor, no dependency
                   management, no tests, and no way to run it outside Zapier to see what it does.
                 </li>
                 <li>
@@ -417,7 +417,7 @@
 
               <h2 id="make-the-one-that-draws-the-data">Make: the one that draws the data</h2>
               <p>
-                Make — Integromat, before the rename — puts the workflow on a canvas as connected circles, and the thing
+                Make - Integromat, before the rename - puts the workflow on a canvas as connected circles, and the thing
                 being drawn is the data, not just the order of steps. That distinction is the whole personality of the
                 tool.
               </p>
@@ -436,7 +436,7 @@
                 </li>
                 <li>
                   <strong>Error handling attached to the step.</strong> You can hang an error route off a specific module
-                  and say what should happen when that step fails — retry, ignore, take a different path, or park the run
+                  and say what should happen when that step fails - retry, ignore, take a different path, or park the run
                   so it can be resumed after you fix the cause. That last one has saved me a full reprocessing job more
                   than once.
                 </li>
@@ -472,7 +472,7 @@
               <p>
                 Start with the licence, because it is the most commonly misstated fact about
                 <a href="/glossary#term-n8n">n8n</a>. It is <strong>source-available, not open source in the OSI
-                sense</strong>. The Sustainable Use License — the company calls the approach fair-code — lets you read
+                sense</strong>. The Sustainable Use License - the company calls the approach fair-code - lets you read
                 the source, modify it, and self-host it for your own internal business purposes at no licence cost. It
                 does not let you host it as a service for other people or resell it without a separate arrangement. If
                 you are an agency planning one instance with client workflows on it as a product, that sentence is the
@@ -523,7 +523,7 @@
                 <li>
                   <strong>Community nodes are somebody else's code.</strong> Installing one puts a third-party package
                   inside the server that holds every credential you own. Treat it like adding a dependency to production,
-                  because it is one — the same
+                  because it is one - the same
                   <a href="/glossary#term-supply-chain-attack">supply chain</a> question you would ask anywhere else.
                 </li>
                 <li>
@@ -544,7 +544,7 @@
                 <a href="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram2.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/n8n-make-or-zapier-an-honest-comparison-diagram2.svg" alt="One five-step automation billed three ways: Zapier counts each successful action step so the trigger and filter are free, Make counts every module execution including the trigger, n8n Cloud counts one execution per run regardless of node count, and self-hosted n8n has no per-run meter at all" width="1160" height="500" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>The same workflow, the same month, three different totals — and the ranking flips the moment the data changes shape rather than the workflow. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>The same workflow, the same month, three different totals - and the ranking flips the moment the data changes shape rather than the workflow. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
@@ -558,7 +558,7 @@
                 <strong>Make meters operations: one per module execution, including the trigger.</strong> The surprise
                 here is different and worse, because the multiplier lives in your data rather than in your workflow. One
                 trigger that returns eighty line items, feeding an iterator, turns a single conceptual "run" into hundreds
-                of operations — and the number changes daily with the size of the incoming payload. A scheduled scenario
+                of operations - and the number changes daily with the size of the incoming payload. A scheduled scenario
                 also consumes at least one operation each time it checks, whether or not there is anything to do, so a
                 scenario polling every minute is spending all month finding nothing.
               </p>
@@ -566,14 +566,14 @@
                 <strong>n8n Cloud meters executions: one per workflow run, however many nodes it contains.</strong> This
                 is the shape that rewards big workflows, and it is genuinely liberating to add a node without doing
                 arithmetic. The place the flat promise bends is sub-workflows, which can count as their own executions
-                depending on how they are called — so if your design calls a sub-workflow per item in a loop, check that
+                depending on how they are called - so if your design calls a sub-workflow per item in a loop, check that
                 specific behaviour on your plan before you build it that way.
               </p>
               <p>
                 <strong>Self-hosted n8n meters nothing, which is the trap.</strong> The bill moves from a line item to a
                 server plus your attention, and attention is the cost nobody puts in the quote. Budget the maintenance
                 hours explicitly, write them into the proposal as a recurring number, and you avoid the slow argument
-                that starts in month four —
+                that starts in month four -
                 <a href="/blog/scoping-work-before-you-quote-it">the same discipline as scoping any other work before
                 quoting it</a>.
               </p>
@@ -601,7 +601,7 @@
               <h3>When the vendor changes an API</h3>
               <p>
                 An endpoint gets deprecated, a field is renamed, an OAuth scope is split in two. Something in the chain
-                will do this within a year — this is not a hypothetical, it is a Tuesday. The interesting difference is
+                will do this within a year - this is not a hypothetical, it is a Tuesday. The interesting difference is
                 who picks the date.
               </p>
 
@@ -613,7 +613,7 @@
               </figure>
 
               <p>
-                On a hosted tool the vendor updates the connector for you, which is a real and underrated benefit — most
+                On a hosted tool the vendor updates the connector for you, which is a real and underrated benefit - most
                 API changes are absorbed before you ever hear about them. The cost is that a connector update can also
                 change field names or output shapes underneath a mapping you wrote a year ago, and there is no version
                 you chose and no tag to roll back to. On a self-hosted n8n pinned to an image tag, nothing changes until
@@ -716,7 +716,7 @@
               </ul>
               <p>
                 And the counterweight, because "just write code" is glib. Code needs somewhere to deploy, somewhere to
-                keep secrets, monitoring, and a person on call — which is precisely the bundle the hosted tools are
+                keep secrets, monitoring, and a person on call - which is precisely the bundle the hosted tools are
                 selling. If a team has none of that, moving the automation into a repository moves the problem rather
                 than solving it. The reason I reach for code more often than people expect is that most teams I work with
                 already have all of it for their own product, and the automation is the only thing living outside the
@@ -725,7 +725,7 @@
 
               <h2 id="when-the-answer-is-apps-script">When the answer is Apps Script</h2>
               <p>
-                If every system involved is already Google — Sheets, Gmail, Drive, Calendar, Forms — then Google Apps
+                If every system involved is already Google - Sheets, Gmail, Drive, Calendar, Forms - then Google Apps
                 Script is often the right answer, and it is the option nobody puts on the shortlist.
               </p>
               <ul>
@@ -745,7 +745,7 @@
                 </li>
                 <li>
                   <strong>It is code with version control.</strong> The <code>clasp</code> command-line tool pulls the
-                  project into local files, so you get a real editor, a repository and reviewable diffs — which is more
+                  project into local files, so you get a real editor, a repository and reviewable diffs - which is more
                   than two of the three tools in this article can offer.
                 </li>
               </ul>
@@ -755,7 +755,7 @@
                 not get charged for exceeding them, you get stopped, which is a different failure mode to plan for. The
                 moment a second SaaS product enters the picture you are writing raw API calls with no connector library,
                 and one of the other three becomes the sensible answer. And the script tends to live in a place nobody
-                looks, owned by whichever account created it — I have seen more than one useful script die quietly with an
+                looks, owned by whichever account created it - I have seen more than one useful script die quietly with an
                 offboarded employee. Put the project in a shared drive, and commit the source somewhere the team can find
                 it.
               </p>
@@ -793,7 +793,7 @@
                     <tr>
                       <td>Hosted is fine, but it must stay in a named region</td>
                       <td>Make, or n8n Cloud</td>
-                      <td>Both let you choose a region — confirm it before promising</td>
+                      <td>Both let you choose a region - confirm it before promising</td>
                     </tr>
                     <tr>
                       <td>Nobody on the team can maintain a server</td>
@@ -866,7 +866,7 @@
                 </li>
                 <li>
                   <strong>Who maintains this in eighteen months?</strong> If the honest answer is somebody in the
-                  business rather than an engineer, it is Zapier — or Make if the flow genuinely branches. If the answer
+                  business rather than an engineer, it is Zapier - or Make if the flow genuinely branches. If the answer
                   is a developer who will still be there, it is n8n.
                 </li>
                 <li>
@@ -879,7 +879,7 @@
                 </li>
               </ol>
               <p>
-                My default when nobody has answered any of those — which is most first conversations — is to build it in
+                My default when nobody has answered any of those - which is most first conversations - is to build it in
                 whatever the client already pays for. The second-best tool that someone in the room can maintain beats
                 the best tool that only I can. That is not a compromise, it is the actual requirement, and it is the same
                 reasoning I apply to
@@ -920,7 +920,7 @@
                 <details>
                   <summary>Can I self-host Make or Zapier?</summary>
                   <p>
-                    No. Both are hosted products only, and that is a deliberate part of what they sell — the uptime, the
+                    No. Both are hosted products only, and that is a deliberate part of what they sell - the uptime, the
                     connector maintenance and the security posture are the product. What they offer instead is a choice
                     of region: Make asks which data zone you want when you create the account, and Zapier has published
                     data-residency options at the enterprise end of its pricing. Neither is a substitute for the data
@@ -954,8 +954,8 @@
                   <summary>Which one should I use for AI agents?</summary>
                   <p>
                     All three can call a model API, so the real question is whether you want the tool to orchestrate the
-                    agent or just to make the request. n8n has the deepest native tooling for this — model nodes, tool
-                    calling, memory and vector store nodes as ordinary parts of a workflow — which is why I built
+                    agent or just to make the request. n8n has the deepest native tooling for this - model nodes, tool
+                    calling, memory and vector store nodes as ordinary parts of a workflow - which is why I built
                     <a class="text-link" href="/blog/i-open-sourced-my-ai-sdr">my open-source AI SDR</a> on it. Zapier
                     and Make both have perfectly good AI steps for the common case of classify this, then draft that.
                     What usually decides it is not the feature list but where the prompt and the customer record are
@@ -968,7 +968,7 @@
                     Learn what one run costs in the tool's own unit before you scale it, because each tool counts a
                     different thing: Zapier counts action steps, Make counts module executions including the trigger, and
                     n8n Cloud counts whole executions. Then find the multiplier that is specific to your data rather than
-                    to your workflow — usually an array that arrives with a variable number of items — and work out the
+                    to your workflow - usually an array that arrives with a variable number of items - and work out the
                     worst realistic day rather than the average one. Put a usage alert on the account, and write the
                     expected monthly figure into the quote so nobody is surprised in month three.
                   </p>
@@ -978,7 +978,7 @@
                   <p>
                     The same two questions decide those too. Power Automate is worth a serious look when the organisation
                     already lives in Microsoft 365, for exactly the reason Apps Script is worth a look when it lives in
-                    Google — the data does not leave a boundary that has already been accepted. Workato and the
+                    Google - the data does not leave a boundary that has already been accepted. Workato and the
                     enterprise integration platforms sell governance, audit trails and support contracts, which is what a
                     large compliance department is actually buying. I have kept this article to the three I ship
                     production work in, because a comparison written from a marketing page is not worth reading.

@@ -453,7 +453,7 @@
 
     warnr(r, 'Think before you paste a real Aadhaar number anywhere. This');
     warnr(r, 'page keeps nothing and makes no request of any kind, so the');
-    warnr(r, 'number never leaves this tab — but that is a promise about');
+    warnr(r, 'number never leaves this tab - but that is a promise about');
     warnr(r, 'this page only, and every other box you type it into is a');
     warnr(r, 'separate decision. Masking to the last four digits is the');
     warnr(r, 'norm for a reason, and it is why the echo above is masked.');
@@ -529,8 +529,8 @@
 
     warnr(r, 'PAN has no check digit you can run. The tenth character is');
     warnr(r, 'described as an alphabetic check digit, but the algorithm has');
-    warnr(r, 'never been published, so nothing offline — this page included');
-    warnr(r, '— can verify it. Structure is the whole of what is checkable');
+    warnr(r, 'never been published, so nothing offline - this page included');
+    warnr(r, '- can verify it. Structure is the whole of what is checkable');
     warnr(r, 'here, and structure is easy to fake on purpose.');
 
     return pass(r, 'Structure matches AAAAA9999A. No checksum exists to run.');
@@ -585,8 +585,8 @@
     if (isUin && !isMain && !isTds) {
       row(r, 'layout', 'UIN, not an ordinary GSTIN');
       row(r, 'check character', given);
-      note(r, 'This matches the separate layout used for a UIN — the number');
-      note(r, 'given to UN bodies, embassies and similar — which is four');
+      note(r, 'This matches the separate layout used for a UIN - the number');
+      note(r, 'given to UN bodies, embassies and similar - which is four');
       note(r, 'digits, three letters, five digits, then U or O, then N.');
       note(r, 'That is a different shape from an ordinary GSTIN, the ten');
       note(r, 'characters in the middle are not a PAN, and this page does');
@@ -794,7 +794,7 @@
     if (!name) {
       note(r, 'That two-letter code is not in the list on this page. States');
       note(r, 'get renamed, split and recoded, so an unknown code is not a');
-      note(r, 'failure — it may simply be newer than this table.');
+      note(r, 'failure - it may simply be newer than this table.');
     }
     return name;
   }
@@ -1248,7 +1248,7 @@
 
     if (fields.length > 2000) {
       out.warn('That is ' + fields.length + ' entries. Stopping at 2000 so the');
-      out.warn('page stays responsive — all of this runs on your processor,');
+      out.warn('page stays responsive - all of this runs on your processor,');
       out.warn('in this tab.');
       fields = fields.slice(0, 2000);
       out.rule();
@@ -1364,7 +1364,7 @@
     out.heading('Could it accidentally be somebody real?');
     out.row('format-valid space', '8 x 10^10 (leading digit 2 to 9, ten free)');
     out.row('rough issued count', '1.4 x 10^9');
-    out.row('so, roughly', pct.toFixed(2) + '% — about 1 in ' + oneIn);
+    out.row('so, roughly', pct.toFixed(2) + '% - about 1 in ' + oneIn);
     out.line('');
     out.dim('Read that carefully. The 1.4 billion is a published round figure');
     out.dim('I typed into this file, not something the page can check, and');

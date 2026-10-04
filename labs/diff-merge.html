@@ -98,7 +98,7 @@
                         "name": "Will the patch it exports really apply?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "That was the point of writing it, and the hunk arithmetic was checked against real git apply while building it — including the awkward cases: an insertion at the top of a file, a deletion of everything, a one-line file, and a missing final newline on either or both sides. It writes ordinary unified diff with three lines of context, so git apply or patch -p1 should take it. The file name in the headers is yours to set."
+                                "text": "That was the point of writing it, and the hunk arithmetic was checked against real git apply while building it - including the awkward cases: an insertion at the top of a file, a deletion of everything, a one-line file, and a missing final newline on either or both sides. It writes ordinary unified diff with three lines of context, so git apply or patch -p1 should take it. The file name in the headers is yours to set."
                         }
                 },
                 {
@@ -211,7 +211,7 @@
           </ol>
         </nav>
         <h1>Diff and three-way merge</h1>
-        <p class="hero-text">Two files that look identical and will not compare, or a merge you do not trust. This runs a real Myers diff and a real three-way merge here in the tab &mdash; and when the only difference is a line ending, it says that in those words instead of painting the whole file red.</p>
+        <p class="hero-text">Two files that look identical and will not compare, or a merge you do not trust. This runs a real Myers diff and a real three-way merge here in the tab - and when the only difference is a line ending, it says that in those words instead of painting the whole file red.</p>
         <ul class="lab-facts">
           <li>Myers diff, side by side or unified</li>
           <li>Word and character highlighting inside a line</li>
@@ -240,14 +240,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No rename detection, no binary files, no submodules</li>
                   <li>Line-oriented, so a reformat reads as a rewrite</li>
                   <li>Each box stops at 20,000 lines and 400,000 characters</li>
@@ -266,7 +266,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -336,44 +336,44 @@
           <button class="lab-btn" type="button" id="dm-download">Download merged file</button>
           <button class="lab-btn" type="button" id="dm-clear">Clear</button>
         </div>
-        <p class="dm-cr">A text box cannot hold a carriage return &mdash; the browser turns
+        <p class="dm-cr">A text box cannot hold a carriage return - the browser turns
           every CRLF you paste into a plain LF. To compare real line endings, open the
           files with the buttons below, or drag one onto a box.</p>
         <div class="dm-inputs">
           <div class="dm-in" id="dm-basewrap" hidden>
-            <label class="lab-pane-label" for="dm-base">Base &mdash; what both sides started from</label>
+            <label class="lab-pane-label" for="dm-base">Base - what both sides started from</label>
             <div class="dm-inbar">
               <button class="lab-btn" type="button" id="dm-openbase"
                       aria-label="Open a file as the base">Open a file&hellip;</button>
               <label class="sr-only" for="dm-filebase">Choose a file to load as the base</label>
               <input class="sr-only" type="file" id="dm-filebase" tabindex="-1" />
-              <span class="dm-src" id="dm-srcbase">typed here &mdash; a text box cannot hold a CR</span>
+              <span class="dm-src" id="dm-srcbase">typed here - a text box cannot hold a CR</span>
             </div>
             <textarea class="lab-toolinput dm-area" id="dm-base" spellcheck="false"
                       autocapitalize="off" autocorrect="off"
                       placeholder="The common ancestor. Used only by the three-way merge."></textarea>
           </div>
           <div class="dm-in" id="dm-minewrap">
-            <label class="lab-pane-label" for="dm-mine" id="dm-mine-label">Original &mdash; the a side of the diff</label>
+            <label class="lab-pane-label" for="dm-mine" id="dm-mine-label">Original - the a side of the diff</label>
             <div class="dm-inbar">
               <button class="lab-btn" type="button" id="dm-openmine"
                       aria-label="Open a file as the first version">Open a file&hellip;</button>
               <label class="sr-only" for="dm-filemine">Choose a file to load as the first version</label>
               <input class="sr-only" type="file" id="dm-filemine" tabindex="-1" />
-              <span class="dm-src" id="dm-srcmine">typed here &mdash; a text box cannot hold a CR</span>
+              <span class="dm-src" id="dm-srcmine">typed here - a text box cannot hold a CR</span>
             </div>
             <textarea class="lab-toolinput dm-area" id="dm-mine" spellcheck="false"
                       autocapitalize="off" autocorrect="off"
                       placeholder="Paste the first version here."></textarea>
           </div>
           <div class="dm-in" id="dm-theirswrap">
-            <label class="lab-pane-label" for="dm-theirs" id="dm-theirs-label">Changed &mdash; the b side of the diff</label>
+            <label class="lab-pane-label" for="dm-theirs" id="dm-theirs-label">Changed - the b side of the diff</label>
             <div class="dm-inbar">
               <button class="lab-btn" type="button" id="dm-opentheirs"
                       aria-label="Open a file as the second version">Open a file&hellip;</button>
               <label class="sr-only" for="dm-filetheirs">Choose a file to load as the second version</label>
               <input class="sr-only" type="file" id="dm-filetheirs" tabindex="-1" />
-              <span class="dm-src" id="dm-srctheirs">typed here &mdash; a text box cannot hold a CR</span>
+              <span class="dm-src" id="dm-srctheirs">typed here - a text box cannot hold a CR</span>
             </div>
             <textarea class="lab-toolinput dm-area" id="dm-theirs" spellcheck="false"
                       autocapitalize="off" autocorrect="off"
@@ -383,16 +383,16 @@
         <div class="lab-resultbar">
           <p class="lab-status" id="dm-status" role="status" aria-live="polite">Paste two versions and press Compare.</p>
         </div>
-        <p class="lab-pane-label" id="dm-viewlabel">Diff &mdash; the original against the changed text</p>
+        <p class="lab-pane-label" id="dm-viewlabel">Diff - the original against the changed text</p>
         <div class="dm-view" id="dm-view" tabindex="0" role="region"
              aria-label="Diff, one row per line, with a sign column"></div>
         <div class="dm-merge" id="dm-merge" hidden>
-          <p class="dm-h">Conflicts &mdash; resolve each one by hand</p>
+          <p class="dm-h">Conflicts - resolve each one by hand</p>
           <div id="dm-conflicts"></div>
           <p class="dm-h">Merged result</p>
           <pre class="dm-merged" id="dm-merged" tabindex="0" role="region" aria-label="Merged result"></pre>
         </div>
-        <p class="lab-pane-label">Report &mdash; counts, line endings, and what this could not tell you</p>
+        <p class="lab-pane-label">Report - counts, line endings, and what this could not tell you</p>
         <pre class="lab-terminal" id="tool-out" tabindex="0"></pre>
       </div>
 
@@ -407,11 +407,11 @@
           </article>
           <article class="info-card">
             <h3>Myers, and the ceiling it runs into</h3>
-            <p>The diff is the greedy O(ND) algorithm from Myers&rsquo; 1986 paper, with the common prefix and suffix trimmed off first and the search trace kept so the edit script can be walked back out of it. Keeping that trace costs memory in proportion to D squared, so D is capped at 1,200. Past the cap the differing middle is reported as one block removed and one block added &mdash; correct, coarser than minimal, and said out loud in the report rather than hidden. The linear-space refinement in the same paper would remove the cap; it is not implemented here.</p>
+            <p>The diff is the greedy O(ND) algorithm from Myers&rsquo; 1986 paper, with the common prefix and suffix trimmed off first and the search trace kept so the edit script can be walked back out of it. Keeping that trace costs memory in proportion to D squared, so D is capped at 1,200. Past the cap the differing middle is reported as one block removed and one block added - correct, coarser than minimal, and said out loud in the report rather than hidden. The linear-space refinement in the same paper would remove the cap; it is not implemented here.</p>
           </article>
           <article class="info-card">
             <h3>Why three-way beats two-way</h3>
-            <p>Compare two files and a missing line is ambiguous: it was either deleted on the left, or it never existed and was added on the right. Those call for opposite merges. A base settles it &mdash; whichever side differs from the base is the side that moved. That is the entire argument, and it is why a region changed on one side only applies cleanly here, while a region changed on both sides to different text is handed back to you.</p>
+            <p>Compare two files and a missing line is ambiguous: it was either deleted on the left, or it never existed and was added on the right. Those call for opposite merges. A base settles it - whichever side differs from the base is the side that moved. That is the entire argument, and it is why a region changed on one side only applies cleanly here, while a region changed on both sides to different text is handed back to you.</p>
           </article>
           <article class="info-card">
             <h3>The patch arithmetic, and why the export ignores the toggle</h3>
@@ -438,7 +438,7 @@
           </details>
           <details class="lab-faq">
             <summary>Will the patch it exports really apply?</summary>
-            <div>That was the point of writing it, and the hunk arithmetic was checked against real git apply while building it &mdash; including the awkward cases: an insertion at the top of a file, a deletion of everything, a one-line file, and a missing final newline on either or both sides. It writes ordinary unified diff with three lines of context, so git apply or patch -p1 should take it. The file name in the headers is yours to set.</div>
+            <div>That was the point of writing it, and the hunk arithmetic was checked against real git apply while building it - including the awkward cases: an insertion at the top of a file, a deletion of everything, a one-line file, and a missing final newline on either or both sides. It writes ordinary unified diff with three lines of context, so git apply or patch -p1 should take it. The file name in the headers is yours to set.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does a reformatted file look like a rewrite?</summary>
@@ -470,7 +470,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/git-objects">
             <span class="lab-card-name">Git object explorer</span>
-            <p class="lab-card-desc">Blobs, trees and commits &mdash; the layer underneath a merge.</p>
+            <p class="lab-card-desc">Blobs, trees and commits - the layer underneath a merge.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/unicode">

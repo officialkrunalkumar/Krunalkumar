@@ -343,7 +343,7 @@
     canvas.style.cursor = n ? 'pointer' : 'default';
     if (readout) {
       readout.textContent = n
-        ? n.name + ' — ' + n.deg + ' connection' + (n.deg === 1 ? '' : 's')
+        ? n.name + ' - ' + n.deg + ' connection' + (n.deg === 1 ? '' : 's')
         : '';
     }
     if (!running) paint();

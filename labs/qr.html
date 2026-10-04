@@ -202,7 +202,7 @@
           </ol>
         </nav>
         <h1>QR code generator and inspector</h1>
-        <p class="hero-text">A QR code is a link you cannot hover over. You point a camera at a square and something happens &mdash; a site opens, or a payment app opens with a stranger&rsquo;s account already filled in. This builds codes, and reads them back so you can see what one says before you let a phone act on it.</p>
+        <p class="hero-text">A QR code is a link you cannot hover over. You point a camera at a square and something happens - a site opens, or a payment app opens with a stranger&rsquo;s account already filled in. This builds codes, and reads them back so you can see what one says before you let a phone act on it.</p>
         <ul class="lab-facts">
           <li>Encoder written from the specification</li>
           <li>Reads photos, screenshots and pasted images</li>
@@ -231,14 +231,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>A decoded link is never opened or resolved</li>
                   <li>No lookups against any external database</li>
@@ -256,7 +256,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -287,10 +287,10 @@
             </select>
             <label class="sr-only" for="tool-ecc">Error correction level</label>
             <select class="lab-select" id="tool-ecc">
-              <option value="L">Correction L &mdash; smallest code</option>
-              <option value="M" selected>Correction M &mdash; balanced</option>
-              <option value="Q">Correction Q &mdash; tolerant</option>
-              <option value="H">Correction H &mdash; survives damage</option>
+              <option value="L">Correction L - smallest code</option>
+              <option value="M" selected>Correction M - balanced</option>
+              <option value="Q">Correction Q - tolerant</option>
+              <option value="H">Correction H - survives damage</option>
             </select>
             <label class="sr-only" for="tool-scale">Module size</label>
             <select class="lab-select" id="tool-scale">
@@ -436,7 +436,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>You cannot hover a square</h3>
-            <p>Every piece of advice about checking a link before you click assumes you can see the link. A QR code shows you nothing. The camera app flashes a preview, usually truncated to fit, for about a second &mdash; directly above the tap target. That is the entire inspection window most people ever get.</p>
+            <p>Every piece of advice about checking a link before you click assumes you can see the link. A QR code shows you nothing. The camera app flashes a preview, usually truncated to fit, for about a second - directly above the tap target. That is the entire inspection window most people ever get.</p>
           </article>
           <article class="info-card">
             <h3>It walks past link scanning</h3>
@@ -461,11 +461,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The direction is fixed by the format</h3>
-            <p>A UPI code contains an address to <em>pay</em>. Your app opens with that address filled in, and the PIN you then type authorises money leaving your account. There is no field in the format that pulls money towards you. To be paid, someone scans <em>your</em> code &mdash; and your PIN is never involved.</p>
+            <p>A UPI code contains an address to <em>pay</em>. Your app opens with that address filled in, and the PIN you then type authorises money leaving your account. There is no field in the format that pulls money towards you. To be paid, someone scans <em>your</em> code - and your PIN is never involved.</p>
           </article>
           <article class="info-card">
             <h3>The name in the code is free text</h3>
-            <p>The <code>pn</code> field is typed by whoever built the code and is verified by nobody. It can say &ldquo;SBI Refund Cell&rdquo;. The only field that decides where the money goes is <code>pa</code>, the address &mdash; and the name your app resolves from that address is the one worth reading.</p>
+            <p>The <code>pn</code> field is typed by whoever built the code and is verified by nobody. It can say &ldquo;SBI Refund Cell&rdquo;. The only field that decides where the money goes is <code>pa</code>, the address - and the name your app resolves from that address is the one worth reading.</p>
           </article>
           <article class="info-card">
             <h3>A blank amount is the tell</h3>
@@ -485,7 +485,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Written out rather than pulled in</h3>
-            <p>Byte-mode encoding, Reed-Solomon parity over GF(2<sup>8</sup>), mask selection by penalty score, the BCH-protected format block &mdash; all of it is in one readable file with the field arithmetic commented. This site carries no dependencies, and a code generator you can read end to end is the only kind whose output you can vouch for.</p>
+            <p>Byte-mode encoding, Reed-Solomon parity over GF(2<sup>8</sup>), mask selection by penalty score, the BCH-protected format block - all of it is in one readable file with the field arithmetic commented. This site carries no dependencies, and a code generator you can read end to end is the only kind whose output you can vouch for.</p>
           </article>
           <article class="info-card">
             <h3>Error correction is not free</h3>

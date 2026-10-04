@@ -363,7 +363,7 @@
           won: true,
           score: score,
           title: 'Cleared',
-          message: total + ' pairs in ' + moves + ' moves and ' + clock(secs) + ' — ' + score +
+          message: total + ' pairs in ' + moves + ' moves and ' + clock(secs) + ' - ' + score +
             ' points, on the ' + (SIZES[size] || SIZES.medium).label + ' board. The minimum possible is ' +
             total + ' moves.'
         });

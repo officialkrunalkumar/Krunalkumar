@@ -138,12 +138,12 @@
         },
         opts: [
           {
-            label: 'Work the 340 failed logons — that volume has to be the attack',
+            label: 'Work the 340 failed logons - that volume has to be the attack',
             cost: 35,
             fx: { c: 0, e: -2, b: 7, r: 4 },
             set: 'chasedNoise',
             pivot: 'Spent 35 minutes on the loudest alert while the real one ran.',
-            note: 'It is a password spray from a botnet, and MFA has blocked every one of them — ' +
+            note: 'It is a password spray from a botnet, and MFA has blocked every one of them - ' +
               'the same spray has been running for three weeks. Volume is not severity. While you ' +
               'read it, FS-01 encrypted another thirty thousand files.'
           },
@@ -178,7 +178,7 @@
         },
         opts: [
           {
-            label: 'Network-isolate FS-01 from the EDR console — it stays powered',
+            label: 'Network-isolate FS-01 from the EDR console - it stays powered',
             cost: 2,
             fx: { c: 44, e: -3, b: 9, r: -2 },
             set: 'contained',
@@ -187,14 +187,14 @@
               'watch the operator work, and the finance share is now offline for everybody.'
           },
           {
-            label: 'Pull the power on FS-01 — nothing beats a machine that is off',
+            label: 'Pull the power on FS-01 - nothing beats a machine that is off',
             cost: 3,
             fx: { c: 48, e: -26, b: 11, r: 3 },
             set: 'contained',
             setAlso: 'pulledPower',
             pivot: 'Powered off a live host, and every volatile artefact went with it.',
             note: 'It stops. So does everything in memory: the injected process, the operator&rsquo;s ' +
-              'command history, the network connections, and — in perhaps one case in six — the key ' +
+              'command history, the network connections, and - in perhaps one case in six - the key ' +
               'itself. This is the single most expensive reflex in incident response, and it feels ' +
               'like the most decisive thing you can do.'
           },
@@ -203,7 +203,7 @@
             cost: 22,
             fx: { c: -7, e: 16, b: 13, r: 2 },
             set: 'watched',
-            note: 'You get the C2 address, the tooling, and the two accounts they are using — which ' +
+            note: 'You get the C2 address, the tooling, and the two accounts they are using - which ' +
               'is what makes the rest of the response possible instead of guesswork. It also costs ' +
               'twenty minutes of encryption and one more server. Sometimes this is the right call. ' +
               'It is never the free one.'
@@ -241,13 +241,13 @@
                in the run had already gone by, and a player who took the
                evidence-first line could never contain at all. What it costs
                is that the twenty minutes are already spent. */
-            label: 'Stop watching — isolate it now, you have seen enough',
+            label: 'Stop watching - isolate it now, you have seen enough',
             when: function (S) { return !S.flags.contained; },
             cost: 3,
             fx: { c: 40, e: 2, b: 12, r: -2 },
             set: 'contained',
             note: 'Encryption stops. The intelligence you bought with those twenty minutes is real ' +
-              'and it will shape the rest of the response — and the twenty minutes are also real, ' +
+              'and it will shape the rest of the response - and the twenty minutes are also real, ' +
               'and they are on the invoice as another eighteen thousand files.'
           },
           {
@@ -285,7 +285,7 @@
         head: 'The backups',
         text: function (S) {
           return 'The appliance holds last night&rsquo;s job, the one that &ldquo;completed with ' +
-            'warnings&rdquo;' + (S.flags.backupDoubt ? ' — the warning your engineer said has been open for three weeks' : '') +
+            'warnings&rdquo;' + (S.flags.backupDoubt ? ' - the warning your engineer said has been open for three weeks' : '') +
             '. There is also an offline copy taken on Tuesday that nobody has restored from since ' +
             'the appliance was installed.';
         },
@@ -339,7 +339,7 @@
             note: 'Two problems, and the second is the expensive one. The operator still has access ' +
               'to mailboxes, so they have now read your assessment of them. And an unreviewed ' +
               'paragraph written at four in the morning is, from this moment, the first written ' +
-              'account of the incident — it will be read back to you by a regulator, an insurer and ' +
+              'account of the incident - it will be read back to you by a regulator, an insurer and ' +
               'possibly a court.'
           },
           {
@@ -356,7 +356,7 @@
             cost: 65,
             fx: { c: 0, e: 0, b: 9, r: 9 },
             note: 'The picture is never complete. Meanwhile four hundred people are guessing in a ' +
-              'group chat, and silence from you is not neutral — it is simply somebody else&rsquo;s ' +
+              'group chat, and silence from you is not neutral - it is simply somebody else&rsquo;s ' +
               'version going first.'
           }
         ]
@@ -394,7 +394,7 @@
             fx: { c: 0, e: 0, b: 0, r: -3 },
             set: 'askedLegal',
             note: 'They say yes, on the CERT-In side, and that the GDPR question depends on whether ' +
-              'personal data was accessed — which is exactly the question your evidence decisions ' +
+              'personal data was accessed - which is exactly the question your evidence decisions ' +
               'have already answered for you, one way or the other. You have used 35 minutes to ' +
               'learn that you should have filed.'
           }
@@ -438,7 +438,7 @@
               'payment itself carries sanctions exposure. Buying time is not the same as buying a fix.'
           },
           {
-            label: 'Keep it in-house — it is one server',
+            label: 'Keep it in-house - it is one server',
             cost: 8,
             fx: { c: 0, e: -9, b: 8, r: 6 },
             note: 'It is one server that had domain credentials on it. The scope question outlives ' +
@@ -479,7 +479,7 @@
 
     plan: [
       'Who may isolate a production host at 02:00 without ringing anyone, and who they tell afterwards. If that is undecided, the decision gets made by whoever is most tired.',
-      'That the first responder images before rebuilding — written down, so it is a policy at three in the morning rather than a judgement call.',
+      'That the first responder images before rebuilding - written down, so it is a policy at three in the morning rather than a judgement call.',
       'Which backup copy is offline, and the date of the last test restore from it. &ldquo;We have backups&rdquo; is not a recovery plan; a tested restore is.',
       'Who files the CERT-In report, who has the login, and what the holding text says before anyone has to write it.',
       'The first all-staff message, drafted in advance and cleared by legal, so nobody composes a regulatory document at four in the morning.',
@@ -492,7 +492,7 @@
     name: 'Wire fraud through a compromised mailbox',
     startMin: 545,                     // 09:05, a Thursday
     opening: 'It is 09:05 on a Thursday. The finance manager has just noticed that a supplier&rsquo;s ' +
-      'bank details changed last month — and that £312,000 went to the new account yesterday afternoon.',
+      'bank details changed last month - and that £312,000 went to the new account yesterday afternoon.',
     beats: [
       {
         head: 'What do you do in the first five minutes',
@@ -503,7 +503,7 @@
         },
         opts: [
           {
-            label: 'Work the DLP alert — data is actively leaving the company',
+            label: 'Work the DLP alert - data is actively leaving the company',
             cost: 65,
             fx: { c: 0, e: 0, b: 13, r: 3 },
             set: 'chasedNoise',
@@ -553,11 +553,11 @@
             cost: 6,
             fx: { c: 5, e: 0, b: -20, r: -2 },
             set: 'recallRequested',
-            note: 'Made. Later than it could have been, and still worth making — recall attempts ' +
+            note: 'Made. Later than it could have been, and still worth making - recall attempts ' +
               'succeed often enough that not trying is never the answer.'
           },
           {
-            label: 'Ring the bank anyway — freeze what is left and get it on record',
+            label: 'Ring the bank anyway - freeze what is left and get it on record',
             when: function (S) { return !!S.flags.moneyGone; },
             cost: 12,
             fx: { c: 4, e: 6, b: -4, r: -3 },
@@ -596,7 +596,7 @@
             pivot: 'Deleted the inbox rule before exporting it.',
             note: 'The rule&rsquo;s creation timestamp was the one artefact that dated the ' +
               'compromise, and it is gone. Worse: a password reset on its own does not end a live ' +
-              'session — the stolen token is still valid until it is revoked, so they may not even ' +
+              'session - the stolen token is still valid until it is revoked, so they may not even ' +
               'have noticed.'
           },
           {
@@ -611,7 +611,7 @@
               'which is the step people miss.'
           },
           {
-            label: 'Reset the password and move on — she needs her email',
+            label: 'Reset the password and move on - she needs her email',
             cost: 5,
             fx: { c: 8, e: -5, b: -2, r: 4 },
             note: 'The refresh token outlives the password. They are back in the mailbox inside the ' +
@@ -633,7 +633,7 @@
             fx: { c: -14, e: 0, b: 8, r: 7 },
             set: 'repliedInThread',
             pivot: 'Warned the supplier inside a thread the attacker was reading.',
-            note: 'They replied first. A lookalike domain — one character out — sent your finance ' +
+            note: 'They replied first. A lookalike domain - one character out - sent your finance ' +
               'team a message from &ldquo;the supplier&rdquo; saying the warning was itself a scam. ' +
               'Never conduct the response in the channel that is compromised.'
           },
@@ -669,7 +669,7 @@
             set: 'scoped',
             note: 'Two more, both in accounts payable, both created the same week. Scope is the ' +
               'question a regulator asks first and the question an incident makes hardest to answer ' +
-              'later — an hour spent on it now is an hour, not a fortnight.'
+              'later - an hour spent on it now is an hour, not a fortnight.'
           },
           {
             label: 'Assume it is contained to the one account',
@@ -683,7 +683,7 @@
             fx: { c: 26, e: 3, b: 21, r: -4 },
             set: 'scoped',
             note: 'Effective and enormous. Three hundred and eighty people locked out at once on a ' +
-              'trading day, a service desk with two staff, and — because you did not search first — ' +
+              'trading day, a service desk with two staff, and - because you did not search first - ' +
               'still no idea which accounts were actually touched.'
           }
         ]
@@ -750,7 +750,7 @@
               'one, and it costs one phone call per change. Most wire fraud dies here.'
           },
           {
-            label: 'Write it up on Monday — everyone has been at this for nine hours',
+            label: 'Write it up on Monday - everyone has been at this for nine hours',
             cost: 5,
             fx: { c: -6, e: -5, b: 3, r: 5 },
             note: 'Fair, and the timeline you can reconstruct on Monday is meaningfully worse than ' +
@@ -1050,7 +1050,7 @@
           'max-height:' + (showFullLog ? '15rem' : 'none') + ';overflow:auto;">';
         if (!showFullLog && from > 0) {
           out += '<li style="font-size:0.72rem;color:' + INK4 + ';margin-bottom:0.4rem;">' +
-            from + ' earlier ' + (from === 1 ? 'entry' : 'entries') + ' — the Timeline button shows them.</li>';
+            from + ' earlier ' + (from === 1 ? 'entry' : 'entries') + ' - the Timeline button shows them.</li>';
         }
         for (var i = from; i < S.log.length; i++) {
           var it = S.log[i];
@@ -1370,12 +1370,12 @@
           for (i = 0; i < S.pivots.length; i++) {
             html += '<li style="margin:0 0 0.4rem;font-size:0.85rem;line-height:1.6;color:' + INK3 + ';">' +
               '<span style="font-family:\'Cascadia Code\',Consolas,monospace;color:' + INK4 + ';">' +
-              S.pivots[i].at + '</span> — ' + S.pivots[i].line + '</li>';
+              S.pivots[i].at + '</span> - ' + S.pivots[i].line + '</li>';
           }
           html += '</ul>';
         } else {
           html += '<p style="margin:0 0 0.6rem;font-size:0.85rem;line-height:1.6;color:' + INK3 + ';">' +
-            'None of the classic mistakes. You took the trades knowingly, which is the whole skill — ' +
+            'None of the classic mistakes. You took the trades knowingly, which is the whole skill - ' +
             'the meters are still not all green, and on a real incident they never are.</p>';
         }
 
@@ -1402,13 +1402,13 @@
           '<p style="margin:0 0 0.5rem;font-size:0.8rem;line-height:1.6;color:' + INK3 + ';">' +
           'Two real clocks were running behind this exercise. CERT-In&rsquo;s April 2022 direction, ' +
           'issued under section 70B(6) of the IT Act, asks for certain cyber incidents to be reported ' +
-          'to CERT-In <strong>within six hours of noticing them</strong> — a window you ' +
+          'to CERT-In <strong>within six hours of noticing them</strong> - a window you ' +
           (S.flags.reported ? 'filed inside' : 'did not file inside') + ' on this run. ' +
           'Article 33 of the GDPR gives <strong>72 hours from becoming aware</strong> of a personal-data ' +
           'breach to notify the supervisory authority; this run used about ' + pct + '% of that.</p>' +
           '<p style="margin:0;font-size:0.78rem;line-height:1.6;color:' + INK4 + ';">' +
           'Stated as context. This is a training exercise, not legal advice, and which duties apply ' +
-          'to a real organisation depends on where it operates and what data it holds — ask the ' +
+          'to a real organisation depends on where it operates and what data it holds - ask the ' +
           'people whose job that is, before you need them.</p></div>' +
           '<div style="margin-top:1.1rem;display:flex;gap:0.6rem;flex-wrap:wrap;">' +
           '<button class="btn btn-primary" type="button" data-ir-again>Run it again</button>' +

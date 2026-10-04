@@ -227,7 +227,7 @@
           </ol>
         </nav>
         <h1>How a database index actually works</h1>
-        <p class="hero-text">Everyone is told an index makes queries fast. Almost nobody is shown the number that makes it true. So this lab counts: there is a 100,000-row table in your browser, laid out into 8 KB pages, with real B+tree indexes over it, and every query on this page reports the pages it actually read &mdash; with the index and without. Alongside it a live tree you can split and merge, so the shape doing the work is not a diagram in a book but something you broke yourself.</p>
+        <p class="hero-text">Everyone is told an index makes queries fast. Almost nobody is shown the number that makes it true. So this lab counts: there is a 100,000-row table in your browser, laid out into 8 KB pages, with real B+tree indexes over it, and every query on this page reports the pages it actually read - with the index and without. Alongside it a live tree you can split and merge, so the shape doing the work is not a diagram in a book but something you broke yourself.</p>
         <ul class="lab-facts">
           <li>A live B+tree that splits and merges</li>
           <li>Pages counted, not estimated</li>
@@ -257,7 +257,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the table, the indexes, the
+              This runs entirely inside your browser - the table, the indexes, the
               counting, all of it on your own machine. Nothing is uploaded and there is
               no server.
             </p>
@@ -280,7 +280,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -292,7 +292,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-dbindex-mount" id="viz-dbindex-mount">
-          <p class="lab-proc-fallback">Building the table and its indexes&hellip; if this message stays, the visualiser did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Building the table and its indexes&hellip; if this message stays, the visualiser did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -307,7 +307,7 @@
           </article>
           <article class="info-card">
             <h3>The tree really splits, and really merges</h3>
-            <p>Insert into a full leaf and watch it split and copy a key upwards. Keep going and watch that propagate until the root itself splits and the tree gains a level &mdash; the only way a B+tree ever gets taller, which is why every leaf stays the same distance from the root. Then delete until a node drops below half full and watch it borrow from a sibling, or merge when there is nothing left to borrow.</p>
+            <p>Insert into a full leaf and watch it split and copy a key upwards. Keep going and watch that propagate until the root itself splits and the tree gains a level - the only way a B+tree ever gets taller, which is why every leaf stays the same distance from the root. Then delete until a node drops below half full and watch it borrow from a sibling, or merge when there is nothing left to borrow.</p>
           </article>
           <article class="info-card">
             <h3>Fan-out is the whole argument</h3>
@@ -370,7 +370,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a page count looks wrong, or the tree does something a B+tree would not, I would genuinely like to know &mdash; that is the one kind of bug this lab cannot afford.</p>
+          <p>If a page count looks wrong, or the tree does something a B+tree would not, I would genuinely like to know - that is the one kind of bug this lab cannot afford.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=db-index#lab-feedback">Report a problem or send feedback</a>
@@ -406,7 +406,7 @@
           </a>
           <a class="lab-card" href="/labs/os-algorithms">
             <span class="lab-card-name">OS algorithms</span>
-            <p class="lab-card-desc">Page replacement and disk scheduling &mdash; the same page-at-a-time thinking, one layer down.</p>
+            <p class="lab-card-desc">Page replacement and disk scheduling - the same page-at-a-time thinking, one layer down.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
         </div>

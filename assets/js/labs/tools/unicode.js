@@ -1102,7 +1102,7 @@
         }
       }
       out.row('at ' + findings[i].at + '  ' + uPlus(findings[i].cp),
-              findings[i].r.short + ' — ' + nameOf(findings[i].cp),
+              findings[i].r.short + ' - ' + nameOf(findings[i].cp),
               findings[i].sev === 'danger' ? 't-err' : 't-warn');
       out.dim('                      ' + findings[i].r.note);
       i += 1;
@@ -1137,7 +1137,7 @@
       out.warn(hits.length + ' distinct character' + (hits.length === 1 ? '' : 's') +
                ' could be read as something else:');
       for (i = 0; i < hits.length && i < 40; i++) {
-        out.row(uPlus(hits[i][0]), 'reads as "' + hits[i][1] + '" — ' + hits[i][2], 't-warn');
+        out.row(uPlus(hits[i][0]), 'reads as "' + hits[i][1] + '" - ' + hits[i][2], 't-warn');
       }
       if (hits.length > 40) out.dim('… and ' + (hits.length - 40) + ' more');
     }
@@ -1153,7 +1153,7 @@
     if (sk.indexOf('rn') !== -1) {
       out.line('');
       out.warn('The skeleton contains "rn", which at small sizes is hard to tell');
-      out.warn('from "m". That one is pure ASCII — no Unicode required.');
+      out.warn('from "m". That one is pure ASCII - no Unicode required.');
     }
     return hits;
   }
@@ -1196,7 +1196,7 @@
     out.line('');
     out.row('scripts used', scripts.length ? scripts.join(', ') : 'Common only');
     if (scripts.length > 1 && !mixIsFriendly(scripts)) {
-      out.err('MIXED SCRIPT. One name, more than one alphabet — the shape almost');
+      out.err('MIXED SCRIPT. One name, more than one alphabet - the shape almost');
       out.err('every registered homograph domain has.');
       out.dim('Browsers try to defend against this by showing the xn-- form when');
       out.dim('a name mixes scripts, but the rules differ per browser and per');
@@ -1349,7 +1349,7 @@
     out.warn('truth. A compiler, an interpreter and a permission check all read');
     out.warn('the stored order; a code reviewer reads the display.');
     out.line('');
-    out.dim('This is a review and CI problem, not a language problem — every');
+    out.dim('This is a review and CI problem, not a language problem - every');
     out.dim('language with comments and string literals is affected. Ways to');
     out.dim('catch it:');
     out.dim('  · reject bidi controls in source at commit time, in a hook or a');
@@ -1428,7 +1428,7 @@
   }
 
   function showHelp() {
-    out.dim('Paste anything — a username, a domain, a line of source, a message');
+    out.dim('Paste anything - a username, a domain, a line of source, a message');
     out.dim('that arrived looking slightly wrong.');
     out.dim('');
     out.dim('Every code point is drawn as its own chip below, with the invisible');
@@ -1540,7 +1540,7 @@
         var cleaned = clean(box.value);
         if (cleaned === box.value) {
           out.rule();
-          out.dim('Nothing to remove — this text has no invisible characters.');
+          out.dim('Nothing to remove - this text has no invisible characters.');
           return;
         }
         box.value = cleaned;

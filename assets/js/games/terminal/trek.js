@@ -230,7 +230,7 @@
           var hit = Math.round((k.e * 0.4) / (1 + d * 0.4) * (0.8 + 0.4 * Math.random()));
           if (hit < 1) hit = 1;
           damage(hit);
-          say('Hit from the klingon at ' + (k.x + 1) + ',' + (k.y + 1) + ' — ' + hit +
+          say('Hit from the klingon at ' + (k.x + 1) + ',' + (k.y + 1) + ' - ' + hit +
               ' units. Shields ' + shields + ', energy ' + energy + '.', 'red');
         }
         g.beep(120, 0.1, 'sawtooth', 0.05);
@@ -341,7 +341,7 @@
           return;
         }
         if (sector[si(nx, ny)] !== '.') {
-          say('Blocked — something is occupying sector ' + (nx + 1) + ',' + (ny + 1) + '.', 'dim');
+          say('Blocked - something is occupying sector ' + (nx + 1) + ',' + (ny + 1) + '.', 'dim');
           return;
         }
         if (energy < IMPULSE_COST) {
@@ -592,7 +592,7 @@
           var dx = cursor.x - qx;
           var dy = cursor.y - qy;
           var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist === 0) return 'The cursor is on your own quadrant — Space holds station.';
+          if (dist === 0) return 'The cursor is on your own quadrant - Space holds station.';
           return 'Warp to ' + (cursor.x + 1) + ',' + (cursor.y + 1) + ': ' +
                  (Math.round(50 * dist) + 20) + ' units of energy, ' + dist.toFixed(1) + ' stardates.';
         }
@@ -604,7 +604,7 @@
                  (klingons.length === 1 ? '' : 's') + ', ' + Math.round(amount / Math.max(1, klingons.length)) + ' each.';
         }
         if (mode === 'torpedo') {
-          return 'Course ' + ARROW8[aim] + ' — ' + torps + ' torpedo' + (torps === 1 ? '' : 'es') + ' in the tubes.';
+          return 'Course ' + ARROW8[aim] + ' - ' + torps + ' torpedo' + (torps === 1 ? '' : 'es') + ' in the tubes.';
         }
         if (mode === 'shields') {
           if (amount >= 0) return 'Transfer ' + amount + ' units of energy into the shields.';

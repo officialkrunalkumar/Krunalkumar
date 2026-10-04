@@ -169,7 +169,7 @@
         var sc = window.KSFestivals.scene(state.festival);
         elResolved.hidden = false;
         elResolved.textContent = sc.known
-          ? sc.glyph + '  ' + sc.name + ' — the card will say “' + sc.greeting + '”'
+          ? sc.glyph + '  ' + sc.name + ' - the card will say “' + sc.greeting + '”'
           : '✨  Not one I know, so the card will say “' + sc.greeting + '” with a general festive look.';
         elResolved.classList.toggle('is-generic', !sc.known);
       } else {
@@ -357,7 +357,7 @@
     if (elNameHint) {
       elNameHint.textContent = mode === 'birthday'
         ? 'Their name, as you’d say it out loud.'
-        : 'Type any festival — spelling doesn’t have to be exact.';
+        : 'Type any festival - spelling doesn’t have to be exact.';
     }
     if (elName) {
       elName.placeholder = mode === 'birthday' ? 'Riya' : 'Diwali';

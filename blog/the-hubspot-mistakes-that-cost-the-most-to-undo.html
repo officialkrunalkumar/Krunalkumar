@@ -8,11 +8,11 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="The HubSpot Mistakes That Cost the Most to Undo" />
-    <meta property="og:description" content="Some CRM mistakes cost an afternoon and some cost a quarter. Object model, property sprawl, deal stages, lifecycle drift, duplicate records, imports with no key, and production changes with nowhere to be wrong — why each one resists repair, and the cheap prevention for each." />
+    <meta property="og:description" content="Some CRM mistakes cost an afternoon and some cost a quarter. Object model, property sprawl, deal stages, lifecycle drift, duplicate records, imports with no key, and production changes with nowhere to be wrong - why each one resists repair, and the cheap prevention for each." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/the-hubspot-mistakes-that-cost-the-most-to-undo.jpg" />
@@ -26,7 +26,7 @@
     <meta property="article:section" content="RevOps" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The HubSpot Mistakes That Cost the Most to Undo" />
-    <meta name="twitter:description" content="Some CRM mistakes cost an afternoon and some cost a quarter. Object model, property sprawl, deal stages, lifecycle drift, duplicate records, imports with no key, and production changes with nowhere to be wrong — why each one resists repair, and the cheap prevention for each." />
+    <meta name="twitter:description" content="Some CRM mistakes cost an afternoon and some cost a quarter. Object model, property sprawl, deal stages, lifecycle drift, duplicate records, imports with no key, and production changes with nowhere to be wrong - why each one resists repair, and the cheap prevention for each." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/the-hubspot-mistakes-that-cost-the-most-to-undo.jpg" />
     <title>The HubSpot Mistakes Hardest to Undo | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -67,7 +67,7 @@
                         "name": "Can I rename a HubSpot property without losing its history?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Changing the label a property shows in the interface is the safe operation — the internal name it is stored under does not move, so reports, workflows and integrations keep working. The destructive operation is deleting a property, or quietly abandoning one in favour of a new field, because the value history hangs off the property itself. HubSpot changes behaviour and retention windows over time, so check the current documentation for your portal before relying on any specific recovery window, and export before you delete either way."
+                                "text": "Changing the label a property shows in the interface is the safe operation - the internal name it is stored under does not move, so reports, workflows and integrations keep working. The destructive operation is deleting a property, or quietly abandoning one in favour of a new field, because the value history hangs off the property itself. HubSpot changes behaviour and retention windows over time, so check the current documentation for your portal before relying on any specific recovery window, and export before you delete either way."
                         }
                 },
                 {
@@ -75,7 +75,7 @@
                         "name": "Is a custom object always better than adding more contact properties?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and treating it as the default is how a small portal gets expensive. Custom objects sit on higher subscription tiers, need their own reporting and permissions, and add a relationship for everyone to reason about. The test is whether the thing has its own lifecycle and a many-to-one relationship to a person or company. A licence that renews, a vehicle that changes owner, an enrolment with its own stages — those want an object. A single flag about a contact does not."
+                                "text": "No, and treating it as the default is how a small portal gets expensive. Custom objects sit on higher subscription tiers, need their own reporting and permissions, and add a relationship for everyone to reason about. The test is whether the thing has its own lifecycle and a many-to-one relationship to a person or company. A licence that renews, a vehicle that changes owner, an enrolment with its own stages - those want an object. A single flag about a contact does not."
                         }
                 },
                 {
@@ -269,12 +269,12 @@
               <ul>
                 <li>
                   <strong>Companies doing the work of deals.</strong> If the sale lives as properties on the company
-                  record &mdash; amount, close date, status &mdash; you can only hold one of it. A second sale to the
+                  record - amount, close date, status - you can only hold one of it. A second sale to the
                   same account overwrites the first, and you can no longer ask how often you sold to that account.
                 </li>
                 <li>
                   <strong>Contacts doing the work of a custom object.</strong> Anything with its own lifecycle and a
-                  many-to-one relationship to a person &mdash; a licence, a course enrolment &mdash; does not stay in
+                  many-to-one relationship to a person - a licence, a course enrolment - does not stay in
                   contact properties. It starts as three fields and ends as a shadow database one person can read.
                 </li>
                 <li>
@@ -310,7 +310,7 @@
               <div class="post-callout" role="note">
                 <p>
                   <strong>Before you delete a property, export it.</strong> Deleting a property does not just remove a
-                  column, it removes the ability to ask what that value used to be &mdash; the change history hangs off
+                  column, it removes the ability to ask what that value used to be - the change history hangs off
                   the property itself. Copying today&rsquo;s values into the survivor keeps the present and discards the
                   past, which is what cohort and attribution reports are made of.
                 </p>
@@ -318,7 +318,7 @@
               <p>
                 Cheap prevention: one named owner for the property list, a naming convention decided once, and a
                 description that says who writes this property and what a blank means. Then the rule I would defend
-                hardest &mdash; a new property needs a report or workflow that will read it.
+                hardest - a new property needs a report or workflow that will read it.
               </p>
               <p>
                 The expensive repair has limits. Where another system holds the truth you can back-fill.
@@ -404,14 +404,14 @@
               </p>
               <p>
                 Imports manufacture duplicates at scale. An import with no stable external identifier has to match on
-                something human &mdash; email, company name, domain. Email changes when people change jobs. Company
+                something human - email, company name, domain. Email changes when people change jobs. Company
                 names differ by a comma. Domains fail for any business owning two. Each near-miss creates a record that
                 looks new because, to the matcher, it is.
               </p>
               <p>
                 Cheap prevention: create a unique-identifier property for every system you import from, on day one, and
                 populate it on every import even when nothing needs it yet. Then normalise before you match rather than
-                after &mdash; case, whitespace, plus-addressing, the <code>www.</code> prefix.
+                after - case, whitespace, plus-addressing, the <code>www.</code> prefix.
                 <a class="text-link" href="/labs/regex">The regex tester here</a> is a reasonable place to work those
                 patterns out.
               </p>
@@ -428,7 +428,7 @@
                 Switching on a new automation or association in a live portal surprises people the first time: enrolment
                 is evaluated against the whole database, not the records you had in mind while building. A trigger that
                 matches history will enrol history. If ten thousand records satisfy the condition, ten thousand enrol
-                &mdash; and if a step sends an email, it sends ten thousand emails to people who did nothing today.
+                - and if a step sends an email, it sends ten thousand emails to people who did nothing today.
               </p>
               <p>
                 Why it is hard to undo: outbound actions are not transactions. You can switch the workflow off in

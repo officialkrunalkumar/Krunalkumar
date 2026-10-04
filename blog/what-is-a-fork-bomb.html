@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What Is a Fork Bomb, and Why Can It Freeze a Linux System?" />
     <meta
@@ -147,7 +147,7 @@
           <p class="eyebrow">Linux security</p>
           <h1>What is a fork bomb, and why can it freeze a Linux system?</h1>
           <p class="hero-text">
-            One short line of Bash can bring a healthy Linux machine to its knees — no exploit, no special privileges,
+            One short line of Bash can bring a healthy Linux machine to its knees - no exploit, no special privileges,
             nothing that looks like an attack. This is how it works, why the usual defenses aren't enough, and the
             approach I proposed in my research to handle it more gracefully.
           </p>
@@ -178,7 +178,7 @@
                   site that boots inside your browser with a hard 64&nbsp;MB ceiling. A fork bomb in
                   there does exactly what this article describes and costs you nothing but a reboot.
                   One catch worth knowing: that shell is BusyBox <code>ash</code>, which rejects the
-                  famous <code>:(){ :|:&amp; };:</code> with <em>bad function name</em> &mdash; use
+                  famous <code>:(){ :|:&amp; };:</code> with <em>bad function name</em> - use
                   <code>f(){ f|f&amp; };f</code> instead. Same bomb, one character of difference.
                 </p>
                 <a class="btn btn-primary" href="/labs/linux">Open the Linux terminal</a>
@@ -190,14 +190,14 @@
               </p>
               <div class="post-callout" role="note">
                 <p>
-                  <strong>Warning — do not run this.</strong> Pasting this into a shell will freeze your machine almost
+                  <strong>Warning - do not run this.</strong> Pasting this into a shell will freeze your machine almost
                   instantly, even inside many VMs, and you'll need a hard reboot. Read on to understand it instead.
                 </p>
               </div>
               <pre><code>:(){ :|:&amp; };:</code></pre>
               <p>
                 It defines a function called <code>:</code> that calls itself twice and pipes one copy into the other,
-                running both in the background — then invokes it. Each process immediately creates two more, which each
+                running both in the background - then invokes it. Each process immediately creates two more, which each
                 create two more, and so on. There is no upper limit written anywhere. It is exponential growth with no
                 brake pedal.
               </p>
@@ -212,11 +212,11 @@
               <p>
                 Every running program on Linux is a process, and the kernel tracks each one in a finite structure called
                 the process table. Processes also consume memory and CPU scheduling slots. A fork bomb doesn't break any
-                single one of these — it exhausts all of them at once. The process table fills, memory runs out, and the
+                single one of these - it exhausts all of them at once. The process table fills, memory runs out, and the
                 scheduler is so busy juggling a flood of near-identical processes that legitimate work never gets a turn.
               </p>
               <p>
-                The result is a machine that hasn't crashed and hasn't been hacked in any traditional sense — it is
+                The result is a machine that hasn't crashed and hasn't been hacked in any traditional sense - it is
                 simply too busy multiplying to respond to you. In security terms, this is an attack on
                 <strong>availability</strong>, one of the three pillars of information security alongside confidentiality
                 and integrity. You often can't even open a terminal to kill it, because opening a terminal needs a
@@ -227,24 +227,24 @@
                 <a href="/assets/images/blog/what-is-a-fork-bomb-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/what-is-a-fork-bomb-diagram1.svg" alt="Chart showing exponential process growth: 1, 2, 4, 8, 16, 32 processes per generation" width="760" height="260" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Each generation doubles the last. Within a handful of steps the count is unmanageable — and the growth never stops on its own. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Each generation doubles the last. Within a handful of steps the count is unmanageable - and the growth never stops on its own. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <h2 id="why-the-obvious-defenses-aren-t-enough">Why the obvious defenses aren't enough</h2>
               <p>
-                Linux does ship with tools that sound like they should solve this, and they each help — until you look
+                Linux does ship with tools that sound like they should solve this, and they each help - until you look
                 closely at the trade-off each one makes:
               </p>
               <ul>
                 <li>
                   <strong>Static process limits</strong> (like <code>ulimit -u</code> or <code>pids</code> limits in
-                  cgroups) cap how many processes a user can have. That does stop the bomb — but the same hard cap also
+                  cgroups) cap how many processes a user can have. That does stop the bomb - but the same hard cap also
                   rejects legitimate work the moment a busy, honest user hits the ceiling. You've traded a crash for a
                   different kind of "no."
                 </li>
                 <li>
                   <strong>Rate limits</strong> on process creation can misfire on perfectly normal software. Some
-                  legitimate tools — certain build systems, CAD software, compilers — spawn processes in fast bursts
+                  legitimate tools - certain build systems, CAD software, compilers - spawn processes in fast bursts
                   that look a lot like an attack.
                 </li>
                 <li>
@@ -266,12 +266,12 @@
               </p>
               <ol>
                 <li>New processes are watched for their fork rate. A process multiplying far faster than a set threshold is flagged as an offender, killed, and its name is recorded.</li>
-                <li>When a recorded name shows up again, it is <em>not</em> killed on sight. Instead it runs inside a resource quarantine — a constrained space where it can execute but can't do damage — and is observed.</li>
+                <li>When a recorded name shows up again, it is <em>not</em> killed on sight. Instead it runs inside a resource quarantine - a constrained space where it can execute but can't do damage - and is observed.</li>
                 <li>If it behaves normally in quarantine, it is released and removed from the list. The false positive corrects itself instead of lasting forever.</li>
               </ol>
               <p>
                 In testing on Xubuntu 18.04 with a Bash fork bomb, the system spotted an attack in as little as 44
-                milliseconds at a threshold of 500 forks, while already-known offenders were handled instantly by name —
+                milliseconds at a threshold of 500 forks, while already-known offenders were handled instantly by name -
                 and, crucially, the machine stayed responsive and available throughout. That last part is the whole
                 point: a defense that keeps the system usable is worth more than one that protects it by shutting the
                 door on real work.
@@ -281,7 +281,7 @@
               <p>
                 The fork bomb is a small, almost elegant reminder of a big lesson: the most dangerous failures often
                 aren't exotic exploits, but ordinary, permitted actions taken to an extreme. Good security isn't only
-                about blocking the obviously malicious — it's about staying available and fair to legitimate users even
+                about blocking the obviously malicious - it's about staying available and fair to legitimate users even
                 while under stress. That principle shows up far beyond Linux, in every rate limiter, queue, and quota you
                 will ever design.
               </p>
@@ -312,7 +312,7 @@
           <div class="post-cta">
             <h2>Curious about security and systems research?</h2>
             <p>
-              This kind of thinking — question the defense, find the trade-off, design something better — is exactly
+              This kind of thinking - question the defense, find the trade-off, design something better - is exactly
               what I work on with the people I mentor. If you want to build that instinct, take a look at how we work
               together.
             </p>

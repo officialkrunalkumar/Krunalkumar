@@ -104,7 +104,7 @@
          reads like the tool found something it did not. */
       re: /\b[A-Z][A-Za-z&'\-]+(?:\s+[A-Z][A-Za-z&'\-]+){0,3}\s+(?:School|College|University|Vidyalaya|Vidyalay|Institute|Academy|Polytechnic|Gurukul)\b/g,
       why: 'The name of a school is one of the oldest security questions in use, and it is printed on half the profiles on the internet.',
-      opens: '"Name of your first school" and "where did you go to college" — both still offered as recovery questions today.'
+      opens: '"Name of your first school" and "where did you go to college" - both still offered as recovery questions today.'
     },
     {
       modes: 'bio ooo cv', sev: 'med', what: 'An employer',
@@ -113,7 +113,7 @@
          into "any letter" and swallow the rest of the sentence. */
       re: /\b(?:[Ww]orks? at|[Ww]orking (?:at|with)|[Ee]mployed at|[Cc]urrently at|[Jj]oined|[Ee]ngineer at|[Dd]eveloper at|[Aa]nalyst at|[Mm]anager at|[Cc]onsultant at|@)\s+([A-Z][\w&.\-]*(?:\s+[A-Z][\w&.\-]*){0,3})/g,
       why: 'Where you work decides which internal systems you can reach, which is the first thing a targeted attacker wants to know.',
-      opens: 'A helpdesk pretext — a caller who already knows your employer, your team and your manager sounds like a colleague.'
+      opens: 'A helpdesk pretext - a caller who already knows your employer, your team and your manager sounds like a colleague.'
     },
     {
       modes: 'bio cv', sev: 'med', what: 'A previous employer',
@@ -142,14 +142,14 @@
     {
       modes: 'bio cv', sev: 'med', what: 'A postal code',
       re: /\b(?:pin|pincode|pin code|postcode|zip)\s*[:\-]?\s*\d{5,6}\b/gi,
-      why: 'A postcode is a small enough area that one more detail — a school run, a gym, a photo of a street — finishes the job.',
+      why: 'A postcode is a small enough area that one more detail - a school run, a gym, a photo of a street - finishes the job.',
       opens: 'Address confirmation on the phone, and narrowing a search to a few streets.'
     },
     {
       modes: 'bio cv', sev: 'high', what: 'A pet, by name',
       re: /\b(?:dog|cat|puppy|kitten|pup|labrador|beagle|retriever|pug|indie|parrot|rabbit)\b[^.\n]{0,20}?\bnamed?\s+([A-Z][a-z]+)/gi,
       why: 'A pet name is the single most reused password base and a stock security answer, in the same breath.',
-      opens: '"What was the name of your first pet?" — still offered by banks, insurers and school portals.'
+      opens: '"What was the name of your first pet?" - still offered by banks, insurers and school portals.'
     },
     {
       modes: 'bio cv', sev: 'med', what: 'A pet, unnamed',
@@ -173,13 +173,13 @@
       modes: 'bio cv', sev: 'high', what: 'A maiden name',
       re: /\b(?:n[eé]e|maiden name)\s*[:\-]?\s*([A-Z][a-z]+)/gi,
       why: 'This is not like a security answer. It is the security answer, written out.',
-      opens: '"Mother’s maiden name" — the oldest bank verification question there is.'
+      opens: '"Mother’s maiden name" - the oldest bank verification question there is.'
     },
     {
       modes: 'bio', sev: 'med', what: 'A routine',
       re: /\b(?:every|each)\s+(?:morning|evening|night|weekend|day|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi,
       why: 'A repeated time is a repeated place. Posted often enough, it says when you are out and when the house is empty.',
-      opens: 'Physical timing — burglary, following, or simply knowing when you will not answer the phone to verify something.'
+      opens: 'Physical timing - burglary, following, or simply knowing when you will not answer the phone to verify something.'
     },
     {
       modes: 'bio', sev: 'med', what: 'An exercise or travel pattern',
@@ -202,7 +202,7 @@
     {
       modes: 'bio cv', sev: 'high', what: 'A government identifier',
       re: /\b[A-Z]{5}\d{4}[A-Z]\b|\b\d{4}\s\d{4}\s\d{4}\b/g,
-      why: 'This is shaped like a PAN or an Aadhaar number. It may be a coincidence — but if it is not, it does not belong anywhere public.',
+      why: 'This is shaped like a PAN or an Aadhaar number. It may be a coincidence - but if it is not, it does not belong anywhere public.',
       opens: 'Direct identity theft, loan applications in your name, and KYC fraud. Nothing about this is recoverable by changing a password.'
     },
     {
@@ -239,7 +239,7 @@
       modes: 'bio cv', sev: 'med', what: 'Another platform, named',
       re: /\b(?:instagram|insta|telegram|snapchat|discord|reddit|github|gitlab|linkedin|steam|strava|spotify|pinterest|tumblr)\b/gi,
       why: 'Each named platform is another profile to read, and each profile carries a different slice of the same life.',
-      opens: 'Cross-platform correlation — the thing this whole page exists to demonstrate.'
+      opens: 'Cross-platform correlation - the thing this whole page exists to demonstrate.'
     },
     {
       modes: 'bio cv', sev: 'low', what: 'A link',
@@ -253,7 +253,7 @@
       modes: 'ooo', sev: 'high', what: 'A return date',
       re: /\b(?:back|returning|return|until|till|through|away until)\b[^\n]{0,10}?(?:(?:on\s+)?(?:[0-3]?\d(?:st|nd|rd|th)?\s+)?(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s*\d{0,4}|\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)/gi,
       why: 'An auto-reply answers anybody, including a scraper, so this is a published window during which you are not reading email.',
-      opens: 'Business email compromise — a payment request timed for a week when you cannot be asked "did you really send this?".'
+      opens: 'Business email compromise - a payment request timed for a week when you cannot be asked "did you really send this?".'
     },
     {
       modes: 'ooo', sev: 'high', what: 'A colleague named as cover',
@@ -264,7 +264,7 @@
     {
       modes: 'ooo', sev: 'med', what: 'A reason for the absence',
       re: /\b(?:annual leave|on leave|vacation|holiday|maternity|paternity|honeymoon|wedding|medical leave|sick leave|surgery|abroad|out of the country|travel(?:ling)? to|conference in)\b/gi,
-      why: 'The reason is never needed and often personal — a honeymoon says the house is empty and says who else is away.',
+      why: 'The reason is never needed and often personal - a honeymoon says the house is empty and says who else is away.',
       opens: 'Physical timing, and an emotional hook for whoever is left covering.'
     },
     {
@@ -484,7 +484,7 @@
          'who genuinely needs to reach the team already knows the team address, ' +
          'and everyone who does not is exactly who the detail was leaking to. ' +
          'If your organisation requires a return date, put it in the internal ' +
-         'reply only — most mail systems can send a different message inside ' +
+         'reply only - most mail systems can send a different message inside ' +
          'and outside the company.', '', 't-dim');
     consentLine();
   }
@@ -544,7 +544,7 @@
     ['Package and app registries', 'a published package carries an email address in its manifest'],
     ['Blogs and newsletters', 'archives outlive the platform they were written on'],
     ['Dead platforms', 'the account is gone; the archived copy of it is not'],
-    ['Breach corpora', 'not an account — a record of the account existing, with a password beside it']
+    ['Breach corpora', 'not an account - a record of the account existing, with a password beside it']
   ];
 
   function reportHandle(raw) {
@@ -581,7 +581,7 @@
        which is the one shape that is not a username at all. Say that, rather
        than solemnly analysing "example.com/" as if it were a handle. */
     if (handle.indexOf('/') >= 0 || handle.indexOf('.') === handle.length - 1) {
-      out.warn('There is no username in that — it is a site address on its own.');
+      out.warn('There is no username in that - it is a site address on its own.');
       out.line('');
       out.dim('Type just the handle, for example  priya_k92, or paste a link that');
       out.dim('goes to a profile rather than to a home page.');
@@ -660,7 +660,7 @@
     out.line('');
     [
       'Profile URLs are predictable. A tool holds a list of templates and asks for each one, then reads the status code: 200 means the name is taken, 404 means it is free. No login and no API key needed.',
-      'Some sites answer more quietly — a 200 for everything, with the words "user not found" in the body. So the tool matches on the text instead. Both are just reading a public page.',
+      'Some sites answer more quietly - a 200 for everything, with the words "user not found" in the body. So the tool matches on the text instead. Both are just reading a public page.',
       'Sign-up forms leak the same fact from the other direction: "that username is already taken" is a yes.',
       'So do password reset forms that say "no account with that address" instead of the careful "if an account exists, we have sent an email".',
       'Archives hold the accounts that are gone. A deleted profile often survives as a snapshot with the text intact.',
@@ -685,7 +685,7 @@
     out.line('');
     wrap('One more, and it is the one worth doing first: search the handle in ' +
          'quotation marks, and search your email address the same way. Then ' +
-         'check the address against a breach index — /labs/breach-check does ' +
+         'check the address against a breach index - /labs/breach-check does ' +
          'that with k-anonymity, and unlike this page it does make a network ' +
          'request, deliberately, and says so.', '  ', 't-dim');
     consentLine();
@@ -729,7 +729,7 @@
       } else if (marker === 0xed && tag.indexOf('Photoshop') === 0) {
         found.push(['IPTC', size, 'captions, credit, keywords added by an editor', 't-warn']);
       } else if (marker === 0xe2 && tag.indexOf('ICC_PROFILE') === 0) {
-        found.push(['ICC profile', size, 'colour data — harmless, but it names the software that wrote the file', 't-dim']);
+        found.push(['ICC profile', size, 'colour data - harmless, but it names the software that wrote the file', 't-dim']);
       } else if (marker === 0xfe) {
         found.push(['JPEG comment', size, 'free text, whatever wrote the file put there', 't-warn']);
       }
@@ -795,7 +795,7 @@
       if (dims.w >= 2400 || dims.h >= 2400) {
         wrap('Full camera resolution, so this is an original rather than ' +
              'something a platform has already resized. Originals carry the ' +
-             'most — in metadata, and in how much of the background is legible.',
+             'most - in metadata, and in how much of the background is legible.',
              '  ', 't-warn');
       } else {
         wrap('Smaller than a camera original, so it has been resized or ' +
@@ -854,7 +854,7 @@
     } else if (!segs.length) {
       out.line('  No metadata segments found in this ' + kind + '.', 't-ok');
       out.line('');
-      wrap('Either it never had any, or something removed it — most social ' +
+      wrap('Either it never had any, or something removed it - most social ' +
            'networks strip metadata on upload, which is why a photo saved from ' +
            'a feed looks clean while the original on your phone does not.',
            '  ', 't-dim');
@@ -865,8 +865,8 @@
       });
       out.line('');
       wrap('This is a segment walk, not a parser: it says the block is there, ' +
-           'not what is in it. To read the tags — camera, serial number, the ' +
-           'exact second, and the GPS coordinates if they are present — use the ' +
+           'not what is in it. To read the tags - camera, serial number, the ' +
+           'exact second, and the GPS coordinates if they are present - use the ' +
            'EXIF viewer at /labs/exif, which decodes them properly and hands ' +
            'you a stripped copy of the file.', '  ', 't-dim');
     }
@@ -958,13 +958,13 @@
     },
     handle: {
       label: 'Username or handle',
-      hint: 'Type one handle. Nothing is looked up — you get the checklist to run yourself.',
+      hint: 'Type one handle. Nothing is looked up - you get the checklist to run yourself.',
       placeholder: 'One username, for example  priya_k92\n\nA profile URL works too; only the last part of the path is read.\n\nNothing is requested. No account is checked. This page has no network access to any site.'
     },
     ooo: {
       label: 'Out-of-office reply',
       hint: 'Paste the auto-reply you have switched on, exactly as it goes out.',
-      placeholder: 'Paste your own out-of-office auto-reply.\n\nInclude the signature block if it goes out with it — that is usually where the phone number is.'
+      placeholder: 'Paste your own out-of-office auto-reply.\n\nInclude the signature block if it goes out with it - that is usually where the phone number is.'
     },
     cv: {
       label: 'Public CV or resume text',

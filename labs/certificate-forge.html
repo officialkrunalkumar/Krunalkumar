@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/certificate-forge" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Generate a real X.509 certificate in your browser" />
-    <meta property="og:description" content="Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust — with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser." />
+    <meta property="og:description" content="Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust - with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/certificate-forge" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-certificate-forge.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Generate a real X.509 certificate in your browser" />
-    <meta name="twitter:description" content="Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust — with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser." />
+    <meta name="twitter:description" content="Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust - with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-certificate-forge.jpg" />
     <title>Certificate & Digital Signature Builder | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -31,7 +31,7 @@
         "url": "https://krunalkumar.dpdns.org/labs/certificate-forge",
         "applicationCategory": "SecurityApplication",
         "operatingSystem": "Any modern web browser",
-        "description": "Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust — with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser.",
+        "description": "Generate a real keypair with WebCrypto, then build a self-signed X.509 certificate, a PKCS#10 signing request and a two-certificate chain of trust - with the ASN.1/DER encoded by hand and shown byte by byte. Sign a message and watch tamper detection work. The PEM it produces parses in openssl. Runs entirely in your browser.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>Build a real certificate, byte by byte</h1>
-        <p class="hero-text">The certificate decoder elsewhere in Labs takes a certificate apart. This one builds one. Your browser generates a genuine RSA-2048 or ECDSA P-256 keypair; everything wrapped around it &mdash; the ASN.1 structure, the X.509 fields, the signing request, the signature &mdash; is encoded here and shown as you build it. The result is real: paste the PEM into <code>openssl x509 -text</code> and it parses.</p>
+        <p class="hero-text">The certificate decoder elsewhere in Labs takes a certificate apart. This one builds one. Your browser generates a genuine RSA-2048 or ECDSA P-256 keypair; everything wrapped around it - the ASN.1 structure, the X.509 fields, the signing request, the signature - is encoded here and shown as you build it. The result is real: paste the PEM into <code>openssl x509 -text</code> and it parses.</p>
         <ul class="lab-facts">
           <li>A real keypair from WebCrypto, never uploaded</li>
           <li>Self-signed X.509, CSR and a chain of trust</li>
@@ -229,7 +229,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -251,7 +251,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -263,7 +263,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-cert-mount">
-          <p class="lab-proc-fallback">Starting the certificate lab… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the certificate lab… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -274,19 +274,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A certificate is a signed statement about a key</h3>
-            <p>Strip away the jargon and an X.509 certificate says: &ldquo;this public key belongs to this name, and I vouch for that&rdquo; &mdash; signed by whoever is vouching. This lab builds that statement field by field: the subject, the validity dates, the key, the extensions, and finally the signature over all of it. Seeing it assembled is the fastest way to understand what your browser checks on every HTTPS connection.</p>
+            <p>Strip away the jargon and an X.509 certificate says: &ldquo;this public key belongs to this name, and I vouch for that&rdquo; - signed by whoever is vouching. This lab builds that statement field by field: the subject, the validity dates, the key, the extensions, and finally the signature over all of it. Seeing it assembled is the fastest way to understand what your browser checks on every HTTPS connection.</p>
           </article>
           <article class="info-card">
             <h3>The maths is borrowed; the format is built</h3>
-            <p>Key generation and signing are done by WebCrypto, the browser&rsquo;s own audited implementation &mdash; never reimplement a cipher you can borrow a trustworthy one for. What is hand-rolled here is the ASN.1/DER encoding, because that is the part worth understanding and the part with no secret to protect. DER is the format engineers are forever debugging; watching it built, tag and length and value, demystifies it.</p>
+            <p>Key generation and signing are done by WebCrypto, the browser&rsquo;s own audited implementation - never reimplement a cipher you can borrow a trustworthy one for. What is hand-rolled here is the ASN.1/DER encoding, because that is the part worth understanding and the part with no secret to protect. DER is the format engineers are forever debugging; watching it built, tag and length and value, demystifies it.</p>
           </article>
           <article class="info-card">
             <h3>A signing request is how you ask for a certificate</h3>
-            <p>You do not send a certificate authority your private key &mdash; you send a CSR: your public key and your name, signed with your private key to prove you hold it. The CA checks that proof, verifies who you are by other means, and issues a certificate. This lab builds a real PKCS#10 CSR you could actually submit.</p>
+            <p>You do not send a certificate authority your private key - you send a CSR: your public key and your name, signed with your private key to prove you hold it. The CA checks that proof, verifies who you are by other means, and issues a certificate. This lab builds a real PKCS#10 CSR you could actually submit.</p>
           </article>
           <article class="info-card">
             <h3>Trust is a chain, and every link is a signature</h3>
-            <p>Your browser trusts a website because a certificate authority signed its certificate, and the browser trusts that authority&rsquo;s root. The chain-of-trust tab builds both certificates and verifies the link the way a browser does &mdash; and shows that an unrelated key does not verify it, which is the whole point of a signature.</p>
+            <p>Your browser trusts a website because a certificate authority signed its certificate, and the browser trusts that authority&rsquo;s root. The chain-of-trust tab builds both certificates and verifies the link the way a browser does - and shows that an unrelated key does not verify it, which is the whole point of a signature.</p>
           </article>
         </div>
       </section>

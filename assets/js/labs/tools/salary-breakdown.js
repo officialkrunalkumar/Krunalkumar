@@ -140,7 +140,7 @@
           note: 'Basic at 40% of CTC, HRA at half of basic, employer PF and gratuity both counted inside the CTC. This is the most common Indian IT and services shape.' },
     ceiling: { basicPct: 50, hraPct: 50, employerPfInCtc: true, pfBase: 'ceiling',
                gratuityInCtc: true,
-               note: 'A higher basic, but PF restricted to the ₹15,000 statutory wage ceiling — which raises take-home and lowers what goes into your EPF.' },
+               note: 'A higher basic, but PF restricted to the ₹15,000 statutory wage ceiling - which raises take-home and lowers what goes into your EPF.' },
     startup: { basicPct: 50, hraPct: 0, employerPfInCtc: false, pfBase: 'full',
                gratuityInCtc: false,
                note: 'A flat structure with no HRA component and the employer PF sitting outside the CTC. Simple, and it costs you the HRA exemption entirely.' },
@@ -477,7 +477,7 @@
 
   function render(m) {
     out.clear();
-    out.heading('CTC broken down — slabs and rules for ' + FY.label);
+    out.heading('CTC broken down - slabs and rules for ' + FY.label);
     out.dim('Confirm these against the current Budget before you rely on them.');
     out.rule();
 
@@ -521,7 +521,7 @@
     out.dim('  EPS is 8.33% of the capped wage; most payrolls post it as a flat');
     out.dim('  ₹1,250 a month, so expect a few rupees of difference against a');
     out.dim('  real payslip. EDLI and administration charges are extra and are');
-    out.dim('  usually the employer’s, not yours — unless your annexure says so.');
+    out.dim('  usually the employer’s, not yours - unless your annexure says so.');
     if (m.gratuity > 0) {
       out.row('gratuity accrued', inr(m.gratuity));
       out.dim('  Accrued, not earned: nothing is payable until five continuous');
@@ -530,7 +530,7 @@
     }
     out.rule();
 
-    out.heading('Professional tax — ' + m.state.name);
+    out.heading('Professional tax - ' + m.state.name);
     out.row('annual', inr(m.pt));
     out.dim('  ' + m.state.note);
     if (m.pt > 0) {
@@ -539,7 +539,7 @@
     }
     out.rule();
 
-    out.heading('HRA exemption — the minimum of three tests');
+    out.heading('HRA exemption - the minimum of three tests');
     if (m.hra <= 0) {
       out.dim('  No HRA component, so there is nothing to exempt.');
     } else if (m.rentAnnual <= 0) {
@@ -631,7 +631,7 @@
     if (m.overCommitted) {
       headlineNotice(host, 'The components add up to more than the CTC, so there ' +
         'is no in-hand figure to show. Lower the basic or HRA percentage, cut the ' +
-        'bonus, or raise the CTC — the output pane has the arithmetic.');
+        'bonus, or raise the CTC - the output pane has the arithmetic.');
       return;
     }
     var items = [

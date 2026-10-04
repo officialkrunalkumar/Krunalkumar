@@ -311,12 +311,12 @@
 
   var PROFILES = [
     {
-      name: 'Chromium browsing history — Chrome, Edge, Brave, Opera, Vivaldi',
+      name: 'Chromium browsing history - Chrome, Edge, Brave, Opera, Vivaldi',
       need: ['urls', 'visits'],
       bonus: ['downloads', 'keyword_search_terms', 'segments', 'visit_source', 'meta'],
       notes: [
         'Lives at User Data/Default/History. `urls` is one row per address,',
-        '`visits` is one row per time it was opened — the join between them is',
+        '`visits` is one row per time it was opened - the join between them is',
         'the actual browsing timeline.',
         'visits.transition matters: the low byte says HOW the page was reached.',
         '1 means the user typed it, 0 means they clicked a link, 7 is a form',
@@ -358,7 +358,7 @@
       notes: [
         'User Data/Default/Network/Cookies on current builds.',
         'The `value` column is empty on any modern build and the real content',
-        'is in `encrypted_value` — AES-GCM under DPAPI on Windows, the login',
+        'is in `encrypted_value` - AES-GCM under DPAPI on Windows, the login',
         'Keychain on macOS, kwallet or gnome-keyring on Linux. That key is not',
         'in this file and cannot be, so nothing here decrypts it. What you can',
         'still prove from this file is which hosts set cookies and when.',
@@ -384,7 +384,7 @@
       ].join('\n')
     },
     {
-      name: 'Chromium saved passwords — Login Data',
+      name: 'Chromium saved passwords - Login Data',
       need: ['logins'],
       bonus: ['stats', 'insecure_credentials', 'meta', 'sync_entities_metadata'],
       notes: [
@@ -412,7 +412,7 @@
       ].join('\n')
     },
     {
-      name: 'Chromium autofill — Web Data',
+      name: 'Chromium autofill - Web Data',
       need: ['autofill'],
       bonus: ['credit_cards', 'autofill_profiles', 'masked_credit_cards', 'token_service'],
       notes: [
@@ -439,12 +439,12 @@
       ].join('\n')
     },
     {
-      name: 'Firefox history and bookmarks — places.sqlite',
+      name: 'Firefox history and bookmarks - places.sqlite',
       need: ['moz_places', 'moz_historyvisits'],
       bonus: ['moz_bookmarks', 'moz_origins', 'moz_annos', 'moz_keywords', 'moz_inputhistory'],
       notes: [
         'moz_places is one row per address, moz_historyvisits one row per',
-        'visit, joined on place_id — the same shape as Chrome, different',
+        'visit, joined on place_id - the same shape as Chrome, different',
         'epoch. Firefox counts microseconds from 1970, not 1601.',
         'moz_inputhistory holds what was typed into the address bar, which',
         'survives even when the page was never actually loaded.',
@@ -476,7 +476,7 @@
       ].join('\n')
     },
     {
-      name: 'Firefox cookie store — cookies.sqlite',
+      name: 'Firefox cookie store - cookies.sqlite',
       need: ['moz_cookies'],
       bonus: [],
       notes: [
@@ -501,7 +501,7 @@
       ].join('\n')
     },
     {
-      name: 'Firefox form history — formhistory.sqlite',
+      name: 'Firefox form history - formhistory.sqlite',
       need: ['moz_formhistory'],
       bonus: [],
       notes: [
@@ -522,13 +522,13 @@
       ].join('\n')
     },
     {
-      name: 'Android SMS and MMS — mmssms.db',
+      name: 'Android SMS and MMS - mmssms.db',
       need: ['sms', 'threads'],
       bonus: ['pdu', 'canonical_addresses', 'part', 'addr', 'words'],
       notes: [
         'sms.type: 1 inbox, 2 sent, 3 draft, 4 outbox, 5 failed, 6 queued.',
-        'sms.date is milliseconds. The MMS side of the same file — the `pdu`',
-        'table — stores its date in SECONDS. One file, two units, and reading',
+        'sms.date is milliseconds. The MMS side of the same file - the `pdu`',
+        'table - stores its date in SECONDS. One file, two units, and reading',
         'pdu.date as milliseconds puts every MMS in January 1970.',
         'MMS bodies live in `part`, not in `pdu`.'
       ],
@@ -553,7 +553,7 @@
       ].join('\n')
     },
     {
-      name: 'Android contacts — contacts2.db',
+      name: 'Android contacts - contacts2.db',
       need: ['raw_contacts', 'mimetypes'],
       bonus: ['data', 'contacts', 'calls', 'accounts', 'groups', 'phone_lookup'],
       notes: [
@@ -601,7 +601,7 @@
       ].join('\n')
     },
     {
-      name: 'WhatsApp messages — msgstore.db, 2021 schema onwards',
+      name: 'WhatsApp messages - msgstore.db, 2021 schema onwards',
       need: ['message', 'chat', 'jid'],
       bonus: ['message_media', 'receipt_user', 'message_quoted', 'call_log', 'message_thumbnail'],
       notes: [
@@ -610,7 +610,7 @@
         '`message` on its own tells you nothing about who was talking.',
         'from_me is 1 for outbound. Timestamps are milliseconds.',
         'A msgstore.db.crypt14 or .crypt15 straight off a phone is encrypted',
-        'and will not open here — it has to be decrypted with the key file',
+        'and will not open here - it has to be decrypted with the key file',
         'from /data/data/com.whatsapp/files/key first.'
       ],
       times: {
@@ -635,7 +635,7 @@
       ].join('\n')
     },
     {
-      name: 'WhatsApp messages — msgstore.db, legacy schema',
+      name: 'WhatsApp messages - msgstore.db, legacy schema',
       need: ['messages', 'chat_list'],
       bonus: ['media_refs', 'messages_quotes', 'props', 'message_thumbnails'],
       notes: [
@@ -662,7 +662,7 @@
       ].join('\n')
     },
     {
-      name: 'WhatsApp contacts — wa.db',
+      name: 'WhatsApp contacts - wa.db',
       need: ['wa_contacts'],
       bonus: ['wa_group_participants', 'wa_props'],
       notes: [
@@ -679,7 +679,7 @@
       ].join('\n')
     },
     {
-      name: 'iOS Messages — sms.db',
+      name: 'iOS Messages - sms.db',
       need: ['message', 'handle', 'chat'],
       bonus: ['attachment', 'chat_message_join', 'message_attachment_join', 'chat_handle_join'],
       notes: [
@@ -712,7 +712,7 @@
       ].join('\n')
     },
     {
-      name: 'iOS backup index — Manifest.db',
+      name: 'iOS backup index - Manifest.db',
       need: ['files'],
       bonus: ['properties'],
       notes: [
@@ -721,7 +721,7 @@
         'and `fileID` is the 40-hex name it was stored under, in a folder',
         'named after its first two characters.',
         'The `file` column is a binary plist holding the size, mode and the',
-        'real timestamps. SQL cannot open it — extract that column and parse',
+        'real timestamps. SQL cannot open it - extract that column and parse',
         'it as a bplist.',
         'This is the file to start from when you have a backup and no idea',
         'where anything is.'
@@ -736,7 +736,7 @@
       ].join('\n')
     },
     {
-      name: 'iOS call history — CallHistory.storedata',
+      name: 'iOS call history - CallHistory.storedata',
       need: ['zcallrecord'],
       bonus: ['z_primarykey', 'z_metadata', 'z_modelcache'],
       notes: [
@@ -758,7 +758,7 @@
       ].join('\n')
     },
     {
-      name: 'Safari history — History.db',
+      name: 'Safari history - History.db',
       need: ['history_items', 'history_visits'],
       bonus: ['history_tombstones', 'history_client_versions'],
       notes: [
@@ -779,7 +779,7 @@
       ].join('\n')
     },
     {
-      name: 'Signal (Android), already decrypted — legacy schema',
+      name: 'Signal (Android), already decrypted - legacy schema',
       need: ['recipient', 'thread', 'sms'],
       bonus: ['mms', 'identities', 'groups', 'part'],
       notes: [
@@ -808,7 +808,7 @@
       ].join('\n')
     },
     {
-      name: 'Signal (Android), already decrypted — unified schema',
+      name: 'Signal (Android), already decrypted - unified schema',
       need: ['recipient', 'thread', 'message'],
       bonus: ['identities', 'groups', 'attachment', 'call'],
       notes: [
@@ -831,7 +831,7 @@
       ].join('\n')
     },
     {
-      name: 'Skype — main.db',
+      name: 'Skype - main.db',
       need: ['messages', 'conversations'],
       bonus: ['contacts', 'calls', 'accounts', 'transfers', 'participants'],
       notes: [
@@ -854,7 +854,7 @@
       ].join('\n')
     },
     {
-      name: 'Windows Timeline — ActivitiesCache.db',
+      name: 'Windows Timeline - ActivitiesCache.db',
       need: ['activity'],
       bonus: ['activity_packageid', 'activityoperation', 'appsettings', 'manualsequence'],
       notes: [
@@ -1088,18 +1088,18 @@
     var hex = LabTool.toHex(bytes.subarray(0, 8));
     if (hex.indexOf('377f0682') === 0 || hex.indexOf('377f0683') === 0) {
       return 'a SQLite write-ahead log (a -wal file). It holds pages not yet ' +
-             'folded into the database, so it is worth keeping — but it cannot ' +
+             'folded into the database, so it is worth keeping - but it cannot ' +
              'be opened on its own. Drop the .db that goes with it, in the same ' +
              'folder, and SQLite will merge them when it is opened properly.';
     }
     if (hex.indexOf('d9d505f920a163d7') === 0) {
       return 'a SQLite rollback journal (a -journal file). It holds the ' +
              'pre-change copies of pages from an interrupted transaction, which ' +
-             'makes it one of the better sources of superseded data — but it is ' +
+             'makes it one of the better sources of superseded data - but it is ' +
              'not a database and cannot be queried.';
     }
     if (hex.indexOf('53514c69746520') === 0) {
-      return 'almost a SQLite header — the text matches but the terminator does ' +
+      return 'almost a SQLite header - the text matches but the terminator does ' +
              'not, which suggests the first bytes have been overwritten.';
     }
     var head = LabTool.entropy(bytes.subarray(0, Math.min(bytes.length, 65536)));
@@ -1223,7 +1223,7 @@
     if (!body.length) out.dim('(no rows)');
     if (dropped > 0) {
       out.warn(dropped + ' further column' + (dropped === 1 ? '' : 's') +
-               ' not shown — query them by name to see them.');
+               ' not shown - query them by name to see them.');
     }
   }
 
@@ -1370,9 +1370,9 @@
       out.err('damaged. Everything below it is unreliable.');
     }
     out.row('pages in file', num(h.pagesFromSize) +
-            (h.tailBytes ? '  (+ ' + num(h.tailBytes) + ' trailing bytes — the file is not a whole number of pages)' : ''));
+            (h.tailBytes ? '  (+ ' + num(h.tailBytes) + ' trailing bytes - the file is not a whole number of pages)' : ''));
     out.row('pages in header', h.headerPagesValid ? num(h.headerPages)
-            : num(h.headerPages) + '  — stale, ignore it');
+            : num(h.headerPages) + '  - stale, ignore it');
     if (!h.headerPagesValid) {
       out.dim('    the change counter and version-valid-for field disagree, which');
       out.dim('    means an old library wrote this and never updated the size');
@@ -1384,7 +1384,7 @@
     out.row('journal mode', h.wal ? 'WAL (write-ahead log)' : 'rollback journal',
             h.wal ? 't-warn' : '');
     out.row('reserved per page', h.reserved + ' bytes' +
-            (h.reserved ? '  — an extension is using page tail space' : ''));
+            (h.reserved ? '  - an extension is using page tail space' : ''));
     out.row('text encoding', encodingName(h.textEncoding));
     out.row('schema format', h.schemaFormat);
     out.row('schema cookie', h.schemaCookie + '  (changes on every schema edit)');
@@ -1407,8 +1407,8 @@
       out.warn('This database is in WAL mode, and that matters for what you are');
       out.warn('about to read. Recent transactions may still be sitting in the');
       out.warn('companion -wal file rather than in this one. If you copied only');
-      out.warn('the .db, the most recent activity — the part usually of most');
-      out.warn('interest — may be missing entirely. Collect the -wal and -shm');
+      out.warn('the .db, the most recent activity - the part usually of most');
+      out.warn('interest - may be missing entirely. Collect the -wal and -shm');
       out.warn('files alongside it and open the set with a real sqlite3 binary.');
     }
     out.rule();
@@ -1453,7 +1453,7 @@
     out.line('');
     if (!h.freelistCount && !free.pages.length) {
       out.dim('Nothing on the freelist. That is not the same as "nothing was');
-      out.dim('deleted" — a VACUUM empties it, and deleted records also leave');
+      out.dim('deleted" - a VACUUM empties it, and deleted records also leave');
       out.dim('bytes in the unallocated middle of live pages and in the slack');
       out.dim('after the last cell on a page. This tool does not carve those.');
     } else {
@@ -1468,7 +1468,7 @@
         out.dim('No printable runs of 8 or more characters found in the ' +
                 strings.scanned + ' free page' + (strings.scanned === 1 ? '' : 's') + ' scanned.');
       } else {
-        out.dim('readable text still in free pages — first ' + strings.found.length +
+        out.dim('readable text still in free pages - first ' + strings.found.length +
                 ' from ' + strings.scanned + ' page' + (strings.scanned === 1 ? '' : 's') + ':');
         for (var i = 0; i < strings.found.length; i++) {
           var s = strings.found[i];
@@ -1520,7 +1520,7 @@
       out.err('  ' + String((err && err.message) || err));
       out.line('');
       out.dim('"file is not a database" after a good header usually means an');
-      out.dim('encrypted body — SQLCipher leaves the first 16 bytes alone in some');
+      out.dim('encrypted body - SQLCipher leaves the first 16 bytes alone in some');
       out.dim('configurations. "malformed" means the page structure is damaged,');
       out.dim('which is normal for a carved file. The header section above was');
       out.dim('read from the raw bytes and still stands.');
@@ -1597,7 +1597,7 @@
 
     var first = document.createElement('option');
     first.value = '';
-    first.textContent = '— overview —';
+    first.textContent = '- overview -';
     sel.appendChild(first);
 
     function group(label, items) {
@@ -1653,7 +1653,7 @@
       var unreadable = [];
       for (var u = 0; u < s.tables.length; u++) {
         var cc = state.counts[s.tables[u].name];
-        if (cc && !cc.ok) unreadable.push(s.tables[u].name + ' — ' + cc.msg);
+        if (cc && !cc.ok) unreadable.push(s.tables[u].name + ' - ' + cc.msg);
       }
       if (unreadable.length) {
         out.line('');
@@ -1760,7 +1760,7 @@
       var res = execFirst('PRAGMA quick_check(20)');
       var lines = res.values.map(function (r) { return String(r[0]); });
       if (lines.length === 1 && lines[0] === 'ok') {
-        out.ok('ok — no structural damage found.');
+        out.ok('ok - no structural damage found.');
       } else {
         out.err(lines.length + ' problem' + (lines.length === 1 ? '' : 's') + ' reported:');
         for (var i = 0; i < lines.length; i++) out.line('  ' + lines[i], 't-err');
@@ -1885,7 +1885,7 @@
     out.line('');
     for (var i = 0; i < extras.length; i++) {
       var e = extras[i];
-      out.line('  ' + e.label + '  —  ' + e.column + ' read as ' + EPOCHS[e.key].label,
+      out.line('  ' + e.label + '  -  ' + e.column + ' read as ' + EPOCHS[e.key].label,
                e.guessed ? 't-warn' : 't-ok');
     }
     var anyGuessed = false;
@@ -2024,7 +2024,7 @@
     var text = box ? box.value : '';
 
     if (!state.db) {
-      out.clear().warn('Open a database first — drop a .db, .sqlite or .sqlite3 file above.');
+      out.clear().warn('Open a database first - drop a .db, .sqlite or .sqlite3 file above.');
       return;
     }
     if (!text || !text.trim()) {
@@ -2038,7 +2038,7 @@
     var writes = WRITES.test(text);
     if (writes) {
       out.warn('This statement modifies the database.');
-      out.dim('It is allowed — it is your file. But be clear about what it');
+      out.dim('It is allowed - it is your file. But be clear about what it');
       out.dim('touches: SQLite is working on a copy held in this tab’s memory.');
       out.dim('The file on your disk is not opened for writing, cannot be, and is');
       out.dim('unchanged. Reload the page and the modification is gone.');
@@ -2101,7 +2101,7 @@
       out.err('SQLite refused it: ' + String((err && err.message) || err));
       out.line('');
       out.dim('The message is SQLite’s own. "no such table" means the name is');
-      out.dim('wrong or the preset assumed a newer schema than this file has —');
+      out.dim('wrong or the preset assumed a newer schema than this file has -');
       out.dim('check the table list. "no such column" is the same story one level');
       out.dim('down; PRAGMA table_info(name) prints the real column names.');
       return;
@@ -2126,7 +2126,7 @@
     }
     if (truncated) {
       out.warn('Stopped at ' + num(QUERY_ROWS) + ' rows or ' + (QUERY_MS / 1000) +
-               ' seconds. Add a LIMIT, or narrow the query — the rest of the');
+               ' seconds. Add a LIMIT, or narrow the query - the rest of the');
       out.warn('result was not fetched.');
     }
     out.dim('(' + (Date.now() - started) + ' ms)');
@@ -2224,7 +2224,7 @@
         });
       }
 
-      out.dim('Drop a SQLite file above — .db, .sqlite, .sqlite3, or no extension');
+      out.dim('Drop a SQLite file above - .db, .sqlite, .sqlite3, or no extension');
       out.dim('at all. It is read and opened in this tab. There is no upload,');
       out.dim('which is the only reason it is reasonable to point this at a');
       out.dim('Chrome History file or a phone extraction.');
@@ -2232,7 +2232,7 @@
       out.dim('It will tell you what the database is if it recognises the schema,');
       out.dim('convert the timestamps to readable dates using the right epoch for');
       out.dim('that application, and report how many freed pages the file still');
-      out.dim('carries — which is where deleted rows tend to survive.');
+      out.dim('carries - which is where deleted rows tend to survive.');
       out.dim('');
       out.dim('Encrypted databases will not open, and cannot: a Signal database');
       out.dim('or a WhatsApp .crypt14 has no readable header without its key.');

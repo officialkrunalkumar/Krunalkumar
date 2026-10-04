@@ -325,7 +325,7 @@
       hint: [':'], hintRe: /:[0-9A-Fa-f]{32}/,
       re: /(?:[A-Za-z0-9._$\\-]{1,64}:\d{1,10}:)?[A-Fa-f0-9]{32}:[A-Fa-f0-9]{32}:{0,3}/g,
       note: 'aad3b435b51404eeaad3b435b51404ee as the first half is the empty LM ' +
-            'hash — a near-certain sign this really is an NT hash and not a ' +
+            'hash - a near-certain sign this really is an NT hash and not a ' +
             'coincidence of two 32-character hex blobs.' },
 
     { key: 'shadow', group: 'secret', title: '/etc/shadow entries', cls: 't-err',
@@ -863,7 +863,7 @@
     st.node.textContent = '';
     out.row('scan', 'finished in ' + elapsed.toFixed(1) + ' s', 't-ok');
     out.row('bytes examined', LabTool.humanBytes(st.aPos) +
-            (st.budgetHit ? '  — INCOMPLETE' : ''), st.budgetHit ? 't-warn' : '');
+            (st.budgetHit ? '  - INCOMPLETE' : ''), st.budgetHit ? 't-warn' : '');
     out.row('ASCII strings', num(st.asciiCount));
     out.row('UTF-16LE strings', num(st.wideCount),
             st.wideCount > st.asciiCount ? 't-info' : '');
@@ -873,8 +873,8 @@
                hexOff(st.aPos) + ', so the last ' +
                LabTool.humanBytes(st.len - st.aPos) + ' was never read.');
       out.dim('Everything below covers the first ' + LabTool.humanBytes(st.aPos) +
-              ' only. Raise the minimum string length — most of the time goes on');
-      out.dim('short runs — or cut the file down and scan it in pieces.');
+              ' only. Raise the minimum string length - most of the time goes on');
+      out.dim('short runs - or cut the file down and scan it in pieces.');
     }
     if (st.wideCount > st.asciiCount) {
       out.line('');
@@ -898,7 +898,7 @@
     out.rule();
     out.heading('ARTEFACTS');
     out.dim('Patterns are matched against every recovered string, ASCII and');
-    out.dim('UTF-16 alike — not against the raw bytes, where a wide URL reads');
+    out.dim('UTF-16 alike - not against the raw bytes, where a wide URL reads');
     out.dim('as h\\0t\\0t\\0p\\0 and matches nothing.');
 
     for (g = 0; g < GROUPS.length; g++) {
@@ -917,7 +917,7 @@
         }
 
         out.line('');
-        out.line(cat.title + '  —  ' + num(bucket.total) + ' hit' +
+        out.line(cat.title + '  -  ' + num(bucket.total) + ' hit' +
                  (bucket.total === 1 ? '' : 's') + ', ' +
                  num(bucket.list.length) + ' unique' +
                  (bucket.capped ? ' (stopped collecting at ' + CAT_KEEP + ')' : ''),
@@ -933,7 +933,7 @@
         if (cat.key === 'ntlm') {
           for (i = 0; i < bucket.list.length; i++) {
             if (bucket.list[i].toLowerCase().indexOf('aad3b435b51404eeaad3b435b51404ee') !== -1) {
-              out.warn('  the empty LM constant is present above — those are real NT hashes');
+              out.warn('  the empty LM constant is present above - those are real NT hashes');
               break;
             }
           }
@@ -947,7 +947,7 @@
       out.line('');
       out.warn('No artefacts matched at all.');
       out.dim('On a real dump that usually means the minimum string length is');
-      out.dim('too high, or the region is compressed or encrypted — check the');
+      out.dim('too high, or the region is compressed or encrypted - check the');
       out.dim('entropy map below before concluding the file is empty.');
     }
   }
@@ -957,7 +957,7 @@
     out.rule();
     out.heading('EMBEDDED FILE SIGNATURES');
     out.dim('Magic bytes found at any offset, not just at zero. Short and');
-    out.dim('easily-forged signatures are validated before being reported —');
+    out.dim('easily-forged signatures are validated before being reported -');
     out.dim('MZ only counts when e_lfanew really points at a PE header.');
 
     if (!st.carveOrder.length) {
@@ -974,7 +974,7 @@
       name = st.carveOrder[i];
       hit = st.carve[name];
       out.line('');
-      out.line(name + '  —  ' + num(hit.count) + ' occurrence' +
+      out.line(name + '  -  ' + num(hit.count) + ' occurrence' +
                (hit.count === 1 ? '' : 's'), 't-info');
       for (k = 0; k < hit.offs.length; k++) {
         line = '  ' + hexOff(hit.offs[k]);
@@ -987,7 +987,7 @@
     }
     if (st.carveCapped) {
       out.line('');
-      out.warn('Carving stopped at ' + num(CARVE_TOTAL) + ' total hits — there are more.');
+      out.warn('Carving stopped at ' + num(CARVE_TOTAL) + ' total hits - there are more.');
     }
   }
 
@@ -1009,7 +1009,7 @@
       out.dim('Each of the ' + E_BLOCKS + ' blocks is measured over the first ' +
               LabTool.humanBytes(Math.min(st.eSize, E_SAMPLE)) + ' of the block.');
       out.dim('A contiguous window, never every Nth byte: striding a dump aliases');
-      out.dim('with UTF-16 — you read either all the text or all the NULs — and');
+      out.dim('with UTF-16 - you read either all the text or all the NULs - and');
       out.dim('the number it produces is not the entropy of anything.');
     }
     out.line('');
@@ -1025,7 +1025,7 @@
       out.line('  ' + row.h.toFixed(2));
     }
     out.line('');
-    out.dim('Flat 8.0 is compressed or encrypted. Flat 0.0 is a run of one byte —');
+    out.dim('Flat 8.0 is compressed or encrypted. Flat 0.0 is a run of one byte -');
     out.dim('unallocated or zeroed pages. The interesting places are the edges:');
     out.dim('a single high block inside ordinary data is where a packed payload,');
     out.dim('an archive or a key blob sits.');
@@ -1064,7 +1064,7 @@
       out.line('');
       out.warn('Listing stopped at ' + STRINGS_KEEP + ' strings.');
       out.dim('Only the listing is truncated. Every string in the file was still');
-      out.dim('run through the artefact patterns above — use the filter box to');
+      out.dim('run through the artefact patterns above - use the filter box to');
       out.dim('reach the ones that are not printed here.');
     }
   }
@@ -1075,7 +1075,7 @@
 
   function rerun() {
     if (!lastBytes) {
-      out.clear().warn('Choose or drop a binary first — a memory dump, a core');
+      out.clear().warn('Choose or drop a binary first - a memory dump, a core');
       out.warn('file, a hibernation file or any large opaque blob.');
       return;
     }
@@ -1126,8 +1126,8 @@
       out.dim('you can see where the compressed or encrypted regions are.');
       out.dim('');
       out.dim('Nothing is uploaded. A memory dump is the single most sensitive');
-      out.dim('file on a machine — every password the user typed since boot may');
-      out.dim('be in it — and that is exactly why this runs in your own tab.');
+      out.dim('file on a machine - every password the user typed since boot may');
+      out.dim('be in it - and that is exactly why this runs in your own tab.');
     }
   });
 })();

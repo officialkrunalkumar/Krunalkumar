@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Check a password against breach data without sending it" />
     <meta name="twitter:description" content="Check whether a password appears in known data breaches using k-anonymity: only the first five characters of its SHA-1 hash are sent, and the comparison happens in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-breach-check.jpg" />
-    <title>Password Breach Check — k-Anonymity | Krunalkumar Shah</title>
+    <title>Password Breach Check - k-Anonymity | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -202,7 +202,7 @@
         <h1>Password breach check</h1>
         <p class="hero-text">The only tool here that sends anything derived from a password, and it is worth understanding exactly why that is safe: five characters of a hash go out, about two thousand candidates come back, and the comparison happens in your tab.</p>
         <ul class="lab-facts">
-          <li>k-anonymity &mdash; 5 hash characters sent</li>
+          <li>k-anonymity - 5 hash characters sent</li>
           <li>The comparison happens locally</li>
           <li>Optional padding against traffic analysis</li>
           <li>Over 800 million breached hashes</li>
@@ -217,7 +217,7 @@
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
           <p>This lookup runs entirely in your browser and needs JavaScript to do it.</p>
-          <p>It queries the vendor directly from your machine — there is no server here to do it for you.</p>
+          <p>It queries the vendor directly from your machine - there is no server here to do it for you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
             <a href="/">site</a> read perfectly well without it.</p>
@@ -236,7 +236,7 @@
               <div>
                 <p class="lab-gate-h limits">What leaves your browser</p>
                 <ul class="lab-gate-list">
-                  <li>They see the first five characters of the SHA-1 hash — shared by around a million passwords — and never the password itself.</li>
+                  <li>They see the first five characters of the SHA-1 hash - shared by around a million passwords - and never the password itself.</li>
                   <li>Your IP address, as with any request you make</li>
                   <li>Nothing is sent until you press the button</li>
                   <li>One request per check, carrying five hash characters</li>
@@ -245,7 +245,7 @@
               <div>
                 <p class="lab-gate-h privacy">What still holds</p>
                 <ul class="lab-gate-list">
-                  <li>No proxy &mdash; the request is not relayed through me</li>
+                  <li>No proxy - the request is not relayed through me</li>
                   <li>I never see it, log it or store it</li>
                   <li>No account, no history, no cookies sent</li>
                   <li>Every request is echoed on screen as it goes out</li>
@@ -259,7 +259,7 @@
               offline tools, and agreeing to those did not bring you through this notice.
             </p>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -267,7 +267,7 @@
 
         <p class="lab-netnote">
           Sends a request to <strong>Have I Been Pwned</strong> when you press the button.
-          They see the first five characters of the SHA-1 hash — shared by around a million passwords — and never the password itself.
+          They see the first five characters of the SHA-1 hash - shared by around a million passwords - and never the password itself.
         </p>
         <div class="lab-toolbar">
           <button class="lab-btn" type="button" id="tool-reveal" aria-pressed="false">Show</button>
@@ -300,7 +300,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>k-anonymity, concretely</h3>
-            <p>Your password is hashed with SHA-1 here, in the page. The first five hex characters &mdash; 20 bits &mdash; are sent. The server returns every breached hash beginning with those, around two thousand of them, and your browser looks for yours in that list. The server cannot know which one you meant, or whether you matched at all.</p>
+            <p>Your password is hashed with SHA-1 here, in the page. The first five hex characters - 20 bits - are sent. The server returns every breached hash beginning with those, around two thousand of them, and your browser looks for yours in that list. The server cannot know which one you meant, or whether you matched at all.</p>
           </article>
           <article class="info-card">
             <h3>What the server actually learns</h3>
@@ -308,7 +308,7 @@
           </article>
           <article class="info-card">
             <h3>Found does not mean you were breached</h3>
-            <p>It means this exact string appears somewhere in published breach data &mdash; possibly because thousands of other people also chose it. Your accounts may be untouched. But the string is in every cracking wordlist now, so it is finished as a password.</p>
+            <p>It means this exact string appears somewhere in published breach data - possibly because thousands of other people also chose it. Your accounts may be untouched. But the string is in every cracking wordlist now, so it is finished as a password.</p>
           </article>
           <article class="info-card">
             <h3>Not found does not mean strong</h3>
@@ -327,7 +327,7 @@
           </details>
           <details class="lab-faq">
             <summary>Why SHA-1, which is broken?</summary>
-            <div>Because that is the protocol Have I Been Pwned defines, and it is not being relied on for security here — it is an index into a public dataset. Nothing is being protected by the hash; the privacy comes from only sending part of it.</div>
+            <div>Because that is the protocol Have I Been Pwned defines, and it is not being relied on for security here - it is an index into a public dataset. Nothing is being protected by the hash; the privacy comes from only sending part of it.</div>
           </details>
           <details class="lab-faq">
             <summary>What does the padding option do?</summary>
@@ -335,7 +335,7 @@
           </details>
           <details class="lab-faq">
             <summary>Should I type my real password in?</summary>
-            <div>That is your call, and the design is what makes it defensible rather than any assurance from me. If you would rather not, check an old password you have stopped using — the result is usually instructive.</div>
+            <div>That is your call, and the design is what makes it defensible rather than any assurance from me. If you would rather not, check an old password you have stopped using - the result is usually instructive.</div>
           </details>
           <details class="lab-faq">
             <summary>It says my password was found thousands of times. What do I do?</summary>
@@ -373,7 +373,7 @@
           </a>
           <a class="lab-card" href="/labs/ct-log">
             <span class="lab-card-name">Certificate transparency</span>
-            <p class="lab-card-desc">Every logged certificate for a domain &mdash; and its subdomains.</p>
+            <p class="lab-card-desc">Every logged certificate for a domain - and its subdomains.</p>
             <span class="lab-card-engine">Uses the network</span>
           </a>
           <a class="lab-card" href="/labs#security-tools">

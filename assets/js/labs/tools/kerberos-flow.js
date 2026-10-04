@@ -130,7 +130,7 @@
     rc4: {
       id: 23,
       name: 'rc4-hmac (RC4-HMAC-NT, etype 23)',
-      key: 'the NT hash itself — MD4 of the UTF-16 password, no salt, no iteration',
+      key: 'the NT hash itself - MD4 of the UTF-16 password, no salt, no iteration',
       perGuess: 'one MD4, then one RC4 setup',
       rate: 'billions of candidates per second on one modern GPU',
       hashcat: '13100'
@@ -154,7 +154,7 @@
     say('Realm ' + R.realm + ' · encryption ' + ETYPES[et].name, '', 't-dim');
     rule();
 
-    step(1, 'AS-REQ — the client asks for a ticket-granting ticket');
+    step(1, 'AS-REQ - the client asks for a ticket-granting ticket');
     out.line('  ' + R.user + '@' + R.realm + '  →  ' + R.kdc, 't-ok');
     out.line('    cname     ' + R.user, 't-ok');
     out.line('    sname     krbtgt/' + R.realm, 't-ok');
@@ -175,11 +175,11 @@
          'roasting attack.');
     }
 
-    step(2, 'AS-REP — the KDC answers with a TGT');
+    step(2, 'AS-REP - the KDC answers with a TGT');
     out.line('  ' + R.kdc + '  →  ' + R.user, 't-ok');
     out.line('    ticket (the TGT)', 't-ok');
     out.line('      encrypted with the KRBTGT account key', 't-ok');
-    out.line('      — opaque to the client', 't-ok');
+    out.line('      - opaque to the client', 't-ok');
     out.line('      ' + blob(48), 't-dim');
     out.line('    enc-part', 't-ok');
     out.line('      encrypted with ALICE\'s key: session key, expiry, flags', 't-ok');
@@ -189,11 +189,11 @@
       'service can read the ticket and never learns the password. Nothing in ' +
       'the middle needs to be trusted.');
     out.line('');
-    p('The TGT carries a PAC — the user\'s SIDs and group memberships — signed ' +
+    p('The TGT carries a PAC - the user\'s SIDs and group memberships - signed ' +
       'by the KDC. That is what actually decides authorisation on a Windows ' +
       'domain, and it is why forging one is so powerful.');
 
-    step(3, 'TGS-REQ — asking for a ticket to one service');
+    step(3, 'TGS-REQ - asking for a ticket to one service');
     out.line('  ' + R.user + '  →  ' + R.kdc, 't-ok');
     out.line('    sname     ' + R.spn, 't-ok');
     out.line('    ticket    the TGT from step 2', 't-ok');
@@ -205,7 +205,7 @@
       'the single most consequential fact about Kerberos and the reason ' +
       'Kerberoasting works.');
 
-    step(4, 'TGS-REP — a service ticket comes back');
+    step(4, 'TGS-REP - a service ticket comes back');
     out.line('  ' + R.kdc + '  →  ' + R.user, 't-ok');
     out.line('    ticket for ' + R.spn, 't-ok');
     out.line('      encrypted with the key of ' + R.svcAccount, 't-ok');
@@ -213,7 +213,7 @@
     out.line('    enc-part', 't-ok');
     out.line('      encrypted with the TGT session key: the service session key', 't-ok');
 
-    step(5, 'AP-REQ — presenting the ticket to the service');
+    step(5, 'AP-REQ - presenting the ticket to the service');
     out.line('  ' + R.user + '  →  sql01.corp.example', 't-ok');
     out.line('    ticket + authenticator', 't-ok');
     out.line('');
@@ -222,7 +222,7 @@
       'the KDC. That is what makes Kerberos scale, and what makes a forged ' +
       'ticket so hard to notice.');
 
-    step(6, 'AP-REP — mutual authentication, if asked for');
+    step(6, 'AP-REP - mutual authentication, if asked for');
     out.line('  sql01.corp.example  →  ' + R.user, 't-ok');
     out.line('    encrypted with the service session key', 't-ok');
     p('Optional, and it is what proves to the CLIENT that it is talking to the ' +
@@ -236,8 +236,8 @@
          'in the other modes cheap. Run Kerberoasting with RC4 and then with ' +
          'AES256.');
     } else {
-      po('This exchange used AES256. The offline attacks still work — they are ' +
-         'not bugs — but each password guess costs about ten thousand times as ' +
+      po('This exchange used AES256. The offline attacks still work - they are ' +
+         'not bugs - but each password guess costs about ten thousand times as ' +
          'much. Run Kerberoasting both ways to see it.');
     }
   }
@@ -273,7 +273,7 @@
     out.line('');
     p('Event 4769 is logged, as it is for every service ticket request on the ' +
       'domain, thousands of times a day. Requesting one ticket looks exactly ' +
-      'like working. Requesting four hundred in a minute does not — which is ' +
+      'like working. Requesting four hundred in a minute does not - which is ' +
       'the detection.');
 
     step(3, 'Leave. Crack it somewhere else.');
@@ -291,7 +291,7 @@
          'characters does not survive the afternoon.');
     } else {
       po('AES256 makes this expensive. 4096 PBKDF2 iterations per candidate is ' +
-         'roughly ten thousand times the work of RC4 — the difference between an ' +
+         'roughly ten thousand times the work of RC4 - the difference between an ' +
          'afternoon and a year for the same wordlist.');
       out.line('');
       pw('But note WHO chooses. The etype is requested by the CLIENT in the ' +
@@ -321,7 +321,7 @@
     rule();
     out.line('');
     p('Kerberoasting needs a domain account to start from. This one needs ' +
-      'nothing at all — only a username.');
+      'nothing at all - only a username.');
 
     step(1, 'Find accounts that do not require pre-authentication');
     out.line('  userAccountControl & 0x400000', 't-warn');
@@ -348,7 +348,7 @@
 
     out.line('');
     rule();
-    po('Clear DONT_REQ_PREAUTH. Audit for it regularly — it is a single flag, ' +
+    po('Clear DONT_REQ_PREAUTH. Audit for it regularly - it is a single flag, ' +
        'it is almost never needed on a modern network, and it converts "attacker ' +
        'needs a foothold" into "attacker needs a username".');
   }
@@ -358,7 +358,7 @@
     rule();
     out.line('');
     pe('Prerequisite: the KRBTGT account\'s key. Obtaining that means the domain ' +
-       'is already fully compromised — this is not a way in, it is a way to ' +
+       'is already fully compromised - this is not a way in, it is a way to ' +
        'stay in.');
 
     step(1, 'Why the KRBTGT key is everything');
@@ -377,7 +377,7 @@
        'signed with the same key, so the signature checks out.');
 
     step(3, 'Why it is so hard to see');
-    p('There is no AS-REQ, because no ticket was requested — event 4768 never ' +
+    p('There is no AS-REQ, because no ticket was requested - event 4768 never ' +
       'fires. The first thing the domain sees is a TGS-REQ arriving with a ' +
       'perfectly valid TGT it has no record of issuing.');
     out.line('');
@@ -390,7 +390,7 @@
     say('What actually fixes it', '', 't-info');
     po('· Reset the KRBTGT password TWICE, with a gap longer than the maximum ' +
        'ticket lifetime between them. Twice because the KDC keeps the previous ' +
-       'key to avoid invalidating tickets in flight — one reset leaves every ' +
+       'key to avoid invalidating tickets in flight - one reset leaves every ' +
        'forged ticket working.');
     po('· The gap matters as much as the second reset. Doing both immediately ' +
        'breaks live sessions across the domain and still leaves a window.');
@@ -403,7 +403,7 @@
     rule();
     out.line('');
     p('The quieter sibling of the Golden Ticket. Instead of the KRBTGT key, it ' +
-      'needs only the key of ONE service account — and it never touches the ' +
+      'needs only the key of ONE service account - and it never touches the ' +
       'domain controller at all.');
 
     step(1, 'Forge a service ticket directly');
@@ -416,7 +416,7 @@
     out.line('');
     pe('It works, because a service validates a ticket entirely by itself. The ' +
        'KDC is not consulted and has no idea this happened. There is no 4768 ' +
-       'and no 4769 — nothing was requested.');
+       'and no 4769 - nothing was requested.');
     out.line('');
     p('Scope is the trade: this grants that one service, not the domain. For an ' +
       'attacker sitting on a database or a file server, that is frequently ' +
@@ -425,7 +425,7 @@
     out.line('');
     rule();
     say('What actually fixes it', '', 't-info');
-    po('· Group Managed Service Accounts again — a key nobody can steal from a ' +
+    po('· Group Managed Service Accounts again - a key nobody can steal from a ' +
        'memory dump stays unforgeable.');
     po('· Enable PAC validation, so the service asks the KDC to confirm the PAC ' +
        'signature instead of trusting it.');
@@ -459,7 +459,7 @@
     out.line('');
     rule();
     say('What actually fixes it', '', 't-info');
-    po('· Tiering. Domain admin credentials never touch a workstation — this is ' +
+    po('· Tiering. Domain admin credentials never touch a workstation - this is ' +
        'the control that actually works, and it is organisational rather than ' +
        'technical.');
     po('· Protected Users group: no RC4, no delegation, and a 4-hour ticket ' +
@@ -481,7 +481,7 @@
     out.line('  TRUSTED_FOR_DELEGATION on a computer account', 't-warn');
     out.line('');
     p('When any user authenticates to that host, their entire TGT is placed in ' +
-      'the ticket and cached in the host\'s memory — so the host can turn ' +
+      'the ticket and cached in the host\'s memory - so the host can turn ' +
       'around and act as them anywhere on the domain. That is the point of the ' +
       'feature: a web server reaching a database as the real user.');
 
@@ -564,8 +564,8 @@
       COLS = measureCols();
       p('Pick a mode and press Run.');
       out.line('');
-      p('Walk the exchange — AS-REQ through AP-REP, and what each half proves.');
-      p('An attack — what the attacker sends, and what actually fixes it.');
+      p('Walk the exchange - AS-REQ through AP-REP, and what each half proves.');
+      p('An attack - what the attacker sends, and what actually fixes it.');
       out.line('');
       p('Start with Kerberoasting. Run it as RC4, then as AES256, and read the ' +
         'cost-per-guess line both times: that one number is the entire argument ' +

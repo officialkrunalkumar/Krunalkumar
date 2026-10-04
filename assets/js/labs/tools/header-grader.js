@@ -154,12 +154,12 @@
       var strong = /no-referrer|same-origin|strict-origin/;
       if (!v) {
         return list.push({ score: 0, max: 10, level: 'warn', title: 'Referrer-Policy',
-          note: 'Absent. Most browsers now default to strict-origin-when-cross-origin, so this is a smaller gap than it was — but the default is not yours to rely on.' });
+          note: 'Absent. Most browsers now default to strict-origin-when-cross-origin, so this is a smaller gap than it was - but the default is not yours to rely on.' });
       }
       list.push(strong.test(v)
         ? { score: 10, max: 10, level: 'ok', title: 'Referrer-Policy', note: v + '.' }
         : { score: 4, max: 10, level: 'warn', title: 'Referrer-Policy',
-            note: v + ' — this still leaks the full URL somewhere. Paths carry tokens more often than people expect.' });
+            note: v + ' - this still leaks the full URL somewhere. Paths carry tokens more often than people expect.' });
     })();
 
     /* ---- Permissions-Policy ---- */
@@ -182,7 +182,7 @@
       }
       if (xfo) {
         return list.push({ score: 8, max: 12, level: 'warn', title: 'Framing (X-Frame-Options)',
-          note: 'X-Frame-Options only. It works, but it is the superseded mechanism — frame-ancestors is the one still being specified.' });
+          note: 'X-Frame-Options only. It works, but it is the superseded mechanism - frame-ancestors is the one still being specified.' });
       }
       list.push({ score: 0, max: 12, level: 'err', title: 'Framing',
         note: 'Neither frame-ancestors nor X-Frame-Options. The page can be framed, which is clickjacking.' });
@@ -228,7 +228,7 @@
       list.push({ score: score, max: 9, level: versioned.length ? 'warn' : 'ok',
         title: 'Version disclosure',
         note: versioned.length
-          ? versioned.concat(named).join(' · ') + '. A version number is the part worth removing — it hands an attacker the advisories to read.'
+          ? versioned.concat(named).join(' · ') + '. A version number is the part worth removing - it hands an attacker the advisories to read.'
           : named.join(' · ') + '. A platform name with no version, which is nearly always unavoidable and of little use to anyone.' });
     })();
 
@@ -261,7 +261,7 @@
     var names = Object.keys(h);
 
     if (!names.length) {
-      out.err('No headers found. Each line needs to look like "Name: value" —');
+      out.err('No headers found. Each line needs to look like "Name: value" -');
       out.err('paste the response block, not the request and not the body.');
       return;
     }
@@ -271,7 +271,7 @@
     for (var i = 0; i < list.length; i++) { got += list[i].score; max += list[i].max; }
     var pct = Math.round((got / max) * 100);
 
-    out.heading('Grade ' + grade(pct) + '  —  ' + got + ' of ' + max + ' (' + pct + '%)');
+    out.heading('Grade ' + grade(pct) + '  -  ' + got + ' of ' + max + ' (' + pct + '%)');
     if (parsed.status) out.dim('Status line seen: HTTP ' + parsed.status);
     out.dim(names.length + ' headers parsed');
     out.rule();

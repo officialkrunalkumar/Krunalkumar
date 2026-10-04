@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Your SSH client asks you this. Can you do it?" />
     <meta name="twitter:description" content="Two SSH key fingerprints, same or different, for sixty seconds. The pairs close until they differ by one confusable character. Most people cannot do it." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-fingerprint.jpg" />
-    <title>Fingerprint — Can You Actually Tell Two SSH Keys Apart?</title>
+    <title>Fingerprint - Can You Actually Tell Two SSH Keys Apart?</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -61,7 +61,7 @@
                         "name": "Are these real SSH fingerprints?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "They are formed exactly like real ones — 43 characters of base64url, the length of a SHA-256 digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from real keys, because a real key would imply a real host. The SSH key inspector in Labs computes genuine ones from a key you paste."
+                                "text": "They are formed exactly like real ones - 43 characters of base64url, the length of a SHA-256 digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from real keys, because a real key would imply a real host. The SSH key inspector in Labs computes genuine ones from a key you paste."
                         }
                 },
                 {
@@ -77,7 +77,7 @@
                         "name": "Is a low score bad?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, it is the expected result and it is the reason the game exists. You are looking for a difference, you know one might be there, and you are doing it as a game — none of which is true of somebody accepting a host key at three in the morning. If you struggled here, you would certainly have typed yes there."
+                                "text": "No, it is the expected result and it is the reason the game exists. You are looking for a difference, you know one might be there, and you are doing it as a game - none of which is true of somebody accepting a host key at three in the morning. If you struggled here, you would certainly have typed yes there."
                         }
                 },
                 {
@@ -85,7 +85,7 @@
                         "name": "Where is my best score kept?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "localStorage on this device, under game.fingerprint.best, and nowhere else. There is no account and no leaderboard, so this browser is the only place it exists — and the data strip on this page will show you the key and clear it."
+                                "text": "localStorage on this device, under game.fingerprint.best, and nowhere else. There is no account and no leaderboard, so this browser is the only place it exists - and the data strip on this page will show you the key and clear it."
                         }
                 }
         ]
@@ -182,7 +182,7 @@
           </ol>
         </nav>
         <h1>Fingerprint</h1>
-        <p class="hero-text">Every SSH client asks you to compare a fingerprint the first time you connect somewhere, and essentially nobody does &mdash; they type yes. The usual explanation is laziness. It is not: comparing two 43-character base64 strings by eye is a task humans are measurably bad at, and sixty seconds here is a faster way to find that out about yourself than being told.</p>
+        <p class="hero-text">Every SSH client asks you to compare a fingerprint the first time you connect somewhere, and essentially nobody does - they type yes. The usual explanation is laziness. It is not: comparing two 43-character base64 strings by eye is a task humans are measurably bad at, and sixty seconds here is a faster way to find that out about yourself than being told.</p>
         <ul class="game-facts">
           <li>Sixty seconds a round</li>
           <li>Pairs get closer as you score</li>
@@ -225,7 +225,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -281,11 +281,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The difficulty ramp is the argument</h3>
-            <p>Early pairs differ in six places and everybody gets those. Past a score of twenty the pairs differ in one character, and that character comes from a confusable set &mdash; I against l, 0 against O, 5 against S, u against v, hyphen against underscore. Accuracy falls off a cliff somewhere in there. Where it falls for you is the finding.</p>
+            <p>Early pairs differ in six places and everybody gets those. Past a score of twenty the pairs differ in one character, and that character comes from a confusable set - I against l, 0 against O, 5 against S, u against v, hyphen against underscore. Accuracy falls off a cliff somewhere in there. Where it falls for you is the finding.</p>
           </article>
           <article class="info-card">
             <h3>Both strings stay on screen</h3>
-            <p>This measures comparison, not memory, because comparison is the real task &mdash; the fingerprint is in your terminal and the known-good one is in a wiki tab. The clock is there instead, because unlimited time turns it into a character-by-character audit that anybody can pass and nobody performs at 03:00 with a deploy blocked.</p>
+            <p>This measures comparison, not memory, because comparison is the real task - the fingerprint is in your terminal and the known-good one is in a wiki tab. The clock is there instead, because unlimited time turns it into a character-by-character audit that anybody can pass and nobody performs at 03:00 with a deploy blocked.</p>
           </article>
           <article class="info-card">
             <h3>What to do instead of squinting</h3>
@@ -300,7 +300,7 @@
         </div>
           <details class="lab-faq">
             <summary>Are these real SSH fingerprints?</summary>
-            <div>They are formed exactly like real ones — 43 characters of base64url, the length of a SHA-256 digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from real keys, because a real key would imply a real host. The SSH key inspector in Labs computes genuine ones from a key you paste.</div>
+            <div>They are formed exactly like real ones - 43 characters of base64url, the length of a SHA-256 digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from real keys, because a real key would imply a real host. The SSH key inspector in Labs computes genuine ones from a key you paste.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does half of every round look identical?</summary>
@@ -308,11 +308,11 @@
           </details>
           <details class="lab-faq">
             <summary>Is a low score bad?</summary>
-            <div>No, it is the expected result and it is the reason the game exists. You are looking for a difference, you know one might be there, and you are doing it as a game — none of which is true of somebody accepting a host key at three in the morning. If you struggled here, you would certainly have typed yes there.</div>
+            <div>No, it is the expected result and it is the reason the game exists. You are looking for a difference, you know one might be there, and you are doing it as a game - none of which is true of somebody accepting a host key at three in the morning. If you struggled here, you would certainly have typed yes there.</div>
           </details>
           <details class="lab-faq">
             <summary>Where is my best score kept?</summary>
-            <div>localStorage on this device, under game.fingerprint.best, and nowhere else. There is no account and no leaderboard, so this browser is the only place it exists — and the data strip on this page will show you the key and clear it.</div>
+            <div>localStorage on this device, under game.fingerprint.best, and nowhere else. There is no account and no leaderboard, so this browser is the only place it exists - and the data strip on this page will show you the key and clear it.</div>
           </details>
       </section>
 

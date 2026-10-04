@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/colophon" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Colophon — How This Site Is Built" />
+    <meta property="og:title" content="Colophon - How This Site Is Built" />
     <meta
       property="og:description"
       content="No framework, no bundler, zero npm dependencies, and a build that refuses to publish damage. Every figure on the page is counted at deploy time rather than typed, so it cannot go stale."
@@ -22,21 +22,21 @@
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-colophon.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Krunalkumar Shah — Colophon: how this site is built" />
+    <meta property="og:image:alt" content="Krunalkumar Shah - Colophon: how this site is built" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Colophon — How This Site Is Built" />
+    <meta name="twitter:title" content="Colophon - How This Site Is Built" />
     <meta
       name="twitter:description"
       content="No framework, no bundler, zero npm dependencies, and a build that refuses to publish damage. Every figure is counted at deploy time."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-colophon.jpg" />
-    <title>Colophon — How This Site Is Built | Krunalkumar Shah</title>
+    <title>Colophon - How This Site Is Built | Krunalkumar Shah</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Colophon — How This Site Is Built",
+        "name": "Colophon - How This Site Is Built",
         "description": "How this site is built: hand-written HTML, zero dependencies, and a deploy that checks its own output. Every number on the page is counted at build time.",
         "url": "https://krunalkumar.dpdns.org/colophon",
         "isPartOf": { "@type": "WebSite", "@id": "https://krunalkumar.dpdns.org/#website" },
@@ -56,7 +56,7 @@
           {
             "@type": "Question",
             "name": "What framework does this site use?",
-            "acceptedAnswer": { "@type": "Answer", "text": "None. There is no React, no static-site generator and no build framework — the pages are HTML, served as committed. A build step runs on deploy to strip CSS comments, rebuild the search index and check its own output, but it generates no pages that are not already in the repository." }
+            "acceptedAnswer": { "@type": "Answer", "text": "None. There is no React, no static-site generator and no build framework - the pages are HTML, served as committed. A build step runs on deploy to strip CSS comments, rebuild the search index and check its own output, but it generates no pages that are not already in the repository." }
           },
           {
             "@type": "Question",
@@ -76,7 +76,7 @@
           {
             "@type": "Question",
             "name": "Can the build refuse to publish?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it does. Eight separate gates check the output before a deploy is allowed to succeed — sitemap parity, share images, static chrome, the service worker precache, structured data, generated-page freshness, the games manifest, and a fingerprint over every vendored file. If any of them fails the build throws instead of writing, and the previous deployment keeps serving." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it does. Eight separate gates check the output before a deploy is allowed to succeed - sitemap parity, share images, static chrome, the service worker precache, structured data, generated-page freshness, the games manifest, and a fingerprint over every vendored file. If any of them fails the build throws instead of writing, and the previous deployment keeps serving." }
           }
         ]
       }
@@ -156,7 +156,7 @@
         <p class="eyebrow">Colophon</p>
         <h1>How this site is built</h1>
         <p class="hero-text">
-          A colophon is the note at the back of a book saying how it was made — the typeface, the paper, the
+          A colophon is the note at the back of a book saying how it was made - the typeface, the paper, the
           press. This is that note for this site: what it runs on, what it deliberately does without, and why.
           Every number on this page is counted at deploy time rather than typed, so none of it can quietly go
           out of date. If you want what it has been <em>doing</em> rather than what it is, the
@@ -196,7 +196,7 @@
             <span class="colo-label">scripts, all mine</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-colophon="commits">225</span>
+            <span class="colo-num" data-colophon="commits">226</span>
             <span class="colo-label">commits</span>
           </div>
         </div>
@@ -216,8 +216,8 @@
           the file the browser is served. <code>package.json</code> exists to name
           <span data-colophon="npmscripts">10</span> scripts and a Node version floor; it has
           <strong><span data-colophon="deps">0</span> dependencies</strong>, so there is no lockfile and no
-          <code>node_modules</code> to commit. What the deploy generates — the sitemap dates, the search
-          index, the figures on this page — <em>is</em> committed, on purpose: it means the repository copy
+          <code>node_modules</code> to commit. What the deploy generates - the sitemap dates, the search
+          index, the figures on this page - <em>is</em> committed, on purpose: it means the repository copy
           is still right when nobody has built it.
         </p>
         <p>
@@ -242,8 +242,8 @@
           <div class="info-card compact-card">
             <h3>Runs in your browser</h3>
             <p>The labs execute real language runtimes on WebAssembly locally, and nothing you type or drop
-            into them is uploaded. The handful that look something up on the internet — DNS, RDAP,
-            certificate transparency, breach and email-security checks — say so on the page and ask before
+            into them is uploaded. The handful that look something up on the internet - DNS, RDAP,
+            certificate transparency, breach and email-security checks - say so on the page and ask before
             they send anything. <a class="text-link" href="/privacy">The privacy policy</a> lists which, and
             to whom.</p>
           </div>
@@ -282,7 +282,7 @@
         </div>
         <p>
           The difference is comments, and they are stripped in the container rather than deleted from the
-          repository on purpose. Those comments carry the measurements — why a colour is the value it is, what
+          repository on purpose. Those comments carry the measurements - why a colour is the value it is, what
           broke last time, which two approaches were tried and rejected. Deleting them by hand to save bytes
           would trade the most useful prose in the codebase for a few kilobytes. Doing it at deploy keeps
           both: git keeps every comment, visitors get the smaller file.
@@ -300,28 +300,28 @@
           every one of them has caught something real:
         </p>
         <p>
-          <strong>Sitemap parity</strong> — every one of the
+          <strong>Sitemap parity</strong> - every one of the
           <strong><span data-colophon="pages">299</span> pages</strong> on disk must have an entry, and every
           entry must have a page. A new page that nobody links to is invisible; a stale entry sends crawlers to
-          a 404. <strong>Share image</strong> — every <code>og:image</code> a page declares must exist as a
+          a 404. <strong>Share image</strong> - every <code>og:image</code> a page declares must exist as a
           file, or the link posts into a chat window with a blank rectangle where the card should be.
-          <strong>Static chrome</strong> — the header and footer baked into every page as the no-JavaScript
+          <strong>Static chrome</strong> - the header and footer baked into every page as the no-JavaScript
           fallback must still match <code>partials/</code>. A nav link added to the partial but not the copies
           is invisible to exactly the people browsing without JavaScript.
         </p>
         <p>
-          <strong>Service worker precache</strong> — every file the offline shell names must resolve, because a
+          <strong>Service worker precache</strong> - every file the offline shell names must resolve, because a
           precache listing something that moved fails the install and takes offline support down with it.
-          <strong>Structured data</strong> — every JSON-LD block on the site must parse. <strong>Games
-          freshness</strong> — all <strong><span data-colophon="games">91</span></strong> generated game pages
-          must match, byte for byte, what the generator would write today. <strong>Games manifest</strong> —
+          <strong>Structured data</strong> - every JSON-LD block on the site must parse. <strong>Games
+          freshness</strong> - all <strong><span data-colophon="games">91</span></strong> generated game pages
+          must match, byte for byte, what the generator would write today. <strong>Games manifest</strong> -
           the runtime values inside each game module must agree with the manifest that describes it, so a page
           cannot advertise a control the code does not have.
         </p>
         <p>
           And the eighth: a single <strong>fingerprint over every vendored file</strong>, recorded in the
-          service worker and recomputed on each deploy. Nothing here comes from npm at runtime —
-          <strong><span data-colophon="deps">0</span> dependencies</strong> — but the repository does carry
+          service worker and recomputed on each deploy. Nothing here comes from npm at runtime -
+          <strong><span data-colophon="deps">0</span> dependencies</strong> - but the repository does carry
           vendored copies of a few large tools, and a vendored file is exactly the kind of thing that can
           change without anyone noticing. If the hash moves and the recorded one did not, the build stops. It
           is a small supply-chain check, and it is the one most sites cannot make about themselves at all.
@@ -335,31 +335,31 @@
         </div>
         <p>
           Everything above is a number this site publishes about itself, which is exactly the kind of number
-          you should not have to take on trust. So these four are not published by anything — your browser
+          you should not have to take on trust. So these four are not published by anything - your browser
           measured them, on this page, on this visit, a moment ago. Reload and they change. Nothing is sent
           anywhere; the figures never leave the tab they were taken in.
         </p>
         <div class="colo-stats colo-stats--wide" id="measure-stats">
           <div class="colo-stat">
-            <span class="colo-num" data-measure="lcp">—</span>
+            <span class="colo-num" data-measure="lcp">-</span>
             <span class="colo-label">largest paint</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-measure="cached">—</span>
+            <span class="colo-num" data-measure="cached">-</span>
             <span class="colo-label">served from cache</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-measure="wire">—</span>
+            <span class="colo-num" data-measure="wire">-</span>
             <span class="colo-label">over the wire</span>
           </div>
           <div class="colo-stat">
-            <span class="colo-num" data-measure="ttfb">—</span>
+            <span class="colo-num" data-measure="ttfb">-</span>
             <span class="colo-label">time to first byte</span>
           </div>
         </div>
         <p id="measure-note">
           On a first visit the cache figure will be low and the bytes high, because nothing has been stored
-          yet. Come back to this page after browsing a little and both should move a long way — that
+          yet. Come back to this page after browsing a little and both should move a long way - that
           difference is the service worker doing the only job it has.
         </p>
       </section>
@@ -372,7 +372,7 @@
         <p>
           The README runs to <strong><span data-colophon="readme">2,173</span> lines</strong>, and the
           stylesheets carry roughly <strong><span data-colophon="csscomments">6,183</span> lines</strong> of
-          comments. They do not describe what the code does — you can read that. They carry the measurement,
+          comments. They do not describe what the code does - you can read that. They carry the measurement,
           the rejected alternative, and what breaks if you change it back.
         </p>
         <p>
@@ -383,7 +383,7 @@
         </p>
         <p>
           It is also why this page counts itself. A colophon that had to be edited by hand every time a lab
-          was added would be wrong within a week — and a manual step with no command behind it is a manual
+          was added would be wrong within a week - and a manual step with no command behind it is a manual
           step that gets skipped.
         </p>
         <p>
@@ -411,24 +411,24 @@
           <details>
             <summary>How is this site built?</summary>
             <p>Hand-written HTML with no framework, no bundler and no npm dependencies at runtime. Everything
-            above sets out what it runs on, what it deliberately does without, and why — with every figure
+            above sets out what it runs on, what it deliberately does without, and why - with every figure
             counted at deploy time rather than typed.</p>
           </details>
           <details>
             <summary>What framework does this site use?</summary>
-            <p>None. No React, no static-site generator, no build framework — the pages are HTML, served as
+            <p>None. No React, no static-site generator, no build framework - the pages are HTML, served as
             committed. A build step runs on deploy to strip CSS comments, rebuild the search index and check
             its own output, but it generates no pages that are not already in the repository.</p>
           </details>
           <details>
             <summary>What is the tech stack?</summary>
             <p>HTML, CSS and vanilla JavaScript, served as committed, hosted on Vercel. No framework, no bundler,
-            no runtime dependencies — the build step only strips CSS comments, rebuilds the search index and
+            no runtime dependencies - the build step only strips CSS comments, rebuilds the search index and
             checks its own output.</p>
           </details>
           <details>
             <summary>How many dependencies does this site have?</summary>
-            <p>Zero at runtime — the figure above is recomputed on every deploy, so it cannot go stale.</p>
+            <p>Zero at runtime - the figure above is recomputed on every deploy, so it cannot go stale.</p>
           </details>
           <details>
             <summary>What changed on this site recently?</summary>

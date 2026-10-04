@@ -512,7 +512,7 @@
         }
         if (v < r.lo || v > r.hi) {
           soundRefuse();
-          showState(fmt(v) + ' is already ruled out — ' + ruledOut(r, v) +
+          showState(fmt(v) + ' is already ruled out - ' + ruledOut(r, v) +
             '. A guess outside the live interval cannot be right, so it carries no ' +
             'information and I am not charging you a guess for it.');
           say(fmt(v) + ' is already ruled out. Nothing spent.');
@@ -556,13 +556,13 @@
 
         paintStack(r.history, S.n);
 
-        var msg = fmt(v) + ' — my number is ' + (up ? 'higher' : 'lower') + '. ' +
+        var msg = fmt(v) + ' - my number is ' + (up ? 'higher' : 'lower') + '. ' +
           fmt(after) + ' of ' + fmt(m) + ' candidates survive, so that answer was worth ' +
           two(lg(m / after)) + ' bits.';
         if (centre) {
           msg += ' That was the best split available: nothing could have guaranteed more.';
         } else {
-          msg += ' It was off centre, though — it risked leaving ' + fmt(worst) +
+          msg += ' It was off centre, though - it risked leaving ' + fmt(worst) +
             ' where the midpoint (' + fmt(midOf(before.lo, before.hi)) +
             ') risks at most ' + fmt(bestWorst) + ', so you gave away ' + two(wasted) +
             ' of a bit whatever the answer turned out to be.';
@@ -632,7 +632,7 @@
           '<p style="' + S_BRIEF + '">I will guess; you say whether yours is lower or higher. ' +
           'I am keeping the interval your answers imply, so if two of them cannot both be ' +
           'true I will say which two and what they left empty. Answering to make this take as ' +
-          'long as possible is allowed, and is a different thing entirely — I will say so if ' +
+          'long as possible is allowed, and is a different thing entirely - I will say so if ' +
           'you do it.</p>' +
           '<div data-stack aria-hidden="true" style="margin:0 0 0.4rem;"></div>' +
           trackHtml() +
@@ -677,7 +677,7 @@
         r.used++;
         paintTrack(r.lo, r.hi, r.guess, S.n);
         if (D.qline) {
-          D.qline.textContent = 'Guess ' + r.used + ' — is it ' + fmt(r.guess) + '?';
+          D.qline.textContent = 'Guess ' + r.used + ' - is it ' + fmt(r.guess) + '?';
         }
         if (D.live) {
           var alive = r.hi - r.lo + 1;
@@ -783,8 +783,8 @@
             ';">' + esc(mine) + ' ' + esc(other) + ' ' + esc(empty) + '</p>' +
             '<p style="margin:0;font-size:0.83rem;line-height:1.6;color:' + INK3 +
             ';">This is not a suspicion. The interval your answers imply is now empty, and an ' +
-            'empty interval means there is no number at all &mdash; not a clever one, not an ' +
-            'unlucky one &mdash; that would have produced this sequence of answers. It adds ' +
+            'empty interval means there is no number at all - not a clever one, not an ' +
+            'unlucky one - that would have produced this sequence of answers. It adds ' +
             'two to your score, and on this board a lower score is the better one.</p>';
         }
         logLine('#' + r.used + '  ' + pad(fmt(gv), 9) + 'contradiction', BAD);
@@ -806,7 +806,7 @@
           '<p style="margin:0 0 0.4rem;font-size:0.83rem;line-height:1.6;color:' + INK3 +
           ';">That is consistent with having a number, and it is also exactly what somebody ' +
           'with no number at all would do. I cannot tell the two apart and I am not going to ' +
-          'pretend I can — nothing you have said is false yet.</p>' +
+          'pretend I can - nothing you have said is false yet.</p>' +
           '<p style="margin:0;font-size:0.83rem;line-height:1.6;color:' + INK3 +
           ';">It is worth doing on purpose, though. Answering to keep the interval as large as ' +
           'every answer allows is the adversary argument, and it is how the lower bound is ' +
@@ -825,7 +825,7 @@
            kept large, and it finished in three — saying it landed on par
            there would be a sentence contradicted by the number beside it. */
         if (r.allMaximal && r.answered >= 2 && r.used === S.par) {
-          body = 'You kept the larger half every single time, so it took exactly par — ' +
+          body = 'You kept the larger half every single time, so it took exactly par - ' +
             S.par + '. That is the adversary strategy and it is the proof that no search ' +
             'can promise better: whatever I had asked, an answer existed that left me ' +
             'this much work.';
@@ -918,7 +918,7 @@
           '<h3 style="margin:0 0 0.15rem;font-size:1.35rem;color:' + INK + ';">' +
           (final <= 1 ? 'Par' : '+' + (final - 1) + ' over par') +
           (isBest ? ' <span style="font-size:0.72rem;color:' + GOOD +
-            ';">&mdash; best on this device</span>' : '') + '</h3>' +
+            ';">- best on this device</span>' : '') + '</h3>' +
           '<p style="margin:0 0 0.9rem;font-size:0.84rem;line-height:1.6;color:' + INK3 + ';">' +
           'You spent ' + S.used + ' guesses on the two rounds you searched, where par is ' +
           (S.par * 2) + '. Across those guesses you threw away ' + two(S.wasted) +
@@ -1035,7 +1035,7 @@
           '<h3 style="' + S_HEAD + '">The same search, and three ways to get it wrong.</h3>' +
           '<p style="' + S_BRIEF + '">Nothing is scored here. Change the midpoint, change the ' +
           'loop, change which value you are looking for, and the trace underneath is the run ' +
-          'that configuration actually performs &mdash; one that overflows, one that never ' +
+          'that configuration actually performs - one that overflows, one that never ' +
           'ends, and one that walks straight past the answer.</p>' +
           '<div data-groups></div>' +
           '<div data-cells style="margin:0.8rem 0 0.4rem;"></div>' +
@@ -1136,7 +1136,7 @@
         var tally = { found: 0, stuck: 0, crash: 0, exit: 0 };
         var html = '<p style="margin:0 0 0.3rem;font-size:0.7rem;letter-spacing:0.05em;' +
           'text-transform:uppercase;color:' + INK4 + ';" id="bsd-lab-cells">' +
-          'Looking for &mdash; pick a value</p>' +
+          'Looking for - pick a value</p>' +
           '<div role="group" aria-labelledby="bsd-lab-cells" data-cellrow ' +
           'style="display:flex;flex-wrap:wrap;gap:0.3rem;">';
         for (var i = 0; i < SMALL.length; i++) {
@@ -1238,7 +1238,7 @@
         } else if (out.outcome === 'stuck') {
           verdict = 'It stopped making progress with lo = ' + fmt(out.lo) + ' and hi = ' +
             fmt(out.hi) + '. Neither bound moved, so the next iteration is identical to the ' +
-            'last one: this loop never ends. Nothing throws and nothing prints — the tab hangs.';
+            'last one: this loop never ends. Nothing throws and nothing prints - the tab hangs.';
         } else {
           verdict = 'It returned "not found" for ' + fmt(value) + ', which is at index ' +
             fmt(idx) + ' of the array. The loop stopped one element early and never compared ' +
@@ -1255,7 +1255,7 @@
             INK3 + ';"><strong style="color:' + INK + ';">The midpoint.</strong> ' +
             '(lo + hi) / 2 overflows a signed 32-bit integer as soon as lo + hi passes ' +
             '2,147,483,647, and the sum then comes back negative. That is the bug Joshua ' +
-            'Bloch wrote up in 2006 &mdash; it had been sitting in ' +
+            'Bloch wrote up in 2006 - it had been sitting in ' +
             'java.util.Arrays.binarySearch, and in most published binary searches, for ' +
             'about nine years. lo + (hi &minus; lo) / 2 computes the same midpoint from a ' +
             'difference that cannot overflow.</p>' +
@@ -1269,7 +1269,7 @@
             INK3 + ';"><strong style="color:' + INK + ';">The midpoint.</strong> ' +
             'lo + (hi &minus; lo) / 2 never overflows, because hi &minus; lo is at most the ' +
             'length of the array. Switch to (lo + hi) / 2 and, on sixteen elements, ' +
-            'absolutely nothing changes &mdash; which is precisely why the bug survived so ' +
+            'absolutely nothing changes - which is precisely why the bug survived so ' +
             'long. Switch the array to two billion entries and look for something near the ' +
             'end, and it parts company on the second probe.</p>';
         }

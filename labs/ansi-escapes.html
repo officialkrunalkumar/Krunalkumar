@@ -73,7 +73,7 @@
                         "name": "Why does ls lose its colours when I pipe it into cat?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it — the escape sequences were never written. Passing --color=always overrides the check and writes them anyway."
+                                "text": "Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it - the escape sequences were never written. Passing --color=always overrides the check and writes them anyway."
                         }
                 },
                 {
@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>ANSI escape codes, explained</h1>
-        <p class="hero-text">An escape sequence is a handful of invisible bytes that tell your terminal to change colour, move the cursor, rename the window or write your clipboard. Paste some in and get every one named, dated to a standard and explained, with the result rendered beside it &mdash; then build your own, or defuse someone else&rsquo;s.</p>
+        <p class="hero-text">An escape sequence is a handful of invisible bytes that tell your terminal to change colour, move the cursor, rename the window or write your clipboard. Paste some in and get every one named, dated to a standard and explained, with the result rendered beside it - then build your own, or defuse someone else&rsquo;s.</p>
         <ul class="lab-facts">
           <li>Every sequence named, with its standard</li>
           <li>SGR rendered, not merely described</li>
@@ -239,14 +239,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>Not a terminal emulator: 80 columns, no scrollback</li>
                   <li>Private modes, OSC and device reports are explained, never obeyed</li>
                   <li>Colours shown are xterm defaults; your terminal has its own</li>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -273,9 +273,9 @@
         <div class="lab-toolbar">
           <label class="sr-only" for="tool-mode">What to do</label>
           <select class="lab-select" id="tool-mode">
-            <option value="decode" selected>Decode &mdash; name and explain every sequence</option>
-            <option value="build">Build &mdash; make a sequence from controls</option>
-            <option value="sanitise">Sanitise &mdash; make untrusted output safe to read</option>
+            <option value="decode" selected>Decode - name and explain every sequence</option>
+            <option value="build">Build - make a sequence from controls</option>
+            <option value="sanitise">Sanitise - make untrusted output safe to read</option>
           </select>
           <label class="sr-only" for="tool-example">Load an example</label>
           <select class="lab-select" id="tool-example">
@@ -312,25 +312,25 @@
             <label for="b-fg">Foreground</label>
             <select class="lab-select" id="b-fg">
               <option value="none">leave it alone</option>
-              <option value="39">39 &mdash; terminal default</option>
-              <option value="30">30 &mdash; black</option>
-              <option value="31">31 &mdash; red</option>
-              <option value="32">32 &mdash; green</option>
-              <option value="33">33 &mdash; yellow</option>
-              <option value="34">34 &mdash; blue</option>
-              <option value="35">35 &mdash; magenta</option>
-              <option value="36">36 &mdash; cyan</option>
-              <option value="37">37 &mdash; white</option>
-              <option value="90">90 &mdash; bright black (aixterm)</option>
-              <option value="91">91 &mdash; bright red (aixterm)</option>
-              <option value="92">92 &mdash; bright green (aixterm)</option>
-              <option value="93">93 &mdash; bright yellow (aixterm)</option>
-              <option value="94">94 &mdash; bright blue (aixterm)</option>
-              <option value="95">95 &mdash; bright magenta (aixterm)</option>
-              <option value="96">96 &mdash; bright cyan (aixterm)</option>
-              <option value="97">97 &mdash; bright white (aixterm)</option>
-              <option value="256" selected>38;5;N &mdash; 256-colour index</option>
-              <option value="rgb">38;2;R;G;B &mdash; truecolour</option>
+              <option value="39">39 - terminal default</option>
+              <option value="30">30 - black</option>
+              <option value="31">31 - red</option>
+              <option value="32">32 - green</option>
+              <option value="33">33 - yellow</option>
+              <option value="34">34 - blue</option>
+              <option value="35">35 - magenta</option>
+              <option value="36">36 - cyan</option>
+              <option value="37">37 - white</option>
+              <option value="90">90 - bright black (aixterm)</option>
+              <option value="91">91 - bright red (aixterm)</option>
+              <option value="92">92 - bright green (aixterm)</option>
+              <option value="93">93 - bright yellow (aixterm)</option>
+              <option value="94">94 - bright blue (aixterm)</option>
+              <option value="95">95 - bright magenta (aixterm)</option>
+              <option value="96">96 - bright cyan (aixterm)</option>
+              <option value="97">97 - bright white (aixterm)</option>
+              <option value="256" selected>38;5;N - 256-colour index</option>
+              <option value="rgb">38;2;R;G;B - truecolour</option>
             </select>
           </div>
           <div class="lab-metric">
@@ -345,25 +345,25 @@
             <label for="b-bg">Background</label>
             <select class="lab-select" id="b-bg">
               <option value="none" selected>leave it alone</option>
-              <option value="49">49 &mdash; terminal default</option>
-              <option value="40">40 &mdash; black</option>
-              <option value="41">41 &mdash; red</option>
-              <option value="42">42 &mdash; green</option>
-              <option value="43">43 &mdash; yellow</option>
-              <option value="44">44 &mdash; blue</option>
-              <option value="45">45 &mdash; magenta</option>
-              <option value="46">46 &mdash; cyan</option>
-              <option value="47">47 &mdash; white</option>
-              <option value="100">100 &mdash; bright black (aixterm)</option>
-              <option value="101">101 &mdash; bright red (aixterm)</option>
-              <option value="102">102 &mdash; bright green (aixterm)</option>
-              <option value="103">103 &mdash; bright yellow (aixterm)</option>
-              <option value="104">104 &mdash; bright blue (aixterm)</option>
-              <option value="105">105 &mdash; bright magenta (aixterm)</option>
-              <option value="106">106 &mdash; bright cyan (aixterm)</option>
-              <option value="107">107 &mdash; bright white (aixterm)</option>
-              <option value="256">48;5;N &mdash; 256-colour index</option>
-              <option value="rgb">48;2;R;G;B &mdash; truecolour</option>
+              <option value="49">49 - terminal default</option>
+              <option value="40">40 - black</option>
+              <option value="41">41 - red</option>
+              <option value="42">42 - green</option>
+              <option value="43">43 - yellow</option>
+              <option value="44">44 - blue</option>
+              <option value="45">45 - magenta</option>
+              <option value="46">46 - cyan</option>
+              <option value="47">47 - white</option>
+              <option value="100">100 - bright black (aixterm)</option>
+              <option value="101">101 - bright red (aixterm)</option>
+              <option value="102">102 - bright green (aixterm)</option>
+              <option value="103">103 - bright yellow (aixterm)</option>
+              <option value="104">104 - bright blue (aixterm)</option>
+              <option value="105">105 - bright magenta (aixterm)</option>
+              <option value="106">106 - bright cyan (aixterm)</option>
+              <option value="107">107 - bright white (aixterm)</option>
+              <option value="256">48;5;N - 256-colour index</option>
+              <option value="rgb">48;2;R;G;B - truecolour</option>
             </select>
           </div>
           <div class="lab-metric">
@@ -381,9 +381,9 @@
           <div class="lab-metric">
             <label for="b-form">Which form goes in the copy box</label>
             <select class="lab-select" id="b-form">
-              <option value="x">\x1b &mdash; C, and most languages</option>
-              <option value="o">\033 &mdash; octal, works everywhere</option>
-              <option value="e">\e &mdash; GNU extension</option>
+              <option value="x">\x1b - C, and most languages</option>
+              <option value="o">\033 - octal, works everywhere</option>
+              <option value="e">\e - GNU extension</option>
               <option value="printf" selected>printf command line</option>
               <option value="echo">echo -e command line</option>
               <option value="raw">raw bytes, with a real invisible ESC</option>
@@ -405,7 +405,7 @@
         </div>
 
         <div class="ae-screenwrap">
-          <p class="lab-pane-label" id="ae-screen-label">Rendered &mdash; colour, cursor moves and erases carried out on an 80-column model</p>
+          <p class="lab-pane-label" id="ae-screen-label">Rendered - colour, cursor moves and erases carried out on an 80-column model</p>
           <div class="ae-screen" id="tool-render" tabindex="0" role="region" aria-labelledby="ae-screen-label"></div>
           <p class="ae-note" id="tool-rendernote" role="status" aria-live="polite"></p>
         </div>
@@ -425,19 +425,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Colour vanishes in a pipe on purpose</h3>
-            <p>A program that emits colour asks first. It calls <code>isatty</code> on file descriptor 1, and when standard output is a pipe or a file rather than a terminal, a well-behaved program emits no escape sequences at all. That is why <code>ls | cat</code> comes out plain and why grep loses its highlighting inside a script: nothing swallowed the colour, it was never written. <code>--color=always</code> removes the check, and the bytes then land in whatever you redirected into &mdash; which is how a log file ends up carrying <code>ESC[01;34m</code> in front of every path. Load the <em>ls --color</em> example above and the decoder will name every one of them, byte by byte.</p>
+            <p>A program that emits colour asks first. It calls <code>isatty</code> on file descriptor 1, and when standard output is a pipe or a file rather than a terminal, a well-behaved program emits no escape sequences at all. That is why <code>ls | cat</code> comes out plain and why grep loses its highlighting inside a script: nothing swallowed the colour, it was never written. <code>--color=always</code> removes the check, and the bytes then land in whatever you redirected into - which is how a log file ends up carrying <code>ESC[01;34m</code> in front of every path. Load the <em>ls --color</em> example above and the decoder will name every one of them, byte by byte.</p>
           </article>
           <article class="info-card">
             <h3>NO_COLOR, and the conventions around it</h3>
-            <p>NO_COLOR (no-color.org) has one rule and it is worth stating precisely: if the variable is present in the environment, colour is disabled, <em>whatever its value is</em>. An empty <code>NO_COLOR=</code> counts as set, which catches out people who expect <code>0</code> to mean off. The older neighbours are less tidy. <code>CLICOLOR=0</code> asks for no colour; <code>CLICOLOR_FORCE=1</code> demands colour even when stdout is not a terminal, which is the escape hatch for piping into <code>less -R</code> deliberately. <code>TERM=dumb</code> tells a program the terminal has no capabilities worth using. <code>FORCE_COLOR</code> is honoured across a great deal of Node tooling. None of them is universal &mdash; every program decides for itself, and a program that honours none of them is not violating a standard.</p>
+            <p>NO_COLOR (no-color.org) has one rule and it is worth stating precisely: if the variable is present in the environment, colour is disabled, <em>whatever its value is</em>. An empty <code>NO_COLOR=</code> counts as set, which catches out people who expect <code>0</code> to mean off. The older neighbours are less tidy. <code>CLICOLOR=0</code> asks for no colour; <code>CLICOLOR_FORCE=1</code> demands colour even when stdout is not a terminal, which is the escape hatch for piping into <code>less -R</code> deliberately. <code>TERM=dumb</code> tells a program the terminal has no capabilities worth using. <code>FORCE_COLOR</code> is honoured across a great deal of Node tooling. None of them is universal - every program decides for itself, and a program that honours none of them is not violating a standard.</p>
           </article>
           <article class="info-card">
             <h3>Escapes in someone else&rsquo;s output are an attack surface</h3>
-            <p>This is the part worth taking seriously. If an attacker can get bytes into a log you later <code>cat</code>, they control your terminal for the length of that file. Cursor movement and erase let them rewrite lines that have already been printed, so an entry reading DENIED can be replaced by one reading ok before you have finished reading the screen &mdash; run the first example and read the overwritten-character count under the render. OSC can rename your window, and window titles are text people trust. OSC 52 writes your clipboard with nothing changing on screen, so the next thing you paste into a root shell is theirs. Alternate screen and bracketed paste can be left in the wrong state, and bracketed paste turned <em>off</em> is the state in which a pasted newline runs the command. Terminal emulators have shipped real memory-safety and command-injection bugs in their OSC and DCS handlers as well. Nothing on this page executes any of it: the clipboard example decodes to a harmless string, and every dangerous sequence is shown inert.</p>
+            <p>This is the part worth taking seriously. If an attacker can get bytes into a log you later <code>cat</code>, they control your terminal for the length of that file. Cursor movement and erase let them rewrite lines that have already been printed, so an entry reading DENIED can be replaced by one reading ok before you have finished reading the screen - run the first example and read the overwritten-character count under the render. OSC can rename your window, and window titles are text people trust. OSC 52 writes your clipboard with nothing changing on screen, so the next thing you paste into a root shell is theirs. Alternate screen and bracketed paste can be left in the wrong state, and bracketed paste turned <em>off</em> is the state in which a pasted newline runs the command. Terminal emulators have shipped real memory-safety and command-injection bugs in their OSC and DCS handlers as well. Nothing on this page executes any of it: the clipboard example decodes to a harmless string, and every dangerous sequence is shown inert.</p>
           </article>
           <article class="info-card">
             <h3>What the renderer will and will not do</h3>
-            <p>The render pane is a small screen model, not a terminal emulator, and it says so under every run. It carries out SGR, cursor movement, erase, insert and delete on eighty fixed columns, with no scrollback, no scroll region, no alternate screen buffer and tab stops every eight. Private modes, OSC, control strings and the device reports are named, explained and deliberately not obeyed &mdash; obeying <code>?1049</code> inside a div would mean nothing, and pretending otherwise would be the wrong lesson. The colours are xterm&rsquo;s default palette, computed from the 6&times;6&times;6 cube and the 24-step grey ramp; your terminal ships its own, so treat every hex value printed here as a reference point rather than a promise about your screen.</p>
+            <p>The render pane is a small screen model, not a terminal emulator, and it says so under every run. It carries out SGR, cursor movement, erase, insert and delete on eighty fixed columns, with no scrollback, no scroll region, no alternate screen buffer and tab stops every eight. Private modes, OSC, control strings and the device reports are named, explained and deliberately not obeyed - obeying <code>?1049</code> inside a div would mean nothing, and pretending otherwise would be the wrong lesson. The colours are xterm&rsquo;s default palette, computed from the 6&times;6&times;6 cube and the 24-step grey ramp; your terminal ships its own, so treat every hex value printed here as a reference point rather than a promise about your screen.</p>
           </article>
         </div>
       </section>
@@ -448,7 +448,7 @@
         </div>
           <details class="lab-faq">
             <summary>Why does ls lose its colours when I pipe it into cat?</summary>
-            <div>Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it &mdash; the escape sequences were never written. Passing --color=always overrides the check and writes them anyway.</div>
+            <div>Because ls checks isatty on standard output before it emits any colour. Piped or redirected, stdout is a pipe or a file rather than a terminal, so a well-behaved program turns colour off. Nothing swallowed it - the escape sequences were never written. Passing --color=always overrides the check and writes them anyway.</div>
           </details>
           <details class="lab-faq">
             <summary>I used --color=always and now my file is full of [01;34m. What is that?</summary>
@@ -492,7 +492,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/unicode">
             <span class="lab-card-name">Unicode inspector</span>
-            <p class="lab-card-desc">Invisible characters, bidi overrides and homoglyphs &mdash; the other way text lies about itself.</p>
+            <p class="lab-card-desc">Invisible characters, bidi overrides and homoglyphs - the other way text lies about itself.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/log-analyser">
@@ -502,7 +502,7 @@
           </a>
           <a class="lab-card" href="/labs/encoding">
             <span class="lab-card-name">Encoder / decoder</span>
-            <p class="lab-card-desc">Base64, hex, URL and more, with auto-detection &mdash; including the OSC 52 payloads above.</p>
+            <p class="lab-card-desc">Base64, hex, URL and more, with auto-detection - including the OSC 52 payloads above.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/memory-strings">
@@ -512,7 +512,7 @@
           </a>
           <a class="lab-card" href="/labs/linux">
             <span class="lab-card-name">Linux terminal</span>
-            <p class="lab-card-desc">A real kernel and a BusyBox shell &mdash; somewhere to try printf and cat -v for yourself.</p>
+            <p class="lab-card-desc">A real kernel and a BusyBox shell - somewhere to try printf and cat -v for yourself.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
         </div>

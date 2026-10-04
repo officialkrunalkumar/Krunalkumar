@@ -645,7 +645,7 @@
     }
     if (c.year === null) {
       return 'There is no crossover inside ' + h +
-        ' years — renting stays ahead for the whole horizon on these numbers.';
+        ' years - renting stays ahead for the whole horizon on these numbers.';
     }
     var extra = c.flips > 1
       ? ' The gap changes sign ' + c.flips + ' times in this run, so the crossover is not a one-way door.'
@@ -729,7 +729,7 @@
         out.err('  the balance never falls. Check the rate and the tenure.');
       }
     } else {
-      out.row('EMI', 'none — bought outright');
+      out.row('EMI', 'none - bought outright');
     }
     out.row('cash up front', inr(sim.upfrontBuy));
     out.row('interest paid', inr(tot.interest));
@@ -814,15 +814,15 @@
     out.line('');
     out.row('imputed rent avoided', inr(tot.rent));
     out.dim('  The rent the buyer did not pay across the horizon. It is already');
-    out.dim('  inside the comparison — it is the whole reason the renter has a');
+    out.dim('  inside the comparison - it is the whole reason the renter has a');
     out.dim('  monthly surplus to invest in the early years.');
     out.line('');
     out.dim('  How the budget works here: each month both paths are given the');
     out.dim('  same money, equal to whichever path costs more, and the cheaper');
     out.dim('  side banks the difference. So a tax saving to the buyer shows up');
     out.dim('  as the renter having less to invest rather than as the buyer');
-    out.dim('  getting richer. The gap between the two — which is the only');
-    out.dim('  thing this page is measuring — moves the same either way.');
+    out.dim('  getting richer. The gap between the two - which is the only');
+    out.dim('  thing this page is measuring - moves the same either way.');
     out.rule();
 
     if (cfg.taxOn) {
@@ -842,8 +842,8 @@
         out.row('  exempt', inr(y1.hra.exempt));
       }
       out.line('');
-      out.warn('  This is the OLD regime only. The new regime — which is the');
-      out.warn('  default one — has no 80C, no HRA exemption, and no 24(b)');
+      out.warn('  This is the OLD regime only. The new regime - which is the');
+      out.warn('  default one - has no 80C, no HRA exemption, and no 24(b)');
       out.warn('  deduction on a self-occupied property. If you are in the new');
       out.warn('  regime, switch this block off, because none of it applies.');
       out.warn('  Every ceiling above is a field you set. They move with the');
@@ -922,7 +922,7 @@
     var wrap = el('div', 'rvb-tablewrap');
     var table = el('table', 'rvb-table rvb-gridtable');
     table.appendChild(el('caption', null,
-      'Crossover year — the year buying overtakes renting — recomputed at each ' +
+      'Crossover year - the year buying overtakes renting - recomputed at each ' +
       'pair of guesses, with every other field held exactly as you set it. ' +
       '"day 1" means buying starts level or ahead and never trails; "none" ' +
       'means buying never gets in front inside the ' + base.horizon +
@@ -980,7 +980,7 @@
       'inside the horizon in ' + neverCount + ' of them and does get in front in ' +
       (total - neverCount) + '. At year ' + base.horizon + ' the gap between the two ' +
       'paths ranges from ' + inr(gapLo) + ' to ' + inr(gapHi) +
-      ' across the grid — a swing of ' + inr(gapHi - gapLo) +
+      ' across the grid - a swing of ' + inr(gapHi - gapLo) +
       ' produced by moving two numbers that nobody can know in advance by four ' +
       'points. That swing is the honest output of this page. The single number ' +
       'in the middle is not.';

@@ -505,7 +505,7 @@
       motion();
       if (info && info.lengthComputable && info.total) {
         var pct = Math.min(100, Math.round((info.loaded / info.total) * 100));
-        setStatus('Downloading the machine image — ' + pct + '%', 'is-busy');
+        setStatus('Downloading the machine image - ' + pct + '%', 'is-busy');
       }
     });
 
@@ -557,7 +557,7 @@
           setTimeout(function () {
             if (emulator) emulator.serial0_send('dmesg | tail -25\n');
           }, 500);
-          setStatus('Logged in as root — click the terminal and type', 'is-ok');
+          setStatus('Logged in as root - click the terminal and type', 'is-ok');
         }, 400);
       }
     });
@@ -733,7 +733,7 @@
   initKeyboard();
   initControls();
   initFullscreen();
-  setStatus('Ready — press Boot');
+  setStatus('Ready - press Boot');
   // Last, so the opening "Ready — …" is painted before the element becomes a
   // live region and is therefore not announced on arrival.
   initStatusLive();

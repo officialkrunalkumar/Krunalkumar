@@ -1178,7 +1178,7 @@
         var idx = br.read(4), total = br.read(4);
         br.read(8);
         notes.push('Structured append: part ' + (idx + 1) + ' of ' + (total + 1) +
-                   ' — this is only a fragment');
+                   ' - this is only a fragment');
         continue;
       }
 
@@ -1205,7 +1205,7 @@
         for (j = 0; j < count; j++) bytes.push(br.read(8));
       } else if (mode === 8) {
         for (j = 0; j < count; j++) br.read(13);
-        notes.push('A Shift-JIS kanji segment was skipped — this reader does not decode it');
+        notes.push('A Shift-JIS kanji segment was skipped - this reader does not decode it');
       }
     }
     flushBytes();
@@ -1558,7 +1558,7 @@
     }
     if (host.toLowerCase().indexOf('xn--') !== -1) {
       flagged++;
-      out.err('This hostname is punycode — it contains non-Latin characters');
+      out.err('This hostname is punycode - it contains non-Latin characters');
       out.err('that render as something else entirely. Paste it into the URL');
       out.err('inspector to see what it actually displays as.');
     }
@@ -1572,7 +1572,7 @@
       flagged++;
       out.warn('That is a link shortener (' + registrable + ').');
       out.warn('The real destination is hidden behind a redirect and nothing');
-      out.warn('here will follow it — requesting it would tell whoever made');
+      out.warn('here will follow it - requesting it would tell whoever made');
       out.warn('the code that someone is looking. A shortener inside a QR code');
       out.warn('is two layers of concealment on one link.');
     }
@@ -1616,8 +1616,8 @@
       out.dim('expected this code to point at this domain at all.');
     }
     out.line('');
-    out.dim('For the full breakdown — homograph decoding, encoding layers,');
-    out.dim('suffix handling — paste it into /labs/url-inspector.');
+    out.dim('For the full breakdown - homograph decoding, encoding layers,');
+    out.dim('suffix handling - paste it into /labs/url-inspector.');
   }
 
   /* A UPI intent string. This is the reason the inspect half exists.
@@ -1648,7 +1648,7 @@
     out.row('payee address (pa)', params.pa || '(missing)', params.pa ? null : 't-warn');
     out.row('payee name (pn)', params.pn || '(not set)');
     if (params.am) out.row('amount (am)', (params.cu || 'INR') + ' ' + params.am, 't-warn');
-    else out.row('amount (am)', 'not fixed — the app will ask you', 't-warn');
+    else out.row('amount (am)', 'not fixed - the app will ask you', 't-warn');
     if (params.mam) out.row('minimum amount', params.mam);
     if (params.tn) out.row('note (tn)', params.tn);
     if (params.mc) out.row('merchant code (mc)', params.mc);
@@ -1689,8 +1689,8 @@
     }
     if (!params.am) {
       out.warn('No amount is fixed, so the app will ask you to type one. That is');
-      out.warn('the version that comes with a story — "just enter one rupee to');
-      out.warn('verify" — and the field is yours to fill in wrongly.');
+      out.warn('the version that comes with a story - "just enter one rupee to');
+      out.warn('verify" - and the field is yours to fill in wrongly.');
       out.line('');
     }
     if (params.url) {
@@ -1699,8 +1699,8 @@
       reportUrl(params.url);
       out.line('');
     }
-    out.dim('The rest of this family — collect requests, mandates, and the phone');
-    out.dim('call that comes with them — is walked through at /labs/upi-fraud.');
+    out.dim('The rest of this family - collect requests, mandates, and the phone');
+    out.dim('call that comes with them - is walked through at /labs/upi-fraud.');
   }
 
   function reportWifi(text) {
@@ -1953,7 +1953,7 @@
       out.err('That is ' + bytes.length + ' bytes. The largest QR code at level ' +
               ecl + ' holds about ' + g.max + '.');
       out.dim('Level L holds the most. Long text in a QR code is a bad idea');
-      out.dim('anyway — the modules get small and phone cameras start failing.');
+      out.dim('anyway - the modules get small and phone cameras start failing.');
       return;
     }
 
@@ -1970,7 +1970,7 @@
     out.heading('Encoded');
     out.row('bytes', bytes.length + ' of ' + g.capacityBytes + ' available');
     out.row('version', g.ver + ' (' + g.size + '×' + g.size + ' modules)');
-    out.row('correction level', ECL_NAMES[g.ecl] + ' — recovers ' + ECL_RECOVERY[g.ecl]);
+    out.row('correction level', ECL_NAMES[g.ecl] + ' - recovers ' + ECL_RECOVERY[g.ecl]);
     out.row('mask chosen', g.mask + ' of 0-7');
     out.row('quiet zone', quiet + ' modules');
     out.rule();

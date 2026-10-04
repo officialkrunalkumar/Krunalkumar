@@ -179,7 +179,7 @@
     {
       screen: 'Payment request',
       rows: [
-        ['Requested by', 'CUSTOMER CARE — REFUND DESK'],
+        ['Requested by', 'CUSTOMER CARE - REFUND DESK'],
         ['UPI ID', 'withheld in this diagram'],
         ['Note from requester', 'Approve to receive your refund'],
         ['Amount', '₹4,999']
@@ -253,7 +253,7 @@
     {
       screen: 'Payment request',
       rows: [
-        ['Requested by', 'REFUND OFFICER — CREDITED'],
+        ['Requested by', 'REFUND OFFICER - CREDITED'],
         ['Note from requester', '₹19,999 credited to your account'],
         ['Status shown in note', 'pending your approval'],
         ['Amount', '₹19,999'],
@@ -312,7 +312,7 @@
     function drawScreen(round) {
       empty(stage);
       var mock = E('figure', 'upi-mock');
-      var ribbon = E('figcaption', 'upi-mock-ribbon', 'Illustration — not a real app');
+      var ribbon = E('figcaption', 'upi-mock-ribbon', 'Illustration - not a real app');
       mock.appendChild(ribbon);
       mock.appendChild(E('p', 'upi-mock-title', round.screen));
 
@@ -377,10 +377,10 @@
         'The PIN is a signature on a debit. It authorises money leaving and it does ' +
         'nothing else, in any app, on any screen, for any reason anybody gives you. ' +
         'Receiving money in UPI needs no approval, no PIN, no scan and no link, ' +
-        'because there is nothing to authorise — the money is simply there.');
+        'because there is nothing to authorise - the money is simply there.');
       para(done, 'upi-done-p',
-        'Everything else on a request screen — the name, the note, the reason, the ' +
-        'word refund — is text the other party typed. Treat it as their claim, not as ' +
+        'Everything else on a request screen - the name, the note, the reason, the ' +
+        'word refund - is text the other party typed. Treat it as their claim, not as ' +
         'information.');
       stage.appendChild(done);
 
@@ -451,7 +451,7 @@
     host.appendChild(head);
     para(host, 'upi-lede',
       'One question, seven screens, and the same answer hiding in the same place ' +
-      'every time. Decide before you scroll — guessing and being wrong is the ' +
+      'every time. Decide before you scroll - guessing and being wrong is the ' +
       'point of the exercise, and it is cheaper here than at a counter.');
     host.appendChild(stage);
     host.appendChild(ask);
@@ -479,7 +479,7 @@
       sub: 'Money you are owed',
       hook: 'It opens with them giving rather than asking. An order that failed, a train ticket cancelled, a double-charged electricity bill, a deposit the landlord is releasing. Being owed money switches off the part of you that checks, because on the face of it nothing is being requested.',
       pressure: 'A closing window and a patient, apologetic voice. The refund reference expires at six. The gateway batch closes tonight. They stay courteous the whole way, because courtesy is what stops you hanging up and calling the company on a number you already have.',
-      moment: 'They raise a collect request, or send a QR code, or walk you into a payment screen, and call it the refund. What you approve is a debit. Often the first one is small and framed as verifying the account — that one exists to teach you the motion, not to take the money.',
+      moment: 'They raise a collect request, or send a QR code, or walk you into a payment screen, and call it the refund. What you approve is a debit. Often the first one is small and framed as verifying the account - that one exists to teach you the motion, not to take the money.',
       question: 'Which of us is about to type a PIN? If the answer is you, this is not a refund. A refund needs nothing from you at all.',
       need: 'Your approval on a screen they have no way of reaching themselves. That is the entire dependency.'
     },
@@ -488,17 +488,17 @@
       sub: 'A credit you did not expect',
       hook: 'A small amount lands in your account, often genuinely, followed by a distressed message. Sent to the wrong number. Please return it. Sometimes a second voice calls, presenting as a bank officer, to confirm the story.',
       pressure: 'Decency and embarrassment, which are far stronger levers than fear. You are being asked to be a good person about somebody else’s mistake, and refusing feels like keeping what is not yours.',
-      moment: 'The return goes out through their link, their QR or their request, and it goes to an account that is not the one that credited you. Two common endings: the amount you send back is quietly larger than what arrived, or the original credit is reversed later as a disputed transaction while your return has already left. There is a third and worse ending — if the money that reached you was itself stolen, passing it on has made your account a link in the chain, and it is your account that gets frozen.',
+      moment: 'The return goes out through their link, their QR or their request, and it goes to an account that is not the one that credited you. Two common endings: the amount you send back is quietly larger than what arrived, or the original credit is reversed later as a disputed transaction while your return has already left. There is a third and worse ending - if the money that reached you was itself stolen, passing it on has made your account a link in the chain, and it is your account that gets frozen.',
       question: 'Why is a bank not doing this? A genuine misdirected transfer is reversed by the sender’s bank, on the sender’s written request, with a reference number. It is never returned by a stranger with a link.',
       need: 'Your willingness to move money outside the banking process. Tell them to raise it with their own bank, keep the credit untouched, tell your bank about it, and stop replying.'
     },
     {
       label: 'The QR that will send you money',
       sub: 'Selling something online',
-      hook: 'You have listed a sofa, a phone, a bike. A buyer appears quickly, agrees the price without haggling, and wants to settle immediately — which is already unusual enough to be worth noticing.',
+      hook: 'You have listed a sofa, a phone, a bike. A buyer appears quickly, agrees the price without haggling, and wants to settle immediately - which is already unusual enough to be worth noticing.',
       pressure: 'They are travelling, or their driver is downstairs, or they are being posted out tomorrow. The urgency is structural: it explains why they cannot meet, why they will not inspect, and why this has to happen in the next ten minutes.',
       moment: 'They send a QR code to receive the payment with, and ask you to scan it and enter your PIN. A QR code is an address to pay to. Scanning it and approving can only move money out of your account.',
-      question: 'Show me the receive screen that asks for a PIN. There is not one, in any app. Receiving is passive — the money is simply there, and you find out afterwards.',
+      question: 'Show me the receive screen that asks for a PIN. There is not one, in any app. Receiving is passive - the money is simply there, and you find out afterwards.',
       need: 'Your belief that receiving requires an action. A single demonstration that it does not ends every version of this.'
     },
     {
@@ -506,14 +506,14 @@
       sub: 'A listing too good to leave',
       hook: 'A car, a bike, furniture, a flat, well under the going rate, posted by a seller who says they are armed forces or a government officer being posted out at short notice and must sell this week. A photograph in uniform and a picture of an identity card do most of the work.',
       pressure: 'Rank and hurry. The story is built so that checking feels like an insult, and a unit transport or a depot will deliver so you never have to see the item or the person. Somebody senior may call to vouch for them.',
-      moment: 'Never one payment. A token to hold it, then transport, then insurance, then a refundable security deposit, then a clearance charge. Each is small against what you have already put in, which is exactly the design — by the third one you are not deciding to pay, you are protecting what you paid.',
+      moment: 'Never one payment. A token to hold it, then transport, then insurance, then a refundable security deposit, then a clearance charge. Each is small against what you have already put in, which is exactly the design - by the third one you are not deciding to pay, you are protecting what you paid.',
       question: 'Am I paying for something I have not seen, to somebody I have not met? No canteen, depot or unit ships goods against an advance transfer to a personal account, and no posting order has ever required one.',
       need: 'The first small payment. Sunk cost does the rest, so the only payment that matters is the one you have not made yet. The same story runs against sellers too, with a forged payment screenshot in place of the token.'
     },
     {
       label: 'The helpline you found yourself',
       sub: 'You made the call',
-      hook: 'Something went wrong with a delivery, a booking, a payment app, an account. You searched for the customer care number and rang what came up. Nobody called you. That is precisely why it works — every warning you have ever heard is about incoming calls.',
+      hook: 'Something went wrong with a delivery, a booking, a payment app, an account. You searched for the customer care number and rang what came up. Nobody called you. That is precisely why it works - every warning you have ever heard is about incoming calls.',
       pressure: 'The number sat on a page that looked official, in an advertisement above the results, or in a business listing anybody can suggest an edit to. The person answers in the company’s name, has a script, and is unhurried.',
       moment: 'A verification request for one or ten rupees to confirm the account is yours, or a push towards a screen-sharing app to process the refund. Either way you approve something. The small amount is not the point; the approval is, and so is what they watch you type next.',
       question: 'Where did this number actually come from? Support numbers live inside the app you already have installed, on the back of your card, or on your statement. A search result is not a source.',
@@ -533,7 +533,7 @@
   function buildScripts(host) {
     para(host, 'upi-lede',
       'Six approaches, and between them they cover most of what actually reaches ' +
-      'people here. They are not six tricks — they are one trick with six ways in, ' +
+      'people here. They are not six tricks - they are one trick with six ways in, ' +
       'and the fourth beat is the part worth memorising.');
 
     var defs = SCRIPTS.map(function (s) {
@@ -581,7 +581,7 @@
      ------------------------------------------------------------------------ */
   var BANDS = [
     ['First 60 minutes',
-     'Money is layered onward within minutes — split, withdrawn, or converted. ' +
+     'Money is layered onward within minutes - split, withdrawn, or converted. ' +
      'A hold placed now can catch whatever has not moved yet. This hour is worth ' +
      'more than the whole week after it.'],
     ['First 24 hours',
@@ -607,7 +607,7 @@
     ['Write it all down while it is fresh.',
      'Numbers, names, times, amounts, the reference of every debit, and screenshots of the conversation before anyone deletes it. Do not rely on remembering any of it tomorrow.'],
     ['Go to the police as well.',
-     'Your local cyber cell, or any police station. Under the Zero FIR principle no station can refuse you for being outside its jurisdiction — the FIR is registered and transferred.'],
+     'Your local cyber cell, or any police station. Under the Zero FIR principle no station can refuse you for being outside its jurisdiction - the FIR is registered and transferred.'],
     ['Look after the person, not only the money.',
      'People carry this badly, and shame is what keeps them quiet for three days while the money moves. Tele-MANAS, the national mental health helpline, is on 14416.'],
     ['Expect the second approach.',
@@ -687,7 +687,7 @@
       'live case, and getting it released to you generally needs a court order, ' +
       'which takes months. Partial recovery is the common good outcome. Full ' +
       'recovery happens and is not the norm, and nobody can promise it to you in ' +
-      'advance — not the bank, not the police, and not me.');
+      'advance - not the bank, not the police, and not me.');
     para(honest, 'upi-honest-p',
       'Two things stay worth doing even when the money is gone. Reporting builds ' +
       'the case against the network rather than only your case, and that is how ' +

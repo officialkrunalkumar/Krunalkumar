@@ -30,7 +30,7 @@
       why: 'Neither 0.1 nor 0.2 can be written exactly in binary, so each is stored as the nearest ' +
         'double and their sum lands a little above three tenths. JavaScript prints the shortest decimal ' +
         'that reads back as that exact double, which is <code>0.30000000000000004</code>. Every language ' +
-        'with IEEE-754 doubles computes the same number &mdash; they differ only in how many digits they show.'
+        'with IEEE-754 doubles computes the same number - they differ only in how many digits they show.'
     },
     {
       lang: 'JavaScript',
@@ -38,7 +38,7 @@
       opts: ['object', 'null', 'undefined', 'TypeError'],
       a: 'object',
       why: 'A bug from the first implementation, kept for compatibility. Values carried a type tag in ' +
-        'their low bits, the tag for objects was <code>000</code>, and the null pointer was all zeros &mdash; ' +
+        'their low bits, the tag for objects was <code>000</code>, and the null pointer was all zeros - ' +
         'so null read as an object. Test for it with <code>value === null</code>; <code>typeof</code> ' +
         'cannot tell you.'
     },
@@ -58,7 +58,7 @@
       opts: ['true true true', 'true true false', 'false true false', 'true false false'],
       a: 'true true false',
       why: 'The loose operator converts before comparing. Against the number 0 both strings become numbers ' +
-        '&mdash; empty string to 0 and "0" to 0 &mdash; so both are true. Compared with each other, both ' +
+        '- empty string to 0 and "0" to 0 - so both are true. Compared with each other, both ' +
         'sides are already strings, no conversion happens, and "" is not "0". Equality that is not ' +
         'transitive is the whole argument for <code>===</code>.'
     },
@@ -70,7 +70,7 @@
       why: 'A <code>var</code> declaration is hoisted to the top of its function but the assignment stays ' +
         'where you wrote it, so <code>x</code> exists and holds <code>undefined</code> when the log runs. ' +
         '<code>let</code> and <code>const</code> are hoisted too, but reading one before its declaration ' +
-        'throws a ReferenceError instead &mdash; which is the more useful behaviour.'
+        'throws a ReferenceError instead - which is the more useful behaviour.'
     },
     {
       lang: 'JavaScript',
@@ -89,7 +89,7 @@
       code: 'console.log([1, 2, 3].map(parseInt).join(","));',
       opts: ['1,2,3', '1,NaN,NaN', 'NaN,NaN,NaN', '1,2,NaN'],
       a: '1,NaN,NaN',
-      why: '<code>map</code> passes three arguments &mdash; value, index, array &mdash; and ' +
+      why: '<code>map</code> passes three arguments - value, index, array - and ' +
         '<code>parseInt</code> takes a second one, the radix. So the calls are <code>parseInt("1", 0)</code>, ' +
         'where radix 0 means "work it out" and gives 1; <code>parseInt("2", 1)</code>, an invalid radix; and ' +
         '<code>parseInt("3", 2)</code>, where 3 is not a binary digit. Wrap the callback so it takes one ' +
@@ -145,7 +145,7 @@
       why: 'Multiplying a list repeats references, not contents, so the outer list holds the same row ' +
         'object twice and writing through one row shows up in the other. The inner <code>[0] * 3</code> is ' +
         'harmless because integers are immutable and never written through. Build rows with a ' +
-        'comprehension &mdash; <code>[[0] * 3 for _ in range(2)]</code> &mdash; and each one is distinct.'
+        'comprehension - <code>[[0] * 3 for _ in range(2)]</code> - and each one is distinct.'
     },
     {
       lang: 'Python',
@@ -166,7 +166,7 @@
       why: 'Python floors division towards negative infinity rather than truncating towards zero, so ' +
         '-7 // 2 is -4. The remainder then follows to keep the identity <code>a == (a // b) * b + a % b</code> ' +
         'true, giving 1, which takes the sign of the divisor. C and Java truncate instead and print -3 and ' +
-        '-1 for the same expression &mdash; worth knowing before porting arithmetic between them.'
+        '-1 for the same expression - worth knowing before porting arithmetic between them.'
     },
 
     /* ---------------- C ---------------- */
@@ -178,7 +178,7 @@
       a: 'Undefined behaviour: often -2147483648, but the compiler may assume it cannot happen',
       why: 'Signed overflow is undefined in C, not a guarantee of wrap-around. On a two\'s-complement ' +
         'target the addition usually does wrap and you see -2147483648, but the compiler is equally ' +
-        'entitled to assume <code>x + 1 &gt; x</code> always holds &mdash; which is how overflow checks ' +
+        'entitled to assume <code>x + 1 &gt; x</code> always holds - which is how overflow checks ' +
         'written that way get optimised away entirely. Do the check before the addition, or use unsigned ' +
         'types, which are defined to wrap.'
     },
@@ -188,7 +188,7 @@
       opts: ['4294967295', '-1', '0', 'Undefined behaviour'],
       a: '4294967295',
       why: 'Unsigned arithmetic is defined to wrap modulo 2 to the power of the width, so 0 - 1 is ' +
-        '<code>UINT_MAX</code> &mdash; 4294967295 where <code>unsigned int</code> is 32 bits. That is the ' +
+        '<code>UINT_MAX</code> - 4294967295 where <code>unsigned int</code> is 32 bits. That is the ' +
         'exact opposite of the signed case above, and it is why ' +
         '<code>for (unsigned i = n; i &gt;= 0; i--)</code> never terminates: the condition cannot be false.'
     },
@@ -225,7 +225,7 @@
       opts: ['6', '5', '8', '1'],
       a: '6',
       why: 'A string literal carries a terminating NUL byte, and <code>char s[] = "hello"</code> sizes the ' +
-        'array to hold it &mdash; six bytes. <code>strlen(s)</code> is 5, because it counts up to but not ' +
+        'array to hold it - six bytes. <code>strlen(s)</code> is 5, because it counts up to but not ' +
         'including the NUL. Confusing the two is the classic off-by-one that turns a buffer size into a ' +
         'buffer overrun.'
     }
@@ -327,7 +327,7 @@
         v.hidden = false;
         v.className = 'gto-verdict ' + (ok ? 'is-right' : 'is-wrong');
         v.innerHTML =
-          '<p class="gto-call">' + (ok ? 'Correct' : 'Not quite') + ' &mdash; it prints <code>' +
+          '<p class="gto-call">' + (ok ? 'Correct' : 'Not quite') + ' - it prints <code>' +
           esc(it.a) + '</code>.</p>' +
           '<p class="gto-why">' + it.why + '</p>' +
           '<button class="btn btn-primary" type="button" id="gto-next">' +
@@ -350,7 +350,7 @@
         }
         var note = pct >= 90 ? 'You already knew where the bodies are buried.'
                  : pct >= 60 ? 'The ones people miss are rarely the language they write every day.'
-                 : 'Worth another run — the order and the options both shuffle.';
+                 : 'Worth another run - the order and the options both shuffle.';
         if (worst && missed[worst] > 1) {
           note += ' ' + missed[worst] + ' of the misses were ' + worst + '.';
         }

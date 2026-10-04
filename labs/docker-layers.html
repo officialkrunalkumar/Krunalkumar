@@ -90,7 +90,7 @@
 			"name": "I delete the file on the very next line. Is it really still in the image?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "Yes. A layer is a diff and a diff can only add. The earlier layer is already committed, immutable, and possibly shared with other images, so a later layer cannot reach into it — all it can write is a whiteout marker saying the file is no longer visible. The bytes ship with the image. Anyone holding it can run docker save, untar the result, and read the layer blob with nothing more exotic than tar. The Union filesystem tab prints the exact commands. If a credential has ever been in a pushed layer, rotate it: squashing afterwards does nothing for anyone who already pulled."
+				"text": "Yes. A layer is a diff and a diff can only add. The earlier layer is already committed, immutable, and possibly shared with other images, so a later layer cannot reach into it - all it can write is a whiteout marker saying the file is no longer visible. The bytes ship with the image. Anyone holding it can run docker save, untar the result, and read the layer blob with nothing more exotic than tar. The Union filesystem tab prints the exact commands. If a credential has ever been in a pushed layer, rotate it: squashing afterwards does nothing for anyone who already pulled."
 			}
 		},
 		{
@@ -122,7 +122,7 @@
 			"name": "What does this tool not understand?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "Heredocs in RUN, which BuildKit supports and this parser does not. Character classes in glob patterns. Quoting, when it splits a shell command on && and ;. It also does not know your packages: an apt or apk package that is not in my size table is modelled at a flat default, and a command it does not recognise at all contributes zero and says so in that layer detail rather than inventing a plausible number. It checks nothing about known vulnerabilities, image signing or the runtime profile the container ends up with — those need a scanner and a running daemon, and this is a reading of one file."
+				"text": "Heredocs in RUN, which BuildKit supports and this parser does not. Character classes in glob patterns. Quoting, when it splits a shell command on && and ;. It also does not know your packages: an apt or apk package that is not in my size table is modelled at a flat default, and a command it does not recognise at all contributes zero and says so in that layer detail rather than inventing a plausible number. It checks nothing about known vulnerabilities, image signing or the runtime profile the container ends up with - those need a scanner and a running daemon, and this is a reading of one file."
 			}
 		},
 		{
@@ -138,7 +138,7 @@
 			"name": "Does anything leave my browser?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "No. There is no server, no upload and no network request of any kind — not to a registry, not to a vulnerability database, not for a base image manifest. That is also why the sizes have to be modelled rather than looked up. Everything is in this tab and gone when you close it, and the page works with the network switched off once it is cached."
+				"text": "No. There is no server, no upload and no network request of any kind - not to a registry, not to a vulnerability database, not for a base image manifest. That is also why the sizes have to be modelled rather than looked up. Everything is in this tab and gone when you close it, and the page works with the network switched off once it is cached."
 			}
 		}
 	]
@@ -235,7 +235,7 @@
           </ol>
         </nav>
         <h1>Docker layer explorer</h1>
-        <p class="hero-text"><code>docker images</code> says 1.6 GB for an application that is four megabytes of JavaScript, and the Dockerfile gives you no clue which line did it. So this prices every line. Edit the file on the left and the layer stack redraws with a size against each instruction &mdash; including the bytes a later <code>rm</code> did not actually remove, because it cannot. Every size here is a modelled estimate rather than a real build, which is the trade for it running entirely in your browser.</p>
+        <p class="hero-text"><code>docker images</code> says 1.6 GB for an application that is four megabytes of JavaScript, and the Dockerfile gives you no clue which line did it. So this prices every line. Edit the file on the left and the layer stack redraws with a size against each instruction - including the bytes a later <code>rm</code> did not actually remove, because it cannot. Every size here is a modelled estimate rather than a real build, which is the trade for it running entirely in your browser.</p>
         <ul class="lab-facts">
           <li>A size against every instruction</li>
           <li>Whiteouts: deleted, still extractable</li>
@@ -264,7 +264,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the parsing, the size model, all of it
+              This runs entirely inside your browser - the parsing, the size model, all of it
               on your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -286,7 +286,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -346,7 +346,7 @@
           </details>
           <details class="lab-faq">
             <summary>I delete the file on the very next line. Is it really still in the image?</summary>
-            <div>Yes. A layer is a diff and a diff can only add. The earlier layer is already committed, immutable, and possibly shared with other images, so a later layer cannot reach into it — all it can write is a whiteout marker saying the file is no longer visible. The bytes ship with the image. Anyone holding it can run docker save, untar the result, and read the layer blob with nothing more exotic than tar. The Union filesystem tab prints the exact commands. If a credential has ever been in a pushed layer, rotate it: squashing afterwards does nothing for anyone who already pulled.</div>
+            <div>Yes. A layer is a diff and a diff can only add. The earlier layer is already committed, immutable, and possibly shared with other images, so a later layer cannot reach into it - all it can write is a whiteout marker saying the file is no longer visible. The bytes ship with the image. Anyone holding it can run docker save, untar the result, and read the layer blob with nothing more exotic than tar. The Union filesystem tab prints the exact commands. If a credential has ever been in a pushed layer, rotate it: squashing afterwards does nothing for anyone who already pulled.</div>
           </details>
           <details class="lab-faq">
             <summary>So why does chaining commands with &amp;&amp; actually shrink the image?</summary>
@@ -362,7 +362,7 @@
           </details>
           <details class="lab-faq">
             <summary>What does this tool not understand?</summary>
-            <div>Heredocs in RUN, which BuildKit supports and this parser does not. Character classes in glob patterns. Quoting, when it splits a shell command on &amp;&amp; and ;. It also does not know your packages: an apt or apk package that is not in my size table is modelled at a flat default, and a command it does not recognise at all contributes zero and says so in that layer detail rather than inventing a plausible number. It checks nothing about known vulnerabilities, image signing or the runtime profile the container ends up with — those need a scanner and a running daemon, and this is a reading of one file.</div>
+            <div>Heredocs in RUN, which BuildKit supports and this parser does not. Character classes in glob patterns. Quoting, when it splits a shell command on &amp;&amp; and ;. It also does not know your packages: an apt or apk package that is not in my size table is modelled at a flat default, and a command it does not recognise at all contributes zero and says so in that layer detail rather than inventing a plausible number. It checks nothing about known vulnerabilities, image signing or the runtime profile the container ends up with - those need a scanner and a running daemon, and this is a reading of one file.</div>
           </details>
           <details class="lab-faq">
             <summary>Is multi-stage always the answer?</summary>
@@ -370,7 +370,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does anything leave my browser?</summary>
-            <div>No. There is no server, no upload and no network request of any kind — not to a registry, not to a vulnerability database, not for a base image manifest. That is also why the sizes have to be modelled rather than looked up. Everything is in this tab and gone when you close it, and the page works with the network switched off once it is cached.</div>
+            <div>No. There is no server, no upload and no network request of any kind - not to a registry, not to a vulnerability database, not for a base image manifest. That is also why the sizes have to be modelled rather than looked up. Everything is in this tab and gone when you close it, and the page works with the network switched off once it is cached.</div>
           </details>
       </section>
 
@@ -378,7 +378,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a size is badly wrong, or the tool misreads a Dockerfile that Docker builds fine, I would genuinely like to know &mdash; a teaching model that teaches the wrong thing is worse than no model.</p>
+          <p>If a size is badly wrong, or the tool misreads a Dockerfile that Docker builds fine, I would genuinely like to know - a teaching model that teaches the wrong thing is worse than no model.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=docker-layers#lab-feedback">Report a problem or send feedback</a>
@@ -404,7 +404,7 @@
           </a>
           <a class="lab-card" href="/labs/linux">
             <span class="lab-card-name">Linux terminal</span>
-            <p class="lab-card-desc">A real shell in the browser — the place to practise the tar and docker save recipes.</p>
+            <p class="lab-card-desc">A real shell in the browser - the place to practise the tar and docker save recipes.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/hash">

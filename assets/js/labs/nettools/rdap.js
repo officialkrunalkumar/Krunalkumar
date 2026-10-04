@@ -50,7 +50,7 @@
     'client delete prohibited': ['delete lock set by the registrar', true],
     'client update prohibited': ['update lock set by the registrar', true],
     'client renew prohibited': ['renewal lock set by the registrar', false],
-    'server transfer prohibited': ['transfer lock set by the registry — strongest', true],
+    'server transfer prohibited': ['transfer lock set by the registry - strongest', true],
     'server delete prohibited': ['delete lock set by the registry', true],
     'server update prohibited': ['update lock set by the registry', true],
     'pending transfer': ['a transfer is in progress right now', false],
@@ -58,7 +58,7 @@
     'redemption period': ['expired and in the redemption grace period', false],
     'auto renew period': ['recently auto-renewed', false],
     'add period': ['registered within the last few days', false],
-    'inactive': ['no nameservers — the domain does not resolve', false],
+    'inactive': ['no nameservers - the domain does not resolve', false],
     'active': ['normal, no restrictions', false],
     'ok': ['normal, no restrictions', false]
   };
@@ -124,7 +124,7 @@
       return;
     }
 
-    out.heading('RDAP lookup — ' + domain);
+    out.heading('RDAP lookup - ' + domain);
     out.dim('via rdap.org, which redirects to the authoritative registry');
     out.line('');
 
@@ -171,7 +171,7 @@
     out.row('name', d.ldhName || domain);
     if (d.unicodeName && d.unicodeName !== d.ldhName) {
       out.row('unicode name', d.unicodeName, 't-warn');
-      out.dim('    an internationalised domain — check it for lookalike characters');
+      out.dim('    an internationalised domain - check it for lookalike characters');
       out.dim('    with the URL inspector at /labs/url-inspector');
     }
     if (d.handle) out.row('registry id', d.handle);
@@ -253,7 +253,7 @@
       if (redacted) {
         out.line('');
         out.dim('Some contact details are redacted. Since GDPR, registries publish');
-        out.dim('almost nothing about individual registrants — usually only the');
+        out.dim('almost nothing about individual registrants - usually only the');
         out.dim('registrar. That is a privacy improvement, and it also removed a');
         out.dim('lot of what WHOIS used to be useful for in investigations.');
       }
@@ -301,7 +301,7 @@
       out.dim('');
       out.dim('RDAP is the structured, HTTPS replacement for WHOIS. Classic WHOIS');
       out.dim('runs over raw TCP port 43, which a browser cannot open and which');
-      out.dim('the Fetch spec blocks outright — so every other web WHOIS tool is');
+      out.dim('the Fetch spec blocks outright - so every other web WHOIS tool is');
       out.dim('a server doing it on your behalf. This one is not.');
       out.dim('');
       out.dim('Try:  github.com  ·  mozilla.org  ·  a domain from a suspicious email');

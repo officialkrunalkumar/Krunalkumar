@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/api" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Online API Tester — Requests Straight From Your Browser" />
+    <meta property="og:title" content="Online API Tester - Requests Straight From Your Browser" />
     <meta property="og:description" content="An HTTP client with no proxy behind it: your request goes straight from your browser to the address you typed. Nothing is logged." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/api" />
@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Online API Tester" />
     <meta name="twitter:description" content="HTTP requests from your browser, with no proxy in the path." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-api.jpg" />
-    <title>Online API Tester — No Proxy | Krunalkumar Shah</title>
+    <title>Online API Tester - No Proxy | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -44,7 +44,7 @@
                 "Custom headers and request bodies",
                 "Pretty-printed JSON responses",
                 "Response timing and status",
-                "No proxy — requests go direct"
+                "No proxy - requests go direct"
         ],
         "author": {
                 "@type": "Person",
@@ -208,13 +208,13 @@
         </nav>
         <h1>Online API tester</h1>
         <p class="hero-text">
-          Send an HTTP request and read the whole response &mdash; status, headers, timing and a
+          Send an HTTP request and read the whole response - status, headers, timing and a
           pretty-printed body. The request goes from your browser straight to the address you
           type. There is no proxy in the path, which is unusual for a web-based API tool and is
           the reason nothing you send is logged in between.
         </p>
         <ul class="lab-facts">
-          <li>No proxy &mdash; requests go direct</li>
+          <li>No proxy - requests go direct</li>
           <li>Nothing logged in between</li>
           <li>Pretty-printed JSON</li>
           <li>Free, no sign-up</li>
@@ -246,7 +246,7 @@
               <div>
                 <p class="lab-gate-h limits">What to know</p>
                 <ul class="lab-gate-list">
-                  <li>Your request genuinely leaves your machine &mdash; that is the point</li>
+                  <li>Your request genuinely leaves your machine - that is the point</li>
                   <li>CORS applies: many APIs will refuse a browser request</li>
                   <li>http:// is silently upgraded to https:// by this page&rsquo;s security policy</li>
                   <li>Cross-origin responses expose only a few headers</li>
@@ -256,7 +256,7 @@
               <div>
                 <p class="lab-gate-h privacy">What you get</p>
                 <ul class="lab-gate-list">
-                  <li>No proxy &mdash; your request is not relayed through anyone</li>
+                  <li>No proxy - your request is not relayed through anyone</li>
                   <li>Nothing stored or logged here, no account</li>
                   <li>Full status, headers, timing and body</li>
                   <li>Honest CORS errors that say what actually happened</li>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start testing</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start testing</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -308,7 +308,7 @@
             <div id="api-body-pane">
               <label class="sr-only" for="api-body">Request body</label>
               <textarea class="api-field api-body" id="api-body" spellcheck="false"
-                        placeholder="Request body — JSON, form data, anything"></textarea>
+                        placeholder="Request body - JSON, form data, anything"></textarea>
             </div>
           </div>
           <div class="lab-pane lab-terminal-wrap">
@@ -328,7 +328,7 @@
             <h3>The browser is enforcing CORS</h3>
             <p>
               When a page requests a different origin, the browser only hands the response back
-              if that server says it may &mdash; via an
+              if that server says it may - via an
               <code>Access-Control-Allow-Origin</code> header. Without it the request may well
               have reached the server and succeeded; the browser simply refuses to let this page
               read the reply. curl and Postman are not browsers and never had that restriction.
@@ -347,7 +347,7 @@
             <h3>Why there is no proxy</h3>
             <p>
               Every other browser-based API tester works around CORS by relaying your request
-              through their server. That works &mdash; and it means your URLs, headers and any
+              through their server. That works - and it means your URLs, headers and any
               token you pasted pass through a machine you do not control. Not having a proxy is
               a deliberate trade: fewer APIs work, and nothing you send is seen by anyone
               but the API you addressed.
@@ -356,7 +356,7 @@
           <article class="info-card">
             <h3>APIs that do work</h3>
             <p>
-              Plenty of public APIs send permissive CORS headers &mdash; GitHub, httpbin,
+              Plenty of public APIs send permissive CORS headers - GitHub, httpbin,
               most open-data endpoints, and any API you have built yourself with CORS enabled.
               The examples in the picker above are all ones that work, so you can see the tool
               behaving before pointing it at your own.
@@ -371,15 +371,15 @@
         </div>
           <details class="lab-faq">
             <summary>Why do some requests fail here but work in Postman?</summary>
-            <div>Because a browser enforces CORS and Postman is not a browser. A browser will only hand a cross-origin response back to a page when the server sends an Access-Control-Allow-Origin header permitting it. curl and Postman have no such rule. So a failure here usually means the API has not opted in to browser access — not that the API is down.</div>
+            <div>Because a browser enforces CORS and Postman is not a browser. A browser will only hand a cross-origin response back to a page when the server sends an Access-Control-Allow-Origin header permitting it. curl and Postman have no such rule. So a failure here usually means the API has not opted in to browser access - not that the API is down.</div>
           </details>
           <details class="lab-faq">
             <summary>Does my request go through your server?</summary>
-            <div>No. The request goes from your browser straight to the address you typed. There is no proxy and no relay here, which is also why CORS applies — a proxy is exactly how other online API testers work around it, and running one would mean your requests, headers and tokens passing through someone else's machine.</div>
+            <div>No. The request goes from your browser straight to the address you typed. There is no proxy and no relay here, which is also why CORS applies - a proxy is exactly how other online API testers work around it, and running one would mean your requests, headers and tokens passing through someone else's machine.</div>
           </details>
           <details class="lab-faq">
             <summary>Is it safe to paste an API key?</summary>
-            <div>Your key is used only to build the request your browser sends, and it is never stored or transmitted anywhere else. That said, treat any key you paste into any web page as one that could be exposed — use a test key where you can, and revoke anything you would not want in a browser's memory.</div>
+            <div>Your key is used only to build the request your browser sends, and it is never stored or transmitted anywhere else. That said, treat any key you paste into any web page as one that could be exposed - use a test key where you can, and revoke anything you would not want in a browser's memory.</div>
           </details>
           <details class="lab-faq">
             <summary>Which methods are supported?</summary>

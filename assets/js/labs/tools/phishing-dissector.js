@@ -157,7 +157,7 @@
     /* Cyrillic u, Greek gamma, Cyrillic straight u, fullwidth y */
     ['z', '\u0290\uFF5A'],
     /* Latin z with retroflex hook, fullwidth z */
-    ['-', '\u2010\u2011\u2012\u2013\u2014\u2212\uFF0D'],
+    ['-', '\u2010\u2011\u2012\u2013-\u2212\uFF0D'],
     /* hyphen, non-breaking hyphen, figure dash, en dash, em dash, minus sign, fullwidth hyphen */
     ['.', '\u3002\uFF0E\uFF61\u06D4']
     /* ideographic full stop, fullwidth full stop, halfwidth ideographic stop, Arabic full stop */
@@ -731,7 +731,7 @@
       add('high', 'The link points at a raw IP address, not a name', at, url.length, [
         'Host: ' + host,
         'An organisation that owns a domain uses it. A bare address means there',
-        'is no certificate to check and no name to recognise — and in the',
+        'is no certificate to check and no name to recognise - and in the',
         'decimal or hexadecimal forms, nothing readable at all.'
       ]);
     } else {
@@ -1607,7 +1607,7 @@
     if (languageGroups.length) {
       out.heading('Wording');
       out.dim('Matched phrases, shown where they appear. Wording is the weakest');
-      out.dim('signal in this whole tool — urgent emails from real people exist,');
+      out.dim('signal in this whole tool - urgent emails from real people exist,');
       out.dim('and a careful attacker writes calmly. Read it as pressure, not proof.');
       out.line('');
       languageGroups.forEach(function (entry) {
@@ -1656,7 +1656,7 @@
             attachments + ' attachment name' + (attachments === 1 ? '' : 's') +
             ' examined.');
     if (urlCount >= MAX_LINKS) {
-      out.warn('That is the ceiling, not the total — this message has more links');
+      out.warn('That is the ceiling, not the total - this message has more links');
       out.warn('than that and the rest were not read. A mailout with hundreds of');
       out.warn('them is worth pasting in pieces if you need all of them checked.');
     }
@@ -1869,7 +1869,7 @@
       out.line('');
       out.dim('A full raw message gives the most: Gmail → ⋮ → "Show original",');
       out.dim('Outlook → File → Properties → Internet headers. A body on its own,');
-      out.dim('or a single URL, both work too — you just get fewer checks.');
+      out.dim('or a single URL, both work too - you just get fewer checks.');
       return;
     }
     if (raw.length > MAX_INPUT) {
@@ -1928,7 +1928,7 @@
       out.dim('Paste a raw email and press Dissect, or load a worked example.');
       out.dim('');
       out.dim('A whole message gives the most to work with, but a body on its own');
-      out.dim('or a single URL are both fine — the checks that need headers are');
+      out.dim('or a single URL are both fine - the checks that need headers are');
       out.dim('skipped and the rest still run.');
       out.dim('');
       out.dim('Nothing is uploaded, no link is fetched and no domain is resolved.');

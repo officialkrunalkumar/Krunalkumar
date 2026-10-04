@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="One night of logons. Find patient zero." />
     <meta name="twitter:description" content="One night of authentication events and one compromised account. The log starts hidden and every question you ask is counted. A new domain each run." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-threat-hunt.jpg" />
-    <title>Threat Hunt — Sixty Log Lines, One Compromised Account</title>
+    <title>Threat Hunt - Sixty Log Lines, One Compromised Account</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -80,7 +80,7 @@
                         "name": "What is the shortest path?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "One query: accounts on a host they have never used before. Because the results come back in time order, patient zero sits at the top — the intrusion is the earliest first-ever logon of the night. Outside-working-hours looks like the obvious opener and is weaker, because service accounts legitimately run at night and fill it with noise. That is true of real domains too."
+                                "text": "One query: accounts on a host they have never used before. Because the results come back in time order, patient zero sits at the top - the intrusion is the earliest first-ever logon of the night. Outside-working-hours looks like the obvious opener and is weaker, because service accounts legitimately run at night and fill it with noise. That is true of real domains too."
                         }
                 },
                 {
@@ -96,7 +96,7 @@
                         "name": "Are the event codes real?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes — 4624 logon, 4625 failed logon, 4768 ticket-granting request, 4769 service ticket and 4776 NTLM authentication are Windows security event IDs, and they appear here in the relationships they really have. The volumes are compressed: a real domain of this size produces these by the thousand per day, and sixty is what fits on a page."
+                                "text": "Yes - 4624 logon, 4625 failed logon, 4768 ticket-granting request, 4769 service ticket and 4776 NTLM authentication are Windows security event IDs, and they appear here in the relationships they really have. The volumes are compressed: a real domain of this size produces these by the thousand per day, and sixty is what fits on a page."
                         }
                 },
                 {
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>Threat hunt</h1>
-        <p class="hero-text">A small domain, one night of authentication events, and exactly one human account that was compromised before any of the others. The log starts hidden. Five questions are available and each one is counted &mdash; because with unlimited reveals everybody wins by showing everything, and the skill this is about, knowing which question to ask <em>first</em>, disappears. A new domain is generated every run.</p>
+        <p class="hero-text">A small domain, one night of authentication events, and exactly one human account that was compromised before any of the others. The log starts hidden. Five questions are available and each one is counted - because with unlimited reveals everybody wins by showing everything, and the skill this is about, knowing which question to ask <em>first</em>, disappears. A new domain is generated every run.</p>
         <ul class="lab-facts">
           <li>A fresh domain every run</li>
           <li>Five questions, all counted</li>
@@ -230,16 +230,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No real log, no account, nothing saved</li>
                 </ul>
               </div>
@@ -255,7 +255,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -294,11 +294,11 @@
           </article>
           <article class="info-card">
             <h3>The loudest account is the second one</h3>
-            <p>The most common wrong answer is the account that shows up doing the most alarming thing &mdash; and it is usually the one the attacker moved <em>to</em>, forty minutes in. Patient zero is quieter: one logon to a host it had never used, at an hour it had never worked. Sort by first anomalous event, not by how bad the event looks.</p>
+            <p>The most common wrong answer is the account that shows up doing the most alarming thing - and it is usually the one the attacker moved <em>to</em>, forty minutes in. Patient zero is quieter: one logon to a host it had never used, at an hour it had never worked. Sort by first anomalous event, not by how bad the event looks.</p>
           </article>
           <article class="info-card">
             <h3>One question comes from the Kerberos lab</h3>
-            <p>Service tickets issued with no preceding ticket-granting request. On a real domain that is the trace a forged TGT leaves &mdash; the KDC never issued the TGT, so there is no 4768 to pair with the 4769. It is the sharpest signal in the log, and it points at the impersonated account rather than the entry point, which is exactly how hunts go wrong.</p>
+            <p>Service tickets issued with no preceding ticket-granting request. On a real domain that is the trace a forged TGT leaves - the KDC never issued the TGT, so there is no 4768 to pair with the 4769. It is the sharpest signal in the log, and it points at the impersonated account rather than the entry point, which is exactly how hunts go wrong.</p>
           </article>
         </div>
       </section>
@@ -313,7 +313,7 @@
           </details>
           <details class="lab-faq">
             <summary>What is the shortest path?</summary>
-            <div>One query: accounts on a host they have never used before. Because the results come back in time order, patient zero sits at the top — the intrusion is the earliest first-ever logon of the night. Outside-working-hours looks like the obvious opener and is weaker, because service accounts legitimately run at night and fill it with noise. That is true of real domains too.</div>
+            <div>One query: accounts on a host they have never used before. Because the results come back in time order, patient zero sits at the top - the intrusion is the earliest first-ever logon of the night. Outside-working-hours looks like the obvious opener and is weaker, because service accounts legitimately run at night and fill it with noise. That is true of real domains too.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does the Kerberos query give the wrong answer?</summary>
@@ -321,7 +321,7 @@
           </details>
           <details class="lab-faq">
             <summary>Are the event codes real?</summary>
-            <div>Yes — 4624 logon, 4625 failed logon, 4768 ticket-granting request, 4769 service ticket and 4776 NTLM authentication are Windows security event IDs, and they appear here in the relationships they really have. The volumes are compressed: a real domain of this size produces these by the thousand per day, and sixty is what fits on a page.</div>
+            <div>Yes - 4624 logon, 4625 failed logon, 4768 ticket-granting request, 4769 service ticket and 4776 NTLM authentication are Windows security event IDs, and they appear here in the relationships they really have. The volumes are compressed: a real domain of this size produces these by the thousand per day, and sixty is what fits on a page.</div>
           </details>
           <details class="lab-faq">
             <summary>Is this a game?</summary>

@@ -117,22 +117,22 @@
      composition dealer must issue a BILL OF SUPPLY and may not collect tax. */
   var TAX_MODES = {
     gst: {
-      label: 'Registered — charge GST',
+      label: 'Registered - charge GST',
       title: 'TAX INVOICE',
       note: ''
     },
     export: {
-      label: 'Export or SEZ under LUT — zero rated',
+      label: 'Export or SEZ under LUT - zero rated',
       title: 'TAX INVOICE',
       note: 'Supply meant for export / SEZ under Letter of Undertaking without payment of integrated tax. Zero rated.'
     },
     unregistered: {
-      label: 'Not registered for GST — below the threshold',
+      label: 'Not registered for GST - below the threshold',
       title: 'INVOICE',
       note: 'Not registered under GST. No tax has been charged on this document.'
     },
     composition: {
-      label: 'Composition scheme — bill of supply',
+      label: 'Composition scheme - bill of supply',
       title: 'BILL OF SUPPLY',
       note: 'Composition taxable person, not eligible to collect tax on supplies.'
     }
@@ -357,7 +357,7 @@
     }
     var want = gstinCheckChar(g.slice(0, 14));
     if (want && want !== g.charAt(14)) {
-      return { level: 'err', text: 'Check character should be ' + want + ', not ' + g.charAt(14) + ' — usually a typo.' };
+      return { level: 'err', text: 'Check character should be ' + want + ', not ' + g.charAt(14) + ' - usually a typo.' };
     }
     if (expectStateCode && g.slice(0, 2) !== expectStateCode) {
       return {
@@ -672,7 +672,7 @@
     }
     if (doc.split === 'unknown') {
       box.appendChild(el('div', 'inv-s-caution',
-        'Set your state and the place of supply — the CGST/SGST or IGST split cannot be decided without both.'));
+        'Set your state and the place of supply - the CGST/SGST or IGST split cannot be decided without both.'));
     }
     return box;
   }
@@ -851,7 +851,7 @@
          the MSMED Act at all, and it only helps if the number is on the paper
          the buyer files. */
       left.appendChild(el('div', 'inv-s-msme',
-        'MSME / Udyam registered — Udyam Reg. No. ' + clean(state.bizUdyam) +
+        'MSME / Udyam registered - Udyam Reg. No. ' + clean(state.bizUdyam) +
         '. Payment is due within the agreed terms under the MSMED Act, 2006.'));
     }
     cols.appendChild(left);
@@ -1038,7 +1038,7 @@
     } else if (doc.split === 'inter') {
       checksBox.appendChild(checkLine('ok',
         'Supplier in ' + stateName(state.bizState) + ', place of supply ' +
-        stateName(placeOfSupply()) + ' — an inter-state supply, so IGST at the full rate.'));
+        stateName(placeOfSupply()) + ' - an inter-state supply, so IGST at the full rate.'));
     } else if (doc.split === 'zero') {
       checksBox.appendChild(checkLine('warn',
         'Export / SEZ under LUT: rates are shown but no tax is charged, and the zero-rated declaration prints on the document.'));
@@ -1147,7 +1147,7 @@
       STATES.forEach(function (s) {
         var opt = document.createElement('option');
         opt.value = s.code;
-        opt.textContent = s.code + ' — ' + s.name + (s.ut ? ' (UT)' : '');
+        opt.textContent = s.code + ' - ' + s.name + (s.ut ? ' (UT)' : '');
         sel.appendChild(opt);
       });
     });
@@ -1380,7 +1380,7 @@
         state.logo = canvas.toDataURL('image/png');
         syncLogoUI();
         renderSheet();
-        say('Logo added — resized in your browser, never uploaded.', 'ok');
+        say('Logo added - resized in your browser, never uploaded.', 'ok');
       };
       img.src = reader.result;
     };
@@ -1424,7 +1424,7 @@
     }
     var title = document.getElementById('inv-preview-title');
     if (title) {
-      title.textContent = 'Live preview — A4, ' +
+      title.textContent = 'Live preview - A4, ' +
         (state.docType === 'quotation' ? 'quotation' : 'invoice');
     }
   }
@@ -1492,7 +1492,7 @@
     s.poRef = 'PO-88213';
     s.copyLabel = 'Original for Recipient';
     s.items = [
-      { desc: 'Brand identity design — logo, type scale and colour system', hsn: '998391', qty: '1', unit: 'job', rate: '85000', taxRate: '18' },
+      { desc: 'Brand identity design - logo, type scale and colour system', hsn: '998391', qty: '1', unit: 'job', rate: '85000', taxRate: '18' },
       { desc: 'Packaging artwork, six SKUs', hsn: '998391', qty: '6', unit: 'nos', rate: '7500', taxRate: '18' },
       { desc: 'Printed brand manual, spiral bound', hsn: '4911', qty: '4', unit: 'nos', rate: '1200', taxRate: '12' }
     ];
@@ -1517,7 +1517,7 @@
     state = sampleState();
     logoInput.value = '';
     syncEverything();
-    say('Example loaded. Change anything — it is only a starting point.', 'ok');
+    say('Example loaded. Change anything - it is only a starting point.', 'ok');
   });
 
   document.getElementById('inv-clear').addEventListener('click', function () {
@@ -1525,7 +1525,7 @@
     state = blankState();
     logoInput.value = '';
     syncEverything();
-    say('Cleared. Any saved draft on this device is untouched — use "Delete saved draft" for that.', 'ok');
+    say('Cleared. Any saved draft on this device is untouched - use "Delete saved draft" for that.', 'ok');
   });
 
   document.getElementById('inv-print').addEventListener('click', function () {
@@ -1638,7 +1638,7 @@
     /* An immediate revoke can race the download in some browsers; a second
        later the click has long been consumed. */
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    say('Downloaded invoice-data.json — it contains everything you typed, including the payment details field.', 'ok');
+    say('Downloaded invoice-data.json - it contains everything you typed, including the payment details field.', 'ok');
   });
 
   var importBtn = document.getElementById('inv-import');
@@ -1656,17 +1656,17 @@
       try {
         parsed = JSON.parse(String(reader.result));
       } catch (e) {
-        say('That file is not valid JSON — expected an invoice-data.json downloaded from this page.', 'err');
+        say('That file is not valid JSON - expected an invoice-data.json downloaded from this page.', 'err');
         return;
       }
       if (!parsed || typeof parsed !== 'object' || parsed.tool !== 'invoice-maker' ||
           parsed.version !== 1 || !parsed.data || typeof parsed.data !== 'object') {
-        say('That does not look like an invoice-maker data file — nothing was changed.', 'err');
+        say('That does not look like an invoice-maker data file - nothing was changed.', 'err');
         return;
       }
       if (!stateIsEmpty() &&
           !confirm('Load this file and replace everything in the form? This cannot be undone.')) {
-        say('Load cancelled — nothing was changed.', 'warn');
+        say('Load cancelled - nothing was changed.', 'warn');
         return;
       }
       state = normalizeState(parsed.data);
@@ -1695,7 +1695,7 @@
   if (existing) {
     var when = parseISO(String(existing.saved || '').slice(0, 10));
     say('A saved draft is on this device' + (when ? ', from ' + fmtDate(when) : '') +
-        '. It is not loaded automatically — press "Load draft" if you want it.', 'warn');
+        '. It is not loaded automatically - press "Load draft" if you want it.', 'warn');
   }
 
   /* Fonts settling after first paint change the sheet height slightly, so

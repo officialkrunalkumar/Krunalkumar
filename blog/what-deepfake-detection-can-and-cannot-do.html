@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What Deepfake Detection Can and Cannot Do" />
     <meta
@@ -87,7 +87,7 @@
             "name": "Can you just tell me whether this video is real?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Usually not from the file alone, and anyone who answers that question quickly is guessing. What I can tell you is what the file supports: whether it carries a signed provenance record, what its encoding history looks like, whether its geometry and lighting hold together, and where the earliest copy I can find came from. Often the decisive fact sits outside the file entirely — the account that posted it, the date it first appeared, or a second recording of the same moment. I would rather hand you that than a percentage."
+              "text": "Usually not from the file alone, and anyone who answers that question quickly is guessing. What I can tell you is what the file supports: whether it carries a signed provenance record, what its encoding history looks like, whether its geometry and lighting hold together, and where the earliest copy I can find came from. Often the decisive fact sits outside the file entirely - the account that posted it, the date it first appeared, or a second recording of the same moment. I would rather hand you that than a percentage."
             }
           },
           {
@@ -95,7 +95,7 @@
             "name": "Are AI detectors useless, then?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Not useless, but badly mismatched to the way people use them. A detector is a classifier trained on the output of the generators whoever built it had access to, so it is strongest on those and weakest on the model released after the training set was frozen — which is the one you are actually being attacked with. Used as one input among several, by someone who knows what it was trained on, it has a place. Used as a verdict on a single file, it produces a confident answer with nothing under it, and a confident wrong answer is worse than no answer."
+              "text": "Not useless, but badly mismatched to the way people use them. A detector is a classifier trained on the output of the generators whoever built it had access to, so it is strongest on those and weakest on the model released after the training set was frozen - which is the one you are actually being attacked with. Used as one input among several, by someone who knows what it was trained on, it has a place. Used as a verdict on a single file, it produces a confident answer with nothing under it, and a confident wrong answer is worse than no answer."
             }
           },
           {
@@ -111,7 +111,7 @@
             "name": "What does a Content Credentials badge actually prove?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "That a particular device or piece of software signed this asset with this stated history, and that the bytes have not changed since. That is genuinely valuable, and it is the strongest thing in the field. It does not prove the scene in front of the lens was real, because a signing camera pointed at a screen produces a validly signed photograph of a fake. It does not prove the signer is honest, only that the certificate chains to something you decided to trust. And an asset with no credential is not thereby fake — it is an asset with no credential, which describes most of the internet."
+              "text": "That a particular device or piece of software signed this asset with this stated history, and that the bytes have not changed since. That is genuinely valuable, and it is the strongest thing in the field. It does not prove the scene in front of the lens was real, because a signing camera pointed at a screen produces a validly signed photograph of a fake. It does not prove the signer is honest, only that the certificate chains to something you decided to trust. And an asset with no credential is not thereby fake - it is an asset with no credential, which describes most of the internet."
             }
           },
           {
@@ -214,7 +214,7 @@
             People send me a video and ask whether it is real. They expect the answer to come from a tool, and they
             expect the tool to return a number. Neither of those expectations survives contact with the work.
             Detection is the losing side of an arms race it cannot win by design, and the honest response is not a
-            better detector — it is provenance, and it is process.
+            better detector - it is provenance, and it is process.
           </p>
           <p class="post-meta">Published 31 August 2026 · 25 min read · by Krunalkumar Shah</p>
         </section>
@@ -251,7 +251,7 @@
               <p>
                 I cannot give them one from the file, and neither can anybody else. That is not modesty about my own
                 equipment. It is a statement about what these techniques measure. Every signal a forensic examiner
-                reads from an image or a video measures <strong>processing history</strong> — what encoders touched
+                reads from an image or a video measures <strong>processing history</strong> - what encoders touched
                 this file, how many times, and whether one region of it has a different history from its neighbours.
                 None of them measure truthfulness. A photograph of a real event that has been cropped, resized and
                 sent through two chat apps lights up every one of them. A carefully made fake, saved once through the
@@ -273,9 +273,9 @@
               <div class="lab-cta">
                 <p class="lab-cta-text">
                   <strong>Everything in this article is a tool you can run.</strong> There is a media forensics lab on
-                  this site that takes a photo or a short video and runs the signal set an examiner would look at —
+                  this site that takes a photo or a short video and runs the signal set an examiner would look at -
                   provenance, error level analysis, quantisation tables, the noise floor, a frequency plot, copy-move
-                  — and says in plain words what each one does and does not imply. It returns no verdict, no score
+                  - and says in plain words what each one does and does not imply. It returns no verdict, no score
                   and no percentage, deliberately. It runs entirely in your browser and nothing you drop into it is
                   uploaded.
                 </p>
@@ -290,7 +290,7 @@
                 A deepfake detector is a classifier. Somebody collects real images and images produced by the
                 generators they had access to, trains a model to separate the two, and measures how well it does on
                 data it has not seen. What that model learns is not "what a fake looks like" in any general sense. It
-                learns the <em>fingerprints of the specific generators in its training set</em> — the way a
+                learns the <em>fingerprints of the specific generators in its training set</em> - the way a
                 particular upsampling layer stipples texture, the way a particular decoder handles hair against a
                 bright background, the way a particular pipeline writes its final JPEG.
               </p>
@@ -345,7 +345,7 @@
               </p>
               <p>
                 <strong>It ignores the base rate, and the base rate dominates.</strong> Take a hypothetical to see
-                the shape of it — the numbers are illustrative, not measured. Suppose one video in a thousand crossing
+                the shape of it - the numbers are illustrative, not measured. Suppose one video in a thousand crossing
                 your desk is synthetic, and suppose you have a detector that flags genuine videos wrongly one time in
                 twenty. Run a thousand videos through it and you get the one real fake, if you are lucky, plus about
                 fifty false alarms. Fewer than one in fifty of your flags is right; roughly forty-nine out of fifty
@@ -358,7 +358,7 @@
                 someone their genuine photograph is 87% likely fake is not a neutral error. In a workplace it is an
                 accusation. In a dispute it is evidence someone will act on. In a court it is worse. Students have
                 been accused of cheating on the output of text detectors with the same architecture and the same
-                failure mode, and the harm did not require the tool to be malicious — only to be believed.
+                failure mode, and the harm did not require the tool to be malicious - only to be believed.
               </p>
               <p>
                 This is why the lab on this site prints no number anywhere. There is nothing honest to compute one
@@ -378,7 +378,7 @@
               <p>
                 A C2PA manifest, an XMP history block, an IPTC record, the EXIF <code>Software</code> field, the
                 make and model of the camera, the lens, the timestamps. This is the only thing in the list that is
-                evidence rather than inference, which is why it goes first — everything else is an argument from
+                evidence rather than inference, which is why it goes first - everything else is an argument from
                 statistics, and this is a record somebody wrote down.
               </p>
               <p>
@@ -399,7 +399,7 @@
                 compression history differs across the frame.
               </p>
               <p>
-                The popular reading — bright means pasted — is wrong often enough to be dangerous, and it is the
+                The popular reading - bright means pasted - is wrong often enough to be dangerous, and it is the
                 reason ELA has been used to "prove" things about news photographs that were not true. Sharp edges,
                 saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken. A
                 clear sky is dark in the ELA of every untouched photograph ever taken. Neither fact is about
@@ -411,20 +411,20 @@
                 There is one more thing to insist on. Always ask what amplification was applied to the picture you
                 are being shown. The gain is a free parameter, and turning it up until something looks suspicious is
                 how ELA is usually used to mislead. A map without its amplification factor stated is a rhetorical
-                device, not a measurement — which is why the lab prints the factor next to the image.
+                device, not a measurement - which is why the lab prints the factor next to the image.
               </p>
 
               <h3>Quantisation tables and double compression</h3>
               <p>
                 A JPEG carries the tables it was quantised with, and inverting the standard scaling recovers the
                 quality setting that wrote it. That tells you something narrow but real: whether a general-purpose
-                encoder produced this copy, or something shipping its own tables did — a camera body, an Adobe
+                encoder produced this copy, or something shipping its own tables did - a camera body, an Adobe
                 product, an Apple pipeline. A "photograph straight from a phone" whose tables belong to a desktop
                 editor is worth a question.
               </p>
               <p>
                 The related trick is the ghost sweep: re-encode across a range of qualities and watch the error
-                curve. A second dip is consistent with two generations of compression. Consistent with — not evidence
+                curve. A second dip is consistent with two generations of compression. Consistent with - not evidence
                 of. Cropping produces it. Rotating produces it. A messaging app produces it. A content management
                 system generating a thumbnail produces it. Nearly every image on the internet has a double compression
                 history, and almost none of them were faked.
@@ -433,8 +433,8 @@
               <h3>The noise floor</h3>
               <p>
                 Camera sensors write a faint, roughly uniform grain across the whole frame, and the pattern is
-                specific enough to the individual sensor that it can act as a fingerprint. Real work on this —
-                photo-response non-uniformity — correlates a suspect image against a reference fingerprint built from
+                specific enough to the individual sensor that it can act as a fingerprint. Real work on this -
+                photo-response non-uniformity - correlates a suspect image against a reference fingerprint built from
                 dozens of images taken with the same camera body. It is genuinely strong evidence when you have the
                 body and the reference set, which is why it shows up in serious casework and almost never in a
                 one-file question on the internet.
@@ -466,15 +466,15 @@
               <p>
                 This is the part no classifier does for you, and the part that still catches things. Do shadows agree
                 on where the light is? Do reflections in glass and water contain what they should? Do the catchlights
-                in both eyes agree in shape and position? Do straight lines in the background — a door frame, a
-                skirting board, a window mullion — survive passing behind a head, or do they kink? Do perspective
+                in both eyes agree in shape and position? Do straight lines in the background - a door frame, a
+                skirting board, a window mullion - survive passing behind a head, or do they kink? Do perspective
                 lines converge somewhere consistent? Do ears, teeth and hairlines behave as individual objects rather
                 than texture?
               </p>
               <p>
                 Physical consistency is expensive for a generator to get right across a whole scene and cheap for a
                 person to check, which is a rare combination in this field. The honest limits: it needs resolution,
-                so it dies on a low-quality forward, and human observers overclaim badly — we are very good at
+                so it dies on a low-quality forward, and human observers overclaim badly - we are very good at
                 inventing an explanation for a shadow once we have decided what we are looking at. It is a source of
                 questions, not of verdicts.
               </p>
@@ -495,12 +495,12 @@
                       <td>Signed provenance</td>
                       <td>That a named tool or device signed these exact bytes, with this stated history</td>
                       <td>Whether the scene in front of the lens was real</td>
-                      <td>Nothing — but its absence is produced by every upload</td>
+                      <td>Nothing - but its absence is produced by every upload</td>
                     </tr>
                     <tr>
                       <td>Unsigned metadata</td>
                       <td>What the file claims about its own origin</td>
-                      <td>Anything, on its own — the fields are freely editable</td>
+                      <td>Anything, on its own - the fields are freely editable</td>
                       <td>Any editor, any export, any deliberate edit</td>
                     </tr>
                     <tr>
@@ -554,7 +554,7 @@
                 <a href="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram1.svg" alt="A grid of six forensic signals against five stages of handling. C2PA manifests and EXIF are signed or written at capture, amended by an edit, and stripped entirely by a chat app or a platform. Quantisation tables are rewritten by every encoder in the chain. Error level analysis, the noise floor and frequency peaks start readable and are progressively muddied by resizing and recompression until a screenshot leaves nothing to read." width="1160" height="700" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Six signals against the ordinary handling every shared file has already had. By the right-hand column there is nothing left that an examiner can lean on — and the right-hand column is where almost every real question arrives. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Six signals against the ordinary handling every shared file has already had. By the right-hand column there is nothing left that an examiner can lean on - and the right-hand column is where almost every real question arrives. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
@@ -568,13 +568,13 @@
                 The same logic runs the other way and is just as important. A file that <em>does</em> carry rich
                 metadata is not thereby genuine, because those fields are trivially writable. If you want to see how
                 little effort that takes, the EXIF lab on this site reads every field in a photograph and lets you
-                strip them — the fastest way to understand that a metadata block is a claim rather than a record.
+                strip them - the fastest way to understand that a metadata block is a claim rather than a record.
               </p>
 
               <div class="lab-cta">
                 <p class="lab-cta-text">
                   <strong>See what your own photographs are carrying.</strong> The EXIF viewer reads the make, model,
-                  lens, software, timestamps and — where it is present — the GPS coordinates written into an image,
+                  lens, software, timestamps and - where it is present - the GPS coordinates written into an image,
                   and strips them on request. Run it on a photo straight off your phone, then on the same photo after
                   you have sent it to yourself through a messaging app, and the difference is the whole point of the
                   diagram above.
@@ -588,7 +588,7 @@
                 gaining ground is the opposite move: instead of trying to spot the fakes, sign the real ones.
               </p>
               <p>
-                That is what C2PA is — an open specification, published by an industry coalition, for attaching a
+                That is what C2PA is - an open specification, published by an industry coalition, for attaching a
                 cryptographically signed manifest to a media file. Adobe's Content Credentials is the best-known
                 implementation of it, and several camera manufacturers have shipped or announced in-camera signing.
                 The mechanism is ordinary
@@ -616,7 +616,7 @@
                   <strong>It attests to the capture, not to the world.</strong> A signing camera pointed at a
                   high-resolution screen produces a perfectly valid, correctly signed photograph of a fake. The
                   signature says "this camera really did record these photons." It does not say the photons came from
-                  a real scene. This gap has a name in other fields — the analogue hole — and no amount of
+                  a real scene. This gap has a name in other fields - the analogue hole - and no amount of
                   cryptography closes it.
                 </li>
                 <li>
@@ -628,8 +628,8 @@
                 </li>
                 <li>
                   <strong>Stripping is trivial and silent.</strong> Removing a manifest takes no skill and leaves no
-                  evidence in the file that it was ever there. Soft bindings — a watermark or a perceptual
-                  fingerprint that survives re-encoding — are designed to let a stripped asset be matched back to its
+                  evidence in the file that it was ever there. Soft bindings - a watermark or a perceptual
+                  fingerprint that survives re-encoding - are designed to let a stripped asset be matched back to its
                   record, and they help, but they are best-effort recovery rather than a guarantee.
                 </li>
                 <li>
@@ -645,8 +645,8 @@
                 None of that makes provenance a bad bet. It makes it a bet on the right side of the asymmetry.
                 Detection asks an unbounded question about an adversary who gets the last move; provenance asks a
                 bounded question about a signature, and a bounded question is one that has an answer. My honest
-                reading is that provenance will end up mattering most for institutions with something to lose —
-                newsrooms, courts, insurers, anyone whose own material needs to be checkable later — and will matter
+                reading is that provenance will end up mattering most for institutions with something to lose -
+                newsrooms, courts, insurers, anyone whose own material needs to be checkable later - and will matter
                 very little for the anonymous clip that lands in a group chat, which will never have carried a
                 manifest in the first place.
               </p>
@@ -666,7 +666,7 @@
               <p>
                 Here is the case that keeps arriving, in one shape or another. Somebody in finance gets a call. The
                 voice is the managing director's, or the group CFO's, and it is close enough that nobody thinks about
-                it twice — a couple of minutes of a public conference talk or a podcast appearance is enough source
+                it twice - a couple of minutes of a public conference talk or a podcast appearance is enough source
                 audio for a convincing clone, and there is no shortage of executives with a couple of minutes of
                 public audio. There is a live acquisition, or a regulator, or a supplier about to walk. It is
                 confidential, so do not mention it to anyone. The payment has to go today, to these details, and the
@@ -684,7 +684,7 @@
                 <li><strong>A single channel</strong>, chosen by the attacker, which they control end to end.</li>
               </ul>
               <p>
-                The cloned voice is not a new attack. It is a better pretext bolted onto an old one — it removes the
+                The cloned voice is not a new attack. It is a better pretext bolted onto an old one - it removes the
                 last informal check, which was that the request sounded like the person. That check was never a
                 control. It was a habit that happened to work while voices were hard to fake, and it stopped working.
               </p>
@@ -695,7 +695,7 @@
                 article's central observation applies exactly here: the theatre is elaborate and the mechanism is
                 simple, and every version of it needs the target to stay on one channel that the attacker controls.
                 On the taxonomy side, this is
-                <a href="/blog/types-of-cyberattacks">social engineering rather than a technical intrusion</a> — no
+                <a href="/blog/types-of-cyberattacks">social engineering rather than a technical intrusion</a> - no
                 system was compromised, and no detector was going to be consulted.
               </p>
 
@@ -712,7 +712,7 @@
 
               <figure class="post-figure post-figure-wide">
                 <a href="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram2.svg" target="_blank" rel="noopener">
-                  <img src="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram2.svg" alt="An urgent inbound request on a channel the caller chose, passing through an out-of-band gate with three conditions — a callback to a number from your own records, a second approver reached separately, and a challenge phrase agreed in advance — before a payment is released. A dashed path running directly from the request to the payment is crossed out." width="1160" height="470" loading="lazy" decoding="async" />
+                  <img src="/assets/images/blog/what-deepfake-detection-can-and-cannot-do-diagram2.svg" alt="An urgent inbound request on a channel the caller chose, passing through an out-of-band gate with three conditions - a callback to a number from your own records, a second approver reached separately, and a challenge phrase agreed in advance - before a payment is released. A dashed path running directly from the request to the payment is crossed out." width="1160" height="470" loading="lazy" decoding="async" />
                 </a>
                 <figcaption>The control does not involve judging the media at all. Every loss of this kind travels the dashed line at the bottom, and a policy either has that line or it does not. Tap the diagram to open it full-screen.</figcaption>
               </figure>
@@ -740,7 +740,7 @@
                 </li>
                 <li>
                   <strong>A challenge phrase agreed in advance.</strong> A short shared phrase, agreed out of band,
-                  kept out of the CRM and the shared drive and the email archive — because a cloned voice can say
+                  kept out of the CRM and the shared drive and the email archive - because a cloned voice can say
                   anything, but it cannot know something the attacker never had access to. Rotate it, and never use
                   it for anything else.
                 </li>
@@ -757,7 +757,7 @@
                 <li>
                   <strong>Stopping a payment has to be safe.</strong> This is the cultural half, and it is not
                   optional. If the most junior person in the chain is afraid to slow down a payment the managing
-                  director appears to have demanded, you do not have a control — you have a document. Say out loud,
+                  director appears to have demanded, you do not have a control - you have a document. Say out loud,
                   in advance, that nobody will ever be criticised for making a callback, and mean it the one time it
                   is inconvenient.
                 </li>
@@ -770,7 +770,7 @@
               <p>
                 Notice what is not on that list. Nobody is asked to decide whether a voice was synthetic. Nobody runs
                 a file through a tool. The controls are indifferent to media quality, which is precisely why they
-                will still be standing when the generators improve again — and they will improve again. That
+                will still be standing when the generators improve again - and they will improve again. That
                 indifference is the property you are buying.
               </p>
               <p>
@@ -788,12 +788,12 @@
               </p>
               <p>
                 <strong>Ask for the original, not the copy you were shown.</strong> The file as it left the sender, or
-                as it sits on the platform — not a screenshot, not a forward, not a re-upload. Nine times in ten this
+                as it sits on the platform - not a screenshot, not a forward, not a re-upload. Nine times in ten this
                 is the whole conversation, because the original does not exist any more and everything downstream is
                 weaker for it. Then hash the file and write down where it came from, who provided it and when, before
                 anyone opens it in anything. If this ends up mattering legally, that record is
                 <a href="/glossary#term-chain-of-custody">chain of custody</a>, and it is worth more than any analysis
-                — a point made at length in
+                - a point made at length in
                 <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually solved</a>, where
                 cases turn on preserved evidence far more often than on clever technique.
               </p>
@@ -814,7 +814,7 @@
                 recording of the same moment from a different angle? Does anything else place this person in that
                 room on that day? Was the event it depicts reported anywhere by anyone with a name? A file that first
                 appears on a three-week-old account, with no earlier copy anywhere, describing an event nobody else
-                recorded, has told you a great deal — and none of it came from the pixels.
+                recorded, has told you a great deal - and none of it came from the pixels.
               </p>
               <p>
                 And then I give you one of three answers, honestly labelled.
@@ -835,8 +835,8 @@
                 </li>
               </ul>
               <p>
-                If the answer matters enough — a disputed video in a legal matter, a fabricated recording of an
-                employee, a compliance question — then the framing has to change too. The question stops being "is it
+                If the answer matters enough - a disputed video in a legal matter, a fabricated recording of an
+                employee, a compliance question - then the framing has to change too. The question stops being "is it
                 real" and becomes "can this be authenticated, by whom, and is the handling defensible." That is a
                 different piece of work, closer to
                 <a href="/blog/security-compliance-explained">the evidence discipline compliance work runs on</a>
@@ -846,7 +846,7 @@
               <p>
                 One last thing I tell people, because it is the part that generalises. The right response to a world
                 where media can be fabricated cheaply is not to get better at spotting fabrications. It is to stop
-                treating an unverified recording as proof of anything on its own — to ask where it came from before
+                treating an unverified recording as proof of anything on its own - to ask where it came from before
                 asking what it shows. That was always good practice. It is now the only practice that works.
               </p>
 
@@ -858,7 +858,7 @@
                     Usually not from the file alone, and anyone who answers that question quickly is guessing. What I
                     can tell you is what the file supports: whether it carries a signed provenance record, what its
                     encoding history looks like, whether its geometry and lighting hold together, and where the
-                    earliest copy I can find came from. Often the decisive fact sits outside the file entirely — the
+                    earliest copy I can find came from. Often the decisive fact sits outside the file entirely - the
                     account that posted it, the date it first appeared, or a second recording of the same moment. I
                     would rather hand you that than a percentage.
                   </p>
@@ -868,7 +868,7 @@
                   <p>
                     Not useless, but badly mismatched to the way people use them. A detector is a classifier trained
                     on the output of the generators whoever built it had access to, so it is strongest on those and
-                    weakest on the model released after the training set was frozen — which is the one you are
+                    weakest on the model released after the training set was frozen - which is the one you are
                     actually being attacked with. Used as one input among several, by someone who knows what it was
                     trained on, it has a place. Used as a verdict on a single file, it produces a confident answer
                     with nothing under it, and a confident wrong answer is worse than no answer.
@@ -892,7 +892,7 @@
                     in the field. It does not prove the scene in front of the lens was real, because a signing camera
                     pointed at a screen produces a validly signed photograph of a fake. It does not prove the signer
                     is honest, only that the certificate chains to something you decided to trust. And an asset with
-                    no credential is not thereby fake — it is an asset with no credential, which describes most of
+                    no credential is not thereby fake - it is an asset with no credential, which describes most of
                     the internet.
                   </p>
                 </details>

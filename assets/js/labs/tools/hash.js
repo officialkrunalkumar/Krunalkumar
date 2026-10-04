@@ -46,12 +46,12 @@
 
   /* ---- hash identification --------------------------------------------- */
   var SHAPES = [
-    { re: /^[a-f0-9]{32}$/i,  names: 'MD5, MD4, NTLM or LM — 128 bits' },
-    { re: /^[a-f0-9]{40}$/i,  names: 'SHA-1 or RIPEMD-160 — 160 bits' },
-    { re: /^[a-f0-9]{56}$/i,  names: 'SHA-224 or SHA3-224 — 224 bits' },
-    { re: /^[a-f0-9]{64}$/i,  names: 'SHA-256, SHA3-256 or BLAKE2s — 256 bits' },
-    { re: /^[a-f0-9]{96}$/i,  names: 'SHA-384 or SHA3-384 — 384 bits' },
-    { re: /^[a-f0-9]{128}$/i, names: 'SHA-512, SHA3-512 or BLAKE2b — 512 bits' },
+    { re: /^[a-f0-9]{32}$/i,  names: 'MD5, MD4, NTLM or LM - 128 bits' },
+    { re: /^[a-f0-9]{40}$/i,  names: 'SHA-1 or RIPEMD-160 - 160 bits' },
+    { re: /^[a-f0-9]{56}$/i,  names: 'SHA-224 or SHA3-224 - 224 bits' },
+    { re: /^[a-f0-9]{64}$/i,  names: 'SHA-256, SHA3-256 or BLAKE2s - 256 bits' },
+    { re: /^[a-f0-9]{96}$/i,  names: 'SHA-384 or SHA3-384 - 384 bits' },
+    { re: /^[a-f0-9]{128}$/i, names: 'SHA-512, SHA3-512 or BLAKE2b - 512 bits' },
     { re: /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/, names: 'bcrypt' },
     { re: /^\$argon2(id|i|d)\$/, names: 'Argon2' },
     { re: /^\$6\$/, names: 'SHA-512 crypt (Linux /etc/shadow)' },
@@ -205,9 +205,9 @@
     out.rule();
     var matched = Object.keys(digests).filter(function (k) { return digests[k] === expected; });
     if (matched.length) {
-      out.ok('MATCH \u2014 the ' + matched.join('/').toUpperCase() + ' digest is identical.');
+      out.ok('MATCH - the ' + matched.join('/').toUpperCase() + ' digest is identical.');
     } else {
-      out.err('NO MATCH \u2014 none of the digests above equal the expected value.');
+      out.err('NO MATCH - none of the digests above equal the expected value.');
       var guess = identify(expected);
       if (guess) out.dim('The value you pasted looks like: ' + guess);
     }
@@ -267,7 +267,7 @@
     try {
       if (mode === 'text') {
         if (!text) { out.clear().warn('Type or paste some text first.'); return; }
-        await hashText(encoder(text), 'Text \u2014 ' + text.length + ' characters');
+        await hashText(encoder(text), 'Text - ' + text.length + ' characters');
       } else if (mode === 'file') {
         if (!lastFile) { out.clear().warn('Choose or drop a file first.'); return; }
         await hashFile(lastFile, lastName);
@@ -275,7 +275,7 @@
         var key = document.getElementById('tool-key').value;
         if (!key) { out.clear().warn('An HMAC needs a key.'); return; }
         out.clear();
-        out.heading('HMAC \u2014 ' + (lastFile ? lastName : 'text input'));
+        out.heading('HMAC - ' + (lastFile ? lastName : 'text input'));
         out.row('key length', key.length + ' characters');
         out.rule();
         if (lastFile) {
@@ -304,9 +304,9 @@
         out.rule();
         out.dim('HMAC-SHA-1 above rests on SHA-1, a hash with practical collision');
         out.dim('attacks. The HMAC construction is not itself known to fall with');
-        out.dim('them, but no new design should rest on a broken hash \u2014 prefer');
+        out.dim('them, but no new design should rest on a broken hash - prefer');
         out.dim('SHA-256 or better.');
-        out.dim('HMAC proves both integrity and that the sender held the key \u2014');
+        out.dim('HMAC proves both integrity and that the sender held the key -');
         out.dim('a plain hash proves only integrity.');
       } else if (mode === 'identify') {
         var guess = identify(text);
@@ -318,11 +318,11 @@
           out.row('likely', guess, 't-ok');
           out.rule();
           out.dim('Length alone cannot separate algorithms that share a digest');
-          out.dim('size \u2014 MD5 and NTLM are both 32 hex characters, and nothing');
+          out.dim('size - MD5 and NTLM are both 32 hex characters, and nothing');
           out.dim('in the value itself distinguishes them. Context does.');
         } else {
           out.err('No match. It may be truncated, salted, or an encoding rather');
-          out.err('than a hash \u2014 try the encoding tool if it looks like base64.');
+          out.err('than a hash - try the encoding tool if it looks like base64.');
         }
       }
     } catch (err) {
@@ -359,7 +359,7 @@
         },
         onError: function (msg) { out.clear().err(msg); }
       });
-      out.dim('Choose a mode, then Run — or press Ctrl + Enter.');
+      out.dim('Choose a mode, then Run - or press Ctrl + Enter.');
     }
   });
 })();

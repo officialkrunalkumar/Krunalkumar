@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Compress, convert and resize images in your browser — JPEG, PNG, WebP and AVIF, with a before/after split showing the real byte counts. No uploads." />
+    <meta name="description" content="Compress, convert and resize images in your browser - JPEG, PNG, WebP and AVIF, with a before/after split showing the real byte counts. No uploads." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
@@ -204,7 +204,7 @@
           </ol>
         </nav>
         <h1>Compress, convert and resize images without uploading them</h1>
-        <p class="hero-text">Search for an image compressor and every result asks you to upload the picture first. Your photographs, your client&rsquo;s floor plans, a scan of a document &mdash; on a stranger&rsquo;s disk before the progress bar finishes. None of that is technically necessary. Browsers have shipped a competent image encoder for over a decade, so this page uses yours: drop files in, and the work happens on your machine.</p>
+        <p class="hero-text">Search for an image compressor and every result asks you to upload the picture first. Your photographs, your client&rsquo;s floor plans, a scan of a document - on a stranger&rsquo;s disk before the progress bar finishes. None of that is technically necessary. Browsers have shipped a competent image encoder for over a decade, so this page uses yours: drop files in, and the work happens on your machine.</p>
         <ul class="lab-facts">
           <li>JPEG, PNG, WebP and AVIF</li>
           <li>Before and after, with real byte counts</li>
@@ -233,14 +233,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No format this browser has no encoder for</li>
                   <li>No HEIC output, and HEIC input only in Safari</li>
@@ -259,7 +259,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -287,7 +287,7 @@
             </select>
           </div>
           <div class="lab-metric">
-            <label for="it-quality">Quality &mdash; <span class="lab-fps" id="it-qualityval">82</span></label>
+            <label for="it-quality">Quality - <span class="lab-fps" id="it-qualityval">82</span></label>
             <input type="range" id="it-quality" min="1" max="100" step="1" value="82" />
           </div>
           <div class="lab-metric">
@@ -315,19 +315,19 @@
             <span class="it-metric-head">Aspect ratio</span>
             <label class="it-check" for="it-lock">
               <input type="checkbox" id="it-lock" checked />
-              Lock it &mdash; leave the other number at 0
+              Lock it - leave the other number at 0
             </label>
           </div>
           <div class="lab-metric" id="it-fit-wrap" hidden>
             <label for="it-fit">Fit the longest edge within</label>
             <select class="lab-select" id="it-fit">
-              <option value="3840">3840 px &mdash; a 4K screen</option>
-              <option value="2560">2560 px &mdash; a large desktop</option>
-              <option value="1920" selected>1920 px &mdash; full HD, most web use</option>
-              <option value="1280">1280 px &mdash; article body width</option>
-              <option value="1024">1024 px &mdash; an email attachment</option>
-              <option value="800">800 px &mdash; a forum or support ticket</option>
-              <option value="512">512 px &mdash; an avatar or thumbnail</option>
+              <option value="3840">3840 px - a 4K screen</option>
+              <option value="2560">2560 px - a large desktop</option>
+              <option value="1920" selected>1920 px - full HD, most web use</option>
+              <option value="1280">1280 px - article body width</option>
+              <option value="1024">1024 px - an email attachment</option>
+              <option value="800">800 px - a forum or support ticket</option>
+              <option value="512">512 px - an avatar or thumbnail</option>
             </select>
           </div>
           <div class="lab-metric">
@@ -413,11 +413,11 @@
           </article>
           <article class="info-card">
             <h3>What a server can genuinely do better</h3>
-            <p>Two things, and I would rather name them than pretend. MozJPEG and libaom tuned hard will beat a browser encoder by a few per cent at the same visual quality, and a server can decode HEIC, which only Safari does here. If those few per cent matter more to you than where the file goes, use a desktop tool like ImageMagick or <code>cjpeg</code> &mdash; also local, also nothing uploaded.</p>
+            <p>Two things, and I would rather name them than pretend. MozJPEG and libaom tuned hard will beat a browser encoder by a few per cent at the same visual quality, and a server can decode HEIC, which only Safari does here. If those few per cent matter more to you than where the file goes, use a desktop tool like ImageMagick or <code>cjpeg</code> - also local, also nothing uploaded.</p>
           </article>
           <article class="info-card">
             <h3>Metadata is the part that follows the file</h3>
-            <p>Re-encoding through a canvas discards every metadata segment, because a canvas has nowhere to put one. That is a privacy feature by accident, and here it is the default on purpose. The keep option exists because photographers legitimately want the copyright and camera fields to survive, and it works by splicing the original EXIF block back into the JPEG &mdash; with the orientation tag reset, or the picture would rotate twice.</p>
+            <p>Re-encoding through a canvas discards every metadata segment, because a canvas has nowhere to put one. That is a privacy feature by accident, and here it is the default on purpose. The keep option exists because photographers legitimately want the copyright and camera fields to survive, and it works by splicing the original EXIF block back into the JPEG - with the orientation tag reset, or the picture would rotate twice.</p>
           </article>
         </div>
       </section>
@@ -430,7 +430,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The curve is not a straight line</h3>
-            <p>Between quality 100 and about 85 a JPEG loses most of its size and almost none of its appearance. Between 85 and 70 it keeps shrinking and the damage stays hidden in textured areas. Below about 60 the block edges arrive in flat regions &mdash; skies, skin, gradients &mdash; and once you have seen them you cannot unsee them. The interesting number sits near the knee, and it moves with the picture.</p>
+            <p>Between quality 100 and about 85 a JPEG loses most of its size and almost none of its appearance. Between 85 and 70 it keeps shrinking and the damage stays hidden in textured areas. Below about 60 the block edges arrive in flat regions - skies, skin, gradients - and once you have seen them you cannot unsee them. The interesting number sits near the knee, and it moves with the picture.</p>
           </article>
           <article class="info-card">
             <h3>Look at 1:1, not at a fitted preview</h3>
@@ -467,7 +467,7 @@
           </article>
           <article class="info-card">
             <h3>A codec this browser does not have</h3>
-            <p><code>canvas.toBlob</code> does not report an unsupported format &mdash; it hands back a PNG and lets you name it whatever you like. The page probes each encoder on a 2&times;2 scratch canvas at load and disables what is missing, with the reason on the option. On the decode side, HEIC from an iPhone opens only in Safari, and the error says that rather than &ldquo;invalid file&rdquo;.</p>
+            <p><code>canvas.toBlob</code> does not report an unsupported format - it hands back a PNG and lets you name it whatever you like. The page probes each encoder on a 2&times;2 scratch canvas at load and disables what is missing, with the reason on the option. On the decode side, HEIC from an iPhone opens only in Safari, and the error says that rather than &ldquo;invalid file&rdquo;.</p>
           </article>
           <article class="info-card">
             <h3>Transparency going into a JPEG</h3>
@@ -486,8 +486,8 @@
         </div>
         <div class="lab-feature">
           <div class="lab-feature-body">
-            <p>A ZIP is a much simpler container than its reputation suggests. Each member gets a local file header &mdash; a signature, a version, some flags, the compression method, a DOS timestamp, a CRC-32 of the contents and two lengths &mdash; followed by the bytes themselves. After the last member comes a central directory repeating that information with an offset to each local header, and after that a twenty-two byte end-of-central-directory record saying how many members there are and where the directory starts. That is the whole format for this purpose, and it is written out here in about eighty lines.</p>
-            <p>Every member is <strong>stored</strong> rather than deflated. That sounds lazy and is actually the right call: JPEG, WebP, PNG and AVIF payloads are already entropy-coded, so deflate finds close to nothing in them &mdash; a fraction of a per cent, in exchange for shipping a compression library to every visitor of this page. Method 0 is a first-class part of the specification, and every unarchiver on every platform opens the result. The only thing the writer refuses is an archive past four gigabytes or 65,535 members, which needs ZIP64 records it does not emit; the per-file and per-batch caps make that unreachable, but refusing beats writing something that opens as garbage.</p>
+            <p>A ZIP is a much simpler container than its reputation suggests. Each member gets a local file header - a signature, a version, some flags, the compression method, a DOS timestamp, a CRC-32 of the contents and two lengths - followed by the bytes themselves. After the last member comes a central directory repeating that information with an offset to each local header, and after that a twenty-two byte end-of-central-directory record saying how many members there are and where the directory starts. That is the whole format for this purpose, and it is written out here in about eighty lines.</p>
+            <p>Every member is <strong>stored</strong> rather than deflated. That sounds lazy and is actually the right call: JPEG, WebP, PNG and AVIF payloads are already entropy-coded, so deflate finds close to nothing in them - a fraction of a per cent, in exchange for shipping a compression library to every visitor of this page. Method 0 is a first-class part of the specification, and every unarchiver on every platform opens the result. The only thing the writer refuses is an archive past four gigabytes or 65,535 members, which needs ZIP64 records it does not emit; the per-file and per-batch caps make that unreachable, but refusing beats writing something that opens as garbage.</p>
           </div>
         </div>
       </section>
@@ -538,7 +538,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/exif">
             <span class="lab-card-name">EXIF viewer</span>
-            <p class="lab-card-desc">See exactly what &ldquo;strip metadata&rdquo; is removing &mdash; camera, timestamp, serial number, coordinates.</p>
+            <p class="lab-card-desc">See exactly what &ldquo;strip metadata&rdquo; is removing - camera, timestamp, serial number, coordinates.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/media-forensics">

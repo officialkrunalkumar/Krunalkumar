@@ -1,5 +1,5 @@
 /* ==========================================================================
-   scripts/games-data.js — every game in /games, as data.
+   scripts/games-data.js - every game in /games, as data.
    --------------------------------------------------------------------------
    scripts/games.js turns this into games/index.html and one page per entry.
    The prose here is hand-written; the generator only decides where it goes.
@@ -24,7 +24,7 @@
      board     true for the games that render DOM tiles instead of a canvas
                (2048, Minesweeper). The shell picks up whichever exists.
      pad       which on-screen control set to ship: dpad | lr | rotate |
-               action | none. Shown only on coarse pointers — see games.css.
+               action | none. Shown only on coarse pointers - see games.css.
      bestKey   set null for a game with no meaningful score (the love
                calculator, the personality test), and no Best cell will be
                written or stored.
@@ -66,14 +66,14 @@ const CATEGORIES = [
     eyebrow: 'Take your time',
     title: 'Puzzles with no clock on them',
     blurb: 'Nothing here chases you. Think as long as you like, undo where it makes sense, and come back to the ' +
-      'board tomorrow &mdash; the ones worth resuming save themselves in your browser.',
+      'board tomorrow - the ones worth resuming save themselves in your browser.',
   },
   {
     key: 'terminal',
     chip: 'Terminal',
     eyebrow: 'From the command line',
     title: 'The games that came with Linux',
-    blurb: 'Eighty columns, twenty-four rows, one character per cell &mdash; rebuilt in a browser rather than ' +
+    blurb: 'Eighty columns, twenty-four rows, one character per cell - rebuilt in a browser rather than ' +
       'emulated, and drawn in the same phosphor green as the <a href="/labs/linux">Linux terminal</a> next door. ' +
       'These are the games people actually played on a machine with no graphics card, and most of them are ' +
       'better than that description suggests.',
@@ -84,7 +84,7 @@ const CATEGORIES = [
     eyebrow: 'Play with someone',
     title: 'Board games for one device',
     blurb: 'The games you play with other people, or against the machine when there is nobody about. Pass one ' +
-      'phone round the table, or take on the computer &mdash; no account, no app, and nothing that needs a ' +
+      'phone round the table, or take on the computer - no account, no app, and nothing that needs a ' +
       'connection once the page has loaded.',
   },
   {
@@ -93,7 +93,7 @@ const CATEGORIES = [
     eyebrow: 'The ones that teach something',
     title: 'Security and computer science, with a score attached',
     blurb: 'These are the <a href="/labs">labs</a> next door with a timer on them. Same subject matter, played ' +
-      'rather than read &mdash; and each one links back to the tool that does the same job without anybody ' +
+      'rather than read - and each one links back to the tool that does the same job without anybody ' +
       'keeping score.',
   },
   {
@@ -101,7 +101,7 @@ const CATEGORIES = [
     chip: 'Toys',
     eyebrow: 'Nothing to win',
     title: 'Toys, not games',
-    blurb: 'No score, no clock, no way to lose. These are the simulations worth staring at &mdash; a handful of ' +
+    blurb: 'No score, no clock, no way to lose. These are the simulations worth staring at - a handful of ' +
       'rules per particle, and behaviour nobody put there on purpose. Drag on any of them and see what happens.',
   },
   {
@@ -110,7 +110,7 @@ const CATEGORIES = [
     eyebrow: 'Just for fun',
     title: 'Quizzes, calculators and the odd bit of nonsense',
     blurb: 'The share-with-a-friend end of the arcade. Some of it is genuinely useful, some of it is a joke with ' +
-      'a straight face &mdash; and where a thing is nonsense, the page says so rather than letting you wonder.',
+      'a straight face - and where a thing is nonsense, the page says so rather than letting you wonder.',
   },
 ];
 
@@ -118,14 +118,14 @@ const CATEGORIES = [
    The hub page
    -------------------------------------------------------------------------- */
 const HUB = {
-  title: 'Games — Free Browser Games With No Ads Or Sign-Up',
+  title: 'Games - Free Browser Games With No Ads Or Sign-Up',
   ogTitle: 'Games that run on your machine, not mine',
   h1: 'Games that run on your machine, not mine',
-  description: 'Free browser games — arcade classics, puzzles, a typing trainer and a few quizzes. No ads, ' +
-    'no account, no tracking — everything runs in your own tab.',
+  description: 'Free browser games - arcade classics, puzzles, a typing trainer and a few quizzes. No ads, ' +
+    'no account, no tracking - everything runs in your own tab.',
   hero: 'The same rule as the labs next door: it all happens inside your browser tab. No account, no ads, no ' +
     'timer counting down to a paywall, and no server anywhere that knows you played. Your best scores live in ' +
-    'your own browser storage, which means clearing your site data clears them &mdash; and that is the honest ' +
+    'your own browser storage, which means clearing your site data clears them - and that is the honest ' +
     'trade for never being asked to sign in.',
   facts: [
     'No ads, ever',
@@ -139,7 +139,7 @@ const HUB = {
     {
       h: 'Because the same claim is being tested',
       p: 'Every lab on this site says the same thing: the work happens on your machine and nothing is sent ' +
-        'anywhere. A game is a harder version of that promise, not an easier one &mdash; free games are the most ' +
+        'anywhere. A game is a harder version of that promise, not an easier one - free games are the most ' +
         'reliably ad-infested corner of the web, and the usual price is a tracker on every click. The games ' +
         'themselves are first-party and self-contained; the only third-party request is the same analytics ' +
         'script every page on this site loads, and your own network tab will show you that and nothing else.',
@@ -152,7 +152,7 @@ const HUB = {
     },
     {
       h: 'Because some of them teach something',
-      p: 'A few of these are the security and computer-science labs with a score attached &mdash; the same idea, ' +
+      p: 'A few of these are the security and computer-science labs with a score attached - the same idea, ' +
         'played rather than read. Those are the ones I would point an intern at, and they link back to the lab ' +
         'that does the same job without the timer.',
     },
@@ -214,14 +214,14 @@ const GAMES = [
     width: 640, height: 480, pad: 'dpad',
     bestKey: 'asteroids',
     engine: 'Canvas &middot; vector outlines &middot; toroidal collision',
-    title: 'Asteroids — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Asteroids - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Asteroids, and the momentum you cannot put down',
     description: 'Free browser Asteroids drawn as vector outlines. The ship keeps its speed when you stop ' +
       'thrusting, which is the whole difficulty of the game.',
     short: 'Momentum, rocks, and one aiming saucer.',
     h1: 'Asteroids',
     hero: 'Turn, thrust, fire. Thrust adds to the speed you already had rather than replacing it, so the ship ' +
-      'carries on drifting long after you let go &mdash; and that one fact is the entire difficulty of the game. ' +
+      'carries on drifting long after you let go - and that one fact is the entire difficulty of the game. ' +
       'Every rock breaks into two smaller rocks twice before it is gone, so a full board gets busier before it ' +
       'gets quieter.',
     facts: ['Thrust adds, never steers', 'Everything wraps', 'Rocks split twice', 'A saucer that aims'],
@@ -243,7 +243,7 @@ const GAMES = [
     info: [
       {
         h: 'Thrust adds to your velocity, it does not set it',
-        p: 'Holding up does not point the ship where it is going &mdash; it adds a push in the direction you ' +
+        p: 'Holding up does not point the ship where it is going - it adds a push in the direction you ' +
           'are facing to the speed you already had. Let go and nothing stops you; there is only a light drag ' +
           'that bleeds a little off each second. So the direction you are aiming and the direction you are ' +
           'travelling are two separate things, and every burn has to be paid back with an opposite one later. ' +
@@ -284,15 +284,15 @@ const GAMES = [
     width: 420, height: 560, pad: 'action',
     bestKey: 'flappy',
     engine: 'Canvas &middot; one button, fixed step',
-    title: 'Flappy — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Flappy - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'One button, and a bird that is always falling',
     description: 'A one-button flap-through-gaps game where gravity, the flap impulse and the pipe spacing are ' +
       'tuned against each other. No ads, no sign-up, nothing uploaded.',
     short: 'One button, gravity, and a gap.',
     h1: 'Flappy',
     hero: 'One button, and a bird that is always falling. The whole game is the relationship between four ' +
-      'numbers &mdash; how hard gravity pulls, how much a flap gives back, how fast the pipes arrive and how ' +
-      'far apart the gaps sit &mdash; and this one is tuned so that ten gaps is a matter of rhythm rather ' +
+      'numbers - how hard gravity pulls, how much a flap gives back, how fast the pipes arrive and how ' +
+      'far apart the gaps sit - and this one is tuned so that ten gaps is a matter of rhythm rather ' +
       'than luck.',
     facts: ['One button, nothing else', 'Tuned so ten gaps is rhythm', 'The gap narrows as you score', 'Your best kept on this device'],
     hud: [
@@ -313,7 +313,7 @@ const GAMES = [
         p: 'A flap sets your upward speed rather than adding to it, so every flap draws the same 60-unit arc ' +
           'and takes about a third of a second to reach the top of it. Flap again as it comes back down and ' +
           'you hover; flap faster and you climb at roughly 190 units a second. Pipes arrive every 1.43 ' +
-          'seconds, so you can climb about 270 units between one gap and the next &mdash; and that number is ' +
+          'seconds, so you can climb about 270 units between one gap and the next - and that number is ' +
           'what decides how far apart consecutive gaps are allowed to be.',
       },
       {
@@ -331,7 +331,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'How do I flap?', a: 'Space, the up arrow, or a tap anywhere on the playfield. That is the whole control scheme — nothing else does anything.' },
+      { q: 'How do I flap?', a: 'Space, the up arrow, or a tap anywhere on the playfield. That is the whole control scheme - nothing else does anything.' },
       { q: 'Does it get harder?', a: 'Slightly. The gap opens at 168 units and loses one and a half for every gap you clear, down to a floor of 132. At ten gaps it has shrunk by about nine per cent, which you feel rather than see. The scroll speed never changes.' },
       { q: 'Why does nothing move until I flap?', a: 'The pipes hold still until your first flap, so a run never starts while you are still reading the screen. The score starts with that flap.' },
       { q: 'Can it generate a gap I cannot reach?', a: 'No. Each gap centre is at most 110 units from the last, and a good flap cadence climbs around 270 units in the time between two pipes, so there is always slack.' },
@@ -350,13 +350,13 @@ const GAMES = [
     width: 480, height: 320, pixel: true, pad: 'runjump',
     bestKey: 'platformer',
     engine: 'Canvas &middot; tile collision',
-    title: 'Platformer — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Platformer - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'A platformer with the jump done properly',
     description: 'A small side-scrolling platformer with run acceleration, a variable-height jump, coins, two kinds of enemy and three levels. No ads and no sign-up.',
     short: 'Run, jump, stomp, reach the flag.',
     h1: 'Platformer',
     hero: 'Three levels of running and jumping, in the spirit of the ones everybody grew up on. Tap the button and you hop; hold it ' +
-      'and you clear a gap. Everything under your feet is a tile in a grid you could read out loud &mdash; the levels are written ' +
+      'and you clear a gap. Everything under your feet is a tile in a grid you could read out loud - the levels are written ' +
       'in the source as rows of text, one character per tile.',
     facts: ['Three hand-built levels', 'Variable-height jump', 'Coins, walkers and hoppers', 'Your best kept on this device'],
     hud: [
@@ -367,7 +367,7 @@ const GAMES = [
     ],
     keys: [
       { k: '← →', d: 'Run' },
-      { k: '↑ or Space', d: 'Jump &mdash; hold it for height' },
+      { k: '↑ or Space', d: 'Jump - hold it for height' },
       { k: 'Esc', d: 'Pause' },
     ],
     infoHeading: 'Three things that decide whether a platformer feels right',
@@ -383,7 +383,7 @@ const GAMES = [
         h: 'Standing on the ground is harder to detect than it looks',
         p: 'Landing sets vertical speed to zero, and the next step of gravity lifts you off the floor again by a fraction of a ' +
           'unit, so a check that waits to be caught inside a tile finds you airborne four frames in five while you are plainly ' +
-          'running along flat ground &mdash; and those frames get air control instead of friction and grip. This one looks one ' +
+          'running along flat ground - and those frames get air control instead of friction and grip. This one looks one ' +
           'unit under your feet instead.',
       },
       {
@@ -412,13 +412,13 @@ const GAMES = [
     script: 'arcade/snake.js',
     width: 320, height: 320, pixel: true, pad: 'dpad',
     engine: 'Canvas &middot; 0 KB to download',
-    title: 'Snake — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Snake - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Snake, the way it was on the phone',
     description: 'The classic Snake game, free and in your browser. Arrow keys or a thumb pad, three speeds, ' +
       'wrap-around walls if you want them, and no ads or sign-up.',
     short: 'Eat, grow, do not bite yourself.',
     h1: 'Snake',
-    hero: 'The one everybody played on a Nokia. Eat, grow, and try very hard not to turn into your own tail &mdash; ' +
+    hero: 'The one everybody played on a Nokia. Eat, grow, and try very hard not to turn into your own tail - ' +
       'which stops being a joke somewhere around length forty, when the board is mostly snake and every turn is ' +
       'a decision you have to have made two moves ago.',
     facts: ['Three speeds', 'Optional wrap-around walls', 'Your best kept on this device', 'Plays on a phone'],
@@ -441,7 +441,7 @@ const GAMES = [
     info: [
       {
         h: 'You cannot reverse',
-        p: 'Turning back along your own neck is instant death, so the game ignores it &mdash; but only for the ' +
+        p: 'Turning back along your own neck is instant death, so the game ignores it - but only for the ' +
           'move you are currently committed to. Press left then up faster than one tick and the second press is ' +
           'queued, not dropped, which is why quick double-turns feel right here and feel broken in most copies.',
       },
@@ -453,7 +453,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Can I play with the walls off?', a: 'Yes. The arrows button in the toolbar switches between walls that kill you and edges that wrap around to the other side. It changes the game a lot — wrap-around is easier to survive and much harder to score well on.' },
+      { q: 'Can I play with the walls off?', a: 'Yes. The arrows button in the toolbar switches between walls that kill you and edges that wrap around to the other side. It changes the game a lot - wrap-around is easier to survive and much harder to score well on.' },
       { q: 'Does the speed setting change my score?', a: 'No. A point is a point at any speed. The speed only changes how much time you get to think, and your best score is kept as a single number across all three.' },
       { q: 'Where is my high score stored?', a: 'In your own browser, on this device. There is no server and no leaderboard. Clearing your site data clears it.' },
       { q: 'Does it work on a phone?', a: 'Yes. A thumb pad appears automatically on a touchscreen, and swiping on the board works too.' },
@@ -474,14 +474,14 @@ const GAMES = [
        its right holds the next queue and the hold slot. */
     width: 320, height: 400, pixel: false, pad: 'rotate',
     engine: 'Canvas &middot; 7-bag randomiser',
-    title: 'Tetris — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Tetris - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Tetris, with the randomiser done properly',
     description: 'Free online Tetris with a proper 7-bag randomiser, hold, ghost piece and hard drop. No ads, ' +
       'no sign-up, runs entirely in your browser.',
     short: 'Stack the falling pieces, clear the lines.',
     h1: 'Tetris',
     hero: 'Seven shapes, one well, and the growing certainty that the piece you need is not coming. It is coming ' +
-      '&mdash; this uses a real 7-bag randomiser, so you can never go more than twelve pieces without a long bar. ' +
+      '- this uses a real 7-bag randomiser, so you can never go more than twelve pieces without a long bar. ' +
       'Knowing that changes how you stack.',
     facts: ['7-bag randomiser', 'Hold, ghost piece and hard drop', 'Wall kicks on rotation', 'Plays on a phone'],
     hud: [
@@ -492,7 +492,7 @@ const GAMES = [
     ],
     /* Hold used to be the C key. Every letter binding came out of the shell
        so the typing trainer could exist, so the ones that mattered became
-       real buttons — which is where a discoverable control belongs anyway. */
+       real buttons - which is where a discoverable control belongs anyway. */
     controls: [
       '<button class="game-btn" type="button" id="game-hold">Hold</button>',
     ],
@@ -515,7 +515,7 @@ const GAMES = [
       {
         h: 'Rotation that gets out of tight spots',
         p: 'Rotating against a wall or an overhang would normally just fail. This tries a short list of nudges ' +
-          'first &mdash; left, right, up &mdash; and takes the first one that fits. It is the difference between ' +
+          'first - left, right, up - and takes the first one that fits. It is the difference between ' +
           'a piece that clicks into a gap and one that stubbornly will not.',
       },
     ],
@@ -537,14 +537,14 @@ const GAMES = [
     script: 'arcade/breakout.js',
     width: 400, height: 300, pixel: false, pad: 'lr',
     engine: 'Canvas &middot; swept collision',
-    title: 'Breakout — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Breakout - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Breakout, without the ball falling through a brick',
     description: 'Free browser Breakout with proper swept collision, so the ball never tunnels through a brick. ' +
       'Mouse, keyboard or touch, no ads, no sign-up.',
     short: 'Bat, ball, and a wall that has to go.',
     h1: 'Breakout',
-    hero: 'A bat, a ball and a wall with a grudge. The angle the ball leaves your bat depends on where it hits &mdash; ' +
-      'catch it near the edge to send it steep, near the middle to keep it flat &mdash; which is the whole game ' +
+    hero: 'A bat, a ball and a wall with a grudge. The angle the ball leaves your bat depends on where it hits - ' +
+      'catch it near the edge to send it steep, near the middle to keep it flat - which is the whole game ' +
       'once you stop chasing it and start aiming it.',
     facts: ['Aim with the bat', 'Mouse, keys or touch', 'Six levels', 'No tunnelling through bricks'],
     hud: [
@@ -593,14 +593,14 @@ const GAMES = [
     bestKey: null,
     tapAction: false,
     engine: 'Mallet velocity &middot; swept goals',
-    title: 'Air Hockey — Play Free Online Against The Computer',
+    title: 'Air Hockey - Play Free Online Against The Computer',
     ogTitle: 'Air hockey where a flick actually flicks',
     description: 'Shufflepuck-style air hockey against the computer. Your mallet carries its speed into the ' +
-      'puck — a flick hits far harder than standing still. First to seven.',
+      'puck - a flick hits far harder than standing still. First to seven.',
     short: 'Flick the puck past them. First to seven.',
     h1: 'Air hockey',
     hero: 'Drag your mallet around your own half. The puck picks up the speed you were moving at, not just the ' +
-      'angle you were sitting at &mdash; so a flick sends it away hard and a block merely returns it. First to ' +
+      'angle you were sitting at - so a flick sends it away hard and a block merely returns it. First to ' +
       'seven wins.',
     facts: ['Your mallet carries its speed', 'Three difficulties', 'First to seven', 'Mouse or finger'],
     hud: [
@@ -618,7 +618,7 @@ const GAMES = [
       {
         h: 'The mallet has velocity, not just position',
         p: 'Its speed is measured between frames and added to the puck along the contact normal. Reflect alone ' +
-          'and the puck can never leave faster than it arrived, which means no shots &mdash; only returns. That ' +
+          'and the puck can never leave faster than it arrived, which means no shots - only returns. That ' +
           'one addition is the difference between a game and a rally.',
       },
       {
@@ -646,14 +646,14 @@ const GAMES = [
     bestOrder: 'low',
     formatBest: function (n) { return (n / 10).toFixed(1) + 's'; },
     engine: 'A 1,200 m course &middot; one divide per object',
-    title: 'Downhill Racer — Free Browser Sledding Game, No Sign-Up',
+    title: 'Downhill Racer - Free Browser Sledding Game, No Sign-Up',
     ogTitle: 'Downhill, in the spirit of Tux Racer',
     description: 'A downhill run in the spirit of Extreme Tux Racer. Steer between the trees, collect the fish, ' +
       'tuck for speed you cannot quite steer out of.',
     short: 'Steer, tuck, collect fish, miss trees.',
     h1: 'Downhill',
     hero: 'Point yourself down the mountain and try to keep it there. Tucking makes you faster and much harder to ' +
-      'turn, which is the entire negotiation of a downhill run &mdash; and the fish are worth going out of your ' +
+      'turn, which is the entire negotiation of a downhill run - and the fish are worth going out of your ' +
       'way for right up until they are not.',
     facts: ['A 1,200 metre course with a finish', 'Tuck for speed, lose the steering', 'Fish are points, trees are not', 'A crash costs momentum, not the run'],
     hud: [
@@ -675,19 +675,19 @@ const GAMES = [
       {
         h: 'One divide per object',
         p: 'There is no 3D here. Every tree, rock and fish is placed by dividing its sideways offset by its ' +
-          'distance and scaling &mdash; the same trick every road racer used before anyone had a graphics card. ' +
+          'distance and scaling - the same trick every road racer used before anyone had a graphics card. ' +
           'The stripes on the snow take their phase from how far you have travelled, which is why speed is ' +
           'legible before you read the number.',
       },
       {
         h: 'Tucking is a real trade',
-        p: 'Holding down cuts your drag, so you keep accelerating &mdash; and it also cuts your steering ' +
+        p: 'Holding down cuts your drag, so you keep accelerating - and it also cuts your steering ' +
           'authority by about half. Going fast is easy; going fast where the trees are not is the game.',
       },
     ],
     faq: [
       { q: 'What happens when I hit a tree?', a: 'You lose most of your speed and the screen flashes, but the run carries on. A downhill you can lose four seconds in is not one anybody plays twice.' },
-      { q: 'How do I win?', a: 'Get to the finish. The course is 1,200 metres and the banner appears across the piste as you approach it. Your score is the TIME, so a faster run is a better one — and your best is a lap record rather than a high score.' },
+      { q: 'How do I win?', a: 'Get to the finish. The course is 1,200 metres and the banner appears across the piste as you approach it. Your score is the TIME, so a faster run is a better one - and your best is a lap record rather than a high score.' },
       { q: 'Why can I barely steer sometimes?', a: 'You are tucked. Let go of down and the steering comes back immediately.' },
     ],
     related: ['air-hockey', 'moon-buggy', 'snake'],
@@ -704,7 +704,7 @@ const GAMES = [
     pad: 'none',
     bestKey: 'memory',
     engine: 'DOM grid &middot; pairs are shapes, not colours',
-    title: 'Memory — The Card Matching Game, Free Online',
+    title: 'Memory - The Card Matching Game, Free Online',
     ogTitle: 'Memory, where the pairs are shapes and not colours',
     description: 'Turn over two cards and keep them if they match. Three board sizes, scored on moves and ' +
       'time, and pairs you can tell apart if you are colour-blind.',
@@ -738,14 +738,14 @@ const GAMES = [
         h: 'Colour is reinforcement, never the answer',
         p: 'Around one man in twelve has some form of red-green colour blindness, and there is no set of ' +
           'fifteen colours that all of them can tell apart. So a pair here is two cards with the same ' +
-          'silhouette &mdash; a crescent and a crescent &mdash; and the colour is only there to make ' +
+          'silhouette - a crescent and a crescent - and the colour is only there to make ' +
           'scanning quicker for the people who can use it.',
       },
       {
         h: 'Small boards never repeat a colour; the big one does',
         p: 'Each shape owns one of eight colours. On the six and eight-pair boards the deal takes one shape ' +
           'per colour, so every card on the table is a different colour as well as a different shape. The ' +
-          'fifteen-pair board uses every shape and therefore reuses seven colours &mdash; deliberately, ' +
+          'fifteen-pair board uses every shape and therefore reuses seven colours - deliberately, ' +
           'because if colour were ever sufficient you would stop reading the shape. The shapes that share a ' +
           'colour are picked to look nothing alike.',
       },
@@ -764,7 +764,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'How do I know which cards make a pair?', a: 'By shape. Two cards match when they carry the same symbol &mdash; two stars, two hexagons. Colour follows the shape around and is there to help you scan, but it is never what decides a match.' },
+      { q: 'How do I know which cards make a pair?', a: 'By shape. Two cards match when they carry the same symbol - two stars, two hexagons. Colour follows the shape around and is there to help you scan, but it is never what decides a match.' },
       { q: 'Why do two different shapes sometimes share a colour?', a: 'Only on the 6&times;5 board, which has fifteen pairs and eight colours. There is no honest way to make fifteen colours distinguishable to everyone, so the shapes carry the identity and the colours are allowed to repeat.' },
       { q: 'How is the score worked out?', a: 'Your moves, plus one point for every five seconds. Lower is better. A perfect 4&times;4 run is eight moves, so eight points plus whatever the clock added.' },
       { q: 'Are best scores kept for each size?', a: 'Yes. Each of the three boards keeps its own record, in this browser only. Clearing site data clears them, and nothing is ever sent anywhere.' },
@@ -775,7 +775,7 @@ const GAMES = [
 
   {
     slug: 'snakes-ladders',
-    /* A board game, not a puzzle — its own hero says "not one decision to
+    /* A board game, not a puzzle - its own hero says "not one decision to
        make", and it sits with chess, ludo and carrom on the shelf. */
     cat: 'board',
     name: 'Snakes and Ladders',
@@ -787,7 +787,7 @@ const GAMES = [
     width: 560, height: 620, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Fixed classic layout &middot; nine ladders, ten snakes',
-    title: 'Snakes and Ladders — Play Free In Your Browser, No Sign-Up',
+    title: 'Snakes and Ladders - Play Free In Your Browser, No Sign-Up',
     ogTitle: 'Snakes and Ladders, one square at a time',
     description: 'Snakes and ladders on the classic ten-by-ten board, for two to four players. Exact roll to ' +
       'finish, a six rolls again, and the token walks every square.',
@@ -804,7 +804,7 @@ const GAMES = [
     ],
     hud: [
       { key: 'turn', label: 'Turn', accent: true, init: 'Red' },
-      { key: 'dice', label: 'Die', init: '—' },
+      { key: 'dice', label: 'Die', init: '-' },
       { key: 'square', label: 'Square', init: '0' },
     ],
     controls: [
@@ -818,20 +818,20 @@ const GAMES = [
       { k: 'Space', d: 'Roll the die' },
       { k: 'Enter', d: 'Roll the die' },
     ],
-    touch: 'Tap Roll and watch &mdash; there is nothing else to press, because there is nothing else to decide.',
+    touch: 'Tap Roll and watch - there is nothing else to press, because there is nothing else to decide.',
     infoHeading: 'The board, the rules and the one honest admission',
     info: [
       {
         h: 'Boustrophedon, which is a real word for a real layout',
         p: 'The numbers do not run left to right on every row. The bottom row runs left to right, the next runs ' +
-          'right to left, and they alternate all the way up &mdash; the way an ox turns at the end of a furrow, ' +
+          'right to left, and they alternate all the way up - the way an ox turns at the end of a furrow, ' +
           'which is what the Greek word means. It is also why the board needs no table of coordinates: the row ' +
           'is (n minus 1) divided by ten, the column is the remainder, and odd rows mirror the column.',
       },
       {
         h: 'You need the exact roll to finish',
         p: 'On 97 a roll of four does nothing at all. The move is not legal, so the token stays where it is and ' +
-          'the turn passes &mdash; the board tells you the number you are still waiting for. Some sets play the ' +
+          'the turn passes - the board tells you the number you are still waiting for. Some sets play the ' +
           'bounce instead, where you go up to 100 and back down the difference. Both are common; this one uses ' +
           'the first.',
       },
@@ -844,18 +844,18 @@ const GAMES = [
       {
         h: 'There is nothing to decide, and that is the point',
         p: 'You never choose anything. The die decides everything from the first roll to the last, which is why ' +
-          'the computer opponent here is a timer that presses Roll rather than an engine &mdash; there is no ' +
+          'the computer opponent here is a timer that presses Roll rather than an engine - there is no ' +
           'move to be better at. The Indian ancestor of the game, Gyan Chaupar or Moksha Patam, made that its ' +
           'subject: ladders stood for virtues, snakes for vices, and where you ended up was not meant to be up ' +
           'to you.',
       },
     ],
     faq: [
-      { q: 'Is there any skill in snakes and ladders?', a: 'None. Every outcome is decided by the dice, and no choice you make changes anything, because there is no choice to make. That is not a shortcoming of this version — it is the game.' },
+      { q: 'Is there any skill in snakes and ladders?', a: 'None. Every outcome is decided by the dice, and no choice you make changes anything, because there is no choice to make. That is not a shortcoming of this version - it is the game.' },
       { q: 'Do I need a six to start?', a: 'Not here. You enter the board on your first roll, whatever it is. Requiring a six is a common house rule and it mostly adds waiting.' },
       { q: 'What happens if I roll more than I need at the end?', a: 'You stay where you are and the turn passes, because an over-roll is not a legal move. The board shows the number you still need.' },
       { q: 'Does a six do anything?', a: 'It earns you another roll, even when the six itself could not be used. There is no three-sixes forfeit here, though plenty of households play one.' },
-      { q: 'Is the board different every game?', a: 'No. It is the same fixed layout every time — nine ladders and ten snakes in the positions most printed boards use — so a square you have learned stays learned.' },
+      { q: 'Is the board different every game?', a: 'No. It is the same fixed layout every time - nine ladders and ten snakes in the positions most printed boards use - so a square you have learned stays learned.' },
       { q: 'Can two of us play on one device?', a: 'Yes. Choose pass and play, and set two, three or four players. There is no online play: that would need a server to hold the game, and this site has none.' },
     ],
     related: ['ludo', 'connect-four', '2048'],
@@ -872,14 +872,14 @@ const GAMES = [
     bestKey: null,
     tapAction: false,
     engine: 'DOM grid &middot; word index from the local date',
-    title: 'Word of the Day — Free Five-Letter Word Puzzle, No Sign-Up',
+    title: 'Word of the Day - Free Five-Letter Word Puzzle, No Sign-Up',
     ogTitle: 'Five letters, six guesses, and a dictionary of shop talk',
     description: 'A five-letter word puzzle built from developer and security vocabulary. One word a day, ' +
       'six guesses, and an unlimited practice mode. No ads, no sign-up.',
     short: 'Five letters of developer shop talk.',
     h1: 'Word of the day',
     hero: 'The five-letter guessing game, with a dictionary that only holds words you would meet in a code ' +
-      'review or an incident report &mdash; NONCE, PROXY, MUTEX, SHARD. One word a day, the same one for ' +
+      'review or an incident report - NONCE, PROXY, MUTEX, SHARD. One word a day, the same one for ' +
       'everybody, and it turns over at your midnight rather than at some server’s. When you have had ' +
       'today’s, practice mode will deal you as many more as you like.',
     facts: ['232 words, all shop talk', 'Six guesses, one word a day', 'Turns over at your local midnight', 'Practice mode is unlimited'],
@@ -898,13 +898,13 @@ const GAMES = [
       { k: 'Backspace', d: 'Delete a letter' },
       { k: 'Click', d: 'The on-screen keyboard does the same' },
     ],
-    touch: 'The on-screen keyboard is the whole interface on a phone &mdash; tap the letters, then Enter. The system keyboard is never raised over the board.',
+    touch: 'The on-screen keyboard is the whole interface on a phone - tap the letters, then Enter. The system keyboard is never raised over the board.',
     infoHeading: 'Four things worth knowing',
     info: [
       {
         h: 'The word turns over at your midnight, not at midnight in London',
         p: 'The obvious way to pick a daily word is to divide the current timestamp by the length of a day, ' +
-          'but that rolls over at UTC midnight &mdash; half past five in the morning in India, the previous ' +
+          'but that rolls over at UTC midnight - half past five in the morning in India, the previous ' +
           'afternoon in California. So the year, month and date are read in local time and turned into a day ' +
           'number from those three integers alone, which also means a daylight-saving change cannot shift it. ' +
           'Two people in different timezones get the same word on the same calendar date, rather than at the ' +
@@ -914,7 +914,7 @@ const GAMES = [
         h: 'The answer list and the guess list are the same 232 words',
         p: 'Most games of this shape accept a huge dictionary of guesses and draw answers from a small one. ' +
           'Here there is one list, so a rejected guess is real information: whatever you typed was never going ' +
-          'to be the answer. The cost is honest and worth stating &mdash; perfectly good English like MOUSE or ' +
+          'to be the answer. The cost is honest and worth stating - perfectly good English like MOUSE or ' +
           'CRANE is refused, because this list is vocabulary from development and security rather than the ' +
           'language at large.',
       },
@@ -934,11 +934,11 @@ const GAMES = [
     ],
     faq: [
       { q: 'Is this Wordle?', a: 'It is the same rules, which are not anybody’s to own, with a different dictionary and no connection to the New York Times. The word list here is development and security vocabulary rather than general English.' },
-      { q: 'Does everybody get the same word?', a: 'Yes, on the same calendar date. It is picked from your local year, month and day, so somebody in Sydney gets it before somebody in London does &mdash; but they get the same word, on the date they both call today.' },
+      { q: 'Does everybody get the same word?', a: 'Yes, on the same calendar date. It is picked from your local year, month and day, so somebody in Sydney gets it before somebody in London does - but they get the same word, on the date they both call today.' },
       { q: 'Why was my guess rejected?', a: 'Only the 232 words on the list are accepted, and they are the same 232 the answer is drawn from. If it was refused it could not have been the answer, which is worth knowing.' },
       { q: 'Can I play more than once a day?', a: 'Yes. The practice button deals a random word from the same list, as often as you like. Practice rounds do not count towards the streak, which is the point of keeping them separate.' },
       { q: 'What happens if I close the tab halfway through?', a: 'The guesses you have already submitted are saved on this device and come back when you return, as long as it is still the same day where you are.' },
-      { q: 'I am colour-blind. Can I tell the tiles apart?', a: 'Amber tiles carry a diagonal stripe as well as the colour, and every tile is announced with its state &mdash; "T, wrong place" &mdash; so a screen reader gives the full result without any colour at all.' },
+      { q: 'I am colour-blind. Can I tell the tiles apart?', a: 'Amber tiles carry a diagonal stripe as well as the colour, and every tile is announced with its state - "T, wrong place" - so a screen reader gives the full result without any colour at all.' },
     ],
     related: ['sudoku', 'minesweeper', 'typing-trainer'],
   },
@@ -953,7 +953,7 @@ const GAMES = [
     script: 'puzzle/2048.js',
     board: true, pad: 'dpad',
     engine: 'DOM tiles &middot; saves your board',
-    title: '2048 — Play Free Online, No Ads | Krunalkumar Shah',
+    title: '2048 - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: '2048, and it remembers where you were',
     description: 'The 2048 sliding tile puzzle, free in your browser. Arrow keys or swipe, one undo, and your ' +
       'board is saved so you can come back to it. No ads, no sign-up.',
@@ -995,7 +995,7 @@ const GAMES = [
       { q: 'Is my board saved?', a: 'Yes, after every move, in your own browser storage. Close the tab and come back and the board, the score and the move count are where you left them.' },
       { q: 'How much can I undo?', a: 'One move. Enough to take back a misfire, not enough to play the board backwards.' },
       { q: 'Can I keep going after reaching 2048?', a: 'Yes. Reaching 2048 is announced but the run carries on, so 4096 and 8192 are both on the table if the board holds together.' },
-      { q: 'Does it work on a phone?', a: 'Yes — swipe in any direction on the board, or use the pad.' },
+      { q: 'Does it work on a phone?', a: 'Yes - swipe in any direction on the board, or use the pad.' },
     ],
     related: ['minesweeper', 'tetris', 'snake'],
   },
@@ -1009,9 +1009,9 @@ const GAMES = [
     script: 'puzzle/minesweeper.js',
     board: true, pad: 'none',
     engine: 'DOM grid &middot; never a first-click loss',
-    title: 'Minesweeper — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Minesweeper - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Minesweeper, where the first click is always safe',
-    description: 'Classic Minesweeper in your browser — beginner, intermediate and expert, a guaranteed safe ' +
+    description: 'Classic Minesweeper in your browser - beginner, intermediate and expert, a guaranteed safe ' +
       'first click, and chording. No ads, no sign-up, nothing uploaded.',
     short: 'Numbers, flags, and no first-click deaths.',
     h1: 'Minesweeper',
@@ -1044,13 +1044,13 @@ const GAMES = [
       {
         h: 'The mines are placed after your first click',
         p: 'The board is empty until you open it. Only then are the mines scattered, avoiding the cell you ' +
-          'clicked and its eight neighbours &mdash; so the first click always opens a region rather than ending ' +
+          'clicked and its eight neighbours - so the first click always opens a region rather than ending ' +
           'the game. This is how every modern implementation does it, and it costs nothing.',
       },
       {
         h: 'Chording is the whole skill',
         p: 'Click a revealed number that already has exactly that many flags around it and every remaining ' +
-          'neighbour opens at once. It is how good players clear a board in a fraction of the clicks &mdash; and ' +
+          'neighbour opens at once. It is how good players clear a board in a fraction of the clicks - and ' +
           'it will happily blow you up if one of those flags is wrong.',
       },
     ],
@@ -1074,14 +1074,14 @@ const GAMES = [
     width: 518, height: 498, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Minimax with alpha-beta &middot; six ply',
-    title: 'Connect Four — Play The Computer Free, No Sign-Up',
+    title: 'Connect Four - Play The Computer Free, No Sign-Up',
     ogTitle: 'Connect Four that never misses a block',
     description: 'Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it ' +
       'can see and always blocks yours, straight out of the search.',
     short: 'Four in a row, against a real search.',
     h1: 'Connect Four',
     hero: 'Drop a disc, get four in a row. The opponent searches six moves ahead with alpha-beta pruning, which ' +
-      'means it will never miss a win and never miss a block &mdash; not because those are coded as rules, but ' +
+      'means it will never miss a win and never miss a block - not because those are coded as rules, but ' +
       'because a search that deep finds them anyway.',
     facts: ['Six-ply search', 'Against the computer or pass and play', 'Three strengths', 'Nothing is uploaded'],
     hud: [
@@ -1101,26 +1101,26 @@ const GAMES = [
       {
         h: 'A window with both colours is worth nothing',
         p: 'The evaluation looks at every run of four cells on the board. If a run already contains one of each ' +
-          'colour, nobody can ever complete it, so it scores zero. Scoring it anyway &mdash; which is the ' +
-          'obvious first implementation &mdash; sends the engine chasing lines that are already dead.',
+          'colour, nobody can ever complete it, so it scores zero. Scoring it anyway - which is the ' +
+          'obvious first implementation - sends the engine chasing lines that are already dead.',
       },
       {
         h: 'The centre column really is worth more',
         p: 'A disc in the middle takes part in far more possible fours than one on the edge. The bonus for it ' +
-          'is not a heuristic somebody invented, it is just counting &mdash; and it is why good players open in ' +
+          'is not a heuristic somebody invented, it is just counting - and it is why good players open in ' +
           'the centre.',
       },
       {
         h: 'Move ordering does the pruning',
         p: 'Columns are searched centre-outward, because alpha-beta prunes hardest when the best move is tried ' +
-          'first. Same search, same answer, a fraction of the work &mdash; which is what lets it go eight ply ' +
+          'first. Same search, same answer, a fraction of the work - which is what lets it go eight ply ' +
           'deep on Strong without you noticing a pause.',
       },
     ],
     faq: [
-      { q: 'Is Connect Four solved?', a: 'Yes — with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks.' },
+      { q: 'Is Connect Four solved?', a: 'Yes - with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks.' },
       { q: 'Why does it always go in the middle first?', a: 'Because the centre column is genuinely the strongest opening square, for the reason above. It is not being predictable, it is being right.' },
-      { q: 'Can two of us play?', a: 'Yes — pass and play on one device.' },
+      { q: 'Can two of us play?', a: 'Yes - pass and play on one device.' },
     ],
     related: ['chess', 'ludo', '2048'],
   },
@@ -1135,9 +1135,9 @@ const GAMES = [
     bestKey: 'sudoku', bestOrder: 'low',
     tapAction: false,
     engine: 'Generated &middot; exactly one solution, checked',
-    title: 'Sudoku — Free Online, Generated With One Solution',
+    title: 'Sudoku - Free Online, Generated With One Solution',
     ogTitle: 'Sudoku that is provably not ambiguous',
-    description: 'Sudoku generated fresh every time, the solution count checked after every clue removed — ' +
+    description: 'Sudoku generated fresh every time, the solution count checked after every clue removed - ' +
       'every puzzle has exactly one answer. Four difficulties, pencil marks.',
     short: 'Generated fresh, one answer guaranteed.',
     h1: 'Sudoku',
@@ -1181,9 +1181,9 @@ const GAMES = [
     ],
     faq: [
       { q: 'Are the puzzles always solvable by logic?', a: 'They always have exactly one answer, which is the guarantee that matters. On Expert some positions may need a fairly advanced technique, but no puzzle here requires guessing between two valid grids, because no puzzle here has two.' },
-      { q: 'What are pencil marks?', a: 'Small candidate numbers you jot into an empty cell. Press the pencil button, then tap numbers — they toggle rather than replace.' },
+      { q: 'What are pencil marks?', a: 'Small candidate numbers you jot into an empty cell. Press the pencil button, then tap numbers - they toggle rather than replace.' },
       { q: 'Does Check tell me the answers?', a: 'No. It highlights entries that are wrong, in red, for a couple of seconds. It will not fill anything in.' },
-      { q: 'Is my progress saved?', a: 'No — each run generates a fresh puzzle. Your best completion time per device is kept.' },
+      { q: 'Is my progress saved?', a: 'No - each run generates a fresh puzzle. Your best completion time per device is kept.' },
     ],
     related: ['minesweeper', '2048', 'connect-four'],
   },
@@ -1202,14 +1202,14 @@ const GAMES = [
     pad: 'none',
     bestKey: 'arithmetic',
     engine: 'Character grid &middot; adapts to your mistakes',
-    title: 'Arithmetic — The BSD Drill, Ninety Seconds Of Mental Sums',
+    title: 'Arithmetic - The BSD Drill, Ninety Seconds Of Mental Sums',
     ogTitle: 'Arithmetic: the numbers you miss come back',
     description: 'Ninety seconds of mental sums, from the BSD games drill. Four operations to pick from, and ' +
       'the numbers you get wrong keep coming back until you can do them.',
     short: 'Ninety seconds of sums that adapt.',
     h1: 'Arithmetic',
     hero: 'The drill that shipped with BSD, with a ninety-second clock on it. Add, subtract, multiply and ' +
-      'divide &mdash; pick which of those you want &mdash; and answer as many as you can. The interesting part ' +
+      'divide - pick which of those you want - and answer as many as you can. The interesting part ' +
       'is what happens when you get one wrong: both numbers go back into the bag, so the sums that beat you are ' +
       'the ones you see most.',
     facts: ['Ninety seconds', 'Four operations, selectable', 'Wrong numbers come back', 'Six levels, it picks one'],
@@ -1218,7 +1218,7 @@ const GAMES = [
       { key: 'best', label: 'Best', accent: true },
       { key: 'right', label: 'Right' },
       { key: 'wrong', label: 'Wrong' },
-      { key: 'avg', label: 'Avg', init: '—' },
+      { key: 'avg', label: 'Avg', init: '-' },
     ],
     controls: [
       '<label class="sr-only" for="game-ops">Operations</label>',
@@ -1236,14 +1236,14 @@ const GAMES = [
         h: 'The numbers you miss go back in the bag',
         p: 'Get a sum wrong and both of its operands are pushed onto a small pool that later questions draw ' +
           'from, roughly two times in five. That is the original\'s adaptation and it is the only part of the ' +
-          'game that teaches anything &mdash; if you cannot do seven eights, you will be asked about sevens ' +
+          'game that teaches anything - if you cannot do seven eights, you will be asked about sevens ' +
           'and eights until you can.',
       },
       {
         h: 'The level moves on speed, not just accuracy',
         p: 'Three right in a row, each answered inside eight seconds, raises the ceiling on how big the numbers ' +
           'get; two wrong in a row lowers it. Correct but slow holds it where it is, which is deliberate ' +
-          '&mdash; getting there eventually is not the same as knowing it.',
+          '- getting there eventually is not the same as knowing it.',
       },
       {
         h: 'Every division comes out whole',
@@ -1255,7 +1255,7 @@ const GAMES = [
     faq: [
       { q: 'Can I turn off division?', a: 'Yes. The dropdown picks addition only, addition and subtraction, those plus multiplication, or all four. It takes effect on the next question rather than the next run.' },
       { q: 'Are the answers ever negative?', a: 'No. Subtraction swaps the operands if it needs to, so the answer is always zero or more and you only ever type digits.' },
-      { q: 'What is the score made of?', a: 'Each sum is worth its level plus a weight for the operation &mdash; one for addition, four for division. So a hard division late in a good run is worth about ten times an easy addition at the start.' },
+      { q: 'What is the score made of?', a: 'Each sum is worth its level plus a weight for the operation - one for addition, four for division. So a hard division late in a good run is worth about ten times an easy addition at the start.' },
       { q: 'Does it work on a phone?', a: 'Yes. Tapping the panel opens a numeric keypad rather than a full keyboard, which is the only thing this game needs.' },
     ],
     related: ['subnet-sprint', 'typespeed', 'reaction-time'],
@@ -1272,7 +1272,7 @@ const GAMES = [
     bestKey: 'hangman',
     tapAction: false,
     engine: 'Character grid &middot; a sixty-word deck',
-    title: 'Hangman &mdash; Sixty Security Words, Six Wrong Guesses',
+    title: 'Hangman - Sixty Security Words, Six Wrong Guesses',
     ogTitle: 'Hangman, with a vocabulary worth learning',
     description: 'Hangman played against sixty security and computing words. Six wrong guesses a word, and a ' +
       'one-line definition every time you solve one.',
@@ -1280,7 +1280,7 @@ const GAMES = [
     h1: 'Hangman',
     hero: 'The same six wrong guesses everybody grew up with, but the words are the ones worth knowing: sixty ' +
       'terms from security and computing, from salt and nonce to traversal and idempotent. Solve one and you ' +
-      'get its definition, which is the point &mdash; a word you had to work out and then read the meaning of ' +
+      'get its definition, which is the point - a word you had to work out and then read the meaning of ' +
       'is a word you keep.',
     facts: ['Sixty words with definitions', 'Six wrong guesses each word', 'A definition on every solve', 'Type it, or use the grid'],
     hud: [
@@ -1299,7 +1299,7 @@ const GAMES = [
     info: [
       {
         h: 'Two ways in, one function',
-        p: 'The shell binds the arrows, Space and Escape, and deliberately binds no letter at all &mdash; that ' +
+        p: 'The shell binds the arrows, Space and Escape, and deliberately binds no letter at all - that ' +
           'is what lets the typing games exist on the same code. A guessing game obviously wants A to mean A, ' +
           'so this one draws an A-Z grid into the character buffer for the arrows and adds its own keydown ' +
           'listener for a real keyboard. Both routes call the same guess function, so there is exactly one ' +
@@ -1340,7 +1340,7 @@ const GAMES = [
     pad: 'dpad',
     bestKey: null,
     engine: 'Character grid &middot; threat scoring, one ply',
-    title: 'Gomoku — Five In A Row Against The Computer, Free',
+    title: 'Gomoku - Five In A Row Against The Computer, Free',
     ogTitle: 'Gomoku that knows an open three from a closed one',
     description: 'Five in a row on a 15&times;15 board against an opponent that scores every line for threats ' +
       'instead of searching ahead. Or pass and play on one device.',
@@ -1349,7 +1349,7 @@ const GAMES = [
     hero: 'Five stones in a row on a fifteen by fifteen board, against the computer or against whoever is ' +
       'sitting next to you. The opponent does not search ahead. It scores every line running through every ' +
       'candidate point, for both colours, which is enough to know that a four has to be answered now and an ' +
-      'open three has to be answered next &mdash; and that is most of what winning at gomoku is.',
+      'open three has to be answered next - and that is most of what winning at gomoku is.',
     facts: ['15&times;15, free-style rules', 'Threat scoring, no search', 'Three strengths', 'Or pass and play'],
     hud: [
       { key: 'black', label: 'X wins', accent: true, init: '0' },
@@ -1379,7 +1379,7 @@ const GAMES = [
       },
       {
         h: 'Open or closed is counted, not matched against a table',
-        p: 'The usual implementation keeps a list of pattern strings &mdash; dot-X-X-X-dot, O-X-X-X-dot &mdash; ' +
+        p: 'The usual implementation keeps a list of pattern strings - dot-X-X-X-dot, O-X-X-X-dot - ' +
           'and that list is always missing a case. Here every run of five cells through the point is checked ' +
           'instead, a run holding an enemy stone is thrown away because nobody can ever complete it, and what ' +
           'settles the verdict is how many different empty squares would finish the best of them. Two ways to ' +
@@ -1395,10 +1395,10 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Do I always go first?', a: 'Yes, you play X and open. That is a real advantage — free-style gomoku is a first-player win with perfect play. Nothing here plays perfectly, so it is an advantage rather than a result.' },
+      { q: 'Do I always go first?', a: 'Yes, you play X and open. That is a real advantage - free-style gomoku is a first-player win with perfect play. Nothing here plays perfectly, so it is an advantage rather than a result.' },
       { q: 'Does six in a row count?', a: 'Yes. These are free-style rules: five or more wins, and there are no forbidden openings. That is the version people play away from a tournament table.' },
       { q: 'What actually changes between the three strengths?', a: 'How heavily it weighs your threats against its own, and how much noise goes into the choice. Casual under-defends and wanders; Sharp defends almost as hard as it attacks; Ruthless defends fully and checks your best reply to its six best moves before committing.' },
-      { q: 'Can two of us play on one device?', a: 'Yes — switch the first dropdown to pass and play. The cursor is shared and the side panel says whose turn it is.' },
+      { q: 'Can two of us play on one device?', a: 'Yes - switch the first dropdown to pass and play. The cursor is shared and the side panel says whose turn it is.' },
       { q: 'Does it work on a phone?', a: 'Yes. Tap the point you want and the stone goes there, or use the pad if you would rather nudge the cursor a square at a time. It is turn-based, so a touchscreen costs you nothing.' },
     ],
     related: ['connect-four', 'chess', 'greed'],
@@ -1408,8 +1408,8 @@ const GAMES = [
     slug: 'pacman',
     cat: 'terminal',
     name: 'Pac-Man',
-    /* Structured data presents this as what it is — an original fan
-       remake — rather than claiming authorship of somebody's registered
+    /* Structured data presents this as what it is - an original fan
+       remake - rather than claiming authorship of somebody's registered
        mark. The page keeps its plain name. */
     jsonldName: 'Pac-Man (fan remake)',
     glyph: 'C',
@@ -1421,7 +1421,7 @@ const GAMES = [
     pad: 'dpad',
     bestKey: 'pacman',
     engine: 'Character grid &middot; four ghost rules',
-    title: 'Pac-Man — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'Pac-Man - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'Four ghosts, four different rules',
     description: 'A hand-drawn maze on a character grid, 192 dots, wrapping side tunnels, and four ghosts ' +
       'that each hunt by a different rule. Pellets make them edible.',
@@ -1460,7 +1460,7 @@ const GAMES = [
         h: 'The turn you asked for is remembered for half a second',
         p: 'Movement is one whole tile at a time, so a turn pressed just before a junction would otherwise be ' +
           'thrown away and you would sail past the corner. The requested direction is held and applied on the ' +
-          'first tick it becomes legal. It expires after 0.55 seconds on purpose &mdash; hold it forever and a ' +
+          'first tick it becomes legal. It expires after 0.55 seconds on purpose - hold it forever and a ' +
           'turn you pressed and forgot about fires at a junction three corridors later.',
       },
       {
@@ -1482,7 +1482,7 @@ const GAMES = [
       { q: 'Is this the arcade maze?', a: 'No. The arcade board is 28 by 31, which will not fit a 30 by 24 character grid with room left for a status line, so this maze is hand-drawn at 28 by 21. It keeps what matters: four corner pellets, wrapping side tunnels, a central ghost house with one door, and no dead ends.' },
       { q: 'Why do the ghosts suddenly all turn round?', a: 'Eating a power pellet reverses every ghost on the spot. Without that, a ghost already sitting on top of you simply eats you during the frightened window, which reads as a bug rather than a rule. The cyan one also turns round on its own every six seconds, when it switches between hunting and retreating.' },
       { q: 'How long are they edible, and what are they worth?', a: 'Six and a half seconds, and they flash white for the last two. The first ghost in a chain is 200 points, then 400, 800 and 1,600. Clearing all four on one pellet is worth 3,000, which is more than three hundred dots.' },
-      { q: 'What happens when I clear the board?', a: 'You win the run and the score is final. There are no faster repeat levels &mdash; if you want more pressure, the ghost speed dropdown above the board changes it mid-run, and it takes effect on the next tick rather than the next game.' },
+      { q: 'What happens when I clear the board?', a: 'You win the run and the score is final. There are no faster repeat levels - if you want more pressure, the ghost speed dropdown above the board changes it mid-run, and it takes effect on the next tick rather than the next game.' },
       { q: 'Can I go inside the ghost house?', a: 'No, the door is solid for you. The corridor that loops around the outside of the house is open, though, and it is one of the few stretches of the board with no dots in it at all.' },
     ],
     related: ['robots', 'snake', 'greed'],
@@ -1501,12 +1501,12 @@ const GAMES = [
     pad: 'dpad',
     bestKey: 'tty-solitaire',
     engine: 'Character grid &middot; draw one, unlimited redeals',
-    title: 'TTY Solitaire — Klondike In A Terminal, Free And No Sign-Up',
+    title: 'TTY Solitaire - Klondike In A Terminal, Free And No Sign-Up',
     ogTitle: 'Klondike, dealt in characters',
     description: 'Klondike solitaire on a character grid. Draw one, four foundations, seven columns, and a cursor you drive with the arrow keys. Nothing is uploaded.',
     short: 'Klondike patience on a character grid.',
     h1: 'TTY Solitaire',
-    hero: 'The patience game everyone already knows, dealt as text: seven columns, four foundations, and a deck you turn one card at a time. The cursor is the whole interface &mdash; arrows to point at a card, action to pick it up, action again to put it down. The rules are the strict ones, including the one people forget: a gap in the tableau takes a king and nothing else.',
+    hero: 'The patience game everyone already knows, dealt as text: seven columns, four foundations, and a deck you turn one card at a time. The cursor is the whole interface - arrows to point at a card, action to pick it up, action again to put it down. The rules are the strict ones, including the one people forget: a gap in the tableau takes a king and nothing else.',
     facts: ['Draw one, unlimited redeals', 'Whole runs move at once', 'Only a king fills a gap', 'Auto-play sends safe cards only'],
     hud: [
       { key: 'score', label: 'Score' },
@@ -1519,18 +1519,18 @@ const GAMES = [
       '<button class="game-btn" type="button" id="game-auto">Send safe cards home</button>',
     ],
     keys: [
-      { k: '↑ ↓ ← →', d: 'Move the cursor &mdash; up walks down a column to take a longer run' },
+      { k: '↑ ↓ ← →', d: 'Move the cursor - up walks down a column to take a longer run' },
       { k: 'Space', d: 'Pick a card up, and put it down' },
     ],
     infoHeading: 'Fitting a card game into four arrows and one key',
     info: [
       {
         h: 'Up does two jobs',
-        p: 'A card game has to know which column you mean and how far down it you are reaching, but the shell only ever sends up, down, left, right and action &mdash; no letter key is bound anywhere in /games. So inside a column, up steps the cursor down through the face-up cards, taking one more into the run each time, and only leaves for the deck and the foundations once the whole face-up run is in hand.',
+        p: 'A card game has to know which column you mean and how far down it you are reaching, but the shell only ever sends up, down, left, right and action - no letter key is bound anywhere in /games. So inside a column, up steps the cursor down through the face-up cards, taking one more into the run each time, and only leaves for the deck and the foundations once the whole face-up run is in hand.',
       },
       {
         h: 'Long columns fold their face-down cards into one row',
-        p: 'A column can reach nineteen cards &mdash; six face down under a full king-to-ace run &mdash; and there are seventeen rows under the foundations. When a pile will not fit, the face-down cards collapse to a single [##6]. Only they are ever folded: a face-down card tells you nothing except that it is there, whereas hiding a face-up one would hide a legal move.',
+        p: 'A column can reach nineteen cards - six face down under a full king-to-ace run - and there are seventeen rows under the foundations. When a pile will not fit, the face-down cards collapse to a single [##6]. Only they are ever folded: a face-down card tells you nothing except that it is there, whereas hiding a face-up one would hide a legal move.',
       },
       {
         h: 'Auto-play only sends cards it cannot need back',
@@ -1559,14 +1559,14 @@ const GAMES = [
     pad: 'dpad',
     bestKey: 'atc',
     engine: 'Character grid &middot; eight headings, ten altitudes',
-    title: 'ATC — The BSD Air Traffic Controller, In Your Browser',
+    title: 'ATC - The BSD Air Traffic Controller, In Your Browser',
     ogTitle: 'ATC: eight headings, ten altitudes, three minutes',
     description: 'The BSD air traffic controller. Aircraft arrive with a heading and an altitude. Get each one ' +
       'out through its own exit at nine, or down on a runway.',
     short: 'Keep them apart, get them home.',
     h1: 'ATC',
     hero: 'Aircraft appear at the edge of the scope with a heading, an altitude and somewhere they have to be ' +
-      '&mdash; out through a numbered exit at altitude nine, or down on a runway pointing the way the runway ' +
+      '- out through a numbered exit at altitude nine, or down on a runway pointing the way the runway ' +
       'points. You have four arrows and three minutes. Two of them in touching squares at the same altitude ' +
       'and the shift is over.',
     facts: ['Eight headings, ten altitudes', 'Eight exits, two runways', 'One square apart is a collision', 'Three minutes a shift'],
@@ -1585,13 +1585,13 @@ const GAMES = [
       { k: '↑ ↓', d: 'Raise or lower its cleared altitude' },
       { k: 'Space', d: 'Move to the next aircraft' },
     ],
-    touch: 'Tap an aircraft on the scope to select it, then use the pad &mdash; left and right turn, up and down change altitude.',
+    touch: 'Tap an aircraft on the scope to select it, then use the pad - left and right turn, up and down change altitude.',
     infoHeading: 'What four arrows have to cover',
     info: [
       {
         h: 'Left and right turn, they do not steer',
         p: 'The shell binds four arrows and one action key, and altitude needs two of them. So a heading is ' +
-          'state the aircraft keeps, and the side arrows rotate it forty-five degrees at a time &mdash; which ' +
+          'state the aircraft keeps, and the side arrows rotate it forty-five degrees at a time - which ' +
           'is roughly how the instruction sounds on the radio anyway: turn left, climb. Spending the arrows on ' +
           'compass points instead would have left nothing for altitude, and altitude is half the game.',
       },
@@ -1614,7 +1614,7 @@ const GAMES = [
       { q: 'How do I get an aircraft off the radar?', a: 'Point it at its own numbered exit and climb it to altitude nine. It leaves the moment it reaches that exit at that altitude. At any other altitude it flies straight over the exit and off the edge, and that loses the shift.' },
       { q: 'How do I land one?', a: 'Match the runway heading printed beside the airport, then time the descent so the aircraft reaches altitude zero on the airport square itself. One level a sweep, so from altitude three you commit three squares out.' },
       { q: 'What exactly counts as a collision?', a: 'Two aircraft in touching squares at the same altitude. One level of separation is enough, which is why altitude rather than heading is the tool that gets you out of trouble.' },
-      { q: 'Why is an aircraft sitting on a runway doing nothing?', a: 'It is a departure waiting for clearance. It will not move until you give it an altitude, and it costs you nothing while it waits &mdash; which makes it the one thing on the screen you are allowed to ignore.' },
+      { q: 'Why is an aircraft sitting on a runway doing nothing?', a: 'It is a departure waiting for clearance. It will not move until you give it an altitude, and it costs you nothing while it waits - which makes it the one thing on the screen you are allowed to ignore.' },
       { q: 'Does it work on a phone?', a: 'Yes. Tap an aircraft to pick it, then use the pad. It is a sixty-six column screen, so turn the phone sideways.' },
     ],
     related: ['greed', 'robots', 'wumpus'],
@@ -1633,7 +1633,7 @@ const GAMES = [
     bestKey: 'trek',
     tapAction: false,
     engine: 'The 1971 game, driven by arrows',
-    title: 'Star Trek — The 1971 Terminal Game, In Your Browser',
+    title: 'Star Trek - The 1971 Terminal Game, In Your Browser',
     ogTitle: 'Star Trek, the 1971 one',
     description: 'Mike Mayfield\'s 1971 Star Trek: an 8x8 galaxy, a klingon fleet and forty stardates. Warp, ' +
       'scan, phasers and photon torpedoes, all from the arrow keys.',
@@ -1667,7 +1667,7 @@ const GAMES = [
       {
         h: 'The command line became a row of orders',
         p: 'The original prompts COMMAND? and reads NAV, SRS, PHA and the rest. The shell every game here runs ' +
-          'inside binds no letter keys at all &mdash; deliberately, so that the typing games can exist on it &mdash; ' +
+          'inside binds no letter keys at all - deliberately, so that the typing games can exist on it - ' +
           'so there was nothing left to type a command with. The orders sit in a row instead: left and right walk ' +
           'along them, Space gives one, and inside each order the arrows mean something specific. Every order also ' +
           'has a way to back out doing nothing: warp to the quadrant you are already in, fire no units, transfer no ' +
@@ -1675,7 +1675,7 @@ const GAMES = [
       },
       {
         h: 'The galaxy stores counts, not ships',
-        p: 'Each of the sixty-four quadrants holds three numbers &mdash; klingons, starbases, stars &mdash; and ' +
+        p: 'Each of the sixty-four quadrants holds three numbers - klingons, starbases, stars - and ' +
           'nothing else. Positions and klingon energy are generated when you arrive and thrown away when you leave, ' +
           'exactly as the 1971 listing did. A klingon you wound and then warp away from is whole again when you ' +
           'come back, which sounds like a bug and is the rule that makes running away expensive.',
@@ -1709,7 +1709,7 @@ const GAMES = [
     pad: 'lr',
     bestKey: 'asciijump',
     engine: 'Character grid &middot; 72 columns',
-    title: 'asciijump — Play Free Online, No Ads | Krunalkumar Shah',
+    title: 'asciijump - Play Free Online, No Ads | Krunalkumar Shah',
     ogTitle: 'One instant at the lip decides the jump',
     description: 'The Linux terminal game asciijump, rebuilt for the browser. Tuck down the in-run, hit the takeoff window, and hold the lean in the air. No install, no ads.',
     short: 'Time the lip, then hold the lean.',
@@ -1733,15 +1733,15 @@ const GAMES = [
     info: [
       {
         h: 'The window is time, not distance',
-        p: 'The game keeps a running estimate of how long until the lip &mdash; the metres of ramp left, divided by your speed &mdash; and grades your press against it. A window measured in columns instead would be wider at 70 km/h than at 100, which quietly pays you for a slow in-run. It also runs both sides of the edge, because pressing late has to be possible: otherwise holding until the ramp simply ends is free, and everybody does that instead of playing.',
+        p: 'The game keeps a running estimate of how long until the lip - the metres of ramp left, divided by your speed - and grades your press against it. A window measured in columns instead would be wider at 70 km/h than at 100, which quietly pays you for a slow in-run. It also runs both sides of the edge, because pressing late has to be possible: otherwise holding until the ramp simply ends is free, and everybody does that instead of playing.',
       },
       {
         h: 'It tells you how wrong you were',
-        p: 'Every jump ends with the miss in seconds &mdash; 0.14 s early, 0.03 s late. That number is the whole teaching mechanism. A timing game that reports only the outcome is a slot machine; one that reports the error is something you are visibly better at after ten jumps.',
+        p: 'Every jump ends with the miss in seconds - 0.14 s early, 0.03 s late. That number is the whole teaching mechanism. A timing game that reports only the outcome is a slot machine; one that reports the error is something you are visibly better at after ten jumps.',
       },
       {
         h: 'Pressing early does not launch you early',
-        p: 'You leave the ramp when the ramp ends, not when you press. Firing early only means your legs finished extending before the edge arrived, so there is nothing left to spring with &mdash; which is why the takeoff is a multiplier on the launch rather than an event of its own. Mashing the button near the lip commits you to the first press that lands inside the window, usually about a second too soon.',
+        p: 'You leave the ramp when the ramp ends, not when you press. Firing early only means your legs finished extending before the edge arrived, so there is nothing left to spring with - which is why the takeoff is a multiplier on the launch rather than an event of its own. Mashing the button near the lip commits you to the first press that lands inside the window, usually about a second too soon.',
       },
       {
         h: 'Distance is only half the score',
@@ -1771,7 +1771,7 @@ const GAMES = [
     bestKey: 'adventure',
     tapAction: false,
     engine: 'Character grid &middot; eighteen rooms',
-    title: 'Adventure — A Small Text Adventure, Free In Your Browser',
+    title: 'Adventure - A Small Text Adventure, Free In Your Browser',
     ogTitle: 'Adventure: a lamp, a locked grate, and gas',
     description: 'A ruined mine in eighteen rooms. Find the key, light the lamp, work out what the gas will do ' +
       'to a naked flame, and carry the gold back out.',
@@ -1797,7 +1797,7 @@ const GAMES = [
     info: [
       {
         h: 'Every move is a list, because there is no letter key to type on',
-        p: 'The games shell binds the four arrows and one action key and nothing else &mdash; no letter is ever ' +
+        p: 'The games shell binds the four arrows and one action key and nothing else - no letter is ever ' +
           'bound, so that the typing games can live on the same shell and so that a game never swallows a ' +
           'keystroke meant for a form. A parser you cannot type into is not a parser, so instead the room ' +
           'lists what you can do and you pick one with the arrows. Guess-the-verb goes out with it, which is ' +
@@ -1820,7 +1820,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is this Colossal Cave?', a: 'No. It is the same kind of game &mdash; rooms, a lamp, a locked way, treasure to carry home &mdash; but the map, the puzzles and the prose are written for this page. Eighteen rooms against the original\'s hundreds.' },
+      { q: 'Is this Colossal Cave?', a: 'No. It is the same kind of game - rooms, a lamp, a locked way, treasure to carry home - but the map, the puzzles and the prose are written for this page. Eighteen rooms against the original\'s hundreds.' },
       { q: 'I am stuck at the gas. What now?', a: 'Read the board nailed to the timbering in the pump chamber, then look at what is lying on the floor of that same room. The mine tells you the answer before it kills you for not having it.' },
       { q: 'Do I need to draw a map?', a: 'Not really. Once you have been somewhere, the exit that leads back to it is labelled with its name, so the list does most of the mapping for you. A pen still helps below the ladderway.' },
       { q: 'What happens when I die?', a: 'The run ends and scores nothing, and you start again at the stile. There is exactly one way to die in this mine and it is signposted twice, so it is a decision rather than an accident.' },
@@ -1841,14 +1841,14 @@ const GAMES = [
     pad: 'dpad',
     bestKey: 'rogue',
     engine: 'Nine rooms a level, dug fresh every run',
-    title: 'Rogue — The Original Roguelike, Free In Your Browser',
+    title: 'Rogue - The Original Roguelike, Free In Your Browser',
     ogTitle: 'Rogue: one life, and a dark dungeon',
     description: 'A small roguelike. Rooms dug fresh every run, a lamp that only reaches so far, monsters that ' +
       'follow you once they have seen you, and exactly one life.',
     short: 'One life, in the dark, downwards.',
     h1: 'Rogue',
     hero: 'Nine rooms a level, joined by corridors, and none of it drawn until your lamp reaches it. Monsters ' +
-      'follow you once they have seen you, the stairs only ever go down, and there is no save file &mdash; when ' +
+      'follow you once they have seen you, the stairs only ever go down, and there is no save file - when ' +
       'you die you start again on level one with sixteen hit points and a dagger.',
     facts: ['A new dungeon every run', 'Line-of-sight lamp', 'Permadeath, no saves', 'Ten levels to the amulet'],
     hud: [
@@ -1868,7 +1868,7 @@ const GAMES = [
         h: 'Nine cells, nine rooms, and no retries',
         p: 'The map is split into a three-by-three grid and one room is dug in each cell, then room centres are ' +
           'joined. Because every room is linked to its neighbour by construction, there is no generate-and-check ' +
-          'loop and no possibility of a level with the stairs walled off &mdash; which is the failure mode of ' +
+          'loop and no possibility of a level with the stairs walled off - which is the failure mode of ' +
           'every dungeon generator that scatters rooms at random and hopes.',
       },
       {
@@ -1888,7 +1888,7 @@ const GAMES = [
       },
       {
         h: 'There is no pack, and that is forced',
-        p: 'The shell binds four arrows and one action key and no letters at all, on purpose &mdash; the typing ' +
+        p: 'The shell binds four arrows and one action key and no letters at all, on purpose - the typing ' +
           'games share it. So a pack you open with i and drink from with q has nowhere to live. Potions are drunk ' +
           'where they are found and a better weapon is picked up and wielded on the spot. It loses a real layer ' +
           'of the original, and it is the only version of this that works with a thumb pad.',
@@ -1907,7 +1907,7 @@ const GAMES = [
 
   {
     slug: 'moon-buggy',
-    touch: "Tap anywhere on the screen to jump &mdash; or use the big green Jump button. Fire shoots the rocks ahead of you.",
+    touch: "Tap anywhere on the screen to jump - or use the big green Jump button. Fire shoots the rocks ahead of you.",
     wide: true,
     cat: 'terminal',
     name: 'Moon buggy',
@@ -1916,7 +1916,7 @@ const GAMES = [
     script: 'terminal/moon-buggy.js',
     pad: 'jumpfire',
     engine: 'Character grid &middot; endless',
-    title: 'Moon Buggy — The Linux Terminal Game, In Your Browser',
+    title: 'Moon Buggy - The Linux Terminal Game, In Your Browser',
     ogTitle: 'Moon buggy, jumped craters and all',
     description: 'The classic Linux terminal game moon-buggy, rebuilt for the browser. Drive across the moon, ' +
       'jump the craters, shoot the rocks. No install, no ads, no sign-up.',
@@ -1948,13 +1948,13 @@ const GAMES = [
         h: 'A cut road is a fall, not an obstacle',
         p: 'The buggy is five cells wide and the narrowest crater is three, so there is no bridging: if any part ' +
           'of the buggy is over the gap while it is on the ground, it goes down. That is the only rule you have ' +
-          'to respect, and everything else &mdash; the rocks, the speed &mdash; is decoration on top of it.',
+          'to respect, and everything else - the rocks, the speed - is decoration on top of it.',
       },
     ],
     faq: [
-      { q: 'Is this the real moon-buggy?', a: 'It is a faithful rebuild, not the original binary. Same idea, same shape, same eighty-column screen — written in JavaScript so it runs in a browser tab instead of needing a terminal and a package manager.' },
+      { q: 'Is this the real moon-buggy?', a: 'It is a faithful rebuild, not the original binary. Same idea, same shape, same eighty-column screen - written in JavaScript so it runs in a browser tab instead of needing a terminal and a package manager.' },
       { q: 'Why does it get faster?', a: 'Speed climbs slowly with distance and caps out, so an expert run stays playable rather than becoming a reaction-time lottery.' },
-      { q: 'Can I shoot the craters?', a: 'No — craters are holes, and a laser does not fill a hole. Rocks can be shot or jumped; craters can only be jumped.' },
+      { q: 'Can I shoot the craters?', a: 'No - craters are holes, and a laser does not fill a hole. Rocks can be shot or jumped; craters can only be jumped.' },
       { q: 'Does it work on a phone?', a: 'Yes. The pad gives you an action button, and tapping the screen jumps.' },
     ],
     related: ['bastet', 'greed', 'snake'],
@@ -1971,9 +1971,9 @@ const GAMES = [
     script: 'terminal/bastet.js',
     pad: 'rotate',
     engine: 'Character grid &middot; adversarial',
-    title: 'Bastet — Bastard Tetris, The Evil Tetris | Krunalkumar Shah',
+    title: 'Bastet - Bastard Tetris, The Evil Tetris | Krunalkumar Shah',
     ogTitle: 'Tetris, if the game were actively against you',
-    description: 'Bastet — "bastard Tetris" — replaces the random piece bag with a solver that hands you the ' +
+    description: 'Bastet - "bastard Tetris" - replaces the random piece bag with a solver that hands you the ' +
       'worst piece every single time. Free, in your browser.',
     short: 'Tetris where the game picks your worst piece.',
     h1: 'Bastet',
@@ -1998,7 +1998,7 @@ const GAMES = [
       {
         h: 'It plays your move for you first',
         p: 'For each of the seven shapes it drops every rotation into every column, scores the board that ' +
-          'results, and keeps the BEST outcome &mdash; because that is what a competent player would find. Then ' +
+          'results, and keeps the BEST outcome - because that is what a competent player would find. Then ' +
           'it serves whichever shape&rsquo;s best outcome is worst. That is 280 simulated drops per piece, which ' +
           'costs nothing and is genuinely adversarial rather than merely unlucky.',
       },
@@ -2011,7 +2011,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is it actually impossible?', a: 'No. It is very hard. The solver models a decent player rather than a perfect one, and a shape with nowhere at all to go is skipped rather than served — an instant unavoidable loss reads as a broken game, not a cruel one.' },
+      { q: 'Is it actually impossible?', a: 'No. It is very hard. The solver models a decent player rather than a perfect one, and a shape with nowhere at all to go is skipped rather than served - an instant unavoidable loss reads as a broken game, not a cruel one.' },
       { q: 'How is this different from just bad luck?', a: 'Bad luck is a distribution. This is a search: it evaluates your actual board before choosing. Twenty S-pieces in a row from a random generator is a story; here it is a plan.' },
       { q: 'What is a good score?', a: 'Far lower than your Tetris score, and that is the point. Clearing thirty lines against this is a genuinely good run.' },
       { q: 'Why is it called that?', a: 'Short for "bastard Tetris", which is what its author called it, and which is fair.' },
@@ -2031,14 +2031,14 @@ const GAMES = [
     script: 'terminal/greed.js',
     pad: 'dpad',
     engine: 'Character grid &middot; pure strategy',
-    title: 'Greed — The Terminal Puzzle Almost Nobody Has Played',
+    title: 'Greed - The Terminal Puzzle Almost Nobody Has Played',
     ogTitle: 'Greed: one rule, and it is enough',
     description: 'A grid of digits. Move in a direction and you travel that many squares, eating everything ' +
       'you cross. No clock, no randomness after the deal.',
     short: 'Eat digits, and try not to box yourself in.',
     h1: 'Greed',
     hero: 'A board full of the digits one to nine. You stand on one. Pick a direction and you move that many ' +
-      'squares, eating everything you cross &mdash; and those squares are gone for good. That is the whole game, ' +
+      'squares, eating everything you cross - and those squares are gone for good. That is the whole game, ' +
       'and it is one of the best puzzles ever written for a terminal, because the only thing standing in your ' +
       'way at the end is the path you already took.',
     facts: ['One rule, no clock', 'No randomness after the deal', '1,200 squares to clear', 'Every dead end is your own'],
@@ -2054,14 +2054,14 @@ const GAMES = [
     info: [
       {
         h: 'Every square on the path must still be there',
-        p: 'A move is legal only if the whole run is intact &mdash; you cannot jump a gap you have already eaten. ' +
+        p: 'A move is legal only if the whole run is intact - you cannot jump a gap you have already eaten. ' +
           'Allowing that makes the game trivial and is the usual mistake in a rewrite. It is also the rule that ' +
           'turns your own earlier greed into the obstacle.',
       },
       {
         h: 'The legal moves are shown, on purpose',
         p: 'The four numbers under the board tell you how far each direction would take you. Hiding that does ' +
-          'not make the game harder, only more tedious &mdash; the difficulty is in choosing, not in counting.',
+          'not make the game harder, only more tedious - the difficulty is in choosing, not in counting.',
       },
     ],
     faq: [
@@ -2085,15 +2085,15 @@ const GAMES = [
     script: 'terminal/robots.js',
     pad: 'dpad',
     engine: 'Character grid &middot; BSD games',
-    title: 'Robots — The BSD Terminal Game, Free In Your Browser',
+    title: 'Robots - The BSD Terminal Game, Free In Your Browser',
     ogTitle: 'Robots: they chase you, and they cannot steer',
     description: 'The BSD games classic. Robots move one square towards you every turn and cannot avoid ' +
-      'anything — the game is arranging collisions, not running away.',
+      'anything - the game is arranging collisions, not running away.',
     short: 'Make them crash into each other.',
     h1: 'Robots',
     hero: 'You move one square; every robot moves one square straight at you. They have no pathfinding at all, ' +
       'which means they will happily walk into each other and into the wrecks they leave behind. You are not ' +
-      'escaping &mdash; you are herding.',
+      'escaping - you are herding.',
     facts: ['From the BSD games collection', 'No pathfinding, on purpose', 'Safe and risky teleports', 'Levels get crowded fast'],
     hud: [
       { key: 'score', label: 'Score' },
@@ -2115,7 +2115,7 @@ const GAMES = [
       {
         h: 'They only know one move',
         p: 'Each robot steps one square towards you on each axis. That is the entire AI. It cannot go round a ' +
-          'wreck, it cannot wait, and it cannot coordinate &mdash; so a robot lined up behind another is already ' +
+          'wreck, it cannot wait, and it cannot coordinate - so a robot lined up behind another is already ' +
           'dead, and your job is to keep arranging that.',
       },
       {
@@ -2145,13 +2145,13 @@ const GAMES = [
     script: 'terminal/typespeed.js',
     pad: 'none',
     engine: 'Character grid &middot; prefix matching',
-    title: 'Typespeed — Type The Flying Words Before They Land',
+    title: 'Typespeed - Type The Flying Words Before They Land',
     ogTitle: 'Typespeed: words fly, you type, they die',
     description: 'The Linux terminal typing game. Words fly across the screen; type them before they reach ' +
       'the wall. Shell commands and security vocabulary, in your browser.',
     short: 'Type the flying words before they land.',
     h1: 'Typespeed',
-    hero: 'The opposite of a typing test. Words fly in from the left and you kill them by typing them &mdash; no ' +
+    hero: 'The opposite of a typing test. Words fly in from the left and you kill them by typing them - no ' +
       'Enter, no selecting, the word dies the moment it is complete. It measures recognition speed rather than ' +
       'endurance, which is a genuinely different skill from the one the ' +
       '<a href="/games/typing-trainer">trainer</a> works on.',
@@ -2172,7 +2172,7 @@ const GAMES = [
       {
         h: 'Prefix, not selection',
         p: 'What you type is compared against every word on screen. As soon as it exactly equals one, that word ' +
-          'dies &mdash; the closest one if two match. Type something no word starts with and the buffer clears ' +
+          'dies - the closest one if two match. Type something no word starts with and the buffer clears ' +
           'itself, so a slip costs you a moment rather than a life.',
       },
       {
@@ -2186,7 +2186,7 @@ const GAMES = [
       { q: 'Do I press Enter?', a: 'No. The word dies the instant what you have typed matches it. Space and Enter both just clear the buffer if you want to start a different word.' },
       { q: 'What happens when a word reaches the wall?', a: 'You lose a life. Five lives, then the run ends and you get your words-per-minute for the session.' },
       { q: 'How is this different from the typing trainer?', a: 'The trainer gives you long passages and measures sustained accuracy. This is a panic: short words, rising speed, and it measures how fast you recognise and fire.' },
-      { q: 'Can I play it on a phone?', a: 'Tapping the playfield opens the keyboard, so yes — though this is one of the few here that genuinely wants a real keyboard.' },
+      { q: 'Can I play it on a phone?', a: 'Tapping the playfield opens the keyboard, so yes - though this is one of the few here that genuinely wants a real keyboard.' },
     ],
     related: ['typing-trainer', 'robots', 'moon-buggy'],
   },
@@ -2202,7 +2202,7 @@ const GAMES = [
     script: 'terminal/ninvaders.js',
     pad: 'lr',
     engine: 'Character grid &middot; they speed up',
-    title: 'nInvaders — Terminal Space Invaders, Free In Your Browser',
+    title: 'nInvaders - Terminal Space Invaders, Free In Your Browser',
     ogTitle: 'Space Invaders, in sixty columns',
     description: 'The terminal Space Invaders. The swarm moves as one body, drops a row at each edge, and gets ' +
       'faster the fewer of them are left. No ads, no sign-up.',
@@ -2240,7 +2240,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'Why can I only have two shots on screen?', a: 'That is the original limit and it is what stops the game becoming a hold-to-win. Missing costs you the time until the shot leaves the top of the screen.' },
-      { q: 'Do the bunkers come back?', a: 'No. They erode from both sides — your own shots damage them too — so by wave three you are usually out in the open.' },
+      { q: 'Do the bunkers come back?', a: 'No. They erode from both sides - your own shots damage them too - so by wave three you are usually out in the open.' },
       { q: 'What happens if they reach the bottom?', a: 'The run ends immediately, regardless of how many lives you have left. Letting them land is not survivable.' },
     ],
     related: ['moon-buggy', 'bastet', 'breakout'],
@@ -2257,13 +2257,13 @@ const GAMES = [
     script: 'terminal/wumpus.js',
     pad: 'dpad',
     engine: 'The 1973 cave, unchanged',
-    title: 'Hunt the Wumpus — The 1973 Cave Game, In Your Browser',
+    title: 'Hunt the Wumpus - The 1973 Cave Game, In Your Browser',
     ogTitle: 'Hunt the Wumpus: deduce, then shoot',
     description: 'Gregory Yob\'s 1973 classic. Twenty rooms in a dodecahedron, three tunnels each, warnings ' +
       'from next door. Work out where it sleeps, then shoot a crooked arrow.',
     short: 'Twenty rooms, three tunnels, one wumpus.',
     h1: 'Hunt the Wumpus',
-    hero: 'You never see the cave. You get a smell, a draught, the sound of wings &mdash; and from those you have ' +
+    hero: 'You never see the cave. You get a smell, a draught, the sound of wings - and from those you have ' +
       'to work out which of twenty rooms it is sleeping in. Fifty years old, and still one of the purest ' +
       'deduction games ever written.',
     facts: ['The original 1973 map', 'Twenty rooms, three tunnels each', 'Warnings only from next door', 'Five crooked arrows'],
@@ -2299,7 +2299,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'What do the warnings mean?', a: 'A smell means the wumpus is in one of the three rooms next to you. A draught means a bottomless pit. Wings mean giant bats, which will pick you up and drop you somewhere random.' },
-      { q: 'Can I map the cave?', a: 'Yes, and that is how the game is meant to be played — with a pen. The room numbers are stable for the whole run.' },
+      { q: 'Can I map the cave?', a: 'Yes, and that is how the game is meant to be played - with a pen. The room numbers are stable for the whole run.' },
       { q: 'What happens if I miss?', a: 'The noise usually wakes the wumpus and it moves to a neighbouring room, so a miss does not just cost an arrow, it invalidates your map.' },
     ],
     related: ['greed', 'robots', 'minesweeper'],
@@ -2317,10 +2317,10 @@ const GAMES = [
     width: 600, height: 600, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Against the computer, or pass and play',
-    title: 'Ludo — Play Free Online Against The Computer, No Sign-Up',
+    title: 'Ludo - Play Free Online Against The Computer, No Sign-Up',
     ogTitle: 'Ludo, on your own or around one phone',
     description: 'Ludo for one to four players. Play the computer on your own, or pass one device around the ' +
-      'table. Two, three or four seats — no ads, nothing uploaded.',
+      'table. Two, three or four seats - no ads, nothing uploaded.',
     short: 'Play the computer, or pass the phone round.',
     h1: 'Ludo',
     hero: 'Four tokens each, a six to get out, and the long-running argument about whose turn it was. Play it ' +
@@ -2333,7 +2333,7 @@ const GAMES = [
     ],
     hud: [
       { key: 'turn', label: 'Turn', accent: true, init: 'Red' },
-      { key: 'dice', label: 'Dice', init: '—' },
+      { key: 'dice', label: 'Dice', init: '-' },
       { key: 'home', label: 'Home', init: '0/4' },
     ],
     controls: [
@@ -2348,14 +2348,14 @@ const GAMES = [
       { k: 'Arrows', d: 'Cycle which legal token is ringed' },
       { k: 'Click', d: 'Tap a highlighted token to move it' },
     ],
-    touch: 'Tap Roll, then tap the token you want to move &mdash; the ones you may legally move are ringed in white.',
+    touch: 'Tap Roll, then tap the token you want to move - the ones you may legally move are ringed in white.',
     infoHeading: 'Two details worth knowing',
     info: [
       {
         h: 'Two players sit opposite, not side by side',
         p: 'With two, the game seats red and yellow across the board from each other, which is how it is played ' +
           'on a real set. Seating them in adjacent corners quietly gives one player a much shorter run to their ' +
-          'home column, and the empty corners are not drawn at all &mdash; an unused yard on the board just ' +
+          'home column, and the empty corners are not drawn at all - an unused yard on the board just ' +
           'looks like somebody walked off mid-game.',
       },
       {
@@ -2366,12 +2366,12 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Can I play against another person?', a: 'Yes, on the same device — choose Pass &amp; play and hand it round. There is no online play: it would need a server to hold the game, and this site has none.' },
+      { q: 'Can I play against another person?', a: 'Yes, on the same device - choose Pass &amp; play and hand it round. There is no online play: it would need a server to hold the game, and this site has none.' },
       { q: 'How good is the computer?', a: 'Decent, not brilliant. It prefers leaving the yard, then capturing, then getting a token home, then advancing whichever token is furthest along. It will beat you if you play carelessly and it will not out-think you.' },
       { q: 'What are the star squares?', a: 'Safe squares. A token standing on one cannot be captured, which makes them worth racing for when somebody is closing in behind you.' },
       { q: 'Do I need an exact roll to get home?', a: 'Yes. A token has to land exactly on the final home square, so an over-roll simply is not a legal move for it. That is the standard rule and it is what makes the last few squares tense.' },
       { q: 'What happens on three sixes?', a: 'The turn is forfeited. A six normally earns another roll, so without that rule a lucky streak could run indefinitely.' },
-      { q: 'Does it work on a phone?', a: 'Yes. Tap Roll, then tap the token you want to move — the legal ones are ringed in white.' },
+      { q: 'Does it work on a phone?', a: 'Yes. Tap Roll, then tap the token you want to move - the legal ones are ringed in white.' },
     ],
     related: ['snake', '2048', 'minesweeper'],
   },
@@ -2389,14 +2389,14 @@ const GAMES = [
     width: 560, height: 592, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Full rules &middot; minimax with alpha-beta',
-    title: 'Chess — Play The Computer Free In Your Browser, No Sign-Up',
+    title: 'Chess - Play The Computer Free In Your Browser, No Sign-Up',
     ogTitle: 'Chess with all the awkward rules in it',
     description: 'Chess against a real engine: castling, en passant, promotion, stalemate, threefold ' +
       'repetition and the fifty-move rule. Three strengths, take-backs, no account.',
     short: 'A real engine, and all the awkward rules.',
     h1: 'Chess',
     hero: 'Not a chessboard with a random-move generator behind it. This searches, prunes, and looks past the ' +
-      'obvious recapture &mdash; and it plays every rule the game actually has, including the three that most ' +
+      'obvious recapture - and it plays every rule the game actually has, including the three that most ' +
       'browser chess quietly leaves out.',
     facts: [
       'Against the computer, or pass and play',
@@ -2434,7 +2434,7 @@ const GAMES = [
       {
         h: 'Legality by making the move',
         p: 'Every candidate move is played, the king is checked for attack, and the move is taken back. It is ' +
-          'slower than working out pins directly and about a tenth of the code &mdash; and at these depths ' +
+          'slower than working out pins directly and about a tenth of the code - and at these depths ' +
           'being right matters much more than being fast.',
       },
       {
@@ -2451,10 +2451,10 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Can two people play?', a: 'Yes — switch to Pass &amp; play and the engine steps out entirely. Both sides are yours to move, which is what a chessboard on a table already is. Take back then undoes one move rather than a pair.' },
-      { q: 'How strong is it?', a: 'Club level at the default setting — it searches three ply plus captures, so it will punish a hanging piece and a one-move tactic every time, and it will not see a deep combination coming. Strong searches four and takes a second or two to reply.' },
+      { q: 'Can two people play?', a: 'Yes - switch to Pass &amp; play and the engine steps out entirely. Both sides are yours to move, which is what a chessboard on a table already is. Take back then undoes one move rather than a pair.' },
+      { q: 'How strong is it?', a: 'Club level at the default setting - it searches three ply plus captures, so it will punish a hanging piece and a one-move tactic every time, and it will not see a deep combination coming. Strong searches four and takes a second or two to reply.' },
       { q: 'Can I take a move back?', a: 'Yes, and it takes back the pair, so it is your turn again. Useful for exploring rather than for cheating, though nothing stops you.' },
-      { q: 'Does it do under-promotion?', a: 'No — a promoted pawn always becomes a queen. Under-promotion matters in perhaps one game in a thousand and the dialogue it needs is miserable on a phone.' },
+      { q: 'Does it do under-promotion?', a: 'No - a promoted pawn always becomes a queen. Under-promotion matters in perhaps one game in a thousand and the dialogue it needs is miserable on a phone.' },
       { q: 'Is there an opening book?', a: 'No. It works everything out from the position, which is why its first few moves are sensible but not fashionable.' },
       { q: 'Is anything sent anywhere?', a: 'No. The engine runs in your tab. There is no server, no analysis upload, and no account.' },
     ],
@@ -2472,18 +2472,18 @@ const GAMES = [
     width: 560, height: 560, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Elastic collisions &middot; sub-stepped',
-    title: 'Carrom — Play Free Online Against The Computer, No Sign-Up',
+    title: 'Carrom - Play Free Online Against The Computer, No Sign-Up',
     ogTitle: 'Carrom, with the physics done properly',
-    /* "Drag back FROM the striker" was geometrically impossible — pressing
+    /* "Drag back FROM the striker" was geometrically impossible - pressing
        on the striker slides it, since it sits on the baseline. The shot is
        a slingshot ANCHORED at the striker: press anywhere clear of it,
        pull back behind it, release. The copy now describes the game that
        ships. */
-    description: 'The carrom board in your browser. Pull back behind the striker and let go — real elastic ' +
+    description: 'The carrom board in your browser. Pull back behind the striker and let go - real elastic ' +
       'collisions, pockets, the queen, and fouls for sinking the striker.',
     short: 'Flick the striker, sink the coins.',
     h1: 'Carrom',
-    hero: 'Press anywhere open, pull back behind the striker &mdash; a slingshot anchored at it &mdash; and let ' +
+    hero: 'Press anywhere open, pull back behind the striker - a slingshot anchored at it - and let ' +
       'go. The coins behave: every impact is resolved along the line between the two centres, so a thin cut ' +
       'sends a coin sideways exactly the way it does on a real board, and a full-face hit drives it straight.',
     facts: ['Against the computer or pass and play', 'The queen is worth three', 'Fouls for sinking the striker', 'Real collision physics'],
@@ -2516,9 +2516,9 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'How do I aim?', a: 'Tap along your baseline to slide the striker sideways, then put your finger down anywhere clear of the baseline and pull back behind the striker — the catapult is anchored at the striker, not at your finger. The dashed line shows where the shot is actually going.' },
+      { q: 'How do I aim?', a: 'Tap along your baseline to slide the striker sideways, then put your finger down anywhere clear of the baseline and pull back behind the striker - the catapult is anchored at the striker, not at your finger. The dashed line shows where the shot is actually going.' },
       { q: 'What is the queen worth?', a: 'Three points, against one for an ordinary coin. The computer will go for it when the line is there.' },
-      { q: 'What happens if I pocket the striker?', a: 'A foul: everything you sank on that stroke comes back to the centre — the queen included — plus one of your own pocketed coins. If you have none pocketed yet, you owe one, and it is paid out of the first coin you do sink.' },
+      { q: 'What happens if I pocket the striker?', a: 'A foul: everything you sank on that stroke comes back to the centre - the queen included - plus one of your own pocketed coins. If you have none pocketed yet, you owe one, and it is paid out of the first coin you do sink.' },
       { q: 'Do I keep the board if I score?', a: 'Yes. Sink a coin cleanly and you shoot again. Miss, or foul, and it passes over.' },
     ],
     related: ['chess', 'ludo', 'air-hockey'],
@@ -2535,20 +2535,20 @@ const GAMES = [
     bestKey: 'guess-the-algorithm',
     tapAction: false,
     engine: 'Six sorts &middot; recorded, then replayed',
-    title: 'Guess The Algorithm — Name The Sort From Its Animation',
+    title: 'Guess The Algorithm - Name The Sort From Its Animation',
     ogTitle: 'Six sorts. One bar chart. Name it before it finishes.',
-    description: 'Six sorting algorithms animated on a bar chart. Name the one running before it finishes — the earlier you call it, the more it is worth.',
+    description: 'Six sorting algorithms animated on a bar chart. Name the one running before it finishes - the earlier you call it, the more it is worth.',
     short: 'Name the sort from its animation.',
     h1: 'Guess the algorithm',
     hero: 'A sort starts running on twenty-four bars and you have twelve seconds to say which one it is. ' +
-      'Every run takes the same twelve seconds whatever it costs, so the clock cannot give it away &mdash; the ' +
+      'Every run takes the same twelve seconds whatever it costs, so the clock cannot give it away - the ' +
       'giveaway has to be the movement. After each round you get the tell that separates that sort from the ones ' +
       'it is most often confused with.',
     facts: ['Six sorts, properly implemented', 'Every run is the same length', 'The tell explained each round', 'Nothing is uploaded'],
     hud: [
       { key: 'round', label: 'Round', init: '1/5' },
       { key: 'score', label: 'Score', accent: true, init: '0' },
-      { key: 'worth', label: 'Worth now', init: '—' },
+      { key: 'worth', label: 'Worth now', init: '-' },
       { key: 'best', label: 'Best' },
     ],
     extra: '<div class="algo-panel">' +
@@ -2582,7 +2582,7 @@ const GAMES = [
           'The difference is what the left looks like while they do it: bubble sort leaves the unsorted part ' +
           'getting gradually tidier, because every pass nudges everything a little; heapsort leaves it in heap ' +
           'order, which looks like nothing at all. Selection and insertion sort both fill from the left, and ' +
-          'there the difference is noise &mdash; selection sort scans in silence and swaps once, insertion sort ' +
+          'there the difference is noise - selection sort scans in silence and swaps once, insertion sort ' +
           'shifts a whole run of neighbours for every element.',
       },
       {
@@ -2601,7 +2601,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'Are these real implementations?', a: 'Yes. Bubble, selection, insertion, merge, quicksort and heapsort are written as they are normally written, and every run is checked to produce a sorted array. Nothing is faked for the animation.' },
-      { q: 'Does the speed give it away?', a: 'The duration does not — every run is stretched or squeezed to the same twelve seconds. The number of steps still differs, so quicksort changes the picture less often than bubble sort does, and you are welcome to use that. It is real information about the cost.' },
+      { q: 'Does the speed give it away?', a: 'The duration does not - every run is stretched or squeezed to the same twelve seconds. The number of steps still differs, so quicksort changes the picture less often than bubble sort does, and you are welcome to use that. It is real information about the cost.' },
       { q: 'Why only twenty-four bars?', a: 'Enough for the patterns to be distinguishable, few enough that individual bars are visible on a phone. At two hundred bars everything looks like static and the only thing you can read is the overall shape.' },
       { q: 'How is the score worked out?', a: 'A correct answer is worth a hundred points at the start of a run, falling to five as it finishes. A wrong answer or running out of time scores nothing, and you get one guess per round. Five rounds, so five hundred is the maximum.' },
     ],
@@ -2617,7 +2617,7 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: 'ctf-arcade',
     engine: 'Twelve artefacts &middot; nothing to install',
-    title: 'CTF Arcade — Beginner Capture-The-Flag Challenges In Your Browser',
+    title: 'CTF Arcade - Beginner Capture-The-Flag Challenges In Your Browser',
     ogTitle: 'Twelve artefacts. Twelve flags.',
     description: 'Twelve small capture-the-flag challenges: base64, hex, ROT13, Vigenere, cookies and an EXIF dump. ' +
       'Decode the artefact, type the flag, read why it worked.',
@@ -2662,7 +2662,7 @@ const GAMES = [
         h: 'Hints cost points and cannot cost you more than quitting',
         p: 'A hint is worth forty per cent of the challenge, and the cost is only subtracted if you then solve it. ' +
           'Giving up scores zero whether you read the hint or not, so reading one is at worst free. The alternative ' +
-          '— charging for the hint the moment it is shown — teaches people to sit and stare rather than ask, which ' +
+          '- charging for the hint the moment it is shown - teaches people to sit and stare rather than ask, which ' +
           'is the opposite of useful.',
       },
       {
@@ -2683,8 +2683,8 @@ const GAMES = [
     faq: [
       { q: 'What format should the answer be in?', a: 'The whole flag, from CTF{ to the closing brace. Spaces around it and the wrong case are both forgiven; leaving the braces off is not, because the wrapper is part of the flag in every competition you will enter.' },
       { q: 'Do I need any tools to solve these?', a: 'No. Every challenge can be done by hand, and each explanation links to the lab that does the same job if you would rather not. Nothing is timed, so take as long as you like over one.' },
-      { q: 'Are the answers hidden from me?', a: 'Not really — the flags are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a practice ladder rather than a competition, so there is nothing to protect and no reason to pretend otherwise.' },
-      { q: 'Is this a real capture the flag?', a: 'It is one slice of one. Real events add exploitation, reversing and forensics, which need a target you have permission to attack — and there is one on this site: <a class="text-link" href="/labs/hacklab">HackLab</a> holds forty-two of those, from SQL injection on a live engine through JWT forgery, SSRF and path traversal, each with hints, the full solution and the real-world fix. This ladder covers recognising and undoing encodings, which is where almost every challenge begins.' },
+      { q: 'Are the answers hidden from me?', a: 'Not really - the flags are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a practice ladder rather than a competition, so there is nothing to protect and no reason to pretend otherwise.' },
+      { q: 'Is this a real capture the flag?', a: 'It is one slice of one. Real events add exploitation, reversing and forensics, which need a target you have permission to attack - and there is one on this site: <a class="text-link" href="/labs/hacklab">HackLab</a> holds forty-two of those, from SQL injection on a live engine through JWT forgery, SSRF and path traversal, each with hints, the full solution and the real-world fix. This ladder covers recognising and undoing encodings, which is where almost every challenge begins.' },
       { q: 'Does anything I type leave the browser?', a: 'No. There are no network calls in the game at all, and the only thing stored is your best score, in this browser on this device.' },
     ],
     related: ['phishing-or-not', 'subnet-sprint', 'password-duel'],
@@ -2700,7 +2700,7 @@ const GAMES = [
     pad: 'none',
     bestKey: 'guess-the-output',
     engine: 'Eighteen snippets &middot; JavaScript, Python and C',
-    title: 'Guess The Output — Code Snippet Quiz, Free In Your Browser',
+    title: 'Guess The Output - Code Snippet Quiz, Free In Your Browser',
     ogTitle: 'It does not print what you think it prints.',
     description: 'Eighteen short snippets in JavaScript, Python and C that do not print what they look like. ' +
       'Pick the output, then read exactly why it does that.',
@@ -2708,7 +2708,7 @@ const GAMES = [
     h1: 'Guess the output',
     hero: 'Eighteen short snippets in JavaScript, Python and C, every one of them doing something the code ' +
       'does not look like it does. Pick what it prints from four options, then read why. The explanation is ' +
-      'the point here &mdash; it appears whether you were right or wrong.',
+      'the point here - it appears whether you were right or wrong.',
     facts: ['Eighteen snippets', 'JavaScript, Python and C', 'The reason after every answer', 'Nothing is uploaded'],
     hud: [
       { key: 'seen', label: 'Seen', accent: true, init: '0/18' },
@@ -2729,8 +2729,8 @@ const GAMES = [
     info: [
       {
         h: 'The explanation is the product',
-        p: 'Getting one of these wrong tells you nothing by itself, so every answer &mdash; right or wrong ' +
-          '&mdash; opens the reason: which rule produced that output, and what to write instead. Most of them ' +
+        p: 'Getting one of these wrong tells you nothing by itself, so every answer - right or wrong ' +
+          '- opens the reason: which rule produced that output, and what to write instead. Most of them ' +
           'end in a habit worth keeping, like passing a comparator to <code>sort</code> or using ' +
           '<code>bag=None</code> instead of a mutable default.',
       },
@@ -2743,15 +2743,15 @@ const GAMES = [
       },
       {
         h: 'Two answers depend on the machine, and say so',
-        p: '<code>sizeof</code> on an array parameter gives the size of a pointer &mdash; eight bytes on the ' +
-          '64-bit builds nearly everyone uses, four on a 32-bit one &mdash; so the option carries that ' +
+        p: '<code>sizeof</code> on an array parameter gives the size of a pointer - eight bytes on the ' +
+          '64-bit builds nearly everyone uses, four on a 32-bit one - so the option carries that ' +
           'condition rather than asserting a bare number. The Python identity question is the same case: ' +
           'small-integer caching is a CPython implementation detail, not a rule of the language.',
       },
       {
         h: 'The same bug twice, in two languages',
         p: 'The JavaScript <code>var</code> loop and the Python comprehension full of lambdas are one ' +
-          'mistake &mdash; a closure capturing a variable rather than its value &mdash; printing 3 3 3 and ' +
+          'mistake - a closure capturing a variable rather than its value - printing 3 3 3 and ' +
           '[2, 2, 2] for exactly the same reason. Meeting them side by side is worth more than meeting ' +
           'either on its own.',
       },
@@ -2776,21 +2776,21 @@ const GAMES = [
     bestKey: 'assembly-puzzles', bestOrder: 'low',
     tapAction: false,
     engine: 'Fifteen instructions, four registers, 32 cells',
-    title: 'Assembly Puzzles &mdash; Write Assembly In Your Browser, Free',
+    title: 'Assembly Puzzles - Write Assembly In Your Browser, Free',
     ogTitle: 'Eight problems, fifteen instructions',
     description: 'Write programs for a tiny virtual machine with four registers and fifteen instructions. ' +
       'Eight problems, each checked against every test case and scored on size.',
     short: 'Eight problems on a tiny machine.',
     h1: 'Assembly puzzles',
     hero: 'A machine with four registers, thirty-two memory cells and fifteen instructions, and eight ' +
-      'problems to solve on it &mdash; from copying a number to reversing a list. Your program is run ' +
+      'problems to solve on it - from copying a number to reversing a list. Your program is run ' +
       'against every test case, not just the one on screen, and the score is the instructions you wrote ' +
       'plus every cycle the machine spent. Shorter programs and tighter loops both count.',
     facts: ['Fifteen instructions', 'Four registers, 32 cells', 'Eight levels', 'Every test case checked'],
     hud: [
       { key: 'level', label: 'Level', init: '1/8' },
       { key: 'cost', label: 'Cost', accent: true, init: '0' },
-      { key: 'best', label: 'Best', init: '&mdash;' },
+      { key: 'best', label: 'Best', init: '-' },
     ],
     controls: [
       '<label class="sr-only" for="game-level">Level</label>',
@@ -2820,12 +2820,12 @@ const GAMES = [
         h: 'The flag behaves the way real flags do',
         p: '<code>CMP a, b</code> sets the flag to a minus b, but so do ADD, SUB, MUL, INC and DEC, from ' +
           'their own result. That is why <code>DEC R0</code> followed by <code>JNE loop</code> is a ' +
-          'complete countdown with no compare in it &mdash; the same reason the equivalent pair is the ' +
+          'complete countdown with no compare in it - the same reason the equivalent pair is the ' +
           'commonest loop on x86. MOV, IN and OUT leave the flag alone.',
       },
       {
         h: 'Why level six takes MUL away',
-        p: 'Early processors had no multiplier at all, and multiplying meant a loop of additions &mdash; ' +
+        p: 'Early processors had no multiplier at all, and multiplying meant a loop of additions - ' +
           'which is why multiplication cost tens of cycles when addition cost one. Doing it by hand once ' +
           'makes the cost model of a CPU much less abstract. Real hardware does better than repeated ' +
           'addition by shifting and adding, roughly one step per bit rather than one per unit.',
@@ -2833,7 +2833,7 @@ const GAMES = [
       {
         h: 'This is not a real instruction set',
         p: 'There is no stack, no CALL or RET, no addressing beyond a register holding an address, and no ' +
-          'overflow behaviour to speak of &mdash; a value too large for the machine is treated as your ' +
+          'overflow behaviour to speak of - a value too large for the machine is treated as your ' +
           'mistake rather than silently wrapped. It teaches the shape of the thing: registers are few, ' +
           'memory is separate, branches are conditional jumps on a flag somebody else set. Anything you ' +
           'learn here transfers as intuition, not as syntax.',
@@ -2860,14 +2860,14 @@ const GAMES = [
     bestKey: 'regex-golf',
     tapAction: false,
     engine: 'new RegExp in a try/catch, with a stopwatch on every test',
-    title: 'Regex Golf — Write The Shortest Pattern, Free In Your Browser',
+    title: 'Regex Golf - Write The Shortest Pattern, Free In Your Browser',
     ogTitle: 'Twelve regexes, as short as you can',
     description: 'Write the shortest regular expression that matches every string in one list and none in the ' +
       'other. Twelve levels, with live ticks and crosses as you type.',
     short: 'Shortest pattern that separates two lists.',
     h1: 'Regex golf',
     hero: 'Two lists of strings. Write one regular expression that matches everything on the left and nothing ' +
-      'on the right &mdash; then write a shorter one. Your score is the number of characters you spend across ' +
+      'on the right - then write a shorter one. Your score is the number of characters you spend across ' +
       'the twelve levels, so this is the rare game here where a low number is the good one.',
     facts: ['Twelve levels', 'Shortest pattern wins', 'Live ticks and crosses', 'Refuses a ReDoS'],
     hud: [
@@ -2900,8 +2900,8 @@ const GAMES = [
       },
       {
         h: 'Why a pattern can be refused',
-        p: 'Two guards. The first reads your pattern for one unbounded repeat inside another &mdash; ' +
-          '<code>(a+)+</code> and its relatives &mdash; and refuses it before running it. The second times ' +
+        p: 'Two guards. The first reads your pattern for one unbounded repeat inside another - ' +
+          '<code>(a+)+</code> and its relatives - and refuses it before running it. The second times ' +
           'the tests and blacklists anything that ran long. The second one only fires after the damage: ' +
           'JavaScript cannot cancel a regular expression once the engine is inside it, which is precisely ' +
           'what makes a ReDoS a denial of service rather than a slow query.',
@@ -2932,7 +2932,7 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: 'git-quest',
     engine: 'Eighteen git commands over an in-memory object store',
-    title: 'Git Quest — Learn Git By Fixing Repositories',
+    title: 'Git Quest - Learn Git By Fixing Repositories',
     ogTitle: 'Nineteen missions, one toy repository',
     description: 'Nineteen missions solved by typing real git commands: init, commit, branch, merge, rebase, reset, revert and a reflog rescue, against a toy repository.',
     short: 'Nineteen missions, one toy repository.',
@@ -2942,7 +2942,7 @@ const GAMES = [
       'that walk from <code>git init</code> to a capstone that uses the whole toolbox. The commit graph redraws beside the ' +
       'terminal as you type, because <em>a branch is a sticky note on a commit</em> is a sentence you ' +
       'believe only after watching the label slide while the dots stay put.',
-    facts: ['Eighteen git commands', 'Nineteen missions', 'The graph drawn as you type', 'Break it freely — retry rebuilds'],
+    facts: ['Eighteen git commands', 'Nineteen missions', 'The graph drawn as you type', 'Break it freely - retry rebuilds'],
     hud: [
       { key: 'mission', label: 'Mission', accent: true, init: '1/19' },
       { key: 'cmds', label: 'Commands', init: '0' },
@@ -2967,20 +2967,20 @@ const GAMES = [
         p: 'Every command here is JavaScript over an in-memory object store: commits are snapshots with ' +
           'parents, branches are labels holding one id, HEAD is a pointer, and the hashes are pretend. ' +
           'Nothing executes on your machine and nothing is stored beyond your best score. The real thing ' +
-          'is one <code>git init</code> away in any terminal, and it works exactly like the toy &mdash; ' +
+          'is one <code>git init</code> away in any terminal, and it works exactly like the toy - ' +
           'that is the point of the toy.',
       },
       {
         h: 'A scene per mission, so exploring cannot break anything',
         p: 'Each mission rebuilds the repository into a curated starting state. Wander off the brief as far ' +
-          'as you like &mdash; make branches, reset things, detach HEAD &mdash; and <code>retry</code> puts ' +
+          'as you like - make branches, reset things, detach HEAD - and <code>retry</code> puts ' +
           'the scene back without touching your progress. The goals check repository state, not the order ' +
           'you typed things in, so any route that gets there counts.',
       },
       {
         h: 'The graph is the lesson',
-        p: 'The panel beside the terminal redraws the commit graph and the three places &mdash; working ' +
-          'tree, index, HEAD &mdash; after every command. Watching <code>reset --soft</code> move one of ' +
+        p: 'The panel beside the terminal redraws the commit graph and the three places - working ' +
+          'tree, index, HEAD - after every command. Watching <code>reset --soft</code> move one of ' +
           'the three while <code>--hard</code> moves all of them teaches more than any table. The prose ' +
           'half of this game is the article <a href="/blog/git-explained-from-the-object-up">Git, ' +
           'explained from the object up</a>, written alongside it.',
@@ -2994,8 +2994,8 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is this real git?', a: 'No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for.' },
-      { q: 'Do I need to know git already?', a: 'No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog — the game and the article were written together.' },
+      { q: 'Is this real git?', a: 'No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model - snapshots, parents, labels, the index, the reflog - matches the real thing, which is what the game is for.' },
+      { q: 'Do I need to know git already?', a: 'No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog - the game and the article were written together.' },
       { q: 'Why is there no push or pull?', a: 'This page makes no network calls, by design, and a simulated server would hand out simulated lessons. Remotes, force-with-lease and the collaboration model are covered in the companion article instead.' },
       { q: 'Can I get stuck?', a: 'Not permanently. retry rebuilds the current mission&rsquo;s scene from scratch, hint nudges, and Restart begins a fresh run. Exploring beyond the brief cannot wedge a later mission, because every mission builds its own scene.' },
       { q: 'What counts towards the best score?', a: 'Every command you run, including help, hint and the ones git refuses. Lower is better, and somewhere around seventy on a first pass is a respectable showing.' },
@@ -3013,16 +3013,16 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: 'shell-quest',
     engine: 'Thirteen commands over an in-memory filesystem',
-    title: 'Shell Quest — Learn The Command Line By Using It',
+    title: 'Shell Quest - Learn The Command Line By Using It',
     ogTitle: 'Eight puzzles, one pretend shell',
     description: 'Eight puzzles solved by typing real commands. ls, grep, find, chmod, wc, file and strings, ' +
       'against a small filesystem that lives in the page and nowhere else.',
     short: 'Eight puzzles, one pretend shell.',
     h1: 'Shell quest',
     hero: 'Eight things to find, and the only way to look is by typing. Thirteen Unix commands are ' +
-      'implemented here &mdash; <code>ls</code>, <code>cd</code>, <code>cat</code>, <code>grep</code>, ' +
+      'implemented here - <code>ls</code>, <code>cd</code>, <code>cat</code>, <code>grep</code>, ' +
       '<code>find</code>, <code>chmod</code>, <code>head</code>, <code>tail</code>, <code>wc</code>, ' +
-      '<code>file</code>, <code>strings</code>, <code>echo</code> and <code>pwd</code> &mdash; over a ' +
+      '<code>file</code>, <code>strings</code>, <code>echo</code> and <code>pwd</code> - over a ' +
       'filesystem that exists only in this page. They are reimplementations, not a shell, and the puzzles ' +
       'get harder as the commands you need get less obvious.',
     facts: ['Thirteen commands', 'Eight quests', 'Not a real shell', 'Your best kept on this device'],
@@ -3050,7 +3050,7 @@ const GAMES = [
         p: 'Every command here is a few dozen lines of JavaScript walking an object tree. There is no ' +
           'process, no kernel, no job control, and deliberately no pipes, no redirection and no variables, ' +
           'because each of those needs a parser and none of them makes a puzzle better. If you want the ' +
-          'real thing &mdash; a kernel, a package manager, a shell that can be broken &mdash; ' +
+          'real thing - a kernel, a package manager, a shell that can be broken - ' +
           '<a href="/labs/linux">/labs/linux</a> boots one in the browser.',
       },
       {
@@ -3100,14 +3100,14 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: 'phishing-or-not',
     engine: 'Twenty specimens &middot; half of them real',
-    title: 'Phishing Or Not — Can You Spot The Fake? Free Quiz',
+    title: 'Phishing Or Not - Can You Spot The Fake? Free Quiz',
     ogTitle: 'Half of these are real. That is the hard part.',
-    description: 'Twenty emails and texts, half genuine. Call each one and get the reason immediately — ' +
+    description: 'Twenty emails and texts, half genuine. Call each one and get the reason immediately - ' +
       'including why several of the alarming ones are perfectly real.',
     short: 'Twenty specimens. Half are genuine.',
     h1: 'Phishing or not',
     hero: 'The hard part of this is not the fakes. It is that half the specimens are <em>real</em> messages ' +
-      'containing everything you have been told to fear &mdash; urgency, a link, a demand to act &mdash; and ' +
+      'containing everything you have been told to fear - urgency, a link, a demand to act - and ' +
       'several of the attacks contain none of it. Suspicion alone will fail you here, which is the point.',
     facts: ['Half of them are genuine', 'The reason shown after every answer', 'Attacks with no link at all', 'Nothing is uploaded'],
     hud: [
@@ -3122,7 +3122,7 @@ const GAMES = [
       {
         h: 'A quiz of obvious fakes teaches nothing',
         p: 'If every genuine message in a test is calm and every attack is frantic, the lesson people take away ' +
-          'is "be suspicious of anything urgent" &mdash; which makes them ignore real security alerts and does ' +
+          'is "be suspicious of anything urgent" - which makes them ignore real security alerts and does ' +
           'nothing about a well-written attack. Several specimens here are genuine warnings that look alarming ' +
           'because they are alarming.',
       },
@@ -3130,13 +3130,13 @@ const GAMES = [
         h: 'The domain is the only reliable tell',
         p: 'Read a domain right to left: the part immediately before the final <code>.com</code> is the bit ' +
           'somebody owns. <code>company.com.mailquota-support.net</code> belongs to whoever owns ' +
-          '<code>mailquota-support.net</code>. That single habit catches most of what is here &mdash; and the ' +
+          '<code>mailquota-support.net</code>. That single habit catches most of what is here - and the ' +
           '<a href="/labs/url-inspector">URL inspector</a> in Labs does it for you on a real link.',
       },
       {
         h: 'Some attacks have no link to inspect',
         p: 'The invoice with a phone number, the "hi mum" text, the message from a chief executive asking for a ' +
-          'quiet transfer &mdash; none of them contains anything to hover over. Advice built entirely around ' +
+          'quiet transfer - none of them contains anything to hover over. Advice built entirely around ' +
           'checking links has nothing to say about the attacks that cost the most money.',
       },
       {
@@ -3146,7 +3146,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'Are these real messages?', a: 'They are faithful reconstructions of both real attacks and real service emails, with names and numbers changed. Nothing here links anywhere.' },
-      { q: 'I got the genuine ones wrong. Is that bad?', a: 'It is the most common result and the most useful one. Calling everything phishing is not security — it means ignoring the alerts that matter, which is its own risk.' },
+      { q: 'I got the genuine ones wrong. Is that bad?', a: 'It is the most common result and the most useful one. Calling everything phishing is not security - it means ignoring the alerts that matter, which is its own risk.' },
       { q: 'What should I actually do with a suspicious message?', a: 'Do not click, and do not use any phone number it gives you. Open the site or app yourself and check from there. It reaches the same place and cannot be faked.' },
     ],
     related: ['password-duel', 'subnet-sprint', 'cyber-hygiene'],
@@ -3160,13 +3160,13 @@ const GAMES = [
     script: 'cs/password-duel.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'A real search, in a Web Worker',
-    title: 'Password Duel — Watch Your Password Get Cracked, Live',
+    title: 'Password Duel - Watch Your Password Get Cracked, Live',
     ogTitle: 'Type a password. Watch it fall.',
-    description: 'Type a password and watch a real cracking run go after it — wordlist, then mangling rules, ' +
+    description: 'Type a password and watch a real cracking run go after it - wordlist, then mangling rules, ' +
       'then brute force. Nothing uploaded; it runs in a worker in your tab.',
     short: 'Type one. Watch it fall.',
     h1: 'Password duel',
-    hero: 'Type a password &mdash; ideally one you have actually used &mdash; and watch a genuine cracking run ' +
+    hero: 'Type a password - ideally one you have actually used - and watch a genuine cracking run ' +
       'go after it: the common list first, then the same list mangled the way people mangle it, then brute ' +
       'force. Nothing leaves the tab, and the number at the end is scaled to real hardware rather than to your ' +
       'laptop.',
@@ -3180,7 +3180,7 @@ const GAMES = [
         h: 'Your browser is a terrible cracker, and that would flatter you',
         p: 'A tab manages perhaps a hundred thousand guesses a second. A rented eight-GPU machine does tens of ' +
           'billions against a fast unsalted hash. Quoting the browser figure would make almost anything look ' +
-          'safe, so the estimate is scaled to the real thing &mdash; and the page says which hash it is assuming.',
+          'safe, so the estimate is scaled to the real thing - and the page says which hash it is assuming.',
       },
       {
         h: 'The rules phase is the one that hurts',
@@ -3197,15 +3197,15 @@ const GAMES = [
       {
         h: 'It genuinely does not leave the tab',
         p: 'The worker is built from a Blob URL inside the page, which is the only way to run off-thread code ' +
-          'under this site\'s content security policy. There is no network call in this file at all &mdash; ' +
+          'under this site\'s content security policy. There is no network call in this file at all - ' +
           'check the network tab while it runs.',
       },
     ],
     faq: [
-      { q: 'Is it safe to type my real password?', a: 'It never leaves your browser and is not stored, so technically yes — but as a habit, typing a live password into any web page is a bad one. Type something structurally identical instead.' },
-      { q: 'It said "not cracked" — am I safe?', a: 'Not necessarily. The browser gives up after a few seconds; real hardware does not. The estimate below the result is the number that matters.' },
+      { q: 'Is it safe to type my real password?', a: 'It never leaves your browser and is not stored, so technically yes - but as a habit, typing a live password into any web page is a bad one. Type something structurally identical instead.' },
+      { q: 'It said "not cracked" - am I safe?', a: 'Not necessarily. The browser gives up after a few seconds; real hardware does not. The estimate below the result is the number that matters.' },
       { q: 'Why does adding ! at the end barely help?', a: 'Because the rule engine tries it. Suffixes and substitutions are the first thing a cracker applies to a wordlist, so they cost an attacker almost nothing.' },
-      { q: 'Is there a tool version of this?', a: 'Yes — the <a href="/labs/password">password lab</a> and the <a href="/labs/hash-cracker">live hash cracker</a> in Labs do the same work without a score attached.' },
+      { q: 'Is there a tool version of this?', a: 'Yes - the <a href="/labs/password">password lab</a> and the <a href="/labs/hash-cracker">live hash cracker</a> in Labs do the same work without a score attached.' },
     ],
     related: ['phishing-or-not', 'cyber-hygiene', 'subnet-sprint'],
   },
@@ -3219,14 +3219,14 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: 'subnet-sprint',
     engine: 'Generated and solved, never stored',
-    title: 'Subnet Sprint — Timed CIDR Practice, Free In Your Browser',
+    title: 'Subnet Sprint - Timed CIDR Practice, Free In Your Browser',
     ogTitle: 'Two minutes of subnetting',
     description: 'Timed CIDR questions: usable hosts, network and broadcast addresses, masks, which prefix ' +
       'fits a host count. Generated fresh, so the bank never runs out.',
     short: 'Two minutes of CIDR, generated fresh.',
     h1: 'Subnet sprint',
     hero: 'Two minutes, as many CIDR questions as you can get through. Every question is generated from a random ' +
-      'address and solved with the same bitwise arithmetic a router uses &mdash; so there is no question bank ' +
+      'address and solved with the same bitwise arithmetic a router uses - so there is no question bank ' +
       'to memorise and no chance of a wrong answer sitting in a table nobody checked.',
     facts: ['Six question types', 'Generated and solved, never stored', 'Two minutes', 'Your best kept on this device'],
     hud: [
@@ -3241,7 +3241,7 @@ const GAMES = [
       {
         h: 'Masks are negative numbers in JavaScript',
         p: 'A /24 mask is <code>0xFFFFFF00</code>, and JavaScript\'s bitwise operators treat that as a signed ' +
-          '32-bit value &mdash; so it is negative, and printing it without an unsigned shift gives nonsense. ' +
+          '32-bit value - so it is negative, and printing it without an unsigned shift gives nonsense. ' +
           'Every calculation here ends in <code>&gt;&gt;&gt; 0</code>. It is the classic bug in hand-written ' +
           'subnet code and it only shows up at the extremes.',
       },
@@ -3254,7 +3254,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'What format should answers be in?', a: 'Dotted decimal for addresses and masks, a plain number for host counts, yes or no for the same-subnet questions, and either /26 or 26 for a prefix.' },
-      { q: 'Why is a /31 not two usable hosts?', a: 'It is, by RFC 3021, for point-to-point links — but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule.' },
+      { q: 'Why is a /31 not two usable hosts?', a: 'It is, by RFC 3021, for point-to-point links - but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule.' },
       { q: 'Is there a calculator version?', a: 'Yes, in Labs. This is the same maths with a timer on it.' },
     ],
     related: ['phishing-or-not', 'password-duel', 'greed'],
@@ -3273,7 +3273,7 @@ const GAMES = [
     pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Character grid &middot; rings computed from a radius',
-    title: 'Rain — The BSD Screensaver, With Ripples That Spread',
+    title: 'Rain - The BSD Screensaver, With Ripples That Spread',
     ogTitle: 'Rain, with the ripples the original never had',
     description: 'The BSD rain screensaver rebuilt in a terminal grid. Drops fall, land, and throw out ' +
       'concentric rings that widen and fade. Density and speed controls.',
@@ -3281,7 +3281,7 @@ const GAMES = [
     h1: 'Rain',
     hero: 'The screensaver that shipped with BSD games drew a dot, then an o, then an O, all in one spot, and ' +
       'called it a raindrop. This one lets the drop land and spread: rings in box-drawing and punctuation that ' +
-      'widen, thin out and dissolve. Nothing about a ring is stored anywhere &mdash; every cell of it is worked ' +
+      'widen, thin out and dissolve. Nothing about a ring is stored anywhere - every cell of it is worked ' +
       'out from the radius, every frame.',
     facts: ['Rings computed, not stored', 'Four densities', 'Round on 2:1 cells', 'No score, no clock'],
     hud: [
@@ -3321,8 +3321,8 @@ const GAMES = [
       },
       {
         h: 'Fading in four steps',
-        p: 'A terminal has no alpha channel, so the fade is four colour bands &mdash; white, cyan, blue, then ' +
-          'dim &mdash; with the leading edge always one band brighter than the two rings trailing it. The dim ' +
+        p: 'A terminal has no alpha channel, so the fade is four colour bands - white, cyan, blue, then ' +
+          'dim - with the leading edge always one band brighter than the two rings trailing it. The dim ' +
           'band is also drawn at half density, in a fixed alternating pattern rather than a random one: random ' +
           'dropout would make a ring flicker every frame instead of dissolving.',
       },
@@ -3348,7 +3348,7 @@ const GAMES = [
     pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Character grid &middot; one averaging pass per frame',
-    title: 'aafire — The ASCII Fire Effect, Free In Your Browser',
+    title: 'aafire - The ASCII Fire Effect, Free In Your Browser',
     ogTitle: 'ASCII fire, and the one pass that makes it',
     description: 'The aalib fire demo in a terminal grid. A heat buffer, one averaging pass a frame, ' +
       'and a ramp of characters. Wind and intensity controls, no score.',
@@ -3376,7 +3376,7 @@ const GAMES = [
         p: 'Two rows of random heat sit below the bottom of the screen. Every frame each cell takes the ' +
           'average of the three cells below it and the one below those, then loses a small random amount. ' +
           'Heat climbs exactly one row per pass and thins as it goes, and that is the whole simulation ' +
-          '&mdash; no particles, no velocities, no flames as objects.',
+          '- no particles, no velocities, no flames as objects.',
       },
       {
         h: 'The ramp does the rest',
@@ -3419,14 +3419,14 @@ const GAMES = [
     pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Character grid &middot; the glyphs do not fall',
-    title: 'cmatrix — The Falling Green Glyphs, In Your Browser',
+    title: 'cmatrix - The Falling Green Glyphs, In Your Browser',
     ogTitle: 'The green rain, and how it actually works',
     description: 'The cmatrix screensaver, rebuilt for the browser. Green glyph rain in eighty columns, with a ' +
       'speed control. Nothing to install.',
     short: 'The green rain. Nothing to win.',
     h1: 'cmatrix',
     hero: 'The screensaver every Linux machine has had since 1999. Worth knowing: the characters do not actually ' +
-      'fall &mdash; each cell holds a glyph that rarely changes, and what moves is a bright head with a fading ' +
+      'fall - each cell holds a glyph that rarely changes, and what moves is a bright head with a fading ' +
       'trail sweeping over letters that were already sitting there.',
     facts: ['The glyphs do not fall', 'Three speeds', 'No score, no clock', 'Runs at 80 columns'],
     hud: [{ key: 'drops', label: 'Columns raining', accent: true, init: '0' }],
@@ -3440,7 +3440,7 @@ const GAMES = [
       {
         h: 'Nothing scrolls',
         p: 'A scrolling text buffer would need a history and would tear at the edges. Instead every cell holds ' +
-          'a character that only occasionally mutates, and each column has a falling <em>brightness</em> &mdash; ' +
+          'a character that only occasionally mutates, and each column has a falling <em>brightness</em> - ' +
           'a white head, a bright tail, then dim. The rain is a lighting effect over a static field.',
       },
       {
@@ -3450,7 +3450,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'What are the characters?', a: 'Half-width katakana plus digits and punctuation, which is what the original used — chosen because they are visually dense and unfamiliar enough not to read as words.' },
+      { q: 'What are the characters?', a: 'Half-width katakana plus digits and punctuation, which is what the original used - chosen because they are visually dense and unfamiliar enough not to read as words.' },
       { q: 'Is there anything to do?', a: 'No. It is a screensaver. That is why it is filed under toys.' },
     ],
     related: ['pipes', 'cbonsai', 'game-of-life'],
@@ -3467,7 +3467,7 @@ const GAMES = [
     pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Character grid &middot; box-drawing corners',
-    title: 'Pipes — The Terminal Screensaver, Free In Your Browser',
+    title: 'Pipes - The Terminal Screensaver, Free In Your Browser',
     ogTitle: 'Pipes, with the corners the right way round',
     description: 'The pipes screensaver in a terminal grid. Pipes wander, turn and wrap, filling the screen ' +
       'until it is too dense to read, then start again.',
@@ -3514,18 +3514,18 @@ const GAMES = [
     script: 'toy/cbonsai.js',
     pad: 'action', bestKey: null,
     engine: 'Recursive branching &middot; seeded',
-    title: 'cbonsai — Grow An ASCII Bonsai In Your Browser',
+    title: 'cbonsai - Grow An ASCII Bonsai In Your Browser',
     ogTitle: 'Grow a bonsai out of one number',
-    description: 'A bonsai grown from a recursive branch with a life counter. Same seed, same tree — so the one ' +
+    description: 'A bonsai grown from a recursive branch with a life counter. Same seed, same tree - so the one ' +
       'you liked can be grown again.',
     short: 'Grow a tree. Keep the seed.',
     h1: 'cbonsai',
-    hero: 'A branch that walks upward, leans, and sometimes splits &mdash; each child inheriting less life than ' +
+    hero: 'A branch that walks upward, leans, and sometimes splits - each child inheriting less life than ' +
       'its parent. That one counter is the whole tree: thick at the base because the trunk still has budget, ' +
       'sparse and leafy at the tips because its children did not.',
-    facts: ['Seeded — the same number grows the same tree', 'Grows in front of you', 'No score, no clock', 'A new one every press'],
+    facts: ['Seeded - the same number grows the same tree', 'Grows in front of you', 'No score, no clock', 'A new one every press'],
     hud: [
-      { key: 'seed', label: 'Seed', accent: true, init: '—' },
+      { key: 'seed', label: 'Seed', accent: true, init: '-' },
       { key: 'parts', label: 'Parts', init: '0' },
     ],
     controls: [
@@ -3540,7 +3540,7 @@ const GAMES = [
         h: 'Life, inherited and reduced',
         p: 'Every branch carries a budget that drains as it grows, and a split hands its child about sixty per ' +
           'cent of what is left. When a branch runs out it turns into a cluster of leaves. Nothing else decides ' +
-          'the silhouette &mdash; no rules about trunk thickness or crown shape, just that one number going down.',
+          'the silhouette - no rules about trunk thickness or crown shape, just that one number going down.',
       },
       {
         h: 'The seed is shown so you can keep it',
@@ -3550,7 +3550,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Can I grow the same tree twice?', a: 'Yes — that is what the seed under the pot is for. The same seed always produces the same tree.' },
+      { q: 'Can I grow the same tree twice?', a: 'Yes - that is what the seed under the pot is for. The same seed always produces the same tree.' },
       { q: 'Why does it grow slowly?', a: 'Because watching it is the point. The button next to Grow another switches to instant if you would rather.' },
     ],
     related: ['cmatrix', 'pipes', 'falling-sand'],
@@ -3565,7 +3565,7 @@ const GAMES = [
     width: 576, height: 384, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Conway &middot; a wrapping torus',
-    title: "Conway's Game of Life — Draw On It, Free In Your Browser",
+    title: "Conway's Game of Life - Draw On It, Free In Your Browser",
     ogTitle: 'Four rules, and nobody can predict them',
     description: "Conway's Game of Life with a glider gun, a pulsar and the R-pentomino built in. Draw your " +
       'own cells, change the speed, watch it go. Nothing uploaded.',
@@ -3594,7 +3594,7 @@ const GAMES = [
     info: [
       {
         h: 'The grid wraps around',
-        p: 'An infinite plane is not on offer and a bounded one quietly changes the rules at the edges &mdash; ' +
+        p: 'An infinite plane is not on offer and a bounded one quietly changes the rules at the edges - ' +
           'gliders die there, which makes the most famous pattern in the subject look broken. A torus gives ' +
           'every cell exactly eight neighbours, everywhere.',
       },
@@ -3605,7 +3605,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'What is the glider gun?', a: "Bill Gosper's pattern from 1970 — the first arrangement found that grows without limit, firing a glider every thirty generations. It won a fifty-dollar prize." },
+      { q: 'What is the glider gun?', a: "Bill Gosper's pattern from 1970 - the first arrangement found that grows without limit, firing a glider every thirty generations. It won a fifty-dollar prize." },
       { q: 'Is there a way to win?', a: 'No. It is a zero-player automaton: you set the starting cells and the rules do the rest. That is why it is filed under toys rather than games.' },
       { q: 'Why does my random soup settle down?', a: 'Almost all random starts collapse into a mixture of still lifes and small oscillators within a few hundred generations. The interesting patterns are the rare ones that do not.' },
     ],
@@ -3621,7 +3621,7 @@ const GAMES = [
     width: 640, height: 440, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Cellular physics &middot; six materials',
-    title: 'Falling Sand — A Powder Toy In Your Browser, Free',
+    title: 'Falling Sand - A Powder Toy In Your Browser, Free',
     ogTitle: 'Sand, water, wood and fire',
     description: 'A falling-sand powder toy. Sand piles, water levels itself, fire eats wood and is put out by ' +
       'water. Draw with any of them. No sign-up, nothing uploaded.',
@@ -3647,21 +3647,21 @@ const GAMES = [
     info: [
       {
         h: 'The grid is scanned bottom-up',
-        p: 'Scan downward and you move a grain, then meet it again a row lower and move it again &mdash; sand ' +
+        p: 'Scan downward and you move a grain, then meet it again a row lower and move it again - sand ' +
           'teleports to the floor in a single frame rather than falling. Going upward means every cell is ' +
           'considered exactly once per frame, which is the whole difference between gravity and a glitch.',
       },
       {
         h: 'Water levels itself for free',
-        p: 'Sand can only move down or diagonally down, so it piles. Water gets one extra rule &mdash; it may ' +
-          'also move sideways &mdash; and that single line is why it spreads out flat instead of forming ' +
+        p: 'Sand can only move down or diagonally down, so it piles. Water gets one extra rule - it may ' +
+          'also move sideways - and that single line is why it spreads out flat instead of forming ' +
           'heaps. No fluid simulation, no pressure, just one more allowed direction.',
       },
     ],
     faq: [
       { q: 'Can I put the fire out?', a: 'Yes. Draw water on it, or over the wood in front of it. Fire that runs out of fuel burns down on its own and leaves smoke.' },
       { q: 'Does it save what I draw?', a: 'No. It is a toy, and reloading gives you a fresh scene.' },
-      { q: 'Why is stone different from wood?', a: 'Stone does nothing at all — it just blocks. Wood also blocks, but it burns, so it is what you build things out of when you want to set fire to them later.' },
+      { q: 'Why is stone different from wood?', a: 'Stone does nothing at all - it just blocks. Wood also blocks, but it burns, so it is what you build things out of when you want to set fire to them later.' },
     ],
     related: ['game-of-life', 'boids', '2048'],
   },
@@ -3675,14 +3675,14 @@ const GAMES = [
     width: 640, height: 420, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Reynolds 1986 &middot; spatial hash',
-    title: 'Boids — Flocking Simulation You Can Break, Free In Your Browser',
+    title: 'Boids - Flocking Simulation You Can Break, Free In Your Browser',
     ogTitle: 'Three rules, and a flock appears',
-    description: "Craig Reynolds's flocking model. Separation, alignment and cohesion — three rules per bird, no " +
+    description: "Craig Reynolds's flocking model. Separation, alignment and cohesion - three rules per bird, no " +
       'leader, no plan. Move the sliders and watch the flock fall apart.',
     short: 'Three rules per bird. No leader.',
     h1: 'Boids',
     hero: 'Every bird looks only at its neighbours and follows three rules: do not crowd them, head roughly the ' +
-      'way they are heading, and drift toward the middle of them. Nothing knows about the flock &mdash; and yet ' +
+      'way they are heading, and drift toward the middle of them. Nothing knows about the flock - and yet ' +
       'there it is. Turn one rule down and watch what it was holding together.',
     facts: ['Three rules, no leader', 'Sliders that break it', 'Your cursor is a hawk', 'Hundreds of birds at sixty frames'],
     hud: [
@@ -3715,7 +3715,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'What happens if I turn separation off?', a: 'They collapse into a single point and stay there. Separation is the only rule pushing outward, so without it cohesion wins completely.' },
-      { q: 'And alignment?', a: 'You get a milling swarm rather than a flock — they stay together but never agree on a direction. It looks like insects instead of birds.' },
+      { q: 'And alignment?', a: 'You get a milling swarm rather than a flock - they stay together but never agree on a direction. It looks like insects instead of birds.' },
       { q: 'Is this how real flocks work?', a: 'Broadly, yes. Reynolds proposed it in 1986 as a model rather than a measurement, and later studies of actual starlings found birds do track a small fixed number of neighbours rather than everything they can see.' },
     ],
     related: ['game-of-life', 'falling-sand', 'moon-buggy'],
@@ -3730,12 +3730,12 @@ const GAMES = [
     width: 640, height: 420, bestKey: null, pad: 'none',
     tapAction: true,
     engine: 'Ballistic droplets &middot; flight-time cueing',
-    title: 'Dancing Fountain — Water On A Beat, In Your Browser',
+    title: 'Dancing Fountain - Water On A Beat, In Your Browser',
     ogTitle: 'The jets fire before the beat, so the water lands on it',
     description: 'A musical fountain: a ring of nozzles and a centre jet throwing real ballistic water, lit from under the surface, choreographed to a piece the page generates itself.',
     short: 'Water on a beat, lit from below.',
     h1: 'Dancing fountain',
-    hero: 'A ring of nozzles around a centre jet, throwing droplets that arc, break into spray at the top and splash when they land. The show is cut to a piece generated in the tab &mdash; and every jet fires slightly <em>before</em> the beat it is meant to hit, because water takes time to get where it is going. That offset is the difference between a fountain dancing and a fountain reacting.',
+    hero: 'A ring of nozzles around a centre jet, throwing droplets that arc, break into spray at the top and splash when they land. The show is cut to a piece generated in the tab - and every jet fires slightly <em>before</em> the beat it is meant to hit, because water takes time to get where it is going. That offset is the difference between a fountain dancing and a fountain reacting.',
     facts: [
       'Droplets under real gravity',
       'Jets cued for flight time',
@@ -3767,7 +3767,7 @@ const GAMES = [
     info: [
       {
         h: 'The jets fire early on purpose',
-        p: 'A droplet leaving a nozzle takes a measurable time to reach the top of its arc. Cue the nozzle on the beat and the water peaks a third of a second late, which reads as sloppy. So the programme works backwards from the flight time and opens the valve early &mdash; the same thing a real show controller does.',
+        p: 'A droplet leaving a nozzle takes a measurable time to reach the top of its arc. Cue the nozzle on the beat and the water peaks a third of a second late, which reads as sloppy. So the programme works backwards from the flight time and opens the valve early - the same thing a real show controller does.',
       },
       {
         h: 'Droplets, not sprites',
@@ -3795,12 +3795,12 @@ const GAMES = [
     width: 640, height: 440, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Additive beams &middot; one transport clock',
-    title: 'Disco Lights — A Beat-Synced Light Rig, Free In Your Browser',
+    title: 'Disco Lights - A Beat-Synced Light Rig, Free In Your Browser',
     ogTitle: 'The lights are on the same clock as the music',
     description: 'A rig of moving beams, mirror-ball scatter and haze, cut to a beat the page generates itself. Lights and music read the same clock, so they hit together.',
     short: 'Beams, haze and a beat that they follow.',
     h1: 'Disco',
-    hero: 'Sweeping spots, colour washes, a mirror ball and a strobe, in a room with enough haze in the air to see the beams rather than just the spots they land on. Everything is struck from one transport &mdash; the same fractional sixteenth that fires the kick also aims the movers &mdash; because two clocks drift and a light that lands a frame after the beat stops reading as a light show.',
+    hero: 'Sweeping spots, colour washes, a mirror ball and a strobe, in a room with enough haze in the air to see the beams rather than just the spots they land on. Everything is struck from one transport - the same fractional sixteenth that fires the kick also aims the movers - because two clocks drift and a light that lands a frame after the beat stops reading as a light show.',
     facts: [
       'Beams you can see in the air',
       'One clock for sound and light',
@@ -3845,8 +3845,8 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is there a seizure risk?', a: 'The strobe is the only part that flashes, it is off until you turn it on, it warns you first, and it is rate-capped. If your system asks for reduced motion the strobe is disabled outright. If you are photosensitive, leave it off &mdash; the rest of the rig does not flash.' },
-      { q: 'Where does the music come from?', a: 'It is generated in the tab with the Web Audio API &mdash; a kick, hats, a bass line and a pad, sequenced live. Nothing is streamed, nothing is downloaded, and there is no copyright on it.' },
+      { q: 'Is there a seizure risk?', a: 'The strobe is the only part that flashes, it is off until you turn it on, it warns you first, and it is rate-capped. If your system asks for reduced motion the strobe is disabled outright. If you are photosensitive, leave it off - the rest of the rig does not flash.' },
+      { q: 'Where does the music come from?', a: 'It is generated in the tab with the Web Audio API - a kick, hats, a bass line and a pad, sequenced live. Nothing is streamed, nothing is downloaded, and there is no copyright on it.' },
       { q: 'Why does the haze slider change the frame rate?', a: 'Haze is drawn as stacked translucent wedges, so it is the most expensive thing on the canvas. Turn it down on a weak machine and everything else keeps its timing.' },
     ],
     related: ['fountain', 'rain', 'cmatrix'],
@@ -3864,12 +3864,12 @@ const GAMES = [
     pad: 'none',
     bestKey: null,
     engine: 'QuizKit &middot; 18 items, six tracks, nine questions each',
-    title: 'Tech Career Quiz — Which Side Of Technology Suits How You Work',
+    title: 'Tech Career Quiz - Which Side Of Technology Suits How You Work',
     ogTitle: 'Six tech tracks, and what each one is like on a dull Tuesday',
     description: 'Eighteen questions about how you like to work, scored across security, backend, frontend, data, infrastructure and product. Honest about the dull parts.',
     short: 'Which side of technology suits you.',
     h1: 'Tech career quiz',
-    hero: 'Eighteen questions about the way you like to work and what you find satisfying &mdash; never about what you already know, because knowing a thing and wanting to do it all day are unrelated. ' +
+    hero: 'Eighteen questions about the way you like to work and what you find satisfying - never about what you already know, because knowing a thing and wanting to do it all day are unrelated. ' +
       'It scores six tracks: security, backend, frontend, data, infrastructure and product. The result names your top two, describes what the work is actually like, and includes the tedious parts, ' +
       'because those are the bit that decides whether you last.',
     facts: ['Eighteen questions', 'Six tracks, nine questions each', 'The dull parts are listed too', 'Nothing is uploaded'],
@@ -3891,7 +3891,7 @@ const GAMES = [
       {
         h: 'Two tracks, because one is not enough to name a job',
         p: '"Security" on its own covers a penetration tester and a compliance lead, who share almost nothing day to day. The result blends your top two and names the kind of role that sits between them ' +
-          '&mdash; data plus infrastructure is a platform job, frontend plus product is design engineering, and so on.',
+          '- data plus infrastructure is a platform job, frontend plus product is design engineering, and so on.',
       },
       {
         h: 'The tedium is in the write-up on purpose',
@@ -3902,7 +3902,7 @@ const GAMES = [
     faq: [
       { q: 'Will this tell me which job to apply for?', a: 'No. It can say which kind of work you find appealing to think about, which is not the same as what you are good at, what is hiring near you, or what you will still want in ten years. The result says so under the bars rather than in small print.' },
       { q: 'Why only six tracks?', a: 'Because six is what could be balanced properly across eighteen questions. There is no option here for QA, technical writing, support engineering, research, or the other jobs that keep software running, and their absence is not a judgement on them.' },
-      { q: 'What if all six come out about level?', a: 'Then the result says that outright instead of picking a winner from noise. A flat spread is common and is usually a sign you have not done enough of any of it yet to have preferences &mdash; which is a fine place to be.' },
+      { q: 'What if all six come out about level?', a: 'Then the result says that outright instead of picking a winner from noise. A flat spread is common and is usually a sign you have not done enough of any of it yet to have preferences - which is a fine place to be.' },
       { q: 'Is anything sent anywhere?', a: 'No. The scoring runs in the page, nothing is uploaded, and nothing is stored, not even locally. Reloading loses your answers.' },
     ],
     related: ['personality-test', 'cyber-hygiene', 'phishing-or-not'],
@@ -3917,13 +3917,13 @@ const GAMES = [
     script: 'fun/dev-personality.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'Sixteen questions &middot; six archetypes',
-    title: 'What Kind Of Developer Are You — A 16-Question Quiz',
+    title: 'What Kind Of Developer Are You - A 16-Question Quiz',
     ogTitle: 'Archaeologist, firefighter, gardener, architect, shipper or toolmaker',
     description: 'Sixteen questions about how you actually work, and one of six developer archetypes at the ' +
-      'end — with the failure mode that comes with it. Nothing uploaded.',
+      'end - with the failure mode that comes with it. Nothing uploaded.',
     short: 'Sixteen questions about how you work.',
     h1: 'What kind of developer are you',
-    hero: 'Not what language you like &mdash; what you do when you meet code you did not write, how you feel ' +
+    hero: 'Not what language you like - what you do when you meet code you did not write, how you feel ' +
       'about a rewrite, and what happens to the test that fails one run in thirty. Sixteen questions, six ' +
       'archetypes, and a result that names the thing your type is bad at as well as the thing it is good at.',
     facts: ['Sixteen questions', 'Six developer archetypes', 'Names the failure mode too', 'Nothing is uploaded'],
@@ -3950,7 +3950,7 @@ const GAMES = [
         h: 'Your second reading matters as much as your first',
         p: 'The bars are each type\'s share of the points you awarded, so the shape of the whole answer is ' +
           'visible rather than just the winner. Where the top two are within two points, the result says so ' +
-          'outright instead of crowning one of them &mdash; two points over sixteen questions is noise.',
+          'outright instead of crowning one of them - two points over sixteen questions is noise.',
       },
       {
         h: 'The lowest one is the interesting one',
@@ -3959,7 +3959,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Is this based on anything?', a: 'No. The six archetypes are made up — they are patterns you can recognise in a team, not categories anybody has measured. The Big Five test elsewhere on this site is the one with actual research behind it.' },
+      { q: 'Is this based on anything?', a: 'No. The six archetypes are made up - they are patterns you can recognise in a team, not categories anybody has measured. The Big Five test elsewhere on this site is the one with actual research behind it.' },
       { q: 'I got a different result the second time. Which is right?', a: 'Neither, particularly. Most people are three of these depending on the week and the codebase, which is why the result also shows your second reading and says when the top two are too close to separate.' },
       { q: 'Can I use this to hire people?', a: 'Please do not. It asks how somebody would like to describe their habits, which is a long way from how they work under a deadline with a codebase they did not choose.' },
       { q: 'Are my answers stored?', a: 'No. Everything is computed in the page, nothing is sent anywhere, and reloading loses it.' },
@@ -3975,7 +3975,7 @@ const GAMES = [
     script: 'fun/name-in-binary.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'Hand-rolled UTF-8 &middot; seven encodings at once',
-    title: 'Your Name In Binary — Text To Binary, Hex, Base64 And Morse',
+    title: 'Your Name In Binary - Text To Binary, Hex, Base64 And Morse',
     ogTitle: 'What your name looks like as bytes',
     description: 'Type anything and watch it become binary, hex, code points, Base64, Morse, ROT13 and leetspeak ' +
       'at once. None of it is encryption, and nothing is uploaded.',
@@ -4004,7 +4004,7 @@ const GAMES = [
       {
         h: 'Encoding is not encryption, and that is the useful part',
         p: 'Encryption needs a key, and without the key the output is no use to anybody. An encoding has no key at ' +
-          'all &mdash; it is only a different way of writing the same characters, and reversing it is a one-click ' +
+          'all - it is only a different way of writing the same characters, and reversing it is a one-click ' +
           'operation that the encoder in the Labs section will happily do for you. Binary, Base64 and ROT13 get ' +
           'mistaken for security constantly, usually by somebody who has just Base64-ed a password into a config ' +
           'file. All that hides it from is a casual glance.',
@@ -4021,13 +4021,13 @@ const GAMES = [
         p: 'Hex is what a memory dump or a hex editor shows you. Base64 is how an image gets into an email or a ' +
           'data: URL. Morse is a telegraph code with no lower case, so anything it cannot carry is dropped and the ' +
           'line under it says how many. ROT13 was a Usenet convention for hiding spoilers. Leetspeak matters ' +
-          'because password crackers have known the letter-to-digit swaps for thirty years &mdash; changing e to 3 ' +
+          'because password crackers have known the letter-to-digit swaps for thirty years - changing e to 3 ' +
           'buys you nothing.',
       },
     ],
     faq: [
       { q: 'Is what I type sent anywhere?', a: 'No. The conversion happens in the page and there is no request of any kind. Close the tab and it is gone; nothing is stored either.' },
-      { q: 'Can I turn the binary back into text?', a: 'Yes, and so can anyone else &mdash; that is the point being made. Paste any row into the encoder and decoder at /labs/encoding and it comes straight back.' },
+      { q: 'Can I turn the binary back into text?', a: 'Yes, and so can anyone else - that is the point being made. Paste any row into the encoder and decoder at /labs/encoding and it comes straight back.' },
       { q: 'Why does one emoji count as four bytes?', a: 'UTF-8 uses one byte for ASCII and up to four for everything else. An emoji sits far outside ASCII, so it needs all four, even though it is a single character and a single code point.' },
       { q: 'Why are some characters missing from the Morse row?', a: 'Morse only defines codes for A to Z, the digits and a handful of punctuation marks. There is no Morse for an emoji, an accented letter or a non-Latin script, so those characters are left out and counted underneath rather than quietly mangled.' },
       { q: 'Is ROT13 or leetspeak any use in a password?', a: 'No. Both are fixed, public substitutions, and every cracking tool applies them automatically to its wordlists. Substituting digits for letters in a dictionary word leaves you with a dictionary word.' },
@@ -4043,14 +4043,14 @@ const GAMES = [
     script: 'cs/fingerprint.js',
     board: true, pad: 'none', bestKey: 'fingerprint',
     engine: 'Sixty seconds &middot; pairs that get closer',
-    title: 'Fingerprint — Can You Actually Tell Two SSH Keys Apart?',
+    title: 'Fingerprint - Can You Actually Tell Two SSH Keys Apart?',
     ogTitle: 'Your SSH client asks you this. Can you do it?',
     description: 'Two SSH key fingerprints, same or different, for sixty seconds. The pairs close ' +
       'until they differ by one confusable character. Most people cannot do it.',
     short: 'Two fingerprints. Same or different? Sixty seconds.',
     h1: 'Fingerprint',
     hero: 'Every SSH client asks you to compare a fingerprint the first time you connect somewhere, ' +
-      'and essentially nobody does &mdash; they type yes. The usual explanation is laziness. It is not: ' +
+      'and essentially nobody does - they type yes. The usual explanation is laziness. It is not: ' +
       'comparing two 43-character base64 strings by eye is a task humans are measurably bad at, and ' +
       'sixty seconds here is a faster way to find that out about yourself than being told.',
     facts: ['Sixty seconds a round', 'Pairs get closer as you score',
@@ -4067,13 +4067,13 @@ const GAMES = [
       {
         h: 'The difficulty ramp is the argument',
         p: 'Early pairs differ in six places and everybody gets those. Past a score of twenty the pairs ' +
-          'differ in one character, and that character comes from a confusable set &mdash; I against l, ' +
+          'differ in one character, and that character comes from a confusable set - I against l, ' +
           '0 against O, 5 against S, u against v, hyphen against underscore. Accuracy falls off a cliff ' +
           'somewhere in there. Where it falls for you is the finding.',
       },
       {
         h: 'Both strings stay on screen',
-        p: 'This measures comparison, not memory, because comparison is the real task &mdash; the ' +
+        p: 'This measures comparison, not memory, because comparison is the real task - the ' +
           'fingerprint is in your terminal and the known-good one is in a wiki tab. The clock is there ' +
           'instead, because unlimited time turns it into a character-by-character audit that anybody can ' +
           'pass and nobody performs at 03:00 with a deploy blocked.',
@@ -4089,7 +4089,7 @@ const GAMES = [
     faq: [
       {
         q: 'Are these real SSH fingerprints?',
-        a: 'They are formed exactly like real ones — 43 characters of base64url, the length of a SHA-256 ' +
+        a: 'They are formed exactly like real ones - 43 characters of base64url, the length of a SHA-256 ' +
           'digest, printed the way ssh-keygen prints them. The bytes are random rather than derived from ' +
           'real keys, because a real key would imply a real host. The SSH key inspector in Labs computes ' +
           'genuine ones from a key you paste.',
@@ -4103,14 +4103,14 @@ const GAMES = [
       {
         q: 'Is a low score bad?',
         a: 'No, it is the expected result and it is the reason the game exists. You are looking for a ' +
-          'difference, you know one might be there, and you are doing it as a game — none of which is true ' +
+          'difference, you know one might be there, and you are doing it as a game - none of which is true ' +
           'of somebody accepting a host key at three in the morning. If you struggled here, you would ' +
           'certainly have typed yes there.',
       },
       {
         q: 'Where is my best score kept?',
         a: 'localStorage on this device, under game.fingerprint.best, and nowhere else. There is no ' +
-          'account and no leaderboard, so this browser is the only place it exists — and the data strip on ' +
+          'account and no leaderboard, so this browser is the only place it exists - and the data strip on ' +
           'this page will show you the key and clear it.',
       },
     ],
@@ -4126,14 +4126,14 @@ const GAMES = [
     script: 'fun/which-attack.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'Fourteen questions &middot; eight attacks',
-    title: 'Which Cyberattack Are You — A Joke Quiz With Real Answers',
+    title: 'Which Cyberattack Are You - A Joke Quiz With Real Answers',
     ogTitle: 'Which cyberattack are you, then',
     description: 'Fourteen daft questions and eight possible results, each one carrying an accurate note on ' +
       'how that attack really works and what actually stops it.',
     short: 'Fourteen daft questions, eight real attacks.',
     h1: 'Which cyberattack are you',
     hero: 'A joke quiz delivered with a straight face. Fourteen questions about parties, locked rooms and ' +
-      'comments boxes, and one of eight attacks at the end &mdash; and underneath the joke, two or three true ' +
+      'comments boxes, and one of eight attacks at the end - and underneath the joke, two or three true ' +
       'sentences about how that attack actually works and what actually defends against it. The questions ' +
       'measure nothing. The paragraph is the point.',
     facts: ['Fourteen questions', 'Eight possible attacks', 'The result text is accurate', 'Nothing is uploaded'],
@@ -4146,12 +4146,12 @@ const GAMES = [
         h: 'The quiz is the wrapper',
         p: 'Nothing you answer here says anything about you, and the questions are not pretending otherwise. ' +
           'What the result carries is a short, accurate account of the attack you landed on: the mechanism ' +
-          'that makes it work, and the specific thing that stops it &mdash; parameterised queries for SQL ' +
+          'that makes it work, and the specific thing that stops it - parameterised queries for SQL ' +
           'injection, validated TLS for a man-in-the-middle, tested offline backups for ransomware.',
       },
       {
         h: 'Phishing and social engineering deliberately share points',
-        p: 'Every other pair of results here is separate, but phishing is social engineering &mdash; the ' +
+        p: 'Every other pair of results here is separate, but phishing is social engineering - the ' +
           'subset that arrives in writing. Four answers score both, because a quiz that treats them as ' +
           'rivals teaches a taxonomy that falls apart the first time you read a real incident report.',
       },
@@ -4164,9 +4164,9 @@ const GAMES = [
     ],
     faq: [
       { q: 'Does this tell me anything about myself?', a: 'No. Not a thing. Fourteen questions about imaginary parties cannot measure a person, and there is no sense in which somebody resembles a denial-of-service attack. It is a way of reading eight attack summaries without noticing you are doing it.' },
-      { q: 'Are the descriptions in the results accurate?', a: 'Yes. Each one says how the attack works and what actually defends against it, and none of them recommend the folk remedies — filtering rude words does not stop SQL injection, and antivirus does not stop credential stuffing. There is a fuller map in the post on types of cyberattacks.' },
+      { q: 'Are the descriptions in the results accurate?', a: 'Yes. Each one says how the attack works and what actually defends against it, and none of them recommend the folk remedies - filtering rude words does not stop SQL injection, and antivirus does not stop credential stuffing. There is a fuller map in the post on types of cyberattacks.' },
       { q: 'Why is brute force described as credential stuffing?', a: 'Because most of what gets logged as a brute-force attack is a replay of username and password pairs leaked from some other breach. Genuinely guessing a long password is impractical; reusing one you have already had leaked is not.' },
-      { q: 'Do you store my answers?', a: 'No. Nothing is sent anywhere and nothing is saved — reloading the page loses the lot.' },
+      { q: 'Do you store my answers?', a: 'No. Nothing is sent anywhere and nothing is saved - reloading the page loses the lot.' },
     ],
     related: ['phishing-or-not', 'cyber-hygiene', 'personality-test'],
   },
@@ -4180,7 +4180,7 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: null,
     engine: 'Zeller&rsquo;s congruence &middot; no date library',
-    title: 'Birthday Facts &mdash; The Day You Were Born, And Every Day Since',
+    title: 'Birthday Facts - The Day You Were Born, And Every Day Since',
     ogTitle: 'Which day of the week were you born on?',
     description: 'Enter a date of birth and get the weekday it fell on, your exact age, days alive, ' +
       'your next birthday and your age on seven planets. Nothing is uploaded.',
@@ -4197,8 +4197,8 @@ const GAMES = [
       'Nothing uploaded, nothing saved',
     ],
     hud: [
-      { key: 'weekday', label: 'Born on', accent: true, init: '&mdash;' },
-      { key: 'days', label: 'Days alive', init: '&mdash;' },
+      { key: 'weekday', label: 'Born on', accent: true, init: '-' },
+      { key: 'days', label: 'Days alive', init: '-' },
     ],
     keys: [
       { k: 'Enter', d: 'Work it out' },
@@ -4224,7 +4224,7 @@ const GAMES = [
       {
         h: '&ldquo;Years, months and days&rdquo; has to pick a convention',
         p: 'Whole months are counted first and the leftover days measured from there, with the month ' +
-          'step clamped to the end of a short month &mdash; so one month after 31 January is 28 ' +
+          'step clamped to the end of a short month - so one month after 31 January is 28 ' +
           'February and the day count restarts on the 28th. Other calculators borrow days from the ' +
           'previous month instead and can differ from this by a day or two around month ends. Neither ' +
           'is wrong; they are answering slightly different questions.',
@@ -4240,15 +4240,15 @@ const GAMES = [
         h: 'Ages on other planets are just division',
         p: 'A year is one orbit. Divide the days you have been alive by a planet&rsquo;s orbital period ' +
           'in Earth days and you have your age in that planet&rsquo;s years. The periods are the ' +
-          'sidereal ones from the NASA fact sheets &mdash; 87.97 days at Mercury, 60,189 at Neptune. ' +
+          'sidereal ones from the NASA fact sheets - 87.97 days at Mercury, 60,189 at Neptune. ' +
           'Which means nobody has ever had a Neptune birthday: one of its years is about 165 of ours.',
       },
     ],
     faq: [
-      { q: 'Is the day of the week right for old dates?', a: 'Back to 1583 it is, on the Gregorian calendar. Earlier than that the form refuses, because the Gregorian calendar arrived in 1582 in some countries, 1752 in Britain and its colonies and 1918 in Russia &mdash; so the weekday for a date in 1650 depends on where you are asking about, and one answer would be a guess dressed as a fact.' },
+      { q: 'Is the day of the week right for old dates?', a: 'Back to 1583 it is, on the Gregorian calendar. Earlier than that the form refuses, because the Gregorian calendar arrived in 1582 in some countries, 1752 in Britain and its colonies and 1918 in Russia - so the weekday for a date in 1650 depends on where you are asking about, and one answer would be a guess dressed as a fact.' },
       { q: 'What if I was born on 29 February?', a: 'Your age and day counts are exact either way, since they never need an anniversary. For the next birthday in an ordinary year this page uses 1 March; some places use 28 February instead. The result says which it used.' },
       { q: 'Another calculator gives a different age. Which is right?', a: 'Both, probably. The disagreement will be in the months-and-days part, near the end of a short month, and it comes from how each one adds a month to the 29th, 30th or 31st. Total days alive is not a matter of opinion and should match exactly.' },
-      { q: 'Is my date of birth sent anywhere?', a: 'No. It is typed into a field, used for arithmetic in the same tab, and never leaves it. It is not stored either &mdash; no localStorage, no cookie. Reload the page and the field is empty.' },
+      { q: 'Is my date of birth sent anywhere?', a: 'No. It is typed into a field, used for arithmetic in the same tab, and never leaves it. It is not stored either - no localStorage, no cookie. Reload the page and the field is empty.' },
       { q: 'How accurate is the heartbeat number?', a: 'It is arithmetic, not measurement: days alive times 1,440 minutes times 70 beats. Treat it as the right size rather than the right number.' },
       { q: 'Why is Pluto not in the table?', a: 'It has not been a planet since 2006. If you want the figure anyway, its orbit is about 90,560 Earth days, so divide your days alive by that.' },
     ],
@@ -4267,7 +4267,7 @@ const GAMES = [
     bestKey: null,
     tapAction: false,
     engine: 'Eight DOM screens, no images, no verification',
-    title: 'Are You A Robot? — A Joke CAPTCHA That Always Lets You In',
+    title: 'Are You A Robot? - A Joke CAPTCHA That Always Lets You In',
     ogTitle: 'A CAPTCHA that eventually admits what it is',
     description: 'A joke CAPTCHA that gets less reasonable with every screen and lets you through anyway, ' +
       'then explains what the real ones actually measure.',
@@ -4278,7 +4278,7 @@ const GAMES = [
       'the real thing works now. The last screen drops the act and says what a modern check is really reading.',
     facts: [
       'Eight screens, all of which you pass',
-      'No images load &mdash; nothing is fetched',
+      'No images load - nothing is fetched',
       'Nothing is stored, scored or sent',
       'Works with a keyboard and a screen reader',
     ],
@@ -4299,7 +4299,7 @@ const GAMES = [
     info: [
       {
         h: 'The puzzles lost the arms race',
-        p: 'Distorted text died because software got better at reading it than people were &mdash; Google said ' +
+        p: 'Distorted text died because software got better at reading it than people were - Google said ' +
           'in 2014, when it introduced the tick box, that its own recogniser handled the hardest variants with ' +
           'better than 99% accuracy. Traffic lights and crossings were the replacement, and machine vision has ' +
           'caught up with those too. The hard ones now stop tired humans more reliably than they stop scripts.',
@@ -4328,7 +4328,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'Can I fail it?', a: 'No. Every screen accepts every answer, including no answer at all. That is the point being made rather than a shortcut &mdash; a fail state would teach the opposite of what the last screen says.' },
+      { q: 'Can I fail it?', a: 'No. Every screen accepts every answer, including no answer at all. That is the point being made rather than a shortcut - a fail state would teach the opposite of what the last screen says.' },
       { q: 'Does it record anything about me?', a: 'It counts your pointer moves, your clicks and the seconds you spent, in variables in your own tab, so the last screen can show you the one signal a real check would care about. The numbers are shown once and are gone when you reload. Nothing is stored and nothing is sent.' },
       { q: 'Are the pictures real photographs?', a: 'No, they are labelled boxes. Nothing loads over the network on this page. It also means a screen reader can read the challenge out, which real image grids manage badly if at all.' },
       { q: 'Could this be used as a real CAPTCHA?', a: 'No, and it would stop nothing. A script would clear all eight screens in milliseconds, which is roughly the situation genuine puzzle-based checks are in as well.' },
@@ -4347,9 +4347,9 @@ const GAMES = [
     script: 'fun/personality-test.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'Big Five &middot; 30 items, half reversed',
-    title: 'Personality Test — A Short Big Five Inventory, Free',
+    title: 'Personality Test - A Short Big Five Inventory, Free',
     ogTitle: 'The personality test companies actually use',
-    description: 'A thirty-item Big Five personality inventory — the five-factor model real assessments are ' +
+    description: 'A thirty-item Big Five personality inventory - the five-factor model real assessments are ' +
       'built on, not a four-letter type. Results as bars, nothing uploaded.',
     short: 'The five-factor model, in thirty questions.',
     h1: 'Personality test',
@@ -4366,7 +4366,7 @@ const GAMES = [
         h: 'The type indicators do not hold up',
         p: 'The famous four-letter one is enormously fun and has very little predictive validity: a large share ' +
           'of people get a different type on a retest a few weeks later, and its dichotomies are not actually ' +
-          'bimodal in the data &mdash; most people sit in the middle, which is the one answer it cannot give.',
+          'bimodal in the data - most people sit in the middle, which is the one answer it cannot give.',
       },
       {
         h: 'Half the questions are backwards',
@@ -4384,12 +4384,12 @@ const GAMES = [
         h: 'It says what it is not',
         p: 'Thirty items is short. Scores move with mood, with how recently you slept, and with whether you are ' +
           'answering as you are or as you would like to be. Good for reflection, not for deciding anything ' +
-          'about anybody &mdash; and the page says so under the result rather than in the small print.',
+          'about anybody - and the page says so under the result rather than in the small print.',
       },
     ],
     faq: [
-      { q: 'Is this scientifically valid?', a: 'The model is — the five-factor structure is the most replicated finding in personality psychology. This particular thirty-item questionnaire is a short informal version, not a validated instrument, and the result page says so.' },
-      { q: 'Why are some questions the opposite of others?', a: 'To catch acquiescence — the tendency to agree with whatever is put in front of you. Reverse-keyed items score backwards, so agreeing with everything cancels out instead of producing a profile.' },
+      { q: 'Is this scientifically valid?', a: 'The model is - the five-factor structure is the most replicated finding in personality psychology. This particular thirty-item questionnaire is a short informal version, not a validated instrument, and the result page says so.' },
+      { q: 'Why are some questions the opposite of others?', a: 'To catch acquiescence - the tendency to agree with whatever is put in front of you. Reverse-keyed items score backwards, so agreeing with everything cancels out instead of producing a profile.' },
       { q: 'What is "emotional volatility"?', a: 'It is the trait usually called neuroticism, renamed because the clinical word carries baggage it does not deserve. High is not bad: it tends to come with noticing things other people miss.' },
       { q: 'Is my data sent anywhere?', a: 'No. Everything is computed in the page and nothing is stored, not even locally. Reloading loses it.' },
     ],
@@ -4405,14 +4405,14 @@ const GAMES = [
     board: true, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'Leitner boxes &middot; 1,450 cards from this site',
-    title: 'Recall — Spaced Repetition Over 1,450 Security Definitions',
+    title: 'Recall - Spaced Repetition Over 1,450 Security Definitions',
     ogTitle: 'The ones you keep missing come back sooner',
     description: 'Flashcards built from the glossary and the FAQ answers already written across this site. ' +
       'Five Leitner boxes, so a card you get right drifts out to three weeks and a card you fail comes back ' +
       'tomorrow. Progress stays in your browser.',
     short: 'Flashcards from the glossary. They come back.',
     h1: 'Recall',
-    hero: 'Every card here is a definition or an answer already written somewhere on this site &mdash; 179 glossary ' +
+    hero: 'Every card here is a definition or an answer already written somewhere on this site - 179 glossary ' +
       'terms and 1,271 FAQ answers, the same ones the corner assistant reads from. Grade yourself and the ' +
       'schedule does the rest: get one right and it drifts out towards three weeks, miss it and it is back ' +
       'tomorrow. Nothing is uploaded, and the only thing kept is which box each card is in.',
@@ -4423,9 +4423,9 @@ const GAMES = [
       'Progress stays on this device',
     ],
     hud: [
-      { key: 'due', label: 'Due now', accent: true, init: '—' },
-      { key: 'deck', label: 'In deck', init: '—' },
-      { key: 'learned', label: 'Learned', init: '—' },
+      { key: 'due', label: 'Due now', accent: true, init: '-' },
+      { key: 'deck', label: 'In deck', init: '-' },
+      { key: 'learned', label: 'Learned', init: '-' },
     ],
     controls: [
       '<label class="sr-only" for="game-deck">Deck</label>',
@@ -4460,16 +4460,16 @@ const GAMES = [
       {
         h: 'Cards are keyed by their wording',
         p: 'The card index is rebuilt on every deploy by walking pages in directory order, so a card&rsquo;s ' +
-          'position in that file is not stable &mdash; add one FAQ to one page and everything after it shifts. ' +
+          'position in that file is not stable - add one FAQ to one page and everything after it shifts. ' +
           'Schedules are therefore keyed on a hash of the question itself. Your progress follows the card, an ' +
           'edited question correctly reads as a new one, and nothing silently inherits someone else&rsquo;s box.',
       },
     ],
     faq: [
-      { q: 'Where do the cards come from?', a: 'The glossary and every FAQ block on the site, collected into one index for the corner assistant. Nothing here was written for this page — it is the same prose, asked back at you.' },
+      { q: 'Where do the cards come from?', a: 'The glossary and every FAQ block on the site, collected into one index for the corner assistant. Nothing here was written for this page - it is the same prose, asked back at you.' },
       { q: 'Does it work offline?', a: 'Yes, once the index has been cached. It is the same file the assistant fetches, so if you have used either on this device it is already there.' },
-      { q: 'Where is my progress stored?', a: 'localStorage on this device, under game.recall.sched, and nowhere else. There is no account and no sync, so this browser is the only place it exists — and the data strip on this page will show you the keys and clear them.' },
-      { q: 'Can I study just cryptography?', a: 'Yes, on the glossary deck — the category picker narrows it to any of the eight. The FAQ deck carries no categories, so the picker switches off there rather than pretending to filter.' },
+      { q: 'Where is my progress stored?', a: 'localStorage on this device, under game.recall.sched, and nowhere else. There is no account and no sync, so this browser is the only place it exists - and the data strip on this page will show you the keys and clear them.' },
+      { q: 'Can I study just cryptography?', a: 'Yes, on the glossary deck - the category picker narrows it to any of the eight. The FAQ deck carries no categories, so the picker switches off there rather than pretending to filter.' },
     ],
     related: ['cyber-hygiene', 'which-attack', 'memory-span'],
   },
@@ -4483,14 +4483,14 @@ const GAMES = [
     script: 'fun/cyber-hygiene.js',
     board: true, pad: 'none', bestKey: null,
     engine: 'Fifteen questions &middot; weighted by what matters',
-    title: 'How Hackable Are You — A 15-Question Security Check',
+    title: 'How Hackable Are You - A 15-Question Security Check',
     ogTitle: 'How hackable are you, honestly',
-    description: 'Fifteen questions about what you actually do, weighted by what actually protects people — ' +
+    description: 'Fifteen questions about what you actually do, weighted by what actually protects people - ' +
       'and a prioritised list of what to fix first. Nothing uploaded.',
     short: 'Fifteen questions, then what to fix first.',
     h1: 'How hackable are you',
     hero: 'Not a scan and not a lecture. Fifteen questions about habits, weighted the way the incident data ' +
-      'weights them &mdash; which is not the way popular advice does &mdash; and then a list of what would ' +
+      'weights them - which is not the way popular advice does - and then a list of what would ' +
       'move your number most, in order.',
     facts: ['Weighted by what actually matters', 'A prioritised list of fixes', 'Takes two minutes', 'Nothing is uploaded'],
     hud: [{ key: 'question', label: 'Progress', accent: true, init: '1/15' }],
@@ -4513,7 +4513,7 @@ const GAMES = [
     faq: [
       { q: 'Is this an audit?', a: 'No. It asks what you do, not what your systems are. A real assessment looks at your actual accounts and devices; this is a two-minute prompt to notice the obvious gaps.' },
       { q: 'Why is a VPN barely worth anything here?', a: 'Because HTTPS already encrypts what a VPN was sold to protect. A VPN moves who can see your traffic; it does nothing about reused passwords, which is what actually gets people.' },
-      { q: 'Do you store my answers?', a: 'No. Nothing is sent and nothing is saved — reloading the page loses the lot.' },
+      { q: 'Do you store my answers?', a: 'No. Nothing is sent and nothing is saved - reloading the page loses the lot.' },
     ],
     related: ['personality-test', 'love-calculator', 'typing-trainer'],
   },
@@ -4527,20 +4527,20 @@ const GAMES = [
     width: 520, height: 340, pad: 'action',
     bestKey: 'reaction-time', bestOrder: 'low',
     engine: 'Five goes &middot; randomised waits',
-    title: 'Reaction Time Test — Five Goes, An Honest Average',
+    title: 'Reaction Time Test - Five Goes, An Honest Average',
     ogTitle: 'How fast are you, really',
     description: 'A reaction time test with randomised waits so you cannot learn the rhythm, and early clicks ' +
       'voided rather than scored. Five goes and an average.',
     short: 'Wait for green. Five goes, one average.',
     h1: 'Reaction time',
     hero: 'Wait for green, then hit it. The wait is different every time, so you cannot fall into a rhythm and ' +
-      'measure your timing instead of your reaction &mdash; and clicking early voids the go rather than scoring ' +
+      'measure your timing instead of your reaction - and clicking early voids the go rather than scoring ' +
       'you two hundred milliseconds for a guess.',
     facts: ['Randomised waits', 'Early clicks are voided', 'Five goes, averaged', 'Your best kept on this device'],
     hud: [
       { key: 'round', label: 'Round', accent: true, init: '0/5' },
-      { key: 'last', label: 'Last', init: '—' },
-      { key: 'avg', label: 'Average', init: '—' },
+      { key: 'last', label: 'Last', init: '-' },
+      { key: 'avg', label: 'Average', init: '-' },
       { key: 'best', label: 'Best' },
     ],
     keys: [{ k: 'Space', d: 'React' }, { k: 'Click', d: 'React' }],
@@ -4562,7 +4562,7 @@ const GAMES = [
     faq: [
       { q: 'What is a good time?', a: 'Around 250 ms is typical for an adult on a normal setup. Under 200 is genuinely quick. Under 150 usually means the click landed early and got lucky.' },
       { q: 'Why did my early click not count?', a: 'Because otherwise guessing beats reacting. An early click voids that attempt and you get another go at the same round.' },
-      { q: 'Does my phone score worse?', a: 'Usually slightly, yes — touch panels add latency that a wired mouse does not. Compare yourself against yourself.' },
+      { q: 'Does my phone score worse?', a: 'Usually slightly, yes - touch panels add latency that a wired mouse does not. Compare yourself against yourself.' },
     ],
     related: ['aim-trainer', 'memory-span', 'typing-trainer'],
   },
@@ -4576,13 +4576,13 @@ const GAMES = [
     width: 520, height: 380, pad: 'none', bestKey: null,
     tapAction: false,
     engine: 'It learns your last two throws',
-    title: 'Rock Paper Scissors — Against An Opponent That Learns You',
+    title: 'Rock Paper Scissors - Against An Opponent That Learns You',
     ogTitle: 'You cannot be random, and this proves it',
     description: 'Rock paper scissors against a frequency model of your habits. After twenty rounds it is ' +
-      'usually beating you — people cannot generate random sequences.',
+      'usually beating you - people cannot generate random sequences.',
     short: 'It learns your habits. You will lose.',
     h1: 'Rock paper scissors',
-    hero: 'The game is not the point. The point is that you cannot be random &mdash; and after twenty rounds a ' +
+    hero: 'The game is not the point. The point is that you cannot be random - and after twenty rounds a ' +
       'table of what you tend to throw after what will be quietly ahead of you. It tells you when it has ' +
       'spotted a pattern, and admits when it has not.',
     facts: ['A frequency model of your last two throws', 'It says when it is guessing', 'No neural anything', 'Nothing is uploaded'],
@@ -4602,7 +4602,7 @@ const GAMES = [
       {
         h: 'A table, not a model',
         p: 'For every pair of throws you have made, it counts what you played next. Then it plays whatever ' +
-          'beats your most likely follow-up. That is the whole algorithm &mdash; and it is enough, because ' +
+          'beats your most likely follow-up. That is the whole algorithm - and it is enough, because ' +
           'human sequences are full of structure nobody can feel: alternating, avoiding a repeat after losing, ' +
           'copying whatever just beat you.',
       },
@@ -4615,7 +4615,7 @@ const GAMES = [
     ],
     faq: [
       { q: 'Can I beat it?', a: 'Yes, but only by being genuinely unpredictable, which is much harder than it sounds. Most people drift back to a pattern within a dozen rounds.' },
-      { q: 'Is it cheating — does it see my move first?', a: 'No. It commits to a throw from the table before your click is scored. That is the whole reason it is beatable at all.' },
+      { q: 'Is it cheating - does it see my move first?', a: 'No. It commits to a throw from the table before your click is scored. That is the whole reason it is beatable at all.' },
       { q: 'How could I actually be random?', a: 'Use something outside your head: the second hand on a clock, digits of a phone number, a coin. Any external source beats intuition.' },
     ],
     related: ['reaction-time', 'aim-trainer', 'greed'],
@@ -4631,13 +4631,13 @@ const GAMES = [
     bestKey: 'aim-trainer', bestOrder: 'low',
     tapAction: false,
     engine: 'Thirty targets &middot; misses penalised',
-    title: 'Aim Trainer — Thirty Targets, Misses Count Against You',
+    title: 'Aim Trainer - Thirty Targets, Misses Count Against You',
     ogTitle: 'Aim trainer that does not reward spraying',
     description: 'Thirty targets as fast as you can, with misses penalised so spraying at the middle is not a ' +
       'strategy. Targets never spawn under your cursor.',
     short: 'Thirty targets. Misses cost you.',
     h1: 'Aim trainer',
-    hero: 'Thirty targets, one at a time. Speed alone is easy to fake &mdash; so misses are charged against ' +
+    hero: 'Thirty targets, one at a time. Speed alone is easy to fake - so misses are charged against ' +
       'your average, and a target never appears where your hand already is, which is the trick that makes most ' +
       'aim trainers flatter you.',
     facts: ['Misses penalised', 'Targets never spawn under the cursor', 'Three target sizes', 'Your best kept on this device'],
@@ -4658,7 +4658,7 @@ const GAMES = [
       {
         h: 'Misses are charged, not ignored',
         p: 'You can halve a raw time by clicking wildly near the middle and getting lucky. Each miss adds a ' +
-          'notional 120 ms to the average, so accuracy and speed collapse into one figure &mdash; which is the ' +
+          'notional 120 ms to the average, so accuracy and speed collapse into one figure - which is the ' +
           'one that actually improves with practice.',
       },
       {
@@ -4668,7 +4668,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'What is a good average?', a: 'Around 600 ms per target on medium is respectable, and under 450 is quick. Small targets add roughly 150 ms for most people — that gap is Fitts\'s law, and it is remarkably consistent.' },
+      { q: 'What is a good average?', a: 'Around 600 ms per target on medium is respectable, and under 450 is quick. Small targets add roughly 150 ms for most people - that gap is Fitts\'s law, and it is remarkably consistent.' },
       { q: 'Does the mouse matter?', a: 'Some. Polling rate and sensitivity change the number more than most people expect, so compare yourself against yourself rather than against anyone else.' },
       { q: 'Why does the raw time differ from my score?', a: 'The result shows both: raw speed, and the adjusted figure after the misses are charged. The gap between them is what accuracy is costing you.' },
     ],
@@ -4684,7 +4684,7 @@ const GAMES = [
     width: 480, height: 320, pad: 'none',
     bestKey: 'memory-span',
     engine: 'Digit span &middot; two attempts per length',
-    title: 'Memory Span Test — How Many Digits Can You Hold?',
+    title: 'Memory Span Test - How Many Digits Can You Hold?',
     ogTitle: 'Seven, plus or minus two',
     description: 'The digit span task: watch a sequence, type it back, and it gets one longer each time. Two ' +
       'attempts per length, exactly as the real instrument works.',
@@ -4716,7 +4716,7 @@ const GAMES = [
       },
     ],
     faq: [
-      { q: 'What is a normal score?', a: 'Most adults land between six and eight. Nine or more is well above the usual range, and it is very sensitive to distraction — a noisy room costs most people a full digit.' },
+      { q: 'What is a normal score?', a: 'Most adults land between six and eight. Nine or more is well above the usual range, and it is very sensitive to distraction - a noisy room costs most people a full digit.' },
       { q: 'Is chunking cheating?', a: 'No, it is the skill. Reading 4 7 1 9 as "forty-seven, nineteen" is how people get past seven, and it is exactly what memory training teaches.' },
       { q: 'Why does it feel harder than remembering a phone number?', a: 'Because a phone number has structure and rhythm you already know. These are random, which is the point.' },
     ],
@@ -4732,14 +4732,14 @@ const GAMES = [
     script: 'fun/typing-trainer.js',
     board: true, pad: 'none',
     engine: 'Real paragraphs &middot; per-key accuracy',
-    title: 'Typing Speed Trainer — Long Paragraphs, Free, No Sign-Up',
+    title: 'Typing Speed Trainer - Long Paragraphs, Free, No Sign-Up',
     ogTitle: 'A typing trainer that uses real paragraphs',
     description: 'Improve your typing speed on real paragraphs, not three-word snippets. Live WPM and ' +
       'accuracy, a per-key error breakdown, and progress kept on your own device.',
     short: 'Real paragraphs, live WPM, per-key accuracy.',
     h1: 'Typing trainer',
     hero: 'Most typing tests hand you a sentence and a stopwatch. That measures your sprint, not your typing. ' +
-      'This gives you full paragraphs &mdash; a minute, three minutes, or five &mdash; because speed over a page ' +
+      'This gives you full paragraphs - a minute, three minutes, or five - because speed over a page ' +
       'is a different skill from speed over a line, and it is the one that matters when you are actually writing ' +
       'something.',
     facts: [
@@ -4773,14 +4773,14 @@ const GAMES = [
       {
         h: 'A word is five characters',
         p: 'Words per minute has meant "characters typed, divided by five, per minute" since the typewriter, and ' +
-          'that is what is used here &mdash; counting actual words would reward you for typing "a a a a a" and ' +
+          'that is what is used here - counting actual words would reward you for typing "a a a a a" and ' +
           'punish you for writing about infrastructure. Net WPM subtracts uncorrected mistakes, which is the ' +
           'figure worth quoting.',
       },
       {
         h: 'The per-key breakdown is the useful part',
         p: 'Everyone is slow somewhere specific. After a run this shows which characters you actually missed, ' +
-          'ordered by how often &mdash; and it is almost never the letters. Semicolons, brackets, capitals ' +
+          'ordered by how often - and it is almost never the letters. Semicolons, brackets, capitals ' +
           'reached with the wrong shift key: those are where the seconds go, and they are trainable once you can ' +
           'see them.',
       },
@@ -4800,7 +4800,7 @@ const GAMES = [
       { q: 'What counts as an error?', a: 'Any character that does not match the target at the moment you type it. Fixing it with backspace removes it from the net score but it is still counted in the per-key breakdown, because it is still a key you struggle with.' },
       { q: 'Can I practise code and symbols specifically?', a: 'Yes. The text picker has real code, a punctuation drill and a numbers-and-symbols mode. Those are the three that actually slow programmers down.' },
       { q: 'Is my typing sent anywhere?', a: 'No. Everything is computed in the page, and your results are stored in your own browser. There is no server involved at any point.' },
-      { q: 'How is this different from the typing test in Labs?', a: 'The lab is a quick benchmark — one short passage, a number at the end. This is for practice: longer texts, several durations, a per-key breakdown and a history you can watch improve.' },
+      { q: 'How is this different from the typing test in Labs?', a: 'The lab is a quick benchmark - one short passage, a number at the end. This is for practice: longer texts, several durations, a per-key breakdown and a history you can watch improve.' },
     ],
     related: ['love-calculator', 'snake', '2048'],
   },
@@ -4816,9 +4816,9 @@ const GAMES = [
     board: true, pad: 'none',
     bestKey: null,
     engine: 'A hash function wearing a disguise',
-    title: 'Love Calculator — Two Names, One Number, Zero Science',
+    title: 'Love Calculator - Two Names, One Number, Zero Science',
     ogTitle: 'A love calculator that admits what it is',
-    description: 'Type two names, get a percentage. It is a hash function, not a compatibility model — and ' +
+    description: 'Type two names, get a percentage. It is a hash function, not a compatibility model - and ' +
       'then this page shows what actually predicts whether couples last.',
     short: 'Two names, one number, no science whatsoever.',
     h1: 'Love calculator',
@@ -4827,13 +4827,13 @@ const GAMES = [
       'so, show you the working, and then link you to the only piece of writing here that has anything true to ' +
       'say about the question.',
     facts: [
-      'Deterministic &mdash; the same names always give the same number',
+      'Deterministic - the same names always give the same number',
       'Nothing is stored or sent',
       'The maths is shown',
       'Zero predictive value, stated plainly',
     ],
     hud: [
-      { key: 'result', label: 'Score', accent: true, init: '—' },
+      { key: 'result', label: 'Score', accent: true, init: '-' },
     ],
     keys: [
       { k: 'Enter', d: 'Calculate' },
@@ -4857,7 +4857,7 @@ const GAMES = [
         p: 'The number is not the product. Your two names are, and on most of these sites they go straight to a ' +
           'server. It is the same pattern as the resume builders that hold your work history hostage behind a ' +
           'download button. Here the calculation happens in your tab and nothing is transmitted, which you can ' +
-          'verify in your own network tab &mdash; there is nothing to see.',
+          'verify in your own network tab - there is nothing to see.',
       },
       {
         h: 'And if you wanted the real answer',
@@ -4885,12 +4885,12 @@ const GAMES = [
     width: 640, height: 440, bestKey: null, pad: 'none',
     tapAction: true,
     engine: 'Per-species flocking &middot; caustic buffer',
-    title: 'Reef Aquarium — Schooling Fish, Free In Your Browser',
+    title: 'Reef Aquarium - Schooling Fish, Free In Your Browser',
     ogTitle: 'Each species schools only with its own',
     description: 'A reef tank with real flocking: every species schools only with its own kind, two loners ignore the shoal, and the light runs a day and night cycle.',
     short: 'Five species, and none of them mix.',
     h1: 'Reef aquarium',
-    hero: 'Ninety fish, and not one of them can see the tank. Each takes its heading from the neighbours it can see and only from the ones that look like it &mdash; so a shoal of tetras parts around an angelfish instead of recruiting it, and five species share one box without ever becoming one flock. The light moves too. Leave it running and the lamp goes out, the caustics go with it, and every fish slows down and sinks toward the sand.',
+    hero: 'Ninety fish, and not one of them can see the tank. Each takes its heading from the neighbours it can see and only from the ones that look like it - so a shoal of tetras parts around an angelfish instead of recruiting it, and five species share one box without ever becoming one flock. The light moves too. Leave it running and the lamp goes out, the caustics go with it, and every fish slows down and sinks toward the sand.',
     facts: [
       'Each species schools alone',
       'Two loners ignore everyone',
@@ -4921,7 +4921,7 @@ const GAMES = [
     info: [
       {
         h: 'A neighbour has to be the same fish',
-        p: 'Reynolds\'s three rules are here unchanged, with one extra test on top: alignment and cohesion are read only from a fish of the same species, and a neighbour of any other species contributes separation and nothing else. That single comparison is the whole difference between five species in a tank and one enormous flock wearing five colours. The angelfish and the wrasse take no alignment or cohesion at all, from anything &mdash; they wander, and the shoals get out of their way.',
+        p: 'Reynolds\'s three rules are here unchanged, with one extra test on top: alignment and cohesion are read only from a fish of the same species, and a neighbour of any other species contributes separation and nothing else. That single comparison is the whole difference between five species in a tank and one enormous flock wearing five colours. The angelfish and the wrasse take no alignment or cohesion at all, from anything - they wander, and the shoals get out of their way.',
       },
       {
         h: 'The tank has a back, and everything follows from it',
@@ -4929,7 +4929,7 @@ const GAMES = [
       },
       {
         h: 'The light on the sand is eighty pixels wide',
-        p: 'The caustic net is computed into a buffer a twentieth of the size of the tank and stretched over the sand, where the browser\'s own smoothing does the blurring for nothing &mdash; light through moving water is never sharp, so the cheap version is also the correct one. The field is three sine waves summed, with the bright filaments taken where they cancel, and it is evaluated through the angle-addition identity so the cost is about four hundred sines a frame instead of six thousand.',
+        p: 'The caustic net is computed into a buffer a twentieth of the size of the tank and stretched over the sand, where the browser\'s own smoothing does the blurring for nothing - light through moving water is never sharp, so the cheap version is also the correct one. The field is three sine waves summed, with the bright filaments taken where they cancel, and it is evaluated through the angle-addition identity so the cost is about four hundred sines a frame instead of six thousand.',
       },
     ],
     faq: [
@@ -4949,12 +4949,12 @@ const GAMES = [
     width: 640, height: 460, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Ballistic stars &middot; reports at distance over c',
-    title: 'Fireworks — The Bang Arrives After The Flash',
+    title: 'Fireworks - The Bang Arrives After The Flash',
     ogTitle: 'You have already seen it. The bang is still on its way.',
     description: 'Peonies, willows and crossettes under real gravity, and the report reaches you late by the distance over the speed of sound. Click to launch a shell.',
     short: 'Real bursts, and a bang that lands late.',
     h1: 'Fireworks',
-    hero: 'Shells climb on a trail, slow to nothing at the top, and break into a peony, a chrysanthemum trailing sparks, a willow that droops, a crossette that splits again, a ring, or a shell that breaks four times over. Every star is under gravity and drag and burns down from white-hot to a dull ember, and the smoke hangs about afterwards and drifts. The detail the whole thing rests on is the one you cannot see: each report is booked at the distance of its own burst divided by the speed of sound, so the bang lands about half a second <em>after</em> the flash &mdash; which is most of the difference between fireworks and moving dots.',
+    hero: 'Shells climb on a trail, slow to nothing at the top, and break into a peony, a chrysanthemum trailing sparks, a willow that droops, a crossette that splits again, a ring, or a shell that breaks four times over. Every star is under gravity and drag and burns down from white-hot to a dull ember, and the smoke hangs about afterwards and drifts. The detail the whole thing rests on is the one you cannot see: each report is booked at the distance of its own burst divided by the speed of sound, so the bang lands about half a second <em>after</em> the flash - which is most of the difference between fireworks and moving dots.',
     facts: [
       'The bang lands after the flash',
       'Six real shell types',
@@ -4963,7 +4963,7 @@ const GAMES = [
     ],
     hud: [
       { key: 'shells', label: 'Shells', accent: true, init: '0' },
-      { key: 'delay', label: 'Report lag', init: '—' },
+      { key: 'delay', label: 'Report lag', init: '-' },
       { key: 'sparks', label: 'Sparks', init: '0' },
     ],
     controls: [
@@ -4985,7 +4985,7 @@ const GAMES = [
     info: [
       {
         h: 'The bang is late, and by how much',
-        p: 'A break 170 m up, seen from 120 m back, is 208 m away, so its report takes 0.61 s to arrive. Every sound here is booked into the audio clock at its own distance divided by 343 m/s &mdash; the launch thump too, because the mortar is 120 m away as well. The HUD prints the last figure, and across the frame it runs from about 380 ms on a low break to 830 ms on a high one out at the edge.',
+        p: 'A break 170 m up, seen from 120 m back, is 208 m away, so its report takes 0.61 s to arrive. Every sound here is booked into the audio clock at its own distance divided by 343 m/s - the launch thump too, because the mortar is 120 m away as well. The HUD prints the last figure, and across the frame it runs from about 380 ms on a low break to 830 ms on a high one out at the edge.',
       },
       {
         h: 'Six shells, and the difference between them is four numbers',
@@ -4993,12 +4993,12 @@ const GAMES = [
       },
       {
         h: 'Nothing here flashes fast',
-        p: 'A burst lifts the whole frame for a moment, and a full-field luminance change repeated fast enough is a seizure risk. So the lift is rate-capped at two a second against the WCAG 2.3.1 general threshold of three, peaks at roughly a tenth of full luminance over a near-black sky, and is not drawn at all when the browser reports <code>prefers-reduced-motion</code> &mdash; where the whole display also runs at six tenths speed, propagation delays stretched to match.',
+        p: 'A burst lifts the whole frame for a moment, and a full-field luminance change repeated fast enough is a seizure risk. So the lift is rate-capped at two a second against the WCAG 2.3.1 general threshold of three, peaks at roughly a tenth of full luminance over a near-black sky, and is not drawn at all when the browser reports <code>prefers-reduced-motion</code> - where the whole display also runs at six tenths speed, propagation delays stretched to match.',
       },
     ],
     faq: [
       { q: 'Why does a shell take so long to go up?', a: 'Because it does. A six-inch shell leaves the tube at about 72 m/s and needs five and a quarter seconds to reach 170 m. An earlier version used a brisker gravity to make the rise snappier and it had to come out: with time compressed and distance not, the report arrived a quarter of the way through the burst, and the one detail this toy exists for looked like audio latency.' },
-      { q: 'Why does a high burst sound duller than a low one?', a: 'Air absorbs high frequencies far faster than low ones &mdash; roughly 0.005 dB per metre at 1 kHz against about 0.09 at 8 kHz. Over 200 m that is a decibel lost down low and eighteen up top, so the sharp crack of a close break has gone by the time a high one reaches you and only the roar is left. The report rolls its own top end off with distance for exactly that reason.' },
+      { q: 'Why does a high burst sound duller than a low one?', a: 'Air absorbs high frequencies far faster than low ones - roughly 0.005 dB per metre at 1 kHz against about 0.09 at 8 kHz. Over 200 m that is a decibel lost down low and eighteen up top, so the sharp crack of a close break has gone by the time a high one reaches you and only the roar is left. The report rolls its own top end off with distance for exactly that reason.' },
       { q: 'Is the sound recorded?', a: 'No. Every thump, report and crackle is built in the tab with the Web Audio API, so there is nothing to download and nothing to license. The crackle is one noise source through a gain following a curve of random spikes, which is all a crackle is, and costs four nodes instead of the forty separate grains the first version fired per shell.' },
     ],
     related: ['disco', 'rain', 'aafire'],
@@ -5013,12 +5013,12 @@ const GAMES = [
     width: 640, height: 460, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Dihedral stamping &middot; steered flow field',
-    title: 'Kaleidoscope — Draw Into A Mirror Barrel, Free In Your Browser',
+    title: 'Kaleidoscope - Draw Into A Mirror Barrel, Free In Your Browser',
     ogTitle: 'Draw one line and get twenty-four',
     description: 'Draw one line and a mirror barrel turns it into a figure. Three to twenty-four segments, true reflection or pure rotation, and a PNG you can keep.',
     short: 'Draw once. It comes back mirrored.',
     h1: 'Kaleidoscope',
-    hero: 'A pointer, and a barrel of mirrors around it. Every stroke is copied into as many wedges as there are segments, and reflected as well if the mirror is on &mdash; so a scribble comes back as a figure. Your hand does the rest: the palette advances with how fast you draw, and the brush thins as you accelerate. Leave it alone and a pen of its own takes over, steered by a slowly drifting flow field, and it will not draw you the same figure twice.',
+    hero: 'A pointer, and a barrel of mirrors around it. Every stroke is copied into as many wedges as there are segments, and reflected as well if the mirror is on - so a scribble comes back as a figure. Your hand does the rest: the palette advances with how fast you draw, and the brush thins as you accelerate. Leave it alone and a pen of its own takes over, steered by a slowly drifting flow field, and it will not draw you the same figure twice.',
     facts: [
       'Three to twenty-four segments',
       'Mirror on, or pure rotation',
@@ -5032,27 +5032,27 @@ const GAMES = [
     ],
     controls: [
       '<label class="game-range"><span>Segments</span><input type="range" id="game-segments" min="3" max="24" value="12" /></label>',
-      '<button class="game-btn game-btn-icon" type="button" id="game-mirror" aria-pressed="true" title="Mirror is on &mdash; every wedge is reflected as well as turned" aria-label="Mirror the wedges">◫</button>',
+      '<button class="game-btn game-btn-icon" type="button" id="game-mirror" aria-pressed="true" title="Mirror is on - every wedge is reflected as well as turned" aria-label="Mirror the wedges">◫</button>',
       '<label class="game-range"><span>Rotation</span><input type="range" id="game-spin" min="-100" max="100" value="22" /></label>',
       '<label class="game-range"><span>Brush</span><input type="range" id="game-brush" min="6" max="100" value="40" /></label>',
       '<label class="sr-only" for="game-palette">Colour</label>',
       '<select class="game-select" autocomplete="off" id="game-palette"><option value="spectrum" selected>Spectrum</option><option value="ember">Ember</option><option value="ice">Ice</option><option value="mono">Mono</option></select>',
-      '<button class="game-btn game-btn-icon" type="button" id="game-auto" aria-pressed="true" title="Auto-draw is on &mdash; click to take the pen" aria-label="Auto-draw">∞</button>',
+      '<button class="game-btn game-btn-icon" type="button" id="game-auto" aria-pressed="true" title="Auto-draw is on - click to take the pen" aria-label="Auto-draw">∞</button>',
       '<button class="game-btn game-btn-icon" type="button" id="game-clear" title="Clear the figure" aria-label="Clear the figure">⌫</button>',
       '<button class="game-btn game-btn-icon" type="button" id="game-save" title="Save the figure as a PNG" aria-label="Save the figure as a PNG">⤓</button>',
     ],
     keys: [
-      { k: 'Drag', d: 'Draw &mdash; your speed sets the colour and the width' },
+      { k: 'Drag', d: 'Draw - your speed sets the colour and the width' },
       { k: 'Space', d: 'Hand the pen to the machine, or take it back' },
       { k: '←/→', d: 'Fewer or more segments' },
       { k: '↑/↓', d: 'Turn the whole figure faster, slower, or the other way' },
     ],
-    touch: 'Drag anywhere in the disc to draw. Move fast for a thin line that races through the palette, slowly for a thick one that stays in the same family of colours &mdash; and tap auto-draw to hand the pen back.',
+    touch: 'Drag anywhere in the disc to draw. Move fast for a thin line that races through the palette, slowly for a thick one that stays in the same family of colours - and tap auto-draw to hand the pen back.',
     infoHeading: 'How it works',
     info: [
       {
         h: 'Turning is one symmetry, mirroring is another',
-        p: 'With the mirror off, your stroke is copied by rotation alone &mdash; the cyclic group &mdash; and the figure keeps its handedness, so a spiral comes out as a pinwheel that leans one way. Switch the mirror on and each copy is reflected as well, which doubles the count and takes the handedness away. That is the dihedral group, and it is what the two mirrors in a real barrel actually do to the light. A real barrel cannot turn it off.',
+        p: 'With the mirror off, your stroke is copied by rotation alone - the cyclic group - and the figure keeps its handedness, so a spiral comes out as a pinwheel that leans one way. Switch the mirror on and each copy is reflected as well, which doubles the count and takes the handedness away. That is the dihedral group, and it is what the two mirrors in a real barrel actually do to the light. A real barrel cannot turn it off.',
       },
       {
         h: 'The ink is not on the canvas',
@@ -5060,7 +5060,7 @@ const GAMES = [
       },
       {
         h: 'The pen that draws when you do not',
-        p: 'Auto-draw is a pen steered by a flow field whose coefficients drift on four slow sines. It carries a heading rather than sitting wherever the field points, which matters more than it sounds: a pen placed by a planar field can only ever settle into a closed orbit, and the first version did exactly that &mdash; the same twelve-pointed star, redrawn for as long as you watched. Each mark it lays also strikes one soft note, pitched by how far from the middle it fell.',
+        p: 'Auto-draw is a pen steered by a flow field whose coefficients drift on four slow sines. It carries a heading rather than sitting wherever the field points, which matters more than it sounds: a pen placed by a planar field can only ever settle into a closed orbit, and the first version did exactly that - the same twelve-pointed star, redrawn for as long as you watched. Each mark it lays also strikes one soft note, pitched by how far from the middle it fell.',
       },
     ],
     faq: [
@@ -5085,12 +5085,12 @@ const GAMES = [
     tapAction: false,
     tapKey: 'action',
     engine: 'Phyllotaxis &middot; continued-fraction arm counts',
-    title: 'Sunflower — The Golden Angle, One Slider, Free In Your Browser',
+    title: 'Sunflower - The Golden Angle, One Slider, Free In Your Browser',
     ogTitle: 'Two tenths of a degree is the whole difference',
     description: 'Seeds placed one turn apart. At 137.508° they pack like a sunflower; two tenths of a degree away they fall into spokes. One slider, and the arm counts are Fibonacci.',
     short: 'One angle decides the whole figure.',
     h1: 'Sunflower',
-    hero: 'Every seed is dropped at the same angle from the one before it, and a little further out. That is the whole model &mdash; no packing solver, no collision test, no growth simulation. Set the turn to 137.508° and the seeds interlock the way a sunflower head does; move it two tenths of a degree and the same seeds fall into spokes with bare gaps between them. The arms you can count in the figure are the denominators of the continued fraction of the angle, which is why a real sunflower has 34 and 55 of them and not 30 and 50, and the readout works them out from whatever you have set rather than looking them up.',
+    hero: 'Every seed is dropped at the same angle from the one before it, and a little further out. That is the whole model - no packing solver, no collision test, no growth simulation. Set the turn to 137.508° and the seeds interlock the way a sunflower head does; move it two tenths of a degree and the same seeds fall into spokes with bare gaps between them. The arms you can count in the figure are the denominators of the continued fraction of the angle, which is why a real sunflower has 34 and 55 of them and not 30 and 50, and the readout works them out from whatever you have set rather than looking them up.',
     facts: [
       'One angle, nothing else',
       'Radius grows as &radic;n, so density is even',
@@ -5113,12 +5113,12 @@ const GAMES = [
       '<button class="game-btn game-btn-icon" type="button" id="game-save" title="Save the figure as a PNG" aria-label="Save the figure as a PNG">&#10515;</button>',
     ],
     keys: [
-      { k: 'Drag', d: 'Fine control of the turn &mdash; forty times finer than the slider' },
+      { k: 'Drag', d: 'Fine control of the turn - forty times finer than the slider' },
       { k: '&larr;/&rarr;', d: 'Nudge the turn by a thousandth of a degree' },
       { k: '&uarr;/&darr;', d: 'More or fewer seeds' },
       { k: 'Space', d: 'Let the turn drift on its own, or hold it' },
     ],
-    touch: 'Drag anywhere across the figure to change the turn &mdash; the whole width of the canvas covers about a fifth of a degree, which is the range the pattern actually lives in, so a slow drag walks the arms through several families. A tap on its own does nothing, so a stray thumb cannot move the angle. The toolbar holds the same control coarsely, a button to snap back to the golden angle, the seed count and size, the palette, drift, and a PNG you can keep.',
+    touch: 'Drag anywhere across the figure to change the turn - the whole width of the canvas covers about a fifth of a degree, which is the range the pattern actually lives in, so a slow drag walks the arms through several families. A tap on its own does nothing, so a stray thumb cannot move the angle. The toolbar holds the same control coarsely, a button to snap back to the golden angle, the seed count and size, the palette, drift, and a PNG you can keep.',
     infoHeading: 'How it works',
     info: [
       {
@@ -5127,17 +5127,17 @@ const GAMES = [
       },
       {
         h: 'Why 137.508° and not 137.5',
-        p: 'If the turn is a rational multiple of a full circle &mdash; and 137.5° is exactly 275/720 &mdash; then seed 720 lands on top of seed 0, and every seed after it retraces the same 720 spokes with empty space between them. Every rational angle does this; the only question is how many seeds it takes. So the best angle is the one that fractions approximate worst, and the worst-approximated number there is is the golden ratio, whose continued fraction is nothing but ones. 360/&phi;&sup2; = 137.50776…° is that angle. Sunflowers, pinecones and pineapples all use it, and they did not read this page.',
+        p: 'If the turn is a rational multiple of a full circle - and 137.5° is exactly 275/720 - then seed 720 lands on top of seed 0, and every seed after it retraces the same 720 spokes with empty space between them. Every rational angle does this; the only question is how many seeds it takes. So the best angle is the one that fractions approximate worst, and the worst-approximated number there is is the golden ratio, whose continued fraction is nothing but ones. 360/&phi;&sup2; = 137.50776…° is that angle. Sunflowers, pinecones and pineapples all use it, and they did not read this page.',
       },
       {
         h: 'The arm counts are worked out, not looked up',
-        p: 'Run the continued fraction of turn ÷ 360 and the denominators that come out are the numbers of spiral arms the eye can pick out. For the golden angle those denominators are 1, 2, 3, 5, 8, 13, 21, 34, 55 &mdash; the Fibonacci sequence, which is where the famous sunflower counts come from. The readout takes the pair straddling &radic;n, because with the seeds one unit apart the arms visible at the rim are the ones whose count is near the number of seeds along a radius. Set an angle that is not golden and the pair stops being Fibonacci, which is the honest answer rather than a nice one.',
+        p: 'Run the continued fraction of turn ÷ 360 and the denominators that come out are the numbers of spiral arms the eye can pick out. For the golden angle those denominators are 1, 2, 3, 5, 8, 13, 21, 34, 55 - the Fibonacci sequence, which is where the famous sunflower counts come from. The readout takes the pair straddling &radic;n, because with the seeds one unit apart the arms visible at the rim are the ones whose count is near the number of seeds along a radius. Set an angle that is not golden and the pair stops being Fibonacci, which is the honest answer rather than a nice one.',
       },
     ],
     faq: [
       {
         q: 'Is this how a real sunflower grows?',
-        a: 'The pattern is, the mechanism is not. A real head puts each new primordium in the largest gap left by the ones already there, and pushes the older ones outward as it grows &mdash; the angle is the <em>result</em> of that packing rule, not an instruction the plant follows. This toy takes the shortcut of placing seeds directly at the angle the rule converges on, because the point here is what the angle does, not how a plant arrives at it.',
+        a: 'The pattern is, the mechanism is not. A real head puts each new primordium in the largest gap left by the ones already there, and pushes the older ones outward as it grows - the angle is the <em>result</em> of that packing rule, not an instruction the plant follows. This toy takes the shortcut of placing seeds directly at the angle the rule converges on, because the point here is what the angle does, not how a plant arrives at it.',
       },
       {
         q: 'Why does the figure keep turning?',
@@ -5145,11 +5145,11 @@ const GAMES = [
       },
       {
         q: 'Why does the slider only cover three degrees?',
-        a: 'Because everything interesting happens inside about half of one. Give the slider the whole circle and the golden angle is a single pixel of travel, which is the same as not having a control at all. The bar covers 136° to 139°, and dragging on the figure itself is finer again &mdash; the full width of the canvas is about a fifth of a degree, which is roughly forty times the resolution of the slider.',
+        a: 'Because everything interesting happens inside about half of one. Give the slider the whole circle and the golden angle is a single pixel of travel, which is the same as not having a control at all. The bar covers 136° to 139°, and dragging on the figure itself is finer again - the full width of the canvas is about a fifth of a degree, which is roughly forty times the resolution of the slider.',
       },
       {
         q: 'Does it store anything?',
-        a: 'No. There is no score to keep, so nothing is written for this page at all; the sound toggle shared with the rest of the arcade is the only setting that survives a reload. Saving a PNG builds the file in the tab and hands it to your browser&rsquo;s own downloader &mdash; nothing is uploaded.',
+        a: 'No. There is no score to keep, so nothing is written for this page at all; the sound toggle shared with the rest of the arcade is the only setting that survives a reload. Saving a PNG builds the file in the tab and hands it to your browser&rsquo;s own downloader - nothing is uploaded.',
       },
     ],
     related: ['kaleidoscope', 'plasma', 'boids'],
@@ -5164,12 +5164,12 @@ const GAMES = [
     width: 640, height: 440, bestKey: null, pad: 'none',
     tapAction: false,
     engine: 'Wait-for graph &middot; four quadrant locks',
-    title: 'Traffic — Cause A Deadlock At A Junction',
+    title: 'Traffic - Cause A Deadlock At A Junction',
     ogTitle: 'Four cars, four quadrants, nobody moves',
     description: 'Four cars, four quadrant locks, and the Coffman conditions named as they happen. Try lights, a four-way stop and a roundabout, and watch a lane starve.',
     short: 'Cause a deadlock. Then prevent it.',
     h1: 'Traffic',
-    hero: 'Four cars reach a crossroads at the same moment. Each edges in, takes the quarter of the box directly ahead of it, and then finds the next quarter already held by the car on its right &mdash; who is waiting on the car in front of <em>them</em>. Nobody can reverse, so nobody moves again. That is not bad driving. It is a deadlock, with all four textbook conditions satisfied at once, drawn to scale in tarmac.',
+    hero: 'Four cars reach a crossroads at the same moment. Each edges in, takes the quarter of the box directly ahead of it, and then finds the next quarter already held by the car on its right - who is waiting on the car in front of <em>them</em>. Nobody can reverse, so nobody moves again. That is not bad driving. It is a deadlock, with all four textbook conditions satisfied at once, drawn to scale in tarmac.',
     facts: [
       'Four quadrants, four locks',
       'The wait-for graph, drawn on the road',
@@ -5178,7 +5178,7 @@ const GAMES = [
     ],
     hud: [
       { key: 'thru', label: 'Throughput', accent: true, init: '0/min' },
-      { key: 'wait', label: 'Mean wait', init: '—' },
+      { key: 'wait', label: 'Mean wait', init: '-' },
       { key: 'max', label: 'Max wait', init: '0.0s' },
       { key: 'dead', label: 'Deadlocks', init: '0' },
       { key: 'state', label: 'Status', init: 'Running' },
@@ -5198,26 +5198,26 @@ const GAMES = [
       { k: 'Space', d: 'Deny or allow hold-and-wait' },
       { k: 'Click', d: 'Send a car down that approach' },
     ],
-    touch: 'Tap an arm of the junction to send a car down it &mdash; four taps, one per arm, and an uncontrolled junction locks on demand. The four sliders set how many cars a minute arrive on each approach; the dropdown picks the rule.',
+    touch: 'Tap an arm of the junction to send a car down it - four taps, one per arm, and an uncontrolled junction locks on demand. The four sliders set how many cars a minute arrive on each approach; the dropdown picks the rule.',
     infoHeading: 'What the junction is standing in for',
     info: [
       {
         h: 'The box is four locks, not one',
-        p: 'Split the junction into quadrants and drive on the right, and every straight-through movement needs exactly two of them in sequence: north takes the north-east then the south-east, east takes the south-east then the south-west, and so on round. Approach <code>a</code> wants quadrant <code>a</code> and then quadrant <code>a+1</code> &mdash; four drivers, four resources, each holding one and waiting on the next, in a ring. That shape was not invented to make a nice demo. It falls out of which side of the road people drive on.',
+        p: 'Split the junction into quadrants and drive on the right, and every straight-through movement needs exactly two of them in sequence: north takes the north-east then the south-east, east takes the south-east then the south-west, and so on round. Approach <code>a</code> wants quadrant <code>a</code> and then quadrant <code>a+1</code> - four drivers, four resources, each holding one and waiting on the next, in a ring. That shape was not invented to make a nice demo. It falls out of which side of the road people drive on.',
       },
       {
         h: 'Why the lights cannot deadlock',
-        p: 'Not because they detect anything &mdash; a fixed cycle has no idea what is in the box. Green only ever goes to two opposite movements, and those two use quadrant sets with nothing in common: north and south between them need all four, and never the same one. A phase that cannot produce a conflict cannot produce a cycle. What it costs is that green arrives on a timer rather than on demand, so push one arrival slider to the top and drag the green time down, and that arm starves while the light is busy serving an empty one. Its max wait is the number that says so.',
+        p: 'Not because they detect anything - a fixed cycle has no idea what is in the box. Green only ever goes to two opposite movements, and those two use quadrant sets with nothing in common: north and south between them need all four, and never the same one. A phase that cannot produce a conflict cannot produce a cycle. What it costs is that green arrives on a timer rather than on demand, so push one arrival slider to the top and drag the green time down, and that arm starves while the light is busy serving an empty one. Its max wait is the number that says so.',
       },
       {
-        h: 'Detected, not guessed &mdash; and livelock is a different failure',
-        p: 'The deadlock counter is not watching for a junction that merely looks jammed. Every frame the four quadrant holders are walked as a wait-for graph &mdash; this car waits on that one, which waits on the next &mdash; and a cycle in that graph is a deadlock by definition, which is the same test an operating system runs on its own. The roundabout cannot produce one, because a car there rolls back out rather than sitting on what it holds. What it can produce is livelock: a car takes a quadrant, loses the next, reverses out, and does it again five and six times over. Nothing is stuck; nothing is progressing either. Push all four sliders to the top on the roundabout and one arm will do exactly that for half a minute at a time.',
+        h: 'Detected, not guessed - and livelock is a different failure',
+        p: 'The deadlock counter is not watching for a junction that merely looks jammed. Every frame the four quadrant holders are walked as a wait-for graph - this car waits on that one, which waits on the next - and a cycle in that graph is a deadlock by definition, which is the same test an operating system runs on its own. The roundabout cannot produce one, because a car there rolls back out rather than sitting on what it holds. What it can produce is livelock: a car takes a quadrant, loses the next, reverses out, and does it again five and six times over. Nothing is stuck; nothing is progressing either. Push all four sliders to the top on the roundabout and one arm will do exactly that for half a minute at a time.',
       },
     ],
     faq: [
-      { q: 'What are the four Coffman conditions?', a: 'Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning — deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third.' },
+      { q: 'What are the four Coffman conditions?', a: 'Mutual exclusion, hold and wait, no preemption, and circular wait. All four have to hold at the same instant for a deadlock, which is why the panel shows them as four separate lights rather than as one warning - deny any single one and the entire failure becomes impossible. The Deny hold-and-wait button does that to the second one, and Clear the jam does it to the third.' },
       { q: 'How do I make it deadlock on purpose?', a: 'Leave it on Uncontrolled and tap each of the four arms in turn, which sends a car down all four at once. Otherwise just wait: at the default arrival rates the junction locks itself somewhere inside the first minute, every time, and each jam is counted.' },
-      { q: 'Which strategy is actually best?', a: 'None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked — deny hold-and-wait and it becomes as fast as anything here, which is the real lesson.' },
+      { q: 'Which strategy is actually best?', a: 'None of them, which is the point. The four-way stop is perfectly fair and pushes about half the traffic of the others, because it serialises the whole box to one car. The lights and the roundabout are close at an even load; the lights lose when the load is uneven, because they keep giving green to an empty arm, and the roundabout loses when contention is heavy, because a rolled-back car did work that produced nothing. Uncontrolled looks quickest for about a minute and then spends a third to a half of its time gridlocked - deny hold-and-wait and it becomes as fast as anything here, which is the real lesson.' },
     ],
     related: ['game-of-life', 'boids', 'guess-the-algorithm'],
   },
@@ -5231,12 +5231,12 @@ const GAMES = [
     width: 720, height: 520, bestKey: 'phishing-inbox', pad: 'lr',
     tapAction: false,
     engine: 'Thirty-four messages &middot; eighteen a run',
-    title: 'Phishing Inbox — Triage The Mail Against A Clock',
+    title: 'Phishing Inbox - Triage The Mail Against A Clock',
     ogTitle: 'The genuine ones are the hard part.',
     description: 'Thirty-four invented messages, and several legitimate ones that look alarming. Sort each as safe or phishing, then see the signal you missed highlighted.',
     short: 'Sort the inbox before the clock does.',
     h1: 'Phishing inbox',
-    hero: 'Messages arrive one at a time and you call each one safe or phishing before the bar runs out. The link in each shows a brand\'s own address; where it <em>actually</em> goes appears only when you hover it, which costs you seconds you do not have &mdash; that trade is the entire game. Twelve of the thirty-four are genuine, and several of those are the most alarming things in the deck, because a player who learns to flag everything has learned to ignore the alerts that matter.',
+    hero: 'Messages arrive one at a time and you call each one safe or phishing before the bar runs out. The link in each shows a brand\'s own address; where it <em>actually</em> goes appears only when you hover it, which costs you seconds you do not have - that trade is the entire game. Twelve of the thirty-four are genuine, and several of those are the most alarming things in the deck, because a player who learns to flag everything has learned to ignore the alerts that matter.',
     facts: [
       'Thirty-four messages, eighteen a run',
       'Twelve of them are genuine',
@@ -5247,11 +5247,11 @@ const GAMES = [
       { key: 'score', label: 'Score', accent: true, init: '0' },
       { key: 'streak', label: 'Streak', init: '0' },
       { key: 'seen', label: 'Sorted', init: '0/18' },
-      { key: 'best', label: 'Best', init: '—' },
+      { key: 'best', label: 'Best', init: '-' },
     ],
     controls: [
       '<label class="sr-only" for="game-clock">Time per message</label>',
-      '<select class="game-select" autocomplete="off" id="game-clock"><option value="20" selected>Steady &mdash; 20s a message</option><option value="12">Pressed &mdash; 12s a message</option><option value="0">No clock</option></select>',
+      '<select class="game-select" autocomplete="off" id="game-clock"><option value="20" selected>Steady - 20s a message</option><option value="12">Pressed - 12s a message</option><option value="0">No clock</option></select>',
       '<button class="game-btn" type="button" id="game-reveal" aria-pressed="false" title="Show every link destination without hovering">Pin link targets</button>',
     ],
     keys: [
@@ -5260,26 +5260,26 @@ const GAMES = [
       { k: '↑ ↓', d: 'Reveal where the link really goes' },
       { k: 'Space', d: 'Next message, once you have been told why' },
     ],
-    touch: 'Tap the link itself to see where it really goes, then use the ◀ and ▶ pad buttons to sort &mdash; left is safe, right is phishing. Once the verdict is up, tap anywhere on the message or press Action for the next one.',
+    touch: 'Tap the link itself to see where it really goes, then use the ◀ and ▶ pad buttons to sort - left is safe, right is phishing. Once the verdict is up, tap anywhere on the message or press Action for the next one.',
     infoHeading: 'Why a clock changes what this teaches',
     info: [
       {
         h: 'The genuine messages are the exam',
-        p: 'If every real message in a drill is calm and every attack is frantic, what people take away is "be suspicious of anything urgent" &mdash; which is a habit of ignoring real security alerts, and does nothing at all about a well-written attack. So a third of this deck is genuine, and it includes a password expiring in four hours, VPN access revoked overnight and a season ticket about to charge itself. A false alarm costs exactly what a miss costs, and the panel beside the message tracks <em>Genuine</em> as a lure type of its own, because for most players it is the one that keeps winning.',
+        p: 'If every real message in a drill is calm and every attack is frantic, what people take away is "be suspicious of anything urgent" - which is a habit of ignoring real security alerts, and does nothing at all about a well-written attack. So a third of this deck is genuine, and it includes a password expiring in four hours, VPN access revoked overnight and a season ticket about to charge itself. A false alarm costs exactly what a miss costs, and the panel beside the message tracks <em>Genuine</em> as a lure type of its own, because for most players it is the one that keeps winning.',
       },
       {
         h: 'The link is two claims, and only one is checkable',
-        p: 'Every message renders like a mail client: display name, the address behind it, subject, body, and a link whose visible text is the brand\'s own address. Where it goes is shown only when you hover it, press up, or tap it &mdash; the bargain a browser\'s status bar makes. That is where the deck hides most of itself: an open redirect that really does start at the right domain and does not stay there, a punycode spelling that renders as the brand, a hyphen standing where a dot would have meant something completely different. Reading a domain right to left, the last two labels are the only part that says who owns it, and everything in front of them is the attacker\'s to choose.',
+        p: 'Every message renders like a mail client: display name, the address behind it, subject, body, and a link whose visible text is the brand\'s own address. Where it goes is shown only when you hover it, press up, or tap it - the bargain a browser\'s status bar makes. That is where the deck hides most of itself: an open redirect that really does start at the right domain and does not stay there, a punycode spelling that renders as the brand, a hyphen standing where a dot would have meant something completely different. Reading a domain right to left, the last two labels are the only part that says who owns it, and everything in front of them is the attacker\'s to choose.',
       },
       {
         h: 'You are shown the signal, not told the reason',
-        p: 'On calling a message, every tell is boxed where it sits &mdash; the doubled label in the address, the sentence about a bank account that has moved, the phone number that steers you off the one printed on your card &mdash; and numbered against a one-line note beside it. A paragraph underneath teaches you the paragraph; a box drawn around four characters in the middle of a domain teaches you where to look next time. The eighteen are drawn five from the obvious tier, six from the middle and seven from the subtle one, so the run ends on a compromised colleague replying into a thread you were already in.',
+        p: 'On calling a message, every tell is boxed where it sits - the doubled label in the address, the sentence about a bank account that has moved, the phone number that steers you off the one printed on your card - and numbered against a one-line note beside it. A paragraph underneath teaches you the paragraph; a box drawn around four characters in the middle of a domain teaches you where to look next time. The eighteen are drawn five from the obvious tier, six from the middle and seven from the subtle one, so the run ends on a compromised colleague replying into a thread you were already in.',
       },
     ],
     faq: [
-      { q: 'Are any of these real companies?', a: 'None of them. Every brand, person, domain, address and phone number in the deck is invented: the domains all sit under .example, which is reserved and can never be registered by anyone, and the IP addresses come from the ranges set aside for documentation. Nothing here links anywhere, and no real campaign or company\'s mail is reproduced &mdash; the lesson is in the shape of the thing, and the shape is what has been kept.' },
+      { q: 'Are any of these real companies?', a: 'None of them. Every brand, person, domain, address and phone number in the deck is invented: the domains all sit under .example, which is reserved and can never be registered by anyone, and the IP addresses come from the ranges set aside for documentation. Nothing here links anywhere, and no real campaign or company\'s mail is reproduced - the lesson is in the shape of the thing, and the shape is what has been kept.' },
       { q: 'I keep failing the genuine ones. Is that bad?', a: 'It is the most common result and the most useful thing the game can tell you. Calling everything phishing is not caution: it means the real password expiry, the real revoked access and the real fraud alert all get treated as noise. The panel names it explicitly at the end of a run, and it names it far more often than any of the attack types.' },
-      { q: 'Can I turn the clock off?', a: 'Yes &mdash; the dropdown has a no-clock setting, and it applies from the next message rather than the one you are halfway through reading. Speed points go with it; the base score and the streak bonus stay, so a slow careful run still scores and simply will not top a fast one.' },
+      { q: 'Can I turn the clock off?', a: 'Yes - the dropdown has a no-clock setting, and it applies from the next message rather than the one you are halfway through reading. Speed points go with it; the base score and the streak bonus stay, so a slow careful run still scores and simply will not top a fast one.' },
     ],
     related: ['phishing-or-not', 'password-duel', 'ctf-arcade'],
   },
@@ -5294,12 +5294,12 @@ const GAMES = [
     bestKey: 'incident-response', pad: 'none',
     tapAction: false,
     engine: 'Two scenarios &middot; four meters that trade against each other',
-    title: 'Incident Response Tabletop — A Breach On A Clock',
+    title: 'Incident Response Tabletop - A Breach On A Clock',
     ogTitle: 'Isolate it fast and you destroy the evidence',
     description: 'Ransomware and a wire fraud, played over simulated hours. Isolate fast and the evidence goes with it; wait and the attacker moves. Ends in an after-action report.',
     short: 'A breach, a clock, and no good options.',
     h1: 'Incident response',
-    hero: 'An alert fires at two in the morning and there are four things you could do, none of them free. Isolate the host and the volatile evidence goes with it; wait for more data and the attacker gets another twenty minutes; rebuild before imaging and you can never answer what left the building. Two scenarios &mdash; a ransomware outbreak and a wire fraud through a compromised mailbox &mdash; each with several branch points, and an after-action report at the end that names what your choices actually cost. Deciding under incomplete information <em>is</em> the skill; the meters are there to show you what you traded for what.',
+    hero: 'An alert fires at two in the morning and there are four things you could do, none of them free. Isolate the host and the volatile evidence goes with it; wait for more data and the attacker gets another twenty minutes; rebuild before imaging and you can never answer what left the building. Two scenarios - a ransomware outbreak and a wire fraud through a compromised mailbox - each with several branch points, and an after-action report at the end that names what your choices actually cost. Deciding under incomplete information <em>is</em> the skill; the meters are there to show you what you traded for what.',
     facts: [
       'Two scenarios, several branch points',
       'Four meters that fight each other',
@@ -5329,7 +5329,7 @@ const GAMES = [
     info: [
       {
         h: 'Every choice costs minutes, and so does thinking',
-        p: 'Each option carries its real cost &mdash; a disk image and memory capture is fifty-five minutes, a rebuild from the golden image is eight &mdash; and deliberation adds a quarter of a simulated minute for every real second, capped so that reading carefully can never cost more than a quarter of an hour on any one decision. The attacker&rsquo;s own schedule runs off the same clock, which is why an event can land while you are still reading the options rather than politely between two of them. The <strong>Measured</strong> pressure setting turns the deliberation clock off entirely and widens the attacker&rsquo;s timings, for anyone who wants to read at their own pace.',
+        p: 'Each option carries its real cost - a disk image and memory capture is fifty-five minutes, a rebuild from the golden image is eight - and deliberation adds a quarter of a simulated minute for every real second, capped so that reading carefully can never cost more than a quarter of an hour on any one decision. The attacker&rsquo;s own schedule runs off the same clock, which is why an event can land while you are still reading the options rather than politely between two of them. The <strong>Measured</strong> pressure setting turns the deliberation clock off entirely and widens the attacker&rsquo;s timings, for anyone who wants to read at their own pace.',
       },
       {
         h: 'Four meters, and they pull against each other',
@@ -5337,12 +5337,12 @@ const GAMES = [
       },
       {
         h: 'The mistakes are the ones people actually make',
-        p: 'Working the loudest alert instead of the highest-confidence one. Rebuilding a host before imaging it, so that in four days nobody can say whether data left. Restoring from a backup nobody verified, onto files that were still clean. Telling four hundred people before legal has seen a word, in a mailbox the attacker is still reading. Warning a supplier by replying inside the thread the attacker controls. Each is offered as a reasonable-sounding option with a plausible case for it, and each is named in the after-action report if you take it &mdash; along with what a written plan would have decided in advance, by daylight, with more than one person in the room.',
+        p: 'Working the loudest alert instead of the highest-confidence one. Rebuilding a host before imaging it, so that in four days nobody can say whether data left. Restoring from a backup nobody verified, onto files that were still clean. Telling four hundred people before legal has seen a word, in a mailbox the attacker is still reading. Warning a supplier by replying inside the thread the attacker controls. Each is offered as a reasonable-sounding option with a plausible case for it, and each is named in the after-action report if you take it - along with what a written plan would have decided in advance, by daylight, with more than one person in the room.',
       },
     ],
     faq: [
       { q: 'Is any of this legal advice?', a: 'No. It is a training exercise. Two real obligations are referenced as context: CERT-In&rsquo;s April 2022 direction under section 70B(6) of the IT Act asks for certain cyber incidents to be reported within six hours of noticing them, and GDPR Article 33 gives 72 hours from becoming aware of a personal-data breach to notify the supervisory authority. Which duties apply to a real organisation depends on where it operates and what data it holds.' },
-      { q: 'Does a replay actually differ?', a: 'Yes. There are two scenarios, and inside each one your earlier choices remove and add later options — ask the bank for a wire recall in the first five minutes and the beat that offers it later never appears at all; keep watching the encrypting host and a chance to isolate it opens up that a contained run never sees. Surprise me picks a scenario for you.' },
+      { q: 'Does a replay actually differ?', a: 'Yes. There are two scenarios, and inside each one your earlier choices remove and add later options - ask the bank for a wire recall in the first five minutes and the beat that offers it later never appears at all; keep watching the encrypting host and a chance to isolate it opens up that a contained run never sees. Surprise me picks a scenario for you.' },
       { q: 'Why does the clock move while I am reading?', a: 'Because it does on a real incident, and a tabletop where time only passes when you click teaches the opposite of the thing worth teaching. It is capped at fifteen simulated minutes per decision so careful reading is never punished for long, and the Measured setting switches it off completely.' },
     ],
     related: ['phishing-or-not', 'password-duel', 'ctf-arcade'],
@@ -5361,12 +5361,12 @@ const GAMES = [
     bestOrder: 'low',
     tapAction: false,
     engine: 'Twenty instructions, four registers, 24 cells with the stack in them',
-    title: 'Assembly Golf — Shortest Program Wins',
+    title: 'Assembly Golf - Shortest Program Wins',
     ogTitle: 'Eight functions, as few instructions as you can',
     description: 'Write the shortest program that passes the hidden tests. Eight functions on an invented twenty instruction machine, scored on length and not on speed.',
     short: 'Eight functions, shortest program wins.',
     h1: 'Assembly golf',
-    hero: 'Eight functions to write &mdash; absolute value, a greatest common divisor, a string reversed in memory &mdash; on a machine with four registers, twenty-four cells and twenty instructions. Being right is only half of it: the score is how many instructions you wrote, and the lower number is the better one. The cycles your program spent are printed beside it and never added in, because on at least one of these levels the shortest answer and the quickest answer are not the same program, and folding the two figures together would hide the only trade worth learning.',
+    hero: 'Eight functions to write - absolute value, a greatest common divisor, a string reversed in memory - on a machine with four registers, twenty-four cells and twenty instructions. Being right is only half of it: the score is how many instructions you wrote, and the lower number is the better one. The cycles your program spent are printed beside it and never added in, because on at least one of these levels the shortest answer and the quickest answer are not the same program, and folding the two figures together would hide the only trade worth learning.',
     facts: [
       'Twenty instructions',
       'Eight functions to write',
@@ -5377,7 +5377,7 @@ const GAMES = [
       { key: 'level', label: 'Level', init: '1/8' },
       { key: 'score', label: 'Instructions', accent: true, init: '0' },
       { key: 'cycles', label: 'Cycles', init: '0' },
-      { key: 'best', label: 'Best', init: '&mdash;' }
+      { key: 'best', label: 'Best', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-level">Level</label>',
@@ -5397,11 +5397,11 @@ const GAMES = [
     info: [
       {
         h: 'Length is the score. Cycles are the price',
-        p: 'Your score is the number of instructions you wrote, summed over the eight levels, and nothing else goes into it &mdash; comments and labels are free. Beside it sits the cycle count: what your program actually cost to run across every hidden case, on a price list where <code>ADD</code> is one cycle, <code>MUL</code> is three and <code>DIV</code> is six. The two numbers pull against each other. Level seven is built to prove it: the shortest primality test divides by everything below n, and stopping at the square root instead costs two more instructions and a small fraction of the work. Every optimiser in a real <a href="/labs/compiler">compiler</a> is making some version of that choice, which is why <code>-Os</code> and <code>-O2</code> are different flags.'
+        p: 'Your score is the number of instructions you wrote, summed over the eight levels, and nothing else goes into it - comments and labels are free. Beside it sits the cycle count: what your program actually cost to run across every hidden case, on a price list where <code>ADD</code> is one cycle, <code>MUL</code> is three and <code>DIV</code> is six. The two numbers pull against each other. Level seven is built to prove it: the shortest primality test divides by everything below n, and stopping at the square root instead costs two more instructions and a small fraction of the work. Every optimiser in a real <a href="/labs/compiler">compiler</a> is making some version of that choice, which is why <code>-Os</code> and <code>-O2</code> are different flags.'
       },
       {
         h: 'Par is measured, and it is only the shortest I found',
-        p: 'Each level ships the shortest program I could write for it, as source text. Par is not typed into a table &mdash; the page assembles that program and runs it against the hidden cases when it opens, and prints what it actually cost. So par cannot drift out of date, and a reference program that stopped working would announce itself on the first visit rather than being believed for a year. What it is not is a proof: it is the shortest I found on the afternoon I wrote it, not the shortest that exists, and beating it is the interesting part. Several of these almost certainly go shorter.'
+        p: 'Each level ships the shortest program I could write for it, as source text. Par is not typed into a table - the page assembles that program and runs it against the hidden cases when it opens, and prints what it actually cost. So par cannot drift out of date, and a reference program that stopped working would announce itself on the first visit rather than being believed for a year. What it is not is a proof: it is the shortest I found on the afternoon I wrote it, not the shortest that exists, and beating it is the interesting part. Several of these almost certainly go shorter.'
       },
       {
         h: 'Why the test cases are hidden',
@@ -5409,11 +5409,11 @@ const GAMES = [
       },
       {
         h: 'The runaway guard is a cap, not a diagnosis',
-        p: 'A program that has not finished after forty thousand cycles is stopped, and the message says it did not terminate within forty thousand cycles. It never says your program loops forever, because deciding that in general is the halting problem &mdash; there is no analysis that could be added here to answer it for every program, and the ones that look easiest are often the ones that are not. The commonest way to hit the cap is <code>DJNZ</code> on a counter that started at zero: it takes one off, misses zero going past, and counts down for a very long time.'
+        p: 'A program that has not finished after forty thousand cycles is stopped, and the message says it did not terminate within forty thousand cycles. It never says your program loops forever, because deciding that in general is the halting problem - there is no analysis that could be added here to answer it for every program, and the ones that look easiest are often the ones that are not. The commonest way to hit the cap is <code>DJNZ</code> on a counter that started at zero: it takes one off, misses zero going past, and counts down for a very long time.'
       },
       {
         h: 'This machine is invented, and it is not the one next door',
-        p: 'Twenty instructions, four registers, twenty-four memory cells with the stack growing down through the top of them, and one signed flag standing in for the several a real processor keeps apart. It is a load/store design, so arithmetic happens between registers and memory is reached only through <code>LD</code> and <code>ST</code> &mdash; the same shape as any RISC, and the reason one line of C becomes three instructions. The cycle prices are invented but proportioned after real hardware. There is no pipeline, no cache, no interrupt and no penalty for a mispredicted branch, all of which matter enormously on a real chip. The <a href="/labs/cpu-simulator">CPU simulator</a> next door runs a fetch-decode-execute cycle a step at a time if you want to see where those go. The other assembly game here, <a href="/games/assembly-puzzles">assembly puzzles</a>, is a different machine with an input tape and a different scoring rule: it teaches what the instructions do, and this one assumes you already know.'
+        p: 'Twenty instructions, four registers, twenty-four memory cells with the stack growing down through the top of them, and one signed flag standing in for the several a real processor keeps apart. It is a load/store design, so arithmetic happens between registers and memory is reached only through <code>LD</code> and <code>ST</code> - the same shape as any RISC, and the reason one line of C becomes three instructions. The cycle prices are invented but proportioned after real hardware. There is no pipeline, no cache, no interrupt and no penalty for a mispredicted branch, all of which matter enormously on a real chip. The <a href="/labs/cpu-simulator">CPU simulator</a> next door runs a fetch-decode-execute cycle a step at a time if you want to see where those go. The other assembly game here, <a href="/games/assembly-puzzles">assembly puzzles</a>, is a different machine with an input tape and a different scoring rule: it teaches what the instructions do, and this one assumes you already know.'
       }
     ],
     faq: [
@@ -5423,7 +5423,7 @@ const GAMES = [
       },
       {
         q: 'Why does it say my program did not terminate?',
-        a: 'It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true &mdash; a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop.'
+        a: 'It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true - a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop.'
       },
       {
         q: 'Is par really the shortest possible?',
@@ -5439,7 +5439,7 @@ const GAMES = [
       },
       {
         q: 'Are my programs saved anywhere?',
-        a: 'They are kept in this browser, per level, and nothing is sent anywhere &mdash; there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best.'
+        a: 'They are kept in this browser, per level, and nothing is sent anywhere - there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best.'
       }
     ],
     related: ['assembly-puzzles', 'regex-golf', 'guess-the-output'],
@@ -5456,12 +5456,12 @@ const GAMES = [
     bestOrder: 'low',
     tapAction: false,
     engine: 'Both halves &middot; an exact cheat detector',
-    title: 'Binary Search Duel — Search, Then Answer',
+    title: 'Binary Search Duel - Search, Then Answer',
     ogTitle: 'You cannot beat log n. Try it from both ends.',
-    description: 'Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one.',
+    description: 'Narrow down my number and see the bits each guess wasted, then think of one while I search - and watch the first answer that contradicts an earlier one.',
     short: 'Narrow it down, then get narrowed down.',
     h1: 'Binary search duel',
-    hero: 'Four rounds, alternating. In two of them I have written a number down and you hunt for it, with the interval still alive drawn as a bar, the candidates counted, and the cost of every off-centre guess worked out in bits. In the other two the roles swap: you think of a number and answer higher or lower, and I keep the interval your answers imply &mdash; so the moment two of them cannot both be true, I can name which two and show you the range they left empty. There is a third mode with no score in it at all, which is the one that reproduces the overflow bug that sat in java.util.Arrays.binarySearch for nine years.',
+    hero: 'Four rounds, alternating. In two of them I have written a number down and you hunt for it, with the interval still alive drawn as a bar, the candidates counted, and the cost of every off-centre guess worked out in bits. In the other two the roles swap: you think of a number and answer higher or lower, and I keep the interval your answers imply - so the moment two of them cannot both be true, I can name which two and show you the range they left empty. There is a third mode with no score in it at all, which is the one that reproduces the overflow bug that sat in java.util.Arrays.binarySearch for nine years.',
     facts: [
       'Two halves, roles reversed',
       'The bits you wasted, per guess',
@@ -5473,11 +5473,11 @@ const GAMES = [
       { key: 'probes', label: 'Probes', init: '0 of 7' },
       { key: 'alive', label: 'Still alive', init: '100' },
       { key: 'over', label: 'Over par', accent: true, init: '0' },
-      { key: 'best', label: 'Best', init: '&mdash;' }
+      { key: 'best', label: 'Best', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-mode">Mode</label>',
-      '<select class="game-select" autocomplete="off" id="game-mode"><option value="duel" selected>The duel &mdash; four rounds</option><option value="trap">The off-by-one trap</option></select>',
+      '<select class="game-select" autocomplete="off" id="game-mode"><option value="duel" selected>The duel - four rounds</option><option value="trap">The off-by-one trap</option></select>',
       '<label class="sr-only" for="game-range">Range</label>',
       '<select class="game-select" autocomplete="off" id="game-range"><option value="50">1 to 50</option><option value="100" selected>1 to 100</option><option value="1000">1 to 1,000</option><option value="10000">1 to 10,000</option></select>',
       '<button class="game-btn" type="button" id="game-hint" aria-pressed="true" title="The best next guess is shown under the bar">Show the midpoint</button>'
@@ -5489,30 +5489,30 @@ const GAMES = [
       { k: 'Type', d: 'A guess straight into the field, if you would rather' },
       { k: 'Esc', d: 'Pause' }
     ],
-    touch: 'Drag along the bar to place your guess &mdash; it clamps to the part still alive, so you cannot spend a guess on a number already ruled out &mdash; then tap the button underneath, which carries the number you set. In the answering half the three buttons are the whole interface. In the trap, the array cells are tappable and everything reruns the moment you change a setting.',
+    touch: 'Drag along the bar to place your guess - it clamps to the part still alive, so you cannot spend a guess on a number already ruled out - then tap the button underneath, which carries the number you set. In the answering half the three buttons are the whole interface. In the trap, the array cells are tappable and everything reruns the moment you change a setting.',
     infoHeading: 'Why log n is a floor and not a habit',
     info: [
       {
         h: 'One answer is one bit',
-        p: 'A yes-or-no answer separates the candidates into two groups, so it can at best halve the survivors, and a guess that splits them unevenly halves them by less than that. The exact floor is slightly kinder than the usual <code>log2(n)</code>, because a correct guess ends the round rather than answering it: with <em>k</em> guesses you can separate at most <code>2^k &minus; 1</code> values, so par is the smallest <em>k</em> where that reaches <em>n</em>. For 64 candidates that is seven and not six &mdash; the sort of off-by-one this game is otherwise about, so it is computed by doubling rather than by rounding a logarithm. None of the four ranges offered is a power of two, so here the two formulas agree.'
+        p: 'A yes-or-no answer separates the candidates into two groups, so it can at best halve the survivors, and a guess that splits them unevenly halves them by less than that. The exact floor is slightly kinder than the usual <code>log2(n)</code>, because a correct guess ends the round rather than answering it: with <em>k</em> guesses you can separate at most <code>2^k &minus; 1</code> values, so par is the smallest <em>k</em> where that reaches <em>n</em>. For 64 candidates that is seven and not six - the sort of off-by-one this game is otherwise about, so it is computed by doubling rather than by rounding a logarithm. None of the four ranges offered is a power of two, so here the two formulas agree.'
       },
       {
         h: 'What an off-centre guess actually costs',
-        p: 'After each guess the page prints two numbers: what the answer was worth, and what the guess could have guaranteed. Those differ, and the difference is the lesson. Guess 40 in a live interval of 1 to 61 and you might get lucky and knock out 39 of them &mdash; but before the answer arrived, that guess risked leaving 39 alive where the midpoint risks at most 30. The shortfall, <code>log2(39/30)</code>, is a third of a bit thrown away whichever way the answer fell, and luck cannot buy it back. That is what the score counts, and why a lucky first-guess hit does not make you good at this.'
+        p: 'After each guess the page prints two numbers: what the answer was worth, and what the guess could have guaranteed. Those differ, and the difference is the lesson. Guess 40 in a live interval of 1 to 61 and you might get lucky and knock out 39 of them - but before the answer arrived, that guess risked leaving 39 alive where the midpoint risks at most 30. The shortfall, <code>log2(39/30)</code>, is a third of a bit thrown away whichever way the answer fell, and luck cannot buy it back. That is what the score counts, and why a lucky first-guess hit does not make you good at this.'
       },
       {
         h: 'The half where you answer, and the two ways to bend it',
-        p: 'When I am searching, every answer you give is a constraint, and I keep the interval all of them imply. If an answer makes that interval empty there is nothing to guess at &mdash; the panel names the two answers involved and the range between them that has nothing in it. The other tactic is not cheating at all: answer to keep the larger half every time and you are playing the adversary from the lower-bound proof, deciding as late as possible, and the search then takes exactly par rather than less. The page says which of the two it is watching, and says plainly that it cannot tell an adversary from somebody with an awkward number.'
+        p: 'When I am searching, every answer you give is a constraint, and I keep the interval all of them imply. If an answer makes that interval empty there is nothing to guess at - the panel names the two answers involved and the range between them that has nothing in it. The other tactic is not cheating at all: answer to keep the larger half every time and you are playing the adversary from the lower-bound proof, deciding as late as possible, and the search then takes exactly par rather than less. The page says which of the two it is watching, and says plainly that it cannot tell an adversary from somebody with an awkward number.'
       },
       {
         h: 'The off-by-one trap, and where to read more',
-        p: 'The third mode has no score. It runs the same search with a midpoint you choose &mdash; <code>lo + (hi &minus; lo) / 2</code> or the natural-looking <code>(lo + hi) / 2</code> &mdash; and a loop you choose, and shows what that combination does to all sixteen elements of a small array: one loop finds every value, one misses eight of them, and one hangs on exactly one. On sixteen elements the two midpoints are identical, which is precisely why the overflow hid for nine years; switch to the two-billion-element array and the naive one goes negative on the second probe. Why log n is the floor rather than a convention is in the <a href="/labs/big-o">big-O playground</a>, and searches and sorts run step by step in the <a href="/labs/algorithm-visualizer">algorithm visualiser</a>.'
+        p: 'The third mode has no score. It runs the same search with a midpoint you choose - <code>lo + (hi &minus; lo) / 2</code> or the natural-looking <code>(lo + hi) / 2</code> - and a loop you choose, and shows what that combination does to all sixteen elements of a small array: one loop finds every value, one misses eight of them, and one hangs on exactly one. On sixteen elements the two midpoints are identical, which is precisely why the overflow hid for nine years; switch to the two-billion-element array and the naive one goes negative on the second probe. Why log n is the floor rather than a convention is in the <a href="/labs/big-o">big-O playground</a>, and searches and sorts run step by step in the <a href="/labs/algorithm-visualizer">algorithm visualiser</a>.'
       }
     ],
     faq: [
       {
         q: 'Is the number chosen before I start guessing?',
-        a: 'Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer &mdash; which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it.'
+        a: 'Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer - which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it.'
       },
       {
         q: 'Can I beat par?',
@@ -5520,7 +5520,7 @@ const GAMES = [
       },
       {
         q: 'What counts as cheating in the half where I answer?',
-        a: 'Only an answer that contradicts one you have already given &mdash; and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par.'
+        a: 'Only an answer that contradicts one you have already given - and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par.'
       },
       {
         q: 'How is the score worked out, and why is lower better?',
@@ -5550,12 +5550,12 @@ const GAMES = [
     tapAction: false,
     tapKey: 'action',
     engine: 'Set-associative simulator &middot; LRU, FIFO, MRU, random and Belady',
-    title: 'Cache Game — A Cache Simulator You Play',
+    title: 'Cache Game - A Cache Simulator You Play',
     ogTitle: 'You are the replacement policy',
     description: 'A real cache simulator. See the tag, index and offset split for every access, pick the evictions yourself, then optimise a loop against Belady optimal.',
     short: 'Be the cache, then beat it.',
     h1: 'Cache game',
-    hero: 'Cache size, block size, associativity and a replacement policy, simulated properly &mdash; and the address cut into a tag, an index and an offset in front of you on every single access, because that decomposition is the part nobody quite internalises. On the first four levels you <em>are</em> the cache: the stream comes at you one access at a time and you say which line to throw out. On the last three the cache is fixed and the access pattern is yours to fix instead. Your misses are set beside the policy you chose and beside Belady optimal, which is computed for real by reading the rest of the stream and is therefore the one thing no cache can ever do.',
+    hero: 'Cache size, block size, associativity and a replacement policy, simulated properly - and the address cut into a tag, an index and an offset in front of you on every single access, because that decomposition is the part nobody quite internalises. On the first four levels you <em>are</em> the cache: the stream comes at you one access at a time and you say which line to throw out. On the last three the cache is fixed and the access pattern is yours to fix instead. Your misses are set beside the policy you chose and beside Belady optimal, which is computed for real by reading the rest of the stream and is therefore the one thing no cache can ever do.',
     facts: [
       'Tag, index and offset, every access',
       'Belady optimal, computed for real',
@@ -5564,10 +5564,10 @@ const GAMES = [
     ],
     hud: [
       { key: 'level', label: 'Level', init: '1/7' },
-      { key: 'rate', label: 'Hit rate', init: '&mdash;' },
+      { key: 'rate', label: 'Hit rate', init: '-' },
       { key: 'misses', label: 'Misses', init: '0' },
       { key: 'score', label: 'Score', accent: true, init: '0' },
-      { key: 'best', label: 'Best', init: '&mdash;' }
+      { key: 'best', label: 'Best', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-level">Level</label>',
@@ -5576,7 +5576,7 @@ const GAMES = [
       '<select class="game-select" autocomplete="off" id="game-policy"><option value="lru" selected>LRU</option><option value="fifo">FIFO</option><option value="mru">MRU</option><option value="random">Random</option></select>',
       '<button class="game-btn" type="button" id="game-write" aria-pressed="true" title="Write-back: a store marks the line dirty and memory is written when the line is evicted">Write-back</button>',
       '<button class="game-btn" type="button" id="game-step">Step</button>',
-      '<button class="game-btn" type="button" id="game-bits" aria-pressed="true" title="The address is shown split into binary fields — click to show hex only">Binary</button>'
+      '<button class="game-btn" type="button" id="game-bits" aria-pressed="true" title="The address is shown split into binary fields - click to show hex only">Binary</button>'
     ],
     keys: [
       { k: 'Space', d: 'Issue the next access, or take the eviction' },
@@ -5589,11 +5589,11 @@ const GAMES = [
     info: [
       {
         h: 'The three fields are arithmetic, not a heuristic',
-        p: 'A block of <em>B</em> bytes needs log&#8322;<em>B</em> offset bits to pick a byte inside it. A cache of <em>S</em> sets needs log&#8322;<em>S</em> index bits to pick the set, and the set is not a suggestion &mdash; a block whose index is 2 may live in set 2 or nowhere. Everything above those two fields is the tag, stored beside the data so a line can say which of the many blocks that share its set it is currently holding. Change the associativity and the number of sets changes, so the boundary between tag and index moves. That is what the toolbar is doing when the split on screen redraws. The <a href="/labs/processor-explorer">processor explorer</a> reports the real cache sizes of the machine you are reading this on.'
+        p: 'A block of <em>B</em> bytes needs log&#8322;<em>B</em> offset bits to pick a byte inside it. A cache of <em>S</em> sets needs log&#8322;<em>S</em> index bits to pick the set, and the set is not a suggestion - a block whose index is 2 may live in set 2 or nowhere. Everything above those two fields is the tag, stored beside the data so a line can say which of the many blocks that share its set it is currently holding. Change the associativity and the number of sets changes, so the boundary between tag and index moves. That is what the toolbar is doing when the split on screen redraws. The <a href="/labs/processor-explorer">processor explorer</a> reports the real cache sizes of the machine you are reading this on.'
       },
       {
         h: 'Belady is a bound, and it is unbuildable',
-        p: 'The optimal policy is to evict the line whose next use is furthest away. It is computed here exactly, by reading the rest of the access stream, and that is precisely why no processor has ever implemented it: it needs the future. It is on the board for one reason. &ldquo;LRU took fifteen&rdquo; is a number with nothing to mean until you also know that seven was possible on the same stream with the same cache. Everything real is a guess at Belady using only the past, and LRU is the guess that recency is a decent predictor of reuse &mdash; which it usually is, and on level two it is not.'
+        p: 'The optimal policy is to evict the line whose next use is furthest away. It is computed here exactly, by reading the rest of the access stream, and that is precisely why no processor has ever implemented it: it needs the future. It is on the board for one reason. &ldquo;LRU took fifteen&rdquo; is a number with nothing to mean until you also know that seven was possible on the same stream with the same cache. Everything real is a guess at Belady using only the past, and LRU is the guess that recency is a decent predictor of reuse - which it usually is, and on level two it is not.'
       },
       {
         h: 'Conflict misses are the ones worth learning',
@@ -5607,15 +5607,15 @@ const GAMES = [
     faq: [
       {
         q: 'Is this a real cache from a real processor?',
-        a: 'No. The parameters are invented and deliberately tiny &mdash; sixty-four to five hundred and twelve bytes, sixteen-bit addresses &mdash; so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href="/labs/processor-explorer">processor explorer</a> is the page that does that.'
+        a: 'No. The parameters are invented and deliberately tiny - sixty-four to five hundred and twelve bytes, sixteen-bit addresses - so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href="/labs/processor-explorer">processor explorer</a> is the page that does that.'
       },
       {
         q: 'How am I allowed to beat LRU? Is Belady cheating?',
-        a: 'You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing &mdash; which is the point of putting the two numbers side by side.'
+        a: 'You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing - which is the point of putting the two numbers side by side.'
       },
       {
         q: 'What is the difference between a capacity miss and a conflict miss?',
-        a: 'A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice &mdash; use a different policy for the shadow and a few misses change category.'
+        a: 'A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice - use a different policy for the shadow and a few misses change category.'
       },
       {
         q: 'Does write-back change the hit rate?',
@@ -5642,12 +5642,12 @@ const GAMES = [
     pad: 'none',
     bestKey: 'cipher-escape',
     engine: 'Five chained rooms &middot; every tool computed live',
-    title: 'Cipher Escape — Five Rooms, Five Ciphers',
+    title: 'Cipher Escape - Five Rooms, Five Ciphers',
     ogTitle: 'Break one room to get into the next',
-    description: 'Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools — a frequency histogram, Kasiski, an IC readout and a crib dragger.',
+    description: 'Five chained rooms: Caesar, Vigenere, rail fence, substitution and XOR. Real tools - a frequency histogram, Kasiski, an IC readout and a crib dragger.',
     short: 'Five ciphers, chained. Each key is next door.',
     h1: 'Cipher escape',
-    hero: 'Five locked rooms, and the note inside each one tells you what the next lock needs. The first is a Caesar shift with twenty-five possible keys, so you find it by looking at all of them at once; the last is a repeating-key XOR that you break by dragging a guessed phrase along the bytes until the key falls out of them. Nothing is gated. The frequency histogram, the Kasiski counter, the index of coincidence, the shift slider and the crib dragger are open in every room from the first second, all of them computed live on whatever ciphertext is in front of you. They are not decoration and they are not hints &mdash; they are the game.',
+    hero: 'Five locked rooms, and the note inside each one tells you what the next lock needs. The first is a Caesar shift with twenty-five possible keys, so you find it by looking at all of them at once; the last is a repeating-key XOR that you break by dragging a guessed phrase along the bytes until the key falls out of them. Nothing is gated. The frequency histogram, the Kasiski counter, the index of coincidence, the shift slider and the crib dragger are open in every room from the first second, all of them computed live on whatever ciphertext is in front of you. They are not decoration and they are not hints - they are the game.',
     facts: [
       'Five ciphers, chained end to end',
       'Every tool computed live, nothing faked',
@@ -5668,14 +5668,14 @@ const GAMES = [
       { k: '← →', d: 'Move the shift, the rail count or the crib offset' },
       { k: '↑ ↓', d: 'Move between the five tools' },
       { k: 'Enter', d: 'Go through a door once it has opened' },
-      { k: 'Esc', d: 'Pause &mdash; there is no clock, so nothing is lost either way' }
+      { k: 'Esc', d: 'Pause - there is no clock, so nothing is lost either way' }
     ],
     touch: 'Drag a slider, or tap the &minus; and + buttons beside it if the drag fights the page. Type into the key fields and into the substitution table, which is one box per cipher letter. The five tool buttons swap the panel underneath them, and in the last room every offset the crib dragger likes is a tappable chip that moves the slider for you.',
     infoHeading: 'Five broken ciphers, and how each one is broken',
     info: [
       {
         h: 'A chain, not a workbench',
-        p: 'The <a href="/labs/cipher">classical cipher playground</a> next door is the workbench: one box, every cipher, run it forwards and backwards as long as you like. That is the right shape for a tool and the wrong shape for learning the order things happen in. Nobody sits down to &ldquo;do a Vigenere&rdquo; &mdash; they sit down with a blob, work out what kind of thing it is, reach for the measurement that narrows it, and only then turn a key. So here each plaintext is the next room&rsquo;s briefing: room one says the second lock takes a six-letter keyword and that it was never written down, room two names the rail count, room three hands over twelve letters of crib, room four names the crib for the XOR. The chain is the reason to actually read a plaintext instead of glancing at it and moving on.'
+        p: 'The <a href="/labs/cipher">classical cipher playground</a> next door is the workbench: one box, every cipher, run it forwards and backwards as long as you like. That is the right shape for a tool and the wrong shape for learning the order things happen in. Nobody sits down to &ldquo;do a Vigenere&rdquo; - they sit down with a blob, work out what kind of thing it is, reach for the measurement that narrows it, and only then turn a key. So here each plaintext is the next room&rsquo;s briefing: room one says the second lock takes a six-letter keyword and that it was never written down, room two names the rail count, room three hands over twelve letters of crib, room four names the crib for the XOR. The chain is the reason to actually read a plaintext instead of glancing at it and moving on.'
       },
       {
         h: 'What each tool really does',
@@ -5683,21 +5683,21 @@ const GAMES = [
       },
       {
         h: 'None of this is encryption',
-        p: 'Said plainly, because the pages that skip this are the reason people put base64 in a cookie and call it secure. A Caesar has twenty-five keys. A rail fence has about ten shapes worth trying. A substitution has 403 septillion alphabets and falls over in ten minutes anyway, because the shuffle does not hide how often each letter is used. The XOR key at the end is five lowercase letters, which is about twelve million possibilities &mdash; a laptop tries all of them and checks each result while you are still reading this sentence. Every one of these was state of the art once and every one is now a puzzle. What actually replaced them is in the labs: <a href="/labs/cryptography">AES, RSA and the elliptic curves</a>, and <a href="/labs/hash">the hash functions</a> that do the other half of the job.'
+        p: 'Said plainly, because the pages that skip this are the reason people put base64 in a cookie and call it secure. A Caesar has twenty-five keys. A rail fence has about ten shapes worth trying. A substitution has 403 septillion alphabets and falls over in ten minutes anyway, because the shuffle does not hide how often each letter is used. The XOR key at the end is five lowercase letters, which is about twelve million possibilities - a laptop tries all of them and checks each result while you are still reading this sentence. Every one of these was state of the art once and every one is now a puzzle. What actually replaced them is in the labs: <a href="/labs/cryptography">AES, RSA and the elliptic curves</a>, and <a href="/labs/hash">the hash functions</a> that do the other half of the job.'
       },
       {
         h: 'The attacks outlived the ciphers',
-        p: 'The ciphers are museum pieces; the three techniques are not. A crib is a known-plaintext attack, and knowing what part of a message says is still how real systems are broken &mdash; it is why a modern cipher is designed to stay secure against an attacker who already has matching plaintext and ciphertext. Frequency analysis is what deterministic encryption leaks: encrypt a database column so that the same value always produces the same ciphertext and you have rebuilt room four at scale, whatever the algorithm underneath. And the XOR room is the many-time pad: a one-time pad is unbreakable exactly once, and reusing the key is the failure the crib dragger walks straight through. That failure has shipped in production, more than once.'
+        p: 'The ciphers are museum pieces; the three techniques are not. A crib is a known-plaintext attack, and knowing what part of a message says is still how real systems are broken - it is why a modern cipher is designed to stay secure against an attacker who already has matching plaintext and ciphertext. Frequency analysis is what deterministic encryption leaks: encrypt a database column so that the same value always produces the same ciphertext and you have rebuilt room four at scale, whatever the algorithm underneath. And the XOR room is the many-time pad: a one-time pad is unbreakable exactly once, and reusing the key is the failure the crib dragger walks straight through. That failure has shipped in production, more than once.'
       }
     ],
     faq: [
       {
         q: 'Do I need to know any cryptography to start?',
-        a: 'No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work &mdash; the Vigenere and the substitution &mdash; both have tools that do the arithmetic and leave you the judgement, which is the part worth having.'
+        a: 'No. Room one is a slider you drag until the text turns into English, and each room explains the measurement it wants before it asks for it. The two rooms that are genuinely work - the Vigenere and the substitution - both have tools that do the arithmetic and leave you the judgement, which is the part worth having.'
       },
       {
         q: 'Are the answers hidden from me?',
-        a: 'Not really. The ciphertexts and the right settings are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere &mdash; each one is produced by running that room\'s own decoder over its own ciphertext with the right key, which is the same code path your slider is using.'
+        a: 'Not really. The ciphertexts and the right settings are in the page\'s JavaScript, and anyone determined can open the file and read them. This is a teaching chain rather than a competition, so there is nothing to protect. The plaintexts themselves are not stored anywhere - each one is produced by running that room\'s own decoder over its own ciphertext with the right key, which is the same code path your slider is using.'
       },
       {
         q: 'Is the Kasiski analysis real, or a picture of one?',
@@ -5705,7 +5705,7 @@ const GAMES = [
       },
       {
         q: 'What if I get stuck in one room?',
-        a: 'Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it &mdash; reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is "Open this room for me", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected.'
+        a: 'Every room has up to two hints, each costing a quarter of that room, and the cost is only taken off if you then solve it - reading a hint and still failing can never leave you worse off than not reading it. Beyond that there is "Open this room for me", which sets the room to its answer so the note behind the door is readable and the chain carries on. That room scores nothing and the rest of the run is unaffected.'
       },
       {
         q: 'How is the score worked out?',
@@ -5726,12 +5726,12 @@ const GAMES = [
     bestKey: 'firewall-defence',
     tapAction: false,
     engine: 'Seven rules in order &middot; first match wins',
-    title: 'Firewall Defence — Rules Are The Towers',
+    title: 'Firewall Defence - Rules Are The Towers',
     ogTitle: 'Block everything and you lose the game',
     description: 'Tower defence where the towers are firewall rules and the creeps are packets. Score is attacks blocked minus legitimate traffic dropped, so a wall loses.',
     short: 'The towers are rules. The creeps are packets.',
     h1: 'Firewall defence',
-    hero: 'Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work &mdash; and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.',
+    hero: 'Packets walk down a wire from the internet to your server, each one carrying the only four things a packet filter gets to see: protocol, source address, destination port, and whether it belongs to a connection you already had. You place rules along the wire, they are read in order, and the first one that matches decides. Some of that traffic is an attack and most of it is the business trying to work - and the score is attacks blocked <em>minus</em> legitimate traffic you dropped, so a wall that stops everything finishes several hundred points down. That is the entire point of the game.',
     facts: [
       'Seven rule slots, read in order',
       'The first match decides, so position matters',
@@ -5764,7 +5764,7 @@ const GAMES = [
       { k: 'Space', d: 'Release the wave, or add the rule you built' },
       { k: 'Esc', d: 'Pause' }
     ],
-    touch: 'Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too &mdash; tap it to flip the default between ACCEPT and DROP.',
+    touch: 'Build a rule with the three dropdowns, then tap an empty slot to drop it there. Tap a rule to select it and drag it left or right to move it up or down the chain; Remove takes the selected one out. The policy bar at the right-hand end is a control too - tap it to flip the default between ACCEPT and DROP.',
     infoHeading: 'Why blocking everything loses',
     info: [
       {
@@ -5773,11 +5773,11 @@ const GAMES = [
       },
       {
         h: 'First match wins, so where a rule sits is part of what it says',
-        p: 'The chain is read left to right and the first rule that matches decides the packet\'s fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source &mdash; and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.'
+        p: 'The chain is read left to right and the first rule that matches decides the packet\'s fate; everything after it never sees the packet at all. Wave three is built to make that expensive: the flood arrives on 443, the same port the shop needs, so the only thing that separates them is the source - and a rule dropping that source does nothing whatsoever if it sits below the rule that accepts 443. Same two rules, same two verdicts, opposite outcome, decided entirely by which one you placed first. Drag it left and watch the log change.'
       },
       {
         h: 'A rule nothing can reach is marked dead',
-        p: 'When every packet a rule could ever match is already decided by something above it, the rule is shadowed &mdash; it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.'
+        p: 'When every packet a rule could ever match is already decided by something above it, the rule is shadowed - it is in the file, it looks like policy, and it can never fire. The game marks those struck through and labelled, which is the fastest way I know to make the idea stick. It is worked out over the space of possible headers rather than over the traffic you have actually seen: three protocols, ten ports plus the case of having no port at all, seven source addresses and two connection states, minus the impossible combinations. That is 294 headers, re-checked on every edit. Deciding it from observed traffic instead would mark a good rule dead during a quiet wave.'
       },
       {
         h: 'Only state can separate a reply from a knock',
@@ -5785,7 +5785,7 @@ const GAMES = [
       },
       {
         h: 'What this leaves out, and where to do it properly',
-        p: 'Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple &mdash; source and destination and port and protocol together &mdash; so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about &mdash; a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.'
+        p: 'Every rule here matches on exactly one field, which is the biggest simplification in the game: a real rule matches a tuple - source and destination and port and protocol together - so it says in one line what this needs two rules and an ordering to say. There is no NAT, no rate limiting, no logging target, no fragmentation and no IPv6. If you want the real syntax, <a href="/labs/firewall-rules">the firewall rule reader</a> in Labs parses and explains an actual rule set instead of scoring you on one, and <a href="/labs/subnet">the subnet calculator</a> does the prefix arithmetic that wave five is really about - a /24 out of 198.18.0.0/15 is one five-hundred-and-twelfth of it.'
       }
     ],
     faq: [
@@ -5807,7 +5807,7 @@ const GAMES = [
       },
       {
         q: 'Can it actually be won?',
-        a: 'Yes. Six hundred is the maximum &mdash; sixty attacks blocked, nothing legitimate dropped &mdash; and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.'
+        a: 'Yes. Six hundred is the maximum - sixty attacks blocked, nothing legitimate dropped - and it fits inside the seven slots with a rule to spare. Your best is kept in this browser on this device and nowhere else, because there is no server behind any of this and so no leaderboard to put it on.'
       }
     ],
     related: ['subnet-sprint', 'traffic', 'incident-response'],
@@ -5822,12 +5822,12 @@ const GAMES = [
     pad: 'none',
     bestKey: 'overflow-puzzle',
     engine: 'An invented machine &middot; four levels, four mitigations',
-    title: 'Buffer Overflow Puzzle — Four Levels',
+    title: 'Buffer Overflow Puzzle - Four Levels',
     ogTitle: 'Eleven bytes, and you never learn the address',
     description: 'Craft the input that takes the return address on a toy machine. Four levels: the plain overflow, a stack canary, a no-execute stack and a randomised base.',
     short: 'Take the return address, one byte at a time.',
     h1: 'Overflow puzzle',
-    hero: 'A made-up machine with thirty-two cells of memory, a stack that grows down, and a note server with one bad line in it: a copy that has no idea how big the buffer is. Level one is the whole bug &mdash; walk your message off the end of an eight-cell buffer and put your own address into the two cells the return instruction reads, with every byte drawn as it lands. Then each level adds one mitigation, in roughly the order the industry added them, and asks you to get past it anyway: a stack canary, a no-execute stack, and a base address that moves every time the process starts. The machine is invented and none of this is a working technique. The picture is the part that transfers.',
+    hero: 'A made-up machine with thirty-two cells of memory, a stack that grows down, and a note server with one bad line in it: a copy that has no idea how big the buffer is. Level one is the whole bug - walk your message off the end of an eight-cell buffer and put your own address into the two cells the return instruction reads, with every byte drawn as it lands. Then each level adds one mitigation, in roughly the order the industry added them, and asks you to get past it anyway: a stack canary, a no-execute stack, and a base address that moves every time the process starts. The machine is invented and none of this is a working technique. The picture is the part that transfers.',
     facts: [
       'Four levels, four mitigations',
       'Every byte drawn as it lands',
@@ -5838,7 +5838,7 @@ const GAMES = [
       { key: 'level', label: 'Level', init: '1/4' },
       { key: 'mit', label: 'Mitigations', init: 'none' },
       { key: 'score', label: 'Score', accent: true, init: '0' },
-      { key: 'best', label: 'Best', init: '&mdash;' }
+      { key: 'best', label: 'Best', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-level">Level</label>',
@@ -5857,7 +5857,7 @@ const GAMES = [
     info: [
       {
         h: 'One mitigation per level, in the order they arrived',
-        p: 'Level one is the bug on its own: an eight-cell buffer, a copy with no bound, and the saved return address two cells above it. Level two puts a random value between the two and checks it before returning, so the naive payload aborts &mdash; and then hands you an over-read that prints the value, because a canary you can read is a formality. Level three marks the stack no-execute, so returning into your own bytes faults before one of them runs, and the only targets left are routines already in the program: one to set a register, one to check it, threaded together by two addresses on the stack. Level four moves the code to a fresh base every run, so the address you have been typing since level one is a guess &mdash; and the answer is to write half of it and leave the half you cannot know alone.'
+        p: 'Level one is the bug on its own: an eight-cell buffer, a copy with no bound, and the saved return address two cells above it. Level two puts a random value between the two and checks it before returning, so the naive payload aborts - and then hands you an over-read that prints the value, because a canary you can read is a formality. Level three marks the stack no-execute, so returning into your own bytes faults before one of them runs, and the only targets left are routines already in the program: one to set a register, one to check it, threaded together by two addresses on the stack. Level four moves the code to a fresh base every run, so the address you have been typing since level one is a guess - and the answer is to write half of it and leave the half you cannot know alone.'
       },
       {
         h: 'The leak is the hinge, and it is the same leak twice',
@@ -5865,11 +5865,11 @@ const GAMES = [
       },
       {
         h: 'The machine is invented, and there is no payload here',
-        p: 'The registers, the instruction names, the addresses, the calling convention and the sizes are all made up. It is not x86, not ARM, not any real instruction set, and it is deliberately not a general interpreter &mdash; what is simulated is the frame, the copy, the canary check and the return dispatch, because that is where the lesson is. There is no shellcode on this page and no way to write any, and pointing the return address at the buffer on the first two levels gets you a fault about an opcode that does not exist. Nothing here transfers as a technique. What transfers is knowing what is above a buffer and why the copy cannot tell.'
+        p: 'The registers, the instruction names, the addresses, the calling convention and the sizes are all made up. It is not x86, not ARM, not any real instruction set, and it is deliberately not a general interpreter - what is simulated is the frame, the copy, the canary check and the return dispatch, because that is where the lesson is. There is no shellcode on this page and no way to write any, and pointing the return address at the buffer on the first two levels gets you a fault about an opcode that does not exist. Nothing here transfers as a technique. What transfers is knowing what is above a buffer and why the copy cannot tell.'
       },
       {
         h: 'What actually fixes it, said plainly',
-        p: 'A copy that is told how big the destination is and honours it, or a language where the length travels with the array so the copy cannot run off the end in the first place. Every mitigation in this game raises the price of turning the bug into control of the machine and removes no bugs at all: the out-of-bounds write is sitting in all four programs, in the same line, untouched. The <a href="/labs/buffer-overflow">buffer overflow lab</a> next door is the same subject as a sandbox &mdash; sliders, a live stack, and a copy you push around to see what happens. This is the same subject as four problems that have answers.'
+        p: 'A copy that is told how big the destination is and honours it, or a language where the length travels with the array so the copy cannot run off the end in the first place. Every mitigation in this game raises the price of turning the bug into control of the machine and removes no bugs at all: the out-of-bounds write is sitting in all four programs, in the same line, untouched. The <a href="/labs/buffer-overflow">buffer overflow lab</a> next door is the same subject as a sandbox - sliders, a live stack, and a copy you push around to see what happens. This is the same subject as four problems that have answers.'
       }
     ],
     faq: [
@@ -5879,7 +5879,7 @@ const GAMES = [
       },
       {
         q: 'Will anything here work on a real program?',
-        a: 'No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model — where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit — and that model is worth having whichever side of it you are on.'
+        a: 'No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model - where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit - and that model is worth having whichever side of it you are on.'
       },
       {
         q: 'Why can I not put a zero byte in the message?',
@@ -5891,7 +5891,7 @@ const GAMES = [
       },
       {
         q: 'Is anything stored or sent?',
-        a: 'Nothing is sent anywhere — there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it.'
+        a: 'Nothing is sent anywhere - there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it.'
       }
     ],
     related: ['assembly-puzzles', 'ctf-arcade', 'shell-quest'],
@@ -5911,12 +5911,12 @@ const GAMES = [
     tapAction: false,
     tapKey: 'action',
     engine: 'Bellman-Ford and Dijkstra &middot; a drop-tail queue on every link',
-    title: 'Packet Routing — Route It, Then Break It',
+    title: 'Packet Routing - Route It, Then Break It',
     ogTitle: 'Cut one link and watch the metric climb',
     description: 'Seven routers whose tables are computed rather than drawn. Run Bellman-Ford or Dijkstra, cut a link, and watch count-to-infinity happen for real.',
     short: 'Route it. Then cut a link.',
     h1: 'Packet routing',
-    hero: 'Seven routers, eight links, and packets that have to get across. Nothing about the path is drawn in advance: each router holds its own table, every table is produced by an algorithm that can only see what a real router would see, and each hop is decided by whatever the table at that hop happens to say at that instant &mdash; including when what it says is wrong. Cut one link with distance vector running and you can watch two routers point at each other and count to sixteen while the packets between them go round in a circle until their hop count runs out.',
+    hero: 'Seven routers, eight links, and packets that have to get across. Nothing about the path is drawn in advance: each router holds its own table, every table is produced by an algorithm that can only see what a real router would see, and each hop is decided by whatever the table at that hop happens to say at that instant - including when what it says is wrong. Cut one link with distance vector running and you can watch two routers point at each other and count to sixteen while the packets between them go round in a circle until their hop count runs out.',
     facts: [
       'Bellman-Ford and Dijkstra, both real',
       'Count-to-infinity, actually running',
@@ -5927,14 +5927,14 @@ const GAMES = [
       { key: 'score', label: 'Score', accent: true, init: '0' },
       { key: 'deliv', label: 'Delivered', init: '0' },
       { key: 'drop', label: 'Dropped', init: '0' },
-      { key: 'lat', label: 'Mean latency', init: '—' },
-      { key: 'best', label: 'Best', init: '—' }
+      { key: 'lat', label: 'Mean latency', init: '-' },
+      { key: 'best', label: 'Best', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-proto">Routing protocol</label>',
-      '<select class="game-select" autocomplete="off" id="game-proto"><option value="dv" selected>Distance vector &mdash; Bellman-Ford</option><option value="ls">Link state &mdash; Dijkstra</option><option value="static">Static routes</option></select>',
+      '<select class="game-select" autocomplete="off" id="game-proto"><option value="dv" selected>Distance vector - Bellman-Ford</option><option value="ls">Link state - Dijkstra</option><option value="static">Static routes</option></select>',
       '<label class="sr-only" for="game-level">Scenario</label>',
-      '<select class="game-select" autocomplete="off" id="game-level"><option value="sandbox" selected>Sandbox &mdash; no clock</option><option value="converge">1 &mdash; Converge</option><option value="infinity">2 &mdash; Count to infinity</option><option value="cut">3 &mdash; Survive a link cut</option><option value="fail">4 &mdash; Router failure</option><option value="spike">5 &mdash; Traffic spike</option></select>',
+      '<select class="game-select" autocomplete="off" id="game-level"><option value="sandbox" selected>Sandbox - no clock</option><option value="converge">1 - Converge</option><option value="infinity">2 - Count to infinity</option><option value="cut">3 - Survive a link cut</option><option value="fail">4 - Router failure</option><option value="spike">5 - Traffic spike</option></select>',
       '<label class="sr-only" for="game-watch">Destination shown on the map</label>',
       '<select class="game-select" autocomplete="off" id="game-watch"><option value="0">Watch A</option><option value="1">Watch B</option><option value="2">Watch C</option><option value="3" selected>Watch D</option><option value="4">Watch E</option><option value="5">Watch F</option><option value="6">Watch G</option></select>',
       '<button class="game-btn" type="button" id="game-split" aria-pressed="false" title="Do not advertise a route back to the neighbour it was learned from">Split horizon</button>',
@@ -5948,30 +5948,30 @@ const GAMES = [
       { k: 'Space', d: 'Cut a link, fail a router, or move a static next hop' },
       { k: 'Esc', d: 'Pause, and the scenario clock stops with it' }
     ],
-    touch: 'Tap a router or a link to select it, then tap the same one again to act &mdash; the second tap cuts a link, fails a router, or on static routes moves that router&rsquo;s next hop along to its next neighbour. The three dropdowns pick the protocol, the scenario and which destination every router is labelled for; the panel on the right is the selected router&rsquo;s actual routing table.',
+    touch: 'Tap a router or a link to select it, then tap the same one again to act - the second tap cuts a link, fails a router, or on static routes moves that router&rsquo;s next hop along to its next neighbour. The three dropdowns pick the protocol, the scenario and which destination every router is labelled for; the panel on the right is the selected router&rsquo;s actual routing table.',
     infoHeading: 'What is real in here, and what is not',
     info: [
       {
         h: 'The tables are computed, not animated',
-        p: 'The number under each router is that router&rsquo;s own table entry, and the packet on the wire is going wherever that entry points. <strong>Distance vector</strong> is Bellman-Ford the way RIP does it: a router knows its own links and whatever its neighbours claim, it sends its whole vector every two seconds, and a report from its current next hop is believed even when it is worse than what it had. <strong>Link state</strong> is Dijkstra the way OSPF does it: each router floods a description of its own neighbourhood, ends up holding the whole map, and runs shortest path first over its own copy &mdash; and an edge only counts when <em>both</em> ends claim it, which is how a dead router&rsquo;s last advertisement stops being believed without anybody having to delete it. <strong>Static</strong> is seeded from the shortest paths so you begin from something that works, and then never changes again on its own, which is the entire case against it in one gesture.'
+        p: 'The number under each router is that router&rsquo;s own table entry, and the packet on the wire is going wherever that entry points. <strong>Distance vector</strong> is Bellman-Ford the way RIP does it: a router knows its own links and whatever its neighbours claim, it sends its whole vector every two seconds, and a report from its current next hop is believed even when it is worse than what it had. <strong>Link state</strong> is Dijkstra the way OSPF does it: each router floods a description of its own neighbourhood, ends up holding the whole map, and runs shortest path first over its own copy - and an edge only counts when <em>both</em> ends claim it, which is how a dead router&rsquo;s last advertisement stops being believed without anybody having to delete it. <strong>Static</strong> is seeded from the shortest paths so you begin from something that works, and then never changes again on its own, which is the entire case against it in one gesture.'
       },
       {
         h: 'Count to infinity, and the tree it is shown on',
-        p: 'G hangs off E and nothing else, so every route to G runs through E. Cut that link with split horizon off and A hears E withdraw the route, then in the same round hears B offer a route to G that B only has because A gave it to B a round earlier. A believes it, because it did not come from E. Now the two of them add the cost of the link between them to each other&rsquo;s stale figure &mdash; 7, 9, 11, 13, 15 &mdash; until they reach 16, which is the only reason it stops. Every packet for G ping-pongs between them for those twelve seconds and dies of hop count. Turn split horizon on and the same cut settles in two rounds with no climb at all. The scenario opens by taking two links out of service so the map is a <em>tree</em>, and that is deliberate rather than convenient: split horizon only ever fixes the loop between two routers. Press Repair everything to put the ring back, cut it again with the fix still on, and the metric climbs anyway, because the stale route goes the long way round a loop split horizon cannot see. That is a property of the technique, and it is why RIP still needs the ceiling of 16.'
+        p: 'G hangs off E and nothing else, so every route to G runs through E. Cut that link with split horizon off and A hears E withdraw the route, then in the same round hears B offer a route to G that B only has because A gave it to B a round earlier. A believes it, because it did not come from E. Now the two of them add the cost of the link between them to each other&rsquo;s stale figure - 7, 9, 11, 13, 15 - until they reach 16, which is the only reason it stops. Every packet for G ping-pongs between them for those twelve seconds and dies of hop count. Turn split horizon on and the same cut settles in two rounds with no climb at all. The scenario opens by taking two links out of service so the map is a <em>tree</em>, and that is deliberate rather than convenient: split horizon only ever fixes the loop between two routers. Press Repair everything to put the ring back, cut it again with the fix still on, and the metric climbs anyway, because the stale route goes the long way round a loop split horizon cannot see. That is a property of the technique, and it is why RIP still needs the ceiling of 16.'
       },
       {
         h: 'The queue is the other half, and the idle path is the point',
-        p: 'Each direction of each link transmits ten packets a second with a drop-tail queue of ten in front of it, so an overflowing queue drops the next arrival exactly as a real one does. A and D are six apart through B and C and six apart through E and F, and a shortest-path table with a tie in it picks the same winner every time &mdash; so the traffic spike fills one first hop while an equally short path beside it carries nothing, which the panel names in words while it happens. On the run I measured here, that scenario delivered 358 packets and dropped 191; with multipath switched on, the same load delivered 541 and dropped 7. That gap is why equal-cost multipath and traffic engineering exist. It is also where this model is crudest: it alternates per <em>packet</em>, and a real router hashes the addresses and ports so that one connection keeps one path. Alternating per packet would reorder a real flow, and the receiver would read the gaps as loss.'
+        p: 'Each direction of each link transmits ten packets a second with a drop-tail queue of ten in front of it, so an overflowing queue drops the next arrival exactly as a real one does. A and D are six apart through B and C and six apart through E and F, and a shortest-path table with a tie in it picks the same winner every time - so the traffic spike fills one first hop while an equally short path beside it carries nothing, which the panel names in words while it happens. On the run I measured here, that scenario delivered 358 packets and dropped 191; with multipath switched on, the same load delivered 541 and dropped 7. That gap is why equal-cost multipath and traffic engineering exist. It is also where this model is crudest: it alternates per <em>packet</em>, and a real router hashes the addresses and ports so that one connection keeps one path. Alternating per packet would reorder a real flow, and the receiver would read the gaps as loss.'
       },
       {
         h: 'What is deliberately missing',
-        p: 'There is no wire format in here at all &mdash; no RIP or OSPF packet, no hello protocol, no adjacency state machine, no areas, no authentication. There is no BGP and no policy, so every path is chosen on a cost, where real inter-domain routing is chosen on business relationships that no shortest-path algorithm can express. And the omission that matters most: <strong>nothing here reacts to a drop.</strong> The senders are open-loop and indifferent, so they keep pouring the same rate into a queue that is already full. A real network throttles itself, which is the whole subject of <a href="/labs/tcp-congestion">the TCP lab</a> next door &mdash; the sawtooth there is the feedback loop this page does not have. For the addressing underneath all of it there is <a href="/labs/subnet">the subnet calculator</a>, for the names on top of it <a href="/labs/dns">the DNS lookup</a>, and for a different failure entirely &mdash; four cars, four locks, nobody moving &mdash; <a href="/games/traffic">Traffic</a>.'
+        p: 'There is no wire format in here at all - no RIP or OSPF packet, no hello protocol, no adjacency state machine, no areas, no authentication. There is no BGP and no policy, so every path is chosen on a cost, where real inter-domain routing is chosen on business relationships that no shortest-path algorithm can express. And the omission that matters most: <strong>nothing here reacts to a drop.</strong> The senders are open-loop and indifferent, so they keep pouring the same rate into a queue that is already full. A real network throttles itself, which is the whole subject of <a href="/labs/tcp-congestion">the TCP lab</a> next door - the sawtooth there is the feedback loop this page does not have. For the addressing underneath all of it there is <a href="/labs/subnet">the subnet calculator</a>, for the names on top of it <a href="/labs/dns">the DNS lookup</a>, and for a different failure entirely - four cars, four locks, nobody moving - <a href="/games/traffic">Traffic</a>.'
       }
     ],
     faq: [
       {
         q: 'Which protocol should I pick to pass a scenario?',
-        a: 'Link state, on every one of them, and the reason is worth watching rather than being told: it converges in a flood plus one computation, where distance vector has to pass a metric round the network a round at a time. Static routing passes the first scenario and fails the link cut outright, because it cannot heal &mdash; it will keep posting packets into the hole until you move the next hop yourself, which you can, one router at a time.'
+        a: 'Link state, on every one of them, and the reason is worth watching rather than being told: it converges in a flood plus one computation, where distance vector has to pass a metric round the network a round at a time. Static routing passes the first scenario and fails the link cut outright, because it cannot heal - it will keep posting packets into the hole until you move the next hop yourself, which you can, one router at a time.'
       },
       {
         q: 'Why does the metric stop at 16?',
@@ -5987,7 +5987,7 @@ const GAMES = [
       },
       {
         q: 'How is the score worked out?',
-        a: 'Delivered minus dropped, with a priority packet counted five times if you lose one, all multiplied by ten &mdash; then up to nine points for low mean latency on top. The multiplication is so that latency can only ever separate two runs that moved the same traffic, rather than quietly becoming the thing being measured. The panel also keeps a best for each scenario separately, because the six of them do not offer the same load and one number covering all of them would be a comparison nobody could act on.'
+        a: 'Delivered minus dropped, with a priority packet counted five times if you lose one, all multiplied by ten - then up to nine points for low mean latency on top. The multiplication is so that latency can only ever separate two runs that moved the same traffic, rather than quietly becoming the thing being measured. The panel also keeps a best for each scenario separately, because the six of them do not offer the same load and one number covering all of them would be a comparison nobody could act on.'
       },
       {
         q: 'Does anything leave my browser?',
@@ -6011,12 +6011,12 @@ const GAMES = [
     tapAction: false,
     tapKey: 'action',
     engine: 'Sine table &middot; 256-entry palette LUT',
-    title: 'Plasma — The Demoscene Colour Field',
+    title: 'Plasma - The Demoscene Colour Field',
     ogTitle: 'It looks expensive. It costs one lookup a pixel.',
     description: 'A demoscene plasma built the old way: a sine table, a 256-colour palette LUT and cycling by index offset. Change the terms, the frequency and the resolution.',
     short: 'Sines added up, read through a turning palette.',
     h1: 'Plasma',
-    hero: 'Sines added together and the sum read through a colour table &mdash; one across, one down, one along the diagonal, and two measured outward from a point you can drag. That is all of it. Nothing here is a gas or a fluid or a field being simulated; the name came from the look. Every value comes out of a 2048-entry table rather than <code>Math.sin</code>, and the colours move because an offset into the palette moves, which is exactly how it was done when the palette was hardware.',
+    hero: 'Sines added together and the sum read through a colour table - one across, one down, one along the diagonal, and two measured outward from a point you can drag. That is all of it. Nothing here is a gas or a fluid or a field being simulated; the name came from the look. Every value comes out of a 2048-entry table rather than <code>Math.sin</code>, and the colours move because an offset into the palette moves, which is exactly how it was done when the palette was hardware.',
     facts: [
       'A sine table, not Math.sin',
       'Two to five sine terms',
@@ -6027,7 +6027,7 @@ const GAMES = [
       { key: 'res', label: 'Rendering at', accent: true, init: '640 × 440' },
       { key: 'terms', label: 'Sine terms', init: '4' },
       { key: 'cycle', label: 'Palette cycle', init: '0.60 turns/s' },
-      { key: 'fps', label: 'Frames', init: '—' }
+      { key: 'fps', label: 'Frames', init: '-' }
     ],
     controls: [
       '<label class="sr-only" for="game-terms">Sine terms</label>',
@@ -6045,30 +6045,30 @@ const GAMES = [
       { k: 'Space', d: 'Put the origin back in the middle' },
       { k: 'Esc', d: 'Pause' }
     ],
-    touch: 'Drag anywhere on the field to move its origin &mdash; every term is measured from that point, so the whole picture follows your finger. A tap on its own does nothing, so a stray thumb cannot move anything. The toolbar holds the number of sine terms, their frequency, the palette, the cycling speed and the resolution, and the HUD prints the size actually being filled.',
+    touch: 'Drag anywhere on the field to move its origin - every term is measured from that point, so the whole picture follows your finger. A tap on its own does nothing, so a stray thumb cannot move anything. The toolbar holds the number of sine terms, their frequency, the palette, the cycling speed and the resolution, and the HUD prints the size actually being filled.',
     infoHeading: 'What a plasma actually is',
     info: [
       {
         h: 'Interference, not physics',
-        p: 'A plasma is several periodic functions added together and the sum mapped through a colour table. There are five of them here: a sine across x, one down y, one along the diagonal, and two radial terms measured outward from the origin &mdash; the second from a centre orbiting it, which is what stops the rings looking like a target. Where crests agree you get a bright blob, where they disagree you get a dark one, and because each term drifts at its own rate the arrangement never quite repeats. Nothing about it models a gas or a fluid. The name is about the look, and the sliders are there so you can take it apart: drop to two terms and the crossed sines are plainly visible.'
+        p: 'A plasma is several periodic functions added together and the sum mapped through a colour table. There are five of them here: a sine across x, one down y, one along the diagonal, and two radial terms measured outward from the origin - the second from a centre orbiting it, which is what stops the rings looking like a target. Where crests agree you get a bright blob, where they disagree you get a dark one, and because each term drifts at its own rate the arrangement never quite repeats. Nothing about it models a gas or a fluid. The name is about the look, and the sliders are there so you can take it apart: drop to two terms and the crossed sines are plainly visible.'
       },
       {
         h: 'It looks expensive and costs one lookup',
-        p: 'This is why the effect was everywhere in the demoscene. At full size the field is 640 by 440, so four terms is 1,126,400 sine evaluations a frame, or just under 68 million a second at sixty frames. <code>Math.sin</code> is a real transcendental call, and asking for it that often is where a browser plasma&rsquo;s frame rate goes before anybody thinks to blame the canvas. A 2048-entry table turns each one into an integer add, a mask and one typed-array read &mdash; and the Frames cell above is there so you can check that on your own machine rather than take it from me. There is a second gift in the table that is easy to miss: because it is indexed by an integer angle, adding angles is adding integers, so the diagonal term needs no angle-addition identity &mdash; its x half is precomputed per column and its y half per row.'
+        p: 'This is why the effect was everywhere in the demoscene. At full size the field is 640 by 440, so four terms is 1,126,400 sine evaluations a frame, or just under 68 million a second at sixty frames. <code>Math.sin</code> is a real transcendental call, and asking for it that often is where a browser plasma&rsquo;s frame rate goes before anybody thinks to blame the canvas. A 2048-entry table turns each one into an integer add, a mask and one typed-array read - and the Frames cell above is there so you can check that on your own machine rather than take it from me. There is a second gift in the table that is easy to miss: because it is indexed by an integer angle, adding angles is adding integers, so the diagonal term needs no angle-addition identity - its x half is precomputed per column and its y half per row.'
       },
       {
         h: 'The palette-cycling trick',
-        p: 'On a VGA card the 256 colours on screen were indices into a hardware table, and you animated by rewriting that table between frames without touching a single pixel &mdash; 768 bytes of work for a whole screen of movement. That is where the waterfalls and the marching gradients of the era came from. There is no hardware palette any more, so here the offset is added when the index is computed instead: the same idea, done in software, one addition per pixel. It is also why every palette in this file is a closed loop whose last colour equals its first, because a palette with a seam shows the seam sweeping across the field once per cycle.'
+        p: 'On a VGA card the 256 colours on screen were indices into a hardware table, and you animated by rewriting that table between frames without touching a single pixel - 768 bytes of work for a whole screen of movement. That is where the waterfalls and the marching gradients of the era came from. There is no hardware palette any more, so here the offset is added when the index is computed instead: the same idea, done in software, one addition per pixel. It is also why every palette in this file is a closed loop whose last colour equals its first, because a palette with a seam shows the seam sweeping across the field once per cycle.'
       },
       {
         h: 'Rendering smaller, and saying so',
-        p: 'The resolution control fills a smaller buffer and lets the browser scale it up, which is how a phone keeps sixty frames &mdash; quarter size is one sixteenth of the pixels. The HUD prints the buffer actually being filled and the frame rate measured in this tab, so both halves of the trade are on screen. A toy that quietly dropped its own resolution to flatter its frame counter would be lying about what it just did, which is the commonest form of a benchmark that means nothing.'
+        p: 'The resolution control fills a smaller buffer and lets the browser scale it up, which is how a phone keeps sixty frames - quarter size is one sixteenth of the pixels. The HUD prints the buffer actually being filled and the frame rate measured in this tab, so both halves of the trade are on screen. A toy that quietly dropped its own resolution to flatter its frame counter would be lying about what it just did, which is the commonest form of a benchmark that means nothing.'
       }
     ],
     faq: [
       {
         q: 'Is this a real plasma?',
-        a: 'No, and nothing here simulates one. It is interference between periodic functions — sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics.'
+        a: 'No, and nothing here simulates one. It is interference between periodic functions - sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics.'
       },
       {
         q: 'Why a sine table when Math.sin exists?',
@@ -6096,12 +6096,12 @@ const GAMES = [
     bestKey: 'race-condition',
     tapAction: false,
     engine: 'Ten levels &middot; every interleaving counted',
-    title: 'Race Condition Puzzle — Break The Lock',
+    title: 'Race Condition Puzzle - Break The Lock',
     ogTitle: 'Nine bugs to cause on purpose. One you cannot.',
-    description: 'You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break.',
+    description: 'You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock - then meet the one lock you cannot break.',
     short: 'You are the scheduler. Cause the bug.',
     h1: 'Race condition',
-    hero: 'Every level here asks you for a <em>wrong</em> answer. Make the counter read 1 after two increments. Take 150 out of an account holding 100. Charge one card three times for one order. The threads are drawn as columns of numbered steps and you click one to run a single step of it, so nothing is timed and nothing is random &mdash; because a race condition is not caused by speed, it is caused by an ordering being legal. Speed only decides how often you meet it. Four of the ten levels hand you a mutex and dare you to break it anyway, and the last one is a lock used correctly, which you cannot break at all.',
+    hero: 'Every level here asks you for a <em>wrong</em> answer. Make the counter read 1 after two increments. Take 150 out of an account holding 100. Charge one card three times for one order. The threads are drawn as columns of numbered steps and you click one to run a single step of it, so nothing is timed and nothing is random - because a race condition is not caused by speed, it is caused by an ordering being legal. Speed only decides how often you meet it. Four of the ten levels hand you a mutex and dare you to break it anyway, and the last one is a lock used correctly, which you cannot break at all.',
     facts: [
       'Ten levels, nine of them breakable',
       'Every ordering counted, not estimated',
@@ -6124,7 +6124,7 @@ const GAMES = [
       { k: '← →', d: 'Move between the threads' },
       { k: 'Enter', d: 'Run one step of the highlighted thread' },
       { k: 'Space', d: 'The same, and it moves the verdict on' },
-      { k: 'Esc', d: 'Pause &mdash; there is no clock to stop' }
+      { k: 'Esc', d: 'Pause - there is no clock to stop' }
     ],
     touch: 'Tap a thread column to run its next step. A column marked blocked is waiting on a lock somebody else holds and will not move until they release it, so tapping it only tells you who is in the way. Step back undoes one step, Run it again resets the level from the top, and Hint points at a thread that still leads to the bug.',
     infoHeading: 'Why the bug is the objective',
@@ -6135,15 +6135,15 @@ const GAMES = [
       },
       {
         h: 'The orderings are counted for real, and the number is not a failure rate',
-        p: 'Solve a level and the game walks its entire state space and tells you how many of the legal orderings produce the bug: 18 of 20 on the counter, 2 of 44 on the double-checked lock, 0 of 2 on the last one. That is an exhaustive search run in your tab, not a figure somebody typed in &mdash; the Hint button uses the same walk, which is how it can say whether the bug is still reachable from where you are standing. But 90 per cent of orderings is not a 90 per cent failure rate, and the game says so every time it prints one: a real scheduler hardly ever preempts inside a five-line function, so the two clean orderings are exactly the ones your tests keep drawing, ten thousand times, green every time. The bug is not improbable. It is unfairly sampled, until the machine gets busy.'
+        p: 'Solve a level and the game walks its entire state space and tells you how many of the legal orderings produce the bug: 18 of 20 on the counter, 2 of 44 on the double-checked lock, 0 of 2 on the last one. That is an exhaustive search run in your tab, not a figure somebody typed in - the Hint button uses the same walk, which is how it can say whether the bug is still reachable from where you are standing. But 90 per cent of orderings is not a 90 per cent failure rate, and the game says so every time it prints one: a real scheduler hardly ever preempts inside a five-line function, so the two clean orderings are exactly the ones your tests keep drawing, ten thousand times, green every time. The bug is not improbable. It is unfairly sampled, until the machine gets busy.'
       },
       {
         h: 'Four locks that fail, each a mistake with a name',
-        p: 'The mutex levels are not a victory lap. In one the critical section covers the write but not the read, so the check that decided the write happens outside it and the lock makes no difference at all. In another two locks are taken in opposite orders, and the goal is a genuine deadlock rather than a lost update. In a third somebody shortened the critical section and left the write outside it. The fourth is double-checked locking with the publish reordered above the field write &mdash; the standard Java singleton idiom, printed in books, and broken on every JVM until the memory model was rewritten for Java 5. Each is presented as what it is: a real mistake, made in shipped code, by people who knew what a mutex was.'
+        p: 'The mutex levels are not a victory lap. In one the critical section covers the write but not the read, so the check that decided the write happens outside it and the lock makes no difference at all. In another two locks are taken in opposite orders, and the goal is a genuine deadlock rather than a lost update. In a third somebody shortened the critical section and left the write outside it. The fourth is double-checked locking with the publish reordered above the field write - the standard Java singleton idiom, printed in books, and broken on every JVM until the memory model was rewritten for Java 5. Each is presented as what it is: a real mistake, made in shipped code, by people who knew what a mutex was.'
       },
       {
         h: 'And one level you cannot win',
-        p: 'The last level is the first level with the lock used properly, and there is no interleaving that breaks it. Run both of the two orderings the program has &mdash; that is the whole state space, and it takes ten clicks &mdash; and the game offers you the claim that it cannot be done, then confirms it: 0 of 2. A level whose answer is "you cannot, and here is why" is worth as much as the nine before it, because without it the game would quietly teach that all locks are theatre. <a href="/labs/concurrency">The concurrency lab</a> next door runs the same machinery without a puzzle attached, and the <a href="/games/traffic">junction in Traffic</a> is the deadlock level drawn in tarmac.'
+        p: 'The last level is the first level with the lock used properly, and there is no interleaving that breaks it. Run both of the two orderings the program has - that is the whole state space, and it takes ten clicks - and the game offers you the claim that it cannot be done, then confirms it: 0 of 2. A level whose answer is "you cannot, and here is why" is worth as much as the nine before it, because without it the game would quietly teach that all locks are theatre. <a href="/labs/concurrency">The concurrency lab</a> next door runs the same machinery without a puzzle attached, and the <a href="/games/traffic">junction in Traffic</a> is the deadlock level drawn in tarmac.'
       }
     ],
     faq: [
@@ -6153,7 +6153,7 @@ const GAMES = [
       },
       {
         q: 'Is the model a real CPU?',
-        a: 'No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either — it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live.'
+        a: 'No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either - it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live.'
       },
       {
         q: 'Where do the ordering counts come from?',
@@ -6161,11 +6161,11 @@ const GAMES = [
       },
       {
         q: 'Can I get stuck?',
-        a: 'A run can reach a point where the bug is no longer reachable — that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else.'
+        a: 'A run can reach a point where the bug is no longer reachable - that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else.'
       },
       {
         q: 'How is the score worked out?',
-        a: 'A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device — there is no server here to keep it anywhere else.'
+        a: 'A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device - there is no server here to keep it anywhere else.'
       },
       {
         q: 'Does anything leave the browser?',
@@ -6189,12 +6189,12 @@ const GAMES = [
     tapAction: false,
     tapKey: 'action',
     engine: 'Eight conversations &middot; two axes, scored apart',
-    title: 'Social Engineering — Defend The Call',
+    title: 'Social Engineering - Defend The Call',
     ogTitle: 'They did not break in. They rang up and asked.',
-    description: 'Eight conversations under live pressure — a call, a walk-in, a chat, a vendor at the door. Choose a reply, then see the technique named and scored.',
+    description: 'Eight conversations under live pressure - a call, a walk-in, a chat, a vendor at the door. Choose a reply, then see the technique named and scored.',
     short: 'Pressure on the phone. Verify it politely.',
     h1: 'Social engineering',
-    hero: 'The two phishing games here are about mail, which is a thing that sits still while you read it. This one is about a person: a voice that gets annoyed when you check, a courier at the goods door at ten to five on a Friday, a message saying somebody you trust has already approved it. You play the defender, never the attacker. Each reply is scored twice &mdash; did the asset stay protected, and was the answer professionally acceptable &mdash; because those two disagree constantly, and a defender who refuses everything is the same failure as a firewall that drops everything.',
+    hero: 'The two phishing games here are about mail, which is a thing that sits still while you read it. This one is about a person: a voice that gets annoyed when you check, a courier at the goods door at ten to five on a Friday, a message saying somebody you trust has already approved it. You play the defender, never the attacker. Each reply is scored twice - did the asset stay protected, and was the answer professionally acceptable - because those two disagree constantly, and a defender who refuses everything is the same failure as a firewall that drops everything.',
     facts: [
       'Eight scenarios, four a run',
       'Three of them are genuine callers',
@@ -6203,8 +6203,8 @@ const GAMES = [
     ],
     hud: [
       { key: 'call', label: 'Conversation', init: '1/4' },
-      { key: 'tech', label: 'Technique', init: '—' },
-      { key: 'score', label: 'Score', accent: true, init: '—' },
+      { key: 'tech', label: 'Technique', init: '-' },
+      { key: 'score', label: 'Score', accent: true, init: '-' },
       { key: 'best', label: 'Best' }
     ],
     controls: [
@@ -6215,30 +6215,30 @@ const GAMES = [
     keys: [
       { k: '↑ ↓', d: 'Move between the three replies' },
       { k: 'Enter', d: 'Give that reply, and carry on' },
-      { k: 'Esc', d: 'Pause &mdash; nothing is timed anyway' }
+      { k: 'Esc', d: 'Pause - nothing is timed anyway' }
     ],
     touch: 'Tap a reply to give it, read what it cost on each axis, then tap Carry on. Every conversation ends on a panel naming the control that would have removed the pressure, and the debrief at the end collects them.',
     infoHeading: 'Why this is scored on two axes',
     info: [
       {
         h: 'Because one number teaches the wrong lesson',
-        p: 'Sending the payroll file to a director in a hurry is charming and a disaster. Slamming the door on a real fire-alarm engineer is safe and costs you the certification, the goodwill, and &mdash; three weeks later &mdash; the sign-in process itself, because somebody senior will quietly decide it is the problem. A single score averages those two failures into something that looks like the same mistake, and they are not. So every reply is rated out of ten on whether the asset stayed protected and out of ten on whether the answer was professionally acceptable, and both meters are the running mean rather than a drifting total &mdash; a mean of twelve ratings cannot hide the one turn where you read out an authenticator code.'
+        p: 'Sending the payroll file to a director in a hurry is charming and a disaster. Slamming the door on a real fire-alarm engineer is safe and costs you the certification, the goodwill, and - three weeks later - the sign-in process itself, because somebody senior will quietly decide it is the problem. A single score averages those two failures into something that looks like the same mistake, and they are not. So every reply is rated out of ten on whether the asset stayed protected and out of ten on whether the answer was professionally acceptable, and both meters are the running mean rather than a drifting total - a mean of twelve ratings cannot hide the one turn where you read out an authenticator code.'
       },
       {
         h: 'The best answers are almost always the polite verification',
-        p: 'Ring back on a number you looked up rather than one you were given. Ask for the ticket reference and open it yourself. Take the reference the caller offered before they withdraw it. Offer to put the file in the work drive instead of sending it to a personal address. Every one of those scores well on both axes, and none of them is a confrontation &mdash; the check is something you go and do, not something you demand from a person standing in front of you. &ldquo;Nobody is accusing anybody, the rule applies to every supplier including the ones we like&rdquo; is the single most useful sentence in the game, and it works because it is true.'
+        p: 'Ring back on a number you looked up rather than one you were given. Ask for the ticket reference and open it yourself. Take the reference the caller offered before they withdraw it. Offer to put the file in the work drive instead of sending it to a personal address. Every one of those scores well on both axes, and none of them is a confrontation - the check is something you go and do, not something you demand from a person standing in front of you. &ldquo;Nobody is accusing anybody, the rule applies to every supplier including the ones we like&rdquo; is the single most useful sentence in the game, and it works because it is true.'
       },
       {
         h: 'The techniques, and why they work underneath the argument',
-        p: 'Authority, so that seniority stands in for identity. Urgency, with a deadline chosen to make checking feel expensive. Reciprocity, which is why the person at the door is carrying two coffees and offering you one. Social proof &mdash; your colleague already approved it, and she is on a flight. Familiarity, which is what an hour of public reading buys: the rota, the outage, the form number, the nickname for the plant room. Tailgating, which runs entirely on how awful it feels to say something to somebody&rsquo;s face. And the helpdesk reversal, where the caller either claims to be IT or claims to be a user ringing IT. <a href="/blog/digital-arrest-scam-explained">The digital arrest scam</a> is authority and urgency run to their limit on a call designed never to end; <a href="/blog/how-sim-swap-works">a SIM swap</a> is the same conversation aimed at a support agent rather than at you; and <a href="/labs/osint-self-check">the OSINT self-check</a> in Labs shows what a stranger can read about you before they ring, which is where that uncomfortable familiarity comes from.'
+        p: 'Authority, so that seniority stands in for identity. Urgency, with a deadline chosen to make checking feel expensive. Reciprocity, which is why the person at the door is carrying two coffees and offering you one. Social proof - your colleague already approved it, and she is on a flight. Familiarity, which is what an hour of public reading buys: the rota, the outage, the form number, the nickname for the plant room. Tailgating, which runs entirely on how awful it feels to say something to somebody&rsquo;s face. And the helpdesk reversal, where the caller either claims to be IT or claims to be a user ringing IT. <a href="/blog/digital-arrest-scam-explained">The digital arrest scam</a> is authority and urgency run to their limit on a call designed never to end; <a href="/blog/how-sim-swap-works">a SIM swap</a> is the same conversation aimed at a support agent rather than at you; and <a href="/labs/osint-self-check">the OSINT self-check</a> in Labs shows what a stranger can read about you before they ring, which is where that uncomfortable familiarity comes from.'
       },
       {
         h: 'There is no clock, and that is deliberate',
-        p: 'The <a href="/games/incident-response">incident response tabletop</a> next door charges you simulated minutes for deliberating, because a breach really does move while you read. This one must not, because the whole defence against a pretext is being allowed to take the time &mdash; a game that punished reading would be teaching the attacker&rsquo;s lesson with the attacker&rsquo;s own instrument. The pressure here lives inside the fiction, where it belongs: the caller escalates, the deadline tightens, the person at the door gets friendlier. You are never actually rushed.'
+        p: 'The <a href="/games/incident-response">incident response tabletop</a> next door charges you simulated minutes for deliberating, because a breach really does move while you read. This one must not, because the whole defence against a pretext is being allowed to take the time - a game that punished reading would be teaching the attacker&rsquo;s lesson with the attacker&rsquo;s own instrument. The pressure here lives inside the fiction, where it belongs: the caller escalates, the deadline tightens, the person at the door gets friendlier. You are never actually rushed.'
       },
       {
         h: 'The process, not the person',
-        p: 'Every conversation ends on the one control that would have removed the pressure entirely &mdash; a callback rule, a named delegate, an out-of-band check, a visitor diary, a documented verification fallback &mdash; and not on what you should have spotted. Each of these attacks works by asking one individual to be clever, alone, at speed, against somebody who has rehearsed, and the answer to that is never a better individual. Which is also why blaming the person who was manipulated is both unkind and useless: unkind because the techniques are aimed squarely at ordinary decency, and useless because the next person shouted at for falling for one is the next person who quietly does not report one.'
+        p: 'Every conversation ends on the one control that would have removed the pressure entirely - a callback rule, a named delegate, an out-of-band check, a visitor diary, a documented verification fallback - and not on what you should have spotted. Each of these attacks works by asking one individual to be clever, alone, at speed, against somebody who has rehearsed, and the answer to that is never a better individual. Which is also why blaming the person who was manipulated is both unkind and useless: unkind because the techniques are aimed squarely at ordinary decency, and useless because the next person shouted at for falling for one is the next person who quietly does not report one.'
       }
     ],
     faq: [
@@ -6248,7 +6248,7 @@ const GAMES = [
       },
       {
         q: 'Are any of these real companies, people or scripts?',
-        a: 'None of them. Every name, company, building, purchase order and job reference is invented, and where a phone number is printed it comes from the block Ofcom reserves for drama and never allocates. No real campaign is reproduced. The attacker\'s side of each conversation is deliberately thin — a name, a hurry, a deadline, a reference you cannot reach — because the shape is the part worth recognising and nothing here should be liftable.'
+        a: 'None of them. Every name, company, building, purchase order and job reference is invented, and where a phone number is printed it comes from the block Ofcom reserves for drama and never allocates. No real campaign is reproduced. The attacker\'s side of each conversation is deliberately thin - a name, a hurry, a deadline, a reference you cannot reach - because the shape is the part worth recognising and nothing here should be liftable.'
       },
       {
         q: 'Why is there no attacker mode?',
@@ -6260,7 +6260,7 @@ const GAMES = [
       },
       {
         q: 'Does it work on a phone?',
-        a: 'Yes. Every reply is a full-width button you tap, there is no pad and no gesture to learn, and nothing is timed, so a slow read costs nothing. The two meters carry their figures as text and a word — strong, holding, slipping, poor — so colour is never the only signal.'
+        a: 'Yes. Every reply is a full-width button you tap, there is no pad and no gesture to learn, and nothing is timed, so a slow read costs nothing. The two meters carry their figures as text and a word - strong, holding, slipping, poor - so colour is never the only signal.'
       },
       {
         q: 'Is anything uploaded?',
@@ -6282,10 +6282,10 @@ const GAMES = [
     engine: 'A real SQL parser over five toy tables',
     title: 'SQL Injection Escape Room',
     ogTitle: 'The database has a real parser. Break it.',
-    description: 'Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix.',
+    description: 'Break into a toy database that runs a real SQL parser in your browser. Four rooms - login bypass, UNION, blind and time-based - each ending in the fix.',
     short: 'Four injection rooms, one real toy parser.',
     h1: 'SQL injection escape room',
-    hero: 'Reading about SQL injection teaches you the diagram of the attack. This teaches you the attack, because there is a real little SQL engine in the page &mdash; a tokeniser, a parser and an evaluator over five in-memory tables &mdash; and it genuinely runs the query you build, injected part and all. Four rooms walk the real techniques in the real order: break a login, <code>UNION</code> a second table out, then pull a value one bit at a time through a page that says only <em>found</em>, and finally through nothing but a delay. Every room ends by showing the parameterised query that would have stopped it, with the value on its own line, because that one picture is the whole lesson.',
+    hero: 'Reading about SQL injection teaches you the diagram of the attack. This teaches you the attack, because there is a real little SQL engine in the page - a tokeniser, a parser and an evaluator over five in-memory tables - and it genuinely runs the query you build, injected part and all. Four rooms walk the real techniques in the real order: break a login, <code>UNION</code> a second table out, then pull a value one bit at a time through a page that says only <em>found</em>, and finally through nothing but a delay. Every room ends by showing the parameterised query that would have stopped it, with the value on its own line, because that one picture is the whole lesson.',
     facts: [
       'A real SQL parser, in the page',
       'Four rooms, four techniques',
@@ -6311,7 +6311,7 @@ const GAMES = [
     info: [
       {
         h: 'The parser is real; the database is not',
-        p: 'There is a genuine engine in this page &mdash; it tokenises the query, parses SELECT with WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, both comment forms and a handful of string functions, and then executes it, including the part you injected. What it runs over is five arrays of plain objects that live in the tab and nowhere else. Nothing touches a real database and there is no network call to make one &mdash; the attack is safe precisely because the target is a toy. For the same ideas with a real query planner in front of you, <a href="/labs/sql">the SQL playground</a> and <a href="/labs/sqlite-browser">the SQLite browser</a> are next door.'
+        p: 'There is a genuine engine in this page - it tokenises the query, parses SELECT with WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, both comment forms and a handful of string functions, and then executes it, including the part you injected. What it runs over is five arrays of plain objects that live in the tab and nowhere else. Nothing touches a real database and there is no network call to make one - the attack is safe precisely because the target is a toy. For the same ideas with a real query planner in front of you, <a href="/labs/sql">the SQL playground</a> and <a href="/labs/sqlite-browser">the SQLite browser</a> are next door.'
       },
       {
         h: 'The assembled query is the teaching device',
@@ -6319,7 +6319,7 @@ const GAMES = [
       },
       {
         h: 'Why the tempting non-fixes do not work',
-        p: 'Escaping quotes by hand loses because you have to get every context right &mdash; strings, numbers, identifiers, LIKE patterns each escape differently &mdash; every single time, and one miss is the whole hole. A blocklist of keywords loses because <code>UNION</code> and <code>OR</code> appear in ordinary data, comments and case tricks slip past, and the list is a promise to enumerate every attack forever. Stored procedures are not automatically safe: one that builds a string and runs <code>EXEC(@sql)</code> is just as injectable. And an ORM is safe only where it parameterises &mdash; its raw-SQL and string-interpolation escape hatches are where the same bug walks back in.'
+        p: 'Escaping quotes by hand loses because you have to get every context right - strings, numbers, identifiers, LIKE patterns each escape differently - every single time, and one miss is the whole hole. A blocklist of keywords loses because <code>UNION</code> and <code>OR</code> appear in ordinary data, comments and case tricks slip past, and the list is a promise to enumerate every attack forever. Stored procedures are not automatically safe: one that builds a string and runs <code>EXEC(@sql)</code> is just as injectable. And an ORM is safe only where it parameterises - its raw-SQL and string-interpolation escape hatches are where the same bug walks back in.'
       },
       {
         h: 'The fix is the same door in every room',
@@ -6327,13 +6327,13 @@ const GAMES = [
       },
       {
         h: 'This is a defensive tool, and stays one',
-        p: 'Every payload in here is aimed at the five toy tables and could not be aimed anywhere else. There is no real product named, no filter-evasion catalogue and no exfiltration tooling &mdash; the deliverable of the whole game is the prepared statement at the end of each room. The point is to recognise the shape of the bug so you can close it in your own code, which is the only place any of this should ever be pointed.'
+        p: 'Every payload in here is aimed at the five toy tables and could not be aimed anywhere else. There is no real product named, no filter-evasion catalogue and no exfiltration tooling - the deliverable of the whole game is the prepared statement at the end of each room. The point is to recognise the shape of the bug so you can close it in your own code, which is the only place any of this should ever be pointed.'
       }
     ],
     faq: [
       {
         q: 'Is this real SQL?',
-        a: 'No &mdash; it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy.'
+        a: 'No - it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy.'
       },
       {
         q: 'Does anything I type reach a real database?',
@@ -6345,11 +6345,11 @@ const GAMES = [
       },
       {
         q: 'The blind rooms are slow. Is that the point?',
-        a: 'Yes. A blind injection leaks one bit at a time, so you extract a value character by character &mdash; and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open.'
+        a: 'Yes. A blind injection leaks one bit at a time, so you extract a value character by character - and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open.'
       },
       {
         q: 'What counts towards the best score?',
-        a: 'Every query you send, in every room, whether it works or errors &mdash; an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog.'
+        a: 'Every query you send, in every room, whether it works or errors - an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog.'
       },
       {
         q: 'Is this teaching me to attack websites?',
@@ -6370,12 +6370,12 @@ const GAMES = [
     pad: 'none',
     bestKey: 'antakshari',
     engine: 'Two closed word lists &middot; a minimax on letters',
-    title: 'Antakshari — The Rule, Played With Words',
+    title: 'Antakshari - The Rule, Played With Words',
     ogTitle: 'The antakshari rule, without the lyrics',
     description: 'Every word must begin with the last letter of the one before it. Play the computer or pass the phone round, with a clock on every turn and no repeats.',
     short: 'Last letter starts the next word.',
     h1: 'Antakshari',
-    hero: 'Antakshari is sung, and the singing is the one thing this cannot ship: film lyrics are somebody else&rsquo;s copyrighted work, and nothing in this section adds a single audio byte to the site. So the <em>rule</em> is kept and the <em>content</em> is swapped &mdash; your entry must start with the last letter of the entry before it, no repeats in a round, twenty-five seconds a turn. The page says that out loud rather than hiding it behind a feature list.',
+    hero: 'Antakshari is sung, and the singing is the one thing this cannot ship: film lyrics are somebody else&rsquo;s copyrighted work, and nothing in this section adds a single audio byte to the site. So the <em>rule</em> is kept and the <em>content</em> is swapped - your entry must start with the last letter of the entry before it, no repeats in a round, twenty-five seconds a turn. The page says that out loud rather than hiding it behind a feature list.',
     facts: [
       'The rule, not the songs',
       'No lyrics, stored or shown',
@@ -6401,7 +6401,7 @@ const GAMES = [
     info: [
       {
         h: 'The list is the referee for both sides',
-        p: 'Every word comes from one of two hand-written lists &mdash; ordinary English nouns, or well-known Indian words written in Latin script, which are places, foods and objects and nothing out of a film. A real word the list has never heard of is refused, which is a genuine limit and is stated on the board rather than buried here. What the closed list buys is the counter below.'
+        p: 'Every word comes from one of two hand-written lists - ordinary English nouns, or well-known Indian words written in Latin script, which are places, foods and objects and nothing out of a film. A real word the list has never heard of is refused, which is a genuine limit and is stated on the board rather than buried here. What the closed list buys is the counter below.'
       },
       {
         h: 'It shows you how starved a letter is',
@@ -6409,7 +6409,7 @@ const GAMES = [
       },
       {
         h: 'The computer plays that same strategy',
-        p: 'Its candidates are the unused words starting with the required letter, and it scores each by how few options you would be left with afterwards. On Sharp it takes the minimum every time. Where forty-seven words end in R and only fourteen begin with one, that is enough to be genuinely hard to beat &mdash; and Gentle exists because that is not always the game you want.'
+        p: 'Its candidates are the unused words starting with the required letter, and it scores each by how few options you would be left with afterwards. On Sharp it takes the minimum every time. Where forty-seven words end in R and only fourteen begin with one, that is enough to be genuinely hard to beat - and Gentle exists because that is not always the game you want.'
       },
       {
         h: 'No lyrics, and no letter keys either',
@@ -6427,7 +6427,7 @@ const GAMES = [
       },
       {
         q: 'What is the difference between the two word lists?',
-        a: 'One is ordinary English nouns. The other is well-known Indian words in Latin script — places, foods and everyday objects. Neither contains anything taken from a film or any other copyrighted work.'
+        a: 'One is ordinary English nouns. The other is well-known Indian words in Latin script - places, foods and everyday objects. Neither contains anything taken from a film or any other copyrighted work.'
       },
       {
         q: 'How is the score worked out?',
@@ -6452,12 +6452,12 @@ const GAMES = [
     bestKey: null,
     tapAction: false,
     engine: 'Free-free tube modes &middot; spherical pendulums',
-    title: 'Wind Chimes — Pitch From Tube Length',
+    title: 'Wind Chimes - Pitch From Tube Length',
     ogTitle: 'A chime you can retune by cutting it',
     description: 'A wind chime simulated rather than sampled: every note comes from its tube length, and the wind decides when it sounds. Six tubes, three metals, three tunings.',
     short: 'Pitch comes from length. Wind decides when.',
     h1: 'Wind chimes',
-    hero: 'Nothing here schedules a note. Each tube, the clapper and the sail swing as pendulums against a wind that gusts, and a tube sounds when the clapper actually reaches it &mdash; struck as hard as the closing speed says. The pitch is not assigned either: it falls out of the tube&rsquo;s length, and because it goes as one over length <em>squared</em>, halving a tube raises it two octaves rather than one. Drag the size slider and hear that happen.',
+    hero: 'Nothing here schedules a note. Each tube, the clapper and the sail swing as pendulums against a wind that gusts, and a tube sounds when the clapper actually reaches it - struck as hard as the closing speed says. The pitch is not assigned either: it falls out of the tube&rsquo;s length, and because it goes as one over length <em>squared</em>, halving a tube raises it two octaves rather than one. Drag the size slider and hear that happen.',
     facts: [
       'Pitch derived from length',
       'Metal changes the length, not the note',
@@ -6465,7 +6465,7 @@ const GAMES = [
       'Sound is synthesised, never a file'
     ],
     hud: [
-      { key: 'note', label: 'Last note', accent: true, init: '—' },
+      { key: 'note', label: 'Last note', accent: true, init: '-' },
       { key: 'strikes', label: 'Strikes', init: '0' },
       { key: 'tuning', label: 'Tuning', init: 'Pentatonic' },
       { key: 'wind', label: 'Wind', init: 'Breeze' }
@@ -6487,7 +6487,7 @@ const GAMES = [
     info: [
       {
         h: 'The pitch is not a number I chose',
-        p: 'For the fundamental bending mode of a thin free-free tube, frequency goes as the radius of gyration over length squared, times the bar speed of the metal. That formula is what decides every note here. It is the <em>ideal</em> thin-tube case and real chimes are not tuned with it &mdash; a real tube has a wall thick enough to matter, a suspension hole and often an end cap, so the formula lands a few per cent out and a maker cuts long and trims by ear. What it gets right is the shape of the relationship, which is the part you can hear.'
+        p: 'For the fundamental bending mode of a thin free-free tube, frequency goes as the radius of gyration over length squared, times the bar speed of the metal. That formula is what decides every note here. It is the <em>ideal</em> thin-tube case and real chimes are not tuned with it - a real tube has a wall thick enough to matter, a suspension hole and often an end cap, so the formula lands a few per cent out and a maker cuts long and trims by ear. What it gets right is the shape of the relationship, which is the part you can hear.'
       },
       {
         h: 'Why brass and aluminium differ',
@@ -6495,11 +6495,11 @@ const GAMES = [
       },
       {
         h: 'Pentatonic, and why chimes use it',
-        p: 'A chime is struck at random by the weather, so any two tubes can sound together at any moment. A pentatonic scale has no semitone in it, which means no pair of tubes can clash &mdash; that is the whole reason it is the traditional choice. Switch to Major and listen for the seventh against the octave; it is not unpleasant, but it is a decision somebody made.'
+        p: 'A chime is struck at random by the weather, so any two tubes can sound together at any moment. A pentatonic scale has no semitone in it, which means no pair of tubes can clash - that is the whole reason it is the traditional choice. Switch to Major and listen for the seventh against the octave; it is not unpleasant, but it is a decision somebody made.'
       },
       {
         h: 'The wind is a condition, not an event',
-        p: 'So the wind is a held sound layer that the shell fades with the run, while each strike is a one-shot built from four partials that decay at different rates &mdash; which is what makes struck metal sound like metal. In a gale the strikes are thinned deliberately, because the honest event rate and the bearable sound rate are different numbers.'
+        p: 'So the wind is a held sound layer that the shell fades with the run, while each strike is a one-shot built from four partials that decay at different rates - which is what makes struck metal sound like metal. In a gale the strikes are thinned deliberately, because the honest event rate and the bearable sound rate are different numbers.'
       }
     ],
     faq: [

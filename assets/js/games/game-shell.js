@@ -1060,8 +1060,8 @@
       var syncSound = function () {
         self.soundBtn.setAttribute('aria-pressed', String(self.audio.on));
         self.soundBtn.title = self.audio.on
-          ? 'Sound is on — click to mute'
-          : 'Sound is off — click to turn it on';
+          ? 'Sound is on - click to mute'
+          : 'Sound is off - click to turn it on';
       };
       syncSound();
       this.soundBtn.addEventListener('click', function () {

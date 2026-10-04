@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>vCard, Wi-Fi and UPI QR payload builder</h1>
-        <p class="hero-text">A QR code is a string in a costume. This builds the string &mdash; contact cards, Wi-Fi joins, calendar events, map points and UPI payment requests &mdash; with the escaping most builders get wrong, and reads one back the other way. Paste a UPI code here before you scan it.</p>
+        <p class="hero-text">A QR code is a string in a costume. This builds the string - contact cards, Wi-Fi joins, calendar events, map points and UPI payment requests - with the escaping most builders get wrong, and reads one back the other way. Paste a UPI code here before you scan it.</p>
         <ul class="lab-facts">
           <li>vCard 3.0, 4.0 and MECARD</li>
           <li>Wi-Fi, calendar, geo and UPI</li>
@@ -239,18 +239,18 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>It cannot check that a UPI address exists or belongs to anyone</li>
-                  <li>It cannot verify a sign= parameter &mdash; that needs a key it does not have</li>
-                  <li>It does not decode EMVCo or Bharat QR &mdash; the kind that starts 000201</li>
+                  <li>It cannot verify a sign= parameter - that needs a key it does not have</li>
+                  <li>It does not decode EMVCo or Bharat QR - the kind that starts 000201</li>
                   <li>It does not draw the QR code; /labs/qr does that</li>
                 </ul>
               </div>
@@ -267,14 +267,14 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
         </div>
 
         <div class="lab-warn">
-          <p class="lab-warn-text"><strong>A pay QR and a receive QR look identical.</strong> On UPI there is no such thing as a &ldquo;receive money&rdquo; QR &mdash; every UPI QR is a request for YOU to PAY. Anyone who tells you to scan a code to receive a refund is taking your money. Your UPI PIN is only ever needed to send.</p>
+          <p class="lab-warn-text"><strong>A pay QR and a receive QR look identical.</strong> On UPI there is no such thing as a &ldquo;receive money&rdquo; QR - every UPI QR is a request for YOU to PAY. Anyone who tells you to scan a code to receive a refund is taking your money. Your UPI PIN is only ever needed to send.</p>
         </div>
 
         <div class="lab-toolbar">
@@ -294,9 +294,9 @@
           <div class="lab-fieldrow">
             <label class="sr-only" for="tool-kind">Payload type</label>
             <select class="lab-select" id="tool-kind">
-              <option value="vcard3" selected>Contact card &mdash; vCard 3.0</option>
-              <option value="vcard4">Contact card &mdash; vCard 4.0</option>
-              <option value="mecard">Contact card &mdash; MECARD</option>
+              <option value="vcard3" selected>Contact card - vCard 3.0</option>
+              <option value="vcard4">Contact card - vCard 4.0</option>
+              <option value="mecard">Contact card - MECARD</option>
               <option value="wifi">Wi-Fi network</option>
               <option value="ical">Calendar event</option>
               <option value="geo">Map point</option>
@@ -554,7 +554,7 @@
                 <label for="u-sign">Signature, sign</label>
                 <input class="lab-toolfield" type="text" id="u-sign" autocomplete="off" spellcheck="false" />
               </div>
-              <p class="lab-qrmeta lab-qrwide">Whatever you put in sign is copied through as text. This page cannot compute a signature and cannot check one &mdash; that needs a key issued by NPCI. Currency is fixed at INR because that is what UPI settles in.</p>
+              <p class="lab-qrmeta lab-qrwide">Whatever you put in sign is copied through as text. This page cannot compute a signature and cannot check one - that needs a key issued by NPCI. Currency is fixed at INR because that is what UPI settles in.</p>
             </div>
           </div>
         </div>
@@ -592,11 +592,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Every UPI QR asks you to pay</h3>
-            <p>There is no &ldquo;receive money&rdquo; QR code on UPI. A payment request and a payment collection look the same because they <em>are</em> the same &mdash; a <code>upi://pay</code> URI naming a payee. If someone says scan this to get your refund, your prize, your deposit or your salary, completing it pays them. Your PIN is only ever needed to send. The parser here prints that on every UPI code it reads, including the ones you build yourself.</p>
+            <p>There is no &ldquo;receive money&rdquo; QR code on UPI. A payment request and a payment collection look the same because they <em>are</em> the same - a <code>upi://pay</code> URI naming a payee. If someone says scan this to get your refund, your prize, your deposit or your salary, completing it pays them. Your PIN is only ever needed to send. The parser here prints that on every UPI code it reads, including the ones you build yourself.</p>
           </article>
           <article class="info-card">
             <h3>The payee name is just text</h3>
-            <p><code>pn</code> is a string typed by whoever printed the code. Nobody verifies it, and a code claiming to be from a bank costs nothing to make. The tool flags names that borrow authority and names carrying Cyrillic or Greek letters drawn like Latin ones, but it cannot check a UPI address against anything &mdash; that needs a lookup at NPCI, which is a network call this page will never make. Read the name your own app resolves, and stop if the two disagree.</p>
+            <p><code>pn</code> is a string typed by whoever printed the code. Nobody verifies it, and a code claiming to be from a bank costs nothing to make. The tool flags names that borrow authority and names carrying Cyrillic or Greek letters drawn like Latin ones, but it cannot check a UPI address against anything - that needs a lookup at NPCI, which is a network call this page will never make. Read the name your own app resolves, and stop if the two disagree.</p>
           </article>
           <article class="info-card">
             <h3>Escaping is where builders break</h3>
@@ -604,7 +604,7 @@
           </article>
           <article class="info-card">
             <h3>A Wi-Fi QR carries the password in clear</h3>
-            <p>The string is <code>WIFI:T:WPA;S:name;P:password;;</code> and the password sits in it as plain characters. Nothing about the format encrypts or hides it, so anyone who photographs the printed square keeps it forever, including people who were never in the building. That is not a reason never to use one &mdash; it is the reason the right place for one is a guest network that reaches the internet and nothing else.</p>
+            <p>The string is <code>WIFI:T:WPA;S:name;P:password;;</code> and the password sits in it as plain characters. Nothing about the format encrypts or hides it, so anyone who photographs the printed square keeps it forever, including people who were never in the building. That is not a reason never to use one - it is the reason the right place for one is a guest network that reaches the internet and nothing else.</p>
           </article>
         </div>
       </section>
@@ -659,7 +659,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/qr">
             <span class="lab-card-name">QR encoder and inspector</span>
-            <p class="lab-card-desc">The general half &mdash; draws the square, and decodes a photograph of one.</p>
+            <p class="lab-card-desc">The general half - draws the square, and decodes a photograph of one.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/upi-fraud">

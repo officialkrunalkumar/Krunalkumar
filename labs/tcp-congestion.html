@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch a TCP connection open, transfer and back off" />
     <meta name="twitter:description" content="Step through the TCP three-way handshake with real sequence numbers, walk both endpoints through the TCP state machine, and watch Reno congestion control draw its slow-start-and-back-off sawtooth. A live simulation, not a scripted animation. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-tcp-congestion.jpg" />
-    <title>TCP Visualiser — Handshake & Congestion | Krunalkumar Shah</title>
+    <title>TCP Visualiser - Handshake & Congestion | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>TCP, from handshake to sawtooth</h1>
-        <p class="hero-text">The pcap analyser elsewhere in Labs shows you TCP packets after they have flown. This lab runs the protocol. Watch the three-way handshake exchange real sequence numbers, watch both ends walk the TCP state machine to ESTABLISHED and back, and watch congestion control probe for bandwidth and back off on loss &mdash; the sawtooth that shapes very nearly every byte you have ever downloaded.</p>
+        <p class="hero-text">The pcap analyser elsewhere in Labs shows you TCP packets after they have flown. This lab runs the protocol. Watch the three-way handshake exchange real sequence numbers, watch both ends walk the TCP state machine to ESTABLISHED and back, and watch congestion control probe for bandwidth and back off on loss - the sawtooth that shapes very nearly every byte you have ever downloaded.</p>
         <ul class="lab-facts">
           <li>The three-way handshake with real seq / ack numbers</li>
           <li>Both endpoints through the TCP state machine</li>
@@ -229,7 +229,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -251,7 +251,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -263,7 +263,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-tcp-mount">
-          <p class="lab-proc-fallback">Starting the TCP visualiser… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the TCP visualiser… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -274,11 +274,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The handshake is a sequence-number agreement</h3>
-            <p>SYN, SYN-ACK, ACK is not a greeting ritual &mdash; it is both ends agreeing on the sequence number each will start counting from, so that every byte afterwards can be ordered and acknowledged. A SYN consumes one sequence number; data advances it by its length; an acknowledgement is always &ldquo;the next byte I expect from you&rdquo;. The numbers on the ladder are the real arithmetic, not decoration.</p>
+            <p>SYN, SYN-ACK, ACK is not a greeting ritual - it is both ends agreeing on the sequence number each will start counting from, so that every byte afterwards can be ordered and acknowledged. A SYN consumes one sequence number; data advances it by its length; an acknowledgement is always &ldquo;the next byte I expect from you&rdquo;. The numbers on the ladder are the real arithmetic, not decoration.</p>
           </article>
           <article class="info-card">
             <h3>TIME_WAIT is the state everyone forgets</h3>
-            <p>Closing a connection takes four segments, not three, because each direction is shut independently. The side that closes first then sits in TIME_WAIT for twice the maximum segment lifetime &mdash; long enough that a straggling old segment cannot be mistaken for part of a new connection reusing the same ports. It is why a busy server can accumulate thousands of sockets in TIME_WAIT, and why that is normal rather than alarming.</p>
+            <p>Closing a connection takes four segments, not three, because each direction is shut independently. The side that closes first then sits in TIME_WAIT for twice the maximum segment lifetime - long enough that a straggling old segment cannot be mistaken for part of a new connection reusing the same ports. It is why a busy server can accumulate thousands of sockets in TIME_WAIT, and why that is normal rather than alarming.</p>
           </article>
           <article class="info-card">
             <h3>Congestion control is why the internet works at all</h3>
@@ -286,7 +286,7 @@
           </article>
           <article class="info-card">
             <h3>A lost packet and an empty pipe are different emergencies</h3>
-            <p>Three duplicate acknowledgements mean one segment went missing but others are still arriving, so the pipe is flowing &mdash; TCP halves its window and keeps going (fast recovery). A timeout means nothing is coming back at all, which is far worse, so the window collapses to one and slow start begins again. Watching the two responses side by side is the clearest way to see why the sawtooth has both gentle dips and sheer cliffs.</p>
+            <p>Three duplicate acknowledgements mean one segment went missing but others are still arriving, so the pipe is flowing - TCP halves its window and keeps going (fast recovery). A timeout means nothing is coming back at all, which is far worse, so the window collapses to one and slow start begins again. Watching the two responses side by side is the clearest way to see why the sawtooth has both gentle dips and sheer cliffs.</p>
           </article>
         </div>
       </section>

@@ -265,7 +265,7 @@
     lines.push('');
     lines.push('     ' + humanDuration(seconds));
     if (seconds > 4.35e17) {
-      lines.push('     — longer than the universe has existed (13.8 bn years).');
+      lines.push('     - longer than the universe has existed (13.8 bn years).');
     }
     lines.push('');
     lines.push(' Same length as the target. The weak one fell in front of you;');
@@ -330,7 +330,7 @@
     } else if (state.exhausted) {
       L.push('');
       if (curMode === 'wordlist') {
-        L.push(' Not in the common-password list. That is a decent sign — but');
+        L.push(' Not in the common-password list. That is a decent sign - but');
         L.push(' switch the attack to "both" to see brute force take over.');
       } else {
         L.push(' Exhausted the search space up to the length cap without a');
@@ -883,7 +883,7 @@
 
       if (outEl) {
         outEl.textContent = [
-          ' LIVE PASSWORD HASH CRACKER — nothing leaves this tab.',
+          ' LIVE PASSWORD HASH CRACKER - nothing leaves this tab.',
           '',
           ' Type a password (or click a weak preset above), choose a hash and an',
           ' attack, then press Start. The cracking runs in a Web Worker, so this',
@@ -891,7 +891,7 @@
           '',
           ' The common-password list falls first, then brute force takes over.',
           ' When something cracks, the readout projects how long a truly random',
-          ' password of the SAME length would take at the exact rate measured —',
+          ' password of the SAME length would take at the exact rate measured -',
           ' which is the whole point: weak passwords fall instantly, strong ones',
           ' never do.'
         ].join('\n');

@@ -59,14 +59,14 @@
   var LOOKUP_MECHANISMS = ['include', 'a', 'mx', 'ptr', 'exists', 'redirect'];
 
   var ALL_VERDICT = {
-    '-': ['-all', 'hard fail — receivers should reject anything not listed', 't-ok', 3],
-    '~': ['~all', 'soft fail — receivers should accept but mark it', 't-warn', 2],
-    '?': ['?all', 'neutral — states a policy and then declines to enforce it', 't-err', 1],
-    '+': ['+all', 'pass everything — any server on earth may send as this domain', 't-err', 0]
+    '-': ['-all', 'hard fail - receivers should reject anything not listed', 't-ok', 3],
+    '~': ['~all', 'soft fail - receivers should accept but mark it', 't-warn', 2],
+    '?': ['?all', 'neutral - states a policy and then declines to enforce it', 't-err', 1],
+    '+': ['+all', 'pass everything - any server on earth may send as this domain', 't-err', 0]
   };
 
   function auditSpf(recs) {
-    out.heading('SPF — who may send as this domain');
+    out.heading('SPF - who may send as this domain');
     var spf = recs.filter(function (r) { return /^v=spf1(\s|$)/i.test(r); });
 
     if (!spf.length) {
@@ -78,7 +78,7 @@
     if (spf.length > 1) {
       out.err('MULTIPLE SPF records (' + spf.length + ').');
       out.dim('This is a permerror. Receivers are required to treat it as broken,');
-      out.dim('so the effect is the same as having no SPF at all — arguably worse,');
+      out.dim('so the effect is the same as having no SPF at all - arguably worse,');
       out.dim('because it looks configured.');
       spf.forEach(function (r) { out.line('  ' + r, 't-dim'); });
       return { score: 0, max: 3, has: true, broken: true };
@@ -101,7 +101,7 @@
       if (mech === 'all') allTerm = qualifier;
       if (mech === 'redirect') redirectTo = body.split('=')[1] || '';
       if (mech === 'ptr') {
-        out.warn('  ptr is deprecated (RFC 7208 §5.5) — slow, unreliable, and');
+        out.warn('  ptr is deprecated (RFC 7208 §5.5) - slow, unreliable, and');
         out.warn('  some receivers ignore it entirely.');
       }
     });
@@ -122,7 +122,7 @@
       out.dim('    The RFC 7208 limit is 10, counted cumulatively across every');
       out.dim('    include. This record has ' + includes + ' include' +
               (includes === 1 ? '' : 's') + ', and each pulls in its own');
-      out.dim('    mechanisms, so the true total is higher than the number above —');
+      out.dim('    mechanisms, so the true total is higher than the number above -');
       out.dim('    working it out means recursively fetching each one.');
       out.dim('    Exceeding 10 breaks SPF entirely, with no warning anywhere.');
     }
@@ -135,7 +135,7 @@
        why this sits ahead of the no-policy branch and not inside it. */
     if (!allTerm && redirectTo) {
       out.row('default policy', 'redirect=' + redirectTo +
-              ' — delegated to that domain’s record', 't-warn');
+              ' - delegated to that domain’s record', 't-warn');
       out.dim('    The enforcing "all" lives in the SPF record at ' + redirectTo + '.');
       out.dim('    This audit did not fetch it, so the score below is provisional:');
       out.dim('    look that record up to see whether it ends -all or ~all.');
@@ -148,7 +148,7 @@
       return { score: 1, max: 3, has: true };
     }
     var v = ALL_VERDICT[allTerm];
-    out.row('default policy', v[0] + ' — ' + v[1], v[2]);
+    out.row('default policy', v[0] + ' - ' + v[1], v[2]);
     if (allTerm === '+') {
       out.err('  +all is worse than having no SPF record. It actively authorises');
       out.err('  every sender in the world.');
@@ -159,7 +159,7 @@
   /* -------------------------------------------------------------- DMARC -- */
   function auditDmarc(recs) {
     out.rule();
-    out.heading('DMARC — what receivers should do about failures');
+    out.heading('DMARC - what receivers should do about failures');
     var dm = recs.filter(function (r) { return /^v=DMARC1(\s*;|$)/i.test(r); });
 
     if (!dm.length) {
@@ -169,7 +169,7 @@
       return { score: 0, max: 3, has: false };
     }
     if (dm.length > 1) {
-      out.err('Multiple DMARC records — receivers treat this as no policy.');
+      out.err('Multiple DMARC records - receivers treat this as no policy.');
       return { score: 0, max: 3, has: true, broken: true };
     }
 
@@ -187,18 +187,18 @@
     var POLICY = {
       reject:     ['reject', 'failing mail is rejected outright', 't-ok', 3],
       quarantine: ['quarantine', 'failing mail goes to spam', 't-warn', 2],
-      none:       ['none', 'monitoring only — nothing is enforced', 't-err', 0]
+      none:       ['none', 'monitoring only - nothing is enforced', 't-err', 0]
     };
     var v = POLICY[p] || ['unknown (' + p + ')', 'not a valid policy value', 't-err', 0];
-    out.row('policy (p)', v[0] + ' — ' + v[1], v[2]);
+    out.row('policy (p)', v[0] + ' - ' + v[1], v[2]);
     if (p === 'none') {
       out.dim('    p=none is the right place to START, while you read reports and');
       out.dim('    fix legitimate senders. Left there permanently it provides no');
-      out.dim('    protection at all — which is where most domains sit.');
+      out.dim('    protection at all - which is where most domains sit.');
     }
 
     if (tags.sp) out.row('subdomain policy (sp)', tags.sp);
-    else out.dim('no sp tag — subdomains inherit the main policy');
+    else out.dim('no sp tag - subdomains inherit the main policy');
 
     var pct = tags.pct ? Number(tags.pct) : 100;
     out.row('percentage (pct)', pct + '%', pct < 100 ? 't-warn' : null);
@@ -210,7 +210,7 @@
     out.row('alignment', 'DKIM ' + (tags.adkim === 's' ? 'strict' : 'relaxed') +
                          ', SPF ' + (tags.aspf === 's' ? 'strict' : 'relaxed'));
     if (tags.rua) out.row('aggregate reports', tags.rua);
-    else out.warn('No rua tag — nobody is receiving aggregate reports, so there is');
+    else out.warn('No rua tag - nobody is receiving aggregate reports, so there is');
     if (!tags.rua) out.warn('no visibility into who is sending as this domain.');
     if (tags.ruf) out.row('forensic reports', tags.ruf);
 
@@ -222,11 +222,11 @@
   /* --------------------------------------------------------------- MX ---- */
   function auditMx(data) {
     out.rule();
-    out.heading('MX — where mail for this domain goes');
+    out.heading('MX - where mail for this domain goes');
     var answers = ((data && data.Answer) || []).filter(function (a) { return a.type === 15; });
     if (!answers.length) {
       out.warn('No MX records. This domain does not receive mail.');
-      out.dim('That is fine for a domain that only serves a website — but if it');
+      out.dim('That is fine for a domain that only serves a website - but if it');
       out.dim('also never SENDS mail, it should still publish SPF -all and');
       out.dim('DMARC p=reject so nobody can spoof it.');
       return { count: 0 };
@@ -239,7 +239,7 @@
        an ordinary record with a blank hostname would be nonsense. */
     var isNullMx = answers.length === 1 && /^0\s+\.?$/.test(String(answers[0].data).trim());
     if (isNullMx) {
-      out.row('null MX', '"0 ." — this domain explicitly accepts no mail', 't-ok');
+      out.row('null MX', '"0 ." - this domain explicitly accepts no mail', 't-ok');
       out.line('');
       out.ok('That is RFC 7505, and it is the right answer for a domain that');
       out.ok('never receives mail. Senders get an immediate permanent failure');
@@ -294,7 +294,7 @@
          glossed, because a testing-mode policy blocks nothing. */
       out.row('MTA-STS', 'record published', 't-ok');
       out.dim('    the record only advertises a policy at mta-sts.' + currentDomain);
-      out.dim('    — it does not itself enforce anything. The policy file is');
+      out.dim('    - it does not itself enforce anything. The policy file is');
       out.dim('    what says mode: enforce, and only enforce refuses to deliver');
       out.dim('    over a stripped or untrusted TLS connection; mode: testing');
       out.dim('    reports and delivers anyway.');
@@ -340,13 +340,13 @@
 
     var advice = [];
     if (!spf.has) advice.push('Publish an SPF record. Start with the providers you actually use, and end it with ~all.');
-    else if (spf.all === '+') advice.push('Change +all immediately — it authorises the entire internet.');
+    else if (spf.all === '+') advice.push('Change +all immediately - it authorises the entire internet.');
     else if (spf.all === '?') advice.push('?all enforces nothing. Move to ~all, then to -all once reports are clean.');
     else if (spf.all === '~') advice.push('Move SPF from ~all to -all once you are confident every legitimate sender is listed.');
     if (!dmarc.has) advice.push('Publish DMARC at _dmarc.' + currentDomain + ', starting at p=none with a rua address so you can see who is sending.');
     else if (dmarc.policy === 'none') advice.push('DMARC is at p=none, which enforces nothing. Once reports look clean, move to quarantine, then reject.');
     else if (dmarc.policy === 'quarantine') advice.push('Move DMARC from quarantine to reject to stop spoofed mail being delivered at all.');
-    if (dmarc.has && !dmarc.hasRua) advice.push('Add a rua address to DMARC — without reports you are enforcing blind.');
+    if (dmarc.has && !dmarc.hasRua) advice.push('Add a rua address to DMARC - without reports you are enforcing blind.');
     if (!extras.mta) advice.push('Consider MTA-STS to stop TLS downgrade on inbound mail.');
 
     if (advice.length) {
@@ -382,7 +382,7 @@
     }
     currentDomain = domain;
 
-    out.heading('Email security audit — ' + domain);
+    out.heading('Email security audit - ' + domain);
     out.dim('five DNS lookups, in sequence');
     out.line('');
 
@@ -403,7 +403,7 @@
         grade(spf, dmarc, extras);
         out.rule();
         out.dim('Every record above is public DNS. Nothing was probed on their');
-        out.dim('servers and no mail was sent — this is the same data any receiving');
+        out.dim('servers and no mail was sent - this is the same data any receiving');
         out.dim('mail server consults, and anyone can read it.');
         out.line('');
         out.dim('DKIM is not covered above, because it cannot be enumerated.');
@@ -479,9 +479,9 @@
     currentDomain = domain;
 
     out.clear();
-    out.heading('DKIM selector sweep — ' + domain);
+    out.heading('DKIM selector sweep - ' + domain);
     out.warn('This makes ' + (SELECTORS.length + 1) + ' DNS queries for the same');
-    out.warn('domain — one per guessed selector, plus one for a made-up name to');
+    out.warn('domain - one per guessed selector, plus one for a made-up name to');
     out.warn('check for a wildcard. That is a very distinctive pattern.');
     out.line('');
 
@@ -530,7 +530,7 @@
             out.err('will appear to exist. These results are meaningless here.');
           } else {
             out.dim('That record is not DKIM-shaped, so it will not be mistaken for');
-            out.dim('a key — but it does mean a negative result below proves even');
+            out.dim('a key - but it does mean a negative result below proves even');
             out.dim('less than usual for this domain.');
           }
           out.line('');
@@ -551,7 +551,7 @@
              target that does not exist. This is what a half-provisioned
              Microsoft 365 tenant looks like, and it is worth reporting. */
           out.warn('  ' + sel[0] + ': CNAME points at a target that does not exist');
-          out.dim('    (' + sel[1] + ' — delegation set up, key never provisioned)');
+          out.dim('    (' + sel[1] + ' - delegation set up, key never provisioned)');
         }
         next();
       });
@@ -564,7 +564,7 @@
         out.warn('No DKIM key found at any of the ' + SELECTORS.length + ' selectors tried.');
         out.line('');
         out.dim('This does NOT mean the domain has no DKIM. A selector is an');
-        out.dim('arbitrary label chosen by whoever configured signing — it can be');
+        out.dim('arbitrary label chosen by whoever configured signing - it can be');
         out.dim('anything, including a random string. The only reliable way to');
         out.dim('learn a selector is to read the DKIM-Signature header of a real');
         out.dim('message from this domain; the s= tag names it.');
@@ -593,7 +593,7 @@
             out.row('key size', 'could not be read from the record', 't-dim');
           }
         } else if (/p=\s*(;|$)/.test(f.record)) {
-          out.err('empty p= — this selector is REVOKED');
+          out.err('empty p= - this selector is REVOKED');
         }
       });
       out.line('');

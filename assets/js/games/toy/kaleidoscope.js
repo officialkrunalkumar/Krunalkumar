@@ -609,7 +609,7 @@
         auto = on;
         if (autoBtn) {
           autoBtn.setAttribute('aria-pressed', String(auto));
-          autoBtn.title = auto ? 'Auto-draw is on — click to take the pen' : 'Auto-draw: let the toy draw itself';
+          autoBtn.title = auto ? 'Auto-draw is on - click to take the pen' : 'Auto-draw: let the toy draw itself';
         }
         if (auto) {
           /* Start the pen from where it stopped rather than from the middle,
@@ -627,8 +627,8 @@
         if (mirrorBtn) {
           mirrorBtn.setAttribute('aria-pressed', String(mirror));
           mirrorBtn.title = mirror
-            ? 'Mirror is on — every wedge is reflected as well as turned'
-            : 'Mirror is off — the copies are turned only, so the figure keeps its handedness';
+            ? 'Mirror is on - every wedge is reflected as well as turned'
+            : 'Mirror is off - the copies are turned only, so the figure keeps its handedness';
         }
         sayFold();
       }
@@ -848,7 +848,7 @@
         ctx.fillStyle = 'rgba(148,163,184,0.62)';
         ctx.font = '13px "Segoe UI", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Drag anywhere in the disc to draw — or press Space and watch it draw itself', CX, H - 16);
+        ctx.fillText('Drag anywhere in the disc to draw - or press Space and watch it draw itself', CX, H - 16);
         ctx.textAlign = 'left';
       }
 

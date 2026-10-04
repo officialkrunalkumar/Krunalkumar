@@ -74,7 +74,7 @@
                         "name": "Is 0.1 + 0.2 a bug in JavaScript?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Every language using IEEE-754 binary doubles gives the same answer — C, Java, Python, Rust, Go, Swift, and the cell in your spreadsheet. Some of them hide it by printing fewer digits by default. The bits are identical; only the printing differs."
+                                "text": "No. Every language using IEEE-754 binary doubles gives the same answer - C, Java, Python, Rust, Go, Swift, and the cell in your spreadsheet. Some of them hide it by printing fewer digits by default. The bits are identical; only the printing differs."
                         }
                 },
                 {
@@ -90,7 +90,7 @@
                         "name": "Should I use a decimal type instead?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "For money, yes — cents are decimal, and decimal arithmetic keeps them exact. For measurement, science and graphics, no: binary floating point is faster, has a far wider range, and decimal has exactly the same problem with one third that binary has with one tenth. Neither is more accurate in general; they are exact about different things."
+                                "text": "For money, yes - cents are decimal, and decimal arithmetic keeps them exact. For measurement, science and graphics, no: binary floating point is faster, has a far wider range, and decimal has exactly the same problem with one third that binary has with one tenth. Neither is more accurate in general; they are exact about different things."
                         }
                 },
                 {
@@ -98,7 +98,7 @@
                         "name": "Can a NaN payload be used to carry information?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Only into and out of a typed-array view, which moves raw bytes and will faithfully carry any payload you write. Through arithmetic, no: the standard says the NaN an operation returns is implementation-defined, so an engine may hand back a different one and some operations do. The NaN panel runs both experiments in your browser and reports what actually happened rather than telling you in advance — the answer is not the same everywhere."
+                                "text": "Only into and out of a typed-array view, which moves raw bytes and will faithfully carry any payload you write. Through arithmetic, no: the standard says the NaN an operation returns is implementation-defined, so an engine may hand back a different one and some operations do. The NaN panel runs both experiments in your browser and reports what actually happened rather than telling you in advance - the answer is not the same everywhere."
                         }
                 },
                 {
@@ -106,7 +106,7 @@
                         "name": "Is Kahan summation always worth it?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It does about four times the arithmetic of a naive loop, so not always. Sorting by magnitude first, or pairwise summation — which is what NumPy does — recovers much of the benefit for less. And any of them can be silently removed by a compiler permitted to re-associate floating point, which is one of the things -ffast-math permits: the compensation terms are exactly what it will prove to be zero."
+                                "text": "It does about four times the arithmetic of a naive loop, so not always. Sorting by magnitude first, or pairwise summation - which is what NumPy does - recovers much of the benefit for less. And any of them can be silently removed by a compiler permitted to re-associate floating point, which is one of the things -ffast-math permits: the compensation terms are exactly what it will prove to be zero."
                         }
                 },
                 {
@@ -114,7 +114,7 @@
                         "name": "Why do large IDs from an API arrive as strings?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because a double stops being able to hold consecutive integers above 2^53, which is 9007199254740992. A 64-bit database id larger than that cannot survive being parsed into a Number, and the failure is silent — the value is not rejected, it is quietly changed to a nearby one. The spacing panel shows exactly where that starts."
+                                "text": "Because a double stops being able to hold consecutive integers above 2^53, which is 9007199254740992. A 64-bit database id larger than that cannot survive being parsed into a Number, and the failure is silent - the value is not rejected, it is quietly changed to a nearby one. The spacing panel shows exactly where that starts."
                         }
                 }
         ]
@@ -211,7 +211,7 @@
           </ol>
         </nav>
         <h1>IEEE-754, one bit at a time</h1>
-        <p class="hero-text">0.1 + 0.2 is not 0.3, and that is not a bug in your language. Flip the bits of a float, watch the addition happen one stage at a time, and read the exact decimal value the pattern really holds &mdash; every digit of it, computed here rather than printed by the browser.</p>
+        <p class="hero-text">0.1 + 0.2 is not 0.3, and that is not a bug in your language. Flip the bits of a float, watch the addition happen one stage at a time, and read the exact decimal value the pattern really holds - every digit of it, computed here rather than printed by the browser.</p>
         <ul class="lab-facts">
           <li>Every bit clickable, float64 and float32</li>
           <li>The exact decimal value, not the printed one</li>
@@ -240,7 +240,7 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
@@ -248,10 +248,10 @@
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
                   <li>Everything is computed in this tab</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>Nothing is saved; reload and it starts over</li>
                   <li>The timing test measures this machine only</li>
-                  <li>Only float64 and float32 &mdash; no float16, no decimal types</li>
+                  <li>Only float64 and float32 - no float16, no decimal types</li>
                 </ul>
               </div>
               <div>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -277,7 +277,7 @@
                   title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-ieee754-mount" id="viz-ieee754-mount">
-          <p class="lab-proc-fallback">Laying out the bits and checking the software adder against your processor&hellip; if this message stays, the visualiser did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Laying out the bits and checking the software adder against your processor&hellip; if this message stays, the visualiser did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -288,11 +288,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The value and its printed name are different things</h3>
-            <p>0.30000000000000004 is not the value of 0.1 + 0.2. It is the shortest decimal that no other double is closer to, chosen by the printing routine. The value is 0.3000000000000000444089209850062616169452667236328125, exactly, with nothing left over &mdash; every binary fraction terminates in decimal, because one half is five tenths. This lab computes those expansions itself, with big-integer arithmetic over digit arrays, so what you read is the number rather than a name for it.</p>
+            <p>0.30000000000000004 is not the value of 0.1 + 0.2. It is the shortest decimal that no other double is closer to, chosen by the printing routine. The value is 0.3000000000000000444089209850062616169452667236328125, exactly, with nothing left over - every binary fraction terminates in decimal, because one half is five tenths. This lab computes those expansions itself, with big-integer arithmetic over digit arrays, so what you read is the number rather than a name for it.</p>
           </article>
           <article class="info-card">
             <h3>Nothing rounded badly</h3>
-            <p>Decimal 0.1 is not representable in binary at all, so it is replaced by the nearest double before any arithmetic happens; the same for 0.2. The addition that follows is correctly rounded &mdash; the page checks that claim rather than repeating it, by computing the exact sum and confirming the machine landed on the nearest double to it. The error was there before the plus sign, in the two substitutions.</p>
+            <p>Decimal 0.1 is not representable in binary at all, so it is replaced by the nearest double before any arithmetic happens; the same for 0.2. The addition that follows is correctly rounded - the page checks that claim rather than repeating it, by computing the exact sum and confirming the machine landed on the nearest double to it. The error was there before the plus sign, in the two substitutions.</p>
           </article>
           <article class="info-card">
             <h3>Subnormals are the floor, not a defect</h3>
@@ -311,7 +311,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is 0.1 + 0.2 a bug in JavaScript?</summary>
-            <div>No. Every language using IEEE-754 binary doubles gives the same answer &mdash; C, Java, Python, Rust, Go, Swift, and the cell in your spreadsheet. Some of them hide it by printing fewer digits by default. The bits are identical; only the printing differs.</div>
+            <div>No. Every language using IEEE-754 binary doubles gives the same answer - C, Java, Python, Rust, Go, Swift, and the cell in your spreadsheet. Some of them hide it by printing fewer digits by default. The bits are identical; only the printing differs.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does the exact value so often end in a 5?</summary>
@@ -319,19 +319,19 @@
           </details>
           <details class="lab-faq">
             <summary>Should I use a decimal type instead?</summary>
-            <div>For money, yes &mdash; cents are decimal, and decimal arithmetic keeps them exact. For measurement, science and graphics, no: binary floating point is faster, has a far wider range, and decimal has exactly the same problem with one third that binary has with one tenth. Neither is more accurate in general; they are exact about different things.</div>
+            <div>For money, yes - cents are decimal, and decimal arithmetic keeps them exact. For measurement, science and graphics, no: binary floating point is faster, has a far wider range, and decimal has exactly the same problem with one third that binary has with one tenth. Neither is more accurate in general; they are exact about different things.</div>
           </details>
           <details class="lab-faq">
             <summary>Can a NaN payload be used to carry information?</summary>
-            <div>Only into and out of a typed-array view, which moves raw bytes and will faithfully carry any payload you write. Through arithmetic, no: the standard says the NaN an operation returns is implementation-defined, so an engine may hand back a different one and some operations do. The NaN panel runs both experiments in your browser and reports what actually happened rather than telling you in advance &mdash; the answer is not the same everywhere.</div>
+            <div>Only into and out of a typed-array view, which moves raw bytes and will faithfully carry any payload you write. Through arithmetic, no: the standard says the NaN an operation returns is implementation-defined, so an engine may hand back a different one and some operations do. The NaN panel runs both experiments in your browser and reports what actually happened rather than telling you in advance - the answer is not the same everywhere.</div>
           </details>
           <details class="lab-faq">
             <summary>Is Kahan summation always worth it?</summary>
-            <div>It does about four times the arithmetic of a naive loop, so not always. Sorting by magnitude first, or pairwise summation &mdash; which is what NumPy does &mdash; recovers much of the benefit for less. And any of them can be silently removed by a compiler permitted to re-associate floating point, which is one of the things -ffast-math permits: the compensation terms are exactly what it will prove to be zero.</div>
+            <div>It does about four times the arithmetic of a naive loop, so not always. Sorting by magnitude first, or pairwise summation - which is what NumPy does - recovers much of the benefit for less. And any of them can be silently removed by a compiler permitted to re-associate floating point, which is one of the things -ffast-math permits: the compensation terms are exactly what it will prove to be zero.</div>
           </details>
           <details class="lab-faq">
             <summary>Why do large IDs from an API arrive as strings?</summary>
-            <div>Because a double stops being able to hold consecutive integers above 2^53, which is 9007199254740992. A 64-bit database id larger than that cannot survive being parsed into a Number, and the failure is silent &mdash; the value is not rejected, it is quietly changed to a nearby one. The spacing panel shows exactly where that starts.</div>
+            <div>Because a double stops being able to hold consecutive integers above 2^53, which is 9007199254740992. A 64-bit database id larger than that cannot survive being parsed into a Number, and the failure is silent - the value is not rejected, it is quietly changed to a nearby one. The spacing panel shows exactly where that starts.</div>
           </details>
       </section>
 

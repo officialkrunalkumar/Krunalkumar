@@ -167,7 +167,7 @@
             g.stat('teleports', safeTeleports);
           }
           px = x; py = y;
-          message = safe ? 'Safe teleport' : 'Teleported — good luck';
+          message = safe ? 'Safe teleport' : 'Teleported - good luck';
           g.beep(600, 0.06, 'sine');
           advance();
           return;

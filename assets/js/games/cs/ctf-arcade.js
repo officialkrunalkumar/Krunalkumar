@@ -35,7 +35,7 @@
       flag: 'CTF{base64_is_not_encryption}',
       hint: 'Letters, digits, and a trailing equals sign used as padding. That alphabet and that padding are base64 and almost nothing else.',
       why: 'Base64 rewrites three bytes as four characters drawn from a 64-character alphabet, so binary can travel ' +
-        'through anything that only accepts text &mdash; mail bodies, JSON, a URL. It is an encoding, not a cipher: there ' +
+        'through anything that only accepts text - mail bodies, JSON, a URL. It is an encoding, not a cipher: there ' +
         'is no key, the table is published, and anyone who recognises it can undo it. The <code>=</code> on the end ' +
         'is padding to a multiple of four, and it is usually the thing that gives base64 away at a glance.',
       lab: 'The <a href="/labs/encoding">encoder and decoder</a> in Labs detects the format for you and shows the bytes.'
@@ -60,7 +60,7 @@
       art: '}sdrawkcab_em_daer{FTC',
       flag: 'CTF{read_me_backwards}',
       hint: 'Read the last character first. A flag never ends with an opening brace.',
-      why: 'There is nothing to decode here &mdash; the string is simply written in reverse, and it is in the ladder ' +
+      why: 'There is nothing to decode here - the string is simply written in reverse, and it is in the ladder ' +
         'because it is the one people stare straight past while trying every decoder they own. The braces settle ' +
         'it in a second: a flag opens with <code>{</code> and closes with <code>}</code>, so a string that starts ' +
         'with a closing brace is either reversed or not a flag. Check the cheap thing first.',
@@ -72,7 +72,7 @@
       brief: 'Posted under a spoiler warning on a forum.',
       art: 'PGS{ebg13_vf_pnrfne_guvegrra}',
       flag: 'CTF{rot13_is_caesar_thirteen}',
-      hint: 'Every flag starts with the same three letters. Here they arrived as P, G and S — count the distance from C to P.',
+      hint: 'Every flag starts with the same three letters. Here they arrived as P, G and S - count the distance from C to P.',
       why: 'ROT13 shifts each letter thirteen places through the alphabet. Because the alphabet is twenty-six letters ' +
         'long, applying it twice returns the original, which is why it needs no separate encoder and decoder. ' +
         'It exists to stop you reading a spoiler by accident, and it protects nothing from anybody who is trying. ' +
@@ -89,7 +89,7 @@
       why: 'A URL may only carry a limited set of characters, so everything else is written as <code>%</code> ' +
         'followed by that byte in hex. <code>%7B</code> is <code>{</code>, <code>%7D</code> is <code>}</code> and ' +
         '<code>%20</code> is a space. That is why a flag sitting in a query string nearly always turns up as ' +
-        '<code>CTF%7B...%7D</code>, and why <code>%2D</code> here is just a hyphen encoded for no reason &mdash; which ' +
+        '<code>CTF%7B...%7D</code>, and why <code>%2D</code> here is just a hyphen encoded for no reason - which ' +
         'is allowed, and is a common way of slipping a string past a filter that only checks for the literal text.',
       lab: 'The <a href="/labs/url-inspector">URL inspector</a> pulls a link apart parameter by parameter and unwraps each encoding layer.'
     },
@@ -102,7 +102,7 @@
       hint: 'Each group is one ASCII byte. 01000011 is 64 + 2 + 1 = 67.',
       why: 'Eight bits to a byte, one byte per character, plain ASCII. Two patterns are worth memorising because ' +
         'they let you read a binary blob without converting anything: capital letters all begin <code>010</code> ' +
-        'and lowercase letters all begin <code>011</code>. The gap between the two is a single bit &mdash; bit 5 &mdash; which ' +
+        'and lowercase letters all begin <code>011</code>. The gap between the two is a single bit - bit 5 - which ' +
         'is the whole reason changing case in ASCII is one XOR with 32.',
       lab: 'The <a href="/labs/encoding">encoder and decoder</a> handles binary in both directions, spaces or no spaces.'
     },
@@ -132,7 +132,7 @@
       flag: 'CTF{metadata_outlives_the_photo}',
       hint: 'Read every field, including the ones cameras leave for the user rather than fill in themselves.',
       why: 'EXIF is a block of tags a camera writes into the image file itself, and it travels with the picture ' +
-        'wherever it goes. Most of it is dull &mdash; exposure, focal length &mdash; but the same block routinely carries the ' +
+        'wherever it goes. Most of it is dull - exposure, focal length - but the same block routinely carries the ' +
         'exact coordinates the shutter was pressed at, the phone\'s model, and free-text fields like ' +
         '<code>UserComment</code> that editing software fills in and nobody ever looks at. The coordinates above ' +
         'are a real place. This is how people have published their own home address attached to a photo of a cat.',
@@ -154,11 +154,11 @@
         'Vary: Accept-Encoding',
       flag: 'CTF{set_cookie_is_just_a_header}',
       hint: 'Three cookies are set. One of them is not doing a job any site needs, and its value still has percent-encoding on it.',
-      why: 'A cookie is not a special kind of storage &mdash; it is a header the server sends and the browser sends back ' +
+      why: 'A cookie is not a special kind of storage - it is a header the server sends and the browser sends back ' +
         'on every subsequent request to that host. Anything a developer puts in one is visible in the response, ' +
         'in the browser\'s own tools, and to anything sitting on the path that can read the traffic. The braces ' +
-        'arrive percent-encoded not because they are illegal &mdash; RFC 6265 actually allows them in a cookie value ' +
-        '&mdash; but because most frameworks encode everything outside a safe subset rather than track which characters ' +
+        'arrive percent-encoded not because they are illegal - RFC 6265 actually allows them in a cookie value ' +
+        '- but because most frameworks encode everything outside a safe subset rather than track which characters ' +
         'are reserved (semicolons, commas, quotes and whitespace are). So decode it exactly as in the URL level. ' +
         'Note which cookies here carry <code>HttpOnly</code> and <code>Secure</code>, and which one does not.',
       lab: 'The <a href="/labs/url-inspector">URL inspector</a> decodes values like this one without you having to visit the site.'
@@ -172,7 +172,7 @@
       hint: 'You know the plaintext of the first three characters. C became J.',
       why: 'A Caesar cipher shifts every letter by a fixed amount, and there are only twenty-five shifts that do ' +
         'anything at all, so it is broken by trying them. You did not need to: the flag format hands you a crib. ' +
-        'Knowing three characters of plaintext collapses the whole key space to one candidate &mdash; <code>C</code> to ' +
+        'Knowing three characters of plaintext collapses the whole key space to one candidate - <code>C</code> to ' +
         '<code>J</code> is seven places. A known-plaintext attack is the same idea at industrial scale, and it is ' +
         'why real ciphers are designed to survive an attacker who already knows what some of the message says.',
       lab: 'The <a href="/labs/cipher">cipher playground</a> lists every shift down the page, so the readable one just appears.'
@@ -189,7 +189,7 @@
         'because the same plaintext letter comes out differently depending on where it lands. It held up for ' +
         'three centuries and it is still breakable without the key: find the key length first, usually with the ' +
         'index of coincidence, and each slice of the message is then an ordinary Caesar. The awkward part in ' +
-        'practice is exactly the rule stated above &mdash; whether the key steps forward on punctuation, since ' +
+        'practice is exactly the rule stated above - whether the key steps forward on punctuation, since ' +
         'different implementations disagree and the wrong choice garbles everything after the first symbol.',
       lab: 'The <a href="/labs/cipher">cipher playground</a> does Vigenere with a key, and will attack one without a key.'
     },
@@ -199,7 +199,7 @@
       brief: 'One encoding wrapped around another. Peel the outer one first.',
       art: 'UEdTe2dqYl95bmxyZWZfcXJyY30=',
       flag: 'CTF{two_layers_deep}',
-      hint: 'Base64, from the padding. What falls out is the right shape for a flag but the wrong letters — you have seen that shape already in this ladder.',
+      hint: 'Base64, from the padding. What falls out is the right shape for a flag but the wrong letters - you have seen that shape already in this ladder.',
       why: 'The rule for a chain is to peel whichever layer you can identify from the outside, and never to guess. ' +
         'Padding and the base64 alphabet identify the outer layer here. What it yields is ' +
         '<code>PGS{gjb_ynlref_qrrc}</code>: braces and underscores in the right places, so the structure survived ' +
@@ -216,7 +216,7 @@
       flag: 'CTF{peel_it_layer_by_layer}',
       hint: 'Pairs of hex digits, so decode that first. The text that comes out is not the flag, but its alphabet and its length should look familiar.',
       why: 'Hex on the outside, base64 underneath. The tell after the first decode is that the result is printable ' +
-        'ASCII made only of letters, digits and a padding character &mdash; which is base64 rather than a message. ' +
+        'ASCII made only of letters, digits and a padding character - which is base64 rather than a message. ' +
         'That is the general skill this ladder is really about: identify a layer by its alphabet and its length ' +
         'rather than by trying decoders at random. Hex is always an even number of characters from a set of ' +
         'sixteen; base64 is a set of sixty-four in blocks of four; a Caesar or Vigenere keeps the punctuation and ' +
@@ -481,7 +481,7 @@
         } else if (given.indexOf('ctf{') !== 0) {
           say('Not it. Every flag here is the whole thing, from CTF{ to the closing brace.', 'wrong');
         } else {
-          say('Not it' + (tries > 2 ? ' — ' + tries + ' tries on this one.' : '.'), 'wrong');
+          say('Not it' + (tries > 2 ? ' - ' + tries + ' tries on this one.' : '.'), 'wrong');
         }
         g.beep(200, 0.07, 'square');
         focus();
@@ -523,7 +523,7 @@
         var message = solved + ' of ' + LEVELS.length + ' solved';
         message += hintsUsed ? ', with ' + hintsUsed + (hintsUsed === 1 ? ' hint.' : ' hints.') : ', no hints.';
         if (solved === LEVELS.length && !hintsUsed) {
-          message += ' That is the maximum — every layer identified on sight.';
+          message += ' That is the maximum - every layer identified on sight.';
         } else if (solved >= 9) {
           message += ' The ones that catch people are the chains, where the trick is to name the outer layer before touching it.';
         } else {

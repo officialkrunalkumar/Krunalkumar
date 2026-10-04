@@ -88,7 +88,7 @@
                         "name": "Does it handle 80C, section 24(b) and HRA?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes, as an option that is off by default, and only for the old regime. Section 24(b) interest on a self-occupied property, 80C principal — sharing one ceiling with your PF, insurance and ELSS, and competing with the stamp duty in the year you buy — and the renter’s HRA exemption under 10(13A) as the least of its three tests, with the metro split. Every ceiling is a field, because they move with each Finance Act. The new regime removes all of it, so if you are in the new regime leave the toggle off. None of this is tax advice."
+                                "text": "Yes, as an option that is off by default, and only for the old regime. Section 24(b) interest on a self-occupied property, 80C principal - sharing one ceiling with your PF, insurance and ELSS, and competing with the stamp duty in the year you buy - and the renter’s HRA exemption under 10(13A) as the least of its three tests, with the metro split. Every ceiling is a field, because they move with each Finance Act. The new regime removes all of it, so if you are in the new regime leave the toggle off. None of this is tax advice."
                         }
                 },
                 {
@@ -112,7 +112,7 @@
                         "name": "Is anything I type uploaded?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no server behind this page and no network request is made. The whole model — the amortisation, both portfolios, the tax arithmetic and the twenty-five sensitivity runs — is computed in your browser tab. A property price, a rent and a salary are not details worth handing to a website, which is exactly why the work happens here."
+                                "text": "No. There is no server behind this page and no network request is made. The whole model - the amortisation, both portfolios, the tax arithmetic and the twenty-five sensitivity runs - is computed in your browser tab. A property price, a rent and a salary are not details worth handing to a website, which is exactly why the work happens here."
                         }
                 }
         ]
@@ -209,7 +209,7 @@
           </ol>
         </nav>
         <h1>Rent versus buy, compared on net worth rather than on the monthly outgo</h1>
-        <p class="hero-text">Almost every comparison of renting and buying puts an EMI next to a rent and declares a winner. That comparison is not close to right: part of the EMI is principal, which is savings, and the renter has not thrown their down payment away either &mdash; they are still holding it. The only question with an answer is what each path is worth after the years you actually intend to stay. This models both, month by month, and marks the year the curves cross &mdash; or says plainly that they never do.</p>
+        <p class="hero-text">Almost every comparison of renting and buying puts an EMI next to a rent and declares a winner. That comparison is not close to right: part of the EMI is principal, which is savings, and the renter has not thrown their down payment away either - they are still holding it. The only question with an answer is what each path is worth after the years you actually intend to stay. This models both, month by month, and marks the year the curves cross - or says plainly that they never do.</p>
         <ul class="lab-facts">
           <li>Net worth at year N, not monthly outgo</li>
           <li>A real amortisation schedule, walked</li>
@@ -238,17 +238,17 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved between visits</li>
                   <li>No price data, no rent index, no lender or fund feed</li>
-                  <li>No advice &mdash; it is arithmetic, and its limits are printed on the page</li>
+                  <li>No advice - it is arithmetic, and its limits are printed on the page</li>
                 </ul>
               </div>
               <div>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -283,8 +283,8 @@
         <p class="rvb-banner">
           <span class="rvb-banner-tag">Two guesses decide this</span>
           Everything here is arithmetic on numbers you type, and two of those numbers
-          &mdash; <strong>property appreciation</strong> and <strong>investment return</strong>
-          &mdash; are guesses that nobody can make reliably. Move each of them by a
+          - <strong>property appreciation</strong> and <strong>investment return</strong>
+          - are guesses that nobody can make reliably. Move each of them by a
           couple of points and the answer flips. That is not a flaw in the model, it is
           the finding, and the grid near the bottom of this page shows it happening.
           The starting values below are placeholders so the controls do something.
@@ -317,7 +317,7 @@
                        value="20" inputmode="numeric" autocomplete="off" />
               </div>
               <div class="lab-metric">
-                <label for="rv-apprec">Property appreciation (% a year) &mdash; a guess</label>
+                <label for="rv-apprec">Property appreciation (% a year) - a guess</label>
                 <input class="lab-toolfield" type="number" id="rv-apprec" min="-20" max="30" step="0.5"
                        value="7" inputmode="decimal" autocomplete="off" />
               </div>
@@ -345,7 +345,7 @@
                        value="6" inputmode="decimal" autocomplete="off" />
               </div>
               <div class="lab-metric">
-                <label for="rv-upfront">Other one-off costs &mdash; legal, brokerage, fit-out (&#8377;)</label>
+                <label for="rv-upfront">Other one-off costs - legal, brokerage, fit-out (&#8377;)</label>
                 <input class="lab-toolfield" type="number" id="rv-upfront" min="0" step="10000"
                        value="200000" inputmode="numeric" autocomplete="off" />
               </div>
@@ -399,7 +399,7 @@
                        value="300000" inputmode="numeric" autocomplete="off" />
               </div>
               <div class="lab-metric">
-                <label for="rv-return">Investment return (% a year) &mdash; also a guess</label>
+                <label for="rv-return">Investment return (% a year) - also a guess</label>
                 <input class="lab-toolfield" type="number" id="rv-return" min="-20" max="40" step="0.5"
                        value="9" inputmode="decimal" autocomplete="off" />
               </div>
@@ -426,7 +426,7 @@
                 </label>
               </div>
               <div class="lab-metric">
-                <label for="rv-broker">Cost to sell &mdash; brokerage and paperwork (% of value)</label>
+                <label for="rv-broker">Cost to sell - brokerage and paperwork (% of value)</label>
                 <input class="lab-toolfield" type="number" id="rv-broker" min="0" max="20" step="0.25"
                        value="2" inputmode="decimal" autocomplete="off" />
               </div>
@@ -463,7 +463,7 @@
           </fieldset>
 
           <fieldset class="rvb-group" id="rv-taxfields" data-active="no">
-            <legend>Old-regime tax treatment &mdash; off by default</legend>
+            <legend>Old-regime tax treatment - off by default</legend>
             <p class="rvb-hint">
               <strong>Read this before switching it on.</strong> Everything in this block
               belongs to the <strong>old</strong> income tax regime. The new regime is the
@@ -514,7 +514,7 @@
               <div class="lab-metric">
                 <label for="rv-metro">City, for the third HRA test</label>
                 <select class="lab-select" id="rv-metro">
-                  <option value="metro" selected>Metro &mdash; Delhi, Mumbai, Kolkata, Chennai (50%)</option>
+                  <option value="metro" selected>Metro - Delhi, Mumbai, Kolkata, Chennai (50%)</option>
                   <option value="non">Anywhere else, Bengaluru and Pune included (40%)</option>
                 </select>
               </div>
@@ -588,7 +588,7 @@
             places you would want to live, whether your landlord will renew, and what it
             is worth to you to never again be asked to vacate at two months&rsquo; notice.
             A house is also a forced savings plan, which for many people is the honest
-            reason it works &mdash; a renter who spends the difference instead of investing
+            reason it works - a renter who spends the difference instead of investing
             it loses this comparison outright, and the model assumes they never do.
             It also leaves out prepayment, rate resets, loan top-ups, GST on
             under-construction property, possession delays, one-time society corpus,
@@ -606,7 +606,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>An EMI is not a rent, and comparing them is the mistake</h3>
-            <p>The EMI contains principal, which is savings, and the rent contains none. So a rent of &#8377;22,000 against an EMI of &#8377;55,000 is not a &#8377;33,000 gap; part of that money is moving from one of your pockets to another. Compare the two paths on what you are worth at the end and the whole framing changes &mdash; which is why this lab plots net worth and nothing else.</p>
+            <p>The EMI contains principal, which is savings, and the rent contains none. So a rent of &#8377;22,000 against an EMI of &#8377;55,000 is not a &#8377;33,000 gap; part of that money is moving from one of your pockets to another. Compare the two paths on what you are worth at the end and the whole framing changes - which is why this lab plots net worth and nothing else.</p>
           </article>
           <article class="info-card">
             <h3>The renter is holding the down payment, and it has to be invested</h3>
@@ -637,7 +637,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does it handle 80C, section 24(b) and HRA?</summary>
-            <div>Yes, as an option that is off by default, and only for the old regime. Section 24(b) interest on a self-occupied property, 80C principal &mdash; sharing one ceiling with your PF, insurance and ELSS, and competing with the stamp duty in the year you buy &mdash; and the renter&rsquo;s HRA exemption under 10(13A) as the least of its three tests, with the metro split. Every ceiling is a field, because they move with each Finance Act. The new regime removes all of it, so if you are in the new regime leave the toggle off. None of this is tax advice.</div>
+            <div>Yes, as an option that is off by default, and only for the old regime. Section 24(b) interest on a self-occupied property, 80C principal - sharing one ceiling with your PF, insurance and ELSS, and competing with the stamp duty in the year you buy - and the renter&rsquo;s HRA exemption under 10(13A) as the least of its three tests, with the metro split. Every ceiling is a field, because they move with each Finance Act. The new regime removes all of it, so if you are in the new regime leave the toggle off. None of this is tax advice.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does it not just tell me which one is better?</summary>
@@ -649,7 +649,7 @@
           </details>
           <details class="lab-faq">
             <summary>Is anything I type uploaded?</summary>
-            <div>No. There is no server behind this page and no network request is made. The whole model &mdash; the amortisation, both portfolios, the tax arithmetic and the twenty-five sensitivity runs &mdash; is computed in your browser tab. A property price, a rent and a salary are not details worth handing to a website, which is exactly why the work happens here.</div>
+            <div>No. There is no server behind this page and no network request is made. The whole model - the amortisation, both portfolios, the tax arithmetic and the twenty-five sensitivity runs - is computed in your browser tab. A property price, a rent and a salary are not details worth handing to a website, which is exactly why the work happens here.</div>
           </details>
       </section>
 

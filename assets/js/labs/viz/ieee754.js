@@ -1185,7 +1185,7 @@
 
     var intro = block('The pattern');
     intro.appendChild(para(
-      'Every finite value below is a 53-bit integer multiplied by a power of two — ' +
+      'Every finite value below is a 53-bit integer multiplied by a power of two - ' +
       'in float32, a 24-bit integer. Click any bit to flip it. Everything under the ' +
       'pattern is recomputed from the bits themselves, including the exact decimal, ' +
       'which is computed digit by digit here and not read out of the browser.'));
@@ -1322,8 +1322,8 @@
            ? '  (all ones: reserved for infinity and NaN)'
            : '  unbiased: ' + (d.E - fmt.bias)))));
     fields.appendChild(row('Leading significand bit',
-      d.kind === 'normal' ? '1, implicit — it is not stored, it is implied by a nonzero exponent'
-        : (d.kind === 'subnormal' ? '0 — this is what makes a subnormal subnormal'
+      d.kind === 'normal' ? '1, implicit - it is not stored, it is implied by a nonzero exponent'
+        : (d.kind === 'subnormal' ? '0 - this is what makes a subnormal subnormal'
            : 'not applicable for ' + classLabel(d.kind))));
     if (d.kind === 'normal' || d.kind === 'subnormal' || d.kind === 'zero') {
       fields.appendChild(row('Significand as an integer', bigToString(bigFromBits(d.sig))));
@@ -1356,7 +1356,7 @@
         sp.appendChild(row('Next representable value', decToString(u.next)));
         sp.appendChild(row('Cross-check', u.agrees
           ? 'the difference of the two exact expansions equals 2^' + u.power + ', as it should'
-          : 'MISMATCH — please report this, it is a bug in this page'));
+          : 'MISMATCH - please report this, it is a bug in this page'));
         out.appendChild(sp);
       }
 
@@ -1374,7 +1374,7 @@
              because rounding to 24 bits moves the value in whichever
              direction is nearer and here that was up. */
           conv.appendChild(row('float64 value minus float32 value',
-            decIsZero(lost) ? 'zero — this value survives in 24 bits' : decToString(lost)));
+            decIsZero(lost) ? 'zero - this value survives in 24 bits' : decToString(lost)));
         }
         out.appendChild(conv);
       }
@@ -1382,7 +1382,7 @@
       var inf = block('Infinity');
       inf.appendChild(para(
         'The exponent field is all ones and the fraction is all zeros. There is no decimal ' +
-        'expansion because there is no number here — this is the value arithmetic reaches when ' +
+        'expansion because there is no number here - this is the value arithmetic reaches when ' +
         'a result is too large to represent, and it compares greater than every finite double.'));
       out.appendChild(inf);
     } else {
@@ -1581,7 +1581,7 @@
       'shifted   ' + sigString(st.extLo, fmt.sigBits) + '   after >> ' + st.shift));
     li.appendChild(row('Bits pushed past the round bit', num(st.lostBits)));
     li.appendChild(row('Sticky bit', st.extLo[SIG + 2] +
-      (st.extLo[SIG + 2] ? ' — something nonzero was lost down there' : ' — nothing was lost')));
+      (st.extLo[SIG + 2] ? ' - something nonzero was lost down there' : ' - nothing was lost')));
     list.appendChild(li);
 
     /* --- step 3 ---------------------------------------------------------- */
@@ -1683,7 +1683,7 @@
       li = stepItem(n, 'What the rounding cost');
       li.appendChild(row('Exact sum of the two stored values', decToString(exactSum)));
       li.appendChild(row('Exact value of the double returned', decToString(exR)));
-      li.appendChild(row('Difference', decIsZero(err) ? 'zero — this addition was exact' : decToString(err), 'fp-row-hi'));
+      li.appendChild(row('Difference', decIsZero(err) ? 'zero - this addition was exact' : decToString(err), 'fp-row-hi'));
       if (u && !decIsZero(err)) {
         var half = exactFromMantissa(0, [1], u.power - 1);
         var full = exactFromMantissa(0, [1], u.power);
@@ -1691,9 +1691,9 @@
         var cmpHalf = decCmp(mag, half);
         li.appendChild(row('Spacing at this magnitude', decToString(u.gap) + '  (2^' + u.power + ')'));
         li.appendChild(row('So the error is',
-          cmpHalf === 0 ? 'exactly half a spacing — the largest a correctly rounded addition can be'
+          cmpHalf === 0 ? 'exactly half a spacing - the largest a correctly rounded addition can be'
             : (cmpHalf < 0 ? 'less than half a spacing, as a correctly rounded result must be'
-               : 'MORE than half a spacing, which should be impossible — please report this')));
+               : 'MORE than half a spacing, which should be impossible - please report this')));
         if (decCmp(mag, full) === 0) li.appendChild(note('The error is exactly one spacing.', 'fp-warn'));
       }
       /* A double addition is defined to return the nearest representable value
@@ -1768,7 +1768,7 @@
     li.appendChild(para(same
       ? 'The software adder above reproduced the hardware result bit for bit. That is the only ' +
         'reason any of the intermediate steps are worth believing.'
-      : 'They differ, which means the adder on this page has a bug. Please report it — that is a ' +
+      : 'They differ, which means the adder on this page has a bug. Please report it - that is a ' +
         'more interesting finding than anything else on the page.'));
     list.appendChild(li);
 
@@ -1795,7 +1795,7 @@
       });
     } else {
       b.appendChild(note(
-        'No disagreements in this run. That is not a proof of correctness — no finite sample is — ' +
+        'No disagreements in this run. That is not a proof of correctness - no finite sample is - ' +
         'but it does mean the intermediate values shown above are the ones the hardware is ' +
         'working with, not a plausible-looking reconstruction.'));
     }
@@ -1873,7 +1873,7 @@
     seam.appendChild(para(
       'The two patterns below are adjacent. The exponent field steps from 0 to 1 and the ' +
       'implied leading bit switches from 0 to 1 at the same moment, and the value steps by ' +
-      'exactly one spacing — no jump, no gap. The encoding was designed so this seam is ' +
+      'exactly one spacing - no jump, no gap. The encoding was designed so this seam is ' +
       'invisible to arithmetic, which is why the bit-increment trick for "next representable ' +
       'value" works straight across it.'));
     seam.appendChild(row('Largest subnormal', ''));
@@ -1883,7 +1883,7 @@
     var step = decSub(exNormal, exLargestSub);
     seam.appendChild(row('Difference between them', decToString(step)));
     seam.appendChild(row('Which is', decCmp(step, exTiny) === 0
-      ? 'exactly 2^-1074, the same spacing as everywhere else down here — checked, not asserted'
+      ? 'exactly 2^-1074, the same spacing as everywhere else down here - checked, not asserted'
       : 'not 2^-1074, which would be a bug on this page'));
     container.appendChild(seam);
 
@@ -1898,8 +1898,8 @@
     gu.appendChild(para(
       'Take two distinct doubles just above the smallest normal and subtract them. The answer ' +
       'is smaller than any normal value, so with gradual underflow it lands in the subnormal ' +
-      'range and survives. Without it — flush-to-zero, which some hardware and some compiler ' +
-      'flags really do — the answer would be zero, and the invariant that x equals y exactly ' +
+      'range and survives. Without it - flush-to-zero, which some hardware and some compiler ' +
+      'flags really do - the answer would be zero, and the invariant that x equals y exactly ' +
       'when x minus y is zero would quietly stop being true.'));
     gu.appendChild(row('x', shortestRoundTrip(b2).text));
     gu.appendChild(row('y', shortestRoundTrip(b1).text));
@@ -2080,7 +2080,7 @@
     var intro = block('Not a number, and not one value either');
     intro.appendChild(para(
       'An exponent field of all ones with a nonzero fraction is a NaN. That leaves 52 fraction ' +
-      'bits free, so a float64 has 2 x (2^52 - 1) distinct NaN patterns — over nine thousand ' +
+      'bits free, so a float64 has 2 x (2^52 - 1) distinct NaN patterns - over nine thousand ' +
       'million million of them. The top fraction bit is the quiet bit: set means quiet, clear ' +
       'means signalling. A signalling NaN is meant to raise an invalid-operation exception the ' +
       'first time arithmetic touches it; JavaScript has no way to observe that exception, so ' +
@@ -2194,7 +2194,7 @@
 
     out.appendChild(row('Constructed pattern', bitsHex(bits)));
     out.appendChild(staticBitRow(bits, F64));
-    out.appendChild(row('Quiet bit', bits[12] + (bits[12] ? ' — quiet NaN' : ' — signalling NaN')));
+    out.appendChild(row('Quiet bit', bits[12] + (bits[12] ? ' - quiet NaN' : ' - signalling NaN')));
     out.appendChild(row('Payload bits', bitsString(bits, 13, 63)));
     out.appendChild(row('Payload as hex', payloadHex(w.hi, w.lo)));
 
@@ -2213,7 +2213,7 @@
       var same = bitsEqual(got, bits);
       tried++;
       if (same) kept++;
-      var r = row(label, bitsHex(got) + (same ? '  — payload survived' : '  — payload changed'));
+      var r = row(label, bitsHex(got) + (same ? '  - payload survived' : '  - payload changed'));
       if (!same) r.className += ' fp-row-hi';
       return r;
     }
@@ -2435,7 +2435,7 @@
 
     var head = block('Adding a lot of numbers, three ways');
     head.appendChild(para(
-      'Floating point addition is not associative, so a sum of N values has no single answer — ' +
+      'Floating point addition is not associative, so a sum of N values has no single answer - ' +
       'it has an answer per order and per algorithm. Below, the same sequence is added naively, ' +
       'with Kahan compensated summation, and with Neumaier’s correction to Kahan. The true ' +
       'total is computed alongside them in exact decimal arithmetic, term by term, so the ' +
@@ -2829,7 +2829,7 @@
       e.appendChild(row('The gap between them', decToString(u.gap), 'fp-row-hi'));
       e.appendChild(row('Cross-check', u.agrees
         ? 'the difference of the two exact expansions is 2^' + u.power + ', as it must be'
-        : 'MISMATCH — please report this'));
+        : 'MISMATCH - please report this'));
       e.appendChild(note(
         'Anything you write between those two values ends up on one of them. That is not an ' +
         'error in the arithmetic; there is nothing in between to land on.'));
@@ -2875,7 +2875,7 @@
     b.appendChild(para(
       'An integer is exactly representable while the spacing at its magnitude is 1 or less. The ' +
       'spacing reaches 1 at 2^53, so 2^53 is the first place two consecutive integers cannot ' +
-      'both exist — and the one that loses is the odd one. Everything in the table was ' +
+      'both exist - and the one that loses is the odd one. Everything in the table was ' +
       'evaluated just now, not tabulated.'));
     var table = E('table', 'fp-table');
     var head = E('tr');
@@ -2903,13 +2903,13 @@
     var two53 = Math.pow(2, 53);
     b.appendChild(row('2^53', String(two53)));
     b.appendChild(row('2^53 + 1 === 2^53', String(two53 + 1 === two53) +
-      '  — the odd integer has nowhere to go, so it lands back on 2^53'));
+      '  - the odd integer has nowhere to go, so it lands back on 2^53'));
     b.appendChild(row('2^53 + 2 === 2^53', String(two53 + 2 === two53)));
     b.appendChild(row('2^53 + 3', shortestRoundTrip(two53 + 3).text +
-      '  — a tie, broken toward the even significand, so it rounds up'));
+      '  - a tie, broken toward the even significand, so it rounds up'));
     b.appendChild(row('Number.MAX_SAFE_INTEGER',
       String(typeof Number.MAX_SAFE_INTEGER === 'number' ? Number.MAX_SAFE_INTEGER : two53 - 1) +
-      '  — the largest integer whose successor is also representable'));
+      '  - the largest integer whose successor is also representable'));
     b.appendChild(note(
       'This is why an identifier from a database arrives in JavaScript as a string more often ' +
       'than not. A 64-bit row id above 2^53 cannot survive JSON.parse into a Number, and the ' +
@@ -3072,7 +3072,7 @@
       clear(mount);
       mount.appendChild(E('p', 'lab-viz-error',
         'This lab could not start in your browser: ' + ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown. Please tell me, and ' +
+        ' - the write-up below still explains what it would have shown. Please tell me, and ' +
         'mention which browser you are using.'));
     }
   }

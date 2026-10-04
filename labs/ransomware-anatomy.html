@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/ransomware-anatomy" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Ransomware, stage by stage — and what each control actually stops" />
+    <meta property="og:title" content="Ransomware, stage by stage - and what each control actually stops" />
     <meta property="og:description" content="Step an incident from the first door to the ransom note, watch a fabricated file tree get enumerated and locked with the key hierarchy drawn honestly, then switch MFA, EDR, segmentation, least privilege, patching and offline backups on and see which stage each one halts. A simulation with no encryption anywhere in it. Runs entirely in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/ransomware-anatomy" />
@@ -19,10 +19,10 @@
     <meta property="og:image:alt" content="Ransomware Anatomy" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ransomware, stage by stage — and what each control actually stops" />
+    <meta name="twitter:title" content="Ransomware, stage by stage - and what each control actually stops" />
     <meta name="twitter:description" content="Step an incident from the first door to the ransom note, watch a fabricated file tree get enumerated and locked with the key hierarchy drawn honestly, then switch MFA, EDR, segmentation, least privilege, patching and offline backups on and see which stage each one halts. A simulation with no encryption anywhere in it. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ransomware-anatomy.jpg" />
-    <title>Ransomware Anatomy — Stage by Stage | Krunalkumar Shah</title>
+    <title>Ransomware Anatomy - Stage by Stage | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -219,7 +219,7 @@
           </ol>
         </nav>
         <h1>How a ransomware incident actually unfolds</h1>
-        <p class="hero-text">The encryption is the last twenty minutes of something that took three weeks. Everything expensive happens before it &mdash; the door, the foothold, the mapping, the deleted backups, the copy of your data taken quietly on a Tuesday. Step the whole chain here, switch the controls you already pay for on one at a time, and watch which stage each of them genuinely stops. Some of them stop nothing, and that is the most useful thing on the page.</p>
+        <p class="hero-text">The encryption is the last twenty minutes of something that took three weeks. Everything expensive happens before it - the door, the foothold, the mapping, the deleted backups, the copy of your data taken quietly on a Tuesday. Step the whole chain here, switch the controls you already pay for on one at a time, and watch which stage each of them genuinely stops. Some of them stop nothing, and that is the most useful thing on the page.</p>
         <ul class="lab-facts">
           <li>Nine stages, from the first door to the note</li>
           <li>Three entry routes, one control list, three different answers</li>
@@ -269,7 +269,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -287,7 +287,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-ransomware-mount">
-          <p class="lab-proc-fallback">Starting the ransomware walkthrough&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the ransomware walkthrough&hellip; if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -318,8 +318,8 @@
         </div>
         <div class="lab-cta">
           <p class="lab-cta-text">Ransomware is one attack among many, and it borrows its first move from
-            most of the others. The <strong>wider map</strong> &mdash; phishing, credential attacks, denial of
-            service and the rest, in plain language &mdash; is the article.</p>
+            most of the others. The <strong>wider map</strong> - phishing, credential attacks, denial of
+            service and the rest, in plain language - is the article.</p>
           <a class="btn btn-primary" href="/blog/types-of-cyberattacks">Read the article</a>
         </div>
       </section>
@@ -343,7 +343,7 @@
           </article>
           <article class="info-card">
             <h3>The bill panel uses your numbers</h3>
-            <p>Type in what a day down costs you, what you would be asked for, how many servers you have and how fast you can genuinely restore them, and it lays the paths side by side on the same day scale. The defaults are placeholders, not a benchmark &mdash; published figures for every one of those inputs disagree by an order of magnitude. The arithmetic is the point, and so is the fact that the first two steps are identical whichever way you go.</p>
+            <p>Type in what a day down costs you, what you would be asked for, how many servers you have and how fast you can genuinely restore them, and it lays the paths side by side on the same day scale. The defaults are placeholders, not a benchmark - published figures for every one of those inputs disagree by an order of magnitude. The arithmetic is the point, and so is the fact that the first two steps are identical whichever way you go.</p>
           </article>
         </div>
       </section>
@@ -356,7 +356,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>There is no encryption anywhere in it</h3>
-            <p>No cipher, no cryptography API call, no key material and no file of yours read at any point. The tree is invented and lives in this tab. The hexadecimal strings shown as keys come from a counter, so scrubbing backwards shows the same value it showed going forwards &mdash; they are decoration over a story, and they are labelled as such in the panel.</p>
+            <p>No cipher, no cryptography API call, no key material and no file of yours read at any point. The tree is invented and lives in this tab. The hexadecimal strings shown as keys come from a counter, so scrubbing backwards shows the same value it showed going forwards - they are decoration over a story, and they are labelled as such in the panel.</p>
           </article>
           <article class="info-card">
             <h3>There is no operational detail in it</h3>
@@ -364,11 +364,11 @@
           </article>
           <article class="info-card">
             <h3>It does not prove your controls work</h3>
-            <p>It shows where a control bites in a model I built. A real environment has misconfigurations, exceptions, an account somebody made in 2019 and a supplier with a permanent tunnel in. Treat the halt points as an argument for a control rather than as evidence about yours &mdash; the only thing that produces evidence about yours is testing it.</p>
+            <p>It shows where a control bites in a model I built. A real environment has misconfigurations, exceptions, an account somebody made in 2019 and a supplier with a permanent tunnel in. Treat the halt points as an argument for a control rather than as evidence about yours - the only thing that produces evidence about yours is testing it.</p>
           </article>
           <article class="info-card">
             <h3>It does not tell you whether to pay</h3>
-            <p>That decision has legal, insurance and regulatory dimensions that vary by country and by who is on the other end, and none of them belong on a web page. What the page can do honestly is show you what paying buys &mdash; a decryption tool of unknown quality, and no effect at all on the copy of your data they already took.</p>
+            <p>That decision has legal, insurance and regulatory dimensions that vary by country and by who is on the other end, and none of them belong on a web page. What the page can do honestly is show you what paying buys - a decryption tool of unknown quality, and no effect at all on the copy of your data they already took.</p>
           </article>
         </div>
       </section>
@@ -432,7 +432,7 @@
           </a>
           <a class="lab-card" href="/labs/file-inspector">
             <span class="lab-card-name">File inspector</span>
-            <p class="lab-card-desc">What a file really is, from its bytes rather than its extension &mdash; the first question anyone asks about an attachment.</p>
+            <p class="lab-card-desc">What a file really is, from its bytes rather than its extension - the first question anyone asks about an attachment.</p>
             <span class="lab-card-engine">Nothing uploaded</span>
           </a>
           <a class="lab-card" href="/labs/phishing-dissector">

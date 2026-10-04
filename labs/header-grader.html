@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Paste your headers. Get a grade, and the reasons." />
     <meta name="twitter:description" content="Paste a set of HTTP response headers and get a weighted grade across CSP, HSTS, framing, referrer policy, permissions policy, cross-origin isolation and version disclosure. Runs entirely in your browser - nothing is fetched and nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-header-grader.jpg" />
-    <title>HTTP Security Header Grader — Paste Headers, Get A Grade</title>
+    <title>HTTP Security Header Grader - Paste Headers, Get A Grade</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>HTTP header grader</h1>
-        <p class="hero-text">Paste the response headers you actually got and this grades eight of them &mdash; what is missing, what is present but weak, and what is doing nothing because of how it is written. It does not fetch your URL, which is the point: a scanner grades what an anonymous request from a datacentre sees, and that is frequently not what your visitors see.</p>
+        <p class="hero-text">Paste the response headers you actually got and this grades eight of them - what is missing, what is present but weak, and what is doing nothing because of how it is written. It does not fetch your URL, which is the point: a scanner grades what an anonymous request from a datacentre sees, and that is frequently not what your visitors see.</p>
         <ul class="lab-facts">
           <li>Eight checks, individually weighted</li>
           <li>A reason for every mark lost</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No requests to the site you are grading</li>
                   <li>No DNS queries and no third-party scanners</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -293,7 +293,7 @@ or: DevTools → Network → the document request
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The weights are not equal</h3>
-            <p>A missing Content-Security-Policy costs 25 points and a missing Referrer-Policy costs 10, because they are not the same size of problem. Scoring every header equally is what produces the grade inflation that makes these tools useless &mdash; a site with six trivial headers and no CSP should not out-score one with CSP alone.</p>
+            <p>A missing Content-Security-Policy costs 25 points and a missing Referrer-Policy costs 10, because they are not the same size of problem. Scoring every header equally is what produces the grade inflation that makes these tools useless - a site with six trivial headers and no CSP should not out-score one with CSP alone.</p>
           </article>
           <article class="info-card">
             <h3>Present is not the same as working</h3>
@@ -301,11 +301,11 @@ or: DevTools → Network → the document request
           </article>
           <article class="info-card">
             <h3>frame-ancestors beats X-Frame-Options</h3>
-            <p>Both stop your page being framed, and where CSP sets <code>frame-ancestors</code> the browser ignores X-Frame-Options entirely. So the two are scored as one check: full marks for frame-ancestors, most of them for X-Frame-Options alone, and nothing for neither &mdash; which is clickjacking.</p>
+            <p>Both stop your page being framed, and where CSP sets <code>frame-ancestors</code> the browser ignores X-Frame-Options entirely. So the two are scored as one check: full marks for frame-ancestors, most of them for X-Frame-Options alone, and nothing for neither - which is clickjacking.</p>
           </article>
           <article class="info-card">
             <h3>Why it grades a paste, not a URL</h3>
-            <p>There is no server here to fetch from, and that turned out to be the better design. A hosted scanner sees one anonymous response from one location; your headers may differ by route, by cookie, by logged-in state, or by CDN edge. Pasting the response you actually received grades the response you actually received &mdash; including from a staging host nothing on the internet can reach.</p>
+            <p>There is no server here to fetch from, and that turned out to be the better design. A hosted scanner sees one anonymous response from one location; your headers may differ by route, by cookie, by logged-in state, or by CDN edge. Pasting the response you actually received grades the response you actually received - including from a staging host nothing on the internet can reach.</p>
           </article>
         </div>
       </section>

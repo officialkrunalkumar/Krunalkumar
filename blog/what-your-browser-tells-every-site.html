@@ -8,8 +8,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What your browser tells every site you visit" />
     <meta property="og:description" content="What a website reads about you before you click anything: the IP address, User-Agent and Accept-Language that arrive with the request, and the screen, time zone, CPU cores, GPU and canvas fingerprint a script reads afterwards. Why the combination identifies you when no single value does, why a fingerprint is harder to escape than a cookie, and why an unusual privacy setup can make you easier to pick out rather than harder." />
@@ -250,8 +250,8 @@
               </p>
               <p>
                 <strong>Your IP address</strong> is the return address on the packets, so it is not optional and
-                not a tracking decision. It says which network you are on &mdash; usually your internet
-                provider, or your employer &mdash; and roughly where that network is. It does not say your name,
+                not a tracking decision. It says which network you are on - usually your internet
+                provider, or your employer - and roughly where that network is. It does not say your name,
                 your street, or which person in the building is typing. Geolocation databases map address ranges
                 onto places, and in my experience they get the country right far more often than the city,
                 though I have not measured that systematically. Many home connections rotate addresses, so an IP is a
@@ -260,8 +260,8 @@
               <p>
                 <strong>User-Agent</strong> names your browser, its version, its engine and your operating
                 system, and on a phone often the device. <strong>Accept-Language</strong> lists the languages you
-                want the page in, which alone often narrows a country. <strong>Referer</strong> &mdash;
-                misspelled in the standard since 1996 and never corrected &mdash; says which page sent you,
+                want the page in, which alone often narrows a country. <strong>Referer</strong> -
+                misspelled in the standard since 1996 and never corrected - says which page sent you,
                 though most browsers now send only the origin across sites. None of this involves JavaScript.
                 Turning scripts off does not turn it off.
               </p>
@@ -269,7 +269,7 @@
               <p>
                 Browsers ship <a class="text-link" href="/glossary#term-webrtc">WebRTC</a> so video calls can
                 connect two machines directly, which means each side must discover what address the other would
-                dial &mdash; a question put to a public STUN server. A page can open a peer connection to nobody,
+                dial - a question put to a public STUN server. A page can open a peer connection to nobody,
                 let the browser gather those candidates, and read the addresses out. No prompt, because the API
                 was designed for calling rather than for asking permission to be called. That is how VPN leak
                 checkers work, and what the leak page does on load. It is also the one thing there that is
@@ -288,12 +288,12 @@
                   reading in; screen size is stable, window size moves when you resize.</li>
                 <li><strong>Time zone</strong>, from <code>Intl.DateTimeFormat</code>. Your rough location, with
                   no location prompt and no address lookup.</li>
-                <li><strong>Languages, platform and touch points</strong> &mdash; what you read, and phone,
+                <li><strong>Languages, platform and touch points</strong> - what you read, and phone,
                   tablet or desktop.</li>
                 <li><strong>CPU cores</strong> from <code>navigator.hardwareConcurrency</code>, and on Chromium
                   <strong>device memory</strong> rounded coarsely. Both exist so pages can size their workloads,
                   and both distinguish machines.</li>
-                <li><strong>Preferences you never told the page</strong> &mdash; dark or light mode, and whether
+                <li><strong>Preferences you never told the page</strong> - dark or light mode, and whether
                   you asked your system to reduce motion, an accessibility setting any page can read.</li>
                 <li><strong>The graphics stack.</strong> A WebGL extension called
                   <code>WEBGL_debug_renderer_info</code> returns your GPU model as plain text. Not a category.
@@ -415,8 +415,8 @@
               </div>
               <p>
                 What would change my mind: randomisation done properly. If a browser returns a
-                <em>different</em> fabricated canvas value to every site and session &mdash; the approach Brave
-                calls farbling &mdash; then being unusual stops mattering, because there is no stable value left
+                <em>different</em> fabricated canvas value to every site and session - the approach Brave
+                calls farbling - then being unusual stops mattering, because there is no stable value left
                 to join on. Whether that survives a site sampling the same measurement many times and averaging
                 the noise away is a real open question, and not one I have tested.
               </p>

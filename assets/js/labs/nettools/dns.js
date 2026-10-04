@@ -47,12 +47,12 @@
      inventing a friendly label for a code I have not handled would be worse
      than showing the code. */
   var RCODE = {
-    0: 'NOERROR — the query succeeded',
-    1: 'FORMERR — the resolver could not parse the query',
-    2: 'SERVFAIL — the resolver failed, often a broken DNSSEC chain',
-    3: 'NXDOMAIN — the name does not exist',
-    4: 'NOTIMP — the resolver does not implement this query',
-    5: 'REFUSED — the resolver refused to answer'
+    0: 'NOERROR - the query succeeded',
+    1: 'FORMERR - the resolver could not parse the query',
+    2: 'SERVFAIL - the resolver failed, often a broken DNSSEC chain',
+    3: 'NXDOMAIN - the name does not exist',
+    4: 'NOTIMP - the resolver does not implement this query',
+    5: 'REFUSED - the resolver refused to answer'
   };
 
   var WHAT = {
@@ -60,12 +60,12 @@
     AAAA: 'IPv6 address',
     CNAME: 'alias pointing at another name',
     MX: 'mail server, with a priority number (lower wins)',
-    TXT: 'free-form text — where SPF, DMARC and domain verification live',
+    TXT: 'free-form text - where SPF, DMARC and domain verification live',
     NS: 'authoritative name server for the zone',
     SOA: 'start of authority: the zone’s primary server and timers',
     CAA: 'which certificate authorities may issue for this domain',
     SRV: 'service location: priority, weight, port, target',
-    PTR: 'reverse lookup — an address back to a name',
+    PTR: 'reverse lookup - an address back to a name',
     DS: 'delegation signer, part of the DNSSEC chain',
     DNSKEY: 'the zone’s DNSSEC public key'
   };
@@ -135,7 +135,7 @@
     var answers = data.Answer || [];
     if (!answers.length) {
       if (data.Status === 0) {
-        out.warn('NODATA — the name exists, but has no ' + typeName + ' record.');
+        out.warn('NODATA - the name exists, but has no ' + typeName + ' record.');
         out.dim('This is not the same as the domain not existing. Something else');
         out.dim('in the zone answered; there is simply nothing of this type.');
         if (data.Authority && data.Authority.length) {
@@ -200,12 +200,12 @@
     if (err && err.resolverRejected) {
       out.line('');
       if (err.httpStatus === 429) {
-        out.err('HTTP 429 — ' + resolver().name + ' is rate-limiting this address.');
+        out.err('HTTP 429 - ' + resolver().name + ' is rate-limiting this address.');
         out.dim('Too many queries arrived too quickly and it is asking for a');
-        out.dim('pause. Nothing is wrong with the name — wait a moment and try');
+        out.dim('pause. Nothing is wrong with the name - wait a moment and try');
         out.dim('again.');
       } else if (err.httpStatus >= 500) {
-        out.err('HTTP ' + err.httpStatus + ' — ' + resolver().name + ' is having trouble.');
+        out.err('HTTP ' + err.httpStatus + ' - ' + resolver().name + ' is having trouble.');
         out.dim('That is a failure on the resolver’s side, not a problem with');
         out.dim('the name or with your connection. Try again shortly, or switch');
         out.dim('to the other resolver above.');
@@ -233,7 +233,7 @@
     if (data.TC) out.warn('The response was truncated.');
     out.line('');
     out.dim(resolver().name + ' now knows that someone at your IP address looked');
-    out.dim('up this name, just now. That is unavoidable for any DNS query — the');
+    out.dim('up this name, just now. That is unavoidable for any DNS query - the');
     out.dim('only choice is who you tell.');
   }
 
@@ -313,7 +313,7 @@
       query(name, type).then(function (data) {
         out.line('');
         if (data.Status === 3) {
-          out.err('NXDOMAIN — ' + name + ' does not exist.');
+          out.err('NXDOMAIN - ' + name + ' does not exist.');
           index = SWEEP.length;   // no point asking five more times
           return next();
         }
@@ -331,8 +331,8 @@
     onReady: function () {
       out.dim('Enter a domain and press Look up. Nothing is sent until you do.');
       out.dim('');
-      out.dim('The lookup goes to the resolver you pick above — Google or');
-      out.dim('Cloudflare — over HTTPS. A browser cannot speak DNS directly,');
+      out.dim('The lookup goes to the resolver you pick above - Google or');
+      out.dim('Cloudflare - over HTTPS. A browser cannot speak DNS directly,');
       out.dim('because it has no UDP socket; DNS-over-HTTPS is the way in.');
       out.dim('');
       out.dim('Try:  github.com  ·  google.com  ·  cloudflare.com');

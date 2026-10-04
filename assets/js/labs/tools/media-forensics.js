@@ -397,7 +397,7 @@
       means: 'These apps reshape faces and skin by default. That is a real, deliberate manipulation of a person’s appearance, and it is also what tens of millions of ordinary selfies have had done to them.' },
     { re: /imagemagick|libvips|graphicsmagick|python-imaging|pillow|sharp \d|libwebp/i,
       what: 'a server-side processing pipeline',
-      means: 'Something re-encoded this file automatically — a CMS, an upload handler, a thumbnailer. Expect every pixel-level measurement below to describe that step rather than the original camera.' },
+      means: 'Something re-encoded this file automatically - a CMS, an upload handler, a thumbnailer. Expect every pixel-level measurement below to describe that step rather than the original camera.' },
     { re: /skia|chrome|chromium|android|screenshot|screen shot|greenshot|snipping/i,
       what: 'a browser canvas, a screenshot tool or an Android surface',
       means: 'This is very likely a screenshot or a re-save rather than an original file. ELA and the noise floor are close to meaningless on one: the screen capture threw the original compression history away and wrote a fresh one.' }
@@ -428,11 +428,11 @@
         } else if (m === 0xe2 && bytesEqual(bytes, seg.start, 'ICC_PROFILE')) {
           res.blocks.push('APP2 ICC colour profile (' + seg.length + ' bytes)');
         } else if (m === 0xe2 && bytesEqual(bytes, seg.start, 'MPF')) {
-          res.blocks.push('APP2 MPF — a multi-picture container, common on phones');
+          res.blocks.push('APP2 MPF - a multi-picture container, common on phones');
         } else if (m === 0xed) {
           res.blocks.push('APP13 Photoshop IRB / IPTC (' + seg.length + ' bytes)');
         } else if (m === 0xee) {
-          res.blocks.push('APP14 Adobe marker — written by Adobe encoders');
+          res.blocks.push('APP14 Adobe marker - written by Adobe encoders');
         } else if (m === 0xfe) {
           res.blocks.push('COM comment (' + seg.length + ' bytes)');
         }
@@ -456,12 +456,12 @@
              to say the key is there and the value is unread rather than to
              quietly report "no generator found". */
           res.blocks.push('zTXt "' + ascii(bytes, c.start, 40).split(' ')[0] +
-                          '" — value is deflate-compressed and NOT read here');
+                          '" - value is deflate-compressed and NOT read here');
         } else if (c.type === 'eXIf') {
           res.blocks.push('eXIf chunk (' + c.length + ' bytes)');
           parseTiff(pdv, c.start, res.fields);
         } else if (c.type === 'caBX') {
-          res.blocks.push('caBX — a C2PA manifest store');
+          res.blocks.push('caBX - a C2PA manifest store');
           res.text += 'c2pa\n';
         }
       }
@@ -500,7 +500,7 @@
   }
 
   function reportProvenance() {
-    section('PROVENANCE — what the file says about itself');
+    section('PROVENANCE - what the file says about itself');
     out.dim('   The only thing on this page that is evidence rather than a hint.');
     out.line('');
 
@@ -520,8 +520,8 @@
       out.warn('   No metadata blocks at all.');
       out.line('');
       out.dim('   THIS MEANS NOTHING BY ITSELF. Every large platform strips');
-      out.dim('   metadata on upload — WhatsApp, Instagram, X, Facebook, most');
-      out.dim('   chat apps — and so does every screenshot. A photograph that');
+      out.dim('   metadata on upload - WhatsApp, Instagram, X, Facebook, most');
+      out.dim('   chat apps - and so does every screenshot. A photograph that');
       out.dim('   has been anywhere near the internet is expected to look like');
       out.dim('   this. Absence of provenance is not evidence of anything.');
     } else {
@@ -651,10 +651,10 @@
       out.dim('   Pick "Error level analysis" in the view menu to see the map.');
       out.line('');
       out.warn('   Read this correctly or do not read it at all:');
-      wrapDim('   ', 'ELA shows recompression, not manipulation. Bright regions are regions whose compression history differs from the rest — and sharp edges, saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken.');
+      wrapDim('   ', 'ELA shows recompression, not manipulation. Bright regions are regions whose compression history differs from the rest - and sharp edges, saturated colour and fine texture are bright in the ELA of every untouched photograph ever taken.');
       wrapDim('   ', 'It is useless on a screenshot, on a PNG, and on anything that has been re-saved once since the edit you are looking for: the last save flattens the whole frame to one history and erases the difference you came to find.');
       wrapDim('   ', 'Uniform brightness does not mean the image is unedited. A great many convincing edits leave no ELA signature at all.');
-      wrapDim('   ', 'And treat the mean above as a description of the file, not as a detector. It is an average over every pixel in the region, so a change confined to one part of the frame barely moves it — pasting a heavily recompressed box into a textured photograph here shifted it by 0.1 while the block count in section 5 went from 3 to 51. Look at the map for anything local. Numbers are for things that changed everywhere.');
+      wrapDim('   ', 'And treat the mean above as a description of the file, not as a detector. It is an average over every pixel in the region, so a change confined to one part of the frame barely moves it - pasting a heavily recompressed box into a textured photograph here shifted it by 0.1 while the block count in section 5 went from 3 to 51. Look at the map for anything local. Numbers are for things that changed everywhere.');
       out.line('');
       next();
     });
@@ -826,9 +826,9 @@
       if (q.sof.sampling.length) {
         out.row('sampling factors', q.sof.sampling.join(', '));
         var sub = q.sof.sampling[0];
-        out.dim('   ' + (sub === '2x2' ? '4:2:0 — the ordinary camera and web setting.' :
-                sub === '2x1' ? '4:2:2 — common in video stills and some editors.' :
-                sub === '1x1' ? '4:4:4 — no chroma subsampling. Unusual for a camera; ' +
+        out.dim('   ' + (sub === '2x2' ? '4:2:0 - the ordinary camera and web setting.' :
+                sub === '2x1' ? '4:2:2 - common in video stills and some editors.' :
+                sub === '1x1' ? '4:4:4 - no chroma subsampling. Unusual for a camera; ' +
                                 'typical of screenshots and of editor exports at maximum quality.' :
                 'an unusual sampling factor.'));
       }
@@ -843,7 +843,7 @@
               ', ' + tab.precision + '-bit, fingerprint ' + tableHash(tab.table));
       if (est) {
         out.row('  implied quality', est.quality + (est.exact ? '  (exact IJG match)' :
-                                                    '  (approximate — not an IJG table)'));
+                                                    '  (approximate - not an IJG table)'));
         if (est.exact) anyExact = true; else anyNot = true;
       }
       /* Four rows of the table, which is enough to see its shape without
@@ -861,7 +861,7 @@
       out.line('');
     }
     if (anyExact) {
-      wrapDim('   ', 'An exact IJG match means the table was produced by scaling the standard Annex K table — which is what libjpeg, GD, Pillow, ImageMagick, most web servers and most browsers do. It tells you a general-purpose encoder wrote this file. It does not tell you what the file contains.');
+      wrapDim('   ', 'An exact IJG match means the table was produced by scaling the standard Annex K table - which is what libjpeg, GD, Pillow, ImageMagick, most web servers and most browsers do. It tells you a general-purpose encoder wrote this file. It does not tell you what the file contains.');
     }
     if (anyNot) {
       wrapDim('   ', 'A table that is not an IJG scaling was written by an encoder carrying its own tables. Camera makers, Adobe and Apple all ship their own sets, so this often points at a camera original or an Adobe/Apple save rather than a web pipeline. Matching it to a specific device needs a reference database of tables, which this page does not have and will not fetch.');
@@ -1376,7 +1376,7 @@
         wrapDim('   ', 'That period divides 8, which is where the JPEG block grid and its harmonics sit. On a JPEG that is very probably all this is, and it means nothing beyond "this file was compressed".');
         wrapDim('   ', 'It is also, honestly, where a period-2 or period-4 resampling ripple lands. A magnitude plot cannot separate the two, so this reading does not distinguish them and I am not going to pretend it does.');
       } else {
-        wrapDim('   ', 'Periodic structure at this scale is what a resampling or transposed-convolution layer leaves — the checkerboard older GAN-era generators were known for. It is also what a resize, a photograph of a screen, a halftone print, a fabric weave, a window screen, a brick wall and a sharpening filter leave. Look at the picture before you read anything into this.');
+        wrapDim('   ', 'Periodic structure at this scale is what a resampling or transposed-convolution layer leaves - the checkerboard older GAN-era generators were known for. It is also what a resize, a photograph of a screen, a halftone print, a fabric weave, a window screen, a brick wall and a sharpening filter leave. Look at the picture before you read anything into this.');
       }
     } else {
       out.ok('   No strong off-axis periodicity in this window.');
@@ -1546,13 +1546,13 @@
      looking. Every item is something a person can verify without trusting any
      measurement on this page. */
   var EYE_CHECKS = [
-    ['Catchlights', 'The bright reflection of the light source in each eye. In one photograph both eyes see the same room, so the two highlights should agree in shape, in count, and in where they sit inside the iris. Generated and composited faces very often disagree — and so, honestly, do real photographs with two light sources or one eye turned away.'],
+    ['Catchlights', 'The bright reflection of the light source in each eye. In one photograph both eyes see the same room, so the two highlights should agree in shape, in count, and in where they sit inside the iris. Generated and composited faces very often disagree - and so, honestly, do real photographs with two light sources or one eye turned away.'],
     ['Ears and jaw', 'Compare the two ears: their height on the head, their shape, the earring in one and not the other. Then follow the jawline for a kink. Faces are asymmetric in real life, so look for a discontinuity rather than for asymmetry.'],
     ['Teeth', 'Individual teeth with their own edges and their own shading, or a smooth white bar with suggestions of gaps? A row of teeth is a hard thing to draw and a common place for the illusion to thin out.'],
     ['Hairline and stray hairs', 'Zoom to where hair meets forehead and where hair meets background. Real hair has individual strands that cross the boundary and background visible between them. A composite has a boundary that is too clean, or hair that dissolves into a smear.'],
-    ['Background through hair', 'Follow a straight line in the background — a door frame, a tile edge, a horizon — as it passes behind the head. It should continue at the same angle on the far side. A warp or a paste bends it.'],
+    ['Background through hair', 'Follow a straight line in the background - a door frame, a tile edge, a horizon - as it passes behind the head. It should continue at the same angle on the far side. A warp or a paste bends it.'],
     ['Glasses, jewellery, lettering', 'Frames that change thickness across the lens, an earring on one side only, text on clothing that is nearly-but-not-quite letters. Small rigid objects are where generators still fail most visibly.'],
-    ['Shadows and skin', 'Does the shadow under the nose agree with the shadow under the chin, and with the catchlights? Is the skin the same texture across the whole face, or smoother in one region than another — which is what the noise map above is measuring.']
+    ['Shadows and skin', 'Does the shadow under the nose agree with the shadow under the chin, and with the catchlights? Is the skin the same texture across the whole face, or smoother in one region than another - which is what the noise map above is measuring.']
   ];
 
   function reportLookHere() {
@@ -1664,7 +1664,7 @@
       out.heading('WHAT THIS PAGE CANNOT TELL YOU');
       wrapDim('', 'Whether a person in this image said or did what it shows. Whether a model made it. Whether it is the original file. Nothing above answers any of those, and a tool that claimed to would be wrong often enough to ruin somebody.');
       out.line('');
-      wrapDim('', 'The two rules worth carrying away: a clean result here is not a certificate — a competent fake, a screenshot, or one extra re-save erases every signal on this page. And a dirty result is not an accusation — cropping, resizing, a messaging app and a phone camera’s own processing all light these up on photographs of things that really happened.');
+      wrapDim('', 'The two rules worth carrying away: a clean result here is not a certificate - a competent fake, a screenshot, or one extra re-save erases every signal on this page. And a dirty result is not an accusation - cropping, resizing, a messaging app and a phone camera’s own processing all light these up on photographs of things that really happened.');
       out.line('');
       wrapDim('', 'What actually settles a question like this is provenance and corroboration: who had the file first, what the camera or the C2PA manifest says, whether another camera saw the same moment, and whether the claim survives contact with anything outside the image. Pixels are the weakest evidence in the room.');
       out.rule();
@@ -1771,7 +1771,7 @@
     if (view === 'zoom') {
       var m = magnifier();
       drawToStage(m.canvas, null,
-                  'Magnifier — 6× crop at ' + m.at +
+                  'Magnifier - 6× crop at ' + m.at +
                   ', pixels on the left, high-pass residual on the right. ' +
                   'Click the image view to move it.');
       return;
@@ -1817,7 +1817,7 @@
   function viewCaption(view, rect) {
     var where = rect && isCropped(rect)
       ? ' Computed on the ' + rect.w + '×' + rect.h + ' crop at ' +
-        rect.x + ',' + rect.y + ' — click to move it.'
+        rect.x + ',' + rect.y + ' - click to move it.'
       : '';
     if (view === 'image') {
       return (workVersion > 0 ? 'The edited image. ' : 'The image as dropped. ') +
@@ -1837,7 +1837,7 @@
     }
     if (view === 'fft') {
       return 'Log magnitude of the 2D FFT, centre is DC. Bright spots away from ' +
-             'the centre and the axes mean periodic structure — which a resize ' +
+             'the centre and the axes mean periodic structure - which a resize ' +
              'produces just as readily as a generator.';
     }
     if (view === 'copymove') {
@@ -1949,7 +1949,7 @@
     },
     seam: {
       label: 'Blend-seam feathering',
-      note: 'An elliptical region blended back in over a feathered edge, slightly softer and slightly brighter than its surroundings — which is what a composited region looks like when someone has made a careful job of the mask. The seam is a ring, and it appears in the ELA and noise-residual VIEWS well before it appears to the eye. Watch what does not happen too: the mean difference printed in section 2 barely moves, because an average over the whole frame is the wrong instrument for a change inside one ellipse. The block count in section 5 does move. Local artefacts show up on maps, not in summary numbers.',
+      note: 'An elliptical region blended back in over a feathered edge, slightly softer and slightly brighter than its surroundings - which is what a composited region looks like when someone has made a careful job of the mask. The seam is a ring, and it appears in the ELA and noise-residual VIEWS well before it appears to the eye. Watch what does not happen too: the mean difference printed in section 2 barely moves, because an average over the whole frame is the wrong instrument for a change inside one ellipse. The block count in section 5 does move. Local artefacts show up on maps, not in summary numbers.',
       apply: function (amount) {
         var w = workCanvas.width, h = workCanvas.height;
         var f = focus || { x: w / 2, y: h / 2 };
@@ -1985,7 +1985,7 @@
     },
     noisefloor: {
       label: 'Mismatched noise floor',
-      note: 'A rectangular region given a noise floor that disagrees with the rest of the frame. Below 50 the region is smoothed — what a denoised or generated patch looks like; above 50 it gains grain the sensor never wrote. Watch section 5, and the noise-floor map view.',
+      note: 'A rectangular region given a noise floor that disagrees with the rest of the frame. Below 50 the region is smoothed - what a denoised or generated patch looks like; above 50 it gains grain the sensor never wrote. Watch section 5, and the noise-floor map view.',
       apply: function (amount) {
         var w = workCanvas.width, h = workCanvas.height;
         var f = focus || { x: w / 2, y: h / 2 };
@@ -2019,7 +2019,7 @@
     },
     recompress: {
       label: 'Recompression ring',
-      note: 'The whole frame re-encoded hard, then pasted back inside one rectangle only — so that region carries a compression history the rest of the image does not. This is the artefact error level analysis was actually designed to find, and the ELA VIEW shows it plainly. The mean difference printed in section 2 will hardly move, because it is an average over the whole frame; the disagreeing-block count in section 5 jumps sharply. Section 4 usually will not react either: its sweep runs on a 512 px window, and a box smaller than that window is diluted inside it.',
+      note: 'The whole frame re-encoded hard, then pasted back inside one rectangle only - so that region carries a compression history the rest of the image does not. This is the artefact error level analysis was actually designed to find, and the ELA VIEW shows it plainly. The mean difference printed in section 2 will hardly move, because it is an average over the whole frame; the disagreeing-block count in section 5 jumps sharply. Section 4 usually will not react either: its sweep runs on a 512 px window, and a box smaller than that window is diluted inside it.',
       async: true,
       apply: function (amount, done) {
         var w = workCanvas.width, h = workCanvas.height;
@@ -2046,7 +2046,7 @@
     },
     warp: {
       label: 'Warped geometry',
-      note: 'A smooth radial bulge around the focus point, sampled bilinearly — the mechanism behind every "slim the jaw" slider in every retouching app. No detector section catches this one, which is the lesson: check straight lines in the background as they pass behind the warped region, because geometry is verified by eye and not by statistics.',
+      note: 'A smooth radial bulge around the focus point, sampled bilinearly - the mechanism behind every "slim the jaw" slider in every retouching app. No detector section catches this one, which is the lesson: check straight lines in the background as they pass behind the warped region, because geometry is verified by eye and not by statistics.',
       apply: function (amount) {
         var w = workCanvas.width, h = workCanvas.height;
         var f = focus || { x: w / 2, y: h / 2 };
@@ -2082,7 +2082,7 @@
     },
     catchlight: {
       label: 'Catchlight mismatch',
-      note: 'Two specular highlights drawn at two points you click, deliberately disagreeing in angle, size and brightness. In one photograph both eyes see the same room, so both catchlights agree. Nothing in section 1 to 7 measures this. Only your eyes do — which is exactly the point of section 8.',
+      note: 'Two specular highlights drawn at two points you click, deliberately disagreeing in angle, size and brightness. In one photograph both eyes see the same room, so both catchlights agree. Nothing in section 1 to 7 measures this. Only your eyes do - which is exactly the point of section 8.',
       apply: function (amount) {
         var w = workCanvas.width, h = workCanvas.height;
         var p1 = clicks.length > 1 ? clicks[0] : { x: w * 0.42, y: h * 0.45 };
@@ -2130,7 +2130,7 @@
       out.line('');
       out.dim('Now press "Run the signal set" and compare it with the run you');
       out.dim('did before applying this. One artefact at a time is the whole');
-      out.dim('method — stack three of them and you learn nothing about which');
+      out.dim('method - stack three of them and you learn nothing about which');
       out.dim('one moved which number.');
       out.line('');
       out.warn('This is your own image with a simulated artefact in it. It is not');
@@ -2307,7 +2307,7 @@
         out.row('EXIF ImageDescription', 'says it is not a photograph of record');
         out.row('JPEG comment', 'the same sentence, for readers that show COM');
         out.rule();
-        wrapDim('', 'Two honest limits. The metadata can be stripped in one command, and the watermark can be cropped off in about four seconds — neither is a control, they are a label. And the export is a JPEG, so it carries one extra generation of compression: run the detector on it and section 4 will find the export itself, which is a useful thing to see happen.');
+        wrapDim('', 'Two honest limits. The metadata can be stripped in one command, and the watermark can be cropped off in about four seconds - neither is a control, they are a label. And the export is a JPEG, so it carries one extra generation of compression: run the detector on it and section 4 will find the export itself, which is a useful thing to see happen.');
         out.line('');
         out.dim('Drop this file into /labs/exif to read the fields back, or into');
         out.dim('/labs/file-inspector to see the segments themselves.');
@@ -2333,7 +2333,7 @@
   function tooManyPixels(w, h) {
     if (w * h <= MAX_PIXELS) return false;
     out.clear().err('That image decodes to ' + w.toLocaleString() + ' × ' +
-      h.toLocaleString() + ' — ' + Math.round(w * h / 1e6).toLocaleString() +
+      h.toLocaleString() + ' - ' + Math.round(w * h / 1e6).toLocaleString() +
       ' megapixels. This tool stops at ' + (MAX_PIXELS / 1e6) + ' megapixels, ' +
       'because the analyses hold three full RGBA buffers at once and anything ' +
       'larger would take this tab down. Nothing was uploaded.');
@@ -2360,7 +2360,7 @@
       out.row('file size', LabTool.humanBytes(bytes.length));
       out.rule();
       out.dim('Press "Run the signal set" to measure it. Click anywhere on the');
-      out.dim('image first if there is a particular region you care about — the');
+      out.dim('image first if there is a particular region you care about - the');
       out.dim('analyses crop around wherever you clicked.');
       out.line('');
       out.warn('Before you read a single number: this page returns no verdict, and');
@@ -2514,11 +2514,11 @@
       if (artefact) {
         artefact.addEventListener('change', function () {
           var spec = ARTEFACTS[artefact.value];
-          if (spec) setCaption(spec.label + ' — press Apply, then run the signals.');
+          if (spec) setCaption(spec.label + ' - press Apply, then run the signals.');
         });
       }
 
-      out.dim('Drop a photograph, or a short video, and nothing is uploaded —');
+      out.dim('Drop a photograph, or a short video, and nothing is uploaded -');
       out.dim('every pixel below is read in this tab.');
       out.line('');
       out.warn('This tool does not tell you whether an image is real.');

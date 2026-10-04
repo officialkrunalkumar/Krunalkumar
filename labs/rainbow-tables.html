@@ -237,14 +237,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; the hashing happens on your own processor</li>
+                  <li>No uploads - the hashing happens on your own processor</li>
                   <li>The wordlist is a few thousand common passwords, not a full dictionary</li>
                   <li>It only cracks unsalted hashes, and reads at most 500 pasted digests</li>
                   <li>The rainbow table is deliberately toy-sized, over a 4-character keyspace</li>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -291,7 +291,7 @@
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
-            <p class="lab-pane-label" id="rt-inlabel">Hashes to crack (one per line) &mdash; optional, blank uses a demo set</p>
+            <p class="lab-pane-label" id="rt-inlabel">Hashes to crack (one per line) - optional, blank uses a demo set</p>
             <label class="sr-only" for="tool-in">Hashes to crack, one per line</label>
             <textarea class="lab-toolinput" id="tool-in" spellcheck="false" autocapitalize="off"
                       autocorrect="off" placeholder="Leave blank to crack a generated demo set, or paste unsalted MD5 / SHA-1 / SHA-256 hashes, one per line. Step 2 is the only step that reads this box."></textarea>
@@ -310,15 +310,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A lookup table is not a rainbow table</h3>
-            <p>People use the terms interchangeably, and they are not the same thing. A lookup table stores every digest next to its plaintext &mdash; fast to search, but the space cost is brutal. A rainbow table stores only the two ends of long chains of alternating hash and reduction steps, trading time for space. Steps 1 and 4 build one of each so the difference is concrete.</p>
+            <p>People use the terms interchangeably, and they are not the same thing. A lookup table stores every digest next to its plaintext - fast to search, but the space cost is brutal. A rainbow table stores only the two ends of long chains of alternating hash and reduction steps, trading time for space. Steps 1 and 4 build one of each so the difference is concrete.</p>
           </article>
           <article class="info-card">
             <h3>A salt is not a secret</h3>
-            <p>A salt is random bytes stored in the clear, right beside the hash. It does nothing to stop someone cracking one chosen user &mdash; they just hash the wordlist again with that user&rsquo;s salt. What it stops is amortisation: one precomputed table can no longer crack a million accounts at once, because every account needs the work redone. Step 3 shows exactly that.</p>
+            <p>A salt is random bytes stored in the clear, right beside the hash. It does nothing to stop someone cracking one chosen user - they just hash the wordlist again with that user&rsquo;s salt. What it stops is amortisation: one precomputed table can no longer crack a million accounts at once, because every account needs the work redone. Step 3 shows exactly that.</p>
           </article>
           <article class="info-card">
             <h3>Slow hashes buy time, not secrecy</h3>
-            <p>PBKDF2, bcrypt, scrypt and Argon2 are deliberately slow, so each guess in an offline attack costs more. Step 5 times SHA-256 against PBKDF2 and reports the ratio. bcrypt, scrypt and Argon2 go further with memory-hardness, which is what actually blunts a GPU &mdash; and which this page cannot measure fairly, so it does not pretend to.</p>
+            <p>PBKDF2, bcrypt, scrypt and Argon2 are deliberately slow, so each guess in an offline attack costs more. Step 5 times SHA-256 against PBKDF2 and reports the ratio. bcrypt, scrypt and Argon2 go further with memory-hardness, which is what actually blunts a GPU - and which this page cannot measure fairly, so it does not pretend to.</p>
           </article>
           <article class="info-card">
             <h3>Why rainbow tables faded</h3>
@@ -327,7 +327,7 @@
         </div>
         <p>
           The other side of this is what a service is actually holding when it says it does not store your
-          password &mdash; <a class="text-link" href="/blog/why-we-dont-store-your-password-is-usually-false">a
+          password - <a class="text-link" href="/blog/why-we-dont-store-your-password-is-usually-false">a
           claim that is usually false</a> as stated, with a ladder of what gets stored in practice and how to
           tell from outside which rung a site is on.
         </p>

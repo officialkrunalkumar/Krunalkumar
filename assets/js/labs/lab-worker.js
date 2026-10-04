@@ -134,7 +134,7 @@ var loadLabel = null;
 function announce(label, size) {
   loadLabel = label;
   status(runtimeCached
-    ? 'Starting ' + label + ' from cache — no download, but it must still be compiled…'
+    ? 'Starting ' + label + ' from cache - no download, but it must still be compiled…'
     : 'Downloading ' + label + ' (' + size + ', cached after this)…');
 }
 
@@ -822,7 +822,7 @@ async function runPerl(code) {
     });
     // Timing out means emperl.data or emperl.wasm never arrived. Falling
     // through would run nothing and report success.
-    if (!booted) throw new Error('Perl failed to load — fetching the runtime timed out.');
+    if (!booted) throw new Error('Perl failed to load - fetching the runtime timed out.');
     loaded.perlReady = true;
   }
 
@@ -1041,8 +1041,8 @@ async function transpile(code) {
           ' (TS' + d.code + ')\n', 't-err');
     });
     labOut('\n' + diagnostics.length +
-        (diagnostics.length === 1 ? ' type error — nothing was run.\n'
-                                  : ' type errors — nothing was run.\n'), 't-warn');
+        (diagnostics.length === 1 ? ' type error - nothing was run.\n'
+                                  : ' type errors - nothing was run.\n'), 't-warn');
     post({ type: 'transpiled', js: null, error: 'type errors' });
     return;
   }

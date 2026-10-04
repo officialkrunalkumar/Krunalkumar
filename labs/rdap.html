@@ -9,8 +9,8 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/rdap" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="WHOIS, done properly — no proxy in the path" />
-    <meta property="og:description" content="Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC — with no proxy." />
+    <meta property="og:title" content="WHOIS, done properly - no proxy in the path" />
+    <meta property="og:description" content="Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC - with no proxy." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/rdap" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-rdap.jpg" />
@@ -19,10 +19,10 @@
     <meta property="og:image:alt" content="RDAP Domain Lookup" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="WHOIS, done properly — no proxy in the path" />
-    <meta name="twitter:description" content="Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC — with no proxy." />
+    <meta name="twitter:title" content="WHOIS, done properly - no proxy in the path" />
+    <meta name="twitter:description" content="Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC - with no proxy." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-rdap.jpg" />
-    <title>RDAP Domain Lookup — The Modern WHOIS | Krunalkumar Shah</title>
+    <title>RDAP Domain Lookup - The Modern WHOIS | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -32,7 +32,7 @@
         "applicationCategory": "SecurityApplication",
         "applicationSubCategory": "Network security tool",
         "operatingSystem": "Any modern web browser",
-        "description": "Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC — with no proxy.",
+        "description": "Look up domain registration data over RDAP, the structured HTTPS successor to WHOIS. Registration date, expiry, transfer locks, nameservers and DNSSEC - with no proxy.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -200,13 +200,13 @@
           </ol>
         </nav>
         <h1>Domain registration lookup (RDAP)</h1>
-        <p class="hero-text">Classic WHOIS runs over raw TCP port 43, which a browser cannot open and the Fetch spec blocks outright &mdash; so every web WHOIS tool is a server querying on your behalf. RDAP is the ICANN-mandated successor, and it speaks HTTPS, so this one is not.</p>
+        <p class="hero-text">Classic WHOIS runs over raw TCP port 43, which a browser cannot open and the Fetch spec blocks outright - so every web WHOIS tool is a server querying on your behalf. RDAP is the ICANN-mandated successor, and it speaks HTTPS, so this one is not.</p>
         <ul class="lab-facts">
           <li>Registration, expiry and transfer dates</li>
           <li>Transfer and delete locks</li>
           <li>Nameservers and DNS provider</li>
           <li>DNSSEC delegation</li>
-          <li>Domain age &mdash; the phishing signal that matters</li>
+          <li>Domain age - the phishing signal that matters</li>
         </ul>
       </section>
 
@@ -217,7 +217,7 @@
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
           <p>This lookup runs entirely in your browser and needs JavaScript to do it.</p>
-          <p>It queries the vendor directly from your machine — there is no server here to do it for you.</p>
+          <p>It queries the vendor directly from your machine - there is no server here to do it for you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
             <a href="/">site</a> read perfectly well without it.</p>
@@ -246,7 +246,7 @@
               <div>
                 <p class="lab-gate-h privacy">What still holds</p>
                 <ul class="lab-gate-list">
-                  <li>No proxy &mdash; the request is not relayed through me</li>
+                  <li>No proxy - the request is not relayed through me</li>
                   <li>I never see it, log it or store it</li>
                   <li>No account, no history, no cookies sent</li>
                   <li>Every request is echoed on screen as it goes out</li>
@@ -260,7 +260,7 @@
               offline tools, and agreeing to those did not bring you through this notice.
             </p>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -312,7 +312,7 @@
           </article>
           <article class="info-card">
             <h3>Why coverage is patchy</h3>
-            <p>RDAP is mandatory for gTLDs and optional for country-code TLDs. Many ccTLDs have not implemented it, and some that have omit CORS headers &mdash; in which case the lookup fails in a browser even though the data exists.</p>
+            <p>RDAP is mandatory for gTLDs and optional for country-code TLDs. Many ccTLDs have not implemented it, and some that have omit CORS headers - in which case the lookup fails in a browser even though the data exists.</p>
           </article>
         </div>
       </section>
@@ -339,7 +339,7 @@
           </details>
           <details class="lab-faq">
             <summary>Can I check whether a domain is available?</summary>
-            <div>Indirectly — a 404 usually means unregistered. A registrar’s search is the reliable way, and note that some registrars have historically front-run availability searches.</div>
+            <div>Indirectly - a 404 usually means unregistered. A registrar’s search is the reliable way, and note that some registrars have historically front-run availability searches.</div>
           </details>
       </section>
 

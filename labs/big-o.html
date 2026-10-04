@@ -218,7 +218,7 @@
           </ol>
         </nav>
         <h1>Big-O, measured rather than asserted</h1>
-        <p class="hero-text">Every complexity table you have ever read is a claim somebody made. This page checks the claim on the machine in front of you: nine algorithms, each run over a ladder of growing inputs, each timed with a clock you can see the resolution of, each plotted as it is measured. Then it fits candidate curves to your numbers and tells you which class the data supports &mdash; including the times it cannot tell two classes apart, which is more often than a textbook admits.</p>
+        <p class="hero-text">Every complexity table you have ever read is a claim somebody made. This page checks the claim on the machine in front of you: nine algorithms, each run over a ladder of growing inputs, each timed with a clock you can see the resolution of, each plotted as it is measured. Then it fits candidate curves to your numbers and tells you which class the data supports - including the times it cannot tell two classes apart, which is more often than a textbook admits.</p>
         <ul class="lab-facts">
           <li>Six complexity classes, timed live</li>
           <li>Log&ndash;log axes: the slope is the exponent</li>
@@ -234,7 +234,7 @@
       <noscript>
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
-          <p>This lab times JavaScript running in your browser and then plots what it measured, so JavaScript is not a nicety here &mdash; it is the thing being measured.</p>
+          <p>This lab times JavaScript running in your browser and then plots what it measured, so JavaScript is not a nicety here - it is the thing being measured.</p>
           <p>There is no server doing the work and no stored result to fall back on. Every number on the chart is produced in your tab, seconds before you see it.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
@@ -246,7 +246,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the algorithms, the timing, the
+              This runs entirely inside your browser - the algorithms, the timing, the
               curve fitting, all of it on your own machine. Nothing is uploaded and there is
               no server.
             </p>
@@ -271,7 +271,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -283,7 +283,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-bigo-mount" id="viz-bigo-mount">
-          <p class="lab-proc-fallback">Starting the complexity lab&hellip; if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the complexity lab&hellip; if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -298,7 +298,7 @@
           </article>
           <article class="info-card">
             <h3>An exponential is the one that will not straighten</h3>
-            <p>Power laws are straight on log&ndash;log; exponentials are not, and no amount of squinting makes them so. Put time on a log axis against a plain linear n and it is the other way round &mdash; the exponentials become straight and every polynomial flattens out. Flipping between those two views is a complete test for which family a curve belongs to, and it takes one click.</p>
+            <p>Power laws are straight on log&ndash;log; exponentials are not, and no amount of squinting makes them so. Put time on a log axis against a plain linear n and it is the other way round - the exponentials become straight and every polynomial flattens out. Flipping between those two views is a complete test for which family a curve belongs to, and it takes one click.</p>
           </article>
           <article class="info-card">
             <h3>Constants are thrown away by the notation, not by the machine</h3>
@@ -339,7 +339,7 @@
           </article>
           <article class="info-card">
             <h3>Background tabs are throttled</h3>
-            <p>A hidden tab has its timers clamped and can be frozen outright. Numbers collected there are not comparable with numbers collected in the foreground, so a run in progress pauses when you switch away and resumes when you come back, and says so. The alternative &mdash; quietly collecting samples that mean something different &mdash; would poison the middle of a curve and leave no trace of why.</p>
+            <p>A hidden tab has its timers clamped and can be frozen outright. Numbers collected there are not comparable with numbers collected in the foreground, so a run in progress pauses when you switch away and resumes when you come back, and says so. The alternative - quietly collecting samples that mean something different - would poison the middle of a curve and leave no trace of why.</p>
           </article>
         </div>
       </section>
@@ -352,7 +352,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The worse algorithm wins first</h3>
-            <p>Insertion sort is quadratic and merge sort is n&nbsp;log&nbsp;n, and for a small array insertion sort is faster &mdash; not slightly, but by a wide margin. It is one tight loop over one array: no recursion, no allocation, no comparator calls, and near-perfect locality. Merge sort has to pay for its better asymptotics up front, and below the crossover the input is not big enough to earn that back.</p>
+            <p>Insertion sort is quadratic and merge sort is n&nbsp;log&nbsp;n, and for a small array insertion sort is faster - not slightly, but by a wide margin. It is one tight loop over one array: no recursion, no allocation, no comparator calls, and near-perfect locality. Merge sort has to pay for its better asymptotics up front, and below the crossover the input is not big enough to earn that back.</p>
           </article>
           <article class="info-card">
             <h3>A crossover is a region, not a point</h3>
@@ -388,7 +388,7 @@
           </article>
           <article class="info-card">
             <h3>What it does not attempt</h3>
-            <p>No worst-case or average-case analysis: every workload is run on one distribution of input, random for the sorts, and the shape of that input matters enormously &mdash; insertion sort on already-sorted data is linear. No memory profiling. No comparison against another machine, because there is nowhere to send the numbers to. The <a href="/labs/os-algorithms">OS algorithms lab</a> is the counterpart that counts operations exactly instead of timing them, and the <a href="/labs/compiler">compiler and VM lab</a> is the layer below this one &mdash; the bytecode a loop actually turns into, which is where the constant factors are born. Neither replaces measuring.</p>
+            <p>No worst-case or average-case analysis: every workload is run on one distribution of input, random for the sorts, and the shape of that input matters enormously - insertion sort on already-sorted data is linear. No memory profiling. No comparison against another machine, because there is nowhere to send the numbers to. The <a href="/labs/os-algorithms">OS algorithms lab</a> is the counterpart that counts operations exactly instead of timing them, and the <a href="/labs/compiler">compiler and VM lab</a> is the layer below this one - the bytecode a loop actually turns into, which is where the constant factors are born. Neither replaces measuring.</p>
           </article>
         </div>
       </section>
@@ -431,7 +431,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a curve comes out the wrong shape, or the verdict names a class that is obviously wrong, that is exactly the kind of thing I want to know about &mdash; mention your browser and roughly what machine it is.</p>
+          <p>If a curve comes out the wrong shape, or the verdict names a class that is obviously wrong, that is exactly the kind of thing I want to know about - mention your browser and roughly what machine it is.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=big-o#lab-feedback">Report a problem or send feedback</a>

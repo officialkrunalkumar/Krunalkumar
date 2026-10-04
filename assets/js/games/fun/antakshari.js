@@ -296,7 +296,7 @@
     title: 'Antakshari',
     startTitle: 'Antakshari, played with words',
     startText: 'Every word has to start with the last letter of the word before it. No lyrics are ' +
-      'involved and none are stored — the note under the board says why. Twenty-five seconds a turn.',
+      'involved and none are stored - the note under the board says why. Twenty-five seconds a turn.',
 
     setup: function (g) {
       var host = g.board;
@@ -366,7 +366,7 @@
           '<p class="anta-note">This is antakshari&rsquo;s rule, not its songs. The real game is sung with ' +
           'film songs; this one is played with words, because the site ships no audio at all and will not ' +
           'reproduce copyrighted lyrics or keep a database of them. The two word lists were written by hand ' +
-          'for this game, and one of them is the referee &mdash; if a word is not on it, it is refused, ' +
+          'for this game, and one of them is the referee - if a word is not on it, it is refused, ' +
           'whoever typed it.</p>';
 
         el.turn = host.querySelector('#anta-turn');
@@ -605,7 +605,7 @@
         var n = handover(word);
         el.hand.textContent = n === 0
           ? 'That hands over ' + up(last) + ', and nothing is left on ' + up(last) + '. It would end the round.'
-          : 'That hands over ' + up(last) + ' — ' + n + (n === 1 ? ' answer' : ' answers') + ' left on it.';
+          : 'That hands over ' + up(last) + ' - ' + n + (n === 1 ? ' answer' : ' answers') + ' left on it.';
         el.hand.className = 'anta-hand' + (n === 0 ? ' is-dry' : (n <= 4 ? ' is-thin' : ''));
       }
 
@@ -883,7 +883,7 @@
           return;
         }
         if (/\s/.test(String(raw).replace(/^\s+|\s+$/g, ''))) {
-          reject('One word at a time — both lists hold single words.');
+          reject('One word at a time - both lists hold single words.');
           return;
         }
         if (word.charAt(0) !== letter) {

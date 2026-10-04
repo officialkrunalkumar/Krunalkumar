@@ -85,7 +85,7 @@
     {
       key: 'base64',
       name: 'Base64',
-      note: 'Three bytes rewritten as four characters from a 64-symbol alphabet, so binary survives channels that only carry text — email attachments, data: URLs, tokens in JSON.'
+      note: 'Three bytes rewritten as four characters from a 64-symbol alphabet, so binary survives channels that only carry text - email attachments, data: URLs, tokens in JSON.'
     },
     {
       key: 'morse',
@@ -324,7 +324,7 @@
         var label = document.createElement('label');
         label.className = 'nib-field';
         label.setAttribute('for', 'nib-text');
-        label.textContent = 'Type anything — a name, a word, a sentence';
+        label.textContent = 'Type anything - a name, a word, a sentence';
         host.appendChild(label);
 
         input = document.createElement('textarea');
@@ -339,7 +339,7 @@
 
         var limit = document.createElement('p');
         limit.className = 'nib-limit';
-        limit.textContent = 'Up to ' + MAX + ' characters. Accents, Devanagari and emoji are all handled properly — ' +
+        limit.textContent = 'Up to ' + MAX + ' characters. Accents, Devanagari and emoji are all handled properly - ' +
           'they are simply worth more than one byte each.';
         host.appendChild(limit);
 
@@ -405,7 +405,7 @@
         if (!text) return;
         copy(text, function (ok) {
           btn.textContent = ok ? 'Copied' : 'Press Ctrl+C';
-          if (live) live.textContent = ok ? row.name + ' copied to the clipboard' : 'Copying failed — select the text and press Ctrl+C';
+          if (live) live.textContent = ok ? row.name + ' copied to the clipboard' : 'Copying failed - select the text and press Ctrl+C';
           /* The two outcomes have always read differently and looked
              differently; they may as well sound different too. A clean
              sine up top for the copy that worked, a low square for the one
@@ -519,7 +519,7 @@
         setRow('hex', values.hex, '');
         setRow('points', values.points,
           points.length && points.length !== bytes.length
-            ? points.length + ' characters, ' + bytes.length + ' bytes — the two only match while the text stays inside ASCII.'
+            ? points.length + ' characters, ' + bytes.length + ' bytes - the two only match while the text stays inside ASCII.'
             : '');
         setRow('base64', values.base64, '');
         setRow('morse', values.morse,

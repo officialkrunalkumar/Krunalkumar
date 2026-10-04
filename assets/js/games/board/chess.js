@@ -212,7 +212,7 @@
         lastMove = null;
         thinking = 0;
         over = false;
-        message = mode === 'pass' ? 'White to move' : 'Your move — you are White';
+        message = mode === 'pass' ? 'White to move' : 'Your move - you are White';
         syncHud();
       }
 
@@ -784,7 +784,7 @@
           message = 'Black is thinking';
           thinking = 0.25;
         } else {
-          message = (check ? 'Check — ' : '') +
+          message = (check ? 'Check - ' : '') +
                     (mode === 'pass' ? name + ' to move' : 'Your move');
         }
       }
@@ -807,7 +807,7 @@
         lastMove = null;
         selected = -1;
         legalForSel = [];
-        message = mode === 'pass' ? 'Taken back' : 'Taken back — your move';
+        message = mode === 'pass' ? 'Taken back' : 'Taken back - your move';
         g.hideOverlay();
         /* Reviving a FINISHED game needs the loop back as well as the flag.
            over() calls stop(), which cancels the animation frame, so setting

@@ -7,7 +7,7 @@
 - [Home](https://krunalkumar.dpdns.org/): Profile summary, core technical domains, credential highlights, and selected open-source builds.
 - [About](https://krunalkumar.dpdns.org/about): Education (M.E. IT / Information Security, B.E. Computer Engineering), international career across 4 countries (India, USA, France, Taiwan), skill matrix, and community roles.
 - [Services](https://krunalkumar.dpdns.org/services): Scoped consulting offerings: AI workflow automation (n8n, Make, HubSpot), full-stack development, Linux/web cybersecurity hardening, personal malware/account recovery, corporate and team training, and technical writing. Includes a private, client-side automation opportunity assessment that estimates current team effort (not savings) and can carry a summary into the Project Planner, plus a general first-steps guide for suspected account compromise, phishing, malware, spyware/stalkerware, and work-device incidents; the guide is informational, not emergency support or a diagnosis.
-- [Projects](https://krunalkumar.dpdns.org/projects): Curated selection of 50 production automation and AI repositories, drawn from 80+ public repos (ChurnGPT 2.0, FNOL Claims Assistant, CleverResponder, HubSpot integrations).
+- [Projects](https://krunalkumar.dpdns.org/projects): Three repository-backed case studies covering ChurnGPT 2.0, an FNOL document-processing prototype, and Google Sheets to ClickUp automation; also a rotating featured project and a paginated gallery of 50 projects from 80+ public repositories. Measured results are attributed to their source, and prototypes are identified as such.
 - [Project Planner](https://krunalkumar.dpdns.org/project-planner): A guided, client-side brief builder for service area, project context, goal, and timing. Visitors review and edit answers before continuing to Contact; no account or server-side answer storage. It can receive an automation assessment summary in a temporary URL fragment, which the planner removes after prefilling the brief; the reviewed brief then travels in a temporary URL fragment to Contact.
 - [Research](https://krunalkumar.dpdns.org/research): Academic paper "Security Against Fork Bomb Attack in Linux Based Systems" (IJRAT 2019, DOI: 10.32622/ijrat.74201911) detailing process resource quarantine mechanisms.
 - [Blog](https://krunalkumar.dpdns.org/blog): Index of all published articles on cybersecurity, AI automation, and engineering practice.
@@ -19,16 +19,16 @@
 
 ## Full Context
 
-- [Full Context Knowledge Base](https://krunalkumar.dpdns.org/llms-full.txt): Complete consolidated documentation — biography, career timeline, research detail, project catalog, program terms, and policies — in one plain-text file.
+- [Full Context Knowledge Base](https://krunalkumar.dpdns.org/llms-full.txt): Complete consolidated documentation - biography, career timeline, research detail, project catalog, program terms, and policies - in one plain-text file.
 
 ## Technical Articles
 
-- [The resume-builder paywall trick](https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick): Why resume sites charge at the download button and upload your career to render it — and the free in-browser alternative.
+- [The resume-builder paywall trick](https://krunalkumar.dpdns.org/blog/the-resume-builder-paywall-trick): Why resume sites charge at the download button and upload your career to render it - and the free in-browser alternative.
 - [What a marriage biodata leaks](https://krunalkumar.dpdns.org/blog/what-a-marriage-biodata-leaks): The identity-theft surface of one A4 page, and how to make one that stays on your device.
-- [How I Vibe Coded This Website](https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website): The engineering mechanism behind an AI-built static site — prompt written as a specification, reasoning kept in the repository, adversarial multi-pass review, and deploy-time gates that refuse to publish damage.
-- [Git, Explained From the Object Up](https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up): The git object model, branching, rebase, the undo toolbox and the reflog — explained from the bottom; companion to the Git Quest game.
-- [What Sixty-Six Tiny Games Taught Me About Serious Software](https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software): How the site's 66 browser games held every production bug class in miniature — state machines, shared keyboards, saved dead ends, copy drift, and canvas accessibility.
-- [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work — specification, verification, accountability, and where the approval gate belongs.
+- [How I Vibe Coded This Website](https://krunalkumar.dpdns.org/blog/how-i-vibe-coded-my-website): The engineering mechanism behind an AI-built static site - prompt written as a specification, reasoning kept in the repository, adversarial multi-pass review, and deploy-time gates that refuse to publish damage.
+- [Git, Explained From the Object Up](https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up): The git object model, branching, rebase, the undo toolbox and the reflog - explained from the bottom; companion to the Git Quest game.
+- [What Sixty-Six Tiny Games Taught Me About Serious Software](https://krunalkumar.dpdns.org/blog/what-66-games-taught-me-about-software): How the site's 66 browser games held every production bug class in miniature - state machines, shared keyboards, saved dead ends, copy drift, and canvas accessibility.
+- [AI Driven, Human Assisted](https://krunalkumar.dpdns.org/blog/ai-driven-human-assisted): The inversion from human-driven/AI-assisted work to AI-driven/human-assisted work - specification, verification, accountability, and where the approval gate belongs.
 - [Types of Cyberattacks, Mapped](https://krunalkumar.dpdns.org/blog/types-of-cyberattacks): Technical breakdown of 6 attack vectors mapped against CIA Triad vulnerabilities and mitigation steps.
 - [Security Compliance, Explained](https://krunalkumar.dpdns.org/blog/security-compliance-explained): Practical enterprise guide to GDPR, CCPA/CPRA, HIPAA, PCI DSS, SOX, ISO 27001, and SOC 2 frameworks.
 - [India's IT Law, Explained](https://krunalkumar.dpdns.org/blog/india-it-act-explained): Legal analysis of the IT Act 2000, intermediary guidelines, CERT-In directions, and DPDP Act 2023.
@@ -37,56 +37,56 @@
 - [I Open-Sourced My AI SDR](https://krunalkumar.dpdns.org/blog/i-open-sourced-my-ai-sdr): CleverResponder architecture for inbound reply handling via SmartLead and Instantly.
 - [What Is a Fork Bomb in Linux?](https://krunalkumar.dpdns.org/blog/what-is-a-fork-bomb): Bash process exhaustion analysis, ulimit edge cases, and dynamic process quarantine solutions.
 - [Automating Email Replies with n8n](https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n): 5-stage automated architecture: trigger, parsing, classification, draft generation, and human-in-the-loop Slack actions.
-- [How to Succeed in Software Development](https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development): Build order for software and automations — make it work, make it modular, make it readable, then optimize.
+- [How to Succeed in Software Development](https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development): Build order for software and automations - make it work, make it modular, make it readable, then optimize.
 - [What your browser tells every site you visit](https://krunalkumar.dpdns.org/blog/what-your-browser-tells-every-site): What is sent before any script runs, what a page reads afterwards, and why the combination fingerprints you when no single value does.
 - [The password advice that stopped being true](https://krunalkumar.dpdns.org/blog/the-password-advice-that-stopped-being-true): Composition rules and forced rotation, why NIST and the NCSC reversed them, and what replaced them.
 - [Why "we don't store your password" is usually false](https://krunalkumar.dpdns.org/blog/why-we-dont-store-your-password-is-usually-false): The ladder from plaintext to slow hashes to passkeys, and how to tell from outside which rung a site is on.
 - [What a VPN does and does not do](https://krunalkumar.dpdns.org/blog/what-a-vpn-does-and-does-not-do): What the tunnel hides and from whom, why HTTPS closed most of the classic pitch, and the long list it cannot help with.
-- [How to read a privacy policy in five minutes](https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes): An ordered procedure — search rather than read, find sharing and retention first, and compare the claims against the network tab.
+- [How to read a privacy policy in five minutes](https://krunalkumar.dpdns.org/blog/how-to-read-a-privacy-policy-in-five-minutes): An ordered procedure - search rather than read, find sharing and retention first, and compare the claims against the network tab.
 - [What happens to your accounts when you die](https://krunalkumar.dpdns.org/blog/what-happens-to-your-accounts-when-you-die): The practical companion on digital legacy: platform tools, password-manager emergency access, and why a master password must never go in a will.
 - [What "AI agent" means once you have to maintain one](https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one): The spectrum from a prompt with a tool call to a multi-agent system, and what non-determinism costs you in testing, cost control and observability.
 - [What build-gate failures taught me about CI](https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci): Six gates on this site, the silent production failure behind each, and why a gate that cries wolf is worse than none.
 - [Writing comments that survive](https://krunalkumar.dpdns.org/blog/writing-comments-that-survive): Why comments restating the code go stale and comments recording a measurement, a rejected alternative or an actual bug do not.
 - [When a static site outgrows being static](https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static): What static genuinely buys, the signals you have outgrown it, and the intermediate steps most projects skip on the way to a backend.
-- [Why every number on this site is counted rather than typed](https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted): How figures are rewritten at deploy from what the build counted, and the limit — any fact about the world outside the repository.
-- [Digital Arrest, Explained](https://krunalkumar.dpdns.org/blog/digital-arrest-scam-explained): There is no such thing as a digital arrest — how the fake-police video-call scam works, why it fools careful people, and what to do in the first hour.
+- [Why every number on this site is counted rather than typed](https://krunalkumar.dpdns.org/blog/why-every-number-on-this-site-is-counted): How figures are rewritten at deploy from what the build counted, and the limit - any fact about the world outside the repository.
+- [Digital Arrest, Explained](https://krunalkumar.dpdns.org/blog/digital-arrest-scam-explained): There is no such thing as a digital arrest - how the fake-police video-call scam works, why it fools careful people, and what to do in the first hour.
 - [How a SIM Swap Works](https://krunalkumar.dpdns.org/blog/how-sim-swap-works): The two ways a number changes hands, why SMS was never an authentication channel, and the defences that hold.
-- [UPI Fraud: How the Money Leaves](https://krunalkumar.dpdns.org/blog/upi-fraud-how-the-money-actually-leaves): A UPI collect request and a payment look almost identical on screen, and only one takes money — the six scripts, and what to do in the first hour.
+- [UPI Fraud: How the Money Leaves](https://krunalkumar.dpdns.org/blog/upi-fraud-how-the-money-actually-leaves): A UPI collect request and a payment look almost identical on screen, and only one takes money - the six scripts, and what to do in the first hour.
 - [What Happens When You Click a Phishing Link](https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link): What the page already learned, how a real-time relay spends your one-time code, and an ordered checklist for the first thirty minutes.
 - [Passwords and Passkeys: What Protects You](https://krunalkumar.dpdns.org/blog/passwords-passkeys-and-what-actually-protects-you): Why your password is rarely the weak point, what a passkey actually is, what it fixes and does not, and a setup you can finish this week.
 - [How to Read a Data Breach Notification](https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification): What accessed, acquired and encrypted passwords really mean, and what to do based on what actually leaked.
 - [Surface, Deep, and Dark Web, Explained](https://krunalkumar.dpdns.org/blog/surface-web-deep-web-and-dark-web): Why the iceberg picture is wrong, how onion routing works, and what breach monitoring can and cannot tell you.
 - [Why Your Phone Feels Hacked](https://krunalkumar.dpdns.org/blog/why-your-phone-feels-hacked-and-probably-is-not): Why a hot, fast-draining phone is almost never hacked, the six signals that do matter, and the checks to run on Android and iOS.
 - [What Deepfake Detection Can and Cannot Do](https://krunalkumar.dpdns.org/blog/what-deepfake-detection-can-and-cannot-do): Why an AI detector's confidence percentage is not evidence, what a forensic examiner actually looks at, and what C2PA provenance genuinely fixes.
-- [What Consent Actually Means Under DPDP](https://krunalkumar.dpdns.org/blog/what-consent-actually-means-under-dpdp): What India's DPDP Act 2023 actually requires of a small company — the consent standard, the notice and its languages, the rights, and the penalty schedule.
+- [What Consent Actually Means Under DPDP](https://krunalkumar.dpdns.org/blog/what-consent-actually-means-under-dpdp): What India's DPDP Act 2023 actually requires of a small company - the consent standard, the notice and its languages, the rights, and the penalty schedule.
 - [What a Security Review Actually Finds](https://krunalkumar.dpdns.org/blog/what-a-security-review-actually-finds): The eight findings a security review of a small SaaS or internal tool keeps turning up, and why a clean report is not a clean bill of health.
 - [What an Auditor Wants From Security Training](https://krunalkumar.dpdns.org/blog/what-an-auditor-actually-wants-from-security-training): What ISO/IEC 27001 Annex A 6.3 asks for, how SOC 2 assessors map the same evidence, where DPDP sits, and the training records that survive a review.
-- [n8n vs Make vs Zapier, Compared](https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison): Compared by what actually decides it — where the workflow runs, who is liable for the data, and what each pricing meter really counts.
-- [Why Your Automation Broke](https://krunalkumar.dpdns.org/blog/why-your-automation-broke): An automation that ran for a year does not stop for mysterious reasons — the eight causes that account for it, and the guard that catches each one early.
+- [n8n vs Make vs Zapier, Compared](https://krunalkumar.dpdns.org/blog/n8n-make-or-zapier-an-honest-comparison): Compared by what actually decides it - where the workflow runs, who is liable for the data, and what each pricing meter really counts.
+- [Why Your Automation Broke](https://krunalkumar.dpdns.org/blog/why-your-automation-broke): An automation that ran for a year does not stop for mysterious reasons - the eight causes that account for it, and the guard that catches each one early.
 
 ## Career, Mentorship & Practice
 
-- [Character Over Career](https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by): Five guiding choices — character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
+- [Character Over Career](https://krunalkumar.dpdns.org/blog/character-over-career-the-choices-i-live-by): Five guiding choices - character over career, satisfaction over success, failure over fear, people over place, goal over gossip.
 - [My Career Story: From Classroom to AI](https://krunalkumar.dpdns.org/blog/my-career-story-from-classroom-to-research-and-ai): Career path from an engineering classroom and a $6 mentoring session to published security research, mentoring across three continents, and AI automation work.
-- [The Four M's Every Business Runs On](https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs): Manpower, money, mind, and management — what each means and why a business fails when one is missing.
+- [The Four M's Every Business Runs On](https://krunalkumar.dpdns.org/blog/the-four-ms-every-business-needs): Manpower, money, mind, and management - what each means and why a business fails when one is missing.
 - [Lessons from Running an Internship Cohort](https://krunalkumar.dpdns.org/blog/what-running-internship-cohorts-taught-me-about-mentorship): Why small committed cohorts beat crowds, how to structure real projects, and what mentorship means day to day.
 - [Standing Out in an Internship Interview](https://krunalkumar.dpdns.org/blog/how-to-stand-out-in-an-internship-interview): What impresses a reviewer, the mistakes that sink candidates, and smart questions to ask.
 - [Smart Feedback: How to Give and Receive](https://krunalkumar.dpdns.org/blog/smart-feedback-how-to-give-and-receive-it): Why vague praise fails, a structure for useful feedback, and how to take criticism without getting defensive.
 - [What actually happens in the first week of an automation engagement](https://krunalkumar.dpdns.org/blog/first-week-of-an-automation-engagement): What gets read, asked and measured before anything is built, and why week one produces a map and a decision rather than a working automation.
 - [Why I quote fixed-price, what it costs me, and when I refuse to](https://krunalkumar.dpdns.org/blog/why-i-quote-fixed-price): The case for fixed price from the client side, the risk premium it carries, and the work I will not quote that way.
-- [The HubSpot mistakes that cost the most to undo](https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo): Object model, property sprawl, deal stages and deduplication — the CRM decisions that are load-bearing by the time you notice them.
+- [The HubSpot mistakes that cost the most to undo](https://krunalkumar.dpdns.org/blog/the-hubspot-mistakes-that-cost-the-most-to-undo): Object model, property sprawl, deal stages and deduplication - the CRM decisions that are load-bearing by the time you notice them.
 - [How to brief a security consultant so the quote is accurate](https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant): What to supply and why each item moves the number, plus the questions a good consultant asks back.
-- [Finding the Right Career](https://krunalkumar.dpdns.org/blog/finding-the-right-career): Why "follow your passion" is bad advice — three things that must overlap, testing instead of deciding, and what to ignore.
+- [Finding the Right Career](https://krunalkumar.dpdns.org/blog/finding-the-right-career): Why "follow your passion" is bad advice - three things that must overlap, testing instead of deciding, and what to ignore.
 - [How to Read a Job Description](https://krunalkumar.dpdns.org/blog/how-to-read-a-job-description): Which requirements are load-bearing, what "fast-paced" and "wear many hats" really mean, and what a missing salary tells you.
 - [The Interview Questions I Ask](https://krunalkumar.dpdns.org/blog/the-interview-questions-i-ask): The five questions kept across years of technical interviews, what each one is really testing, and the signals that only look like signal.
-- [The Mentee Mistakes That Cost the Most Time](https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time): Tutorial loops, restarts, roadmap hunting and silence when stuck — the habits that cost months, and what to do instead.
-- [Scope the Work Before You Quote It](https://krunalkumar.dpdns.org/blog/scoping-work-before-you-quote-it): Most bad projects are under-scoped rather than underpriced — five questions to answer before sending a number, and how to change scope without resentment.
+- [The Mentee Mistakes That Cost the Most Time](https://krunalkumar.dpdns.org/blog/the-mentee-mistakes-that-cost-the-most-time): Tutorial loops, restarts, roadmap hunting and silence when stuck - the habits that cost months, and what to do instead.
+- [Scope the Work Before You Quote It](https://krunalkumar.dpdns.org/blog/scoping-work-before-you-quote-it): Most bad projects are under-scoped rather than underpriced - five questions to answer before sending a number, and how to change scope without resentment.
 - [The Real Cost of a Manual Process](https://krunalkumar.dpdns.org/blog/the-real-cost-of-a-manual-process): Minutes × frequency × loaded hourly rate, the four costs that never make the estimate, and a payback formula.
 - [Types of Love, and Choosing Someone to Marry](https://krunalkumar.dpdns.org/blog/types-of-love-and-choosing-a-life-partner): Telling infatuation from the real thing, what predicts a lasting marriage, and the questions to ask before you commit.
 - [The Life of the Buddha, Without the Mythology](https://krunalkumar.dpdns.org/blog/the-life-of-the-buddha): Who Siddhattha Gotama actually was, what the earliest texts say, where the familiar legend was added later, and what he taught in forty-five years of walking.
 - [What Happens After We Die](https://krunalkumar.dpdns.org/blog/what-happens-after-we-die): What the major traditions actually claim about death, where they disagree, what near-death experiences do and do not show, and living with an open question.
 
-## Labs — free online compilers that run in the browser
+## Labs - free online compilers that run in the browser
 
 - [Labs hub](https://krunalkumar.dpdns.org/labs): Eleven language playgrounds, three real machines and dozens more tools, all executing locally in the visitor's browser. No server, no sign-up, nothing uploaded.
 - [Online Python compiler](https://krunalkumar.dpdns.org/labs/python): Genuine CPython on WebAssembly with the standard library and input() support. No pip.
@@ -95,7 +95,7 @@
 - [Online SQL compiler](https://krunalkumar.dpdns.org/labs/sql): A real SQLite engine in memory, with results rendered as a table.
 - [Online Lua compiler](https://krunalkumar.dpdns.org/labs/lua): Lua 5.4 on WebAssembly, with metatables and coroutines.
 - [Online Linux terminal](https://krunalkumar.dpdns.org/labs/linux): A genuine Linux kernel and BusyBox shell booted in the browser via x86 emulation. No network, safe to break.
-- [Online BSD shell](https://krunalkumar.dpdns.org/labs/bsd): A real OpenBSD kernel and ksh booted the same way — the family the macOS command line comes from. Deliberately minimal.
+- [Online BSD shell](https://krunalkumar.dpdns.org/labs/bsd): A real OpenBSD kernel and ksh booted the same way - the family the macOS command line comes from. Deliberately minimal.
 - [Online C compiler](https://krunalkumar.dpdns.org/labs/c): A real clang and lld toolchain in the browser. structs, pointers, malloc, scanf.
 - [Online C++ compiler](https://krunalkumar.dpdns.org/labs/cpp): Real clang with libc++ and the full STL: vector, string, map, algorithm, templates.
 - [Online PHP compiler](https://krunalkumar.dpdns.org/labs/php): Real PHP 8.4 with enums, match and the full array library.
@@ -103,13 +103,13 @@
 - [Online Perl compiler](https://krunalkumar.dpdns.org/labs/perl): Real Perl 5 on WebAssembly. Regular expressions doing what they do best.
 - [Online PostgreSQL compiler](https://krunalkumar.dpdns.org/labs/postgres): The actual Postgres server with window functions, CTEs and JSONB.
 - [Online DOS prompt](https://krunalkumar.dpdns.org/labs/dos): Real FreeDOS booted in the browser. DIR, COPY, batch files, VIM and NASM.
-- [Online synth & DJ desk](https://krunalkumar.dpdns.org/labs/synth): load a track from your own machine and play over it — a
+- [Online synth & DJ desk](https://krunalkumar.dpdns.org/labs/synth): load a track from your own machine and play over it - a
   sixteen-step drum machine, one-shot pads and a playable synth, mixed live in the browser.
   Drums are synthesised rather than sampled; your file is never uploaded.
 - [Typing speed test for programmers](https://krunalkumar.dpdns.org/labs/typing): Measured on real code, not just prose. WPM and accuracy, nothing uploaded.
 
 
-## Security & digital forensics tools — all client-side
+## Security & digital forensics tools - all client-side
 
 - [Hash generator & verifier](https://krunalkumar.dpdns.org/labs/hash): MD5, SHA-1, SHA-256, SHA-384, SHA-512 and HMAC for text or files, plus checksum verification and hash identification.
 - [File type inspector & hex viewer](https://krunalkumar.dpdns.org/labs/file-inspector): Identifies a file from its magic bytes rather than its extension, and flags the mismatch. Hex dump, printable strings and an entropy graph.
@@ -121,7 +121,7 @@
 - [SSL/TLS certificate decoder](https://krunalkumar.dpdns.org/labs/cert-decoder): Decodes an X.509 PEM without OpenSSL: subject, issuer, validity, key size, SANs, extensions and fingerprints.
 - [Certificate builder](https://krunalkumar.dpdns.org/labs/certificate-forge): The certificate decoder in reverse. Generates a real RSA-2048 or ECDSA P-256 keypair with WebCrypto, then hand-encodes a self-signed X.509 certificate, a PKCS#10 CSR and a two-certificate chain of trust, with the ASN.1/DER shown byte by byte and the output verified against a real X.509 parser. Also signs messages and demonstrates tamper detection. Entirely client-side.
 - [Encoder & decoder](https://krunalkumar.dpdns.org/labs/encoding): Base64, Base64url, Base32, Base58, hex, URL, HTML entities, binary, decimal, Morse and JSON, with automatic format detection.
-- [Classical cipher playground](https://krunalkumar.dpdns.org/labs/cipher): Caesar, ROT13, Atbash, Vigenere and XOR — and automatic cryptanalysis that breaks all of them without a key.
+- [Classical cipher playground](https://krunalkumar.dpdns.org/labs/cipher): Caesar, ROT13, Atbash, Vigenere and XOR - and automatic cryptanalysis that breaks all of them without a key.
 - [Image steganography](https://krunalkumar.dpdns.org/labs/steganography): Hides a message in the least significant bits of a PNG, extracts one, and amplifies the low-bit plane to reveal concealed data.
 - [Regex tester & ReDoS checker](https://krunalkumar.dpdns.org/labs/regex): Live matching with capture groups, plus an empirical catastrophic-backtracking test and a library of security-relevant patterns.
 - [CVSS v3.1 calculator](https://krunalkumar.dpdns.org/labs/cvss): The official base score formula with every metric explained and its contribution shown. Parses and emits vector strings.
@@ -132,25 +132,25 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [SPF and DMARC record builder](https://krunalkumar.dpdns.org/labs/dmarc-builder): Authors the records rather than checking them, with a live count against the RFC 7208 ten-lookup limit, a p=none to reject rollout plan, and a DMARC aggregate report parser.
 - [SBOM inspector](https://krunalkumar.dpdns.org/labs/sbom-inspector): Reads a package-lock.json or requirements.txt for direct versus transitive counts, install scripts, typosquat lookalikes, licence mix and unpinned ranges. Exports CycloneDX.
 - [Cookie inspector](https://krunalkumar.dpdns.org/labs/cookie-inspector): Explains every Set-Cookie attribute, flags the combinations a browser rejects outright, and covers __Host- prefixes, CHIPS and what SameSite really does about CSRF.
-- [CSP playground](https://krunalkumar.dpdns.org/labs/csp-playground): Write a Content-Security-Policy, paste a page, see what would be blocked — including a nonce silently voiding 'unsafe-inline', and JSONP on your own origin defeating 'self'.
+- [CSP playground](https://krunalkumar.dpdns.org/labs/csp-playground): Write a Content-Security-Policy, paste a page, see what would be blocked - including a nonce silently voiding 'unsafe-inline', and JSONP on your own origin defeating 'self'.
 - [Salt and rainbow tables](https://krunalkumar.dpdns.org/labs/rainbow-tables): Builds a precomputed table live, breaks unsalted hashes with it, then adds a salt and shows it become worthless. Times a fast hash against a slow one in the tab.
 - [Timing side-channel](https://krunalkumar.dpdns.org/labs/timing-attack): Recovers a secret byte by byte from measured medians against a naive comparison, and fails against a constant-time one. Reports the browser's own timer resolution.
 - [Firewall rule simulator](https://krunalkumar.dpdns.org/labs/firewall-rules): Walks a packet through an iptables or nftables chain rule by rule, detects shadowed rules, models conntrack, and explains DROP against REJECT.
 - [Phishing email dissector](https://krunalkumar.dpdns.org/labs/phishing-dissector): Paste a suspicious email and see why it is or is not phishing: spoofed display names, lookalike and punycode domains, link text against destination.
-- [TOTP generator & verifier](https://krunalkumar.dpdns.org/labs/totp): Generates and verifies two-factor codes with every step shown — counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included.
+- [TOTP generator & verifier](https://krunalkumar.dpdns.org/labs/totp): Generates and verifies two-factor codes with every step shown - counter from the clock, HMAC, dynamic truncation, modulo. RFC 6238 test vectors included.
 - [Passkey & WebAuthn explorer](https://krunalkumar.dpdns.org/labs/passkeys): Creates a real passkey with the browser's own WebAuthn API, then reads every byte it produced: the CBOR attestation object, AAGUID and COSE public key.
 - [OSINT self-check](https://krunalkumar.dpdns.org/labs/osint-self-check): Paste your own bio, handle, out-of-office or CV and see what a stranger could work out, and which password reset each detail helps answer.
 - [STRIDE threat model builder](https://krunalkumar.dpdns.org/labs/threat-model): Describe a system and it proposes the STRIDE threats for each element. Accept, reject or rewrite each one, attach a mitigation, print the model.
-- [UPI & payment fraud explainer](https://krunalkumar.dpdns.org/labs/upi-fraud): Decide seven times whether a payment screen is taking money or giving it, with the tell shown afterwards — then the six UPI scripts that reach India.
+- [UPI & payment fraud explainer](https://krunalkumar.dpdns.org/labs/upi-fraud): Decide seven times whether a payment screen is taking money or giving it, with the tell shown afterwards - then the six UPI scripts that reach India.
 - [HTTP security header grader](https://krunalkumar.dpdns.org/labs/header-grader): Paste the response headers you actually got and get a weighted grade across eight of them, with a reason for every mark lost. It grades a paste rather than fetching a URL, so it works on staging and on internal hosts.
-- [OAuth 2.0 flow simulator](https://krunalkumar.dpdns.org/labs/oauth-flow): Walks the authorization code flow with real PKCE values generated by WebCrypto, then runs five attacks against it — stolen code, login CSRF, loose redirect_uri, code replay and provider mix-up — showing which check refuses each. Also audits an authorize URL you paste.
+- [OAuth 2.0 flow simulator](https://krunalkumar.dpdns.org/labs/oauth-flow): Walks the authorization code flow with real PKCE values generated by WebCrypto, then runs five attacks against it - stolen code, login CSRF, loose redirect_uri, code replay and provider mix-up - showing which check refuses each. Also audits an authorize URL you paste.
 - [SSH public key inspector](https://krunalkumar.dpdns.org/labs/ssh-keys): Both fingerprints (SHA256 and MD5), the real modulus size, authorized_keys options, and the key type recorded inside the blob checked against the label on the line. Refuses a private key and says what to do about it.
-- [SAML response dissector](https://krunalkumar.dpdns.org/labs/saml-response): Decodes a SAMLResponse — base64, URL-encoded or DEFLATE-compressed — and reports the envelope, subject, validity window and attributes, plus which elements are actually signed, XML signature wrapping and the NameID comment trick. The signature is not verified and it says so.
-- [Kerberos flow and attacks](https://krunalkumar.dpdns.org/labs/kerberos-flow): Walks AS-REQ through AP-REP, then runs Kerberoasting, AS-REP roasting, Golden and Silver tickets, pass-the-ticket and unconstrained delegation — each with what actually fixes it. RC4 against AES256 side by side is the argument for disabling RC4.
-- [Threat hunt deduction exercise](https://krunalkumar.dpdns.org/labs/threat-hunt): A fresh domain of authentication events every run, with one human account compromised before the others. The log starts hidden and every question you ask is counted. No score — a debrief naming the shortest honest path.
+- [SAML response dissector](https://krunalkumar.dpdns.org/labs/saml-response): Decodes a SAMLResponse - base64, URL-encoded or DEFLATE-compressed - and reports the envelope, subject, validity window and attributes, plus which elements are actually signed, XML signature wrapping and the NameID comment trick. The signature is not verified and it says so.
+- [Kerberos flow and attacks](https://krunalkumar.dpdns.org/labs/kerberos-flow): Walks AS-REQ through AP-REP, then runs Kerberoasting, AS-REP roasting, Golden and Silver tickets, pass-the-ticket and unconstrained delegation - each with what actually fixes it. RC4 against AES256 side by side is the argument for disabling RC4.
+- [Threat hunt deduction exercise](https://krunalkumar.dpdns.org/labs/threat-hunt): A fresh domain of authentication events every run, with one human account compromised before the others. The log starts hidden and every question you ask is counted. No score - a debrief naming the shortest honest path.
 
 
-## Digital forensics tools — drop a file, all client-side
+## Digital forensics tools - drop a file, all client-side
 
 - [HAR analyzer](https://krunalkumar.dpdns.org/labs/har-analyzer): Find the secrets in a browser network export - tokens, cookies, keys, PII - and download a redacted copy safe to share.
 - [SQLite browser](https://krunalkumar.dpdns.org/labs/sqlite-browser): Open any SQLite database - Chrome history, WhatsApp, app data - browse tables, run SQL, timestamps decoded.
@@ -164,18 +164,18 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [Log file analyser](https://krunalkumar.dpdns.org/labs/log-analyser): Paste or drop a log file and get findings locally: brute force and password spray told apart, a success after a run of failures, scanner probes.
 - [PDF toolkit](https://krunalkumar.dpdns.org/labs/pdf-tools): Merge, split, reorder, rotate and delete PDF pages, read the structure a PDF is made of, and save a copy with the metadata stripped.
 
-## Interactive visualisers — canvas and WebGL, in the browser
+## Interactive visualisers - canvas and WebGL, in the browser
 
 - [Live hash cracking](https://krunalkumar.dpdns.org/labs/hash-cracker): Watch a weak password hash fall in real time, with the guesses-per-second counter ticking. Off the main thread.
 - [Algorithm visualizer](https://krunalkumar.dpdns.org/labs/algorithm-visualizer): Sorting, searching and pathfinding, animated and steppable. Race any two on identical data and see why O(n log n) beats O(n2) instead of being told.
 - [CPU simulator](https://krunalkumar.dpdns.org/labs/cpu-simulator): Write assembly and step through it one instruction at a time, watching registers, flags, stack and memory change.
 - [Shader playground](https://krunalkumar.dpdns.org/labs/shader-playground): Write a GLSL fragment shader and see it render live on your GPU. Time and mouse uniforms, errors with line numbers.
 - [Inside a processor](https://krunalkumar.dpdns.org/labs/processor-explorer): Semantic-zoom journey from chip package to die to core pipeline to logic gate to a single transistor, with animated data flow at every level. Canvas 2D, entirely client-side.
-- [Word cloud generator](https://krunalkumar.dpdns.org/labs/word-cloud): A free word cloud generator: paste text and the most frequent words are sized biggest and packed pixel-tight into a shape — 65 drawn shapes, 271 emoji, or any letter or picture you supply — with colour palettes, angle presets and font choices, downloadable as a PNG. Filler words are removed automatically. Everything runs in the browser with no upload and no watermark; a wordart.com-style tool made free and private.
-- [Resume maker](https://krunalkumar.dpdns.org/labs/resume-maker): A free resume builder: fill a form, pick one of five templates (ATS-safe single column through designed sidebar and banner layouts), add an optional photo and accent colour, and print to A4 or save as PDF from the print dialog. Live preview as you type, no sign-up, no watermark, no paywall at the download button — and no upload, because the whole tool runs client-side. Nothing is written to the device either: the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept.
-- [Marriage biodata maker](https://krunalkumar.dpdns.org/labs/biodata-maker): A free marriage biodata (matrimonial CV) maker: personal, horoscope, education, family and contact details rendered into one of five templates from traditional maroon-and-gold to minimal ink-friendly, with an optional photo and a choice of invocation line. Every field optional, prints to A4, and nothing is written to the device — the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept. Built client-side on purpose: birth details, income and a home address are exactly the data that should never be uploaded to a random website.
-- [Wish generator](https://krunalkumar.dpdns.org/labs/wish-generator): A free birthday and festival wish link generator: type a name, pick one of six looks, and copy a link that opens as a full-screen animated card addressed to that person. 92 festivals are recognised, each with its own greeting, palette, motif and decoration — Eid gets "Eid Mubarak" rather than "Happy Eid", Navratri gets "Shubh Navratri", Uttarayan gets "Kai Po Che!" — and days of mourning and atonement (Yom Kippur, Muharram, Qingming, Obon) are given a still, unlit treatment instead of confetti. Festival spelling is matched approximately, so "bestu varsh", "diwaly" and "gujarati new year" all resolve; anything unrecognised still produces a warm generic card. Entirely client-side: the name travels inside the link, and nothing is stored or uploaded.
-- [TCP](https://krunalkumar.dpdns.org/labs/tcp-congestion): TCP made watchable in three families: the three-way handshake and four-way close with real sequence and acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip — slow start, congestion avoidance, fast recovery on triple-duplicate ACKs and collapse to one on a timeout, plotted as the classic sawtooth. A live simulation checked against RFC 793 examples, entirely client-side.
+- [Word cloud generator](https://krunalkumar.dpdns.org/labs/word-cloud): A free word cloud generator: paste text and the most frequent words are sized biggest and packed pixel-tight into a shape - 65 drawn shapes, 271 emoji, or any letter or picture you supply - with colour palettes, angle presets and font choices, downloadable as a PNG. Filler words are removed automatically. Everything runs in the browser with no upload and no watermark; a wordart.com-style tool made free and private.
+- [Resume maker](https://krunalkumar.dpdns.org/labs/resume-maker): A free resume builder: fill a form, pick one of five templates (ATS-safe single column through designed sidebar and banner layouts), add an optional photo and accent colour, and print to A4 or save as PDF from the print dialog. Live preview as you type, no sign-up, no watermark, no paywall at the download button - and no upload, because the whole tool runs client-side. Nothing is written to the device either: the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept.
+- [Marriage biodata maker](https://krunalkumar.dpdns.org/labs/biodata-maker): A free marriage biodata (matrimonial CV) maker: personal, horoscope, education, family and contact details rendered into one of five templates from traditional maroon-and-gold to minimal ink-friendly, with an optional photo and a choice of invocation line. Every field optional, prints to A4, and nothing is written to the device - the draft lives in the page for one session and closing or reloading the tab clears it, so Download data (.json) is how a draft is kept. Built client-side on purpose: birth details, income and a home address are exactly the data that should never be uploaded to a random website.
+- [Wish generator](https://krunalkumar.dpdns.org/labs/wish-generator): A free birthday and festival wish link generator: type a name, pick one of six looks, and copy a link that opens as a full-screen animated card addressed to that person. 92 festivals are recognised, each with its own greeting, palette, motif and decoration - Eid gets "Eid Mubarak" rather than "Happy Eid", Navratri gets "Shubh Navratri", Uttarayan gets "Kai Po Che!" - and days of mourning and atonement (Yom Kippur, Muharram, Qingming, Obon) are given a still, unlit treatment instead of confetti. Festival spelling is matched approximately, so "bestu varsh", "diwaly" and "gujarati new year" all resolve; anything unrecognised still produces a warm generic card. Entirely client-side: the name travels inside the link, and nothing is stored or uploaded.
+- [TCP](https://krunalkumar.dpdns.org/labs/tcp-congestion): TCP made watchable in three families: the three-way handshake and four-way close with real sequence and acknowledgement arithmetic, the TCP state machine walked by both endpoints, and TCP Reno congestion control simulated round trip by round trip - slow start, congestion avoidance, fast recovery on triple-duplicate ACKs and collapse to one on a timeout, plotted as the classic sawtooth. A live simulation checked against RFC 793 examples, entirely client-side.
 - [Buffer overflow](https://krunalkumar.dpdns.org/labs/buffer-overflow): A stack buffer overflow drawn byte by byte on a real downward-growing stack: watch a string copy overwrite the saved frame pointer and the return address, hijack control flow to injected shellcode (as a diagram, never executed), then enable a stack canary and watch it catch the overflow. A defences panel shows what NX and ASLR each stop and how each is bypassed. Entirely client-side, a teaching diagram for defenders.
 - [Regex engine](https://krunalkumar.dpdns.org/labs/regex-engine): A regular expression engine built from scratch: recursive descent parser, Thompson NFA construction, subset construction to a DFA, and a backtracking matcher, all steppable. The ReDoS panel measures backtracking cost against input length and compares it with the linear-time state-machine engines. All three engines are differentially tested against JavaScript RegExp. Entirely client-side.
 - [Cryptography](https://krunalkumar.dpdns.org/labs/cryptography): AES-128 stepped through all 40 transformations with a live avalanche measurement, SHA-256 across its 64 compression rounds, and Diffie-Hellman, RSA and elliptic-curve key exchange with small checkable numbers plus a working brute-force attacker. Teaching implementations, verified against FIPS-197 and FIPS-180-4 test vectors. Entirely client-side.
@@ -187,21 +187,21 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [CAP theorem sandbox](https://krunalkumar.dpdns.org/labs/cap-theorem): Five nodes, a network you can partition, CP or AP behaviour, and quorum arithmetic evaluated live. Covers PACELC and what CAP does not claim.
 - [Periodic table & element explorer](https://krunalkumar.dpdns.org/labs/periodic-table): All 118 elements, each with a drawn swatch of what the substance really looks like, a shell diagram, and the full physical data.
 - [Surface, deep and dark web](https://krunalkumar.dpdns.org/labs/web-layers): Type any URL and see whether it is surface, deep or dark web and exactly which signal decided it. Steps a request through a three-relay Tor circuit.
-- [Git object explorer](https://krunalkumar.dpdns.org/labs/git-objects): A working git object store in the browser — run add, commit, branch, merge, rebase and reflog against a toy repo and watch real blobs and trees appear.
+- [Git object explorer](https://krunalkumar.dpdns.org/labs/git-objects): A working git object store in the browser - run add, commit, branch, merge, rebase and reflog against a toy repo and watch real blobs and trees appear.
 - [TLS handshake explorer](https://krunalkumar.dpdns.org/labs/tls-handshake): Steps a TLS 1.3 handshake message by message next to TLS 1.2, shows which messages are encrypted from what point, and watches HKDF derive the traffic secrets.
 - [Ransomware anatomy](https://krunalkumar.dpdns.org/labs/ransomware-anatomy): Steps a ransomware incident through nine stages, locks a simulated file tree, then switches controls on to see where each one stops the chain.
 - [Wi-Fi security explained](https://krunalkumar.dpdns.org/labs/wifi-security): WEP to WPA3 side by side, the WPA2 four-way handshake and SAE drawn out input by input, and how an evil twin collects credentials on public wifi.
 - [Compiler & VM visualiser](https://krunalkumar.dpdns.org/labs/compiler): A small language taken from source to tokens to a syntax tree to bytecode, then the stack machine that runs it stepped with the call frames visible.
 - [Big-O, measured](https://krunalkumar.dpdns.org/labs/big-o): Nine algorithms from O(1) to O(2^n), timed in your own browser and plotted on log-log axes where the slope is the exponent, with a fit naming the class.
 - [Database index visualiser](https://krunalkumar.dpdns.org/labs/db-index): Why an index makes a query fast: a live B+tree that splits and merges, and a 100,000-row table where the pages each query reads are counted.
-- [HTTP version race](https://krunalkumar.dpdns.org/labs/http-versions): HTTP/1.1, HTTP/2 and HTTP/3 raced over one simulated link — set the latency, bandwidth and packet loss, then watch head-of-line blocking freeze HTTP/2.
+- [HTTP version race](https://krunalkumar.dpdns.org/labs/http-versions): HTTP/1.1, HTTP/2 and HTTP/3 raced over one simulated link - set the latency, bandwidth and packet loss, then watch head-of-line blocking freeze HTTP/2.
 - [Docker layer explorer](https://krunalkumar.dpdns.org/labs/docker-layers): Paste a Dockerfile and see where the gigabytes went, layer by layer, including the files a later RUN deleted that are still sitting in the image.
 
-## HackLab — a deliberately vulnerable app for learning offensive security
+## HackLab - a deliberately vulnerable app for learning offensive security
 
-- [HackLab](https://krunalkumar.dpdns.org/labs/hacklab): Break real vulnerabilities in your browser — SQL injection against a live SQLite engine, reflected XSS in a sandboxed opaque-origin frame, path traversal, command injection and IDOR. Every target is a throwaway in-memory fake; nothing is uploaded and there is no server to attack. Each challenge pairs the exploit with its real-world fix.
+- [HackLab](https://krunalkumar.dpdns.org/labs/hacklab): Break real vulnerabilities in your browser - SQL injection against a live SQLite engine, reflected XSS in a sandboxed opaque-origin frame, path traversal, command injection and IDOR. Every target is a throwaway in-memory fake; nothing is uploaded and there is no server to attack. Each challenge pairs the exploit with its real-world fix.
 
-## Network lookup tools — these DO make requests
+## Network lookup tools - these DO make requests
 
 - [DNS lookup](https://krunalkumar.dpdns.org/labs/dns): A, AAAA, MX, TXT, NS, SOA and CAA over DNS-over-HTTPS, with your choice of resolver. A browser cannot speak DNS directly - this is how it gets there. Queries Google or Cloudflare directly from the visitor's browser; no proxy.
 - [Email security audit](https://krunalkumar.dpdns.org/labs/email-security): Can somebody send mail pretending to be this domain? SPF, DKIM, DMARC, MTA-STS and BIMI, parsed and graded, from public DNS alone. Queries Google Public DNS directly from the visitor's browser; no proxy.
@@ -209,23 +209,23 @@ Nothing in this section uploads anything. There is no server behind these tools:
 - [Domain registration (RDAP)](https://krunalkumar.dpdns.org/labs/rdap): Registration date, expiry, transfer locks and DNSSEC. Classic WHOIS needs a raw TCP socket; RDAP speaks HTTPS, so there is no proxy in the path. Queries the authoritative registry directly from the visitor's browser; no proxy.
 - [Password breach check](https://krunalkumar.dpdns.org/labs/breach-check): Is this password in a known breach? Only five characters of its hash are sent, and the comparison happens in your tab. k-anonymity, not a promise. Queries Have I Been Pwned directly from the visitor's browser; no proxy.
 
-These are deliberately separated from the offline security tools above. They still use no proxy — the visitor's browser contacts the vendor directly — but unlike the rest of Labs, a request genuinely leaves the machine, and each page says which vendor and what they learn before anything fires.
+These are deliberately separated from the offline security tools above. They still use no proxy - the visitor's browser contacts the vendor directly - but unlike the rest of Labs, a request genuinely leaves the machine, and each page says which vendor and what they learn before anything fires.
 
-## API tester — also makes requests
-- [API tester](https://krunalkumar.dpdns.org/labs/api): Send HTTP requests and inspect the responses —
+## API tester - also makes requests
+- [API tester](https://krunalkumar.dpdns.org/labs/api): Send HTTP requests and inspect the responses -
   GET, POST, custom headers, pretty-printed JSON. It uses the browser's own fetch with no proxy in the
   path, so the request goes straight to whatever host you name and nothing is relayed through this site.
   CORS applies exactly as it would in any other page.
 
-## Everyday tools — documents, money, time and text
+## Everyday tools - documents, money, time and text
 
-- [vCard, WiFi and UPI QR builder](https://krunalkumar.dpdns.org/labs/qr-payloads): Builds contact cards, WiFi join strings, calendar events and UPI intent URIs — and reads a pay QR back in plain language, because a pay QR and a receive QR look identical.
+- [vCard, WiFi and UPI QR builder](https://krunalkumar.dpdns.org/labs/qr-payloads): Builds contact cards, WiFi join strings, calendar events and UPI intent URIs - and reads a pay QR back in plain language, because a pay QR and a receive QR look identical.
 - [Rent versus buy (India)](https://krunalkumar.dpdns.org/labs/rent-vs-buy): Both paths over N years with the down payment and monthly difference invested, net worth plotted, the crossover year marked, and sensitivity sliders for the two unknowable numbers.
 - [GST return working sheet](https://krunalkumar.dpdns.org/labs/gst-return): Totals invoices rate-wise, splits CGST/SGST from IGST, separates B2B from B2C and zero-rated exports, and catches invoice-number gaps, duplicates and GSTIN checksum failures.
 - [Timezone meeting planner](https://krunalkumar.dpdns.org/labs/timezones): A stacked hour grid across zones with working hours shaded and overlap highlighted, handling DST transitions, half-hour offsets and slots landing on a different calendar day.
 - [Indian ID format checker](https://krunalkumar.dpdns.org/labs/indian-ids): Aadhaar Verhoeff checksum, PAN structure, GSTIN check digit, IFSC, UPI VPA and vehicle registration. Checks format and checksum only; it performs no lookup and cannot tell you an ID is real.
 - [Diff and three-way merge](https://krunalkumar.dpdns.org/labs/diff-merge): Side-by-side and unified views with word and character highlighting, then a base/mine/theirs merge resolved by hand. Makes CRLF visible and exports a unified patch.
-- [Mojibake repair](https://krunalkumar.dpdns.org/labs/mojibake): Diagnoses broken text — UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities — and says which damage is reversible and which has lost data.
+- [Mojibake repair](https://krunalkumar.dpdns.org/labs/mojibake): Diagnoses broken text - UTF-8 read as Latin-1, double encoding, a stray BOM, double-encoded entities - and says which damage is reversible and which has lost data.
 - [ANSI escape explainer](https://krunalkumar.dpdns.org/labs/ansi-escapes): Decodes escape sequences in pasted text and builds them in the other direction. Covers why colour breaks in a pipe, NO_COLOR, and why escapes in untrusted log output are a security problem.
 - [GST invoice & quotation maker](https://krunalkumar.dpdns.org/labs/invoice-maker): CGST plus SGST or IGST decided from the place of supply, rate-wise tax summary, amount in words. Prints to A4; its exports feed the GST return working sheet.
 - [Unicode inspector](https://krunalkumar.dpdns.org/labs/unicode): Takes any string apart code point by code point: invisible characters shown in place, homoglyph and Trojan Source detection, NFC/NFD/NFKC/NFKD compared.
@@ -233,10 +233,10 @@ These are deliberately separated from the offline security tools above. They sti
 - [CTC to in-hand salary breakdown](https://krunalkumar.dpdns.org/labs/salary-breakdown): Turns an Indian CTC into a monthly in-hand figure with every step shown: component split, PF, gratuity, professional tax by state, and both tax regimes.
 - [Loan EMI and prepayment calculator](https://krunalkumar.dpdns.org/labs/emi): The full amortisation schedule, prepayment compared both ways, and what a rate rise does to your tenure.
 - [Image compressor, converter and resizer](https://krunalkumar.dpdns.org/labs/image-tools): JPEG, PNG, WebP and AVIF in the browser, with a before/after split showing the real byte counts. No uploads.
-- [Typing test certificate](https://krunalkumar.dpdns.org/labs/typing-certificate): A timed typing test — one, three or five minutes — ending in a printable A4 certificate honest enough to say on its face that it proves nothing.
-- [QR code generator & inspector](https://krunalkumar.dpdns.org/labs/qr): Builds a QR code, or decodes one from a photo and reads what it would do before you scan it — the URL, and the payee and amount inside a UPI string.
+- [Typing test certificate](https://krunalkumar.dpdns.org/labs/typing-certificate): A timed typing test - one, three or five minutes - ending in a printable A4 certificate honest enough to say on its face that it proves nothing.
+- [QR code generator & inspector](https://krunalkumar.dpdns.org/labs/qr): Builds a QR code, or decodes one from a photo and reads what it would do before you scan it - the URL, and the payee and amount inside a UPI string.
 
-## Games — all offline-capable, none of them asking for anything
+## Games - all offline-capable, none of them asking for anything
 - [Games hub](https://krunalkumar.dpdns.org/games): The 91 games, in seven categories, filterable. Every one runs entirely in the browser with no ads, no sign-up and no network after the first visit. Best scores are kept in this browser's own storage and the hub lists exactly what is stored, clears it, or switches storage off altogether.
 - [Snake](https://krunalkumar.dpdns.org/games/snake): The Nokia one. Three speeds, optional wrap-around walls, arrow keys or a thumb pad.
 - [Tetris](https://krunalkumar.dpdns.org/games/tetris): Seven-bag randomiser, hold, hard drop, ghost piece.
@@ -245,12 +245,12 @@ These are deliberately separated from the offline security tools above. They sti
 - [Chess](https://krunalkumar.dpdns.org/games/chess): A real negamax engine with alpha-beta and quiescence search, plus castling, en passant and promotion. Play it or pass the device.
 - [Ludo](https://krunalkumar.dpdns.org/games/ludo) and [Carrom](https://krunalkumar.dpdns.org/games/carrom): Against the computer, with the physics done properly rather than faked.
 - [Moon buggy](https://krunalkumar.dpdns.org/games/moon-buggy): The Linux terminal classic, on a character grid drawn to a canvas.
-- [Shell quest](https://krunalkumar.dpdns.org/games/shell-quest): Eight puzzles in a pretend Unix shell — a way to learn cd, ls, grep and find by needing them.
+- [Shell quest](https://krunalkumar.dpdns.org/games/shell-quest): Eight puzzles in a pretend Unix shell - a way to learn cd, ls, grep and find by needing them.
 - [Typing trainer](https://krunalkumar.dpdns.org/games/typing-trainer): Real paragraphs rather than word lists, with per-key accuracy and a words-per-minute figure that means something.
 - [Word of the day](https://krunalkumar.dpdns.org/games/word-of-the-day): Five letters, six guesses, one word a day, with its own on-screen keyboard.
 - [Personality test](https://krunalkumar.dpdns.org/games/personality-test): A short five-factor inventory. It says plainly that it is not a clinical instrument.
 - [Phishing or not](https://krunalkumar.dpdns.org/games/phishing-or-not): Real-looking emails, one call to make on each. The explanation is the point.
-- [Fingerprint](https://krunalkumar.dpdns.org/games/fingerprint): Two SSH key fingerprints, same or different, for sixty seconds. The pairs close from six differing characters to one confusable character, and most people find out they cannot do this — which is why nobody verifies host keys by eye.
+- [Fingerprint](https://krunalkumar.dpdns.org/games/fingerprint): Two SSH key fingerprints, same or different, for sixty seconds. The pairs close from six differing characters to one confusable character, and most people find out they cannot do this - which is why nobody verifies host keys by eye.
 
   The seven categories are arcade, puzzle, terminal (17 ports of Linux terminal
   games), board, cs (games for programmers), toy (things to fiddle with rather
@@ -260,7 +260,7 @@ These are deliberately separated from the offline security tools above. They sti
   score in this browser.
 
 ## Colophon
-- [Colophon](https://krunalkumar.dpdns.org/colophon): how the site is built — hand-written static HTML,
+- [Colophon](https://krunalkumar.dpdns.org/colophon): how the site is built - hand-written static HTML,
   zero npm dependencies, a deploy that strips CSS comments, rebuilds the search index and
   refuses to publish if its own output checks fail. Every figure on the page is counted at
   build time rather than typed.
@@ -277,23 +277,23 @@ These are deliberately separated from the offline security tools above. They sti
   the three pages that is indexed. It builds links to two cards that exist only when somebody is named
   in them: `/birthday?name=…` and `/festival?name=…`. Without the query parameter there is nothing to
   say, so both send the visitor to the generator rather than showing an empty greeting.
-  Birthday takes an optional `&theme=` — candlelight, confetti, balloons, starlit, blossom or neon,
-  each a different palette, decoration and particle behaviour rather than a recolour — and both take an
+  Birthday takes an optional `&theme=` - candlelight, confetti, balloons, starlit, blossom or neon,
+  each a different palette, decoration and particle behaviour rather than a recolour - and both take an
   optional `&from=`. Once the card has rendered the query parameter is stripped from the address bar,
   so it reads as a page made for that person; the card keeps a Copy link button holding the full URL.
-  Each card carries a Save image button that redraws it natively at 1080×1920 and downloads a PNG —
+  Each card carries a Save image button that redraws it natively at 1080×1920 and downloads a PNG -
 better than the screenshot it replaces, since it has no status bar or address bar in it. The generator
 also works with no network once it has been opened: the service worker keeps a copy of any page a
-visitor opens — the same deal the resume and biodata makers get — and it only ever builds a link
+visitor opens - the same deal the resume and biodata makers get - and it only ever builds a link
 out of the name typed into it.
   The cards are designed to be screenshotted and put on a WhatsApp status: portrait-first, composed to
   look finished when still rather than mid-animation, and signed with the KS_ wordmark so the image
-  carries an attribution the URL cannot. Both are noindex and out of the sitemap — they have no content
+  carries an attribution the URL cannot. Both are noindex and out of the sitemap - they have no content
   of their own, so an indexed copy would be a blank greeting. Everything stops under
   prefers-reduced-motion, which draws the settled scene in a single frame rather than an empty one.
 
 ## A Loud Place
-- [A Loud Place](https://krunalkumar.dpdns.org/party): the counterpart to the still place — a
+- [A Loud Place](https://krunalkumar.dpdns.org/party): the counterpart to the still place - a
   dance floor with cartoon dancers, sweeping DJ beams, a mirror ball and a DJ working the decks.
   The music is a 124 BPM house arrangement (intro, groove, breakdown, build, drop) synthesised
   live in the Web Audio API rather than streamed from a file, so nothing is downloaded and
@@ -302,17 +302,17 @@ out of the name typed into it.
   prefers-reduced-motion. Has a fullscreen mode.
 
 ## A Still Place
-- [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page — an illustrated Buddha at dawn who
+- [A Still Place](https://krunalkumar.dpdns.org/buddha): a quiet page - an illustrated Buddha at dawn who
   breathes, opens his eyes every nine seconds and smiles; one of 684 verses from the Pali Canon, re-picked on
   load and on every tap; and a 4s-in / 6s-out breathing guide. Every verse carries its citation, because a
   great many sayings passed around as the Buddha's were never his. Has a fullscreen mode.
   The sound is synthesised rather than downloaded and has four settings, cycled with the T key:
-  Bhairavi at dawn, Yaman at dusk, Bhupali in the evening, and a sustained Om with no flute —
+  Bhairavi at dawn, Yaman at dusk, Bhupali in the evening, and a sustained Om with no flute -
   each a real raga with a time of day attached to it, the drone sliding to the new tonic.
 
 ## Peer-to-peer chat
 - [Peer-to-peer chat](https://krunalkumar.dpdns.org/labs/chat): two browsers connected directly over
-  WebRTC with no signalling server — the connection code is carried by the two people themselves.
+  WebRTC with no signalling server - the connection code is carried by the two people themselves.
   Text chat one-to-one or in a group (star topology, the host relays), file transfer with no size
   limit where the browser can stream to disk, and a live view of the ICE
   negotiation. Explains why a browser can never listen on a port the way netcat does. This is the one
@@ -333,12 +333,12 @@ out of the name typed into it.
 ## Reading the site
 - Every page carries a search button and a light/dark toggle in the header. Search runs against a
   prebuilt index of all 288 pages and opens a full-screen panel; it is entirely client-side, so no
-  query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in — the site stays dark unless the toggle
+  query ever leaves the browser. Analytics records only that a search ran and its result count. The light theme is opt-in - the site stays dark unless the toggle
   is used, and the choice is remembered locally. Both themes are checked against the WCAG AA
   contrast floor across every page.
-- The 117 lab pages need JavaScript — the runtime, the parser, the emulator all execute in the tab,
+- The 117 lab pages need JavaScript - the runtime, the parser, the emulator all execute in the tab,
   so there is nothing to run without it. Each hides its controls and shows a <noscript> note rather
   than leaving dead buttons. Every other page is plain HTML and reads in full without JavaScript;
   the five carrying a form (contact, internships, the labs hub's feedback box, the games hub's
-  feedback box, and verify) point to email instead — the first four drop the submit button,
+  feedback box, and verify) point to email instead - the first four drop the submit button,
   verify hides the whole lookup field.

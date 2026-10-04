@@ -18,7 +18,7 @@
   if (title) {
     const headlines = [
       'This page seems to have wandered off.',
-      'Houston, we have a problem — this page does not exist.',
+      'Houston, we have a problem - this page does not exist.',
       'This page drifted out of orbit.',
       'You have reached the edge of the known universe.',
       'Page lost in space. The rocket is still searching.',

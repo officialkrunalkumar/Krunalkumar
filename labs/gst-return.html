@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>GST return working sheet</h1>
-        <p class="hero-text">The arithmetic you would otherwise do in a spreadsheet on the tenth of the month: the invoices added up rate by rate, CGST and SGST separated from IGST, B2B split from B2C, exports kept out of the domestic buckets. Then the two questions a scrutiny notice opens with &mdash; is there a hole in your invoice series, and is any number used twice. It checks. It does not file.</p>
+        <p class="hero-text">The arithmetic you would otherwise do in a spreadsheet on the tenth of the month: the invoices added up rate by rate, CGST and SGST separated from IGST, B2B split from B2C, exports kept out of the domestic buckets. Then the two questions a scrutiny notice opens with - is there a hole in your invoice series, and is any number used twice. It checks. It does not file.</p>
         <ul class="lab-facts">
           <li>Rate-wise totals, the shape GSTR-1 wants</li>
           <li>CGST and SGST split from IGST</li>
@@ -239,7 +239,7 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
@@ -247,7 +247,7 @@
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
                   <li>It files nothing and reaches no GST portal</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>It cannot tell you a GSTIN is registered, only well-formed</li>
                   <li>Capped at 6 MB a file, 40 files, 20,000 CSV rows</li>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -282,7 +282,7 @@
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
-            <p class="lab-pane-label">Invoices in &mdash; JSON, CSV, or both</p>
+            <p class="lab-pane-label">Invoices in - JSON, CSV, or both</p>
             <div class="lab-fieldrow">
               <label class="gstr-lbl" for="gstr-fy">Financial year
                 <select class="lab-select" id="gstr-fy"></select>
@@ -335,11 +335,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The split comes from two state codes</h3>
-            <p>A GSTIN begins with the two digits of the state that issued it, so the supplier’s state is read straight off the number you type in &mdash; the page says which state it read and where it read it from. That code is compared against the place of supply: the same state means CGST plus SGST at half the rate each, computed separately rather than halved after rounding; a different state means IGST at the full rate. In a union territory without its own legislature the state half is UTGST, which the sheet names. If either code is missing the document is listed as undecided rather than guessed at.</p>
+            <p>A GSTIN begins with the two digits of the state that issued it, so the supplier’s state is read straight off the number you type in - the page says which state it read and where it read it from. That code is compared against the place of supply: the same state means CGST plus SGST at half the rate each, computed separately rather than halved after rounding; a different state means IGST at the full rate. In a union territory without its own legislature the state half is UTGST, which the sheet names. If either code is missing the document is listed as undecided rather than guessed at.</p>
           </article>
           <article class="info-card">
             <h3>The CSV it reads</h3>
-            <p>If you write your invoices in the <a href="/labs/invoice-maker">invoice maker</a>, skip the CSV: drop the invoice-data.json it downloads and every field here is already filled in. Otherwise &mdash; a header row is required and column order does not matter. Four columns are needed: <code>date</code>, <code>invoice_no</code>, <code>taxable_value</code> and <code>rate</code>. Six more are optional: <code>doc_type</code> (invoice, credit_note, debit_note), <code>customer</code>, <code>customer_gstin</code>, <code>place_of_supply</code> (a two-digit state code), <code>tax</code>, and <code>supply_type</code> (domestic, export_lut, export_with_tax, sez_lut, sez_with_tax). Common aliases are accepted &mdash; invoice_date, party_gstin, taxable_amount and so on. Several rows may share one invoice number, so an invoice with a 12% line and an 18% line is read as one document with two rate lines.</p>
+            <p>If you write your invoices in the <a href="/labs/invoice-maker">invoice maker</a>, skip the CSV: drop the invoice-data.json it downloads and every field here is already filled in. Otherwise - a header row is required and column order does not matter. Four columns are needed: <code>date</code>, <code>invoice_no</code>, <code>taxable_value</code> and <code>rate</code>. Six more are optional: <code>doc_type</code> (invoice, credit_note, debit_note), <code>customer</code>, <code>customer_gstin</code>, <code>place_of_supply</code> (a two-digit state code), <code>tax</code>, and <code>supply_type</code> (domestic, export_lut, export_with_tax, sez_lut, sez_with_tax). Common aliases are accepted - invoice_date, party_gstin, taxable_amount and so on. Several rows may share one invoice number, so an invoice with a 12% line and an 18% line is read as one document with two rate lines.</p>
           </article>
           <article class="info-card">
             <h3>What the checks actually catch</h3>
@@ -347,7 +347,7 @@
           </article>
           <article class="info-card">
             <h3>What it deliberately does not compute</h3>
-            <p>Input tax credit, reverse charge on inward supplies, advances received and adjusted, amendments to earlier periods, TDS and TCS credits, compensation cess, interest and late fee. Every one of those needs figures this page has never seen, and a 3B liability built from output tax alone would be wrong in your favour &mdash; the expensive direction to be wrong in. Nil-rated, exempt and non-GST supplies all land in the 0% row together, and GSTR-1 wants them apart.</p>
+            <p>Input tax credit, reverse charge on inward supplies, advances received and adjusted, amendments to earlier periods, TDS and TCS credits, compensation cess, interest and late fee. Every one of those needs figures this page has never seen, and a 3B liability built from output tax alone would be wrong in your favour - the expensive direction to be wrong in. Nil-rated, exempt and non-GST supplies all land in the 0% row together, and GSTR-1 wants them apart.</p>
           </article>
         </div>
       </section>

@@ -176,7 +176,7 @@
 
     if (url.username || url.password) {
       out.line('');
-      out.err('CREDENTIALS IN THE URL — "' + url.username + (url.password ? ':***' : '') + '@"');
+      out.err('CREDENTIALS IN THE URL - "' + url.username + (url.password ? ':***' : '') + '@"');
       out.err('Everything before the @ is a username, not the destination. This is');
       out.err('the classic trick: http://www.paypal.com@evil.example goes to');
       out.err('evil.example, and the familiar name is decoration.');
@@ -203,21 +203,21 @@
       }
     } else if (!ipLiteral) {
       if (labels.length < 2) {
-        out.row('registrable domain', 'none — "' + url.hostname + '" is a single label');
+        out.row('registrable domain', 'none - "' + url.hostname + '" is a single label');
         out.dim('A bare name with no dot is not a public domain: it resolves through');
         out.dim('the hosts file, or through local DNS suffix search on this network.');
       } else {
         out.row('registrable domain',
-                'none — "' + url.hostname + '" is a public suffix, not a registered name');
+                'none - "' + url.hostname + '" is a public suffix, not a registered name');
       }
     }
     if (!ipLiteral && SUSPICIOUS_TLD.indexOf(tld) !== -1) {
-      out.row('TLD', '.' + tld + ' — over-represented in abuse reports', 't-warn');
+      out.row('TLD', '.' + tld + ' - over-represented in abuse reports', 't-warn');
     }
     if (registrable && SHORTENERS.indexOf(registrable.toLowerCase()) !== -1) {
       out.line('');
       out.warn('This is a link shortener. The real destination is hidden until it');
-      out.warn('is followed — which this tool deliberately will not do.');
+      out.warn('is followed - which this tool deliberately will not do.');
     }
     if (/^\d{1,3}(\.\d{1,3}){3}$/.test(url.hostname)) {
       out.warn('The host is a bare IP address. Legitimate services almost always');
@@ -246,13 +246,13 @@
       out.line('');
     }
     if (!found.length) {
-      out.ok('All ASCII — no homograph substitution in the hostname.');
+      out.ok('All ASCII - no homograph substitution in the hostname.');
     } else {
       out.err('NON-ASCII CHARACTERS IN THE HOSTNAME');
       found.forEach(function (f) {
         out.row('position ' + f.at, JSON.stringify(f.ch) +
           '  U+' + f.ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0') +
-          '  — ' + f.note, 't-err');
+          '  - ' + f.note, 't-err');
       });
       out.line('');
       out.warn('These render like Latin letters and are not. This is how a');
@@ -304,7 +304,7 @@
       out.line('fully decoded:', 't-dim');
       out.line('  ' + current);
       if (layers > 1) {
-        out.warn('Multiple layers of encoding is rarely accidental — it is done to');
+        out.warn('Multiple layers of encoding is rarely accidental - it is done to');
         out.warn('get past filters that only decode once.');
       }
     } else {
@@ -320,7 +320,7 @@
     id: 'urlinspectortool',
     run: function () { analyse(document.getElementById('tool-text').value); },
     onReady: function () {
-      out.dim('Paste a suspicious link. It is taken apart as text — this tool');
+      out.dim('Paste a suspicious link. It is taken apart as text - this tool');
       out.dim('never opens it, never resolves it, and never tells its owner.');
     }
   });

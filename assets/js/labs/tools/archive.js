@@ -210,7 +210,7 @@
     if (guess !== null) {
       return {
         text: guess, enc: 'utf-8?',
-        note: 'high bytes decode cleanly as UTF-8 although the UTF-8 flag is not set — ' +
+        note: 'high bytes decode cleanly as UTF-8 although the UTF-8 flag is not set - ' +
               'another unzip tool may read this name as CP437 instead'
       };
     }
@@ -490,7 +490,7 @@
       if (segments[i] === '..') hasDotDot = true;
     }
     if (hasDotDot) {
-      flag(e, 2, 'slip', 'contains a ".." path segment — extraction walks up ' +
+      flag(e, 2, 'slip', 'contains a ".." path segment - extraction walks up ' +
            'out of the target directory');
     } else if (name.indexOf('..') >= 0) {
       /* A literal ".." inside a name ("report..v2.pdf") is legal and common,
@@ -500,22 +500,22 @@
            'is not traversal by itself');
     }
     if (name.charAt(0) === '/' || name.charAt(0) === '\\') {
-      flag(e, 2, 'slip', 'absolute path — starts at the filesystem root, ' +
+      flag(e, 2, 'slip', 'absolute path - starts at the filesystem root, ' +
            'ignoring the target directory');
     }
     if (/^[A-Za-z]:/.test(name)) {
-      flag(e, 2, 'slip', 'Windows drive-absolute path — writes to ' +
+      flag(e, 2, 'slip', 'Windows drive-absolute path - writes to ' +
            safe(name.slice(0, 2)) + ' regardless of where you extract');
     }
     if (/^\\\\/.test(name)) {
-      flag(e, 2, 'slip', 'UNC path — targets a network share');
+      flag(e, 2, 'slip', 'UNC path - targets a network share');
     }
     if (name.indexOf('\\') >= 0 && !/^[A-Za-z]:/.test(name) && !/^\\\\/.test(name)) {
       /* APPNOTE 4.4.17.1 says forward slash, always. A backslash is either a
          literal character in a filename on Unix, or a Windows path that some
          extractor will helpfully treat as a separator. Either way the two
          readings differ, which is the useful part. */
-      flag(e, 1, 'backslash', 'contains a backslash — the ZIP spec requires ' +
+      flag(e, 1, 'backslash', 'contains a backslash - the ZIP spec requires ' +
            'forward slashes, so extractors disagree on whether this is one ' +
            'directory or several');
     }
@@ -526,7 +526,7 @@
 
     /* ---- symlinks: a quieter route to the same escape ------------------ */
     if (e.isSymlink) {
-      flag(e, 1, 'symlink', 'is a symbolic link — its target is stored as the ' +
+      flag(e, 1, 'symlink', 'is a symbolic link - its target is stored as the ' +
            'file content, and a link to /etc or C:\\ turns later entries into ' +
            'writes outside the target directory');
     }
@@ -538,17 +538,17 @@
     if (e.ratio !== null && !e.isDir) {
       if (e.ratio === Infinity) {
         flag(e, 2, 'bomb', 'declares ' + sizeText(e.usize) + ' uncompressed from ' +
-             'zero compressed bytes — impossible, the header is lying');
+             'zero compressed bytes - impossible, the header is lying');
       } else if (e.ratio > 1000) {
-        flag(e, 2, 'bomb', 'compression ratio ' + ratioText(e.ratio) + ' — ' +
+        flag(e, 2, 'bomb', 'compression ratio ' + ratioText(e.ratio) + ' - ' +
              sizeText(e.csize) + ' expands to ' + sizeText(e.usize));
       } else if (e.ratio > 100) {
-        flag(e, 1, 'ratio', 'compression ratio ' + ratioText(e.ratio) + ' — high, ' +
+        flag(e, 1, 'ratio', 'compression ratio ' + ratioText(e.ratio) + ' - high, ' +
              'though long runs of identical bytes do this legitimately');
       }
       if (e.method === 8 && e.ratio > DEFLATE_CEILING) {
         flag(e, 2, 'impossible', 'claims ' + ratioText(e.ratio) + ' from deflate, ' +
-             'which cannot exceed ' + DEFLATE_CEILING + ':1 — the sizes are ' +
+             'which cannot exceed ' + DEFLATE_CEILING + ':1 - the sizes are ' +
              'fabricated or this entry shares its compressed data with others');
       }
     }
@@ -557,7 +557,7 @@
     if (BIDI.test(name)) {
       var preview = rtlPreview(name);
       flag(e, 2, 'bidi', 'contains a bidirectional control character' +
-           (preview ? ' — a file manager displays this as "' + safe(preview) + '"' : ''));
+           (preview ? ' - a file manager displays this as "' + safe(preview) + '"' : ''));
     }
     if (CONTROL.test(name)) {
       flag(e, 1, 'control', 'contains control characters, which can hide the ' +
@@ -570,11 +570,11 @@
       flag(e, 2, 'blank', 'the filename is nothing but whitespace');
     }
     if (/ {5,}/.test(base)) {
-      flag(e, 2, 'spacer', 'a long run of spaces pads the name — in a narrow ' +
+      flag(e, 2, 'spacer', 'a long run of spaces pads the name - in a narrow ' +
            'column this pushes the real extension out of sight');
     }
     if (/[ .]$/.test(base) && !e.isDir) {
-      flag(e, 1, 'trailing', 'ends in a space or dot — Windows silently strips ' +
+      flag(e, 1, 'trailing', 'ends in a space or dot - Windows silently strips ' +
            'those, so the file on disk gets a different name than the archive ' +
            'claims');
     }
@@ -590,18 +590,18 @@
     if (!e.isDir && EXEC_EXT[ext]) {
       var second = secondExt(base);
       if (second && DOC_EXT[second]) {
-        flag(e, 2, 'double', 'double extension — presents as ".' + second +
+        flag(e, 2, 'double', 'double extension - presents as ".' + second +
              '" but the real extension is ".' + ext + '", which executes');
       } else {
         flag(e, 1, 'exec', 'executable or script (.' + ext + ')');
       }
     }
     if (!e.isDir && ARCHIVE_EXT[ext]) {
-      flag(e, 1, 'nested', 'nested archive (.' + ext + ') — most scanners stop ' +
+      flag(e, 1, 'nested', 'nested archive (.' + ext + ') - most scanners stop ' +
            'at one level of nesting, and this tool does not open it either');
     }
     if (e.encrypted || e.strongCrypto || e.method === 99) {
-      flag(e, 1, 'encrypted', 'encrypted — the content cannot be scanned, which ' +
+      flag(e, 1, 'encrypted', 'encrypted - the content cannot be scanned, which ' +
            'is often the reason it is encrypted');
     }
     if (e.stamp.bad && !(e.dosDate === 0 && e.dosTime === 0)) {
@@ -711,7 +711,7 @@
       if (lower['word/document.xml'] || anyPrefix('word/')) kind = 'a Word document (OOXML)';
       else if (lower['xl/workbook.xml'] || anyPrefix('xl/')) kind = 'an Excel workbook (OOXML)';
       else if (lower['ppt/presentation.xml'] || anyPrefix('ppt/')) kind = 'a PowerPoint file (OOXML)';
-      facts.push({ sev: 0, text: '[Content_Types].xml is present — this is ' + kind + ', not a plain archive.' });
+      facts.push({ sev: 0, text: '[Content_Types].xml is present - this is ' + kind + ', not a plain archive.' });
 
       model.entries.forEach(function (e) {
         var b = baseName(e.name).toLowerCase();
@@ -722,36 +722,36 @@
         facts.push({
           sev: 2,
           text: 'vbaProject.bin is present: this document contains VBA macros. A .docx or .xlsx ' +
-                'is not supposed to hold macros at all — the macro-enabled formats are .docm and ' +
-                '.xlsm — so a macro-bearing file with an .docx extension is deliberately mislabelled.'
+                'is not supposed to hold macros at all - the macro-enabled formats are .docm and ' +
+                '.xlsm - so a macro-bearing file with an .docx extension is deliberately mislabelled.'
         });
       } else {
-        facts.push({ sev: 0, text: 'No vbaProject.bin — no VBA macro project in this document.' });
+        facts.push({ sev: 0, text: 'No vbaProject.bin - no VBA macro project in this document.' });
       }
       if (anyPrefix('xl/externallinks/')) {
-        facts.push({ sev: 1, text: 'xl/externalLinks/ is present — the workbook ' +
+        facts.push({ sev: 1, text: 'xl/externalLinks/ is present - the workbook ' +
                      'pulls data from another file or URL when it opens.' });
       }
       if (anyPrefix('word/embeddings/') || anyPrefix('xl/embeddings/') ||
           anyPrefix('ppt/embeddings/')) {
-        facts.push({ sev: 1, text: 'An embeddings/ folder is present — other files, ' +
+        facts.push({ sev: 1, text: 'An embeddings/ folder is present - other files, ' +
                      'often OLE objects, are packaged inside the document.' });
       }
     }
 
     if (lower['meta-inf/manifest.mf']) {
-      facts.push({ sev: 0, text: 'META-INF/MANIFEST.MF is present — this is a Java JAR/WAR. A JAR runs code.' });
+      facts.push({ sev: 0, text: 'META-INF/MANIFEST.MF is present - this is a Java JAR/WAR. A JAR runs code.' });
     }
     if (lower['androidmanifest.xml'] || lower['classes.dex']) {
-      facts.push({ sev: 1, text: 'AndroidManifest.xml / classes.dex present — this is an Android APK.' });
+      facts.push({ sev: 1, text: 'AndroidManifest.xml / classes.dex present - this is an Android APK.' });
     }
     if (lower['mimetype'] && lower['meta-inf/container.xml']) {
-      facts.push({ sev: 0, text: 'mimetype + META-INF/container.xml — this is an EPUB book.' });
+      facts.push({ sev: 0, text: 'mimetype + META-INF/container.xml - this is an EPUB book.' });
     } else if (lower['mimetype'] && lower['meta-inf/manifest.xml']) {
-      facts.push({ sev: 0, text: 'mimetype + META-INF/manifest.xml — this is an OpenDocument file (ODT/ODS/ODP).' });
+      facts.push({ sev: 0, text: 'mimetype + META-INF/manifest.xml - this is an OpenDocument file (ODT/ODS/ODP).' });
     }
     if (anyPrefix('__macosx/')) {
-      facts.push({ sev: 0, text: '__MACOSX/ present — resource forks added by the ' +
+      facts.push({ sev: 0, text: '__MACOSX/ present - resource forks added by the ' +
                    'macOS Archive Utility. Harmless, but it leaks how and where ' +
                    'the archive was made.' });
     }
@@ -850,8 +850,8 @@
     };
 
     if (bytes.length < 22) {
-      model.fatal = 'The file is ' + bytes.length + ' bytes. The smallest possible ZIP — ' +
-                    'an empty one — is 22 bytes.';
+      model.fatal = 'The file is ' + bytes.length + ' bytes. The smallest possible ZIP - ' +
+                    'an empty one - is 22 bytes.';
       return model;
     }
 
@@ -869,7 +869,7 @@
         model.salvaged = true;
         model.notes.push('No end-of-central-directory record was found, so the central directory ' +
                          'is missing or the file is truncated. Falling back to a scan for local ' +
-                         'file headers — the results below are best effort, not the archive index. ' +
+                         'file headers - the results below are best effort, not the archive index. ' +
                          'The scan skips over each entry using the size the entry itself declares, ' +
                          'so one wrong size hides everything after it.');
         var n = salvage(v, model);
@@ -1051,7 +1051,7 @@
     /* ---- structure ---- */
     section('Archive structure');
     if (model.salvaged) {
-      out.warn('Recovered by scanning for local file headers — see the note above.');
+      out.warn('Recovered by scanning for local file headers - see the note above.');
       if (model.salvageTruncated) {
         out.warn('Stopped after 500 recovered headers.');
       }
@@ -1118,7 +1118,7 @@
 
     if (!model.entries.length) {
       out.rule();
-      out.ok('The archive is empty — a valid ZIP with no files in it.');
+      out.ok('The archive is empty - a valid ZIP with no files in it.');
       out.rule();
       out.dim('Nothing was uploaded. The file was read and parsed in this tab.');
       return;
@@ -1163,10 +1163,10 @@
        confidently wrong figure. Disclose it, with wording distinct from the
        per-entry overflow caveat since the cause is different. */
     out.row('total uncompressed', sizeText(model.totalUncompressed) +
-            (model.totalUncompressed > 9007199254740991 ? '  (sum past 2^53 — approximate)'
+            (model.totalUncompressed > 9007199254740991 ? '  (sum past 2^53 - approximate)'
              : (model.sizeOverflow ? '  (plus entries that overflowed)' : '')));
     out.row('total compressed', sizeText(model.totalCompressed) +
-            (model.totalCompressed > 9007199254740991 ? '  (sum past 2^53 — approximate)' : ''));
+            (model.totalCompressed > 9007199254740991 ? '  (sum past 2^53 - approximate)' : ''));
     out.row('expansion vs file', model.expansion >= 1000 ? Math.round(model.expansion) + 'x'
                                                          : model.expansion.toFixed(1) + 'x',
             model.expansion > 1000 ? 't-err' : model.expansion > 100 ? 't-warn' : 't-ok');
@@ -1222,7 +1222,7 @@
       out.line('');
       out.dim('Extracting this would turn ' + LabTool.humanBytes(model.size) + ' on disk into ' +
               sizeText(model.totalUncompressed) + '. Antivirus scanners, mail gateways and CI');
-      out.dim('runners have all been knocked over by exactly this — the file is small enough to');
+      out.dim('runners have all been knocked over by exactly this - the file is small enough to');
       out.dim('pass every size limit and the damage happens after the limit is checked.');
     } else if (ratios.length) {
       out.warn(ratios.length + ' entr' + (ratios.length === 1 ? 'y compresses' : 'ies compress') +
@@ -1289,7 +1289,7 @@
     if (nested.length) {
       out.warn(nested.length + ' nested archive' + (nested.length === 1 ? '' : 's') + ':');
       printFindings(nested, 'nested', 't-warn');
-      out.dim('Nothing here opens them. Drop one in separately — each layer is its own');
+      out.dim('Nothing here opens them. Drop one in separately - each layer is its own');
       out.dim('archive with its own paths and its own ratios, and nesting is the oldest way');
       out.dim('to get past a scanner that only looks one level deep.');
     } else {
@@ -1333,7 +1333,7 @@
       var anyCdEncrypted = false;
       model.entries.forEach(function (e) { if (e.cdEncrypted) anyCdEncrypted = true; });
       if (!anyCdEncrypted) {
-        out.dim('Note that the filenames, sizes and CRCs above are readable anyway — standard ZIP');
+        out.dim('Note that the filenames, sizes and CRCs above are readable anyway - standard ZIP');
         out.dim('encryption covers file contents only, so the directory leaks the structure of');
         out.dim('whatever is inside.');
       }
@@ -1344,7 +1344,7 @@
        in salvage mode the local headers ARE the source. */
     if (model.salvaged) {
       section('Directory vs local headers');
-      out.dim('Skipped — there is no central directory in this file, so there is nothing');
+      out.dim('Skipped - there is no central directory in this file, so there is nothing');
       out.dim('to compare the local headers against.');
     } else {
       section('Directory vs local headers');
@@ -1355,7 +1355,7 @@
         printFindings(mismatch, ['mismatch', 'nolocal'], 't-err');
         out.dim('Every entry is described twice: once in the central directory and once in the');
         out.dim('local header in front of its data. Some tools read one, some the other. When');
-        out.dim('they disagree, a scanner and an extractor can be shown different files — which');
+        out.dim('they disagree, a scanner and an extractor can be shown different files - which');
         out.dim('is the entire trick behind several mail-gateway bypasses.');
       } else if (model.lfhChecked) {
         out.ok('The central directory and the local headers agree.');
@@ -1407,7 +1407,7 @@
 
     out.rule();
     out.dim('Nothing was decompressed and nothing was uploaded. Every number above comes from');
-    out.dim('the archive index, read in this tab — which is the point: you can decide whether');
+    out.dim('the archive index, read in this tab - which is the point: you can decide whether');
     out.dim('to extract something without extracting it first.');
   }
 
@@ -1427,7 +1427,7 @@
       out.clear();
       out.err('The parser gave up on this file: ' +
               (err && err.message ? err.message : String(err)));
-      out.dim('That is itself a result — a well-formed ZIP does not do this. The file may be');
+      out.dim('That is itself a result - a well-formed ZIP does not do this. The file may be');
       out.dim('truncated, deliberately malformed, or not a ZIP at all. Nothing was extracted');
       out.dim('and nothing was uploaded.');
     }
@@ -1451,7 +1451,7 @@
         },
         onError: function (msg) { out.clear().err(msg); }
       });
-      out.dim('Drop a .zip — or a .docx, .xlsx, .jar, .apk or .epub, which are all ZIPs.');
+      out.dim('Drop a .zip - or a .docx, .xlsx, .jar, .apk or .epub, which are all ZIPs.');
       out.dim('The archive is never decompressed and never uploaded: this reads the index');
       out.dim('and reports what extracting it would do. That is what makes it safe to point');
       out.dim('at an attachment you do not trust.');

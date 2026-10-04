@@ -563,9 +563,9 @@
     out.line('');
     out.rule();
     if (j.mode === 'naive') {
-      out.heading('Naive comparison — returns on the first mismatch');
+      out.heading('Naive comparison - returns on the first mismatch');
     } else {
-      out.heading('Constant-time comparison — XOR over the full length');
+      out.heading('Constant-time comparison - XOR over the full length');
     }
     out.dim('The "score" column compares the pick against the secret AFTER the');
     out.dim('pick is made. It is never fed back into the attack.');
@@ -652,7 +652,7 @@
         ' samples here', 't-err');
     }
     if (!v.ok) {
-      out.line('          not a supported recovery — the attack continues with it', 't-warn');
+      out.line('          not a supported recovery - the attack continues with it', 't-warn');
     }
 
     var plot = {
@@ -662,8 +662,8 @@
       winner: win,
       runner: next,
       title: (j.mode === 'naive' ? 'naive compare' : 'constant-time compare') +
-        ' — position ' + (j.pos + 1) + ' of ' + j.secret.length +
-        ' — ' + j.rounds + ' samples per candidate'
+        ' - position ' + (j.pos + 1) + ' of ' + j.secret.length +
+        ' - ' + j.rounds + ' samples per candidate'
     };
     draw(plot);
     say('Position ' + (j.pos + 1) + ' of ' + j.secret.length + '. Slowest candidate ' +
@@ -701,7 +701,7 @@
       j.prefix += '?';
       out.line('  ' + pad('pos ' + j.secret.length, 8) + pad('picked "?"', 14) +
         'no candidate was accepted', 't-err');
-      out.line('          which means one of the characters above is wrong —', 't-warn');
+      out.line('          which means one of the characters above is wrong -', 't-warn');
       out.line('          this is the honest failure signal, and it is free', 't-warn');
     }
     out.dim('          (with the length fixed, a wrong last character and the');
@@ -759,7 +759,7 @@
       out.line('');
       if (j.results[0].right > j.results[1].right) {
         out.ok('  That difference is the whole point. The same attack, the same');
-        out.ok('  machine, the same clock, the same number of samples — only the');
+        out.ok('  machine, the same clock, the same number of samples - only the');
         out.ok('  comparison changed.');
       } else {
         out.warn('  The naive comparison did not come out ahead of the constant-time');
@@ -824,7 +824,7 @@
     out.dim('  are both ordinary. Some browsers also add randomised jitter, so');
     out.dim('  the smallest gap seen here can be finer than the real clamp.');
     out.dim('  Whatever it says, it is measured in this tab, on this machine,');
-    out.dim('  right now — not read off a table.');
+    out.dim('  right now - not read off a table.');
     var warn = el('tool-clockwarn');
     if (warn) {
       warn.textContent = 'Measured here, in this tab: performance.now() resolves to about ' +
@@ -950,8 +950,8 @@
     out.row('  secret length', secret.length + ' (assumed known)');
     out.row('  estimated run time', 'about ' + seconds(est));
     out.line('');
-    out.dim('  The length is handed to the attack. The same comparison leaks it —');
-    out.dim('  the length check returns before a single character is compared —');
+    out.dim('  The length is handed to the attack. The same comparison leaks it -');
+    out.dim('  the length check returns before a single character is compared -');
     out.dim('  but recovering it is a separate step and is not implemented here.');
 
     if (est > RUN_REFUSE_MS) {

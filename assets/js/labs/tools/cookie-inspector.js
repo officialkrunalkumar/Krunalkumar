@@ -342,7 +342,7 @@
   function noteFlagValue(c, key) {
     var a = attr(c, key);
     if (!a || !a.hasValue) return;
-    out.warn('  "' + a.name + '=' + clip(a.value, 30) + '" — the value is ignored.');
+    out.warn('  "' + a.name + '=' + clip(a.value, 30) + '" - the value is ignored.');
     out.dim('  This is a presence-only attribute. Writing =false does not turn it');
     out.dim('  off; the only way to not have it is to not write it.');
   }
@@ -477,7 +477,7 @@
     }
     if (!c.name) {
       if (!c.hasPair) out.err('There is no "=" before the first semicolon.');
-      else out.err('The name is empty — the pair begins with "=".');
+      else out.err('The name is empty - the pair begins with "=".');
       out.dim('The specifications disagree about this one, so what happens depends on');
       out.dim('what is reading it. RFC 6265, from 2011, says to ignore the header');
       out.dim('entirely. RFC 6265bis, the revision written to describe what browsers');
@@ -513,7 +513,7 @@
       out.warn('The value is wrapped in double quotes.');
       out.dim('The grammar allows that form, but the parsing algorithm does not strip');
       out.dim('them: a browser stores the quotes as part of the value and sends them');
-      out.dim('back. Server libraries vary — many strip them, which is exactly how a');
+      out.dim('back. Server libraries vary - many strip them, which is exactly how a');
       out.dim('value ends up compared against itself and losing.');
       out.row('stored as', clip(c.value, 90));
       out.row('inside the quotes', clip(c.inner, 90));
@@ -522,7 +522,7 @@
       out.dim('That is what a semicolon inside a quoted value does. The parsing');
       out.dim('algorithm cuts at the first semicolon before it has any opinion about');
       out.dim('quotes, so the value ends there and everything after it is being read');
-      out.dim('as attributes. Browsers do exactly this — the quotes buy nothing.');
+      out.dim('as attributes. Browsers do exactly this - the quotes buy nothing.');
       out.dim('Percent-encode or base64 a value that has to contain a semicolon.');
       cut(v, 10, 'value cut short at a semicolon in the quotes',
           ['What the browser stores is ' + clip(c.value, 40) + ', not what was',
@@ -571,21 +571,21 @@
       out.heading(isHost ? 'The __Host- prefix' : 'The __Secure- prefix');
       out.dim('The prefix is not decoration and it is not a naming convention. The');
       out.dim('browser reads it and enforces it. A cookie that carries the prefix and');
-      out.dim('breaks the rule is REJECTED — not stored with weaker settings, not');
+      out.dim('breaks the rule is REJECTED - not stored with weaker settings, not');
       out.dim('logged, not downgraded. Dropped. The match on the prefix itself is');
       out.dim('case-insensitive.');
       out.line('');
       if (isHost) {
-        out.row('needs Secure', secure ? 'yes — present' : 'yes — MISSING',
+        out.row('needs Secure', secure ? 'yes - present' : 'yes - MISSING',
                 secure ? 't-ok' : 't-err');
-        out.row('needs Path=/', pathValue === '/' ? 'yes — present'
-                              : 'yes — ' + (pathAttr ? 'Path is "' + pathAttr.value + '"'
+        out.row('needs Path=/', pathValue === '/' ? 'yes - present'
+                              : 'yes - ' + (pathAttr ? 'Path is "' + pathAttr.value + '"'
                                                      : 'no Path attribute'),
                 pathValue === '/' ? 't-ok' : 't-err');
         out.row('needs NO Domain', domainSet
-                ? 'yes — Domain=' + clip(domainAttr.value, 60) + ' is present'
+                ? 'yes - Domain=' + clip(domainAttr.value, 60) + ' is present'
                 : (domainAttr ? 'the Domain value is empty, which is undefined'
-                              : 'yes — absent, correct'),
+                              : 'yes - absent, correct'),
                 domainSet ? 't-err' : (domainAttr ? 't-warn' : 't-ok'));
         if (!secure) kill(v, '__Host- without Secure', ['The browser rejects the cookie.']);
         if (pathValue !== '/') {
@@ -613,7 +613,7 @@
           pass(v, '__Host- satisfied, so no subdomain can overwrite this cookie');
         }
       } else {
-        out.row('needs Secure', secure ? 'yes — present' : 'yes — MISSING',
+        out.row('needs Secure', secure ? 'yes - present' : 'yes - MISSING',
                 secure ? 't-ok' : 't-err');
         if (!secure) {
           kill(v, '__Secure- without the Secure attribute',
@@ -654,7 +654,7 @@
       out.row('Secure', 'absent', 't-err');
       cut(v, 25, 'no Secure attribute',
           ['The cookie goes out in cleartext on any http request to a matching host,',
-           'including one the visitor never intended — an image, a typo, a captive',
+           'including one the visitor never intended - an image, a typo, a captive',
            'portal. And an active attacker can overwrite it over http even when the',
            'real site is https-only.']);
     }
@@ -672,8 +672,8 @@
       out.row('HttpOnly', 'absent', 't-err');
       cut(v, 20, 'no HttpOnly attribute',
           ['Any script on any matching page reads this with document.cookie. One',
-           'XSS anywhere on the site — an ad frame, a stale dependency, a review',
-           'field — and the value has been posted somewhere you do not control.',
+           'XSS anywhere on the site - an ad frame, a stale dependency, a review',
+           'field - and the value has been posted somewhere you do not control.',
            'If this is a session cookie, script has no business reading it at all.']);
     }
 
@@ -681,7 +681,7 @@
       explained++;
       out.row('SameSite', ss.value);
       if (ssValue === 'strict') {
-        out.dim('  Never attached to a request that started on another site — not even');
+        out.dim('  Never attached to a request that started on another site - not even');
         out.dim('  a plain link. Follow a link from an email into a Strict-protected');
         out.dim('  app and you arrive logged out, which is why few teams use it for');
         out.dim('  the main session cookie and many use it for a second one.');
@@ -711,7 +711,7 @@
       }
     } else if (ss) {
       out.row('SameSite', (ss.hasValue ? ss.value : '(written with no value)') +
-              ' — not a recognised value', 't-warn');
+              ' - not a recognised value', 't-warn');
       out.dim('  Only Strict, Lax and None exist. An unrecognised value is not an');
       out.dim('  error: the attribute is discarded and the cookie falls back to');
       out.dim('  whatever the browser default is, which is the next entry.');
@@ -727,7 +727,7 @@
       out.dim('  younger than two minutes was still sent on a top-level cross-site');
       out.dim('  POST, so SSO flows kept working. It was published as temporary. This');
       out.dim('  page makes no requests, so it cannot tell you whether the browser in');
-      out.dim('  front of you still has it — assume it might.');
+      out.dim('  front of you still has it - assume it might.');
       cut(v, 15, 'no SameSite attribute',
           ['You are relying on a default that differs by browser and by version.',
            'Writing SameSite=Lax explicitly costs nothing and removes the question.']);
@@ -735,7 +735,7 @@
 
     if (partitioned) {
       explained++;
-      out.row('Partitioned', 'present' + (secure ? '' : ' — but Secure is missing'),
+      out.row('Partitioned', 'present' + (secure ? '' : ' - but Secure is missing'),
               secure ? 't-ok' : 't-err');
       out.dim('  CHIPS: cookies having independent partitioned state. The cookie is');
       out.dim('  stored in a jar keyed by the TOP-LEVEL site as well as by its own');
@@ -751,7 +751,7 @@
         kill(v, 'Partitioned without Secure',
              ['Chrome requires Secure here. Whether the result is a rejected cookie',
               'or a cookie stored unpartitioned depends on the browser and the',
-              'version — and both outcomes are wrong. Either the cookie is gone, or',
+              'version - and both outcomes are wrong. Either the cookie is gone, or',
               'it is in the shared jar you were trying to leave.']);
       } else {
         pass(v, 'Partitioned with Secure: scoped per top-level site');
@@ -761,11 +761,11 @@
     if (domainAttr && !domainSet) {
       explained++;
       out.row('Domain', (trim(domainAttr.value) || '(empty)') +
-              ' — no domain to set', 't-warn');
+              ' - no domain to set', 't-warn');
       out.dim('  There is no domain here: the value is empty, or is a bare dot, which');
       out.dim('  strips to empty. The specification calls that case undefined and then');
       out.dim('  says the attribute SHOULD be ignored, which leaves the cookie');
-      out.dim('  host-only — narrower than intended rather than wider, so it fails in');
+      out.dim('  host-only - narrower than intended rather than wider, so it fails in');
       out.dim('  the safe direction. Undefined is still undefined though: this is what');
       out.dim('  a template renders when the domain variable is unset, and nothing');
       out.dim('  tells anyone it happened. Emit no attribute instead of an empty one.');
@@ -780,7 +780,7 @@
     } else if (domainAttr) {
       explained++;
       out.row('Domain', clip(domainAttr.value, 80) +
-              (trim(domainAttr.value).charAt(0) === '.' ? '  — leading dot stripped' : ''));
+              (trim(domainAttr.value).charAt(0) === '.' ? '  - leading dot stripped' : ''));
       if (trim(domainAttr.value).charAt(0) === '.') {
         out.dim('  The leading dot has meant nothing since RFC 6265 in 2011. In the old');
         out.dim('  Netscape rules it was the difference between the domain itself and');
@@ -794,8 +794,8 @@
       if (looksLikeIp(domainValue)) {
         out.dim('  The value is an IP address, and an address has no subdomains, so');
         out.dim('  this attribute cannot widen anything. It either names the exact host');
-        out.dim('  the response came from — in which case the cookie ends up host-only');
-        out.dim('  anyway — or it does not, and the cookie is rejected for not matching.');
+        out.dim('  the response came from - in which case the cookie ends up host-only');
+        out.dim('  anyway - or it does not, and the cookie is rejected for not matching.');
         out.dim('  Either way it is doing nothing for you. Leave it out.');
       } else {
         out.dim('  A Domain attribute only ever WIDENS. It sends the cookie to the named');
@@ -816,21 +816,21 @@
              'Drop the attribute unless a second hostname genuinely needs it.']);
       }
     } else {
-      out.row('Domain', 'absent — host-only', 't-ok');
+      out.row('Domain', 'absent - host-only', 't-ok');
       out.dim('  The narrowest scope there is: this exact host, no subdomains.');
       pass(v, 'no Domain attribute, so the cookie is host-only');
     }
 
     if (pathAttr) {
       explained++;
-      out.row('Path', pathAttr.value + (pathValue ? '' : ' — ignored, it must start with /'));
+      out.row('Path', pathAttr.value + (pathValue ? '' : ' - ignored, it must start with /'));
       out.dim('  A prefix match on the URL path. Worth saying out loud: Path is not a');
       out.dim('  security boundary. Same-origin script at /a can read and set cookies');
       out.dim('  for /b, because the same-origin policy does not partition by path.');
       out.dim('  Path reduces how often the cookie is sent. It protects nothing.');
     } else {
       var dp = origin ? defaultPath(origin.path) : null;
-      out.row('Path', 'absent' + (dp ? ' — default-path is "' + dp + '"' : ''));
+      out.row('Path', 'absent' + (dp ? ' - default-path is "' + dp + '"' : ''));
       out.dim('  With no Path attribute the cookie does not get "/". It gets the');
       out.dim('  DIRECTORY of the request URI. A response from /account/settings');
       out.dim('  yields a cookie scoped to /account, which then does not arrive at');
@@ -855,7 +855,7 @@
       c.dupes.forEach(function (d) {
         out.warn('Duplicate attribute: ' + d.name + ' appears more than once.');
       });
-      out.dim('The last occurrence wins — the parser walks the list in order and each');
+      out.dim('The last occurrence wins - the parser walks the list in order and each');
       out.dim('one overwrites the previous. Two Path attributes is not an error, it is');
       out.dim('a silent choice you did not make.');
       cut(v, 3, 'repeated attribute, and the last one wins');
@@ -905,12 +905,12 @@
 
     if (maxAge) {
       out.row('Max-Age', maxAge.value + (maxAgeValid ? ' seconds'
-              : ' — not a plain integer, so the attribute is ignored'),
+              : ' - not a plain integer, so the attribute is ignored'),
               maxAgeValid ? null : 't-warn');
     }
     if (expires) {
       out.row('Expires', expires.value + (expiresMs === null
-              ? ' — this reader could not parse that date' : ''),
+              ? ' - this reader could not parse that date' : ''),
               expiresMs === null ? 't-warn' : null);
       if (expiresMs !== null) out.row('parsed as', fmtUtc(expiresMs));
     }
@@ -1021,7 +1021,7 @@
           out.dim('a hosted platform, a customer subdomain, a CNAME pointed at a');
           out.dim('vendor. Any one of them can read this cookie, and any one of them');
           out.dim('can OVERWRITE it, because cookies do not obey the same-origin');
-          out.dim('policy — they answer to the registrable domain and ignore scheme,');
+          out.dim('policy - they answer to the registrable domain and ignore scheme,');
           out.dim('port and host. So a compromised sibling gets the session, and can');
           out.dim('also hand the visitor a session of its own choosing.');
           cut(v, 8, 'scope widened from the host to a parent domain',
@@ -1041,7 +1041,7 @@
       if (!pathAttr) {
         out.row('default-path', defaultPath(origin.path));
         if (defaultPath(origin.path) !== '/') {
-          out.warn('Not "/" — the cookie will not be sent to paths outside ' +
+          out.warn('Not "/" - the cookie will not be sent to paths outside ' +
                    defaultPath(origin.path) + '.');
         }
       }
@@ -1095,12 +1095,12 @@
 
     var score = v.fatal.length ? 0 : Math.max(0, v.score);
     var band;
-    if (v.fatal.length) band = 'rejected, so the score is moot — fix the list above first';
+    if (v.fatal.length) band = 'rejected, so the score is moot - fix the list above first';
     else if (score >= 90) band = 'about as tight as a Set-Cookie line gets';
     else if (score >= 70) band = 'workable, with the gaps listed above';
-    else if (score >= 45) band = 'weak — the deductions are the work';
+    else if (score >= 45) band = 'weak - the deductions are the work';
     else band = 'broken in practice, whatever it does in your tests';
-    out.row('score', score + ' / 100 — ' + band,
+    out.row('score', score + ' / 100 - ' + band,
             score >= 70 ? 't-ok' : (score >= 45 ? 't-warn' : 't-err'));
     out.dim('The weights are mine, not a standard. Every one is printed above so you');
     out.dim('can disagree with it. Nothing here knows what the cookie is FOR: an');
@@ -1229,7 +1229,7 @@
     var text = document.getElementById('tool-text').value;
     if (text.length > MAX_CHARS) {
       out.warn('That paste is ' + text.length + ' characters. Only the first ' +
-               MAX_CHARS + ' are read, so the page stays responsive — the work');
+               MAX_CHARS + ' are read, so the page stays responsive - the work');
       out.warn('happens in this tab, on your processor.');
       text = text.slice(0, MAX_CHARS);
     }
@@ -1243,7 +1243,7 @@
     var found = candidateLines(text);
     if (found.sawRequestHeader) {
       out.warn('A line starting "Cookie:" was skipped. That is the REQUEST header the');
-      out.warn('browser sends back, and it carries names and values only — every');
+      out.warn('browser sends back, and it carries names and values only - every');
       out.warn('attribute has already been stripped by then. This tool needs the');
       out.warn('Set-Cookie header from the response.');
       out.line('');

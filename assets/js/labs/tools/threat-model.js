@@ -96,7 +96,7 @@
       T: { t: 'Input to %s is tampered with',
            w: 'Bodies, query strings, headers, file names and message payloads all arrive from somewhere less trusted. Ask which of them are validated, and which are passed straight into a query, a shell, a template or a deserialiser.' },
       R: { t: 'What %s did leaves no reliable record',
-           w: 'Ask whether this process records who asked, what it did and when — and whether the party who might be blamed also has write access to that record.' },
+           w: 'Ask whether this process records who asked, what it did and when - and whether the party who might be blamed also has write access to that record.' },
       I: { t: '%s returns more than the caller should see',
            w: 'Over-broad responses, verbose errors, debug endpoints, and object ids that can be walked. Ask whether the check is on the object as well as on the route.' },
       D: { t: '%s can be exhausted or stopped',
@@ -118,7 +118,7 @@
       T: { t: 'Data on %s is modified in transit',
            w: 'Ask what protects it end to end, whether certificates are actually validated, and whether the receiver would detect a modified message.' },
       I: { t: 'Data on %s is read in transit',
-           w: 'Ask what is in the payload, whether it is encrypted, and who legitimately sits in the middle — a proxy, a load balancer, a logging appliance, a vendor.' },
+           w: 'Ask what is in the payload, whether it is encrypted, and who legitimately sits in the middle - a proxy, a load balancer, a logging appliance, a vendor.' },
       D: { t: '%s is blocked or flooded',
            w: 'Ask what the sender does when this flow fails: retries forever, drops the data silently, or queues it somewhere that then fills up.' }
     }
@@ -130,7 +130,7 @@
      sign the threat was accepted without being thought about. */
   var MITIGATIONS = {
     S: [
-      'Require authentication on this interface — a session token, mutual TLS, or a signed request — and make the failure path loud.',
+      'Require authentication on this interface - a session token, mutual TLS, or a signed request - and make the failure path loud.',
       'Use a managed identity provider rather than a local password store, so account recovery and lockout are somebody’s full-time job.',
       'Add a second factor, and bind the session to a device or a key so a stolen cookie on its own is not enough.',
       'Verify the request out of band before acting on it, for the small number of actions where being wrong is expensive.'
@@ -153,14 +153,14 @@
       'Return only the fields the caller needs; no wildcard reads, no debug shapes in production.',
       'Redact secrets and personal data at the logging call itself, not in a pipeline further down.',
       'Scope every credential to the smallest set of objects that will do the job.',
-      'Set an explicit retention period and delete on schedule — data you no longer hold cannot be disclosed.'
+      'Set an explicit retention period and delete on schedule - data you no longer hold cannot be disclosed.'
     ],
     D: [
       'Rate limit per identity and per source, and return a clear error rather than falling over.',
       'Set timeouts, a retry budget and a circuit breaker on every outbound dependency.',
       'Cap request sizes, payload sizes and the work any single request can cause.',
       'Alert on quota and capacity before they are reached, and write down what degraded mode looks like.',
-      'Back it up, and test the restore on a schedule — an untested backup is a plan, not a control.'
+      'Back it up, and test the restore on a schedule - an untested backup is a plan, not a control.'
     ],
     E: [
       'Authorise every action server-side against the caller’s identity and the specific object, not against the route.',
@@ -407,7 +407,7 @@
            visitor just needs to know the reload will be empty. */
         if (!storageBroken) {
           storageBroken = true;
-          setStatus('This browser refuses site storage, so nothing can be saved here. The model is safe until you reload — use Export JSON.', 'err');
+          setStatus('This browser refuses site storage, so nothing can be saved here. The model is safe until you reload - use Export JSON.', 'err');
         }
       }
     }, 350);
@@ -618,7 +618,7 @@
         { r: 'cust', t: 'entity', n: 'Customer', b: 0, note: 'Signs up, signs in, pays, asks for refunds.' },
         { r: 'pay', t: 'entity', n: 'Payment provider API', b: 2, note: 'Holds the card data so that we do not have to.' },
         { r: 'web', t: 'process', n: 'Web application', b: 1, note: 'Public HTTPS front end: sessions, checkout, account pages, webhook receiver.' },
-        { r: 'bill', t: 'process', n: 'Billing worker', b: 1, note: 'Background jobs — charges, refunds, retries, dunning.' },
+        { r: 'bill', t: 'process', n: 'Billing worker', b: 1, note: 'Background jobs - charges, refunds, retries, dunning.' },
         { r: 'db', t: 'store', n: 'Customer database', b: 1, note: 'Names, emails, addresses, subscription state. Deliberately no card numbers.' },
         { r: 'log', t: 'store', n: 'Application logs', b: 1, note: 'Request logs and job history, kept for thirty days.' },
         { r: 'f1', t: 'flow', n: 'Sign-in and checkout requests', from: 'cust', to: 'web' },
@@ -680,7 +680,7 @@
         { r: 'g3', c: 'I', d: 'accepted', l: 3, i: 2, s: 'planned',
           m: 'Strip signatures, phone numbers and account references before the prompt is built, and send the minimum the draft needs. Use an endpoint with a no-training commitment, and tell the client in writing which text leaves their tenancy and where it goes.' },
         { r: 'draft', c: 'T', d: 'accepted', l: 3, i: 2, s: 'mitigated',
-          m: 'Treat the email body as hostile text and never as instructions. Model output goes to a human for approval and can never trigger a send or a CRM write on its own. Prompt injection is not hypothetical here — the input is literally mail from strangers.' },
+          m: 'Treat the email body as hostile text and never as instructions. Model output goes to a human for approval and can never trigger a send or a CRM write on its own. Prompt injection is not hypothetical here - the input is literally mail from strangers.' },
         { r: 'n8n', c: 'E', d: 'accepted', l: 2, i: 3, s: 'open',
           m: 'One scoped API key per integration with the narrowest permission set the workflow actually uses, instead of one admin key reused everywhere because it was quicker. Review each quarter what every key can still do.' },
         { r: 'crm', c: 'T', d: 'accepted', l: 2, i: 2, s: 'planned',
@@ -1087,7 +1087,7 @@
     var badge = el('span', 'tm-cat tm-cat--' + t.cat);
     badge.appendChild(el('b', null, t.cat));
     badge.appendChild(el('span', null, ' ' + cat.name));
-    badge.title = cat.name + ' — attacks ' + cat.prop.toLowerCase();
+    badge.title = cat.name + ' - attacks ' + cat.prop.toLowerCase();
     head.appendChild(badge);
     if (!t.auto) head.appendChild(el('span', 'tm-tag', 'added by hand'));
     if (t.decision === 'accepted') {
@@ -1253,7 +1253,7 @@
       var pick = el('select', 'lab-select');
       pick.appendChild(option('', 'Add a threat of your own…', true));
       CATS.forEach(function (c) {
-        pick.appendChild(option(c.k, c.k + ' — ' + c.name));
+        pick.appendChild(option(c.k, c.k + ' - ' + c.name));
       });
       pick.addEventListener('change', function () {
         if (!pick.value) return;
@@ -1387,7 +1387,7 @@
     var th = reportSection('Threats accepted, and what happens about them');
     if (!accepted.length) {
       th.appendChild(el('p', 'tm-rtext',
-        'Nothing accepted yet. Work through the proposals in step 2 — a model with no accepted threats is a model nobody has read.'));
+        'Nothing accepted yet. Work through the proposals in step 2 - a model with no accepted threats is a model nobody has read.'));
     } else {
       var twrap = el('div', 'tm-tablewrap');
       var tt = el('table', 'tm-table');
@@ -1412,7 +1412,7 @@
         var band = riskBand(t.likelihood, t.impact);
         var r = el('tr');
         cell(r, e ? labelFor(e) : '—');
-        cell(r, t.cat + ' — ' + catInfo(t.cat).name);
+        cell(r, t.cat + ' - ' + catInfo(t.cat).name);
         cell(r, t.title || '—');
         cell(r, t.likelihood ? LEVELS[t.likelihood - 1].label : '—');
         cell(r, t.impact ? LEVELS[t.impact - 1].label : '—');
@@ -1436,8 +1436,8 @@
       rejected.forEach(function (t) {
         var e = elementById(t.el);
         var li = el('li');
-        li.appendChild(el('b', null, (e ? labelFor(e) : '—') + ' · ' + t.cat + ' — ' + (t.title || catInfo(t.cat).name)));
-        li.appendChild(el('span', null, ' — ' + (t.reason || 'No reason recorded, which is a gap.')));
+        li.appendChild(el('b', null, (e ? labelFor(e) : '—') + ' · ' + t.cat + ' - ' + (t.title || catInfo(t.cat).name)));
+        li.appendChild(el('span', null, ' - ' + (t.reason || 'No reason recorded, which is a gap.')));
         ul.appendChild(li);
       });
       rj.appendChild(ul);

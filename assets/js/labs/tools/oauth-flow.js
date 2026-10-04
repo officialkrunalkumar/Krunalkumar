@@ -338,11 +338,11 @@
     out.line('');
     p('The code travels through the browser, so it is visible in history, in the ' +
       'Referer of anything the callback page loads, and in any proxy log along the ' +
-      'way. It is deliberately short-lived and single-use for that reason — and on ' +
+      'way. It is deliberately short-lived and single-use for that reason - and on ' +
       'its own that is not enough, which is step 5.');
     out.line('');
     p('iss identifies which server answered (RFC 9207). A client that talks to more ' +
-      'than one provider needs it — see the mix-up attack.');
+      'than one provider needs it - see the mix-up attack.');
 
     step(4, 'The client checks state before doing anything else');
     kv('state returned', s.state, 't-ok');
@@ -398,7 +398,7 @@
       out.line('');
       pw('The id_token is for the CLIENT, proving who signed in. It is not an API ' +
          'credential. Sending it to your backend as one is the single most common ' +
-         'OpenID Connect mistake — verify its signature, issuer, audience and the ' +
+         'OpenID Connect mistake - verify its signature, issuer, audience and the ' +
          'nonce you sent in step 1.');
     }
 
@@ -456,14 +456,14 @@
          'started the flow. The code was the only secret and it travelled through ' +
          'the browser.');
       out.line('');
-      p('A client secret does not save you here either: public clients — every ' +
-        'mobile app and every single-page app — cannot keep one. That is the gap ' +
+      p('A client secret does not save you here either: public clients - every ' +
+        'mobile app and every single-page app - cannot keep one. That is the gap ' +
         'PKCE was written to close.');
     } else if (s.method === 'plain') {
       out.line('  HTTP/1.1 400 Bad Request', 't-warn');
       out.line('    { "error": "invalid_grant" }', 't-warn');
       out.line('');
-      pw('Blocked — but only because this attacker never saw the authorization ' +
+      pw('Blocked - but only because this attacker never saw the authorization ' +
          'request. With method=plain the challenge equals the verifier, so an ' +
          'attacker positioned to read the request in step 1 reads the verifier too ' +
          'and walks straight through. Use S256.');
@@ -487,7 +487,7 @@
     rule();
     out.line('');
     p('This one runs backwards from what people expect. The attacker is not stealing ' +
-      'the victim\'s account — they are giving the victim THEIRS.');
+      'the victim\'s account - they are giving the victim THEIRS.');
 
     step(1, 'The attacker starts a normal flow as themselves');
     p('They log in at ' + s.issuer + ' with their own credentials and stop at the ' +
@@ -504,7 +504,7 @@
        'attacker\'s identity to the victim\'s session.');
     out.line('');
     p('The victim is now signed in as the attacker without noticing. Anything they ' +
-      'save — a document, a payment method, a linked account — lands in the ' +
+      'save - a document, a payment method, a linked account - lands in the ' +
       'attacker\'s account, where the attacker can read it later.');
     out.line('');
     p('With a state check:');
@@ -512,7 +512,7 @@
     kv('state expected', s.state, 't-ok');
     po('Mismatch. The response is dropped before the code is spent.');
     out.line('');
-    p('state must be bound to the browser session — a cookie or session store — and ' +
+    p('state must be bound to the browser session - a cookie or session store - and ' +
       'compared server-side. A state the client merely echoes back to itself from ' +
       'the URL proves nothing.');
     out.line('');
@@ -533,9 +533,9 @@
 
     step(2, 'What the attacker asks for');
     var host = s.redirect.replace(/^https?:\/\//, '').split('/')[0];
-    p('Prefix matching — a registered value treated as a starting string:');
+    p('Prefix matching - a registered value treated as a starting string:');
     out.line('    ' + s.redirect + '.evil.example/steal', 't-err');
-    p('Subdomain wildcards — one forgotten dangling DNS record is enough:');
+    p('Subdomain wildcards - one forgotten dangling DNS record is enough:');
     out.line('    https://abandoned.' + host.replace(/^[^.]+\./, '') + '/steal', 't-err');
     p('An unchecked query or fragment on an otherwise correct callback:');
     printUrl(s.redirect + '?next=https://evil.example', 't-err');
@@ -589,7 +589,7 @@
     say('Attack: mix-up between two identity providers', '', 't-info');
     rule();
     out.line('');
-    p('Only applies to a client that offers a choice of provider — "sign in with A or ' +
+    p('Only applies to a client that offers a choice of provider - "sign in with A or ' +
       'B". That is most consumer applications.');
 
     step(1, 'The setup');
@@ -619,7 +619,7 @@
     out.line('');
     out.line('    iss=' + encodeURIComponent(s.issuer), 't-ok');
     out.line('');
-    p('Failing that, use a separate redirect_uri per provider — then the callback ' +
+    p('Failing that, use a separate redirect_uri per provider - then the callback ' +
       'that fires tells you unambiguously which flow this is.');
     out.line('');
     p('PKCE does not stop this one either. The client is a willing participant and ' +
@@ -699,12 +699,12 @@
     } else if (rt === 'code') {
       good('response_type=code', 'Authorization code flow, which is the right one.');
     } else if (/\btoken\b/.test(rt)) {
-      bad('response_type=' + rt + ' — implicit flow',
+      bad('response_type=' + rt + ' - implicit flow',
         'Tokens are returned in the URL fragment: browser history, Referer and any ' +
         'script on the page can read them, and there is no client authentication at ' +
         'all. Removed in OAuth 2.1. Move to code + PKCE.');
     } else if (/id_token/.test(rt)) {
-      warn('response_type=' + rt + ' — hybrid flow',
+      warn('response_type=' + rt + ' - hybrid flow',
         'Valid, but it puts an id_token in the redirect. Only worth the extra care ' +
         'if you genuinely need the token before the code exchange.');
     } else {
@@ -715,7 +715,7 @@
     var chal = q.get('code_challenge');
     var meth = (q.get('code_challenge_method') || '').trim();
     if (!chal) {
-      bad('no code_challenge — PKCE is not in use',
+      bad('no code_challenge - PKCE is not in use',
         'A stolen authorization code is enough to obtain tokens. Required for every ' +
         'client in OAuth 2.1, not only public ones.');
     } else if (meth === 'S256') {
@@ -746,7 +746,7 @@
           'is open.');
       }
     } else if (state.length < 8) {
-      warn('state is only ' + state.length + ' characters', 'Make it unguessable — 16 random bytes.');
+      warn('state is only ' + state.length + ' characters', 'Make it unguessable - 16 random bytes.');
     } else {
       good('state present', state.length + ' characters. Confirm it is compared server-side, not just echoed.');
     }
@@ -795,7 +795,7 @@
       good('scope', parts.length + ' requested: ' + parts.join(', '));
       if (/\b(admin|write|\*|full_access|offline_access)\b/i.test(scope)) {
         warn('scope includes a broad grant',
-          'Ask for it at the moment it is needed rather than at first sign-in — the ' +
+          'Ask for it at the moment it is needed rather than at first sign-in - the ' +
           'consent screen is the one place a user reads what you asked for.');
       }
       if (/\bopenid\b/.test(scope) && !q.get('nonce')) {
@@ -897,9 +897,9 @@
       COLS = measureCols();
       p('Pick a mode and press Run.');
       out.line('');
-      p('Walk the flow — every step with real PKCE values, generated here.');
-      p('An attack — what the attacker sends, and what refuses it.');
-      p('Audit a URL — paste your own authorize request and have it graded.');
+      p('Walk the flow - every step with real PKCE values, generated here.');
+      p('An attack - what the attacker sends, and what refuses it.');
+      p('Audit a URL - paste your own authorize request and have it graded.');
       out.line('');
       p('There is no authorization server behind this page. Nothing is fetched and ' +
         'nothing you paste leaves the tab.');

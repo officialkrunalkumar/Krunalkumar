@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Eight functions, as few instructions as you can" />
     <meta name="twitter:description" content="Write the shortest program that passes the hidden tests. Eight functions on an invented twenty instruction machine, scored on length and not on speed." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-assembly-golf.jpg" />
-    <title>Assembly Golf — Shortest Program Wins</title>
+    <title>Assembly Golf - Shortest Program Wins</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -69,7 +69,7 @@
                         "name": "Why does it say my program did not terminate?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true — a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop."
+                                "text": "It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true - a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop."
                         }
                 },
                 {
@@ -101,7 +101,7 @@
                         "name": "Are my programs saved anywhere?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "They are kept in this browser, per level, and nothing is sent anywhere — there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best."
+                                "text": "They are kept in this browser, per level, and nothing is sent anywhere - there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best."
                         }
                 }
         ]
@@ -198,7 +198,7 @@
           </ol>
         </nav>
         <h1>Assembly golf</h1>
-        <p class="hero-text">Eight functions to write &mdash; absolute value, a greatest common divisor, a string reversed in memory &mdash; on a machine with four registers, twenty-four cells and twenty instructions. Being right is only half of it: the score is how many instructions you wrote, and the lower number is the better one. The cycles your program spent are printed beside it and never added in, because on at least one of these levels the shortest answer and the quickest answer are not the same program, and folding the two figures together would hide the only trade worth learning.</p>
+        <p class="hero-text">Eight functions to write - absolute value, a greatest common divisor, a string reversed in memory - on a machine with four registers, twenty-four cells and twenty instructions. Being right is only half of it: the score is how many instructions you wrote, and the lower number is the better one. The cycles your program spent are printed beside it and never added in, because on at least one of these levels the shortest answer and the quickest answer are not the same program, and folding the two figures together would hide the only trade worth learning.</p>
         <ul class="game-facts">
           <li>Twenty instructions</li>
           <li>Eight functions to write</li>
@@ -238,7 +238,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Best</span>
-              <span class="game-stat-value" data-stat="best">&mdash;</span>
+              <span class="game-stat-value" data-stat="best">-</span>
             </div>
           </div>
           <div class="game-toolbar">
@@ -250,7 +250,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -308,11 +308,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Length is the score. Cycles are the price</h3>
-            <p>Your score is the number of instructions you wrote, summed over the eight levels, and nothing else goes into it &mdash; comments and labels are free. Beside it sits the cycle count: what your program actually cost to run across every hidden case, on a price list where <code>ADD</code> is one cycle, <code>MUL</code> is three and <code>DIV</code> is six. The two numbers pull against each other. Level seven is built to prove it: the shortest primality test divides by everything below n, and stopping at the square root instead costs two more instructions and a small fraction of the work. Every optimiser in a real <a href="/labs/compiler">compiler</a> is making some version of that choice, which is why <code>-Os</code> and <code>-O2</code> are different flags.</p>
+            <p>Your score is the number of instructions you wrote, summed over the eight levels, and nothing else goes into it - comments and labels are free. Beside it sits the cycle count: what your program actually cost to run across every hidden case, on a price list where <code>ADD</code> is one cycle, <code>MUL</code> is three and <code>DIV</code> is six. The two numbers pull against each other. Level seven is built to prove it: the shortest primality test divides by everything below n, and stopping at the square root instead costs two more instructions and a small fraction of the work. Every optimiser in a real <a href="/labs/compiler">compiler</a> is making some version of that choice, which is why <code>-Os</code> and <code>-O2</code> are different flags.</p>
           </article>
           <article class="info-card">
             <h3>Par is measured, and it is only the shortest I found</h3>
-            <p>Each level ships the shortest program I could write for it, as source text. Par is not typed into a table &mdash; the page assembles that program and runs it against the hidden cases when it opens, and prints what it actually cost. So par cannot drift out of date, and a reference program that stopped working would announce itself on the first visit rather than being believed for a year. What it is not is a proof: it is the shortest I found on the afternoon I wrote it, not the shortest that exists, and beating it is the interesting part. Several of these almost certainly go shorter.</p>
+            <p>Each level ships the shortest program I could write for it, as source text. Par is not typed into a table - the page assembles that program and runs it against the hidden cases when it opens, and prints what it actually cost. So par cannot drift out of date, and a reference program that stopped working would announce itself on the first visit rather than being believed for a year. What it is not is a proof: it is the shortest I found on the afternoon I wrote it, not the shortest that exists, and beating it is the interesting part. Several of these almost certainly go shorter.</p>
           </article>
           <article class="info-card">
             <h3>Why the test cases are hidden</h3>
@@ -320,11 +320,11 @@
           </article>
           <article class="info-card">
             <h3>The runaway guard is a cap, not a diagnosis</h3>
-            <p>A program that has not finished after forty thousand cycles is stopped, and the message says it did not terminate within forty thousand cycles. It never says your program loops forever, because deciding that in general is the halting problem &mdash; there is no analysis that could be added here to answer it for every program, and the ones that look easiest are often the ones that are not. The commonest way to hit the cap is <code>DJNZ</code> on a counter that started at zero: it takes one off, misses zero going past, and counts down for a very long time.</p>
+            <p>A program that has not finished after forty thousand cycles is stopped, and the message says it did not terminate within forty thousand cycles. It never says your program loops forever, because deciding that in general is the halting problem - there is no analysis that could be added here to answer it for every program, and the ones that look easiest are often the ones that are not. The commonest way to hit the cap is <code>DJNZ</code> on a counter that started at zero: it takes one off, misses zero going past, and counts down for a very long time.</p>
           </article>
           <article class="info-card">
             <h3>This machine is invented, and it is not the one next door</h3>
-            <p>Twenty instructions, four registers, twenty-four memory cells with the stack growing down through the top of them, and one signed flag standing in for the several a real processor keeps apart. It is a load/store design, so arithmetic happens between registers and memory is reached only through <code>LD</code> and <code>ST</code> &mdash; the same shape as any RISC, and the reason one line of C becomes three instructions. The cycle prices are invented but proportioned after real hardware. There is no pipeline, no cache, no interrupt and no penalty for a mispredicted branch, all of which matter enormously on a real chip. The <a href="/labs/cpu-simulator">CPU simulator</a> next door runs a fetch-decode-execute cycle a step at a time if you want to see where those go. The other assembly game here, <a href="/games/assembly-puzzles">assembly puzzles</a>, is a different machine with an input tape and a different scoring rule: it teaches what the instructions do, and this one assumes you already know.</p>
+            <p>Twenty instructions, four registers, twenty-four memory cells with the stack growing down through the top of them, and one signed flag standing in for the several a real processor keeps apart. It is a load/store design, so arithmetic happens between registers and memory is reached only through <code>LD</code> and <code>ST</code> - the same shape as any RISC, and the reason one line of C becomes three instructions. The cycle prices are invented but proportioned after real hardware. There is no pipeline, no cache, no interrupt and no penalty for a mispredicted branch, all of which matter enormously on a real chip. The <a href="/labs/cpu-simulator">CPU simulator</a> next door runs a fetch-decode-execute cycle a step at a time if you want to see where those go. The other assembly game here, <a href="/games/assembly-puzzles">assembly puzzles</a>, is a different machine with an input tape and a different scoring rule: it teaches what the instructions do, and this one assumes you already know.</p>
           </article>
         </div>
       </section>
@@ -339,7 +339,7 @@
           </details>
           <details class="lab-faq">
             <summary>Why does it say my program did not terminate?</summary>
-            <div>It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true &mdash; a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop.</div>
+            <div>It ran past forty thousand cycles and was stopped. That usually means a loop whose exit test can never be true - a counter tested before it is changed, a DJNZ that started at zero, or a jump that lands above the instruction doing the work. The cap is a cap, not a diagnosis: no checker can decide in general whether a program will stop.</div>
           </details>
           <details class="lab-faq">
             <summary>Is par really the shortest possible?</summary>
@@ -355,7 +355,7 @@
           </details>
           <details class="lab-faq">
             <summary>Are my programs saved anywhere?</summary>
-            <div>They are kept in this browser, per level, and nothing is sent anywhere &mdash; there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best.</div>
+            <div>They are kept in this browser, per level, and nothing is sent anywhere - there is no network call in the game at all. Restart clears your scores but leaves the code; clearing your site data removes both, along with your best.</div>
           </details>
       </section>
 

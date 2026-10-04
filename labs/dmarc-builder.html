@@ -111,7 +111,7 @@
                         "name": "If I build a record here, is my domain protected?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Not until you publish it, and not by the record alone. The tool checks syntax, counts lookups from what you told it, and lays out a rollout — it cannot tell you that a name resolves, that a vendor still sends for you, or that one real message would pass. Publish it, wait for the reports, and read them before you tighten the policy."
+                                "text": "Not until you publish it, and not by the record alone. The tool checks syntax, counts lookups from what you told it, and lays out a rollout - it cannot tell you that a name resolves, that a vendor still sends for you, or that one real message would pass. Publish it, wait for the reports, and read them before you tighten the policy."
                         }
                 }
         ]
@@ -237,14 +237,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No DNS. It cannot tell you whether a name resolves</li>
                   <li>Include lookup costs are numbers you supply, not measurements</li>
                   <li>It does not generate keys, and it explains why</li>
@@ -254,7 +254,7 @@
               <div>
                 <p class="lab-gate-h privacy">Why that matters here</p>
                 <ul class="lab-gate-list">
-                  <li>An aggregate report names every IP sending as you &mdash; it stays here</li>
+                  <li>An aggregate report names every IP sending as you - it stays here</li>
                   <li>A public key you paste is never transmitted</li>
                   <li>Nothing you type ever appears in your Network tab</li>
                   <li>Works with no internet once the page is cached</li>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -308,7 +308,7 @@
 
               <div class="dm-panel" role="tabpanel" id="dm-panel-spf"
                    aria-labelledby="dm-tab-spf" tabindex="0">
-                <p class="dm-lede">SPF is one TXT record listing the servers allowed to send for a domain. The trap is the RFC 7208 limit of ten DNS-costing terms: go past it and receivers return PermError, which is <strong>not</strong> a pass. The counter below is live &mdash; and it is an estimate, because this page resolves nothing and the cost of each include is a number you supply.</p>
+                <p class="dm-lede">SPF is one TXT record listing the servers allowed to send for a domain. The trap is the RFC 7208 limit of ten DNS-costing terms: go past it and receivers return PermError, which is <strong>not</strong> a pass. The counter below is live - and it is an estimate, because this page resolves nothing and the cost of each include is a number you supply.</p>
 
                 <label class="dm-lbl" for="spf-domain">
                   <span>Domain the record is for</span>
@@ -324,14 +324,14 @@
                 <div class="dm-addrow">
                   <label class="sr-only" for="spf-addtype">Mechanism to add</label>
                   <select class="lab-select" id="spf-addtype">
-                    <option value="ip4">ip4 &mdash; an address or CIDR block</option>
-                    <option value="ip6">ip6 &mdash; an address or CIDR block</option>
-                    <option value="include">include &mdash; another domain&rsquo;s SPF</option>
-                    <option value="a">a &mdash; the A/AAAA records of a domain</option>
-                    <option value="mx">mx &mdash; the hosts named in an MX</option>
-                    <option value="exists">exists &mdash; a macro-expanded lookup</option>
-                    <option value="ptr">ptr &mdash; reverse DNS (discouraged)</option>
-                    <option value="redirect">redirect &mdash; hand the policy over</option>
+                    <option value="ip4">ip4 - an address or CIDR block</option>
+                    <option value="ip6">ip6 - an address or CIDR block</option>
+                    <option value="include">include - another domain&rsquo;s SPF</option>
+                    <option value="a">a - the A/AAAA records of a domain</option>
+                    <option value="mx">mx - the hosts named in an MX</option>
+                    <option value="exists">exists - a macro-expanded lookup</option>
+                    <option value="ptr">ptr - reverse DNS (discouraged)</option>
+                    <option value="redirect">redirect - hand the policy over</option>
                   </select>
                   <button class="lab-btn" type="button" id="spf-add">Add</button>
                   <button class="lab-btn" type="button" id="spf-add-google">+ Google Workspace</button>
@@ -342,15 +342,15 @@
                 <label class="dm-lbl" for="spf-all">
                   <span>Everything not listed above</span>
                   <select class="lab-select" id="spf-all">
-                    <option value="-all" selected>-all &mdash; hard fail, reject it</option>
-                    <option value="~all">~all &mdash; soft fail, accept but mark it</option>
-                    <option value="?all">?all &mdash; neutral, enforce nothing</option>
-                    <option value="+all">+all &mdash; pass anything (never publish this)</option>
-                    <option value="none">no all term &mdash; only if you use redirect</option>
+                    <option value="-all" selected>-all - hard fail, reject it</option>
+                    <option value="~all">~all - soft fail, accept but mark it</option>
+                    <option value="?all">?all - neutral, enforce nothing</option>
+                    <option value="+all">+all - pass anything (never publish this)</option>
+                    <option value="none">no all term - only if you use redirect</option>
                   </select>
                 </label>
 
-                <p class="dm-note">The two presets fill in a lookup cost those records commonly expand to. Vendors change them without telling anyone, so check the number against the real record &mdash; the counter trusts whatever you put there, and nothing else.</p>
+                <p class="dm-note">The two presets fill in a lookup cost those records commonly expand to. Vendors change them without telling anyone, so check the number against the real record - the counter trusts whatever you put there, and nothing else.</p>
               </div>
 
               <div class="dm-panel" role="tabpanel" id="dm-panel-dmarc"
@@ -358,19 +358,19 @@
                 <p class="dm-lede">DMARC ties the SPF and DKIM results to the domain in the From: header and says what a receiver should do when neither lines up. Build it once, publish it in stages. Going straight to <code>p=reject</code> is how legitimate mail disappears.</p>
 
                 <label class="dm-lbl" for="dmarc-domain">
-                  <span>Domain &mdash; the record is published at _dmarc.&lt;domain&gt;</span>
+                  <span>Domain - the record is published at _dmarc.&lt;domain&gt;</span>
                   <input class="lab-toolfield" type="text" id="dmarc-domain" value="example.com"
                          spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" />
                 </label>
 
                 <label class="dm-lbl" for="dmarc-rua">
-                  <span>rua &mdash; where aggregate reports go (mailto: URIs, comma separated)</span>
+                  <span>rua - where aggregate reports go (mailto: URIs, comma separated)</span>
                   <input class="lab-toolfield" type="text" id="dmarc-rua" value="mailto:dmarc@example.com"
                          spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" />
                 </label>
 
                 <label class="dm-lbl" for="dmarc-ruf">
-                  <span>ruf &mdash; failure reports (optional; most receivers never send them)</span>
+                  <span>ruf - failure reports (optional; most receivers never send them)</span>
                   <input class="lab-toolfield" type="text" id="dmarc-ruf" value=""
                          spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off"
                          placeholder="mailto:dmarc-failures@example.com" />
@@ -378,40 +378,40 @@
 
                 <div class="dm-grid">
                   <label class="dm-lbl" for="dmarc-adkim">
-                    <span>adkim &mdash; DKIM alignment</span>
+                    <span>adkim - DKIM alignment</span>
                     <select class="lab-select" id="dmarc-adkim">
-                      <option value="r" selected>r &mdash; relaxed</option>
-                      <option value="s">s &mdash; strict</option>
+                      <option value="r" selected>r - relaxed</option>
+                      <option value="s">s - strict</option>
                     </select>
                   </label>
                   <label class="dm-lbl" for="dmarc-aspf">
-                    <span>aspf &mdash; SPF alignment</span>
+                    <span>aspf - SPF alignment</span>
                     <select class="lab-select" id="dmarc-aspf">
-                      <option value="r" selected>r &mdash; relaxed</option>
-                      <option value="s">s &mdash; strict</option>
+                      <option value="r" selected>r - relaxed</option>
+                      <option value="s">s - strict</option>
                     </select>
                   </label>
                   <label class="dm-lbl" for="dmarc-sp">
-                    <span>sp &mdash; policy for subdomains</span>
+                    <span>sp - policy for subdomains</span>
                     <select class="lab-select" id="dmarc-sp">
-                      <option value="inherit" selected>omit &mdash; subdomains inherit p</option>
+                      <option value="inherit" selected>omit - subdomains inherit p</option>
                       <option value="none">none</option>
                       <option value="quarantine">quarantine</option>
                       <option value="reject">reject</option>
                     </select>
                   </label>
                   <label class="dm-lbl" for="dmarc-fo">
-                    <span>fo &mdash; when to raise a failure report</span>
+                    <span>fo - when to raise a failure report</span>
                     <select class="lab-select" id="dmarc-fo">
-                      <option value="" selected>omit &mdash; defaults to 0</option>
-                      <option value="0">0 &mdash; only if everything fails</option>
-                      <option value="1">1 &mdash; if either check fails</option>
-                      <option value="d">d &mdash; DKIM failed</option>
-                      <option value="s">s &mdash; SPF failed</option>
+                      <option value="" selected>omit - defaults to 0</option>
+                      <option value="0">0 - only if everything fails</option>
+                      <option value="1">1 - if either check fails</option>
+                      <option value="d">d - DKIM failed</option>
+                      <option value="s">s - SPF failed</option>
                     </select>
                   </label>
                   <label class="dm-lbl" for="dmarc-ri">
-                    <span>ri &mdash; seconds between aggregate reports</span>
+                    <span>ri - seconds between aggregate reports</span>
                     <input class="lab-toolfield" type="number" id="dmarc-ri" value="86400" min="3600" />
                   </label>
                   <label class="dm-lbl" for="dmarc-ramp">
@@ -440,7 +440,7 @@
                            spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" />
                   </label>
                   <label class="dm-lbl" for="dkim-k">
-                    <span>k &mdash; key type</span>
+                    <span>k - key type</span>
                     <select class="lab-select" id="dkim-k">
                       <option value="rsa" selected>rsa</option>
                       <option value="ed25519">ed25519</option>
@@ -449,22 +449,22 @@
                 </div>
 
                 <label class="dm-lbl" for="dkim-p">
-                  <span>p &mdash; the public key, base64, with no BEGIN/END lines</span>
+                  <span>p - the public key, base64, with no BEGIN/END lines</span>
                   <textarea class="lab-toolfield dm-textarea" id="dkim-p" rows="5" spellcheck="false"
                             placeholder="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA&hellip;"></textarea>
                 </label>
 
                 <label class="dm-lbl dm-check" for="dkim-test">
                   <input type="checkbox" id="dkim-test" />
-                  <span>t=y &mdash; testing mode, so receivers do not act on a failure</span>
+                  <span>t=y - testing mode, so receivers do not act on a failure</span>
                 </label>
 
-                <p class="dm-note">Paste the public key only. If you find yourself with a private key in a browser text box, the key is already in the wrong place &mdash; generate a new pair on a machine you control and abandon that one.</p>
+                <p class="dm-note">Paste the public key only. If you find yourself with a private key in a browser text box, the key is already in the wrong place - generate a new pair on a machine you control and abandon that one.</p>
               </div>
 
               <div class="dm-panel" role="tabpanel" id="dm-panel-rua"
                    aria-labelledby="dm-tab-rua" tabindex="0" hidden>
-                <p class="dm-lede">Aggregate reports arrive as a gzipped XML attachment, roughly once a day, from those receivers that implement DMARC reporting &mdash; which is many of the large ones and by no means all of them. Unzip it and paste the XML here. Nothing is uploaded, which matters more here than anywhere else on this page: that file lists every IP address on the internet sending mail as your domain.</p>
+                <p class="dm-lede">Aggregate reports arrive as a gzipped XML attachment, roughly once a day, from those receivers that implement DMARC reporting - which is many of the large ones and by no means all of them. Unzip it and paste the XML here. Nothing is uploaded, which matters more here than anywhere else on this page: that file lists every IP address on the internet sending mail as your domain.</p>
 
                 <label class="dm-lbl" for="rua-xml">
                   <span>The XML from inside the .gz</span>
@@ -476,7 +476,7 @@
                   <button class="lab-btn" type="button" id="rua-sample">Load a synthetic sample</button>
                 </div>
 
-                <p class="dm-note">The sample is a fixture written by hand to exercise the parser: documentation address ranges, example domains, and four records chosen to show the patterns worth recognising &mdash; a clean sender, a forwarder, an unaligned third party and a spoof. It is not anybody&rsquo;s traffic.</p>
+                <p class="dm-note">The sample is a fixture written by hand to exercise the parser: documentation address ranges, example domains, and four records chosen to show the patterns worth recognising - a clean sender, a forwarder, an unaligned third party and a spoof. It is not anybody&rsquo;s traffic.</p>
               </div>
 
             </div>
@@ -495,11 +495,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The ten-lookup limit is the one that bites</h3>
-            <p>RFC 7208 caps an SPF evaluation at ten DNS-costing terms, counted across everything an <code>include</code> pulls in recursively. Go over and the answer is PermError &mdash; not a fail, not a pass, but &ldquo;could not be evaluated&rdquo;. Nothing bounces, nothing is logged anywhere the sender will see it, and the record simply stops protecting anything. The counter here is live for exactly that reason. It is also an estimate: nothing on this page resolves DNS, so each include costs whatever you tell me it costs.</p>
+            <p>RFC 7208 caps an SPF evaluation at ten DNS-costing terms, counted across everything an <code>include</code> pulls in recursively. Go over and the answer is PermError - not a fail, not a pass, but &ldquo;could not be evaluated&rdquo;. Nothing bounces, nothing is logged anywhere the sender will see it, and the record simply stops protecting anything. The counter here is live for exactly that reason. It is also an estimate: nothing on this page resolves DNS, so each include costs whatever you tell me it costs.</p>
           </article>
           <article class="info-card">
             <h3>p=none protects nothing, and that is the point</h3>
-            <p>A DMARC record at <code>p=none</code> asks receivers to report and to change nothing. That is the right place to start and the wrong place to stop &mdash; most domains that publish DMARC never leave it. The value of the stage is the reports: they name every source sending as you, including the marketing tool somebody bought on a company card. You cannot move to reject safely until that list has no surprises left in it.</p>
+            <p>A DMARC record at <code>p=none</code> asks receivers to report and to change nothing. That is the right place to start and the wrong place to stop - most domains that publish DMARC never leave it. The value of the stage is the reports: they name every source sending as you, including the marketing tool somebody bought on a company card. You cannot move to reject safely until that list has no surprises left in it.</p>
           </article>
           <article class="info-card">
             <h3>A selector is a label, not a secret</h3>
@@ -507,7 +507,7 @@
           </article>
           <article class="info-card">
             <h3>SPF fail with DKIM pass is a forwarder</h3>
-            <p>This is the single most misread row in an aggregate report. A mailing list or a forwarding rule re-sends your message from its own server, which is not in your SPF, so SPF fails; the DKIM signature travels inside the message and still verifies, so DMARC passes on DKIM alone. Usually nothing is wrong. It is a read of two fields rather than a fact, and a spoofer replaying a message that was already signed produces the same two fields &mdash; volume and timing are what separate them. Adding the forwarder to your SPF is the wrong fix anyway, because you cannot list every forwarder your recipients use &mdash; which is the reason DKIM exists.</p>
+            <p>This is the single most misread row in an aggregate report. A mailing list or a forwarding rule re-sends your message from its own server, which is not in your SPF, so SPF fails; the DKIM signature travels inside the message and still verifies, so DMARC passes on DKIM alone. Usually nothing is wrong. It is a read of two fields rather than a fact, and a spoofer replaying a message that was already signed produces the same two fields - volume and timing are what separate them. Adding the forwarder to your SPF is the wrong fix anyway, because you cannot list every forwarder your recipients use - which is the reason DKIM exists.</p>
           </article>
         </div>
       </section>
@@ -538,7 +538,7 @@
           </details>
           <details class="lab-faq">
             <summary>If I build a record here, is my domain protected?</summary>
-            <div>Not until you publish it, and not by the record alone. The tool checks syntax, counts lookups from what you told it, and lays out a rollout &mdash; it cannot tell you that a name resolves, that a vendor still sends for you, or that one real message would pass. Publish it, wait for the reports, and read them before you tighten the policy.</div>
+            <div>Not until you publish it, and not by the record alone. The tool checks syntax, counts lookups from what you told it, and lays out a rollout - it cannot tell you that a name resolves, that a vendor still sends for you, or that one real message would pass. Publish it, wait for the reports, and read them before you tighten the policy.</div>
           </details>
       </section>
 

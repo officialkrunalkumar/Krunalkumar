@@ -44,10 +44,10 @@
   /* Structural warning signs. None of these prove a pattern is vulnerable —
      the timing test decides that — but they are where to look first. */
   var SMELLS = [
-    [/\([^)]*[+*][^)]*\)[+*]/, 'nested quantifier — a repeat inside a repeat, e.g. (a+)+'],
-    [/\([^)]*\|[^)]*\)[+*]/,   'repeated alternation — e.g. (a|a)* or (a|ab)+'],
+    [/\([^)]*[+*][^)]*\)[+*]/, 'nested quantifier - a repeat inside a repeat, e.g. (a+)+'],
+    [/\([^)]*\|[^)]*\)[+*]/,   'repeated alternation - e.g. (a|a)* or (a|ab)+'],
     [/\[[^\]]*\][+*][^|]*\[[^\]]*\][+*]/, 'adjacent unbounded classes that can match the same characters'],
-    [/\.\*\.\*/,               'two .* in sequence — every split point gets tried'],
+    [/\.\*\.\*/,               'two .* in sequence - every split point gets tried'],
     [/\\s\*\\s\*/,             'repeated whitespace matchers in sequence']
   ];
 
@@ -66,7 +66,7 @@
     '  try { re = new RegExp(d.source, d.flags); }',
     '  catch (err) { self.postMessage({ phase: "invalid", message: String(err && err.message || err) }); return; }',
     '',
-    '  /* Phase 1 — the visitor\'s own pattern against their own test text. */',
+    '  /* Phase 1 - the visitor\'s own pattern against their own test text. */',
     '  var matches = [], truncated = false, replaced = null;',
     '  if (d.subject) {',
     '    if (d.flags.indexOf("g") !== -1) {',
@@ -91,7 +91,7 @@
     '  }',
     '  self.postMessage({ phase: "match", matches: matches, truncated: truncated, replaced: replaced });',
     '',
-    '  /* Phase 2 — pathological inputs, to force maximum backtracking: a long',
+    '  /* Phase 2 - pathological inputs, to force maximum backtracking: a long',
     '     run of one character, then something that cannot match, so the engine',
     '     must exhaust every partition before it can fail. */',
     '  var seeds = d.seeds, worst = 0, worstLen = 0;',
@@ -189,11 +189,11 @@
       }
       out.line('');
       out.warn('If this pattern ever runs on input a user controls, that user can');
-      out.warn('stall the process at will. On a single-threaded runtime — Node, or');
-      out.warn('any one worker — that is a denial of service from one request.');
+      out.warn('stall the process at will. On a single-threaded runtime - Node, or');
+      out.warn('any one worker - that is a denial of service from one request.');
       out.line('');
       out.dim('Fixes, roughly in order of preference:');
-      out.dim('  · remove the nesting — (a+)+ almost always means (a+)');
+      out.dim('  · remove the nesting - (a+)+ almost always means (a+)');
       out.dim('  · make alternations mutually exclusive so there is nothing to');
       out.dim('    backtrack into');
       out.dim('  · bound the repetition: {1,64} instead of + or *');
@@ -208,7 +208,7 @@
       out.line('');
       out.ok('No exponential blow-up observed.');
       out.dim('Inputs up to 40 characters of the worst shapes stayed fast. This');
-      out.dim('is an empirical test, not a proof — a pattern can still be slow on');
+      out.dim('is an empirical test, not a proof - a pattern can still be slow on');
       out.dim('a shape the test did not try.');
     }
   }
@@ -278,7 +278,7 @@
       out.warn('found on ordinary input rather than a crafted one. Had this run');
       out.warn('on the page rather than in a worker, the tab would have frozen.');
       out.line('');
-      out.dim('  · remove the nesting — (a+)+ almost always means (a+)');
+      out.dim('  · remove the nesting - (a+)+ almost always means (a+)');
       out.dim('  · bound the repetition: {1,64} instead of + or *');
       out.dim('  · anchor the pattern so failure is decided early');
       out.dim('  · for input you do not control, use a linear-time engine (RE2)');

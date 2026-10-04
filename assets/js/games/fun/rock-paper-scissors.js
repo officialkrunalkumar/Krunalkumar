@@ -149,7 +149,7 @@
           var total = wins + losses + draws;
           var line;
           if (total < 6) line = 'Playing at random until it has seen enough of you.';
-          else if (!confident) line = 'No clear pattern in your last two throws — playing at random.';
+          else if (!confident) line = 'No clear pattern in your last two throws - playing at random.';
           else line = 'It expected you to play ' + predicted + '.';
           ctx.fillStyle = confident ? '#fde047' : '#64748b';
           ctx.fillText(line, W / 2, 178);

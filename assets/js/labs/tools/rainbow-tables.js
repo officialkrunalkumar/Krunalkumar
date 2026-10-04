@@ -287,7 +287,7 @@
 
   function guardBusy() {
     if (busy) {
-      setStatus('Still working — wait for this one to finish.');
+      setStatus('Still working - wait for this one to finish.');
       return true;
     }
     return false;
@@ -325,7 +325,7 @@
     out.heading('Building a lookup table');
     out.dim('Hashing every entry in the built-in wordlist with ' + algoLabel(algo) + ',');
     out.dim('and keeping a map from digest back to password. This is what most');
-    out.dim('people picture when they say "rainbow table" — it is really just a');
+    out.dim('people picture when they say "rainbow table" - it is really just a');
     out.dim('lookup table. The real thing is step 4, and it is quite different.');
     out.line('');
 
@@ -400,7 +400,7 @@
       out.dim('for it in space. Storing one for every 8-character lowercase');
       out.dim('password (' + nf(fullEntries) + ' of them) at ' + perEntry + ' bytes each would need');
       out.dim('about ' + bigBytes(fullBytes) + '. That space cost is the reason real rainbow');
-      out.dim('tables (step 4) trade time for space instead — and the reason a');
+      out.dim('tables (step 4) trade time for space instead - and the reason a');
       out.dim('salt, which multiplies that cost per user, is so effective.');
       out.line('');
       out.dim('Now try step 2 to crack some hashes with this table.');
@@ -506,7 +506,7 @@
       }
       if (parsed.truncated) {
         out.warn('More than ' + nf(MAX_HASHES) + ' digests were pasted. Only the first ' + nf(MAX_HASHES) + ' are');
-        out.warn('used — past that the output pane, not the lookup, is the bottleneck.');
+        out.warn('used - past that the output pane, not the lookup, is the bottleneck.');
         out.line('');
       }
 
@@ -565,7 +565,7 @@
         out.row('lookup time', (t1 - t0).toFixed(2) + ' ms for all ' + nf(targets.length) + ' (lookups only)');
         out.line('');
         out.dim('A lookup is O(1): the digest is the key. That is what makes an');
-        out.dim('unsalted hash of a common password effectively free to reverse —');
+        out.dim('unsalted hash of a common password effectively free to reverse -');
         out.dim('the expensive part (hashing the wordlist) was done once, in step 1.');
         if (usingDemo) {
           out.line('');
@@ -685,7 +685,7 @@
           out.row('salted hits', nf(hits) + ' of 8');
           out.row('lookup time', (t1 - t0).toFixed(2) + ' ms');
           if (hits === 0) out.ok('Zero. A random per-entry salt made the whole table worthless.');
-          else out.warn('Unexpected hit — salts collided, which is astronomically unlikely.');
+          else out.warn('Unexpected hit - salts collided, which is astronomically unlikely.');
           out.line('');
 
           // Part C: the real lesson — per-user salt vs amortisation.
@@ -731,7 +731,7 @@
               out.row('target user salt', LabTool.toHex(userSalt));
               out.row('rebuild with that salt', (t3 - t2).toFixed(0) + ' ms (the work redone for ONE user)');
               if (found !== undefined) out.ok('Cracked that one user: ' + found + '  (salt did not save them)');
-              else out.warn('Not found — unexpected for a wordlist member.');
+              else out.warn('Not found - unexpected for a wordlist member.');
               out.line('');
 
               // Now show that per-user table fails for a DIFFERENT user's salt.
@@ -748,7 +748,7 @@
                 }
                 out.line('');
                 out.dim('That is the real point of salting. It does not protect a single');
-                out.dim('targeted password — a dictionary run with the known salt still');
+                out.dim('targeted password - a dictionary run with the known salt still');
                 out.dim('cracks it. What it destroys is AMORTISATION: one precomputed');
                 out.dim('table can no longer crack a million users at once. The attacker');
                 out.dim('pays the full cost again for every single user. A slow hash');
@@ -833,7 +833,7 @@
     out.dim('MD5 over a 4-char keyspace of ' + nf(RT_KEYSPACE) + ' (a-z 0-9). ' + RT_CHAINS + ' chains,');
     out.dim('each ' + RT_CHAINLEN + ' links long, but only the two ENDS of each chain are');
     out.dim('stored. That is the space-time trade: at most ' + nf(RT_CHAINS * RT_CHAINLEN) + ' plaintexts');
-    out.dim('are covered — fewer in practice, because chains cross and repeat —');
+    out.dim('are covered - fewer in practice, because chains cross and repeat -');
     out.dim('yet only ' + nf(RT_CHAINS) + ' rows are kept. The measured coverage is below.');
     out.line('');
 
@@ -890,7 +890,7 @@
       out.row('distinct endpoints', nf(distinctEnds));
       out.row('merged chains', nf(merged) + (merged ? '  <- two chains collided onto one endpoint' : ''));
       out.row('plaintexts covered', nf(covered) + ' of ' + nf(RT_KEYSPACE));
-      out.row('coverage', (covered / RT_KEYSPACE * 100).toFixed(3) + '%  (toy size — a real one aims near 99.9%)');
+      out.row('coverage', (covered / RT_KEYSPACE * 100).toFixed(3) + '%  (toy size - a real one aims near 99.9%)');
       out.row('build time', (t1 - t0).toFixed(0) + ' ms on this machine');
       out.rule();
       if (onDone) onDone();
@@ -955,7 +955,7 @@
       var r = rainbowCrack(th);
       out.row('MD5 hashes computed', nf(r.hashes) + ' (walk plus chain regenerations)');
       out.row('false alarms hit', nf(r.falseAlarms));
-      if (r.found === target) out.ok('Recovered: ' + r.found + '  — from ' + nf(RT_CHAINS) + ' stored rows, not a full table.');
+      if (r.found === target) out.ok('Recovered: ' + r.found + '  - from ' + nf(RT_CHAINS) + ' stored rows, not a full table.');
       else out.warn('Walk did not recover it (a merge swallowed the chain).');
       out.line('');
 
@@ -979,16 +979,16 @@
       }
       if (alarm) {
         var chainPw = alarm.chainStart;
-        out.dim('While walking, an endpoint matched a stored chain — so the walk');
+        out.dim('While walking, an endpoint matched a stored chain - so the walk');
         out.dim('regenerated that chain from its start looking for the target. It');
         out.dim('was not there. The endpoint collided by chance:');
         out.row('matched endpoint', alarm.endpoint);
         out.row('chain regenerated from', chainPw);
         out.row('cost of the false alarm', 'one full chain (' + nf(RT_CHAINLEN) + ' hashes) wasted');
-        out.ok('That is a false alarm — the tax you pay for storing only endpoints.');
+        out.ok('That is a false alarm - the tax you pay for storing only endpoints.');
       } else {
         out.dim('No false alarm surfaced on this particular set of walks, which can');
-        out.dim('happen with a small table. They are inherent to the design — an');
+        out.dim('happen with a small table. They are inherent to the design - an');
         out.dim('endpoint match only suggests the plaintext might be in the chain.');
       }
       out.line('');
@@ -1012,7 +1012,7 @@
       out.rule();
       out.dim('Honest scope: this is a demonstration, not a weapon. A real rainbow');
       out.dim('table would be gigabytes and aim to cover almost the whole keyspace.');
-      out.dim('It only ever worked on fast, unsalted hashes — the moment there is a');
+      out.dim('It only ever worked on fast, unsalted hashes - the moment there is a');
       out.dim('salt, every user needs their own table, and it collapses (step 3).');
       out.dim('Modern GPUs brute-force these small keyspaces outright, which is why');
       out.dim('rainbow tables are largely obsolete outside unsalted legacy dumps.');
@@ -1028,7 +1028,7 @@
     out.clear();
     if (algoSel !== 'md5') {
       out.dim('(The algorithm selector says ' + algoLabel(algoSel) + ', but this rainbow demo');
-      out.dim(' always uses MD5 — see the note at the end. Everything here is MD5.)');
+      out.dim(' always uses MD5 - see the note at the end. Everything here is MD5.)');
       out.line('');
     }
     // The walks are synchronous and take a moment. Yielding first lets the
@@ -1059,7 +1059,7 @@
     out.heading('Fast vs slow hashing, measured on this machine');
     out.dim('Timing ' + nf(SHA_N) + ' SHA-256 digests against ' + nf(PB_M) + ' PBKDF2-HMAC-SHA256');
     out.dim('derivations at ' + nf(PBKDF2_ITERS) + ' iterations. A short warm-up runs first so');
-    out.dim('the JIT is hot. This blocks nothing — subtle is async.');
+    out.dim('the JIT is hot. This blocks nothing - subtle is async.');
     out.line('');
     setStatus('Benchmarking…');
     setBusy(true);
@@ -1123,7 +1123,7 @@
               out.dim('  native code and especially a GPU are orders of magnitude faster.');
               out.dim('- So trust the RATIO between the two, not either absolute rate.');
               out.dim('- PBKDF2 is only compute-hard. bcrypt, scrypt and Argon2 are also');
-              out.dim('  MEMORY-hard, which is what actually blunts GPU and ASIC attacks —');
+              out.dim('  MEMORY-hard, which is what actually blunts GPU and ASIC attacks -');
               out.dim('  and this page cannot measure that fairly, so it does not try.');
               setStatus('Benchmark done: ~' + nf(Math.round(ratio)) + 'x.');
               setBusy(false);
@@ -1146,11 +1146,11 @@
   }
 
   var STEP_LABELS = {
-    1: 'Hashes to crack — not used by this step',
-    2: 'Hashes to crack (one per line) — optional, blank uses a demo set',
-    3: 'Hashes to crack — not used by this step',
-    4: 'Hashes to crack — not used by this step',
-    5: 'Hashes to crack — not used by this step'
+    1: 'Hashes to crack - not used by this step',
+    2: 'Hashes to crack (one per line) - optional, blank uses a demo set',
+    3: 'Hashes to crack - not used by this step',
+    4: 'Hashes to crack - not used by this step',
+    5: 'Hashes to crack - not used by this step'
   };
 
   function setActiveStep(n) {
@@ -1194,7 +1194,7 @@
       if (algo) algo.addEventListener('change', function () {
         // The built table belongs to one algorithm; drop it when that changes.
         table = null; tableAlgo = null;
-        setStatus('Algorithm changed — the table will rebuild on the next step.');
+        setStatus('Algorithm changed - the table will rebuild on the next step.');
       });
       setActiveStep(1);
 

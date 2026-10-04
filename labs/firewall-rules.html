@@ -73,7 +73,7 @@
                         "name": "Is my ruleset uploaded?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. It is parsed and simulated in your browser and nothing is sent anywhere — there is no server here to send it to. That matters more than usual for this one, because a firewall ruleset is a map of a network: internal ranges, which ports are open on which hosts, and which addresses are trusted."
+                                "text": "No. It is parsed and simulated in your browser and nothing is sent anywhere - there is no server here to send it to. That matters more than usual for this one, because a firewall ruleset is a map of a network: internal ranges, which ports are open on which hosts, and which addresses are trusted."
                         }
                 },
                 {
@@ -89,7 +89,7 @@
                         "name": "It says a rule can never match, but that rule clearly works on my host.",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Two likely reasons, and both are printed. If the rule carries a match this model does not implement — --tcp-flags, a rate limit, an ipset, an ICMP type — the walk treats it as not matching and says so, because pretending it matched would be the worse lie. And if the report claims an earlier rule covers it, read the dimensions it lists: the comparison only knows protocol, addresses, ports, interfaces and conntrack state, so a rule narrowed by anything outside that list may well still be live. If you find a case where it is wrong, tell me."
+                                "text": "Two likely reasons, and both are printed. If the rule carries a match this model does not implement - --tcp-flags, a rate limit, an ipset, an ICMP type - the walk treats it as not matching and says so, because pretending it matched would be the worse lie. And if the report claims an earlier rule covers it, read the dimensions it lists: the comparison only knows protocol, addresses, ports, interfaces and conntrack state, so a rule narrowed by anything outside that list may well still be live. If you find a case where it is wrong, tell me."
                         }
                 },
                 {
@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>Firewall rule simulator</h1>
-        <p class="hero-text">A firewall is a list read from the top, and almost every firewall question turns out to be a question about order. Paste a ruleset, describe a packet, and watch it go down the chain &mdash; every rule it was tested against, why each one did or did not match, and where the decision was actually made.</p>
+        <p class="hero-text">A firewall is a list read from the top, and almost every firewall question turns out to be a question about order. Paste a ruleset, describe a packet, and watch it go down the chain - every rule it was tested against, why each one did or did not match, and where the decision was actually made.</p>
         <ul class="lab-facts">
           <li>iptables-save and a useful nftables subset</li>
           <li>Every rule the packet was tested against</li>
@@ -239,14 +239,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Long rulesets are capped so the page stays responsive</li>
                   <li>No packet is sent anywhere; the walk is arithmetic</li>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -369,11 +369,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The first rule that matches is the only one that matters</h3>
-            <p>A chain is read from the top and the first rule that matches ends the walk. ACCEPT, DROP and REJECT decide; RETURN and falling off the end of a user chain hand the packet back to whoever jumped in; a packet that matches nothing at all lands on the chain policy. That is the whole mechanism, and it is why a rule can be perfectly correct and still do nothing &mdash; the answer was given four lines above it. This walk prints every rule the packet was tested against rather than only the winner, because the rules that did not match are how you work out why the one you expected never got a chance.</p>
+            <p>A chain is read from the top and the first rule that matches ends the walk. ACCEPT, DROP and REJECT decide; RETURN and falling off the end of a user chain hand the packet back to whoever jumped in; a packet that matches nothing at all lands on the chain policy. That is the whole mechanism, and it is why a rule can be perfectly correct and still do nothing - the answer was given four lines above it. This walk prints every rule the packet was tested against rather than only the winner, because the rules that did not match are how you work out why the one you expected never got a chance.</p>
           </article>
           <article class="info-card">
             <h3>Shadowing is containment, not duplication</h3>
-            <p>Two rules that shadow each other rarely look alike. <code>-s 10.0.0.0/8 -j DROP</code> sitting above <code>-s 10.10.0.0/16 -p tcp --dport 5432 -j ACCEPT</code> share no text whatsoever, and the second one can never run. So the check here compares match spaces &mdash; protocol sets, address ranges, port ranges, interface patterns, conntrack states &mdash; and asks whether the earlier rule&rsquo;s space contains the later one&rsquo;s entirely. It is deliberately conservative: a union of two ranges is never merged before comparing, so it will miss a shadow rather than announce one that is not there. A false alarm during a firewall review costs more than a miss does.</p>
+            <p>Two rules that shadow each other rarely look alike. <code>-s 10.0.0.0/8 -j DROP</code> sitting above <code>-s 10.10.0.0/16 -p tcp --dport 5432 -j ACCEPT</code> share no text whatsoever, and the second one can never run. So the check here compares match spaces - protocol sets, address ranges, port ranges, interface patterns, conntrack states - and asks whether the earlier rule&rsquo;s space contains the later one&rsquo;s entirely. It is deliberately conservative: a union of two ranges is never merged before comparing, so it will miss a shadow rather than announce one that is not there. A false alarm during a firewall review costs more than a miss does.</p>
           </article>
           <article class="info-card">
             <h3>Stateful is one table and one bit</h3>
@@ -381,7 +381,7 @@
           </article>
           <article class="info-card">
             <h3>DROP is silence, REJECT is an answer</h3>
-            <p>DROP sends nothing at all, so the client waits out its own timeout &mdash; on a Linux client with default SYN retries, roughly two minutes. REJECT sends an ICMP unreachable or a TCP reset and the client fails at once. DROP costs a port scanner real time on every closed port, and costs you exactly the same time when the thing hanging is your own deployment and a stalled connection looks identical to a routing problem, a dead host and a wrong port number. REJECT is also information: a refusal confirms a host is there, that it is reachable, and that something is deciding. The usual compromise is REJECT inside a network you operate and DROP at the edge.</p>
+            <p>DROP sends nothing at all, so the client waits out its own timeout - on a Linux client with default SYN retries, roughly two minutes. REJECT sends an ICMP unreachable or a TCP reset and the client fails at once. DROP costs a port scanner real time on every closed port, and costs you exactly the same time when the thing hanging is your own deployment and a stalled connection looks identical to a routing problem, a dead host and a wrong port number. REJECT is also information: a refusal confirms a host is there, that it is reachable, and that something is deciding. The usual compromise is REJECT inside a network you operate and DROP at the edge.</p>
           </article>
         </div>
       </section>
@@ -392,7 +392,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is my ruleset uploaded?</summary>
-            <div>No. It is parsed and simulated in your browser and nothing is sent anywhere &mdash; there is no server here to send it to. That matters more than usual for this one, because a firewall ruleset is a map of a network: internal ranges, which ports are open on which hosts, and which addresses are trusted.</div>
+            <div>No. It is parsed and simulated in your browser and nothing is sent anywhere - there is no server here to send it to. That matters more than usual for this one, because a firewall ruleset is a map of a network: internal ranges, which ports are open on which hosts, and which addresses are trusted.</div>
           </details>
           <details class="lab-faq">
             <summary>Which parts of iptables and nftables does it read?</summary>
@@ -400,7 +400,7 @@
           </details>
           <details class="lab-faq">
             <summary>It says a rule can never match, but that rule clearly works on my host.</summary>
-            <div>Two likely reasons, and both are printed. If the rule carries a match this model does not implement &mdash; --tcp-flags, a rate limit, an ipset, an ICMP type &mdash; the walk treats it as not matching and says so, because pretending it matched would be the worse lie. And if the report claims an earlier rule covers it, read the dimensions it lists: the comparison only knows protocol, addresses, ports, interfaces and conntrack state, so a rule narrowed by anything outside that list may well still be live. If you find a case where it is wrong, tell me.</div>
+            <div>Two likely reasons, and both are printed. If the rule carries a match this model does not implement - --tcp-flags, a rate limit, an ipset, an ICMP type - the walk treats it as not matching and says so, because pretending it matched would be the worse lie. And if the report claims an earlier rule covers it, read the dimensions it lists: the comparison only knows protocol, addresses, ports, interfaces and conntrack state, so a rule narrowed by anything outside that list may well still be live. If you find a case where it is wrong, tell me.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is my second packet still NEW?</summary>

@@ -389,7 +389,7 @@
 
     var dec = utf8Decode(enc.bytes);
     if (!dec.ok) {
-      h.why = 'those bytes are not valid UTF-8 — byte ' + dec.at + ' is ' + dec.why;
+      h.why = 'those bytes are not valid UTF-8 - byte ' + dec.at + ' is ' + dec.why;
       h.decodeFail = dec;
       return h;
     }
@@ -483,7 +483,7 @@
         result += run;
         refusedCount += 1;
         if (refused.length < 5) {
-          refused.push('"' + visible(run, 12) + '" at ' + i + ' — ' +
+          refused.push('"' + visible(run, 12) + '" at ' + i + ' - ' +
                        (dec.ok ? 'the round trip changed nothing' : dec.why || 'not valid UTF-8'));
         }
       }
@@ -708,7 +708,7 @@
           'Positions: ' + fffd.slice(0, 12).join(', ') + (fffd.length > 12 ? ', …' : ''),
           'A decoder met bytes it could not read and substituted U+FFFD for them.',
           'The original bytes were discarded at that moment, by that decoder, and',
-          'are not present in what you pasted. No tool can bring them back — this',
+          'are not present in what you pasted. No tool can bring them back - this',
           'one will not pretend to. Go back to the file before that decode ran.'
         ]
       });
@@ -794,7 +794,7 @@
             ? 'Round ' + entRounds + ' only had work to do because an earlier round produced'
             : 'One pass was enough, so the text was escaped exactly once.',
           entRounds > 1
-            ? 'text that still looked like markup — an escaper ran over already'
+            ? 'text that still looked like markup - an escaper ran over already'
             : 'Entity decoding loses nothing: every reference has one expansion.',
           entRounds > 1
             ? 'escaped text. Nothing is lost: each round is exactly invertible.'
@@ -884,7 +884,7 @@
         lines.push('Bytes in the five undefined cp1252 slots: ' + h.slots.join(', ') + '.');
         lines.push('Reversible here only because a browser follows the WHATWG table and');
         lines.push('keeps 0x81 0x8D 0x8F 0x90 0x9D as C1 controls. A strict cp1252 has no');
-        lines.push('character for them and may have dropped the byte instead — if that is');
+        lines.push('character for them and may have dropped the byte instead - if that is');
         lines.push('what happened upstream, the sequence is gone and this repair is a guess.');
       }
       if (h.mode === 'runs') {
@@ -892,14 +892,14 @@
           lines.push('Runs repaired:');
           for (p = 0; p < h.touched.length; p++) lines.push('  ' + h.touched[p]);
           if (h.touchedMore > 0) {
-            lines.push('  and ' + h.touchedMore + ' more, not listed — the list stops at five.');
+            lines.push('  and ' + h.touchedMore + ' more, not listed - the list stops at five.');
           }
         }
         if (h.refused.length) {
           lines.push('Runs left untouched:');
           for (p = 0; p < h.refused.length; p++) lines.push('  ' + h.refused[p]);
           if (h.refusedMore > 0) {
-            lines.push('  and ' + h.refusedMore + ' more, not listed — the list stops at five.');
+            lines.push('  and ' + h.refusedMore + ' more, not listed - the list stops at five.');
           }
           lines.push('A run that will not decode is usually a run that was never damaged:');
           lines.push('a lone E9 is a correct Latin-1 "e-acute" and not the start of anything.');
@@ -919,7 +919,7 @@
 
     if (applied.length > 1) {
       state.findings.push({
-        title: 'Double encoding — the same mistake applied ' + applied.length + ' times',
+        title: 'Double encoding - the same mistake applied ' + applied.length + ' times',
         verdict: 'REVERSIBLE',
         confidence: 96,
         lines: [
@@ -928,7 +928,7 @@
           'happens when text is repaired-and-re-broken, or written through a broken',
           'pipe twice. In UTF-8 bytes an "e-acute" goes C3 A9, then C3 83 C2 A9, then',
           'C3 83 C6 92 C3 82 C2 A9 if the second pass read Windows-1252, or',
-          'C3 83 C2 83 C3 82 C2 A9 if it read Latin-1 — they differ because byte 83',
+          'C3 83 C2 83 C3 82 C2 A9 if it read Latin-1 - they differ because byte 83',
           'is a florin in one table and a C1 control in the other. Step through the',
           'stages and watch the hex view shrink to match.'
         ]
@@ -978,8 +978,8 @@
         lines: [
           'Nothing here matched. That is not the same as "the text is correct":',
           'it means none of the seven patterns below explains it. Damage that',
-          'produces plausible text — a transliteration, a truncation, a decode',
-          'that landed on real letters — leaves no signature to find.'
+          'produces plausible text - a transliteration, a truncation, a decode',
+          'that landed on real letters - leaves no signature to find.'
         ]
       });
     }
@@ -1047,7 +1047,7 @@
 
     out.line('');
     out.rule();
-    out.heading('Every charset hypothesis, scored — first round');
+    out.heading('Every charset hypothesis, scored - first round');
     out.dim('Each one is a real attempt on the text as it stands after any entity');
     out.dim('decoding: encode it back to that charset, decode those bytes as strict');
     out.dim('UTF-8, then check that the damage count actually fell.');
@@ -1056,9 +1056,9 @@
       var h = state.round1[i];
       var name = h.label + (h.mode === 'runs' ? ', run-targeted' : ', whole text');
       if (h.ok) out.line('  ' + pad(name, 27) + h.confidence + '%  accepted', 't-ok');
-      else out.line('  ' + pad(name, 27) + 'rejected — ' + (h.why || 'no reason recorded'), 't-dim');
+      else out.line('  ' + pad(name, 27) + 'rejected - ' + (h.why || 'no reason recorded'), 't-dim');
     }
-    if (!state.round1.length) out.dim('  (no charset round ran — nothing reached that stage)');
+    if (!state.round1.length) out.dim('  (no charset round ran - nothing reached that stage)');
 
     out.line('');
     out.rule();
@@ -1067,7 +1067,7 @@
       out.dim('Nothing to apply.');
     } else {
       for (i = 0; i < state.chain.length; i++) {
-        out.line('  ' + (i + 1) + '. ' + state.chain[i].label + ' — ' + state.chain[i].detail);
+        out.line('  ' + (i + 1) + '. ' + state.chain[i].label + ' - ' + state.chain[i].detail);
       }
       out.line('');
       out.dim('Use "Apply next step" to walk them one at a time and watch the bytes');
@@ -1095,7 +1095,7 @@
     out.dim('above so you can disagree with it. It is not a proof and it caps at 99:');
     out.dim('one wrong-decode story explaining every byte is not the same as knowing');
     out.dim('what the author typed. A finding that is an observation rather than a');
-    out.dim('hypothesis — a replacement character is on the page or it is not — is');
+    out.dim('hypothesis - a replacement character is on the page or it is not - is');
     out.dim('the one kind recorded at 100.');
   }
 
@@ -1109,7 +1109,7 @@
       if (i < state.at) tag = 'applied';
       else if (i === state.at) tag = 'next to apply';
       else tag = 'not yet applied';
-      li.textContent = state.chain[i].label + ' — ' + state.chain[i].detail + ' — ' + tag;
+      li.textContent = state.chain[i].label + ' - ' + state.chain[i].detail + ' - ' + tag;
       li.className = i < state.at ? 'mjb-done' : (i === state.at ? 'mjb-next' : 'mjb-later');
       list.appendChild(li);
     }
@@ -1128,9 +1128,9 @@
     var bytes = utf8Encode(stage.text);
 
     if (status) {
-      status.textContent = 'Stage ' + state.at + ' of ' + (state.stages.length - 1) + ' — ' +
+      status.textContent = 'Stage ' + state.at + ' of ' + (state.stages.length - 1) + ' - ' +
         stage.label + (stage.detail ? ' (' + stage.detail + ')' : '') +
-        ' — ' + stage.text.length + ' characters, ' + bytes.length + ' UTF-8 bytes';
+        ' - ' + stage.text.length + ' characters, ' + bytes.length + ' UTF-8 bytes';
     }
     if (field) field.value = stage.text;
     if (pane) pane.textContent = hexDump(bytes);
@@ -1195,17 +1195,17 @@
      them, and so that the intended bytes are readable in the source. */
   var SAMPLES = [
     {
-      name: 'The classic \u2014 UTF-8 read as Windows-1252',
+      name: 'The classic - UTF-8 read as Windows-1252',
       text: 'Caf\u00C3\u00A9 \u00E2\u20AC\u201D \u00C2\u00A34.50 for the ' +
             '\u00E2\u20AC\u0153house blend\u00E2\u20AC\u009D, and that\u00E2\u20AC\u2122s before tax.'
     },
     {
-      name: 'Double encoded \u2014 the same mistake, twice',
+      name: 'Double encoded - the same mistake, twice',
       text: 'Caf\u00C3\u0192\u00C2\u00A9 \u00C3\u00A2\u00E2\u201A\u00AC\u00E2\u20AC\u009D ' +
             '\u00C3\u201A\u00C2\u00A34.50, exported, re-imported, exported again.'
     },
     {
-      name: 'Stray BOMs \u2014 one leading, one from a concatenation',
+      name: 'Stray BOMs - one leading, one from a concatenation',
       text: '\uFEFFid,name,note\n1,Ada,fine\n' +
             '\u00EF\u00BB\u00BFid,name,note\n2,Grace,also fine'
     },
@@ -1215,22 +1215,22 @@
             'free delivery &amp;#8212; today only'
     },
     {
-      name: 'Mixed \u2014 entities plus half-repaired UTF-8',
+      name: 'Mixed - entities plus half-repaired UTF-8',
       text: 'Row 1: Caf&amp;eacute;\nRow 2: Caf\u00C3\u00A9\n' +
             'Row 3: Caf\u00E9 (this one was always fine)'
     },
     {
-      name: 'UTF-8 read as CP437 \u2014 a DOS-era export',
+      name: 'UTF-8 read as CP437 - a DOS-era export',
       text: 'Caf\u251C\u2310 \u0393\u00C7\u00F6 \u252C\u00FA4.50 out of a console ' +
             'still on the old code page'
     },
     {
-      name: 'UTF-8 read as KOI8-R \u2014 an old mailbox',
+      name: 'UTF-8 read as KOI8-R - an old mailbox',
       text: 'Caf\u0446\u2558 \u0411\u2500\u25A0 \u0431\u04514.50 out of a KOI8-R ' +
             'mailbox, the rarer one'
     },
     {
-      name: 'Already destroyed \u2014 replacement characters',
+      name: 'Already destroyed - replacement characters',
       text: 'The na\uFFFDve r\uFFFDsum\uFFFD came back from the importer like this.'
     }
   ];

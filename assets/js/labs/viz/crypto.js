@@ -223,7 +223,7 @@
 
     for (var r = 1; r <= 10; r++) {
       next = subBytes(state, false);
-      push('SubBytes', 'Every byte is replaced through the S-box — the only non-linear step in '
+      push('SubBytes', 'Every byte is replaced through the S-box - the only non-linear step in '
          + 'AES, and the reason the cipher is not just a big system of linear equations.',
          state, next, r);
       state = next;
@@ -758,7 +758,7 @@
     var g4 = group('');
     g4.appendChild(E('p', 'oa-warn',
       'A teaching implementation. It is not constant-time and has no mode of operation or padding, ' +
-      'so it must never protect anything real — use WebCrypto for that.'));
+      'so it must never protect anything real - use WebCrypto for that.'));
     host.appendChild(g4);
   };
 
@@ -818,7 +818,7 @@
       bars.appendChild(bar);
     }
     this.avalHost.appendChild(E('p', 'cy-pane-title',
-      'Avalanche — bits differing from an identical block with one flipped bit'));
+      'Avalanche - bits differing from an identical block with one flipped bit'));
     this.avalHost.appendChild(bars);
     var scale = E('div', 'cy-aval-scale');
     scale.appendChild(E('span', null, 'start'));
@@ -1078,7 +1078,7 @@
     if (r.error) return;
     var stage = Math.min(idx, this.total - 1);
 
-    var pub = actor('public', 'Public — everyone can see this', []);
+    var pub = actor('public', 'Public - everyone can see this', []);
     pub.appendChild(kv('p =', r.p));
     pub.appendChild(kv('g =', r.g));
     if (stage >= 3) pub.appendChild(kv('A =', r.A));
@@ -1097,7 +1097,7 @@
     if (stage >= 4) bo.appendChild(kv('A^b mod p =', r.shared, 'cy-secret'));
     this.actorHost.appendChild(bo);
 
-    var ev = actor('eve', 'Eve — listening to everything', []);
+    var ev = actor('eve', 'Eve - listening to everything', []);
     ev.appendChild(kv('knows', 'p, g' + (stage >= 3 ? ', A, B' : '')));
     if (stage >= 5) {
       var tried = Math.min(stage - 4, r.eve.length);
@@ -1125,10 +1125,10 @@
     var r = this.result;
     if (r.error) return r.error;
     var stage = Math.min(idx, this.total - 1);
-    if (stage === 0) return 'p and g are public. Anyone may know them, including an attacker — they are usually published in a standard.';
+    if (stage === 0) return 'p and g are public. Anyone may know them, including an attacker - they are usually published in a standard.';
     if (stage === 1) return 'Alice picks a secret a = ' + r.a + ' and publishes A = g^a mod p = ' + r.A + '. Computing that takes about log2(a) squarings, not a multiplications.';
     if (stage === 2) return 'Bob does the same with b = ' + r.b + ', publishing B = ' + r.B + '.';
-    if (stage === 3) return 'A and B travel over the open network. An eavesdropper now has p, g, A and B — everything except the two secrets.';
+    if (stage === 3) return 'A and B travel over the open network. An eavesdropper now has p, g, A and B - everything except the two secrets.';
     if (stage === 4) return 'Alice computes B^a and Bob computes A^b. Both are g^(ab) mod p, so both get ' + r.shared + ' without ever transmitting it. That is the whole trick.';
     var tried = Math.min(stage - 4, r.eve.length);
     var last = r.eve[tried - 1];
@@ -1138,7 +1138,7 @@
              'about 2048 bits, where this same loop would outlast the universe.';
     }
     return 'Eve tries a = ' + last.guess + ': g^' + last.guess + ' mod ' + r.p + ' = ' + last.value +
-           ', which is not A = ' + r.A + '. She has no better option than to keep going — that is the discrete logarithm problem.';
+           ', which is not A = ' + r.A + '. She has no better option than to keep going - that is the discrete logarithm problem.';
   };
 
   DhFamily.prototype.compare = function () {
@@ -1225,7 +1225,7 @@
     if (r.error) return;
     var st = Math.min(idx, this.total - 1);
 
-    var priv = actor('alice', 'Private — never leaves the owner', []);
+    var priv = actor('alice', 'Private - never leaves the owner', []);
     priv.appendChild(kv('p =', r.p, 'cy-secret'));
     priv.appendChild(kv('q =', r.q, 'cy-secret'));
     if (st >= 2) priv.appendChild(kv('φ(n) =', r.phi, 'cy-secret'));
@@ -1245,7 +1245,7 @@
     this.actorHost.appendChild(msg);
 
     if (st >= 7) {
-      var ev = actor('eve', 'Eve — attacking the public key', []);
+      var ev = actor('eve', 'Eve - attacking the public key', []);
       ev.appendChild(kv('knows', 'n = ' + r.n + ', e = ' + r.e + ', c = ' + r.cipher));
       if (r.factors.length) {
         ev.appendChild(kv('factored n after', r.factorAttempts + ' trial divisions'));
@@ -1261,7 +1261,7 @@
       this.eqHost.textContent = 'Extended Euclid on e = ' + r.e + ' and φ(n) = ' + r.phi +
         ':  ' + lines + '   →   d = ' + r.d;
     } else if (st >= 5) {
-      this.eqHost.textContent = '(m^e)^d = m^(ed) = m^(1 mod φ(n)) = m mod n  —  ' +
+      this.eqHost.textContent = '(m^e)^d = m^(ed) = m^(1 mod φ(n)) = m mod n  -  ' +
         r.message + '^' + r.e + ' mod ' + r.n + ' = ' + r.cipher + ', and ' + r.cipher + '^' +
         r.d + ' mod ' + r.n + ' = ' + r.decrypted + '.';
     }
@@ -1281,12 +1281,12 @@
     switch (st) {
       case 0: return 'Two primes are chosen and kept secret. Everything else is derived from them, which is why their secrecy is the whole security of RSA.';
       case 1: return 'n = p×q = ' + r.n + ' is published. Multiplying is easy; recovering p and q from n is the hard problem RSA rests on.';
-      case 2: return 'φ(n) = (p−1)(q−1) = ' + r.phi + '. Computing this needs p and q, so only the key owner can — that asymmetry is the trapdoor.';
+      case 2: return 'φ(n) = (p−1)(q−1) = ' + r.phi + '. Computing this needs p and q, so only the key owner can - that asymmetry is the trapdoor.';
       case 3: return 'd is the modular inverse of e mod φ(n), found by the extended Euclidean algorithm: d = ' + r.d + ', and e×d ≡ 1 mod φ(n).';
       case 4: return 'The public key (n, e) = (' + r.n + ', ' + r.e + ') is published. The private key (n, d) is kept. p, q and φ(n) can now be thrown away.';
       case 5: return 'Encryption is one modular exponentiation: c = m^e mod n = ' + r.cipher + '. Anyone with the public key can do this.';
       case 6: return 'Decryption is the same operation with d: c^d mod n = ' + r.decrypted + ', back to the original message. Only the holder of d can do it.';
-      default: return 'Eve factored n = ' + r.n + ' in ' + r.factorAttempts + ' trial divisions, which hands her φ(n) and therefore d. Real keys are 2048 bits precisely because trial division — and every cleverer method known — becomes hopeless at that size.';
+      default: return 'Eve factored n = ' + r.n + ' in ' + r.factorAttempts + ' trial divisions, which hands her φ(n) and therefore d. Real keys are 2048 bits precisely because trial division - and every cleverer method known - becomes hopeless at that size.';
     }
   };
 
@@ -1346,7 +1346,7 @@
     g3.appendChild(row);
     g3.appendChild(E('p', 'oa-hint',
       'Over a small prime field the curve is a scatter of points rather than a smooth line. ' +
-      'The symmetry about the middle row is real — every x with a solution has two.'));
+      'The symmetry about the middle row is real - every x with a solution has two.'));
     host.appendChild(g3);
   };
 
@@ -1509,13 +1509,13 @@
                'addend: ' + (s.result ? '(' + s.result.x + ', ' + s.result.y + ')' : 'infinity') +
                '. Then the addend doubles, ready for the next bit.';
       }
-      return 'Bit ' + bit + ' of kA = ' + r.kA + ' is 0, so nothing is added this round — the ' +
+      return 'Bit ' + bit + ' of kA = ' + r.kA + ' is 0, so nothing is added this round - the ' +
              'addend just doubles. That is why multiplying by a 256-bit scalar costs about 256 ' +
              'doublings rather than 2²⁵⁶ additions.';
     }
     if (st === r.stepsA.length) {
       return 'Alice publishes kA·G and Bob publishes kB·G. Recovering kA from kA·G is the ' +
-             'elliptic-curve discrete logarithm problem, and on a real curve it is infeasible — ' +
+             'elliptic-curve discrete logarithm problem, and on a real curve it is infeasible - ' +
              'here, with only ' + r.points.length + ' points, you could simply check them all.';
     }
     return 'Alice computes kA·(kB·G) and Bob computes kB·(kA·G). Scalar multiplication ' +

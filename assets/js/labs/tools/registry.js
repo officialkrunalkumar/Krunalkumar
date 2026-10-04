@@ -544,7 +544,7 @@
     };
     if (!(bytes[0] === 0x72 && bytes[1] === 0x65 && bytes[2] === 0x67 && bytes[3] === 0x66)) {
       return { error: 'No "regf" signature. The first four bytes are ' +
-                      LabTool.toHex(bytes.subarray(0, 4)) + ' — this is not a registry hive. ' +
+                      LabTool.toHex(bytes.subarray(0, 4)) + ' - this is not a registry hive. ' +
                       'Exported .reg files are text and are not hives either.' };
     }
 
@@ -705,13 +705,13 @@
   }
 
   var HIVE_BLURB = {
-    SYSTEM:   'SYSTEM — hardware, services, drivers, USB history, time zone.',
-    SOFTWARE: 'SOFTWARE — Windows build, installed programs, machine-wide autostart.',
-    NTUSER:   'NTUSER.DAT — one user\'s activity: documents, typed URLs, programs run.',
-    SAM:      'SAM — local account database: users, RIDs, logon counters.',
-    SECURITY: 'SECURITY — LSA policy, cached secrets. Mostly encrypted blobs.',
-    USRCLASS: 'UsrClass.dat — per-user COM classes and shell bags.',
-    AMCACHE:  'Amcache.hve — a record of program files seen on the machine.',
+    SYSTEM:   'SYSTEM - hardware, services, drivers, USB history, time zone.',
+    SOFTWARE: 'SOFTWARE - Windows build, installed programs, machine-wide autostart.',
+    NTUSER:   'NTUSER.DAT - one user\'s activity: documents, typed URLs, programs run.',
+    SAM:      'SAM - local account database: users, RIDs, logon counters.',
+    SECURITY: 'SECURITY - LSA policy, cached secrets. Mostly encrypted blobs.',
+    USRCLASS: 'UsrClass.dat - per-user COM classes and shell bags.',
+    AMCACHE:  'Amcache.hve - a record of program files seen on the machine.',
     UNKNOWN:  'Unrecognised layout. The tree browser below still works.'
   };
 
@@ -728,7 +728,7 @@
     { re: /powershell.*(-enc|-e\b|-ec\b)/i,      why: 'encoded PowerShell command' },
     { re: /powershell.*(-w\s+hidden|-windowstyle\s+hidden)/i, why: 'hidden PowerShell window' },
     { re: /powershell.*(-nop|-noprofile)/i,      why: 'PowerShell with profile suppressed' },
-    { re: /\bmshta\b/i,                          why: 'mshta — runs HTML applications' },
+    { re: /\bmshta\b/i,                          why: 'mshta - runs HTML applications' },
     { re: /\bregsvr32\b.*\/i:/i,                 why: 'regsvr32 scriptlet loading' },
     { re: /\bcertutil\b.*(-decode|-urlcache)/i,  why: 'certutil used as a downloader' },
     { re: /\bbitsadmin\b/i,                      why: 'bitsadmin transfer' },
@@ -773,7 +773,7 @@
   function autostartSection(h, kind) {
     out.rule();
     out.heading('AUTOSTART AND PERSISTENCE');
-    out.dim('The first thing anyone checks. Amber lines matched a heuristic —');
+    out.dim('The first thing anyone checks. Amber lines matched a heuristic -');
     out.dim('that is a reason to look, not a verdict. Signed installers use');
     out.dim('these keys too.');
 
@@ -852,7 +852,7 @@
         }
         if (hits.length) {
           out.line('');
-          out.heading('Image File Execution Options — debugger hijacks');
+          out.heading('Image File Execution Options - debugger hijacks');
           for (i = 0; i < hits.length && i < 60; i++) out.warn('  ' + trunc(hits[i], 160));
           out.dim('  A Debugger value means Windows launches that command');
           out.dim('  instead of the named program. Also used legitimately by');
@@ -918,7 +918,7 @@
       out.line('');
       out.ok('No populated Run/RunOnce keys found in this hive.');
       out.dim('Either they are empty, or the persistence for this machine lives');
-      out.dim('in a hive you have not loaded — check SOFTWARE and each user\'s');
+      out.dim('in a hive you have not loaded - check SOFTWARE and each user\'s');
       out.dim('NTUSER.DAT, plus scheduled tasks, which are not in the registry.');
     }
   }
@@ -943,7 +943,7 @@
     out.heading('Services that start without being asked  (' + kids.declared + ' services total)');
     if (kids.capped) {
       out.warn('  Only the first ' + kids.length + ' were examined. A machine with this many');
-      out.warn('  services is not a normal machine — treat the count itself as a finding.');
+      out.warn('  services is not a normal machine - treat the count itself as a finding.');
     }
     out.dim('  ' + cs + '\\Services');
     out.dim('  ' + pad('name', 30) + pad('start', 11) + pad('type', 18) + 'image path');
@@ -1001,14 +1001,14 @@
       var failed = asDword(sv['failed']);
       if (failed) out.row('failed control set', 'ControlSet' + ('000' + failed).slice(-3), 't-warn');
     } else {
-      out.warn('No Select key — cannot tell which control set was live.');
+      out.warn('No Select key - cannot tell which control set was live.');
       cs = 'ControlSet001';
     }
 
     var cn = stringAt(h, cs + '\\Control\\ComputerName\\ComputerName', 'ComputerName');
     var acn = stringAt(h, cs + '\\Control\\ComputerName\\ActiveComputerName', 'ComputerName');
     if (cn) out.row('computer name', cn);
-    if (acn && acn !== cn) out.row('active name', acn + '  (differs — renamed, pending reboot)', 't-warn');
+    if (acn && acn !== cn) out.row('active name', acn + '  (differs - renamed, pending reboot)', 't-warn');
 
     var domain = stringAt(h, cs + '\\Services\\Tcpip\\Parameters', 'Domain');
     var host = stringAt(h, cs + '\\Services\\Tcpip\\Parameters', 'Hostname');
@@ -1090,7 +1090,7 @@
     }
     var models = subkeys(h, stor, 2000);
     if (!models.length) { out.dim('USBSTOR exists but is empty.'); return; }
-    out.dim(cs + '\\Enum\\USBSTOR — ' + models.length + ' device model(s)');
+    out.dim(cs + '\\Enum\\USBSTOR - ' + models.length + ' device model(s)');
 
     var count = 0;
     for (var i = 0; i < models.length && count < 60; i++) {
@@ -1178,7 +1178,7 @@
     var sids = subkeys(h, bam, 500);
     if (!sids.length) return;
     out.rule();
-    out.heading('BAM — PROGRAM EXECUTION  (' + sids.length + ' user SID(s))');
+    out.heading('BAM - PROGRAM EXECUTION  (' + sids.length + ' user SID(s))');
     var total = 0;
     for (var i = 0; i < sids.length; i++) {
       var list = values(h, sids[i]);
@@ -1207,7 +1207,7 @@
     out.rule();
     out.heading('WINDOWS');
     if (!cv) {
-      out.warn('Microsoft\\Windows NT\\CurrentVersion is missing — unusual for a');
+      out.warn('Microsoft\\Windows NT\\CurrentVersion is missing - unusual for a');
       out.warn('SOFTWARE hive. It may be a partial or carved file.');
     } else {
       var v = valueMap(h, cv);
@@ -1311,7 +1311,7 @@
     if (rows.length > limit) out.dim('  … ' + (rows.length - limit) + ' more not shown (capped at 300)');
     out.dim('  InstallDate is a string the installer chose to write, so it is');
     out.dim('  self-reported and frequently absent. The key\'s own last-written');
-    out.dim('  time is the harder evidence — browse an entry to see it.');
+    out.dim('  time is the harder evidence - browse an entry to see it.');
   }
 
   /* ======================================================================
@@ -1386,9 +1386,9 @@
   function reportUserAssist(h) {
     var ua = keyAt(h, 'Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist');
     out.rule();
-    out.heading('USERASSIST — GUI PROGRAM EXECUTION');
+    out.heading('USERASSIST - GUI PROGRAM EXECUTION');
     if (!ua) { out.dim('No UserAssist key in this hive.'); return; }
-    out.dim('Value names are ROT13 encoded — not for security, just to keep');
+    out.dim('Value names are ROT13 encoded - not for security, just to keep');
     out.dim('casual eyes off them. Decoded below. Only programs launched from');
     out.dim('the shell appear here; anything started from a command line does not.');
 
@@ -1401,7 +1401,7 @@
       if (!list.length) continue;
       var label = USERASSIST_GUIDS[guids[g].name.toUpperCase()] || 'unknown category';
       out.line('');
-      out.line('  ' + guids[g].name + '  — ' + label + '  (' + list.length + ')', 't-info');
+      out.line('  ' + guids[g].name + '  - ' + label + '  (' + list.length + ')', 't-info');
       out.dim('  ' + pad('runs', 7) + pad('last executed (UTC)', 26) + 'name');
 
       var rows = [];
@@ -1455,9 +1455,9 @@
     var base = 'Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs';
     var node = keyAt(h, base);
     out.rule();
-    out.heading('RECENTDOCS — FILES OPENED');
+    out.heading('RECENTDOCS - FILES OPENED');
     if (!node) { out.dim('No RecentDocs key.'); return; }
-    out.dim(base + '  —  key last written ' + nkTime(node));
+    out.dim(base + '  -  key last written ' + nkTime(node));
 
     var shown = 0;
     function dumpRecent(key, label) {
@@ -1528,7 +1528,7 @@
     var v = valueMap(h, node);
     var order = v['mrulist'] ? clean(asString(v['mrulist'])) : '';
     out.rule();
-    out.heading('RUNMRU — WIN+R HISTORY');
+    out.heading('RUNMRU - WIN+R HISTORY');
     out.dim(order ? 'MRUList order: ' + order + '  (leftmost is most recent)'
                   : 'No MRUList value; showing in hive order.');
     var seq = order ? order.split('') : Object.keys(v);
@@ -1572,14 +1572,14 @@
     out.rule();
     out.heading('OPEN / SAVE DIALOG HISTORY');
     out.dim('These values are shell item blobs. Full parsing is a different');
-    out.dim('project, so only the readable leading string is pulled out — which');
+    out.dim('project, so only the readable leading string is pulled out - which');
     out.dim('happens to be the executable name or the filename in both cases.');
 
     var i, list;
     if (lv) {
       list = values(h, lv);
       out.line('');
-      out.line('  LastVisitedPidlMRU — applications that opened a file dialog', 't-info');
+      out.line('  LastVisitedPidlMRU - applications that opened a file dialog', 't-info');
       for (i = 0; i < list.length && i < 40; i++) {
         if (list[i].name.toLowerCase() === 'mrulistex' || !list[i].data) continue;
         var exe = utf16Bytes(list[i].data).split('\u0000')[0];
@@ -1589,7 +1589,7 @@
     if (os) {
       var exts = subkeys(h, os, 500);
       out.line('');
-      out.line('  OpenSavePidlMRU — by file extension (' + exts.length + ' types)', 't-info');
+      out.line('  OpenSavePidlMRU - by file extension (' + exts.length + ' types)', 't-info');
       var shown = 0;
       for (i = 0; i < exts.length && shown < 60; i++) {
         list = values(h, exts[i]);
@@ -1619,7 +1619,7 @@
     var kids = subkeys(h, node, 5000);
     if (!kids.length) return;
     out.rule();
-    out.heading('MOUNTPOINTS2 — VOLUMES AND SHARES THIS USER TOUCHED  (' + kids.length + ')');
+    out.heading('MOUNTPOINTS2 - VOLUMES AND SHARES THIS USER TOUCHED  (' + kids.length + ')');
     var shares = [], vols = [], letters = [], i;
     for (i = 0; i < kids.length; i++) {
       var n = kids[i].name;
@@ -1634,7 +1634,7 @@
     }
     if (shares.length) {
       out.line('');
-      out.line('  network shares  — evidence the user connected to another host', 't-info');
+      out.line('  network shares  - evidence the user connected to another host', 't-info');
       for (i = 0; i < shares.length && i < 60; i++) out.warn('    ' + shares[i]);
     }
     if (vols.length) {
@@ -1842,7 +1842,7 @@
         }
         if (line) out.line('  ' + line);
         out.dim('  Membership lives in the alias C values as raw SIDs and is not');
-        out.dim('  decoded here — browse SAM\\Domains\\Builtin\\Aliases to see them.');
+        out.dim('  decoded here - browse SAM\\Domains\\Builtin\\Aliases to see them.');
       }
     }
   }
@@ -1964,7 +1964,7 @@
     }
     out.row('header checksum', h.checksumStored === h.checksumCalc
       ? 'valid (0x' + h.checksumCalc.toString(16) + ')'
-      : 'MISMATCH — stored 0x' + h.checksumStored.toString(16) +
+      : 'MISMATCH - stored 0x' + h.checksumStored.toString(16) +
         ', computed 0x' + h.checksumCalc.toString(16),
       h.checksumStored === h.checksumCalc ? 't-ok' : 't-err');
 
@@ -2027,7 +2027,7 @@
     out.row('cell offset', '0x' + node.rel.toString(16) + '  (file offset 0x' +
                            (node.rel + HBIN_BASE).toString(16) + ')');
     out.row('counts', node.subkeyCount + ' subkeys, ' + node.valueCount + ' values');
-    if (!node.allocated) out.warn('This cell is marked FREE — the key is deleted.');
+    if (!node.allocated) out.warn('This cell is marked FREE - the key is deleted.');
 
     var vals = values(h, node);
     out.rule();
@@ -2099,11 +2099,11 @@
       out.dim('Almost everything here is an encrypted LSA blob: cached domain');
       out.dim('logons, service account passwords, the machine account secret.');
       out.dim('Decryption needs the bootkey from SYSTEM and is out of scope.');
-      out.dim('The key structure is browsable below — Policy\\PolAdtEv holds the');
+      out.dim('The key structure is browsable below - Policy\\PolAdtEv holds the');
       out.dim('audit policy, and Policy\\Accounts the privilege assignments.');
     } else {
       out.rule();
-      out.heading(kind === 'UNKNOWN' ? 'UNRECOGNISED HIVE' : kind + ' — KEY TREE');
+      out.heading(kind === 'UNKNOWN' ? 'UNRECOGNISED HIVE' : kind + ' - KEY TREE');
       if (kind === 'UNKNOWN') {
         out.dim('The root key\'s children do not match any hive this tool knows.');
       }
@@ -2146,7 +2146,7 @@
 
   function run() {
     if (!hive) {
-      out.clear().warn('Choose or drop a registry hive first — SYSTEM, SOFTWARE,');
+      out.clear().warn('Choose or drop a registry hive first - SYSTEM, SOFTWARE,');
       out.warn('SAM, SECURITY or an NTUSER.DAT. They have no file extension and');
       out.warn('live in C:\\Windows\\System32\\config and in each user profile.');
       return;
@@ -2204,7 +2204,7 @@
         });
       }
 
-      out.dim('Drop a Windows registry hive — SYSTEM, SOFTWARE, SAM, SECURITY or');
+      out.dim('Drop a Windows registry hive - SYSTEM, SOFTWARE, SAM, SECURITY or');
       out.dim('an NTUSER.DAT. The tool recognises which one it is and pulls out');
       out.dim('what matters: autostart entries first, then USB history, installed');
       out.dim('programs, accounts, recent documents and program execution,');

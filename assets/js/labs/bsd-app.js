@@ -410,7 +410,7 @@
       motion();
       if (info && info.lengthComputable && info.total) {
         var pct = Math.min(100, Math.round((info.loaded / info.total) * 100));
-        setStatus('Downloading the OpenBSD disk — ' + pct + '%', 'is-busy');
+        setStatus('Downloading the OpenBSD disk - ' + pct + '%', 'is-busy');
       }
     });
 
@@ -465,7 +465,7 @@
       emulator.keyboard_send_scancodes([0x1f, 0x1f | 0x80]);
       setTimeout(function () {
         if (emulator) emulator.keyboard_send_scancodes([0x1c, 0x1c | 0x80]);
-        setStatus('Shell ready — click the screen, then type', 'is-ok');
+        setStatus('Shell ready - click the screen, then type', 'is-ok');
         queueRepaint();
       }, 350);
     }, 700);
@@ -490,10 +490,10 @@
       if (graphical) {
         canvas.style.display = 'block';
         el.screen.appendChild(canvas);        // move it into view
-        setStatus('Graphics mode — click the screen, then use the keyboard', 'is-ok');
+        setStatus('Graphics mode - click the screen, then use the keyboard', 'is-ok');
       } else {
         el.shadow.appendChild(canvas);        // park it again
-        setStatus('Ready — click the screen, then type', 'is-ok');
+        setStatus('Ready - click the screen, then type', 'is-ok');
         queueRepaint();
       }
     });
@@ -695,7 +695,7 @@
   initFocus();
   initControls();
   initFullscreen();
-  setStatus('Ready — press Boot');
+  setStatus('Ready - press Boot');
   // Last, so the opening "Ready — …" is painted before the element becomes a
   // live region and is therefore not announced on arrival.
   initStatusLive();

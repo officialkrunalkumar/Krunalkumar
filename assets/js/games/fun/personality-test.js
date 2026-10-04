@@ -90,11 +90,11 @@
     else if (high('O') && low('C')) lines.push('Plenty of ideas, fewer finished. Worth pairing yourself with somebody who closes things.');
     if (high('E') && high('A')) lines.push('People find you easy, and you find people easy. That is a real asset and it is also how you end up with everybody else’s work.');
     if (low('E') && high('C')) lines.push('You do your best work with the door shut, and it shows.');
-    if (high('N')) lines.push('You feel things quickly. That is not a fault &mdash; it usually comes with noticing things other people miss &mdash; but it costs more on a bad week.');
+    if (high('N')) lines.push('You feel things quickly. That is not a fault - it usually comes with noticing things other people miss - but it costs more on a bad week.');
     if (low('N')) lines.push('You are hard to rattle, which is worth a great deal in a crisis and can read as indifference when it is not.');
     if (low('A')) lines.push('You will say the awkward thing. Teams need one of you and rarely enjoy having two.');
 
-    if (!lines.length) lines.push('You sit near the middle on most of these, which is where most people actually are &mdash; the extremes get written about because they are unusual, not because they are better.');
+    if (!lines.length) lines.push('You sit near the middle on most of these, which is where most people actually are - the extremes get written about because they are unusual, not because they are better.');
 
     return '<strong>' + TRAITS[top].name + '</strong> is your strongest reading, with <strong>' +
            TRAITS[second].name.toLowerCase() + '</strong> behind it and <strong>' +
@@ -149,7 +149,7 @@
           return { title: 'Your five readings', body: describe(pct), bars: bars };
         },
         disclaimer: 'This is a thirty-item questionnaire, not an assessment. It measures how you answered ' +
-          'today, which is not quite the same as what you are like &mdash; scores move with mood, and the ' +
+          'today, which is not quite the same as what you are like - scores move with mood, and the ' +
           'shortest respectable version of this instrument is twice as long. Useful for reflection, useless ' +
           'for deciding anything about anybody. Nothing you answered left your browser.'
       });

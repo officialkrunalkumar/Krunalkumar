@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch AES, SHA-256 and RSA actually run, one step at a time" />
     <meta name="twitter:description" content="Step through AES-128 round by round, watch SHA-256 churn its eight registers for 64 rounds, and follow Diffie-Hellman, RSA and elliptic-curve key exchange with numbers small enough to check by hand. Verified against the NIST test vectors. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-cryptography.jpg" />
-    <title>Cryptography Visualiser — AES, RSA, ECC | Krunalkumar Shah</title>
+    <title>Cryptography Visualiser - AES, RSA, ECC | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>Cryptography, opened up</h1>
-        <p class="hero-text">The other cryptography tools here treat the algorithm as a black box, which is exactly what a tool should do. This page is the opposite. AES becomes a grid of sixteen bytes you watch get substituted, shifted and mixed; SHA-256 becomes eight registers churning; Diffie-Hellman becomes two people arriving at the same number without ever sending it &mdash; and an eavesdropper who has to guess.</p>
+        <p class="hero-text">The other cryptography tools here treat the algorithm as a black box, which is exactly what a tool should do. This page is the opposite. AES becomes a grid of sixteen bytes you watch get substituted, shifted and mixed; SHA-256 becomes eight registers churning; Diffie-Hellman becomes two people arriving at the same number without ever sending it - and an eavesdropper who has to guess.</p>
         <ul class="lab-facts">
           <li>AES-128 in all 40 transformations</li>
           <li>SHA-256 across every one of its 64 rounds</li>
@@ -229,7 +229,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -251,7 +251,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -263,7 +263,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-crypto-mount">
-          <p class="lab-proc-fallback">Starting the cryptography visualiser… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the cryptography visualiser… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -274,15 +274,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>AES is four moves, repeated</h3>
-            <p>Substitute every byte through the S-box, rotate the rows, mix the columns, XOR in the round key &mdash; then do it nine more times. None of the four is clever on its own; the strength comes from repetition. The avalanche chart under the state grid makes that concrete: flip one bit of the input and by round three roughly half the output bits have changed.</p>
+            <p>Substitute every byte through the S-box, rotate the rows, mix the columns, XOR in the round key - then do it nine more times. None of the four is clever on its own; the strength comes from repetition. The avalanche chart under the state grid makes that concrete: flip one bit of the input and by round three roughly half the output bits have changed.</p>
           </article>
           <article class="info-card">
             <h3>Nothing is up anyone&rsquo;s sleeve</h3>
-            <p>The AES S-box here is generated, not pasted &mdash; it is the multiplicative inverse in GF(2&#8312;) followed by an affine transform, computed when the page loads. SHA-256&rsquo;s constants are the fractional parts of the square and cube roots of the first primes, also computed live. Those provenances are the argument that the designers did not hide a backdoor in a magic table, and they are far more convincing computed than asserted.</p>
+            <p>The AES S-box here is generated, not pasted - it is the multiplicative inverse in GF(2&#8312;) followed by an affine transform, computed when the page loads. SHA-256&rsquo;s constants are the fractional parts of the square and cube roots of the first primes, also computed live. Those provenances are the argument that the designers did not hide a backdoor in a magic table, and they are far more convincing computed than asserted.</p>
           </article>
           <article class="info-card">
             <h3>Small numbers, so you can check the maths</h3>
-            <p>Diffie-Hellman with a 2048-bit prime is honest and completely unwatchable. With p = 23 you can follow every modular exponentiation by eye &mdash; and watch the eavesdropper break it by brute force in a couple of dozen guesses. That is the only way to feel why the real thing needs numbers with six hundred digits.</p>
+            <p>Diffie-Hellman with a 2048-bit prime is honest and completely unwatchable. With p = 23 you can follow every modular exponentiation by eye - and watch the eavesdropper break it by brute force in a couple of dozen guesses. That is the only way to feel why the real thing needs numbers with six hundred digits.</p>
           </article>
           <article class="info-card">
             <h3>A teaching implementation, and it says so</h3>

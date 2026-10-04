@@ -130,11 +130,11 @@
         // .opener can throw, and the success message below must still render.
         try { waWindow.opener = null; } catch (e) { /* cross-origin — ignore */ }
         awaitingWhatsAppReturn = true;
-        formStatus.innerHTML = '<span class="success-pill"><span aria-hidden="true">✓</span> WhatsApp opened — press Send there, then come back here.</span>';
+        formStatus.innerHTML = '<span class="success-pill"><span aria-hidden="true">✓</span> WhatsApp opened - press Send there, then come back here.</span>';
         if (typeof window.gtag === 'function') window.gtag('event', options.analyticsPrefix + '_submit');
       } else {
         // Pop-up blocked: give the visitor a direct link so the submission is not silently lost.
-        formStatus.innerHTML = '<span class="error-pill">Your browser blocked the pop-up — <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
+        formStatus.innerHTML = '<span class="error-pill">Your browser blocked the pop-up - <a href="' + waUrl + '" target="_blank" rel="noopener noreferrer">tap here to open WhatsApp</a> and press Send.</span>';
         // Only arm the "did it go through?" follow-up once they actually
         // leave for WhatsApp — otherwise any tab switch replaces the
         // rescue link with a question about a message that never went out.
@@ -161,7 +161,7 @@
       });
 
       document.getElementById('wa-retry').addEventListener('click', function () {
-        formStatus.innerHTML = '<span class="success-pill">No problem — your details are still filled in. Try sending again, or email me at krunalkumar@krunalkumar.dpdns.org.</span>';
+        formStatus.innerHTML = '<span class="success-pill">No problem - your details are still filled in. Try sending again, or email me at krunalkumar@krunalkumar.dpdns.org.</span>';
       });
 
       // The live region announces the question, but announcements are easy

@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="The characters in your text that you cannot see" />
     <meta name="twitter:description" content="Take any string apart code point by code point: invisible and bidi characters shown in place, homoglyph and Trojan Source detection, the four normalisation forms side by side, and grapheme clusters drawn against bytes. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-unicode.jpg" />
-    <title>Unicode Inspector — Invisible Characters | Krunalkumar Shah</title>
+    <title>Unicode Inspector - Invisible Characters | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -212,7 +212,7 @@
           </ol>
         </nav>
         <h1>Unicode inspector</h1>
-        <p class="hero-text">A string is a sequence of code points. What you see is a picture of it. Almost every Unicode bug that becomes a security bug lives in the gap between the two &mdash; a username with an invisible character in it, a domain spelled in Cyrillic, a line of source that reads one way and compiles the other. Paste something in and the gap becomes visible.</p>
+        <p class="hero-text">A string is a sequence of code points. What you see is a picture of it. Almost every Unicode bug that becomes a security bug lives in the gap between the two - a username with an invisible character in it, a domain spelled in Cyrillic, a line of source that reads one way and compiles the other. Paste something in and the gap becomes visible.</p>
         <ul class="lab-facts">
           <li>Every code point, named and decoded</li>
           <li>Invisible and bidi characters shown in place</li>
@@ -242,14 +242,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Character names are partial; category and script are exact</li>
                   <li>The confusable table is curated, not the full UTS 39 set</li>
@@ -267,7 +267,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -303,12 +303,12 @@
              whole subject of this page. -->
         <div class="uni-strips">
           <div>
-            <p class="uni-striplabel" id="uni-label-clusters">As you see it &mdash; grapheme clusters</p>
+            <p class="uni-striplabel" id="uni-label-clusters">As you see it - grapheme clusters</p>
             <div class="uni-strip" id="tool-clusters" tabindex="0" role="group"
                  aria-labelledby="uni-label-clusters"></div>
           </div>
           <div>
-            <p class="uni-striplabel" id="uni-label-points">As it is stored &mdash; code points, in logical order</p>
+            <p class="uni-striplabel" id="uni-label-points">As it is stored - code points, in logical order</p>
             <div class="uni-strip" id="tool-points" tabindex="0" role="group"
                  aria-labelledby="uni-label-points"></div>
           </div>
@@ -356,7 +356,7 @@
           </article>
           <article class="info-card">
             <h3>Homoglyphs and the address bar</h3>
-            <p>Cyrillic <code>&#x430;</code> and Latin <code>a</code> are different characters that most fonts draw identically. A domain using one for the other is a different domain that looks like yours. The skeleton in the report replaces every lookalike with the plain character it imitates, so two names a person cannot tell apart collapse to the same string &mdash; which is the only comparison worth running before you register or trust a name.</p>
+            <p>Cyrillic <code>&#x430;</code> and Latin <code>a</code> are different characters that most fonts draw identically. A domain using one for the other is a different domain that looks like yours. The skeleton in the report replaces every lookalike with the plain character it imitates, so two names a person cannot tell apart collapse to the same string - which is the only comparison worth running before you register or trust a name.</p>
           </article>
           <article class="info-card">
             <h3>Bidi overrides reorder the display</h3>
@@ -400,7 +400,7 @@ if (accessLevel != "user<span class="uni-mark">RLO</span> <span class="uni-mark"
           unusual; only the direction it is painted in changed.</p>
         <ol class="lab-steps">
           <li>Reject bidi controls in source at commit time, in a hook or a CI step, unless a file genuinely needs them.</li>
-          <li>Turn on the compiler warning where there is one &mdash; rustc, gcc and clang all added one after the disclosure.</li>
+          <li>Turn on the compiler warning where there is one - rustc, gcc and clang all added one after the disclosure.</li>
           <li>Make the code viewer show them. GitHub warns about bidi characters in diffs, and most editors can render them as visible marks.</li>
           <li>For a first pass, grep is enough: U+202A to U+202E, U+2066 to U+2069, U+200E, U+200F and U+061C.</li>
         </ol>

@@ -41,7 +41,7 @@
     javascript: {
       name: 'JavaScript',
       slug: 'javascript',
-      pageTitle: 'Online JavaScript Compiler — Free | Krunalkumar Shah',
+      pageTitle: 'Online JavaScript Compiler - Free | Krunalkumar Shah',
       engine: 'Your browser’s own JS engine, in a Web Worker',
       size: '0 KB',
       year: 1995,
@@ -50,7 +50,7 @@
       mode: 'jsblob',
       stdin: true,
       sample: [
-        '// JavaScript runs natively here — there is nothing to download.',
+        '// JavaScript runs natively here - there is nothing to download.',
         '// Whatever you type in the Input panel arrives as `stdin`.',
         '',
         'const rows = [',
@@ -71,7 +71,7 @@
     typescript: {
       name: 'TypeScript',
       slug: 'typescript',
-      pageTitle: 'Online TypeScript Compiler — Real tsc | Krunalkumar Shah',
+      pageTitle: 'Online TypeScript Compiler - Real tsc | Krunalkumar Shah',
       engine: 'The official TypeScript compiler, then your browser’s JS engine',
       size: '~1.7 MB',  // the wire figure (9 MB unpacked) — see the note on the C entry below
       year: 2012,
@@ -113,7 +113,7 @@
     python: {
       name: 'Python',
       slug: 'python',
-      pageTitle: 'Online Python Compiler — Real CPython | Krunalkumar Shah',
+      pageTitle: 'Online Python Compiler - Real CPython | Krunalkumar Shah',
       engine: 'Real CPython compiled to WebAssembly (Pyodide)',
       size: '~5.5 MB',  // the wire figure (12 MB unpacked) — see the note on the C entry below
       year: 1991,
@@ -147,7 +147,7 @@
     c: {
       name: 'C',
       slug: 'c',
-      pageTitle: 'Online C Compiler — Real clang, Free | Krunalkumar Shah',
+      pageTitle: 'Online C Compiler - Real clang, Free | Krunalkumar Shah',
       engine: 'Real clang compiled to WebAssembly, linked with lld',
       // ~19 MB, not the ~58 MB this used to claim. 58 MB is what the
       // toolchain unpacks to (and is what `bytes` records for the storage
@@ -198,7 +198,7 @@
     cpp: {
       name: 'C++',
       slug: 'cpp',
-      pageTitle: 'Online C++ Compiler — Real clang & STL | Krunalkumar Shah',
+      pageTitle: 'Online C++ Compiler - Real clang & STL | Krunalkumar Shah',
       engine: 'Real clang and libc++ compiled to WebAssembly',
       size: '~19 MB',   // the wire figure — see the note on the C entry above
       year: 1985,
@@ -247,7 +247,7 @@
     sql: {
       name: 'SQL',
       slug: 'sql',
-      pageTitle: 'Online SQL Compiler — Practise SQLite | Krunalkumar Shah',
+      pageTitle: 'Online SQL Compiler - Practise SQLite | Krunalkumar Shah',
       engine: 'Real SQLite compiled to WebAssembly (sql.js)',
       size: '~350 KB',
       year: 1974,
@@ -287,7 +287,7 @@
     lua: {
       name: 'Lua',
       slug: 'lua',
-      pageTitle: 'Online Lua Compiler — Real Lua 5.4 | Krunalkumar Shah',
+      pageTitle: 'Online Lua Compiler - Real Lua 5.4 | Krunalkumar Shah',
       engine: 'Real Lua 5.4 compiled to WebAssembly (Wasmoon)',
       size: '~150 KB',
       year: 1993,
@@ -320,7 +320,7 @@
     postgres: {
       name: 'PostgreSQL',
       slug: 'postgres',
-      pageTitle: 'Online PostgreSQL Editor — Real Postgres | Krunalkumar Shah',
+      pageTitle: 'Online PostgreSQL Editor - Real Postgres | Krunalkumar Shah',
       engine: 'Real PostgreSQL compiled to WebAssembly (PGlite)',
       size: '~5.5 MB',  // the wire figure (17 MB unpacked) — see the note on the C entry above
       bytes: 16844056,
@@ -363,7 +363,7 @@
     ruby: {
       name: 'Ruby',
       slug: 'ruby',
-      pageTitle: 'Online Ruby Compiler — Real CRuby | Krunalkumar Shah',
+      pageTitle: 'Online Ruby Compiler - Real CRuby | Krunalkumar Shah',
       engine: 'Real CRuby compiled to WebAssembly (ruby.wasm)',
       size: '~5 MB',    // the wire figure (17 MB unpacked) — see the note on the C entry above
       bytes: 16822206,
@@ -404,7 +404,7 @@
     perl: {
       name: 'Perl',
       slug: 'perl',
-      pageTitle: 'Online Perl Compiler — Real Perl 5 | Krunalkumar Shah',
+      pageTitle: 'Online Perl Compiler - Real Perl 5 | Krunalkumar Shah',
       engine: 'Real Perl 5 compiled to WebAssembly (WebPerl)',
       size: '~3.8 MB',  // the wire figure (16 MB unpacked) — see the note on the C entry above
       bytes: 16073263,
@@ -441,7 +441,7 @@
     php: {
       name: 'PHP',
       slug: 'php',
-      pageTitle: 'Online PHP Compiler — Real PHP 8.4 | Krunalkumar Shah',
+      pageTitle: 'Online PHP Compiler - Real PHP 8.4 | Krunalkumar Shah',
       engine: 'Real PHP 8.4 compiled to WebAssembly',
       size: '~3.5 MB',  // the wire figure (14 MB unpacked) — see the note on the C entry above
       bytes: 14210763,

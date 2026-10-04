@@ -113,7 +113,7 @@
                         "name": "Does the secret I type leave my browser?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no server to send it to. The comparisons, the timing, the statistics and the plot all run in this tab, and nothing you type appears in your Network tab. The secret is not a real credential anyway — it is the thing the attack in front of you is trying to recover."
+                                "text": "No. There is no server to send it to. The comparisons, the timing, the statistics and the plot all run in this tab, and nothing you type appears in your Network tab. The secret is not a real credential anyway - it is the thing the attack in front of you is trying to recover."
                         }
                 }
         ]
@@ -239,14 +239,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>It cannot make your browser&rsquo;s clock finer than it is</li>
                   <li>It attacks a secret you type here, nothing on any server</li>
                   <li>Runs are capped in length so the tab stays usable</li>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -308,7 +308,7 @@
         </div>
         <div class="lab-vizrow">
           <label class="lab-field-inline">
-            <span>Secret to recover &mdash; 2 to 12 characters from the alphabet above. It stays in this tab, and the attack is only told its length.</span>
+            <span>Secret to recover - 2 to 12 characters from the alphabet above. It stays in this tab, and the attack is only told its length.</span>
             <input type="text" class="lab-toolfield" id="tool-secret" value="cafe42"
                    maxlength="12" spellcheck="false" autocomplete="off" autocapitalize="off" />
           </label>
@@ -317,7 +317,7 @@
              here by the tool once the clock has been measured; the text below
              is what a visitor sees before that, and it is the same claim. -->
         <div class="lab-warn">
-          <p class="lab-warn-text" id="tool-clockwarn">Browsers deliberately coarsen <code>performance.now()</code> as a Spectre mitigation, and this page is not cross-origin-isolated, so the clock here is clamped &mdash; commonly to around a tenth of a millisecond, sometimes to a whole millisecond. The difference this attack hunts is one loop iteration. Press &ldquo;Measure the clock&rdquo; and this line will be replaced by what your browser actually gave.</p>
+          <p class="lab-warn-text" id="tool-clockwarn">Browsers deliberately coarsen <code>performance.now()</code> as a Spectre mitigation, and this page is not cross-origin-isolated, so the clock here is clamped - commonly to around a tenth of a millisecond, sometimes to a whole millisecond. The difference this attack hunts is one loop iteration. Press &ldquo;Measure the clock&rdquo; and this line will be replaced by what your browser actually gave.</p>
         </div>
         <div class="lab-panes">
           <div class="lab-pane">
@@ -344,15 +344,15 @@
           </article>
           <article class="info-card">
             <h3>The median, never the mean</h3>
-            <p>Every measurement here shares a processor with a compositor, a garbage collector and whatever else is open. Any one of those interruptions is worth more milliseconds than the entire signal, and a single one of them drags a mean past every other candidate &mdash; handing you a wrong character with total confidence. The median does not notice it. The tool also reports the fraction of paired samples in which the winner really was slower, because a gap between two medians on its own says nothing about whether the two distributions overlap.</p>
+            <p>Every measurement here shares a processor with a compositor, a garbage collector and whatever else is open. Any one of those interruptions is worth more milliseconds than the entire signal, and a single one of them drags a mean past every other candidate - handing you a wrong character with total confidence. The median does not notice it. The tool also reports the fraction of paired samples in which the winner really was slower, because a gap between two medians on its own says nothing about whether the two distributions overlap.</p>
           </article>
           <article class="info-card">
             <h3>The clock is the hard part, not the maths</h3>
-            <p>Browsers clamp <code>performance.now()</code> on purpose, as a Spectre mitigation, and only relax it for pages served cross-origin-isolated with COOP and COEP headers. This page is not one of those and is not trying to be. So the tool measures the resolution it actually got &mdash; the smallest non-zero gap over hundreds of consecutive reads &mdash; and prints it before anything else. That is also why every sample runs the comparison hundreds of thousands of times before the clock is read at all. If the attack comes out as noise on your machine, that is a statement about your browser&rsquo;s timer and not about the vulnerability.</p>
+            <p>Browsers clamp <code>performance.now()</code> on purpose, as a Spectre mitigation, and only relax it for pages served cross-origin-isolated with COOP and COEP headers. This page is not one of those and is not trying to be. So the tool measures the resolution it actually got - the smallest non-zero gap over hundreds of consecutive reads - and prints it before anything else. That is also why every sample runs the comparison hundreds of thousands of times before the clock is read at all. If the attack comes out as noise on your machine, that is a statement about your browser&rsquo;s timer and not about the vulnerability.</p>
           </article>
           <article class="info-card">
             <h3>Where this bites in real code</h3>
-            <p>Not passwords. A password is checked against a slow hash, and the hash takes the same time whatever you send it. The exposure is everywhere a secret is compared as bytes: an HMAC on a webhook, an API token, a signed cookie, a password-reset token, a licence key. The fix is a comparison that always does the same work &mdash; <code>hmac.compare_digest</code>, <code>crypto.timingSafeEqual</code>, <code>subtle.verify</code> &mdash; and, better still, comparing HMACs of both values rather than the values, so that lengths and contents are uniform whatever arrives.</p>
+            <p>Not passwords. A password is checked against a slow hash, and the hash takes the same time whatever you send it. The exposure is everywhere a secret is compared as bytes: an HMAC on a webhook, an API token, a signed cookie, a password-reset token, a licence key. The fix is a comparison that always does the same work - <code>hmac.compare_digest</code>, <code>crypto.timingSafeEqual</code>, <code>subtle.verify</code> - and, better still, comparing HMACs of both values rather than the values, so that lengths and contents are uniform whatever arrives.</p>
           </article>
         </div>
       </section>
@@ -383,7 +383,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does the secret I type leave my browser?</summary>
-            <div>No. There is no server to send it to. The comparisons, the timing, the statistics and the plot all run in this tab, and nothing you type appears in your Network tab. The secret is not a real credential anyway &mdash; it is the thing the attack in front of you is trying to recover.</div>
+            <div>No. There is no server to send it to. The comparisons, the timing, the statistics and the plot all run in this tab, and nothing you type appears in your Network tab. The secret is not a real credential anyway - it is the thing the attack in front of you is trying to recover.</div>
           </details>
       </section>
 

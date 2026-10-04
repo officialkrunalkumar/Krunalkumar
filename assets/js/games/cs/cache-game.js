@@ -478,8 +478,8 @@
         'index bits at all and the tag is the whole block address, which is why a fully associative ' +
         'cache needs a comparator per line. Five blocks are read round and round through four lines.',
       lesson: 'LRU misses on all fifteen accesses. Five blocks cycling through four lines is its ' +
-        'worst case by construction: the block it discards is always the one wanted next. MRU &mdash; ' +
-        'evict the MOST recently used &mdash; gets seven on this stream, which is the optimum. That is ' +
+        'worst case by construction: the block it discards is always the one wanted next. MRU - ' +
+        'evict the MOST recently used - gets seven on this stream, which is the optimum. That is ' +
         'not a general result about MRU. It is what happens when the pattern is a cycle, and it is ' +
         'why real caches ship a policy that is hard to embarrass rather than one that wins here.'
     },
@@ -539,7 +539,7 @@
           build: function () { return grid(0x1000, 16, 16, 4, 64, 'col'); }
         }
       ],
-      lesson: 'Thirty-two misses against two hundred and fifty-six under LRU &mdash; a miss on every ' +
+      lesson: 'Thirty-two misses against two hundred and fifty-six under LRU - a miss on every ' +
         'single one of the two hundred and fifty-six reads, for exactly the same work. Other ' +
         'policies shave a few off the column-major figure and none of them come close to fixing it. ' +
         'Row-major walks along inside a block and gets eight uses out of every one ' +
@@ -553,7 +553,7 @@
       mode: 'pattern',
       cfg: { size: 256, block: 32, assoc: 1 },
       target: 8,
-      brief: 'A direct-mapped cache &mdash; one way, eight sets &mdash; and an array of eight rows, each row ' +
+      brief: 'A direct-mapped cache - one way, eight sets - and an array of eight rows, each row ' +
         'sixty-four four-byte elements, so two hundred and fifty-six bytes from one row to the next. ' +
         'That row stride is exactly the size of the cache. The loop walks down the first eight ' +
         'columns. This is a real bug that real code ships.',
@@ -586,7 +586,7 @@
         'big. Every row started at a multiple of the cache size, so every row landed in set zero, ' +
         'and a direct-mapped set has one line. Thirty-two bytes of padding per row moves each row on ' +
         'by one set and the misses fall to eight. Eight-way associativity fixes it a completely ' +
-        'different way &mdash; the eight blocks now share one set that has eight lines &mdash; and lands on ' +
+        'different way - the eight blocks now share one set that has eight lines - and lands on ' +
         'exactly the same eight. Both fixes at once is no better than either, which is worth ' +
         'noticing before you pay for associativity you do not need.'
     },
@@ -603,7 +603,7 @@
          is a far worse fault than a target being slightly generous. */
       target: 90,
       brief: 'An eight by eight matrix multiply in eight-byte doubles, sixteen lines of cache, and ' +
-        'only the loads of A and B counted &mdash; the running sum for one element of C lives in a ' +
+        'only the loads of A and B counted - the running sum for one element of C lives in a ' +
         'register. A and B together are thirty-two blocks and the cache holds sixteen, so the order ' +
         'you touch them in decides everything.',
       options: [
@@ -631,8 +631,8 @@
       lesson: 'With LRU selected: one hundred and ninety-seven misses for the textbook nest, and one ' +
         'hundred and ten of them are conflicts. Interchanging the inner two loops so B is read along ' +
         'a row rather than down a column takes it to seventy-three. Tiling into four by four blocks ' +
-        '&mdash; doing a corner of the answer at a time, so the piece of each matrix you need stays ' +
-        'resident while you need it &mdash; takes it to sixty-two. Two by two tiles are WORSE than no ' +
+        '- doing a corner of the answer at a time, so the piece of each matrix you need stays ' +
+        'resident while you need it - takes it to sixty-two. Two by two tiles are WORSE than no ' +
         'tiling done well, at a hundred and twenty-seven, because the tile is smaller than a block ' +
         'and the passes multiply. Same arithmetic, same answer, a third of the memory traffic. Switch ' +
         'the policy to MRU and the tiling collapses to a hundred and twenty-four while the plain ' +
@@ -789,8 +789,8 @@
         if (!bitsBtn) return;
         bitsBtn.setAttribute('aria-pressed', String(showBits));
         bitsBtn.title = showBits
-          ? 'The address is shown split into binary fields — click to show hex only'
-          : 'Only hex is shown — click to see the address split into binary fields';
+          ? 'The address is shown split into binary fields - click to show hex only'
+          : 'Only hex is shown - click to see the address split into binary fields';
       }
 
       if (bitsBtn) {
@@ -1027,7 +1027,7 @@
             'border-bottom:2px dashed ' + INK4 + ';padding-bottom:0.15rem;">none</div>' +
             '<div style="font-size:0.66rem;letter-spacing:0.06em;text-transform:uppercase;' +
             'color:' + INK4 + ';margin-top:0.3rem;">' + label + ', 0 bits</div>' +
-            '<div style="font-size:0.74rem;color:' + INK3 + ';">' + (note || '&mdash;') + '</div></div>';
+            '<div style="font-size:0.74rem;color:' + INK3 + ';">' + (note || '-') + '</div></div>';
         }
         var body = showBits ? bin(value, bits) : hex(value, hexDigits(bits));
         var read = note || hex(value, hexDigits(bits));
@@ -1334,12 +1334,12 @@
 
           if (phase === 'choose') {
             html += banner('Set ' + pending.set + ' is full and this block has to go somewhere. ' +
-              'Pick the line to throw out &mdash; the stream below is the future, and you are ' +
+              'Pick the line to throw out - the stream below is the future, and you are ' +
               'allowed to read it. A real cache is not.', CONFC);
           } else if (last) {
             html += banner(last.hit
               ? 'Hit in way ' + last.way + '.'
-              : 'Miss &mdash; ' + last.kind + '. Way ' + last.way + ' now holds tag ' +
+              : 'Miss - ' + last.kind + '. Way ' + last.way + ' now holds tag ' +
                 hex(last.p.tag, hexDigits(sim.tagBits)) +
                 (last.evicted
                   ? ', replacing tag ' + hex(last.evicted.tag, hexDigits(sim.tagBits)) +
@@ -1365,7 +1365,7 @@
             html += banner(opt.label + ': <strong>' + lastRun.misses + ' misses</strong> out of ' +
               stream.length + ' accesses, hit rate ' + pct(lastRun.hits, stream.length) +
               '. The target is ' + L.target + ' or fewer' +
-              (lastRun.misses <= L.target ? ' &mdash; cleared.' : '.'),
+              (lastRun.misses <= L.target ? ' - cleared.' : '.'),
               lastRun.misses <= L.target ? OKC : CONFC);
             html += countersHtml(lastRun);
             html += setMapHtml(lastRun.cfgUsed, stream);

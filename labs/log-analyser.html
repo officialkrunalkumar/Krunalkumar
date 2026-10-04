@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Read a log file and find out whether anyone got in" />
     <meta name="twitter:description" content="Paste or drop auth.log, an nginx or Apache access log, an IIS W3C log or a Windows Security CSV, and get findings: brute force and password spray told apart, a successful login after a run of failures, scanner fingerprints, injection and traversal attempts, a timeline and top talkers. Runs entirely in your browser - the log is never uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-log-analyser.jpg" />
-    <title>Log File Analyser — Brute Force Detection | Krunalkumar Shah</title>
+    <title>Log File Analyser - Brute Force Detection | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -233,14 +233,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No correlation across sources; it reads one file</li>
                   <li>No threat intelligence and no reputation lookups</li>
                   <li>No GeoIP, so no claim about where an address is</li>
@@ -259,7 +259,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -329,19 +329,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Brute force and spray are different problems</h3>
-            <p>Most tools report &ldquo;failed logins from an address&rdquo; and stop, which loses the only distinction that changes what you do next. Many passwords against <em>one</em> account is somebody who wants that account. One password across <em>many</em> accounts is somebody who wants any account and is deliberately staying under your lockout threshold &mdash; so the control you are relying on will never fire, and per-account alerting will never see it. This clusters failures by source <em>and</em> by how they are spread across accounts, and names the two shapes separately.</p>
+            <p>Most tools report &ldquo;failed logins from an address&rdquo; and stop, which loses the only distinction that changes what you do next. Many passwords against <em>one</em> account is somebody who wants that account. One password across <em>many</em> accounts is somebody who wants any account and is deliberately staying under your lockout threshold - so the control you are relying on will never fire, and per-account alerting will never see it. This clusters failures by source <em>and</em> by how they are spread across accounts, and names the two shapes separately.</p>
           </article>
           <article class="info-card">
             <h3>The success after the failures</h3>
-            <p>A run of failures is noise; the internet generates it constantly. A success at the end of that run is the finding. So the events are put in order &mdash; by timestamp where the file has usable ones, by file position where it does not, and the report says which &mdash; and every source that failed repeatedly and then succeeded gets its own entry, with the failures and the success quoted underneath by line number.</p>
+            <p>A run of failures is noise; the internet generates it constantly. A success at the end of that run is the finding. So the events are put in order - by timestamp where the file has usable ones, by file position where it does not, and the report says which - and every source that failed repeatedly and then succeeded gets its own entry, with the failures and the success quoted underneath by line number.</p>
           </article>
           <article class="info-card">
             <h3>Why there is no map</h3>
-            <p>&ldquo;Impossible travel&rdquo; needs to know where two addresses are, and finding that out means sending your log&rsquo;s addresses to somebody else &mdash; which would undo the entire point of analysing the file locally. So this makes the weaker claim it can actually support: one account authenticated from two different addresses, minutes apart. That is a prompt to look. A VPN reconnecting produces it too, and the report says so every time.</p>
+            <p>&ldquo;Impossible travel&rdquo; needs to know where two addresses are, and finding that out means sending your log&rsquo;s addresses to somebody else - which would undo the entire point of analysing the file locally. So this makes the weaker claim it can actually support: one account authenticated from two different addresses, minutes apart. That is a prompt to look. A VPN reconnecting produces it too, and the report says so every time.</p>
           </article>
           <article class="info-card">
             <h3>The double-counting trap</h3>
-            <p>sshd and PAM both log the same failed SSH password, on two separate lines. Add them up and every number in the report doubles. So PAM&rsquo;s copy is dropped when sshd&rsquo;s own lines are present &mdash; and counted when they are absent, which is what some distributions produce. Whichever branch ran is stated in the output, because a silent choice about what to count is a silent choice about what the numbers mean.</p>
+            <p>sshd and PAM both log the same failed SSH password, on two separate lines. Add them up and every number in the report doubles. So PAM&rsquo;s copy is dropped when sshd&rsquo;s own lines are present - and counted when they are absent, which is what some distributions produce. Whichever branch ran is stated in the output, because a silent choice about what to count is a silent choice about what the numbers mean.</p>
           </article>
         </div>
       </section>
@@ -357,11 +357,11 @@
           </article>
           <article class="info-card">
             <h3>On the web side</h3>
-            <p>The status-code profile, the paths that only a scanner asks for, self-declared tooling in the user agent, traversal and injection strings in the query &mdash; matched against the raw request and one decode of it, because percent-encoding is the first thing anyone reaches for to get past a string match &mdash; clients whose traffic is nearly all 404, and responses far outside the normal size for a 200.</p>
+            <p>The status-code profile, the paths that only a scanner asks for, self-declared tooling in the user agent, traversal and injection strings in the query - matched against the raw request and one decode of it, because percent-encoding is the first thing anyone reaches for to get past a string match - clients whose traffic is nearly all 404, and responses far outside the normal size for a 200.</p>
           </article>
           <article class="info-card">
             <h3>It is not a SIEM</h3>
-            <p>There is no correlation across sources: it reads the one file you give it, so an attack that touched three systems looks like a third of an attack here. There is no threat intelligence, no reputation data, no rule language, no storage and no history. Reload the page and it is gone &mdash; which is the trade for it never being uploaded in the first place.</p>
+            <p>There is no correlation across sources: it reads the one file you give it, so an attack that touched three systems looks like a third of an attack here. There is no threat intelligence, no reputation data, no rule language, no storage and no history. Reload the page and it is gone - which is the trade for it never being uploaded in the first place.</p>
           </article>
           <article class="info-card">
             <h3>Every threshold is printed</h3>
@@ -431,7 +431,7 @@
           </a>
           <a class="lab-card" href="/labs/phishing-dissector">
             <span class="lab-card-name">Phishing dissector</span>
-            <p class="lab-card-desc">Where the credentials in your log probably came from &mdash; taken apart line by line.</p>
+            <p class="lab-card-desc">Where the credentials in your log probably came from - taken apart line by line.</p>
             <span class="lab-card-engine">Nothing uploaded</span>
           </a>
         </div>

@@ -209,7 +209,7 @@
           </ol>
         </nav>
         <h1>Regex to NFA to DFA, and back to why one of them cannot be slow</h1>
-        <p class="hero-text">A regular expression is not a search algorithm. It is a description of a set of strings, and there is a mechanical pipeline that turns that description into a machine which reads one character at a time and never backtracks. This page builds that pipeline in front of you &mdash; parse tree, NFA, DFA, minimal DFA &mdash; draws every stage, and then races the finished machine against a backtracker until the backtracker falls over.</p>
+        <p class="hero-text">A regular expression is not a search algorithm. It is a description of a set of strings, and there is a mechanical pipeline that turns that description into a machine which reads one character at a time and never backtracks. This page builds that pipeline in front of you - parse tree, NFA, DFA, minimal DFA - draws every stage, and then races the finished machine against a backtracker until the backtracker falls over.</p>
         <ul class="lab-facts">
           <li>Thompson&rsquo;s construction, drawn as a real graph</li>
           <li>Every DFA state shown as the NFA subset it is</li>
@@ -238,14 +238,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>Everything runs on your device &mdash; there is no server</li>
+                  <li>Everything runs on your device - there is no server</li>
                   <li>No backreferences and no lookaround, and the page says why</li>
                   <li>Machines are capped in size, and the cap is announced when hit</li>
                   <li>Nothing is uploaded, logged or stored</li>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -274,7 +274,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-regexautomata-mount" id="viz-regexautomata-mount">
-          <p class="lab-proc-fallback">Building the parser and the state machines&hellip; if this message stays, the visualiser did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Building the parser and the state machines&hellip; if this message stays, the visualiser did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -293,7 +293,7 @@
           </article>
           <article class="info-card">
             <h3>The refusals are the lesson, not a gap</h3>
-            <p>Backreferences and lookaround are refused with the reason spelled out. A backreference describes a language that is provably not regular, so no finite automaton of any size can recognise it &mdash; the pumping lemma settles that. A word boundary is refused for a much weaker reason: it is perfectly regular and simply has no Thompson rule here. The page distinguishes the two, because treating them the same would teach something false.</p>
+            <p>Backreferences and lookaround are refused with the reason spelled out. A backreference describes a language that is provably not regular, so no finite automaton of any size can recognise it - the pumping lemma settles that. A word boundary is refused for a much weaker reason: it is perfectly regular and simply has no Thompson rule here. The page distinguishes the two, because treating them the same would teach something false.</p>
           </article>
           <article class="info-card">
             <h3>The caps are real and they are announced</h3>
@@ -352,7 +352,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/regex-engine">
             <span class="lab-card-name">Inside a regex engine</span>
-            <p class="lab-card-desc">The backtracking search, stepped one dead end at a time &mdash; the family this page is not.</p>
+            <p class="lab-card-desc">The backtracking search, stepped one dead end at a time - the family this page is not.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/regex">

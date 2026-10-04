@@ -11,13 +11,13 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Automating Email Replies with n8n: A Practical Guide" />
     <meta
       property="og:description"
-      content="How the workflow is structured, where AI fits, the mistakes to avoid, and how to keep a human in the loop — from real client automation work."
+      content="How the workflow is structured, where AI fits, the mistakes to avoid, and how to keep a human in the loop - from real client automation work."
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/automating-email-replies-with-n8n" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="Automating Email Replies with n8n: A Practical Guide" />
     <meta
       name="twitter:description"
-      content="How the workflow is structured, where AI fits, the mistakes to avoid, and how to keep a human in the loop — from real client automation work."
+      content="How the workflow is structured, where AI fits, the mistakes to avoid, and how to keep a human in the loop - from real client automation work."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/automating-email-replies-with-n8n.jpg" />
     <title>Automating Email Replies with n8n | Krunalkumar Shah</title>
@@ -148,7 +148,7 @@
           <h1>Automating email replies with n8n</h1>
           <p class="hero-text">
             Replying to the same kinds of emails over and over is exactly the sort of work software should handle. I've
-            built several of these systems for real clients — including my open-source CleverResponder builds for
+            built several of these systems for real clients - including my open-source CleverResponder builds for
             SmartLead and Instantly. Here's how I structure them, where AI genuinely helps, and the mistakes worth avoiding.
           </p>
           <p class="post-meta">Published 18 May 2026 · 5 min read · by Krunalkumar Shah</p>
@@ -166,7 +166,7 @@
                 <li><a href="#why-n8n-for-this">Why n8n for this</a></li>
                 <li><a href="#the-anatomy-of-a-reply-automation-workflow">The anatomy of a reply-automation workflow</a></li>
                 <li><a href="#classify-before-you-generate">Classify before you generate</a></li>
-                <li><a href="#where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps — and where it shouldn't decide alone</a></li>
+                <li><a href="#where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps - and where it shouldn't decide alone</a></li>
                 <li><a href="#the-mistakes-worth-avoiding">The mistakes worth avoiding</a></li>
                 <li><a href="#start-small-then-grow-the-trust">Start small, then grow the trust</a></li>
               </ol>
@@ -175,7 +175,7 @@
             <div class="post-body">
               <h2 id="why-n8n-for-this">Why n8n for this</h2>
               <p>
-                n8n is a workflow automation tool where you connect building blocks — triggers, logic, and actions — into
+                n8n is a workflow automation tool where you connect building blocks - triggers, logic, and actions - into
                 a flow, without writing a whole application from scratch. For email reply automation it fits well for a
                 few reasons: it talks to email and CRM services out of the box, it lets you drop in custom logic where you
                 need it, and because you can self-host it, sensitive message content doesn't have to pass through a
@@ -189,18 +189,18 @@
                 Understanding this shape matters more than any single node:
               </p>
               <ol>
-                <li><strong>Trigger</strong> — something starts the flow: a new reply lands in an inbox, or a campaign tool like SmartLead or Instantly fires a webhook.</li>
-                <li><strong>Fetch &amp; parse</strong> — pull in the message and pull out what matters: sender, subject, body, and any context from a CRM about who this person is.</li>
-                <li><strong>Classify</strong> — decide what kind of message this is. Interested? Not interested? A question? Out of office? This is the single most important step, and the one people skip.</li>
-                <li><strong>Draft</strong> — generate an appropriate response, often with an AI step guided by a tight prompt and the context you gathered.</li>
-                <li><strong>Act</strong> — send the reply, or route it to a human for approval, and log the outcome back to the CRM so nothing falls through the cracks.</li>
+                <li><strong>Trigger</strong> - something starts the flow: a new reply lands in an inbox, or a campaign tool like SmartLead or Instantly fires a webhook.</li>
+                <li><strong>Fetch &amp; parse</strong> - pull in the message and pull out what matters: sender, subject, body, and any context from a CRM about who this person is.</li>
+                <li><strong>Classify</strong> - decide what kind of message this is. Interested? Not interested? A question? Out of office? This is the single most important step, and the one people skip.</li>
+                <li><strong>Draft</strong> - generate an appropriate response, often with an AI step guided by a tight prompt and the context you gathered.</li>
+                <li><strong>Act</strong> - send the reply, or route it to a human for approval, and log the outcome back to the CRM so nothing falls through the cracks.</li>
               </ol>
 
               <figure class="post-figure post-figure-wide">
                 <a href="/assets/images/blog/automating-email-replies-with-n8n-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/automating-email-replies-with-n8n-diagram1.svg" alt="Five-stage email automation: Trigger, Fetch and parse, Classify, Draft, Act" width="760" height="210" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Every reliable email automation is a variation on this: trigger, gather context, classify, draft, then act — with logging throughout. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Every reliable email automation is a variation on this: trigger, gather context, classify, draft, then act - with logging throughout. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <h2 id="classify-before-you-generate">Classify before you generate</h2>
@@ -210,17 +210,17 @@
                 to classify intent <em>first</em>, then let each category follow its own path.
               </p>
               <p>
-                A reply that clearly says "not interested" should trigger a polite unsubscribe and a CRM update — not an
+                A reply that clearly says "not interested" should trigger a polite unsubscribe and a CRM update - not an
                 AI-written persuasion attempt. A genuine question can get an AI-drafted answer. Anything ambiguous or
                 sensitive should go to a human. Sorting messages into the right lane before generating anything is what
                 separates an automation people trust from one that quietly embarrasses them.
               </p>
 
-              <h2 id="where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps — and where it shouldn't decide alone</h2>
+              <h2 id="where-ai-helps-and-where-it-shouldn-t-decide-alone">Where AI helps - and where it shouldn't decide alone</h2>
               <p>
                 AI is excellent at the language part: understanding a messy human reply and drafting a fluent,
-                on-tone response. Let it do that. What it should not do unsupervised is make irreversible decisions —
-                sending money, making promises, or firing off anything to a high-value contact — without a human glance.
+                on-tone response. Let it do that. What it should not do unsupervised is make irreversible decisions -
+                sending money, making promises, or firing off anything to a high-value contact - without a human glance.
               </p>
               <blockquote>
                 <p>
@@ -234,13 +234,13 @@
                 <li><strong>No approval step for high-stakes replies.</strong> Start with a human approving AI drafts, and only remove the gate for categories once you trust them. Full autonomy on day one is how you get a bad send you can't take back.</li>
                 <li><strong>Forgetting to log.</strong> If the CRM doesn't record what the automation did, you're flying blind and you'll double-reply or contradict yourself. Always write the outcome back.</li>
                 <li><strong>No rate limiting or error handling.</strong> Real inboxes get bursts and outages. Handle failures gracefully and throttle sends, or a provider will flag you as spam.</li>
-                <li><strong>Over-automating.</strong> Not every email should be automated. The value is in the repetitive, high-volume, low-judgment messages — leave the rest to a person.</li>
+                <li><strong>Over-automating.</strong> Not every email should be automated. The value is in the repetitive, high-volume, low-judgment messages - leave the rest to a person.</li>
               </ul>
 
               <h2 id="start-small-then-grow-the-trust">Start small, then grow the trust</h2>
               <p>
-                My advice for a first build: pick one narrow, high-volume category — say, auto-handling clear
-                "not interested" replies — and automate only that, with a human approving each action at first. Watch it
+                My advice for a first build: pick one narrow, high-volume category - say, auto-handling clear
+                "not interested" replies - and automate only that, with a human approving each action at first. Watch it
                 for a week. When it's boringly reliable, remove the approval gate for that one category and add the next.
                 Automation earns autonomy the same way a person does: by proving itself on small things before you hand it
                 bigger ones.
@@ -273,7 +273,7 @@
           <div class="post-cta">
             <h2>Want to learn to build systems like this?</h2>
             <p>
-              Practical automation — real workflows, real trade-offs — is exactly what I teach the people I mentor.
+              Practical automation - real workflows, real trade-offs - is exactly what I teach the people I mentor.
               If you'd like to build these skills on genuine projects, the internships page explains how we work
               together.
             </p>

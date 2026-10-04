@@ -101,7 +101,7 @@
   var ENTITIES = [
     ['&rsquo;', '’'], ['&lsquo;', '‘'],
     ['&ldquo;', '“'], ['&rdquo;', '”'],
-    ['&mdash;', '—'], ['&ndash;', '–'],
+    ['-', '—'], ['&ndash;', '–'],
     ['&hellip;', '…'], ['&nbsp;', ' '], ['&pound;', '£'],
     ['&amp;', '&']
   ];
@@ -149,7 +149,7 @@
       turns: [
         {
           tech: 'Authority',
-          line: '&ldquo;It&rsquo;s Martin &mdash; Martin Doyle, finance director. I&rsquo;m outside the boardroom and I have two minutes. I need the payroll summary for the September run. Send it to my personal address, I&rsquo;m not on the laptop.&rdquo;',
+          line: '&ldquo;It&rsquo;s Martin - Martin Doyle, finance director. I&rsquo;m outside the boardroom and I have two minutes. I need the payroll summary for the September run. Send it to my personal address, I&rsquo;m not on the laptop.&rdquo;',
           opts: [
             {
               label: 'Send it. He is the finance director and he is about to walk into a board meeting.',
@@ -158,7 +158,7 @@
               note: 'Nothing about that voice was checkable, and you have just posted the personal data of everybody in the company to an address you cannot confirm. The technique is <strong>authority</strong>: seniority is being offered as a substitute for identity, and the hurry is there so you do not notice the substitution. Note that this reply scores well on manners. That is exactly why it works.'
             },
             {
-              label: '&ldquo;Of course &mdash; I&rsquo;ll ring you straight back on the number in the directory.&rdquo;',
+              label: '&ldquo;Of course - I&rsquo;ll ring you straight back on the number in the directory.&rdquo;',
               a: 10, p: 9,
               note: 'This is the answer and it costs about ninety seconds. A callback on a number you looked up yourself survives a spoofed display, a convincing voice and a name you recognise, because the attacker controls what they tell you and controls nothing you go and find. Notice what you did not do: you did not accuse anybody of anything, and you did not refuse.'
             },
@@ -171,7 +171,7 @@
         },
         {
           tech: 'Authority, escalated',
-          line: '&ldquo;You&rsquo;re going to make me late for a board meeting over a spreadsheet? Fine &mdash; ring Nina in HR, she&rsquo;ll vouch for me. Actually no, there isn&rsquo;t time. Just send it.&rdquo;',
+          line: '&ldquo;You&rsquo;re going to make me late for a board meeting over a spreadsheet? Fine - ring Nina in HR, she&rsquo;ll vouch for me. Actually no, there isn&rsquo;t time. Just send it.&rdquo;',
           opts: [
             {
               label: 'Send it. He offered a reference, which is not what a fraudster does.',
@@ -182,10 +182,10 @@
             {
               label: '&ldquo;I&rsquo;ll ring Nina. If she confirms, it&rsquo;s with you in three minutes.&rdquo;',
               a: 9, p: 8,
-              note: 'Take the reference the caller offered. Either it confirms and you have spent three minutes, or the line goes dead &mdash; and a caller who hangs up when you accept their own suggestion has answered the question for you.'
+              note: 'Take the reference the caller offered. Either it confirms and you have spent three minutes, or the line goes dead - and a caller who hangs up when you accept their own suggestion has answered the question for you.'
             },
             {
-              label: '&ldquo;I know you&rsquo;re pressed. I&rsquo;m following the callback rule anyway &mdash; it applies to everybody and it&rsquo;s quicker than it sounds.&rdquo;',
+              label: '&ldquo;I know you&rsquo;re pressed. I&rsquo;m following the callback rule anyway - it applies to everybody and it&rsquo;s quicker than it sounds.&rdquo;',
               a: 10, p: 10,
               note: 'Naming the rule moves the disagreement off you and onto the process, which is the only place it can be argued with fairly. It also hands a genuine colleague something to be annoyed at that is not a person, and that is worth more than it sounds on a Monday morning.'
             }
@@ -209,7 +209,7 @@
             {
               label: 'Put the phone down without another word and get on with your morning.',
               a: 8, p: 1,
-              note: 'The data is safe, which is worth something real. But an unexplained hang-up is how a defender becomes the person colleagues quietly route around, and the next request like this simply goes to somebody who does not check. It also means nobody reports it &mdash; and this call should end with security knowing it happened, so that the fifth person who gets it is already expecting it.'
+              note: 'The data is safe, which is worth something real. But an unexplained hang-up is how a defender becomes the person colleagues quietly route around, and the next request like this simply goes to somebody who does not check. It also means nobody reports it - and this call should end with security knowing it happened, so that the fifth person who gets it is already expecting it.'
             }
           ]
         }
@@ -224,7 +224,7 @@
       kind: 'attack',
       channel: 'Phone call',
       name: 'Ticket 4412',
-      opening: '&ldquo;Hi &mdash; it&rsquo;s Ravi from the service desk, I&rsquo;m picking up ticket 4412 about your mailbox.&rdquo; You did not raise a ticket. You do have a mailbox.',
+      opening: '&ldquo;Hi - it&rsquo;s Ravi from the service desk, I&rsquo;m picking up ticket 4412 about your mailbox.&rdquo; You did not raise a ticket. You do have a mailbox.',
       turns: [
         {
           tech: 'Familiarity',
@@ -234,10 +234,10 @@
               label: 'He knows Sam, the rota and Monday&rsquo;s outage. Carry on with the call.',
               a: 2, p: 7,
               pivot: 'Treated knowing true things about you as proof of who was speaking.',
-              note: 'Knowing true things about you is not identification, and it is the cheapest item on the attacker&rsquo;s list. A rota on a noticeboard, a whiteboard visible behind somebody in a photograph, a status page, a supplier naming the tool you use &mdash; an hour of public reading buys all of it. <strong>Familiarity</strong> works because it feels like something only an insider could know, and that feeling is the product being sold.'
+              note: 'Knowing true things about you is not identification, and it is the cheapest item on the attacker&rsquo;s list. A rota on a noticeboard, a whiteboard visible behind somebody in a photograph, a status page, a supplier naming the tool you use - an hour of public reading buys all of it. <strong>Familiarity</strong> works because it feels like something only an insider could know, and that feeling is the product being sold.'
             },
             {
-              label: '&ldquo;I don&rsquo;t have a ticket open. What&rsquo;s the reference &mdash; I&rsquo;ll look it up my side.&rdquo;',
+              label: '&ldquo;I don&rsquo;t have a ticket open. What&rsquo;s the reference - I&rsquo;ll look it up my side.&rdquo;',
               a: 9, p: 9,
               note: 'The ticket is a check you can both see, and it lives on your side of the conversation. A genuine agent is pleased you looked; the reference either exists in your queue or it does not, and no amount of warmth changes which.'
             },
@@ -256,7 +256,7 @@
               label: 'Read out the code. He is on the service desk and the code came from your own company&rsquo;s app.',
               a: 0, p: 6,
               pivot: 'Read a second-factor code aloud to an inbound caller.',
-              note: 'That code is the second factor and it is yours alone. No service desk anywhere needs it: they can reset, revoke and re-enrol entirely from their side. &ldquo;Read me the code&rdquo; has one meaning &mdash; somebody is standing at a login prompt with your username and password and is one number short. A push notification you did not ask for means the password has already gone.'
+              note: 'That code is the second factor and it is yours alone. No service desk anywhere needs it: they can reset, revoke and re-enrol entirely from their side. &ldquo;Read me the code&rdquo; has one meaning - somebody is standing at a login prompt with your username and password and is one number short. A push notification you did not ask for means the password has already gone.'
             },
             {
               label: '&ldquo;Nobody from the service desk should be asking me for that. I&rsquo;m ending the call and reporting it.&rdquo;',
@@ -288,12 +288,12 @@
             {
               label: '&ldquo;I&rsquo;m going to hang up and ring the desk myself. If this is genuine we&rsquo;ll have it finished in five minutes.&rdquo;',
               a: 10, p: 10,
-              note: 'Polite, specific, out of band, and it leaves the door open &mdash; which matters, because some of these calls really are the service desk. The version of you that slams the phone down on your own colleagues twice a month is a version people stop ringing, and then you find out about problems last.'
+              note: 'Polite, specific, out of band, and it leaves the door open - which matters, because some of these calls really are the service desk. The version of you that slams the phone down on your own colleagues twice a month is a version people stop ringing, and then you find out about problems last.'
             }
           ]
         }
       ],
-      truth: 'The ticket did not exist. The rota, the outage and Sam&rsquo;s name came off a public post and a status page. The code being asked for was arriving because somebody was already sitting at a login screen with a working password, and the second factor was the only thing left to get &mdash; which meant asking you for it nicely.',
+      truth: 'The ticket did not exist. The rota, the outage and Sam&rsquo;s name came off a public post and a status page. The code being asked for was arriving because somebody was already sitting at a login screen with a working password, and the second factor was the only thing left to get - which meant asking you for it nicely.',
       control: 'A standing rule, published where everybody can see it and repeated until it is boring: the service desk never asks for a code, a password or a screen share on an inbound call, and any caller who does is reported rather than argued with. The same conversation aimed at a phone shop is <a href="/blog/how-sim-swap-works">how a SIM swap works</a>, where the person being manipulated is a support agent doing their job properly.'
     },
 
@@ -307,7 +307,7 @@
       turns: [
         {
           tech: 'Reciprocity',
-          line: '&ldquo;Oh &mdash; thank you, could you? These are for the Thursday stand-up and I&rsquo;m already late. Take one, honestly, there&rsquo;s a spare.&rdquo;',
+          line: '&ldquo;Oh - thank you, could you? These are for the Thursday stand-up and I&rsquo;m already late. Take one, honestly, there&rsquo;s a spare.&rdquo;',
           opts: [
             {
               label: 'Hold the door and take the spare coffee.',
@@ -329,16 +329,16 @@
         },
         {
           tech: 'Social proof',
-          line: '&ldquo;I&rsquo;m with the Dowsett fit-out crew, we&rsquo;ve been in all week &mdash; ask Amanda on the desk, she&rsquo;s been signing us in.&rdquo; Amanda does not start until nine.',
+          line: '&ldquo;I&rsquo;m with the Dowsett fit-out crew, we&rsquo;ve been in all week - ask Amanda on the desk, she&rsquo;s been signing us in.&rdquo; Amanda does not start until nine.',
           opts: [
             {
               label: 'Fine. They have clearly been in all week.',
               a: 2, p: 7,
               pivot: 'Accepted a reference that could not be reached, from somebody who knew it could not be reached.',
-              note: '&ldquo;Ask the person who is not here&rdquo; is the oldest reference in the trade. It is not really a lie, it is a bet that you will not wait &mdash; and <strong>social proof</strong> does the work: if everybody else has already accepted this, checking makes you the difficult one.'
+              note: '&ldquo;Ask the person who is not here&rdquo; is the oldest reference in the trade. It is not really a lie, it is a bet that you will not wait - and <strong>social proof</strong> does the work: if everybody else has already accepted this, checking makes you the difficult one.'
             },
             {
-              label: '&ldquo;No problem &mdash; reception opens at nine, I&rsquo;ll wait with you.&rdquo;',
+              label: '&ldquo;No problem - reception opens at nine, I&rsquo;ll wait with you.&rdquo;',
               a: 9, p: 8,
               note: 'You have neither accused them nor admitted them. Waiting <em>with</em> somebody is the version of this that costs nothing socially, and twenty minutes in a lobby is a price a genuine contractor pays without thinking about it.'
             },
@@ -357,23 +357,23 @@
               label: 'Say nothing. They are two feet behind you and the moment has gone.',
               a: 1, p: 6,
               pivot: 'The building&rsquo;s record of who was inside that morning is now wrong, and will stay wrong.',
-              note: 'This is the honest option and it is what most people do. The discomfort is real, and it is precisely the material the technique is built from. Worth naming plainly: the reason this feels impossible is not that you are weak, it is that every social instinct you have is being used as the tool. Which is why the answer can never be &ldquo;be braver&rdquo; &mdash; it has to be a process, so that nobody has to be.'
+              note: 'This is the honest option and it is what most people do. The discomfort is real, and it is precisely the material the technique is built from. Worth naming plainly: the reason this feels impossible is not that you are weak, it is that every social instinct you have is being used as the tool. Which is why the answer can never be &ldquo;be braver&rdquo; - it has to be a process, so that nobody has to be.'
             },
             {
-              label: '&ldquo;Sorry &mdash; I can&rsquo;t badge anybody else through on mine. Reception at nine, and I&rsquo;ll walk you back down.&rdquo;',
+              label: '&ldquo;Sorry - I can&rsquo;t badge anybody else through on mine. Reception at nine, and I&rsquo;ll walk you back down.&rdquo;',
               a: 10, p: 8,
               note: 'Awkward and right. Look at the shape of it: the refusal is about your badge rather than about them, which is the difference between a boundary and an accusation. Walking them back down is the part that stops it being cold.'
             },
             {
               label: 'Say nothing now, then ring facilities from your desk and describe exactly what happened.',
               a: 6, p: 8,
-              note: 'Half a save, and enormously better than nothing. The person is inside, which is bad &mdash; but somebody knows within minutes, while the recording still exists and the coffee cups are still on a desk. A culture where that call is easy to make is worth more than a culture where nobody ever needs to make one, because the second sort does not exist.'
+              note: 'Half a save, and enormously better than nothing. The person is inside, which is bad - but somebody knows within minutes, while the recording still exists and the coffee cups are still on a desk. A culture where that call is easy to make is worth more than a culture where nobody ever needs to make one, because the second sort does not exist.'
             }
           ]
         }
       ],
       truth: 'The polo shirt was ordered online and the coffee cost eleven pounds. The Dowsett fit-out crew is real, which is what made the reference work. Nobody in the lobby did anything a reasonable person would call stupid, and the building&rsquo;s record of who was inside that morning is simply wrong.',
-      control: 'A visitor process that is somebody&rsquo;s job rather than everybody&rsquo;s judgement: contractors signed in against a named host, visitor passes that look visibly different from a distance, and a reader that counts people rather than door openings. Plus one published sentence &mdash; holding a door is fine as long as the person badges through it &mdash; which turns an awkward refusal into an ordinary thing to say.'
+      control: 'A visitor process that is somebody&rsquo;s job rather than everybody&rsquo;s judgement: contractors signed in against a named host, visitor passes that look visibly different from a distance, and a reader that counts people rather than door openings. Plus one published sentence - holding a door is fine as long as the person badges through it - which turns an awkward refusal into an ordinary thing to say.'
     },
 
     /* ---------------------------------------------------------- attack 4 */
@@ -386,7 +386,7 @@
       turns: [
         {
           tech: 'Social proof',
-          line: '&ldquo;Hi &mdash; Priya has already approved the bank detail change for Kelso Interiors, she said you&rsquo;d do the update. She&rsquo;s on the flight to Cologne so she won&rsquo;t answer for a few hours. Invoice is due today.&rdquo;',
+          line: '&ldquo;Hi - Priya has already approved the bank detail change for Kelso Interiors, she said you&rsquo;d do the update. She&rsquo;s on the flight to Cologne so she won&rsquo;t answer for a few hours. Invoice is due today.&rdquo;',
           opts: [
             {
               label: 'Do the update. Priya approved it and she is not reachable to ask twice.',
@@ -408,7 +408,7 @@
         },
         {
           tech: 'Familiarity',
-          line: '&ldquo;Sure &mdash; it&rsquo;s the usual C2 form, attached. Same as the Ferrers job last quarter. You can see it&rsquo;s the right template.&rdquo;',
+          line: '&ldquo;Sure - it&rsquo;s the usual C2 form, attached. Same as the Ferrers job last quarter. You can see it&rsquo;s the right template.&rdquo;',
           opts: [
             {
               label: 'The form is the right one and the old job reference checks out. Process it.',
@@ -424,7 +424,7 @@
             {
               label: '&ldquo;Which Ferrers job? I&rsquo;ll pull the file.&rdquo;',
               a: 7, p: 7,
-              note: 'A fair probe and it will often end the conversation. It is weaker than the callback though, because it is a quiz &mdash; and somebody who has done their reading passes quizzes. Verification should never depend on you happening to know more than the person on the other end.'
+              note: 'A fair probe and it will often end the conversation. It is weaker than the callback though, because it is a quiz - and somebody who has done their reading passes quizzes. Verification should never depend on you happening to know more than the person on the other end.'
             }
           ]
         },
@@ -452,7 +452,7 @@
         }
       ],
       truth: 'Priya really was on that flight, and the itinerary was public. The account belonged to a mule account opened three weeks earlier. Kelso Interiors were owed the money and never received it, and nobody at either company did anything a reasonable person would not have done.',
-      control: 'One written rule: bank details change only after a callback to the number held in the contract file &mdash; never a number printed on the invoice or pasted into the message &mdash; and the callback is made by somebody other than the person who received the request. It is boring, and it is the single control that stops nearly all of this.'
+      control: 'One written rule: bank details change only after a callback to the number held in the contract file - never a number printed on the invoice or pasted into the message - and the callback is made by somebody other than the person who received the request. It is boring, and it is the single control that stops nearly all of this.'
     },
 
     /* ---------------------------------------------------------- attack 5 */
@@ -465,7 +465,7 @@
       turns: [
         {
           tech: 'Familiarity',
-          line: '&ldquo;We&rsquo;re here for the number two riser &mdash; plant room on the third, past the old server cage. Somebody logged the fault this morning.&rdquo;',
+          line: '&ldquo;We&rsquo;re here for the number two riser - plant room on the third, past the old server cage. Somebody logged the fault this morning.&rdquo;',
           opts: [
             {
               label: 'They know the building well enough to be from the building. Wave them in.',
@@ -479,7 +479,7 @@
               note: 'You asked for the one thing that cannot be fabricated on your side: a record you can open yourself. And you offered to do the work, so the question arrives as help rather than as suspicion.'
             },
             {
-              label: '&ldquo;Wait here a moment &mdash; I&rsquo;ll ring the building manager.&rdquo;',
+              label: '&ldquo;Wait here a moment - I&rsquo;ll ring the building manager.&rdquo;',
               a: 10, p: 8,
               note: 'Out of band, on a number of your choosing. Standing outside for four minutes is not an insult to anybody who genuinely has a job number.'
             }
@@ -503,7 +503,7 @@
             {
               label: '&ldquo;Give me four minutes. If I can reach anybody who confirms the job you&rsquo;re in, and if not I&rsquo;ll book you back in for Monday myself.&rdquo;',
               a: 10, p: 10,
-              note: 'Both axes at once. You did not decide who they were, you decided what the process was &mdash; and a genuine crew gets a route that does not involve standing in the rain being disbelieved.'
+              note: 'Both axes at once. You did not decide who they were, you decided what the process was - and a genuine crew gets a route that does not involve standing in the rain being disbelieved.'
             }
           ]
         },
@@ -518,14 +518,14 @@
               note: 'Sign on the way out is sign never, and &ldquo;I&rsquo;m not going to drop you in it&rdquo; is reciprocity again: a favour offered so that a favour can be asked. Notice how friendly the last move always is. The unpleasant approaches are easy to refuse, which is exactly why they are not the ones that work.'
             },
             {
-              label: '&ldquo;Sign in first &mdash; it&rsquo;s ninety seconds and it means I&rsquo;m not the one explaining it on Monday.&rdquo;',
+              label: '&ldquo;Sign in first - it&rsquo;s ninety seconds and it means I&rsquo;m not the one explaining it on Monday.&rdquo;',
               a: 10, p: 9,
-              note: 'Truthful and impersonal. Giving the real reason &mdash; the record, rather than your opinion of them &mdash; is very hard to argue with and gives nobody anything to take personally.'
+              note: 'Truthful and impersonal. Giving the real reason - the record, rather than your opinion of them - is very hard to argue with and gives nobody anything to take personally.'
             },
             {
               label: '&ldquo;No. Off site, please.&rdquo; Close the door.',
               a: 10, p: 2,
-              note: 'The building is safe. If those two had been a genuine out-of-hours crew, the fault stays broken, facilities hear about it on Monday, and somebody quietly concludes that the sign-in process is the problem &mdash; which is how a control gets removed altogether. Being right and being unbearable is a real failure mode, not a hard-nosed virtue.'
+              note: 'The building is safe. If those two had been a genuine out-of-hours crew, the fault stays broken, facilities hear about it on Monday, and somebody quietly concludes that the sign-in process is the problem - which is how a control gets removed altogether. Being right and being unbearable is a real failure mode, not a hard-nosed virtue.'
             }
           ]
         }
@@ -544,16 +544,16 @@
       turns: [
         {
           tech: 'A genuine request',
-          line: '&ldquo;Hi &mdash; I started last week on the claims team and I still don&rsquo;t have access to the case system. My manager&rsquo;s on leave and the trainer says I should have had it on day one. Can you add me?&rdquo;',
+          line: '&ldquo;Hi - I started last week on the claims team and I still don&rsquo;t have access to the case system. My manager&rsquo;s on leave and the trainer says I should have had it on day one. Can you add me?&rdquo;',
           opts: [
             {
               label: 'Add them. Everything they said is consistent and they are obviously a new starter.',
               a: 2, p: 8,
               pivot: 'Granted access on a story, and happened to be right.',
-              note: 'Everything they said may well be true, and none of it was checked. The instinct is generous and the outcome is an account granted on a narrative &mdash; which is the same outcome the finance call was after, arrived at more pleasantly. Being right about somebody by luck is not a control.'
+              note: 'Everything they said may well be true, and none of it was checked. The instinct is generous and the outcome is an account granted on a narrative - which is the same outcome the finance call was after, arrived at more pleasantly. Being right about somebody by luck is not a control.'
             },
             {
-              label: '&ldquo;I can&rsquo;t add you from a message, but I can get this moving today &mdash; your manager has a delegate who can approve it and I&rsquo;ll find out who.&rdquo;',
+              label: '&ldquo;I can&rsquo;t add you from a message, but I can get this moving today - your manager has a delegate who can approve it and I&rsquo;ll find out who.&rdquo;',
               a: 9, p: 10,
               note: 'This is the shape the whole game is arguing for: no to the shortcut, yes to the person, with a named next step and a timescale. It costs one lookup, and it means a new starter does not spend their second week concluding that the rules here are decoration.'
             },
@@ -561,7 +561,7 @@
               label: '&ldquo;Access requests go through your manager. Come back when they&rsquo;re off leave.&rdquo;',
               a: 4, p: 1,
               pivot: 'Refused with no route, which moves the risk rather than removing it.',
-              note: 'Technically correct and quietly expensive. What happens next is not that the new starter waits two weeks &mdash; it is that somebody on the claims team lends them a login so the work gets done, and now an account in the audit trail is two people. Refusing without offering a route does not remove risk. It moves it somewhere nobody can see it.'
+              note: 'Technically correct and quietly expensive. What happens next is not that the new starter waits two weeks - it is that somebody on the claims team lends them a login so the work gets done, and now an account in the audit trail is two people. Refusing without offering a route does not remove risk. It moves it somewhere nobody can see it.'
             }
           ]
         },
@@ -573,7 +573,7 @@
               label: 'Lend them a login of your own so they can clear the backlog.',
               a: 0, p: 8,
               pivot: 'A shared credential, which ends the audit trail for everybody who touches it.',
-              note: 'The kindest wrong answer available, and a common one. From this afternoon, nothing that account does can be attributed to a person &mdash; including anything done by whoever it gets passed to next. Helping is right. Helping by breaking the one mechanism that lets anybody reconstruct what happened is not.'
+              note: 'The kindest wrong answer available, and a common one. From this afternoon, nothing that account does can be attributed to a person - including anything done by whoever it gets passed to next. Helping is right. Helping by breaking the one mechanism that lets anybody reconstruct what happened is not.'
             },
             {
               label: '&ldquo;Here&rsquo;s the delegate&rsquo;s name and the request link. I&rsquo;ve flagged it as a new starter so it goes to the top of the queue.&rdquo;',
@@ -595,7 +595,7 @@
               label: 'Find a way round it. They are obviously genuine and it is obviously the right thing to do.',
               a: 1, p: 8,
               pivot: 'Made an exception on the strength of being sure, which is the thing attackers manufacture.',
-              note: 'Obviously genuine is a feeling, and it is correct most of the time &mdash; which is precisely the problem. A control applied except when you are sure is a control an attacker only has to make you sure about. This person really was genuine. The next one, with the same story and the same warmth, is the one the process exists for.'
+              note: 'Obviously genuine is a feeling, and it is correct most of the time - which is precisely the problem. A control applied except when you are sure is a control an attacker only has to make you sure about. This person really was genuine. The next one, with the same story and the same warmth, is the one the process exists for.'
             },
             {
               label: '&ldquo;No, and I&rsquo;d say the same if you were the chief executive, which is rather the point of it. But I&rsquo;ll make sure it isn&rsquo;t slow.&rdquo;',
@@ -610,7 +610,7 @@
           ]
         }
       ],
-      truth: 'Every word of it was true. Genuine requests arrive with real deadlines, a missing approver and a plausible story, because that is what the attacks are copied from &mdash; and a defender who has learned to refuse anything resembling an attack will refuse a great deal of ordinary work.',
+      truth: 'Every word of it was true. Genuine requests arrive with real deadlines, a missing approver and a plausible story, because that is what the attacks are copied from - and a defender who has learned to refuse anything resembling an attack will refuse a great deal of ordinary work.',
       control: 'A named delegate recorded for every approver before anybody goes on leave, and a request route a new starter can find on day one. Almost all of the pressure in that conversation was somebody&rsquo;s absence, and none of it was anybody&rsquo;s fault.'
     },
 
@@ -624,7 +624,7 @@
       turns: [
         {
           tech: 'A genuine request',
-          line: '&ldquo;Morning &mdash; quarterly alarm test, panel&rsquo;s in the back corridor. It&rsquo;s booked in. Should take about two hours.&rdquo;',
+          line: '&ldquo;Morning - quarterly alarm test, panel&rsquo;s in the back corridor. It&rsquo;s booked in. Should take about two hours.&rdquo;',
           opts: [
             {
               label: 'Wave them through. Alarm testing is routine and the van is parked outside.',
@@ -633,12 +633,12 @@
               note: 'A van and a lanyard are both purchasable, and &ldquo;it&rsquo;s booked in&rdquo; is a claim about <em>your</em> records rather than theirs. That this particular engineer is genuine is not something you knew at the moment you decided.'
             },
             {
-              label: '&ldquo;Let me find the booking &mdash; what&rsquo;s it under?&rdquo; and open the diary.',
+              label: '&ldquo;Let me find the booking - what&rsquo;s it under?&rdquo; and open the diary.',
               a: 9, p: 10,
               note: 'The record on your side is the check. It takes a minute, it works identically whether the person is genuine or not, and a real engineer has been asked this at every building they have entered this month.'
             },
             {
-              label: '&ldquo;I can&rsquo;t see anything for today. Bear with me &mdash; I&rsquo;ll ring facilities and get it confirmed.&rdquo;',
+              label: '&ldquo;I can&rsquo;t see anything for today. Bear with me - I&rsquo;ll ring facilities and get it confirmed.&rdquo;',
               a: 9, p: 9,
               note: '&ldquo;Bear with me&rdquo; is doing real work in that sentence. The difference between a check and an accusation is almost entirely whether the person is left standing there wondering what you think of them.'
             }
@@ -652,12 +652,12 @@
               label: '&ldquo;No PO in my system, no entry. Sorry.&rdquo;',
               a: 4, p: 1,
               pivot: 'Refused a checkable reference outright, which costs the control its authority.',
-              note: 'The strict answer, and here it is the wrong one. The engineer is genuine, the certification lapse is real, and what happens next is that somebody senior overrules you in front of reception &mdash; after which the sign-in process has quietly lost its authority. A control that cannot survive being right about a real job does not last long enough to stop a fake one.'
+              note: 'The strict answer, and here it is the wrong one. The engineer is genuine, the certification lapse is real, and what happens next is that somebody senior overrules you in front of reception - after which the sign-in process has quietly lost its authority. A control that cannot survive being right about a real job does not last long enough to stop a fake one.'
             },
             {
               label: '&ldquo;That&rsquo;s enough to go on. I&rsquo;ll confirm the PO with facilities and get you signed in and escorted.&rdquo;',
               a: 10, p: 10,
-              note: 'You took a checkable reference and used it. Everything about this is identical to refusing the crew at the goods door on Friday; only the outcome differs, because the check came back differently. That is what a process is for &mdash; it produces the right answer without requiring you to be a good judge of character.'
+              note: 'You took a checkable reference and used it. Everything about this is identical to refusing the crew at the goods door on Friday; only the outcome differs, because the check came back differently. That is what a process is for - it produces the right answer without requiring you to be a good judge of character.'
             },
             {
               label: '&ldquo;Come in and get started, I&rsquo;ll sort the paperwork behind you.&rdquo;',
@@ -685,13 +685,13 @@
             {
               label: 'Sign them in, point at the corridor, ask reception to keep an eye out.',
               a: 6, p: 8,
-              note: 'Realistic, and much better than the master key. It is also how most buildings actually operate, so it is worth being honest about what it is: the residual risk here has not been removed, it has been accepted &mdash; which is fine, as long as somebody decided that on purpose rather than by drifting into it.'
+              note: 'Realistic, and much better than the master key. It is also how most buildings actually operate, so it is worth being honest about what it is: the residual risk here has not been removed, it has been accepted - which is fine, as long as somebody decided that on purpose rather than by drifting into it.'
             }
           ]
         }
       ],
       truth: 'Halstead Fire were contracted, booked and expected. The only thing wrong with that morning was that none of it had been written down anywhere the person at the door could see.',
-      control: 'A visitor diary the front desk can actually read, carrying the contractor, the host and the PO before the van arrives &mdash; plus a standing answer for what to do when a genuine job is not in it, so that nobody is ever made to choose between the rules and the certification.'
+      control: 'A visitor diary the front desk can actually read, carrying the contractor, the host and the PO before the van arrives - plus a standing answer for what to do when a genuine job is not in it, so that nobody is ever made to choose between the rules and the certification.'
     },
 
     /* --------------------------------------------------------- genuine 3 */
@@ -704,7 +704,7 @@
       turns: [
         {
           tech: 'A genuine request, meeting a bad control',
-          line: '&ldquo;I know, I&rsquo;m sorry &mdash; the surname is different because I got married, and the address is my mum&rsquo;s because I moved in March. It is definitely my account.&rdquo;',
+          line: '&ldquo;I know, I&rsquo;m sorry - the surname is different because I got married, and the address is my mum&rsquo;s because I moved in March. It is definitely my account.&rdquo;',
           opts: [
             {
               label: 'Reset it. Nobody would invent that, and she is clearly upset.',
@@ -713,7 +713,7 @@
               note: 'This is the conversation a number takeover is won in, and it is won by sympathy rather than by lying well. Every detail offered is unverifiable and emotionally expensive to doubt, which is the design. What makes it genuinely hard is that the story is usually true: most people who fail verification are the customer.'
             },
             {
-              label: '&ldquo;I can&rsquo;t reset on what we have, but there&rsquo;s another way to prove it &mdash; can I send a code to the number on the account?&rdquo;',
+              label: '&ldquo;I can&rsquo;t reset on what we have, but there&rsquo;s another way to prove it - can I send a code to the number on the account?&rdquo;',
               a: 10, p: 10,
               note: 'An out-of-band check, initiated by you, against a detail already on the record that the caller cannot choose. Note that it is not a refusal: you moved the conversation onto evidence that means something instead of defending the three questions you happened to have.'
             },
@@ -721,7 +721,7 @@
               label: '&ldquo;I&rsquo;m sorry, I can&rsquo;t help you.&rdquo; End the call.',
               a: 4, p: 1,
               pivot: 'A hard refusal with no route, which turns the control into a lottery over who answers next.',
-              note: 'Safe, useless and expensive. She rings back in ten minutes and reaches somebody with a softer heart, which is the actual outcome of a refusal with no route: the control is now a lottery over which agent picks up. That is <a href="/blog/how-sim-swap-works">how a SIM swap works</a> in practice &mdash; the agent who eventually says yes is rarely careless, just the fifth one asked.'
+              note: 'Safe, useless and expensive. She rings back in ten minutes and reaches somebody with a softer heart, which is the actual outcome of a refusal with no route: the control is now a lottery over which agent picks up. That is <a href="/blog/how-sim-swap-works">how a SIM swap works</a> in practice - the agent who eventually says yes is rarely careless, just the fifth one asked.'
             }
           ]
         },
@@ -733,18 +733,18 @@
               label: 'Override the check. The need is real and the story has been consistent throughout.',
               a: 0, p: 8,
               pivot: 'Consistency was accepted as evidence.',
-              note: 'Consistency is not evidence &mdash; a story told twice is still a story. And the need being real says nothing about who is holding the phone. Everything you are feeling here is what an attacker would be trying to produce deliberately, which is exactly why this decision cannot be left to how a call feels.'
+              note: 'Consistency is not evidence - a story told twice is still a story. And the need being real says nothing about who is holding the phone. Everything you are feeling here is what an attacker would be trying to produce deliberately, which is exactly why this decision cannot be left to how a call feels.'
             },
             {
               label: '&ldquo;Let&rsquo;s try the code. If that fails there&rsquo;s a documented route with photo ID that takes about a day, and I&rsquo;ll start it now so you&rsquo;re not waiting on me.&rdquo;',
               a: 10, p: 10,
-              note: 'A fallback that exists in writing is the difference between a good control and a cruel one. It means the agent never has to choose between the rules and a person in trouble &mdash; and that choice, made often enough, is what breaks every verification process eventually.'
+              note: 'A fallback that exists in writing is the difference between a good control and a cruel one. It means the agent never has to choose between the rules and a person in trouble - and that choice, made often enough, is what breaks every verification process eventually.'
             },
             {
               label: '&ldquo;Rules are rules.&rdquo;',
               a: 6, p: 0,
               pivot: 'A rule with no explanation and no route, which is a rule people learn to route around.',
-              note: 'Three words that lose a customer and teach the next agent nothing. A rule with no route through it and no reason attached is a rule people learn to work around &mdash; and the person who works around it will be a colleague, not the caller.'
+              note: 'Three words that lose a customer and teach the next agent nothing. A rule with no route through it and no reason attached is a rule people learn to work around - and the person who works around it will be a colleague, not the caller.'
             }
           ]
         },
@@ -767,13 +767,13 @@
               label: '&ldquo;Of course, no problem.&rdquo;',
               a: 0, p: 8,
               pivot: 'A second request inside one call was granted because refusing twice felt rude.',
-              note: 'The same outcome as the reply above it, without even the pause. Worth naming what just happened: having said no once, saying no again in the same call feels twice as rude &mdash; and that arithmetic is the thing every single technique in this game is built on.'
+              note: 'The same outcome as the reply above it, without even the pause. Worth naming what just happened: having said no once, saying no again in the same call feels twice as rude - and that arithmetic is the thing every single technique in this game is built on.'
             }
           ]
         }
       ],
       truth: 'She was the customer. The married name, the address and the four days were all true, and the code proved it in about forty seconds. Nothing about the call required a judgement of character. It required one check that pointed at something on the record rather than at something in the caller&rsquo;s memory.',
-      control: 'A verification process with a documented fallback and a documented ceiling: what to do when the questions fail, and what an agent may never do however convincing the call. Both halves are needed &mdash; a process with no fallback produces cruelty, and a process with no ceiling produces a takeover.'
+      control: 'A verification process with a documented fallback and a documented ceiling: what to do when the questions fail, and what an agent may never do however convincing the call. Both halves are needed - a process with no fallback produces cruelty, and a process with no ceiling produces a takeover.'
     }
   ];
 
@@ -999,7 +999,7 @@
           var ax = AXES[i];
           var live = meter(ax.key);
           var pct = Math.round(barShown[i]);
-          var shown = live === null ? '&mdash;' : String(Math.round(live));
+          var shown = live === null ? '-' : String(Math.round(live));
           var label = live === null
             ? ax.label + ', not scored yet, ' + ax.hint
             : ax.label + ' ' + Math.round(live) + ' out of 100, ' + barWord(pct) + ', ' + ax.hint;
@@ -1134,7 +1134,7 @@
         }
         if (opt.p <= 3) {
           return {
-            word: 'Asset held — at a cost to the person on the other end.',
+            word: 'Asset held - at a cost to the person on the other end.',
             tone: '#fbbf24', bg: 'rgba(251,191,36,0.1)'
           };
         }
@@ -1315,7 +1315,7 @@
           '</h3>' +
           '<p style="margin:0 0 1.1rem;font-size:0.85rem;line-height:1.6;color:' + INK3 + ';">' +
           'The mean of the two axes, each of which is the mean of every reply you gave. They are ' +
-          'scored separately because they disagree constantly &mdash; and a run that is strong on one ' +
+          'scored separately because they disagree constantly - and a run that is strong on one ' +
           'and weak on the other is the interesting result, not a mistake.</p>';
 
         var vals = [a, p];
@@ -1343,7 +1343,7 @@
           var t = S.tech[name];
           var mean = Math.round((t.a / t.n) * 10);
           html += '<li style="margin:0 0 0.4rem;font-size:0.85rem;line-height:1.6;color:' + INK3 +
-            ';"><strong style="color:' + INK + ';">' + name + '</strong> &mdash; ' + t.n +
+            ';"><strong style="color:' + INK + ';">' + name + '</strong> - ' + t.n +
             (t.n === 1 ? ' turn' : ' turns') + ', asset held ' + mean + ' out of 100 against it.</li>';
         }
         html += '</ul>';
@@ -1354,7 +1354,7 @@
           html += '<ul style="margin:0 0 0.6rem;padding-left:1.1rem;">';
           for (i = 0; i < S.pivots.length; i++) {
             html += '<li style="margin:0 0 0.4rem;font-size:0.85rem;line-height:1.6;color:' + INK3 +
-              ';"><span style="color:' + INK4 + ';">' + S.pivots[i].where + '</span> &mdash; ' +
+              ';"><span style="color:' + INK4 + ';">' + S.pivots[i].where + '</span> - ' +
               S.pivots[i].line + '</li>';
           }
           html += '</ul>';
@@ -1369,7 +1369,7 @@
           '<ul style="margin:0 0 0.9rem;padding-left:1.1rem;">';
         for (i = 0; i < S.controls.length; i++) {
           html += '<li style="margin:0 0 0.5rem;font-size:0.85rem;line-height:1.6;color:' + INK3 +
-            ';"><strong style="color:' + INK + ';">' + S.controls[i].name + '</strong> &mdash; ' +
+            ';"><strong style="color:' + INK + ';">' + S.controls[i].name + '</strong> - ' +
             S.controls[i].control + '</li>';
         }
         html += '</ul>';
@@ -1384,13 +1384,13 @@
           '<p style="margin:0 0 0.6rem;font-size:0.85rem;line-height:1.65;color:' + INK3 + ';">' +
           'Every conversation in here ends on a control, and none of them end on what you should have ' +
           'spotted. That is deliberate. Each of these attacks works by asking one individual to be ' +
-          'clever, alone, at speed, against somebody who has rehearsed &mdash; and the answer to that ' +
+          'clever, alone, at speed, against somebody who has rehearsed - and the answer to that ' +
           'is never a better individual. It is a callback rule, a named approver, an out-of-band ' +
           'check, a visitor diary and a documented fallback, decided by daylight with more than one ' +
           'person in the room.</p>' +
           '<p style="margin:0 0 0.6rem;font-size:0.85rem;line-height:1.65;color:' + INK3 + ';">' +
           'Which is also why blaming the person who was manipulated is both unkind and useless. It is ' +
-          'unkind because the techniques here are aimed squarely at ordinary decency &mdash; ' +
+          'unkind because the techniques here are aimed squarely at ordinary decency - ' +
           'helpfulness, deference, not wanting to be rude to somebody carrying two coffees. It is ' +
           'useless because the next person to be shouted at for falling for one is the next person who ' +
           'quietly does not report one, and late reporting costs far more than the original mistake.</p>' +
@@ -1400,7 +1400,7 @@
           'authority and urgency run to their limit, on a call designed never to end. ' +
           '<a href="/blog/how-sim-swap-works">How a SIM swap works</a> is this game aimed at a support ' +
           'agent instead of at you. And <a href="/labs/osint-self-check">the OSINT self-check</a> shows ' +
-          'what a stranger can read about you before they ring &mdash; which is where the ' +
+          'what a stranger can read about you before they ring - which is where the ' +
           'uncomfortable familiarity in half of these conversations comes from.</p></div>' +
           '<div style="margin-top:1.1rem;display:flex;gap:0.6rem;flex-wrap:wrap;">' +
           '<button class="btn btn-primary" type="button" data-se-again>Take another set</button>' +

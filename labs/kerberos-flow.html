@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Walk Kerberos. Then Kerberoast it, RC4 and AES." />
     <meta name="twitter:description" content="Walk the Kerberos AS and TGS exchange, then run six Active Directory attacks from Kerberoasting to Golden tickets, each with what fixes it." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-kerberos-flow.jpg" />
-    <title>Kerberos Explained — The Flow, Then Six Attacks</title>
+    <title>Kerberos Explained - The Flow, Then Six Attacks</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -88,7 +88,7 @@
                         "name": "Why must the KRBTGT password be reset twice?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because Active Directory keeps the previous KRBTGT key so that tickets already in flight keep working. One reset therefore leaves every forged Golden Ticket valid. You need two resets with a gap longer than the maximum ticket lifetime between them — and the gap matters as much as the second reset, since doing both back to back breaks live sessions domain-wide and still leaves a window open."
+                                "text": "Because Active Directory keeps the previous KRBTGT key so that tickets already in flight keep working. One reset therefore leaves every forged Golden Ticket valid. You need two resets with a gap longer than the maximum ticket lifetime between them - and the gap matters as much as the second reset, since doing both back to back breaks live sessions domain-wide and still leaves a window open."
                         }
                 },
                 {
@@ -96,7 +96,7 @@
                         "name": "Why is a Silver Ticket harder to detect than a Golden one?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because it never reaches the domain controller. A service validates a ticket entirely by itself, using its own account key, without consulting the KDC — that is what makes Kerberos scale. So a forged service ticket produces no 4768 and no 4769: there is nothing for the domain controller to log because nothing was requested of it. Host-based logging on the service itself is the only place it appears."
+                                "text": "Because it never reaches the domain controller. A service validates a ticket entirely by itself, using its own account key, without consulting the KDC - that is what makes Kerberos scale. So a forged service ticket produces no 4768 and no 4769: there is nothing for the domain controller to log because nothing was requested of it. Host-based logging on the service itself is the only place it appears."
                         }
                 },
                 {
@@ -104,7 +104,7 @@
                         "name": "Does this tool touch my domain?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no KDC here, no LDAP query and no network code on the page at all. Every message is constructed in your browser from RFC 4120. It also means the tool cannot tell you which of your own accounts are roastable — that needs a query against your own directory, from a machine joined to it."
+                                "text": "No. There is no KDC here, no LDAP query and no network code on the page at all. Every message is constructed in your browser from RFC 4120. It also means the tool cannot tell you which of your own accounts are roastable - that needs a query against your own directory, from a machine joined to it."
                         }
                 }
         ]
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>Kerberos flow and attacks</h1>
-        <p class="hero-text">Walk the exchange from AS-REQ to AP-REP, then attack it. The one to run first is Kerberoasting &mdash; because it is not an exploit. No bug is triggered and nothing is bypassed: a domain user asks the KDC for a service ticket, which is exactly what the protocol is for, and gets back a blob encrypted with the service account&rsquo;s password. Run it as RC4, then as AES256, and read the cost-per-guess line both times. That one number is the whole argument for disabling RC4.</p>
+        <p class="hero-text">Walk the exchange from AS-REQ to AP-REP, then attack it. The one to run first is Kerberoasting - because it is not an exploit. No bug is triggered and nothing is bypassed: a domain user asks the KDC for a service ticket, which is exactly what the protocol is for, and gets back a blob encrypted with the service account&rsquo;s password. Run it as RC4, then as AES256, and read the cost-per-guess line both times. That one number is the whole argument for disabling RC4.</p>
         <ul class="lab-facts">
           <li>Six attacks, each with what fixes it</li>
           <li>RC4 against AES256, side by side</li>
@@ -230,16 +230,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No KDC, no LDAP, no domain contacted</li>
                 </ul>
               </div>
@@ -255,7 +255,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -285,7 +285,7 @@
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
-            <p class="lab-pane-label">Notes &mdash; this tool needs no input</p>
+            <p class="lab-pane-label">Notes - this tool needs no input</p>
             <label class="sr-only" for="tool-text">Scratch notes</label>
             <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
                       autocorrect="off" placeholder="Nothing to paste. Pick a mode above and press Run.
@@ -315,11 +315,11 @@ again. Compare the cost-per-guess line."></textarea>
           </article>
           <article class="info-card">
             <h3>The encryption type is the whole argument</h3>
-            <p>With RC4 the key <em>is</em> the NT hash: one MD4 of the password, unsalted, uniterated. With AES256 each guess costs 4096 rounds of PBKDF2 &mdash; roughly ten thousand times the work. Same attack, same request, the difference between an afternoon and a year. And the client picks the etype in the request, so AES only helps once RC4 is actually refused.</p>
+            <p>With RC4 the key <em>is</em> the NT hash: one MD4 of the password, unsalted, uniterated. With AES256 each guess costs 4096 rounds of PBKDF2 - roughly ten thousand times the work. Same attack, same request, the difference between an afternoon and a year. And the client picks the etype in the request, so AES only helps once RC4 is actually refused.</p>
           </article>
           <article class="info-card">
             <h3>Golden and Silver differ in what you can see</h3>
-            <p>A Golden Ticket forges a TGT with the KRBTGT key, so there is no AS-REQ and event 4768 never fires &mdash; the domain first sees a valid ticket it has no record of issuing. A Silver Ticket forges a service ticket and never touches the domain controller at all, so there is no 4768 <em>and</em> no 4769. Smaller blast radius, almost no evidence.</p>
+            <p>A Golden Ticket forges a TGT with the KRBTGT key, so there is no AS-REQ and event 4768 never fires - the domain first sees a valid ticket it has no record of issuing. A Silver Ticket forges a service ticket and never touches the domain controller at all, so there is no 4768 <em>and</em> no 4769. Smaller blast radius, almost no evidence.</p>
           </article>
           <article class="info-card">
             <h3>The fixes are named, and so are the fake ones</h3>
@@ -342,15 +342,15 @@ again. Compare the cost-per-guess line."></textarea>
           </details>
           <details class="lab-faq">
             <summary>Why must the KRBTGT password be reset twice?</summary>
-            <div>Because Active Directory keeps the previous KRBTGT key so that tickets already in flight keep working. One reset therefore leaves every forged Golden Ticket valid. You need two resets with a gap longer than the maximum ticket lifetime between them — and the gap matters as much as the second reset, since doing both back to back breaks live sessions domain-wide and still leaves a window open.</div>
+            <div>Because Active Directory keeps the previous KRBTGT key so that tickets already in flight keep working. One reset therefore leaves every forged Golden Ticket valid. You need two resets with a gap longer than the maximum ticket lifetime between them - and the gap matters as much as the second reset, since doing both back to back breaks live sessions domain-wide and still leaves a window open.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is a Silver Ticket harder to detect than a Golden one?</summary>
-            <div>Because it never reaches the domain controller. A service validates a ticket entirely by itself, using its own account key, without consulting the KDC — that is what makes Kerberos scale. So a forged service ticket produces no 4768 and no 4769: there is nothing for the domain controller to log because nothing was requested of it. Host-based logging on the service itself is the only place it appears.</div>
+            <div>Because it never reaches the domain controller. A service validates a ticket entirely by itself, using its own account key, without consulting the KDC - that is what makes Kerberos scale. So a forged service ticket produces no 4768 and no 4769: there is nothing for the domain controller to log because nothing was requested of it. Host-based logging on the service itself is the only place it appears.</div>
           </details>
           <details class="lab-faq">
             <summary>Does this tool touch my domain?</summary>
-            <div>No. There is no KDC here, no LDAP query and no network code on the page at all. Every message is constructed in your browser from RFC 4120. It also means the tool cannot tell you which of your own accounts are roastable — that needs a query against your own directory, from a machine joined to it.</div>
+            <div>No. There is no KDC here, no LDAP query and no network code on the page at all. Every message is constructed in your browser from RFC 4120. It also means the tool cannot tell you which of your own accounts are roastable - that needs a query against your own directory, from a machine joined to it.</div>
           </details>
       </section>
 

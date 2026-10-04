@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-happens-when-you-click-a-phishing-link" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What Happens When You Click a Phishing Link" />
     <meta
@@ -118,7 +118,7 @@
             "name": "Does changing my password fix it?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Only half of it, and it is the half people stop at. A modern credential-harvesting page steals the session cookie the real service issued, and a session cookie is not a password — it is a token saying this browser has already signed in. Until that session is ended, the new password changes nothing for the attacker. Change the password, then use the sign-out-everywhere or revoke-sessions control, in that order, and then look for what outlives both: mail rules, forwarding addresses, connected apps and recovery details."
+              "text": "Only half of it, and it is the half people stop at. A modern credential-harvesting page steals the session cookie the real service issued, and a session cookie is not a password - it is a token saying this browser has already signed in. Until that session is ended, the new password changes nothing for the attacker. Change the password, then use the sign-out-everywhere or revoke-sessions control, in that order, and then look for what outlives both: mail rules, forwarding addresses, connected apps and recovery details."
             }
           },
           {
@@ -126,7 +126,7 @@
             "name": "I have two-factor authentication. Does that not stop this?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "It stops the reused-password attack, which is worth having. It does not stop a page that relays your login to the real site in real time. A code from an app or an SMS is valid for a short window and the attacker needs about a second of it; a push approval is easier still, because the prompt you approve is the attacker's genuine login attempt. The factors that survive are the ones bound to the address you are actually on — a passkey or a hardware security key — because the signature they produce verifies nowhere except the real site. That only holds if the weaker methods are removed from the account, because an attacker will simply choose the fallback."
+              "text": "It stops the reused-password attack, which is worth having. It does not stop a page that relays your login to the real site in real time. A code from an app or an SMS is valid for a short window and the attacker needs about a second of it; a push approval is easier still, because the prompt you approve is the attacker's genuine login attempt. The factors that survive are the ones bound to the address you are actually on - a passkey or a hardware security key - because the signature they produce verifies nowhere except the real site. That only holds if the weaker methods are removed from the account, because an attacker will simply choose the fallback."
             }
           },
           {
@@ -274,7 +274,7 @@
               <p>
                 The honest answer starts by taking the question apart, because "I clicked" describes at least six
                 different events and only three of them need anything done in a hurry. Most writing on this subject
-                answers a question nobody asked — how to spot a phishing email — which is excellent advice arriving
+                answers a question nobody asked - how to spot a phishing email - which is excellent advice arriving
                 several minutes too late.
               </p>
               <p>
@@ -327,7 +327,7 @@
                     </tr>
                     <tr>
                       <td>Typed a one-time code, or approved a push prompt</td>
-                      <td>A live signed-in session — the second factor is already satisfied</td>
+                      <td>A live signed-in session - the second factor is already satisfied</td>
                       <td>All of the above, then re-enrol MFA and audit rules, apps and recovery</td>
                     </tr>
                     <tr>
@@ -356,14 +356,14 @@
               </p>
               <p>
                 Fetching a page is a request, and a request carries a return address. The server logged your IP, which
-                resolves to your internet provider and, at best, to a city — mobile carrier ranges are coarse enough
+                resolves to your internet provider and, at best, to a city - mobile carrier ranges are coarse enough
                 to place you in the wrong state. It logged your <code>User-Agent</code>, naming your browser, its
                 version and your operating system. If the page ran any script it could also read your screen size,
                 language and timezone, which together make a rough fingerprint.
               </p>
               <p>
                 The more interesting part is the link itself. Almost every phishing link in a bulk campaign carries a
-                per-recipient token — a random string in the path, a query parameter, or your address encoded into the
+                per-recipient token - a random string in the path, a query parameter, or your address encoded into the
                 URL fragment. That token is how the landing page greets you by name and pre-fills your address in the
                 sign-in box, which is the most effective trick in the business, because a form that already knows who
                 you are reads as a form you have used before. Pull a suspicious link apart in
@@ -375,14 +375,14 @@
                 <strong>which specific person clicked</strong>. An address that clicks is a confirmed live address
                 read by a human who engages with mail, and that is a materially more valuable record than one that has
                 only ever been sent to. Lists get scored, sorted and resold on exactly that signal. This is why a
-                click reliably produces more mail rather than less — the slow-burning consequence nobody warns you
+                click reliably produces more mail rather than less - the slow-burning consequence nobody warns you
                 about.
               </p>
               <div class="post-callout" role="note">
                 <p>
                   <strong>The same disclosure happens before you click.</strong> If your mail client loads remote
                   images, a one-pixel image on the sender's server reports that the message was opened, roughly from
-                  where, and when — the tracking pixel ordinary marketing mail has used for twenty years. Turning off
+                  where, and when - the tracking pixel ordinary marketing mail has used for twenty years. Turning off
                   automatic image loading costs you nothing but a click on the messages you actually wanted.
                 </p>
               </div>
@@ -396,7 +396,7 @@
 
               <h2 id="the-credential-page-end-to-end">The credential page, end to end</h2>
               <p>
-                The overwhelming majority of phishing has one goal, and it is not malware. It is a working login —
+                The overwhelming majority of phishing has one goal, and it is not malware. It is a working login -
                 cheap to attempt, high-yield, and needing no exploit and no code execution anywhere.
               </p>
               <p>
@@ -405,7 +405,7 @@
                 increasingly a legitimate form or survey service so the domain in the address bar belongs to a company
                 you already trust. You type your address and password, the script stores them, and then it redirects
                 you to the genuine site. That last step is the clever part. You land on the real login page, assume
-                you mistyped, sign in properly, and the second attempt works — so nothing ever felt wrong.
+                you mistyped, sign in properly, and the second attempt works - so nothing ever felt wrong.
               </p>
               <p>
                 <strong>That is the version most people picture, and it is no longer the version that matters.</strong>
@@ -421,14 +421,14 @@
                 <a href="/assets/images/blog/what-happens-when-you-click-a-phishing-link-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/what-happens-when-you-click-a-phishing-link-diagram1.svg" alt="A sequence diagram of a reverse-proxy phishing page: you open the link, the proxy fetches the real login page and relays it back, your password is forwarded unchanged, the real service asks for a code, the six digits you read off your phone are relayed onward inside their thirty-second window, and the session cookie the service issues stops at the proxy" width="1160" height="720" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>The relay, step by step. Nothing in it is forged — every page and every prompt is the genuine article, passed through. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>The relay, step by step. Nothing in it is forged - every page and every prompt is the genuine article, passed through. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
                 Follow what the attacker ends up holding. Not a password: a <strong>session cookie</strong>. When the
                 real service is finally satisfied that you are you, it issues a token saying this browser has signed
                 in, and that token lands in the proxy's hands rather than yours. A session cookie does not care how
-                the session was established. Replayed into a fresh browser, it is an account already open — no
+                the session was established. Replayed into a fresh browser, it is an account already open - no
                 password prompt, no second factor, nothing left to solve. That is
                 <a href="/glossary#term-session-hijacking">session hijacking</a>, arrived at through the front door.
               </p>
@@ -441,7 +441,7 @@
               <div class="lab-cta">
                 <p class="lab-cta-text">
                   <strong>Take the message apart instead of guessing.</strong> The phishing dissector on this site
-                  reads a raw email and quotes every finding back with the byte offset it came from — display name
+                  reads a raw email and quotes every finding back with the byte offset it came from - display name
                   against the real address, punycode and lookalike hosts decoded in both directions, link text against
                   the actual destination, attachment names read as bytes. It never fetches a link and never expands a
                   shortener, because opening one would tell the sender you read the message. Everything happens in
@@ -470,7 +470,7 @@
                   and shows the window ticking down, which makes the size of that gap concrete.
                 </li>
                 <li>
-                  <strong>A push approval.</strong> The easiest of all to defeat, because nothing needs relaying —
+                  <strong>A push approval.</strong> The easiest of all to defeat, because nothing needs relaying -
                   the attacker triggers a genuine login and you approve it. The prompt on your phone is real. It is
                   simply not yours.
                 </li>
@@ -482,8 +482,8 @@
                 </li>
                 <li>
                   <strong>A passkey or a hardware security key.</strong> The one that breaks the mechanism rather than
-                  raising its price. The key signs a challenge together with the origin — the exact address the
-                  browser is on — and will not produce a signature for an origin the credential was not created on.
+                  raising its price. The key signs a challenge together with the origin - the exact address the
+                  browser is on - and will not produce a signature for an origin the credential was not created on.
                   The proxy's domain is not the real domain, so there is nothing to relay and nothing to type into the
                   wrong box. It is the only factor here that fails closed when you make a mistake.
                 </li>
@@ -510,7 +510,7 @@
                 working attack therefore needs a chain: one bug to run code inside the sandbox, a second to escape it.
                 Chains like that are expensive, they die the moment either bug is patched, and spending one on bulk
                 credential phishing means burning a valuable asset for a mail password. They get pointed at named
-                individuals — journalists, dissidents, executives — not at mailing lists.
+                individuals - journalists, dissidents, executives - not at mailing lists.
               </p>
               <p>
                 The exceptions deserve naming rather than hand-waving: a browser or operating system months behind on
@@ -530,7 +530,7 @@
                 <p>
                   <strong>The rule that covers all of it.</strong> No legitimate website has ever needed you to open a
                   terminal, press a key combination, or paste a command in order to prove you are a person or to view
-                  a document. Not one. If a page asks, the page is the attack — and closing the tab is the entire
+                  a document. Not one. If a page asks, the page is the attack - and closing the tab is the entire
                   remedy, because nothing has run yet.
                 </p>
               </div>
@@ -545,7 +545,7 @@
                 <li>
                   <strong>Macros.</strong> A program written in Visual Basic for Applications, stored inside an Office
                   document, able to run when the document opens. This dominated for years, until Microsoft began
-                  blocking macros by default in files carrying the mark of the web — the flag Windows attaches to
+                  blocking macros by default in files carrying the mark of the web - the flag Windows attaches to
                   anything downloaded from the internet. The banner asking you to "enable content" is the last
                   obstacle between a document and code running as you, which is why the message above it is always
                   some variation of "this document was created in an earlier version".
@@ -553,7 +553,7 @@
                 <li>
                   <strong>Containers: ISO, IMG, VHD and password-protected archives.</strong> These exist because of
                   that rule. The mark of the web attaches to the downloaded file, and historically did not propagate
-                  to files pulled out of a mounted disk image — so an ISO delivers its contents unmarked and the macro
+                  to files pulled out of a mounted disk image - so an ISO delivers its contents unmarked and the macro
                   block does not apply. An archive with its password written in the email body does a related job: no
                   scanner can read inside it, and a human helpfully supplies the key.
                   <a href="/labs/archive-inspector">The archive inspector</a> lists what is inside an archive without
@@ -561,7 +561,7 @@
                 </li>
                 <li>
                   <strong>Windows shortcuts (.lnk).</strong> The one that surprises people. A shortcut contains no
-                  code at all — it contains a command line. A file named <code>Invoice_March.pdf.lnk</code>, wearing
+                  code at all - it contains a command line. A file named <code>Invoice_March.pdf.lnk</code>, wearing
                   whatever icon its author chose, can point at PowerShell with arguments that fetch and run something.
                   The icon is decoration and the extension is hidden by default. What you double-click is a command,
                   dressed as a document.
@@ -570,7 +570,7 @@
                   <strong>HTML smuggling.</strong> The attachment is an <code>.html</code> file, which every mail
                   gateway is happy to pass. Opening it runs a few lines of script that assemble the real payload out
                   of data already embedded in that same file and hand it to you as a download. No executable crossed
-                  the network, so there was nothing in transit to catch — the file was manufactured on your machine.
+                  the network, so there was nothing in transit to catch - the file was manufactured on your machine.
                 </li>
                 <li>
                   <strong>Anything else that can hold an embedded object.</strong> OneNote pages, compiled help files,
@@ -582,7 +582,7 @@
                 All of these need a human action after the download, and that is the boundary that decides your
                 response. <a href="/labs/file-inspector">The file inspector</a> reads a file's
                 <a href="/glossary#term-magic-bytes">magic bytes</a> and tells you what it actually is rather than
-                what it is named — which settles the common version of this question, whether the thing calling itself
+                what it is named - which settles the common version of this question, whether the thing calling itself
                 a PDF is one, without opening it.
               </p>
 
@@ -601,7 +601,7 @@
                 </li>
                 <li>
                   <strong>Decide which of the six things you did.</strong> Not what you are afraid you did. If you are
-                  unsure whether you typed a password, check your password manager's history — an autofill event on an
+                  unsure whether you typed a password, check your password manager's history - an autofill event on an
                   unfamiliar domain is a definitive answer, and its absence is a good sign.
                 </li>
               </ol>
@@ -625,7 +625,7 @@
                   <strong>Revoke every session, immediately afterwards.</strong> Look for "sign out everywhere",
                   "active sessions" or "devices". This is the step that invalidates the stolen cookie, and not every
                   provider does it automatically on a password change. Doing it before the change is worse than
-                  useless — a live attacker session can simply set the password back.
+                  useless - a live attacker session can simply set the password back.
                 </li>
                 <li>
                   <strong>Check mail rules and forwarding.</strong> The step almost everybody misses, which is why it
@@ -649,7 +649,7 @@
                 <li>
                   <strong>Tell whoever needs to know, now.</strong> Your IT or security team if this is a work
                   account; your bank if payment details were involved. Report before you have finished investigating,
-                  not after — they can revoke things you cannot.
+                  not after - they can revoke things you cannot.
                 </li>
               </ol>
               <p><strong>If you ran a file, opened one, or enabled content:</strong></p>
@@ -669,7 +669,7 @@
                 </li>
                 <li>
                   <strong>Escalate. Do not clean it and carry on.</strong> A clean antivirus result means the scanner
-                  recognised nothing, which is not the same as nothing being there — initial-access tooling is rebuilt
+                  recognised nothing, which is not the same as nothing being there - initial-access tooling is rebuilt
                   specifically to be unrecognised for its first days in the wild. The reliable answer is a rebuild.
                 </li>
               </ol>
@@ -689,8 +689,8 @@
               </p>
               <p>
                 A rule that moves every message containing <em>invoice</em>, <em>payment</em>, <em>bank</em>,
-                <em>security alert</em> or <em>password</em> into a folder nobody reads — Archive, RSS Feeds, a folder
-                named with a single full stop — and marks it read on the way. Sometimes a forwarding rule that
+                <em>security alert</em> or <em>password</em> into a folder nobody reads - Archive, RSS Feeds, a folder
+                named with a single full stop - and marks it read on the way. Sometimes a forwarding rule that
                 silently copies everything to an outside address. From that moment the attacker reads your mail and
                 you do not see the warnings about it, which is the objective: quiet, durable access to the
                 conversation rather than a smash and grab.
@@ -705,7 +705,7 @@
               <p>Where to look, on the two systems most people are on:</p>
               <ul>
                 <li>
-                  <strong>Microsoft 365 and Outlook on the web:</strong> Settings, then Mail, then Rules — and
+                  <strong>Microsoft 365 and Outlook on the web:</strong> Settings, then Mail, then Rules - and
                   separately, Forwarding, because a forward is not listed as a rule. Also check the connected accounts
                   section, and on a work account whether anyone has been given delegate access to your mailbox.
                 </li>
@@ -719,8 +719,8 @@
                 Three more things worth thirty seconds each while you are in there. Read the Sent folder, and then
                 Deleted items, because somebody who mailed your contacts from your account usually removes the
                 evidence. Check the connected-applications list, since a token granted to an app is access no password
-                change touches. And read the recent sign-in activity your provider records — locations, devices, times
-                — which will often tell you plainly whether anything happened at all.
+                change touches. And read the recent sign-in activity your provider records - locations, devices, times
+                - which will often tell you plainly whether anything happened at all.
               </p>
               <p>
                 All of this is the same logic as the incident work in
@@ -731,20 +731,20 @@
               <h2 id="when-it-is-genuinely-fine">When it is genuinely fine</h2>
               <p>
                 Most of the time it is fine, and saying so plainly is what makes the rest of this worth believing. If
-                a page only warns, people stop reading it — and then they stop reporting, which is the outcome that
+                a page only warns, people stop reading it - and then they stop reporting, which is the outcome that
                 actually costs money.
               </p>
               <p>You are fine, with nothing further to do, if any of these describes you:</p>
               <ul>
                 <li>You opened the link, the page looked wrong, and you closed it. Nothing typed, so nothing left your device.</li>
                 <li>You reached a login page, felt uneasy, and went to the real site in another tab instead. That instinct is the control working.</li>
-                <li>The link was dead, or your browser or mail provider blocked it — which usually means somebody reported it before you did.</li>
+                <li>The link was dead, or your browser or mail provider blocked it - which usually means somebody reported it before you did.</li>
                 <li>You downloaded a file and never opened it. Delete it, empty the bin, done. Downloading is not running.</li>
                 <li>You clicked from a supported phone, the page opened in the mail app's browser, and you typed nothing.</li>
               </ul>
               <p>
                 The thing that keeps me calm about phishing generally is that it is a volume business. Almost all of
-                these messages are aimed at nobody in particular — one template posted to a hundred thousand
+                these messages are aimed at nobody in particular - one template posted to a hundred thousand
                 addresses, in the hope that a fraction of a percent do the work. You were almost certainly not chosen.
                 You were on a list. The <a href="/blog/types-of-cyberattacks">wider map of attack families</a> puts
                 that in proportion: phishing is the cheapest entry in the catalogue, which is exactly why it is the
@@ -786,7 +786,7 @@
                   <summary>Does changing my password fix it?</summary>
                   <p>
                     Only half of it, and it is the half people stop at. A modern credential-harvesting page steals
-                    the session cookie the real service issued, and a session cookie is not a password — it is a
+                    the session cookie the real service issued, and a session cookie is not a password - it is a
                     token saying this browser has already signed in. Until that session is ended, the new password
                     changes nothing for the attacker. Change the password, then use the sign-out-everywhere or
                     revoke-sessions control, in that order, and then look for what outlives both: mail rules,
@@ -800,7 +800,7 @@
                     your login to the real site in real time. A code from an app or an SMS is valid for a short
                     window and the attacker needs about a second of it; a push approval is easier still, because the
                     prompt you approve is the attacker's genuine login attempt. The factors that survive are the
-                    ones bound to the address you are actually on — a passkey or a hardware security key — because
+                    ones bound to the address you are actually on - a passkey or a hardware security key - because
                     the signature they produce verifies nowhere except the real site. That only holds if the weaker
                     methods are removed from the account, because an attacker will simply choose the fallback.
                   </p>
@@ -851,7 +851,7 @@
               <p>
                 So: which of the six was it? If you typed nothing, you have lost a little privacy and gained some
                 spam, and that is genuinely the whole story. If you typed something, you have half an hour of dull,
-                specific work ahead — password, sessions, rules, apps, recovery, reuse — and the order matters more
+                specific work ahead - password, sessions, rules, apps, recovery, reuse - and the order matters more
                 than the speed. If something ran, stop reading and get the machine off the network. Everything else on
                 this page explains why those three answers are different.
               </p>
@@ -884,7 +884,7 @@
             <h2>Clicked something and want a straight answer?</h2>
             <p>
               Most of the time the answer is smaller than the fear, and the work is establishing which of the six
-              things actually happened and then closing whatever it opened — sessions, rules, tokens, reused
+              things actually happened and then closing whatever it opened - sessions, rules, tokens, reused
               passwords. I do that for individuals and for teams, and I teach it to the people I mentor.
             </p>
             <div class="hero-actions">

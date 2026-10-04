@@ -98,7 +98,7 @@
                         "name": "Why is a timeout not a fix for deadlock?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because it does not remove the cycle, it survives one instance of it. Give up on a lock after 200 ms and the hang becomes a retry; if both threads retry they can collide again, and again, in step, which is livelock — every thread busy, no thread progressing. It also turns a deterministic failure you can reproduce into an intermittent one you cannot, which is a straight downgrade for whoever debugs it next. Ordering the locks removes the cycle, costs nothing at runtime and is checkable by reading the code."
+                                "text": "Because it does not remove the cycle, it survives one instance of it. Give up on a lock after 200 ms and the hang becomes a retry; if both threads retry they can collide again, and again, in step, which is livelock - every thread busy, no thread progressing. It also turns a deterministic failure you can reproduce into an intermittent one you cannot, which is a straight downgrade for whoever debugs it next. Ordering the locks removes the cycle, costs nothing at runtime and is checkable by reading the code."
                         }
                 },
                 {
@@ -211,7 +211,7 @@
           </ol>
         </nav>
         <h1>Concurrency primitives, one step at a time</h1>
-        <p class="hero-text">A race condition is easy to describe and almost impossible to picture, which is why the bug survives code review and then turns up once a fortnight in production. So here nothing is imagined: the threads are programs of single instructions and you decide which one runs next. Be honest about what this is, though &mdash; JavaScript is single-threaded, there are no real threads on this page, and this is a model of concurrency that you drive by hand.</p>
+        <p class="hero-text">A race condition is easy to describe and almost impossible to picture, which is why the bug survives code review and then turns up once a fortnight in production. So here nothing is imagined: the threads are programs of single instructions and you decide which one runs next. Be honest about what this is, though - JavaScript is single-threaded, there are no real threads on this page, and this is a model of concurrency that you drive by hand.</p>
         <ul class="lab-facts">
           <li>You pick which thread steps next</li>
           <li>Lost updates you cause deliberately</li>
@@ -240,16 +240,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>There are no real threads here &mdash; this is a model you step by hand</li>
+                  <li>There are no real threads here - this is a model you step by hand</li>
                   <li>The model is sequentially consistent; real hardware is worse</li>
                   <li>The enumeration stops at 600,000 schedules and says so</li>
                 </ul>
@@ -266,7 +266,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -278,7 +278,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-concurrency-mount" id="conc-mount">
-          <p class="lab-proc-fallback">Starting the threads and the scheduler. If this message stays, the visualiser did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the threads and the scheduler. If this message stays, the visualiser did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -293,7 +293,7 @@
           </article>
           <article class="info-card">
             <h3>A lock does not stop the interleaving</h3>
-            <p>It stops the interleavings that matter, which is a different and much weaker claim. With two threads doing two increments each there are 924 legal orders and 918 of them end at the wrong number; add a mutex and 6 orders survive, all of them correct. The threads still take turns &mdash; the transcript shows it &mdash; they just never take turns inside the critical section. Those numbers are enumerated in the last tab, not quoted from anywhere.</p>
+            <p>It stops the interleavings that matter, which is a different and much weaker claim. With two threads doing two increments each there are 924 legal orders and 918 of them end at the wrong number; add a mutex and 6 orders survive, all of them correct. The threads still take turns - the transcript shows it - they just never take turns inside the critical section. Those numbers are enumerated in the last tab, not quoted from anywhere.</p>
           </article>
           <article class="info-card">
             <h3>A semaphore is not a mutex</h3>
@@ -324,7 +324,7 @@
           </details>
           <details class="lab-faq">
             <summary>Why is a timeout not a fix for deadlock?</summary>
-            <div>Because it does not remove the cycle, it survives one instance of it. Give up on a lock after 200 ms and the hang becomes a retry; if both threads retry they can collide again, and again, in step, which is livelock &mdash; every thread busy, no thread progressing. It also turns a deterministic failure you can reproduce into an intermittent one you cannot, which is a straight downgrade for whoever debugs it next. Ordering the locks removes the cycle, costs nothing at runtime and is checkable by reading the code.</div>
+            <div>Because it does not remove the cycle, it survives one instance of it. Give up on a lock after 200 ms and the hang becomes a retry; if both threads retry they can collide again, and again, in step, which is livelock - every thread busy, no thread progressing. It also turns a deterministic failure you can reproduce into an intermittent one you cannot, which is a straight downgrade for whoever debugs it next. Ordering the locks removes the cycle, costs nothing at runtime and is checkable by reading the code.</div>
           </details>
           <details class="lab-faq">
             <summary>Does any of this apply to JavaScript?</summary>

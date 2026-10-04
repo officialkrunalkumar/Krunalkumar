@@ -22,7 +22,7 @@
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-research.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Krunalkumar Shah — Research" />
+    <meta property="og:image:alt" content="Krunalkumar Shah - Research" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Krunalkumar Shah Research | Publications & Ideas" />
@@ -198,7 +198,7 @@
               A fork bomb is a denial-of-service attack in which a process endlessly replicates itself until the
               process table and memory are exhausted, freezing the system. What drew me to it is that creating a
               process is a legitimate operation needing no special privileges, so even hardened Linux systems are
-              vulnerable — availability, one of the three pillars of information security, breaks down.
+              vulnerable - availability, one of the three pillars of information security, breaks down.
             </p>
           </article>
           <article class="info-card">
@@ -215,7 +215,7 @@
             <p>
               I combined name-based detection with something I call process resource quarantine. New processes are
               monitored for their fork rate; offenders are killed and their name recorded. When a recorded name
-              reappears, I do not kill it outright — it runs inside a resource quarantine and is inspected. If it
+              reappears, I do not kill it outright - it runs inside a resource quarantine and is inspected. If it
               behaves, it is released and removed from the list, so a false positive corrects itself instead of
               lasting forever.
             </p>
@@ -225,7 +225,7 @@
             <p>
               I evaluated the system with a bash fork bomb on Xubuntu 18.04 (kernel 4.15). It identified an attack in
               as little as 44&nbsp;ms at a threshold of 500 forks, while known offenders were handled instantly by
-              name — and the machine stayed responsive and available throughout, which was the whole point.
+              name - and the machine stayed responsive and available throughout, which was the whole point.
             </p>
           </article>
         </div>
@@ -244,7 +244,7 @@
             Your browser cannot play this video. The same explanation is written out above,
             and the flow chart below shows every step.
           </video>
-          <figcaption>The paper, narrated, in a hundred seconds: a fork bomb filling the process table until the machine stops answering, then the same attack run against the defense. Every box in the flow chart below is visited &mdash; the trusted-name shortcut, the kill, the quarantine, and the false positive that corrects itself &mdash; with the machine&rsquo;s process count and table pressure shown alongside. Nothing plays until you press play.</figcaption>
+          <figcaption>The paper, narrated, in a hundred seconds: a fork bomb filling the process table until the machine stops answering, then the same attack run against the defense. Every box in the flow chart below is visited - the trusted-name shortcut, the kill, the quarantine, and the false positive that corrects itself - with the machine&rsquo;s process count and table pressure shown alongside. Nothing plays until you press play.</figcaption>
         </figure>
 
         <figure class="research-figure">
@@ -262,13 +262,13 @@
               decoding="async"
             />
           </a>
-          <figcaption>How each fork request is screened — trusted names skip checks, unknown processes are rate-checked, and repeat offenders get quarantined instead of being permanently banned. Tap the diagram to open it full-screen.</figcaption>
+          <figcaption>How each fork request is screened - trusted names skip checks, unknown processes are rate-checked, and repeat offenders get quarantined instead of being permanently banned. Tap the diagram to open it full-screen.</figcaption>
         </figure>
 
         <div class="lab-cta">
           <p class="lab-cta-text">
-            <strong>See it happen.</strong> The behavior this paper describes &mdash; a process
-            table filling until the system stops responding &mdash; can be watched safely in a real
+            <strong>See it happen.</strong> The behavior this paper describes - a process
+            table filling until the system stops responding - can be watched safely in a real
             Linux machine that boots inside your browser. It is capped at 64&nbsp;MB and sealed off
             from your computer, so setting off a fork bomb there costs you one click on Reboot.
           </p>

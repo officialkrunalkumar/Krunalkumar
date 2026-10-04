@@ -37,7 +37,7 @@
       q: 'How do you store passwords?',
       opts: [
         ['A password manager', 14, null],
-        ['The browser’s built-in one', 9, 'Fine, and much better than memory — just make sure the device itself is locked and the browser profile has a strong password.'],
+        ['The browser’s built-in one', 9, 'Fine, and much better than memory - just make sure the device itself is locked and the browser profile has a strong password.'],
         ['My head, or a notes file', 2, 'Human memory forces reuse, which is the real problem. A manager removes the reason to reuse.']
       ]
     },
@@ -54,7 +54,7 @@
       opts: [
         ['I check the sending domain and hover links', 10, null],
         ['I would probably spot an obvious one', 5, 'Targeted phishing does not look obvious. Check the actual sending domain, not the display name.'],
-        ['Honestly, probably not', 0, 'Try the phishing game on this site — the point of it is that the good ones look completely normal.']
+        ['Honestly, probably not', 0, 'Try the phishing game on this site - the point of it is that the good ones look completely normal.']
       ]
     },
     {
@@ -84,7 +84,7 @@
     {
       q: 'What do you do on public wifi?',
       opts: [
-        ['Use it normally — I check for HTTPS', 7, null],
+        ['Use it normally - I check for HTTPS', 7, null],
         ['Avoid it entirely', 6, 'Reasonable, though HTTPS means public wifi is far less dangerous than it was in 2010.'],
         ['Use it for anything, without thinking', 3, 'Mostly fine now, but watch for certificate warnings and never click through one.']
       ]
@@ -109,7 +109,7 @@
       q: 'If somebody rang claiming to be your bank, what would you do?',
       opts: [
         ['Hang up and call the number on my card', 10, null],
-        ['Ask them to prove who they are', 4, 'They will happily "prove" it. Caller ID is trivially spoofed — hanging up and dialling back is the only real check.'],
+        ['Ask them to prove who they are', 4, 'They will happily "prove" it. Caller ID is trivially spoofed - hanging up and dialling back is the only real check.'],
         ['Answer their questions', 0, 'This is the most successful attack there is, and it does not need any technology at all.']
       ]
     },
@@ -133,7 +133,7 @@
       q: 'Has anyone else got a login to one of your personal accounts?',
       opts: [
         ['No', 5, null],
-        ['A family member, deliberately', 3, 'Fine if deliberate — just make sure it is not the recovery route as well.'],
+        ['A family member, deliberately', 3, 'Fine if deliberate - just make sure it is not the recovery route as well.'],
         ['Probably, from years ago', 0, 'Old shared logins outlive the reason they were shared. Rotate them.']
       ]
     }
@@ -188,7 +188,7 @@
           }
           fixes.sort(function (a, b) { return b.gap - a.gap; });
 
-          var body = '<strong>' + band + ' &mdash; ' + pct + '%.</strong> ';
+          var body = '<strong>' + band + ' - ' + pct + '%.</strong> ';
           if (!fixes.length) {
             body += 'Nothing on this list is working against you, which is genuinely unusual. ' +
                     'The remaining risk is the stuff no questionnaire catches: a supplier being breached, ' +

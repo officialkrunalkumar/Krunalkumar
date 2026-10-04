@@ -62,7 +62,7 @@
 
   // A hint for fellow console-openers. The terminal itself lives at /terminal.
   console.log('%c👀 curiosity opens consoles… it also opens /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
-  console.log('%c⌨️  press . for the background controls — or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
+  console.log('%c⌨️  press . for the background controls - or run `magic` in /terminal', 'font-size:11px;font-style:italic;color:#7dd3fc;');
 
   // Assigned when the WhatsApp bubble is built near the bottom of this file. The
   // `b` shortcut belongs with the other background keys, which are wired up in
@@ -223,7 +223,7 @@
     // particleLightness only moves on a theme flip, so the result is constant
     // between theme changes — see the `color` cache below.
     function particleColour(hue, alpha) {
-      return `hsla(${hue}, 90%, ${particleLightness}%, ${alpha})`;
+      return `hsla(${hue} 90%, ${particleLightness}, ${alpha}`;
     }
 
     function spawnParticle() {
@@ -1011,7 +1011,7 @@
     // Mayuri tells him the person came through the corner rather than the
     // contact page, which is the one useful thing this link can carry.
     const WA_HREF = 'https://wa.me/918200713617?text=' +
-      encodeURIComponent('Hi Krunalkumar, Mayuri sent me over from your website — I would like to talk.');
+      encodeURIComponent('Hi Krunalkumar, Mayuri sent me over from your website - I would like to talk.');
 
     let waHidden = false;
     try {
@@ -1262,7 +1262,7 @@
     panel.className = 'mayuri-panel';
     panel.id = 'mayuri-panel';
     panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-label', 'Mayuri — how can I help');
+    panel.setAttribute('aria-label', 'Mayuri - how can I help');
     panel.hidden = true;
 
     /* TWO DOORS, not four routes. The four were a menu of forms — a question
@@ -1703,7 +1703,7 @@
           clearTimeout(trip);
           stay.disabled = true;
           stay.textContent = 'Staying here';
-          bubble('bot', 'Of course — we will stay. What else can I help with?');
+          bubble('bot', 'Of course - we will stay. What else can I help with?');
         });
         /* Closing her is also a change of mind: a timer that fires after the
            panel is gone would move the page for no visible reason. */
@@ -1711,7 +1711,7 @@
         return;
       }
       if (r.confident) {
-        const row = bubble('bot', (r.title ? r.title + ' — ' : '') + r.text);
+        const row = bubble('bot', (r.title ? r.title + ' - ' : '') + r.text);
         addLinks(row, r.links);
         if (r.offerBoss) addBossOffer(row, 'Ask Krunalkumar directly');
         addChips(row, r.chips);
@@ -1731,9 +1731,9 @@
          information and fetches someone who does. */
       const row = bubble('bot',
         r.kind === 'weak'
-          ? 'I am not sure I have the right answer for that. These are the closest things I can find — ' +
+          ? 'I am not sure I have the right answer for that. These are the closest things I can find - ' +
             'or I can pass you to my boss and you can ask him directly.'
-          : 'I do not have this information, sorry. Let me redirect you to my boss — ' +
+          : 'I do not have this information, sorry. Let me redirect you to my boss - ' +
             'you can ask him directly and he will know.');
       addLinks(row, r.links);
       addBossOffer(row);
@@ -1756,7 +1756,7 @@
       if (brainState === 'ready') { answerAfterPause(window.MayuriChat.ask(q)); return; }
       if (brainState === 'failed') {
         typeThen(90, () => {
-          const row = bubble('bot', 'I could not load what I know — the connection dropped. Krunalkumar is still reachable.');
+          const row = bubble('bot', 'I could not load what I know - the connection dropped. Krunalkumar is still reachable.');
           addBossOffer(row);
         });
         return;
@@ -1764,7 +1764,7 @@
       /* Asked while the corpus is still downloading: hold the question and
          answer it the moment the index lands, rather than dropping it or
          making them ask twice. */
-      const waiting = bubble('bot', 'One moment — reading what I know…');
+      const waiting = bubble('bot', 'One moment - reading what I know…');
       loadBrain().then(() => {
         waiting.remove();
         /* No second pause here: the corpus download was the wait, and adding

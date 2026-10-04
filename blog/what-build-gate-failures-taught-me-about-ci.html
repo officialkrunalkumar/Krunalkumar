@@ -8,11 +8,11 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Six gates, and the bug that produced each one" />
-    <meta property="og:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration — including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
+    <meta property="og:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration - including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-build-gate-failures-taught-me-about-ci" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-build-gate-failures-taught-me-about-ci.jpg" />
@@ -26,7 +26,7 @@
     <meta property="article:section" content="Engineering" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Six gates, and the bug that produced each one" />
-    <meta name="twitter:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration — including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
+    <meta name="twitter:description" content="Every gate in this site's build exists because something shipped broken and nobody noticed. Six of them, the bug behind each, and what they taught me about continuous integration - including the gate whose own regular expression was wrong, and which therefore blamed the fifty-two files that were correct." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-build-gate-failures-taught-me-about-ci.jpg" />
     <title>What Build Gates Taught Me About CI | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -67,7 +67,7 @@
                         "name": "Are these gates a replacement for tests?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, they cover different things. Tests exercise code that runs. These gates check artefacts that nothing runs — structured data, sitemaps, precache lists, share images — where a defect is invisible in review and silent in production. A project wants both."
+                                "text": "No, they cover different things. Tests exercise code that runs. These gates check artefacts that nothing runs - structured data, sitemaps, precache lists, share images - where a defect is invisible in review and silent in production. A project wants both."
                         }
                 },
                 {
@@ -201,7 +201,7 @@
             </nav>
             <p class="eyebrow">Engineering</p>
             <h1>What build-gate failures taught me about CI</h1>
-            <p class="hero-text">Every gate in this site's build exists because something shipped broken and nobody noticed — not in testing, not in review, and not in the deploy log. This is the six of them, the bug behind each, and what they changed about how I think about continuous integration.</p>
+            <p class="hero-text">Every gate in this site's build exists because something shipped broken and nobody noticed - not in testing, not in review, and not in the deploy log. This is the six of them, the bug behind each, and what they changed about how I think about continuous integration.</p>
             <p class="post-meta">Published 31 August 2026 &middot; 9 min read &middot; by Krunalkumar Shah</p>
           </section>
 
@@ -245,7 +245,7 @@
               </div>
               <h2 id="the-thing-nothing-else-runs">Gate the thing nothing else exercises</h2>
               <p>
-                Every page here carries structured data &mdash; JSON-LD blocks describing the page to search
+                Every page here carries structured data - JSON-LD blocks describing the page to search
                 engines. Nothing on the page uses them. No visitor sees them, no script reads them, and no
                 test could plausibly fail because of them. The build's comment states the problem exactly:
               </p>
@@ -263,7 +263,7 @@
               <p>
                 The gate parses every block on every page, the way a crawler would, and names the file if one
                 does not parse. It is about fifteen lines. The reason it is worth having is not that JSON-LD
-                is important; it is that this shape &mdash; invisible in review, silent in production &mdash;
+                is important; it is that this shape - invisible in review, silent in production -
                 describes a whole category of artefact. Sitemaps, feeds, service worker manifests, robots
                 files, structured data, share images. Nobody looks at any of them until a stranger does.
               </p>
@@ -286,12 +286,12 @@
               <p>
                 The <strong>service-worker precache gate</strong> held a hand-written file list equal to
                 what the pages actually load. That list's own comment had already admitted the failure mode
-                before the gate existed &mdash; <em>&ldquo;if a page grows a new stylesheet or script, it
-                must be added here or offline quietly breaks&rdquo;</em> &mdash; which is a remarkable thing
+                before the gate existed - <em>&ldquo;if a page grows a new stylesheet or script, it
+                must be added here or offline quietly breaks&rdquo;</em> - which is a remarkable thing
                 to write down and then leave to discipline. The gate turned that sentence into a refusal.
                 The eventual fix went one step further: the content list was retired for caching pages as
                 a visitor opens them, which removes the failure mode rather than policing it, and the gate
-                now holds the one short list left &mdash; the offline page and its own files &mdash; equal
+                now holds the one short list left - the offline page and its own files - equal
                 to what that page references.
               </p>
               <p>
@@ -299,7 +299,7 @@
                 static copy of the header and footer so there is something real before JavaScript arrives.
                 The README asked for those copies to be kept in sync by hand, across ninety-odd pages. A link
                 added to the canonical partial but not to the copies is invisible to exactly one group of
-                people: those browsing without JavaScript &mdash; the people the static copy exists for.
+                people: those browsing without JavaScript - the people the static copy exists for.
               </p>
               <p>
                 Written out like that, the lesson is almost embarrassing. <strong>&ldquo;Remember to update
@@ -312,7 +312,7 @@
               <p>
                 The games on this site are described twice: once in a manifest that generates the pages, and
                 once in the module that actually runs. Some fields appear in both. Where they disagreed,
-                the manifest quietly lost &mdash; because nothing hands it to the runtime, so a value set only
+                the manifest quietly lost - because nothing hands it to the runtime, so a value set only
                 there is a comment that reads like code.
               </p>
               <p>
@@ -330,7 +330,7 @@
               </p>
               <pre><code>new RegExp('\b' + field + '\s*:')</code></pre>
               <p>
-                In a normal string, <code>\b</code> is not a word boundary &mdash; it is a backspace
+                In a normal string, <code>\b</code> is not a word boundary - it is a backspace
                 character. <code>\s</code> is just the letter <code>s</code>. The pattern matched nothing, so
                 the gate concluded every game was broken, and the list of files it told you to go and fix was
                 precisely the list of files that were already correct.
@@ -344,7 +344,7 @@
               <p>
                 Which leads directly to the rule I would now apply everywhere. <strong>A gate nobody has
                 ever seen fail is a gate nobody knows works.</strong> The gates here are exported from the
-                build script for that reason and no other &mdash; so they can be pointed at a deliberately
+                build script for that reason and no other - so they can be pointed at a deliberately
                 broken copy of the site and proven to throw.
               </p>
               <h2 id="failures-only-strangers-see">The failures only a stranger ever sees</h2>
@@ -386,7 +386,7 @@
               <p>
                 <strong>Name the file, and say what to do.</strong> Each gate prints the offending path and
                 what is wrong with it. One of them goes further and simply performs the fix rather than
-                demanding it &mdash; a fingerprint that used to fail the build and instruct you to edit two
+                demanding it - a fingerprint that used to fail the build and instruct you to edit two
                 constants by hand now just writes the value itself. That is usually the better ending: if the
                 gate knows enough to detect the problem, ask whether it knows enough to solve it.
               </p>
@@ -440,7 +440,7 @@
           <nav class="related-reading" aria-label="Related articles">
             <p class="eyebrow">Related reading</p>
             <ul>
-              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website - and the mechanism that made it hold</a></li>
               <li><a href="/blog/what-66-games-taught-me-about-software">What sixty-six tiny games taught me about serious software</a></li>
               <li><a href="/blog/why-your-automation-broke">Why your automation broke, and how to build one that fails loudly</a></li>
               <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
@@ -449,7 +449,7 @@
 
           <div class="post-cta">
             <h2>Want the rest of how this site is built?</h2>
-            <p>The colophon covers the whole arrangement — no framework, no dependencies, and a build that counts its own figures rather than trusting anyone to keep them current.</p>
+            <p>The colophon covers the whole arrangement - no framework, no dependencies, and a build that counts its own figures rather than trusting anyone to keep them current.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="/colophon">Read the colophon</a>
               <a class="btn btn-secondary" href="/labs">Browse the labs</a>

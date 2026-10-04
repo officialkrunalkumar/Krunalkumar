@@ -197,7 +197,7 @@
         mode = mode === 'move' ? 'shoot' : 'move';
         shotPath = [];
         pick = 0;
-        say(mode === 'shoot' ? 'Arrow ready — pick a tunnel to send it down.' : 'Walking again.', 'yellow');
+        say(mode === 'shoot' ? 'Arrow ready - pick a tunnel to send it down.' : 'Walking again.', 'yellow');
         /* Up to arm, down to stand down. Which way the pair moves is the
            whole message, so a player who has stopped reading the bottom
            line still knows which mode they just put themselves in. */
@@ -257,7 +257,7 @@
             g.noise(0.4, { type: 'lowpass', freq: 150, to: 80, q: 1.2, level: 0.03 });
           });
           if (wumpus === you) {
-            say('The noise wakes it — and it finds you.', 'red');
+            say('The noise wakes it - and it finds you.', 'red');
             g.over({ score: g.score, message: 'The wumpus woke and found you.' });
             return;
           }
@@ -324,7 +324,7 @@
             term.text(x, 18, (k === pick ? '> ' : '  ') + label, k === pick ? 'white' : 'dim');
           }
 
-          term.text(3, 20, mode === 'shoot' ? 'ARROW READY — enter sends it down the marked tunnel' : 'Walking — enter moves you',
+          term.text(3, 20, mode === 'shoot' ? 'ARROW READY - enter sends it down the marked tunnel' : 'Walking - enter moves you',
                     mode === 'shoot' ? 'yellow' : 'dim');
           term.text(3, 22, '← → choose tunnel     ↑ toggle arrow     enter / space go', 'dim');
         }

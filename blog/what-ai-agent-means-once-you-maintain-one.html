@@ -8,11 +8,11 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What “AI agent” means once you have to maintain one" />
-    <meta property="og:description" content="Five different things get called an agent, and most products sold as one are a fixed chain or a router — usually the right choice. What changes once you maintain a real loop: evaluation sets instead of tests, a model dependency you cannot pin, caps on the loop, tool design, traces, and prompt injection." />
+    <meta property="og:description" content="Five different things get called an agent, and most products sold as one are a fixed chain or a router - usually the right choice. What changes once you maintain a real loop: evaluation sets instead of tests, a model dependency you cannot pin, caps on the loop, tool design, traces, and prompt injection." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/what-ai-agent-means-once-you-maintain-one" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-ai-agent-means-once-you-maintain-one.jpg" />
@@ -26,7 +26,7 @@
     <meta property="article:section" content="AI engineering" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="What “AI agent” means once you have to maintain one" />
-    <meta name="twitter:description" content="Five different things get called an agent, and most products sold as one are a fixed chain or a router — usually the right choice. What changes once you maintain a real loop: evaluation sets instead of tests, a model dependency you cannot pin, caps on the loop, tool design, traces, and prompt injection." />
+    <meta name="twitter:description" content="Five different things get called an agent, and most products sold as one are a fixed chain or a router - usually the right choice. What changes once you maintain a real loop: evaluation sets instead of tests, a model dependency you cannot pin, caps on the loop, tool design, traces, and prompt injection." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/what-ai-agent-means-once-you-maintain-one.jpg" />
     <title>AI agents, once you maintain one | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -67,7 +67,7 @@
                         "name": "Is a workflow with a single model call an agent?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "By the loose usage, people will call it one. By any definition that helps you plan, no — there is no loop, so there is no runtime decision about what to do next, and the things that make agents hard to maintain all follow from that decision. The label matters because it sets expectations about cost, testing and blast radius. A single call has a cost you can bound in advance, an ordinary trace, and one place to look when it misbehaves."
+                                "text": "By the loose usage, people will call it one. By any definition that helps you plan, no - there is no loop, so there is no runtime decision about what to do next, and the things that make agents hard to maintain all follow from that decision. The label matters because it sets expectations about cost, testing and blast radius. A single call has a cost you can bound in advance, an ordinary trace, and one place to look when it misbehaves."
                         }
                 },
                 {
@@ -107,7 +107,7 @@
                         "name": "When is a multi-agent system worth the trouble?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Less often than it gets built, in my view. It multiplies every maintenance cost in this article by the number of loops and adds a failure mode of its own, where two agents pass a confident mistake back and forth and neither has any way to notice. What would persuade me is genuinely disjoint sub-tasks with different tool sets that can run in parallel and hand back structured results — not prose — to a coordinator that validates them. If your sub-agents are exchanging free text, you have added coordination cost and kept every original problem."
+                                "text": "Less often than it gets built, in my view. It multiplies every maintenance cost in this article by the number of loops and adds a failure mode of its own, where two agents pass a confident mistake back and forth and neither has any way to notice. What would persuade me is genuinely disjoint sub-tasks with different tool sets that can run in parallel and hand back structured results - not prose - to a coordinator that validates them. If your sub-agents are exchanging free text, you have added coordination cost and kept every original problem."
                         }
                 }
         ]
@@ -288,7 +288,7 @@
               <p>
                 What replaces it is an evaluation set: fixed inputs, each with a way to grade the
                 output. Exact match where the answer is a value. A programmatic checker where it is
-                structured &mdash; did it call the right tool, did it stop, does the figure match the
+                structured - did it call the right tool, did it stop, does the figure match the
                 source. A written rubric only where you cannot do better, since that grader carries the
                 same non-determinism you were measuring. Then run it repeatedly and track a rate, not a
                 verdict. I have no defensible number for how many runs are enough; the principle is that
@@ -329,7 +329,7 @@
               <p>
                 Cost and latency are not properties of your prompt. They are properties of how many
                 times the loop goes round, and the loop decides that at runtime. Most loops re-send the
-                accumulated history on every step, so cost grows faster than the step count &mdash;
+                accumulated history on every step, so cost grows faster than the step count -
                 roughly quadratic in the bad case, depending on how you trim history and whether the
                 provider caches the repeated prefix. I have not measured it and would not quote a
                 figure. Retries are worse still: a loop that retries on failure can retry on a failure
@@ -350,12 +350,12 @@
                 <p>
                   <strong>A cap has to live outside the model.</strong> A line in the prompt saying
                   &ldquo;use at most five steps&rdquo; is a request, not a limit. Enforce it in the code
-                  that drives the loop, and alert when it fires &mdash; a cap that trips silently looks
+                  that drives the loop, and alert when it fires - a cap that trips silently looks
                   like a bad answer.
                 </p>
               </div>
               <p>
-                Do the arithmetic against whatever the agent replaces first &mdash;
+                Do the arithmetic against whatever the agent replaces first -
                 <a class="text-link" href="/blog/the-real-cost-of-a-manual-process">the real cost of a
                 manual process</a> is the method, and the agent&rsquo;s side of that ledger has a
                 variance the manual side does not.
@@ -364,7 +364,7 @@
               <p>
                 An agent can only do what its tools let it do; everything else is phrasing. In the agent
                 work I have done, most of what looked like the model not being clever enough turned out
-                to be a tool design failure &mdash; which is encouraging, because tool design is
+                to be a tool design failure - which is encouraging, because tool design is
                 ordinary engineering.
               </p>
               <ul>
@@ -377,7 +377,7 @@
                 <li>
                   <strong>Parameters that are ambiguous.</strong> Free text where an enumeration
                   belongs, optional arguments with unstated defaults, units left implicit. Put the unit
-                  in the name &mdash; <code>timeout_seconds</code>, not <code>timeout</code> &mdash; and
+                  in the name - <code>timeout_seconds</code>, not <code>timeout</code> - and
                   make required fields required. The schema is the only part of your instruction that is
                   enforced rather than merely read.
                 </li>
@@ -388,7 +388,7 @@
                   tells it what to change. Write errors for a reader about to try again.
                 </li>
                 <li>
-                  <strong>Granularity.</strong> Five tools beat one tool with a mode flag &mdash; until
+                  <strong>Granularity.</strong> Five tools beat one tool with a mode flag - until
                   you have forty, when choosing between them becomes the problem. I have no clean rule
                   for where that turns over.
                 </li>
@@ -418,7 +418,7 @@
               <p>
                 There is a real conflict here and I would rather name it than pretend it resolves. A
                 trace is only useful when complete, and a complete trace holds whatever the agent read
-                &mdash; often personal data belonging to somebody who never agreed to it sitting in your
+                - often personal data belonging to somebody who never agreed to it sitting in your
                 logs for a year. I redact at write time where the field is known and keep retention
                 short where it is not, which costs me some debugging ability. Under
                 <a class="text-link" href="/blog/what-consent-actually-means-under-dpdp">DPDP or a
@@ -440,8 +440,8 @@
                 plan rewritten each time it nearly completes. Every step looks reasonable from the
                 inside; only the step cap sees the pattern. My research was on
                 <a class="text-link" href="/blog/what-is-a-fork-bomb">fork bombs</a>, where the
-                unsettling part is not clever code but that every individual action &mdash; creating a
-                process &mdash; is legitimate, and all the damage lives in the repetition. An agent loop
+                unsettling part is not clever code but that every individual action - creating a
+                process - is legitimate, and all the damage lives in the repetition. An agent loop
                 is the same shape with a bill attached.
               </p>
               <h3>Prompt injection</h3>
@@ -482,7 +482,7 @@
                 feel nervous. A review step people click through without reading is worse than no gate,
                 because it manufactures the appearance of oversight while removing none of the risk.
                 Show the diff, make rejecting cheap, then watch how often reject is pressed. I have no
-                number for a healthy rejection rate &mdash; but zero over a long period tells you the
+                number for a healthy rejection rate - but zero over a long period tells you the
                 gate is theatre. The
                 <a class="text-link" href="/blog/i-open-sourced-my-ai-sdr">Slack approval step in my AI
                 SDR</a> exists for this reason, and
@@ -494,7 +494,7 @@
                 pipeline do this job?</strong> The signs are easy to spot. The steps are the same on
                 every run. The branching is enumerable. The model&rsquo;s contribution is one act of
                 judgement in the middle
-                &mdash; classify this, extract that, draft the other &mdash; wrapped in code you wrote.
+                - classify this, extract that, draft the other - wrapped in code you wrote.
               </p>
               <p>
                 If so, build the pipeline and call the model as a function inside it. You keep a test
@@ -505,7 +505,7 @@
               <p>
                 An agent is a maintenance commitment before it is a capability. That is an argument for
                 building one deliberately, with the evaluation set, the caps, the traces and the
-                boundaries in place from the first week &mdash; each is harder to add later.
+                boundaries in place from the first week - each is harder to add later.
               </p>
               </div>
             </div>
@@ -534,7 +534,7 @@
 
           <div class="post-cta">
             <h2>Weighing an agent against a pipeline?</h2>
-            <p>That is a conversation worth having before the build rather than after it. I scope the work in writing first, and I will tell you when the deterministic version is the better buy &mdash; including when it means a smaller invoice.</p>
+            <p>That is a conversation worth having before the build rather than after it. I scope the work in writing first, and I will tell you when the deterministic version is the better buy - including when it means a smaller invoice.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="/services">See how I work</a>
               <a class="btn btn-secondary" href="/contact">Start a conversation</a>

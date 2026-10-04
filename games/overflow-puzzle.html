@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Eleven bytes, and you never learn the address" />
     <meta name="twitter:description" content="Craft the input that takes the return address on a toy machine. Four levels: the plain overflow, a stack canary, a no-execute stack and a randomised base." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-overflow-puzzle.jpg" />
-    <title>Buffer Overflow Puzzle — Four Levels</title>
+    <title>Buffer Overflow Puzzle - Four Levels</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -69,7 +69,7 @@
                         "name": "Will anything here work on a real program?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model — where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit — and that model is worth having whichever side of it you are on."
+                                "text": "No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model - where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit - and that model is worth having whichever side of it you are on."
                         }
                 },
                 {
@@ -93,7 +93,7 @@
                         "name": "Is anything stored or sent?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Nothing is sent anywhere — there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it."
+                                "text": "Nothing is sent anywhere - there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it."
                         }
                 }
         ]
@@ -190,7 +190,7 @@
           </ol>
         </nav>
         <h1>Overflow puzzle</h1>
-        <p class="hero-text">A made-up machine with thirty-two cells of memory, a stack that grows down, and a note server with one bad line in it: a copy that has no idea how big the buffer is. Level one is the whole bug &mdash; walk your message off the end of an eight-cell buffer and put your own address into the two cells the return instruction reads, with every byte drawn as it lands. Then each level adds one mitigation, in roughly the order the industry added them, and asks you to get past it anyway: a stack canary, a no-execute stack, and a base address that moves every time the process starts. The machine is invented and none of this is a working technique. The picture is the part that transfers.</p>
+        <p class="hero-text">A made-up machine with thirty-two cells of memory, a stack that grows down, and a note server with one bad line in it: a copy that has no idea how big the buffer is. Level one is the whole bug - walk your message off the end of an eight-cell buffer and put your own address into the two cells the return instruction reads, with every byte drawn as it lands. Then each level adds one mitigation, in roughly the order the industry added them, and asks you to get past it anyway: a stack canary, a no-execute stack, and a base address that moves every time the process starts. The machine is invented and none of this is a working technique. The picture is the part that transfers.</p>
         <ul class="game-facts">
           <li>Four levels, four mitigations</li>
           <li>Every byte drawn as it lands</li>
@@ -230,7 +230,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Best</span>
-              <span class="game-stat-value" data-stat="best">&mdash;</span>
+              <span class="game-stat-value" data-stat="best">-</span>
             </div>
           </div>
           <div class="game-toolbar">
@@ -241,7 +241,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -299,7 +299,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>One mitigation per level, in the order they arrived</h3>
-            <p>Level one is the bug on its own: an eight-cell buffer, a copy with no bound, and the saved return address two cells above it. Level two puts a random value between the two and checks it before returning, so the naive payload aborts &mdash; and then hands you an over-read that prints the value, because a canary you can read is a formality. Level three marks the stack no-execute, so returning into your own bytes faults before one of them runs, and the only targets left are routines already in the program: one to set a register, one to check it, threaded together by two addresses on the stack. Level four moves the code to a fresh base every run, so the address you have been typing since level one is a guess &mdash; and the answer is to write half of it and leave the half you cannot know alone.</p>
+            <p>Level one is the bug on its own: an eight-cell buffer, a copy with no bound, and the saved return address two cells above it. Level two puts a random value between the two and checks it before returning, so the naive payload aborts - and then hands you an over-read that prints the value, because a canary you can read is a formality. Level three marks the stack no-execute, so returning into your own bytes faults before one of them runs, and the only targets left are routines already in the program: one to set a register, one to check it, threaded together by two addresses on the stack. Level four moves the code to a fresh base every run, so the address you have been typing since level one is a guess - and the answer is to write half of it and leave the half you cannot know alone.</p>
           </article>
           <article class="info-card">
             <h3>The leak is the hinge, and it is the same leak twice</h3>
@@ -307,11 +307,11 @@
           </article>
           <article class="info-card">
             <h3>The machine is invented, and there is no payload here</h3>
-            <p>The registers, the instruction names, the addresses, the calling convention and the sizes are all made up. It is not x86, not ARM, not any real instruction set, and it is deliberately not a general interpreter &mdash; what is simulated is the frame, the copy, the canary check and the return dispatch, because that is where the lesson is. There is no shellcode on this page and no way to write any, and pointing the return address at the buffer on the first two levels gets you a fault about an opcode that does not exist. Nothing here transfers as a technique. What transfers is knowing what is above a buffer and why the copy cannot tell.</p>
+            <p>The registers, the instruction names, the addresses, the calling convention and the sizes are all made up. It is not x86, not ARM, not any real instruction set, and it is deliberately not a general interpreter - what is simulated is the frame, the copy, the canary check and the return dispatch, because that is where the lesson is. There is no shellcode on this page and no way to write any, and pointing the return address at the buffer on the first two levels gets you a fault about an opcode that does not exist. Nothing here transfers as a technique. What transfers is knowing what is above a buffer and why the copy cannot tell.</p>
           </article>
           <article class="info-card">
             <h3>What actually fixes it, said plainly</h3>
-            <p>A copy that is told how big the destination is and honours it, or a language where the length travels with the array so the copy cannot run off the end in the first place. Every mitigation in this game raises the price of turning the bug into control of the machine and removes no bugs at all: the out-of-bounds write is sitting in all four programs, in the same line, untouched. The <a href="/labs/buffer-overflow">buffer overflow lab</a> next door is the same subject as a sandbox &mdash; sliders, a live stack, and a copy you push around to see what happens. This is the same subject as four problems that have answers.</p>
+            <p>A copy that is told how big the destination is and honours it, or a language where the length travels with the array so the copy cannot run off the end in the first place. Every mitigation in this game raises the price of turning the bug into control of the machine and removes no bugs at all: the out-of-bounds write is sitting in all four programs, in the same line, untouched. The <a href="/labs/buffer-overflow">buffer overflow lab</a> next door is the same subject as a sandbox - sliders, a live stack, and a copy you push around to see what happens. This is the same subject as four problems that have answers.</p>
           </article>
         </div>
       </section>
@@ -326,7 +326,7 @@
           </details>
           <details class="lab-faq">
             <summary>Will anything here work on a real program?</summary>
-            <div>No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model — where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit — and that model is worth having whichever side of it you are on.</div>
+            <div>No, and it is not built so that it could. There is no shellcode in the game and no way to author any, the addresses are fictional, and the machine only ever enters a routine at its first instruction. What you take away is the mental model - where the return address sits, why a canary stops one case and not another, what NX changed about the shape of an exploit - and that model is worth having whichever side of it you are on.</div>
           </details>
           <details class="lab-faq">
             <summary>Why can I not put a zero byte in the message?</summary>
@@ -338,7 +338,7 @@
           </details>
           <details class="lab-faq">
             <summary>Is anything stored or sent?</summary>
-            <div>Nothing is sent anywhere — there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it.</div>
+            <div>Nothing is sent anywhere - there is no network call in the game at all. The only thing kept is your best total, in local storage in this browser on this device, and the reset strip under the board clears it.</div>
           </details>
       </section>
 

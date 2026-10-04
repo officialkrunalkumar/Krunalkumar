@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix." />
+    <meta name="description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms - login bypass, UNION, blind and time-based - each ending in the fix." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/sqli-escape" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="The database has a real parser. Break it." />
-    <meta property="og:description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix." />
+    <meta property="og:description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms - login bypass, UNION, blind and time-based - each ending in the fix." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/sqli-escape" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-sqli-escape.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The database has a real parser. Break it." />
-    <meta name="twitter:description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix." />
+    <meta name="twitter:description" content="Break into a toy database that runs a real SQL parser in your browser. Four rooms - login bypass, UNION, blind and time-based - each ending in the fix." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-sqli-escape.jpg" />
     <title>SQL Injection Escape Room</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Break into a toy database that runs a real SQL parser in your browser. Four rooms — login bypass, UNION, blind and time-based — each ending in the fix.",
+        "description": "Break into a toy database that runs a real SQL parser in your browser. Four rooms - login bypass, UNION, blind and time-based - each ending in the fix.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -61,7 +61,7 @@
                         "name": "Is this real SQL?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No — it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy."
+                                "text": "No - it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy."
                         }
                 },
                 {
@@ -85,7 +85,7 @@
                         "name": "The blind rooms are slow. Is that the point?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. A blind injection leaks one bit at a time, so you extract a value character by character — and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open."
+                                "text": "Yes. A blind injection leaks one bit at a time, so you extract a value character by character - and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open."
                         }
                 },
                 {
@@ -93,7 +93,7 @@
                         "name": "What counts towards the best score?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Every query you send, in every room, whether it works or errors — an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog."
+                                "text": "Every query you send, in every room, whether it works or errors - an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog."
                         }
                 },
                 {
@@ -198,7 +198,7 @@
           </ol>
         </nav>
         <h1>SQL injection escape room</h1>
-        <p class="hero-text">Reading about SQL injection teaches you the diagram of the attack. This teaches you the attack, because there is a real little SQL engine in the page &mdash; a tokeniser, a parser and an evaluator over five in-memory tables &mdash; and it genuinely runs the query you build, injected part and all. Four rooms walk the real techniques in the real order: break a login, <code>UNION</code> a second table out, then pull a value one bit at a time through a page that says only <em>found</em>, and finally through nothing but a delay. Every room ends by showing the parameterised query that would have stopped it, with the value on its own line, because that one picture is the whole lesson.</p>
+        <p class="hero-text">Reading about SQL injection teaches you the diagram of the attack. This teaches you the attack, because there is a real little SQL engine in the page - a tokeniser, a parser and an evaluator over five in-memory tables - and it genuinely runs the query you build, injected part and all. Four rooms walk the real techniques in the real order: break a login, <code>UNION</code> a second table out, then pull a value one bit at a time through a page that says only <em>found</em>, and finally through nothing but a delay. Every room ends by showing the parameterised query that would have stopped it, with the value on its own line, because that one picture is the whole lesson.</p>
         <ul class="game-facts">
           <li>A real SQL parser, in the page</li>
           <li>Four rooms, four techniques</li>
@@ -243,7 +243,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -300,7 +300,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The parser is real; the database is not</h3>
-            <p>There is a genuine engine in this page &mdash; it tokenises the query, parses SELECT with WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, both comment forms and a handful of string functions, and then executes it, including the part you injected. What it runs over is five arrays of plain objects that live in the tab and nowhere else. Nothing touches a real database and there is no network call to make one &mdash; the attack is safe precisely because the target is a toy. For the same ideas with a real query planner in front of you, <a href="/labs/sql">the SQL playground</a> and <a href="/labs/sqlite-browser">the SQLite browser</a> are next door.</p>
+            <p>There is a genuine engine in this page - it tokenises the query, parses SELECT with WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, both comment forms and a handful of string functions, and then executes it, including the part you injected. What it runs over is five arrays of plain objects that live in the tab and nowhere else. Nothing touches a real database and there is no network call to make one - the attack is safe precisely because the target is a toy. For the same ideas with a real query planner in front of you, <a href="/labs/sql">the SQL playground</a> and <a href="/labs/sqlite-browser">the SQLite browser</a> are next door.</p>
           </article>
           <article class="info-card">
             <h3>The assembled query is the teaching device</h3>
@@ -308,7 +308,7 @@
           </article>
           <article class="info-card">
             <h3>Why the tempting non-fixes do not work</h3>
-            <p>Escaping quotes by hand loses because you have to get every context right &mdash; strings, numbers, identifiers, LIKE patterns each escape differently &mdash; every single time, and one miss is the whole hole. A blocklist of keywords loses because <code>UNION</code> and <code>OR</code> appear in ordinary data, comments and case tricks slip past, and the list is a promise to enumerate every attack forever. Stored procedures are not automatically safe: one that builds a string and runs <code>EXEC(@sql)</code> is just as injectable. And an ORM is safe only where it parameterises &mdash; its raw-SQL and string-interpolation escape hatches are where the same bug walks back in.</p>
+            <p>Escaping quotes by hand loses because you have to get every context right - strings, numbers, identifiers, LIKE patterns each escape differently - every single time, and one miss is the whole hole. A blocklist of keywords loses because <code>UNION</code> and <code>OR</code> appear in ordinary data, comments and case tricks slip past, and the list is a promise to enumerate every attack forever. Stored procedures are not automatically safe: one that builds a string and runs <code>EXEC(@sql)</code> is just as injectable. And an ORM is safe only where it parameterises - its raw-SQL and string-interpolation escape hatches are where the same bug walks back in.</p>
           </article>
           <article class="info-card">
             <h3>The fix is the same door in every room</h3>
@@ -316,7 +316,7 @@
           </article>
           <article class="info-card">
             <h3>This is a defensive tool, and stays one</h3>
-            <p>Every payload in here is aimed at the five toy tables and could not be aimed anywhere else. There is no real product named, no filter-evasion catalogue and no exfiltration tooling &mdash; the deliverable of the whole game is the prepared statement at the end of each room. The point is to recognise the shape of the bug so you can close it in your own code, which is the only place any of this should ever be pointed.</p>
+            <p>Every payload in here is aimed at the five toy tables and could not be aimed anywhere else. There is no real product named, no filter-evasion catalogue and no exfiltration tooling - the deliverable of the whole game is the prepared statement at the end of each room. The point is to recognise the shape of the bug so you can close it in your own code, which is the only place any of this should ever be pointed.</p>
           </article>
         </div>
       </section>
@@ -327,7 +327,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is this real SQL?</summary>
-            <div>No &mdash; it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy.</div>
+            <div>No - it is a small SQL engine reimplemented in JavaScript over five tables held in memory. It understands SELECT, WHERE, AND/OR, comparisons, LIKE, UNION SELECT, ORDER BY, LIMIT, scalar subqueries, both comment forms and a few string functions. The model matches the real thing closely enough that the techniques transfer, which is the point of the toy.</div>
           </details>
           <details class="lab-faq">
             <summary>Does anything I type reach a real database?</summary>
@@ -339,11 +339,11 @@
           </details>
           <details class="lab-faq">
             <summary>The blind rooms are slow. Is that the point?</summary>
-            <div>Yes. A blind injection leaks one bit at a time, so you extract a value character by character &mdash; and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open.</div>
+            <div>Yes. A blind injection leaks one bit at a time, so you extract a value character by character - and a binary search using the < and > comparisons gets there in a handful of queries where marching the alphabet takes dozens. In the time-based room the only signal is a delay, and that delay is simulated in your tab; nothing is holding a server open.</div>
           </details>
           <details class="lab-faq">
             <summary>What counts towards the best score?</summary>
-            <div>Every query you send, in every room, whether it works or errors &mdash; an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog.</div>
+            <div>Every query you send, in every room, whether it works or errors - an attacker pays for each request. Lower is better, so a clean run is a small number of well-chosen queries, and a binary search on the two blind rooms is most of the difference between a tidy score and a slog.</div>
           </details>
           <details class="lab-faq">
             <summary>Is this teaching me to attack websites?</summary>

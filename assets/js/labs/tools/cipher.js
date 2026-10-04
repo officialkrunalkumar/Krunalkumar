@@ -305,7 +305,7 @@
       case 'xor':        result = xorText(text, key); break;
 
       case 'break-caesar': {
-        out.heading('Brute force — all 25 shifts, ranked by how English they look');
+        out.heading('Brute force - all 25 shifts, ranked by how English they look');
         out.dim('There are only 25 possible keys. That is the entire problem.');
         out.line('');
         breakCaesar(text).slice(0, 5).forEach(function (r, i) {
@@ -325,7 +325,7 @@
       }
 
       case 'break-xor': {
-        out.heading('Single-byte XOR brute force — all 255 keys');
+        out.heading('Single-byte XOR brute force - all 255 keys');
         var xr = breakXor(text);
         if (!xr.length) {
           out.err('No key produced printable text. This may be multi-byte XOR,');
@@ -379,7 +379,7 @@
         out.rule();
         out.dim('Key length came from the index of coincidence; each letter of the');
         out.dim('key then fell to the same frequency attack as a Caesar cipher.');
-        out.dim('No key was guessed — it was derived from the ciphertext alone.');
+        out.dim('No key was guessed - it was derived from the ciphertext alone.');
         return;
       }
 
@@ -395,7 +395,7 @@
     out.warn('None of these ciphers are secure. Every one of them is breakable');
     out.warn('by hand, and the break modes in the dropdown do it automatically.');
     out.dim('They are worth knowing because they explain what modern ciphers');
-    out.dim('had to fix — and because CTFs are full of them.');
+    out.dim('had to fix - and because CTFs are full of them.');
   }
 
   LabTool.define({

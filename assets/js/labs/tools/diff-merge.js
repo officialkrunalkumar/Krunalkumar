@@ -750,7 +750,7 @@
       marks = true;
       forced = true;
       host.appendChild(mk('p', 'dm-none',
-        'Every line of text matches, so there is nothing to mark as changed — ' +
+        'Every line of text matches, so there is nothing to mark as changed - ' +
         'but the two are not the same bytes. Line-ending marks are switched on ' +
         'below so you can see where they differ: ␍ is a carriage return, ␊ a line feed.'));
     }
@@ -853,7 +853,7 @@
      ====================================================================== */
 
   function preOf(lines) {
-    var p = mk('pre', 'dm-pre', lines.length ? lines.join('\n') : '(nothing — this side has no lines here)');
+    var p = mk('pre', 'dm-pre', lines.length ? lines.join('\n') : '(nothing - this side has no lines here)');
     return p;
   }
 
@@ -871,7 +871,7 @@
   function conflictCard(region, number, idx) {
     var card = mk('div', 'dm-conflict');
     card.appendChild(mk('p', 'dm-conflict-h',
-      'Conflict ' + number + ' — base lines ' +
+      'Conflict ' + number + ' - base lines ' +
       (region.hi > region.lo ? (region.lo + 1) + ' to ' + region.hi
                              : 'inserted before line ' + (region.lo + 1))));
 
@@ -905,7 +905,7 @@
       acts.appendChild(btn);
     }
 
-    var tag = mk('span', 'dm-chosen', 'Unresolved — the merged file keeps the markers');
+    var tag = mk('span', 'dm-chosen', 'Unresolved - the merged file keeps the markers');
     tag.id = 'dm-chosen-' + idx;
     acts.appendChild(tag);
     card.appendChild(acts);
@@ -1084,7 +1084,7 @@
       out.line('');
       for (p = 0; p < problems.length; p++) out.warn(problems[p]);
       out.line('');
-      out.dim('Cut it down, or run git diff locally — that is the right tool for a whole repository.');
+      out.dim('Cut it down, or run git diff locally - that is the right tool for a whole repository.');
       el.view.textContent = '';
       setStatusText('Input above the ceiling', 'is-err');
       return;
@@ -1095,10 +1095,10 @@
     if (st.mode === 'merge') {
       el.basewrap.hidden = false;
       el.mergePanel.hidden = false;
-      el.mineLabel.textContent = 'Mine — your side of the merge';
-      el.theirsLabel.textContent = 'Theirs — the other side';
+      el.mineLabel.textContent = 'Mine - your side of the merge';
+      el.theirsLabel.textContent = 'Theirs - the other side';
       el.viewLabel.textContent =
-        'Diff — the base against the merged result, redrawn as you resolve';
+        'Diff - the base against the merged result, redrawn as you resolve';
       el.download.disabled = false;
       var tw = threeWay(st.base, st.mine, st.theirs);
       st.regions = tw.regions;
@@ -1111,9 +1111,9 @@
 
     el.basewrap.hidden = true;
     el.mergePanel.hidden = true;
-    el.mineLabel.textContent = 'Original — the a side of the diff';
-    el.theirsLabel.textContent = 'Changed — the b side of the diff';
-    el.viewLabel.textContent = 'Diff — the original against the changed text';
+    el.mineLabel.textContent = 'Original - the a side of the diff';
+    el.theirsLabel.textContent = 'Changed - the b side of the diff';
+    el.viewLabel.textContent = 'Diff - the original against the changed text';
     el.download.disabled = true;
     st.regions = null;
     st.three = null;
@@ -1144,7 +1144,7 @@
     }
     if (!p.hunks) {
       if (st.aScan.text === st.bScan.text) setStatusText('Byte-for-byte identical', 'is-ok');
-      else setStatusText('Every line matches — only the invisible characters differ', 'is-busy');
+      else setStatusText('Every line matches - only the invisible characters differ', 'is-busy');
       return;
     }
     setStatusText(bits, '');
@@ -1172,7 +1172,7 @@
     if (s.tabIndent && s.spaceIndent) {
       out.row(label + ' indentation', s.tabIndent + ' tab, ' + s.spaceIndent + ' space   MIXED');
     }
-    if (s.bom) out.row(label + ' byte order mark', 'yes — U+FEFF before line 1');
+    if (s.bom) out.row(label + ' byte order mark', 'yes - U+FEFF before line 1');
   }
 
   /* The headline case. Two texts whose line arrays match exactly but whose
@@ -1245,7 +1245,7 @@
       out.dim('A region changed on one side only applies cleanly, because the base');
       out.dim('says which side moved. A region changed on both sides to the same');
       out.dim('text applies cleanly too. Anything else is a conflict and is left');
-      out.dim('for you above — nothing here guesses.');
+      out.dim('for you above - nothing here guesses.');
       if (st.mergedMarkers) {
         out.line('');
         out.warn(st.mergedMarkers + ' conflict' + (st.mergedMarkers === 1 ? ' is' : 's are') +
@@ -1306,7 +1306,7 @@
       var goneAll = st.wsCounts.respect - st.wsCounts.all;
       if (st.wsCounts.respect === 0) {
         out.line('');
-        out.ok('No hunks in any mode — there are no differing lines to lose.');
+        out.ok('No hunks in any mode - there are no differing lines to lose.');
       } else if (st.wsCounts.respect >= 0 && st.wsCounts.trim >= 0) {
         out.line('');
         if (gone > 0) {
@@ -1318,7 +1318,7 @@
           out.warn(goneAll + ' of ' + st.wsCounts.respect + ' hunk' +
                    (st.wsCounts.respect === 1 ? '' : 's') +
                    (goneAll === 1 ? ' disappears' : ' disappear') + ' only when ALL');
-          out.warn('whitespace is ignored — so the change is interior spacing.');
+          out.warn('whitespace is ignored - so the change is interior spacing.');
         } else {
           out.ok('No hunk disappears when whitespace is ignored. The differences');
           out.ok('here are real changes to the text.');
@@ -1326,7 +1326,7 @@
       }
     } else {
       out.rule();
-      out.dim('The whitespace comparison is skipped above 8,000 lines — it means');
+      out.dim('The whitespace comparison is skipped above 8,000 lines - it means');
       out.dim('running the diff three times, and that is not free in a tab.');
     }
 
@@ -1340,7 +1340,7 @@
       out.dim('zero-length side takes the line number before the range. It should');
       out.dim('apply with "git apply" or "patch -p1".');
     } else {
-      out.dim('Nothing to export — there are no differing lines.');
+      out.dim('Nothing to export - there are no differing lines.');
     }
     if (el.ws.value !== 'respect') {
       out.line('');
@@ -1354,14 +1354,14 @@
     out.heading('What this does not do');
     out.dim('No rename or copy detection: a moved file reads as one whole file');
     out.dim('deleted and another added.');
-    out.dim('No binary files, no images, no submodules, no git history — this');
+    out.dim('No binary files, no images, no submodules, no git history - this');
     out.dim('compares two pieces of text you pasted, and nothing else.');
     out.dim('Line-oriented. A reformat that rewraps every line is a rewrite here');
     out.dim('no matter which whitespace mode you pick, because at the level of');
     out.dim('whole lines that is exactly what it is.');
     out.dim('The merge is textual. It has no idea whether the result compiles,');
     out.dim('and a clean merge is not a correct one.');
-    out.dim('A text box cannot hold a carriage return — the browser turns every');
+    out.dim('A text box cannot hold a carriage return - the browser turns every');
     out.dim('CRLF you paste into an LF. To compare real line endings, open the');
     out.dim('files with the buttons above the boxes, or drop them on a box.');
     if (st.base.bom || st.mine.bom || st.theirs.bom) {
@@ -1397,7 +1397,7 @@
   function downloadPatch() {
     if (!st.patch || !st.patch.text) {
       out.rule();
-      out.warn('There is no patch to download — the two sides have no differing lines.');
+      out.warn('There is no patch to download - the two sides have no differing lines.');
       return;
     }
     var name = (el.name.value || 'file.txt').replace(/[\\/]+/g, '_');
@@ -1412,7 +1412,7 @@
   function copyPatch() {
     if (!st.patch || !st.patch.text) {
       out.rule();
-      out.warn('There is no patch to copy — the two sides have no differing lines.');
+      out.warn('There is no patch to copy - the two sides have no differing lines.');
       return;
     }
     LabTool.copy(st.patch.text, el.copy);
@@ -1421,7 +1421,7 @@
   function downloadMerged() {
     if (st.mode !== 'merge' || !st.merged) {
       out.rule();
-      out.warn('Switch to three-way merge first — there is no merged file in diff mode.');
+      out.warn('Switch to three-way merge first - there is no merged file in diff mode.');
       return;
     }
     var ending = exportEnding();
@@ -1434,7 +1434,7 @@
     out.row('final newline', finalNL ? 'yes' : 'no');
     if (st.mergedMarkers) {
       out.warn('It still contains ' + st.mergedMarkers + ' conflict marker block' +
-               (st.mergedMarkers === 1 ? '' : 's') + '. That is deliberate — the');
+               (st.mergedMarkers === 1 ? '' : 's') + '. That is deliberate - the');
       out.warn('same thing git leaves behind when it cannot decide for you.');
     }
     out.dim('A merged file has no single correct line ending when the two sides');
@@ -1527,12 +1527,12 @@
     var note = el['src' + which];
     if (!note) return;
     if (!from) {
-      note.textContent = 'typed here — a text box cannot hold a CR';
+      note.textContent = 'typed here - a text box cannot hold a CR';
       note.className = 'dm-src';
       return;
     }
     var s = scan(text);
-    note.textContent = from + ' — real characters, ' +
+    note.textContent = from + ' - real characters, ' +
       (s.crlf ? s.crlf + ' CRLF' : '') + (s.crlf && s.lf ? ' and ' : '') +
       (s.lf ? s.lf + ' LF' : '') + (!s.crlf && !s.lf ? 'no line breaks' : '') + ' preserved';
     note.className = 'dm-src is-raw';
@@ -1549,7 +1549,7 @@
     if (file.size > MAX_FILE) {
       out.clear();
       out.err('That file is ' + LabTool.humanBytes(file.size) + '. This stops at ' +
-              LabTool.humanBytes(MAX_FILE) + ' — the comparison runs on your processor here.');
+              LabTool.humanBytes(MAX_FILE) + ' - the comparison runs on your processor here.');
       return;
     }
     var reader = new FileReader();
@@ -1683,7 +1683,7 @@
           st.raw[which] = null;
           var note = el['src' + which];
           if (note) {
-            note.textContent = 'typed here — a text box cannot hold a CR';
+            note.textContent = 'typed here - a text box cannot hold a CR';
             note.className = 'dm-src';
           }
         });

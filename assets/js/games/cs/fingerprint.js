@@ -253,7 +253,7 @@
           streak++;
           if (streak > best) best = streak;
           if (level.confusable) hard.right++;
-          verdict.textContent = same ? 'Yes — identical.' : 'Yes — different.';
+          verdict.textContent = same ? 'Yes - identical.' : 'Yes - different.';
           verdict.className = 'fp-verdict is-right';
           g.stat('score', score);
           g.stat('streak', streak);
@@ -267,9 +267,9 @@
           remain -= PENALTY_MS;
           g.stat('streak', 0);
           if (same) {
-            verdict.textContent = 'No — those were identical. −3s';
+            verdict.textContent = 'No - those were identical. −3s';
           } else {
-            verdict.textContent = 'No — ' + spots.length +
+            verdict.textContent = 'No - ' + spots.length +
               (spots.length === 1 ? ' character differs. −3s' : ' characters differ. −3s');
             paint(fpB, right, spots);
           }
@@ -297,12 +297,12 @@
 
         var note = el('p', 'quiz-result-body');
         if (hardAcc === null) {
-          note.textContent = 'You did not reach the single-confusable-character pairs — ' +
+          note.textContent = 'You did not reach the single-confusable-character pairs - ' +
             'those start at a score of 21. That is where this stops being easy.';
         } else if (hardAcc >= 90) {
           note.textContent = 'On the pairs differing by one confusable character you scored ' +
             hardAcc + '%, over ' + hard.asked + ' of them. That is genuinely unusual. ' +
-            'Note that you were looking for a difference and knew one might be there — ' +
+            'Note that you were looking for a difference and knew one might be there - ' +
             'nobody connecting to a server at 03:00 is.';
         } else {
           note.textContent = 'On the pairs differing by one confusable character you scored ' +

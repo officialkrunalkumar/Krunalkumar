@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Find the credentials hiding in a HAR file" />
     <meta name="twitter:description" content="Drop a browser HAR export and find the secrets inside it: Authorization headers, bearer tokens, API keys, session cookies, JWTs and PII. Download a redacted copy safe to share. Runs entirely in your browser - nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-har-analyzer.jpg" />
-    <title>HAR File Analyzer — Find Secrets & Tokens | Krunalkumar Shah</title>
+    <title>HAR File Analyzer - Find Secrets & Tokens | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>HAR file analyzer</h1>
-        <p class="hero-text">A HAR file is a recording of your browser&rsquo;s Network tab, and people mail them to support desks constantly without realising they contain every header, cookie and token from the session. This finds them &mdash; and hands back a redacted copy safe to send.</p>
+        <p class="hero-text">A HAR file is a recording of your browser&rsquo;s Network tab, and people mail them to support desks constantly without realising they contain every header, cookie and token from the session. This finds them - and hands back a redacted copy safe to send.</p>
         <ul class="lab-facts">
           <li>Authorization, bearer tokens, API keys</li>
           <li>JWTs, session cookies, private keys</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Large files are capped so the page stays responsive</li>
                   <li>No lookups against any external database</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -299,7 +299,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>What a HAR contains</h3>
-            <p>Everything. A HAR (HTTP Archive) records every request and response your browser made, including request and response headers, cookies, query strings, POST bodies and often the response bodies too. That means the Authorization header carrying your session, the API keys in the requests, and any personal data that came back &mdash; all in one JSON file.</p>
+            <p>Everything. A HAR (HTTP Archive) records every request and response your browser made, including request and response headers, cookies, query strings, POST bodies and often the response bodies too. That means the Authorization header carrying your session, the API keys in the requests, and any personal data that came back - all in one JSON file.</p>
           </article>
           <article class="info-card">
             <h3>The support-desk trap</h3>
@@ -307,11 +307,11 @@
           </article>
           <article class="info-card">
             <h3>How redaction works here</h3>
-            <p>The redacted copy replaces every detected secret &mdash; header values, cookie values, tokens, keys, and Luhn-valid card numbers &mdash; with a placeholder, rebuilding the file from the original bytes so the structure survives. What it cannot detect it cannot redact, so an opaque session id in a field called "u" may remain; the output says so.</p>
+            <p>The redacted copy replaces every detected secret - header values, cookie values, tokens, keys, and Luhn-valid card numbers - with a placeholder, rebuilding the file from the original bytes so the structure survives. What it cannot detect it cannot redact, so an opaque session id in a field called "u" may remain; the output says so.</p>
           </article>
           <article class="info-card">
             <h3>Nothing is uploaded</h3>
-            <p>The whole point of a tool that reads credentials is that it must not transmit them. This one parses the HAR in your browser and makes no network request &mdash; you can confirm that in your own Network tab, which is a fitting way to check.</p>
+            <p>The whole point of a tool that reads credentials is that it must not transmit them. This one parses the HAR in your browser and makes no network request - you can confirm that in your own Network tab, which is a fitting way to check.</p>
           </article>
         </div>
       </section>

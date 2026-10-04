@@ -187,7 +187,7 @@
            as a swallowed input rather than as a rule. */
         if (sixes >= 3) {
           movable = [];
-          message = NAMES[turn] + ' rolled three sixes — turn forfeited';
+          message = NAMES[turn] + ' rolled three sixes - turn forfeited';
           after(0.9, endTurn);
           return;
         }
@@ -196,7 +196,7 @@
         sel = 0;
 
         if (!movable.length) {
-          message = NAMES[turn] + ' rolled ' + dice + ' — no legal move';
+          message = NAMES[turn] + ' rolled ' + dice + ' - no legal move';
           after(0.7, endTurn);
           return;
         }
@@ -311,7 +311,7 @@
         movable = [];
         pending = null;
         pendingAI = 0;
-        message = mode === 'computer' ? 'You are Red — roll to start' : 'Red to roll';
+        message = mode === 'computer' ? 'You are Red - roll to start' : 'Red to roll';
         syncHud();
         syncControls();
       }

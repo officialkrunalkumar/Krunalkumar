@@ -227,7 +227,7 @@
       outputCapped = true;
       pending.push({
         cls: 't-err',
-        text: '\n[output limit reached — ' + humanBytes(CFG.MAX_OUTPUT_BYTES) +
+        text: '\n[output limit reached - ' + humanBytes(CFG.MAX_OUTPUT_BYTES) +
               '. The program was still printing, so it has been stopped.]\n'
       });
       stopRun('output limit');
@@ -495,7 +495,7 @@
           stopRun('download timed out');
         } else {
           write('\n[stopped automatically after ' + Math.round(killMs / 1000) +
-                ' seconds — the program never finished]\n', 't-err');
+                ' seconds - the program never finished]\n', 't-err');
           stopRun('time limit');
         }
         return;
@@ -508,7 +508,7 @@
             ? 'Still downloading the ' + runtimeName(current) + ' after ' +
               Math.round(elapsed / 1000) + ' seconds. It is a large one-time download and ' +
               'it is cached afterwards, so later runs start immediately. Nothing is wrong ' +
-              'with your code — it has not run yet.'
+              'with your code - it has not run yet.'
             : 'Still running after ' + Math.round(elapsed / 1000) + ' seconds. If this ' +
               'was not meant to take long, it is probably an infinite loop. It will be ' +
               'stopped automatically at ' + Math.round(killMs / 1000) + 's.'
@@ -919,7 +919,7 @@
           clearRuntimes.disabled = false;
           clearRuntimes.textContent = 'Remove downloaded runtimes';
           refreshMeter();
-          write('\n[removed the downloaded runtimes — the next run will fetch them again]\n', 't-info');
+          write('\n[removed the downloaded runtimes - the next run will fetch them again]\n', 't-info');
         });
       });
     }
@@ -992,12 +992,12 @@
     } else if (!meta.dir) {
       // JavaScript: the engine is already in the browser. Quoting "0 KB to
       // download" for it was never wrong, only strange.
-      setStatus('Ready — runs natively, nothing to download');
+      setStatus('Ready - runs natively, nothing to download');
     } else {
       // Reaching the service worker is a round trip, so say the cautious thing
       // meanwhile. Over-warning about a download is a far smaller lie than
       // promising an instant start that then takes twenty seconds.
-      setStatus('Ready — ' + meta.size + ' to download on the first run, then cached');
+      setStatus('Ready - ' + meta.size + ' to download on the first run, then cached');
       // `has` is guarded rather than assumed: sw.js caches this site's own JS,
       // so a returning visitor can be running a lab-cache.js from before this
       // function existed until the new worker takes over.
@@ -1015,7 +1015,7 @@
           // The visitor may have changed language while the worker answered.
           if (current !== id || !r || !r.cached) return;
           runtimeCached = true;
-          setStatus('Ready — ' + meta.name + ' is cached on this device, so it starts straight away');
+          setStatus('Ready - ' + meta.name + ' is cached on this device, so it starts straight away');
         });
       }
     }

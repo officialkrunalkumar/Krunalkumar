@@ -254,10 +254,10 @@
           if (pocketed[turn].length) {
             returnToCentre(pocketed[turn].pop());
             scores[turn] -= 1;
-            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker — a coin comes back';
+            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker - a coin comes back';
           } else {
             owed[turn] += 1;
-            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker — a coin is owed';
+            message = (turn === 0 ? 'You' : 'They') + ' pocketed the striker - a coin is owed';
           }
           gained = 0;
         } else if (gained) {
@@ -275,7 +275,7 @@
             owed[turn] -= 1;
             paid++;
           }
-          if (paid) message += ' — ' + (paid > 1 ? paid + ' dues paid' : 'a due paid');
+          if (paid) message += ' - ' + (paid > 1 ? paid + ' dues paid' : 'a due paid');
         } else {
           message = 'Nothing sunk';
         }

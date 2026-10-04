@@ -332,7 +332,7 @@
       host.tabIndex = 0;
       host.setAttribute('role', 'group');
       host.setAttribute('aria-label',
-        fam.label + ' stage — press Space to play and pause, arrow keys to step');
+        fam.label + ' stage - press Space to play and pause, arrow keys to step');
       fam.buildStage(host);
       main.appendChild(host);
       return host;

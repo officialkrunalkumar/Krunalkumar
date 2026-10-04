@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch HTTP/1.1, HTTP/2 and HTTP/3 race on the same link" />
     <meta name="twitter:description" content="Load the same page over HTTP/1.1, HTTP/2 and HTTP/3 on one simulated link and watch the three waterfalls fill in side by side. You set the latency, the bandwidth and the packet loss. Real HPACK compression with a running dynamic table, TCP head-of-line blocking, QUIC 0-RTT and connection migration. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-http-versions.jpg" />
-    <title>HTTP Version Race — 1.1 vs 2 vs 3 | Krunalkumar Shah</title>
+    <title>HTTP Version Race - 1.1 vs 2 vs 3 | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -249,7 +249,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the simulation, the drawing, all of it on
+              This runs entirely inside your browser - the simulation, the drawing, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -271,7 +271,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -283,7 +283,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-http-mount">
-          <p class="lab-proc-fallback">Starting the HTTP version race… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the HTTP version race… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -294,10 +294,10 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>HTTP/1.1: one request at a time, per connection</h3>
-            <p>A connection carries one request and waits for the whole response before the next one can go. Browsers worked around that by opening six connections per origin, so the seventh resource waits for a lane to free up regardless of how fast the link is. Pipelining was supposed to fix it and did not: middleboxes reordered or mangled the responses, so browsers shipped it disabled and eventually removed it. Sites shipped <em>domain sharding</em> instead &mdash; serving assets from img1, img2, img3 purely to buy more connections.</p>
+            <p>A connection carries one request and waits for the whole response before the next one can go. Browsers worked around that by opening six connections per origin, so the seventh resource waits for a lane to free up regardless of how fast the link is. Pipelining was supposed to fix it and did not: middleboxes reordered or mangled the responses, so browsers shipped it disabled and eventually removed it. Sites shipped <em>domain sharding</em> instead - serving assets from img1, img2, img3 purely to buy more connections.</p>
           </article>
           <article class="info-card">
-            <h3>HTTP/2: one connection, many streams &mdash; and one queue underneath</h3>
+            <h3>HTTP/2: one connection, many streams - and one queue underneath</h3>
             <p>HTTP/2 put every request on one connection as an independent stream, interleaved frame by frame, and compressed the headers with HPACK so the repeated ones stop costing anything. Six lanes became one lane carrying everything. What it did not change is what is underneath: a single TCP connection is a single ordered byte stream, so the streams are independent to the application and not independent at all to the transport.</p>
           </article>
           <article class="info-card">
@@ -306,7 +306,7 @@
           </article>
           <article class="info-card">
             <h3>The part nobody puts on a slide</h3>
-            <p>Six TCP connections have six congestion windows and recover from loss six times as fast in aggregate as one connection does. HTTP/2 gave that up. Raise the loss slider far enough and HTTP/1.1 finishes first &mdash; not because it is a better protocol, but because it is more aggressive with the network. That was a genuine argument during HTTP/2's design, and this lab reproduces it rather than hiding it.</p>
+            <p>Six TCP connections have six congestion windows and recover from loss six times as fast in aggregate as one connection does. HTTP/2 gave that up. Raise the loss slider far enough and HTTP/1.1 finishes first - not because it is a better protocol, but because it is more aggressive with the network. That was a genuine argument during HTTP/2's design, and this lab reproduces it rather than hiding it.</p>
           </article>
         </div>
       </section>
@@ -326,7 +326,7 @@
           </article>
           <article class="info-card">
             <h3>HTTP/3 does not block across streams</h3>
-            <p>QUIC numbers packets and tracks stream offsets separately, so a gap in one stream is not a gap in another. The red band covers one row. It is the same link, the same losses and the same congestion response &mdash; the only difference is who has to wait.</p>
+            <p>QUIC numbers packets and tracks stream offsets separately, so a gap in one stream is not a gap in another. The red band covers one row. It is the same link, the same losses and the same congestion response - the only difference is who has to wait.</p>
           </article>
           <article class="info-card">
             <h3>What none of them fix</h3>
@@ -348,7 +348,7 @@
           </article>
           <article class="info-card">
             <h3>A stall costs exactly one round trip</h3>
-            <p>When a packet is lost, the affected scope stops dead for one RTT. That overstates the cost on a fast link, where real TCP keeps sending until the receive window fills. It understates it whenever loss arrives in bursts, or when a retransmission timeout fires instead of a fast retransmit &mdash; those cost far more. The error runs in both directions and I have not tuned it to flatter anybody.</p>
+            <p>When a packet is lost, the affected scope stops dead for one RTT. That overstates the cost on a fast link, where real TCP keeps sending until the receive window fills. It understates it whenever loss arrives in bursts, or when a retransmission timeout fires instead of a fast retransmit - those cost far more. The error runs in both directions and I have not tuned it to flatter anybody.</p>
           </article>
           <article class="info-card">
             <h3>Congestion control is one simple loop</h3>
@@ -356,7 +356,7 @@
           </article>
           <article class="info-card">
             <h3>HPACK is exact, except for Huffman</h3>
-            <p>The static table indices, the integer prefix encoding, the entry sizing and the eviction are all as RFC 7541 specifies. The literals are sent uncompressed, which HPACK allows, so the literal bytes are around a fifth larger than a real encoder would send. Nothing changes for the indexed fields, which are what the view is about. HTTP/3 uses QPACK rather than HPACK &mdash; the same idea, rearranged so a lost packet cannot block header decoding.</p>
+            <p>The static table indices, the integer prefix encoding, the entry sizing and the eviction are all as RFC 7541 specifies. The literals are sent uncompressed, which HPACK allows, so the literal bytes are around a fifth larger than a real encoder would send. Nothing changes for the indexed fields, which are what the view is about. HTTP/3 uses QPACK rather than HPACK - the same idea, rearranged so a lost packet cannot block header decoding.</p>
           </article>
           <article class="info-card">
             <h3>The page model is simplified</h3>
@@ -364,7 +364,7 @@
           </article>
           <article class="info-card">
             <h3>HTTP/3 is not always faster</h3>
-            <p>On a clean link the win is about one handshake round trip. UDP is rate-limited or blocked outright on some networks, and QUIC does its work in userspace rather than in the kernel, which costs measurably more CPU per byte. If you want to know whether it helps your site, measure your site &mdash; <a href="/labs/har-analyzer">drop a real HAR file into the HAR analyser</a> rather than trusting this.</p>
+            <p>On a clean link the win is about one handshake round trip. UDP is rate-limited or blocked outright on some networks, and QUIC does its work in userspace rather than in the kernel, which costs measurably more CPU per byte. If you want to know whether it helps your site, measure your site - <a href="/labs/har-analyzer">drop a real HAR file into the HAR analyser</a> rather than trusting this.</p>
           </article>
         </div>
       </section>

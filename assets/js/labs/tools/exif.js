@@ -179,7 +179,7 @@
       renderReport(bytes, file);
     } catch (err) {
       out.rule();
-      out.err('Could not finish reading that file — its metadata is malformed');
+      out.err('Could not finish reading that file - its metadata is malformed');
       out.err('in a way this reader could not follow.');
       out.line('');
       out.dim('Nothing was uploaded and nothing else on the page is affected.');
@@ -197,14 +197,14 @@
     var data = readExif(bytes);
     if (data.error === 'not-jpeg') {
       out.warn('This is not a JPEG. PNG and WebP can carry metadata too, but the');
-      out.warn('EXIF block that phones write lives in JPEG — try a photo straight');
+      out.warn('EXIF block that phones write lives in JPEG - try a photo straight');
       out.warn('from a camera roll.');
       return;
     }
     if (data.none || data.xmpOnly) {
       out.ok('No EXIF block found.');
       out.dim(data.xmpOnly ? 'There is an APP1 segment, but it is XMP rather than EXIF.'
-                           : 'Either it never had any, or something already stripped it —');
+                           : 'Either it never had any, or something already stripped it -');
       out.dim('most social networks remove EXIF on upload, which is why a photo');
       out.dim('saved from Instagram looks clean and the original does not.');
       return;
@@ -236,11 +236,11 @@
       if (g.GPSDateStamp) out.row('GPS date', g.GPSDateStamp);
       out.line('');
       out.warn('That is roughly street-level accuracy. Anyone with this file can');
-      out.warn('read it — the coordinates travel inside the image, so emailing or');
+      out.warn('read it - the coordinates travel inside the image, so emailing or');
       out.warn('sharing the original shares the location too.');
       out.line('');
       out.dim('Coordinates: ' + lat.toFixed(6) + ', ' + lon.toFixed(6));
-      out.dim('(paste into any map — nothing here contacts a mapping service)');
+      out.dim('(paste into any map - nothing here contacts a mapping service)');
     } else {
       out.ok('No GPS coordinates in this image.');
     }
@@ -305,7 +305,7 @@
           out.dim('Re-encoding through a canvas keeps the pixels and drops every');
           if (actual === 'image/png') {
             out.dim('metadata segment. PNG is lossless, so the pixels are identical');
-            out.dim('to the original — only the file size will differ.');
+            out.dim('to the original - only the file size will differ.');
           } else {
             out.dim('metadata segment. It is a re-compression, so the file size and');
             out.dim('the last few bits of quality will differ from the original.');
@@ -337,7 +337,7 @@
         onError: function (msg) { out.clear().err(msg); }
       });
       document.getElementById('tool-strip').addEventListener('click', strip);
-      out.dim('Drop a photo taken on a phone — those are the ones that carry GPS.');
+      out.dim('Drop a photo taken on a phone - those are the ones that carry GPS.');
       out.dim('Nothing is uploaded; the file is read and re-encoded in this tab.');
     }
   });

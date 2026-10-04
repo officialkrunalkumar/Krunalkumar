@@ -72,7 +72,7 @@
                         "name": "Is anything I paste uploaded?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. The header is parsed in your browser and nothing is sent anywhere — there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for."
+                                "text": "No. The header is parsed in your browser and nothing is sent anywhere - there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for."
                         }
                 },
                 {
@@ -101,7 +101,7 @@
                 },
                 {
                         "@type": "Question",
-                        "name": "Max-Age or Expires — which one wins?",
+                        "name": "Max-Age or Expires - which one wins?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
                                 "text": "Max-Age, always. It wins regardless of which appeared first in the header and regardless of which date is later; Expires is only consulted when Max-Age is absent or is not a plain integer. Max-Age is also the better attribute, because it is a duration rather than a date and does not depend on the visitor’s clock being right."
@@ -112,7 +112,7 @@
                         "name": "What can this tool not tell me?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value — a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason."
+                                "text": "A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value - a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason."
                         }
                 }
         ]
@@ -209,7 +209,7 @@
           </ol>
         </nav>
         <h1>Set-Cookie header inspector</h1>
-        <p class="hero-text">A cookie header is one of the few places where the browser can disagree with you in complete silence. Get the prefix wrong, or write SameSite=None without Secure, and the cookie is not weakened &mdash; it is thrown away, with no console warning and no server-side signal. Paste the header here and find out what the browser actually did with it.</p>
+        <p class="hero-text">A cookie header is one of the few places where the browser can disagree with you in complete silence. Get the prefix wrong, or write SameSite=None without Secure, and the cookie is not weakened - it is thrown away, with no console warning and no server-side signal. Paste the header here and find out what the browser actually did with it.</p>
         <ul class="lab-facts">
           <li>Every attribute explained in plain language</li>
           <li>The prefix rules that cause silent rejection</li>
@@ -238,14 +238,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Long pastes are capped so the page stays responsive</li>
                   <li>No request is made to the site the cookie came from</li>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -278,7 +278,7 @@
                   title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <label class="lab-field-inline">
-          <span>Response URL, optional &mdash; without it the Domain match, the default path and the secure-origin rules cannot be checked</span>
+          <span>Response URL, optional - without it the Domain match, the default path and the secure-origin rules cannot be checked</span>
           <input class="lab-toolfield" type="text" id="tool-origin" spellcheck="false"
                  autocapitalize="off" autocorrect="off" autocomplete="off"
                  placeholder="https://app.example.com/account/settings" />
@@ -304,7 +304,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A name prefix is a rule, not a convention</h3>
-            <p><code>__Host-</code> and <code>__Secure-</code> are read by the browser, not by your team. A cookie named <code>__Host-session</code> must carry <code>Secure</code>, must carry <code>Path=/</code>, and must have no <code>Domain</code> attribute at all. Break any of those and the cookie is <strong>rejected</strong> &mdash; not stored with weaker settings, not downgraded, not logged. Dropped. <code>__Secure-</code> needs only <code>Secure</code>, and fails the same way without it. That is the whole point of the prefix: it is a constraint you cannot accidentally undo later, because the browser refuses the cookie rather than quietly accepting a worse one. It is also the single most common surprise here, because the symptom is a login that will not stick and there is nothing in any console to search for.</p>
+            <p><code>__Host-</code> and <code>__Secure-</code> are read by the browser, not by your team. A cookie named <code>__Host-session</code> must carry <code>Secure</code>, must carry <code>Path=/</code>, and must have no <code>Domain</code> attribute at all. Break any of those and the cookie is <strong>rejected</strong> - not stored with weaker settings, not downgraded, not logged. Dropped. <code>__Secure-</code> needs only <code>Secure</code>, and fails the same way without it. That is the whole point of the prefix: it is a constraint you cannot accidentally undo later, because the browser refuses the cookie rather than quietly accepting a worse one. It is also the single most common surprise here, because the symptom is a login that will not stick and there is nothing in any console to search for.</p>
           </article>
           <article class="info-card">
             <h3>The cookie is the entire mechanism of CSRF</h3>
@@ -312,11 +312,11 @@
           </article>
           <article class="info-card">
             <h3>Partitioned, and what it takes away</h3>
-            <p>CHIPS stores a third-party cookie in a jar keyed by the top-level site as well as by its own host, and requires <code>Secure</code>. The same widget embedded on two different sites gets two cookies with the same name and no way to see across. That is the point of it, and it is also the cost: a widget that relied on one shared cookie to recognise a visitor everywhere cannot do that any more. Per-embedding state survives &mdash; a collapsed panel, a chosen language, a cart on that one shop. Cross-site identity does not, and no attribute brings it back.</p>
+            <p>CHIPS stores a third-party cookie in a jar keyed by the top-level site as well as by its own host, and requires <code>Secure</code>. The same widget embedded on two different sites gets two cookies with the same name and no way to see across. That is the point of it, and it is also the cost: a widget that relied on one shared cookie to recognise a visitor everywhere cannot do that any more. Per-embedding state survives - a collapsed panel, a chosen language, a cart on that one shop. Cross-site identity does not, and no attribute brings it back.</p>
           </article>
           <article class="info-card">
             <h3>A Domain attribute only ever widens</h3>
-            <p>There is no way to narrow a cookie with <code>Domain</code>. The narrow cookie is the one with no <code>Domain</code> attribute at all, which matches that exact host and nothing else. Writing <code>Domain=example.com</code> on a response from <code>app.example.com</code> hands the cookie to every host under <code>example.com</code>: an old staging box, a marketing page somebody put on a hosted platform, a CNAME pointed at a vendor. Any of them can read it, and any of them can overwrite it &mdash; cookies do not obey the same-origin policy, so scheme, port and host do not protect you. A compromised sibling gets the session, and can also hand a visitor a session of its choosing.</p>
+            <p>There is no way to narrow a cookie with <code>Domain</code>. The narrow cookie is the one with no <code>Domain</code> attribute at all, which matches that exact host and nothing else. Writing <code>Domain=example.com</code> on a response from <code>app.example.com</code> hands the cookie to every host under <code>example.com</code>: an old staging box, a marketing page somebody put on a hosted platform, a CNAME pointed at a vendor. Any of them can read it, and any of them can overwrite it - cookies do not obey the same-origin policy, so scheme, port and host do not protect you. A compromised sibling gets the session, and can also hand a visitor a session of its choosing.</p>
           </article>
         </div>
       </section>
@@ -327,7 +327,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is anything I paste uploaded?</summary>
-            <div>No. The header is parsed in your browser and nothing is sent anywhere &mdash; there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for.</div>
+            <div>No. The header is parsed in your browser and nothing is sent anywhere - there is no server here to send it to. That matters more than usual for this tool, because the thing being pasted is often a live session cookie from a system you are responsible for.</div>
           </details>
           <details class="lab-faq">
             <summary>Why would a browser reject a cookie without telling me?</summary>
@@ -342,12 +342,12 @@
             <div>It gives the widget a separate cookie jar per embedding site. Anything the widget remembers about one site keeps working. Anything that depended on recognising the same visitor across different embedding sites stops, permanently, and there is no attribute that restores it. If a widget needs identity across sites, that now has to be an explicit sign-in rather than a cookie.</div>
           </details>
           <details class="lab-faq">
-            <summary>Max-Age or Expires &mdash; which one wins?</summary>
+            <summary>Max-Age or Expires - which one wins?</summary>
             <div>Max-Age, always. It wins regardless of which appeared first in the header and regardless of which date is later; Expires is only consulted when Max-Age is absent or is not a plain integer. Max-Age is also the better attribute, because it is a duration rather than a date and does not depend on the visitor&rsquo;s clock being right.</div>
           </details>
           <details class="lab-faq">
             <summary>What can this tool not tell me?</summary>
-            <div>A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value &mdash; a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason.</div>
+            <div>A great deal. It reads the text you paste, so it cannot know whether your server really sent that, or what a framework or CDN rewrote on the way out. It cannot judge the value - a predictable session id is the worst thing a cookie can carry and the header never shows it. Browser behaviour also moves, so where a rule is in flux the output says so rather than quoting a version. The score is mine, not a standard, which is why every deduction is printed with its reason.</div>
           </details>
       </section>
 

@@ -136,7 +136,7 @@
           if (!moved) return;
         }
       },
-      tell: 'Nothing ever moves more than one place at a time &mdash; every swap is between neighbours, so tall bars ' +
+      tell: 'Nothing ever moves more than one place at a time - every swap is between neighbours, so tall bars ' +
         'crawl rightwards a step per comparison instead of jumping. Each pass carries the largest remaining value all ' +
         'the way to the right-hand end and then restarts from the left, so the sorted region grows from the right and ' +
         'the scan gets visibly shorter each time round.'
@@ -186,7 +186,7 @@
       run: function (r) { msort(r, 0, r.a.length); },
       tell: 'Values are overwritten rather than swapped, so bars change height in place instead of trading positions. ' +
         'Watch a stretch of the array get rewritten left to right as one clean ascending run, then a stretch twice as ' +
-        'wide, then twice again. Nothing is in its final position until the last merge sweeps the whole array &mdash; ' +
+        'wide, then twice again. Nothing is in its final position until the last merge sweeps the whole array - ' +
         'right up to the end you are looking at two sorted halves and no sorted whole.'
     },
     {
@@ -194,7 +194,7 @@
       name: 'Quicksort',
       run: function (r) { qsort(r, 0, r.a.length - 1); },
       tell: 'A scan runs left to right across one window, and every so often a bar makes a single long jump across ' +
-        'it &mdash; that is a value being thrown to the correct side of the pivot. When the scan reaches the end, one ' +
+        'it - that is a value being thrown to the correct side of the pivot. When the scan reaches the end, one ' +
         'bar lands in its final position for good and the window splits into two smaller windows that get worked ' +
         'separately. Activity that keeps narrowing and then leaps somewhere else entirely is the tell.'
     },
@@ -210,7 +210,7 @@
         }
       },
       tell: 'The first stretch looks like vandalism: a lot of swapping that leaves the array less ordered than it ' +
-        'started, because it is building a heap, not sorting. After that the pattern is unmistakable &mdash; the ' +
+        'started, because it is building a heap, not sorting. After that the pattern is unmistakable - the ' +
         'leftmost bar swaps straight to the right-hand end, and a value tumbles down from position one in a chain of ' +
         'swaps at doubling distances. Sorted grows from the right as in bubble sort, but the left stays jumbled ' +
         'instead of getting gradually tidier.'
@@ -232,7 +232,7 @@
     formatBest: function (n) { return n + ' pts'; },
     tapAction: false,
     startTitle: 'Guess the algorithm',
-    startText: 'A sort runs on twenty-four bars. Name it from the four buttons below before it finishes — the sooner you call it, the more it is worth.',
+    startText: 'A sort runs on twenty-four bars. Name it from the four buttons below before it finishes - the sooner you call it, the more it is worth.',
 
     setup: function (g) {
       var order = [];           // which algorithm each round uses
@@ -332,7 +332,7 @@
         g.stat('worth', '—');
 
         if (verdict) {
-          var head = correct ? 'Correct &mdash; ' : (chosen ? 'Not quite &mdash; ' : 'Out of time &mdash; ');
+          var head = correct ? 'Correct - ' : (chosen ? 'Not quite - ' : 'Out of time - ');
           verdict.className = 'algo-verdict ' + (correct ? 'is-right' : 'is-wrong');
           verdict.innerHTML =
             '<span class="algo-call">' + head + 'that was <strong>' + algo.name + '</strong>' +
@@ -376,7 +376,7 @@
             score: g.score,
             title: g.score + ' out of ' + (ROUNDS * 100),
             message: pct >= 75 ? 'You are reading the movement rather than waiting for the shape to settle, which is the whole skill.'
-                   : pct >= 40 ? 'Sound. The points are in the first few seconds — the giveaways are all in how things move, not where they end up.'
+                   : pct >= 40 ? 'Sound. The points are in the first few seconds - the giveaways are all in how things move, not where they end up.'
                    : 'Worth another go. Start by asking one question: are values being swapped, or overwritten?'
           });
           return;

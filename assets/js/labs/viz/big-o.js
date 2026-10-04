@@ -232,7 +232,7 @@
         return s;
       },
       note: 'Two hundred and fifty-six reads at random positions, whatever the array length. ' +
-            'The operation count never changes, so a flat line is the right answer — and you ' +
+            'The operation count never changes, so a flat line is the right answer - and you ' +
             'will probably not get one. Past a few hundred thousand elements the probes stop ' +
             'fitting in cache and each one costs a trip to slower memory. That drift is not the ' +
             'algorithm; it is the memory hierarchy, and it is the reason O(1) does not mean fast.'
@@ -279,7 +279,7 @@
       prep: function (fx) { return fx; },
       run: function (fx) { var out = mergeSort(fx); return out[0] + out[out.length - 1]; },
       note: 'Textbook top-down merge sort: split, sort both halves, merge. It allocates two new ' +
-            'arrays at every level, which is a real cost and a real source of garbage — if you ' +
+            'arrays at every level, which is a real cost and a real source of garbage - if you ' +
             'see one sample in a cell three times the others, you are probably looking at a ' +
             'collection. The median is what gets plotted, and the whisker shows you the outlier ' +
             'rather than hiding it.'
@@ -291,7 +291,7 @@
       build: function (n) { return randomArray(n, 101); },
       prep: function (fx) { return fx.slice(); },
       run: function (a) { numericSort(a); return a[0] + a[a.length - 1]; },
-      note: 'Array.prototype.sort with a numeric comparator — the engine’s own sort, written ' +
+      note: 'Array.prototype.sort with a numeric comparator - the engine’s own sort, written ' +
             'in C++ and tuned for years. That gap in absolute time is the constant factor, the ' +
             'thing big-O notation deliberately throws away, and the reason "same complexity" and ' +
             '"same speed" are different sentences. Expect the verdict to be equivocal here, and ' +
@@ -309,7 +309,7 @@
       run: function (a) { insertionSort(a); return a[0] + a[a.length - 1]; },
       note: 'Quadratic, and the fastest thing on this page for a small array. One tight loop, no ' +
             'allocation, no recursion, near-perfect locality. Race it against merge sort to see ' +
-            'where that stops being true — the crossover is why real sort implementations switch ' +
+            'where that stops being true - the crossover is why real sort implementations switch ' +
             'to insertion sort below a threshold instead of recursing all the way down.'
     },
     {
@@ -346,7 +346,7 @@
       run: subsetWalk,
       note: 'A genuine 2ⁿ: one iteration per subset, constant work inside. Each step of two on ' +
             'the ladder should quadruple the time, and it does. This is the shape that makes ' +
-            '"just throw more hardware at it" stop working — a machine a thousand times faster ' +
+            '"just throw more hardware at it" stop working - a machine a thousand times faster ' +
             'buys you ten more elements.'
     }
   ];
@@ -1039,13 +1039,13 @@
   /* ======================================================================== */
 
   var AXIS_NOTES = {
-    linear: 'Linear axes — the way a spreadsheet would draw it. One curve leaves the top of ' +
+    linear: 'Linear axes - the way a spreadsheet would draw it. One curve leaves the top of ' +
             'the frame and everything else is squashed onto the floor, which is exactly why ' +
             'nobody teaches complexity from a linear plot.',
     loglog: 'Log–log axes. This is the one that matters: a power law nᵖ is a STRAIGHT LINE here, ' +
             'and its slope is p. Slope 1 is linear, slope 2 is quadratic, slope 1.1 is n log n ' +
             'pretending to be linear. Read the exponent off the picture. An exponential is not ' +
-            'straight here at all — it curves upward without ever settling.',
+            'straight here at all - it curves upward without ever settling.',
     semilog: 'Log time, linear n. Now the exponentials are the straight lines and their slope is ' +
              'the growth base, while every polynomial bends over and flattens. Switch between ' +
              'this and log–log to tell an exponential from a polynomial by shape alone.'
@@ -1265,7 +1265,7 @@
       'The smallest sizes are dropped by default. At a thousand elements the array ' +
       'fits in L1 cache and the loop is dominated by call overhead, so those points ' +
       'sit below the line and drag a fit towards a class that is too cheap. Put them ' +
-      'back and watch the verdict change — that is worth doing once.'));
+      'back and watch the verdict change - that is worth doing once.'));
 
     var actions = E('div', 'bo-btnrow');
     this.btnRun = E('button', 'bo-btn primary', 'Measure');
@@ -1384,7 +1384,7 @@
       if (document.hidden) {
         self.pausedHidden = true;
         if (self.timer) { clearTimeout(self.timer); self.timer = null; }
-        self.progressText.textContent = 'Paused — this tab is in the background.';
+        self.progressText.textContent = 'Paused - this tab is in the background.';
       } else if (self.pausedHidden) {
         self.pausedHidden = false;
         self.setStatus('Resumed.');
@@ -1417,7 +1417,7 @@
       clear(sel);
       ALGOS.forEach(function (a) {
         if (!a.race) return;
-        var op = E('option', null, a.label + ' — ' + a.claim);
+        var op = E('option', null, a.label + ' - ' + a.claim);
         op.value = a.key;
         if (a.key === self[pair[1]]) op.selected = true;
         sel.appendChild(op);
@@ -1571,7 +1571,7 @@
        with numbers nothing on screen admitted were different. */
     if (document.hidden) {
       this.pausedHidden = true;
-      this.progressText.textContent = 'Paused — this tab is in the background.';
+      this.progressText.textContent = 'Paused - this tab is in the background.';
       this.setStatus('Paused. Timings taken while a tab is in the background are ' +
         'throttled and not comparable, so the run waits until you come back.');
       return;
@@ -1779,7 +1779,7 @@
     var wider = Math.round(last.n / first.n);
     var p = E('p', 'bo-verdict-line');
     p.textContent = 'Measured ' + fmtTime(first.t) + ' at n = ' + fmtN(first.n) +
-      ' and ' + fmtTime(last.t) + ' at n = ' + fmtN(last.n) + ' — ' +
+      ' and ' + fmtTime(last.t) + ' at n = ' + fmtN(last.n) + ' - ' +
       fmtN(grew) + ' times the work for ' + fmtN(wider) + ' times the input. ' +
       'No complexity class is fitted on this tab: the shared ladder is dense at ' +
       'four elements because that is where the crossover is, and a range chosen ' +
@@ -1836,7 +1836,7 @@
         (others.length > 1 ? ' sit' : ' sits') +
         ' inside the noise too, and this range cannot separate them. ' +
         'The simplest curve that still fits is ' + v.supported.label +
-        ', and that is the honest verdict — "one of these", not a single winner.'));
+        ', and that is the honest verdict - "one of these", not a single winner.'));
     } else if (v.second) {
       p.appendChild(document.createTextNode(' The next candidate, ' + v.second.label +
         ', is off by ' + fmtPct(v.second.rms) + ', so the data separates the classes cleanly.'));
@@ -1846,7 +1846,7 @@
         s.fit.exponential.rms < v.best.rms * 1.6 + 0.01) {
       p.appendChild(document.createTextNode(' An exponential also fits this range, ' +
         'with a base of ' + s.fit.exponential.base.toFixed(3) +
-        ' — over a short ladder those are hard to tell apart, so widen it before ' +
+        ' - over a short ladder those are hard to tell apart, so widen it before ' +
         'believing either.'));
     }
     return p;
@@ -1857,7 +1857,7 @@
       var only = E('div', 'bo-card');
       only.appendChild(E('p', 'bo-verdict-line',
         'Both slots are set to the same algorithm, so there is nothing to cross. ' +
-        'Pick two different ones — insertion sort against merge sort is the pair ' +
+        'Pick two different ones - insertion sort against merge sort is the pair ' +
         'worth starting with.'));
       this.verdict.appendChild(only);
       return;
@@ -1870,7 +1870,7 @@
 
     var line = E('p', 'bo-verdict-line');
     if (a.points.length < 3 || b.points.length < 3) {
-      line.textContent = 'Run the race first — the crossover needs both curves.';
+      line.textContent = 'Run the race first - the crossover needs both curves.';
       card.appendChild(line);
       this.verdict.appendChild(card);
       return;
@@ -1898,7 +1898,7 @@
       var after = found.aWasFaster ? b : a;
       var where = found.n === null
         ? 'The lead changes hands somewhere between n = ' + fmtN(found.lo) + ' and n = ' +
-          fmtN(found.hi) + ', and the measurements cannot pin it closer than that — near ' +
+          fmtN(found.hi) + ', and the measurements cannot pin it closer than that - near ' +
           'the crossing the two curves are within the noise of each other, which is what ' +
           'a crossover actually looks like when you measure one instead of solving for it. '
         : 'They cross at about n = ' + fmtN(found.n) + '. ';

@@ -112,7 +112,7 @@
     var ok = allowMacros ? /^[A-Za-z0-9_%{}.+=-]+$/ : /^[A-Za-z0-9_-]+$/;
     for (var i = 0; i < labels.length; i++) {
       var label = labels[i];
-      if (!label.length) return 'has an empty label — two dots in a row, or a leading dot';
+      if (!label.length) return 'has an empty label - two dots in a row, or a leading dot';
       if (label.length > 63) {
         return 'has a ' + label.length + '-character label; a label stops at 63';
       }
@@ -207,14 +207,14 @@
      too. Working that out needs DNS, which this page does not have, so the
      cost is a field the visitor fills in. */
   var MECHS = [
-    { id: 'ip4', label: 'ip4 — an address or CIDR block', cost: 0, needsValue: true },
-    { id: 'ip6', label: 'ip6 — an address or CIDR block', cost: 0, needsValue: true },
-    { id: 'include', label: 'include — another domain’s SPF record', cost: 1, needsValue: true, nested: true },
-    { id: 'a', label: 'a — the A/AAAA records of a domain', cost: 1, needsValue: false },
-    { id: 'mx', label: 'mx — the hosts named in a domain’s MX', cost: 1, needsValue: false },
-    { id: 'exists', label: 'exists — a macro-expanded lookup', cost: 1, needsValue: true },
-    { id: 'ptr', label: 'ptr — reverse DNS (discouraged)', cost: 1, needsValue: false },
-    { id: 'redirect', label: 'redirect — hand the whole policy to another domain', cost: 1, needsValue: true, nested: true, modifier: true }
+    { id: 'ip4', label: 'ip4 - an address or CIDR block', cost: 0, needsValue: true },
+    { id: 'ip6', label: 'ip6 - an address or CIDR block', cost: 0, needsValue: true },
+    { id: 'include', label: 'include - another domain’s SPF record', cost: 1, needsValue: true, nested: true },
+    { id: 'a', label: 'a - the A/AAAA records of a domain', cost: 1, needsValue: false },
+    { id: 'mx', label: 'mx - the hosts named in a domain’s MX', cost: 1, needsValue: false },
+    { id: 'exists', label: 'exists - a macro-expanded lookup', cost: 1, needsValue: true },
+    { id: 'ptr', label: 'ptr - reverse DNS (discouraged)', cost: 1, needsValue: false },
+    { id: 'redirect', label: 'redirect - hand the whole policy to another domain', cost: 1, needsValue: true, nested: true, modifier: true }
   ];
 
   function mechDef(id) {
@@ -270,13 +270,13 @@
     var word;
     var cls = 'dm-count';
     if (n > 10) {
-      word = 'Over the limit — this record is a PermError, which is not a pass.';
+      word = 'Over the limit - this record is a PermError, which is not a pass.';
       cls += ' is-over';
     } else if (n === 10) {
       word = 'At the limit. One more DNS-costing term breaks the record.';
       cls += ' is-near';
     } else if (n >= 8) {
-      word = 'Close to the limit — ' + (10 - n) +
+      word = 'Close to the limit - ' + (10 - n) +
         (n === 9 ? ' lookup left.' : ' lookups left.') + ' One include may end it.';
       cls += ' is-near';
     } else {
@@ -333,7 +333,7 @@
       v.value = row.val || '';
       v.spellcheck = false;
       v.autocomplete = 'off';
-      v.placeholder = mechDef(row.mech).needsValue ? 'required' : 'optional — blank means this domain';
+      v.placeholder = mechDef(row.mech).needsValue ? 'required' : 'optional - blank means this domain';
       v.setAttribute('aria-label', 'Value for mechanism ' + human);
       v.addEventListener('input', function () { row.val = v.value; });
 
@@ -406,7 +406,7 @@
       out.dim('evaluating and returns PermError.');
       out.line('');
       out.warn('PermError is not a pass. A DMARC policy of p=reject will not save');
-      out.warn('mail that fails this way — SPF simply produced no usable answer, so');
+      out.warn('mail that fails this way - SPF simply produced no usable answer, so');
       out.warn('the message rests entirely on DKIM, if you have it.');
       out.line('');
       out.dim('You are at ' + have + ' now. Ways down from here:');
@@ -415,12 +415,12 @@
       out.dim('  - drop a vendor that no longer sends for you');
       out.dim('  - move a sender onto a subdomain with its own SPF record');
       out.dim('  - drop "a" and "mx" if the hosts they name never send mail');
-      setStatus('refused — over the 10-lookup limit', 'is-err');
+      setStatus('refused - over the 10-lookup limit', 'is-err');
       return false;
     }
     spfRows.push(row);
     renderSpfRows();
-    setStatus('added ' + mech + ' — estimate now ' + spfTotal() + ' of 10',
+    setStatus('added ' + mech + ' - estimate now ' + spfTotal() + ' of 10',
       spfTotal() >= 8 ? 'is-busy' : 'is-ok');
     return true;
   }
@@ -430,7 +430,7 @@
     var domain = cleanDomain(val('spf-domain'));
     var allSel = val('spf-all');
 
-    out.heading('SPF — which servers may send as this domain');
+    out.heading('SPF - which servers may send as this domain');
     out.rule();
 
     var domProblem = domainProblem(domain);
@@ -485,7 +485,7 @@
 
     out.rule();
     if (total > 10) {
-      out.err('OVER THE LIMIT — this record is a PermError.');
+      out.err('OVER THE LIMIT - this record is a PermError.');
       out.err('Receivers stop evaluating at the eleventh lookup. The result is');
       out.err('not a fail and it is not a pass; it is "could not be evaluated",');
       out.err('and DMARC then rests entirely on DKIM. I will not hand this over as');
@@ -493,7 +493,7 @@
       out.line('');
       out.dim('Bring the estimate to 10 or under and press Build again.');
       setCopy('');
-      setStatus(total + ' of 10 — refused, PermError', 'is-err');
+      setStatus(total + ' of 10 - refused, PermError', 'is-err');
     } else if (total >= 8) {
       var left = 10 - total;
       out.warn('At ' + total + ' of 10 there ' + (left === 1 ? 'is 1 lookup' : 'are ' + left + ' lookups') +
@@ -556,7 +556,7 @@
       out.dim('NXDOMAIN or no answer. RFC 7208 §4.6.4 allows two. The third is a');
       out.dim('PermError, exactly like going over ten.');
       out.dim('You have ' + lookupTerms + ' term' + (lookupTerms === 1 ? '' : 's') +
-        ' here that could go void — typically a vendor');
+        ' here that could go void - typically a vendor');
       out.dim('you stopped using, whose include target was deleted. I cannot tell');
       out.dim('you which, because I resolve nothing. /labs/email-security queries');
       out.dim('DNS and will show you what each one actually returns.');
@@ -593,7 +593,7 @@
     if (record.length > 255) {
       out.line('');
       out.warn('Over 255 characters, so it has to go out as several quoted strings');
-      out.warn('joined by the resolver — shown above. Some DNS panels do that split');
+      out.warn('joined by the resolver - shown above. Some DNS panels do that split');
       out.warn('for you and some hand you an error.');
     }
     out.dim('One SPF record per domain. Two is a PermError, and "I added a second');
@@ -608,7 +608,7 @@
     var nested = spfRows.filter(function (r) { return mechDef(r.mech).nested; }).length;
     if (nested) {
       out.dim('The cost of each include and redirect above is a number you typed');
-      out.dim('in, so the total is an estimate built from what you told me — not a');
+      out.dim('in, so the total is an estimate built from what you told me - not a');
       out.dim('resolution. Vendors change their records without telling anyone, so');
       out.dim('a cost that was right last year may not be. Check the real total');
       out.dim('against a resolver before you trust a tight one.');
@@ -624,7 +624,7 @@
     if (usable) {
       out.line('');
       out.dim('Copy record puts the TXT value on your clipboard, without the quotes.');
-      setStatus('built — ' + total + ' of 10 lookups', total >= 8 ? 'is-busy' : 'is-ok');
+      setStatus('built - ' + total + ' of 10 lookups', total >= 8 ? 'is-busy' : 'is-ok');
     } else if (total > 10) {
       /* Said already, in the over-the-limit block above. */
     } else if (problems.length) {
@@ -677,7 +677,7 @@
     };
     if (opts.sp === 'inherit') opts.sp = '';
 
-    out.heading('DMARC — what a receiver should do when a message fails');
+    out.heading('DMARC - what a receiver should do when a message fails');
     out.rule();
 
     var domProblem = domainProblem(domain);
@@ -771,7 +771,7 @@
     }
     if (pcts.length && rampTidied) {
       out.warn('The pct ramp was sorted and de-duplicated to ' + pcts.join(', ') + '.');
-      out.warn('A rollout only widens — a stage that narrows it again is a step');
+      out.warn('A rollout only widens - a stage that narrows it again is a step');
       out.warn('backwards, not a stage.');
       out.line('');
     }
@@ -790,12 +790,12 @@
     var stages = [];
     stages.push({
       record: dmarcRecord('none', null, opts),
-      name: 'Stage 1 — p=none, monitoring only',
+      name: 'Stage 1 - p=none, monitoring only',
       howLabel: 'How long, by convention:',
       how: [
         'Usually a few weeks to a couple of months. Long enough to see a full',
         'billing run, a newsletter, an outage, and whatever marketing does once',
-        'a quarter. That is convention, not a measurement — nothing here timed',
+        'a quarter. That is convention, not a measurement - nothing here timed',
         'anything, and your mail is not anybody else’s mail.'
       ],
       watchLabel: 'What to watch before moving on:',
@@ -810,12 +810,12 @@
     pcts.forEach(function (p, i) {
       stages.push({
         record: dmarcRecord('quarantine', p, opts),
-        name: 'Stage ' + (i + 2) + ' — p=quarantine at ' + p + '%' +
+        name: 'Stage ' + (i + 2) + ' - p=quarantine at ' + p + '%' +
           (p === 100 ? ' (pct omitted; 100 is the default)' : ''),
         howLabel: 'How long, by convention:',
         how: [
           'A week or two per step is the figure people write down most often.',
-          'Longer if your mail is seasonal — you want a full cycle of whatever the',
+          'Longer if your mail is seasonal - you want a full cycle of whatever the',
           'business actually sends before you widen it.'
         ],
         watchLabel: 'What to watch before moving on:',
@@ -824,13 +824,13 @@
           ['The pass rate in the reports. It should not move when pct does; if it',
            'drops, you have found a sender that only works some of the time.'],
           ['Anything quarantined that you did not mean to quarantine. Fix the',
-           'sender — do not lower the policy back.']
+           'sender - do not lower the policy back.']
         ]
       });
     });
     stages.push({
       record: dmarcRecord('reject', null, opts),
-      name: 'Stage ' + (pcts.length + 2) + ' — p=reject',
+      name: 'Stage ' + (pcts.length + 2) + ' - p=reject',
       howLabel: 'How long:',
       how: [
         'Indefinitely. This is the resting place, not a step. From here, new',
@@ -889,14 +889,14 @@
       out.line('  A signature from mail.' + domain + ' does NOT align.', 't-warn');
     } else {
       out.line('  adkim=r (relaxed): the DKIM d= may be ' + domain + ' or any', 't-ok');
-      out.line('  subdomain of it — mail.' + domain + ' aligns.', 't-ok');
+      out.line('  subdomain of it - mail.' + domain + ' aligns.', 't-ok');
     }
     if (opts.aspf === 's') {
       out.line('  aspf=s (strict): the SMTP MAIL FROM domain must be exactly ' + domain, 't-warn');
       out.line('  Bounce addresses at bounce.' + domain + ' do NOT align.', 't-warn');
     } else {
       out.line('  aspf=r (relaxed): the SMTP MAIL FROM may be ' + domain + ' or a', 't-ok');
-      out.line('  subdomain — bounce.' + domain + ' aligns.', 't-ok');
+      out.line('  subdomain - bounce.' + domain + ' aligns.', 't-ok');
     }
     out.line('');
     out.dim('Relaxed is the default and the right choice for almost everyone.');
@@ -911,7 +911,7 @@
       out.line('');
       out.dim('RFC 7489 §7.1: the receiving domain must publish a record agreeing');
       out.dim('to accept reports for yours. Without it, conforming receivers send');
-      out.dim('nothing at all — and the symptom is an empty inbox, which looks');
+      out.dim('nothing at all - and the symptom is an empty inbox, which looks');
       out.dim('exactly like "no mail is failing".');
       out.line('');
       out.line('  Ask them to publish:', 't-info');
@@ -933,7 +933,7 @@
       subdomainDests.forEach(function (d) { out.line('  ' + d, 't-info'); });
       out.dim('Counted as internal here, so no permission record is asked for.');
       out.dim('That is the common reading and the common behaviour, not something');
-      out.dim('I can prove for every receiver — RFC 7489 §7.1 is written in terms');
+      out.dim('I can prove for every receiver - RFC 7489 §7.1 is written in terms');
       out.dim('of the destination host. If reports never arrive, publishing the');
       out.dim('permission record anyway costs nothing and rules this out:');
       subdomainDests.forEach(function (d) {
@@ -944,14 +944,14 @@
     if (opts.ruf.length) {
       out.rule();
       out.heading('About ruf');
-      out.warn('Failure reports carry pieces of real messages — headers, sometimes');
+      out.warn('Failure reports carry pieces of real messages - headers, sometimes');
       out.warn('the subject, sometimes recipient addresses. That is personal data');
       out.warn('arriving unsolicited in a mailbox, which is why most large receivers');
       out.warn('stopped sending them years ago. Expect very few, from very few');
       out.warn('places, and think about where they land before you ask for them.');
       if (!opts.fo) {
         out.dim('fo is unset, so it defaults to 0: report only when everything fails.');
-        out.dim('fo=1 — report when either check fails — is the one worth having.');
+        out.dim('fo=1 - report when either check fails - is the one worth having.');
       }
     } else if (opts.fo) {
       out.rule();
@@ -962,7 +962,7 @@
     out.rule();
     out.heading('What this does not do');
     out.dim('It builds strings. It does not check that _dmarc.' + domain + ' is free,');
-    out.dim('that your senders are aligned, or that a single message would pass —');
+    out.dim('that your senders are aligned, or that a single message would pass -');
     out.dim('none of which can be known without DNS and a real message. The pct');
     out.dim('ramp is a convention people follow, not a measured schedule, and the');
     out.dim('DMARC revision that has been in progress for years proposes dropping');
@@ -978,7 +978,7 @@
     }
     setCopy(stages[0].record);
     out.line('');
-    out.dim('Copy record puts stage 1 on your clipboard — the one you publish today.');
+    out.dim('Copy record puts stage 1 on your clipboard - the one you publish today.');
     setStatus('built ' + stages.length + ' stages', 'is-ok');
   }
 
@@ -1072,7 +1072,7 @@
     var p = String((byId('dkim-p') || {}).value || '').replace(/\s+/g, '');
     var testing = byId('dkim-test') && byId('dkim-test').checked;
 
-    out.heading('DKIM — the public half of the signing key, in DNS');
+    out.heading('DKIM - the public half of the signing key, in DNS');
     out.rule();
 
     var domProblem = domainProblem(domain);
@@ -1092,7 +1092,7 @@
     if (!/^[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?)*$/.test(selector)) {
       out.err('That selector has a character DKIM does not allow. RFC 6376 §3.1');
       out.err('makes a selector one or more dot-separated labels of letters,');
-      out.err('digits and hyphens — no underscores, no spaces.');
+      out.err('digits and hyphens - no underscores, no spaces.');
       setCopy('');
       setStatus('selector not valid', 'is-err');
       return;
@@ -1111,7 +1111,7 @@
     out.line('');
     if (!p) {
       out.warn('No public key pasted, so the p= tag is empty.');
-      out.warn('An empty p= is not a placeholder — it is the documented way to');
+      out.warn('An empty p= is not a placeholder - it is the documented way to');
       out.warn('REVOKE a key. Publishing this record as it stands tells receivers');
       out.warn('that any signature using this selector must be treated as invalid.');
       out.line('');
@@ -1138,7 +1138,7 @@
             keyOk = false;
             out.warn('This is the DER-wrapped form: 44 bytes of SubjectPublicKeyInfo,');
             out.warn('which is what "openssl pkey -pubout" hands you. Nothing is wrong');
-            out.warn('with the key — RFC 8463 §3 just wants the 32 raw bytes from inside');
+            out.warn('with the key - RFC 8463 §3 just wants the 32 raw bytes from inside');
             out.warn('the wrapper in p=, not the wrapper.');
             out.line('');
             out.line('  The 32 bytes it contains, base64:', 't-info');
@@ -1146,19 +1146,19 @@
           } else {
             keyOk = false;
             out.warn('An Ed25519 public key is 32 raw bytes, and its DER-wrapped form is');
-            out.warn('44. This decodes to ' + bytes.length + ', which is neither — so either it is');
+            out.warn('44. This decodes to ' + bytes.length + ', which is neither - so either it is');
             out.warn('an RSA key with k=ed25519 set by mistake, or the base64 is');
             out.warn('truncated.');
           }
           out.dim('Ed25519 signing is defined in RFC 8463 and is small and fast, but');
-          out.dim('verifier support is still thinner than RSA. Publishing both — one');
-          out.dim('selector each — is the usual way round that.');
+          out.dim('verifier support is still thinner than RSA. Publishing both - one');
+          out.dim('selector each - is the usual way round that.');
         } else {
           var bits = rsaModulusBits(bytes);
           if (bits === null) {
             out.warn('This decoded, but it is not a DER SubjectPublicKeyInfo that this');
             out.warn('reader understands, so I cannot tell you the key size. That does');
-            out.warn('not necessarily mean it is wrong — only that I will not guess.');
+            out.warn('not necessarily mean it is wrong - only that I will not guess.');
           } else {
             out.row('RSA modulus', bits + ' bits');
             if (bits < 1024) {
@@ -1169,7 +1169,7 @@
               out.warn('says signers SHOULD use 2048. Worth taking care of during the');
               out.warn('next rotation rather than as an emergency.');
             } else {
-              out.ok(bits + '-bit RSA — at or above what RFC 8301 asks signers for.');
+              out.ok(bits + '-bit RSA - at or above what RFC 8301 asks signers for.');
             }
             if (bits > 2048) {
               out.dim('Above 2048 the record gets long, and some DNS providers and some');
@@ -1217,7 +1217,7 @@
     out.dim('can have more than one key at once: the signature on a message carries');
     out.dim('s=' + selector + ' and d=' + domain + ', and the verifier looks up exactly');
     out.dim('that one name. Nothing enumerates selectors, which is also why a');
-    out.dim('scanner cannot list your keys — it can only guess common names.');
+    out.dim('scanner cannot list your keys - it can only guess common names.');
     out.line('');
     out.heading('Rotating without breaking anything');
     out.dim('1. Publish the NEW selector alongside the old one. Both records live.');
@@ -1225,7 +1225,7 @@
     out.dim('3. Switch the signer to the new selector.');
     out.dim('4. Leave the OLD record published. Mail signed before the switch is');
     out.dim('   still in transit, still being retried, still sitting in a queue');
-    out.dim('   somewhere — and it verifies against the old key or not at all.');
+    out.dim('   somewhere - and it verifies against the old key or not at all.');
     out.dim('5. Only then remove the old record.');
     out.line('');
     out.dim('Deleting the old key at step 3 is the classic rotation outage. There is');
@@ -1234,7 +1234,7 @@
 
     out.rule();
     out.heading('This page will not generate a key');
-    out.dim('Not as an omission — as a refusal. A private key generated by a web');
+    out.dim('Not as an omission - as a refusal. A private key generated by a web');
     out.dim('page is a key that page has seen, and there is no way for you to');
     out.dim('verify from the outside that it was not kept, logged or derived from a');
     out.dim('predictable seed. You would be taking my word for it, and you should');
@@ -1246,7 +1246,7 @@
 
     if (!keyOk) {
       setCopy('');
-      setStatus('key not usable — record not offered', 'is-err');
+      setStatus('key not usable - record not offered', 'is-err');
       return;
     }
     setCopy(record);
@@ -1282,9 +1282,9 @@
 
   function classify(spfAligned, dkimAligned) {
     if (dkimAligned === 'pass' && spfAligned === 'pass') return 'your own, both aligned';
-    if (dkimAligned === 'pass' && spfAligned !== 'pass') return 'forwarded or relayed — DKIM carried it';
-    if (dkimAligned !== 'pass' && spfAligned === 'pass') return 'SPF only — breaks when forwarded';
-    return 'fails DMARC — reject would stop this';
+    if (dkimAligned === 'pass' && spfAligned !== 'pass') return 'forwarded or relayed - DKIM carried it';
+    if (dkimAligned !== 'pass' && spfAligned === 'pass') return 'SPF only - breaks when forwarded';
+    return 'fails DMARC - reject would stop this';
   }
 
   function parseReport() {
@@ -1294,7 +1294,7 @@
       out.warn('Paste the XML from inside the aggregate report first.');
       out.line('');
       out.dim('Aggregate reports arrive as a .gz or .zip attachment. This tool does');
-      out.dim('not decompress either one — unzip it yourself and paste the XML.');
+      out.dim('not decompress either one - unzip it yourself and paste the XML.');
       out.dim('That is a deliberate limit, not an oversight: the parsing is the hard');
       out.dim('part and the decompression is one command you already have.');
       setCopy('');
@@ -1356,7 +1356,7 @@
       out.warn('this receiver saw no mail claiming to be from the domain in the');
       out.warn('period covered. Empty reports are normal for a quiet domain.');
       setCopy('');
-      setStatus('parsed — no records', 'is-ok');
+      setStatus('parsed - no records', 'is-ok');
       return;
     }
 
@@ -1500,7 +1500,7 @@
       out.dim('from its own IP, which is not in your SPF, so SPF fails. The DKIM');
       out.dim('signature travels inside the message and still verifies, so DMARC');
       out.dim('passes on DKIM alone. Nothing is wrong. Do not chase these, and do not');
-      out.dim('add the forwarder to your SPF — you cannot list every forwarder your');
+      out.dim('add the forwarder to your SPF - you cannot list every forwarder your');
       out.dim('recipients use, which is precisely why DKIM exists.');
     } else {
       out.ok('No source in this report shows the forwarding pattern (SPF fail with');
@@ -1521,7 +1521,7 @@
     var failing = list.filter(function (s) { return s.spf !== 'pass' && s.dkim !== 'pass'; });
     if (failing.length) {
       out.rule();
-      out.heading('Failing both — this is what reject would stop');
+      out.heading('Failing both - this is what reject would stop');
       failing.forEach(function (s) {
         var froms = Object.keys(s.from);
         out.line('  ' + pad(s.ip, 24) + pad(s.count, 8) +
@@ -1545,8 +1545,8 @@
       unaligned.forEach(function (d) {
         out.line('  ' + pad(d, 32) + unalignedSigners[d] + ' messages', 't-warn');
       });
-      out.dim('The signature is valid — the key is right and the message was not');
-      out.dim('altered — but the d= domain is not the From: domain, so DMARC does');
+      out.dim('The signature is valid - the key is right and the message was not');
+      out.dim('altered - but the d= domain is not the From: domain, so DMARC does');
       out.dim('not count it. This is what a third-party sender signing with its own');
       out.dim('domain looks like. Fix it by having them sign with a selector under');
       out.dim('your domain, which is a supported option at every serious vendor.');
@@ -1556,19 +1556,19 @@
       out.dim('about the organisational domain, so a d= one level ABOVE the From:');
       out.dim('domain aligns in practice and is listed here anyway. Working out the');
       out.dim('organisational domain needs the public suffix list, which is a file');
-      out.dim('this page will not carry — the receiver’s own verdict is in the DKIM');
+      out.dim('this page will not carry - the receiver’s own verdict is in the DKIM');
       out.dim('and SPF columns above, and it is the one that counted.');
     }
 
     out.rule();
     out.heading('What this report cannot tell you');
     out.dim('It is one receiver, over one period, seeing the mail that reached it.');
-    out.dim('It carries no message content, no subjects and no recipients — only');
+    out.dim('It carries no message content, no subjects and no recipients - only');
     out.dim('counts, IPs and results. It cannot say whether a failing source is');
     out.dim('malicious; that judgement is yours, from the volume and from knowing');
     out.dim('your own senders. The forwarder call above is a heuristic on two');
     out.dim('fields, not a fact. And a source missing from this report is not');
-    out.dim('absent from the internet — it just did not send to this receiver.');
+    out.dim('absent from the internet - it just did not send to this receiver.');
     out.line('');
     out.dim('Nothing here was uploaded. The XML was parsed by DOMParser in this tab');
     out.dim('and the source IPs of everything sending as you went nowhere.');
@@ -1774,7 +1774,7 @@
       out.dim('a real domain has published, /labs/email-security queries DNS and');
       out.dim('grades the answer.');
       out.dim('');
-      out.dim('Start on the SPF tab — the lookup counter above the mechanism list');
+      out.dim('Start on the SPF tab - the lookup counter above the mechanism list');
       out.dim('is the thing most records get wrong.');
       updateCount();
     }

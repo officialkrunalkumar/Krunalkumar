@@ -108,7 +108,7 @@
     /* The live region carries the quote but not the citation markup — a screen
        reader announcing "em Saturday Evening Post em" helps nobody. */
     if (!quiet && announce) {
-      announce.textContent = item.q + ' — ' + item.s.replace(/<[^>]+>/g, '');
+      announce.textContent = item.q + ' - ' + item.s.replace(/<[^>]+>/g, '');
     }
   }
 

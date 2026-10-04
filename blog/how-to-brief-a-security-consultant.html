@@ -8,8 +8,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/how-to-brief-a-security-consultant" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="How to brief a security consultant so the quote is accurate" />
     <meta property="og:description" content="Scope, environment, access, third parties, constraints and deliverable: what a security consultant needs from you before a quote can be honest, and the questions a good one will ask back." />
@@ -209,7 +209,7 @@
             </nav>
             <p class="eyebrow">Security</p>
             <h1>How to brief a security consultant so the quote is accurate</h1>
-            <p class="hero-text">A vague brief does not get you a cheap quote. It gets you a wide one, because the consultant is pricing the range of things your system might turn out to be &mdash; and you pay for that range either way. This is what to put in the brief, and why each item moves the number.</p>
+            <p class="hero-text">A vague brief does not get you a cheap quote. It gets you a wide one, because the consultant is pricing the range of things your system might turn out to be - and you pay for that range either way. This is what to put in the brief, and why each item moves the number.</p>
             <p class="post-meta">Published 31 August 2026 &middot; 9 min read &middot; by Krunalkumar Shah</p>
           </section>
 
@@ -237,8 +237,8 @@
 
               <h2 id="the-width-of-the-quote-is-the-guess">The width of the quote is the guess</h2>
               <p>
-                Send the same one-line request to three security firms &mdash; &ldquo;we need a security test of our
-                platform&rdquo; &mdash; and the numbers that come back are usually hard to compare. The instinct is to read
+                Send the same one-line request to three security firms - &ldquo;we need a security test of our
+                platform&rdquo; - and the numbers that come back are usually hard to compare. The instinct is to read
                 the spread as one firm being greedy and another being cheap. Sometimes that is exactly what it is. More
                 often all three read the same vague sentence, made different assumptions about what sits behind it, and
                 priced their own assumptions.
@@ -246,7 +246,7 @@
               <p>
                 Here is the part that is easy to miss as a buyer. When a consultant cannot see the size of the work, they
                 do not price the work. They price the work plus the range of things it might turn out to be. That padding
-                is not dishonest &mdash; it is the only rational response to a request for a fixed number covering an
+                is not dishonest - it is the only rational response to a request for a fixed number covering an
                 unknown quantity. You pay for it either way: if the job turns out small you overpaid, and if it turns out
                 large you get a change request anyway, because the padding was a guess too.
               </p>
@@ -301,8 +301,8 @@
               </table>
               <p>
                 Only the third is a penetration test in the strict sense, and the only one where &ldquo;we did not find a
-                way in&rdquo; is a result rather than a disappointment. If what you need is the fourth &mdash; which, in my
-                experience, is what most teams need first &mdash; say so, and you will get broader coverage for the same
+                way in&rdquo; is a result rather than a disappointment. If what you need is the fourth - which, in my
+                experience, is what most teams need first - say so, and you will get broader coverage for the same
                 money; I wrote separately about
                 <a class="text-link" href="/blog/what-a-security-review-actually-finds">what a security review actually
                 finds</a>. If the driver is an audit, the control text decides the scope rather than you, and
@@ -318,7 +318,7 @@
               <ul>
                 <li><strong>Domains and subdomains.</strong> How many, and whether you believe the list is complete.</li>
                 <li><strong>Public IPs or ranges.</strong> Roughly how many live hosts, not how many addresses you own.</li>
-                <li><strong>Web applications.</strong> How many, and roughly how many distinct user flows each &mdash; sign-up, checkout, admin, reporting. Flows price better than screens.</li>
+                <li><strong>Web applications.</strong> How many, and roughly how many distinct user flows each - sign-up, checkout, admin, reporting. Flows price better than screens.</li>
                 <li><strong>APIs.</strong> How many endpoints, whether a specification exists, and whether it is current.</li>
                 <li><strong>Mobile apps.</strong> Which platforms, and whether you can supply builds and test accounts.</li>
                 <li><strong>Cloud accounts.</strong> How many, and whether you want a configuration review alongside the testing or instead of it.</li>
@@ -356,13 +356,13 @@
                 This moves the effort more than almost anything else on the list. There are three broad positions:
                 unauthenticated only, one authenticated role, or every role including administrator and a second tenant.
                 Each role you add is close to another pass over the application, because the interesting authorisation
-                bugs live <em>between</em> roles &mdash; can a viewer perform an editor&rsquo;s action, can tenant A see
+                bugs live <em>between</em> roles - can a viewer perform an editor&rsquo;s action, can tenant A see
                 tenant B. I have not measured this against a large sample, so treat it as a rule of thumb: roles behave
                 like a multiplier on application testing effort, not an addition to it.
               </p>
               <p>
-                Which is why I will say plainly that grey box &mdash; you hand over accounts, the subdomain list, the API
-                specification and an architecture sketch &mdash; usually gives more findings per rupee than pure black
+                Which is why I will say plainly that grey box - you hand over accounts, the subdomain list, the API
+                specification and an architecture sketch - usually gives more findings per rupee than pure black
                 box. In a black box engagement the opening stretch goes on rebuilding a map of your own system at
                 consultant rates, and that map is not the deliverable you wanted.
               </p>
@@ -418,7 +418,7 @@
               <p>
                 Agree in advance what happens when something critical turns up outside office hours. Two questions,
                 answered in writing: does the tester stop, and who do they wake. Name a person, a number and a fallback.
-                Settle one more thing while you are there &mdash; what happens if the tester finds evidence of a
+                Settle one more thing while you are there - what happens if the tester finds evidence of a
                 compromise that predates them. That is not a finding, it is an incident, and the engagement changes shape
                 the moment it appears.
               </p>
@@ -448,13 +448,13 @@
               <p>
                 You can judge a great deal from the questions that come back at you. A consultant who reads a
                 one-paragraph email and returns a firm number without asking anything is quoting a template. That is not
-                necessarily dishonest &mdash; a template price for a template job is a real business model &mdash; but the
+                necessarily dishonest - a template price for a template job is a real business model - but the
                 number is not about you, and it will move once the work starts.
               </p>
               <p>The questions I would expect, roughly in this order:</p>
               <ol>
                 <li>What decision does this report support, and who reads it?</li>
-                <li>How many domains, applications, endpoints and accounts &mdash; and how confident are you in those counts?</li>
+                <li>How many domains, applications, endpoints and accounts - and how confident are you in those counts?</li>
                 <li>What is explicitly out of scope?</li>
                 <li>Production or staging, and how far apart are they?</li>
                 <li>Which roles can I have, who provisions the accounts, and by when?</li>
@@ -468,7 +468,7 @@
               </p>
               <p>
                 Common advice says get three quotes and compare. I only half agree. Comparing three numbers produced from
-                three different readings of a vague brief is close to meaningless &mdash; you are comparing assumptions,
+                three different readings of a vague brief is close to meaningless - you are comparing assumptions,
                 and the cheapest assumption wins for the wrong reason. Send the same detailed brief to all three and the
                 comparison becomes real, and what remains differs on method, seniority and deliverable.
               </p>

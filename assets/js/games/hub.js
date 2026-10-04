@@ -1788,7 +1788,7 @@
         S.setEnabled(!turningOff);
         if (said) said.textContent = turningOff
           ? 'Storage is off, and what was there has been deleted.'
-          : 'Storage is on again. Nothing has been restored — it was deleted, not hidden.';
+          : 'Storage is on again. Nothing has been restored - it was deleted, not hidden.';
         fillBests();
         render();
       });

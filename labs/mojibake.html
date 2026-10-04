@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Mojibake repair - name the wrong decode, then undo it" />
     <meta name="twitter:description" content="Text that came out as CafA-tilde-copyright was not corrupted - it was decoded under the wrong table, and that is usually reversible. This tool tries Windows-1252, ISO-8859-1, CP437 and KOI8-R, counts the rounds of double encoding, finds stray byte order marks, decodes doubled HTML entities, and says plainly when a replacement character means the bytes are already gone. Runs entirely in your browser; nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-mojibake.jpg" />
-    <title>Mojibake repair — fix broken text | Krunalkumar Shah</title>
+    <title>Mojibake repair - fix broken text | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -73,7 +73,7 @@
                         "name": "Is the text I paste uploaded anywhere?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. The character tables, the decoder and the scoring are all in one JavaScript file that runs in your tab. There is no network call of any kind. Broken text is usually real customer data — names, addresses, subject lines — which is exactly the sort of thing that should not be pasted into an unknown server to be tidied up."
+                                "text": "No. The character tables, the decoder and the scoring are all in one JavaScript file that runs in your tab. There is no network call of any kind. Broken text is usually real customer data - names, addresses, subject lines - which is exactly the sort of thing that should not be pasted into an unknown server to be tidied up."
                         }
                 },
                 {
@@ -81,7 +81,7 @@
                         "name": "What is the difference between REVERSIBLE and LOSSY here?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Reversible means every original byte is still present in what you pasted, just read through the wrong table, so the repair is exact rather than a reconstruction. A mis-decode, a doubled entity and a stray BOM are all reversible. LOSSY means bytes were discarded before you ever saw the text — that is what U+FFFD marks — and no amount of processing brings them back. The report labels every finding one way or the other and never blurs the two."
+                                "text": "Reversible means every original byte is still present in what you pasted, just read through the wrong table, so the repair is exact rather than a reconstruction. A mis-decode, a doubled entity and a stray BOM are all reversible. LOSSY means bytes were discarded before you ever saw the text - that is what U+FFFD marks - and no amount of processing brings them back. The report labels every finding one way or the other and never blurs the two."
                         }
                 },
                 {
@@ -105,7 +105,7 @@
                         "name": "It did not repair my text. What now?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Read the rejection reasons in the hypothesis table — each one names the character or the byte that ruled that charset out, which is often more useful than a repair would have been. If the answer is a replacement character, the text cannot be recovered from here and you need the file from before the bad decode. If it is a charset this tool does not carry, it says so rather than forcing a wrong answer onto your text."
+                                "text": "Read the rejection reasons in the hypothesis table - each one names the character or the byte that ruled that charset out, which is often more useful than a repair would have been. If the answer is a replacement character, the text cannot be recovered from here and you need the file from before the bad decode. If it is a charset this tool does not carry, it says so rather than forcing a wrong answer onto your text."
                         }
                 },
                 {
@@ -113,7 +113,7 @@
                         "name": "Can it break text that was fine to begin with?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A whole-text repair is only accepted if every character maps to a byte and those bytes pass a strict UTF-8 decode, which ordinary prose fails almost immediately — a lone é is byte E9, and E9 is not a valid UTF-8 sequence. The run-targeted mode is weaker, because it picks its own boundaries, so it scores lower, and it names the runs it repaired and the runs it refused — the first five of each, with a count of anything past that. Nothing is applied to your input until you press a button."
+                                "text": "A whole-text repair is only accepted if every character maps to a byte and those bytes pass a strict UTF-8 decode, which ordinary prose fails almost immediately - a lone é is byte E9, and E9 is not a valid UTF-8 sequence. The run-targeted mode is weaker, because it picks its own boundaries, so it scores lower, and it names the runs it repaired and the runs it refused - the first five of each, with a count of anything past that. Nothing is applied to your input until you press a button."
                         }
                 }
         ]
@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>Mojibake repair</h1>
-        <p class="hero-text">Text that arrives as <code>CafÃ©</code> or <code>â€œ</code> or <code>├⌐</code> is not damaged. It is the right bytes read through the wrong table, which is why it can usually be put back exactly. Paste some in and this names the wrong table, scores how sure it is, and hands you an ordered repair chain you can walk one step at a time &mdash; with the bytes on screen at every stage, because the bytes are the evidence and the glyphs are only the symptom.</p>
+        <p class="hero-text">Text that arrives as <code>CafÃ©</code> or <code>â€œ</code> or <code>├⌐</code> is not damaged. It is the right bytes read through the wrong table, which is why it can usually be put back exactly. Paste some in and this names the wrong table, scores how sure it is, and hands you an ordered repair chain you can walk one step at a time - with the bytes on screen at every stage, because the bytes are the evidence and the glyphs are only the symptom.</p>
         <ul class="lab-facts">
           <li>Windows-1252, Latin-1, CP437, KOI8-R</li>
           <li>Double encoding, counted in rounds</li>
@@ -239,16 +239,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>Four charsets are tried, and all four are named</li>
-                  <li>U+FFFD is never repaired &mdash; those bytes are already gone</li>
+                  <li>U+FFFD is never repaired - those bytes are already gone</li>
                   <li>The named-entity table is partial; numeric references are complete</li>
                   <li>Input is capped at 20,000 characters so the page stays responsive</li>
                 </ul>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -289,7 +289,7 @@
             <p class="lab-pane-label">Broken text</p>
             <label class="sr-only" for="tool-in">Broken text to diagnose</label>
             <textarea class="lab-toolinput" id="tool-in" spellcheck="false" autocapitalize="off"
-                      autocorrect="off" placeholder="Paste the row that came out wrong &mdash; a name, a subject line, a CSV cell&hellip;"></textarea>
+                      autocorrect="off" placeholder="Paste the row that came out wrong - a name, a subject line, a CSV cell&hellip;"></textarea>
           </div>
           <div class="lab-pane">
             <p class="lab-pane-label">Diagnosis</p>
@@ -313,7 +313,7 @@
               </div>
             </div>
             <div class="mjb-col">
-              <p class="lab-pane-label" id="mjb-hex-h">Bytes at this stage &mdash; UTF-8, hex</p>
+              <p class="lab-pane-label" id="mjb-hex-h">Bytes at this stage - UTF-8, hex</p>
               <pre class="lab-terminal mjb-hex" id="tool-hex" tabindex="0" role="region" aria-labelledby="mjb-hex-h"></pre>
             </div>
           </div>
@@ -337,7 +337,7 @@
           </article>
           <article class="info-card">
             <h3>0x80 to 0x9F is the whole argument</h3>
-            <p>Latin-1 leaves that byte range as C1 control characters. Windows-1252 fills it with the curly quotes, the two dashes, the euro sign and the ellipsis &mdash; exactly the characters people paste. Five slots (81 8D 8F 90 9D) are undefined in Microsoft&rsquo;s original code page, and U+201D, the closing curly quote, encodes to E2 80 9D. That is why <code>â€</code> turns up so often, and why the byte that ends it goes missing in any round trip that treats the two tables as interchangeable.</p>
+            <p>Latin-1 leaves that byte range as C1 control characters. Windows-1252 fills it with the curly quotes, the two dashes, the euro sign and the ellipsis - exactly the characters people paste. Five slots (81 8D 8F 90 9D) are undefined in Microsoft&rsquo;s original code page, and U+201D, the closing curly quote, encodes to E2 80 9D. That is why <code>â€</code> turns up so often, and why the byte that ends it goes missing in any round trip that treats the two tables as interchangeable.</p>
           </article>
           <article class="info-card">
             <h3>U+FFFD is a receipt, not damage</h3>
@@ -356,11 +356,11 @@
         </div>
           <details class="lab-faq">
             <summary>Is the text I paste uploaded anywhere?</summary>
-            <div>No. The character tables, the decoder and the scoring are all in one JavaScript file that runs in your tab. There is no network call of any kind. Broken text is usually real customer data &mdash; names, addresses, subject lines &mdash; which is exactly the sort of thing that should not be pasted into an unknown server to be tidied up.</div>
+            <div>No. The character tables, the decoder and the scoring are all in one JavaScript file that runs in your tab. There is no network call of any kind. Broken text is usually real customer data - names, addresses, subject lines - which is exactly the sort of thing that should not be pasted into an unknown server to be tidied up.</div>
           </details>
           <details class="lab-faq">
             <summary>What is the difference between REVERSIBLE and LOSSY here?</summary>
-            <div>Reversible means every original byte is still present in what you pasted, just read through the wrong table, so the repair is exact rather than a reconstruction. A mis-decode, a doubled entity and a stray BOM are all reversible. LOSSY means bytes were discarded before you ever saw the text &mdash; that is what U+FFFD marks &mdash; and no amount of processing brings them back. The report labels every finding one way or the other and never blurs the two.</div>
+            <div>Reversible means every original byte is still present in what you pasted, just read through the wrong table, so the repair is exact rather than a reconstruction. A mis-decode, a doubled entity and a stray BOM are all reversible. LOSSY means bytes were discarded before you ever saw the text - that is what U+FFFD marks - and no amount of processing brings them back. The report labels every finding one way or the other and never blurs the two.</div>
           </details>
           <details class="lab-faq">
             <summary>What does the confidence number actually mean?</summary>
@@ -372,11 +372,11 @@
           </details>
           <details class="lab-faq">
             <summary>It did not repair my text. What now?</summary>
-            <div>Read the rejection reasons in the hypothesis table &mdash; each one names the character or the byte that ruled that charset out, which is often more useful than a repair would have been. If the answer is a replacement character, the text cannot be recovered from here and you need the file from before the bad decode. If it is a charset this tool does not carry, it says so rather than forcing a wrong answer onto your text.</div>
+            <div>Read the rejection reasons in the hypothesis table - each one names the character or the byte that ruled that charset out, which is often more useful than a repair would have been. If the answer is a replacement character, the text cannot be recovered from here and you need the file from before the bad decode. If it is a charset this tool does not carry, it says so rather than forcing a wrong answer onto your text.</div>
           </details>
           <details class="lab-faq">
             <summary>Can it break text that was fine to begin with?</summary>
-            <div>A whole-text repair is only accepted if every character maps to a byte and those bytes pass a strict UTF-8 decode, which ordinary prose fails almost immediately &mdash; a lone &eacute; is byte E9, and E9 is not a valid UTF-8 sequence. The run-targeted mode is weaker, because it picks its own boundaries, so it scores lower, and it names the runs it repaired and the runs it refused &mdash; the first five of each, with a count of anything past that. Nothing is applied to your input until you press a button.</div>
+            <div>A whole-text repair is only accepted if every character maps to a byte and those bytes pass a strict UTF-8 decode, which ordinary prose fails almost immediately - a lone &eacute; is byte E9, and E9 is not a valid UTF-8 sequence. The run-targeted mode is weaker, because it picks its own boundaries, so it scores lower, and it names the runs it repaired and the runs it refused - the first five of each, with a count of anything past that. Nothing is applied to your input until you press a button.</div>
           </details>
       </section>
 
@@ -400,7 +400,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/unicode">
             <span class="lab-card-name">Unicode inspector</span>
-            <p class="lab-card-desc">Code points, invisible characters and homoglyphs &mdash; what a string contains rather than what it shows.</p>
+            <p class="lab-card-desc">Code points, invisible characters and homoglyphs - what a string contains rather than what it shows.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/encoding">
@@ -410,7 +410,7 @@
           </a>
           <a class="lab-card" href="/labs/file-inspector">
             <span class="lab-card-name">File inspector</span>
-            <p class="lab-card-desc">What a file really is, read from its magic bytes &mdash; plus hex, strings and entropy.</p>
+            <p class="lab-card-desc">What a file really is, read from its magic bytes - plus hex, strings and entropy.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/memory-strings">

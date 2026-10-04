@@ -199,12 +199,12 @@
           </ol>
         </nav>
         <h1>Live password hash cracker</h1>
-        <p class="hero-text">&ldquo;Your password is cracked in seconds&rdquo; is abstract until you watch it happen. Type a password, pick a hash, and this cracks it live &mdash; guesses per second ticking up &mdash; then shows you how long a genuinely strong one would have taken instead.</p>
+        <p class="hero-text">&ldquo;Your password is cracked in seconds&rdquo; is abstract until you watch it happen. Type a password, pick a hash, and this cracks it live - guesses per second ticking up - then shows you how long a genuinely strong one would have taken instead.</p>
         <ul class="lab-facts">
           <li>Live guesses-per-second counter</li>
           <li>Wordlist then brute force</li>
           <li>MD5, SHA-1, SHA-256</li>
-          <li>Runs in a Web Worker &mdash; page stays smooth</li>
+          <li>Runs in a Web Worker - page stays smooth</li>
           <li>The number for a strong password too</li>
         </ul>
       </section>
@@ -227,7 +227,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -249,7 +249,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -285,7 +285,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-vizrow">
-          <label class="lab-field-inline"><span>Target password</span><input type="text" id="viz-target" class="lab-toolfield" spellcheck="false" autocomplete="off" placeholder="type a password to crack — or pick a weak preset below" /></label>
+          <label class="lab-field-inline"><span>Target password</span><input type="text" id="viz-target" class="lab-toolfield" spellcheck="false" autocomplete="off" placeholder="type a password to crack - or pick a weak preset below" /></label>
         </div>
         <div class="lab-panes lab-panes-single">
           <div class="lab-pane">
@@ -302,7 +302,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Weak passwords fall instantly</h3>
-            <p>A common password is not brute-forced at all &mdash; it is the first thing on the wordlist, matched before the counter has really started. Watching <code>password1</code> fall in the first few milliseconds is a more convincing argument than any lecture.</p>
+            <p>A common password is not brute-forced at all - it is the first thing on the wordlist, matched before the counter has really started. Watching <code>password1</code> fall in the first few milliseconds is a more convincing argument than any lecture.</p>
           </article>
           <article class="info-card">
             <h3>Strong passwords never fall</h3>
@@ -310,7 +310,7 @@
           </article>
           <article class="info-card">
             <h3>Why it runs in a worker</h3>
-            <p>A cracking loop that ran on the main thread would freeze the page and make the Stop button useless. This runs in a Web Worker so the counter animates smoothly and Stop halts it instantly &mdash; the same reason real tools are multi-threaded.</p>
+            <p>A cracking loop that ran on the main thread would freeze the page and make the Stop button useless. This runs in a Web Worker so the counter animates smoothly and Stop halts it instantly - the same reason real tools are multi-threaded.</p>
           </article>
           <article class="info-card">
             <h3>It only cracks what you type</h3>

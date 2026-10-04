@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Read an X.509 certificate without openssl" />
     <meta name="twitter:description" content="Decode an X.509 PEM certificate in your browser: subject, issuer, validity, key size, SANs, extensions and SHA-256 fingerprint. No OpenSSL needed and nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-cert-decoder.jpg" />
-    <title>SSL/TLS Certificate Decoder — X.509 PEM | Krunalkumar Shah</title>
+    <title>SSL/TLS Certificate Decoder - X.509 PEM | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>SSL/TLS certificate decoder</h1>
-        <p class="hero-text"><code>openssl x509 -text</code> is the right answer when you have openssl. The times you do not &mdash; a locked-down machine, a phone, someone else&rsquo;s laptop &mdash; are exactly when a certificate turns up in an email and needs reading.</p>
+        <p class="hero-text"><code>openssl x509 -text</code> is the right answer when you have openssl. The times you do not - a locked-down machine, a phone, someone else&rsquo;s laptop - are exactly when a certificate turns up in an email and needs reading.</p>
         <ul class="lab-facts">
           <li>Subject, issuer and validity</li>
           <li>Key algorithm and size</li>
@@ -229,16 +229,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No chain validation &mdash; that needs network lookups</li>
+                  <li>No chain validation - that needs network lookups</li>
                   <li>No revocation checking (OCSP or CRL)</li>
                 </ul>
               </div>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -292,11 +292,11 @@ MIIF…
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Subject, issuer, and the chain</h3>
-            <p>The subject is who the certificate is for, the issuer is who signed it. If they are identical it is self-signed. Following the chain up to a trusted root needs network lookups, which this page does not do &mdash; it reads what is inside the certificate, not whether anyone still trusts it.</p>
+            <p>The subject is who the certificate is for, the issuer is who signed it. If they are identical it is self-signed. Following the chain up to a trusted root needs network lookups, which this page does not do - it reads what is inside the certificate, not whether anyone still trusts it.</p>
           </article>
           <article class="info-card">
             <h3>Why lifetimes shrank</h3>
-            <p>The ceiling is falling on a schedule. CA/Browser Forum ballot SC-081 replaced the flat 398-day maximum with fixed steps: 200 days from March 2026, 100 from March 2027, and 47 from March 2029. The limit binds at issuance, so a certificate cut before a step can legitimately outlive it — the decoder above checks against whichever ceiling applies today rather than a single number baked into the page. Shorter lifetimes limit the damage from a key compromise and force automation, which is why ACME and Let’s Encrypt became the norm.</p>
+            <p>The ceiling is falling on a schedule. CA/Browser Forum ballot SC-081 replaced the flat 398-day maximum with fixed steps: 200 days from March 2026, 100 from March 2027, and 47 from March 2029. The limit binds at issuance, so a certificate cut before a step can legitimately outlive it - the decoder above checks against whichever ceiling applies today rather than a single number baked into the page. Shorter lifetimes limit the damage from a key compromise and force automation, which is why ACME and Let’s Encrypt became the norm.</p>
           </article>
           <article class="info-card">
             <h3>Subject Alternative Names are what browsers read</h3>

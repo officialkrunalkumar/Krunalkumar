@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch a program become tokens, a tree and bytecode - then watch it run" />
     <meta name="twitter:description" content="A miniature language taken all the way from source to execution: a hand-written lexer, a recursive descent parser, a bytecode emitter, and a stack machine you can single-step. Click any node and the source range and the instructions it produced light up together. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-compiler.jpg" />
-    <title>Compiler & VM Visualiser — AST, bytecode | Krunalkumar Shah</title>
+    <title>Compiler & VM Visualiser - AST, bytecode | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>A compiler, and the machine it feeds</h1>
-        <p class="hero-text">Every explanation of compilers I have read draws the stages as four boxes with arrows between them, and leaves the boxes empty. This one fills them with your program, all four at once: the source, the tokens it lexes into, the tree the parser builds, and the bytecode that comes out. Click anything in any pane and the other three light up the part that corresponds to it &mdash; that mapping is the point. Then hand the bytecode to the stack machine and step it, one instruction at a time, with the value stack and the call frames on screen.</p>
+        <p class="hero-text">Every explanation of compilers I have read draws the stages as four boxes with arrows between them, and leaves the boxes empty. This one fills them with your program, all four at once: the source, the tokens it lexes into, the tree the parser builds, and the bytecode that comes out. Click anything in any pane and the other three light up the part that corresponds to it - that mapping is the point. Then hand the bytecode to the stack machine and step it, one instruction at a time, with the value stack and the call frames on screen.</p>
         <ul class="lab-facts">
           <li>A real lexer, parser and emitter</li>
           <li>Four panes, one selection</li>
@@ -239,7 +239,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the lexer, the parser, the emitter and the
+              This runs entirely inside your browser - the lexer, the parser, the emitter and the
               machine that executes the result, all of it on your own device. Nothing is uploaded and
               there is no server.
             </p>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -275,7 +275,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-compiler-mount">
-          <p class="lab-proc-fallback">Starting the compiler visualiser… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the compiler visualiser… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -286,15 +286,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Tokens are the easy part</h3>
-            <p>The lexer walks the text once, left to right, with a single character of lookahead and no idea what a program is. It cannot tell you that <code>print print</code> is nonsense, because deciding that is not its job &mdash; it will hand over two perfectly good keyword tokens and let the next stage refuse them. Almost every &ldquo;unexpected token&rdquo; message you have ever seen comes from the stage after this one.</p>
+            <p>The lexer walks the text once, left to right, with a single character of lookahead and no idea what a program is. It cannot tell you that <code>print print</code> is nonsense, because deciding that is not its job - it will hand over two perfectly good keyword tokens and let the next stage refuse them. Almost every &ldquo;unexpected token&rdquo; message you have ever seen comes from the stage after this one.</p>
           </article>
           <article class="info-card">
             <h3>The tree is where precedence lives</h3>
-            <p>There is no precedence table anywhere in the parser. There is a chain of functions &mdash; equality calls comparison, which calls term, which calls factor &mdash; and each one binds more tightly than its caller. That chain <em>is</em> the precedence. Load the precedence example and compare the two trees: <code>2 + 3 * 4</code> and <code>(2 + 3) * 4</code> are the same seven tokens in the same order, and the shape decides the answer.</p>
+            <p>There is no precedence table anywhere in the parser. There is a chain of functions - equality calls comparison, which calls term, which calls factor - and each one binds more tightly than its caller. That chain <em>is</em> the precedence. Load the precedence example and compare the two trees: <code>2 + 3 * 4</code> and <code>(2 + 3) * 4</code> are the same seven tokens in the same order, and the shape decides the answer.</p>
           </article>
           <article class="info-card">
             <h3>A loop is a jump backwards</h3>
-            <p>The emitter walks the tree once and writes instructions as it goes, which means it reaches a jump before it knows where the jump goes. So it writes a placeholder, carries on, and comes back to fill in the address once the branch is finished &mdash; backpatching, and the reason a single-pass compiler is possible at all. What comes out is not a loop or a conditional but two kinds of jump, and you can read the addresses.</p>
+            <p>The emitter walks the tree once and writes instructions as it goes, which means it reaches a jump before it knows where the jump goes. So it writes a placeholder, carries on, and comes back to fill in the address once the branch is finished - backpatching, and the reason a single-pass compiler is possible at all. What comes out is not a loop or a conditional but two kinds of jump, and you can read the addresses.</p>
           </article>
           <article class="info-card">
             <h3>The stack is the whole machine</h3>
@@ -352,7 +352,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/regex-engine">
             <span class="lab-card-name">Regex engine</span>
-            <p class="lab-card-desc">The same idea for patterns: parse, compile, run &mdash; and watch backtracking go exponential.</p>
+            <p class="lab-card-desc">The same idea for patterns: parse, compile, run - and watch backtracking go exponential.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/cpu-simulator">

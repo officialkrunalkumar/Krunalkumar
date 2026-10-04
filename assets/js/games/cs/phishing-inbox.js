@@ -158,14 +158,14 @@
       cat: 'inv', tier: 1, phish: true,
       name: 'Stembridge Supplies',
       addr: 'billing@stembridge-invoices.example',
-      subj: 'Overdue invoice SB-40118 — final notice',
+      subj: 'Overdue invoice SB-40118 - final notice',
       body: 'Our bank has changed. Please settle the outstanding 8,420 to the new account today; the old account is closed and anything sent to it will be lost.',
       link: { text: 'https://stembridge.example/invoices/40118', href: 'https://stembridge-invoices.example/pay' },
       sig: [
         { f: 'addr', t: 'stembridge-invoices.example', note: 'Not the supplier you have been paying for years.' },
         { f: 'body', t: 'Our bank has changed', note: 'The most expensive sentence in business fraud.' }
       ],
-      tell: 'A supplier changing bank details by email is verified by voice, on a number off an old invoice — never one in the new mail.'
+      tell: 'A supplier changing bank details by email is verified by voice, on a number off an old invoice - never one in the new mail.'
     },
     {
       cat: 'pay', tier: 1, phish: true,
@@ -184,7 +184,7 @@
       cat: 'it', tier: 1, phish: true,
       name: 'IT Service Desk',
       addr: 'helpdesk@brightmoor.example.support-desk.example',
-      subj: 'Mailbox at 98% — messages will start bouncing',
+      subj: 'Mailbox at 98% - messages will start bouncing',
       body: 'Your mailbox is nearly full. Sign in below to raise your quota, or incoming mail will be rejected from midnight.',
       link: { text: 'https://brightmoor.example/quota', href: 'https://brightmoor.example.support-desk.example/quota' },
       sig: [
@@ -197,14 +197,14 @@
       cat: 'mfa', tier: 1, phish: true,
       name: 'Orrery ID',
       addr: 'push@orrery-id-alerts.example',
-      subj: 'Approve sign-in — attempt 7 of 7',
+      subj: 'Approve sign-in - attempt 7 of 7',
       body: 'Someone is trying to sign in as you from 203.0.113.44. Six prompts have already gone to your phone. Approve the next one to stop the notifications.',
       link: null,
       sig: [
         { f: 'addr', t: 'orrery-id-alerts.example', note: 'Not orrery.example, and not a subdomain of it.' },
         { f: 'body', t: 'Approve the next one to stop the notifications', note: 'The flood IS the attack. Approving ends it for them.' }
       ],
-      tell: 'MFA fatigue. Deny it, then change the password — because somebody already has the old one, or there would be no prompts.'
+      tell: 'MFA fatigue. Deny it, then change the password - because somebody already has the old one, or there would be no prompts.'
     },
     {
       cat: 'call', tier: 1, phish: true,
@@ -264,7 +264,7 @@
       cat: 'inv', tier: 2, phish: true,
       name: 'Roland Pike',
       addr: 'r.pike@brightmoor.example.finance-mail.example',
-      subj: 'Re: Stembridge — can you handle this quietly',
+      subj: 'Re: Stembridge - can you handle this quietly',
       body: 'I am in back-to-back meetings all afternoon. Please push the Stembridge payment through today and do not copy anyone in yet; I will explain on Friday.',
       link: null,
       sig: [
@@ -277,7 +277,7 @@
       cat: 'it', tier: 2, phish: true,
       name: 'Marta Vogel (IT)',
       addr: 'm.vogel@brightmoor-it.example',
-      subj: 'Laptop encryption check — five minutes',
+      subj: 'Laptop encryption check - five minutes',
       body: 'We are auditing disk encryption before the insurance renewal. Run the checker below and enter your usual password when it asks.',
       link: { text: 'https://brightmoor.example/it/encryption-check', href: 'https://brightmoor-it.example/check' },
       sig: [
@@ -294,10 +294,10 @@
       body: 'Brightmoor requires a change every 90 days. Change it now, or you will be locked out at six and will have to ring the service desk.',
       link: { text: 'https://brightmoor.orrery.example/change-password', href: 'https://brightmoor.orrery.example/change-password' },
       sig: [
-        { f: 'href', t: 'brightmoor.orrery.example', note: 'brightmoor is a subdomain OF orrery.example — their tenant.' },
+        { f: 'href', t: 'brightmoor.orrery.example', note: 'brightmoor is a subdomain OF orrery.example - their tenant.' },
         { f: 'body', t: 'locked out at six', note: 'A real deadline. Deadlines are not evidence of anything.' }
       ],
-      tell: 'Genuine, and the one most people call fake. Threat, deadline, password link — and the owned domain is still your own identity provider.'
+      tell: 'Genuine, and the one most people call fake. Threat, deadline, password link - and the owned domain is still your own identity provider.'
     },
     {
       cat: 'mfa', tier: 2, phish: true,
@@ -316,7 +316,7 @@
       cat: 'call', tier: 2, phish: true,
       name: 'Vantage Trust Bank',
       addr: 'alerts@vantagetrust.example',
-      subj: 'Card blocked — call us to reactivate',
+      subj: 'Card blocked - call us to reactivate',
       body: 'We have blocked the card ending 8802 after unusual activity. Call 0808 157 0119 and quote reference 44-A. Do not use the number on the back of your card, that line is closed today.',
       link: null,
       sig: [
@@ -349,7 +349,7 @@
         { f: 'body', t: 'Nothing is needed from you', note: 'There is no action here to hijack.' },
         { f: 'href', t: 'northgatepay.example', note: 'Matches the sender exactly.' }
       ],
-      tell: 'Genuine. Good news, nothing to do, exact domain — there is nothing in this shape for an attacker to win.'
+      tell: 'Genuine. Good news, nothing to do, exact domain - there is nothing in this shape for an attacker to win.'
     },
     {
       cat: 'real', tier: 2, phish: false,
@@ -375,13 +375,13 @@
         { f: 'href', t: '198.51.100.23', note: 'A bare address. No service this size hands one to a customer.' },
         { f: 'body', t: 'when you get a moment', note: 'No urgency anywhere. Tone was never the tell.' }
       ],
-      tell: 'Calm, plausible, no deadline — and the link is a raw IP address. Only one of those four facts is checkable.'
+      tell: 'Calm, plausible, no deadline - and the link is a raw IP address. Only one of those four facts is checkable.'
     },
     {
       cat: 'inv', tier: 2, phish: true,
       name: 'Pallas Mutual',
       addr: 'renewals@pallasmutual.example',
-      subj: 'Policy BM-3391 renewal — invoice attached',
+      subj: 'Policy BM-3391 renewal - invoice attached',
       body: 'Your renewal comes to 4,900. Please pay through the portal below. Note that our payment reference has changed this year.',
       link: { text: 'https://pallasmutual.example/pay/BM-3391', href: 'https://pallasmutual.example.invoice-portal.example/pay' },
       sig: [
@@ -403,7 +403,7 @@
         { f: 'addr', t: 'e.haldenrail.example', note: 'Bulk-mail subdomains like e. and mail. are ordinary and theirs.' },
         { f: 'body', t: 'cancel or change it any time', note: 'Three ways out, all of them yours.' }
       ],
-      tell: 'Genuine. "Action needed", a deadline and a sum of money — every fear signal at once, and the domain is still their own.'
+      tell: 'Genuine. "Action needed", a deadline and a sum of money - every fear signal at once, and the domain is still their own.'
     },
     {
       cat: 'it', tier: 3, phish: true,
@@ -416,7 +416,7 @@
         { f: 'addr', t: 'brightrnoor.example', note: 'r n, not m. At this size they are the same shape.' },
         { f: 'href', t: 'brightrnoor.example', note: 'The visible text has the m. The destination does not.' }
       ],
-      tell: 'A homoglyph. "rn" reads as "m" in nearly every typeface — widen the letters, or paste the domain somewhere you can read it slowly.'
+      tell: 'A homoglyph. "rn" reads as "m" in nearly every typeface - widen the letters, or paste the domain somewhere you can read it slowly.'
     },
     {
       cat: 'mfa', tier: 3, phish: true,
@@ -442,7 +442,7 @@
         { f: 'addr', t: 'bounce+8f21ab', note: 'A machine-looking local part is ordinary bounce handling.' },
         { f: 'addr', t: 'notify.quillon.example', note: 'And the domain after the @ is still theirs.' }
       ],
-      tell: 'Genuine. Whatever sits before the @ can be anything at all — it is not a domain, and it proves nothing in either direction.'
+      tell: 'Genuine. Whatever sits before the @ can be anything at all - it is not a domain, and it proves nothing in either direction.'
     },
     {
       cat: 'cred', tier: 3, phish: true,
@@ -461,14 +461,14 @@
       cat: 'inv', tier: 3, phish: true,
       name: 'Dinah Okafor',
       addr: 'd.okafor@brightmoor.example',
-      subj: 'RE: RE: Stembridge remittance — updated details',
+      subj: 'RE: RE: Stembridge remittance - updated details',
       body: 'Sorry for the delay on this. Ignore the account on the last invoice, our finance team have moved us over. New details are in the sheet below.',
       link: { text: 'https://ferrite.example/s/remittance', href: 'https://ferrite-share.example/s/remittance' },
       sig: [
         { f: 'addr', t: 'd.okafor@brightmoor.example', note: 'Genuinely hers. A stolen mailbox passes every sender check.' },
         { f: 'href', t: 'ferrite-share.example', note: 'The one thing she did not send.' }
       ],
-      tell: 'Thread hijack from a colleague\'s own account. Nothing about the sender is wrong — the bank change is what you verify, by voice, on a number you already had.'
+      tell: 'Thread hijack from a colleague\'s own account. Nothing about the sender is wrong - the bank change is what you verify, by voice, on a number you already had.'
     },
     {
       cat: 'pay', tier: 3, phish: true,
@@ -494,13 +494,13 @@
         { f: 'subj', t: '192.0.2.19', note: 'An IP in the text is information, not a warning sign.' },
         { f: 'href', t: 'brightmoor.orrery.example', note: 'An IP in the LINK would have been the problem. This is a name.' }
       ],
-      tell: 'Genuine. Seeing an address is not itself a tell — where it appears is the entire question.'
+      tell: 'Genuine. Seeing an address is not itself a tell - where it appears is the entire question.'
     },
     {
       cat: 'call', tier: 3, phish: true,
       name: 'Brightmoor Service Desk',
       addr: 'servicedesk@brightmoor.example',
-      subj: 'Ticket BM-88214 — we tried to reach you',
+      subj: 'Ticket BM-88214 - we tried to reach you',
       body: 'Following up the ticket you raised this morning. Please call the engineer directly on 0808 157 0188; the main line is on a backlog today.',
       link: null,
       sig: [
@@ -539,7 +539,7 @@
       cat: 'cred', tier: 3, phish: true,
       name: 'Ferrite Cloud',
       addr: 'no-reply@ferríte.example',
-      subj: 'Session expired — sign in to carry on',
+      subj: 'Session expired - sign in to carry on',
       body: 'You were signed out of your workspace a few minutes ago. Sign in again to pick up where you left off.',
       link: { text: 'https://ferríte.example/signin', href: 'https://xn--ferrte-hva.example/signin' },
       sig: [
@@ -565,7 +565,7 @@
       cat: 'real', tier: 3, phish: false,
       name: 'Stembridge Supplies',
       addr: 'accounts@stembridge.example',
-      subj: 'Invoice SB-40119 — same details as always',
+      subj: 'Invoice SB-40119 - same details as always',
       body: 'March delivery, 2,140, payable within 30 days. Our bank details are unchanged and are printed on the invoice as usual.',
       link: { text: 'https://stembridge.example/invoices/40119', href: 'https://stembridge.example/invoices/40119' },
       sig: [
@@ -1000,7 +1000,7 @@
           revealAll = !revealAll;
           revealBtn.setAttribute('aria-pressed', String(revealAll));
           revealBtn.title = revealAll
-            ? 'Link targets are pinned open — click to hide them again'
+            ? 'Link targets are pinned open - click to hide them again'
             : 'Show every link destination without hovering';
           laidFor = -1;
           g.announce(revealAll
@@ -1210,7 +1210,7 @@
         ctx.fillText('Postbox', PAD, 24);
         ctx.fillStyle = FAINT;
         ctx.font = '12px ' + UI;
-        ctx.fillText('Brightmoor Analytics — Inbox', PAD + 66, 24);
+        ctx.fillText('Brightmoor Analytics - Inbox', PAD + 66, 24);
 
         ctx.textAlign = 'right';
         ctx.fillStyle = DIM;
@@ -1372,7 +1372,7 @@
         if (!L.hrefShown) {
           ctx.fillStyle = FAINT;
           ctx.font = '11px ' + UI;
-          ctx.fillText('Hover the link, press up, or tap it — to see where it really goes.',
+          ctx.fillText('Hover the link, press up, or tap it - to see where it really goes.',
             L.innerX, L.statusY);
           return;
         }
@@ -1491,7 +1491,7 @@
           ctx.fillStyle = FAINT;
           ctx.font = '11.5px ' + UI;
           ctx.fillText(clockOn
-            ? Math.ceil(left) + 's left — the clock is worth up to ' + SPEED_MAX + ' points'
+            ? Math.ceil(left) + 's left - the clock is worth up to ' + SPEED_MAX + ' points'
             : 'No clock. Base and streak still score.', W - PAD - 16, BAND_Y + 52);
           ctx.fillStyle = streak >= 3 ? WARN : FAINT;
           ctx.fillText(streak >= 2 ? streak + ' in a row' : '', W - PAD - 16, BAND_Y + 28);
@@ -1508,7 +1508,7 @@
 
         ctx.fillStyle = DIM;
         ctx.font = '13px ' + UI;
-        ctx.fillText('— this one is ' + (m.phish ? 'phishing' : 'genuine') + '.', x + hw + 8, BAND_Y + 26);
+        ctx.fillText('- this one is ' + (m.phish ? 'phishing' : 'genuine') + '.', x + hw + 8, BAND_Y + 26);
 
         ctx.fillStyle = '#cbd5e1';
         ctx.font = '12px ' + UI;

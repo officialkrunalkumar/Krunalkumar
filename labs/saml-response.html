@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Decode a SAML response. See what is really signed." />
     <meta name="twitter:description" content="Decode a SAMLResponse for its subject, validity and attributes, plus what is actually signed and a signature-wrapping check. Nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-saml-response.jpg" />
-    <title>SAML Response Dissector — What Is Actually Signed</title>
+    <title>SAML Response Dissector - What Is Actually Signed</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -72,7 +72,7 @@
                         "name": "Does this verify the signature?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and no browser tool honestly can. Verification needs the IdP's signing certificate and a byte-exact XML canonicalisation of the signed element. Neither is in the response. What it does instead is report which elements are signed and check the structure for wrapping — both genuinely useful, and both impossible to get from a plain decoder."
+                                "text": "No, and no browser tool honestly can. Verification needs the IdP's signing certificate and a byte-exact XML canonicalisation of the signed element. Neither is in the response. What it does instead is report which elements are signed and check the structure for wrapping - both genuinely useful, and both impossible to get from a plain decoder."
                         }
                 },
                 {
@@ -88,7 +88,7 @@
                         "name": "My login fails with an expired assertion. Why?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Almost always clock drift between the identity provider and the service provider. Assertion windows are deliberately short — five minutes is typical — so a couple of minutes of skew is enough to break every login. Check NTP on both ends before you change anything in the SAML configuration."
+                                "text": "Almost always clock drift between the identity provider and the service provider. Assertion windows are deliberately short - five minutes is typical - so a couple of minutes of skew is enough to break every login. Check NTP on both ends before you change anything in the SAML configuration."
                         }
                 },
                 {
@@ -104,7 +104,7 @@
                         "name": "Is it safe to paste a real SAML response here?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It is parsed entirely in this tab and nothing is transmitted — this page contains no network code. That said, a SAML response is a live credential until its window expires, so the habit worth keeping is to use one that has already expired, or to treat any response you have pasted anywhere as spent."
+                                "text": "It is parsed entirely in this tab and nothing is transmitted - this page contains no network code. That said, a SAML response is a live credential until its window expires, so the habit worth keeping is to use one that has already expired, or to treat any response you have pasted anywhere as spent."
                         }
                 }
         ]
@@ -201,13 +201,13 @@
           </ol>
         </nav>
         <h1>SAML response dissector</h1>
-        <p class="hero-text">Paste a SAMLResponse &mdash; base64, URL-encoded, a whole form field, a deflated redirect-binding value, or raw XML. You get the envelope, the subject, the validity window and every attribute. You also get the thing other decoders leave out: <em>what is actually signed</em>. Signing the Response but validating the Assertion, or the reverse, is the most common SAML integration bug there is, and you can see it without holding any certificate.</p>
+        <p class="hero-text">Paste a SAMLResponse - base64, URL-encoded, a whole form field, a deflated redirect-binding value, or raw XML. You get the envelope, the subject, the validity window and every attribute. You also get the thing other decoders leave out: <em>what is actually signed</em>. Signing the Response but validating the Assertion, or the reverse, is the most common SAML integration bug there is, and you can see it without holding any certificate.</p>
         <ul class="lab-facts">
           <li>Says which elements are signed</li>
           <li>Checks for XML signature wrapping</li>
           <li>Catches the NameID comment trick</li>
           <li>Reads deflated redirect-binding values</li>
-          <li>Never uploaded &mdash; it is a live credential</li>
+          <li>Never uploaded - it is a live credential</li>
         </ul>
       </section>
 
@@ -230,16 +230,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No connection to your IdP or your SP</li>
                 </ul>
               </div>
@@ -255,7 +255,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -319,7 +319,7 @@ consumer URL → the SAMLResponse form field."></textarea>
         </div>
           <details class="lab-faq">
             <summary>Does this verify the signature?</summary>
-            <div>No, and no browser tool honestly can. Verification needs the IdP's signing certificate and a byte-exact XML canonicalisation of the signed element. Neither is in the response. What it does instead is report which elements are signed and check the structure for wrapping — both genuinely useful, and both impossible to get from a plain decoder.</div>
+            <div>No, and no browser tool honestly can. Verification needs the IdP's signing certificate and a byte-exact XML canonicalisation of the signed element. Neither is in the response. What it does instead is report which elements are signed and check the structure for wrapping - both genuinely useful, and both impossible to get from a plain decoder.</div>
           </details>
           <details class="lab-faq">
             <summary>Should the Response or the Assertion be signed?</summary>
@@ -327,7 +327,7 @@ consumer URL → the SAMLResponse form field."></textarea>
           </details>
           <details class="lab-faq">
             <summary>My login fails with an expired assertion. Why?</summary>
-            <div>Almost always clock drift between the identity provider and the service provider. Assertion windows are deliberately short — five minutes is typical — so a couple of minutes of skew is enough to break every login. Check NTP on both ends before you change anything in the SAML configuration.</div>
+            <div>Almost always clock drift between the identity provider and the service provider. Assertion windows are deliberately short - five minutes is typical - so a couple of minutes of skew is enough to break every login. Check NTP on both ends before you change anything in the SAML configuration.</div>
           </details>
           <details class="lab-faq">
             <summary>What is a redirect-binding value and why will it not decode elsewhere?</summary>
@@ -335,7 +335,7 @@ consumer URL → the SAMLResponse form field."></textarea>
           </details>
           <details class="lab-faq">
             <summary>Is it safe to paste a real SAML response here?</summary>
-            <div>It is parsed entirely in this tab and nothing is transmitted — this page contains no network code. That said, a SAML response is a live credential until its window expires, so the habit worth keeping is to use one that has already expired, or to treat any response you have pasted anywhere as spent.</div>
+            <div>It is parsed entirely in this tab and nothing is transmitted - this page contains no network code. That said, a SAML response is a live credential until its window expires, so the habit worth keeping is to use one that has already expired, or to treat any response you have pasted anywhere as spent.</div>
           </details>
       </section>
 

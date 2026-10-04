@@ -631,7 +631,7 @@
       this.root = newRoot;
       this.touch(newRoot);
       this.say('The root split, so the tree grew a level. It is now ' + this.height() +
-               ' levels deep — this is the only way a B+tree ever gets taller, ' +
+               ' levels deep - this is the only way a B+tree ever gets taller, ' +
                'which is why every leaf stays the same distance from the root.');
     }
     this.inserts++;
@@ -658,7 +658,7 @@
       this.touch(right);
       this.say('The leaf overflowed at ' + (this.maxKeys + 1) + ' keys, so it split: ' +
                '[' + node.keys.join(' ') + '] and [' + right.keys.join(' ') + ']. ' +
-               'In a B+tree the first key of the new leaf is COPIED upwards — the ' +
+               'In a B+tree the first key of the new leaf is COPIED upwards - the ' +
                'leaves still hold every key.');
       return { key: right.keys[0], node: right };
     }
@@ -684,7 +684,7 @@
     this.touch(rightNode);
     this.say('That pushed a key into the parent, which overflowed too, so it split ' +
              'and sent ' + upKey + ' further up. Above the leaves the separator MOVES ' +
-             'up rather than being copied — internal nodes only route.');
+             'up rather than being copied - internal nodes only route.');
     return { key: upKey, node: rightNode };
   };
 
@@ -1004,7 +1004,7 @@
         redraw();
       }));
     gOrder.appendChild(E('p', 'db-hint',
-      'Three to eight, so splits are visible. A real index uses hundreds — the ' +
+      'Three to eight, so splits are visible. A real index uses hundreds - the ' +
       'table under the tree shows what that does to the height.'));
     side.appendChild(gOrder);
 
@@ -1053,7 +1053,7 @@
         'Looking up ' + k + ' read ' + path.length + ' page' + (path.length === 1 ? '' : 's') +
         ': one per level, ending at the leaf holding [' + leaf.keys.join(' ') + ']. ' +
         (leaf.keys.indexOf(k) >= 0 ? 'The key is there.'
-                                   : 'The key is not there — and the tree still had to read every ' +
+                                   : 'The key is not there - and the tree still had to read every ' +
                                      'one of those pages to prove it.')
       ];
       self.message = null;
@@ -1274,7 +1274,7 @@
 
     var legend = E('p', 'db-sub',
       'Blue boxes are internal nodes and only route; green boxes are leaves and ' +
-      'hold every key. The dashed green line is the leaf chain — that is what a ' +
+      'hold every key. The dashed green line is the leaf chain - that is what a ' +
       'range scan walks once it has found where to start. Amber marks the nodes ' +
       'the last operation had to write.');
     main.appendChild(legend);
@@ -1555,7 +1555,7 @@
       '. Page counts are not estimates: the heap page of every matching row was ' +
       'looked up and the reads counted, which is why changing the physical order ' +
       'changes the number. Two plans can read the same number of pages and still ' +
-      'cost differently — a bitmap heap scan visits them in physical order, so most ' +
+      'cost differently - a bitmap heap scan visits them in physical order, so most ' +
       'of them are priced as sequential reads rather than seeks.'));
   };
 
@@ -1575,13 +1575,13 @@
         num(withIdx.heapPages) + ' page reads, because consecutive keys live on ' +
         'unrelated pages. Reading the table straight through and sorting it costs ' +
         num(noIdx.pages) + '. Take the LIMIT off an ORDER BY and the index usually stops ' +
-        'being worth it — unless the table is clustered on that column, which you can ' +
+        'being worth it - unless the table is clustered on that column, which you can ' +
         'try in the controls.';
     }
     if (chosen === noIdx) {
       return 'The scan wins. ' + num(matched) + ' rows is ' + pct(matched / N_ROWS) +
         ' of the table, and they are spread across ' + num(heap.distinct) + ' of the ' +
-        num(HEAP_PAGES) + ' heap pages — so using the index would mean reading almost the ' +
+        num(HEAP_PAGES) + ' heap pages - so using the index would mean reading almost the ' +
         'whole table anyway, one scattered page at a time, plus the index on top. ' +
         'A planner that refuses your index here is not broken; it is right.';
     }
@@ -1596,7 +1596,7 @@
         num(matched) + ' rows is ' + pct(matched / N_ROWS) + ' of the table, scattered over ' +
         num(heap.distinct) + ' of the ' + num(HEAP_PAGES) + ' heap pages, so the index plan ' +
         'reads ' + num(withIdx.pages) + ' pages against the scan’s ' + num(noIdx.pages) +
-        ' — no real saving at all. The model puts them at ' + money(withIdx.cost) + ' and ' +
+        ' - no real saving at all. The model puts them at ' + money(withIdx.cost) + ' and ' +
         money(noIdx.cost) + ', which is close enough that the winner here should be read as ' +
         '"about the same", not as a result. Widen the range further and the scan takes it ' +
         'outright; narrow it and the index pulls away.';
@@ -1839,7 +1839,7 @@
       tag = 'no';
       note = 'The index cannot be descended for this query. Age is the second key, so ' +
         'the rows with age = ' + this.age + ' are scattered into ' + ranges.length +
-        ' separate stripes with everything else in between — there is no single place ' +
+        ' separate stripes with everything else in between - there is no single place ' +
         'to jump to. That is the leftmost-prefix rule, and it is not a limitation ' +
         'somebody chose: the entries are sorted by city first, so age simply is not ' +
         'in order across the index. The database can still read every one of the ' +
@@ -1871,7 +1871,7 @@
         money(seqPlan.cost) + ' for reading the table straight through, so the model ' +
         'picks the index' +
         (seqPlan.cost < idxPlan.cost * 1.3
-          ? ' — but only just, and a margin that thin is not a result.'
+          ? ' - but only just, and a margin that thin is not a result.'
           : '.')
       : 'Costed out, the index plan comes to ' + money(idxPlan.cost) + ' against ' +
         money(seqPlan.cost) + ' for reading the table straight through, so the model ' +
@@ -1904,7 +1904,7 @@
     main.appendChild(E('p', 'db-sub',
       'This is why (city, age) and (age, city) are different indexes and why column ' +
       'order in a composite index is a real decision. If you query both columns and ' +
-      'also query one of them alone, put that one first — then one index serves both.'));
+      'also query one of them alone, put that one first - then one index serves both.'));
   };
 
   /* ======================================================================== */
@@ -1954,7 +1954,7 @@
     }));
     gi.appendChild(E('p', 'db-hint',
       'INCLUDE stores a column in the leaves without making it part of the key. ' +
-      'It cannot be searched on, but it can be returned — which is the whole point.'));
+      'It cannot be searched on, but it can be returned - which is the whole point.'));
     side.appendChild(gi);
 
     var gp = group('Predicate');
@@ -2044,11 +2044,11 @@
       note.textContent = 'Every column in the SELECT list is in the index, so the leaves ' +
         'answer the query on their own and the table is never opened. ' + num(plan.pages) +
         ' pages instead of ' + num(fetchPlan.pages) + '. Notice that nothing about the ' +
-        'WHERE clause changed — covering is about what you ask for, not what you filter on.';
+        'WHERE clause changed - covering is about what you ask for, not what you filter on.';
     } else if (isStar) {
       note.textContent = 'This is how SELECT * defeats a covering index. The WHERE clause is ' +
         'identical, the index is identical, and the plan is worse by ' +
-        times(fetchPlan.pages, onlyPlan.pages) + ' — because id and signup_day are not in ' +
+        times(fetchPlan.pages, onlyPlan.pages) + ' - because id and signup_day are not in ' +
         'the index, so every one of the ' + num(matched) + ' matching rows has to be fetched ' +
         'from the heap. Naming the columns you actually need is not a style preference here; ' +
         'it is the difference between reading ' + num(onlyPlan.pages) + ' pages and ' +
@@ -2099,7 +2099,7 @@
 
     var caveat = E('div', 'db-note db-warnnote');
     caveat.textContent = 'One thing this model leaves out, because it matters in ' +
-      'production: PostgreSQL cannot trust an index entry on its own — it has to know ' +
+      'production: PostgreSQL cannot trust an index entry on its own - it has to know ' +
       'the row is visible to your transaction. It checks the visibility map, and where ' +
       'that says a page is not all-visible it fetches the heap row anyway. So a table ' +
       'that has just been written to heavily will show heap fetches on a query that ' +
@@ -2142,7 +2142,7 @@
       function (v) { return v.toFixed(1); },
       function (v) { COST.randPage = v; redraw(); }));
     gp.appendChild(E('p', 'db-hint',
-      'Drop it towards 1.0 — an SSD, or a table already in cache — and the ' +
+      'Drop it towards 1.0 - an SSD, or a table already in cache - and the ' +
       'crossover moves right: the index stays worth using for a larger slice ' +
       'of the table.'));
     side.appendChild(gp);
@@ -2235,7 +2235,7 @@
     cards.appendChild(statCard('Plain index scan gives up at',
       indexGivesUp !== null ? pct(indexGivesUp / N_ROWS) : 'it does not',
       indexGivesUp !== null
-        ? 'About ' + num(indexGivesUp) + ' rows. The index is not abandoned there — ' +
+        ? 'About ' + num(indexGivesUp) + ' rows. The index is not abandoned there - ' +
           'the bitmap plan below still uses it. Only the way the heap is read changes.'
         : 'On a table clustered by this key, walking the index in order is also ' +
           'walking the table in order, so nothing beats it.'));
@@ -2257,15 +2257,15 @@
         'wherever there is space, so the correlation decays and the chart drifts back ' +
         'towards the uncorrelated shape.'
       : 'Three plans, one query shape, and the only thing changing is how many rows come ' +
-        'back. The plain index scan dies early — at ' +
+        'back. The plain index scan dies early - at ' +
         (indexGivesUp !== null ? pct(indexGivesUp / N_ROWS) + ' of the table' : 'a few hundred rows') +
-        ' — because consecutive keys live on unrelated pages, so it re-reads the same ' +
+        ' - because consecutive keys live on unrelated pages, so it re-reads the same ' +
         'heap pages over and over. The bitmap heap scan survives much longer: it collects ' +
         'every row pointer first, sorts them into page order, and reads each page once. ' +
         'Only past ' + (switchRows !== null ? pct(switchRows / N_ROWS) : 'that') +
         ' does reading everything straight through win outright. The folklore that ' +
         '"an index stops being used above five percent" is really about the first of ' +
-        'those three plans, not the second — and the usual reason a planner gets this ' +
+        'those three plans, not the second - and the usual reason a planner gets this ' +
         'wrong in production is a stale estimate of how many rows the predicate matches, ' +
         'not the cost model.';
     main.appendChild(note);
@@ -2603,7 +2603,7 @@
       clear(mount);
       var msg = E('p', 'lab-viz-error',
         'This lab could not start in your browser: ' + ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown. ' +
+        ' - the write-up below still explains what it would have shown. ' +
         'Please tell me, and mention which browser you are using.');
       mount.appendChild(msg);
     }

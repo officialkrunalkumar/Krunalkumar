@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="DNS lookups straight from your browser, over DoH" />
     <meta name="twitter:description" content="Look up A, AAAA, MX, TXT, NS, SOA, CAA and more over DNS-over-HTTPS, straight from your browser with no proxy. Pick your own resolver. Free, no sign-up." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-dns.jpg" />
-    <title>DNS Lookup — A, MX, TXT, NS, CAA over DoH | Krunalkumar Shah</title>
+    <title>DNS Lookup - A, MX, TXT, NS, CAA over DoH | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,12 +200,12 @@
           </ol>
         </nav>
         <h1>DNS lookup</h1>
-        <p class="hero-text">A browser has no UDP socket, so it cannot speak DNS the ordinary way. DNS-over-HTTPS is the way in &mdash; a genuine lookup that happens to travel over HTTPS. You pick which resolver sees it.</p>
+        <p class="hero-text">A browser has no UDP socket, so it cannot speak DNS the ordinary way. DNS-over-HTTPS is the way in - a genuine lookup that happens to travel over HTTPS. You pick which resolver sees it.</p>
         <ul class="lab-facts">
           <li>A, AAAA, CNAME, MX, TXT, NS, SOA, CAA</li>
           <li>Your choice of resolver</li>
           <li>DNSSEC status shown</li>
-          <li>No proxy &mdash; direct from your browser</li>
+          <li>No proxy - direct from your browser</li>
           <li>Nothing sent until you press the button</li>
         </ul>
       </section>
@@ -217,7 +217,7 @@
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
           <p>This lookup runs entirely in your browser and needs JavaScript to do it.</p>
-          <p>It queries the vendor directly from your machine — there is no server here to do it for you.</p>
+          <p>It queries the vendor directly from your machine - there is no server here to do it for you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
             <a href="/">site</a> read perfectly well without it.</p>
@@ -245,7 +245,7 @@
               <div>
                 <p class="lab-gate-h privacy">What still holds</p>
                 <ul class="lab-gate-list">
-                  <li>No proxy &mdash; the request is not relayed through me</li>
+                  <li>No proxy - the request is not relayed through me</li>
                   <li>I never see it, log it or store it</li>
                   <li>No account, no history, no cookies sent</li>
                   <li>Every request is echoed on screen as it goes out</li>
@@ -259,7 +259,7 @@
               offline tools, and agreeing to those did not bring you through this notice.
             </p>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -319,15 +319,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Why DNS-over-HTTPS</h3>
-            <p>Ordinary DNS runs over UDP port 53. A browser cannot open a UDP socket at all, so no web page can send a classic DNS query. DoH carries the same queries and answers over an HTTPS request, which a browser can make &mdash; so this is a real lookup, not an approximation.</p>
+            <p>Ordinary DNS runs over UDP port 53. A browser cannot open a UDP socket at all, so no web page can send a classic DNS query. DoH carries the same queries and answers over an HTTPS request, which a browser can make - so this is a real lookup, not an approximation.</p>
           </article>
           <article class="info-card">
             <h3>NXDOMAIN is not the same as NODATA</h3>
-            <p>NXDOMAIN means the name does not exist. NODATA means it exists but has no record of the type you asked for &mdash; a domain with a website but no mail returns NODATA for MX. Tools that collapse both into &ldquo;not found&rdquo; hide a meaningful difference.</p>
+            <p>NXDOMAIN means the name does not exist. NODATA means it exists but has no record of the type you asked for - a domain with a website but no mail returns NODATA for MX. Tools that collapse both into &ldquo;not found&rdquo; hide a meaningful difference.</p>
           </article>
           <article class="info-card">
             <h3>Who sees your query</h3>
-            <p>Whichever resolver you pick, and only that one. This is true of every DNS query you have ever made &mdash; your ISP&rsquo;s resolver sees all of them &mdash; the difference is that here you chose. There is no proxy of mine in the path.</p>
+            <p>Whichever resolver you pick, and only that one. This is true of every DNS query you have ever made - your ISP&rsquo;s resolver sees all of them - the difference is that here you chose. There is no proxy of mine in the path.</p>
           </article>
           <article class="info-card">
             <h3>The AD flag</h3>
@@ -387,7 +387,7 @@
           </a>
           <a class="lab-card" href="/labs/ct-log">
             <span class="lab-card-name">Certificate transparency</span>
-            <p class="lab-card-desc">Every logged certificate for a domain &mdash; and its subdomains.</p>
+            <p class="lab-card-desc">Every logged certificate for a domain - and its subdomains.</p>
             <span class="lab-card-engine">Uses the network</span>
           </a>
           <a class="lab-card" href="/labs/rdap">

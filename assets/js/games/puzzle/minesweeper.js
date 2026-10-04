@@ -125,7 +125,7 @@
         flagBtn.addEventListener('click', function () {
           flagMode = !flagMode;
           flagBtn.setAttribute('aria-pressed', String(flagMode));
-          flagBtn.title = flagMode ? 'Flag mode on — tap to flag' : 'Flag mode (or long-press a cell)';
+          flagBtn.title = flagMode ? 'Flag mode on - tap to flag' : 'Flag mode (or long-press a cell)';
         });
       }
       if (newBtn) newBtn.addEventListener('click', function () { g.start(); });

@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Connect Four that never misses a block" />
     <meta name="twitter:description" content="Connect Four against a six-ply minimax opponent, or pass and play. It always takes a win it can see and always blocks yours, straight out of the search." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-connect-four.jpg" />
-    <title>Connect Four — Play The Computer Free, No Sign-Up</title>
+    <title>Connect Four - Play The Computer Free, No Sign-Up</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -64,7 +64,7 @@
                         "name": "Is Connect Four solved?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes — with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks."
+                                "text": "Yes - with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks."
                         }
                 },
                 {
@@ -80,7 +80,7 @@
                         "name": "Can two of us play?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes — pass and play on one device."
+                                "text": "Yes - pass and play on one device."
                         }
                 }
         ]
@@ -177,7 +177,7 @@
           </ol>
         </nav>
         <h1>Connect Four</h1>
-        <p class="hero-text">Drop a disc, get four in a row. The opponent searches six moves ahead with alpha-beta pruning, which means it will never miss a win and never miss a block &mdash; not because those are coded as rules, but because a search that deep finds them anyway.</p>
+        <p class="hero-text">Drop a disc, get four in a row. The opponent searches six moves ahead with alpha-beta pruning, which means it will never miss a win and never miss a block - not because those are coded as rules, but because a search that deep finds them anyway.</p>
         <ul class="game-facts">
           <li>Six-ply search</li>
           <li>Against the computer or pass and play</li>
@@ -220,7 +220,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -275,15 +275,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A window with both colours is worth nothing</h3>
-            <p>The evaluation looks at every run of four cells on the board. If a run already contains one of each colour, nobody can ever complete it, so it scores zero. Scoring it anyway &mdash; which is the obvious first implementation &mdash; sends the engine chasing lines that are already dead.</p>
+            <p>The evaluation looks at every run of four cells on the board. If a run already contains one of each colour, nobody can ever complete it, so it scores zero. Scoring it anyway - which is the obvious first implementation - sends the engine chasing lines that are already dead.</p>
           </article>
           <article class="info-card">
             <h3>The centre column really is worth more</h3>
-            <p>A disc in the middle takes part in far more possible fours than one on the edge. The bonus for it is not a heuristic somebody invented, it is just counting &mdash; and it is why good players open in the centre.</p>
+            <p>A disc in the middle takes part in far more possible fours than one on the edge. The bonus for it is not a heuristic somebody invented, it is just counting - and it is why good players open in the centre.</p>
           </article>
           <article class="info-card">
             <h3>Move ordering does the pruning</h3>
-            <p>Columns are searched centre-outward, because alpha-beta prunes hardest when the best move is tried first. Same search, same answer, a fraction of the work &mdash; which is what lets it go eight ply deep on Strong without you noticing a pause.</p>
+            <p>Columns are searched centre-outward, because alpha-beta prunes hardest when the best move is tried first. Same search, same answer, a fraction of the work - which is what lets it go eight ply deep on Strong without you noticing a pause.</p>
           </article>
         </div>
       </section>
@@ -294,7 +294,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is Connect Four solved?</summary>
-            <div>Yes — with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks.</div>
+            <div>Yes - with perfect play the first player wins, and it has been proven since 1988. This opponent is not perfect at six ply, so you can beat it; it is perfect at spotting immediate wins and blocks.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does it always go in the middle first?</summary>
@@ -302,7 +302,7 @@
           </details>
           <details class="lab-faq">
             <summary>Can two of us play?</summary>
-            <div>Yes — pass and play on one device.</div>
+            <div>Yes - pass and play on one device.</div>
           </details>
       </section>
 

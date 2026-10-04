@@ -84,7 +84,7 @@
     server.ack = clientSynSeq + 1;
     server.state = 'SYN_RCVD';
     send('server', 's2c', ['SYN', 'ACK'], server.seq, server.ack, 0,
-      'The server replies with its own SYN and acknowledges the client — ack = client ISN + 1, the ' +
+      'The server replies with its own SYN and acknowledges the client - ack = client ISN + 1, the ' +
       'next byte it expects. This single segment does the server’s half of the handshake.',
       'SYN_SENT', 'SYN_RCVD');
     var serverSynSeq = server.seq;
@@ -115,7 +115,7 @@
     client.state = 'FIN_WAIT_1';
     send('client', 'c2s', ['FIN', 'ACK'], client.seq, client.ack, 0,
       'The client is done and sends FIN. Like SYN, a FIN consumes one sequence number. The client ' +
-      'enters FIN_WAIT_1 — it can still receive, but will send no more data.', 'FIN_WAIT_1', 'ESTABLISHED');
+      'enters FIN_WAIT_1 - it can still receive, but will send no more data.', 'FIN_WAIT_1', 'ESTABLISHED');
     var clientFinSeq = client.seq;
     client.seq += 1;
 
@@ -135,7 +135,7 @@
     client.ack = serverFinSeq + 1;
     client.state = 'TIME_WAIT';
     send('client', 'c2s', ['ACK'], client.seq, client.ack, 0,
-      'The client acknowledges the server’s FIN and enters TIME_WAIT — it lingers for twice the ' +
+      'The client acknowledges the server’s FIN and enters TIME_WAIT - it lingers for twice the ' +
       'maximum segment lifetime so a delayed segment cannot corrupt a future connection on the same ' +
       'ports. The server, on receiving this, is fully CLOSED.', 'TIME_WAIT', 'CLOSED');
 
@@ -235,7 +235,7 @@
         wnd = ssthresh;
         cwnd = ssthresh;                    // fast recovery: halve, don't reset
         phase = 'congestion avoidance';
-        event = 'Three duplicate ACKs — a single segment was lost but packets are still flowing. ' +
+        event = 'Three duplicate ACKs - a single segment was lost but packets are still flowing. ' +
           'Fast retransmit: ssthresh drops to ' + ssthresh + ' and cwnd halves to ' + cwnd +
           ' rather than collapsing. This is the top of a sawtooth tooth.';
       } else if (loss && loss.kind === 'timeout') {
@@ -243,7 +243,7 @@
         wnd = 1;
         cwnd = 1;                           // timeout: back to square one
         phase = 'slow start';
-        event = 'A retransmission timeout — the pipe may have emptied. This is the severe signal: ' +
+        event = 'A retransmission timeout - the pipe may have emptied. This is the severe signal: ' +
           'ssthresh drops to ' + ssthresh + ' and cwnd resets all the way to 1. Slow start begins again.';
       } else if (phase === 'slow start') {
         var flipped = false;
@@ -253,17 +253,17 @@
           flipped = true;
           phase = 'congestion avoidance';
           event = 'cwnd has reached ssthresh (' + ssthresh + '). Slow start ends and congestion ' +
-            'avoidance begins — from here cwnd grows by just one MSS per round trip.';
+            'avoidance begins - from here cwnd grows by just one MSS per round trip.';
         } else {
           event = 'Slow start: every ACK bumps cwnd, so it doubles each round trip. Exponential ' +
-            'growth, but from a tiny base — this is TCP feeling for the ceiling.';
+            'growth, but from a tiny base - this is TCP feeling for the ceiling.';
         }
         /* The ceiling gets its own words. A flat line captioned "it doubles
            each round trip" teaches the wrong thing, and the flatness is the
            interesting part: this is the link, not the algorithm. */
         if (wnd > capacity) {
           event = (flipped
-            ? 'Slow start ends here — at the link ceiling rather than at ssthresh (' +
+            ? 'Slow start ends here - at the link ceiling rather than at ssthresh (' +
               ssthresh + '). '
             : '') +
             'The window wants ' + wnd + ' MSS and the path carries only ' + capacity +
@@ -275,7 +275,7 @@
         wnd = wnd + 1;                             // additive increase
         if (wnd > capacity) {
           event = 'Congestion avoidance would add one more MSS, but the path is already full at ' +
-            capacity + '. cwnd holds at the ceiling — this is what probing gently looks like once ' +
+            capacity + '. cwnd holds at the ceiling - this is what probing gently looks like once ' +
             'the probe has found the edge, and it stays here until a loss knocks it back down.';
         } else {
           event = 'Congestion avoidance: cwnd creeps up by one MSS per round trip, probing gently ' +
@@ -449,7 +449,7 @@
       rows: [
         { key: 'syn', cells: ['SYN', 'Client proposes a starting sequence number', 'yes'] },
         { key: 'synack', cells: ['SYN-ACK', 'Server agrees and proposes its own', 'yes'] },
-        { key: 'ack', cells: ['ACK', 'Client confirms — both sides now synchronised', 'no'] },
+        { key: 'ack', cells: ['ACK', 'Client confirms - both sides now synchronised', 'no'] },
         { key: 'fin', cells: ['FIN', 'One side signals it has no more data', 'yes'] }
       ]
     };
@@ -601,7 +601,7 @@
     clear(this.topHost);
     var phaseCls = frame.loss ? 'tc-phase-loss' : (frame.phase === 'slow start' ? 'tc-phase-ss' : 'tc-phase-ca');
     this.topHost.appendChild(E('span', 'tc-phase ' + phaseCls,
-      frame.loss ? (frame.loss === 'triple' ? 'fast recovery' : 'timeout — reset') : frame.phase));
+      frame.loss ? (frame.loss === 'triple' ? 'fast recovery' : 'timeout - reset') : frame.phase));
     this.topHost.appendChild(E('span', 'ms-ip', 'RTT ' + frame.rtt + ' · cwnd = ' + frame.cwnd +
       ' MSS · ssthresh = ' + frame.ssthresh));
     this.draw(idx);

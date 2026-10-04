@@ -177,7 +177,7 @@
                 : 'PAST THE END, into the ' + region;
       snapshot(i, writeAddr, full[i],
         'Write ' + hex2(full[i]) + (i === input.length ? ' (the NUL terminator)' : '') +
-        ' to ' + hexAddr(writeAddr) + ' — ' + where + '.',
+        ' to ' + hexAddr(writeAddr) + ' - ' + where + '.',
         i === full.length - 1);
       wrote.push({ addr: writeAddr, value: full[i], region: region });
       // A C string is laid out low address to high, so buffer[0] is the lowest
@@ -427,15 +427,15 @@
     var stop = this.stops[Math.min(idx, this.stops.length - 1)];
     switch (stop.region) {
       case REGION.buffer: return 'The buffer sits at the LOWEST addresses of the frame. The stack ' +
-        'grows downward, so a local array is at the bottom — and a string copied into it writes ' +
+        'grows downward, so a local array is at the bottom - and a string copied into it writes ' +
         'upward, toward everything important.';
       case REGION.saved_fp: return 'Just above the buffer is the saved frame pointer: the caller’s ' +
         'base pointer, restored when this function returns. It is the first casualty of an overflow.';
-      case REGION.ret: return 'Above that is the return address — where the CPU jumps when this ' +
+      case REGION.ret: return 'Above that is the return address - where the CPU jumps when this ' +
         'function finishes. Overwrite these four bytes and you choose where the program goes next. ' +
         'This is the target of the entire attack.';
       default: return 'At the top are the arguments the caller pushed. The whole frame is torn down ' +
-        'on return, and the saved return address is what makes that orderly — until it is overwritten.';
+        'on return, and the saved return address is what makes that orderly - until it is overwritten.';
     }
   };
   AnatomyFamily.prototype.compare = function () { return null; };
@@ -594,7 +594,7 @@
       this.topHost.appendChild(E('span', 'ms-tag ms-tag-bad', 'RET → attacker code'));
       this.ipHost.appendChild(E('b', null, 'instruction pointer = ' + hexAddr(run.retValue)));
       this.ipHost.appendChild(document.createTextNode(
-        ' — which is inside the buffer. The CPU is now executing bytes the attacker supplied.'));
+        ' - which is inside the buffer. The CPU is now executing bytes the attacker supplied.'));
     } else {
       this.topHost.appendChild(E('span', 'ms-tag ms-tag-warn', 'building the payload…'));
     }
@@ -605,7 +605,7 @@
     var run = this.run;
     if (idx >= run.steps.length) {
       return 'The function returns. RET pops the saved return address — now ' + hexAddr(run.retValue) +
-        ', the start of the buffer — into the instruction pointer, and the CPU begins executing the ' +
+        ', the start of the buffer - into the instruction pointer, and the CPU begins executing the ' +
         'bytes that were copied in as “data”. Nothing here actually runs: this is a diagram of the ' +
         'hijack, drawn over an array in a sandboxed tab.';
     }
@@ -670,11 +670,11 @@
     clear(this.topHost);
     if (checked) {
       if (run.canarySmashed) {
-        this.topHost.appendChild(E('span', 'ms-tag ms-tag-safe', 'CAUGHT — *** stack smashing detected ***'));
+        this.topHost.appendChild(E('span', 'ms-tag ms-tag-safe', 'CAUGHT - *** stack smashing detected ***'));
         this.topHost.appendChild(E('span', 'ms-ip', 'the program aborts instead of returning'));
       } else {
         var t = E('span', 'ms-tag ' + (run.overwroteRet ? 'ms-tag-bad' : 'ms-tag-safe'));
-        t.textContent = run.overwroteRet ? 'canary intact but return already changed' : 'canary intact — safe return';
+        t.textContent = run.overwroteRet ? 'canary intact but return already changed' : 'canary intact - safe return';
         this.topHost.appendChild(t);
       }
     } else {
@@ -694,15 +694,15 @@
     if (idx >= run.steps.length) {
       if (run.canarySmashed) {
         return 'The epilogue compares the canary against its known value, finds it changed, and ' +
-          'calls __stack_chk_fail — the program prints “stack smashing detected” and aborts. The ' +
+          'calls __stack_chk_fail - the program prints “stack smashing detected” and aborts. The ' +
           'overflow still happened, but control never reaches the corrupted return address.';
       }
       return 'The canary is unchanged, so the function returns normally. A canary only catches a ' +
-        'CONTIGUOUS overflow that runs through it — an attacker who can write to an arbitrary ' +
+        'CONTIGUOUS overflow that runs through it - an attacker who can write to an arbitrary ' +
         'address, skipping the canary, is not stopped by it.';
     }
     var s = run.steps[Math.min(idx, run.steps.length - 1)];
-    if (s.overwroteCanary) return s.note + ' The canary has just been overwritten — this will be ' +
+    if (s.overwroteCanary) return s.note + ' The canary has just been overwritten - this will be ' +
       'detected at the epilogue.';
     return s.note;
   };
@@ -744,7 +744,7 @@
       g.appendChild(E('div', null, ''));
     });
     g.appendChild(E('p', 'oa-hint',
-      'Modern binaries ship all three. None is sufficient alone, and each has a known bypass — ' +
+      'Modern binaries ship all three. None is sufficient alone, and each has a known bypass - ' +
       'which is why they are layered.'));
     host.appendChild(g);
   };
@@ -761,7 +761,7 @@
         stops: 'A linear buffer overflow that runs through the canary to the return address.',
         misses: 'An arbitrary write that skips the canary, or a leak that reveals its value.' },
       { key: 'nx', on: this.nx, name: 'NX / DEP',
-        stops: 'Executing shellcode placed on the stack — the classic “jump into the buffer”.',
+        stops: 'Executing shellcode placed on the stack - the classic “jump into the buffer”.',
         misses: 'Return-oriented programming, which reuses existing executable code instead of injecting any.' },
       { key: 'aslr', on: this.aslr, name: 'ASLR',
         stops: 'Guessing the address of the buffer or a library, since they move every run.',
@@ -790,7 +790,7 @@
     }, this);
 
     var count = (this.canary ? 1 : 0) + (this.nx ? 1 : 0) + (this.aslr ? 1 : 0);
-    var verdict = count === 3 ? 'All three layered: a real exploit now needs a memory leak AND a ROP chain — much harder, not impossible.'
+    var verdict = count === 3 ? 'All three layered: a real exploit now needs a memory leak AND a ROP chain - much harder, not impossible.'
       : count === 0 ? 'No mitigations: a textbook overflow works exactly as in the Hijack tab.'
       : count + ' of 3 enabled: the gaps above are the ones an attacker aims for.';
     this.tableHost.appendChild(table(['Mitigations on', 'Assessment'], [[count + ' of 3', verdict]]));
@@ -799,8 +799,8 @@
     var upto = Math.min(idx, this.rows.length - 1);
     if (idx >= this.rows.length) {
       return 'Defence in depth: none of these stops an overflow from happening, and each has a ' +
-        'documented bypass. Together they raise the cost enough that memory-safe languages — which ' +
-        'prevent the write in the first place — are the real fix.';
+        'documented bypass. Together they raise the cost enough that memory-safe languages - which ' +
+        'prevent the write in the first place - are the real fix.';
     }
     var r = this.rows[upto];
     return r.name + (r.on ? ' is enabled. ' : ' is off. ') + 'It stops ' +

@@ -32,7 +32,7 @@
     { hex: '474946383961',     type: 'GIF image (89a)' },
     { hex: '52494646',         type: 'RIFF container (WAV, AVI or WEBP)' },
     { hex: '25504446',         type: 'PDF document' },
-    { hex: '504b0304',         type: 'ZIP archive — also DOCX, XLSX, PPTX, JAR, APK' },
+    { hex: '504b0304',         type: 'ZIP archive - also DOCX, XLSX, PPTX, JAR, APK' },
     { hex: '504b0506',         type: 'ZIP archive (empty)' },
     { hex: '526172211a07',     type: 'RAR archive' },
     { hex: '377abcaf271c',     type: '7-Zip archive' },
@@ -46,7 +46,7 @@
     { hex: 'cafebabe',         type: 'Java class file or Mach-O fat binary' },
     { hex: '0061736d',         type: 'WebAssembly module' },
     { hex: '53514c69746520',   type: 'SQLite database' },
-    { hex: 'd0cf11e0a1b11ae1', type: 'Microsoft Compound File — legacy DOC, XLS, MSI' },
+    { hex: 'd0cf11e0a1b11ae1', type: 'Microsoft Compound File - legacy DOC, XLS, MSI' },
     { hex: '7b5c727466',       type: 'RTF document' },
     { hex: '3c3f786d6c',       type: 'XML document' },
     { hex: '4f676753',         type: 'OGG media' },
@@ -211,13 +211,13 @@
     if (sig) {
       out.row('actual type', sig.type, 't-ok');
     } else {
-      out.row('actual type', 'no known signature — plain text, or an unlisted format', 't-warn');
+      out.row('actual type', 'no known signature - plain text, or an unlisted format', 't-warn');
     }
     out.row('extension says', claimed || ('.' + ext + ' (no strong expectation)'));
 
     if (sig && claimed && sig.type.indexOf(claimed.split(' ')[0]) === -1) {
       out.line('');
-      out.err('MISMATCH — the extension claims ' + claimed + ' but the bytes say ' + sig.type + '.');
+      out.err('MISMATCH - the extension claims ' + claimed + ' but the bytes say ' + sig.type + '.');
       out.dim('That is not automatically malicious: .docx really is a ZIP, and');
       out.dim('.apk and .jar are too. It IS the first thing worth explaining.');
     }
@@ -231,7 +231,7 @@
       out.dim('Near 8 means compressed or encrypted. Expected for an archive or');
       out.dim('a media file; on a plain executable it suggests packing.');
     } else if (overall < 1.5) {
-      out.dim('Very low — long runs of the same byte, like a sparse or padded file.');
+      out.dim('Very low - long runs of the same byte, like a sparse or padded file.');
     } else {
       out.dim('Typical of text, code or an uncompressed binary.');
     }
@@ -255,7 +255,7 @@
     out.rule();
     out.dim('printable strings of ' + minLen + '+ characters (first 200)');
     if (!found.length) {
-      out.dim('none — consistent with compressed or encrypted content');
+      out.dim('none - consistent with compressed or encrypted content');
     } else {
       found.forEach(function (s) { out.line('  ' + s); });
     }
@@ -281,7 +281,7 @@
         // this works for a dropped file too.
         if (lastBytes && lastFile) analyse(lastBytes, lastFile);
       });
-      out.dim('Drop any file above. Nothing is uploaded — it is read and');
+      out.dim('Drop any file above. Nothing is uploaded - it is read and');
       out.dim('analysed inside this tab, which is what makes it safe to point');
       out.dim('at something you do not trust.');
     }

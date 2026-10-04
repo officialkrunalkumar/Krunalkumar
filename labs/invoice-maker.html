@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/invoice-maker" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="GST invoice and quotation maker — the tax split done properly" />
+    <meta property="og:title" content="GST invoice and quotation maker - the tax split done properly" />
     <meta property="og:description" content="Make a GST invoice or a quotation: CGST plus SGST or IGST decided by comparing your state with the place of supply, rate-wise tax summary, amount in words in lakh and crore, round-off shown as its own line. Four templates, prints to A4 through your own print dialog, and nothing is uploaded." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/invoice-maker" />
@@ -19,7 +19,7 @@
     <meta property="og:image:alt" content="GST Invoice and Quotation Maker" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="GST invoice and quotation maker — the tax split done properly" />
+    <meta name="twitter:title" content="GST invoice and quotation maker - the tax split done properly" />
     <meta name="twitter:description" content="Make a GST invoice or a quotation: CGST plus SGST or IGST decided by comparing your state with the place of supply, rate-wise tax summary, amount in words in lakh and crore, round-off shown as its own line. Four templates, prints to A4 through your own print dialog, and nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-invoice-maker.jpg" />
     <title>GST Invoice & Quotation Maker | Krunalkumar Shah</title>
@@ -249,7 +249,7 @@
           </ol>
         </nav>
         <h1>GST invoice and quotation maker</h1>
-        <p class="hero-text">Most free invoice generators print CGST and SGST on every document they make, whoever the buyer is. That is wrong roughly half the time: under GST the split is decided by comparing your state with the place of supply, and a supply that crosses a state line takes IGST instead. This one asks for both states, says out loud which rule it applied, and refuses to guess when either is missing. It is a document generator &mdash; it makes one invoice or one quotation and prints it. It is not accounting software and it is not tax advice.</p>
+        <p class="hero-text">Most free invoice generators print CGST and SGST on every document they make, whoever the buyer is. That is wrong roughly half the time: under GST the split is decided by comparing your state with the place of supply, and a supply that crosses a state line takes IGST instead. This one asks for both states, says out loud which rule it applied, and refuses to guess when either is missing. It is a document generator - it makes one invoice or one quotation and prints it. It is not accounting software and it is not tax advice.</p>
         <ul class="lab-facts">
           <li>Nothing is uploaded</li>
           <li>CGST + SGST, IGST or UTGST, decided from the place of supply</li>
@@ -355,10 +355,10 @@
                     </select></label>
                   <label class="field full"><span>Tax treatment</span>
                     <select data-key="taxMode">
-                      <option value="gst">Registered &mdash; charge GST</option>
-                      <option value="export">Export or SEZ under LUT &mdash; zero rated</option>
-                      <option value="unregistered">Not registered for GST &mdash; below the threshold</option>
-                      <option value="composition">Composition scheme &mdash; bill of supply</option>
+                      <option value="gst">Registered - charge GST</option>
+                      <option value="export">Export or SEZ under LUT - zero rated</option>
+                      <option value="unregistered">Not registered for GST - below the threshold</option>
+                      <option value="composition">Composition scheme - bill of supply</option>
                     </select></label>
                   <label class="field inv-checkfield" id="inv-wrap-revcharge">
                     <input type="checkbox" data-key="revCharge" />
@@ -442,19 +442,19 @@
                   <label class="field full"><span>Notes</span>
                     <textarea data-key="notes" rows="2" placeholder="What is included, what is not"></textarea></label>
                   <label class="field full"><span>Payment details</span>
-                    <textarea data-key="bank" rows="3" placeholder="Bank, account name, UPI ID &mdash; whatever you want printed"></textarea></label>
+                    <textarea data-key="bank" rows="3" placeholder="Bank, account name, UPI ID - whatever you want printed"></textarea></label>
                   <label class="field full"><span>Terms printed on the document</span>
                     <textarea data-key="termsText" rows="2" placeholder="Payment within 15 days. Interest on overdue amounts."></textarea></label>
                   <label class="field"><span>Signatory name</span>
                     <input type="text" data-key="signName" placeholder="Who signs it" /></label>
                 </div>
-                <p class="form-hint">Payment details are a plain text box on purpose. Nothing here treats an account number as a field, validates one, or puts one in a link &mdash; it is typed by you, printed on your document, and goes nowhere else.</p>
+                <p class="form-hint">Payment details are a plain text box on purpose. Nothing here treats an account number as a field, validates one, or puts one in a link - it is typed by you, printed on your document, and goes nowhere else.</p>
               </section>
             </form>
           </div>
 
           <div class="inv-previewcol">
-            <h2 class="inv-preview-title" id="inv-preview-title">Live preview &mdash; A4, invoice</h2>
+            <h2 class="inv-preview-title" id="inv-preview-title">Live preview - A4, invoice</h2>
             <div class="inv-sheet-wrap" id="inv-sheet-wrap">
               <div class="inv-sheet" id="inv-sheet" aria-label="Document preview"></div>
             </div>
@@ -469,11 +469,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The place of supply decides the tax</h3>
-            <p>Not your address, not the client&rsquo;s billing address by itself &mdash; the place of supply. Same state as yours, and the tax splits into CGST and SGST at half the rate each. A different state, and it is IGST at the full rate. Print the wrong pair and both sides file a return that does not reconcile, which is why the tool shows the comparison it made in words above the form.</p>
+            <p>Not your address, not the client&rsquo;s billing address by itself - the place of supply. Same state as yours, and the tax splits into CGST and SGST at half the rate each. A different state, and it is IGST at the full rate. Print the wrong pair and both sides file a return that does not reconcile, which is why the tool shows the comparison it made in words above the form.</p>
           </article>
           <article class="info-card">
             <h3>UTGST is not a typo for SGST</h3>
-            <p>A union territory without its own legislature &mdash; Chandigarh, Lakshadweep, Ladakh, the Andaman and Nicobar Islands, Dadra and Nagar Haveli and Daman and Diu, and Other Territory &mdash; charges UTGST as the state half. Delhi, Puducherry and Jammu and Kashmir have legislatures, so they take SGST. The label follows your state automatically, because nobody should have to remember that list.</p>
+            <p>A union territory without its own legislature - Chandigarh, Lakshadweep, Ladakh, the Andaman and Nicobar Islands, Dadra and Nagar Haveli and Daman and Diu, and Other Territory - charges UTGST as the state half. Delhi, Puducherry and Jammu and Kashmir have legislatures, so they take SGST. The label follows your state automatically, because nobody should have to remember that list.</p>
           </article>
           <article class="info-card">
             <h3>Paise, not floating point</h3>
@@ -497,15 +497,15 @@
           </article>
           <article class="info-card">
             <h3>Drafts are a decision, not a default</h3>
-            <p>&ldquo;Save draft&rdquo; writes the form into this browser&rsquo;s storage on this device, and nothing else writes anything. It is never loaded back automatically &mdash; the page tells you a draft exists and waits, because a form full of a client&rsquo;s details reappearing for the next person at a shared desk is not a feature. &ldquo;Delete saved draft&rdquo; removes it. &ldquo;Download data&rdquo; gives you the whole thing as a .json file you own and can carry anywhere.</p>
+            <p>&ldquo;Save draft&rdquo; writes the form into this browser&rsquo;s storage on this device, and nothing else writes anything. It is never loaded back automatically - the page tells you a draft exists and waits, because a form full of a client&rsquo;s details reappearing for the next person at a shared desk is not a feature. &ldquo;Delete saved draft&rdquo; removes it. &ldquo;Download data&rdquo; gives you the whole thing as a .json file you own and can carry anywhere.</p>
           </article>
           <article class="info-card">
             <h3>Printing is the export</h3>
-            <p>There is no PDF library here on purpose. Your browser already ships an excellent PDF engine &mdash; the print dialog &mdash; and the print rules hand it only the sheet, sized to A4, with the site header, the toolbar, the form and even the site&rsquo;s own byline removed. Choose &ldquo;Save as PDF&rdquo; and you have the document; choose a printer and you have paper. No watermark either way, because there is no step at which anyone could add one.</p>
+            <p>There is no PDF library here on purpose. Your browser already ships an excellent PDF engine - the print dialog - and the print rules hand it only the sheet, sized to A4, with the site header, the toolbar, the form and even the site&rsquo;s own byline removed. Choose &ldquo;Save as PDF&rdquo; and you have the document; choose a printer and you have paper. No watermark either way, because there is no step at which anyone could add one.</p>
           </article>
           <article class="info-card">
             <h3>What it is not</h3>
-            <p>It is not accounting software: no ledger, no numbering series, no tracking of what has been paid, no returns. It is not tax advice either &mdash; it cannot tell you which rate your work attracts, whether you should be registered, or whether a supply is zero rated. If you need that, ask a chartered accountant. If you need a careful private tool built for your own users, that is the kind of work I take on: see the <a href="/services">services page</a>.</p>
+            <p>It is not accounting software: no ledger, no numbering series, no tracking of what has been paid, no returns. It is not tax advice either - it cannot tell you which rate your work attracts, whether you should be registered, or whether a supply is zero rated. If you need that, ask a chartered accountant. If you need a careful private tool built for your own users, that is the kind of work I take on: see the <a href="/services">services page</a>.</p>
           </article>
         </div>
       </section>
@@ -559,15 +559,15 @@
       <!-- Screen only: the print rules hide everything in .inv-page except the
            tool, so this can never land on somebody's invoice. -->
       <aside class="section-card inv-builtby" aria-label="Who built this">
-        <p>Built by me, Krunalkumar Shah &mdash; by hand, no framework and no dependencies, the way the rest of this site is built; the <a href="/colophon">colophon</a> counts the receipts.</p>
-        <p>If your business needs a careful, private tool of its own, that is the work I take on &mdash; details on the <a href="/services">services page</a>.</p>
+        <p>Built by me, Krunalkumar Shah - by hand, no framework and no dependencies, the way the rest of this site is built; the <a href="/colophon">colophon</a> counts the receipts.</p>
+        <p>If your business needs a careful, private tool of its own, that is the work I take on - details on the <a href="/services">services page</a>.</p>
       </aside>
 
       <section class="section-card lab-report">
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a total looks wrong, a template misprints, or the tax split disagrees with your accountant, I would genuinely like to know &mdash; that last one especially.</p>
+          <p>If a total looks wrong, a template misprints, or the tax split disagrees with your accountant, I would genuinely like to know - that last one especially.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=invoice-maker#lab-feedback">Report a problem or send feedback</a>
@@ -583,7 +583,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/resume-maker">
             <span class="lab-card-name">Resume maker</span>
-            <p class="lab-card-desc">Five templates, live preview, and no paywall at the download button &mdash; because printing is the download.</p>
+            <p class="lab-card-desc">Five templates, live preview, and no paywall at the download button - because printing is the download.</p>
             <span class="lab-card-engine">Fill, pick a template, print</span>
           </a>
           <a class="lab-card" href="/labs/biodata-maker">

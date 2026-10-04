@@ -284,8 +284,8 @@
 
         var birthdayNote;
         if (isToday) birthdayNote = turning === 0 ? 'That is today. Welcome.'
-                                                 : 'That is today — you are ' + turning + '.';
-        else birthdayNote = plural(untilBirthday, 'day') + ' away — your ' + ordinal(turning) + '.';
+                                                 : 'That is today - you are ' + turning + '.';
+        else birthdayNote = plural(untilBirthday, 'day') + ' away - your ' + ordinal(turning) + '.';
         if (dob.m === 2 && dob.d === 29) {
           birthdayNote += ' Born on 29 February, so in ordinary years this page marks it on 1 March.';
         }
@@ -306,7 +306,7 @@
             value: plural(totalDays, 'day'),
             note: plural(weeks, 'week') + ' and ' + plural(oddDays, 'day') + ', or ' +
                   plural(totalDays * 24, 'hour') +
-                  '. Complete days only — a date of birth carries no clock time.'
+                  '. Complete days only - a date of birth carries no clock time.'
           },
           {
             label: 'Next birthday',
@@ -325,7 +325,7 @@
             label: 'Heartbeats, roughly',
             value: '≈ ' + group(beats),
             note: 'Days × 24 × 60 × ' + BPM + '. The multiplication is exact; the ' + BPM +
-                  ' is not — a newborn runs near 120 and an adult at rest sits between 60 and 100.'
+                  ' is not - a newborn runs near 120 and an adult at rest sits between 60 and 100.'
           }
         ];
 
@@ -348,7 +348,7 @@
           'Earth days, taken from the NASA fact sheets.</li>' +
           '</ul>' +
           '<p class="bf-privacy">The date stayed in this tab. It was not sent anywhere and it was not ' +
-          'saved, not even in your browser — reload the page and the field is empty.</p>' +
+          'saved, not even in your browser - reload the page and the field is empty.</p>' +
           '</div>';
 
         out.innerHTML = html;
@@ -368,7 +368,7 @@
 
         var dob = parseDate(field.value);
         if (!dob) {
-          fail('Enter a date of birth — the picker, or type it as yyyy-mm-dd.');
+          fail('Enter a date of birth - the picker, or type it as yyyy-mm-dd.');
           return;
         }
         if (!realDate(dob)) {
@@ -378,7 +378,7 @@
           return;
         }
         if (dob.y < MIN_YEAR) {
-          fail('Dates before ' + MIN_YEAR + ' are not calculated here — the Gregorian calendar was ' +
+          fail('Dates before ' + MIN_YEAR + ' are not calculated here - the Gregorian calendar was ' +
                'adopted at different times in different countries, so the weekday would depend on where.');
           return;
         }

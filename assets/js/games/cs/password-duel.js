@@ -301,7 +301,7 @@
         host.className = 'game-board board-duel';
         host.innerHTML =
           '<form class="duel-form" novalidate>' +
-          '  <label class="duel-label" for="duel-pw">Type a password &mdash; it never leaves this tab</label>' +
+          '  <label class="duel-label" for="duel-pw">Type a password - it never leaves this tab</label>' +
           '  <input type="text" id="duel-pw" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="try one you have actually used" />' +
           '  <button class="btn btn-primary" type="submit" id="duel-go">Attack it</button>' +
           '</form>' +
@@ -389,7 +389,7 @@
       }
 
       function paintLive(phase) {
-        var names = { wordlist: 'trying the top passwords', rules: 'trying them mangled — P@ssw0rd1 and friends', brute: 'brute forcing every combination' };
+        var names = { wordlist: 'trying the top passwords', rules: 'trying them mangled - P@ssw0rd1 and friends', brute: 'brute forcing every combination' };
         var p = host.querySelector('#duel-phase');
         var c = host.querySelector('#duel-count');
         var r = host.querySelector('#duel-rate');
@@ -447,11 +447,11 @@
           ? '<p class="duel-verdict">Cracked in ' + n.toLocaleString('en-US') + ' guesses' +
             (ms != null ? ', in ' + (ms / 1000).toFixed(1) + ' seconds' : '') + '.</p>' +
             '<p class="duel-note">Found by ' + (phase === 'wordlist' ? 'a list of the most common passwords'
-              : phase === 'rules' ? 'that same list with obvious substitutions applied — capitals, @ for a, 0 for o, a number on the end'
+              : phase === 'rules' ? 'that same list with obvious substitutions applied - capitals, @ for a, 0 for o, a number on the end'
               : 'plain brute force') + '.</p>'
           : '<p class="duel-verdict">Not cracked here.</p>' +
             '<p class="duel-note">The browser gave up after ' + n.toLocaleString('en-US') +
-            ' guesses. That is not the same as safe &mdash; see below.</p>';
+            ' guesses. That is not the same as safe - see below.</p>';
 
         var maths =
           '<div class="duel-maths">' +
@@ -461,7 +461,7 @@
           ' possibilities. Against a rented multi-GPU machine doing fifty billion guesses a second at an ' +
           'unsalted fast hash, the average search takes <strong>' + humanTime(realSeconds) + '</strong>.</p>' +
           '<p class="duel-caveat">That figure assumes the attacker has to guess blind. If your password is on a ' +
-          'wordlist, or is a word with predictable substitutions, none of the arithmetic applies &mdash; it falls ' +
+          'wordlist, or is a word with predictable substitutions, none of the arithmetic applies - it falls ' +
           'in the first few million guesses regardless of how long it is. Length beats cleverness: four ordinary ' +
           'words beat <code>P@ssw0rd!</code> by a margin no substitution can close.</p>' +
           '</div>';

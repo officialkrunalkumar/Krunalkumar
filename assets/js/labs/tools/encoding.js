@@ -140,7 +140,7 @@
     var bytes = new Uint8Array(tokens.length);
     for (var i = 0; i < tokens.length; i++) {
       if (!/^[01]{1,8}$/.test(tokens[i])) {
-        throw new Error('"' + tokens[i] + '" is not a binary byte — expected up to eight 0s and 1s');
+        throw new Error('"' + tokens[i] + '" is not a binary byte - expected up to eight 0s and 1s');
       }
       bytes[i] = parseInt(tokens[i], 2);
     }
@@ -154,7 +154,7 @@
     var bytes = new Uint8Array(tokens.length);
     for (var i = 0; i < tokens.length; i++) {
       if (!/^\d{1,3}$/.test(tokens[i]) || Number(tokens[i]) > 255) {
-        throw new Error('"' + tokens[i] + '" is not a byte value — expected 0 to 255');
+        throw new Error('"' + tokens[i] + '" is not a byte value - expected 0 to 255');
       }
       bytes[i] = Number(tokens[i]);
     }
@@ -251,12 +251,12 @@
 
     try {
       var result = convert(text, mode);
-      out.heading('Result — ' + result.length + ' characters');
+      out.heading('Result - ' + result.length + ' characters');
       out.line(result);
       document.getElementById('tool-result').value = result;
     } catch (err) {
       out.err('Could not convert: ' + (err && err.message ? err.message : err));
-      out.dim('That usually means the input is not valid for the chosen mode —');
+      out.dim('That usually means the input is not valid for the chosen mode -');
       out.dim('the detection line above is a better guide than the dropdown.');
       return;
     }
@@ -264,7 +264,7 @@
     if (/^(b64|hex|b32|b58|url|bin|dec|morse)/.test(mode)) {
       out.rule();
       out.warn('None of this is encryption. Every conversion here is reversible');
-      out.warn('by anyone, with no key — encoding changes the alphabet, not the');
+      out.warn('by anyone, with no key - encoding changes the alphabet, not the');
       out.warn('secrecy. If data needs protecting, it needs a cipher and a key.');
     }
   }

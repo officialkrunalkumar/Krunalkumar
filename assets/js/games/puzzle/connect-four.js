@@ -333,7 +333,7 @@
           over = true;
           g.over({
             title: 'Full board',
-            message: 'A draw — nobody got four.',
+            message: 'A draw - nobody got four.',
             hideScore: true
           });
           return true;
@@ -373,7 +373,7 @@
           over = false;
           winLine = null;
           thinking = 0;
-          message = mode === 'pass' ? 'Red to play' : 'Your turn — you are red';
+          message = mode === 'pass' ? 'Red to play' : 'Your turn - you are red';
           g.stat('you', wins[0]);
           g.stat('them', wins[1]);
         },

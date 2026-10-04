@@ -304,7 +304,7 @@
   /* --- naming tables ---------------------------------------------------- */
 
   var ECMA = 'ECMA-48 (ISO/IEC 6429, ANSI X3.64)';
-  var XTERM = 'xterm ctlseqs, de facto — not in ECMA-48';
+  var XTERM = 'xterm ctlseqs, de facto - not in ECMA-48';
   var DEC = 'DEC private, VT100/VT220 lineage; CSI ? Pm h/l';
 
   var CSI_FINAL = {
@@ -316,7 +316,7 @@
     'E': ['CNL', 'Cursor Next Line', 'cursor', 'moves down Pn rows and to column 1'],
     'F': ['CPL', 'Cursor Preceding Line', 'cursor', 'moves up Pn rows and to column 1'],
     'G': ['CHA', 'Cursor Character Absolute', 'cursor', 'moves to column Pn on the current row'],
-    'H': ['CUP', 'Cursor Position', 'cursor', 'moves to row Pn, column Pn — both 1-based, both default 1'],
+    'H': ['CUP', 'Cursor Position', 'cursor', 'moves to row Pn, column Pn - both 1-based, both default 1'],
     'I': ['CHT', 'Cursor Forward Tabulation', 'cursor', 'moves forward Pn tab stops'],
     'J': ['ED', 'Erase in Display', 'erase', 'erases part or all of the screen'],
     'K': ['EL', 'Erase in Line', 'erase', 'erases part or all of the current line'],
@@ -329,20 +329,20 @@
     'Z': ['CBT', 'Cursor Backward Tabulation', 'cursor', 'moves back Pn tab stops'],
     'a': ['HPR', 'Character Position Forward', 'cursor', 'moves right Pn columns, the relative form of HPA'],
     'b': ['REP', 'Repeat', 'other', 'repeats the previous printable character Pn more times'],
-    'c': ['DA', 'Device Attributes', 'report', 'asks the terminal what it is — the terminal answers by writing bytes back on your stdin'],
+    'c': ['DA', 'Device Attributes', 'report', 'asks the terminal what it is - the terminal answers by writing bytes back on your stdin'],
     'd': ['VPA', 'Line Position Absolute', 'cursor', 'moves to row Pn, keeping the column'],
     'e': ['VPR', 'Line Position Forward', 'cursor', 'moves down Pn rows, keeping the column'],
     'f': ['HVP', 'Horizontal and Vertical Position', 'cursor', 'the same move as CUP, kept for compatibility with older devices'],
     'g': ['TBC', 'Tabulation Clear', 'other', 'clears a tab stop, or all of them with parameter 3'],
     'h': ['SM', 'Set Mode', 'mode', 'turns an ANSI mode on'],
     'l': ['RM', 'Reset Mode', 'mode', 'turns an ANSI mode off'],
-    'm': ['SGR', 'Select Graphic Rendition', 'sgr', 'sets the rendition — colour, weight, underline and the rest'],
+    'm': ['SGR', 'Select Graphic Rendition', 'sgr', 'sets the rendition - colour, weight, underline and the rest'],
     'n': ['DSR', 'Device Status Report', 'report', 'asks the terminal for status; CSI 6n asks for the cursor position and the answer arrives on your stdin'],
     'p': ['DECSTR / DECSCL', 'Soft Terminal Reset or set conformance level', 'mode', 'CSI ! p is a soft reset; with intermediates it sets the conformance level'],
     'q': ['DECSCUSR / DECLL', 'Set Cursor Style or load LEDs', 'mode', 'CSI Ps SP q picks the cursor shape; without the space it drives the keyboard LEDs'],
     'r': ['DECSTBM', 'Set Top and Bottom Margins', 'mode', 'sets the scrolling region to rows Pt through Pb'],
     's': ['SCOSC / DECSLRM', 'Save Cursor Position', 'save', 'saves the cursor position, the ANSI.SYS form; with two parameters it sets left and right margins instead'],
-    't': ['XTWINOPS', 'Window manipulation', 'report', 'resizes, moves, raises or QUERIES the window — the query forms make the terminal write the answer, including the window title, back on your stdin'],
+    't': ['XTWINOPS', 'Window manipulation', 'report', 'resizes, moves, raises or QUERIES the window - the query forms make the terminal write the answer, including the window title, back on your stdin'],
     'u': ['SCORC', 'Restore Cursor Position', 'save', 'restores the cursor saved by CSI s'],
     'x': ['DECREQTPARM', 'Request Terminal Parameters', 'report', 'another form that makes the terminal reply on your stdin'],
     '~': ['Function key', 'VT220 keypad and function key report', 'other', 'this is the shape a key sends to the program, not something a program sends to the screen']
@@ -352,14 +352,14 @@
   var C0_NAMES = {
     0x00: ['NUL', 'Null', 'does nothing; a padding byte'],
     0x07: ['BEL', 'Bell', 'rings the terminal bell, or flashes it, or fires a desktop notification'],
-    0x08: ['BS', 'Backspace', 'moves the cursor one column left without erasing — combined with overprinting it is how underlining worked on paper terminals'],
+    0x08: ['BS', 'Backspace', 'moves the cursor one column left without erasing - combined with overprinting it is how underlining worked on paper terminals'],
     0x09: ['HT', 'Horizontal Tab', 'moves to the next tab stop, every eight columns unless changed'],
     0x0a: ['LF', 'Line Feed', 'moves down one row; the terminal driver in ONLCR mode also returns to column 1, which is why a bare newline looks like CR LF on screen'],
     0x0b: ['VT', 'Vertical Tab', 'moves down, treated as a line feed by nearly everything'],
     0x0c: ['FF', 'Form Feed', 'a page break on a printer; most terminals treat it as a line feed, some clear the screen'],
-    0x0d: ['CR', 'Carriage Return', 'moves to column 1 of the SAME row — everything printed after it overwrites what is already there'],
+    0x0d: ['CR', 'Carriage Return', 'moves to column 1 of the SAME row - everything printed after it overwrites what is already there'],
     0x0e: ['SO', 'Shift Out', 'switches to the G1 character set; a stray one is why a terminal suddenly prints line-drawing glyphs'],
-    0x0f: ['SI', 'Shift In', 'switches back to G0 — this is what reset -Q or printf "\\017" fixes'],
+    0x0f: ['SI', 'Shift In', 'switches back to G0 - this is what reset -Q or printf "\\017" fixes'],
     0x1a: ['SUB', 'Substitute', 'stands in for a character that could not be represented'],
     0x7f: ['DEL', 'Delete', 'originally an all-holes punch on paper tape; ignored on output']
   };
@@ -383,13 +383,13 @@
     'H': ['HTS', 'Horizontal Tab Set', 'other', 'sets a tab stop at the current column'],
     'M': ['RI', 'Reverse Index', 'cursor', 'moves UP one line and scrolls the screen down at the top margin'],
     'N': ['SS2', 'Single Shift Two', 'other', 'the next character comes from the G2 set'],
-    'O': ['SS3', 'Single Shift Three', 'other', 'the next character comes from the G3 set — this is the prefix arrow keys send in application mode'],
+    'O': ['SS3', 'Single Shift Three', 'other', 'the next character comes from the G3 set - this is the prefix arrow keys send in application mode'],
     'P': ['DCS', 'Device Control String', 'string', 'starts a device control string'],
     'V': ['SPA', 'Start of Protected Area', 'other', 'marks the start of a protected area'],
     'W': ['EPA', 'End of Protected Area', 'other', 'marks the end of a protected area'],
     'Z': ['DECID', 'Identify Terminal', 'report', 'obsolete request for identification; the terminal replies on your stdin'],
     '\\': ['ST', 'String Terminator', 'string', 'ends an OSC, DCS, APC, PM or SOS string'],
-    'c': ['RIS', 'Reset to Initial State', 'mode', 'a HARD reset — clears the screen, the scrollback in some terminals, the palette, tab stops and every mode'],
+    'c': ['RIS', 'Reset to Initial State', 'mode', 'a HARD reset - clears the screen, the scrollback in some terminals, the palette, tab stops and every mode'],
     '=': ['DECKPAM', 'Keypad Application Mode', 'mode', 'the numeric keypad starts sending escape sequences instead of digits'],
     '>': ['DECKPNM', 'Keypad Numeric Mode', 'mode', 'the keypad goes back to sending digits'],
     'n': ['LS2', 'Locking Shift Two', 'other', 'locks G2 into GL'],
@@ -439,7 +439,7 @@
     1015: ['urxvt mouse', 'the urxvt mouse encoding'],
     1047: ['Alternate screen', 'switch to the alternate screen buffer'],
     1048: ['Save cursor', 'save or restore the cursor as DECSC does'],
-    1049: ['Alternate screen + save cursor', 'save the cursor, switch to a cleared alternate screen, and on reset switch back — this is what less and vim use'],
+    1049: ['Alternate screen + save cursor', 'save the cursor, switch to a cleared alternate screen, and on reset switch back - this is what less and vim use'],
     2004: ['Bracketed paste', 'wrap pasted text in ESC [ 200~ and ESC [ 201~ so a program can tell a paste from typing'],
     2026: ['Synchronised output', 'ask the terminal to hold the frame until the application says it is done'],
     9001: ['win32-input-mode', 'Windows Terminal extended key reporting']
@@ -448,26 +448,26 @@
   /* --- SGR -------------------------------------------------------------- */
 
   var SGR_TEXT = {
-    0: 'reset — every attribute back to the terminal default',
+    0: 'reset - every attribute back to the terminal default',
     1: 'bold, or increased intensity; many terminals render it as the bright colour instead of a heavier face',
     2: 'faint, or decreased intensity',
     3: 'italic',
     4: 'underline (the colon forms 4:1 4:2 4:3 4:4 4:5 pick single, double, curly, dotted, dashed where supported)',
     5: 'slow blink, defined as under 150 per minute',
-    6: 'rapid blink, over 150 per minute — rarely implemented',
+    6: 'rapid blink, over 150 per minute - rarely implemented',
     7: 'reverse video: swap the foreground and background',
     8: 'conceal: the text is written to the screen but not displayed. It is still in the scrollback and still copies out',
     9: 'crossed out',
     10: 'primary (default) font',
     20: 'Fraktur, almost never implemented',
     21: 'doubly underlined in ECMA-48; several terminals read it as bold off instead',
-    22: 'normal intensity — cancels both 1 and 2',
+    22: 'normal intensity - cancels both 1 and 2',
     23: 'not italic, not Fraktur',
     24: 'not underlined',
     25: 'not blinking',
     26: 'proportional spacing',
     27: 'not reversed',
-    28: 'reveal — cancels conceal',
+    28: 'reveal - cancels conceal',
     29: 'not crossed out',
     39: 'default foreground colour',
     49: 'default background colour',
@@ -513,7 +513,7 @@
 
     function push(code, text) {
       if (notes.length >= MAX_SGR_NOTES) { unlisted++; return; }
-      notes.push(code + ' — ' + text);
+      notes.push(code + ' - ' + text);
     }
 
     /* Terminals clamp a truecolour component to a byte. Printing the raw 999
@@ -652,8 +652,8 @@
   var ED_TEXT = {
     0: 'from the cursor to the end of the screen',
     1: 'from the start of the screen to the cursor',
-    2: 'the entire screen — the cursor usually does not move, which is why clear is ED 2 followed by a cursor home',
-    3: 'the SCROLLBACK as well (xterm extension) — this is the one that destroys evidence you thought had scrolled away'
+    2: 'the entire screen - the cursor usually does not move, which is why clear is ED 2 followed by a cursor home',
+    3: 'the SCROLLBACK as well (xterm extension) - this is the one that destroys evidence you thought had scrolled away'
   };
   var EL_TEXT = {
     0: 'from the cursor to the end of the line',
@@ -761,15 +761,15 @@
       d.cat = 'mode';
       d.abbr = on ? 'DECSET' : (tok.fin === 'l' ? 'DECRST' : (tok.fin === 's' ? 'XTSAVE' : 'XTRESTORE'));
       d.name = on ? 'DEC Private Mode Set' : (tok.fin === 'l' ? 'DEC Private Mode Reset' : 'Save or restore DEC private modes');
-      d.std = DEC + ' — most of the numbers above 1000 are xterm, not DEC';
+      d.std = DEC + ' - most of the numbers above 1000 are xterm, not DEC';
       var nums = tok.params.slice(1).split(';');
       nums.forEach(function (raw) {
         var n = parseInt(raw, 10);
         if (isNaN(n)) return;
         var m = DEC_MODES[n];
         var verb = on ? 'ON' : (tok.fin === 'l' ? 'OFF' : (tok.fin === 's' ? 'saved' : 'restored'));
-        if (m) d.effect.push('?' + n + ' ' + m[0] + ' turned ' + verb + ' — ' + m[1]);
-        else d.effect.push('?' + n + ' turned ' + verb + ' — no widely documented meaning; terminals ignore modes they do not know');
+        if (m) d.effect.push('?' + n + ' ' + m[0] + ' turned ' + verb + ' - ' + m[1]);
+        else d.effect.push('?' + n + ' turned ' + verb + ' - no widely documented meaning; terminals ignore modes they do not know');
         if (n === 1049 || n === 47 || n === 1047) {
           d.risk = 'Alternate screen. Left set, your shell is drawing into a buffer that disappears; left reset in the middle of a full-screen program, the program and the screen disagree about what is on it.';
         }
@@ -796,7 +796,7 @@
 
     d.abbr = f[0]; d.name = f[1]; d.cat = f[2];
     if (priv === '>' || priv === '<' || priv === '=' || priv === '?') {
-      d.std = 'private-parameter form of ' + f[0] + ' — ' + XTERM;
+      d.std = 'private-parameter form of ' + f[0] + ' - ' + XTERM;
     }
 
     if (tok.fin === 'm') {
@@ -808,12 +808,12 @@
 
     var p1 = firstParam(tok.params, tok.fin === 'J' || tok.fin === 'K' ? 0 : 1);
     if (tok.fin === 'J') {
-      d.effect.push('Erases ' + (ED_TEXT[p1] || 'an undefined region — parameter ' + p1 + ' is not 0, 1, 2 or 3') + '.');
+      d.effect.push('Erases ' + (ED_TEXT[p1] || 'an undefined region - parameter ' + p1 + ' is not 0, 1, 2 or 3') + '.');
       d.risk = 'Erase in Display removes text that has already been printed. In a log you are reading, that is deletion of the record in front of you.';
       return d;
     }
     if (tok.fin === 'K') {
-      d.effect.push('Erases ' + (EL_TEXT[p1] || 'an undefined region — parameter ' + p1 + ' is not 0, 1 or 2') + '.');
+      d.effect.push('Erases ' + (EL_TEXT[p1] || 'an undefined region - parameter ' + p1 + ' is not 0, 1 or 2') + '.');
       d.risk = 'Erase in Line blanks a line that is already on screen so something else can be written over it.';
       return d;
     }
@@ -871,7 +871,7 @@
     var known = OSC_NAMES[num];
     d.abbr = 'OSC ' + num;
     d.name = known ? known[0] : 'Operating System Command';
-    d.effect.push('Terminated by ' + (tok.cut ? 'nothing — the string never ended, so a terminal keeps consuming input' : tok.term) + '.');
+    d.effect.push('Terminated by ' + (tok.cut ? 'nothing - the string never ended, so a terminal keeps consuming input' : tok.term) + '.');
 
     if (!known) {
       d.effect.push('Command number ' + num + ' has no widely documented meaning. Payload, inert: ' + visible(rest).slice(0, 160));
@@ -886,7 +886,7 @@
       if (uri) {
         d.effect.push('Opens a hyperlink to: ' + uri);
         d.effect.push('Everything printed until the closing OSC 8 ; ; ST becomes the clickable text.');
-        d.risk = 'The visible text and the link target are independent. A line that reads "docs.example.com" can point anywhere at all — the terminal equivalent of a mismatched anchor in an email.';
+        d.risk = 'The visible text and the link target are independent. A line that reads "docs.example.com" can point anywhere at all - the terminal equivalent of a mismatched anchor in an email.';
       } else {
         d.effect.push('Closes the current hyperlink. An OSC 8 with an empty URI is the end marker.');
       }
@@ -898,7 +898,7 @@
       var cbits = rest.split(';');
       var sel = cbits[0] || 's0';
       var payload = cbits.slice(1).join(';');
-      d.effect.push('Selection targeted: "' + sel + '" — c is the CLIPBOARD, p the PRIMARY selection, s the one the terminal has been configured to prefer.');
+      d.effect.push('Selection targeted: "' + sel + '" - c is the CLIPBOARD, p the PRIMARY selection, s the one the terminal has been configured to prefer.');
       if (payload === '?') {
         d.effect.push('The payload is "?", which is the READ form: the terminal base64-encodes your current clipboard and writes it back on the program\u2019s standard input.');
         d.risk = 'This reads your clipboard. Any program that can print to your terminal can ask for it, and the answer arrives as input. Most terminals ship with the read form disabled for exactly this reason; check allowWindowOps in xterm, or the clipboard write/read permissions in whichever terminal you use.';
@@ -914,7 +914,7 @@
         } else {
           d.effect.push('The payload did not decode as base64, so there is nothing to show.');
         }
-        d.risk = 'This writes your clipboard. Nothing on screen changes. The next time you paste — into a root shell, into a change ticket, into a terminal on another machine — you paste what this sequence put there, not what you copied. This page never executes it: it decodes the payload and prints it as inert text.';
+        d.risk = 'This writes your clipboard. Nothing on screen changes. The next time you paste - into a root shell, into a change ticket, into a terminal on another machine - you paste what this sequence put there, not what you copied. This page never executes it: it decodes the payload and prints it as inert text.';
       }
       return d;
     }
@@ -1224,7 +1224,7 @@
               stat.printed + ' characters written');
     if (stat.overwrote) {
       bits.push(stat.overwrote + ' characters that had already been printed were erased or ' +
-        'replaced afterwards — output going backwards, which is how a progress bar ' +
+        'replaced afterwards - output going backwards, which is how a progress bar ' +
         'redraws and equally how a log line is forged');
     } else {
       bits.push('nothing already printed was erased or overwritten');
@@ -1317,10 +1317,10 @@
       var tok = e.tok, d = e.d;
       out.heading('[' + (n + 1) + '] ' + visible(tok.raw).slice(0, 72));
       out.row('  bytes', hexDump(tok.raw));
-      out.row('  name', d.abbr + ' \u2014 ' + d.name);
+      out.row('  name', d.abbr + ' - ' + d.name);
       out.row('  standard', d.std);
       if (tok.eight) out.row('  form', '8-bit C1 introducer, not the two-byte ESC form');
-      if (tok.cut) out.row('  note', 'truncated \u2014 no terminator in the input');
+      if (tok.cut) out.row('  note', 'truncated - no terminator in the input');
 
       if (d.sgr) {
         var notes = sgrWalk(tok.params, style);
@@ -1361,7 +1361,7 @@
 
     out.rule();
     out.dim('The copy box below holds this same text with every control character');
-    out.dim('made visible — the form that is safe to paste into a ticket, a chat');
+    out.dim('made visible - the form that is safe to paste into a ticket, a chat');
     out.dim('message or a commit body without it acting on the reader’s terminal.');
     out.line('');
     limitsBlock();
@@ -1421,7 +1421,7 @@
       out.rule();
     }
 
-    out.heading('Visible form \u2014 the cat -v convention, and what is in the copy box');
+    out.heading('Visible form - the cat -v convention, and what is in the copy box');
     out.dim('Control characters are shown, not obeyed: ESC becomes ^[, the other C0');
     out.dim('controls become ^ plus a letter, DEL becomes ^?, C1 becomes M-^ plus a');
     out.dim('letter. Tabs and newlines are left alone so the text stays readable.');
@@ -1430,7 +1430,7 @@
     if (caretForm.length > 8000) out.dim('\u2026 truncated at 8000 characters for display; the copy box has all of it.');
     out.line('');
     out.rule();
-    out.heading('Stripped form \u2014 every sequence removed');
+    out.heading('Stripped form - every sequence removed');
     out.dim('Newlines and tabs kept, everything else discarded. This is the form to');
     out.dim('put in a report or an incident ticket, where the escape sequences are');
     out.dim('noise rather than evidence.');
@@ -1486,8 +1486,8 @@
        satisfies n >= 90, so with the tests the other way round the background
        branch was unreachable and HUES[n - 90] indexed past the end of an
        eight-entry table, printing "Foreground bright undefined". */
-    else if (n >= 100) note = 'Background bright ' + HUES[n - 100] + ' — aixterm extension';
-    else if (n >= 90) note = 'Foreground bright ' + HUES[n - 90] + ' — aixterm extension, not ECMA-48';
+    else if (n >= 100) note = 'Background bright ' + HUES[n - 100] + ' - aixterm extension';
+    else if (n >= 90) note = 'Foreground bright ' + HUES[n - 90] + ' - aixterm extension, not ECMA-48';
     else if (n >= 40) note = 'Background ' + HUES[n - 40];
     else note = 'Foreground ' + HUES[n - 30];
     return { params: mode, note: note };
@@ -1517,13 +1517,13 @@
       var el = $(a.id);
       if (el && el.checked) {
         params.push(String(a.code));
-        notes.push(a.code + ' ' + a.label + ' — ' + SGR_TEXT[a.code]);
+        notes.push(a.code + ' ' + a.label + ' - ' + SGR_TEXT[a.code]);
       }
     });
     var fg = readColour('fg');
-    if (fg) { params.push(fg.params); notes.push(fg.params + ' — ' + fg.note); }
+    if (fg) { params.push(fg.params); notes.push(fg.params + ' - ' + fg.note); }
     var bg = readColour('bg');
-    if (bg) { params.push(bg.params); notes.push(bg.params + ' — ' + bg.note); }
+    if (bg) { params.push(bg.params); notes.push(bg.params + ' - ' + bg.note); }
 
     var body = String($('b-text').value || '');
     var joined = params.join(';');

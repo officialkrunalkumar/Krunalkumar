@@ -8,8 +8,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/writing-comments-that-survive" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="The comment that restates the code is the one that rots" />
     <meta property="og:description" content="The comment that restates what the code does is the first one to go stale, because the code moves and the sentence does not. The comments that survive record something the code cannot say for itself: a measurement, an alternative that was rejected, a constraint that is load-bearing, and above all a bug that was actually hit. Examples throughout are from this site's own source." />
@@ -67,7 +67,7 @@
                         "name": "Is this not just an argument for self-documenting code?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It sits alongside it. The first move should always be to make the code express the mechanism. But a measured contrast ratio, a bug that was actually hit, or an alternative that was rejected cannot be expressed in a better variable name — those are facts about history and constraints, not about behaviour."
+                                "text": "It sits alongside it. The first move should always be to make the code express the mechanism. But a measured contrast ratio, a bug that was actually hit, or an alternative that was rejected cannot be expressed in a better variable name - those are facts about history and constraints, not about behaviour."
                         }
                 },
                 {
@@ -75,7 +75,7 @@
                         "name": "Won't a comment recording a bug become misleading once the bug is fixed?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It records why a guard exists, which stays true for as long as the guard does. The failure case is when the guard is removed and the comment is left, and that reads as obviously strange — which is better than a restated mechanism going quietly wrong."
+                                "text": "It records why a guard exists, which stays true for as long as the guard does. The failure case is when the guard is removed and the comment is left, and that reads as obviously strange - which is better than a restated mechanism going quietly wrong."
                         }
                 },
                 {
@@ -201,7 +201,7 @@
             </nav>
             <p class="eyebrow">Craft</p>
             <h1>Writing comments that survive</h1>
-            <p class="hero-text">The comment that goes stale is almost always the one that restates the code. The code moves and the sentence does not, and within a year it is actively lying. The comments that survive are the ones recording something the code cannot say for itself — and the best of them record a bug that was actually hit.</p>
+            <p class="hero-text">The comment that goes stale is almost always the one that restates the code. The code moves and the sentence does not, and within a year it is actively lying. The comments that survive are the ones recording something the code cannot say for itself - and the best of them record a bug that was actually hit.</p>
             <p class="post-meta">Published 31 August 2026 &middot; 8 min read &middot; by Krunalkumar Shah</p>
           </section>
 
@@ -237,7 +237,7 @@
               <h2 id="why-restating-the-code-fails">Why restating the code is the one that rots</h2>
               <p>
                 A comment that says what the line below it does has two problems. It duplicates a fact that
-                is already expressed, precisely, in a language the computer checks &mdash; and it is coupled
+                is already expressed, precisely, in a language the computer checks - and it is coupled
                 to the exact shape of that line, so any edit invalidates it. Nothing enforces the coupling,
                 so the edit happens and the sentence stays.
               </p>
@@ -294,7 +294,7 @@
               </p>
               <p>
                 The same file records a second one. The metadata stripper re-encodes an image through a
-                canvas, and it was hardcoded to JPEG &mdash; so a PNG dropped in came back with its
+                canvas, and it was hardcoded to JPEG - so a PNG dropped in came back with its
                 transparency composited onto black and every pixel put through a lossy encoder, for a tool
                 whose entire promise is &ldquo;the same picture, minus the metadata&rdquo;. The comment names
                 that plainly, then explains why the format is now decided by the magic bytes rather than the
@@ -311,7 +311,7 @@
               <p>
                 <strong>The rejected alternative.</strong> The games engine here is a third shell alongside
                 two that already existed, and its header spends a paragraph justifying that rather than
-                assuming it is obvious &mdash; a visualiser runs forever and cannot be lost, whereas a game
+                assuming it is obvious - a visualiser runs forever and cannot be lost, whereas a game
                 has runs that start, pause, end and produce a number worth keeping, and that single difference
                 drags in a state machine, an overlay, a personal best and a thumb pad. Without that, the
                 third file looks like duplication, and somebody eventually proposes merging it.
@@ -327,7 +327,7 @@
                 It goes on to say what happened when the order was the other way round: the sizing pass ends
                 by painting a frame, a game's draw reads the state that reset builds, and with the calls
                 reversed Tetris drew a twenty-row grid that did not exist yet and threw on the first row.
-                Two adjacent lines with no visible dependency between them &mdash; exactly the pair somebody
+                Two adjacent lines with no visible dependency between them - exactly the pair somebody
                 reorders while tidying, with no reason to suspect anything.
               </p>
               <p>
@@ -348,7 +348,7 @@
               <p>
                 That list costs the file nothing and buys a great deal. A reader knows immediately which
                 results to trust and which to treat as illustrative, and a future maintainer knows which
-                gaps were deliberate rather than overlooked &mdash; which is the difference between a
+                gaps were deliberate rather than overlooked - which is the difference between a
                 simplification and a bug.
               </p>
               <p>
@@ -374,21 +374,21 @@
                 It also suits a codebase maintained by one person, where there is no review conversation to
                 carry the context instead. On a team, some of what I write in comments would live in a pull
                 request discussion, and a fair objection is that a long comment can be a substitute for
-                clearer code. I do not think the two compete as often as that objection implies &mdash; you
+                clearer code. I do not think the two compete as often as that objection implies - you
                 cannot express &ldquo;this measured 1.64:1&rdquo; or &ldquo;a JPEG pointed at its own
-                directory&rdquo; in a better variable name &mdash; but the objection is right that the first
+                directory&rdquo; in a better variable name - but the objection is right that the first
                 move should always be to make the code say it.
               </p>
               <p>
                 And these still rot. A reason can be superseded; a measurement can be taken on hardware
                 nobody uses any more. The claim is only that they rot more slowly, and that when one does go
-                stale it tends to fail visibly &mdash; a story that no longer matches the code reads as
+                stale it tends to fail visibly - a story that no longer matches the code reads as
                 strange, where a restated mechanism just reads as wrong and nobody notices.
               </p>
               <p>
                 The compressed version, if you want one rule: <strong>write the comment where the mistake
                 would be made, and put the failure in it.</strong> Not in a wiki, not in a commit message
-                nobody will run <code>blame</code> to find &mdash; on the line somebody is about to change.
+                nobody will run <code>blame</code> to find - on the line somebody is about to change.
               </p>
               </div>
             </div>
@@ -410,7 +410,7 @@
             <ul>
               <li><a href="/blog/what-build-gate-failures-taught-me-about-ci">What build-gate failures taught me about CI</a></li>
               <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
-              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website - and the mechanism that made it hold</a></li>
               <li><a href="/blog/what-66-games-taught-me-about-software">What sixty-six tiny games taught me about serious software</a></li>
             </ul>
           </nav>

@@ -798,7 +798,7 @@
           if (!out.ok) { setResult('bad', '<span class="sqli-badge">SQL error.</span> ' + esc(out.error)); return; }
           var rows = out.res.rows;
           if (!rows.length) {
-            setResult('bad', '<span class="sqli-badge">Login failed.</span> No row matched &mdash; the query returned nothing.');
+            setResult('bad', '<span class="sqli-badge">Login failed.</span> No row matched - the query returned nothing.');
             return;
           }
           /* The app logs in as the first row it gets back. */
@@ -807,7 +807,7 @@
             setResult('ok', '<span class="sqli-badge">Access granted.</span> Logged in as <b>admin</b> without the password. The quote broke out of the string and <code>--</code> deleted the password check.');
             solveRoom();
           } else {
-            setResult('bad', '<span class="sqli-badge">Logged in as ' + esc(String(rows[0][1])) + ' (not admin).</span> The bypass works &mdash; now make the <em>first</em> row the admin one.');
+            setResult('bad', '<span class="sqli-badge">Logged in as ' + esc(String(rows[0][1])) + ' (not admin).</span> The bypass works - now make the <em>first</em> row the admin one.');
           }
         }
         userEl.addEventListener('input', repaint);
@@ -861,7 +861,7 @@
           }
           setResult(loot ? 'ok' : 'info',
             (loot
-              ? '<span class="sqli-badge">Extracted.</span> A row from <code>vault</code> is sitting in the product results &mdash; the yellow cell was never a product.'
+              ? '<span class="sqli-badge">Extracted.</span> A row from <code>vault</code> is sitting in the product results - the yellow cell was never a product.'
               : '<span class="sqli-badge">' + res.rows.length + ' row' + (res.rows.length === 1 ? '' : 's') + '.</span> These are just products. Union another table in.') +
             renderTable(res));
           if (loot) solveRoom();
@@ -1049,7 +1049,7 @@
             if (confirmed === secret) {
               setHint('');
               setResult('ok', '<span class="sqli-badge">Recovered:</span> <code>' + esc(secret) +
-                '</code> &mdash; extracted through a channel that never printed it.');
+                '</code> - extracted through a channel that never printed it.');
               solveRoom();
               return;
             }
@@ -1057,7 +1057,7 @@
           } else if (op === '=') {
             setHint('Not that character. Narrow it down with < and > first.');
           } else {
-            setHint('Good &mdash; now you know which half. Confirm the exact character with =.');
+            setHint('Good - now you know which half. Confirm the exact character with =.');
           }
           repaint();
           focusSoon(chEl);
@@ -1090,7 +1090,7 @@
             code: "db.query('SELECT id, user, role FROM users WHERE user = ? AND pass = ?', [user, pass])",
             binds: [{ ph: '?1 (user)', v: "admin' --" }, { ph: '?2 (pass)', v: 'anything' }],
             why: 'The driver sends the query text and the two values on separate channels. The <b>\'</b> and the ' +
-              '<b>--</b> arrive as ordinary characters to look for in the <code>user</code> column, not as SQL &mdash; ' +
+              '<b>--</b> arrive as ordinary characters to look for in the <code>user</code> column, not as SQL - ' +
               'so no row has that literal username, and the login fails as it should.'
           }
         },
@@ -1101,19 +1101,19 @@
             'first (try <code>\' ORDER BY 4 --</code>), then match the types.',
           hint: 'There are three columns and the middle one is text. Pad the numeric columns with NULL: ' +
             '<code>\' UNION SELECT NULL, secret, NULL FROM vault --</code>. Put text in a numeric slot and it errors ' +
-            'on purpose &mdash; that is the type check.',
+            'on purpose - that is the type check.',
           mount: mountUnion,
           fix: {
             code: "db.query('SELECT id, name, price FROM products WHERE name LIKE ?', ['%' + term + '%'])",
             binds: [{ ph: '?1 (term)', v: "' UNION SELECT NULL, secret, NULL FROM vault --" }],
             why: 'The whole payload becomes the search term, wrapped in the <code>%</code> signs and bound as one ' +
               'string. <code>UNION</code>, <code>SELECT</code> and the rest are matched literally against product ' +
-              'names &mdash; nothing matches, and the parser never sees a second query.'
+              'names - nothing matches, and the parser never sees a second query.'
           }
         },
         {
           num: '3', title: 'Blind boolean',
-          goal: 'A password-reset page says only <b>Account found</b> or <b>No account</b> &mdash; no data at all. ' +
+          goal: 'A password-reset page says only <b>Account found</b> or <b>No account</b> - no data at all. ' +
             'The admin\'s 6-character token is in <code>users.token</code>. Pull it out one character at a time. ' +
             'The scaffolding is written for you; you choose the comparison and the character.',
           hint: 'Use <code>&gt;</code> and <code>&lt;</code> to binary-search each position (halve the alphabet each ' +
@@ -1123,13 +1123,13 @@
             code: "db.query('SELECT id FROM users WHERE email = ?', [email])",
             binds: [{ ph: '?1 (email)', v: "x' OR SUBSTRING(token,1,1)='7' --" }],
             why: 'The entire payload is one bound value compared against <code>email</code>. The <code>OR</code> and ' +
-              'the <code>SUBSTRING</code> are never executed &mdash; they are just text no email equals &mdash; so the ' +
+              'the <code>SUBSTRING</code> are never executed - they are just text no email equals - so the ' +
               'found / not-found bit stops depending on the secret, and there is nothing left to read one character at a time.'
           }
         },
         {
           num: '4', title: 'Time-based blind',
-          goal: 'Same idea, but the page gives back nothing at all &mdash; not even found or not-found. The only ' +
+          goal: 'Same idea, but the page gives back nothing at all - not even found or not-found. The only ' +
             'signal is how long the response takes. Extract the 4-character reset code from <code>pins.code</code> by ' +
             'making the database pause when your guess is right. The delay is simulated in this tab.',
           hint: 'Wrap the comparison so a match runs <code>SLEEP</code>: the stepper builds ' +
@@ -1150,7 +1150,7 @@
               'A blocklist of keywords loses too: <code>UNION</code>, <code>SELECT</code> and <code>OR</code> appear in ' +
                 'ordinary data, comments and case-tricks slip past filters, and the list is a promise to enumerate every ' +
                 'attack, forever. Parameterising needs no list.',
-              'Stored procedures are not automatically safe &mdash; one that builds a string with <code>EXEC(@sql)</code> ' +
+              'Stored procedures are not automatically safe - one that builds a string with <code>EXEC(@sql)</code> ' +
                 'inside it is just as injectable. They are safe only when they, too, use bound parameters.',
               'An ORM is safe only where it parameterises. Its query builder does; its raw-SQL and string-interpolation ' +
                 'escape hatches do not, and those are where the same bug comes straight back.'
@@ -1178,7 +1178,7 @@
         var last = roomIndex === ROOMS.length - 1;
         html += '<div class="sqli-row" style="margin-top:.7rem">' +
           '<button class="game-btn sqli-primary" type="button" id="sqli-next">' +
-          (last ? 'Finish &mdash; you are out' : 'Next room &rarr;') + '</button></div>';
+          (last ? 'Finish - you are out' : 'Next room &rarr;') + '</button></div>';
         fixEl.innerHTML = html;
         fixEl.hidden = false;
 
@@ -1239,7 +1239,7 @@
         clearResult();
         helpEl.hidden = true;
         var room = ROOMS[i];
-        briefTitleEl.textContent = 'Room ' + room.num + ' — ' + room.title;
+        briefTitleEl.textContent = 'Room ' + room.num + ' - ' + room.title;
         briefGoalEl.innerHTML = room.goal;
         paintRooms();
         room.mount();
@@ -1259,7 +1259,7 @@
           'comparisons, <code>LIKE</code>, <code>UNION SELECT</code>, <code>ORDER BY</code>, <code>LIMIT</code>, ' +
           'scalar subqueries, the comment forms <code>--</code> and <code>/* */</code>, and the functions ' +
           '<code>SUBSTRING</code>, <code>LENGTH</code>, <code>ASCII</code>, <code>UPPER</code>, <code>LOWER</code> and ' +
-          '<code>SLEEP</code>. It is a teaching toy, not a full SQL engine &mdash; there are no writes, no joins and ' +
+          '<code>SLEEP</code>. It is a teaching toy, not a full SQL engine - there are no writes, no joins and ' +
           'no real database anywhere near it.</p>';
       }
 

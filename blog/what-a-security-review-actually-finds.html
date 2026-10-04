@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/what-a-security-review-actually-finds" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="What a Security Review Actually Finds" />
     <meta
@@ -87,7 +87,7 @@
             "name": "Is a security review the same as a penetration test?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. A review is a structured read of the system with full access — code, configuration, cloud, and the people who built it — and its output is breadth: the list of ways the system can be made to misbehave, ranked. A penetration test is a bounded attack simulation, usually with much less information, and its output is depth: proof that a specific path is exploitable, with evidence attached. Reviews find more per rupee on a system nobody has looked at before. Penetration tests are what a customer's contract usually means when it asks for one. They answer different questions, and the industry uses both words loosely, so agree the deliverable rather than the noun."
+              "text": "No. A review is a structured read of the system with full access - code, configuration, cloud, and the people who built it - and its output is breadth: the list of ways the system can be made to misbehave, ranked. A penetration test is a bounded attack simulation, usually with much less information, and its output is depth: proof that a specific path is exploitable, with evidence attached. Reviews find more per rupee on a system nobody has looked at before. Penetration tests are what a customer's contract usually means when it asks for one. They answer different questions, and the industry uses both words loosely, so agree the deliverable rather than the noun."
             }
           },
           {
@@ -95,7 +95,7 @@
             "name": "How long does a review take?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "For a small SaaS product or an internal tool, usually one to two weeks of calendar time for a few days of actual work, plus a re-test later once the fixes land. The variable is not the size of the codebase — it is how many separate authorisation models are in it. One product with one permission model reads quickly. The same product after three years of bolted-on roles, an admin panel, a partner API and a mobile client is four systems, and each one has to be walked separately."
+              "text": "For a small SaaS product or an internal tool, usually one to two weeks of calendar time for a few days of actual work, plus a re-test later once the fixes land. The variable is not the size of the codebase - it is how many separate authorisation models are in it. One product with one permission model reads quickly. The same product after three years of bolted-on roles, an admin panel, a partner API and a mobile client is four systems, and each one has to be walked separately."
             }
           },
           {
@@ -103,7 +103,7 @@
             "name": "Will the review break anything?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "It should not, because most of the work is reading rather than sending traffic, and what testing there is happens against a non-production environment by default. Where something has to be tried against production — because staging does not reproduce it — that gets agreed in writing first, scheduled, and done with someone from your side on a call. The honest caveat is that rate-limit testing is the one activity that can visibly load a system, so it is always scheduled rather than sprung."
+              "text": "It should not, because most of the work is reading rather than sending traffic, and what testing there is happens against a non-production environment by default. Where something has to be tried against production - because staging does not reproduce it - that gets agreed in writing first, scheduled, and done with someone from your side on a call. The honest caveat is that rate-limit testing is the one activity that can visibly load a system, so it is always scheduled rather than sprung."
             }
           },
           {
@@ -119,7 +119,7 @@
             "name": "What if you find nothing serious?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Then you get a short report saying so, the architecture notes, and the same fee, because you paid for the looking rather than for the finding. It is uncommon on a system nobody has reviewed before, and it is not the same as a guarantee — it means the checks I ran on the code I was given, in the time I was given, did not surface a serious issue. If I ever return nothing and cannot tell you specifically what I looked at and what I could not reach, you should not accept the report."
+              "text": "Then you get a short report saying so, the architecture notes, and the same fee, because you paid for the looking rather than for the finding. It is uncommon on a system nobody has reviewed before, and it is not the same as a guarantee - it means the checks I ran on the code I was given, in the time I was given, did not surface a serious issue. If I ever return nothing and cannot tell you specifically what I looked at and what I could not reach, you should not accept the report."
             }
           },
           {
@@ -262,7 +262,7 @@
                 guessing. An outsider probing a login form from the internet has to infer what the code does; a
                 reviewer with the repository open can see the handler that forgot a check, and can see it in ten
                 minutes rather than two days. The trade-off is that a reviewer with full access is not proving the
-                attacker's path — that is a different exercise, and it is the next section.
+                attacker's path - that is a different exercise, and it is the next section.
               </p>
               <p>
                 A review is also not a scan. Automated tooling is one input among several, and on the systems I
@@ -291,7 +291,7 @@
                   will not satisfy that clause.
                 </li>
                 <li>
-                  <strong>A red team</strong> is goal-based adversary emulation — get to this data, by any route,
+                  <strong>A red team</strong> is goal-based adversary emulation - get to this data, by any route,
                   without being caught. It tests your detection and response as much as your software, which is
                   why it is wasted money until you have detection and response to test. If nobody is watching the
                   logs, a red team will simply tell you that nobody is watching the logs, which a five-minute
@@ -306,14 +306,14 @@
                 other direction is rarer but worse: buying a review when the contract you are trying to close
                 specifically names a third-party test report. Read the clause before you buy. That is the same
                 discipline as
-                <a href="/blog/scoping-work-before-you-quote-it">scoping the work before you quote it</a> — agree
+                <a href="/blog/scoping-work-before-you-quote-it">scoping the work before you quote it</a> - agree
                 what the deliverable is, in writing, and the noun stops mattering.
               </p>
 
               <h2 id="the-eight-things-that-keep-coming-back">The eight things that keep coming back</h2>
               <p>
                 What follows is ordered by a rough product of two things: how often it appears, and how badly it
-                ends when it is exploited. It is not a checklist I work through — it is what the work keeps
+                ends when it is exploited. It is not a checklist I work through - it is what the work keeps
                 returning. Every one of these has a reason behind it, and the reason is almost never that somebody
                 was careless. It is usually a decision that was correct when it was made and stopped being correct
                 when the product grew past the conditions that made it correct.
@@ -327,8 +327,8 @@
               <h2 id="broken-object-level-authorisation">1. Broken object-level authorisation</h2>
               <p>
                 The single most common serious finding, by a distance. There is an identifier somewhere the caller
-                controls — <code>/api/invoices/1042</code>, a <code>?account=88</code> in a query string, a
-                document id in a JSON body — and the handler checks that you are logged in but never checks that
+                controls - <code>/api/invoices/1042</code>, a <code>?account=88</code> in a query string, a
+                document id in a JSON body - and the handler checks that you are logged in but never checks that
                 the thing you asked for is yours.
               </p>
               <p>
@@ -349,7 +349,7 @@
                 <strong>Why it ends badly.</strong> There is no exploit to write, no tooling to buy and no skill
                 barrier. A curious customer finds it by changing a number in the address bar. And because it is a
                 data-access flaw rather than a code-execution flaw, one loop over a range of integers is the
-                entire breach — which converts an engineering ticket into a notification obligation and a
+                entire breach - which converts an engineering ticket into a notification obligation and a
                 regulator's question, the territory covered in
                 <a href="/blog/security-compliance-explained">security compliance, explained</a>.
               </p>
@@ -358,7 +358,7 @@
                 <a href="/assets/images/blog/what-a-security-review-actually-finds-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/what-a-security-review-actually-finds-diagram1.svg" alt="Two request paths compared: a broken path that authenticates the caller then loads invoice 1042 by id alone and returns it, with the ownership check missing between the two steps, and a fixed path where the query is scoped by id and owner together so the response is an ordinary 404" width="1160" height="620" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>Authentication answers who is calling. Authorisation answers what this caller may have — and it is the second one that keeps going missing. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>Authentication answers who is calling. Authorisation answers what this caller may have - and it is the second one that keeps going missing. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
@@ -377,7 +377,7 @@
               </p>
               <p>
                 <strong>Why it happens.</strong> Rate limiting is infrastructure, and the authentication flow is
-                usually the first thing anyone builds — before there was infrastructure to put it behind. It then
+                usually the first thing anyone builds - before there was infrastructure to put it behind. It then
                 ships behind a load balancer or a CDN that probably does something, and nobody ever confirms what,
                 because confirming it looks like attacking your own service and feels like something you need
                 permission for.
@@ -386,7 +386,7 @@
                 <strong>What it costs.</strong> Three separate things, only one of which is the obvious one.
                 Credential stuffing replays somebody else's breach against your login at machine speed. A
                 six-digit code with no attempt cap is a space of one million guesses, and a million requests over
-                an unthrottled endpoint is minutes, not years — the length of the code was never the control, the
+                an unthrottled endpoint is minutes, not years - the length of the code was never the control, the
                 attempt limit was. And the one that is not a security incident at all: an unlimited password-reset
                 endpoint is a free email cannon pointed at anyone, which is how a young company gets its sending
                 domain blocked for a fortnight.
@@ -395,8 +395,8 @@
                 <strong>The fix.</strong> Limits keyed on the account as well as the source address, so rotating
                 proxies does not defeat them. An attempt counter bound to the code itself, which invalidates the
                 code rather than merely slowing the caller. Exponential backoff instead of a hard lockout, so the
-                control does not become a way to lock legitimate users out on purpose. That trade-off — protecting
-                a system without becoming your own denial of service — is the same one I spent a research project
+                control does not become a way to lock legitimate users out on purpose. That trade-off - protecting
+                a system without becoming your own denial of service - is the same one I spent a research project
                 on, and it applies to every limiter you will ever design.
               </p>
 
@@ -407,12 +407,12 @@
               </p>
               <p>
                 <strong>Why it happens.</strong> The first deploy needed a key and there was no secret store yet,
-                so it went in a file. Later a secret store arrived and the application was migrated to it — but
+                so it went in a file. Later a secret store arrived and the application was migrated to it - but
                 the old value was never rotated, so the key in the history is still a working key. And the two
                 mechanics that surprise people are both about how build systems store things. Deleting a secret in
                 a later commit does not remove it: git keeps every version of every file as a content-addressed
                 object, and anyone with the repository can still read the old blob. You can watch that happen in
-                <a href="/labs/git-objects">the git objects lab</a>. The same is true of container images —
+                <a href="/labs/git-objects">the git objects lab</a>. The same is true of container images -
                 <code>COPY .env</code> in one instruction and <code>RUN rm .env</code> in the next leaves the file
                 sitting in the earlier layer, and the layer ships. <a href="/labs/docker-layers">The Docker layers
                 lab</a> takes an image apart so you can see it.
@@ -423,7 +423,7 @@
                 account, which is why these two are so dangerous together and so unremarkable apart.
               </p>
               <p>
-                <strong>The fix, in this order.</strong> Rotate first — it is the only step that changes anything
+                <strong>The fix, in this order.</strong> Rotate first - it is the only step that changes anything
                 today. Then scrub, accepting that scrubbing history on a repository with forks is best-effort.
                 Then prevent: a pre-commit scanner and your host's push protection, so the next one is caught at
                 the door rather than at the review.
@@ -451,11 +451,11 @@
                 list.
               </p>
               <p>
-                <strong>The fix.</strong> Do not guess at a narrower policy — read the access records. Every major
+                <strong>The fix.</strong> Do not guess at a narrower policy - read the access records. Every major
                 cloud will tell you which permissions a principal actually used over the last ninety days. Narrow
                 to that plus a written exception for the things that run quarterly, then check again in a month.
                 It is unglamorous, it is mostly reading, and the reading is the single highest-leverage afternoon
-                in most cloud accounts — the rollout afterwards, done safely across a live account, is longer than
+                in most cloud accounts - the rollout afterwards, done safely across a live account, is longer than
                 that, which is why the plan below has it waiting behind a stopgap rather than shipping this week.
               </p>
 
@@ -463,7 +463,7 @@
               <p>
                 An environment that was going to be temporary. It usually has no multi-factor authentication, a
                 password shared in a chat thread, a build from months ago with the vulnerabilities that have since
-                been patched in production, no logging anybody reads — and a copy of the production database,
+                been patched in production, no logging anybody reads - and a copy of the production database,
                 because realistic data was needed to test something.
               </p>
               <p>
@@ -483,7 +483,7 @@
               </p>
               <p>
                 <strong>The fix, in a deliberate order.</strong> Find every environment first. Put each one behind
-                authentication and off the public internet second — that is an afternoon. Argue about data masking
+                authentication and off the public internet second - that is an afternoon. Argue about data masking
                 third, because it is a project, and a project is not a reason to leave the door open for the
                 quarter it takes.
               </p>
@@ -491,7 +491,7 @@
               <div class="post-callout" role="note">
                 <p>
                   <strong>The pattern under all five so far.</strong> None of these are ignorance. Each is a
-                  decision that was correct under conditions that later changed — one tenant, no infrastructure,
+                  decision that was correct under conditions that later changed - one tenant, no infrastructure,
                   no secret store, an outage, a deadline. Security debt behaves exactly like technical debt: it
                   accrues from reasonable choices and it is repaid deliberately or not at all. A reviewer's real
                   job is to find where the conditions moved and the code did not.
@@ -509,7 +509,7 @@
                 <strong>Why it happens.</strong> The lockfile was pinned to make builds reproducible, which was
                 right. Then the upgrade was deferred because a release was close, which was also right. Repeat
                 that four times and a minor version behind has become a major version behind, and the upgrade now
-                requires a code change, so it gets deferred again — this time for a reason that is real.
+                requires a code change, so it gets deferred again - this time for a reason that is real.
               </p>
               <p>
                 <strong>What it costs.</strong> Occasionally it is the way in. More often it is the reason a fix
@@ -533,7 +533,7 @@
               <p>
                 <strong>Why it happens.</strong> Verbose errors were correct in development, where they are the
                 fastest debugging tool available. The production configuration inherited from the development one,
-                or the flag was flipped during an incident to see what was happening and never flipped back —
+                or the flag was flipped during an incident to see what was happening and never flipped back -
                 which is the same shape as the cloud role above, and for the same human reason.
               </p>
               <p>
@@ -556,7 +556,7 @@
                 working until it expires next year.
               </p>
               <p>
-                <strong>Why it happens.</strong> Stateless sessions were chosen for good reasons — they scale,
+                <strong>Why it happens.</strong> Stateless sessions were chosen for good reasons - they scale,
                 they remove a database round trip on every request, and they make horizontal scaling simple. The
                 trade-off is that you gave up the ability to take one back. That trade-off is usually made
                 correctly and recorded nowhere, so the person who later asks "can we log everyone out?" is told
@@ -574,7 +574,7 @@
                 <strong>The fix.</strong> Short-lived access tokens with a refresh token you can actually revoke.
                 Invalidate every session on password change, on role change and on offboarding. And make "log out
                 everywhere, now" an action an administrator can take at three in the morning without waiting for a
-                deploy — that button is worth more than most of the controls people ask about first.
+                deploy - that button is worth more than most of the controls people ask about first.
               </p>
 
               <h2 id="how-findings-get-ranked">How findings get ranked</h2>
@@ -590,9 +590,9 @@
                 different urgency. So the score is one input to three questions:
               </p>
               <ol>
-                <li><strong>Is it reachable from where an attacker actually stands</strong> — anonymously, as any signed-up user, or only as an administrator who is already inside?</li>
-                <li><strong>What does it get them from there</strong> — one record, every record, or the ability to run code and reach the next thing?</li>
-                <li><strong>What does the fix cost</strong> — an afternoon, a sprint, or a migration?</li>
+                <li><strong>Is it reachable from where an attacker actually stands</strong> - anonymously, as any signed-up user, or only as an administrator who is already inside?</li>
+                <li><strong>What does it get them from there</strong> - one record, every record, or the ability to run code and reach the next thing?</li>
+                <li><strong>What does the fix cost</strong> - an afternoon, a sprint, or a migration?</li>
               </ol>
 
               <figure class="post-figure post-figure-wide">
@@ -605,8 +605,8 @@
               <p>
                 The output of that is a plan rather than a ranking: fix the cheap and reachable things this week,
                 schedule the expensive and reachable ones with a stopgap running in the meantime, batch the cheap
-                and unreachable ones into the next sprint, and write down — in a sentence, with a name against it
-                — the ones you are choosing to accept. That last category is not a failure. An accepted risk that
+                and unreachable ones into the next sprint, and write down - in a sentence, with a name against it
+                - the ones you are choosing to accept. That last category is not a failure. An accepted risk that
                 somebody decided is safer than a high-severity finding nobody read.
               </p>
 
@@ -627,7 +627,7 @@
               </p>
               <ul>
                 <li>
-                  <strong>A findings list.</strong> Each entry says where it is — file, endpoint, resource — how I
+                  <strong>A findings list.</strong> Each entry says where it is - file, endpoint, resource - how I
                   confirmed it, what an attacker gets from it, and the smallest change that closes it. If I could
                   not confirm something and am reporting a suspicion, it says that too, in those words.
                 </li>
@@ -637,7 +637,7 @@
                 </li>
                 <li>
                   <strong>An architecture note.</strong> The handful of things that are not findings today but
-                  will generate findings later — the second permission model nobody has reconciled with the first,
+                  will generate findings later - the second permission model nobody has reconciled with the first,
                   the queue that trusts its own messages, the service that has to be an administrator because of
                   one call.
                 </li>
@@ -680,7 +680,7 @@
                 <li>
                   <strong>An hour with someone who can answer "why is it like this".</strong> This is the single
                   most valuable input, and the most often skipped. Nearly every finding has a history, and the
-                  history changes the fix — a permission that exists for one nightly job is a different problem
+                  history changes the fix - a permission that exists for one nightly job is a different problem
                   from a permission nobody remembers granting.
                 </li>
                 <li>
@@ -690,7 +690,7 @@
                 </li>
                 <li>
                   <strong>Somebody who can accept a risk.</strong> Not every finding gets fixed, and that is fine
-                  — but a finding nobody has the authority to decide about stays open forever and quietly rots the
+                  - but a finding nobody has the authority to decide about stays open forever and quietly rots the
                   credibility of the whole list.
                 </li>
               </ul>
@@ -717,7 +717,7 @@
                 </li>
                 <li>
                   <strong>I read what I was given.</strong> An environment nobody mentioned, a repository nobody
-                  listed, a vendor integration described as "just a webhook" — I look for these, and I still only
+                  listed, a vendor integration described as "just a webhook" - I look for these, and I still only
                   find the ones that leave traces.
                 </li>
                 <li>
@@ -736,7 +736,7 @@
               </blockquote>
               <p>
                 That second half is the part people underrate. Most teams I meet are not carrying an unknown risk
-                so much as an undiscussed one — everybody suspects the staging box is a problem, nobody has said
+                so much as an undiscussed one - everybody suspects the staging box is a problem, nobody has said
                 it in a room where a decision could be made. A review is, among other things, a device for making
                 that conversation happen with a document in front of it. It is cheaper to be told than to be
                 shown.
@@ -747,8 +747,8 @@
                 <details>
                   <summary>Is a security review the same as a penetration test?</summary>
                   <p>
-                    No. A review is a structured read of the system with full access — code, configuration,
-                    cloud, and the people who built it — and its output is breadth: the list of ways the system
+                    No. A review is a structured read of the system with full access - code, configuration,
+                    cloud, and the people who built it - and its output is breadth: the list of ways the system
                     can be made to misbehave, ranked. A penetration test is a bounded attack simulation, usually
                     with much less information, and its output is depth: proof that a specific path is
                     exploitable, with evidence attached. Reviews find more per rupee on a system nobody has looked
@@ -762,7 +762,7 @@
                   <p>
                     For a small SaaS product or an internal tool, usually one to two weeks of calendar time for a
                     few days of actual work, plus a re-test later once the fixes land. The variable is not the
-                    size of the codebase — it is how many separate authorisation models are in it. One product
+                    size of the codebase - it is how many separate authorisation models are in it. One product
                     with one permission model reads quickly. The same product after three years of bolted-on
                     roles, an admin panel, a partner API and a mobile client is four systems, and each one has to
                     be walked separately.
@@ -773,7 +773,7 @@
                   <p>
                     It should not, because most of the work is reading rather than sending traffic, and what
                     testing there is happens against a non-production environment by default. Where something has
-                    to be tried against production — because staging does not reproduce it — that gets agreed in
+                    to be tried against production - because staging does not reproduce it - that gets agreed in
                     writing first, scheduled, and done with someone from your side on a call. The honest caveat is
                     that rate-limit testing is the one activity that can visibly load a system, so it is always
                     scheduled rather than sprung.
@@ -795,7 +795,7 @@
                   <p>
                     Then you get a short report saying so, the architecture notes, and the same fee, because you
                     paid for the looking rather than for the finding. It is uncommon on a system nobody has
-                    reviewed before, and it is not the same as a guarantee — it means the checks I ran on the code
+                    reviewed before, and it is not the same as a guarantee - it means the checks I ran on the code
                     I was given, in the time I was given, did not surface a serious issue. If I ever return
                     nothing and cannot tell you specifically what I looked at and what I could not reach, you
                     should not accept the report.
@@ -826,7 +826,7 @@
               <p>
                 The eight findings above are not a secret, and publishing them costs me nothing, because knowing
                 the list is not the same as having walked your own system against it. If you read this and
-                recognised three of them, that recognition is already worth more than most reports — and the next
+                recognised three of them, that recognition is already worth more than most reports - and the next
                 step is either an afternoon with your own code and two test accounts, or a conversation.
               </p>
             </div>
@@ -858,7 +858,7 @@
             <h2>Want the list walked against your own system?</h2>
             <p>
               I review small SaaS products and internal tools, and the first conversation is about whether you
-              need one at all — often the honest answer is not yet, or not this. If it is yes, you get the
+              need one at all - often the honest answer is not yet, or not this. If it is yes, you get the
               findings, the ordered plan, the re-test, and an hour with your engineers to make sure it turns into
               merged changes rather than a filed document.
             </p>

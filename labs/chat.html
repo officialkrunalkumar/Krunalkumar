@@ -12,10 +12,10 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/chat" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Peer-to-Peer Chat — Why a Browser Cannot Listen on a Port" />
+    <meta property="og:title" content="Peer-to-Peer Chat - Why a Browser Cannot Listen on a Port" />
     <meta
       property="og:description"
-      content="Two browsers, one direct WebRTC connection, no server relaying anything — and the reason netcat's listening half has no browser equivalent."
+      content="Two browsers, one direct WebRTC connection, no server relaying anything - and the reason netcat's listening half has no browser equivalent."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/chat" />
@@ -25,13 +25,13 @@
     <meta property="og:image:alt" content="Peer-to-Peer Chat" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Peer-to-Peer Chat — Why a Browser Cannot Listen on a Port" />
+    <meta name="twitter:title" content="Peer-to-Peer Chat - Why a Browser Cannot Listen on a Port" />
     <meta
       name="twitter:description"
       content="Two browsers, one direct WebRTC connection, no server relaying anything."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-chat.jpg" />
-    <title>Peer-to-Peer Chat — Browser WebRTC vs netcat</title>
+    <title>Peer-to-Peer Chat - Browser WebRTC vs netcat</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -82,7 +82,7 @@
                         "name": "Do my messages go through your server?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. There is no server here to go through — the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent."
+                                "text": "No. There is no server here to go through - the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent."
                         }
                 },
                 {
@@ -184,7 +184,7 @@
           </ol>
         </nav>
         <h1>Peer-to-peer chat, and why a browser cannot listen on a port</h1>
-        <p class="hero-text">Two browsers, one direct connection, nothing in between. This is as close as the web gets to <code>netcat</code> — and the ways it cannot get closer are the interesting part.</p>
+        <p class="hero-text">Two browsers, one direct connection, nothing in between. This is as close as the web gets to <code>netcat</code> - and the ways it cannot get closer are the interesting part.</p>
         <ul class="lab-facts">
           <li>Direct browser-to-browser over WebRTC</li>
           <li>No server relays your messages</li>
@@ -198,7 +198,7 @@
            This one obviously does, so it says so before anything else. -->
       <div class="chat-warn" role="note">
         <strong>This lab uses the network.</strong> Most of the tools in Labs never open a network
-        connection — that is their whole point. This one has to: it connects your browser directly
+        connection - that is their whole point. This one has to: it connects your browser directly
         to someone else's, which no other lab here does. Your messages are not stored anywhere and
         do not pass through this site, but they do leave your machine, and the person on the other
         end can read them. Treat it as a demonstration, not as a private messenger.
@@ -258,7 +258,7 @@
           <ol class="chat-steps">
             <li>
               <h3>1. Send them this code</h3>
-              <p class="chat-note">Any channel will do — chat app, email, read it out. It describes
+              <p class="chat-note">Any channel will do - chat app, email, read it out. It describes
                 how to reach you, so it is long. A short code would need a lookup server, and there
                 is no server behind this site.</p>
               <label class="sr-only" for="chat-offer-out">Your channel code, to send to the other person</label>
@@ -269,7 +269,7 @@
                         data-copy-target="chat-offer-out">Copy code</button>
               </div>
               <p class="chat-note">Send this to the other person however you already
-                talk to them &mdash; a chat app, an email, a note. It is long, but
+                talk to them - a chat app, an email, a note. It is long, but
                 nothing has to be typed: copy it and paste it.</p>
             </li>
             <li>
@@ -281,7 +281,7 @@
             </li>
             <li>
               <h3>3. Want more people?</h3>
-              <p class="chat-note">Everyone connects to you, and you pass their messages on —
+              <p class="chat-note">Everyone connects to you, and you pass their messages on -
                 one listener, several clients. Each extra person is one more code exchange with
                 you, not with each other.</p>
               <button class="btn btn-secondary" id="chat-invite" type="button" hidden>Invite someone else</button>
@@ -331,7 +331,7 @@
             <button class="btn btn-secondary" id="chat-voice" type="button" disabled>Voice</button>
             <button class="btn btn-secondary" id="chat-video" type="button" disabled>Video</button>
             <button class="btn btn-secondary" id="chat-av-stop" type="button" hidden>Stop camera</button>
-            <span class="chat-note chat-av-note">One-to-one only &mdash; relaying video needs a media server.</span>
+            <span class="chat-note chat-av-note">One-to-one only - relaying video needs a media server.</span>
           </div>
           <div class="chat-av" id="chat-av" hidden>
             <figure class="chat-av-cell">
@@ -362,7 +362,7 @@
         <p>
           <code>netcat</code> has two halves. One side listens on a port and waits;
           the other dials that address and port. A browser can only ever do the second.
-          There is no JavaScript API that binds a socket and accepts an incoming connection —
+          There is no JavaScript API that binds a socket and accepts an incoming connection -
           not a slow one, not a restricted one, none at all.
         </p>
         <p>
@@ -373,7 +373,7 @@
         </p>
         <h2>So how do these two find each other?</h2>
         <p>
-          They cannot, unaided — which is why this lab asks you to carry the first message
+          They cannot, unaided - which is why this lab asks you to carry the first message
           yourself. Each side writes a description of how it can be reached, and the two of you
           pass those descriptions between you over some channel you already share. After that the
           browsers talk directly, and nothing else is involved.
@@ -408,7 +408,7 @@
         </table>
         <h2>What STUN is doing</h2>
         <p>
-          On the same wifi this works with nothing outside this page at all — both machines can see
+          On the same wifi this works with nothing outside this page at all - both machines can see
           each other's local addresses. Across the internet each one is behind a router and does not
           know its own public address, so it asks a STUN server one question: <em>what address do you
           see me coming from?</em> That answer goes into the code you paste. No message ever travels
@@ -416,7 +416,7 @@
         </p>
         <p>
           Some networks defeat this entirely. If both sides are behind strict NAT, no pair of
-          addresses works and the only fix is a TURN server that forwards traffic for you — which
+          addresses works and the only fix is a TURN server that forwards traffic for you - which
           costs real money to run, so this lab does not have one. When it happens the page says so
           instead of spinning. Trying it on a different network, or both on the same wifi, usually
           works.
@@ -429,7 +429,7 @@
         </div>
           <details class="lab-faq">
             <summary>Do my messages go through your server?</summary>
-            <div>No. There is no server here to go through — the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent.</div>
+            <div>No. There is no server here to go through - the two browsers hold the connection directly, and no message is written anywhere. The only outside contact the chat itself makes is to a STUN server, which answers what public address you appear to come from and never sees a message. The page also loads analytics, like every page on this site: it records that a connection happened and whether a call was voice or video, never anything you sent.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is the code so long?</summary>

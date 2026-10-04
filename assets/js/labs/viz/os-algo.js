@@ -647,7 +647,7 @@
     }
     if (!lteVec(request, state.avail)) {
       return { granted: false, reason: 'Not enough resources are available right now, so ' +
-               state.names[proc] + ' waits. Nothing is unsafe — there simply is not enough free.' };
+               state.names[proc] + ' waits. Nothing is unsafe - there simply is not enough free.' };
     }
     var alloc2 = state.alloc.map(function (row, i) {
       return i === proc ? addVec(row, request) : row.slice();
@@ -659,7 +659,7 @@
       reason: trial.safe
         ? 'Granting it leaves a safe state, so the request is granted immediately.'
         : 'Granting it would leave an unsafe state, so the request is refused and ' +
-          state.names[proc] + ' waits — even though the resources are free.'
+          state.names[proc] + ' waits - even though the resources are free.'
     };
   }
 
@@ -965,7 +965,7 @@
   SchedFamily.prototype.compute = function () {
     this.result = schedule({ procs: this.procs, quantum: this.quantum }, this.algoKey);
     this.error = this.result.complete ? null :
-      'This run hit the step limit before every process finished — try smaller bursts.';
+      'This run hit the step limit before every process finished - try smaller bursts.';
     return this.result.frames.length;
   };
 
@@ -1079,9 +1079,9 @@
     var txt = 't = ' + t + ' to ' + (t + 1) + ': ' + name + ' runs';
     if (startedNow && prev && prev.running >= 0 && prev.remaining[prev.running] > 0) {
       txt += ', taking the CPU from ' + res.rows[prev.running].name +
-             (this.algoKey === 'rr' ? ' whose quantum expired' : ' — a preemption');
+             (this.algoKey === 'rr' ? ' whose quantum expired' : ' - a preemption');
     } else if (startedNow) {
-      txt += ' — it is chosen because ' + this.pickReason();
+      txt += ' - it is chosen because ' + this.pickReason();
     }
     txt += '. ' + (left === 0 ? name + ' finishes here.' : left + ' unit' + (left === 1 ? '' : 's') + ' left.');
     if (frame.ready.length) txt += ' ' + frame.ready.length + ' process' + (frame.ready.length === 1 ? '' : 'es') + ' waiting.';
@@ -1156,7 +1156,7 @@
       onChange();
     }));
     g2.appendChild(this.framesField);
-    g2.appendChild(E('p', 'oa-hint', 'Add a frame and watch the fault count fall — except under FIFO, where it sometimes rises.'));
+    g2.appendChild(E('p', 'oa-hint', 'Add a frame and watch the fault count fall - except under FIFO, where it sometimes rises.'));
     host.appendChild(g2);
 
     var g3 = group('Load an example');
@@ -1183,7 +1183,7 @@
 
   PageFamily.prototype.compute = function () {
     var refs = this.refs();
-    this.error = refs.length ? null : 'Type a reference string — a list of page numbers.';
+    this.error = refs.length ? null : 'Type a reference string - a list of page numbers.';
     this.result = pageReplace(refs, this.frameCount, this.algoKey);
     return this.result.steps.length;
   };
@@ -1248,12 +1248,12 @@
     if (!res || !res.steps.length) return '';
     var s = res.steps[Math.min(idx, res.steps.length - 1)];
     if (s.hit) {
-      return 'Reference ' + s.page + ' is already in frame ' + s.slot + ' — a hit, and no disk read.' +
+      return 'Reference ' + s.page + ' is already in frame ' + s.slot + ' - a hit, and no disk read.' +
              (this.algoKey === 'clock' ? ' Its reference bit is set back to 1, buying it a second chance.' : '');
     }
     if (s.evicted === null) {
       return 'Reference ' + s.page + ' is not resident and frame ' + s.slot +
-             ' was still empty, so this is a compulsory fault — unavoidable on first touch.';
+             ' was still empty, so this is a compulsory fault - unavoidable on first touch.';
     }
     return 'Reference ' + s.page + ' faults. ' + this.victimReason(s) +
            ' Page ' + s.evicted + ' is evicted from frame ' + s.slot + ' and ' + s.page + ' takes its place.';
@@ -1377,7 +1377,7 @@
 
   DiskFamily.prototype.compute = function () {
     var reqs = this.reqs();
-    this.error = reqs.length ? null : 'Type a request queue — a list of cylinder numbers.';
+    this.error = reqs.length ? null : 'Type a request queue - a list of cylinder numbers.';
     this.result = diskSchedule(reqs, this.head, this.maxCyl, this.up, this.algoKey);
     return Math.max(1, this.result.segments.length);
   };
@@ -1497,9 +1497,9 @@
     var cur = Math.min(idx, res.segments.length - 1);
     var s = res.segments[cur];
     var txt = 'Seek ' + (cur + 1) + ': the head moves from ' + s.from + ' to ' + s.to +
-              ' — ' + s.dist + ' cylinder' + (s.dist === 1 ? '' : 's') + '.';
+              ' - ' + s.dist + ' cylinder' + (s.dist === 1 ? '' : 's') + '.';
     if (s.jump) txt += ' This is the return jump of a circular policy: nothing is serviced along it, which is the price of the fairer wait.';
-    else if (/^end /.test(s.label)) txt += ' SCAN runs all the way to the end of the disk before turning, even with no request there — LOOK is the same policy without this wasted travel.';
+    else if (/^end /.test(s.label)) txt += ' SCAN runs all the way to the end of the disk before turning, even with no request there - LOOK is the same policy without this wasted travel.';
     return txt;
   };
 
@@ -1637,11 +1637,11 @@
     var s = res.steps[Math.min(idx, res.steps.length - 1)];
     if (s.chosen < 0) {
       return 'P' + s.proc + ' needs ' + s.size + 'K and no free block is big enough, so it waits. ' +
-             'There may be plenty of memory left — just not in one piece. That is external fragmentation.';
+             'There may be plenty of memory left - just not in one piece. That is external fragmentation.';
     }
     var b = s.blocks[s.chosen];
     var waste = b.size - b.used;
-    var txt = 'P' + s.proc + ' (' + s.size + 'K) goes into block ' + s.chosen + ' of ' + b.size + 'K — ' + this.fitReason() + '.';
+    var txt = 'P' + s.proc + ' (' + s.size + 'K) goes into block ' + s.chosen + ' of ' + b.size + 'K - ' + this.fitReason() + '.';
     if (waste > 0) txt += ' ' + waste + 'K inside that block is now unusable by anyone else: internal fragmentation.';
     else txt += ' It fits exactly, with nothing wasted.';
     return txt;
@@ -1796,8 +1796,8 @@
       return box;
     }
 
-    this.matrixHost.appendChild(matrix('Allocation — held now', this.alloc));
-    this.matrixHost.appendChild(matrix('Maximum — could ever need', this.max));
+    this.matrixHost.appendChild(matrix('Allocation - held now', this.alloc));
+    this.matrixHost.appendChild(matrix('Maximum - could ever need', this.max));
 
     var availBox = E('div', 'oa-matrix');
     availBox.appendChild(E('p', 'oa-matrix-title', 'Available'));
@@ -1883,7 +1883,7 @@
           '] → Work = [' + s.workAfter.join(' ') + ']'));
       } else {
         card.appendChild(E('span', 'oa-bankstep-out oa-bankstep-bad',
-          'Nothing left can be satisfied — the state is unsafe.'));
+          'Nothing left can be satisfied - the state is unsafe.'));
       }
       this.stepHost.appendChild(card);
     }
@@ -1905,12 +1905,12 @@
     var s = res.steps[cur];
     if (s.chosen < 0) {
       return 'Round ' + (cur + 1) + ': every unfinished process needs more of something than Work holds, ' +
-             'so the search is stuck. The state is unsafe — not deadlocked yet, but there is no order ' +
+             'so the search is stuck. The state is unsafe - not deadlocked yet, but there is no order ' +
              'that guarantees everyone can finish.';
     }
     return 'Round ' + (cur + 1) + ': Work is [' + s.work.join(' ') + ']. ' + this.names[s.chosen] +
            ' is the first process whose Need fits inside it, so it is assumed to run, finish, and hand ' +
-           'back everything it holds — Work becomes [' + s.workAfter.join(' ') + '].';
+           'back everything it holds - Work becomes [' + s.workAfter.join(' ') + '].';
   };
 
   BankFamily.prototype.compare = function () { return null; };
@@ -2133,7 +2133,7 @@
       host.tabIndex = 0;
       host.setAttribute('role', 'group');
       host.setAttribute('aria-label',
-        fam.label + ' stage — press Space to play and pause, arrow keys to step');
+        fam.label + ' stage - press Space to play and pause, arrow keys to step');
       fam.buildStage(host);
       main.appendChild(host);
       return host;

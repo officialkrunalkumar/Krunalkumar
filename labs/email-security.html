@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/email-security" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Can someone spoof mail from this domain?" />
-    <meta property="og:description" content="Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only — nothing is probed on their servers." />
+    <meta property="og:description" content="Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only - nothing is probed on their servers." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/email-security" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-email-security.jpg" />
@@ -20,9 +20,9 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Can someone spoof mail from this domain?" />
-    <meta name="twitter:description" content="Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only — nothing is probed on their servers." />
+    <meta name="twitter:description" content="Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only - nothing is probed on their servers." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-email-security.jpg" />
-    <title>SPF, DKIM & DMARC Checker — Domain Audit | Krunalkumar Shah</title>
+    <title>SPF, DKIM & DMARC Checker - Domain Audit | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -32,7 +32,7 @@
         "applicationCategory": "SecurityApplication",
         "applicationSubCategory": "Network security tool",
         "operatingSystem": "Any modern web browser",
-        "description": "Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only — nothing is probed on their servers.",
+        "description": "Check any domain’s SPF, DKIM, DMARC, MTA-STS and BIMI records and get a graded verdict on whether it can be spoofed. Reads public DNS only - nothing is probed on their servers.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>Email security audit</h1>
-        <p class="hero-text">Whether somebody can send mail pretending to be a domain comes down to a handful of public DNS records. This reads them, explains what each one actually enforces, and grades the result &mdash; without touching the target&rsquo;s servers at all.</p>
+        <p class="hero-text">Whether somebody can send mail pretending to be a domain comes down to a handful of public DNS records. This reads them, explains what each one actually enforces, and grades the result - without touching the target&rsquo;s servers at all.</p>
         <ul class="lab-facts">
           <li>SPF parsed, including the 10-lookup limit</li>
           <li>DMARC policy and alignment</li>
@@ -217,7 +217,7 @@
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
           <p>This lookup runs entirely in your browser and needs JavaScript to do it.</p>
-          <p>It queries the vendor directly from your machine — there is no server here to do it for you.</p>
+          <p>It queries the vendor directly from your machine - there is no server here to do it for you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
             <a href="/">site</a> read perfectly well without it.</p>
@@ -245,7 +245,7 @@
               <div>
                 <p class="lab-gate-h privacy">What still holds</p>
                 <ul class="lab-gate-list">
-                  <li>No proxy &mdash; the request is not relayed through me</li>
+                  <li>No proxy - the request is not relayed through me</li>
                   <li>I never see it, log it or store it</li>
                   <li>No account, no history, no cookies sent</li>
                   <li>Every request is echoed on screen as it goes out</li>
@@ -259,7 +259,7 @@
               offline tools, and agreeing to those did not bring you through this notice.
             </p>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -299,7 +299,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>SPF says who may send</h3>
-            <p>A list of servers authorised to send for the domain, ending in a default. <code>-all</code> tells receivers to reject anything else; <code>~all</code> says accept but mark; <code>?all</code> enforces nothing. There is a hard limit of ten DNS lookups &mdash; exceed it and SPF fails to evaluate at all, which is worse than a permissive record.</p>
+            <p>A list of servers authorised to send for the domain, ending in a default. <code>-all</code> tells receivers to reject anything else; <code>~all</code> says accept but mark; <code>?all</code> enforces nothing. There is a hard limit of ten DNS lookups - exceed it and SPF fails to evaluate at all, which is worse than a permissive record.</p>
           </article>
           <article class="info-card">
             <h3>DMARC decides what happens on failure</h3>
@@ -362,7 +362,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/ct-log">
             <span class="lab-card-name">Certificate transparency</span>
-            <p class="lab-card-desc">Every logged certificate for a domain &mdash; and its subdomains.</p>
+            <p class="lab-card-desc">Every logged certificate for a domain - and its subdomains.</p>
             <span class="lab-card-engine">Uses the network</span>
           </a>
           <a class="lab-card" href="/labs/rdap">

@@ -900,7 +900,7 @@
             sndHorn();
             g.announce('Deadlock. All four quadrants are held and each car is waiting for the ' +
               'one in front of it. Mutual exclusion, hold and wait, no preemption and a circular ' +
-              'wait — all four conditions at once. Clear the jam, or deny hold-and-wait.');
+              'wait - all four conditions at once. Clear the jam, or deny hold-and-wait.');
           } else if (clock - deadSince > DEADLOCK_HOLD) {
             preempt();
           }
@@ -934,7 +934,7 @@
             livelocks++;
             g.announce('Livelock' + (worstArm >= 0 ? ' on the ' + NAMES[worstArm].toLowerCase() + ' arm' : '') +
               '. A car keeps taking a quadrant, losing the next one and reversing out. It is not ' +
-              'blocked and it is not idle — it is busy, and getting nowhere. Randomised backoff ' +
+              'blocked and it is not idle - it is busy, and getting nowhere. Randomised backoff ' +
               'is the usual fix.');
           }
           return;
@@ -1069,7 +1069,7 @@
         ctx.fillStyle = 'rgba(203,213,225,0.72)';
         ctx.font = 'bold 10px "Segoe UI", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('THE BOX — the shared resource', CX, CY - LANE - 14);
+        ctx.fillText('THE BOX - the shared resource', CX, CY - LANE - 14);
         ctx.font = '9px "Segoe UI", sans-serif';
         ctx.fillStyle = 'rgba(148,163,184,0.65)';
         ctx.fillText('four quadrants, four locks', CX, CY + LANE + 22);
@@ -1299,10 +1299,10 @@
       };
 
       var SCHEME_HEAD = {
-        none: 'UNCONTROLLED — incremental locking',
-        lights: 'LIGHTS — a fixed-cycle mutex',
-        stop: 'FOUR-WAY STOP — a ticket lock',
-        circle: 'ROUNDABOUT — lock-free with rollback'
+        none: 'UNCONTROLLED - incremental locking',
+        lights: 'LIGHTS - a fixed-cycle mutex',
+        stop: 'FOUR-WAY STOP - a ticket lock',
+        circle: 'ROUNDABOUT - lock-free with rollback'
       };
 
       function drawPanel(ctx) {
@@ -1384,18 +1384,18 @@
         var justPreempted = preemptFlash >= 0 && clock - preemptFlash < 2.5;
 
         var conds = [
-          { on: true, t: 'Mutual exclusion — one car per quadrant', note: '' },
+          { on: true, t: 'Mutual exclusion - one car per quadrant', note: '' },
           {
             on: holdWait && !denyHW,
-            t: 'Hold and wait — holds one, wants the next',
+            t: 'Hold and wait - holds one, wants the next',
             note: denyHW ? 'denied by your rule' : ''
           },
           {
             on: !justPreempted,
-            t: 'No preemption — nobody reverses out',
+            t: 'No preemption - nobody reverses out',
             note: justPreempted ? 'broken: you reversed one out' : ''
           },
-          { on: ring, t: 'Circular wait — N → E → S → W → N', note: '' }
+          { on: ring, t: 'Circular wait - N → E → S → W → N', note: '' }
         ];
 
         y = 160;

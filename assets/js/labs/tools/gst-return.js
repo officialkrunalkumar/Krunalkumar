@@ -257,7 +257,7 @@
       r.bad.push('starts with ' + m[1] + ', which is not a GST state code ' +
                  '(01 to 38, plus 97 and 99)');
     } else if (RETIRED[m[1]]) {
-      r.notes.push('state code ' + m[1] + ' is retired — ' + RETIRED[m[1]]);
+      r.notes.push('state code ' + m[1] + ' is retired - ' + RETIRED[m[1]]);
     }
     if (m[1] === '99') {
       r.notes.push('99 is the centre\'s code, used on a UIN rather than an ' +
@@ -273,14 +273,14 @@
     }
     if (m[4] !== 'Z') {
       r.notes.push('the fourteenth character is "' + m[4] + '" rather than Z ' +
-                   '— TDS and TCS registrations do differ here, ordinary ones ' +
+                   '- TDS and TCS registrations do differ here, ordinary ones ' +
                    'do not');
     }
     var want = gstinCheckChar(g.slice(0, 14));
     if (want === null) {
       r.bad.push('contains a character outside 0-9 and A-Z');
     } else if (want !== m[5]) {
-      r.bad.push('fails its check digit — it ends "' + m[5] + '" where the ' +
+      r.bad.push('fails its check digit - it ends "' + m[5] + '" where the ' +
                  'first fourteen characters compute to "' + want + '"');
     }
     r.ok = r.bad.length === 0;
@@ -446,7 +446,7 @@
     }
 
     if (st.docType === 'quotation') {
-      doc.skip = 'a quotation, not a supply — nothing to report';
+      doc.skip = 'a quotation, not a supply - nothing to report';
       return doc;
     }
     if (st.taxMode === 'export') {
@@ -457,14 +457,14 @@
          have a supply_type column that separates them. */
       doc.supply = 'exp_lut';
       doc.notes.push('came in as the invoice maker\'s "export or SEZ under LUT" ' +
-                     'mode, which cannot distinguish the two — counted as an export');
+                     'mode, which cannot distinguish the two - counted as an export');
     }
     if (st.taxMode === 'unregistered') {
       doc.skip = 'marked "not registered for GST", so it carries no tax to report';
       return doc;
     }
     if (st.taxMode === 'composition') {
-      doc.skip = 'a composition bill of supply — that goes in CMP-08 and GSTR-4, not here';
+      doc.skip = 'a composition bill of supply - that goes in CMP-08 and GSTR-4, not here';
       return doc;
     }
     if (st.revCharge === true) {
@@ -540,7 +540,7 @@
       docs.push(readInvoiceState(st, name + (queue.length > 1 ? ' #' + (i + 1) : '')));
     }
     if (!docs.length) {
-      return { error: 'has no invoices in it — expected the invoice-data.json that /labs/invoice-maker downloads' };
+      return { error: 'has no invoices in it - expected the invoice-data.json that /labs/invoice-maker downloads' };
     }
     return { docs: docs };
   }
@@ -729,7 +729,7 @@
         problems.push(where + ': a credit note whose taxable value is itself ' +
                       'NEGATIVE. The minus already comes from doc_type, so the ' +
                       'two signs cancel and this row has been ADDED to the ' +
-                      'period rather than subtracted from it — which leaves the ' +
+                      'period rather than subtracted from it - which leaves the ' +
                       'taxable total ' + money(Math.abs(taxable) * 2) + ' too ' +
                       'high, and its tax with it. Write the value positive and ' +
                       'build the sheet again.');
@@ -869,8 +869,8 @@
       var row = document.createElement('p');
       row.className = 'gstr-file';
       row.textContent = f.error
-        ? f.name + ' — could not be read: ' + f.error
-        : f.name + ' — ' + plural(f.docs.length, 'document', 'documents');
+        ? f.name + ' - could not be read: ' + f.error
+        : f.name + ' - ' + plural(f.docs.length, 'document', 'documents');
       box.appendChild(row);
     });
   }
@@ -955,10 +955,10 @@
       fy.appendChild(opt);
     }
     var periods = [{ v: 'all', t: 'Whole financial year' },
-                   { v: 'q0', t: 'Q1 — April to June' },
-                   { v: 'q1', t: 'Q2 — July to September' },
-                   { v: 'q2', t: 'Q3 — October to December' },
-                   { v: 'q3', t: 'Q4 — January to March' }];
+                   { v: 'q0', t: 'Q1 - April to June' },
+                   { v: 'q1', t: 'Q2 - July to September' },
+                   { v: 'q2', t: 'Q3 - October to December' },
+                   { v: 'q3', t: 'Q4 - January to March' }];
     for (i = 0; i < 12; i++) {
       periods.push({ v: 'm' + i, t: MONTHS[(3 + i) % 12] + (i >= 9 ? ' (next calendar year)' : '') });
     }
@@ -1024,7 +1024,7 @@
     try { build(); }
     catch (err) {
       hr();
-      out.err('Could not finish the sheet — something in the input was shaped in');
+      out.err('Could not finish the sheet - something in the input was shaped in');
       out.err('a way this page could not follow. Whatever printed above is still');
       out.err('valid; nothing below it was computed.');
       out.line('');
@@ -1108,7 +1108,7 @@
          a file recorded. Claiming the GSTIN in both cases would be a small lie
          about where a load-bearing number came from. */
       out.row('Your state', myState
-        ? stateLabel(myState) + (myGstin ? ' — from digits 1-2 of the GSTIN' : '')
+        ? stateLabel(myState) + (myGstin ? ' - from digits 1-2 of the GSTIN' : '')
         : 'could not be read from the GSTIN');
       /* Guarded: a GSTIN typed too short, or with a state code outside the
          list, gives a raw string to print but no state, and there is then no
@@ -1133,7 +1133,7 @@
       if (files[i].error) {
         // A JSON parse message comes from the engine and can be a whole
         // sentence with a position in it, so it folds rather than running off.
-        wrapOut('  ', files[i].name + ' — ' + files[i].error, 't-err');
+        wrapOut('  ', files[i].name + ' - ' + files[i].error, 't-err');
         badFiles++;
       } else {
         out.line('  ' + padR(files[i].name, 46) +
@@ -1146,7 +1146,7 @@
                ' could not be read and contributed nothing to the totals.');
     }
     if (csvResult) {
-      if (csvResult.error) wrapOut('  ', 'CSV box — ' + csvResult.error, 't-err');
+      if (csvResult.error) wrapOut('  ', 'CSV box - ' + csvResult.error, 't-err');
       else {
         out.line('  ' + padR('CSV box (' + csvResult.rows + ' rows)', 46) +
                  padL(plural(csvResult.docs.length, 'document', 'documents'), 20));
@@ -1185,7 +1185,7 @@
 
     out.line('');
     out.row('Documents seen', String(docs.length));
-    out.row('In the period', String(inPeriod.length) + ' — these are the ones added up');
+    out.row('In the period', String(inPeriod.length) + ' - these are the ones added up');
     out.row('In the FY, not period', String(outOfPeriod.length));
     out.row('Outside FY ' + fyLabel(fyStart), String(outOfFy.length));
     out.row('No usable date', String(noDate.length));
@@ -1325,7 +1325,7 @@
     var halfName = myState ? stateHalfName(myState) : 'SGST/UTGST';
     var exportRows = [];
 
-    out.heading('RATE-WISE, DOMESTIC SUPPLIES — the shape GSTR-1 and 3B want');
+    out.heading('RATE-WISE, DOMESTIC SUPPLIES - the shape GSTR-1 and 3B want');
     out.dim(trow(['Rate', 'Taxable value', 'CGST', halfName, 'IGST', 'Docs'],
                  RATE_COLS, true));
     hr();
@@ -1362,7 +1362,7 @@
       out.line('');
       out.warn('Rates outside the usual set are present: ' +
                Object.keys(unusualRates).join(', ') + '. They are added up as');
-      out.warn('given — check they are what you meant.');
+      out.warn('given - check they are what you meant.');
     }
     hr('=');
 
@@ -1400,7 +1400,7 @@
 
     /* --- credit and debit notes ---------------------------------------- */
     out.heading('CREDIT AND DEBIT NOTES');
-    out.dim('Already netted into the tables above — this is the same money shown');
+    out.dim('Already netted into the tables above - this is the same money shown');
     out.dim('separately so you can see how much of the movement it is.');
     out.line('');
     out.line(trow(['Credit notes', money(notes.credit.taxable), money(notes.credit.cgst),
@@ -1417,7 +1417,7 @@
     out.dim('never carry one.');
     out.dim('A credit note carries a minus sign here. Nothing on this page checks');
     out.dim('the time limit for reporting one, or whether the recipient reversed');
-    out.dim('the credit — both need the other side\'s filings.');
+    out.dim('the credit - both need the other side\'s filings.');
     if (csvResult && csvResult.negCredits) {
       /* The line above is flatly untrue for these rows, and this is the table
          where the wrong figure is on screen, so the contradiction is answered
@@ -1432,7 +1432,7 @@
     hr('=');
 
     /* --- zero-rated ---------------------------------------------------- */
-    out.heading('ZERO-RATED — kept out of the rate buckets above');
+    out.heading('ZERO-RATED - kept out of the rate buckets above');
     out.dim(trow(['Supply', 'Taxable value', 'IGST', 'Docs'], ZERO_COLS, true));
     hr();
     var zeroKeys = ['exp_wp', 'exp_lut', 'sez_wp', 'sez_lut'];
@@ -1455,9 +1455,9 @@
     out.dim('the IGST is charged and claimed back. Which route you are on is a');
     out.dim('fact about your LUT, not something this page can work out.');
     out.dim('An invoice-maker .json cannot say whether a zero-rated supply was an');
-    out.dim('export or an SEZ supply — it has one mode for both — so those land in');
+    out.dim('export or an SEZ supply - it has one mode for both - so those land in');
     out.dim('the export row. The CSV supply_type column does separate them.');
-    out.dim('Nil-rated, exempt and non-GST supplies are NOT separated here — they');
+    out.dim('Nil-rated, exempt and non-GST supplies are NOT separated here - they');
     out.dim('all land in the 0% row above, and GSTR-1 wants them apart.');
     hr('=');
 
@@ -1559,8 +1559,8 @@
       flagged++;
       out.warn(plural(posMismatch.length, 'document has', 'documents have') +
                ' a place of supply that differs from the');
-      out.warn('recipient GSTIN\'s own state. That is legitimate — a supply can be');
-      out.warn('made where the buyer is not registered — but it is worth a look:');
+      out.warn('recipient GSTIN\'s own state. That is legitimate - a supply can be');
+      out.warn('made where the buyer is not registered - but it is worth a look:');
       for (i = 0; i < posMismatch.length && i < 15; i++) {
         var pm = posMismatch[i];
         out.line('  ' + pm.doc.number + '  GSTIN says ' + stateLabel(pm.gstinState) +
@@ -1604,7 +1604,7 @@
         out.line('  ' + padR(sr.label, 30) + padR(sr.kind, 9) +
                  padL(sr.min + ' to ' + sr.max, 18) + padL(sr.count + ' seen', 12));
         if (sr.tooWide) {
-          out.dim('      spans ' + (sr.max - sr.min + 1) + ' numbers — too wide to be one');
+          out.dim('      spans ' + (sr.max - sr.min + 1) + ' numbers - too wide to be one');
           out.dim('      run, so gaps were not looked for in it');
         } else if (sr.gaps.length) {
           flagged++;
@@ -1727,7 +1727,7 @@
       out.line('');
       out.dim('Set aside, with the reason:');
       for (i = 0; i < skipped.length && i < 20; i++) {
-        wrapOut('  ', (skipped[i].number || '(no number)') + ' — ' + skipped[i].skip, 't-dim');
+        wrapOut('  ', (skipped[i].number || '(no number)') + ' - ' + skipped[i].skip, 't-dim');
       }
       if (skipped.length > 20) out.dim('  ' + (skipped.length - 20) + ' more not listed.');
     }
@@ -1785,7 +1785,7 @@
     lines.push(csvLine(['meta', 'documents_in_period', '', '', '', '', docCount, '']));
     lines.push(csvLine(['meta', 'disclaimer', '', '', '', '', '',
                         'Working sheet only. Not a return, not filed, not connected ' +
-                        'to the GST portal, not advice. Output tax only — no ITC, ' +
+                        'to the GST portal, not advice. Output tax only - no ITC, ' +
                         'no RCM, no advances, no amendments, no interest.']));
 
     rows.forEach(function (r) {
@@ -1804,7 +1804,7 @@
       } else if (s.gaps.length) {
         lines.push(csvLine(['check', 'series_gap', '', '', '', '', s.gaps.length,
                             s.label + ' missing ' + s.gaps.slice(0, 200).join(' ') +
-                            ' — a gap is not proof of anything, cancelled invoices leave gaps']));
+                            ' - a gap is not proof of anything, cancelled invoices leave gaps']));
       }
     });
     mismatches.forEach(function (m) {
@@ -1814,7 +1814,7 @@
     });
     gstinProblems.forEach(function (g) {
       lines.push(csvLine(['check', 'gstin', '', '', '', '', 1,
-                          g.check.raw + ' on ' + g.doc.number + ' — ' +
+                          g.check.raw + ' on ' + g.doc.number + ' - ' +
                           (g.check.bad.concat(g.check.notes)).join('; ')]));
     });
     outOfPeriod.forEach(function (d) {
@@ -1863,7 +1863,7 @@
 
   function exportCsv() {
     if (!lastCsvExport) {
-      out.warn('Build the sheet first — there is nothing to export yet.');
+      out.warn('Build the sheet first - there is nothing to export yet.');
       return;
     }
     LabTool.download(utf8Bytes('\ufeff' + lastCsvExport),
@@ -1923,10 +1923,10 @@
     el('gstr-period').value = 'q0';
 
     out.clear();
-    out.warn('Example data loaded. It is made up — the names are placeholders and');
+    out.warn('Example data loaded. It is made up - the names are placeholders and');
     out.warn('the numbers are mine, not anyone\'s books.');
     out.line('');
-    out.dim('The three GSTINs it uses — yours and two buyers\' — were built here by');
+    out.dim('The three GSTINs it uses - yours and two buyers\' - were built here by');
     out.dim('computing a real check character over the first fourteen positions, so');
     out.dim('all three are well-formed. A fourth is one of those with its check');
     out.dim('character shifted by one, on purpose, so the checksum finding has');

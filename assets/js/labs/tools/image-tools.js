@@ -591,7 +591,7 @@
         ctx.fillRect(0, 0, size.w, size.h);
         if (item.srcType === 'image/png' || item.srcType === 'image/webp' ||
             item.srcType === 'image/gif' || item.srcType === 'image/avif') {
-          item.notes.push('any transparency was flattened onto white — JPEG has no alpha channel');
+          item.notes.push('any transparency was flattened onto white - JPEG has no alpha channel');
         }
       }
 
@@ -605,7 +605,7 @@
       }
 
       if (item.rotate > 1) {
-        item.notes.push('rotated here — this browser handed back the unrotated pixels ' +
+        item.notes.push('rotated here - this browser handed back the unrotated pixels ' +
                         'and the orientation tag said ' + item.rotate);
       }
       if (item.scan.progressive) {
@@ -736,7 +736,7 @@
     var share = t.before ? (t.saved / t.before) * 100 : 0;
     var verb = t.saved >= 0 ? 'saved' : 'added';
     node.textContent = t.count + (t.count === 1 ? ' image: ' : ' images: ') +
-      LabTool.humanBytes(t.before) + ' in, ' + LabTool.humanBytes(t.after) + ' out — ' +
+      LabTool.humanBytes(t.before) + ' in, ' + LabTool.humanBytes(t.after) + ' out - ' +
       LabTool.humanBytes(Math.abs(t.saved)) + ' ' + verb + ', ' + pct(Math.abs(share)) + '.';
     el('it-zip').disabled = busy;
   }
@@ -747,7 +747,7 @@
     if (!items.length) {
       var empty = document.createElement('li');
       empty.className = 'it-empty';
-      empty.textContent = 'No images yet. Drop one or many above — they stay on this machine.';
+      empty.textContent = 'No images yet. Drop one or many above - they stay on this machine.';
       list.appendChild(empty);
       return;
     }
@@ -989,7 +989,7 @@
     caption((zoom
       ? 'Magnified until the original is one image pixel per device pixel, with the processed copy shown at the same size beside it. Drag the divider, or use the split slider.'
       : 'Both copies are drawn into the same box, so the divider cuts one picture rather than comparing two scales. Turn on 1:1 pixels to judge quality rather than framing.') +
-      (stretched ? ' The processed copy is a different shape, so it is stretched into the original’s frame for this comparison only — the saved file keeps the dimensions listed above.' : ''));
+      (stretched ? ' The processed copy is a different shape, so it is stretched into the original’s frame for this comparison only - the saved file keeps the dimensions listed above.' : ''));
   }
 
   function drawHalf(ctx, img, item, box, x0, x1, isBefore) {
@@ -1022,16 +1022,16 @@
     for (var i = 0; i < fileList.length; i++) {
       var file = fileList[i];
       if (items.length >= MAX_FILES) {
-        rejected.push(file.name + ' — this tool stops at ' + MAX_FILES + ' images at once');
+        rejected.push(file.name + ' - this tool stops at ' + MAX_FILES + ' images at once');
         continue;
       }
       if (file.size > MAX_FILE) {
-        rejected.push(file.name + ' — ' + LabTool.humanBytes(file.size) + ', over the ' +
+        rejected.push(file.name + ' - ' + LabTool.humanBytes(file.size) + ', over the ' +
                       LabTool.humanBytes(MAX_FILE) + ' ceiling; the work happens on your processor');
         continue;
       }
       if (!file.size) {
-        rejected.push(file.name + ' — the file is empty');
+        rejected.push(file.name + ' - the file is empty');
         continue;
       }
       items.push({
@@ -1111,7 +1111,7 @@
   function run() {
     if (busy) return;
     if (!items.length) {
-      out.clear().warn('Drop one or more images first. Nothing is uploaded — the encoding happens in this tab.');
+      out.clear().warn('Drop one or more images first. Nothing is uploaded - the encoding happens in this tab.');
       return;
     }
     out.clear();
@@ -1183,7 +1183,7 @@
     }
     out.line('');
     out.dim('Nothing was uploaded. Use Save on a row, or Download all as a ZIP,');
-    out.dim('which is also built here — there is no server in this page at all.');
+    out.dim('which is also built here - there is no server in this page at all.');
     setBusy(false);
     renderTotal();
     drawPreview();
@@ -1208,7 +1208,7 @@
     if (!zip) {
       out.rule();
       out.err('That batch is too large for the simple ZIP this page writes.');
-      out.dim('Save the rows individually instead — nothing is lost by doing so.');
+      out.dim('Save the rows individually instead - nothing is lost by doing so.');
       return;
     }
     LabTool.download(zip, 'images-' + entries.length + '.zip', 'application/zip');
@@ -1246,7 +1246,7 @@
 
   function syncMeta() {
     el('it-meta-note').textContent = el('it-meta').value === 'keep'
-      ? 'Kept only where the output is a JPEG and the original had an EXIF block — nothing else can carry it. The orientation tag is reset to 1 so the picture is not rotated twice.'
+      ? 'Kept only where the output is a JPEG and the original had an EXIF block - nothing else can carry it. The orientation tag is reset to 1 so the picture is not rotated twice.'
       : 'Camera, lens, serial number, timestamp and GPS coordinates all go. A canvas has nowhere to keep them, so stripping is what happens by default.';
   }
 
@@ -1313,7 +1313,7 @@
       if (opts[i].value === 'keep') continue;
       if (!supported[opts[i].value]) {
         opts[i].disabled = true;
-        opts[i].textContent = opts[i].textContent + ' — no encoder in this browser';
+        opts[i].textContent = opts[i].textContent + ' - no encoder in this browser';
       }
     }
   }

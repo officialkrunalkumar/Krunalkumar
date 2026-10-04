@@ -711,7 +711,7 @@
       // They did leave it on. Pre-light it exactly as a remembered preference
       // does, so one press picks up where they left off.
       toggle.classList.add('is-remembered');
-      toggle.setAttribute('title', 'Sound off — press to resume');
+      toggle.setAttribute('title', 'Sound off - press to resume');
     }
   }
 
@@ -842,6 +842,6 @@
      button so one press picks up where they left off. */
   if (remembered) {
     toggle.classList.add('is-remembered');
-    toggle.setAttribute('title', 'Sound off — press to resume');
+    toggle.setAttribute('title', 'Sound off - press to resume');
   }
 }());

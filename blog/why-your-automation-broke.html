@@ -11,13 +11,13 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Why Your Automation Broke, and How to Build One That Fails Loudly" />
     <meta
       property="og:description"
-      content="Nothing on your side changed — that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
+      content="Nothing on your side changed - that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/why-your-automation-broke" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="Why Your Automation Broke, and How to Build One That Fails Loudly" />
     <meta
       name="twitter:description"
-      content="Nothing on your side changed — that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
+      content="Nothing on your side changed - that is the reason it broke, not the reason it should not have. Eight causes, the guard for each, and the engineering that turns a silent stop into a message you get the same morning."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-automation-broke.jpg" />
     <title>Why Your Automation Broke | Krunalkumar Shah</title>
@@ -43,7 +43,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Why Your Automation Broke, and How to Build One That Fails Loudly",
-        "description": "Why an automation that worked for a year suddenly stopped, and how to build one that fails loudly instead: a deprecated API version, an expired or revoked refresh token, a rate limit that only bites at scale, a renamed CRM field, a webhook retried or delivered twice, a timezone or daylight saving boundary, a changed default page size, and a schema that gained a required field — each with the guard that catches it, followed by idempotency keys, dead-letter queues, alerting on absence rather than on error, contract tests against the vendor, pinned API versions and version-controlled workflows.",
+        "description": "Why an automation that worked for a year suddenly stopped, and how to build one that fails loudly instead: a deprecated API version, an expired or revoked refresh token, a rate limit that only bites at scale, a renamed CRM field, a webhook retried or delivered twice, a timezone or daylight saving boundary, a changed default page size, and a schema that gained a required field - each with the guard that catches it, followed by idempotency keys, dead-letter queues, alerting on absence rather than on error, contract tests against the vendor, pinned API versions and version-controlled workflows.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/why-your-automation-broke.jpg",
         "datePublished": "2026-08-31",
         "dateModified": "2026-08-31",
@@ -87,7 +87,7 @@
             "name": "My automation stopped and the logs are completely empty. Where do I start?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "An empty log is itself the finding: it means nothing executed, so the fault is at the edge rather than in the middle. Check three things in this order. First the credential — open the connection in the platform and look for a reauthentication prompt, or call a cheap authenticated endpoint by hand and see whether you get a 401. Second the trigger — confirm the workflow is still active, that a schedule survived any recent platform migration, and that a webhook endpoint registered with the vendor still points at a URL that exists. Third the vendor's status page and changelog for the window in which the last successful run sits. Between them those three cover the large majority of empty-log cases, and all three are faster to check than reading the workflow."
+              "text": "An empty log is itself the finding: it means nothing executed, so the fault is at the edge rather than in the middle. Check three things in this order. First the credential - open the connection in the platform and look for a reauthentication prompt, or call a cheap authenticated endpoint by hand and see whether you get a 401. Second the trigger - confirm the workflow is still active, that a schedule survived any recent platform migration, and that a webhook endpoint registered with the vendor still points at a URL that exists. Third the vendor's status page and changelog for the window in which the last successful run sits. Between them those three cover the large majority of empty-log cases, and all three are faster to check than reading the workflow."
             }
           },
           {
@@ -103,7 +103,7 @@
             "name": "Is self-hosting more or less reliable than a hosted platform?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Neither, and the question is really about which failures you would rather own. A hosted platform absorbs patching, uptime and connector maintenance, and in exchange you get their outages, their retry policy and their deprecations on their timetable. Self-hosting gives you control over every one of those and hands you the pager. What actually changes reliability is not the hosting model — it is whether anybody is alerted when the thing stops. I have seen self-hosted workflows with better monitoring than enterprise deployments, and the reverse, and in both cases the monitoring was the variable."
+              "text": "Neither, and the question is really about which failures you would rather own. A hosted platform absorbs patching, uptime and connector maintenance, and in exchange you get their outages, their retry policy and their deprecations on their timetable. Self-hosting gives you control over every one of those and hands you the pager. What actually changes reliability is not the hosting model - it is whether anybody is alerted when the thing stops. I have seen self-hosted workflows with better monitoring than enterprise deployments, and the reverse, and in both cases the monitoring was the variable."
             }
           },
           {
@@ -111,7 +111,7 @@
             "name": "Do I really need a dead-letter queue for a five-step workflow?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Probably not, and I would not build one first. For a small workflow the useful order is: alert on absence, then handle retries safely with an idempotency key, then add a dead-letter queue when you find yourself losing items you cannot reconstruct. The signal that you need one is specific — a failure where you cannot answer the question \"which records did not get processed, and can I run them again\". Until you have hit that question, the queue is scaffolding for a problem you do not have, and the monitoring is not."
+              "text": "Probably not, and I would not build one first. For a small workflow the useful order is: alert on absence, then handle retries safely with an idempotency key, then add a dead-letter queue when you find yourself losing items you cannot reconstruct. The signal that you need one is specific - a failure where you cannot answer the question \"which records did not get processed, and can I run them again\". Until you have hit that question, the queue is scaffolding for a problem you do not have, and the monitoring is not."
             }
           },
           {
@@ -135,7 +135,7 @@
             "name": "Should I just rebuild it in code instead?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Only if the reason is one of a short list: volume that makes per-operation pricing absurd, logic that has outgrown what a visual canvas can express readably, or a requirement for tests and review that the platform cannot give you. Rebuilding in code does not remove a single cause from the first half of this article — the vendor still deprecates, the token still expires, the page size still changes. What it changes is that the guards become ordinary code you can test, and the workflow becomes a diff. That is a real gain, and it arrives with a maintenance burden that a no-code platform was carrying for you."
+              "text": "Only if the reason is one of a short list: volume that makes per-operation pricing absurd, logic that has outgrown what a visual canvas can express readably, or a requirement for tests and review that the platform cannot give you. Rebuilding in code does not remove a single cause from the first half of this article - the vendor still deprecates, the token still expires, the page size still changes. What it changes is that the guards become ordinary code you can test, and the workflow becomes a diff. That is a real gain, and it arrives with a maintenance burden that a no-code platform was carrying for you."
             }
           }
         ]
@@ -214,7 +214,7 @@
             The sentence that opens almost every one of these conversations is "we didn't change anything." It is
             usually true, and it is the reason the thing stopped rather than a defence against it. Your workflow was
             the only part of the arrangement holding still. Here are the eight causes that actually account for it,
-            what each one looks like from the outside — which is normally silence — and the specific guard that
+            what each one looks like from the outside - which is normally silence - and the specific guard that
             catches it.
           </p>
           <p class="post-meta">Published 31 August 2026 · 25 min read · by Krunalkumar Shah</p>
@@ -267,7 +267,7 @@
               </p>
               <p>
                 That second question is the one this article is really about. The first half below is a list of what
-                actually moves — eight causes that between them account for nearly everything I have been called in
+                actually moves - eight causes that between them account for nearly everything I have been called in
                 to look at. The second half is the engineering that turns any of them from a three-week silence into
                 a message you get on the morning it happens. If you only have an afternoon, skip to
                 <a href="#alert-on-absence-not-on-error">alerting on absence</a>, which is worth more than the other
@@ -277,7 +277,7 @@
               <h2 id="why-the-failure-is-silent">Why the failure is silent</h2>
               <p>
                 Every alarm most teams own is wired to an error. A step throws, the platform catches it, an email
-                goes out, somebody looks. That is a real mechanism and it works — for the failures where something
+                goes out, somebody looks. That is a real mechanism and it works - for the failures where something
                 ran.
               </p>
               <p>
@@ -298,13 +298,13 @@
                 <a href="/assets/images/blog/why-your-automation-broke-diagram1.svg" target="_blank" rel="noopener">
                   <img src="/assets/images/blog/why-your-automation-broke-diagram1.svg" alt="Two shapes of failure compared: a loud failure where a run starts, a step returns an error, the platform retries and parks the run and an alert reaches a human the same day; and a silent failure where a revoked token stops the trigger firing, so no step runs, nothing raises an error, nothing lands in the dead-letter queue and no alert is ever sent, with a guard band showing an alert that fires when the count of successful runs in a window falls to zero" width="1160" height="620" loading="lazy" decoding="async" />
                 </a>
-                <figcaption>The top row is the failure your alerting was designed for. The bottom row is the one that costs you the client — and the only difference in the mechanism is that nothing ever executed. Tap the diagram to open it full-screen.</figcaption>
+                <figcaption>The top row is the failure your alerting was designed for. The bottom row is the one that costs you the client - and the only difference in the mechanism is that nothing ever executed. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
               <p>
                 Keep that picture in mind through the next eight sections. For each cause I have written what it
                 looks like from outside, because that is the only view you get at three in the morning, and the
-                specific guard that catches it. Several of the guards repeat. That is not padding — the same three
+                specific guard that catches it. Several of the guards repeat. That is not padding - the same three
                 or four checks cover most of the list, which is the good news buried in a long article.
               </p>
 
@@ -313,7 +313,7 @@
                 <strong>From outside.</strong> Two shapes, and the second is far worse than the first. The loud
                 shape is an HTTP 410, or a 400 whose body mentions a version you have never typed anywhere. The
                 quiet shape is an endpoint that still answers 200 while the field you read is now nested one level
-                deeper, or renamed, or gone — so your workflow runs green and writes empty strings into a CRM for a
+                deeper, or renamed, or gone - so your workflow runs green and writes empty strings into a CRM for a
                 fortnight.
               </p>
               <p>
@@ -324,8 +324,8 @@
                 a pull mechanism.
               </p>
               <p>
-                <strong>The guard.</strong> Pin the version explicitly — in the path, the header, or wherever the
-                vendor puts it — and never rely on the default. "The default" means "whatever is current on the day
+                <strong>The guard.</strong> Pin the version explicitly - in the path, the header, or wherever the
+                vendor puts it - and never rely on the default. "The default" means "whatever is current on the day
                 this runs", which is a moving target you have handed to a stranger. Then subscribe a shared address
                 that a working human reads to the changelog and status feed, and record every pinned version with
                 its announced end date somewhere you will actually look, which for me means a comment in the
@@ -345,8 +345,8 @@
                 whose account the integration was connected under left, and IT deprovisioned them properly. A user
                 changed a password, and the identity provider invalidates refresh tokens on password change. An
                 administrator revoked third-party app access during a security tidy-up, correctly. The refresh
-                token had an absolute lifetime and simply reached it. Or — the one I would name specifically because
-                it catches people repeatedly — the OAuth client is still in a provider's testing or unverified
+                token had an absolute lifetime and simply reached it. Or - the one I would name specifically because
+                it catches people repeatedly - the OAuth client is still in a provider's testing or unverified
                 state, where refresh tokens are deliberately short-lived, so the integration works beautifully for a
                 week and then does not.
               </p>
@@ -354,7 +354,7 @@
                 <strong>The guard.</strong> Three things, in order of how much they buy you. Connect integrations
                 under a service account or a shared mailbox that survives a person leaving, not under whoever
                 happened to be at the keyboard. Add a token-health check that runs on a schedule, calls the
-                cheapest authenticated endpoint the vendor has — a <code>/me</code> or a <code>/whoami</code> — and
+                cheapest authenticated endpoint the vendor has - a <code>/me</code> or a <code>/whoami</code> - and
                 alerts on a 401 rather than logging it. And alert on absence, because a token failure that kills
                 the trigger will never reach any check that lives inside the workflow. If your access token is a
                 JWT, <a href="/labs/jwt">the JWT lab</a> decodes one in the browser and shows you its expiry claim,
@@ -372,7 +372,7 @@
               </p>
               <p>
                 <strong>Why it happens.</strong> Limits are per second, per minute, per day, and often per bursty
-                window on top of that — and you were comfortably underneath all of them for a year. Then a customer
+                window on top of that - and you were comfortably underneath all of them for a year. Then a customer
                 imports a spreadsheet, or a backfill runs, or a retry storm from an unrelated failure eats the
                 minute's budget, or the vendor tightens the number because somebody else abused it. Nothing in your
                 workflow changed. Its volume did.
@@ -382,7 +382,7 @@
                 generic failure and never as a shrug: respect the <code>Retry-After</code> header when the vendor
                 sends one, back off exponentially with jitter when it does not, and cap your own concurrency rather
                 than trusting the platform's default parallelism. Then add the cheapest and most underrated check
-                in this article — count the records you took in and the records you wrote out, and alert when they
+                in this article - count the records you took in and the records you wrote out, and alert when they
                 differ. A run that reports "processed 46 of 512" is a run that tells you the truth. This is the
                 same trade-off I spent a research project on in a different domain: a limiter that protects a
                 system by refusing honest work has only moved the failure, and the only way to know which side of
@@ -406,7 +406,7 @@
                 <strong>The guard.</strong> Bind to the immutable identifier wherever the vendor exposes one, even
                 when the label is what a human would read. Validate the record before you use it: assert that the
                 fields you depend on are present and non-empty, and fail the run when they are not. That last part
-                is the important half — most no-code platforms make skipping easier than failing, and a workflow
+                is the important half - most no-code platforms make skipping easier than failing, and a workflow
                 that skips is a workflow that has learned to lie to you. And tell the CRM owner, in one sentence,
                 which fields an automation depends on. That conversation costs five minutes and prevents the
                 rename.
@@ -414,7 +414,7 @@
 
               <h2 id="a-webhook-arrived-twice-or-never">5. A webhook arrived twice, or never</h2>
               <p>
-                <strong>From outside.</strong> Duplicates, which are visible but embarrassing — two invoices, two
+                <strong>From outside.</strong> Duplicates, which are visible but embarrassing - two invoices, two
                 Slack messages, two rows, one confused customer. Or the opposite and quieter failure: a delivery
                 that never arrived at all, because the vendor retried three times into a five-minute outage on your
                 side and then gave up. A webhook that was never received leaves no trace anywhere in your systems.
@@ -449,7 +449,7 @@
               <p>
                 <strong>From outside.</strong> A report that arrives at the wrong hour. A daily job that on one day
                 a year does not run at all, and on another day runs twice. A "yesterday's records" query that on
-                those same days covers 23 hours or 25 hours, so a day of data goes missing or gets counted twice —
+                those same days covers 23 hours or 25 hours, so a day of data goes missing or gets counted twice -
                 and nothing anywhere errors, because 23 hours of records is a perfectly valid set of records.
               </p>
               <p>
@@ -462,7 +462,7 @@
               </p>
               <p>
                 <strong>The guard.</strong> Schedule in UTC and convert only for display. Make every window
-                explicit and half-open — greater than or equal to the start, strictly less than the end — rather
+                explicit and half-open - greater than or equal to the start, strictly less than the end - rather
                 than asking for "yesterday", which is a word and not a boundary. Store timestamps with their offset
                 rather than as bare local strings. And for anything that must happen once a day, prefer logic that
                 says "if this has not run since the last boundary, run it now" over logic that fires at an instant,
@@ -474,7 +474,7 @@
               <h2 id="pagination-changed-underneath-you">7. Pagination changed underneath you</h2>
               <p>
                 <strong>From outside.</strong> Nothing. This is the purest silent failure on the list. You ask for
-                a list, take the first page, and stop — because for a year the first page <em>was</em> the whole
+                a list, take the first page, and stop - because for a year the first page <em>was</em> the whole
                 list. Then the account grows past the page size, or the vendor reduces its default from 100 to 50
                 to shed load, and from that day you process the first 50 of 300 records on every run, successfully,
                 forever. There is no error at any point in the life of that bug.
@@ -482,7 +482,7 @@
               <p>
                 <strong>Why it happens.</strong> The loop was never written, because there was never a second page
                 to write it against. It is not carelessness; it is a test that could not have failed at the time.
-                This is the same shape as most security findings I write up — a decision that was correct under the
+                This is the same shape as most security findings I write up - a decision that was correct under the
                 conditions of the day, and stopped being correct when the conditions moved.
               </p>
               <p>
@@ -508,12 +508,12 @@
                 <strong>From outside.</strong> A 400 or a 422 on write, naming a field you have never sent. This
                 one is at least loud, which is why it is last. The nastier variant is a field that becomes
                 mandatory on create but not on update, so half your workflow carries on working and the half that
-                onboards new records does not — which reads, on a dashboard, as a drop in new customers rather than
+                onboards new records does not - which reads, on a dashboard, as a drop in new customers rather than
                 as a broken integration.
               </p>
               <p>
-                <strong>Why it happens.</strong> The vendor added a concept — a currency on a line item, a consent
-                flag, a region on a customer — and made it mandatory for new records. Plenty of vendors do not
+                <strong>Why it happens.</strong> The vendor added a concept - a currency on a line item, a consent
+                flag, a region on a customer - and made it mandatory for new records. Plenty of vendors do not
                 classify adding a required field as a breaking change, because every client they test with already
                 sends it. From your side it is unambiguously breaking.
               </p>
@@ -551,7 +551,7 @@
                     </tr>
                     <tr>
                       <td>Refresh token expired or revoked</td>
-                      <td>Silence — the trigger stops firing entirely</td>
+                      <td>Silence - the trigger stops firing entirely</td>
                       <td>Alert on absence; daily token-health check</td>
                     </tr>
                     <tr>
@@ -576,7 +576,7 @@
                     </tr>
                     <tr>
                       <td>Default page size changed</td>
-                      <td>Nothing at all — steady, silent truncation</td>
+                      <td>Nothing at all - steady, silent truncation</td>
                       <td>Follow the cursor; explicit page size; count check</td>
                     </tr>
                     <tr>
@@ -606,21 +606,21 @@
               <p>
                 The mechanism is deliberately dull. At the end of every successful run, write a heartbeat: a
                 timestamp in a table, a row in a log, a ping to a dead-man's-switch service that expects to hear
-                from you on an interval. Then have something outside the workflow — and it must be outside, because
-                a monitor that lives inside the thing it monitors dies with it — check the age of the newest
+                from you on an interval. Then have something outside the workflow - and it must be outside, because
+                a monitor that lives inside the thing it monitors dies with it - check the age of the newest
                 heartbeat and alert when it exceeds the interval plus a margin.
               </p>
               <p>
                 Two refinements are worth the extra hour. First, alert on the count, not only the age: successful
                 runs per hour, records processed per run. A workflow that runs on schedule and processes zero
                 records every time is failing, and an age check will never notice. Second, alert on the step change
-                as well as the zero — yesterday's run handled 500 records and today's handled 12, which is either a
+                as well as the zero - yesterday's run handled 500 records and today's handled 12, which is either a
                 quiet holiday or the pagination bug from section seven.
               </p>
               <p>
                 The honest caveat: this check will page somebody for a benign gap. A vendor has an outage, a
                 genuinely quiet Sunday drops the count, a deployment pauses the queue for six minutes. The response
-                to that is to widen the window or exclude the known-quiet period — not to delete the check, which is
+                to that is to widen the window or exclude the known-quiet period - not to delete the check, which is
                 what usually happens on the second false alarm. A monitor everybody has muted is worse than no
                 monitor, because it is also a story you tell yourself about being covered.
               </p>
@@ -628,7 +628,7 @@
               <div class="lab-cta">
                 <p class="lab-cta-text">
                   <strong>Practise reading the evidence.</strong> When an automation misbehaves, the first artefact
-                  you get is a log, and the skill is spotting the gap rather than the error — the hour with no
+                  you get is a log, and the skill is spotting the gap rather than the error - the hour with no
                   entries, the status code that appears fifty times in a minute, the request that stops recurring.
                   The log analyser on this site takes a pasted log and surfaces those patterns, entirely in your
                   browser. Nothing you paste is uploaded anywhere.
@@ -652,7 +652,7 @@
                   <strong>Use the sender's identifier, not one you generate.</strong> A key you generate at the top
                   of the handler is a different key on the retry, which defeats the entire mechanism. Use the
                   vendor's event id where they give you one. Where they do not, derive it deterministically from
-                  the natural key of the work — the order id plus the word "invoice" hashed together will do, and
+                  the natural key of the work - the order id plus the word "invoice" hashed together will do, and
                   the <a href="/labs/hash">hash lab</a> is a quick way to convince yourself that the same input
                   really does give the same digest every time.
                 </li>
@@ -665,7 +665,7 @@
                 </li>
               </ul>
               <p>
-                Two practical notes. Give the key a lifetime that comfortably outlives the vendor's retry window —
+                Two practical notes. Give the key a lifetime that comfortably outlives the vendor's retry window -
                 if they retry over 24 hours, a key you expire after an hour is a key that is absent when it
                 matters. And check whether the vendor accepts an <code>Idempotency-Key</code> header on writes,
                 which many payment and billing APIs do: sending one makes <em>your</em> retries safe on
@@ -680,7 +680,7 @@
               </p>
               <p>
                 The first is that nobody looks at it. A queue with no alarm on it is a folder. Alert on depth
-                greater than zero, not on rate — one stuck item is a signal, and waiting for a spike means waiting
+                greater than zero, not on rate - one stuck item is a signal, and waiting for a spike means waiting
                 for the thing you were trying to avoid. The second is that items arrive without enough context to
                 replay: an error message and a record id, and by the time anybody opens it the record has moved on
                 and the original payload is gone. Store the complete input, the error, the attempt count, the
@@ -689,7 +689,7 @@
               <p>
                 Then make replay a single command. If draining the queue means somebody reconstructing a request by
                 hand from a screenshot, the queue is a graveyard with good intentions. And test the replay path
-                deliberately, on purpose, before you need it — the first replay is where you discover that the
+                deliberately, on purpose, before you need it - the first replay is where you discover that the
                 downstream system has since started rejecting the payload shape you stored.
               </p>
               <p>
@@ -705,15 +705,15 @@
                 it is the only guard in this article that finds a vendor's change before your data does.
               </p>
               <p>
-                It is small. A scheduled job — daily is usually enough — that calls the endpoints you depend on and
+                It is small. A scheduled job - daily is usually enough - that calls the endpoints you depend on and
                 asserts the things you actually rely on: that the field exists, that it has the type you expect,
                 that a list endpoint returns a next-page cursor in the shape you parse, that creating and deleting
                 one throwaway object of each kind you write still succeeds. It fails loudly and it names the field.
                 Compared with discovering the same fact three weeks later through a customer, it is close to free.
               </p>
               <p>
-                Two caveats, because this one gets oversold. Vendor sandboxes drift from production — a sandbox
-                schema is often behind, occasionally ahead, and sometimes has different limits — so a green
+                Two caveats, because this one gets oversold. Vendor sandboxes drift from production - a sandbox
+                schema is often behind, occasionally ahead, and sometimes has different limits - so a green
                 contract test against a sandbox is evidence rather than proof. And plenty of vendors have no
                 sandbox at all, in which case you are testing against production with a tagged, disposable record
                 that you create and delete in the same job, and you should agree that in writing with whoever owns
@@ -727,7 +727,7 @@
               <p>
                 <strong>Pin the version.</strong> Say which version of the API you are calling, everywhere,
                 explicitly. An unpinned integration is a promise that a stranger's release schedule is your release
-                schedule. Pinning does not make you safe forever — versions do get retired — but it converts a
+                schedule. Pinning does not make you safe forever - versions do get retired - but it converts a
                 surprise into a dated obligation, and a dated obligation can be put in a calendar.
               </p>
               <p>
@@ -751,7 +751,7 @@
 
               <h2 id="what-to-ask-a-vendor-before-you-build">What to ask a vendor before you build</h2>
               <p>
-                Most of the eight causes above are decided before you write a line — by which vendor you picked and
+                Most of the eight causes above are decided before you write a line - by which vendor you picked and
                 what they promise. These are the questions I ask, and they take one email:
               </p>
               <ul>
@@ -768,7 +768,7 @@
               <p>
                 If a vendor cannot answer most of these, that is information about the integration you are about to
                 build rather than a judgement on the person who replied. Sometimes you build on them anyway,
-                because the business reason is good — and then you budget for more monitoring, because you have
+                because the business reason is good - and then you budget for more monitoring, because you have
                 just been told you will get less warning. Either way, that answer belongs in the estimate before it
                 belongs in the invoice, which is the same argument as
                 <a href="/blog/scoping-work-before-you-quote-it">scoping the work before you quote it</a>.
@@ -788,7 +788,7 @@
               <p>
                 So the goal is not zero breakage. It is time to detection, measured honestly. Every guard in the
                 second half of this article exists to shorten the distance between the moment something moves and
-                the moment a human knows — from three weeks to ten minutes — and to make sure that when a human
+                the moment a human knows - from three weeks to ten minutes - and to make sure that when a human
                 does know, the input is still sitting there so the work can be replayed rather than reconstructed.
               </p>
               <p>
@@ -804,8 +804,8 @@
                 </p>
               </blockquote>
               <p>
-                A worked example of the whole shape — trigger, classification, human gate, and what happens when a
-                step fails — is in the walkthrough of
+                A worked example of the whole shape - trigger, classification, human gate, and what happens when a
+                step fails - is in the walkthrough of
                 <a href="/blog/automating-email-replies-with-n8n">automating email replies with n8n</a>, and the
                 code for a production system built the same way is public in
                 <a href="/blog/i-open-sourced-my-ai-sdr">the AI SDR I open-sourced</a>. Both are worth reading with
@@ -819,9 +819,9 @@
                   <summary>My automation stopped and the logs are completely empty. Where do I start?</summary>
                   <p>
                     An empty log is itself the finding: it means nothing executed, so the fault is at the edge
-                    rather than in the middle. Check three things in this order. First the credential — open the
+                    rather than in the middle. Check three things in this order. First the credential - open the
                     connection in the platform and look for a reauthentication prompt, or call a cheap
-                    authenticated endpoint by hand and see whether you get a 401. Second the trigger — confirm the
+                    authenticated endpoint by hand and see whether you get a 401. Second the trigger - confirm the
                     workflow is still active, that a schedule survived any recent platform migration, and that a
                     webhook endpoint registered with the vendor still points at a URL that exists. Third the
                     vendor's status page and changelog for the window in which the last successful run sits.
@@ -848,7 +848,7 @@
                     platform absorbs patching, uptime and connector maintenance, and in exchange you get their
                     outages, their retry policy and their deprecations on their timetable. Self-hosting gives you
                     control over every one of those and hands you the pager. What actually changes reliability is
-                    not the hosting model — it is whether anybody is alerted when the thing stops. I have seen
+                    not the hosting model - it is whether anybody is alerted when the thing stops. I have seen
                     self-hosted workflows with better monitoring than enterprise deployments, and the reverse, and
                     in both cases the monitoring was the variable.
                   </p>
@@ -859,7 +859,7 @@
                     Probably not, and I would not build one first. For a small workflow the useful order is:
                     alert on absence, then handle retries safely with an idempotency key, then add a dead-letter
                     queue when you find yourself losing items you cannot reconstruct. The signal that you need one
-                    is specific — a failure where you cannot answer the question "which records did not get
+                    is specific - a failure where you cannot answer the question "which records did not get
                     processed, and can I run them again". Until you have hit that question, the queue is
                     scaffolding for a problem you do not have, and the monitoring is not.
                   </p>
@@ -894,7 +894,7 @@
                     Only if the reason is one of a short list: volume that makes per-operation pricing absurd,
                     logic that has outgrown what a visual canvas can express readably, or a requirement for tests
                     and review that the platform cannot give you. Rebuilding in code does not remove a single
-                    cause from the first half of this article — the vendor still deprecates, the token still
+                    cause from the first half of this article - the vendor still deprecates, the token still
                     expires, the page size still changes. What it changes is that the guards become ordinary code
                     you can test, and the workflow becomes a diff. That is a real gain, and it arrives with a
                     maintenance burden that a no-code platform was carrying for you.
@@ -907,7 +907,7 @@
                 point: the difference between an automation that quietly stops for three weeks and one that tells
                 you within the hour is a handful of dull checks that nobody is excited to build on the day there is
                 nothing to hear. If you recognised two of these in something you are running, the next step is an
-                afternoon with a heartbeat and a count — or a conversation.
+                afternoon with a heartbeat and a count - or a conversation.
               </p>
             </div>
           </div>

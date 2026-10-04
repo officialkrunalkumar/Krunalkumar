@@ -73,7 +73,7 @@
                         "name": "Does this tell me whether the ID is real?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and it is worth being blunt about it. This checks format and checksum only. It performs no lookup against any database or registry. It cannot tell you that an ID is real, that it belongs to the person who gave it to you, or that it has not been cancelled. A number that passes every check here can be entirely fictional — a valid checksum only means the number was constructed the way a real one would be. Real verification means the official route: the issuing authority, its own portal, its own consent flow."
+                                "text": "No, and it is worth being blunt about it. This checks format and checksum only. It performs no lookup against any database or registry. It cannot tell you that an ID is real, that it belongs to the person who gave it to you, or that it has not been cancelled. A number that passes every check here can be entirely fictional - a valid checksum only means the number was constructed the way a real one would be. Real verification means the official route: the issuing authority, its own portal, its own consent flow."
                         }
                 },
                 {
@@ -97,7 +97,7 @@
                         "name": "Why is my bank, or my UPI handle, not in the list?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because both lists were typed out offline and both go stale. Bank amalgamations retire IFSC prefixes, and a new UPI handle appears whenever an app signs a new sponsor bank — and a page that makes no network request cannot notice either. A code missing from those lists is not evidence of anything. The same goes for RTO codes on number plates: those lists are long and they change, so this page names the state and deliberately does not claim to know the office."
+                                "text": "Because both lists were typed out offline and both go stale. Bank amalgamations retire IFSC prefixes, and a new UPI handle appears whenever an app signs a new sponsor bank - and a page that makes no network request cannot notice either. A code missing from those lists is not evidence of anything. The same goes for RTO codes on number plates: those lists are long and they change, so this page names the state and deliberately does not claim to know the office."
                         }
                 },
                 {
@@ -113,7 +113,7 @@
                         "name": "What happens when a line could be two different things?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It says so and checks it as each candidate instead of silently picking one. In practice these six formats collide rarely, because they differ in length and in where the letters and digits sit — but a bare twelve-digit number is also an account number and a hundred other things, and the output points that out rather than announcing “Aadhaar” with confidence it has not earned. Anything matching nothing is reported as unrecognised, with a count of its digits and letters so you can see what you actually pasted."
+                                "text": "It says so and checks it as each candidate instead of silently picking one. In practice these six formats collide rarely, because they differ in length and in where the letters and digits sit - but a bare twelve-digit number is also an account number and a hundred other things, and the output points that out rather than announcing “Aadhaar” with confidence it has not earned. Anything matching nothing is reported as unrecognised, with a count of its digits and letters so you can see what you actually pasted."
                         }
                 }
         ]
@@ -209,10 +209,10 @@
             <li aria-current="page">Indian ID checker</li>
           </ol>
         </nav>
-        <h1>Indian ID checker &mdash; format and checksum only</h1>
+        <h1>Indian ID checker - format and checksum only</h1>
         <p class="hero-text">Aadhaar and GSTIN carry real check digits, and this page computes them and shows the arithmetic. Everything else here is structure. What none of it can do is tell you an identifier is real: there is <strong>no lookup against any database or registry</strong>, so a number that passes every check on this page can still be entirely fictional.</p>
         <ul class="lab-facts">
-          <li>Format and checksum only &mdash; no lookup, ever</li>
+          <li>Format and checksum only - no lookup, ever</li>
           <li>Aadhaar Verhoeff and GSTIN check digits, with the working shown</li>
           <li>PAN, IFSC, UPI handle and number-plate structure</li>
           <li>Paste a column, get a table and a CSV</li>
@@ -239,16 +239,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No lookup against UIDAI, Income Tax, GST, RBI, NPCI or any RTO</li>
-                  <li>Format and checksum only &mdash; it cannot tell you an ID is real</li>
+                  <li>Format and checksum only - it cannot tell you an ID is real</li>
                   <li>No account, no history, nothing saved</li>
                 </ul>
               </div>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -280,7 +280,7 @@
             against any database or registry.</strong> It cannot tell you that an ID
             is real, that it belongs to the person who gave it to you, or that it has
             not been cancelled. A number that passes every check here can be entirely
-            fictional &mdash; a valid checksum only means the number was constructed the
+            fictional - a valid checksum only means the number was constructed the
             way a real one would be.
           </p>
         </div>
@@ -288,7 +288,7 @@
           <p class="lab-warn-text">
             <strong>Aadhaar, specifically.</strong> Do not paste a real Aadhaar number
             anywhere you have not thought about first. This page keeps nothing and makes
-            no request of any kind, so the number stays in this tab &mdash; but that is a
+            no request of any kind, so the number stays in this tab - but that is a
             promise about this page and no other. Masking to the last four digits is the
             norm for a reason, which is why the output echoes Aadhaar masked. If you are
             testing your own validator, press <em>Fake test Aadhaar</em> rather than using
@@ -341,7 +341,7 @@
           </article>
           <article class="info-card">
             <h3>PAN: no check digit you can run</h3>
-            <p>PAN is five letters, four digits, one letter. The fourth character is the holder type &mdash; P for an individual, C for a company, H for a HUF, F for a firm, A for an AOP, T for a trust, and the rest &mdash; and the fifth is the first letter of the surname for an individual, or of the entity name otherwise. The tenth character is described as an alphabetic check digit, but that algorithm has never been published, so structure is genuinely all anyone offline can verify.</p>
+            <p>PAN is five letters, four digits, one letter. The fourth character is the holder type - P for an individual, C for a company, H for a HUF, F for a firm, A for an AOP, T for a trust, and the rest - and the fifth is the first letter of the surname for an individual, or of the entity name otherwise. The tenth character is described as an alphabetic check digit, but that algorithm has never been published, so structure is genuinely all anyone offline can verify.</p>
           </article>
           <article class="info-card">
             <h3>GSTIN: the one with real structure</h3>
@@ -360,7 +360,7 @@
         </div>
           <details class="lab-faq">
             <summary>Does this tell me whether the ID is real?</summary>
-            <div>No, and it is worth being blunt about it. This checks format and checksum only. It performs no lookup against any database or registry. It cannot tell you that an ID is real, that it belongs to the person who gave it to you, or that it has not been cancelled. A number that passes every check here can be entirely fictional &mdash; a valid checksum only means the number was constructed the way a real one would be. Real verification means the official route: the issuing authority, its own portal, its own consent flow.</div>
+            <div>No, and it is worth being blunt about it. This checks format and checksum only. It performs no lookup against any database or registry. It cannot tell you that an ID is real, that it belongs to the person who gave it to you, or that it has not been cancelled. A number that passes every check here can be entirely fictional - a valid checksum only means the number was constructed the way a real one would be. Real verification means the official route: the issuing authority, its own portal, its own consent flow.</div>
           </details>
           <details class="lab-faq">
             <summary>Is anything I paste uploaded?</summary>
@@ -372,7 +372,7 @@
           </details>
           <details class="lab-faq">
             <summary>Why is my bank, or my UPI handle, not in the list?</summary>
-            <div>Because both lists were typed out offline and both go stale. Bank amalgamations retire IFSC prefixes, and a new UPI handle appears whenever an app signs a new sponsor bank &mdash; and a page that makes no network request cannot notice either. A code missing from those lists is not evidence of anything. The same goes for RTO codes on number plates: those lists are long and they change, so this page names the state and deliberately does not claim to know the office.</div>
+            <div>Because both lists were typed out offline and both go stale. Bank amalgamations retire IFSC prefixes, and a new UPI handle appears whenever an app signs a new sponsor bank - and a page that makes no network request cannot notice either. A code missing from those lists is not evidence of anything. The same goes for RTO codes on number plates: those lists are long and they change, so this page names the state and deliberately does not claim to know the office.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I use this for KYC or to check a customer document?</summary>
@@ -380,7 +380,7 @@
           </details>
           <details class="lab-faq">
             <summary>What happens when a line could be two different things?</summary>
-            <div>It says so and checks it as each candidate instead of silently picking one. In practice these six formats collide rarely, because they differ in length and in where the letters and digits sit &mdash; but a bare twelve-digit number is also an account number and a hundred other things, and the output points that out rather than announcing &ldquo;Aadhaar&rdquo; with confidence it has not earned. Anything matching nothing is reported as unrecognised, with a count of its digits and letters so you can see what you actually pasted.</div>
+            <div>It says so and checks it as each candidate instead of silently picking one. In practice these six formats collide rarely, because they differ in length and in where the letters and digits sit - but a bare twelve-digit number is also an account number and a hundred other things, and the output points that out rather than announcing &ldquo;Aadhaar&rdquo; with confidence it has not earned. Anything matching nothing is reported as unrecognised, with a count of its digits and letters so you can see what you actually pasted.</div>
           </details>
       </section>
 

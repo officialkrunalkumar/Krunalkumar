@@ -38,14 +38,14 @@
      har.js and sqlite-browser.js. */
   var CLAIMS = (function () {
     var m = Object.create(null);
-    m.iss = 'Issuer — who minted this token';
-    m.sub = 'Subject — who it is about';
-    m.aud = 'Audience — who is meant to accept it';
+    m.iss = 'Issuer - who minted this token';
+    m.sub = 'Subject - who it is about';
+    m.aud = 'Audience - who is meant to accept it';
     m.exp = 'Expires at';
     m.nbf = 'Not valid before';
     m.iat = 'Issued at';
-    m.jti = 'JWT ID — unique identifier';
-    m.scope = 'Scope — granted permissions';
+    m.jti = 'JWT ID - unique identifier';
+    m.scope = 'Scope - granted permissions';
     m.azp = 'Authorised party';
     m.email = 'Email address';
     m.name = 'Display name';
@@ -136,7 +136,7 @@
     var parts = token.split('.');
     if (parts.length !== 3) {
       out.err('That is not a JWT. A JWT has exactly three parts separated by dots:');
-      out.err('header.payload.signature — this has ' + parts.length + '.');
+      out.err('header.payload.signature - this has ' + parts.length + '.');
       out.line('');
       out.dim('A two-part value may be an unsecured JWT; a single blob is more');
       out.dim('likely base64 or an opaque session id.');
@@ -156,7 +156,7 @@
     if (!isObj(header)) {
       out.err('The header decoded to ' + jsonType(header) + ', not a JSON object.');
       out.err('A JOSE header must be an object. Nothing here can be read as a');
-      out.err('token — whatever produced it is not producing JWTs.');
+      out.err('token - whatever produced it is not producing JWTs.');
       return;
     }
 
@@ -178,7 +178,7 @@
     if (!hasAlg) {
       out.err('The header names no alg at all. A JOSE header is required to name');
       out.err('one, and a library that reads a missing alg as "none" will accept');
-      out.err('this token unsigned — the alg:none bug reached from the other side.');
+      out.err('this token unsigned - the alg:none bug reached from the other side.');
       out.err('Nothing here can be verified. Treat it as forged.');
     } else if (typeof alg !== 'string') {
       out.warn('alg is ' + algLabel + ', which is not a string. The header is');
@@ -188,7 +188,7 @@
       out.err('back to "unsigned" when it cannot read one accepts this token.');
       out.err('Treat it exactly as you would alg:none.');
     } else if (alg.toLowerCase() === 'none') {
-      out.err('alg is "none" — this token is unsigned. Any server that accepts');
+      out.err('alg is "none" - this token is unsigned. Any server that accepts');
       out.err('it is trivially forgeable. This is a real and recurring bug.');
     }
 
@@ -200,7 +200,7 @@
       out.line('');
       out.err('The payload decoded to ' + jsonType(payload) + ', not a JSON object.');
       out.err('That is well-formed base64url and well-formed JSON, so the token');
-      out.err('gets this far, but a JWT claims set has to be an object — there');
+      out.err('gets this far, but a JWT claims set has to be an object - there');
       out.err('are no claims to read and no exp to check.');
       return;
     }
@@ -222,13 +222,13 @@
     out.rule();
     if (typeof payload.exp === 'number') {
       var expired = payload.exp * 1000 < Date.now();
-      if (expired) out.err('EXPIRED — exp is in the past.');
+      if (expired) out.err('EXPIRED - exp is in the past.');
       else out.ok('Not expired.');
     } else {
-      out.warn('No exp claim — this token never expires on its own.');
+      out.warn('No exp claim - this token never expires on its own.');
     }
     if (typeof payload.nbf === 'number' && payload.nbf * 1000 > Date.now()) {
-      out.warn('NOT YET VALID — nbf is in the future.');
+      out.warn('NOT YET VALID - nbf is in the future.');
     }
 
     var secret = document.getElementById('tool-key').value;
@@ -241,14 +241,14 @@
     }
     if (!algoSpec(alg)) {
       out.warn('Cannot verify ' + algLabel + ' here. RS/ES/PS algorithms are signed with');
-      out.warn('a private key and verified with a public one — paste an HMAC-signed');
+      out.warn('a private key and verified with a public one - paste an HMAC-signed');
       out.warn('token (HS256/384/512) to check a signature in this tool.');
       return;
     }
     try {
       var ok = await verifyHmac(token, secret, alg);
-      if (ok) out.ok('SIGNATURE VALID — the token was signed with that secret and is unmodified.');
-      else out.err('SIGNATURE INVALID — wrong secret, or the token has been altered.');
+      if (ok) out.ok('SIGNATURE VALID - the token was signed with that secret and is unmodified.');
+      else out.err('SIGNATURE INVALID - wrong secret, or the token has been altered.');
     } catch (err) {
       out.err('Verification failed: ' + (err && err.message ? err.message : err));
     }

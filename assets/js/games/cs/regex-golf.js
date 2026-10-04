@@ -374,7 +374,7 @@
         }
         box.innerHTML =
           '<p class="rg-warn-lead">' + lead + '</p>' +
-          '<p class="rg-warn-body">This is a ReDoS — a regular expression denial of service. ' +
+          '<p class="rg-warn-body">This is a ReDoS - a regular expression denial of service. ' +
           'The denial is that JavaScript cannot cancel a running match: it holds the one thread, ' +
           'so the page stops repainting and a server stops answering. Refusing it afterwards, as ' +
           'happened here, does not undo the work. You can watch the backtracking itself in the ' +
@@ -557,12 +557,12 @@
         if (src.length > MAX_LEN) { clearMarks(); status('Too long.', 'is-bad'); warn('long'); refuse('long'); return; }
 
         var seen = known(refused, src);
-        if (seen) { clearMarks(); status('Refused — see the note below.', 'is-bad'); warn(seen.why, seen.ms); refuse('redos'); return; }
+        if (seen) { clearMarks(); status('Refused - see the note below.', 'is-bad'); warn(seen.why, seen.ms); refuse('redos'); return; }
 
         if (nestedQuantifier(src)) {
           refused[src] = { why: 'shape', ms: 0 };
           clearMarks();
-          status('Refused — see the note below.', 'is-bad');
+          status('Refused - see the note below.', 'is-bad');
           warn('shape', 0);
           refuse('redos');
           return;
@@ -591,7 +591,7 @@
         if (!finished || spent > BUDGET_MS) {
           refused[src] = { why: 'slow', ms: Math.round(spent) };
           clearMarks();
-          status('Refused — see the note below.', 'is-bad');
+          status('Refused - see the note below.', 'is-bad');
           warn('slow', Math.round(spent));
           refuse('redos');
           return;
@@ -626,7 +626,7 @@
           ? 'Solved in ' + src.length + ', which beats par by ' + (-delta) + '.'
           : delta === 0
             ? 'Solved in ' + src.length + '. That is par.'
-            : 'Solved in ' + src.length + '. Par is ' + lvl.par + ' — worth another look.',
+            : 'Solved in ' + src.length + '. Par is ' + lvl.par + ' - worth another look.',
           'is-good');
       }
 

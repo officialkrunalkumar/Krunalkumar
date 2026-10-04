@@ -268,8 +268,8 @@
   /* Ports whose traffic is, by design, readable by anyone on the path.
      The note is what an analyst should actually say in the report. */
   var CLEARTEXT = {
-    21:   ['FTP', 'commands, filenames and the password are plain ASCII — use SFTP or FTPS'],
-    23:   ['Telnet', 'every keystroke including the password is in the clear — SSH replaced this in 1995'],
+    21:   ['FTP', 'commands, filenames and the password are plain ASCII - use SFTP or FTPS'],
+    23:   ['Telnet', 'every keystroke including the password is in the clear - SSH replaced this in 1995'],
     25:   ['SMTP', 'mail bodies and AUTH credentials readable unless STARTTLS was negotiated'],
     69:   ['TFTP', 'no authentication at all, and the file contents are plain'],
     79:   ['finger', 'user enumeration, unauthenticated'],
@@ -377,7 +377,7 @@
     else return false;
 
     ctx.format = 'classic pcap' + (nano ? ' (nanosecond timestamps)' : '') +
-                 (modified ? ' — Kuznetzov "modified" variant' : '');
+                 (modified ? ' - Kuznetzov "modified" variant' : '');
     ctx.endian = little ? 'little-endian' : 'big-endian';
     ctx.versionText = dv.getUint16(4, little) + '.' + dv.getUint16(6, little);
 
@@ -409,7 +409,7 @@
          file, so it is the one worth sanity-checking. A wrong-but-plausible
          value is undetectable here; an absurd one is not. */
       if (incl > MAX_PKT_LEN) {
-        ctx.notes.push('Record at offset ' + pos + ' claims a ' + num(incl) + '-byte packet. That is not a real capture length — the file is truncated, corrupt, or not what its header says. Stopped there.');
+        ctx.notes.push('Record at offset ' + pos + ' claims a ' + num(incl) + '-byte packet. That is not a real capture length - the file is truncated, corrupt, or not what its header says. Stopped there.');
         ctx.stoppedAt = pos;
         break;
       }
@@ -860,10 +860,10 @@
     if (c.syn && c.synack && c.fin) return ['connected and closed cleanly', 't-ok'];
     if (c.syn && c.synack)          return ['connected, still open at end of capture', 't-ok'];
     if (c.syn && c.rst)             return ['refused (RST to the SYN)', 't-warn'];
-    if (c.syn && !c.synack)         return ['no reply — dropped or filtered', 't-err'];
+    if (c.syn && !c.synack)         return ['no reply - dropped or filtered', 't-err'];
     if (c.rst)                      return ['reset', 't-warn'];
     if (c.fin)                      return ['closed (handshake not captured)', 't-dim'];
-    return ['mid-stream — capture started after the handshake', 't-dim'];
+    return ['mid-stream - capture started after the handshake', 't-dim'];
   }
 
   /* ---- TCP payload buffering ------------------------------------------- */
@@ -1232,7 +1232,7 @@
         where: where,
         fields: [
           ['username', user ? user[1] : '(not captured)'],
-          ['password', pass ? pass[1] : '(not captured — the PASS line may be past the buffer or the snaplen)']
+          ['password', pass ? pass[1] : '(not captured - the PASS line may be past the buffer or the snaplen)']
         ],
         note: label === 'FTP'
           ? 'FTP sends the login as two plain commands. So are the file names, and so is the data on the second connection.'
@@ -1244,7 +1244,7 @@
         proto: label + ' APOP',
         where: where,
         fields: [['APOP', apop[1]]],
-        note: 'APOP hashes the password with a server challenge — not readable directly, but crackable offline from this capture.'
+        note: 'APOP hashes the password with a server challenge - not readable directly, but crackable offline from this capture.'
       });
     }
   }
@@ -1369,7 +1369,7 @@
       proto: 'Telnet session' + (sawPrompt ? ' (login prompt seen)' : ''),
       where: f.srcIp + ' → ' + ep(f.dstIp, f.dstPort),
       fields: fields,
-      note: 'Telnet transmits every keystroke unencrypted. The password is not echoed back, so it appears only in the client-to-server direction — which is this.'
+      note: 'Telnet transmits every keystroke unencrypted. The password is not echoed back, so it appears only in the client-to-server direction - which is this.'
     });
   }
 
@@ -1455,7 +1455,7 @@
 
     if (!handled) {
       if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
-        ctx.fatal = 'This is a gzip file (magic 1f 8b), almost certainly a .pcap.gz. Decompress it first — gunzip, 7-Zip, or Wireshark, which opens them directly.';
+        ctx.fatal = 'This is a gzip file (magic 1f 8b), almost certainly a .pcap.gz. Decompress it first - gunzip, 7-Zip, or Wireshark, which opens them directly.';
       } else if (bytes[0] === 0x28 && bytes[1] === 0xb5 && bytes[2] === 0x2f && bytes[3] === 0xfd) {
         ctx.fatal = 'This is a zstd-compressed file. Decompress it first.';
       } else if (bytes[0] === 0x50 && bytes[1] === 0x4b) {
@@ -1488,7 +1488,7 @@
 
   function render(ctx) {
     out.clear();
-    out.heading(ctx.fileName + '  —  ' + LabTool.humanBytes(ctx.fileSize));
+    out.heading(ctx.fileName + '  -  ' + LabTool.humanBytes(ctx.fileSize));
 
     if (ctx.fatal) {
       out.line('');
@@ -1508,7 +1508,7 @@
     var ltKeys = Object.keys(ctx.linkTypes);
     for (var i = 0; i < ltKeys.length && i < 4; i++) {
       var lt = ltKeys[i];
-      out.row(i === 0 ? 'link type' : '', lt + ' — ' + (LINKTYPES[lt] || 'unknown') +
+      out.row(i === 0 ? 'link type' : '', lt + ' - ' + (LINKTYPES[lt] || 'unknown') +
               (ctx.linkTypes[lt] ? '  (' + plural(ctx.linkTypes[lt], 'packet') + ')' : ''));
     }
     if (ctx.snaplen) out.row('snapshot length', num(ctx.snaplen) + ' bytes');
@@ -1530,7 +1530,7 @@
 
     if (ctx.dissected < ctx.packets) {
       out.line('');
-      out.warn('TRUNCATED — dissected the first ' + num(ctx.dissected) + ' of ' + num(ctx.packets) +
+      out.warn('TRUNCATED - dissected the first ' + num(ctx.dissected) + ' of ' + num(ctx.packets) +
                ' packets. Everything below this line describes that subset;');
       out.warn('the counts and timestamps above cover the whole file.');
     }
@@ -1538,7 +1538,7 @@
       out.line('');
       out.warn(plural(ctx.truncatedPackets, 'packet') +
         (ctx.truncatedPackets === 1 ? ' was' : ' were') + ' cut short by the capture snaplen. Payload');
-      out.warn('analysis on those is incomplete by definition — a password past the');
+      out.warn('analysis on those is incomplete by definition - a password past the');
       out.warn('cut is simply not in this file.');
     }
     if (ctx.malformed) out.dim(plural(ctx.malformed, 'packet') + ' could not be dissected (short, malformed, or an unhandled encapsulation).');
@@ -1582,7 +1582,7 @@
         out.row('802.1Q VLANs', 'VLAN ' + vlanKeys.slice(0, 12).join(', ') +
                 (vlanKeys.length > 12 ? ' … (' + vlanKeys.length + ' total)' : ''));
       }
-      if (ctx.fragments) out.row('IP fragments', num(ctx.fragments) + ' — payload spanning fragments is not reassembled here');
+      if (ctx.fragments) out.row('IP fragments', num(ctx.fragments) + ' - payload spanning fragments is not reassembled here');
     }
 
     // ---- talkers --------------------------------------------------------
@@ -1662,7 +1662,7 @@
         out.line('');
         for (i = 0; i < scanKeys.length && i < 5; i++) {
           out.warn(scanKeys[i] + ' opened ' + num(scanners[scanKeys[i]]) +
-                   ' TCP connections that were never answered — that shape is a port scan.');
+                   ' TCP connections that were never answered - that shape is a port scan.');
         }
       }
     }
@@ -1672,7 +1672,7 @@
     out.heading('Cleartext credentials');
     if (!ctx.creds.length) {
       out.ok('None found.');
-      out.dim('That is a real result, not an error — but read it narrowly. It means');
+      out.dim('That is a real result, not an error - but read it narrowly. It means');
       out.dim('no credential appeared in the plaintext protocols this tool parses,');
       out.dim('within the first ' + num(MAX_DISSECT) + ' packets and the buffered part of each');
       out.dim('flow. Encrypted traffic is not decrypted here and never will be.');
@@ -1690,8 +1690,8 @@
         out.line('');
       }
       if (ctx.credsFull) out.warn('Stopped at ' + MAX_CREDS + ' credentials; there are more in this file.');
-      out.dim('Every value above travelled in the clear. Any device on the path —');
-      out.dim('a switch, a router, a hotel access point, anyone on the same wifi —');
+      out.dim('Every value above travelled in the clear. Any device on the path -');
+      out.dim('a switch, a router, a hotel access point, anyone on the same wifi -');
       out.dim('could read it with no more effort than this took.');
     }
     if (ctx.flowsFull) {
@@ -1719,7 +1719,7 @@
       if (dnsSorted.length > 40) out.dim('… ' + num(dnsSorted.length - 40) + ' more names not shown.');
       if (ctx.dnsKeys.length >= MAX_DNS_KEYS) out.dim('(name table hit its ' + MAX_DNS_KEYS + '-entry cap)');
       out.dim('DNS is unencrypted unless it is DoH or DoT, so this list is visible');
-      out.dim('to the network too — it is a record of what was visited.');
+      out.dim('to the network too - it is a record of what was visited.');
     }
 
     // ---- HTTP -----------------------------------------------------------
@@ -1761,7 +1761,7 @@
           out.err(conflicts[i] + ' was claimed by ' + Object.keys(ctx.arp[conflicts[i]]).join(' and '));
         }
         out.warn('One IP claimed by several MAC addresses is either a failover, a');
-        out.warn('roaming client, or ARP spoofing — the capture cannot tell you');
+        out.warn('roaming client, or ARP spoofing - the capture cannot tell you');
         out.warn('which, but it is worth explaining before you move on.');
       }
     }
@@ -1791,7 +1791,7 @@
       out.line('');
       out.row('on encrypted ports', plural(encryptedPkts, 'packet'), 't-ok');
       out.row('on plaintext ports', plural(cleartextPkts, 'packet'), cleartextPkts ? 't-warn' : 't-ok');
-      out.dim('Counted by port number, which is a guess about intent — traffic on');
+      out.dim('Counted by port number, which is a guess about intent - traffic on');
       out.dim('443 is almost certainly TLS, but nothing here verifies that.');
     }
 
@@ -1805,7 +1805,7 @@
     out.rule();
     out.dim('What this does not do: decrypt TLS, reassemble across missing TCP');
     out.dim('segments, follow tunnels (GRE, IPsec, VXLAN), or dissect 802.11.');
-    out.dim('For any of that, open the file in Wireshark. Nothing was uploaded —');
+    out.dim('For any of that, open the file in Wireshark. Nothing was uploaded -');
     out.dim('every number above was computed from the bytes in this tab.');
   }
 
@@ -1853,14 +1853,14 @@
       });
       out.dim('Drop a .pcap or .pcapng capture above.');
       out.dim('');
-      out.dim('It is parsed here — classic pcap in either byte order, the');
-      out.dim('nanosecond variants, and pcapng blocks — then dissected down');
+      out.dim('It is parsed here - classic pcap in either byte order, the');
+      out.dim('nanosecond variants, and pcapng blocks - then dissected down');
       out.dim('through Ethernet, VLAN, IPv4/IPv6, TCP, UDP, ICMP and ARP.');
       out.dim('The plaintext protocols get read: HTTP, FTP, Telnet, SMTP,');
       out.dim('POP3, IMAP, DNS and SNMP, including any credentials in them.');
       out.dim('');
       out.dim('A capture is other people\'s traffic. That is exactly why this');
-      out.dim('one never leaves the tab — no upload, no request, no exception.');
+      out.dim('one never leaves the tab - no upload, no request, no exception.');
     }
   });
 })();

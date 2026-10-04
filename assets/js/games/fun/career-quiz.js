@@ -38,7 +38,7 @@
     {
       key: 'frontend',
       name: 'Frontend',
-      day: 'Building the screens people touch: the states nobody sketched — loading, empty, error, half-typed — keyboard and screen-reader behaviour, and the loop between a design and something real enough to argue about.',
+      day: 'Building the screens people touch: the states nobody sketched - loading, empty, error, half-typed - keyboard and screen-reader behaviour, and the loop between a design and something real enough to argue about.',
       grind: 'The last tenth of the polish takes as long as the rest. Device and browser differences, the same form built again slightly differently, and a steady drip of small copy and spacing changes.'
     },
     {
@@ -65,18 +65,18 @@
      tracks describe a job far better than one does — "security" alone covers
      a penetration tester and a compliance lead, who share almost nothing. */
   var PAIRS = {
-    '0|1': 'Application security, or secure platform work — the people who can read the code well enough to say why the flaw is a flaw rather than just that a tool flagged it.',
+    '0|1': 'Application security, or secure platform work - the people who can read the code well enough to say why the flaw is a flaw rather than just that a tool flagged it.',
     '0|2': 'The client-side and human end of security: session handling, what a browser gives away, and sign-in flows that survive somebody being fooled.',
     '0|3': 'Detection engineering, or fraud and abuse work, where most of the job is deciding which signals deserve to wake a human.',
     '0|4': 'Cloud security and identity: permissions, network boundaries, and the pipeline that has to enforce them without stopping everybody else working.',
     '0|5': 'Trust and safety, or security inside a customer-facing product, where the argument is as much about what to allow as about what to block.',
     '1|2': 'Full-stack product engineering, usually in a small team, where owning a feature end to end matters more than depth in either half.',
-    '1|3': 'Data engineering — pipelines, schemas and correctness at volume, which is a backend job wearing a different hat.',
+    '1|3': 'Data engineering - pipelines, schemas and correctness at volume, which is a backend job wearing a different hat.',
     '1|4': 'Platform engineering: the services and tooling other engineers build on, judged by how little they have to think about you.',
     '1|5': 'Technical product work, or an early engineer at a small company, where the shape of the system and the question of what to build are one conversation.',
-    '2|3': 'Analytics interfaces and data visualisation — making a number legible without quietly making it a lie.',
+    '2|3': 'Analytics interfaces and data visualisation - making a number legible without quietly making it a lie.',
     '2|4': 'Web performance and frontend platform work: build tooling, bundle size, and what actually loads on a cheap phone on a bad connection.',
-    '2|5': 'Design engineering — living between the mock-up and the shipped screen, and usually the person who notices the empty state was never designed.',
+    '2|5': 'Design engineering - living between the mock-up and the shipped screen, and usually the person who notices the empty state was never designed.',
     '3|4': 'Analytics or machine-learning platform work: keeping the pipelines, the compute and the bill upright so other people can ask questions.',
     '3|5': 'Product analytics and experimentation, where the real skill is telling a team clearly what the numbers cannot tell them.',
     '4|5': 'Developer experience and internal platforms, where your users are colleagues, they are technical, and they will tell you exactly what they think.'
@@ -149,9 +149,9 @@
       ['a feature we shipped that nobody has opened', 'product']
     ] },
     { q: 'Work is most enjoyable when it is…', o: [
-      ['adversarial — somebody out there is trying to get past it', 'security'],
-      ['structural — pieces that have to fit exactly', 'backend'],
-      ['investigative — the answer is in there and does not want to come out', 'data']
+      ['adversarial - somebody out there is trying to get past it', 'security'],
+      ['structural - pieces that have to fit exactly', 'backend'],
+      ['investigative - the answer is in there and does not want to come out', 'data']
     ] },
     { q: 'The compliment that would land best:', o: [
       ['It is genuinely nice to use.', 'frontend'],
@@ -159,7 +159,7 @@
       ['You stopped us building the wrong thing.', 'product']
     ] },
     { q: 'How do you feel about being on call?', o: [
-      ['Fine — an incident is when the work matters most', 'security'],
+      ['Fine - an incident is when the work matters most', 'security'],
       ['I would rather nothing I make ever wakes anybody, me included', 'frontend'],
       ['Fine, as long as I own the code that pages me', 'backend']
     ] },
@@ -268,7 +268,7 @@
           /* A flat spread is a real outcome and should be said out loud
              rather than dressed up as a top-two. */
           if (first.picked - rows[rows.length - 1].picked <= 2) {
-            body += ' Although your answers barely leaned anywhere — the six came out close enough that ' +
+            body += ' Although your answers barely leaned anywhere - the six came out close enough that ' +
               'the order at the top is close to arbitrary. Read all of them.';
           } else if (rows[2].picked === second.picked) {
             body += ' ' + rows[2].track.name + ' tied for second, so treat that one as equally likely.';
@@ -282,7 +282,7 @@
             'questions can only say which kind of work you find appealing to think about, which is not the ' +
             'same as what you are good at, what pays where you live, or what you will still want at forty. ' +
             'People also move between all six of these repeatedly, and the skills carry. The only test that ' +
-            'settles it is doing a few weeks of the actual work — there is more on that in ' +
+            'settles it is doing a few weeks of the actual work - there is more on that in ' +
             '<a href="/blog/finding-the-right-career">finding the right career</a>, and the ' +
             '<a href="/internships">internships</a> here exist for exactly that reason.</span>';
 
@@ -302,7 +302,7 @@
           };
         },
         disclaimer: 'This measures preference, not aptitude, and it only knows the six tracks it was written ' +
-          'with — there is no option here for QA, technical writing, support engineering, research or the ' +
+          'with - there is no option here for QA, technical writing, support engineering, research or the ' +
           'dozen other jobs that keep software running. Each track appears in exactly nine questions so no ' +
           'result is favoured by the wording. Nothing you answered left your browser and nothing was stored.'
       });

@@ -230,7 +230,7 @@
         out.err('STOP. That is ' + PRIVATE[i][1] + ', not a public key.');
         out.line('');
         pe('Nothing has been parsed, nothing has been hashed, and nothing has ' +
-           'left this tab — this page has no network code in it at all. But the ' +
+           'left this tab - this page has no network code in it at all. But the ' +
            'bytes are in your clipboard and in this browser\'s memory, and I ' +
            'cannot tell you where else they have been pasted today.');
         out.line('');
@@ -302,7 +302,7 @@
       out.line('');
       pe('MISMATCH. The label on the line and the type inside the encoded key ' +
          'disagree. This key has been edited by hand or damaged in transit. Do ' +
-         'not install it — fetch a fresh copy from the person who owns it.');
+         'not install it - fetch a fresh copy from the person who owns it.');
       out.line('');
     }
 
@@ -386,7 +386,7 @@
 
   function describeOptions(opts) {
     if (/\brestrict\b/.test(opts)) {
-      po('restrict — everything off by default, which is the right starting point.');
+      po('restrict - everything off by default, which is the right starting point.');
     }
     if (/command="/.test(opts)) {
       var m = opts.match(/command="([^"]*)"/);
@@ -400,11 +400,11 @@
     if (/from="/.test(opts)) {
       po('from= limits which addresses may use this key.');
     }
-    if (/\bno-pty\b/.test(opts)) po('no-pty — no terminal allocation.');
+    if (/\bno-pty\b/.test(opts)) po('no-pty - no terminal allocation.');
     if (/\bno-agent-forwarding\b/.test(opts)) po('no-agent-forwarding.');
     if (/\bno-port-forwarding\b/.test(opts)) po('no-port-forwarding.');
     if (/\bcert-authority\b/.test(opts)) {
-      pw('cert-authority — this is not a user key, it is a CA. Every certificate ' +
+      pw('cert-authority - this is not a user key, it is a CA. Every certificate ' +
          'it signs will be accepted. Treat it with far more care than a normal ' +
          'authorized_keys entry.');
     }
@@ -426,7 +426,7 @@
         problems++;
       } else if (bits < 3072) {
         pw('RSA ' + bits + ' bits. Accepted everywhere, but 2048 is the floor ' +
-           'rather than a recommendation — 3072 or an Ed25519 key is the ' +
+           'rather than a recommendation - 3072 or an Ed25519 key is the ' +
            'current advice.');
         problems++;
       } else {
@@ -443,7 +443,7 @@
          'with no parameters to get wrong.');
     } else if (/^sk-/.test(type)) {
       po('A FIDO/U2F-backed key. The private half lives on a hardware token and ' +
-         'cannot be copied off the machine — the strongest option here.');
+         'cannot be copied off the machine - the strongest option here.');
     } else if (/^ecdsa-sha2-/.test(type)) {
       pw('ECDSA. Sound if the curve is one of the NIST three, but it needs good ' +
          'randomness for every signature and has produced real key-recovery ' +
@@ -452,7 +452,7 @@
     } else if (/-cert-v01@openssh\.com$/.test(type)) {
       p('This is an OpenSSH certificate rather than a bare key. Its validity ' +
         'window, principals and critical options are inside the blob and are ' +
-        'not decoded here — ssh-keygen -L -f will print them.');
+        'not decoded here - ssh-keygen -L -f will print them.');
     }
 
     if (!problems) {
@@ -478,7 +478,7 @@
 
     if (!text) {
       out.err('Nothing to read.');
-      p('Paste a public key — the contents of a .pub file, a line out of ' +
+      p('Paste a public key - the contents of a .pub file, a line out of ' +
         'authorized_keys, or a known_hosts entry.');
       return;
     }
@@ -513,7 +513,7 @@
     } catch (e) {
       out.err('Could not finish reading that: ' + e.message);
       p('If the key works with ssh, this is a bug in the tool rather than in ' +
-        'your key — the report link below reaches me.');
+        'your key - the report link below reaches me.');
     }
   }
 
@@ -527,8 +527,8 @@
       p('A .pub file, one line of authorized_keys with its options, a ' +
         'known_hosts entry, or a whole authorized_keys file at once.');
       out.line('');
-      p('You get both fingerprints — SHA256 as ssh-keygen prints it today, and ' +
-        'MD5 as every runbook written before OpenSSH 6.8 records it — plus the ' +
+      p('You get both fingerprints - SHA256 as ssh-keygen prints it today, and ' +
+        'MD5 as every runbook written before OpenSSH 6.8 records it - plus the ' +
         'key size, and whether the type inside the blob matches the label on ' +
         'the line.');
       out.line('');

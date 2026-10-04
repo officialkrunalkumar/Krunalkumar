@@ -26,11 +26,11 @@
     dig: {
       name: 'The archaeologist',
       good: 'You do not touch code until you know how it got that way. Git log, the closed pull requests, ' +
-        'the ticket from four years ago that explains the strange branch &mdash; you read them, and you are ' +
+        'the ticket from four years ago that explains the strange branch - you read them, and you are ' +
         'usually the only person on the team who can say why anything is the way it is. That is worth more ' +
         'than it looks: most bad rewrites are somebody deleting a workaround whose reason was never written down.',
       flaw: 'You can spend a whole day proving why a line exists and still not change it. Understanding turns ' +
-        'into deference &mdash; the history explains why the code is bad, it does not oblige you to keep it. ' +
+        'into deference - the history explains why the code is bad, it does not oblige you to keep it. ' +
         'And a reason from 2019 is not automatically a reason today.',
       low: 'You start from what the code does rather than why it does it, which is quicker until the day you ' +
         'remove something load-bearing.'
@@ -61,7 +61,7 @@
     plan: {
       name: 'The architect',
       good: 'You think in boundaries. Where does this decision belong, what does this module promise, what ' +
-        'happens at the seam &mdash; and you would rather spend Tuesday getting the shape right than spend ' +
+        'happens at the seam - and you would rather spend Tuesday getting the shape right than spend ' +
         'six months routing around a shape that is wrong. The interfaces you draw tend to still make sense ' +
         'when somebody else is holding them.',
       flaw: 'You design for the system you imagine in three years rather than the one in front of you. The ' +
@@ -84,7 +84,7 @@
     tool: {
       name: 'The toolmaker',
       good: 'You notice the third time you do something by hand, and then it never happens by hand again. ' +
-        'Scripts, generators, a test harness that runs the flaky thing two hundred times overnight &mdash; you ' +
+        'Scripts, generators, a test harness that runs the flaky thing two hundred times overnight - you ' +
         'build the thing that builds the thing, and the rest of the team gets faster without quite noticing why.',
       flaw: 'Sometimes the automation takes longer than the task ever would have, and now it has a bug and a ' +
         'maintainer, and the maintainer is you. A bespoke tool only you understand is a bus factor of one ' +
@@ -133,7 +133,7 @@
       options: [
         { label: 'I am awake before the second buzz and oddly focused.', scores: { fire: 3 } },
         { label: 'Irritated for a minute, then genuinely curious about what got us here.', scores: { dig: 3 } },
-        { label: 'Fine, as long as the runbook is any good &mdash; and if it is not, I rewrite it afterwards.', scores: { tool: 2, fire: 1 } },
+        { label: 'Fine, as long as the runbook is any good - and if it is not, I rewrite it afterwards.', scores: { tool: 2, fire: 1 } },
         { label: 'Quietly furious that this class of failure was possible at all.', scores: { plan: 2, grow: 1 } },
         { label: 'I patch it, I sleep, I write the proper fix into next week.', scores: { ship: 3 } }
       ]
@@ -152,10 +152,10 @@
     {
       q: 'A colleague asks why a particular function is written in such a strange way.',
       options: [
-        { label: 'I know already &mdash; there is a bug report behind it, and I can find it.', scores: { dig: 3 } },
+        { label: 'I know already - there is a bug report behind it, and I can find it.', scores: { dig: 3 } },
         { label: 'I do not know, and I want to know before either of us touches it.', scores: { dig: 2, plan: 1 } },
         { label: 'It was a workaround during an incident. I was there.', scores: { fire: 3 } },
-        { label: 'It does not matter much now &mdash; it is covered by tests, so we can change it safely.', scores: { grow: 2, ship: 1 } }
+        { label: 'It does not matter much now - it is covered by tests, so we can change it safely.', scores: { grow: 2, ship: 1 } }
       ]
     },
     {
@@ -307,7 +307,7 @@
              the write-up says so rather than crowning one of them. */
           var blend = topPts - secondPts <= 2
             ? 'You are close to an even split between <strong>' + top.name.toLowerCase() + '</strong> and <strong>' +
-              second.name.toLowerCase() + '</strong> &mdash; two points apart over sixteen questions is not a ' +
+              second.name.toLowerCase() + '</strong> - two points apart over sixteen questions is not a ' +
               'real gap, so read both descriptions and take whichever one stings.'
             : '<strong>' + second.name + '</strong> is your second reading, which softens ' +
               'the first: it is the part of you that will notice when the main instinct is running away with you.';
@@ -322,7 +322,7 @@
           return { title: top.name, body: body, bars: bars };
         },
         disclaimer: 'This is a joke with a straight face. Sixteen questions cannot tell you what sort of ' +
-          'developer you are, and the archetypes are made up &mdash; most people are three of them depending ' +
+          'developer you are, and the archetypes are made up - most people are three of them depending ' +
           'on the week, the codebase and how much sleep they had. Useful as a prompt for a conversation with ' +
           'your team, useless for hiring anybody. Nothing you answered left your browser.'
       });

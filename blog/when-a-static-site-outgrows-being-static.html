@@ -8,8 +8,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/when-a-static-site-outgrows-being-static" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="The signals that you have outgrown static, and the steps people skip" />
     <meta property="og:description" content="A static site can run compilers, an operating system emulator and a forensics suite entirely in the visitor's browser, so &quot;static&quot; is not a synonym for &quot;simple&quot;. These are the honest signals that you have genuinely outgrown it, the intermediate steps most projects skip on the way to a backend, and the things you give up the moment you have a server." />
@@ -34,7 +34,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "The signals that you have outgrown static, and the steps people skip",
-        "description": "What static hosting genuinely buys, the specific signals that you have outgrown it, the intermediate steps between static and a backend that most projects skip, and the costs of going dynamic — argued from a site that pushes the static approach unusually far.",
+        "description": "What static hosting genuinely buys, the specific signals that you have outgrown it, the intermediate steps between static and a backend that most projects skip, and the costs of going dynamic - argued from a site that pushes the static approach unusually far.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/when-a-static-site-outgrows-being-static.jpg",
         "datePublished": "2026-08-31",
         "dateModified": "2026-08-31",
@@ -99,7 +99,7 @@
                         "name": "What do you lose by going dynamic?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "An attack surface you did not have, an availability dependency, a bill that scales with traffic, and the ability to make simple verifiable promises about data never leaving the visitor's machine — which for a site full of security tools is the product itself."
+                                "text": "An attack surface you did not have, an availability dependency, a bill that scales with traffic, and the ability to make simple verifiable promises about data never leaving the visitor's machine - which for a site full of security tools is the product itself."
                         }
                 }
         ]
@@ -241,7 +241,7 @@
               </p>
               <p>
                 None of that requires the site to be simple. This one has zero dependencies in
-                <code>package.json</code> &mdash; the figure is counted at deploy, not typed &mdash; and it
+                <code>package.json</code> - the figure is counted at deploy, not typed - and it
                 still runs language playgrounds, a Linux terminal and a suite of forensics tools, all
                 client-side. The heavy lifting moved to the visitor's machine rather than disappearing.
               </p>
@@ -258,7 +258,7 @@
               <p>
                 A service worker sits between the page and the network, decides what to keep, and serves it
                 back when there is nothing to serve from. On this site that means any page you have opened
-                &mdash; an article, a document maker, a game &mdash; keeps working on a train from then on.
+                - an article, a document maker, a game - keeps working on a train from then on.
                 Everything is cached on use rather than up front, deliberately, so a first visit does not
                 pay to download an archive nobody asked for, and what a visitor never opened is honestly
                 not there.
@@ -266,11 +266,11 @@
               <p>
                 The catch that shaped that choice is the one every hand-maintained list has. This site's
                 precache list used to be written by hand, and its own comment admitted the failure mode
-                before anything enforced it &mdash; if a page grows a new stylesheet or script, it has to be
+                before anything enforced it - if a page grows a new stylesheet or script, it has to be
                 added there or offline quietly breaks. A build gate held the list honest for a while; the
                 list itself was then retired for caching on use, which cannot drift by construction,
                 because the copy that is kept is the copy that was actually served. The one hand list left
-                is the offline fallback page and the couple of files it references &mdash; short enough for
+                is the offline fallback page and the couple of files it references - short enough for
                 the build to check whole and refuse to publish when it disagrees with the page.
               </p>
               <p>
@@ -314,7 +314,7 @@
                 <li>
                   <strong>Search that outgrows a shipped index.</strong> This site ships a prebuilt index
                   and fetches it once, on first use, rather than on page load. It is currently about 957&nbsp;KB
-                  across 272 pages. That is fine now and it will not be fine forever &mdash; the file grows
+                  across 272 pages. That is fine now and it will not be fine forever - the file grows
                   roughly linearly with the site, and at some point asking for it becomes a worse deal than
                   a query. When it does, the answer is a search service, not a bigger download.
                 </li>
@@ -338,7 +338,7 @@
                   <strong>A generator plus a gate.</strong> Where a fact lives in two places and drifts,
                   derive one from the other and make disagreement fail the build. This site's games section
                   is generated from a single manifest for exactly this reason, and its glossary works the
-                  same way. Very often this is not a step towards a backend &mdash; it is the whole answer,
+                  same way. Very often this is not a step towards a backend - it is the whole answer,
                   and the perceived need for a server was really a need for a source of truth.
                 </li>
                 <li>
@@ -387,13 +387,13 @@
                 <strong>The ability to make a simple promise.</strong> For this site that last one is
                 decisive rather than incidental. Every tool here says nothing you paste is uploaded, and that
                 claim is verifiable in a network tab precisely because there is nowhere for it to go. The
-                moment a server exists, the promise becomes a policy &mdash; something you assert and the
+                moment a server exists, the promise becomes a policy - something you assert and the
                 visitor takes on trust. That is a genuinely worse product for this particular site, so the
                 ceiling is a feature and not a limitation I am working around.
               </p>
               <h2 id="the-test-worth-applying">The test worth applying</h2>
               <p>
-                Not &ldquo;is this hard to do statically?&rdquo; &mdash; a great deal is hard and still worth
+                Not &ldquo;is this hard to do statically?&rdquo; - a great deal is hard and still worth
                 doing, and the browser is a far more capable machine than the framing usually allows. The
                 question that actually separates the cases is:
               </p>
@@ -410,8 +410,8 @@
                 One caveat on all of the above, because it is a real limit on my confidence: this is a site
                 run by one person where I own every decision and there is no editorial team, no compliance
                 requirement and no revenue depending on a release date. Those constraints change the maths in
-                ways I have not had to live with here, and I would weigh the organisational signals &mdash;
-                editors, freshness, ownership &mdash; more heavily than the technical ones in most workplaces.
+                ways I have not had to live with here, and I would weigh the organisational signals -
+                editors, freshness, ownership - more heavily than the technical ones in most workplaces.
               </p>
               </div>
             </div>
@@ -432,7 +432,7 @@
             <p class="eyebrow">Related reading</p>
             <ul>
               <li><a href="/blog/what-build-gate-failures-taught-me-about-ci">What build-gate failures taught me about CI</a></li>
-              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website - and the mechanism that made it hold</a></li>
               <li><a href="/blog/writing-comments-that-survive">Writing comments that survive</a></li>
               <li><a href="/blog/why-your-automation-broke">Why your automation broke, and how to build one that fails loudly</a></li>
             </ul>

@@ -88,7 +88,7 @@
 
     var headers = parse(raw);
     if (!headers.length) {
-      out.err('No headers found. Paste the raw header block — the part with');
+      out.err('No headers found. Paste the raw header block - the part with');
       out.err('lines like "Received:", "From:" and "Authentication-Results:".');
       return;
     }
@@ -126,7 +126,7 @@
     if (pathDomain && fromDomain && pathDomain !== fromDomain) {
       out.warn('Return-Path domain (' + pathDomain + ') differs from From (' +
                fromDomain + '). Legitimate for mailing lists and bulk senders,');
-      out.warn('and also exactly what a spoofed envelope looks like — check SPF.');
+      out.warn('and also exactly what a spoofed envelope looks like - check SPF.');
     }
 
     // ---- authentication ----
@@ -173,7 +173,7 @@
     // ---- delivery path ----
     out.rule();
     var received = pickAll(headers, 'Received');
-    out.heading('Delivery path — ' + received.length + ' hop(s)');
+    out.heading('Delivery path - ' + received.length + ' hop(s)');
     out.dim('Read bottom to top: the last entry is where the message started.');
     out.line('');
 
@@ -186,7 +186,7 @@
       if (hop.by) out.row('  by', hop.by);
       if (hop.ip) {
         var isPrivate = PRIVATE.test(hop.ip);
-        out.row('  IP', hop.ip + (isPrivate ? '  (private — internal relay)' : ''),
+        out.row('  IP', hop.ip + (isPrivate ? '  (private - internal relay)' : ''),
                 isPrivate ? 't-dim' : null);
       }
       out.row('  TLS', hop.tls ? 'yes' : 'no', hop.tls ? 't-ok' : 't-warn');
@@ -215,7 +215,7 @@
       out.heading('Originating IP');
       out.line(origin.ip, 't-info');
       out.dim('This is the address that actually handed the message to the first');
-      out.dim('server that logged it — the closest thing to a real sender.');
+      out.dim('server that logged it - the closest thing to a real sender.');
       out.dim('Nothing here looks it up: no WHOIS, no geolocation, no reputation');
       out.dim('query, because any of those would tell a third party what you are');
       out.dim('investigating. Copy it into your own tooling if you need more.');

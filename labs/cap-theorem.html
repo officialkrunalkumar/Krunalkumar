@@ -208,7 +208,7 @@
           </ol>
         </nav>
         <h1>CAP theorem sandbox</h1>
-        <p class="hero-text">Everyone has seen the three circles and the words &ldquo;pick two&rdquo;. That picture is wrong in a way that matters, because you do not pick partition tolerance &mdash; the network picks for you. Here is a cluster of five replicas and ten links you can cut yourself, and the choice as it really is: what a replica does in the seconds it cannot reach the others.</p>
+        <p class="hero-text">Everyone has seen the three circles and the words &ldquo;pick two&rdquo;. That picture is wrong in a way that matters, because you do not pick partition tolerance - the network picks for you. Here is a cluster of five replicas and ten links you can cut yourself, and the choice as it really is: what a replica does in the seconds it cannot reach the others.</p>
         <ul class="lab-facts">
           <li>Cut links, components computed live</li>
           <li>CP refuses writes; AP diverges</li>
@@ -237,14 +237,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>Everything runs on your device &mdash; there is no cluster anywhere</li>
+                  <li>Everything runs on your device - there is no cluster anywhere</li>
                   <li>The nodes, links and latencies are a model, not measurements</li>
                   <li>No consensus protocol: CP here is a quorum check, not Raft</li>
                   <li>Links are up or cut; real partitions are messier than that</li>
@@ -262,7 +262,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -273,7 +273,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-cap-mount" id="viz-cap-mount">
-          <p class="lab-proc-fallback">Building the cluster&hellip; if this message stays, the visualiser did not load &mdash; please tell me, and mention which browser you are using.</p>
+          <p class="lab-proc-fallback">Building the cluster&hellip; if this message stays, the visualiser did not load - please tell me, and mention which browser you are using.</p>
         </div>
       </div>
 
@@ -288,15 +288,15 @@
           </article>
           <article class="info-card">
             <h3>CP is not down, AP is not wrong</h3>
-            <p>A CP system refuses one operation, on one key, in one component, for as long as one partition lasts &mdash; and is up and healthy the whole time. An AP system with no partition and no concurrent write returns exactly what a CP one does. In the sandbox, with every link up, the two modes are indistinguishable. That is the part the slogan hides, and it is most of the year.</p>
+            <p>A CP system refuses one operation, on one key, in one component, for as long as one partition lasts - and is up and healthy the whole time. An AP system with no partition and no concurrent write returns exactly what a CP one does. In the sandbox, with every link up, the two modes are indistinguishable. That is the part the slogan hides, and it is most of the year.</p>
           </article>
           <article class="info-card">
             <h3>The C is linearizability, the A is total</h3>
-            <p>Gilbert and Lynch formalise consistency as atomic, or linearizable: one total order of operations consistent with real time. It is not the C in ACID, which is about invariants inside a transaction. Availability there means every request to every non-failing node terminates with a non-error response &mdash; a total requirement, not a percentage, and much stronger than &ldquo;highly available&rdquo;.</p>
+            <p>Gilbert and Lynch formalise consistency as atomic, or linearizable: one total order of operations consistent with real time. It is not the C in ACID, which is about invariants inside a transaction. Availability there means every request to every non-failing node terminates with a non-error response - a total requirement, not a percentage, and much stronger than &ldquo;highly available&rdquo;.</p>
           </article>
           <article class="info-card">
             <h3>Eventual consistency is a spectrum</h3>
-            <p>Between &ldquo;the replicas agree eventually&rdquo; and linearizable sits a ladder of real, nameable guarantees: read your writes, monotonic reads, monotonic writes, writes follow reads, causal consistency, bounded staleness. Plain eventual consistency promises only convergence if the writes stop, with no bound on when. Most systems called eventually consistent give you more &mdash; find out how much more before you rely on it.</p>
+            <p>Between &ldquo;the replicas agree eventually&rdquo; and linearizable sits a ladder of real, nameable guarantees: read your writes, monotonic reads, monotonic writes, writes follow reads, causal consistency, bounded staleness. Plain eventual consistency promises only convergence if the writes stop, with no bound on when. Most systems called eventually consistent give you more - find out how much more before you rely on it.</p>
           </article>
         </div>
       </section>

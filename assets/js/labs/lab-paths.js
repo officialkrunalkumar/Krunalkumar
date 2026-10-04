@@ -214,7 +214,7 @@
     if (questions.length < need) {
       panel.textContent = '';
       panel.appendChild(el('p', 'lab-exam-note',
-        'This exam is not available yet — the labs on this path do not have enough questions between them.'));
+        'This exam is not available yet - the labs on this path do not have enough questions between them.'));
       panel.hidden = false;
       return;
     }
@@ -300,7 +300,7 @@
 
     if (score >= bank.pass) {
       result.className = 'lab-exam-result is-pass';
-      result.textContent = 'Passed — ' + score + ' of ' + questions.length + ' correct.';
+      result.textContent = 'Passed - ' + score + ' of ' + questions.length + ' correct.';
       nameForm(box, pathKey, bank, score, questions.length, form);
       return;
     }
@@ -345,7 +345,7 @@
 
     var wrap = el('form', 'lab-exam-name');
     wrap.appendChild(el('p', 'lab-exam-note',
-      'The name goes on the certificate as typed, and cannot be changed afterwards — ' +
+      'The name goes on the certificate as typed, and cannot be changed afterwards - ' +
       'this path is issued once.'));
 
     var id = 'certname-' + pathKey;
@@ -506,7 +506,7 @@
       if (rec) {
         issued.textContent = 'Issued to ' + rec.name + ' on ' +
           new Date(rec.at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) +
-          ' — ' + rec.score + ' of ' + rec.asked + ' correct.';
+          ' - ' + rec.score + ' of ' + rec.asked + ' correct.';
       }
       issued.hidden = !rec;
     }

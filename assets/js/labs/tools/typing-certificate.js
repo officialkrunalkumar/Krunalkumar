@@ -894,7 +894,7 @@
       // on a document is the failure mode this whole page exists to avoid.
       if (added > PASTE_CHUNK) {
         suspect = true;
-        el.status.textContent = 'That was not typed key by key \u2014 no certificate for this run';
+        el.status.textContent = 'That was not typed key by key - no certificate for this run';
         el.status.className = 'lab-status is-err';
       }
       var now = Date.now();
@@ -943,7 +943,7 @@
      same hole by another route. */
   function refusePaste(event) {
     event.preventDefault();
-    el.status.textContent = 'Pasting is off here \u2014 a pasted score would mean nothing';
+    el.status.textContent = 'Pasting is off here - a pasted score would mean nothing';
     el.status.className = 'lab-status is-err';
     window.setTimeout(function () {
       if (finished) return;
@@ -1036,13 +1036,13 @@
     if (lastResult && lastResult.id) {
       el.idLine.textContent = 'Reference on this sheet: ' + lastResult.id;
     } else {
-      el.idLine.textContent = 'No reference yet \u2014 finish a test and one is generated here.';
+      el.idLine.textContent = 'No reference yet - finish a test and one is generated here.';
     }
   }
 
   el.print.addEventListener('click', function () {
     if (!lastResult || lastResult.suspect) {
-      el.idLine.textContent = 'Nothing to print yet \u2014 finish a timed test first.';
+      el.idLine.textContent = 'Nothing to print yet - finish a timed test first.';
       el.name.focus();
       return;
     }

@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Trace where an email really came from" />
     <meta name="twitter:description" content="Parse raw email headers to trace the delivery path, read SPF, DKIM and DMARC results, spot a spoofed sender and find the originating IP. Runs entirely in your browser - headers are never uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-email-headers.jpg" />
-    <title>Email Header Analyzer — SPF, DKIM, DMARC | Krunalkumar Shah</title>
+    <title>Email Header Analyzer - SPF, DKIM, DMARC | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>Email header analyzer</h1>
-        <p class="hero-text">The From: line is decoration &mdash; anyone can write anything there. The Received: chain and the authentication results are what actually record where a message came from, and those are what this reads.</p>
+        <p class="hero-text">The From: line is decoration - anyone can write anything there. The Received: chain and the authentication results are what actually record where a message came from, and those are what this reads.</p>
         <ul class="lab-facts">
           <li>Full Received: hop chain with timing</li>
           <li>SPF, DKIM and DMARC verdicts</li>
@@ -229,17 +229,17 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No WHOIS, geolocation or reputation lookups</li>
-                  <li>No DNS queries &mdash; SPF and DKIM results are read, not re-checked</li>
+                  <li>No DNS queries - SPF and DKIM results are read, not re-checked</li>
                 </ul>
               </div>
               <div>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -292,11 +292,11 @@ Apple Mail: View → Message → All Headers"></textarea>
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Received headers read bottom to top</h3>
-            <p>Each server prepends its own line as the message passes through, so the last entry in the raw headers is the first hop chronologically. This tool reverses them for you and shows the gap between each pair &mdash; a large gap means the message sat in a queue or a filter, and a negative one means the chain was forged or the clocks disagree.</p>
+            <p>Each server prepends its own line as the message passes through, so the last entry in the raw headers is the first hop chronologically. This tool reverses them for you and shows the gap between each pair - a large gap means the message sat in a queue or a filter, and a negative one means the chain was forged or the clocks disagree.</p>
           </article>
           <article class="info-card">
             <h3>What SPF, DKIM and DMARC each prove</h3>
-            <p>SPF says the sending server was authorised to send for that domain. DKIM says the message is cryptographically signed and unmodified. DMARC says the domain owner accepts the combination. All three passing proves the message really came from that domain &mdash; not that it is honest. A lookalike domain registered yesterday passes all three too.</p>
+            <p>SPF says the sending server was authorised to send for that domain. DKIM says the message is cryptographically signed and unmodified. DMARC says the domain owner accepts the combination. All three passing proves the message really came from that domain - not that it is honest. A lookalike domain registered yesterday passes all three too.</p>
           </article>
           <article class="info-card">
             <h3>The Reply-To mismatch</h3>

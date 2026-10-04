@@ -769,7 +769,7 @@
               src: src.name, no: row.no, raw: row.raw,
               why: d.day + ' ' + MONTH_ABBR[d.mon] + ' ' + pad2(d.h) + ':' + pad2(d.mi) + ':' + pad2(d.s) +
                    ' is not a real instant in ' + year +
-                   ' — either the assumed year is wrong for this line, or the time is out of range'
+                   ' - either the assumed year is wrong for this line, or the time is out of range'
             });
             return;
           }
@@ -1361,7 +1361,7 @@
     L.push('## What happened');
     L.push('');
     events.forEach(function (ev, i) {
-      L.push((i + 1) + '. **' + iso(ev.utc) + '** — ' + mdCell(ev.src) + ' — ' + mdCell(ev.msg));
+      L.push((i + 1) + '. **' + iso(ev.utc) + '** - ' + mdCell(ev.src) + ' - ' + mdCell(ev.msg));
     });
     L.push('');
 
@@ -1371,7 +1371,7 @@
       L.push('None.');
     } else {
       r.unparsed.forEach(function (b) {
-        L.push('- Input line ' + b.no + ', ' + mdCell(b.src) + ': ' + code(clip(b.raw, 200)) + ' — ' + mdCell(b.why));
+        L.push('- Input line ' + b.no + ', ' + mdCell(b.src) + ': ' + code(clip(b.raw, 200)) + ' - ' + mdCell(b.why));
       });
     }
     L.push('');

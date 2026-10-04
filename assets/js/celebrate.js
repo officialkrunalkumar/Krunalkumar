@@ -819,7 +819,7 @@
           y += 74;
           ctx.font = 'italic 34px ' + FONT;
           ctx.fillStyle = 'rgba(255,255,255,0.8)';
-          ctx.fillText('— from ' + config.from, EXPORT_W / 2, y);
+          ctx.fillText('- from ' + config.from, EXPORT_W / 2, y);
         }
 
         /* The mark is pinned to the foot rather than following the flow, so it
@@ -918,7 +918,7 @@
     /* "— from X" rather than "with love, X". The same link gets sent by a
        sibling and by a manager, and only one of those two phrasings survives
        both. The neutral one is the one that always works. */
-    put('[data-c-from]', config.from ? '— from ' + config.from : '');
+    put('[data-c-from]', config.from ? '- from ' + config.from : '');
 
     /* The tab title and the OG-less link preview text. Assigning to
        document.title is not an HTML sink, so this is safe. */

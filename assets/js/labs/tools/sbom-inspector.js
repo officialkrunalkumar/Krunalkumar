@@ -500,7 +500,7 @@
     if (!s) return { bucket: 'unknown', raw: '', why: 'no licence field in the lockfile' };
     if (/^unlicensed$/i.test(s)) {
       return { bucket: 'unknown', raw: s, proprietary: true,
-               why: 'declared UNLICENSED — proprietary, no grant at all' };
+               why: 'declared UNLICENSED - proprietary, no grant at all' };
     }
     if (/^see licen[sc]e in/i.test(s)) {
       return { bucket: 'unknown', raw: s, proprietary: true,
@@ -786,7 +786,7 @@
 
     model.evidence.push('a "packages" map with ' + plural(keys.length, 'entry'));
     if (declaredVersion) model.evidence.push('"lockfileVersion": ' + declaredVersion);
-    else model.evidence.push('no "lockfileVersion" field, which npm always writes — treated as v3-shaped');
+    else model.evidence.push('no "lockfileVersion" field, which npm always writes - treated as v3-shaped');
     if (isObj(json.dependencies) && declaredVersion === 2) {
       model.evidence.push('a mirrored "dependencies" tree, which is what makes it v2 rather than v3');
     }
@@ -1166,7 +1166,7 @@
     });
     model.ownScripts = scripts;
     model.notes.push('A manifest lists what you asked for. It cannot tell you what');
-    model.notes.push('you got — that is the lockfile’s job, and the whole transitive');
+    model.notes.push('you got - that is the lockfile’s job, and the whole transitive');
     model.notes.push('tree is missing here.');
     return model;
   }
@@ -1262,7 +1262,7 @@
        install scripts for a v1 lockfile, so it does not say it. */
     model.notRequirements = model.entries.length === 0 && model.badCount > 0;
     model.shapeLabel = model.notRequirements
-      ? 'unrecognised text — not a lockfile this tool reads'
+      ? 'unrecognised text - not a lockfile this tool reads'
       : (compiled ? 'requirements.txt written by pip-compile'
                   : 'requirements.txt (hand-written or frozen)');
     model.evidence.push('no JSON, no yarn or pnpm markers, and ' +
@@ -1488,7 +1488,7 @@
       R.rule();
       R.err('Not a file this tool reads.');
       R.dim('It is not JSON, and it carries no yarn, pnpm or poetry marker, so the');
-      R.dim('last thing left to try was requirements.txt — and ' + howMany);
+      R.dim('last thing left to try was requirements.txt - and ' + howMany);
       R.dim('as a requirement. Rather than print a report full of zeroes under the');
       R.dim('heading "requirements.txt", here is what did not fit:');
       model.badLines.slice(0, 5).forEach(function (b) { R.dim('  line ' + b.line + ': ' + b.text); });
@@ -1557,7 +1557,7 @@
                  (c.missingDirect.length > 8 ? ' and ' + (c.missingDirect.length - 8) + ' more' : ''));
         }
       } else {
-        R.warn('direct vs transitive    UNAVAILABLE — no root entry in this file');
+        R.warn('direct vs transitive    UNAVAILABLE - no root entry in this file');
       }
       if (c.links) R.row('workspace links', num(c.links));
       if (c.workspaces) R.row('workspace members', num(c.workspaces));
@@ -1583,7 +1583,7 @@
       R.row('devDependencies', num(m.directCounts.devDependencies));
       R.row('optionalDependencies', num(m.directCounts.optionalDependencies));
       R.row('peerDependencies', num(m.directCounts.peerDependencies));
-      R.row('transitive', 'UNAVAILABLE — a manifest does not contain them', 't-warn');
+      R.row('transitive', 'UNAVAILABLE - a manifest does not contain them', 't-warn');
       if (m.ownScripts.length) {
         R.warn('This package declares its own install-time scripts: ' + m.ownScripts.join(', '));
       }
@@ -1620,7 +1620,7 @@
     R.heading('INSTALL SCRIPTS');
     if (m.installScripts !== 'available') {
       var why = m.shape === 'npm1'
-        ? 'An npm v1 lockfile does not carry "hasInstallScript". The field did not\nexist until the v2 packages map, so this check cannot be run on this file —\nwhich is not the same as the file being clean.'
+        ? 'An npm v1 lockfile does not carry "hasInstallScript". The field did not\nexist until the v2 packages map, so this check cannot be run on this file -\nwhich is not the same as the file being clean.'
         : (m.shape === 'manifest'
           ? 'A manifest records only its OWN scripts, never its dependencies’. The\ninstall-time code that matters lives in packages this file does not list.'
           : 'requirements.txt records nothing about install-time behaviour. A source\ndistribution runs setup.py on install and can do anything it likes there;\nthe file in front of you cannot tell you which of these do.');
@@ -1635,7 +1635,7 @@
           withScripts.length ? 't-warn' : 't-ok');
     R.dim('npm writes "hasInstallScript": true only when a package has a preinstall,');
     R.dim('install or postinstall script. Absence means npm found none while it was');
-    R.dim('resolving — which is a real signal, provided the lockfile came from npm 7');
+    R.dim('resolving - which is a real signal, provided the lockfile came from npm 7');
     R.dim('or later. It is not a verdict either way: build tools legitimately');
     R.dim('compile native code here. It is where install-time code runs, so it is');
     R.dim('the shortest list worth reading by hand.');
@@ -1688,8 +1688,8 @@
       R.dim('not flagged against python-dateutil: pip resolves both to the same');
       R.dim('project, and calling that a lookalike would be wrong rather than noisy.');
     } else {
-      R.dim('A scoped name whose tail is a well-known package — @types/express,');
-      R.dim('@sentry/react — is NOT flagged. You cannot reach a scope by typo, and');
+      R.dim('A scoped name whose tail is a well-known package - @types/express,');
+      R.dim('@sentry/react - is NOT flagged. You cannot reach a scope by typo, and');
       R.dim('flagging that pattern buried the real hits under DefinitelyTyped.');
     }
 
@@ -1715,7 +1715,7 @@
     hits.slice(0, SHOW * 3).forEach(function (h) {
       var line = h.hit.target ? 'looks like  ' + h.hit.target : '';
       R.row('  ' + clip(h.name, 28), line, 't-warn');
-      R.row('', '    ' + KIND_LABEL[h.hit.kind] + ' — ' + h.hit.detail);
+      R.row('', '    ' + KIND_LABEL[h.hit.kind] + ' - ' + h.hit.detail);
     });
     if (hits.length > SHOW * 3) R.dim('  and ' + num(hits.length - SHOW * 3) + ' more');
     R.line('');
@@ -1729,7 +1729,7 @@
     R.heading('LICENCE MIX');
     if (m.licences !== 'available') {
       var why = m.shape === 'npm1'
-        ? 'An npm v1 lockfile has no licence field. Entries carry version, resolved,\nintegrity and requires, and nothing else — so every package here is unknown\nfor the reason that the file could not have said.'
+        ? 'An npm v1 lockfile has no licence field. Entries carry version, resolved,\nintegrity and requires, and nothing else - so every package here is unknown\nfor the reason that the file could not have said.'
         : (m.shape === 'manifest'
           ? 'A manifest carries its own licence at most, never its dependencies’.'
           : 'requirements.txt has no licence field of any kind. Not one line of this\nfile could carry a licence even if somebody wanted it to.');
@@ -1811,8 +1811,8 @@
       R.row('not pinned', num(unpinned.length) + '  (' + pct(unpinned.length, rootDecl.length) + ')',
             unpinned.length ? 't-warn' : 't-ok');
       if (m.ecosystem === 'pypi') {
-        R.dim('Pinned means "==" or "===" with a concrete version. Everything else —');
-        R.dim('">=", "~=", a wildcard, or no specifier at all — lets pip choose on the');
+        R.dim('Pinned means "==" or "===" with a concrete version. Everything else -');
+        R.dim('">=", "~=", a wildcard, or no specifier at all - lets pip choose on the');
         R.dim('day it runs, which is how two machines get different code from one file.');
       } else {
         R.dim('Pinned means an exact version. A caret lets minor and patch move, a');
@@ -1838,7 +1838,7 @@
         if (worst.length > SHOW) R.dim('  and ' + num(worst.length - SHOW) + ' more');
       }
     } else if (m.shape === 'npm1') {
-      R.warn('The root’s own ranges are UNAVAILABLE — a v1 lockfile does not record');
+      R.warn('The root’s own ranges are UNAVAILABLE - a v1 lockfile does not record');
       R.warn('the manifest’s dependency list at all. Only the ranges packages');
       R.warn('declare on each other survive, and those are summarised below.');
     }
@@ -1870,20 +1870,20 @@
         R.dim('Starting from the certainly-direct set only, so this is a lower bound.');
       }
     } else if (m.shape === 'requirements' && !m.compiled) {
-      R.row('dependency graph depth', 'UNAVAILABLE — no edges in this file', 't-warn');
+      R.row('dependency graph depth', 'UNAVAILABLE - no edges in this file', 't-warn');
     } else if (m.shape === 'manifest') {
-      R.row('dependency graph depth', 'UNAVAILABLE — a manifest has no tree', 't-warn');
+      R.row('dependency graph depth', 'UNAVAILABLE - a manifest has no tree', 't-warn');
     } else {
       // v1 with nothing certainly direct, or a packages map with no root:
       // there is no start set, so there is no depth. Say so rather than
       // leaving the row out and letting the gap read as zero.
-      R.row('dependency graph depth', 'UNAVAILABLE — no starting set to walk from', 't-warn');
+      R.row('dependency graph depth', 'UNAVAILABLE - no starting set to walk from', 't-warn');
     }
 
     var fan = ranked(m.fanIn);
     if (!fan.length) {
       R.line('');
-      R.warn('Most-depended-upon    UNAVAILABLE — this file records no edges between');
+      R.warn('Most-depended-upon    UNAVAILABLE - this file records no edges between');
       R.warn('packages, so there is nothing to count.');
       return;
     }
@@ -2030,7 +2030,7 @@
 
   function exportSbom() {
     if (!current) {
-      R.clear().warn('Analyse a lockfile first — there is nothing to export yet.');
+      R.clear().warn('Analyse a lockfile first - there is nothing to export yet.');
       return;
     }
     var built;
@@ -2053,15 +2053,15 @@
     R.heading('CYCLONEDX 1.5 EXPORTED');
     R.row('components', num(built.componentCount) + ' of type "library"');
     R.row('with a purl', num(built.componentCount) + ' (every component)');
-    R.row('with a hash', num(withHash) + ' — only where the file carried integrity');
-    R.row('with a licence', num(withLic) + ' — only where the file carried one');
+    R.row('with a hash', num(withHash) + ' - only where the file carried integrity');
+    R.row('with a licence', num(withLic) + ' - only where the file carried one');
     var noEdges = current.shape === 'manifest'
-      ? 'none — a manifest carries no tree to derive one from'
+      ? 'none - a manifest carries no tree to derive one from'
       : (current.shape === 'requirements' && !current.compiled
-        ? 'none — a plain requirements.txt records no edges'
-        : 'none — nothing in this file resolved to an edge');
+        ? 'none - a plain requirements.txt records no edges'
+        : 'none - nothing in this file resolved to an edge');
     R.row('dependency edges', built.depCount ? num(built.depCount) + ' nodes' : noEdges);
-    R.row('metadata.component', built.bom.metadata.component ? built.bom.metadata.component.name : 'omitted — the input did not name one');
+    R.row('metadata.component', built.bom.metadata.component ? built.bom.metadata.component.name : 'omitted - the input did not name one');
     R.line('');
     R.warn('What this SBOM does NOT contain, and will not:');
     R.dim('  • no vulnerabilities. Not one. That needs an advisory database, which');
@@ -2327,7 +2327,7 @@
       out.dim('the left. Everything is computed in this tab; the file is never sent.');
       out.dim('');
       out.dim('This reads the lockfile. It does not resolve the registry, so it');
-      out.dim('cannot tell you whether a package is malicious — only where to look.');
+      out.dim('cannot tell you whether a package is malicious - only where to look.');
     }
   });
 })();

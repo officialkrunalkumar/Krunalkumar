@@ -74,7 +74,7 @@
           throw new Error('"' + bad.charAt(0) + '" is not a hex digit. Hex uses 0-9 and a-f.');
         }
         if (clean.length % 2) {
-          throw new Error('That is ' + clean.length + ' hex digits — an odd number, so the last byte is incomplete.');
+          throw new Error('That is ' + clean.length + ' hex digits - an odd number, so the last byte is incomplete.');
         }
       } else {
         clean = clean.replace(/[^0-9a-f]/gi, '');
@@ -225,7 +225,7 @@
         if (opts.maxBytes && file.size > opts.maxBytes) {
           opts.onError && opts.onError(
             'That file is ' + LabTool.humanBytes(file.size) + '. This tool stops at ' +
-            LabTool.humanBytes(opts.maxBytes) + ' so the page stays responsive — ' +
+            LabTool.humanBytes(opts.maxBytes) + ' so the page stays responsive - ' +
             'the work happens in this tab, on your processor.');
           return;
         }

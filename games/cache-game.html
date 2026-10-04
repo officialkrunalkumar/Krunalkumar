@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="You are the replacement policy" />
     <meta name="twitter:description" content="A real cache simulator. See the tag, index and offset split for every access, pick the evictions yourself, then optimise a loop against Belady optimal." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-cache-game.jpg" />
-    <title>Cache Game — A Cache Simulator You Play</title>
+    <title>Cache Game - A Cache Simulator You Play</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -61,7 +61,7 @@
                         "name": "Is this a real cache from a real processor?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. The parameters are invented and deliberately tiny — sixty-four to five hundred and twelve bytes, sixteen-bit addresses — so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href=\"/labs/processor-explorer\">processor explorer</a> is the page that does that."
+                                "text": "No. The parameters are invented and deliberately tiny - sixty-four to five hundred and twelve bytes, sixteen-bit addresses - so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href=\"/labs/processor-explorer\">processor explorer</a> is the page that does that."
                         }
                 },
                 {
@@ -69,7 +69,7 @@
                         "name": "How am I allowed to beat LRU? Is Belady cheating?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing — which is the point of putting the two numbers side by side."
+                                "text": "You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing - which is the point of putting the two numbers side by side."
                         }
                 },
                 {
@@ -77,7 +77,7 @@
                         "name": "What is the difference between a capacity miss and a conflict miss?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice — use a different policy for the shadow and a few misses change category."
+                                "text": "A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice - use a different policy for the shadow and a few misses change category."
                         }
                 },
                 {
@@ -198,7 +198,7 @@
           </ol>
         </nav>
         <h1>Cache game</h1>
-        <p class="hero-text">Cache size, block size, associativity and a replacement policy, simulated properly &mdash; and the address cut into a tag, an index and an offset in front of you on every single access, because that decomposition is the part nobody quite internalises. On the first four levels you <em>are</em> the cache: the stream comes at you one access at a time and you say which line to throw out. On the last three the cache is fixed and the access pattern is yours to fix instead. Your misses are set beside the policy you chose and beside Belady optimal, which is computed for real by reading the rest of the stream and is therefore the one thing no cache can ever do.</p>
+        <p class="hero-text">Cache size, block size, associativity and a replacement policy, simulated properly - and the address cut into a tag, an index and an offset in front of you on every single access, because that decomposition is the part nobody quite internalises. On the first four levels you <em>are</em> the cache: the stream comes at you one access at a time and you say which line to throw out. On the last three the cache is fixed and the access pattern is yours to fix instead. Your misses are set beside the policy you chose and beside Belady optimal, which is computed for real by reading the rest of the stream and is therefore the one thing no cache can ever do.</p>
         <ul class="game-facts">
           <li>Tag, index and offset, every access</li>
           <li>Belady optimal, computed for real</li>
@@ -230,7 +230,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Hit rate</span>
-              <span class="game-stat-value" data-stat="rate">&mdash;</span>
+              <span class="game-stat-value" data-stat="rate">-</span>
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Misses</span>
@@ -242,7 +242,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Best</span>
-              <span class="game-stat-value" data-stat="best">&mdash;</span>
+              <span class="game-stat-value" data-stat="best">-</span>
             </div>
           </div>
           <div class="game-toolbar">
@@ -252,11 +252,11 @@
             <select class="game-select" autocomplete="off" id="game-policy"><option value="lru" selected>LRU</option><option value="fifo">FIFO</option><option value="mru">MRU</option><option value="random">Random</option></select>
             <button class="game-btn" type="button" id="game-write" aria-pressed="true" title="Write-back: a store marks the line dirty and memory is written when the line is evicted">Write-back</button>
             <button class="game-btn" type="button" id="game-step">Step</button>
-            <button class="game-btn" type="button" id="game-bits" aria-pressed="true" title="The address is shown split into binary fields — click to show hex only">Binary</button>
+            <button class="game-btn" type="button" id="game-bits" aria-pressed="true" title="The address is shown split into binary fields - click to show hex only">Binary</button>
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -314,11 +314,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The three fields are arithmetic, not a heuristic</h3>
-            <p>A block of <em>B</em> bytes needs log&#8322;<em>B</em> offset bits to pick a byte inside it. A cache of <em>S</em> sets needs log&#8322;<em>S</em> index bits to pick the set, and the set is not a suggestion &mdash; a block whose index is 2 may live in set 2 or nowhere. Everything above those two fields is the tag, stored beside the data so a line can say which of the many blocks that share its set it is currently holding. Change the associativity and the number of sets changes, so the boundary between tag and index moves. That is what the toolbar is doing when the split on screen redraws. The <a href="/labs/processor-explorer">processor explorer</a> reports the real cache sizes of the machine you are reading this on.</p>
+            <p>A block of <em>B</em> bytes needs log&#8322;<em>B</em> offset bits to pick a byte inside it. A cache of <em>S</em> sets needs log&#8322;<em>S</em> index bits to pick the set, and the set is not a suggestion - a block whose index is 2 may live in set 2 or nowhere. Everything above those two fields is the tag, stored beside the data so a line can say which of the many blocks that share its set it is currently holding. Change the associativity and the number of sets changes, so the boundary between tag and index moves. That is what the toolbar is doing when the split on screen redraws. The <a href="/labs/processor-explorer">processor explorer</a> reports the real cache sizes of the machine you are reading this on.</p>
           </article>
           <article class="info-card">
             <h3>Belady is a bound, and it is unbuildable</h3>
-            <p>The optimal policy is to evict the line whose next use is furthest away. It is computed here exactly, by reading the rest of the access stream, and that is precisely why no processor has ever implemented it: it needs the future. It is on the board for one reason. &ldquo;LRU took fifteen&rdquo; is a number with nothing to mean until you also know that seven was possible on the same stream with the same cache. Everything real is a guess at Belady using only the past, and LRU is the guess that recency is a decent predictor of reuse &mdash; which it usually is, and on level two it is not.</p>
+            <p>The optimal policy is to evict the line whose next use is furthest away. It is computed here exactly, by reading the rest of the access stream, and that is precisely why no processor has ever implemented it: it needs the future. It is on the board for one reason. &ldquo;LRU took fifteen&rdquo; is a number with nothing to mean until you also know that seven was possible on the same stream with the same cache. Everything real is a guess at Belady using only the past, and LRU is the guess that recency is a decent predictor of reuse - which it usually is, and on level two it is not.</p>
           </article>
           <article class="info-card">
             <h3>Conflict misses are the ones worth learning</h3>
@@ -337,15 +337,15 @@
         </div>
           <details class="lab-faq">
             <summary>Is this a real cache from a real processor?</summary>
-            <div>No. The parameters are invented and deliberately tiny &mdash; sixty-four to five hundred and twelve bytes, sixteen-bit addresses &mdash; so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href="/labs/processor-explorer">processor explorer</a> is the page that does that.</div>
+            <div>No. The parameters are invented and deliberately tiny - sixty-four to five hundred and twelve bytes, sixteen-bit addresses - so that the whole cache fits on screen and the binary split of an address is short enough to read. The <em>arithmetic</em> is the real thing: an L1 data cache on a current desktop is typically 32 or 48 KB, 64-byte lines and eight to twelve ways, and it computes its index and tag exactly the way this does. Nothing is measured from your machine here; the <a href="/labs/processor-explorer">processor explorer</a> is the page that does that.</div>
           </details>
           <details class="lab-faq">
             <summary>How am I allowed to beat LRU? Is Belady cheating?</summary>
-            <div>You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing &mdash; which is the point of putting the two numbers side by side.</div>
+            <div>You are shown the whole access stream, including the part that has not happened yet, and you are allowed to read it. That is the only advantage you have, and it is the same advantage Belady has. A cache has neither. So beating LRU here proves nothing about LRU and everything about how much information a replacement policy is missing - which is the point of putting the two numbers side by side.</div>
           </details>
           <details class="lab-faq">
             <summary>What is the difference between a capacity miss and a conflict miss?</summary>
-            <div>A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice &mdash; use a different policy for the shadow and a few misses change category.</div>
+            <div>A capacity miss would have happened even in a perfect cache of that size: the working set is simply bigger than the cache. A conflict miss would not have: the block was thrown out only because the index bits sent it to a set that was already busy, while lines elsewhere sat idle. The game separates them by running a fully associative LRU cache of the same capacity alongside yours and asking whether it would have hit. That reference model is the conventional one, and it is a choice - use a different policy for the shadow and a few misses change category.</div>
           </details>
           <details class="lab-faq">
             <summary>Does write-back change the hit rate?</summary>

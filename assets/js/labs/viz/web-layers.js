@@ -82,7 +82,7 @@
      teaching anything. A missing scheme is assumed to be https, and said so. */
   function parseUrl(raw) {
     var text = String(raw || '').trim();
-    if (!text) return { ok: false, reason: 'Nothing to read yet — type or pick an address.' };
+    if (!text) return { ok: false, reason: 'Nothing to read yet - type or pick an address.' };
 
     /* A colon alone is not enough to call something a scheme: "localhost:8080"
        and "example.com:443/x" both look exactly like one, and treating the host
@@ -135,7 +135,7 @@
        every check and came out labelled surface web with full confidence,
        which is exactly the guessing the rest of this file refuses to do. */
     if (!/^\[[^\]]*\]$/.test(host) && !/^[a-z0-9._\-¡-￿]+$/.test(host)) {
-      return { ok: false, reason: 'That does not read as a host name — a host cannot contain spaces or ' +
+      return { ok: false, reason: 'That does not read as a host name - a host cannot contain spaces or ' +
         'punctuation like that, so there is nothing here to sort.' };
     }
 
@@ -159,7 +159,7 @@
 
   function isPrivateHost(host) {
     if (host === 'localhost' || host === '127.0.0.1' || host === '::1' ||
-        host === '[::1]') return 'a loopback address — it means "this machine"';
+        host === '[::1]') return 'a loopback address - it means "this machine"';
     if (/^10\./.test(host)) return 'inside 10.0.0.0/8, a private range';
     if (/^192\.168\./.test(host)) return 'inside 192.168.0.0/16, a private range';
     if (/^172\.(1[6-9]|2\d|3[01])\./.test(host)) return 'inside 172.16.0.0/12, a private range';
@@ -188,7 +188,7 @@
     function add(spec) {
       if (verdict && !spec.always) {
         checks.push({ key: spec.key, label: spec.label, status: 'skipped',
-          detail: 'Not reached — the address was already settled above.' });
+          detail: 'Not reached - the address was already settled above.' });
         return;
       }
       checks.push(spec);
@@ -267,8 +267,8 @@
         key: 'scheme', label: 'Is this a web address at all?', status: 'hit',
         verdict: 'deep',
         why: 'the scheme is ' + url.scheme + ':, which no web crawler follows',
-        detail: 'Search engines index http and https. Anything else — ftp, magnet, ssh, a custom app ' +
-          'scheme — is outside the web they crawl, so its contents are not in any index.'
+        detail: 'Search engines index http and https. Anything else - ftp, magnet, ssh, a custom app ' +
+          'scheme - is outside the web they crawl, so its contents are not in any index.'
       });
     } else {
       add({
@@ -290,7 +290,7 @@
         key: 'robots', label: 'Does robots.txt disallow it?', status: 'hit',
         verdict: 'deep',
         why: 'this site’s robots.txt carries "Disallow: ' + blocked + '", so no well-behaved crawler will fetch it',
-        detail: 'No login, no paywall, no secret — just a line in a text file. The page is served to ' +
+        detail: 'No login, no paywall, no secret - just a line in a text file. The page is served to ' +
           'you the moment you ask for it and will never appear in a search result. That is the deep ' +
           'web, on a personal site, with nothing hidden about it.'
       });
@@ -318,8 +318,8 @@
         verdict: 'deep',
         why: 'the path contains "' + authHit + '", which is the shape of a page that is generated for one signed-in account',
         detail: 'A crawler arriving here has no session, so it is redirected to a login form or handed ' +
-          'a 401. The page behind it is real and enormous — every statement, every message, every ' +
-          'order — and none of it is in any index.'
+          'a 401. The page behind it is real and enormous - every statement, every message, every ' +
+          'order - and none of it is in any index.'
       });
     } else {
       add({
@@ -338,7 +338,7 @@
         verdict: 'deep',
         why: 'the path contains "' + payHit + '", the shape of subscriber-only content',
         detail: 'Paywalls are the interesting edge. Many publishers let crawlers read the whole article ' +
-          'so it can be indexed, then show you a wall — the page is in the index and still not readable. ' +
+          'so it can be indexed, then show you a wall - the page is in the index and still not readable. ' +
           'Others block the crawler too. From the address alone you cannot tell which, so this is a ' +
           'lean rather than a fact.'
       });
@@ -442,7 +442,7 @@
     var knows = {
       you: {
         knows: ['Which site you asked for', 'What you sent', 'All three relays in your circuit'],
-        blind: ['Nothing — you are the one party who sees the whole picture']
+        blind: ['Nothing - you are the one party who sees the whole picture']
       },
       guard: {
         knows: ['Your real IP address', 'That you are using Tor', 'The middle relay it hands the cell to'],
@@ -450,18 +450,18 @@
       },
       middle: {
         knows: ['The guard it received from', 'The exit it forwards to'],
-        blind: ['Your IP address', 'The destination', 'The content — it holds a cell it cannot open']
+        blind: ['Your IP address', 'The destination', 'The content - it holds a cell it cannot open']
       },
       exit: {
         knows: ['The site you are visiting', 'The middle relay it received from',
-          https ? 'That there is a TLS session to that site — but not what is inside it'
+          https ? 'That there is a TLS session to that site - but not what is inside it'
                 : 'Everything you sent and everything that comes back, in the clear'],
-        blind: ['Your IP address', 'Who you are', https ? 'The content, because HTTPS is still wrapped around it' : 'Nothing about the content — plain HTTP hides none of it']
+        blind: ['Your IP address', 'Who you are', https ? 'The content, because HTTPS is still wrapped around it' : 'Nothing about the content - plain HTTP hides none of it']
       },
       site: {
         knows: ['The exit relay’s IP address, which it may recognise as Tor', 'What you sent',
-          loggedIn ? 'Exactly who you are — you signed in' : 'Nothing that identifies you, unless something in the request does'],
-        blind: loggedIn ? ['Your IP address — and it no longer matters, because you gave it your name']
+          loggedIn ? 'Exactly who you are - you signed in' : 'Nothing that identifies you, unless something in the request does'],
+        blind: loggedIn ? ['Your IP address - and it no longer matters, because you gave it your name']
                         : ['Your IP address', 'Your location']
       }
     };
@@ -479,13 +479,13 @@
     frames.push({
       at: 'you', to: null, layers: 3, endToEnd: false, phase: 'build', layerNames: [G, M, X],
       event: 'Your client picks three relays and negotiates a separate key with each one, one hop at a ' +
-        'time. Then it wraps the request in three layers — outermost for the guard, innermost for the ' +
+        'time. Then it wraps the request in three layers - outermost for the guard, innermost for the ' +
         'exit. No relay ever learns more than one key.'
     });
     frames.push({
       at: 'you', to: 'guard', layers: 2, phase: 'forward', layerNames: [M, X],
       event: 'The guard receives the cell and removes the outer layer with its own key. It sees your IP ' +
-        'address, because it is talking to you directly — and it sees an instruction to forward to the ' +
+        'address, because it is talking to you directly - and it sees an instruction to forward to the ' +
         'middle relay. That is all it can read.'
     });
     frames.push({
@@ -497,13 +497,13 @@
     frames.push({
       at: 'middle', to: 'exit', layers: 0, phase: 'forward', layerNames: [],
       event: 'The exit removes the last layer and finds a plain request for a website. It now knows ' +
-        'where you are going. It does not know who asked — as far as it can tell, the middle relay did.'
+        'where you are going. It does not know who asked - as far as it can tell, the middle relay did.'
     });
     frames.push({
       at: 'exit', to: 'site', layers: 0, phase: 'deliver', layerNames: [],
       event: https
         ? 'The exit opens the connection to the site. Because the site uses HTTPS, the exit is carrying a ' +
-          'TLS session it cannot read — it knows the hostname and nothing else. The site sees a request ' +
+          'TLS session it cannot read - it knows the hostname and nothing else. The site sees a request ' +
           'from the exit relay’s IP address.'
         : 'The exit opens the connection to the site. There is no HTTPS, so the exit relay reads every ' +
           'byte in both directions and could rewrite any of it. Tor moved the risk from your ISP to a ' +
@@ -512,7 +512,7 @@
     frames.push({
       at: 'site', to: 'exit', layers: 0, phase: 'return', layerNames: [],
       event: 'The site replies to the exit relay, because that is the only address it has. If you signed ' +
-        'into an account, none of the relaying matters any more — you handed it your name yourself.'
+        'into an account, none of the relaying matters any more - you handed it your name yourself.'
     });
     frames.push({
       at: 'exit', to: 'middle', layers: 1, phase: 'return', layerNames: [X],
@@ -598,7 +598,7 @@
     });
     frames.push({
       at: 'm1', to: 'rp', layers: 0, endToEnd: true, phase: 'forward', layerNames: [],
-      event: 'Your circuit ends here. The rendezvous point removes the last of your layers and finds — ' +
+      event: 'Your circuit ends here. The rendezvous point removes the last of your layers and finds - ' +
         'another encrypted blob. The innermost layer is keyed end to end between you and the service, ' +
         'and the rendezvous point does not have that key and never will.'
     });
@@ -609,8 +609,8 @@
     });
     frames.push({
       at: 'm2', to: 'g2', layers: 2, endToEnd: true, phase: 'forward', layerNames: [M2, RP],
-      event: 'The service’s guard wraps it again. This relay knows the service’s real IP address — ' +
-        'it is the one machine on the path that does — but not which onion address it fronts for, and ' +
+      event: 'The service’s guard wraps it again. This relay knows the service’s real IP address - ' +
+        'it is the one machine on the path that does - but not which onion address it fronts for, and ' +
         'not a byte of the content.'
     });
     frames.push({
@@ -639,7 +639,7 @@
     {
       title: 'A malicious exit on unencrypted HTTP',
       body: 'The exit relay is the point where the traffic becomes ordinary internet traffic again. On ' +
-        'plain HTTP it can read everything and change anything — inject, strip, redirect. Anyone can run ' +
+        'plain HTTP it can read everything and change anything - inject, strip, redirect. Anyone can run ' +
         'an exit relay. HTTPS is what stops this, and Tor is not a substitute for it.'
     },
     {
@@ -695,14 +695,14 @@
     traffic: {
       label: 'Tor traffic, by where it goes',
       unit: 'Measured as a share of the traffic the Tor network itself carries.',
-      caption: 'A different question with a much less contested answer — and the one that changes the ' +
+      caption: 'A different question with a much less contested answer - and the one that changes the ' +
         'picture most.',
       rows: [
         { name: 'Ordinary public websites, reached through an exit relay', lo: 93, hi: 99, tone: 'green',
           note: 'The overwhelming majority of what Tor carries is people reading the ordinary web: from ' +
             'countries that filter it, on networks that log it, or simply not wanting to be followed ' +
             'around. None of this is the dark web at all.' },
-        { name: 'Onion services — the dark web proper', lo: 1, hi: 7, tone: 'red',
+        { name: 'Onion services - the dark web proper', lo: 1, hi: 7, tone: 'red',
           note: 'By the Tor Project’s own published metrics this has sat in the low single digits for ' +
             'years. The layer that the entire phrase refers to is a rounding error in the traffic of the ' +
             'network it lives on.' }
@@ -728,7 +728,7 @@
   var LEGITIMATE = [
     ['SecureDrop', 'Whistleblower submission systems run as onion services by newspapers including ' +
       'The Guardian, The New York Times and The Washington Post', 'So a source can contact a newsroom ' +
-      'without the newsroom — or anyone watching it — learning who they are'],
+      'without the newsroom - or anyone watching it - learning who they are'],
     ['BBC News', 'An official onion mirror of the news site, launched in 2019', 'To stay reachable from ' +
       'countries that block the ordinary domain'],
     ['ProPublica', 'The first major newsroom to publish a full onion version of its site, in 2016',
@@ -859,8 +859,8 @@
     { title: 'Your router’s admin panel', url: 'http://192.168.1.1/setup' },
     { title: 'A subscriber-only article', url: 'https://news.example.com/2026/04/subscriber/the-story' },
     { title: 'An ordinary encyclopaedia article', url: 'https://en.wikipedia.org/wiki/Onion_routing' },
-    { title: 'An onion address (fabricated — it cannot resolve)', url: 'http://this-is-not-a-real-address.onion/index' },
-    { title: 'An I2P address (fabricated — it cannot resolve)', url: 'http://not-a-real-destination.i2p/' }
+    { title: 'An onion address (fabricated - it cannot resolve)', url: 'http://this-is-not-a-real-address.onion/index' },
+    { title: 'An I2P address (fabricated - it cannot resolve)', url: 'http://not-a-real-destination.i2p/' }
   ];
 
   var VERDICT_TEXT = {
@@ -884,7 +884,7 @@
     this.input = textBox(this.value, function (v) { self.value = v; onChange(); }, 'https://example.com/page');
     g.appendChild(this.input);
     g.appendChild(E('p', 'oa-hint',
-      'Nothing is fetched. This reads the string on your own machine and makes no request of any kind — ' +
+      'Nothing is fetched. This reads the string on your own machine and makes no request of any kind - ' +
       'which is also its main limitation, and the checks say so where it bites.'));
     host.appendChild(g);
 
@@ -981,7 +981,7 @@
       return 'Undecidable from a string. ' + c.detail;
     }
     if (c.status === 'skipped') {
-      return 'Skipped. Once a check settles the answer the rest do not run — but they are listed so you ' +
+      return 'Skipped. Once a check settles the answer the rest do not run - but they are listed so you ' +
         'can see what was never asked.';
     }
     return c.detail;
@@ -993,7 +993,7 @@
       rows: [
         { key: 'surface', cells: ['Surface web', 'Fetchable by anyone, linked to, indexable',
           'Follows a link and stores what it gets', 'The smallest of the three'] },
-        { key: 'deep', cells: ['Deep web', 'Reachable, but not by a crawler — a login, a key, a form, a robots rule',
+        { key: 'deep', cells: ['Deep web', 'Reachable, but not by a crawler - a login, a key, a form, a robots rule',
           'It does not; it has no session and no query to submit', 'Far larger than the surface web'] },
         { key: 'dark', cells: ['Dark web', 'A different network entirely, with its own naming',
           'It cannot resolve the name at all', 'A very small fraction of the deep web'] }
@@ -1017,14 +1017,14 @@
   CircuitFamily.prototype.algoOptions = function () {
     return [
       { key: 'standard', label: 'Three relays to an ordinary site' },
-      { key: 'onion', label: 'An onion service — neither end knows the other' }
+      { key: 'onion', label: 'An onion service - neither end knows the other' }
     ];
   };
   CircuitFamily.prototype.buildPanel = function (host, onChange) {
     var self = this;
     var g = group('The destination');
     g.appendChild(field('Site uses HTTPS', selectBox(
-      [{ key: 'yes', label: 'yes' }, { key: 'no', label: 'no — plain HTTP' }],
+      [{ key: 'yes', label: 'yes' }, { key: 'no', label: 'no - plain HTTP' }],
       'yes', function (v) { self.https = (v === 'yes'); onChange(); })));
     g.appendChild(field('You signed into an account', selectBox(
       [{ key: 'no', label: 'no' }, { key: 'yes', label: 'yes' }],
@@ -1103,16 +1103,16 @@
     var box = E('div', 'wl-onion');
     box.appendChild(E('p', 'wl-onion-title',
       frame.layers === 0 && !frame.endToEnd
-        ? 'No circuit layers left — this is the plain request'
+        ? 'No circuit layers left - this is the plain request'
         : frame.layers + (frame.layers === 1 ? ' circuit layer' : ' circuit layers') + ' still wrapped'));
     var inner = E('div', 'wl-payload', cir.mode === 'onion'
       ? 'Your request to the onion service'
       : (cir.https ? 'Your request, inside its own TLS session to the site'
-                   : 'Your request, in the clear — the site does not use HTTPS'));
+                   : 'Your request, in the clear - the site does not use HTTPS'));
     if (frame.endToEnd) {
       var e2e = E('div', 'wl-layer wl-layer-e2e');
       e2e.appendChild(E('span', 'wl-layer-tag',
-        'end-to-end, client ↔ service — no relay holds this key'));
+        'end-to-end, client ↔ service - no relay holds this key'));
       e2e.appendChild(inner);
       inner = e2e;
     }
@@ -1134,7 +1134,7 @@
     var k = cir.knows[focus];
     if (node && k) {
       var grid = E('div', 'wl-know');
-      grid.appendChild(E('p', 'wl-know-head', node.label + ' — ' + node.role));
+      grid.appendChild(E('p', 'wl-know-head', node.label + ' - ' + node.role));
       var yes = E('div', 'wl-know-yes');
       yes.appendChild(E('h4', null, 'Knows'));
       var yesList = E('ul');
@@ -1171,7 +1171,7 @@
         else dest = 'no';
         var content;
         if (n.id === 'you' || n.kind === 'dest') content = 'yes';
-        else if (n.id === 'exit') content = cir.https ? 'no — HTTPS' : 'yes — plain HTTP';
+        else if (n.id === 'exit') content = cir.https ? 'no - HTTPS' : 'yes - plain HTTP';
         else content = 'no';
         return { key: n.id, cells: [n.label + ' (' + n.role + ')', yourAddr, dest, content] };
       })

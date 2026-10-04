@@ -33,7 +33,7 @@
       n: 'Vijay Pratap Singh Jadon', r: 'Full Stack Developer · MERN Stack' },
     { q: 'Krunalkumar is a valuable contributor to our initiative. He brings not only his expertise in cybersecurity, but also a vibrant, positive attitude that energizes the team.',
       n: 'Alice Pavaloiu', r: 'Co-founder at Open Ethics & English Right' },
-    { q: 'I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing—thoughtful, insightful, and highly engaging.',
+    { q: 'I highly recommend Krunalkumar for his exceptional expertise in software engineering, AI, and cybersecurity. His approach was amazing-thoughtful, insightful, and highly engaging.',
       n: 'Anish Patel', r: 'Java Developer at Mphasis' },
     { q: 'Krunal\'s expertise, dedication, and exceptional teaching skills were instrumental in shaping my understanding and approach to programming.',
       n: 'Vivek Dubey', r: 'Software Engineer II @ Ionage' },

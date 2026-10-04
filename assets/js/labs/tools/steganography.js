@@ -62,7 +62,7 @@
       out.rule();
       if (file.type === 'image/jpeg') {
         out.warn('This is a JPEG. You can extract from it, but hiding will only');
-        out.warn('work if you keep the PNG this tool produces — JPEG compression');
+        out.warn('work if you keep the PNG this tool produces - JPEG compression');
         out.warn('rewrites the exact bits the message lives in and destroys it.');
         out.line('');
       }
@@ -102,7 +102,7 @@
     var w = image.naturalWidth, h = image.naturalHeight;
     if (w * h <= MAX_PIXELS) return false;
     out.clear().err('That image is ' + w.toLocaleString() + ' x ' + h.toLocaleString() +
-                    ' — ' + Math.round(w * h / 1e6).toLocaleString() + ' megapixels. This tool ' +
+                    ' - ' + Math.round(w * h / 1e6).toLocaleString() + ' megapixels. This tool ' +
                     'decodes up to ' + (MAX_PIXELS / 1e6) + ' megapixels; anything larger would ' +
                     'need gigabytes of memory and freeze this tab. Try a smaller image.');
     return true;
@@ -170,7 +170,7 @@
         var name = imageName.replace(/\.[^.]+$/, '') + '-hidden.png';
         LabTool.download(new Uint8Array(buf), name, 'image/png');
         out.clear();
-        out.ok('Message hidden — saved as ' + name);
+        out.ok('Message hidden - saved as ' + name);
         out.rule();
         out.row('message length', message.length + ' characters');
         out.row('bits written', bits.length.toLocaleString());
@@ -185,7 +185,7 @@
         if (madeOpaque) {
           out.warn('This image had transparency. A canvas keeps colour premultiplied');
           out.warn('by alpha, so the low bits of a partly transparent pixel do not');
-          out.warn('survive being read back — the message would have been noise. Those');
+          out.warn('survive being read back - the message would have been noise. Those');
           out.warn('pixels were made fully opaque before writing, so the saved PNG');
           out.warn('has no transparency left where there was some before.');
           out.line('');
@@ -236,7 +236,7 @@
       out.line('');
       out.dim('That is the expected result for almost every image. It is also');
       out.dim('what you would see if a message had been hidden and the file was');
-      out.dim('since re-encoded — JPEG compression, a resize, or an upload to a');
+      out.dim('since re-encoded - JPEG compression, a resize, or an upload to a');
       out.dim('site that reprocesses images all wipe the low bits.');
       lsbView(data);
       return;
@@ -257,7 +257,7 @@
     if (text.slice(0, 4) !== MAGIC) {
       out.warn('Found a plausible length header but no valid payload.');
       out.dim('Either this image was not written by this tool, or it uses a');
-      out.dim('different LSB scheme — bit order and channel order vary.');
+      out.dim('different LSB scheme - bit order and channel order vary.');
       lsbView(data);
       return;
     }
@@ -271,7 +271,7 @@
     document.getElementById('tool-text').value = text.slice(4);
     out.rule();
     out.dim('Recovered by reading the last bit of every colour channel in order.');
-    out.dim('No key was needed, because there is no key — that is the whole');
+    out.dim('No key was needed, because there is no key - that is the whole');
     out.dim('point about steganography being concealment, not protection.');
   }
 
@@ -316,7 +316,7 @@
       document.getElementById('tool-hide').addEventListener('click', hide);
       out.dim('Drop a PNG. Then either hide a message in it, or extract one.');
       out.dim('');
-      out.dim('Nothing is uploaded — the pixels are read and rewritten in this');
+      out.dim('Nothing is uploaded - the pixels are read and rewritten in this');
       out.dim('tab, and the result comes back as a download.');
     }
   });

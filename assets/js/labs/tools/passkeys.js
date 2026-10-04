@@ -237,7 +237,7 @@
     [0x04, 'UV', 'User verified',
      'The authenticator checked who it was: a PIN, a fingerprint, a face. This is the bit that turns one factor into two.'],
     [0x08, 'BE', 'Backup eligible',
-     'This credential is of a kind that can be copied off the device — a synced passkey. The bit is fixed for the life of the credential.'],
+     'This credential is of a kind that can be copied off the device - a synced passkey. The bit is fixed for the life of the credential.'],
     [0x10, 'BS', 'Backup state',
      'It actually is backed up right now. A relying party that reads BE=1 and BS=0 knows the key exists in exactly one place today.'],
     [0x20, 'RFU2', 'Reserved',
@@ -548,7 +548,7 @@
       tr.appendChild(make('td', 'pk-flag-set', on ? 'yes' : 'no'));
       var meaning = make('td', 'pk-flag-why');
       meaning.appendChild(make('b', null, f[2]));
-      meaning.appendChild(document.createTextNode(' — ' + f[3]));
+      meaning.appendChild(document.createTextNode(' - ' + f[3]));
       tr.appendChild(meaning);
       body.appendChild(tr);
     }
@@ -664,8 +664,8 @@
 
     if (root.PublicKeyCredential && root.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
       root.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function (yes) {
-        fill(platformRow, yes ? 'available — Face ID, Windows Hello, a fingerprint reader or similar'
-                              : 'none found — a security key or a phone would be used instead',
+        fill(platformRow, yes ? 'available - Face ID, Windows Hello, a fingerprint reader or similar'
+                              : 'none found - a security key or a phone would be used instead',
              yes ? 'is-ok' : 'is-warn');
       }, function () { fill(platformRow, 'the browser would not say', 'is-warn'); });
     } else {
@@ -674,7 +674,7 @@
 
     if (root.PublicKeyCredential && root.PublicKeyCredential.isConditionalMediationAvailable) {
       root.PublicKeyCredential.isConditionalMediationAvailable().then(function (yes) {
-        fill(condRow, yes ? 'supported — passkeys can appear in the username field'
+        fill(condRow, yes ? 'supported - passkeys can appear in the username field'
                           : 'not supported here', yes ? 'is-ok' : 'is-warn');
       }, function () { fill(condRow, 'the browser would not say', 'is-warn'); });
     } else {
@@ -701,8 +701,8 @@
       'So nothing below is live. This is what the two calls would have done.');
     var why = section(reportHost, 'Why');
     para(why, 'The page checked and found: ' + (support.reason || 'no working WebAuthn API') + '.');
-    para(why, 'The usual causes are an insecure context — WebAuthn refuses to run over plain ' +
-      'http or from a file:// URL, because origin binding is meaningless without TLS — an older ' +
+    para(why, 'The usual causes are an insecure context - WebAuthn refuses to run over plain ' +
+      'http or from a file:// URL, because origin binding is meaningless without TLS - an older ' +
       'browser, or a policy that has switched the API off. Nothing is broken on your machine.');
 
     var one = section(reportHost, 'What registration would have done');
@@ -713,10 +713,10 @@
       'then shows a prompt the page cannot see, style or read.');
     para(one, '3. The authenticator generates a key pair, keeps the private half, and returns an ' +
       'attestation object: CBOR containing a format name, a statement, and the authenticator ' +
-      'data — which holds SHA-256 of the RP ID, a flags byte, a counter, the AAGUID, the ' +
+      'data - which holds SHA-256 of the RP ID, a flags byte, a counter, the AAGUID, the ' +
       'credential ID and the public key in COSE form.');
     para(one, '4. Alongside it comes clientDataJSON: the challenge echoed back, the type, and ' +
-      'the origin the browser actually loaded — not the origin the page claims to be.');
+      'the origin the browser actually loaded - not the origin the page claims to be.');
 
     var two = section(reportHost, 'What signing in would have done');
     para(two, '1. A fresh challenge goes to navigator.credentials.get().');
@@ -750,7 +750,7 @@
       host.appendChild(storeCard(list[i], i));
     }
     var note = make('p', 'pk-empty',
-      'These records hold a public key, an ID and a label — never a private key, which the ' +
+      'These records hold a public key, an ID and a label - never a private key, which the ' +
       'authenticator does not hand out. Clearing this site’s storage deletes them; the passkey ' +
       'itself stays in your password manager or security key until you remove it there.');
     host.appendChild(note);
@@ -776,10 +776,10 @@
     kv(card, 'algorithm', record.algName || String(record.alg), 'pk-mono');
     kv(card, 'AAGUID', record.aaguid || 'unknown', 'pk-mono');
     kv(card, 'discoverable', record.discoverable ? 'yes, it can be found without a hint'
-                                                 : 'unknown — the browser did not say');
-    kv(card, 'synced (BE/BS)', record.be ? (record.bs ? 'yes — backed up to an account'
+                                                 : 'unknown - the browser did not say');
+    kv(card, 'synced (BE/BS)', record.be ? (record.bs ? 'yes - backed up to an account'
                                                       : 'eligible, not backed up yet')
-                                         : 'no — device-bound');
+                                         : 'no - device-bound');
     kv(card, 'created', record.created || 'unknown');
     return card;
   }
@@ -895,7 +895,7 @@
     para(idSec, allZero(authData.aaguid)
       ? 'All zeroes. The authenticator declined to say what model it is, which is normal: it is ' +
         'what you get with attestation "none", and what most platform and synced passkey ' +
-        'providers return regardless. Privacy by default — a per-model identifier on every ' +
+        'providers return regardless. Privacy by default - a per-model identifier on every ' +
         'registration is a tracking vector.'
       : 'A 128-bit identifier for the make and model of authenticator, the same for every unit ' +
         'of that model. Turning it into a product name means a lookup in the FIDO Metadata ' +
@@ -937,7 +937,7 @@
       ? 'The record above is now in localStorage under the key "lab.passkeys", on this device ' +
         'only. It holds the credential ID, the COSE public key, the AAGUID and the label you ' +
         'typed. It does not and cannot hold a private key.'
-      : 'Storage was refused — private browsing usually does this. The passkey itself was still ' +
+      : 'Storage was refused - private browsing usually does this. The passkey itself was still ' +
         'created; this page simply has nowhere to remember it, so signing in will need the ' +
         'discoverable option rather than a named credential.');
     para(kept, 'A real relying party writes the same fields into a database row against your ' +
@@ -959,14 +959,14 @@
 
   function formatNote(fmt) {
     if (fmt === 'none') {
-      return 'Format "none" — the authenticator made no claim about itself, because the page ' +
+      return 'Format "none" - the authenticator made no claim about itself, because the page ' +
         'asked for attestation "none" or the platform strips it. Almost every consumer ' +
         'deployment wants exactly this: attestation tells you the make and model of the ' +
         'authenticator, which matters to an enterprise enforcing a hardware policy and to ' +
         'nobody else, and carries a privacy cost either way.';
     }
     if (fmt === 'packed') {
-      return 'Format "packed" — a signature over the authenticator data and the client data ' +
+      return 'Format "packed" - a signature over the authenticator data and the client data ' +
         'hash, made with an attestation key rather than the new credential key, usually with a ' +
         'certificate chain in x5c. It proves the model, not the person.';
     }
@@ -1039,7 +1039,7 @@
     kv(box, 'rpIdHash', hex(authData.rpIdHash, 0, 8) + ' …', 'pk-mono');
     kv(box, 'signCount', String(authData.signCount), 'pk-mono');
     para(box, authData.signCount === 0
-      ? 'A sign count of zero means this authenticator does not keep one — normal for synced ' +
+      ? 'A sign count of zero means this authenticator does not keep one - normal for synced ' +
         'passkeys, because a counter cannot be kept consistent across copies. A server should ' +
         'treat zero as "no signal" rather than as a failure.'
       : 'The counter is meant to increase on every use. A server that sees it go backwards is ' +
@@ -1051,15 +1051,15 @@
 
   function backupNote(flags) {
     if (flags.be && flags.bs) {
-      return 'BE and BS are both set: this is a synced passkey. It lives in an account — an ' +
-        'Apple, Google, Microsoft or password-manager account — and it will appear on your next ' +
+      return 'BE and BS are both set: this is a synced passkey. It lives in an account - an ' +
+        'Apple, Google, Microsoft or password-manager account - and it will appear on your next ' +
         'device when you sign in there. Losing the laptop does not lose the credential, and the ' +
         'security of the passkey is now the security of that account.';
     }
     if (flags.be && !flags.bs) {
       return 'BE is set and BS is not: this credential could be backed up and currently is not. ' +
         'It exists in one place. If that place is lost, so is it, and recovery is whatever the ' +
-        'site offers instead — which is usually where the real weakness of an account lives.';
+        'site offers instead - which is usually where the real weakness of an account lives.';
     }
     return 'BE is clear: this is device-bound. The private key cannot leave the authenticator, ' +
       'which is the stronger property and the worse recovery story. This is what a hardware ' +
@@ -1069,9 +1069,9 @@
   function renderCose(box, cose) {
     var info = algInfo(cose['3']);
     kv(box, 'kty (1)', coseKty(cose['1']), 'pk-mono');
-    kv(box, 'alg (3)', String(cose['3']) + (info ? '  — ' + info.name : ''), 'pk-mono');
+    kv(box, 'alg (3)', String(cose['3']) + (info ? '  - ' + info.name : ''), 'pk-mono');
     if (info && info.kind === 'ec') {
-      kv(box, 'crv (-1)', String(cose['-1']) + '  — ' + info.curve, 'pk-mono');
+      kv(box, 'crv (-1)', String(cose['-1']) + '  - ' + info.curve, 'pk-mono');
       kv(box, 'x (-2)', hex(bytesOf(cose['-2']), 0, 8) + ' …  (' + bytesOf(cose['-2']).length + ' bytes)', 'pk-mono');
       kv(box, 'y (-3)', hex(bytesOf(cose['-3']), 0, 8) + ' …  (' + bytesOf(cose['-3']).length + ' bytes)', 'pk-mono');
       para(box, 'A point on ' + info.curve + '. x and y are the coordinates; together they are ' +
@@ -1094,7 +1094,7 @@
 
   function coseKty(value) {
     var names = { '1': 'OKP (Edwards curve)', '2': 'EC2 (elliptic curve)', '3': 'RSA' };
-    return String(value) + (names[String(value)] ? '  — ' + names[String(value)] : '');
+    return String(value) + (names[String(value)] ? '  - ' + names[String(value)] : '');
   }
 
   /* ---------------------------------------------------------------------
@@ -1128,7 +1128,7 @@
         'This page has no stored credential ID to name.');
       var box = section(reportHost, 'Two ways forward');
       para(box, 'Create a passkey first, and this page will remember its ID and put it in ' +
-        'allowCredentials — the non-discoverable flow, where the site has to know who you are ' +
+        'allowCredentials - the non-discoverable flow, where the site has to know who you are ' +
         'before it can ask.');
       para(box, 'Or switch the sign-in mode to “discoverable” and try anyway. If you already ' +
         'have a passkey for this site in a password manager, the authenticator can find it with ' +
@@ -1148,7 +1148,7 @@
         'specific key. This is the non-discoverable flow: the site already knows which account ' +
         'you claim to be.'
       : 'No allowCredentials at all. The authenticator has to find a credential for this RP ID ' +
-        'on its own, which only works if the credential is discoverable — stored with its own ' +
+        'on its own, which only works if the credential is discoverable - stored with its own ' +
         'user handle rather than wrapped inside its ID. This is the flow behind a sign-in button ' +
         'with no username field.');
     say('Waiting for the authenticator.');
@@ -1179,7 +1179,7 @@
       return;
     }
     var adBox = renderAuthData(authData, 'Sign-in authenticator data');
-    para(adBox, 'The AT flag is clear this time. There is no public key in a sign-in response — ' +
+    para(adBox, 'The AT flag is clear this time. There is no public key in a sign-in response - ' +
       'the site already has it, and sending it again would prove nothing.');
 
     var sigSec = section(reportHost, 'The signature',
@@ -1190,7 +1190,7 @@
     var stored = findStored(id);
     if (!stored) {
       kv(sigSec, 'verification', 'no stored public key for this credential', 'is-warn');
-      para(sigSec, 'The authenticator returned a credential this page has no record of — most ' +
+      para(sigSec, 'The authenticator returned a credential this page has no record of - most ' +
         'likely one created before you last cleared storage, or in the discoverable flow with a ' +
         'passkey from another session. The signature is real; there is simply nothing here to ' +
         'check it against. Create a fresh passkey and sign in with that to see the verification ' +
@@ -1215,8 +1215,8 @@
     var pending = kv(sigSec, 'verification', 'checking…', 'is-dim');
     verifyAssertion(cose, authBytes, clientDataBytes, signature).then(function (result) {
       pending.lastChild.textContent = result.ok
-        ? 'valid — this signature was made by the private key that matches the stored public key'
-        : 'INVALID — the signature does not match the stored public key';
+        ? 'valid - this signature was made by the private key that matches the stored public key'
+        : 'INVALID - the signature does not match the stored public key';
       pending.lastChild.className = 'pk-v ' + (result.ok ? 'is-ok' : 'is-err');
       kv(sigSec, 'clientDataHash', hex(result.hash, 0, 16) + ' …', 'pk-mono');
       kv(sigSec, 'signed bytes', result.signed.length + ' bytes', 'pk-mono');
@@ -1230,7 +1230,7 @@
       }
       para(sigSec, 'That verification ran here, in this tab, with the public key out of ' +
         'localStorage. On a real site the same arithmetic happens on a server against a key in a ' +
-        'database — plus four checks this page is not in a position to make: that the challenge ' +
+        'database - plus four checks this page is not in a position to make: that the challenge ' +
         'is the one it just issued and has not been used, that the origin string is exactly its ' +
         'own, that the RP ID hash matches, and that the sign counter has not gone backwards.');
 
@@ -1284,7 +1284,7 @@
         'stored record and delete the passkey in your password manager first.');
     } else if (name === 'SecurityError') {
       para(box, 'The browser rejected the RP ID. A page may only claim its own domain or a ' +
-        'registrable parent of it — nothing else, ever. This is the first of the two walls that ' +
+        'registrable parent of it - nothing else, ever. This is the first of the two walls that ' +
         'make passkeys unphishable, and it is enforced before any authenticator is contacted.');
     } else if (name === 'NotSupportedError') {
       para(box, 'None of the algorithms offered could be produced by an available authenticator. ' +
@@ -1295,7 +1295,7 @@
     } else {
       para(box, 'Message: ' + ((err && err.message) || String(err)));
     }
-    para(box, 'Nothing left your browser during the attempt — there is no server here to send ' +
+    para(box, 'Nothing left your browser during the attempt - there is no server here to send ' +
       'anything to.');
     status(phase + ' cancelled', 'is-warn');
     say('The ' + phase + ' did not complete: ' + name + '.');
@@ -1312,7 +1312,7 @@
       'This call is supposed to fail. Watching it fail is the point.');
     var box = section(reportHost, 'The request');
     para(box, 'Everything is as before except one field: rp.id is “' + foreign + '” while this ' +
-      'page is served from “' + rpId() + '”. A phishing site has exactly this problem — it wants ' +
+      'page is served from “' + rpId() + '”. A phishing site has exactly this problem - it wants ' +
       'a signature scoped to your bank, and it is not your bank.');
     pre(box, JSON.stringify(forDisplay({ rp: options.rp, origin: root.location.origin }), null, 2));
     status('trying a foreign RP ID…', 'is-busy');
@@ -1377,7 +1377,7 @@
       return;
     }
     host.appendChild(make('p', 'pk-empty',
-      'Ready. Pick a lookalike origin and press the button — the signature above will be ' +
+      'Ready. Pick a lookalike origin and press the button - the signature above will be ' +
       'verified a second time, with one field of the client data changed.'));
   }
 
@@ -1441,7 +1441,7 @@
         set(realRow, good.ok ? 'valid' : 'invalid', good.ok ? 'is-ok' : 'is-err');
         return verifyAssertion(lastAssertion.cose, lastAssertion.authBytes,
                                fakedBytes, lastAssertion.signature).then(function (bad) {
-          set(fakeRow, bad.ok ? 'valid — which would be a catastrophe' : 'INVALID',
+          set(fakeRow, bad.ok ? 'valid - which would be a catastrophe' : 'INVALID',
               bad.ok ? 'is-err' : 'is-ok');
           set(hashRow, hex(good.hash, 0, 8) + ' …   vs   ' + hex(bad.hash, 0, 8) + ' …', 'pk-mono');
           explainPhish(box, bad.ok);
@@ -1463,7 +1463,7 @@
          precisely the case the separate origin check exists to catch. */
       box.appendChild(make('p', 'pk-note',
         'This one keeps the hostname, so the rpIdHash inside the authenticator data is ' +
-        'unchanged — an RP ID is a host and nothing else, with no scheme and no port. That is ' +
+        'unchanged - an RP ID is a host and nothing else, with no scheme and no port. That is ' +
         'exactly why a relying party has to check the origin string as well as the hash: over ' +
         'plain http, or on a different port, the RP ID still matches and only the origin gives ' +
         'it away. The signature above already refused, because the origin is inside the bytes ' +
@@ -1494,7 +1494,7 @@
     }
     box.appendChild(make('p', 'pk-note',
       'One string changed and the signature stopped verifying. The origin is inside the bytes ' +
-      'that were signed, so there is no way to reuse this assertion anywhere else — not on a ' +
+      'that were signed, so there is no way to reuse this assertion anywhere else - not on a ' +
       'lookalike domain, not on a subdomain the site did not authorise, not over plain http.'));
     box.appendChild(make('p', 'pk-note',
       'And this is the second wall, not the first. To get here I had to take a real assertion and ' +
@@ -1504,7 +1504,7 @@
       'any prompt appears.'));
     box.appendChild(make('p', 'pk-note',
       'Compare that with a one-time code. A relay proxy asks you for the six digits, you read ' +
-      'them out, and they work — because nothing in the code says which site asked. That is the ' +
+      'them out, and they work - because nothing in the code says which site asked. That is the ' +
       'whole difference, and it is structural rather than a matter of being careful.'));
   }
 
@@ -1524,8 +1524,8 @@
       'localStorage. That is all it ever had.');
     para(box, 'The passkeys still exist wherever your browser or password manager put them, ' +
       'and they will still be offered to this site. Removing them for real means going into ' +
-      'that manager — iCloud Keychain, Google Password Manager, 1Password, Windows Hello, or ' +
-      'the security key itself — and deleting them there. A site can never delete a passkey; ' +
+      'that manager - iCloud Keychain, Google Password Manager, 1Password, Windows Hello, or ' +
+      'the security key itself - and deleting them there. A site can never delete a passkey; ' +
       'it can only forget the public key and stop accepting it.');
     status('cleared', 'is-ok');
     say('Stored records cleared.');

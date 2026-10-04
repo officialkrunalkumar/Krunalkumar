@@ -644,7 +644,7 @@
     var o = this.o;
     o.line('The repository commands, all doing the real thing to real objects:', 'hd');
     o.pair('status', 'compare the three places and report the differences');
-    o.pair('add <path>|.', 'copy the file into the index — writes a blob NOW');
+    o.pair('add <path>|.', 'copy the file into the index - writes a blob NOW');
     o.pair('commit -m "msg"', 'seal the index into a tree + a commit, move the branch');
     o.pair('log [--all]', 'walk the parent pointers back from HEAD');
     o.pair('branch [name]', 'list branches, or write a new 41-byte label file');
@@ -653,12 +653,12 @@
     o.pair('checkout -b <name>', 'create the branch and move onto it');
     o.pair('switch <name>', 'the modern spelling of checkout for branches');
     o.pair('merge <branch>', 'fast-forward, or write a commit with two parents');
-    o.pair('rebase <upstream>', 'replay your commits — new objects, new names');
+    o.pair('rebase <upstream>', 'replay your commits - new objects, new names');
     o.pair('reset [--soft|--mixed|--hard] <rev>', 'move the label, and how much else');
     o.pair('revert <rev>', 'a NEW commit that undoes an old one');
     o.pair('cherry-pick <rev>', 'replay one commit here');
     o.pair('tag <name> | tag -a <name> -m "msg"', 'a label, or a real tag object');
-    o.pair('reflog', "every place HEAD has been — git's diary");
+    o.pair('reflog', "every place HEAD has been - git's diary");
     o.pair('diff [--staged]', 'which paths differ between which two places');
     o.line('');
     o.line('The plumbing, which is where the object model shows through:', 'hd');
@@ -668,7 +668,7 @@
     o.pair('rev-parse <rev>', 'resolve a name to a full 40-character hash');
     o.pair('show-ref', 'every ref, and the hash inside it');
     o.line('');
-    o.line('Not git — this toy has no editor, so these stand in for one:', 'hd');
+    o.line('Not git - this toy has no editor, so these stand in for one:', 'hd');
     o.pair('write <path> <text>', 'replace a file in the working tree');
     o.pair('append <path> <text>', 'add a line to a file');
     o.pair('rm <path>', 'remove from the working tree and the index');
@@ -689,7 +689,7 @@
       o.dim('and only the reflog would remember them.');
     } else {
       o.line('On branch ' + r.head.ref.slice(11), 'hd');
-      if (!r.refs[r.head.ref]) o.dim('No commits yet — the branch file does not exist until the first commit.');
+      if (!r.refs[r.head.ref]) o.dim('No commits yet - the branch file does not exist until the first commit.');
     }
 
     if (r.merging) {
@@ -741,7 +741,7 @@
     }
     if (!staged.length && !unstaged.length && !untracked.length && !conflicted.length) {
       o.line('');
-      o.ok('Nothing to commit — all three places agree.');
+      o.ok('Nothing to commit - all three places agree.');
     }
   };
 
@@ -814,7 +814,7 @@
       o.line('  rm ' + args[i], 'wa');
     }
     o.dim('Removed from the working tree and the index. Every commit that ever');
-    o.dim('contained the file still contains it — the blob is still in the store.');
+    o.dim('contained the file still contains it - the blob is still in the store.');
   };
 
   Git.prototype.cmd_commit = function (args) {
@@ -832,7 +832,7 @@
     var headOid = r.headOid();
     if (amend) {
       var pc = headOid ? r.parseCommit(headOid) : null;
-      if (!pc) { o.err('Nothing to amend — there is no commit yet.'); return; }
+      if (!pc) { o.err('Nothing to amend - there is no commit yet.'); return; }
       parents = pc.parents.slice();
     } else if (headOid) {
       parents = [headOid];
@@ -840,7 +840,7 @@
     if (r.merging) parents = [headOid, r.merging.theirs];
 
     var sameAsHead = !amend && !r.merging && sameMap(head, r.index);
-    if (sameAsHead) { o.err('Nothing to commit — the index is identical to HEAD.'); return; }
+    if (sameAsHead) { o.err('Nothing to commit - the index is identical to HEAD.'); return; }
 
     r.wrote = [];
     var tree = r.writeTreeFromPaths(r.index);
@@ -967,12 +967,12 @@
       delete r.refs[full];
       o.warn('Deleted branch ' + args[0] + ' (was ' + short(gone) + ').');
       o.dim('One 41-byte file removed. The commit object is untouched and still');
-      o.dim('in the store — `reflog` and the graph below both still show it.');
+      o.dim('in the store - `reflog` and the graph below both still show it.');
       return;
     }
     if (!args.length) {
       var names = r.branchNames();
-      if (!names.length) { o.dim('(no branches yet — the first commit creates one)'); return; }
+      if (!names.length) { o.dim('(no branches yet - the first commit creates one)'); return; }
       for (i = 0; i < names.length; i++) {
         var cur = !r.head.detached && r.head.ref === 'refs/heads/' + names[i];
         o.line((cur ? '* ' : '  ') + names[i] + '  ' + short(r.refs['refs/heads/' + names[i]]), cur ? 'ok' : 'out');
@@ -1003,7 +1003,7 @@
 
     if (create) {
       var at = args.length > 1 ? r.resolve(args[1]) : r.headOid();
-      if (!at || at.ambiguous) { o.err('Nothing to branch from yet — make a commit first.'); return; }
+      if (!at || at.ambiguous) { o.err('Nothing to branch from yet - make a commit first.'); return; }
       if (r.refs['refs/heads/' + name]) { o.err("branch '" + name + "' already exists"); return; }
       r.refs['refs/heads/' + name] = at;
       var before0 = r.headOid();
@@ -1036,13 +1036,13 @@
     }
     var oid = r.resolve(name);
     if (!oid) { o.err("pathspec '" + name + "' did not match any branch, tag or commit"); return; }
-    if (oid.ambiguous) { o.err("'" + name + "' is ambiguous — more than one object starts with it"); return; }
+    if (oid.ambiguous) { o.err("'" + name + "' is ambiguous - more than one object starts with it"); return; }
     r.head = { detached: true, ref: null, oid: oid };
     r.materialise(oid);
     r.logHead(before, oid, 'checkout: moving to ' + name);
     o.warn('You are in "detached HEAD" state.');
     o.dim('HEAD now contains a commit hash directly instead of "ref: refs/...".');
-    o.dim('Nothing is broken and nothing is lost — you are simply standing on a');
+    o.dim('Nothing is broken and nothing is lost - you are simply standing on a');
     o.dim('commit with no branch label. Commits made here get no label either,');
     o.dim('so only the reflog would remember them. `checkout <branch>` returns,');
     o.dim('and `branch <name>` right here would give this spot a name.');
@@ -1054,9 +1054,9 @@
     var r = this.r, o = this.o;
     if (!args.length) { o.err('usage: merge <branch>'); return; }
     var theirs = r.resolve(args[0]);
-    if (!theirs || theirs.ambiguous) { o.err("merge: '" + args[0] + "' — not something we can merge"); return; }
+    if (!theirs || theirs.ambiguous) { o.err("merge: '" + args[0] + "' - not something we can merge"); return; }
     var ours = r.headOid();
-    if (!ours) { o.err('Nothing to merge into — no commits yet.'); return; }
+    if (!ours) { o.err('Nothing to merge into - no commits yet.'); return; }
     if (r.ancestors(ours)[theirs]) { o.ok('Already up to date.'); return; }
 
     var base = r.mergeBase(ours, theirs);
@@ -1128,7 +1128,7 @@
     o.line('  commit     ' + oid, 'hd');
     o.dim('Both original commits are untouched and keep their names. The graph');
     o.dim('now records honestly that two lines of work happened and where they');
-    o.dim('joined — that is the difference between merge and rebase.');
+    o.dim('joined - that is the difference between merge and rebase.');
     this.reportWrites();
   };
 
@@ -1170,7 +1170,7 @@
   Git.prototype.cmd_rebase = function (args) {
     var r = this.r, o = this.o, i;
     if (!args.length) { o.err('usage: rebase <upstream>'); return; }
-    if (r.head.detached) { o.err('Rebase here needs a branch — you are on a detached HEAD.'); return; }
+    if (r.head.detached) { o.err('Rebase here needs a branch - you are on a detached HEAD.'); return; }
     var upstream = r.resolve(args[0]);
     if (!upstream || upstream.ambiguous) { o.err("rebase: invalid upstream '" + args[0] + "'"); return; }
     var ours = r.headOid();
@@ -1184,14 +1184,14 @@
       o.dim('You had no commits of your own to replay.');
       return;
     }
-    if (r.ancestors(ours)[upstream]) { o.ok('Current branch is up to date — nothing to replay.'); return; }
+    if (r.ancestors(ours)[upstream]) { o.ok('Current branch is up to date - nothing to replay.'); return; }
 
     var base = r.mergeBase(ours, upstream);
     var todo = [], cur = ours, guard = 0;
     while (cur && cur !== base && guard++ < 200) {
       var c = r.parseCommit(cur);
       if (c.parents.length > 1) {
-        o.warn('Skipping merge commit ' + short(cur) + ' — `git rebase` drops merges by default too.');
+        o.warn('Skipping merge commit ' + short(cur) + ' - `git rebase` drops merges by default too.');
       } else {
         todo.unshift(cur);
       }
@@ -1210,7 +1210,7 @@
       if (res.conflicts.length) {
         o.err('CONFLICT while replaying ' + short(todo[i]) + ': ' + res.conflicts.join(', '));
         o.dim('This toy aborts the whole rebase rather than dropping you into a');
-        o.dim('half-finished one — real git stops and waits for you. Nothing was');
+        o.dim('half-finished one - real git stops and waits for you. Nothing was');
         o.dim('changed; your branch still points where it did.');
         r.wrote = [];
         return;
@@ -1237,7 +1237,7 @@
     o.ok('Successfully rebased ' + r.head.ref.slice(11) + ' onto ' + short(upstream) + '.');
     o.dim('Each pair above is the same change by the same author with the same');
     o.dim('author date, under a new name. The hash covers the parent line and the');
-    o.dim('committer line, and replaying changed both — so identity cannot survive');
+    o.dim('committer line, and replaying changed both - so identity cannot survive');
     o.dim('a rebase even when the diff is untouched. Open the Object store tab and');
     o.dim('put the two commits side by side; that is the whole proof.');
     o.dim('Git edited nothing. It wrote new commits and moved one label. The old');
@@ -1328,7 +1328,7 @@
       r.work = work;                       // --mixed leaves files alone
       o.ok('reset --mixed to ' + short(target));
       o.dim('The branch label and the index moved. Your files are untouched, so');
-      o.dim('the work is still there — just unstaged.');
+      o.dim('the work is still there - just unstaged.');
     } else {
       r.materialise(target);
       o.warn('reset --hard to ' + short(target));
@@ -1373,7 +1373,7 @@
       r.refs['refs/tags/' + name] = tagOid;
       o.ok('Created annotated tag ' + name + ' -> tag object ' + short(tagOid) + ' -> commit ' + short(target) + '.');
       o.dim('An annotated tag is the fourth object type. It is a real object with');
-      o.dim('its own hash, holding the target, a tagger and a message — which is');
+      o.dim('its own hash, holding the target, a tagger and a message - which is');
       o.dim('why it can be signed and a lightweight tag cannot.');
       this.reportWrites();
     } else {
@@ -1446,7 +1446,7 @@
     var oid = write ? r.store('blob', bytes) : r.hashOnly('blob', bytes);
     o.line(oid, 'hd');
     o.dim('That is SHA-1 over the literal bytes  "blob " + ' + bytes.length + ' + NUL + contents.');
-    o.dim(write ? 'Written into the object store.' : 'Not stored — pass -w to store it.');
+    o.dim(write ? 'Written into the object store.' : 'Not stored - pass -w to store it.');
   };
 
   Git.prototype.cmd_rev_parse = function (args) {
@@ -1480,7 +1480,7 @@
 
   Git.prototype.cmd_reflog = function () {
     var r = this.r, o = this.o, i;
-    if (!r.reflog.length) { o.dim('(the reflog is empty — nothing has moved HEAD yet)'); return; }
+    if (!r.reflog.length) { o.dim('(the reflog is empty - nothing has moved HEAD yet)'); return; }
     for (i = 0; i < r.reflog.length && i < 40; i++) {
       var e = r.reflog[i];
       o.line(short(e.after) + '  HEAD@{' + i + '}  ' + e.action, 'out');
@@ -1519,7 +1519,7 @@
     }
     if (!n) o.ok('No difference between ' + aName + ' and ' + bName + '.');
     else o.dim('Comparing ' + aName + ' with ' + bName + '. This toy reports which');
-    if (n) o.dim('PATHS differ, by blob name — not a line-by-line diff.');
+    if (n) o.dim('PATHS differ, by blob name - not a line-by-line diff.');
   };
 
   /* ====================================================================== */
@@ -1922,7 +1922,7 @@
     var filesPanel = E('div', 'gt-panel');
     var fh = E('div', 'gt-ph');
     fh.appendChild(E('span', null, 'Working tree'));
-    fh.appendChild(E('span', 'gt-phnote', '— ordinary files. Git knows nothing about an edit until you add it.'));
+    fh.appendChild(E('span', 'gt-phnote', '- ordinary files. Git knows nothing about an edit until you add it.'));
     filesPanel.appendChild(fh);
     var files = E('div', 'gt-files');
     files.setAttribute('role', 'group');
@@ -1955,7 +1955,7 @@
     var termPanel = E('div', 'gt-panel');
     var th = E('div', 'gt-ph');
     th.appendChild(E('span', null, 'Shell'));
-    th.appendChild(E('span', 'gt-phnote', '— type `help`. Up and Down recall earlier commands.'));
+    th.appendChild(E('span', 'gt-phnote', '- type `help`. Up and Down recall earlier commands.'));
     termPanel.appendChild(th);
     var log = document.createElement('pre');
     log.className = 'gt-log';
@@ -1991,7 +1991,7 @@
     var graphPanel = E('div', 'gt-panel');
     var gh = E('div', 'gt-ph');
     gh.appendChild(E('span', null, 'Commit graph'));
-    gh.appendChild(E('span', 'gt-phnote', '— every commit object in the store. Dimmed rows have no label pointing at them.'));
+    gh.appendChild(E('span', 'gt-phnote', '- every commit object in the store. Dimmed rows have no label pointing at them.'));
     graphPanel.appendChild(gh);
     var graph = E('div', 'gt-graph');
     graph.setAttribute('role', 'group');
@@ -2215,7 +2215,7 @@
 
   GitUI.prototype.undoLast = function () {
     if (!this.history.length) {
-      this.emit('Nothing to undo — no command has changed the repository yet.', 'dim');
+      this.emit('Nothing to undo - no command has changed the repository yet.', 'dim');
       return;
     }
     this.undoTo(this.history.length - 1);
@@ -2232,7 +2232,7 @@
     this.history = this.history.slice(0, i);
     this.emit('Undone: ' + entry.cmd, 'wa');
     this.emit('The refs, the index and the working tree are back where they were', 'dim');
-    this.emit('before that command. Every object it wrote is still in the store —', 'dim');
+    this.emit('before that command. Every object it wrote is still in the store -', 'dim');
     this.emit('undo moves labels, it does not delete anything.', 'dim');
     this.renderAll();
   };
@@ -2333,7 +2333,7 @@
         else { state = 'committed and unchanged'; cls = ''; }
         btn.appendChild(E('span', 'gt-dot' + (cls ? ' ' + cls : '')));
         btn.appendChild(E('span', null, p));
-        label = p + ' — ' + state;
+        label = p + ' - ' + state;
         btn.setAttribute('aria-label', label);
         btn.title = label;
         btn.addEventListener('click', function () {
@@ -2575,7 +2575,7 @@
       }
       box.appendChild(pre);
       box.appendChild(E('p', 'gt-legend',
-        'A tree entry on disk is "' + '<mode> <name>' + '" then a NUL then twenty RAW bytes of hash — ' +
+        'A tree entry on disk is "' + '<mode> <name>' + '" then a NUL then twenty RAW bytes of hash - ' +
         'not the forty hex characters shown here. That is why a tree object looks like binary in an editor.'));
     } else {
       var text = utf8Decode(o.body, 0, o.body.length);
@@ -2584,7 +2584,7 @@
       if (o.type === 'commit') {
         box.appendChild(E('p', 'gt-legend',
           'Everything above is inside the hash: the tree, the parents, the author line, ' +
-          'the committer line and the message. Change any character and the commit gets a different name — ' +
+          'the committer line and the message. Change any character and the commit gets a different name - ' +
           'which is exactly why rebase cannot preserve identity.'));
       } else if (o.type === 'blob') {
         box.appendChild(E('p', 'gt-legend',
@@ -2621,7 +2621,7 @@
       : 'HEAD holds the NAME of a branch, which is why committing moves the branch file and leaves HEAD alone.'));
 
     if (!keys.length) {
-      body.appendChild(E('p', 'gt-empty', 'No refs yet — the first commit creates refs/heads/main.'));
+      body.appendChild(E('p', 'gt-empty', 'No refs yet - the first commit creates refs/heads/main.'));
       return;
     }
     for (i = 0; i < keys.length; i++) {
@@ -2640,7 +2640,7 @@
 
     body.appendChild(E('p', 'gt-legend',
       'Every move HEAD has made, newest first. Real git keeps this for about ninety days, ' +
-      'including for commits nothing points at any more — which is why committed work is so hard to lose.'));
+      'including for commits nothing points at any more - which is why committed work is so hard to lose.'));
 
     if (!r.reflog.length) {
       body.appendChild(E('p', 'gt-empty', 'Nothing has moved HEAD yet.'));
@@ -2656,7 +2656,7 @@
     }
 
     body.appendChild(E('p', 'gt-legend',
-      'Undo, below, is not a git command — it is this page keeping a snapshot of the refs, ' +
+      'Undo, below, is not a git command - it is this page keeping a snapshot of the refs, ' +
       'the index and the working tree before each command. Undoing rewinds to just before that ' +
       'command and everything after it. It never removes an object, because git never does either.'));
 
@@ -2670,7 +2670,7 @@
         var row = E('div', 'gt-undo');
         var u = E('span', 'u');
         u.appendChild(E('b', null, h.cmd));
-        if (h.destructive) u.appendChild(E('span', 'd', '  — destructive'));
+        if (h.destructive) u.appendChild(E('span', 'd', '  - destructive'));
         row.appendChild(u);
         var btn = E('button', 'gt-mini', 'Undo this');
         btn.type = 'button';
@@ -2702,7 +2702,7 @@
       msg.className = 'lab-viz-error';
       msg.textContent = 'This lab could not start in your browser: ' +
         ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown.';
+        ' - the write-up below still explains what it would have shown.';
       mount.appendChild(msg);
     }
   }

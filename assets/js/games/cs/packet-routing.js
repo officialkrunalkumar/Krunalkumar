@@ -1868,7 +1868,7 @@
         ctx.fillStyle = COL_TEXT;
         ctx.font = 'bold 11px "Segoe UI", sans-serif';
         if (selIdx < N) {
-          ctx.fillText('Router ' + NODES[selIdx].name + ' — its table', x, y);
+          ctx.fillText('Router ' + NODES[selIdx].name + ' - its table', x, y);
         } else {
           ctx.fillText('Link ' + linkName(selIdx - N), x, y);
         }

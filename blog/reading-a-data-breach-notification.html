@@ -11,13 +11,13 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="How to Read a Data Breach Notification" />
     <meta
       property="og:description"
-      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open — and what to actually do, by what leaked."
+      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open - and what to actually do, by what leaked."
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/reading-a-data-breach-notification" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="How to Read a Data Breach Notification" />
     <meta
       name="twitter:description"
-      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open — and what to actually do, by what leaked."
+      content="Every phrase in that email was chosen. Here is what accessed, acquired, may have been affected and encrypted passwords each leave open - and what to actually do, by what leaked."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/reading-a-data-breach-notification.jpg" />
     <title>How to Read a Data Breach Notification | Krunalkumar Shah</title>
@@ -87,7 +87,7 @@
             "name": "The notification says the passwords were encrypted. Do I still need to change mine?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Start with the word itself: passwords are supposed to be hashed, not encrypted, because encryption is reversible with a key and the key often sits in the same system that was breached. So the sentence means either that they did something they should not have, or that whoever wrote the notice did not know the difference — and neither reading tells you your password is safe. Even a correctly hashed password is only as strong as the guessing it survives: bcrypt, scrypt or Argon2 with a real work factor makes each guess expensive, while an unsalted MD5 or SHA-1 hash of a common password falls to a lookup. You cannot check which one they used, so change it at that service and everywhere you reused it, and let the algorithm turn out to be good news you did not need."
+              "text": "Yes. Start with the word itself: passwords are supposed to be hashed, not encrypted, because encryption is reversible with a key and the key often sits in the same system that was breached. So the sentence means either that they did something they should not have, or that whoever wrote the notice did not know the difference - and neither reading tells you your password is safe. Even a correctly hashed password is only as strong as the guessing it survives: bcrypt, scrypt or Argon2 with a real work factor makes each guess expensive, while an unsalted MD5 or SHA-1 hash of a common password falls to a lookup. You cannot check which one they used, so change it at that service and everywhere you reused it, and let the algorithm turn out to be good news you did not need."
             }
           },
           {
@@ -95,7 +95,7 @@
             "name": "What does \"we have no evidence of misuse\" actually mean?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "It means they looked at what they can see and did not find anything. That is worth having, but notice how narrow the view is. Misuse of your data mostly happens somewhere else — a login attempt at a different company, a phishing message sent from an address they do not control, a loan application at a bank they have no relationship with. None of that is visible from inside the breached company's logs, and none of it would be, however carefully they looked. The useful follow-up question is not whether they found evidence but what evidence would have looked like and whether they were positioned to see it. In most incidents the honest answer is that they were not."
+              "text": "It means they looked at what they can see and did not find anything. That is worth having, but notice how narrow the view is. Misuse of your data mostly happens somewhere else - a login attempt at a different company, a phishing message sent from an address they do not control, a loan application at a bank they have no relationship with. None of that is visible from inside the breached company's logs, and none of it would be, however carefully they looked. The useful follow-up question is not whether they found evidence but what evidence would have looked like and whether they were positioned to see it. In most incidents the honest answer is that they were not."
             }
           },
           {
@@ -103,7 +103,7 @@
             "name": "Is the free credit monitoring worth taking?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Take it, because it is free and it takes ten minutes, but do not treat it as the response. Monitoring is detection after the fact — it tells you a new account or enquiry appeared, which means the fraud already happened. It usually covers one bureau rather than all of them, it expires after a year or two while a leaked identity number is permanent, and it does nothing whatsoever about the risk that actually applies to most breaches, which is somebody replaying your password at other sites. A credit bureau has no view of your email account. In India you are entitled to one free full credit report per calendar year from each credit information company, so a recurring calendar reminder gives you most of the same value permanently and at no cost."
+              "text": "Take it, because it is free and it takes ten minutes, but do not treat it as the response. Monitoring is detection after the fact - it tells you a new account or enquiry appeared, which means the fraud already happened. It usually covers one bureau rather than all of them, it expires after a year or two while a leaked identity number is permanent, and it does nothing whatsoever about the risk that actually applies to most breaches, which is somebody replaying your password at other sites. A credit bureau has no view of your email account. In India you are entitled to one free full credit report per calendar year from each credit information company, so a recurring calendar reminder gives you most of the same value permanently and at no cost."
             }
           },
           {
@@ -111,7 +111,7 @@
             "name": "My Aadhaar or PAN number was in the breach. What can I actually do?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "You cannot change the number, so the work is making the number less useful. For Aadhaar, UIDAI lets you lock biometrics and lock the number itself through the mAadhaar app or the portal, generate a Virtual ID to hand over instead of the real number, and review your authentication history to see where it has been used. For PAN, the exposure that matters is credit taken in your name, so pull your credit report from each bureau and read the enquiries section rather than only the score. Beyond that, expect the number to be quoted at you by callers as proof they are genuine — a leaked identity number is worth far more to a social engineer than to a fraudster filling in a form, and treating it as public is the mental adjustment that protects you."
+              "text": "You cannot change the number, so the work is making the number less useful. For Aadhaar, UIDAI lets you lock biometrics and lock the number itself through the mAadhaar app or the portal, generate a Virtual ID to hand over instead of the real number, and review your authentication history to see where it has been used. For PAN, the exposure that matters is credit taken in your name, so pull your credit report from each bureau and read the enquiries section rather than only the score. Beyond that, expect the number to be quoted at you by callers as proof they are genuine - a leaked identity number is worth far more to a social engineer than to a fraudster filling in a form, and treating it as public is the mental adjustment that protects you."
             }
           },
           {
@@ -119,7 +119,7 @@
             "name": "How do I tell a real breach notification from a phishing email pretending to be one?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Do not try to tell them apart, because both a real notice and a good forgery will look plausible and attackers deliberately send fakes in the days after a real breach becomes news. Instead, never act inside the email. Do not click the link, do not use the phone number in it, and do not type a password into anything it opens. Go to the company the way you normally do — the app on your phone, or an address you type yourself — and look for the notice there. Real notices are published on the company's own site and repeated by the press; a notice that exists only in your inbox and only behind a link is a strong signal on its own."
+              "text": "Do not try to tell them apart, because both a real notice and a good forgery will look plausible and attackers deliberately send fakes in the days after a real breach becomes news. Instead, never act inside the email. Do not click the link, do not use the phone number in it, and do not type a password into anything it opens. Go to the company the way you normally do - the app on your phone, or an address you type yourself - and look for the notice there. Real notices are published on the company's own site and repeated by the press; a notice that exists only in your inbox and only behind a link is a strong signal on its own."
             }
           },
           {
@@ -127,7 +127,7 @@
             "name": "Can I sue the company or get compensation under the DPDP Act?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Not under that Act, and this is the part people are most often surprised by. The Digital Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties — the Schedule runs up to two hundred and fifty crore rupees for failing to take reasonable security safeguards and up to two hundred crore for failing to give breach intimation — but those penalties are paid to the government, not to you. The Act creates no route to individual compensation. What it does give you is a right to grievance redressal that you must use with the company first, and then a complaint to the Board. If you lost money, the routes that can actually return it are your bank's unauthorised-transaction process, the cybercrime helpline, and a consumer forum claim for deficiency in service."
+              "text": "Not under that Act, and this is the part people are most often surprised by. The Digital Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties - the Schedule runs up to two hundred and fifty crore rupees for failing to take reasonable security safeguards and up to two hundred crore for failing to give breach intimation - but those penalties are paid to the government, not to you. The Act creates no route to individual compensation. What it does give you is a right to grievance redressal that you must use with the company first, and then a complaint to the Board. If you lost money, the routes that can actually return it are your bank's unauthorised-transaction process, the cybercrime helpline, and a consumer forum claim for deficiency in service."
             }
           },
           {
@@ -135,7 +135,7 @@
             "name": "Nothing has happened in six months. Am I in the clear?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Silence is weak evidence, because breach data does not expire and it is often used long after it is stolen. A corpus gets traded, merged with other corpora, and worked through by different people at different times; credential lists in particular are replayed for years because a password that was reused in 2024 is frequently still in use. Identity numbers age even more slowly than that. This is not a reason to stay anxious — it is a reason to make the fix structural rather than vigilant. A unique password per site and a phishing-resistant second factor keep working while you forget about the incident entirely, which is the whole point of choosing controls over watchfulness."
+              "text": "Silence is weak evidence, because breach data does not expire and it is often used long after it is stolen. A corpus gets traded, merged with other corpora, and worked through by different people at different times; credential lists in particular are replayed for years because a password that was reused in 2024 is frequently still in use. Identity numbers age even more slowly than that. This is not a reason to stay anxious - it is a reason to make the fix structural rather than vigilant. A unique password per site and a phishing-resistant second factor keep working while you forget about the incident entirely, which is the whole point of choosing controls over watchfulness."
             }
           }
         ]
@@ -213,9 +213,9 @@
           <p class="hero-text">
             "We recently became aware of an incident." Every word after that opening was chosen, reviewed by a
             lawyer, and written to be true on the worst set of facts the company could not rule out. That is not
-            dishonesty — it is what careful drafting under legal exposure produces. But it means the email is a
+            dishonesty - it is what careful drafting under legal exposure produces. But it means the email is a
             document to be read rather than a message to be believed, and the reading is a skill. Here is the
-            vocabulary, the dates that are missing, and what to actually do — which depends almost entirely on
+            vocabulary, the dates that are missing, and what to actually do - which depends almost entirely on
             which fields leaked.
           </p>
           <p class="post-meta">Published 31 August 2026 · 26 min read · by Krunalkumar Shah</p>
@@ -262,7 +262,7 @@
                 contained, we engaged, we notified. Claims about what happened to your data are hedged: may have
                 been, potentially, could have included. Claims about consequences are negative: we have no evidence
                 of. Once you notice that the confidence in each sentence is set by who is in a position to know, the
-                document starts telling you a great deal — not by what it says, but by which parts it refuses to say
+                document starts telling you a great deal - not by what it says, but by which parts it refuses to say
                 plainly.
               </p>
               <p>
@@ -305,8 +305,8 @@
                 it are two different incidents with two different consequences for you.
               </p>
               <p>
-                <strong>Acquired</strong> — sometimes written as exfiltrated, downloaded, or removed from our
-                environment — means a copy left. This is the stronger word and companies use it only when they can
+                <strong>Acquired</strong> - sometimes written as exfiltrated, downloaded, or removed from our
+                environment - means a copy left. This is the stronger word and companies use it only when they can
                 establish it, because it is the word that triggers the widest obligations in the widest number of
                 jurisdictions. If a notice avoids it, that is worth noticing.
               </p>
@@ -323,13 +323,13 @@
                 usually the most honest one in the document. It is almost never a softening. It is a statement
                 about the company's telemetry: they know a set of records was in scope, they cannot narrow it to the
                 individual rows, so everyone in the set gets told. Which means being in the "may have" group does
-                not make your exposure hypothetical — it makes it undetermined, and undetermined is not a lighter
+                not make your exposure hypothetical - it makes it undetermined, and undetermined is not a lighter
                 version of exposed. Treat it as exposed and move on.
               </p>
               <div class="post-callout" role="note">
                 <p>
                   <strong>One question worth asking.</strong> If the company has a support channel, ask which
-                  categories of your record were in the affected set — not whether you personally were affected,
+                  categories of your record were in the affected set - not whether you personally were affected,
                   which they usually cannot answer, but which fields the compromised system held. That question is
                   answerable from an architecture diagram rather than from logs, and it is the answer that decides
                   your entire response.
@@ -359,13 +359,13 @@
                 Two related phrases behave the same way. <strong>"We have no reason to believe"</strong> is weaker
                 still, because it does not even assert that anyone looked. And <strong>"out of an abundance of
                 caution"</strong> is a framing device: it presents a mandatory disclosure as a voluntary courtesy.
-                Sometimes that is fair — companies do notify beyond their strict obligations. Often it is a notice
+                Sometimes that is fair - companies do notify beyond their strict obligations. Often it is a notice
                 that a statute required, wearing a friendlier coat.
               </p>
               <p>
                 The useful reframe is that absence of evidence is a claim about the observer, not about the world.
                 It is the same logic as a breach-monitoring service returning zero results, which tells you only
-                that the corpus that vendor happens to hold does not contain your address today — the mechanism
+                that the corpus that vendor happens to hold does not contain your address today - the mechanism
                 covered in
                 <a href="/blog/surface-web-deep-web-and-dark-web">the piece on the surface, deep and dark web</a>.
                 A negative result is bounded by the search, always.
@@ -379,7 +379,7 @@
                 nothing you can act on.
               </p>
               <p>
-                There is a second trap in the word financial. Companies usually mean it narrowly — card numbers,
+                There is a second trap in the word financial. Companies usually mean it narrowly - card numbers,
                 bank account numbers, the things that map to a fraud statute. That definition can happily coexist
                 with the breach including your salary band, your transaction history, your loan status, the name of
                 your bank, and the last four digits of your card. None of those let anyone take money directly. All
@@ -406,7 +406,7 @@
                 word.
               </p>
               <p>
-                Passwords should not be encrypted. Encryption is reversible by design — that is what it is for — and
+                Passwords should not be encrypted. Encryption is reversible by design - that is what it is for - and
                 it requires a key, and the key has to live somewhere the application can reach, which is very often
                 the same environment that was just breached. Passwords should be
                 <a href="/glossary#term-hash-function">hashed</a>: run through a one-way function so that the stored
@@ -433,8 +433,8 @@
                 <li>
                   <strong>The <a href="/glossary#term-salt">salt</a>.</strong> A unique random value per user,
                   mixed in before hashing, so that two people with the same password do not produce the same stored
-                  value. Without it, one precomputed table — a
-                  <a href="/glossary#term-rainbow-table">rainbow table</a> — cracks every common password in the
+                  value. Without it, one precomputed table - a
+                  <a href="/glossary#term-rainbow-table">rainbow table</a> - cracks every common password in the
                   dump at once, and the attacker's cost is amortised across every user rather than paid per user.
                 </li>
                 <li>
@@ -453,7 +453,7 @@
               <p>
                 One more thing worth naming, because it is where a strong hash quietly stops helping. Hashing
                 protects the password, not the person. If your password was weak, or was in a previous breach, or
-                follows a pattern anyone would guess, it will fall to an offline attack whatever the algorithm is —
+                follows a pattern anyone would guess, it will fall to an offline attack whatever the algorithm is -
                 the cost per guess only matters when there are a great many guesses to make. That is the argument
                 for length and randomness rather than complexity rules, which is the subject of
                 <a href="/blog/passwords-passkeys-and-what-actually-protects-you">the passwords and passkeys
@@ -476,9 +476,9 @@
                 the last one, softened into the word "recently".
               </p>
               <ol>
-                <li><strong>The date of first access</strong> — when the attacker got in.</li>
-                <li><strong>The date of discovery</strong> — when somebody at the company noticed, or was told.</li>
-                <li><strong>The date of notification</strong> — when the email reached you.</li>
+                <li><strong>The date of first access</strong> - when the attacker got in.</li>
+                <li><strong>The date of discovery</strong> - when somebody at the company noticed, or was told.</li>
+                <li><strong>The date of notification</strong> - when the email reached you.</li>
               </ol>
               <p>
                 The interval between the first two is dwell time, and it is the number that describes how long you
@@ -490,7 +490,7 @@
                 dwell time tends to be measured in seasons.
               </p>
               <p>
-                The interval between the second two is the disclosure lag, and it is where most public anger lands —
+                The interval between the second two is the disclosure lag, and it is where most public anger lands -
                 usually unfairly, and sometimes precisely fairly. The unfair part is that a great deal has to happen
                 in that window: containment, forensic imaging, working out which records were in scope, checking
                 whether the attacker still has a foothold, regulator filings, and drafting. Notifying on day one with
@@ -532,7 +532,7 @@
                 </li>
                 <li>
                   <strong>How many people, and in which jurisdictions.</strong> A number tells you whether this is
-                  an incident or an event, and the jurisdictional split tells you which regulator has an interest —
+                  an incident or an event, and the jurisdictional split tells you which regulator has an interest -
                   which in turn tells you what recourse exists.
                 </li>
                 <li>
@@ -559,7 +559,7 @@
               <div class="post-callout" role="note">
                 <p>
                   <strong>The forgery problem, stated once.</strong> In the days after a breach becomes public,
-                  attackers send fake notifications about it — same company, same story, a link to a convincing
+                  attackers send fake notifications about it - same company, same story, a link to a convincing
                   login page. Both the real message and the fake are unexpected emails about a frightening event
                   with an action attached, so telling them apart by eye is the wrong game. Never act inside the
                   email. Open the app or type the address yourself. What that page is really doing, and why it works,
@@ -608,7 +608,7 @@
                 </li>
                 <li>
                   <strong>Date of birth, mother's maiden name, security answers.</strong> Retire them permanently.
-                  These were always a bad authentication mechanism — they are facts, not secrets, and facts leak.
+                  These were always a bad authentication mechanism - they are facts, not secrets, and facts leak.
                   Wherever a site insists on security questions, put a random string in the answer field and store
                   it in your password manager. The answer does not have to be true; it has to be unguessable.
                 </li>
@@ -645,13 +645,13 @@
               <p>
                 The breached company will force a password reset. Whatever your password there was, it stops
                 working. The attacker gains very little at the company they broke into. What they gain is a list of
-                email addresses paired with passwords — and the value of that list is entirely at other companies,
+                email addresses paired with passwords - and the value of that list is entirely at other companies,
                 because a meaningful proportion of people use the same password in more than one place.
               </p>
               <p>
                 <a href="/glossary#term-credential-stuffing">Credential stuffing</a> is the industrialised version
                 of that idea. Take a few million pairs from breach A. Point automation at the login pages of
-                hundreds of unrelated services — banks, retailers, streaming, food delivery, government portals.
+                hundreds of unrelated services - banks, retailers, streaming, food delivery, government portals.
                 Route the attempts through residential proxies so no single address looks abnormal, drive real
                 browsers so the requests carry plausible fingerprints, and go slowly enough per account to avoid
                 any lockout. Success rates per attempt are low, commonly cited in fractions of a percent. Against a
@@ -670,7 +670,7 @@
                 Two refinements are worth knowing because they defeat the obvious defences. The first is credential
                 tweaking: attackers do not only try the leaked password, they try the predictable mutations of it,
                 because that is what people do when forced to change one. Adding a digit, incrementing a number,
-                appending the year or an exclamation mark — these are enumerated automatically. Changing
+                appending the year or an exclamation mark - these are enumerated automatically. Changing
                 <em>Summer2024!</em> to <em>Summer2025!</em> is not changing your password.
               </p>
               <p>
@@ -682,7 +682,7 @@
                 The defence is one sentence long and everything else is secondary: <strong>a different password at
                 every site</strong>, generated and stored by a password manager, so that a breach at one company is
                 an event with no blast radius anywhere else. Multi-factor authentication is a strong second layer,
-                and worth turning on everywhere — but note that a code from an app or an SMS can still be phished
+                and worth turning on everywhere - but note that a code from an app or an SMS can still be phished
                 in real time by a convincing login page, whereas a passkey cannot be replayed against a site it was
                 not created for. Unique passwords remove the attack; the second factor limits it.
               </p>
@@ -691,7 +691,7 @@
                 <p class="lab-cta-text">
                   <strong>Find out which of your accounts is already in a public dump.</strong> The breach checker
                   on this site searches published breach corpora for an address, and checks a password using
-                  <a href="/glossary#term-k-anonymity">k-anonymity</a> — hashing it in your browser and sending only
+                  <a href="/glossary#term-k-anonymity">k-anonymity</a> - hashing it in your browser and sending only
                   the first five characters of that hash, so the password itself never leaves the page. It will not
                   claim to scan the dark web, because nothing can. It searches what has been published, which is the
                   part that is real and the part that tells you which password to change first.
@@ -702,7 +702,7 @@
               <h2 id="the-credit-monitoring-offer">The credit monitoring offer</h2>
               <p>
                 Almost every large notification includes twelve or twenty-four months of free credit monitoring or
-                identity protection. Take it — it is free, it takes ten minutes, and it occasionally catches
+                identity protection. Take it - it is free, it takes ten minutes, and it occasionally catches
                 something. Then understand why it is a small gesture rather than a remedy, because the gap between
                 how it reads and what it does is wide.
               </p>
@@ -731,7 +731,7 @@
                 </li>
                 <li>
                   <strong>It costs the company very little.</strong> Bought at the scale of a large breach, per
-                  person, it is inexpensive — and it converts an awkward paragraph into a paragraph with an offer
+                  person, it is inexpensive - and it converts an awkward paragraph into a paragraph with an offer
                   in it. That is not a reason to refuse it. It is a reason not to read it as the measure of how
                   seriously the incident is being treated.
                 </li>
@@ -741,7 +741,7 @@
                 detail to open an account in your name, and where you would otherwise never check. In that case
                 take the subscription and also set a recurring calendar reminder, because in India you are entitled
                 to one free full credit report per calendar year from each credit information company. Pulling
-                those yourself gives you multi-bureau coverage, permanently, for nothing — which is a better
+                those yourself gives you multi-bureau coverage, permanently, for nothing - which is a better
                 arrangement than the one in the email.
               </p>
 
@@ -756,7 +756,7 @@
                 <a href="/blog/india-it-act-explained">Information Technology Act</a>, they require service
                 providers, intermediaries, data centres and body corporates to report specified cyber incidents to
                 CERT-In within six hours of noticing them or being told about them. The same directions require
-                synchronised clocks and the retention of logs for a rolling period within India — the practical
+                synchronised clocks and the retention of logs for a rolling period within India - the practical
                 purpose being that an investigation months later has something to read. Note who this obligation
                 runs to: it is a report to the national incident response agency. Nothing in it tells you anything.
               </p>
@@ -768,8 +768,8 @@
                 Rules. That obligation sits on the same footing as the consent duties in
                 <a href="/blog/what-consent-actually-means-under-dpdp">what consent actually means under the DPDP
                 Act</a>: both are things the company owes you, and both are enforced by the Board rather than by
-                you. The Rules set out what the intimation must contain — the nature and extent of the breach,
-                when and where it occurred, the likely consequences, the mitigation taken, and a contact point —
+                you. The Rules set out what the intimation must contain - the nature and extent of the breach,
+                when and where it occurred, the likely consequences, the mitigation taken, and a contact point -
                 and require the individual to be told without delay, with the Board getting an initial intimation
                 without delay and a fuller account within seventy-two hours. Because the Act and its Rules commence
                 in stages, check the operative text for the date you are reading this rather than trusting a
@@ -803,7 +803,7 @@
                 </li>
                 <li>
                   <strong>If money has moved, act on the financial track immediately.</strong> Report the
-                  unauthorised transaction to your bank at once — the Reserve Bank's customer protection framework
+                  unauthorised transaction to your bank at once - the Reserve Bank's customer protection framework
                   limits your liability where you report promptly, and the clock is short. File on the national
                   cybercrime reporting portal and use the 1930 helpline, which exists precisely to attempt to
                   freeze funds while they are still in the chain. The mechanics of how quickly that money moves,
@@ -820,7 +820,7 @@
                 I have supported law enforcement as a registered cyber-expert volunteer since 2020, and the pattern
                 I would want any reader to take from that work is unglamorous: the outcomes that go well are the
                 ones where somebody acted within hours and kept records. Evidence decays, funds move, and logs roll
-                over. The legal framework matters, but it operates on whatever is left by the time it engages —
+                over. The legal framework matters, but it operates on whatever is left by the time it engages -
                 which is the same lesson as
                 <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are actually solved</a>.
               </p>
@@ -828,7 +828,7 @@
               <h2 id="the-first-hour-in-order">The first hour, in order</h2>
               <p>
                 Stripped of everything above, this is what I do when one of these arrives, and the order is
-                deliberate — each step reduces the cost of getting a later one wrong.
+                deliberate - each step reduces the cost of getting a later one wrong.
               </p>
               <ol>
                 <li>
@@ -859,7 +859,7 @@
                 </li>
                 <li>
                   <strong>Act on the specific fields.</strong> Card replaced, identity number locked, security
-                  answers retired — whichever of the checklist above applies.
+                  answers retired - whichever of the checklist above applies.
                 </li>
                 <li>
                   <strong>Then stop.</strong> Note the date, take the free monitoring if offered, and go back to
@@ -876,7 +876,7 @@
                     Yes. Start with the word itself: passwords are supposed to be hashed, not encrypted, because
                     encryption is reversible with a key and the key often sits in the same system that was breached.
                     So the sentence means either that they did something they should not have, or that whoever wrote
-                    the notice did not know the difference — and neither reading tells you your password is safe.
+                    the notice did not know the difference - and neither reading tells you your password is safe.
                     Even a correctly hashed password is only as strong as the guessing it survives: bcrypt, scrypt
                     or Argon2 with a real work factor makes each guess expensive, while an unsalted MD5 or SHA-1
                     hash of a common password falls to a lookup. You cannot check which one they used, so change it
@@ -888,7 +888,7 @@
                   <summary>What does "we have no evidence of misuse" actually mean?</summary>
                   <p>
                     It means they looked at what they can see and did not find anything. That is worth having, but
-                    notice how narrow the view is. Misuse of your data mostly happens somewhere else — a login
+                    notice how narrow the view is. Misuse of your data mostly happens somewhere else - a login
                     attempt at a different company, a phishing message sent from an address they do not control, a
                     loan application at a bank they have no relationship with. None of that is visible from inside
                     the breached company's logs, and none of it would be, however carefully they looked. The useful
@@ -901,7 +901,7 @@
                   <summary>Is the free credit monitoring worth taking?</summary>
                   <p>
                     Take it, because it is free and it takes ten minutes, but do not treat it as the response.
-                    Monitoring is detection after the fact — it tells you a new account or enquiry appeared, which
+                    Monitoring is detection after the fact - it tells you a new account or enquiry appeared, which
                     means the fraud already happened. It usually covers one bureau rather than all of them, it
                     expires after a year or two while a leaked identity number is permanent, and it does nothing
                     whatsoever about the risk that actually applies to most breaches, which is somebody replaying
@@ -920,7 +920,7 @@
                     history to see where it has been used. For PAN, the exposure that matters is credit taken in
                     your name, so pull your credit report from each bureau and read the enquiries section rather
                     than only the score. Beyond that, expect the number to be quoted at you by callers as proof they
-                    are genuine — a leaked identity number is worth far more to a social engineer than to a
+                    are genuine - a leaked identity number is worth far more to a social engineer than to a
                     fraudster filling in a form, and treating it as public is the mental adjustment that protects
                     you.
                   </p>
@@ -931,8 +931,8 @@
                     Do not try to tell them apart, because both a real notice and a good forgery will look plausible
                     and attackers deliberately send fakes in the days after a real breach becomes news. Instead,
                     never act inside the email. Do not click the link, do not use the phone number in it, and do not
-                    type a password into anything it opens. Go to the company the way you normally do — the app on
-                    your phone, or an address you type yourself — and look for the notice there. Real notices are
+                    type a password into anything it opens. Go to the company the way you normally do - the app on
+                    your phone, or an address you type yourself - and look for the notice there. Real notices are
                     published on the company's own site and repeated by the press; a notice that exists only in your
                     inbox and only behind a link is a strong signal on its own.
                   </p>
@@ -941,9 +941,9 @@
                   <summary>Can I sue the company or get compensation under the DPDP Act?</summary>
                   <p>
                     Not under that Act, and this is the part people are most often surprised by. The Digital
-                    Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties —
+                    Personal Data Protection Act, 2023 gives the Data Protection Board power to impose penalties -
                     the Schedule runs up to two hundred and fifty crore rupees for failing to take reasonable
-                    security safeguards and up to two hundred crore for failing to give breach intimation — but
+                    security safeguards and up to two hundred crore for failing to give breach intimation - but
                     those penalties are paid to the government, not to you. The Act creates no route to individual
                     compensation. What it does give you is a right to grievance redressal that you must use with the
                     company first, and then a complaint to the Board. If you lost money, the routes that can
@@ -958,7 +958,7 @@
                     is stolen. A corpus gets traded, merged with other corpora, and worked through by different
                     people at different times; credential lists in particular are replayed for years because a
                     password that was reused in 2024 is frequently still in use. Identity numbers age even more
-                    slowly than that. This is not a reason to stay anxious — it is a reason to make the fix
+                    slowly than that. This is not a reason to stay anxious - it is a reason to make the fix
                     structural rather than vigilant. A unique password per site and a phishing-resistant second
                     factor keep working while you forget about the incident entirely, which is the whole point of
                     choosing controls over watchfulness.
@@ -969,7 +969,7 @@
               <p>
                 The uncomfortable truth under all of this is that you did not choose the security of the company
                 that lost your data, and you cannot audit it from your inbox. What you can choose is how much a
-                single company's bad day is allowed to cost you — and that is decided almost entirely before the
+                single company's bad day is allowed to cost you - and that is decided almost entirely before the
                 email arrives, by whether the password they lost was one you used anywhere else. Read the notice
                 carefully, act on the fields that leaked, and then spend the afternoon on the thing that makes the
                 next notification boring.

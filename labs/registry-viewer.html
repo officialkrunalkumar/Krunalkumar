@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>Windows registry hive parser</h1>
-        <p class="hero-text">A registry hive is a binary file, and the forensic gold in it &mdash; autostart entries, USB history, recent documents, user accounts &mdash; is exactly what you want to read off a machine you are investigating. This parses the raw regf format, no Windows required.</p>
+        <p class="hero-text">A registry hive is a binary file, and the forensic gold in it - autostart entries, USB history, recent documents, user accounts - is exactly what you want to read off a machine you are investigating. This parses the raw regf format, no Windows required.</p>
         <ul class="lab-facts">
           <li>Raw regf hive parsing</li>
           <li>Key tree browser with timestamps</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Large files are capped so the page stays responsive</li>
                   <li>No lookups against any external database</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -309,11 +309,11 @@
           </article>
           <article class="info-card">
             <h3>The inline-value trap</h3>
-            <p>The hive format stores small values inline in the field that normally holds an offset, flagged by a high bit &mdash; a detail that breaks naive parsers and silently corrupts their output. This handles it explicitly.</p>
+            <p>The hive format stores small values inline in the field that normally holds an offset, flagged by a high bit - a detail that breaks naive parsers and silently corrupts their output. This handles it explicitly.</p>
           </article>
           <article class="info-card">
             <h3>Timestamps decoded</h3>
-            <p>Registry key write times are Windows FILETIMEs &mdash; 100-nanosecond ticks since 1601, past what a normal number can hold exactly. They are decoded to readable UTC so a key&rsquo;s last modification is legible.</p>
+            <p>Registry key write times are Windows FILETIMEs - 100-nanosecond ticks since 1601, past what a normal number can hold exactly. They are decoded to readable UTC so a key&rsquo;s last modification is legible.</p>
           </article>
         </div>
       </section>

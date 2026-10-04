@@ -70,7 +70,7 @@
       joke: 'You do not break in. You are let in, by somebody who read your message and believed it, ' +
         'and you spent longer on the wording than they did on the reading.',
       fact: 'Phishing impersonates a sender the target already trusts so that the target does the ' +
-        'damaging thing themselves &mdash; typing a password into a copy of a login page, or paying an ' +
+        'damaging thing themselves - typing a password into a copy of a login page, or paying an ' +
         'invoice that was never owed. The reliable check is where the link actually goes: read the domain ' +
         'right to left, and the two labels before the final slash are the ones somebody had to buy. ' +
         'Passkeys and hardware security keys are the strongest defence, because they refuse to hand a ' +
@@ -82,7 +82,7 @@
         'and a deadline they invented on the walk over.',
       fact: 'Social engineering attacks the human process rather than the system: urgency, authority and ' +
         'familiarity, applied until somebody skips the step that would have caught it. Most of it is a ' +
-        'phone call, and caller ID is trivially spoofed, so the defence is out-of-band verification &mdash; ' +
+        'phone call, and caller ID is trivially spoofed, so the defence is out-of-band verification - ' +
         'hang up and ring the number you already had, not the one you were just given. Anything that moves ' +
         'money or resets access should need a second person who was not part of the original conversation.'
     },
@@ -101,8 +101,8 @@
       line: 'You are not subtle and you have never wanted to be.',
       joke: 'You bring everyone. You bring everyone again. You are the reason the queue outside is longer ' +
         'than the room.',
-      fact: 'A distributed denial of service floods a target from many machines at once &mdash; usually a ' +
-        'botnet of compromised devices &mdash; until legitimate requests cannot get served. Nothing is ' +
+      fact: 'A distributed denial of service floods a target from many machines at once - usually a ' +
+        'botnet of compromised devices - until legitimate requests cannot get served. Nothing is ' +
         'stolen and nothing is decrypted; the damage is purely to availability, which is why it is the one ' +
         'attack a business feels within minutes. It is absorbed rather than blocked: capacity spread across ' +
         'many locations, upstream scrubbing at the network provider, caching, and rate limits applied ' +
@@ -113,7 +113,7 @@
       joke: 'Everything still exists. You have simply made it unreadable, priced the key, and set a clock ' +
         'that only you can see.',
       fact: 'Ransomware encrypts a victim’s files and sells back the key, and modern crews steal a copy ' +
-        'first so they can also threaten to publish &mdash; which is why paying does not reliably end it. ' +
+        'first so they can also threaten to publish - which is why paying does not reliably end it. ' +
         'The actual countermeasure is backups that are offline or immutable and that somebody has genuinely ' +
         'restored from, because an untested backup is a belief rather than a plan. The way in is almost ' +
         'always mundane: an unpatched internet-facing service, or remote access with no multi-factor on it.'
@@ -122,7 +122,7 @@
       line: 'You never say anything yourself. You just carry it, slightly changed.',
       joke: 'Both of them think they are talking to each other. Both of them are right about half of it.',
       fact: 'A man-in-the-middle attacker sits in the network path and relays traffic, reading or altering ' +
-        'it in transit &mdash; through a rogue wireless access point, ARP spoofing on a local network, or ' +
+        'it in transit - through a rogue wireless access point, ARP spoofing on a local network, or ' +
         'DNS answers that point somewhere else. Properly validated TLS defeats it, because the attacker ' +
         'cannot present a certificate for a domain they do not control. That is why clicking through a ' +
         'certificate warning is the one browser prompt that genuinely matters, and why HSTS exists: it ' +
@@ -144,7 +144,7 @@
       joke: 'You never attack anybody directly. You just write something down where somebody else will read ' +
         'it, and let their own browser do the rest.',
       fact: 'Cross-site scripting puts an attacker’s script into a page so that it runs in another ' +
-        'visitor’s browser with that site’s privileges &mdash; stored in a comment, or reflected ' +
+        'visitor’s browser with that site’s privileges - stored in a comment, or reflected ' +
         'back out of a URL. From there it can read whatever that page can read, which is usually the ' +
         'session. The defence is escaping output for the context it lands in rather than sanitising input, ' +
         'a Content-Security-Policy that refuses to run injected script, and HttpOnly cookies so a stolen ' +
@@ -305,7 +305,7 @@
           return { title: TITLES[top], body: body, bars: bars };
         },
         disclaimer: 'This measures nothing. Fourteen silly questions cannot tell you anything about yourself, ' +
-          'and there is no sense in which a person resembles a denial-of-service attack &mdash; the quiz is a ' +
+          'and there is no sense in which a person resembles a denial-of-service attack - the quiz is a ' +
           'delivery mechanism for the paragraph underneath the result, which is the accurate part. Nothing you ' +
           'answered left your browser.'
       });

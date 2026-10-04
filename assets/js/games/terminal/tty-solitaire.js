@@ -316,7 +316,7 @@
       function actFound(f) {
         var cards;
         if (!sel) {
-          if (!found[f].length) { bad('Nothing on the ' + SUITNAME[f] + ' yet — it starts with the ace.'); return; }
+          if (!found[f].length) { bad('Nothing on the ' + SUITNAME[f] + ' yet - it starts with the ace.'); return; }
           pickUp('found', f, 0);
           return;
         }

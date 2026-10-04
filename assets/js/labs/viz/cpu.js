@@ -181,7 +181,7 @@
     if (symbols && Object.prototype.hasOwnProperty.call(symbols, tok)) {
       return { t: 'imm', v: symbols[tok].addr, label: tok };
     }
-    if (/^R[0-9]+$/i.test(tok)) return { t: 'bad', why: 'register "' + tok + '" does not exist — this CPU has R0 through R7' };
+    if (/^R[0-9]+$/i.test(tok)) return { t: 'bad', why: 'register "' + tok + '" does not exist - this CPU has R0 through R7' };
     if (/^[A-Za-z_.][A-Za-z0-9_.]*$/.test(tok)) return { t: 'bad', why: 'unknown label "' + tok + '"' };
     return { t: 'bad', why: 'cannot parse "' + tok + '"' };
   }
@@ -307,7 +307,7 @@
     }
 
     if (program.length === 0 && errors.length === 0) {
-      errors.push({ line: 0, msg: 'nothing to assemble — the program is empty' });
+      errors.push({ line: 0, msg: 'nothing to assemble - the program is empty' });
     }
 
     return {
@@ -502,26 +502,26 @@
           break;
 
         case 'PUSH':
-          if (this.sp - 1 < 0) throw 'stack overflow — no room to PUSH';
+          if (this.sp - 1 < 0) throw 'stack overflow - no room to PUSH';
           this.sp = this.sp - 1;
           this.mem[this.sp] = mask(this.val(o[0]));
           this.touch.mem = this.sp; this.touch.sp = true;
           break;
         case 'POP':
-          if (this.sp >= MEM_SIZE) throw 'stack underflow — POP on an empty stack';
+          if (this.sp >= MEM_SIZE) throw 'stack underflow - POP on an empty stack';
           this.writeReg(o[0].n, this.mem[this.sp]);
           this.sp = this.sp + 1; this.touch.sp = true;
           break;
 
         case 'CALL':
-          if (this.sp - 1 < 0) throw 'stack overflow — no room for the return address';
+          if (this.sp - 1 < 0) throw 'stack overflow - no room for the return address';
           this.sp = this.sp - 1;
           this.mem[this.sp] = this.pc + 1;     // return to the line after CALL
           this.touch.mem = this.sp; this.touch.sp = true;
           next = o[0].v;
           break;
         case 'RET':
-          if (this.sp >= MEM_SIZE) throw 'RET with an empty stack — no return address';
+          if (this.sp >= MEM_SIZE) throw 'RET with an empty stack - no return address';
           next = this.mem[this.sp];
           this.sp = this.sp + 1; this.touch.sp = true;
           break;
@@ -548,7 +548,7 @@
     this.pc = next;
     this.steps++;
     if (this.steps >= STEP_LIMIT) {
-      this.error = 'step limit (' + LabViz.humanNumber(STEP_LIMIT) + ') reached — the program never halted';
+      this.error = 'step limit (' + LabViz.humanNumber(STEP_LIMIT) + ') reached - the program never halted';
       this.halted = true;
     }
     return true;
@@ -560,7 +560,7 @@
 
   var EXAMPLES = {
     fib:
-      "; Fibonacci — print the first 10 Fibonacci numbers.\n" +
+      "; Fibonacci - print the first 10 Fibonacci numbers.\n" +
       "; R0 = current, R1 = next, R2 = counter.\n" +
       "      MOV  R0, #0\n" +
       "      MOV  R1, #1\n" +
@@ -575,7 +575,7 @@
       "      HLT\n",
 
     fact:
-      "; Factorial — compute 6! and print it (720).\n" +
+      "; Factorial - compute 6! and print it (720).\n" +
       "; R0 counts down from n, R1 accumulates the product.\n" +
       "      MOV  R0, #6         ; n\n" +
       "      MOV  R1, #1         ; result = 1\n" +
@@ -587,14 +587,14 @@
       "      HLT\n",
 
     sum:
-      "; Sum an array — walk it with an index and add each element.\n" +
+      "; Sum an array - walk it with an index and add each element.\n" +
       "; The array and its length live in data memory (see DW at the end).\n" +
       "      MOV  R0, #0         ; sum = 0\n" +
       "      MOV  R1, #0         ; i = 0\n" +
       "      LOAD R2, [len]      ; R2 = number of elements\n" +
       "loop: CMP  R1, R2         ; i < len ?\n" +
       "      JL   body\n" +
-      "      JMP  done           ; i reached len — finished\n" +
+      "      JMP  done           ; i reached len - finished\n" +
       "body: LOAD R3, [arr+R1]   ; R3 = arr[i]\n" +
       "      ADD  R0, R3         ; sum += arr[i]\n" +
       "      ADD  R1, #1         ; i++\n" +
@@ -606,7 +606,7 @@
       "len:  DW 6\n",
 
     bubble:
-      "; Bubble sort — sort the array ascending, then print it.\n" +
+      "; Bubble sort - sort the array ascending, then print it.\n" +
       "; Repeats passes until a whole pass makes no swap.\n" +
       "      LOAD R7, [len]      ; n\n" +
       "pass: MOV  R6, #0         ; swapped = 0\n" +
@@ -629,7 +629,7 @@
       "next: ADD  R0, #1         ; j++\n" +
       "      JMP  in\n" +
       "chk:  CMP  R6, #0         ; did this pass swap anything?\n" +
-      "      JNZ  pass           ; yes — another pass\n" +
+      "      JNZ  pass           ; yes - another pass\n" +
       "      MOV  R0, #0         ; print the sorted array\n" +
       "prn:  CMP  R0, R7\n" +
       "      JL   emit\n" +
@@ -784,7 +784,7 @@
     var left = E('div', 'cpu-col');
 
     var codePanel = E('div', 'cpu-panel');
-    codePanel.appendChild(E('div', 'cpu-ph', 'Source — assembly'));
+    codePanel.appendChild(E('div', 'cpu-ph', 'Source - assembly'));
     var code = document.createElement('textarea');
     code.id = 'viz-code'; code.className = 'cpu-code';
     code.spellcheck = false; code.setAttribute('autocapitalize', 'off');
@@ -805,7 +805,7 @@
     left.appendChild(codePanel);
 
     var listPanel = E('div', 'cpu-panel');
-    listPanel.appendChild(E('div', 'cpu-ph', 'Program — the current instruction is highlighted'));
+    listPanel.appendChild(E('div', 'cpu-ph', 'Program - the current instruction is highlighted'));
     var listing = E('div', 'cpu-listing'); listing.id = 'viz-listing';
     listPanel.appendChild(listing);
     left.appendChild(listPanel);
@@ -824,13 +824,13 @@
     right.appendChild(regPanel);
 
     var memPanel = E('div', 'cpu-panel');
-    memPanel.appendChild(E('div', 'cpu-ph', 'Data memory — 256 words (hex)'));
+    memPanel.appendChild(E('div', 'cpu-ph', 'Data memory - 256 words (hex)'));
     var mem = E('div', 'cpu-mem'); mem.id = 'viz-mem';
     memPanel.appendChild(mem);
     right.appendChild(memPanel);
 
     var stackPanel = E('div', 'cpu-panel');
-    stackPanel.appendChild(E('div', 'cpu-ph', 'Stack — top first'));
+    stackPanel.appendChild(E('div', 'cpu-ph', 'Stack - top first'));
     var stack = E('div', 'cpu-stack'); stack.id = 'viz-stack';
     stackPanel.appendChild(stack);
     right.appendChild(stackPanel);
@@ -933,7 +933,7 @@
       ['Flag', 'Set when'],
       [
         ['Z (Zero)', 'the result of the last arithmetic/logic op (or CMP) was 0'],
-        ['N (Negative)', 'bit 15 of that result was 1 — i.e. it reads as a negative number'],
+        ['N (Negative)', 'bit 15 of that result was 1 - i.e. it reads as a negative number'],
         ['C (Carry)', 'ADD overflowed past 16 bits, SUB/CMP needed a borrow, or a shift pushed a 1 out']
       ]
     ));
@@ -964,7 +964,7 @@
     var p2 = document.createElement('p');
     p2.innerHTML = 'A memory address is written in brackets and can add terms: ' +
       '<code>[42]</code>, <code>[R1]</code>, <code>[arr+R1]</code>. Declare data with ' +
-      '<code>label: DW 5, 8, 2</code> — the label becomes the address of the first word. ' +
+      '<code>label: DW 5, 8, 2</code> - the label becomes the address of the first word. ' +
       'Instructions and data live in separate spaces, so PC is simply the line number and ' +
       'nothing you STORE can overwrite your code.';
     d.appendChild(p2);
@@ -1062,7 +1062,7 @@
 
     if (!asm.ok) {
       this.assembled = false;
-      this.emitErr('Assembly failed — ' + asm.errors.length + ' error' + (asm.errors.length === 1 ? '' : 's') + ':');
+      this.emitErr('Assembly failed - ' + asm.errors.length + ' error' + (asm.errors.length === 1 ? '' : 's') + ':');
       // sort by line
       asm.errors.sort(function (a, b) { return a.line - b.line; });
       for (var i = 0; i < asm.errors.length; i++) {

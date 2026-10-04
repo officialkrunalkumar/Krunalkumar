@@ -153,7 +153,7 @@
                "INSERT INTO users VALUES (3,'agarcia','p@ssw0rd','staff');");
 
         var form = el('div', 'hl-app');
-        form.appendChild(el('p', 'hl-app-title', 'Acme Corp — Staff Portal'));
+        form.appendChild(el('p', 'hl-app-title', 'Acme Corp - Staff Portal'));
         var uWrap = el('label', 'hl-field'); uWrap.appendChild(el('span', null, 'Username'));
         var u = el('input'); u.type = 'text'; u.autocomplete = 'off'; uWrap.appendChild(u);
         var pWrap = el('label', 'hl-field'); pWrap.appendChild(el('span', null, 'Password'));
@@ -185,7 +185,7 @@
           } catch (err) {
             result.classList.add('is-err');
             result.textContent = 'SQL error: ' + err.message +
-              '  — a thrown error is itself a signal that your input reached the parser.';
+              '  - a thrown error is itself a signal that your input reached the parser.';
             return;
           }
           if (!rows.length || !rows[0].values.length) {
@@ -222,7 +222,7 @@
       'Full payload:  \' UNION SELECT label, value FROM secrets --'
     ],
     solution: "Search for:  ' UNION SELECT label, value FROM secrets --\nThe query becomes SELECT name, price FROM products WHERE name LIKE '%' UNION SELECT label, value FROM secrets --%' and the secrets rows appear in the results.",
-    fix: 'Same root cause and same fix as any injection: parameterise the query so input is data, not code. Defence in depth helps too — the application account should not have SELECT on a secrets table it never legitimately reads, and a UNION that changes the column set should be impossible because the query text is fixed.',
+    fix: 'Same root cause and same fix as any injection: parameterise the query so input is data, not code. Defence in depth helps too - the application account should not have SELECT on a secrets table it never legitimately reads, and a UNION that changes the column set should be impossible because the query text is fixed.',
     mount: function (root, win) {
       getSql().then(function (SQL) {
         var db = new SQL.Database();
@@ -235,7 +235,7 @@
                "INSERT INTO secrets VALUES ('db_root_password','c0rrect-horse-vault');");
 
         var app = el('div', 'hl-app');
-        app.appendChild(el('p', 'hl-app-title', 'Acme Shop — product search'));
+        app.appendChild(el('p', 'hl-app-title', 'Acme Shop - product search'));
         var sWrap = el('label', 'hl-field'); sWrap.appendChild(el('span', null, 'Search products'));
         var s = el('input'); s.type = 'text'; s.autocomplete = 'off'; s.placeholder = 'widget'; sWrap.appendChild(s);
         var go = el('button', 'hl-btn', 'Search');
@@ -297,7 +297,7 @@
     category: 'Cross-site scripting',
     level: 2,
     brief: 'A guestbook echoes your comment straight back into the page, unescaped. A victim viewing that page carries a session token in a script variable. Take it.',
-    objective: 'Make the victim page send its session token back to you — get your injected script to run and exfiltrate window.SESSION.',
+    objective: 'Make the victim page send its session token back to you - get your injected script to run and exfiltrate window.SESSION.',
     hints: [
       'Your comment is written into the victim page as raw HTML. A plain <script> tag added after load will not execute, but an element with an inline event handler will.',
       'Try an image that fails to load, with an onerror handler:  <img src=x onerror="...">.',
@@ -309,7 +309,7 @@
     mount: function (root, win) {
       var app = el('div', 'hl-app');
       app.appendChild(el('p', 'hl-app-title', 'Community Guestbook'));
-      app.appendChild(el('p', 'hl-label', 'Your comment is shown to everyone who visits — including a logged-in moderator whose session token sits in window.SESSION on their view of the page.'));
+      app.appendChild(el('p', 'hl-label', 'Your comment is shown to everyone who visits - including a logged-in moderator whose session token sits in window.SESSION on their view of the page.'));
       var cWrap = el('label', 'hl-field'); cWrap.appendChild(el('span', null, 'Leave a comment'));
       var c = el('textarea'); c.rows = 3; c.placeholder = 'Nice site!'; cWrap.appendChild(c);
       var go = el('button', 'hl-btn', 'Post comment');
@@ -409,13 +409,13 @@
       'Ask for:  ../config/secrets.env',
       'If a single ../ is stripped, try more, or ....//  which becomes ../ after a naive single strip.'
     ],
-    solution: 'Request the filename  ../config/secrets.env  — the viewer builds the path public/../config/secrets.env, which resolves to config/secrets.env, outside the folder it meant to expose.',
-    fix: 'Never trust a supplied path. Resolve the final absolute path and verify it still sits inside the intended directory before opening it, rejecting anything that does not. Strip or refuse .. rather than stripping it once (a single pass turns ....// into ../). Best of all, do not accept filenames at all — map an opaque id to a known-safe path on the server side.',
+    solution: 'Request the filename  ../config/secrets.env  - the viewer builds the path public/../config/secrets.env, which resolves to config/secrets.env, outside the folder it meant to expose.',
+    fix: 'Never trust a supplied path. Resolve the final absolute path and verify it still sits inside the intended directory before opening it, rejecting anything that does not. Strip or refuse .. rather than stripping it once (a single pass turns ....// into ../). Best of all, do not accept filenames at all - map an opaque id to a known-safe path on the server side.',
     mount: function (root, win) {
       // A virtual filesystem. There is no real disk here.
       var FS = {
         'public/welcome.txt': 'Welcome! Public documents live in this folder.',
-        'public/brochure.txt': 'Acme Corp — we make widgets.',
+        'public/brochure.txt': 'Acme Corp - we make widgets.',
         'public/pricing.txt': 'Widgets: $12. Gadgets: $25.',
         'config/secrets.env': 'DB_PASSWORD=vault-9931\nAPI_KEY=HL{traversal_left_the_folder}\nADMIN_EMAIL=root@acme.example',
         'config/app.ini': '[app]\ndebug=false'
@@ -486,14 +486,14 @@
     level: 2,
     brief: 'A network tool runs ping against the host you type, by handing your input straight to a shell. Add a command of your own.',
     objective: 'Read the flag by running cat flag.txt through the ping form.',
-    note: 'The "shell" here is a small simulation — there is no real shell in your browser. The parsing of ; && | and the danger they carry are real.',
+    note: 'The "shell" here is a small simulation - there is no real shell in your browser. The parsing of ; && | and the danger they carry are real.',
     hints: [
       'The server runs literally:  sh -c "ping -c1 <your input>". Your text is part of a shell command line. Shell metacharacters end one command and start another.',
       'A semicolon separates commands: host ; second-command. So  localhost; ls  would run ls after the ping.',
       'List the files first to find the flag:  localhost; ls',
       'Then read it:  localhost; cat flag.txt'
     ],
-    solution: 'Enter  localhost; cat flag.txt  — the shell runs ping, then, after the semicolon, runs cat flag.txt, printing the flag. && and | work too.',
+    solution: 'Enter  localhost; cat flag.txt  - the shell runs ping, then, after the semicolon, runs cat flag.txt, printing the flag. && and | work too.',
     fix: 'Do not build a shell command from input. Call the program directly with an argument vector (execFile("ping", ["-c1", host]) rather than exec("ping -c1 " + host)), so there is no shell to interpret metacharacters. Validate that host is actually a hostname or IP. If a shell is truly unavoidable, allow-list the exact characters permitted and reject everything else.',
     mount: function (root, win) {
       var FILES = { 'flag.txt': 'HL{never_pass_input_to_a_shell}', 'notes.txt': 'todo: fix this form', 'app.js': '// server code' };
@@ -571,19 +571,19 @@
       'Invoice numbers are sequential and predictable. Yours is in the 2000s; try the 1000s.',
       'Set the invoice id to 1001 and view it.'
     ],
-    solution: 'Change the invoice id from your own (2002) to 1001 and view it. The server returns it because it only checks that you are logged in, not that the invoice is yours — an Insecure Direct Object Reference.',
-    fix: 'Check authorisation on every object access, not just authentication. Before returning invoice N, confirm invoice N belongs to the logged-in user. Predictable ids are not the vulnerability — the missing ownership check is — but using unguessable ids (UUIDs) is useful defence in depth.',
+    solution: 'Change the invoice id from your own (2002) to 1001 and view it. The server returns it because it only checks that you are logged in, not that the invoice is yours - an Insecure Direct Object Reference.',
+    fix: 'Check authorisation on every object access, not just authentication. Before returning invoice N, confirm invoice N belongs to the logged-in user. Predictable ids are not the vulnerability - the missing ownership check is - but using unguessable ids (UUIDs) is useful defence in depth.',
     mount: function (root, win) {
       var INVOICES = {
         2001: { owner: 2, to: 'You', amount: '$120.00', note: 'Your March invoice.' },
         2002: { owner: 2, to: 'You', amount: '$98.50', note: 'Your April invoice.' },
-        1001: { owner: 1, to: 'Northwind Ltd', amount: '$44,900.00', note: 'CONFIDENTIAL — acquisition retainer. Flag: HL{check_the_owner_not_just_the_login}' },
+        1001: { owner: 1, to: 'Northwind Ltd', amount: '$44,900.00', note: 'CONFIDENTIAL - acquisition retainer. Flag: HL{check_the_owner_not_just_the_login}' },
         1002: { owner: 1, to: 'Northwind Ltd', amount: '$12,000.00', note: 'Consulting, Q1.' }
       };
       var ME = 2;
 
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Billing — logged in as customer #2'));
+      app.appendChild(el('p', 'hl-app-title', 'Billing - logged in as customer #2'));
       var iWrap = el('label', 'hl-field'); iWrap.appendChild(el('span', null, 'Invoice id'));
       var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = '2002'; iWrap.appendChild(i);
       var go = el('button', 'hl-btn', 'View invoice');
@@ -638,7 +638,7 @@
     title: 'Forge an admin token by turning the signature off',
     category: 'Authentication (JWT)',
     level: 2,
-    brief: 'This API accepts JSON Web Tokens. It reads the algorithm from the token’s own header and, fatally, honours "alg":"none" — a token that says it needs no signature.',
+    brief: 'This API accepts JSON Web Tokens. It reads the algorithm from the token’s own header and, fatally, honours "alg":"none" - a token that says it needs no signature.',
     objective: 'Present a token that the server accepts as user "admin" with role "admin".',
     hints: [
       'A JWT is three base64url parts: header.payload.signature. The header names the algorithm. Decode the given token and read it.',
@@ -653,7 +653,7 @@
       var startTok = b64urlEncode(startHeader) + '.' + b64urlEncode(startPayload) + '.c2lnbmVkX3dpdGhfYV9zZWNyZXQ';
 
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Account API — send a bearer token'));
+      app.appendChild(el('p', 'hl-app-title', 'Account API - send a bearer token'));
       app.appendChild(el('p', 'hl-label', 'Your current token (guest):'));
       var given = el('pre', 'hl-query'); given.textContent = startTok; app.appendChild(given);
 
@@ -699,15 +699,15 @@
     objective: 'Log in as "admin" without knowing the password.',
     hints: [
       'The query is db.users.findOne({ user: <your user>, pass: <your pass> }). What if pass were not a string but an object?',
-      'MongoDB treats { "$ne": "" } as "not equal to empty" — which matches any real password. Send that as the password value.',
+      'MongoDB treats { "$ne": "" } as "not equal to empty" - which matches any real password. Send that as the password value.',
       'Set user to "admin" and pass to the JSON object {"$ne":""}. Use the JSON body editor.'
     ],
     solution: 'Send a JSON body where the password is a query operator, e.g. {"user":"admin","pass":{"$ne":""}}. The database matches the admin row because their password is "not equal to empty", and you are logged in without ever knowing it.',
-    fix: 'Cast inputs to the type you expect before querying — a password must be a string, not an object. Reject non-string credentials, use a data-access layer that parameterises queries, and never build a query straight from an untrusted JSON body.',
+    fix: 'Cast inputs to the type you expect before querying - a password must be a string, not an object. Reject non-string credentials, use a data-access layer that parameterises queries, and never build a query straight from an untrusted JSON body.',
     mount: function (root, win) {
       var USERS = [{ user: 'admin', pass: 'S3cr3t-f9x2!', flag: 'HL{operators_are_not_strings}' }];
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Login — JSON body'));
+      app.appendChild(el('p', 'hl-app-title', 'Login - JSON body'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'POST /login body (JSON)'));
       var i = el('textarea'); i.rows = 3; i.spellcheck = false;
       i.value = '{ "user": "admin", "pass": "guess" }';
@@ -762,14 +762,14 @@
     title: 'Make yourself an admin by adding a field the form never showed',
     category: 'Mass assignment',
     level: 2,
-    brief: 'The "update profile" endpoint copies every field of your JSON body onto the user record. The form only shows name and email — but nothing stops you sending more.',
+    brief: 'The "update profile" endpoint copies every field of your JSON body onto the user record. The form only shows name and email - but nothing stops you sending more.',
     objective: 'Change your own role to "admin".',
     hints: [
       'The server does user = Object.assign(user, body). It trusts that the body only contains the fields the form renders.',
       'Add a field the form never offered. The role is stored on the same record.',
       'Send {"name":"You","email":"you@example.com","role":"admin"}.'
     ],
-    solution: 'Add "role":"admin" to the JSON body. The endpoint blindly merges the whole body onto your user object, so the extra field overwrites your role — classic mass assignment (over-posting).',
+    solution: 'Add "role":"admin" to the JSON body. The endpoint blindly merges the whole body onto your user object, so the extra field overwrites your role - classic mass assignment (over-posting).',
     fix: 'Never bind a request body straight onto a model. Use an explicit allow-list of fields a user may change (name, email) and ignore everything else. Sensitive fields like role, isAdmin or credit balance must only ever be set by trusted server code.',
     mount: function (root, win) {
       var user = { id: 7, name: 'You', email: 'you@example.com', role: 'user' };
@@ -808,7 +808,7 @@
     title: 'Bounce a victim to an attacker site through a trusted link',
     category: 'Open redirect',
     level: 2,
-    brief: 'After login the app sends you wherever ?next= says. It never checks that the destination is one of its own pages, so the link — on a domain the victim trusts — can point anywhere.',
+    brief: 'After login the app sends you wherever ?next= says. It never checks that the destination is one of its own pages, so the link - on a domain the victim trusts - can point anywhere.',
     objective: 'Craft a next value that redirects off-site, to https://evil.example.',
     hints: [
       'The app does location = decodeURIComponent(next) with no validation. It assumes next is a path like /account.',
@@ -819,7 +819,7 @@
     fix: 'Only redirect to destinations you control. Accept a relative path and reject anything that starts with a scheme, "//", or a different host. A safe pattern is an allow-list of paths, or storing the intended destination server-side against a key instead of passing a URL in the query string.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Login redirect — trusted-site.example'));
+      app.appendChild(el('p', 'hl-app-title', 'Login redirect - trusted-site.example'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'Continue link: /login?next='));
       var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = '/account'; w.appendChild(i);
       app.appendChild(w);
@@ -849,7 +849,7 @@
           win();
         } else {
           result.classList.add('is-err');
-          result.textContent = 'Redirected within trusted-site.example to ' + d + '. Still on-site — no victim harmed.';
+          result.textContent = 'Redirected within trusted-site.example to ' + d + '. Still on-site - no victim harmed.';
         }
       });
     }
@@ -869,7 +869,7 @@
       'Use: <!DOCTYPE r [<!ENTITY xxe SYSTEM "file:///etc/passwd">]> and put &xxe; inside an element.'
     ],
     solution: 'Define an external entity pointing at the file and reference it in the document, e.g. <?xml version="1.0"?><!DOCTYPE r [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><r>&xxe;</r>. The parser resolves file:///etc/passwd and expands its contents into the element.',
-    fix: 'Disable DOCTYPE and external entity resolution in your XML parser (in most libraries a single flag, e.g. FEATURE_SECURE_PROCESSING / disallow-doctype-decl). Better still, prefer a format without this footgun — JSON — for untrusted input.',
+    fix: 'Disable DOCTYPE and external entity resolution in your XML parser (in most libraries a single flag, e.g. FEATURE_SECURE_PROCESSING / disallow-doctype-decl). Better still, prefer a format without this footgun - JSON - for untrusted input.',
     mount: function (root, win) {
       var FILES = {
         'file:///etc/passwd': 'root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:/var/www:/usr/sbin/nologin\ndeploy:x:1000:1000::/home/deploy:/bin/bash\n# flag: HL{disable_external_entities}',
@@ -924,14 +924,14 @@
     title: 'Reach an internal service through a URL-preview feature',
     category: 'Server-side request forgery (SSRF)',
     level: 3,
-    brief: 'The link-preview fetches whatever URL you paste — from the server. The server sits inside a network with services a visitor could never reach directly, and it happily fetches those too.',
+    brief: 'The link-preview fetches whatever URL you paste - from the server. The server sits inside a network with services a visitor could never reach directly, and it happily fetches those too.',
     objective: 'Read the cloud metadata service at http://169.254.169.254/latest/meta-data/iam/credentials.',
     hints: [
-      'The server fetches your URL with no restriction on where it points. It can reach addresses your browser cannot — localhost and link-local ranges inside the datacentre.',
+      'The server fetches your URL with no restriction on where it points. It can reach addresses your browser cannot - localhost and link-local ranges inside the datacentre.',
       'Cloud instances expose a metadata service on a fixed link-local address that hands out credentials to anything on the box.',
       'Fetch http://169.254.169.254/latest/meta-data/iam/credentials.'
     ],
-    solution: 'Paste an internal URL. The server-side fetcher will retrieve http://169.254.169.254/latest/meta-data/iam/credentials — the cloud metadata endpoint — and return its response, leaking instance credentials to you.',
+    solution: 'Paste an internal URL. The server-side fetcher will retrieve http://169.254.169.254/latest/meta-data/iam/credentials - the cloud metadata endpoint - and return its response, leaking instance credentials to you.',
     fix: 'Do not let user input choose what the server connects to. Resolve and validate the host against an allow-list, block private, loopback and link-local ranges (127.0.0.0/8, 169.254.0.0/16, 10/8, 192.168/16, ::1), disable redirects to those ranges, and require the metadata service to use signed requests (IMDSv2).',
     mount: function (root, win) {
       var INTERNAL = {
@@ -988,18 +988,18 @@
       'Nest the payload so the dangerous key sits one level down: { "__proto__": { "isAdmin": true } }.',
       'Send {"__proto__":{"isAdmin":true}}. Afterwards the app checks ({}).isAdmin.'
     ],
-    solution: 'Send {"__proto__":{"isAdmin":true}}. The unsafe deep-merge follows the __proto__ key onto Object.prototype and sets isAdmin there, so every object — including a fresh {} used later for an authorisation check — now reports isAdmin true.',
+    solution: 'Send {"__proto__":{"isAdmin":true}}. The unsafe deep-merge follows the __proto__ key onto Object.prototype and sets isAdmin there, so every object - including a fresh {} used later for an authorisation check - now reports isAdmin true.',
     fix: 'Reject or skip the keys __proto__, constructor and prototype in any recursive merge. Use a null-prototype object (Object.create(null)) or a Map for untrusted data, freeze Object.prototype, and prefer vetted libraries whose merge is hardened against this.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Application settings — deep merge'));
+      app.appendChild(el('p', 'hl-app-title', 'Application settings - deep merge'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'POST /settings body (JSON)'));
       var i = el('textarea'); i.rows = 3; i.spellcheck = false;
       i.value = '{ "theme": "dark" }';
       w.appendChild(i); app.appendChild(w);
       var go = el('button', 'hl-btn', 'Save settings');
       app.appendChild(go);
-      app.appendChild(el('p', 'hl-label', 'Authorisation probe — a fresh object’s inherited isAdmin:'));
+      app.appendChild(el('p', 'hl-label', 'Authorisation probe - a fresh object’s inherited isAdmin:'));
       var out = el('pre', 'hl-query'); out.textContent = '({}).isAdmin === undefined'; app.appendChild(out);
       var result = el('div', 'hl-result'); app.appendChild(result);
       root.appendChild(app);
@@ -1028,7 +1028,7 @@
         out.textContent = '({}).isAdmin === ' + JSON.stringify(probe.isAdmin);
         if (polluted) {
           result.classList.add('is-ok');
-          result.textContent = 'Object.prototype is polluted — every object now inherits isAdmin.';
+          result.textContent = 'Object.prototype is polluted - every object now inherits isAdmin.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{guard___proto___in_merges}'));
           // clean up so the page itself is not left poisoned
           try { delete Object.prototype.isAdmin; } catch (e) {}
@@ -1055,7 +1055,7 @@
       'When the allowed origin is reflected and credentials are allowed, the attacker’s page (any Origin) can read the response including private data.',
       'Set the Origin header to https://evil.example and send the request.'
     ],
-    solution: 'Send the request with Origin: https://evil.example. The server reflects it into Access-Control-Allow-Origin and allows credentials, so a script on evil.example can read the private response with the victim’s session cookie — a cross-origin data leak.',
+    solution: 'Send the request with Origin: https://evil.example. The server reflects it into Access-Control-Allow-Origin and allows credentials, so a script on evil.example can read the private response with the victim’s session cookie - a cross-origin data leak.',
     fix: 'Never reflect the Origin blindly. Compare it against a strict allow-list and only then echo it. Do not combine a wildcard or reflected origin with Access-Control-Allow-Credentials: true. If the resource is not meant to be shared cross-origin, send no CORS headers at all.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
@@ -1081,7 +1081,7 @@
         var canRead = acao === origin;
         var body = canRead
           ? '{ "user": "victim", "email": "victim@trusted.example", "flag": "HL{never_reflect_origin_with_credentials}" }'
-          : '(blocked by the browser — ACAO did not match)';
+          : '(blocked by the browser - ACAO did not match)';
         out.textContent = headers + '\n\nBody readable by ' + origin + ': ' + canRead + '\n' + body;
         if (canRead && origin && origin !== 'https://trusted.example') {
           result.classList.add('is-ok');
@@ -1106,12 +1106,12 @@
     brief: 'Your session is a base64-encoded JSON object handed straight back to you, with no signature. The server decodes it and trusts every field, including your role.',
     objective: 'Present a session that the server reads as role "admin".',
     hints: [
-      'The cookie is not encrypted or signed — it is just base64 of JSON. Decode it and read what is inside.',
+      'The cookie is not encrypted or signed - it is just base64 of JSON. Decode it and read what is inside.',
       'Change the role to admin, re-encode the JSON as base64, and send it back. Nothing verifies it was not tampered with.',
-      'base64( {"user":"you","role":"admin"} ) — paste that as the session value.'
+      'base64( {"user":"you","role":"admin"} ) - paste that as the session value.'
     ],
     solution: 'Base64-decode the session to reveal a JSON object, change "role" to "admin", base64-encode it again and submit. Because the session is neither signed nor encrypted, the server accepts the modified object as-is.',
-    fix: 'Never trust client-held state. Either keep the session server-side and give the client only an opaque random id, or sign the cookie (HMAC) and verify the signature before reading any field. Encoding is not integrity — base64 is not a security boundary.',
+    fix: 'Never trust client-held state. Either keep the session server-side and give the client only an opaque random id, or sign the cookie (HMAC) and verify the signature before reading any field. Encoding is not integrity - base64 is not a security boundary.',
     mount: function (root, win) {
       var start = btoa(JSON.stringify({ user: 'you', role: 'user' }));
       var app = el('div', 'hl-app');
@@ -1152,14 +1152,14 @@
     title: 'Break out of a template and read a server secret',
     category: 'Template injection (SSTI)',
     level: 2,
-    brief: 'The greeting page drops your name straight into a server-side template string. The template engine evaluates {{ ... }} expressions — including ones you supply.',
+    brief: 'The greeting page drops your name straight into a server-side template string. The template engine evaluates {{ ... }} expressions - including ones you supply.',
     objective: 'Make the template evaluate an expression and reveal the value of {{ secret }}.',
     hints: [
       'The page renders "Hello, <your name>". Your name is placed inside the template before it is evaluated, not after.',
-      'Template engines evaluate {{ expression }}. Try {{7*7}} and watch it become 49 — proof your input is being evaluated as code.',
+      'Template engines evaluate {{ expression }}. Try {{7*7}} and watch it become 49 - proof your input is being evaluated as code.',
       'The engine exposes a variable called secret. Submit {{secret}}.'
     ],
-    solution: 'Enter a template expression as your name. {{7*7}} renders as 49, confirming injection; {{secret}} then evaluates the server-side secret variable and prints it — server-side template injection leading to data disclosure (and, in real engines, remote code execution).',
+    solution: 'Enter a template expression as your name. {{7*7}} renders as 49, confirming injection; {{secret}} then evaluates the server-side secret variable and prints it - server-side template injection leading to data disclosure (and, in real engines, remote code execution).',
     fix: 'Never build a template from untrusted input. Pass user data as *values* into a pre-compiled template (context variables), never concatenate it into the template source. Sandbox or disable dangerous globals in the template engine, and prefer logic-less templating.',
     mount: function (root, win) {
       var CONTEXT = { secret: 'HL{user_input_is_data_never_template_source}' };
@@ -1218,7 +1218,7 @@
     hints: [
       'The filter is (&(uid=<user>)(userPassword=<pass>)). Both halves must match. What does * mean in an LDAP filter?',
       'In LDAP, * is a wildcard that matches any value. If the password field becomes just *, it matches any stored password.',
-      'Set user to admin and password to * — the filter becomes (&(uid=admin)(userPassword=*)), which matches.'
+      'Set user to admin and password to * - the filter becomes (&(uid=admin)(userPassword=*)), which matches.'
     ],
     solution: 'Enter * as the password (or user). LDAP treats * as "matches any value", so the filter (&(uid=admin)(userPassword=*)) is satisfied by the admin entry regardless of the real password, and you are authenticated.',
     fix: 'Escape LDAP filter metacharacters ( ) * \\ NUL in all user input before building a filter (RFC 4515), or use a parameterised LDAP API. As always, bind with least privilege and never interpolate raw input into a query language.',
@@ -1270,7 +1270,7 @@
     objective: 'Set a display name that becomes an executable formula in the exported CSV.',
     hints: [
       'Whatever you type becomes a cell value in the CSV. Spreadsheets treat a leading =, +, - or @ as the start of a formula, not text.',
-      'A formula cell can call functions — the dangerous ones reach the shell or exfiltrate data. Even a simple =1+1 proves the cell is executable.',
+      'A formula cell can call functions - the dangerous ones reach the shell or exfiltrate data. Even a simple =1+1 proves the cell is executable.',
       'Set your name to something like =2+5 (or =HYPERLINK("http://evil","click")). The export cell will begin with =.'
     ],
     solution: 'Put a formula in your name, e.g. =2+5. When the CSV is generated your name is written straight into a cell, and any spreadsheet opening the file evaluates it as a formula. Real payloads use =HYPERLINK, =WEBSERVICE or DDE/command execution.',
@@ -1295,7 +1295,7 @@
         var first = name.charAt(0);
         if (first === '=' || first === '+' || first === '-' || first === '@') {
           result.classList.add('is-ok');
-          result.textContent = 'The name cell begins with "' + first + '" — a spreadsheet opening this file will execute it as a formula.';
+          result.textContent = 'The name cell begins with "' + first + '" - a spreadsheet opening this file will execute it as a formula.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{prefix_dangerous_cells_with_a_quote}'));
           win();
         } else {
@@ -1319,11 +1319,11 @@
       'If you can set the Host header (or an X-Forwarded-Host that the app honours), the generated link uses your domain. The victim clicks it and their token reaches you.',
       'Set the Host header to evil.example.'
     ],
-    solution: 'Send the reset request with Host: evil.example. The app builds the reset link from that header, so the email to the victim contains https://evil.example/reset?token=... — when they click it, their token is delivered to the attacker.',
+    solution: 'Send the reset request with Host: evil.example. The app builds the reset link from that header, so the email to the victim contains https://evil.example/reset?token=... - when they click it, their token is delivered to the attacker.',
     fix: 'Never build absolute URLs from the Host header. Use a fixed, configured canonical domain for links in emails. Validate the Host / X-Forwarded-Host against an allow-list at the edge, and reject requests with an unexpected Host.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Forgot password — request a reset for victim@site.example'));
+      app.appendChild(el('p', 'hl-app-title', 'Forgot password - request a reset for victim@site.example'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'Host header of your request'));
       var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'site.example'; w.appendChild(i);
       app.appendChild(w);
@@ -1365,7 +1365,7 @@
     hints: [
       'The token is hash(issuedAtMillis). The issue time is shown to you (it is in the email’s Date header in reality). There is no random component.',
       'Feed the same millisecond value through the same hash and you get the same token. Try the exact issuedAt shown.',
-      'Enter the issuedAt value shown as the "guessed time" and generate — the token will match.'
+      'Enter the issuedAt value shown as the "guessed time" and generate - the token will match.'
     ],
     solution: 'Because the token derives only from the issue time, hashing the known issuedAt reproduces it exactly. There is no entropy to guess — the "random" token is a pure function of a value the attacker can read.',
     fix: 'Generate tokens from a cryptographically secure random source (crypto.getRandomValues / crypto.randomBytes), at least 128 bits, never from the clock, a counter or Math.random. Store the token hashed and expire it quickly.',
@@ -1385,7 +1385,7 @@
       var victimToken = weakHash(issuedAt);
 
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Password reset — victim’s token was issued at:'));
+      app.appendChild(el('p', 'hl-app-title', 'Password reset - victim’s token was issued at:'));
       var info = el('pre', 'hl-query');
       info.textContent = 'issuedAt = ' + issuedAt + '  (' + new Date(issuedAt).toISOString() + ')\nvictim token = ' + victimToken.slice(0, 4) + '…(hidden)';
       app.appendChild(info);
@@ -1409,7 +1409,7 @@
           win();
         } else {
           result.classList.add('is-err');
-          result.textContent = 'Generated ' + token.slice(0, 8) + '… — no match. The issue time is shown above; use it exactly.';
+          result.textContent = 'Generated ' + token.slice(0, 8) + '… - no match. The issue time is shown above; use it exactly.';
         }
       });
     }
@@ -1422,7 +1422,7 @@
     title: 'Check out for a negative total by editing the quantity',
     category: 'Business logic',
     level: 2,
-    brief: 'The cart trusts the quantity the client sends and multiplies it by the price with no sanity check. A negative quantity produces a negative line — a refund you never earned.',
+    brief: 'The cart trusts the quantity the client sends and multiplies it by the price with no sanity check. A negative quantity produces a negative line - a refund you never earned.',
     objective: 'Reach a checkout total of zero or less.',
     hints: [
       'total = price × quantity, computed from whatever quantity the client posts. There is no check that quantity is a positive integer.',
@@ -1434,7 +1434,7 @@
     mount: function (root, win) {
       var PRICE = 20;
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Cart — Widget @ $' + PRICE + ' each'));
+      app.appendChild(el('p', 'hl-app-title', 'Cart - Widget @ $' + PRICE + ' each'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'Quantity (client-controlled)'));
       var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = '2'; w.appendChild(i);
       app.appendChild(w);
@@ -1473,12 +1473,12 @@
     title: 'Slip past a token check using loose equality',
     category: 'Type juggling',
     level: 2,
-    brief: 'The API compares your token to a secret with loose equality (==). In languages that coerce types, two strings that look like numbers in scientific notation can compare equal even when the characters differ — the "magic hash" trap.',
+    brief: 'The API compares your token to a secret with loose equality (==). In languages that coerce types, two strings that look like numbers in scientific notation can compare equal even when the characters differ - the "magic hash" trap.',
     objective: 'Provide a token that is not the secret yet passes the loose == check.',
     hints: [
       'The check is inputToken == secretToken with ==, not ===. The secret is the string "0e462097431906509019562988736854".',
       'When both operands look like numbers, == converts them to numbers first. A string like "0e123..." is parsed as 0 × 10^123 = 0. Any "0e<digits>" string equals 0.',
-      'Send a different "0e<digits>" string, e.g. 0e1 — a numeric 0, equal to the secret under == but not identical.'
+      'Send a different "0e<digits>" string, e.g. 0e1 - a numeric 0, equal to the secret under == but not identical.'
     ],
     solution: 'The secret is a "0e…" string, which numeric coercion turns into 0. Send any other all-digit "0e…" value (like 0e1); under loose == both sides coerce to 0 and compare equal, even though the strings differ. This is the classic PHP magic-hash / type-juggling bypass.',
     fix: 'Always compare secrets with strict, type-safe equality (=== in JS, hash_equals / === in PHP) and, for tokens, a constant-time comparison. Never let a security decision ride on implicit type coercion.',
@@ -1491,7 +1491,7 @@
         return a === b;
       }
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Token check — if (token == secret) ...'));
+      app.appendChild(el('p', 'hl-app-title', 'Token check - if (token == secret) ...'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'Your token')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'guess'; w.appendChild(i);
       app.appendChild(w);
       var go = el('button', 'hl-btn', 'Submit token');
@@ -1503,7 +1503,7 @@
         result.className = 'hl-result';
         var t = i.value;
         if (looseEq(t, SECRET)) {
-          if (t === SECRET) { result.classList.add('is-err'); result.textContent = 'That is the real secret — no bypass, you just guessed it.'; return; }
+          if (t === SECRET) { result.classList.add('is-err'); result.textContent = 'That is the real secret - no bypass, you just guessed it.'; return; }
           result.classList.add('is-ok');
           result.textContent = 'Accepted. "' + t + '" == the secret under loose equality, though the strings differ.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{use_strict_equality_for_secrets}'));
@@ -1522,15 +1522,15 @@
     title: 'Discover a hidden field with GraphQL introspection, then read it',
     category: 'GraphQL introspection',
     level: 2,
-    brief: 'This GraphQL API leaves introspection enabled in production. The schema — including fields the UI never calls — is queryable, and one of those fields returns something it should not.',
+    brief: 'This GraphQL API leaves introspection enabled in production. The schema - including fields the UI never calls - is queryable, and one of those fields returns something it should not.',
     objective: 'Use introspection to find the hidden field on User, then query it.',
     hints: [
       'Send the introspection query { __type(name:"User"){ fields{ name } } } to list every field the type exposes.',
       'The UI only ever asks for name and email, but the type also exposes a field that holds a secret. Find its name.',
       'Query { user { ssnToken } } once introspection has revealed the ssnToken field.'
     ],
-    solution: 'Introspection ({ __type(name:"User"){ fields { name } } }) lists a field the UI never uses — ssnToken. Querying { user { ssnToken } } then returns the sensitive value, because the field exists in the schema and nothing authorises access to it.',
-    fix: 'Disable introspection in production, but do not rely on it for security — obscurity is not access control. Put field-level authorisation on sensitive fields, and do not expose secrets through the schema at all.',
+    solution: 'Introspection ({ __type(name:"User"){ fields { name } } }) lists a field the UI never uses - ssnToken. Querying { user { ssnToken } } then returns the sensitive value, because the field exists in the schema and nothing authorises access to it.',
+    fix: 'Disable introspection in production, but do not rely on it for security - obscurity is not access control. Put field-level authorisation on sensitive fields, and do not expose secrets through the schema at all.',
     mount: function (root, win) {
       var SCHEMA = { User: { fields: ['id', 'name', 'email', 'ssnToken'] } };
       var USER = { id: 1, name: 'Dana', email: 'dana@site.example', ssnToken: 'HL{disable_introspection_and_authorise_fields}' };
@@ -1551,7 +1551,7 @@
         var m = /__type\s*\(\s*name\s*:\s*"([^"]+)"/.exec(q);
         if (m && SCHEMA[m[1]]) {
           out.textContent = JSON.stringify({ data: { __type: { fields: SCHEMA[m[1]].fields.map(function (f) { return { name: f }; }) } } }, null, 2);
-          result.classList.add('is-err'); result.textContent = 'Introspection succeeded — now query the hidden field it revealed.';
+          result.classList.add('is-err'); result.textContent = 'Introspection succeeded - now query the hidden field it revealed.';
           return;
         }
         // otherwise treat as a user query; return requested fields
@@ -1584,7 +1584,7 @@
       'Close the string and add a condition that is always true, the XPath version of \' OR \'1\'=\'1.',
       'Set the password to: \' or \'1\'=\'1'
     ],
-    solution: 'Inject an always-true clause into the password, e.g. \' or \'1\'=\'1. The XPath becomes //user[name/text()=\'admin\' and pass/text()=\'\' or \'1\'=\'1\'], which matches every user, and the first is returned — logged in without the password.',
+    solution: 'Inject an always-true clause into the password, e.g. \' or \'1\'=\'1. The XPath becomes //user[name/text()=\'admin\' and pass/text()=\'\' or \'1\'=\'1\'], which matches every user, and the first is returned - logged in without the password.',
     fix: 'Never build XPath from raw input. Use parameterised/variable-bound XPath (XQuery variables) or escape input, and store credentials hashed rather than in a queryable XML document at all.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
@@ -1610,11 +1610,11 @@
         // detect a tautology: an ' or '...'='... that is always true
         var tautology = /'\s*or\s*'([^']*)'\s*=\s*'\1'/i.test(q) || /'\s*or\s*'?1'?\s*=\s*'?1'?/i.test(q);
         if (tautology) {
-          result.classList.add('is-ok'); result.textContent = 'Logged in as admin — the query matched every user.';
+          result.classList.add('is-ok'); result.textContent = 'Logged in as admin - the query matched every user.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{bind_xpath_variables}'));
           win();
         } else if (u.value === 'admin' && pp.value === 'S3cr3t') {
-          result.classList.add('is-err'); result.textContent = 'Logged in with the real password — not an injection.';
+          result.classList.add('is-err'); result.textContent = 'Logged in with the real password - not an injection.';
         } else {
           result.classList.add('is-err'); result.textContent = 'Invalid credentials.';
         }
@@ -1628,12 +1628,12 @@
     title: 'Upload a web shell past a broken file-type check',
     category: 'Unrestricted file upload',
     level: 2,
-    brief: 'The avatar upload only checks that the filename ends in an image extension — and it checks with a naive test that a double extension defeats. A server-executable file slips through and lands in a web-served directory.',
+    brief: 'The avatar upload only checks that the filename ends in an image extension - and it checks with a naive test that a double extension defeats. A server-executable file slips through and lands in a web-served directory.',
     objective: 'Upload a file the server will execute as code (a .php file) despite the image-only check.',
     hints: [
       'The check is filename.endsWith(".jpg") OR the extension appears anywhere. A file can have more than one dot.',
       'Name the file so it satisfies the weak check but still ends in an executable extension the web server runs.',
-      'Try shell.jpg.php (passes a contains-".jpg" check, but the server runs .php) — or shell.php with content-type image/jpeg.'
+      'Try shell.jpg.php (passes a contains-".jpg" check, but the server runs .php) - or shell.php with content-type image/jpeg.'
     ],
     solution: 'Give the file a double extension like shell.jpg.php: the naive check sees ".jpg" and allows it, but the web server executes the final .php. (Spoofing the Content-Type to image/jpeg defeats a content-type-only check the same way.) The uploaded file is then requestable and runs as code.',
     fix: 'Validate the real file type by content (magic bytes), not the name or Content-Type. Store uploads outside the web root with a generated random name and a safe extension, serve them via a handler that never executes them, and disable script execution in the upload directory.',
@@ -1658,7 +1658,7 @@
         var finalExt = name.split('.').pop();
         if (finalExt === 'php' || finalExt === 'jsp' || finalExt === 'aspx') {
           result.classList.add('is-ok');
-          result.textContent = 'Stored as ' + f.value + ' in /uploads/ — and the server runs .' + finalExt + '. You have a web shell.';
+          result.textContent = 'Stored as ' + f.value + ' in /uploads/ - and the server runs .' + finalExt + '. You have a web shell.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{check_content_not_the_filename}'));
           win();
         } else {
@@ -1682,7 +1682,7 @@
       'The handler responds to more than GET. A POST (or PUT) to the same path runs the same code, but the GET-only rule never fires.',
       'Send POST /admin instead of GET /admin.'
     ],
-    solution: 'The authorisation rule is scoped to GET, but the admin handler answers other verbs too. Sending POST /admin (or PUT/HEAD) executes the admin action while the GET-only rule stays silent — verb tampering.',
+    solution: 'The authorisation rule is scoped to GET, but the admin handler answers other verbs too. Sending POST /admin (or PUT/HEAD) executes the admin action while the GET-only rule stays silent - verb tampering.',
     fix: 'Apply authorisation to the action, not a specific method. Default-deny all verbs and explicitly allow the ones a route supports, checking authorisation on each. Never write access rules that name a single HTTP method.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
@@ -1702,7 +1702,7 @@
         var method = m.value;
         // the rule only guards GET
         if (method === 'GET') {
-          result.classList.add('is-err'); result.textContent = '403 Forbidden — the GET rule blocked you.';
+          result.classList.add('is-err'); result.textContent = '403 Forbidden - the GET rule blocked you.';
           return;
         }
         // any other verb reaches the handler
@@ -1720,14 +1720,14 @@
     title: 'Reach the account by skipping straight past the 2FA step',
     category: 'Broken authentication (2FA)',
     level: 3,
-    brief: 'Login is two steps: password, then a 2FA code. But the app marks you logged in after the password step and only *shows* the 2FA prompt — the final account page never re-checks that 2FA actually passed.',
+    brief: 'Login is two steps: password, then a 2FA code. But the app marks you logged in after the password step and only *shows* the 2FA prompt - the final account page never re-checks that 2FA actually passed.',
     objective: 'Get to /account without submitting a valid 2FA code.',
     hints: [
       'After the password step the session is already authenticated; the 2FA page is just the next screen, not a gate.',
       'The /account endpoint checks that you are logged in, not that you completed 2FA. What if you request it directly instead of entering the code?',
       'Skip the code entry and navigate straight to /account.'
     ],
-    solution: 'The password step sets the authenticated session, and /account only checks authentication — not whether the 2FA challenge was satisfied. Requesting /account directly (skipping the code) lands you in the account, because the second factor was never actually enforced.',
+    solution: 'The password step sets the authenticated session, and /account only checks authentication - not whether the 2FA challenge was satisfied. Requesting /account directly (skipping the code) lands you in the account, because the second factor was never actually enforced.',
     fix: 'Do not mark the session fully authenticated until the second factor succeeds. Keep a distinct "pending 2FA" state that grants no access, verify 2FA server-side, and gate every protected endpoint on the *completed* multi-factor state, not merely on the password step.',
     mount: function (root, win) {
       var state = { passwordOk: false, twofaOk: false };
@@ -1735,7 +1735,7 @@
       app.appendChild(el('p', 'hl-app-title', 'Two-step login'));
       var pw = el('label', 'hl-field'); pw.appendChild(el('span', null, 'password')); var pp = el('input'); pp.type = 'text'; pp.autocomplete = 'off'; pp.value = 'correct-horse'; pw.appendChild(pp);
       app.appendChild(pw);
-      var step1 = el('button', 'hl-btn', 'Step 1 — submit password');
+      var step1 = el('button', 'hl-btn', 'Step 1 - submit password');
       app.appendChild(step1);
       var twofaWrap = el('div'); app.appendChild(twofaWrap);
       var result = el('div', 'hl-result'); app.appendChild(result);
@@ -1746,13 +1746,13 @@
         // the bug: the session is authenticated here, before 2FA
         state.passwordOk = true;
         twofaWrap.textContent = '';
-        twofaWrap.appendChild(el('p', 'hl-label', 'Step 2 — enter your 2FA code (or skip straight to the account):'));
+        twofaWrap.appendChild(el('p', 'hl-label', 'Step 2 - enter your 2FA code (or skip straight to the account):'));
         var cw = el('label', 'hl-field'); cw.appendChild(el('span', null, '2FA code')); var code = el('input'); code.type = 'text'; code.autocomplete = 'off'; code.value = ''; cw.appendChild(code); twofaWrap.appendChild(cw);
         var verify = el('button', 'hl-btn', 'Verify code'); twofaWrap.appendChild(verify);
         var skip = el('button', 'hl-btn hl-btn-ghost', 'GET /account'); twofaWrap.appendChild(skip);
         verify.addEventListener('click', function () {
           result.className = 'hl-result';
-          if (code.value === '424242') { state.twofaOk = true; result.classList.add('is-err'); result.textContent = 'Correct code — but that is the legitimate path, not the bypass.'; }
+          if (code.value === '424242') { state.twofaOk = true; result.classList.add('is-err'); result.textContent = 'Correct code - but that is the legitimate path, not the bypass.'; }
           else { result.classList.add('is-err'); result.textContent = 'Wrong code.'; }
         });
         skip.addEventListener('click', function () {
@@ -1760,7 +1760,7 @@
           // /account only checks passwordOk (authenticated), not twofaOk
           if (state.passwordOk) {
             result.classList.add('is-ok');
-            result.textContent = 'Account page loaded without a valid 2FA code — the second factor was never enforced.';
+            result.textContent = 'Account page loaded without a valid 2FA code - the second factor was never enforced.';
             result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{gate_access_on_completed_2fa}'));
             win();
           }
@@ -1775,18 +1775,18 @@
     title: 'Redeem a one-time gift card twice by racing the check',
     category: 'Race condition (TOCTOU)',
     level: 3,
-    brief: 'Redeeming a gift card reads the balance, then writes the new balance a moment later. Two requests that arrive together both read the old balance before either writes — so both succeed. Time-of-check to time-of-use.',
+    brief: 'Redeeming a gift card reads the balance, then writes the new balance a moment later. Two requests that arrive together both read the old balance before either writes - so both succeed. Time-of-check to time-of-use.',
     objective: 'Redeem the single $50 balance more than once by firing concurrent requests.',
     hints: [
       'A single redeem: read balance ($50) → if ≥ amount, deduct → write. The gap between read and write is the whole vulnerability.',
       'If several requests read the balance before any of them writes, each sees $50 and each redeems. Fire them at once rather than one after another.',
       'Use the "Fire 5 at once" button, which sends the redeem requests concurrently rather than sequentially.'
     ],
-    solution: 'Sending redeem requests concurrently means they all execute the "read balance" step before any executes "write balance". Each sees the full $50 and deducts, so the one-time card pays out several times — a classic time-of-check/time-of-use race.',
+    solution: 'Sending redeem requests concurrently means they all execute the "read balance" step before any executes "write balance". Each sees the full $50 and deducts, so the one-time card pays out several times - a classic time-of-check/time-of-use race.',
     fix: 'Make the check-and-deduct atomic: a single conditional UPDATE (UPDATE cards SET balance=balance-50 WHERE id=? AND balance>=50), a row lock / SELECT ... FOR UPDATE, or an idempotency key so a card can only be redeemed once. Never read, decide, and write as separate un-synchronised steps.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Gift card — balance $50, redeem $50'));
+      app.appendChild(el('p', 'hl-app-title', 'Gift card - balance $50, redeem $50'));
       var seq = el('button', 'hl-btn hl-btn-ghost', 'Redeem once (sequential)');
       var race = el('button', 'hl-btn', 'Fire 5 at once (concurrent)');
       app.appendChild(seq); app.appendChild(race);
@@ -1826,7 +1826,7 @@
         result.className = 'hl-result';
         if (payouts > 1) {
           result.classList.add('is-ok');
-          result.textContent = 'The $50 card paid out ' + payouts + ' times — a race on the balance check.';
+          result.textContent = 'The $50 card paid out ' + payouts + ' times - a race on the balance check.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{make_check_and_deduct_atomic}'));
           win();
         } else {
@@ -1846,14 +1846,14 @@
     title: 'Poison the shared cache through an unkeyed header',
     category: 'Web cache poisoning',
     level: 3,
-    brief: 'The page reflects the X-Forwarded-Host header into a script URL, and the cache keys responses only by path — not by that header. Send the header once and every later visitor is served your poisoned copy.',
+    brief: 'The page reflects the X-Forwarded-Host header into a script URL, and the cache keys responses only by path - not by that header. Send the header once and every later visitor is served your poisoned copy.',
     objective: 'Get a response cached that loads a script from an attacker host.',
     hints: [
       'The page builds <script src="https://<X-Forwarded-Host>/app.js">. The cache stores the result under just the URL path, ignoring the header you sent.',
-      'If your request populates the cache with a poisoned Host, subsequent users who request the same path get your version — including your script src.',
+      'If your request populates the cache with a poisoned Host, subsequent users who request the same path get your version - including your script src.',
       'Set X-Forwarded-Host to evil.example and request the page so the poisoned response is cached.'
     ],
-    solution: 'Send X-Forwarded-Host: evil.example. The origin reflects it into the script tag and the cache stores that response keyed only by path. Every visitor who then requests the page is served the cached copy loading https://evil.example/app.js — cache poisoning turning one request into mass compromise.',
+    solution: 'Send X-Forwarded-Host: evil.example. The origin reflects it into the script tag and the cache stores that response keyed only by path. Every visitor who then requests the page is served the cached copy loading https://evil.example/app.js - cache poisoning turning one request into mass compromise.',
     fix: 'Include every header that affects the response in the cache key (or add a Vary), and never reflect Host / X-Forwarded-Host into output. Build absolute URLs from a fixed configured domain, and strip untrusted forwarding headers at the edge.',
     mount: function (root, win) {
       var cache = null;
@@ -1880,12 +1880,12 @@
       });
       visit.addEventListener('click', function () {
         result.className = 'hl-result';
-        if (!cache) { result.classList.add('is-err'); result.textContent = 'Cache is empty — populate it first.'; return; }
+        if (!cache) { result.classList.add('is-err'); result.textContent = 'Cache is empty - populate it first.'; return; }
         out.textContent = cache + '\n\n[cache] HIT for /home';
         var m = /src="https:\/\/([^/"]+)\//.exec(cache);
         if (m && m[1] !== 'site.example') {
           result.classList.add('is-ok');
-          result.textContent = 'Another user just loaded a script from ' + m[1] + ' — your poisoned response was served from cache.';
+          result.textContent = 'Another user just loaded a script from ' + m[1] + ' - your poisoned response was served from cache.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{key_the_cache_on_every_relevant_header}'));
           win();
         } else {
@@ -1902,14 +1902,14 @@
     title: 'Frame a page that forgot to say it must not be framed',
     category: 'Clickjacking',
     level: 2,
-    brief: 'The "delete account" page sends no framing protection — no X-Frame-Options, no frame-ancestors CSP. An attacker can load it in an invisible iframe over a decoy, and the victim’s click lands on the real button.',
+    brief: 'The "delete account" page sends no framing protection - no X-Frame-Options, no frame-ancestors CSP. An attacker can load it in an invisible iframe over a decoy, and the victim’s click lands on the real button.',
     objective: 'Confirm the page can be framed by an attacker origin (the precondition for a clickjacking attack).',
     hints: [
       'A page is safe from framing only if it sends X-Frame-Options: DENY/SAMEORIGIN or a CSP frame-ancestors directive. Check what this page sends.',
       'Toggle the response headers. With neither protection present, any site may iframe the page and overlay a decoy.',
       'Remove both framing protections, then load the page in the attacker frame.'
     ],
-    solution: 'With neither X-Frame-Options nor a frame-ancestors CSP, the attacker’s site can load the sensitive page in a transparent iframe positioned over a harmless-looking decoy. The victim thinks they are clicking the decoy but actually clicks the framed "delete" button — clickjacking.',
+    solution: 'With neither X-Frame-Options nor a frame-ancestors CSP, the attacker’s site can load the sensitive page in a transparent iframe positioned over a harmless-looking decoy. The victim thinks they are clicking the decoy but actually clicks the framed "delete" button - clickjacking.',
     fix: 'Send Content-Security-Policy: frame-ancestors \'none\' (or \'self\') on every sensitive page, and X-Frame-Options: DENY for older browsers. For actions, add a confirmation step and anti-CSRF tokens so a single hijacked click cannot complete a destructive operation.',
     mount: function (root, win) {
       var headers = { xfo: false, csp: false };
@@ -1930,7 +1930,7 @@
         result.className = 'hl-result';
         if (headers.xfo || headers.csp) {
           result.classList.add('is-err');
-          result.textContent = 'The browser refused to frame the page — a framing protection is present.';
+          result.textContent = 'The browser refused to frame the page - a framing protection is present.';
         } else {
           result.classList.add('is-ok');
           result.textContent = 'The page loaded inside evil.example’s invisible iframe. A decoy over the delete button would clickjack the victim.';
@@ -1956,11 +1956,11 @@
       'Inject: admin\' AND SUBSTR(password,1,1)=\'S\' -- and adjust the letter until it says found.'
     ],
     solution: 'Append a boolean condition testing one character of the secret, e.g. admin\' AND SUBSTR(password,1,1)=\'S\' -- . A "found" response confirms that character; repeat for each position to reconstruct the whole value. The single yes/no bit is enough to exfiltrate arbitrary data.',
-    fix: 'Parameterise every query so input can never change its logic. Blind injection is still injection — the fix is the same bound parameters, plus least-privilege DB accounts and not exposing row-existence as an oracle.',
+    fix: 'Parameterise every query so input can never change its logic. Blind injection is still injection - the fix is the same bound parameters, plus least-privilege DB accounts and not exposing row-existence as an oracle.',
     mount: function (root, win) {
       var SECRET = 'Sunf1sh';
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'User search — returns only found / not found'));
+      app.appendChild(el('p', 'hl-app-title', 'User search - returns only found / not found'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'name')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'admin'; w.appendChild(i);
       app.appendChild(w);
       var go = el('button', 'hl-btn', 'Search');
@@ -2016,19 +2016,19 @@
     title: 'Store a payload now, detonate it in a query later',
     category: 'SQL injection (second-order)',
     level: 3,
-    brief: 'Registration safely escapes your username when it stores it. But a later "rename" feature builds a query from the stored value without re-escaping — the payload you saved earlier fires then.',
+    brief: 'Registration safely escapes your username when it stores it. But a later "rename" feature builds a query from the stored value without re-escaping - the payload you saved earlier fires then.',
     objective: 'Register a username that, when the rename step runs, drops the audit filter and reveals every user.',
     hints: [
       'Your name is escaped on the way in, so nothing happens at registration. The rename step reads it back and concatenates it into a new query, un-escaped.',
-      'Store a name that becomes an injection when placed into: UPDATE users SET name=\'<stored>\' WHERE ... — a classic \' OR \'1\'=\'1 works once it is read back.',
-      'Register with the username: x\' OR \'1\'=\'1 — then run the rename step.'
+      'Store a name that becomes an injection when placed into: UPDATE users SET name=\'<stored>\' WHERE ... - a classic \' OR \'1\'=\'1 works once it is read back.',
+      'Register with the username: x\' OR \'1\'=\'1 - then run the rename step.'
     ],
-    solution: 'Register a username containing an injection payload (x\' OR \'1\'=\'1). It is stored safely, so nothing happens yet. When the rename feature later reads the stored value and concatenates it into a query without escaping, the payload executes — second-order injection.',
-    fix: 'Escaping on input is not enough — data read back from the database is still untrusted. Parameterise the *later* query too. Treat every value as untrusted at the point it is used in a query, no matter where it came from.',
+    solution: 'Register a username containing an injection payload (x\' OR \'1\'=\'1). It is stored safely, so nothing happens yet. When the rename feature later reads the stored value and concatenates it into a query without escaping, the payload executes - second-order injection.',
+    fix: 'Escaping on input is not enough - data read back from the database is still untrusted. Parameterise the *later* query too. Treat every value as untrusted at the point it is used in a query, no matter where it came from.',
     mount: function (root, win) {
       var stored = null;
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Step 1 — register (input is escaped and stored)'));
+      app.appendChild(el('p', 'hl-app-title', 'Step 1 - register (input is escaped and stored)'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'username')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'newuser'; w.appendChild(i);
       app.appendChild(w);
       var reg = el('button', 'hl-btn', 'Register');
@@ -2042,7 +2042,7 @@
         stored = i.value;                 // stored verbatim (escaping happened at the DB layer, safely)
         stage2.textContent = '';
         stage2.appendChild(el('p', 'hl-label', 'Stored username: ' + stored));
-        stage2.appendChild(el('p', 'hl-app-title', 'Step 2 — rename (reads the stored value, no re-escaping):'));
+        stage2.appendChild(el('p', 'hl-app-title', 'Step 2 - rename (reads the stored value, no re-escaping):'));
         var q = el('pre', 'hl-query');
         q.textContent = "UPDATE users SET name='" + stored + "' WHERE id=7; SELECT * FROM users WHERE name='" + stored + "'";
         stage2.appendChild(q);
@@ -2053,7 +2053,7 @@
           var injected = /'\s*or\s*'1'\s*=\s*'1/i.test(stored) || /'\s*or\s*'?1'?\s*=\s*'?1/i.test(stored);
           if (injected) {
             result.classList.add('is-ok');
-            result.textContent = 'The rename query matched every user — the value you stored earlier just executed as SQL.';
+            result.textContent = 'The rename query matched every user - the value you stored earlier just executed as SQL.';
             result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{parameterise_the_later_query_too}'));
             win();
           } else {
@@ -2071,7 +2071,7 @@
     title: 'Crack a JWT signed with a guessable secret, then forge one',
     category: 'Authentication (JWT)',
     level: 3,
-    brief: 'This token is properly signed with HS256 — but the secret is a dictionary word. If you can find the secret you can mint any token you like, signature and all.',
+    brief: 'This token is properly signed with HS256 - but the secret is a dictionary word. If you can find the secret you can mint any token you like, signature and all.',
     objective: 'Recover the HMAC secret from the wordlist, then present an admin token signed with it.',
     hints: [
       'HS256 signs with a shared secret. Try each word in the list as the key and re-sign the token’s header.payload; the word whose signature matches the given token is the secret.',
@@ -2143,7 +2143,7 @@
           return hmac(REAL_SECRET, h + '.' + p).then(function (real) {
             if (sig === real) {
               result.classList.add('is-ok');
-              result.textContent = 'Forged token verifies against the server secret — you are admin.';
+              result.textContent = 'Forged token verifies against the server secret - you are admin.';
               result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{use_a_long_random_hmac_secret}'));
               win();
             } else { result.classList.add('is-err'); result.textContent = 'Signature mismatch.'; }
@@ -2171,7 +2171,7 @@
     mount: function (root, win) {
       var REGISTERED = 'https://app.trusted.example/callback';
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Authorize — client "trusted-app" (registered: ' + REGISTERED + ')'));
+      app.appendChild(el('p', 'hl-app-title', 'Authorize - client "trusted-app" (registered: ' + REGISTERED + ')'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'redirect_uri')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = REGISTERED; w.appendChild(i);
       app.appendChild(w);
       var go = el('button', 'hl-btn', 'Victim approves login');
@@ -2209,14 +2209,14 @@
     title: 'Chain a leaky list endpoint into reading another user’s record',
     category: 'Broken access control (IDOR)',
     level: 2,
-    brief: 'Ids here are unguessable UUIDs — good — but a public "team members" list hands them out, and the record endpoint then serves any UUID without an ownership check. Unguessable is not the same as authorised.',
+    brief: 'Ids here are unguessable UUIDs - good - but a public "team members" list hands them out, and the record endpoint then serves any UUID without an ownership check. Unguessable is not the same as authorised.',
     objective: 'Read teammate Dana’s private record by discovering and using her id.',
     hints: [
       'You cannot guess a UUID, but you do not have to: the /team endpoint lists members and their ids. Read Dana’s id from there.',
       'The /record?id= endpoint returns any id you give it, with no check that it is yours. Paste Dana’s id.',
       'List the team, copy Dana’s UUID, then fetch her record.'
     ],
-    solution: 'Random ids resist guessing but do not enforce access control. The team-list endpoint leaks Dana’s UUID, and the record endpoint returns it without checking ownership — so reading her private record is just two requests. The missing authorisation check is the bug, not the id format.',
+    solution: 'Random ids resist guessing but do not enforce access control. The team-list endpoint leaks Dana’s UUID, and the record endpoint returns it without checking ownership - so reading her private record is just two requests. The missing authorisation check is the bug, not the id format.',
     fix: 'Authorise every object access against the logged-in user, regardless of how unguessable the id is. Do not leak identifiers of resources the caller cannot access, and scope list endpoints to what the user is allowed to see.',
     mount: function (root, win) {
       var TEAM = [
@@ -2266,11 +2266,11 @@
       '127.0.0.1 can be written as a single decimal (2130706433), in octal, in IPv6 (::1 / [::1]), or as 127.1. The filter recognises none of those.',
       'Try http://2130706433/admin or http://[::1]/admin.'
     ],
-    solution: 'A string blocklist cannot enumerate every spelling of an address. 127.0.0.1 is also 2130706433 (decimal), 0x7f000001 (hex), 127.1 (short form) and ::1 (IPv6) — all reach the loopback interface, none contain the blocked text. The request sails past the filter to the internal service.',
-    fix: 'Never filter SSRF by string matching the URL. Resolve the hostname to an IP, then reject the request if the resolved address is in a private, loopback or link-local range — and re-check after every redirect. Allow-list destinations where possible.',
+    solution: 'A string blocklist cannot enumerate every spelling of an address. 127.0.0.1 is also 2130706433 (decimal), 0x7f000001 (hex), 127.1 (short form) and ::1 (IPv6) - all reach the loopback interface, none contain the blocked text. The request sails past the filter to the internal service.',
+    fix: 'Never filter SSRF by string matching the URL. Resolve the hostname to an IP, then reject the request if the resolved address is in a private, loopback or link-local range - and re-check after every redirect. Allow-list destinations where possible.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'URL fetcher — filter blocks "localhost" and "127.0.0.1"'));
+      app.appendChild(el('p', 'hl-app-title', 'URL fetcher - filter blocks "localhost" and "127.0.0.1"'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'URL')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'http://127.0.0.1/admin'; w.appendChild(i);
       app.appendChild(w);
       var go = el('button', 'hl-btn', 'Fetch');
@@ -2302,7 +2302,7 @@
         if (isLoopback(url)) {
           out.textContent = '{ "service": "internal-admin", "flag": "HL{resolve_then_check_the_ip}" }';
           result.classList.add('is-ok');
-          result.textContent = 'Reached the loopback admin service — the filter never saw it coming.';
+          result.textContent = 'Reached the loopback admin service - the filter never saw it coming.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{resolve_then_check_the_ip}'));
           win();
         } else {
@@ -2319,18 +2319,18 @@
     title: 'Fire a script the server never saw, straight from the URL fragment',
     category: 'Cross-site scripting (DOM)',
     level: 2,
-    brief: 'This page reads the URL fragment (the part after #) and writes it into the document with innerHTML. The server never sees the fragment, so no server-side filter can help — the sink is in the browser.',
+    brief: 'This page reads the URL fragment (the part after #) and writes it into the document with innerHTML. The server never sees the fragment, so no server-side filter can help - the sink is in the browser.',
     objective: 'Craft a fragment value that would execute script when the page renders it.',
     hints: [
       'The code does el.innerHTML = decodeURIComponent(location.hash.slice(1)). Whatever is in the fragment becomes live HTML.',
       'innerHTML with an <img> that has an onerror handler runs script without a <script> tag (which innerHTML ignores).',
       'Set the fragment to <img src=x onerror=alert(1)>.'
     ],
-    solution: 'Because the fragment is written with innerHTML, HTML in it becomes live. <script> is ignored by innerHTML, but <img src=x onerror=...> runs the handler when the bogus image fails to load — DOM-based XSS, entirely client-side and invisible to server filters.',
+    solution: 'Because the fragment is written with innerHTML, HTML in it becomes live. <script> is ignored by innerHTML, but <img src=x onerror=...> runs the handler when the bogus image fails to load - DOM-based XSS, entirely client-side and invisible to server filters.',
     fix: 'Never write untrusted data with innerHTML. Use textContent, or sanitise with a vetted library (DOMPurify) and set a strict CSP. Treat every DOM sink (innerHTML, document.write, eval, setAttribute for on*) as dangerous and keep untrusted data out of them.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
-      app.appendChild(el('p', 'hl-app-title', 'Profile page — reads location.hash into innerHTML'));
+      app.appendChild(el('p', 'hl-app-title', 'Profile page - reads location.hash into innerHTML'));
       var w = el('label', 'hl-field'); w.appendChild(el('span', null, 'URL fragment (after #)')); var i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.value = 'Welcome'; w.appendChild(i);
       app.appendChild(w);
       var go = el('button', 'hl-btn', 'Render fragment');
@@ -2354,7 +2354,7 @@
                        /<\s*iframe[^>]+srcdoc/i.test(payload);
         if (executes) {
           result.classList.add('is-ok');
-          result.textContent = 'That fragment written via innerHTML would execute — DOM XSS. (Nothing is actually run here.)';
+          result.textContent = 'That fragment written via innerHTML would execute - DOM XSS. (Nothing is actually run here.)';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{keep_untrusted_data_out_of_innerHTML}'));
           win();
         } else {
@@ -2371,14 +2371,14 @@
     title: 'Escape the extract directory with a crafted archive path',
     category: 'Path traversal (zip slip)',
     level: 2,
-    brief: 'The uploader extracts each archive entry by joining its name to the target directory. An entry whose name contains ../ walks out of that directory and writes anywhere the process can — overwriting real files.',
+    brief: 'The uploader extracts each archive entry by joining its name to the target directory. An entry whose name contains ../ walks out of that directory and writes anywhere the process can - overwriting real files.',
     objective: 'Name an archive entry so it writes outside /tmp/extract, over /etc/cron.d/.',
     hints: [
       'Extraction does writeFile(targetDir + "/" + entry.name). It never checks that the result stays inside targetDir.',
       'An entry name can contain path traversal. ../ segments climb out of the extract directory.',
       'Name the entry ../../etc/cron.d/evil so it resolves outside /tmp/extract.'
     ],
-    solution: 'A zip entry name is attacker-controlled. Naming it ../../etc/cron.d/evil makes the naive join (targetDir + "/" + name) resolve to /etc/cron.d/evil, writing a file far outside the extraction directory — zip slip, which can overwrite binaries, cron jobs or config.',
+    solution: 'A zip entry name is attacker-controlled. Naming it ../../etc/cron.d/evil makes the naive join (targetDir + "/" + name) resolve to /etc/cron.d/evil, writing a file far outside the extraction directory - zip slip, which can overwrite binaries, cron jobs or config.',
     fix: 'After joining, resolve the final path and verify it is still inside the intended directory (path.resolve(target, name).startsWith(target + sep)); reject any entry that escapes. Strip or reject "..", absolute paths and symlinks in archive entries.',
     mount: function (root, win) {
       var TARGET = '/tmp/extract';
@@ -2411,7 +2411,7 @@
         var resolved = resolvePath(i.value);
         if (resolved.indexOf(TARGET) !== 0) {
           result.classList.add('is-ok');
-          result.textContent = 'Wrote to ' + resolved + ' — outside the extract directory. That is arbitrary file write.';
+          result.textContent = 'Wrote to ' + resolved + ' - outside the extract directory. That is arbitrary file write.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{verify_the_resolved_path_stays_inside}'));
           win();
         } else {
@@ -2431,11 +2431,11 @@
     brief: 'A company subdomain still has a DNS CNAME to a cloud host, but the resource behind it was deleted. Anyone who registers that resource name on the provider now serves content on the company’s subdomain.',
     objective: 'Identify the dangling subdomain and claim its backing resource.',
     hints: [
-      'Check each subdomain’s CNAME target. One points at a provider bucket that returns "NoSuchBucket" — the DNS record outlived the resource.',
+      'Check each subdomain’s CNAME target. One points at a provider bucket that returns "NoSuchBucket" - the DNS record outlived the resource.',
       'The provider lets anyone register an unclaimed name. Claim the exact bucket the dangling CNAME points to.',
       'assets.acme.example → CNAME acme-assets.storage.example (unclaimed). Register acme-assets.storage.example.'
     ],
-    solution: 'assets.acme.example still has a CNAME to acme-assets.storage.example, but that bucket was deleted and is unclaimed. Registering that exact bucket name on the provider makes your content serve from the trusted acme.example subdomain — subdomain takeover, useful for phishing, cookie theft and CSP bypass.',
+    solution: 'assets.acme.example still has a CNAME to acme-assets.storage.example, but that bucket was deleted and is unclaimed. Registering that exact bucket name on the provider makes your content serve from the trusted acme.example subdomain - subdomain takeover, useful for phishing, cookie theft and CSP bypass.',
     fix: 'Remove DNS records the moment the resource they point to is decommissioned. Audit for dangling CNAMEs, use providers that verify domain ownership before serving, and monitor your DNS for records pointing at unclaimed resources.',
     mount: function (root, win) {
       var DNS = [
@@ -2463,7 +2463,7 @@
         var dangling = DNS.filter(function (r) { return /unclaimed/.test(r.status); })[0];
         if (i.value.trim() === dangling.cname) {
           result.classList.add('is-ok');
-          result.textContent = 'You now control ' + dangling.cname + ' — and it is served from ' + dangling.sub + ', a trusted subdomain.';
+          result.textContent = 'You now control ' + dangling.cname + ' - and it is served from ' + dangling.sub + ', a trusted subdomain.';
           result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{remove_dns_when_you_delete_the_resource}'));
           win();
         } else {
@@ -2480,14 +2480,14 @@
     title: 'Slip past a filter by sending the same parameter twice',
     category: 'HTTP parameter pollution',
     level: 2,
-    brief: 'A WAF checks the first value of the "role" parameter, but the application framework reads the last one. Send the parameter twice and the two layers disagree — the check passes, the app sees your value.',
+    brief: 'A WAF checks the first value of the "role" parameter, but the application framework reads the last one. Send the parameter twice and the two layers disagree - the check passes, the app sees your value.',
     objective: 'Get the application to read role=admin while the filter sees role=user.',
     hints: [
       'When a query string has role=user&role=admin, different components pick different occurrences. The filter reads the first; the app reads the last.',
       'Put the safe value first (to satisfy the filter) and the payload last (which the app uses).',
       'Send role=user&role=admin.'
     ],
-    solution: 'Sending role=user&role=admin exploits inconsistent duplicate-parameter handling: the WAF validates the first occurrence (user, allowed) while the application framework uses the last (admin). The two layers disagree, and the malicious value reaches the app unchecked — HTTP parameter pollution.',
+    solution: 'Sending role=user&role=admin exploits inconsistent duplicate-parameter handling: the WAF validates the first occurrence (user, allowed) while the application framework uses the last (admin). The two layers disagree, and the malicious value reaches the app unchecked - HTTP parameter pollution.',
     fix: 'Make every layer agree on duplicate handling, and reject requests with duplicate parameters where it matters. Validate at the same layer that consumes the value, canonicalise the query string first, and never rely on a front-end filter that parses differently from the app.',
     mount: function (root, win) {
       var app = el('div', 'hl-app');
@@ -2515,7 +2515,7 @@
         if (filterSees !== 'admin') {           // filter must pass
           if (appSees === 'admin') {
             result.classList.add('is-ok');
-            result.textContent = 'Filter passed (saw user) but the app granted admin — the layers disagreed.';
+            result.textContent = 'Filter passed (saw user) but the app granted admin - the layers disagreed.';
             result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{make_every_layer_parse_the_same}'));
             win();
           } else {
@@ -2536,7 +2536,7 @@
     title: 'Recover an API key from how long a comparison takes',
     category: 'Timing attack',
     level: 3,
-    brief: 'The key check compares character by character and returns the moment two differ. A correct prefix takes measurably longer to reject — so the response time leaks how many leading characters you got right.',
+    brief: 'The key check compares character by character and returns the moment two differ. A correct prefix takes measurably longer to reject - so the response time leaks how many leading characters you got right.',
     objective: 'Use the timing oracle to recover the 6-character key’s first character.',
     hints: [
       'The comparison is not constant-time: it stops at the first mismatch. More matching leading characters means more loop iterations means more time.',
@@ -2576,7 +2576,7 @@
           win();
         } else {
           result.classList.add('is-err');
-          result.textContent = 'First character wrong — its time was shorter. Try others; the slowest is correct.';
+          result.textContent = 'First character wrong - its time was shorter. Try others; the slowest is correct.';
         }
       });
     }
@@ -2592,7 +2592,7 @@
     objective: 'Confirm the code space is small enough to brute-force by trying codes until one works.',
     hints: [
       'A 4-digit code has 10,000 possibilities. With no rate limit and no expiry, an attacker just tries them all.',
-      'Use the "auto-brute" button, which submits codes rapidly until one is accepted — the server never stops it.',
+      'Use the "auto-brute" button, which submits codes rapidly until one is accepted - the server never stops it.',
       'Run the auto-brute; it will find the code within 10,000 tries.'
     ],
     solution: 'With only 10,000 possible codes and no rate limiting, lockout or expiry, an automated client simply enumerates every code until one is accepted. The short code is weak, but the missing rate limit is what makes it exploitable.',
@@ -2612,7 +2612,7 @@
 
       one.addEventListener('click', function () {
         result.className = 'hl-result';
-        if (i.value === CODE) { result.classList.add('is-ok'); result.textContent = 'Accepted — but you knew it. Try the brute button to make the point.'; }
+        if (i.value === CODE) { result.classList.add('is-ok'); result.textContent = 'Accepted - but you knew it. Try the brute button to make the point.'; }
         else { result.classList.add('is-err'); result.textContent = 'Wrong code. (The server did not count this attempt against you.)'; }
       });
       brute.addEventListener('click', function () {
@@ -2623,7 +2623,7 @@
           var guess = ('000' + n).slice(-4);
           if (guess === CODE) { hit = guess; break; }
         }
-        out.textContent = 'submitted ' + tries + ' codes — none rejected by rate limiting\ncode found: ' + hit;
+        out.textContent = 'submitted ' + tries + ' codes - none rejected by rate limiting\ncode found: ' + hit;
         result.classList.add('is-ok');
         result.textContent = 'Brute-forced the code in ' + tries + ' tries. The endpoint never slowed down.';
         result.appendChild(el('p', 'hl-flag', 'Flag captured: HL{rate_limit_and_expire_2fa_codes}'));
@@ -2873,7 +2873,7 @@
     });
 
     if (solvedCount === CHALLENGES.length) {
-      var done = el('p', 'hl-alldone', 'All challenges solved. Now re-read each fix — that half is the job.');
+      var done = el('p', 'hl-alldone', 'All challenges solved. Now re-read each fix - that half is the job.');
       listNode.appendChild(done);
     }
   }

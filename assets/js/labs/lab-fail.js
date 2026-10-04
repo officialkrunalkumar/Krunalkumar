@@ -32,11 +32,11 @@
              'so there is nothing to fix on your side.',
     memory: 'The browser ran out of memory loading the %s. Closing other tabs ' +
             'frees some up, and the lighter labs need a fraction of it.',
-    unsupported: 'This browser cannot run the %s — the WebAssembly support it ' +
+    unsupported: 'This browser cannot run the %s - the WebAssembly support it ' +
                  'needs is missing or switched off. A current Chrome, Firefox, ' +
                  'Edge or Safari will run it.',
     unknown: 'The %s did not start. Nothing has run yet, so there is nothing to ' +
-             'fix on your side — trying again usually settles it.'
+             'fix on your side - trying again usually settles it.'
   };
 
   var node = null;

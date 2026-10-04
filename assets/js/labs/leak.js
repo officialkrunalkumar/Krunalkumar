@@ -61,7 +61,7 @@
       });
     } else if (done) {
       row(addrTable, 'Public address', 'not discovered',
-          'No STUN reply came back — a firewall may be blocking UDP.');
+          'No STUN reply came back - a firewall may be blocking UDP.');
     }
 
     found.local.forEach(function (a) {
@@ -162,7 +162,7 @@
       ctx.fillStyle = '#f60';
       ctx.fillRect(0, 0, 120, 30);
       ctx.fillStyle = '#069';
-      ctx.fillText('Krunalkumar — fingerprint 🔒', 4, 8);
+      ctx.fillText('Krunalkumar - fingerprint 🔒', 4, 8);
       ctx.globalCompositeOperation = 'multiply';
       ctx.fillStyle = 'rgba(0,120,255,0.6)';
       ctx.beginPath(); ctx.arc(60, 30, 24, 0, Math.PI * 2); ctx.fill();

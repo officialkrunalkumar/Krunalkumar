@@ -315,7 +315,7 @@
       label: 'Failed logons',
       run: function (st) {
         show(st.events.filter(function (e) { return e.c === 4625; }), 'Failed logons (4625)');
-        p('Failures are noisy — people mistype passwords all day. What matters ' +
+        p('Failures are noisy - people mistype passwords all day. What matters ' +
           'is a failure immediately followed by a success on the same host by ' +
           'the same account: that is someone finding out what they can reach.');
       }
@@ -330,7 +330,7 @@
         show(rows, '4769 with no preceding 4768');
         p('A service ticket the KDC issued against a ticket-granting ticket it ' +
           'has no record of issuing. On a real domain that is the trace a ' +
-          'forged TGT leaves — see the Kerberos lab. It points at the account ' +
+          'forged TGT leaves - see the Kerberos lab. It points at the account ' +
           'being IMPERSONATED, which is not necessarily where the intrusion ' +
           'started.');
       }
@@ -469,7 +469,7 @@
       po('Correct. ' + st.zero + ' was patient zero, first seen on ' + st.beach[0] +
          ' at ' + hhmm(st.t0) + '.');
     } else if (guess === st.second) {
-      pe('Not quite. ' + guess + ' IS compromised — but it appears at ' +
+      pe('Not quite. ' + guess + ' IS compromised - but it appears at ' +
          hhmm(st.t0 + 40) + ', forty minutes after the intrusion started. It is ' +
          'the account the attacker moved TO.');
       out.line('');
@@ -482,7 +482,7 @@
       pe('No. ' + guess + ' behaved normally throughout.');
       out.line('');
       po('Patient zero was ' + st.zero + ', first seen on ' + st.beach[0] +
-         ' at ' + hhmm(st.t0) + ' — a host it had never used, at an hour it had ' +
+         ' at ' + hhmm(st.t0) + ' - a host it had never used, at an hour it had ' +
          'never worked.');
     }
 
@@ -501,7 +501,7 @@
     p(hhmm(st.t0 + 24) + '  ' + st.beach[2] + ' as well.');
     out.line('');
     p(hhmm(st.t0 + 40) + '  ' + st.second + ' appears on ' + st.beach[2] +
-      ' — a second identity, used from a machine the first one had just reached.');
+      ' - a second identity, used from a machine the first one had just reached.');
     out.line('');
     p(hhmm(st.t0 + 44) + '  a service ticket for ' + st.second +
       ' with no ticket-granting request behind it.');
@@ -525,7 +525,7 @@
       'That is true of real domains too.');
     out.line('');
     p('The 4769-without-4768 query is the sharpest signal in the log and it ' +
-      'points at ' + st.second + ' — the impersonated account, not the entry ' +
+      'points at ' + st.second + ' - the impersonated account, not the entry ' +
       'point. A strong signal that answers a different question is how hunts ' +
       'go wrong.');
 
@@ -556,7 +556,7 @@
     var s = Math.floor(Math.random() * 90000) + 1000;
     state = build(s);
 
-    say('Threat hunt — run #' + s, '', 't-info');
+    say('Threat hunt - run #' + s, '', 't-info');
     rule();
     say('One night of authentication events from a small domain: ' +
         state.accounts.length + ' accounts, ' + HOSTS.length + ' hosts, ' +
@@ -587,7 +587,7 @@
       out.line('');
       p('One of the five is the Kerberos tell: a service ticket with no ' +
         'ticket-granting request behind it. It is the sharpest signal in the ' +
-        'log and it answers a different question than the one you were asked — ' +
+        'log and it answers a different question than the one you were asked - ' +
         'which is worth finding out the hard way once.');
       var box = stage();
       if (box) {

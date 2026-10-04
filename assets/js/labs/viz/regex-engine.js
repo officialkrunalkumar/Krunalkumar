@@ -160,7 +160,7 @@
          not do. A brace that does not open a well-formed quantifier stays a
          literal, which is what JavaScript does with /a{/ too. */
       if (c === '{' && /^\{\d+(?:,\d*)?\}/.test(pattern.slice(pos))) {
-        fail('bounded repetition {n,m} is not supported by this engine — write it out, so a{2,3} becomes aaa?');
+        fail('bounded repetition {n,m} is not supported by this engine - write it out, so a{2,3} becomes aaa?');
       }
       if (c === ')' || c === '*' || c === '+' || c === '?' || c === '|') {
         fail('unexpected ' + c);
@@ -352,7 +352,7 @@
         case 'group':
           b = frag(node.node);
           build.push({ kind: 'group', start: b.start, end: b.out,
-                       note: 'A group adds no states at all — it only changed how the pattern was parsed.' });
+                       note: 'A group adds no states at all - it only changed how the pattern was parsed.' });
           return b;
         default:
           throw new Error('cannot compile node type ' + node.type);
@@ -913,7 +913,7 @@
     var l = this.lines[Math.min(idx, this.lines.length - 1)];
     return 'Node ' + (Math.min(idx, this.lines.length - 1) + 1) + ' of ' + this.lines.length +
       ', at depth ' + l.depth + ': ' + l.text.trim() +
-      '. The parser is plain recursive descent — alternation calls concatenation, which calls ' +
+      '. The parser is plain recursive descent - alternation calls concatenation, which calls ' +
       'repetition, which calls atom, and an atom may be a bracketed group that starts the cycle again.';
   };
   ParseFamily.prototype.compare = function () { return null; };
@@ -965,7 +965,7 @@
     if (this.algoKey === 'build') {
       var b = this.nfa.build[Math.min(idx, this.nfa.build.length - 1)];
       this.topHost.appendChild(E('p', 'cy-pane-title', 'Fragment ' + (idx + 1) +
-        ' of ' + this.nfa.build.length + ' — ' + b.kind));
+        ' of ' + this.nfa.build.length + ' - ' + b.kind));
       var states = E('div', 'rx-states');
       this.nfa.states.forEach(function (st) {
         var cls = 'rx-state';
@@ -1118,14 +1118,14 @@
     var p = this.run.path[Math.min(idx, this.run.path.length - 1)];
     if (p.state < 0) {
       return 'On "' + p.ch + '" there is no transition out of the current state, so the match ' +
-        'fails immediately. No backtracking is possible — and none is needed.';
+        'fails immediately. No backtracking is possible - and none is needed.';
     }
     if (p.ch === null) {
       return 'The machine starts in D0. From here every character costs exactly one table lookup, ' +
         'no matter how the pattern was written.';
     }
     return 'Read "' + p.ch + '" and move to D' + p.state + '. One lookup, no alternatives kept, ' +
-      'nothing to undo — this is the engine that cannot be made to blow up.';
+      'nothing to undo - this is the engine that cannot be made to blow up.';
   };
   DfaFamily.prototype.compare = function () {
     if (this.error) return null;
@@ -1178,11 +1178,11 @@
       this.error = 'The backtracker stopped at ' + this.run.depthLimit + ' levels of nested ' +
         'recursion without deciding. A greedy quantifier recurses once per character it ' +
         'consumes, so a long enough pattern or test string reaches the stack limit before the ' +
-        'step limit — the same wall a real engine hits, reported rather than crashed into. ' +
+        'step limit - the same wall a real engine hits, reported rather than crashed into. ' +
         'Shorten the input, or open the ReDoS tab to watch the cost curve on strings that fit.';
     } else if (this.run.bailed) {
       this.error = 'The backtracker gave up after 400,000 steps without deciding. That is not a ' +
-        'bug in the engine — it is what ReDoS looks like from the inside. Open the ReDoS tab.';
+        'bug in the engine - it is what ReDoS looks like from the inside. Open the ReDoS tab.';
     }
     return Math.max(1, this.run.trace.length);
   };
@@ -1215,7 +1215,7 @@
     var t = r.trace[Math.min(idx, r.trace.length - 1)];
     return 'Step ' + t.step + ', depth ' + t.depth + ': ' + (t.what || t.node) +
       '. A backtracking engine commits to one possibility, and if it fails it rewinds and tries ' +
-      'the next — which is what makes backreferences possible and what makes the worst case exponential.';
+      'the next - which is what makes backreferences possible and what makes the worst case exponential.';
   };
   BtFamily.prototype.compare = function () { return null; };
 
@@ -1330,7 +1330,7 @@
     if (row.bailed) {
       return 'At ' + row.input.length + ' characters the backtracker passed two million steps ' +
         'without deciding, and was stopped. On a server with no such ceiling this request would ' +
-        'still be running, holding a thread — one short string, one hung worker. That is ReDoS.';
+        'still be running, holding a thread - one short string, one hung worker. That is ReDoS.';
     }
     var msg = 'Input of ' + row.input.length + ' characters: backtracking took ' + row.backtrack +
       ' steps, the NFA simulation ' + row.nfa + '.';

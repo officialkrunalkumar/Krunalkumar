@@ -643,8 +643,8 @@
       { side: 'tcp', title: 'TCP: the four-tuple no longer exists', detail: 'The connection was defined by that source IP. With a new one, the packets arriving at the server do not belong to any connection it knows, and the ones the server sends go to an address you no longer hold. The connection is not migrated, it is dead.' },
       { side: 'tcp', title: 'TCP: everything starts over', detail: 'New SYN, new TLS handshake, ' + ms(2) + ' ms of round trips before a byte can move again, and every request that was in flight has to be reissued. Anything partially downloaded is downloaded again unless range requests save it.' },
       { side: 'quic', title: 'QUIC: the connection ID does not depend on your address', detail: 'The client keeps sending on the same connection ID from its new address. The server looks up the connection by ID, not by address, and finds it immediately, with all its keys and stream state intact.' },
-      { side: 'quic', title: 'QUIC: path validation, and that is all', detail: 'The server sends a PATH_CHALLENGE to the new address and the client echoes it back in a PATH_RESPONSE — one round trip, ' + ms(1) + ' ms, to prove that the address is really yours and that nobody is using your connection to flood a stranger. The congestion controller resets, because this is a different path with different capacity. The transfer continues.' },
-      { side: 'both', title: 'What it costs, honestly', detail: 'QUIC pays one round trip and a congestion-window reset. TCP pays a full reconnect plus a fresh TLS handshake plus lost work. Migration is real and it works, but it is not free, and it only helps if the client actually implements it — several do not migrate at all and simply open a new connection.' }
+      { side: 'quic', title: 'QUIC: path validation, and that is all', detail: 'The server sends a PATH_CHALLENGE to the new address and the client echoes it back in a PATH_RESPONSE - one round trip, ' + ms(1) + ' ms, to prove that the address is really yours and that nobody is using your connection to flood a stranger. The congestion controller resets, because this is a different path with different capacity. The transfer continues.' },
+      { side: 'both', title: 'What it costs, honestly', detail: 'QUIC pays one round trip and a congestion-window reset. TCP pays a full reconnect plus a fresh TLS handshake plus lost work. Migration is real and it works, but it is not free, and it only helps if the client actually implements it - several do not migrate at all and simply open a new connection.' }
     ];
   }
 
@@ -1433,7 +1433,7 @@
     var out = 'At ' + fmtMs(pt) + ': ' + doneBy(sim, pt) + ' of ' + sim.resources.length +
       ' delivered, ' + waiting + ' not yet even requested.';
     if (waiting > 0 && pt > sim.setupMs) {
-      out += ' Those are not slow, they are queued — HTTP/1.1 can have exactly one request in ' +
+      out += ' Those are not slow, they are queued - HTTP/1.1 can have exactly one request in ' +
         'flight per connection, so the seventh resource waits for a lane to free up. That is ' +
         'head-of-line blocking at the protocol level, and it is what pipelining tried and failed ' +
         'to fix, because a proxy in the middle could reorder or mangle the responses.';
@@ -1725,7 +1725,7 @@
       var f = this.hp[cur];
       if (cur === 0) {
         return 'The first request pays for everything. The user agent string alone is ' + UA.length +
-          ' bytes and nothing has been seen before, so almost every field goes out as a literal — ' +
+          ' bytes and nothing has been seen before, so almost every field goes out as a literal - ' +
           f.hpack + ' bytes against ' + f.plain + ' as HTTP/1.1 headers. Every literal that goes ' +
           'out with indexing set is also written into the dynamic table, which is the investment ' +
           'the next request collects on.';
@@ -1754,14 +1754,14 @@
         this.sim.resources.length + ', HTTP/3 has ' + doneBy(this.other, pt) + '.';
       if (st.conn) {
         return head + ' HTTP/2 is stopped dead. One TCP segment went missing, and TCP will not ' +
-          'hand the application a single byte that comes after the hole — not for the stream that ' +
+          'hand the application a single byte that comes after the hole - not for the stream that ' +
           'lost the packet, and not for the fifteen that did not. The red band is every stream ' +
           'waiting on one retransmit. HTTP/2 multiplexed the streams but left them sharing one ' +
           'ordered byte stream underneath, and this is the bill for that.';
       }
       return head + ' QUIC gives every stream its own delivery order, so a lost packet blocks only ' +
         'the stream it belonged to. That single change is the reason HTTP/3 exists, and it is why ' +
-        'it had to leave TCP to get it — you cannot fix this above the transport.';
+        'it had to leave TCP to get it - you cannot fix this above the transport.';
     }
     var waitingH1 = 0;
     for (var k = 0; k < this.other.resources.length; k++) {
@@ -1773,7 +1773,7 @@
       ' on ' + this.other.connCount + '.';
     if (waitingH1) {
       msg += ' HTTP/1.1 still has ' + waitingH1 + ' resources it has not asked for yet, because it ' +
-        'has nowhere to put the request. HTTP/2 asked for all of them in the first flight — that ' +
+        'has nowhere to put the request. HTTP/2 asked for all of them in the first flight - that ' +
         'is multiplexing, and it is most of what HTTP/2 was for.';
     }
     if (!this.priorities) {
@@ -1913,7 +1913,7 @@
     this.tMax = Math.max(200, tMax * 1.02);
     if (this.loss === 0) {
       this.error = 'Loss is at zero, so no stream is ever blocked and there is nothing here to ' +
-        'see. Raise the loss slider — this view only says anything when packets go missing.';
+        'see. Raise the loss slider - this view only says anything when packets go missing.';
     }
     return H3_FRAMES;
   };
@@ -2054,7 +2054,7 @@
   ThreeFamily.prototype.note = function (idx) {
     if (this.algoKey === 'setup') {
       var cur = Math.min(idx, this.ladder.length - 1);
-      var base = this.ladder[cur].title + ' — ' + this.ladder[cur].detail;
+      var base = this.ladder[cur].title + ' - ' + this.ladder[cur].detail;
       if (this.mode === 'quic0' && cur === 0) {
         base += ' This is the trade the industry argued about for years: half a round trip against ' +
           'a request an attacker who recorded the packet can send again later. Browsers only use ' +
@@ -2064,7 +2064,7 @@
     }
     if (this.algoKey === 'migrate') {
       var s = this.walk[Math.min(idx, this.walk.length - 1)];
-      return s.title + ' — ' + s.detail;
+      return s.title + ' - ' + s.detail;
     }
     var pt = this.frameTime(idx);
     var st3 = stallAt(this.sim, pt);
@@ -2073,11 +2073,11 @@
       this.sim.resources.length + ', HTTP/2 has ' + doneBy(this.other, pt) + '.';
     if (st3.stream && !st2.conn) {
       out += ' HTTP/3 has ' + st3.stream + (st3.stream === 1 ? ' stream' : ' streams') +
-        ' waiting on a retransmit and the rest are still receiving — the bandwidth that stream ' +
+        ' waiting on a retransmit and the rest are still receiving - the bandwidth that stream ' +
         'was using goes to its neighbours rather than being wasted.';
     } else if (st2.conn) {
       out += ' HTTP/2 is blocked on every stream; HTTP/3 is losing at most the streams that ' +
-        'actually lost a packet. Same link, same losses, same congestion response — the only ' +
+        'actually lost a packet. Same link, same losses, same congestion response - the only ' +
         'difference is that QUIC gives each stream its own delivery order.';
     } else {
       out += ' Both are running clean at this instant. Step forward to the next loss.';

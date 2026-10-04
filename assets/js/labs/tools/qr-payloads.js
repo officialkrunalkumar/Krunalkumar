@@ -724,7 +724,7 @@
     if (sec !== 'nopass' && looksHex(pass)) {
       if (pass.length === 64) {
         notes.push('The password is exactly 64 hex digits, so it is a raw WPA PSK');
-        notes.push('and not a passphrase — a passphrase is 8 to 63 characters. It');
+        notes.push('and not a passphrase - a passphrase is 8 to 63 characters. It');
         notes.push('is written unquoted, which is the reading that is correct here.');
         notes.push('Quoting it would make it a 64-character passphrase, and no');
         notes.push('supplicant will accept one of those.');
@@ -812,7 +812,7 @@
 
     if (startInst !== null && endInst !== null && endInst <= startInst) {
       warns.push('The end is not after the start. Calendar apps handle that');
-      warns.push('inconsistently — some clamp it, some refuse the whole file.');
+      warns.push('inconsistently - some clamp it, some refuse the whole file.');
     }
 
     var location = val('e-location');
@@ -834,7 +834,7 @@
     notes.push('updates rather than duplicates. Two different events with');
     notes.push('identical text and times would collide; vary one field.');
     notes.push('DTSTAMP is the moment you pressed Build, which is what the');
-    notes.push('field means — when this object was created, not when it happens.');
+    notes.push('field means - when this object was created, not when it happens.');
 
     return {
       kind: 'ical', fields: fields, notes: notes, warns: warns,
@@ -1251,7 +1251,7 @@
     } else if (unfolded && unfolded !== text) {
       var saved = utf8Len(text) - utf8Len(unfolded);
       out.ok('Every line is within 75 octets.');
-      out.dim('Folding cost ' + saved + ' extra octets in the QR code — one line');
+      out.dim('Folding cost ' + saved + ' extra octets in the QR code - one line');
       out.dim('break and one space per fold. That is the trade: a conformant');
       out.dim('file, or a slightly smaller square.');
     } else {
@@ -1277,7 +1277,7 @@
       out.dim('first one lands in the wrong field. This is where most builders');
       out.dim('quietly get it wrong.');
     } else {
-      out.dim('Nothing needed escaping — no separators appear inside any value.');
+      out.dim('Nothing needed escaping - no separators appear inside any value.');
     }
   }
 
@@ -1430,8 +1430,8 @@
     }
     out.row('payee name (pn)', params.pn || '(not set)');
     if (amountSet) out.row('amount (am)', (params.cu || 'no currency given') + ' ' + params.am);
-    else if (params.am) out.row('amount (am)', params.am + ' — the payer types the real one in');
-    else out.row('amount (am)', 'blank — the payer types it in');
+    else if (params.am) out.row('amount (am)', params.am + ' - the payer types the real one in');
+    else out.row('amount (am)', 'blank - the payer types it in');
     if (params.cu) out.row('currency (cu)', params.cu);
     if (params.tn) out.row('note (tn)', params.tn);
     if (params.tr) out.row('transaction ref (tr)', params.tr);
@@ -1478,7 +1478,7 @@
       out.warn('This matters more than it looks: a screenshot showing "you will');
       out.warn('receive 5,000" proves nothing, because the figure on screen came');
       out.warn('from whoever typed it, not from the code. It is also the version');
-      out.warn('that arrives with a story — "just enter one rupee to verify".');
+      out.warn('that arrives with a story - "just enter one rupee to verify".');
       out.line('');
     }
 
@@ -1495,7 +1495,7 @@
         if (KNOWN_HANDLES.indexOf(shape.handle.toLowerCase()) === -1) {
           flags += 1;
           out.warn('That handle is not on this page’s short list of ones I have');
-          out.warn('seen. That is not a verdict — NPCI adds handles constantly and');
+          out.warn('seen. That is not a verdict - NPCI adds handles constantly and');
           out.warn('the list here is partial and out of date by design. It means');
           out.warn('only that I cannot recognise it, so check it yourself.');
         } else {
@@ -1640,8 +1640,8 @@
     out.line('');
     out.dim('Read the parsed intent before you approve it, and read the name');
     out.dim('your own app resolves rather than the one in the code.');
-    out.dim('The rest of the family — collect requests, mandates, and the phone');
-    out.dim('call that comes with them — is at /labs/upi-fraud, and the money');
+    out.dim('The rest of the family - collect requests, mandates, and the phone');
+    out.dim('call that comes with them - is at /labs/upi-fraud, and the money');
     out.dim('path is written up at');
     out.dim('/blog/upi-fraud-how-the-money-actually-leaves.');
     if (sourceLabel) {
@@ -1690,7 +1690,7 @@
   function reportVcard(text) {
     var v = parseVcard(text);
     out.heading('vCard');
-    out.row('version', v.version || '(no VERSION line — that is mandatory)',
+    out.row('version', v.version || '(no VERSION line - that is mandatory)',
             v.version ? null : 't-warn');
     out.row('content lines', v.props.length + ' after unfolding');
     var raw = String(text).replace(/\r\n/g, '\n').split('\n').length;
@@ -1702,7 +1702,7 @@
     reportStructured(v.props, 'N', N_PARTS, ';', unescText);
     reportStructured(v.props, 'ADR', ADR_PARTS, ';', unescText);
     out.rule();
-    out.dim('Values above are shown unescaped — the backslashes in the source');
+    out.dim('Values above are shown unescaped - the backslashes in the source');
     out.dim('are structure, not content. Every semicolon and comma you can see');
     out.dim('here was inside a value in the original.');
     if (v.version !== '3.0' && v.version !== '4.0') {
@@ -1762,7 +1762,7 @@
     if (map.P) {
       out.line('');
       out.err('THE PASSWORD IS IN THE CODE IN CLEAR TEXT.');
-      out.err('It is not encrypted, hashed or protected in any way — the string');
+      out.err('It is not encrypted, hashed or protected in any way - the string');
       out.err('above is exactly what is printed in the square. Anyone who');
       out.err('photographs the code has the password, forever, including people');
       out.err('who were never in the building. There is no way to make a Wi-Fi');
@@ -1818,7 +1818,7 @@
         out.warn('There is a TZID and no VTIMEZONE block. RFC 5545 requires the');
         out.warn('zone definition to travel with the file, so strictly this is');
         out.warn('not conformant. In practice the receiving app looks the name up');
-        out.warn('in its own IANA database and gets it right — until it does not,');
+        out.warn('in its own IANA database and gets it right - until it does not,');
         out.warn('and then the event floats.');
       }
       tzids.forEach(function (z) {
@@ -2035,7 +2035,7 @@
     out.clear();
     var text = rawVal('tool-in');
     if (!text.trim()) {
-      out.warn('Paste a payload string first — the thing inside the QR code, not');
+      out.warn('Paste a payload string first - the thing inside the QR code, not');
       out.warn('a picture of it. /labs/qr decodes the picture and prints this.');
       return;
     }
@@ -2052,7 +2052,7 @@
     else if (type === 'emvco') {
       out.heading('An EMVCo QR, not a URI');
       out.line('This starts 000201, which is the payload format indicator of an');
-      out.line('EMVCo code — the family Bharat QR belongs to. It is tag-length-');
+      out.line('EMVCo code - the family Bharat QR belongs to. It is tag-length-');
       out.line('value binary-ish text, not a upi:// URI, and this page does not');
       out.line('decode it. Saying so is better than half-decoding it.');
       out.line('');
@@ -2097,8 +2097,8 @@
       out.dim('back and compares every value to what you typed.');
       out.dim('Paste the result into /labs/qr to draw the square.');
     } else {
-      out.dim('Paste a payload string — a vCard, a MECARD, a WIFI: string, a');
-      out.dim('VEVENT, a geo: point or a upi:// URI — and press Read it.');
+      out.dim('Paste a payload string - a vCard, a MECARD, a WIFI: string, a');
+      out.dim('VEVENT, a geo: point or a upi:// URI - and press Read it.');
       out.dim('Nothing is opened, resolved or requested. Not the URLs, not the');
       out.dim('VPAs, not the network names.');
     }

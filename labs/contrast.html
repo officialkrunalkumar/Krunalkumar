@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Colour contrast, with the arithmetic shown" />
     <meta name="twitter:description" content="Pick two colours and watch the WCAG 2.x ratio being built - sRGB channels linearised, weighted into a relative luminance, then the ratio with its flare terms. APCA is computed alongside and labelled as the draft it is. Colour-blindness simulation, a smallest-change fixer in OKLCH and a full palette matrix. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-contrast.jpg" />
-    <title>Colour Contrast Checker — WCAG & APCA | Krunalkumar Shah</title>
+    <title>Colour Contrast Checker - WCAG & APCA | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -231,16 +231,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No judgement about APCA &mdash; that number is shown, never enforced</li>
+                  <li>No judgement about APCA - that number is shown, never enforced</li>
                   <li>No lookups against any external database</li>
                 </ul>
               </div>
@@ -256,7 +256,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -265,10 +265,10 @@
         <div class="lab-toolbar">
           <label class="sr-only" for="tool-target">Target to fix against</label>
           <select class="lab-select" id="tool-target">
-            <option value="4.5" selected>Fix to AA, normal text &mdash; 4.5:1</option>
-            <option value="7">Fix to AAA, normal text &mdash; 7:1</option>
-            <option value="3">Fix to AA, large text and UI &mdash; 3:1</option>
-            <option value="4.5aaa">Fix to AAA, large text &mdash; 4.5:1</option>
+            <option value="4.5" selected>Fix to AA, normal text - 4.5:1</option>
+            <option value="7">Fix to AAA, normal text - 7:1</option>
+            <option value="3">Fix to AA, large text and UI - 3:1</option>
+            <option value="4.5aaa">Fix to AAA, large text - 4.5:1</option>
           </select>
           <button class="lab-btn" type="button" id="tool-swap">&#8645; Swap the two</button>
           <button class="lab-btn lab-btn-run" type="button" id="tool-run">&#9654; Recompute</button>
@@ -288,7 +288,7 @@
           <input class="lab-toolfield" type="text" id="tool-fg" spellcheck="false"
                  autocapitalize="off" autocorrect="off" autocomplete="off"
                  value="#6b7c94" aria-describedby="cn-formats"
-                 placeholder="Foreground &mdash; #6b7c94, rgb(107 124 148), hsl(214 16% 50%), oklch(0.55 0.03 250)" />
+                 placeholder="Foreground - #6b7c94, rgb(107 124 148), hsl(214 16% 50%), oklch(0.55 0.03 250)" />
           <span class="lab-status" id="tool-fgnote"></span>
         </div>
         <div class="lab-fieldrow">
@@ -300,7 +300,7 @@
           <input class="lab-toolfield" type="text" id="tool-bg" spellcheck="false"
                  autocapitalize="off" autocorrect="off" autocomplete="off"
                  value="#020617" aria-describedby="cn-formats"
-                 placeholder="Background &mdash; #020617, rgb(2 6 23), hsl(226 84% 5%), oklch(0.15 0.02 265)" />
+                 placeholder="Background - #020617, rgb(2 6 23), hsl(226 84% 5%), oklch(0.15 0.02 265)" />
           <span class="lab-status" id="tool-bgnote"></span>
         </div>
         <p class="cn-formats" id="cn-formats">Hex, <code>rgb()</code>, <code>hsl()</code> and
@@ -315,7 +315,7 @@
                 <p class="cn-sample-large" id="cn-sample-large">Large text, 24 px bold</p>
                 <p class="cn-sample-normal" id="cn-sample-normal">Normal body text at 16 px. This is the size most of a page actually is, and the size the 4.5:1 rule was written for.</p>
                 <p class="cn-sample-muted" id="cn-sample-muted">The same colour at 13 px, which is where a passing ratio starts to feel optimistic.</p>
-                <p class="cn-sample-ui" id="cn-sample-ui">Input border and icon &mdash; SC 1.4.11, 3:1</p>
+                <p class="cn-sample-ui" id="cn-sample-ui">Input border and icon - SC 1.4.11, 3:1</p>
               </div>
               <div class="cn-verdicts" id="cn-verdicts"></div>
               <!-- The shell gives the output pane its own announcer, but all
@@ -351,8 +351,8 @@
 
         <div class="cn-block">
           <h2 class="cn-block-title">Check a whole palette at once</h2>
-          <p class="cn-block-note">Paste your colours &mdash; one per line, or separated by
-            commas &mdash; and every pairing gets a ratio. A palette usually fails in the
+          <p class="cn-block-note">Paste your colours - one per line, or separated by
+            commas - and every pairing gets a ratio. A palette usually fails in the
             places nobody thought to check, which is the pairing two designers each
             assumed the other had looked at.</p>
           <label class="sr-only" for="cn-palette">Palette colours, one per line</label>
@@ -378,7 +378,7 @@
           </article>
           <article class="info-card">
             <h3>The 0.05 is glare, not maths</h3>
-            <p>Both luminances get <code>+ 0.05</code> before the division. That is a flare term &mdash; an allowance for ambient light bouncing off the screen and lifting the blacks. It is why black on white comes out at 21:1 rather than infinity, and why the formula stops discriminating usefully between very dark colours: below the flare term, the difference is drowned.</p>
+            <p>Both luminances get <code>+ 0.05</code> before the division. That is a flare term - an allowance for ambient light bouncing off the screen and lifting the blacks. It is why black on white comes out at 21:1 rather than infinity, and why the formula stops discriminating usefully between very dark colours: below the flare term, the difference is drowned.</p>
           </article>
           <article class="info-card">
             <h3>Green does almost all of the work</h3>
@@ -386,7 +386,7 @@
           </article>
           <article class="info-card">
             <h3>Three thresholds, not one</h3>
-            <p>4.5:1 for normal text at AA, 3:1 for large text &mdash; 24 px, or 18.66 px at bold &mdash; and 3:1 for UI components and meaningful graphics under SC 1.4.11. AAA raises the first two to 7:1 and 4.5:1 and adds nothing for components. Logotypes and genuinely disabled controls are exempt, which is a real exemption and not a place to hide a low-contrast button.</p>
+            <p>4.5:1 for normal text at AA, 3:1 for large text - 24 px, or 18.66 px at bold - and 3:1 for UI components and meaningful graphics under SC 1.4.11. AAA raises the first two to 7:1 and 4.5:1 and adds nothing for components. Logotypes and genuinely disabled controls are exempt, which is a real exemption and not a place to hide a low-contrast button.</p>
           </article>
         </div>
       </section>
@@ -399,11 +399,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>It cannot tell which one is the text</h3>
-            <p>The formula sorts the two luminances and divides. That makes it symmetric: dark grey on white and white on dark grey score identically. Your eye does not agree. Light text on a dark ground blooms &mdash; the glyph spreads into its background &mdash; so the same ratio reads thinner and harder. Every dark theme that measured fine and felt wrong is this effect.</p>
+            <p>The formula sorts the two luminances and divides. That makes it symmetric: dark grey on white and white on dark grey score identically. Your eye does not agree. Light text on a dark ground blooms - the glyph spreads into its background - so the same ratio reads thinner and harder. Every dark theme that measured fine and felt wrong is this effect.</p>
           </article>
           <article class="info-card">
             <h3>It was calibrated for a different room</h3>
-            <p>The thresholds came out of work on paper-like reading conditions and were fixed in 2008. They do not model the light behind you, an OLED panel with true blacks, or a phone at maximum brightness in daylight. A single flare constant stands in for all of it. That is not a scandal &mdash; a standard has to draw a line somewhere &mdash; but it is worth knowing which line you are standing on.</p>
+            <p>The thresholds came out of work on paper-like reading conditions and were fixed in 2008. They do not model the light behind you, an OLED panel with true blacks, or a phone at maximum brightness in daylight. A single flare constant stands in for all of it. That is not a scandal - a standard has to draw a line somewhere - but it is worth knowing which line you are standing on.</p>
           </article>
           <article class="info-card">
             <h3>What APCA does differently</h3>
@@ -419,12 +419,12 @@
       <section class="section-card">
         <div class="section-heading">
           <h2>What a passing ratio does not guarantee</h2>
-          <p>The formula takes six numbers &mdash; two colours, three channels each. Everything below is outside it, and every one of these has made readable text unreadable in something I have worked on.</p>
+          <p>The formula takes six numbers - two colours, three channels each. Everything below is outside it, and every one of these has made readable text unreadable in something I have worked on.</p>
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Weight and size</h3>
-            <p>A 300-weight face at 4.6:1 can be harder to read than a 600-weight one at 4.3:1. WCAG 2.x has exactly one size input &mdash; whether the text counts as large &mdash; and no weight input at all. If your body copy is set in a thin face, the ratio is telling you less than you think it is.</p>
+            <p>A 300-weight face at 4.6:1 can be harder to read than a 600-weight one at 4.3:1. WCAG 2.x has exactly one size input - whether the text counts as large - and no weight input at all. If your body copy is set in a thin face, the ratio is telling you less than you think it is.</p>
           </article>
           <article class="info-card">
             <h3>Anti-aliasing and the panel</h3>
@@ -464,17 +464,17 @@
           </article>
           <article class="info-card">
             <h3>APCA is not vector-checked</h3>
-            <p>I implemented APCA-W3 0.1.9 from its published constants and I have not run it against the reference test suite line by line. The self-check only asserts its structural behaviour. That is why it is presented as a comparison and never as a verdict &mdash; a green tick for something I only eyeballed would be worse than no tick at all.</p>
+            <p>I implemented APCA-W3 0.1.9 from its published constants and I have not run it against the reference test suite line by line. The self-check only asserts its structural behaviour. That is why it is presented as a comparison and never as a verdict - a green tick for something I only eyeballed would be worse than no tick at all.</p>
           </article>
           <article class="info-card">
             <h3>The simulations are a model</h3>
-            <p>Machado, Oliveira and Fernandes (2009), severity 1.0, applied in linear light because that is the space they were derived in. Achromatopsia is not from that paper &mdash; it is Rec. 709 luminance written to all three channels. All four are dichromacy at full strength, and most colour vision deficiency is milder than that, so treat them as a lower bound on what people see.</p>
+            <p>Machado, Oliveira and Fernandes (2009), severity 1.0, applied in linear light because that is the space they were derived in. Achromatopsia is not from that paper - it is Rec. 709 luminance written to all three channels. All four are dichromacy at full strength, and most colour vision deficiency is milder than that, so treat them as a lower bound on what people see.</p>
           </article>
         </div>
         <div class="lab-cta">
           <p class="lab-cta-text">If you want to see the same numbers being pushed around by hand,
             the <strong>shader playground</strong> is where colour maths stops being a table and
-            starts being pixels &mdash; the sRGB transfer function above is the same one every
+            starts being pixels - the sRGB transfer function above is the same one every
             fragment shader has to undo before it can blend anything correctly.</p>
           <a class="btn btn-primary" href="/labs/shader-playground">Open the shader playground</a>
         </div>
@@ -526,7 +526,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/encoding">
             <span class="lab-card-name">Encoder / decoder</span>
-            <p class="lab-card-desc">Base64, hex, URL and more &mdash; including the hex a colour is written in.</p>
+            <p class="lab-card-desc">Base64, hex, URL and more - including the hex a colour is written in.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/shader-playground">

@@ -184,7 +184,7 @@
               g.beep(880, 0.15, 'sine');
               /* Announced, not ended: the manifest promises the run carries
                  on, and 4096 is genuinely reachable from here. */
-              flash('2048 reached — keep going');
+              flash('2048 reached - keep going');
               break;
             }
           }

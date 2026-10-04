@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Eight problems, fifteen instructions" />
     <meta name="twitter:description" content="Write programs for a tiny virtual machine with four registers and fifteen instructions. Eight problems, each checked against every test case and scored on size." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-assembly-puzzles.jpg" />
-    <title>Assembly Puzzles — Write Assembly In Your Browser, Free</title>
+    <title>Assembly Puzzles - Write Assembly In Your Browser, Free</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -190,7 +190,7 @@
           </ol>
         </nav>
         <h1>Assembly puzzles</h1>
-        <p class="hero-text">A machine with four registers, thirty-two memory cells and fifteen instructions, and eight problems to solve on it &mdash; from copying a number to reversing a list. Your program is run against every test case, not just the one on screen, and the score is the instructions you wrote plus every cycle the machine spent. Shorter programs and tighter loops both count.</p>
+        <p class="hero-text">A machine with four registers, thirty-two memory cells and fifteen instructions, and eight problems to solve on it - from copying a number to reversing a list. Your program is run against every test case, not just the one on screen, and the score is the instructions you wrote plus every cycle the machine spent. Shorter programs and tighter loops both count.</p>
         <ul class="game-facts">
           <li>Fifteen instructions</li>
           <li>Four registers, 32 cells</li>
@@ -226,7 +226,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Best</span>
-              <span class="game-stat-value" data-stat="best">&mdash;</span>
+              <span class="game-stat-value" data-stat="best">-</span>
             </div>
           </div>
           <div class="game-toolbar">
@@ -238,7 +238,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -300,15 +300,15 @@
           </article>
           <article class="info-card">
             <h3>The flag behaves the way real flags do</h3>
-            <p><code>CMP a, b</code> sets the flag to a minus b, but so do ADD, SUB, MUL, INC and DEC, from their own result. That is why <code>DEC R0</code> followed by <code>JNE loop</code> is a complete countdown with no compare in it &mdash; the same reason the equivalent pair is the commonest loop on x86. MOV, IN and OUT leave the flag alone.</p>
+            <p><code>CMP a, b</code> sets the flag to a minus b, but so do ADD, SUB, MUL, INC and DEC, from their own result. That is why <code>DEC R0</code> followed by <code>JNE loop</code> is a complete countdown with no compare in it - the same reason the equivalent pair is the commonest loop on x86. MOV, IN and OUT leave the flag alone.</p>
           </article>
           <article class="info-card">
             <h3>Why level six takes MUL away</h3>
-            <p>Early processors had no multiplier at all, and multiplying meant a loop of additions &mdash; which is why multiplication cost tens of cycles when addition cost one. Doing it by hand once makes the cost model of a CPU much less abstract. Real hardware does better than repeated addition by shifting and adding, roughly one step per bit rather than one per unit.</p>
+            <p>Early processors had no multiplier at all, and multiplying meant a loop of additions - which is why multiplication cost tens of cycles when addition cost one. Doing it by hand once makes the cost model of a CPU much less abstract. Real hardware does better than repeated addition by shifting and adding, roughly one step per bit rather than one per unit.</p>
           </article>
           <article class="info-card">
             <h3>This is not a real instruction set</h3>
-            <p>There is no stack, no CALL or RET, no addressing beyond a register holding an address, and no overflow behaviour to speak of &mdash; a value too large for the machine is treated as your mistake rather than silently wrapped. It teaches the shape of the thing: registers are few, memory is separate, branches are conditional jumps on a flag somebody else set. Anything you learn here transfers as intuition, not as syntax.</p>
+            <p>There is no stack, no CALL or RET, no addressing beyond a register holding an address, and no overflow behaviour to speak of - a value too large for the machine is treated as your mistake rather than silently wrapped. It teaches the shape of the thing: registers are few, memory is separate, branches are conditional jumps on a flag somebody else set. Anything you learn here transfers as intuition, not as syntax.</p>
           </article>
         </div>
       </section>

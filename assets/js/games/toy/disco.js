@@ -540,14 +540,14 @@
         }
         strobeBtn.setAttribute('aria-pressed', String(strobeOn));
         strobeBtn.title = strobeOn
-          ? 'Strobe is on — click to stop the flashing'
+          ? 'Strobe is on - click to stop the flashing'
           : 'Strobe: fast flashing light, off by default';
       }
 
       function syncBlackBtn() {
         if (!blackBtn) return;
         blackBtn.setAttribute('aria-pressed', String(blackout));
-        blackBtn.title = blackout ? 'Lights are out — click to bring them back' : 'Blackout: kill every light at once';
+        blackBtn.title = blackout ? 'Lights are out - click to bring them back' : 'Blackout: kill every light at once';
       }
 
       /* How many sixteenths apart two strobe flashes are, and this is the
@@ -1173,7 +1173,7 @@
             ctx.fillStyle = 'rgba(148,163,184,0.55)';
             ctx.font = '12px "Segoe UI", sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Blackout — press Space or the button to bring the lights back', W / 2, H - 22);
+            ctx.fillText('Blackout - press Space or the button to bring the lights back', W / 2, H - 22);
             ctx.textAlign = 'left';
             return;
           }

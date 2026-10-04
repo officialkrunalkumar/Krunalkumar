@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ==========================================================================
-   scripts/games.js — writes games/index.html and every games/<slug>.html
+   scripts/games.js - writes games/index.html and every games/<slug>.html
    from the manifest in games-data.js.
    --------------------------------------------------------------------------
        node scripts/games.js            regenerate every page
@@ -15,14 +15,14 @@
    consent-free shell markup, the pad, the report strip. Across thirty-odd
    games that is thirty identical copies of four hundred lines, and
    build.js's own static-chrome gate exists precisely because copies like
-   that drift — its comment says so: "a link added to the partial but not to
+   that drift - its comment says so: "a link added to the partial but not to
    97 static copies is invisible exactly to the people browsing without
    JavaScript".
 
    So this reads partials/header.html and partials/footer.html and stamps
    the real thing into every page. Chrome parity stops being a property the
    build checks after the fact and becomes one the pages cannot lose. The
-   OUTPUT is still ordinary committed HTML — no runtime templating, nothing
+   OUTPUT is still ordinary committed HTML - no runtime templating, nothing
    resolved at request time, and a game page opened from the repository is
    the page a visitor gets. Same arrangement glossary.js already has with
    glossary-terms.js.
@@ -50,7 +50,7 @@ const ONLY = process.argv.slice(2).filter((a) => !a.startsWith('--'))[0] || null
    Escaping
    --------------------------------------------------------------------------
    Two different jobs, and mixing them up is how the C++ lab once rendered
-   "so  and lambdas work" — see the README's "Escape < in prose" rule.
+   "so  and lambdas work" - see the README's "Escape < in prose" rule.
 
    esc()  is for HTML text and attributes.
    jstr() is for JSON-LD, whose <script> content is NOT HTML-parsed; escaping
@@ -64,7 +64,7 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
-/* Prose written with HTML entities (&mdash;, &rsquo;) stays as typed; this
+/* Prose written with HTML entities (-, &rsquo;) stays as typed; this
    only fixes the raw characters that would break the parse. */
 function prose(s) {
   return String(s == null ? '' : s).replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
@@ -78,7 +78,7 @@ function jstr(s) {
    the manifest uses are resolved back to real characters first. */
 function plain(s) {
   return String(s == null ? '' : s)
-    .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')
+    .replace(/-/g, '-').replace(/&ndash;/g, '–')
     .replace(/&rsquo;/g, '’').replace(/&lsquo;/g, '‘')
     .replace(/&ldquo;/g, '“').replace(/&rdquo;/g, '”')
     .replace(/&hellip;/g, '…').replace(/&middot;/g, '·')
@@ -104,7 +104,7 @@ function readPartial(rel) {
   /* CRLF is normalized away HERE, at the read, and this line is load-bearing.
      These bytes are stamped verbatim into every generated page, and the
      freshness gate compares those pages byte-for-byte against the committed
-     tree — so if a Windows checkout hands this function a CRLF partial, every
+     tree - so if a Windows checkout hands this function a CRLF partial, every
      generated page differs from what a Linux builder generates and the deploy
      fails on pages nobody edited. That is not hypothetical: it happened, from
      a partial that had been checked out CRLF before the -text pins existed.
@@ -120,9 +120,9 @@ function staticHeader() {
 
   /* The Games link is pre-marked active, the way blog pages and the root
      pages already mark their own. The gate compares href lists, not markup
-     ("the active-link class differs per page by design" — build.js), and
-     without this a no-JS visitor — the person the static header exists
-     for — got a header with no current-page mark at all. */
+     ("the active-link class differs per page by design" - build.js), and
+     without this a no-JS visitor - the person the static header exists
+     for - got a header with no current-page mark at all. */
   const links = Array.from(src.matchAll(/<a class="nav-link" href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g))
     .map((m) => m[1] === '/games'
       ? `            <a class="nav-link active" aria-current="page" href="${m[1]}">${m[2].trim()}</a>`
@@ -226,7 +226,7 @@ function gameJsonLd(g) {
   const blocks = [];
 
   /* Embedded, not referenced. These pages used to say author/publisher =
-     {"@id": ".../#person"} with no Person node anywhere on the page — the
+     {"@id": ".../#person"} with no Person node anywhere on the page - the
      node lives on the homepage, and Google parses each page on its own, so
      the reference resolved to nothing. A small Person carried in full costs
      a hundred bytes and always resolves. */
@@ -241,7 +241,7 @@ function gameJsonLd(g) {
     '@context': 'https://schema.org',
     '@type': 'VideoGame',
     /* jsonldName lets the trademark-encumbered classics present as what
-       they are in structured data — "Tetris (fan remake)" — without
+       they are in structured data - "Tetris (fan remake)" - without
        renaming the page. Claiming authorship of a VideoGame named plainly
        "Tetris" is a claim about the wrong work: the implementation here is
        original, the title is somebody's registered mark. */
@@ -313,8 +313,8 @@ function hud(g) {
      This used to be a single flex row holding the score, the best, the
      level, a difficulty select, a toggle or two and four chrome buttons.
      On a laptop it wrapped into a ragged two-and-a-bit lines; on a phone it
-     wrapped into five, and the score — the one thing a player looks at
-     mid-game — ended up wherever there happened to be room. Numbers and
+     wrapped into five, and the score - the one thing a player looks at
+     mid-game - ended up wherever there happened to be room. Numbers and
      controls are different kinds of thing and now sit in different rows:
      the stats read left to right at a glance, the controls line up
      underneath and can wrap without ever pushing the score around. */
@@ -326,7 +326,7 @@ ${stats}
 ${extras ? extras + '\n' : ''}            <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -372,7 +372,7 @@ const PADS = {
   /* Two distinct verbs, so a phone player is not asked to guess which of
      them one button means. Jump is placed first and larger because it is the
      one that keeps you alive. */
-  /* Left, right and a jump. The platformer used 'jumpfire' — a pad built for
+  /* Left, right and a jump. The platformer used 'jumpfire' - a pad built for
      moon buggy, which auto-scrolls and so needs no left or right. The
      platformer reads held.left and held.right for all its movement and binds
      no swipe of its own, so on a phone there was no input in existence that
@@ -382,7 +382,7 @@ const PADS = {
      whole time.
 
      Both action buttons say Jump because the platformer treats 'up' and
-     'action' as the same jump and has no fire at all — the old pad's second
+     'action' as the same jump and has no fire at all - the old pad's second
      button was labelled Fire and did nothing of the kind. */
   runjump: `          <div class="game-dpad">
             <button type="button" class="pad-left" data-key="left" aria-label="Left">&#9664;</button>
@@ -420,7 +420,7 @@ ${items}
 
   /* The touch counterpart. games.css hides .game-keys on a coarse pointer,
      which used to leave a phone player with a D-pad and no explanation of
-     what the gestures were — the keyboard legend is a list of keys they do
+     what the gestures were - the keyboard legend is a list of keys they do
      not have. This says the same thing in the vocabulary they do have, and
      is hidden in turn on anything with a mouse. */
   if (g.touch) {
@@ -431,7 +431,7 @@ ${items}
 }
 
 /* The reset strip. Every game gets one, including the handful that keep no
-   best score — those still keep a difficulty or a saved board, and the
+   best score - those still keep a difficulty or a saved board, and the
    visitor has no way to know which is which without being told. The strip
    says what is held and removes exactly that, rather than sending anybody to
    the browser's own "clear all site data", which is not a control so much as
@@ -565,7 +565,7 @@ function reportSection(g) {
 }
 
 /* A card, used on the hub and in the "more in the arcade" strip. The canvas
-   is NOT emitted here — hub.js inserts it — so a no-JS visitor gets the
+   is NOT emitted here - hub.js inserts it - so a no-JS visitor gets the
    glyph tile, which is a complete card rather than an empty frame. */
 function card(g, compact) {
   const tag = g.tag ? `\n          <span class="game-tag">${esc(g.tag)}</span>` : '';
@@ -590,7 +590,7 @@ function gamePage(g, chrome) {
      definition time and throws without it.
 
      term-shell.js sits between game-shell.js and the terminal games, so it
-     loads only for those — a canvas game has no use for a character grid and
+     loads only for those - a canvas game has no use for a character grid and
      should not pay for one. Order matters: all three are `defer`, which
      guarantees execution in document order, so TermShell exists by the time
      a terminal game's own module runs. */
@@ -646,7 +646,7 @@ ${facts(g.facts)}      </section>
       <div class="game" id="game-${esc(g.slug)}"${g.wide ? ' data-wide="1"' : ''}>
 ${hud(g)}
 ${stage(g)}
-${g.wide ? `        <p class="game-rotate">This one is ${g.cols || 80} columns wide — turn your phone sideways and it gets a great deal easier to read.</p>\n` : ''}${g.extra ? '        ' + g.extra.trim() + '\n' : ''}${keys(g)}${pad(g)}
+${g.wide ? `        <p class="game-rotate">This one is ${g.cols || 80} columns wide - turn your phone sideways and it gets a great deal easier to read.</p>\n` : ''}${g.extra ? '        ' + g.extra.trim() + '\n' : ''}${keys(g)}${pad(g)}
 ${dataStrip(g)}
       </div>
 ${infoCards(g)}${faqSection(g)}${reportSection(g)}${relatedSection(g)}    </main>
@@ -686,7 +686,7 @@ ${list.map((g) => card(g)).join('\n')}
       '@context': 'https://schema.org',
       '@type': 'ItemList',
       name: 'Browser games by Krunalkumar Shah',
-      description: 'Games that run entirely in your own browser — no account, no server, nothing uploaded.',
+      description: 'Games that run entirely in your own browser - no account, no server, nothing uploaded.',
       itemListElement: GAMES.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
@@ -746,7 +746,7 @@ ${HUB.facts.map((f) => `          <li>${prose(f)}</li>`).join('\n')}
         </ul>
 
         <!-- Type-to-filter over the cards below, exactly the shape /labs
-             uses. It is a view on this one page — site-wide search is "/" —
+             uses. It is a view on this one page - site-wide search is "/" -
              so it ships as plain markup and hub.js wires it up. Hidden
              without JS by games.css, because a box that filters nothing is a
              broken promise rather than progressive enhancement. -->
@@ -766,7 +766,7 @@ ${chips}
           </ul>
           <p class="game-filter-count" id="game-filter-count" role="status" aria-live="polite"></p>
           <div class="game-filter-empty" id="game-filter-empty" hidden>
-            <p>Nothing here matches. This box only filters the games on this page &mdash;
+            <p>Nothing here matches. This box only filters the games on this page -
                try the site search (press <kbd>/</kbd>), or clear the filter.</p>
             <button type="button" class="game-filter-clear" id="game-filter-empty-clear">Clear the filter</button>
           </div>
@@ -779,7 +779,7 @@ ${chips}
            THE ASTERISK IS LOAD-BEARING. Both the narration and the recorded
            interface in the desktop cut quote the number of games as it stood
            on the day it was recorded, and that number is baked into the
-           picture rather than supplied by the caption track — so it cannot be
+           picture rather than supplied by the caption track - so it cannot be
            corrected by editing a file, only by re-recording. Every other
            figure on this site is recounted at deploy; this one cannot be, so
            it gets a note instead of a silent lie. -->
@@ -796,7 +796,7 @@ ${chips}
             <track kind="captions" src="/assets/video/games-desktop.vtt" srclang="en" label="English" default />
               Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
             </video>
-            <figcaption><strong>On a computer</strong> &mdash; the categories, the type-to-filter box, and the storage panel where you can read your saved scores, clear them, or switch saving off.</figcaption>
+            <figcaption><strong>On a computer</strong> - the categories, the type-to-filter box, and the storage panel where you can read your saved scores, clear them, or switch saving off.</figcaption>
           </figure>
           <figure class="explainer">
             <video controls preload="none" playsinline width="1920" height="1080"
@@ -805,13 +805,13 @@ ${chips}
             <track kind="captions" src="/assets/video/games-mobile.vtt" srclang="en" label="English" default />
               Your browser cannot play this video. Everything it points at is on this page already: the filter above, the category chips, and the storage panel further down.
             </video>
-            <figcaption><strong>On a phone</strong> &mdash; your scores shown as the real rows the browser is holding, cleared in one tap.</figcaption>
+            <figcaption><strong>On a phone</strong> - your scores shown as the real rows the browser is holding, cleared in one tap.</figcaption>
           </figure>
         </div>
         <p class="explainer-note">
           <span aria-hidden="true">*</span> The walkthrough was recorded when the arcade was smaller, so the
           number of games it quotes is already behind. Games are still being added. The count on this page is
-          the one to trust &mdash; it is counted at every deploy rather than typed.
+          the one to trust - it is counted at every deploy rather than typed.
         </p>
       </section>
 ${sections}
@@ -837,7 +837,7 @@ ${HUB.about.map((c) => `          <article class="info-card">
           <p>
             Best scores, the difficulty you last picked and the odd half-finished board are kept in your own
             browser&rsquo;s storage, on this device. None of it is sent anywhere, none of it identifies you, and
-            there is no account it could be attached to &mdash; but it is yours, so here it is, and here are the
+            there is no account it could be attached to - but it is yours, so here it is, and here are the
             switches.
           </p>
         </div>
@@ -858,7 +858,7 @@ ${HUB.about.map((c) => `          <article class="info-card">
           </div>
 
           <p class="data-note">
-            Turning storage off also deletes what is already there &mdash; a switch that only stops future writes
+            Turning storage off also deletes what is already there - a switch that only stops future writes
             is a pause, not an opt-out. One key does survive, holding the word <code>off</code>, because a
             preference to store nothing still has to be remembered or it is forgotten the moment you reload.
             Nothing under <code>site.</code> or <code>lab.</code> is touched by any of these buttons, so your
@@ -890,8 +890,8 @@ ${HUB.about.map((c) => `          <article class="info-card">
           <h2>Tell me and I will fix it</h2>
           <p>
             These games run entirely inside your browser, and browsers differ. If something breaks
-            &mdash; a game that will not start, a control that does nothing, a score that will not save
-            &mdash; the quickest route is
+            - a game that will not start, a control that does nothing, a score that will not save
+            - the quickest route is
             <a href="https://wa.me/918200713617?text=Hi%20Krunalkumar%2C%20something%20is%20broken%20in%20Games%3A%20" target="_blank" rel="noopener">a WhatsApp message</a>.
             Or fill this in and it opens WhatsApp with the details already written out.
           </p>
@@ -902,13 +902,13 @@ ${HUB.about.map((c) => `          <article class="info-card">
           data-wa-message-template="Hello Krunalkumar, I am reporting something from the Games section of your website.\\nGame: Games hub (https://krunalkumar.dpdns.org/games)\\nName: {name}\\nContact: {phone}\\nEmail: {email}\\n\\nWhat is breaking / feedback:\\n{message}"
           data-wa-analytics-prefix="games_feedback"
           data-wa-followup-question="Did your report go through on WhatsApp?"
-          data-wa-confirmed-message="&#128591; Thank you &mdash; that genuinely helps. I will look into it and get back to you.">
+          data-wa-confirmed-message="&#128591; Thank you - that genuinely helps. I will look into it and get back to you.">
           <div class="form-grid">
             <label class="field">
               <span>Your name</span>
               <input type="text" placeholder="Firstname Lastname" name="name" autocomplete="name" required />
             </label>
-            <!-- The hint sits OUTSIDE the <label> on purpose &mdash; same structure and
+            <!-- The hint sits OUTSIDE the <label> on purpose - same structure and
                  reasoning as contact.html: nested, it polluted the label's
                  accessible name and aria-describedby read it a second time. -->
             <div class="field">
@@ -927,7 +927,7 @@ ${HUB.about.map((c) => `          <article class="info-card">
           <label class="field full">
             <span>What is breaking, or any feedback</span>
             <textarea name="message" rows="6" required
-              placeholder="What you were playing, what you expected, what happened instead &mdash; and your browser and device if you know them."></textarea>
+              placeholder="What you were playing, what you expected, what happened instead - and your browser and device if you know them."></textarea>
           </label>
 
           <div class="form-actions">
@@ -935,7 +935,7 @@ ${HUB.about.map((c) => `          <article class="info-card">
             <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
           </div>
           <p class="form-note">Prefer email? Write to
-          <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> &mdash;
+          <a class="text-link" href="mailto:krunalkumar@krunalkumar.dpdns.org">krunalkumar@krunalkumar.dpdns.org</a> -
           no WhatsApp needed.</p>
           <noscript>
             <p class="form-note">This form needs JavaScript to open WhatsApp. Please email

@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one." />
+    <meta name="description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search - and watch the first answer that contradicts an earlier one." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/binary-search-duel" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="You cannot beat log n. Try it from both ends." />
-    <meta property="og:description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one." />
+    <meta property="og:description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search - and watch the first answer that contradicts an earlier one." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/binary-search-duel" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-binary-search-duel.jpg" />
@@ -20,9 +20,9 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="You cannot beat log n. Try it from both ends." />
-    <meta name="twitter:description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one." />
+    <meta name="twitter:description" content="Narrow down my number and see the bits each guess wasted, then think of one while I search - and watch the first answer that contradicts an earlier one." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-binary-search-duel.jpg" />
-    <title>Binary Search Duel — Search, Then Answer</title>
+    <title>Binary Search Duel - Search, Then Answer</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "Narrow down my number and see the bits each guess wasted, then think of one while I search — and watch the first answer that contradicts an earlier one.",
+        "description": "Narrow down my number and see the bits each guess wasted, then think of one while I search - and watch the first answer that contradicts an earlier one.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -61,7 +61,7 @@
                         "name": "Is the number chosen before I start guessing?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer — which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it."
+                                "text": "Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer - which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it."
                         }
                 },
                 {
@@ -77,7 +77,7 @@
                         "name": "What counts as cheating in the half where I answer?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Only an answer that contradicts one you have already given — and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par."
+                                "text": "Only an answer that contradicts one you have already given - and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par."
                         }
                 },
                 {
@@ -198,7 +198,7 @@
           </ol>
         </nav>
         <h1>Binary search duel</h1>
-        <p class="hero-text">Four rounds, alternating. In two of them I have written a number down and you hunt for it, with the interval still alive drawn as a bar, the candidates counted, and the cost of every off-centre guess worked out in bits. In the other two the roles swap: you think of a number and answer higher or lower, and I keep the interval your answers imply &mdash; so the moment two of them cannot both be true, I can name which two and show you the range they left empty. There is a third mode with no score in it at all, which is the one that reproduces the overflow bug that sat in java.util.Arrays.binarySearch for nine years.</p>
+        <p class="hero-text">Four rounds, alternating. In two of them I have written a number down and you hunt for it, with the interval still alive drawn as a bar, the candidates counted, and the cost of every off-centre guess worked out in bits. In the other two the roles swap: you think of a number and answer higher or lower, and I keep the interval your answers imply - so the moment two of them cannot both be true, I can name which two and show you the range they left empty. There is a third mode with no score in it at all, which is the one that reproduces the overflow bug that sat in java.util.Arrays.binarySearch for nine years.</p>
         <ul class="game-facts">
           <li>Two halves, roles reversed</li>
           <li>The bits you wasted, per guess</li>
@@ -242,19 +242,19 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Best</span>
-              <span class="game-stat-value" data-stat="best">&mdash;</span>
+              <span class="game-stat-value" data-stat="best">-</span>
             </div>
           </div>
           <div class="game-toolbar">
             <label class="sr-only" for="game-mode">Mode</label>
-            <select class="game-select" autocomplete="off" id="game-mode"><option value="duel" selected>The duel &mdash; four rounds</option><option value="trap">The off-by-one trap</option></select>
+            <select class="game-select" autocomplete="off" id="game-mode"><option value="duel" selected>The duel - four rounds</option><option value="trap">The off-by-one trap</option></select>
             <label class="sr-only" for="game-range">Range</label>
             <select class="game-select" autocomplete="off" id="game-range"><option value="50">1 to 50</option><option value="100" selected>1 to 100</option><option value="1000">1 to 1,000</option><option value="10000">1 to 10,000</option></select>
             <button class="game-btn" type="button" id="game-hint" aria-pressed="true" title="The best next guess is shown under the bar">Show the midpoint</button>
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -295,7 +295,7 @@
           <li><kbd>Type</kbd> A guess straight into the field, if you would rather</li>
           <li><kbd>Esc</kbd> Pause</li>
         </ul>
-        <p class="game-touch">Drag along the bar to place your guess &mdash; it clamps to the part still alive, so you cannot spend a guess on a number already ruled out &mdash; then tap the button underneath, which carries the number you set. In the answering half the three buttons are the whole interface. In the trap, the array cells are tappable and everything reruns the moment you change a setting.</p>
+        <p class="game-touch">Drag along the bar to place your guess - it clamps to the part still alive, so you cannot spend a guess on a number already ruled out - then tap the button underneath, which carries the number you set. In the answering half the three buttons are the whole interface. In the trap, the array cells are tappable and everything reruns the moment you change a setting.</p>
         <div class="game-pad" data-pad="none"></div>
         <div class="game-data">
           <p class="game-data-line">
@@ -313,19 +313,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>One answer is one bit</h3>
-            <p>A yes-or-no answer separates the candidates into two groups, so it can at best halve the survivors, and a guess that splits them unevenly halves them by less than that. The exact floor is slightly kinder than the usual <code>log2(n)</code>, because a correct guess ends the round rather than answering it: with <em>k</em> guesses you can separate at most <code>2^k &minus; 1</code> values, so par is the smallest <em>k</em> where that reaches <em>n</em>. For 64 candidates that is seven and not six &mdash; the sort of off-by-one this game is otherwise about, so it is computed by doubling rather than by rounding a logarithm. None of the four ranges offered is a power of two, so here the two formulas agree.</p>
+            <p>A yes-or-no answer separates the candidates into two groups, so it can at best halve the survivors, and a guess that splits them unevenly halves them by less than that. The exact floor is slightly kinder than the usual <code>log2(n)</code>, because a correct guess ends the round rather than answering it: with <em>k</em> guesses you can separate at most <code>2^k &minus; 1</code> values, so par is the smallest <em>k</em> where that reaches <em>n</em>. For 64 candidates that is seven and not six - the sort of off-by-one this game is otherwise about, so it is computed by doubling rather than by rounding a logarithm. None of the four ranges offered is a power of two, so here the two formulas agree.</p>
           </article>
           <article class="info-card">
             <h3>What an off-centre guess actually costs</h3>
-            <p>After each guess the page prints two numbers: what the answer was worth, and what the guess could have guaranteed. Those differ, and the difference is the lesson. Guess 40 in a live interval of 1 to 61 and you might get lucky and knock out 39 of them &mdash; but before the answer arrived, that guess risked leaving 39 alive where the midpoint risks at most 30. The shortfall, <code>log2(39/30)</code>, is a third of a bit thrown away whichever way the answer fell, and luck cannot buy it back. That is what the score counts, and why a lucky first-guess hit does not make you good at this.</p>
+            <p>After each guess the page prints two numbers: what the answer was worth, and what the guess could have guaranteed. Those differ, and the difference is the lesson. Guess 40 in a live interval of 1 to 61 and you might get lucky and knock out 39 of them - but before the answer arrived, that guess risked leaving 39 alive where the midpoint risks at most 30. The shortfall, <code>log2(39/30)</code>, is a third of a bit thrown away whichever way the answer fell, and luck cannot buy it back. That is what the score counts, and why a lucky first-guess hit does not make you good at this.</p>
           </article>
           <article class="info-card">
             <h3>The half where you answer, and the two ways to bend it</h3>
-            <p>When I am searching, every answer you give is a constraint, and I keep the interval all of them imply. If an answer makes that interval empty there is nothing to guess at &mdash; the panel names the two answers involved and the range between them that has nothing in it. The other tactic is not cheating at all: answer to keep the larger half every time and you are playing the adversary from the lower-bound proof, deciding as late as possible, and the search then takes exactly par rather than less. The page says which of the two it is watching, and says plainly that it cannot tell an adversary from somebody with an awkward number.</p>
+            <p>When I am searching, every answer you give is a constraint, and I keep the interval all of them imply. If an answer makes that interval empty there is nothing to guess at - the panel names the two answers involved and the range between them that has nothing in it. The other tactic is not cheating at all: answer to keep the larger half every time and you are playing the adversary from the lower-bound proof, deciding as late as possible, and the search then takes exactly par rather than less. The page says which of the two it is watching, and says plainly that it cannot tell an adversary from somebody with an awkward number.</p>
           </article>
           <article class="info-card">
             <h3>The off-by-one trap, and where to read more</h3>
-            <p>The third mode has no score. It runs the same search with a midpoint you choose &mdash; <code>lo + (hi &minus; lo) / 2</code> or the natural-looking <code>(lo + hi) / 2</code> &mdash; and a loop you choose, and shows what that combination does to all sixteen elements of a small array: one loop finds every value, one misses eight of them, and one hangs on exactly one. On sixteen elements the two midpoints are identical, which is precisely why the overflow hid for nine years; switch to the two-billion-element array and the naive one goes negative on the second probe. Why log n is the floor rather than a convention is in the <a href="/labs/big-o">big-O playground</a>, and searches and sorts run step by step in the <a href="/labs/algorithm-visualizer">algorithm visualiser</a>.</p>
+            <p>The third mode has no score. It runs the same search with a midpoint you choose - <code>lo + (hi &minus; lo) / 2</code> or the natural-looking <code>(lo + hi) / 2</code> - and a loop you choose, and shows what that combination does to all sixteen elements of a small array: one loop finds every value, one misses eight of them, and one hangs on exactly one. On sixteen elements the two midpoints are identical, which is precisely why the overflow hid for nine years; switch to the two-billion-element array and the naive one goes negative on the second probe. Why log n is the floor rather than a convention is in the <a href="/labs/big-o">big-O playground</a>, and searches and sorts run step by step in the <a href="/labs/algorithm-visualizer">algorithm visualiser</a>.</p>
           </article>
         </div>
       </section>
@@ -336,7 +336,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is the number chosen before I start guessing?</summary>
-            <div>Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer &mdash; which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it.</div>
+            <div>Yes. In the rounds where you search, the number is drawn when the round begins and does not move afterwards. Nothing here adapts to your guesses to keep the game going longer - which is exactly the trick the second half invites you to try on me, and the reason the second half has a checker in it.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I beat par?</summary>
@@ -344,7 +344,7 @@
           </details>
           <details class="lab-faq">
             <summary>What counts as cheating in the half where I answer?</summary>
-            <div>Only an answer that contradicts one you have already given &mdash; and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par.</div>
+            <div>Only an answer that contradicts one you have already given - and it is detected rather than suspected, because the interval your answers imply becomes empty, and an empty interval means no number of any kind would have produced that sequence. Answering to keep the search working as long as possible is not cheating and is not penalised: it is the adversary argument, and the game names it and then finishes in exactly par.</div>
           </details>
           <details class="lab-faq">
             <summary>How is the score worked out, and why is lower better?</summary>

@@ -75,8 +75,8 @@
     var scholarship = fields.scholarship.value;
     var internshipTrack = 'Free internship (selective)';
     var mentorshipTrack = scholarship === 'no'
-      ? 'Paid mentorship — ₹4,999/month'
-      : 'Paid mentorship — with scholarship request';
+      ? 'Paid mentorship - ₹4,999/month'
+      : 'Paid mentorship - with scholarship request';
     var track;
     var copy;
 

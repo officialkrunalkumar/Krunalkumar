@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Git stops being spells once you know what it stores. The object model, the three trees, what each command actually moves, and the undo toolbox — deeply."
+      content="Git stops being spells once you know what it stores. The object model, the three trees, what each command actually moves, and the undo toolbox - deeply."
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Git, Explained From the Object Up" />
     <meta
       property="og:description"
-      content="Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model — explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content."
+      content="Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model - explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content."
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/git-explained-from-the-object-up" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="Git, Explained From the Object Up" />
     <meta
       name="twitter:description"
-      content="Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model — explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content."
+      content="Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model - explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/git-explained-from-the-object-up.jpg" />
     <title>Git, Explained From the Object Up | Krunalkumar Shah</title>
@@ -43,7 +43,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Git, Explained From the Object Up",
-        "description": "Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model — explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content.",
+        "description": "Most people use git as a set of spells: type this, hope, type harder. Every command stops being magic the moment you know the three things it can move. The object store, the three trees, branching and rebase, the undo toolbox, and the collaboration model - explained from the bottom, with receipts from rewriting 169 commits on this site without changing a byte of content.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/git-explained-from-the-object-up.jpg",
         "datePublished": "2026-08-29",
         "dateModified": "2026-08-29",
@@ -149,7 +149,7 @@
           <p class="hero-text">
             Most people use git the way people once used incantations: type this, hope, type it harder. It works
             until the first merge conflict, the first detached HEAD, the first force-push panic. The cure is not
-            memorising more commands. It is knowing the three things any command can move — because once you can
+            memorising more commands. It is knowing the three things any command can move - because once you can
             see what git actually stores, every command becomes obvious, including the frightening ones. This
             week I rewrote 169 commits on this site without changing a byte of content; that is only a sane thing
             to do if you know exactly what is underneath. Here is what is underneath.
@@ -181,16 +181,16 @@
               <p>
                 Every git command you will ever run manipulates some combination of exactly three places, and the
                 documentation rarely says so out loud. The <strong>working tree</strong> is the folder you can
-                see — ordinary files, the ones your editor touches. The <strong>index</strong> (the docs also say
+                see - ordinary files, the ones your editor touches. The <strong>index</strong> (the docs also say
                 "staging area") is git's private draft of your next commit. And the <strong>history</strong> is a
-                graph of commits, with a handful of named labels pointing into it, one of which —
-                <code>HEAD</code> — marks where you are standing.
+                graph of commits, with a handful of named labels pointing into it, one of which -
+                <code>HEAD</code> - marks where you are standing.
               </p>
               <p>
                 That is the whole machine. <code>git add</code> copies a file from the working tree into the
                 index. <code>git commit</code> turns the index into a permanent snapshot and moves your branch
                 label forward. <code>git diff</code> compares two of the three places. The commands that
-                frighten people — <code>reset</code>, <code>checkout</code>, <code>rebase</code> — are frightening
+                frighten people - <code>reset</code>, <code>checkout</code>, <code>rebase</code> - are frightening
                 only because they move more than one of the three at once, silently.
                 <strong>Learn the three places and you stop memorising commands; you start predicting
                 them.</strong>
@@ -199,10 +199,10 @@
               <h2 id="what-a-commit-actually-is">What a commit actually is</h2>
               <p>
                 Git does not store diffs. It stores <em>snapshots</em>, whole ones, in a content-addressed object
-                store — a small database living in the <code>.git</code> folder. A file's content is stored as a
+                store - a small database living in the <code>.git</code> folder. A file's content is stored as a
                 <strong>blob</strong>. A folder is a <strong>tree</strong>: a list of names pointing at blobs and
-                other trees. A <strong>commit</strong> is a tiny text record that points at one tree — the
-                complete state of your project at that moment — plus its parent commit or commits, an author, a
+                other trees. A <strong>commit</strong> is a tiny text record that points at one tree - the
+                complete state of your project at that moment - plus its parent commit or commits, an author, a
                 date, and a message. Every one of these objects is named by a hash of its own content (SHA-1 in
                 almost every repository you will meet). Change one character of a message and the hash changes,
                 which means the "name" of a commit <em>is</em> its content. Nothing in the store can be edited in
@@ -210,15 +210,15 @@
               </p>
               <p>
                 Branches, which feel like heavy machinery, are the lightest thing in the system. A branch is a
-                41-byte file — <code>.git/refs/heads/main</code> — containing one commit hash and a newline.
+                41-byte file - <code>.git/refs/heads/main</code> - containing one commit hash and a newline.
                 <code>HEAD</code> is another small file that usually says "I am on branch main". Creating a branch
                 copies one hash into one file. That is why it is instant, and why the advice "branch freely" is
-                not bravado — you are writing a sticky note, not copying a project.
+                not bravado - you are writing a sticky note, not copying a project.
               </p>
               <p>
                 Here is the receipt for the claim in the opening. This week I removed an unwanted trailer line
                 from 169 commit messages in this site's repository. Because a commit's hash covers its message,
-                all 169 commits got new names — and because a commit's <em>tree</em> is a separate object, I
+                all 169 commits got new names - and because a commit's <em>tree</em> is a separate object, I
                 could verify with two lines of shell that every one of the 169 new commits pointed at the
                 <strong>byte-identical tree</strong> as its original, with identical dates. The content provably
                 never changed; only the envelopes were rewritten. Without the object model that operation is
@@ -228,7 +228,7 @@
               <h2 id="the-everyday-five">The everyday five</h2>
               <p>
                 Ninety percent of git life is five commands, and each is one sentence once you hold the three
-                places in mind. <code>git status</code> compares all three and reports the differences — that is
+                places in mind. <code>git status</code> compares all three and reports the differences - that is
                 its entire job, which is why it is always safe. <code>git add file</code> copies the file's
                 current content into the index; edit the file again afterwards and the index still holds the
                 older version, which surprises everyone exactly once. <code>git commit -m "message"</code> seals
@@ -237,7 +237,7 @@
               </p>
               <p>
                 The two inspectors complete the set. <code>git log --oneline --graph</code> walks the parent
-                pointers backwards from <code>HEAD</code> and draws the graph — it is how you see the structure
+                pointers backwards from <code>HEAD</code> and draws the graph - it is how you see the structure
                 you are standing in. And <code>git diff</code> answers "what is different?", but you have to know
                 which two places it compares: bare <code>git diff</code> is working tree against index ("what
                 have I edited but not staged"); <code>git diff --staged</code> is index against the last commit
@@ -251,7 +251,7 @@
                 next commits advance <code>feature</code>; <code>main</code> stays where it was. When the work is
                 done, <code>git switch main</code> and <code>git merge feature</code>. If <code>main</code> has
                 not moved since you branched, git notices your branch simply continues the line, and slides the
-                <code>main</code> label forward — a <strong>fast-forward</strong>, no new commit at all. If both
+                <code>main</code> label forward - a <strong>fast-forward</strong>, no new commit at all. If both
                 branches moved, git makes a <strong>merge commit</strong>: a commit with two parents, whose tree
                 combines both sides. The graph records honestly that two lines of work happened and where they
                 joined.
@@ -261,7 +261,7 @@
                 <strong>the same lines changed on both sides, and git refuses to guess.</strong> It writes both
                 versions into the file between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> and
                 <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers and stops. Resolution is not a special mode
-                with special commands — you edit the file until it says what it should, <code>git add</code> it
+                with special commands - you edit the file until it says what it should, <code>git add</code> it
                 to declare it resolved, and <code>git commit</code>. When one whole side is simply right,
                 <code>git checkout --ours file</code> or <code>--theirs file</code> takes it in one move. The
                 only conflict skill that matters is refusing to rush: the markers are a question, and the answer
@@ -273,7 +273,7 @@
                 Remember that nothing in the object store can be edited. So what can "rewriting history" possibly
                 mean? It means this: git computes what each of your commits changed, replays those changes one by
                 one on top of a different starting point, writes <em>new</em> commits with new hashes, and moves
-                your branch label to the new line. The old commits are not touched — they sit in the store,
+                your branch label to the new line. The old commits are not touched - they sit in the store,
                 unlabelled, until they age out. <code>git rebase main</code> does exactly this to your feature
                 branch, giving you the clean "as if I had started from today's main" line. <code>git commit
                 --amend</code> is the one-commit version. Even my 169-commit rewrite was this same operation
@@ -287,13 +287,13 @@
                 people already have.</strong> Their labels still point at the old line; yours point at the new
                 one; git sees two divergent histories and the "fix" usually merges the mess back together,
                 doubling every commit. Rebase your own unpushed work as freely as you like. The moment a commit
-                has been pushed to a shared branch, prefer <code>revert</code> — or accept the coordination cost
+                has been pushed to a shared branch, prefer <code>revert</code> - or accept the coordination cost
                 and force-push with care, which is the last section's business.
               </p>
 
               <h2 id="the-undo-toolbox">The undo toolbox</h2>
               <p>
-                Every undo situation is "which of the three places holds the mistake?" — and there is a tool per
+                Every undo situation is "which of the three places holds the mistake?" - and there is a tool per
                 answer. Working tree only: <code>git restore file</code> overwrites the file from the index
                 (destructive to your edit, invisible to history). Staged too early: <code>git restore --staged
                 file</code> copies the index entry back from the last commit, leaving your file alone. Committed
@@ -302,10 +302,10 @@
               <div class="post-callout" role="note">
                 <p>
                   <strong>What <code>git reset</code> actually moves.</strong> <code>--soft</code> moves the
-                  branch label only — your index and files stay put, so the undone commit's work sits staged and
-                  ready to recommit. <code>--mixed</code> (the default) also resets the index — the work stays
-                  only in your files, unstaged. <code>--hard</code> resets all three — label, index, and working
-                  tree — and is the only one of the three that can destroy work you have not committed.
+                  branch label only - your index and files stay put, so the undone commit's work sits staged and
+                  ready to recommit. <code>--mixed</code> (the default) also resets the index - the work stays
+                  only in your files, unstaged. <code>--hard</code> resets all three - label, index, and working
+                  tree - and is the only one of the three that can destroy work you have not committed.
                 </p>
               </div>
               <p>
@@ -314,18 +314,18 @@
                 mistake and the correction, which is exactly what you want on anything shared.
                 <code>git stash</code> parks uncommitted work on a side shelf so you can switch branches with
                 clean hands, and <code>git stash pop</code> takes it back down. And <code>git cherry-pick</code>
-                copies a single commit's change onto wherever you stand — the surgical tool for "I need just that
+                copies a single commit's change onto wherever you stand - the surgical tool for "I need just that
                 one fix over here".
               </p>
               <p>
                 Then there is the safety net under all of it. <code>git reflog</code> is git's private diary of
-                every place <code>HEAD</code> has been — every commit, switch, reset, rebase, and merge — kept
-                for about ninety days by default — thirty for entries the branch tip can no longer
+                every place <code>HEAD</code> has been - every commit, switch, reset, rebase, and merge - kept
+                for about ninety days by default - thirty for entries the branch tip can no longer
                 reach, which is precisely the orphaned-commit case, so recover sooner rather than
                 later. Ran <code>reset --hard</code>
                 on the wrong branch and watched a day's work vanish? <code>git reflog</code>, find the hash from
                 twenty minutes ago, <code>git reset --hard</code> back to it. <strong>In a committed repository
-                it is genuinely difficult to lose work permanently — the disasters people fear are mostly
+                it is genuinely difficult to lose work permanently - the disasters people fear are mostly
                 fifteen-second reflog recoveries.</strong> The corollary is the real rule of git safety: commit
                 early, because only uncommitted work is ever truly at risk.
               </p>
@@ -334,41 +334,41 @@
               <p>
                 A remote is just another copy of the same object store, and the collaboration commands are couriers
                 between the two. <code>git clone url</code> copies the store and checks out a branch.
-                <code>git fetch</code> brings down new objects and updates your <em>picture</em> of the remote —
-                the <code>origin/main</code> labels — without touching your own branches, which makes it always
+                <code>git fetch</code> brings down new objects and updates your <em>picture</em> of the remote -
+                the <code>origin/main</code> labels - without touching your own branches, which makes it always
                 safe. <code>git pull</code> is exactly <code>fetch</code> followed by a merge (or a rebase, if
                 you tell it) of your branch onto that picture; when pull "goes wrong" it is the merge half, and
                 everything from the conflict section applies. <code>git push</code> sends your objects up and
-                asks the remote to move its label — and the remote refuses if you are not up to date, which is
+                asks the remote to move its label - and the remote refuses if you are not up to date, which is
                 git protecting someone else's work from your label.
               </p>
               <p>
                 Overriding that refusal is what force-pushing is, and there is a right tool:
                 <code>git push --force-with-lease</code> overwrites the remote branch <em>only if it still points
-                where you last saw it</em> — a compare-and-swap, where bare <code>--force</code> is a blind
+                where you last saw it</em> - a compare-and-swap, where bare <code>--force</code> is a blind
                 overwrite that will happily erase a colleague's afternoon. When I force-pushed this site's
                 rewritten history, the lease was the difference between "replace exactly the history I audited"
                 and "replace whatever happens to be there". One more thing that week taught me: platforms keep
-                their own labels into your graph — GitHub holds an immutable ref for every pull request ever
-                opened — so treat rewriting as a tool for history you own outright, and expect the platform to
+                their own labels into your graph - GitHub holds an immutable ref for every pull request ever
+                opened - so treat rewriting as a tool for history you own outright, and expect the platform to
                 remember some of the rest.
               </p>
               <p>
                 Reading about git is the weaker half of learning it. The stronger half is typing commands at a
-                repository you cannot damage, watching the graph move — so I built one. The sixty-seventh game
+                repository you cannot damage, watching the graph move - so I built one. The sixty-seventh game
                 on this site is a terminal: a simulated repository, real commands, and nineteen missions that walk
                 from <code>git init</code> to a capstone that uses the whole toolbox, with the graph drawn live as you type.
               </p>
               <div class="lab-cta">
                 <p class="lab-cta-text">
                   A safe repository, a real prompt, and nineteen missions from first commit to a whole-toolbox capstone.
-                  Break it freely — that is what it is for.
+                  Break it freely - that is what it is for.
                 </p>
                 <a class="btn btn-primary" href="/games/git-quest">Play Git Quest</a>
               </div>
               <p>
                 And if you want the object store explained by the person who has to live with the consequences,
-                everything in this article is checkable against this site's own repository — 170-odd commits,
+                everything in this article is checkable against this site's own repository - 170-odd commits,
                 every one of them a tree, a parent, and a label, exactly as described. That is the quiet beauty
                 of git: it is not a tool you trust. It is a data structure you can check.
               </p>
@@ -390,7 +390,7 @@
             <p class="eyebrow">Related reading</p>
             <ul>
               <li><a href="/blog/what-66-games-taught-me-about-software">What sixty-six tiny games taught me about serious software</a></li>
-              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website — and the mechanism that made it hold</a></li>
+              <li><a href="/blog/how-i-vibe-coded-my-website">How I vibe coded this website - and the mechanism that made it hold</a></li>
               <li><a href="/blog/how-to-succeed-in-software-development">How to succeed in software development: the four-step path</a></li>
             </ul>
           </nav>
@@ -398,7 +398,7 @@
           <div class="post-cta">
             <h2>Want your team fluent instead of frightened?</h2>
             <p>
-              Most git disasters are not git problems — they are three-places problems, and an hour on the model
+              Most git disasters are not git problems - they are three-places problems, and an hour on the model
               saves a hundred on the symptoms. Working through exactly this, on your repositories and your
               workflow, is the kind of thing I do with clients and with the people I mentor.
             </p>

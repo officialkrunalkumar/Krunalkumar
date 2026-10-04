@@ -1272,7 +1272,7 @@
       if (triedThis) {
         body.push('The account that succeeded is one of the accounts that had been');
         body.push('failing from this same source. That is the shape of a guessed');
-        body.push('password rather than a user mistyping and retrying — a user does');
+        body.push('password rather than a user mistyping and retrying - a user does');
         body.push('not usually fail against other accounts first. It is a strong');
         body.push('signal and not a finding of compromise: a script holding a stale');
         body.push('credential, or a monitoring job that walks several accounts,');
@@ -1287,7 +1287,7 @@
       }
       body.push('');
       body.push('If this is real, the clock starts here: what did that account do next,');
-      body.push('and what can it reach. Nothing on this page can answer that — it has');
+      body.push('and what can it reach. Nothing on this page can answer that - it has');
       body.push('only this one file.');
       if (!chronological) {
         body.push('');
@@ -1301,7 +1301,7 @@
 
       if (found <= MAX_PER_KIND) {
         addFinding(findings, 'high',
-          'Successful authentication after ' + plural(p.fails, 'failure') + ' — ' +
+          'Successful authentication after ' + plural(p.fails, 'failure') + ' - ' +
           safe(e.user, 40) + ' from ' + e.src, body, ev);
       }
       pending[e.src] = null;
@@ -1313,7 +1313,7 @@
         ['Only the first ' + MAX_PER_KIND + ' are printed in full. On a log where this pattern',
          'repeats dozens of times, the likelier explanation is an application or a',
          'monitoring agent retrying with a stale credential and eventually being',
-         'refreshed — but it is worth confirming which accounts they are.'], []);
+         'refreshed - but it is worth confirming which accounts they are.'], []);
     }
   }
 
@@ -1349,7 +1349,7 @@
           '',
           'It is NOT impossible travel, because nothing here knows where either',
           'address is. There is no GeoIP database on this page and no lookup is',
-          'made, deliberately — sending your log’s addresses to a geolocation',
+          'made, deliberately - sending your log’s addresses to a geolocation',
           'service to analyse them locally would be a strange bargain.',
           '',
           'Ordinary things that produce this: a VPN connecting or dropping, a',
@@ -1363,7 +1363,7 @@
           body.push('explanation considerably more likely.');
         }
         addFinding(findings, sameBlock ? 'low' : 'medium',
-          'Same account, two sources, ' + duration(gap) + ' apart — ' + safe(users[i], 40),
+          'Same account, two sources, ' + duration(gap) + ' apart - ' + safe(users[i], 40),
           body, evidence(res, [a.n, b.n], [a, b]));
       }
     }
@@ -1388,7 +1388,7 @@
       srcCount = countKeys(u.srcs);
       if (u.fails < BRUTE_MIN_FAILS || srcCount < 5) continue;
       addFinding(findings, 'medium',
-        'One account failing from ' + plural(srcCount, 'different source') + ' — ' + safe(u.user, 40),
+        'One account failing from ' + plural(srcCount, 'different source') + ' - ' + safe(u.user, 40),
         ['account          ' + safe(u.user, 60),
          'failures         ' + num(u.fails),
          'sources          ' + num(srcCount) + '  (' + topKeys(u.srcs, 6).join(', ') +
@@ -1453,7 +1453,7 @@
     { name: 'dirbuster / gobuster / feroxbuster', re: /dirbuster|gobuster|feroxbuster|dirsearch|ffuf/i, sev: 'high', what: 'a directory brute-forcer' },
     { name: 'hydra / medusa', re: /\bhydra\b|medusa/i, sev: 'high', what: 'a credential brute-forcer' },
     { name: 'acunetix / netsparker / burp', re: /acunetix|netsparker|burpsuite|nessus|qualys|openvas/i, sev: 'medium', what: 'a commercial scanner (possibly your own)' },
-    { name: 'curl / wget', re: /^curl\/|^Wget/i, sev: 'low', what: 'a command-line client — normal for an API, unusual for a page' },
+    { name: 'curl / wget', re: /^curl\/|^Wget/i, sev: 'low', what: 'a command-line client - normal for an API, unusual for a page' },
     { name: 'python / go / java client libraries', re: /python-requests|python-urllib|Go-http-client|okhttp|Java\/\d|libwww-perl|axios|node-fetch/i, sev: 'low', what: 'a script rather than a browser' },
     { name: 'declared bots', re: /bot\b|crawler|spider|slurp/i, sev: 'low', what: 'self-declared crawlers, easy to impersonate' }
   ];
@@ -1572,7 +1572,7 @@
       if (served) {
         pbody.push(num(served) + ' of these ' + (served === 1 ? 'was' : 'were') +
                    ' answered with a 2xx.');
-        pbody.push('That does not mean the payload worked — plenty of applications answer');
+        pbody.push('That does not mean the payload worked - plenty of applications answer');
         pbody.push('a broken query with a 200 and an error page. It is the subset worth');
         pbody.push('checking against the application log.');
       } else {
@@ -1587,7 +1587,7 @@
       pbody.push('parameter that legitimately contains one of these strings will all');
       pbody.push('land here. Read the lines before acting on the count.');
       addFinding(findings, p.def.sev,
-        names[i] + ' — ' + plural(p.n, 'request') + ' from ' + plural(countKeys(p.ips), 'address'),
+        names[i] + ' - ' + plural(p.n, 'request') + ' from ' + plural(countKeys(p.ips), 'address'),
         pbody, evidence(res, p.lines, null));
     }
 
@@ -1626,7 +1626,7 @@
       var uh = uaHits[uaNames[i]];
       if (uh.def.sev === 'low' && uh.n < 20) continue;
       addFinding(findings, uh.def.sev,
-        'User agent "' + safe(uaNames[i], 40) + '" — ' + plural(uh.n, 'request'),
+        'User agent "' + safe(uaNames[i], 40) + '" - ' + plural(uh.n, 'request'),
         ['what it is       ' + uh.def.what,
          'sources          ' + topKeys(uh.ips, 5).join(', ') + (countKeys(uh.ips) > 5 ? ', …' : ''),
          '',
@@ -1648,7 +1648,7 @@
     for (i = 0; i < scanners.length && i < MAX_PER_KIND; i++) {
       var sc = scanners[i];
       addFinding(findings, 'medium',
-        'Enumeration from ' + sc.ip + ' — ' + num(sc.c404) + ' of ' + num(sc.hits) + ' requests were 404',
+        'Enumeration from ' + sc.ip + ' - ' + num(sc.c404) + ' of ' + num(sc.hits) + ' requests were 404',
         ['requests         ' + num(sc.hits),
          '404 responses    ' + num(sc.c404) + '  (' + pct(sc.c404, sc.hits) + ')',
          'distinct paths   ' + num(countKeys(sc.paths)),
@@ -1656,7 +1656,7 @@
          '',
          'A browser gets a 404 occasionally. A client whose traffic is mostly',
          '404s is asking for things it has no reason to think exist, which is',
-         'the definition of enumeration. The ratio matters more than the count —',
+         'the definition of enumeration. The ratio matters more than the count -',
          'a busy site produces thousands of honest 404s from broken links.'],
         evidence(res, sc.lines, null));
     }
@@ -1935,7 +1935,7 @@
     R.line('');
     R.heading('MOST COMMON USER AGENTS');
     var uas = topKeys(res.uas || {}, TOP_ROWS);
-    if (!uas.length) R.dim('  none recorded — this log format does not carry the user agent');
+    if (!uas.length) R.dim('  none recorded - this log format does not carry the user agent');
     for (i = 0; i < uas.length; i++) {
       R.line('  ' + padLeft(num(res.uas[uas[i]]), 8) + '  ' + safe(uas[i], 110));
     }
@@ -1983,7 +1983,7 @@
       }
       R.line('');
       R.dim('An account with failures AND successes from the same log is the one to');
-      R.dim('read first — that is either a user who mistyped, or the moment someone');
+      R.dim('read first - that is either a user who mistyped, or the moment someone');
       R.dim('stopped guessing.');
     }
 
@@ -2014,7 +2014,7 @@
         R.line('  ' + pad(safe(progs[i], 32), 34) + num(res.programs[progs[i]]));
       }
     } else {
-      R.dim('  no recognisable program field — these lines are not syslog-shaped');
+      R.dim('  no recognisable program field - these lines are not syslog-shaped');
     }
 
     var msgs = topKeys(res.messages, TOP_ROWS);
@@ -2109,7 +2109,7 @@
     reported = true;
     R.heading(name || 'pasted text');
     R.row('size', LabTool.humanBytes(text.length));
-    R.row('lines', num(lines.length) + (truncated ? '   (truncated — see below)' : ''));
+    R.row('lines', num(lines.length) + (truncated ? '   (truncated - see below)' : ''));
     R.row('format', det.label, 't-info');
     R.dim('                      detected because ' + det.why);
     if (truncated) {
@@ -2117,7 +2117,7 @@
       R.warn('This file was cut at ' + LabTool.humanBytes(MAX_BYTES) + ' / ' + num(MAX_LINES) +
              ' lines so the tab stays usable.');
       R.dim('Everything below covers only the part that was read. For a bigger log,');
-      R.dim('split it first — the counts would be wrong rather than incomplete if');
+      R.dim('split it first - the counts would be wrong rather than incomplete if');
       R.dim('this carried on past the cut without saying so.');
     }
     R.rule();
@@ -2131,7 +2131,7 @@
       R.err('The parser stopped on an internal error: ' +
             ((err && err.message) || String(err)));
       R.dim('Whatever is printed above is still valid. If this is reproducible, the');
-      R.dim('file is shaped in a way worth knowing about — the report link below');
+      R.dim('file is shaped in a way worth knowing about - the report link below');
       R.dim('goes straight to me.');
       return;
     }
@@ -2159,8 +2159,8 @@
     if (!res.parsed) {
       R.line('');
       R.err('Not one line matched the ' + det.label + ' parser.');
-      R.dim('Either the format was detected wrongly — try picking it by hand in the');
-      R.dim('selector — or this is a format nothing here reads. The five it reads are');
+      R.dim('Either the format was detected wrongly - try picking it by hand in the');
+      R.dim('selector - or this is a format nothing here reads. The five it reads are');
       R.dim('Linux auth.log, nginx/Apache access logs, IIS W3C, Windows Security CSV,');
       R.dim('and generic syslog.');
       renderLimits();
@@ -2410,7 +2410,7 @@
       var copyBtn = document.getElementById('tool-copy');
       if (copyBtn) {
         copyBtn.addEventListener('click', function () {
-          if (!reported) { R.clear().warn('There is no report to copy yet — analyse a log first.'); return; }
+          if (!reported) { R.clear().warn('There is no report to copy yet - analyse a log first.'); return; }
           LabTool.copy(R.text(), copyBtn);
         });
       }
@@ -2418,7 +2418,7 @@
       var saveBtn = document.getElementById('tool-save');
       if (saveBtn) {
         saveBtn.addEventListener('click', function () {
-          if (!reported) { R.clear().warn('There is no report to save yet — analyse a log first.'); return; }
+          if (!reported) { R.clear().warn('There is no report to save yet - analyse a log first.'); return; }
           var stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
           var head = 'Log analysis report\n' +
                      'Generated ' + new Date().toISOString() + ' by ' +

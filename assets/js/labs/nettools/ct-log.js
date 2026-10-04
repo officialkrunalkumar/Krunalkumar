@@ -89,7 +89,7 @@
       return;
     }
 
-    out.heading('Certificate Transparency search — ' + domain);
+    out.heading('Certificate Transparency search - ' + domain);
     out.dim(includeSubs ? 'including subdomains' : 'exact domain only');
     out.dim('costs up to ' + PAGE_LIMIT + ' of the ~' + HOURLY_BUDGET +
             ' key-less queries ' + VENDOR + ' allows per hour');
@@ -108,7 +108,7 @@
         } else {
           if (batch.length >= 100 && pages >= PAGE_LIMIT) {
             out.line('');
-            out.warn('Stopped after ' + pages + ' pages. There are more results —');
+            out.warn('Stopped after ' + pages + ' pages. There are more results -');
             out.warn('this cap exists so the tool does not hammer a free service.');
           }
           render(all, domain, includeSubs);
@@ -116,7 +116,7 @@
       }).catch(function (err) {
         out.line('');
         if (err && err.rateLimited) {
-          out.err('Rate-limited by ' + VENDOR + ' — the hourly budget is spent.');
+          out.err('Rate-limited by ' + VENDOR + ' - the hourly budget is spent.');
           out.dim('The key-less endpoint allows roughly ' + HOURLY_BUDGET +
                   ' queries an hour from one IP');
           out.dim('address, and a search here can use ' + PAGE_LIMIT +
@@ -131,7 +131,7 @@
             out.line('');
             out.warn('Showing the ' + all.length + ' certificate' +
                      (all.length === 1 ? '' : 's') +
-                     ' that arrived before the limit — this list is incomplete.');
+                     ' that arrived before the limit - this list is incomplete.');
             render(all, domain, includeSubs);
           }
           return;
@@ -152,7 +152,7 @@
     if (!certs.length) {
       out.warn('No certificates found for ' + domain + '.');
       out.dim('Either none has ever been issued, or the domain is wrong. Note');
-      out.dim('that CT only covers publicly-trusted CAs — a certificate from an');
+      out.dim('that CT only covers publicly-trusted CAs - a certificate from an');
       out.dim('internal corporate CA is never logged and will not appear here.');
       return;
     }
@@ -173,7 +173,7 @@
                 (expiringSoon.length ? '   ·   ' + expiringSoon.length +
                  ' expiring within 30 days' : ''));
     out.dim('Cert Spotter returns only unexpired issuances, so certificates that');
-    out.dim('have already lapsed are not counted here — this is what is live now,');
+    out.dim('have already lapsed are not counted here - this is what is live now,');
     out.dim('not everything ever issued for the domain.');
     out.line('');
 
@@ -209,7 +209,7 @@
       out.warn(flagged.length + ' name' + (flagged.length === 1 ? '' : 's') +
                ' above look like non-production or internal infrastructure.');
       out.dim('Putting those on a public certificate publishes their existence');
-      out.dim('permanently. The log is append-only — they cannot be withdrawn.');
+      out.dim('permanently. The log is append-only - they cannot be withdrawn.');
       out.dim('That is not a vulnerability by itself, but it is reconnaissance');
       out.dim('an attacker gets for free, and it is usually unintentional.');
     }
@@ -228,7 +228,7 @@
       .forEach(function (k) { out.row(k, issuers[k] + ' certificate' + (issuers[k] === 1 ? '' : 's')); });
     if (Object.keys(issuers).length > 3) {
       out.line('');
-      out.dim('Several different CAs. Usually that is just history — a migration,');
+      out.dim('Several different CAs. Usually that is just history - a migration,');
       out.dim('or different teams using different providers. Worth a glance');
       out.dim('anyway: an unexpected CA is what a mis-issuance looks like, and');
       out.dim('spotting exactly that is why CT exists.');
@@ -254,7 +254,7 @@
 
     out.rule();
     out.dim('All of this came from a public, append-only log. Nothing was sent');
-    out.dim('to ' + domain + ' and none of its servers were contacted — the data');
+    out.dim('to ' + domain + ' and none of its servers were contacted - the data');
     out.dim('lives in the CT logs, not on their machines.');
     out.line('');
     out.dim(VENDOR + ' now knows someone at your IP searched for this domain.');
@@ -268,7 +268,7 @@
       out.dim('');
       out.dim('Search sparingly. ' + VENDOR + ' answers without an API key, but');
       out.dim('only about ' + HOURLY_BUDGET + ' times an hour per IP address, and one search');
-      out.dim('fetches up to ' + PAGE_LIMIT + ' pages — each page is one of those. Three');
+      out.dim('fetches up to ' + PAGE_LIMIT + ' pages - each page is one of those. Three');
       out.dim('searches of a busy domain can use the whole hour\'s allowance.');
       out.dim('');
       out.dim('Certificate Transparency is a public, append-only record of every');

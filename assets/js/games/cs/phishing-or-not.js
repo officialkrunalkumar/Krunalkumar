@@ -28,7 +28,7 @@
       body: 'We blocked a sign-in from a new device. If this was not you, confirm your identity within 24 hours or your account will be limited.',
       link: 'https://paypal-account-verify.com/secure/login',
       phish: true,
-      tell: 'The domain is <code>paypal-account-verify.com</code>. That is not PayPal — it is somebody who registered a name with "paypal" in it, which anybody can do for a few pounds. The brand name before the last dot is what counts, and here the real domain is <code>paypal-account-verify</code>.'
+      tell: 'The domain is <code>paypal-account-verify.com</code>. That is not PayPal - it is somebody who registered a name with "paypal" in it, which anybody can do for a few pounds. The brand name before the last dot is what counts, and here the real domain is <code>paypal-account-verify</code>.'
     },
     {
       kind: 'email',
@@ -37,7 +37,7 @@
       body: 'A key with fingerprint SHA256:9dL... was added. If you did not add it, revoke it in your settings.',
       link: 'https://github.com/settings/keys',
       phish: false,
-      tell: 'Genuine. It has urgency and a link, which is exactly why "urgency plus link equals phishing" is bad advice &mdash; real security notices are urgent by nature. The domain is <code>github.com</code> with nothing appended, and it tells you where to go rather than sending you there.'
+      tell: 'Genuine. It has urgency and a link, which is exactly why "urgency plus link equals phishing" is bad advice - real security notices are urgent by nature. The domain is <code>github.com</code> with nothing appended, and it tells you where to go rather than sending you there.'
     },
     {
       kind: 'sms',
@@ -55,7 +55,7 @@
       body: 'As per RBI guidelines your KYC is pending. Update today to avoid account suspension.',
       link: 'https://hdfcbank-kyc-update.net/kyc',
       phish: true,
-      tell: 'HDFC Bank is <code>hdfcbank.com</code>. <code>hdfcbank-kyc-update.net</code> is a different registration entirely &mdash; anyone can register a name with a brand inside it. Invoking a regulator is a standard pressure tactic &mdash; banks do not suspend accounts by email link.'
+      tell: 'HDFC Bank is <code>hdfcbank.com</code>. <code>hdfcbank-kyc-update.net</code> is a different registration entirely - anyone can register a name with a brand inside it. Invoking a regulator is a standard pressure tactic - banks do not suspend accounts by email link.'
     },
     {
       kind: 'email',
@@ -64,12 +64,12 @@
       body: 'Your Google Account was signed in on a Windows device. If this was you, no action is needed.',
       link: 'https://myaccount.google.com/notifications',
       phish: false,
-      tell: 'Genuine. <code>notifications.google.com</code> is a subdomain of <code>google.com</code> &mdash; read domains right-to-left, and the part immediately before the final <code>.com</code> is the one that is owned. And it explicitly says no action is needed, which an attacker never says.'
+      tell: 'Genuine. <code>notifications.google.com</code> is a subdomain of <code>google.com</code> - read domains right-to-left, and the part immediately before the final <code>.com</code> is the one that is owned. And it explicitly says no action is needed, which an attacker never says.'
     },
     {
       kind: 'email',
       from: 'hr@yourcompany-payroll.com',
-      subject: 'Updated salary structure — action required',
+      subject: 'Updated salary structure - action required',
       body: 'Please review the revised salary bands and confirm your bank details on the portal before Friday.',
       link: 'https://yourcompany-payroll.com/login',
       phish: true,
@@ -82,7 +82,7 @@
       body: 'Order 205-4471820-9931 is on its way. Track it in Your Orders.',
       link: 'https://www.amazon.co.uk/gp/your-account/order-history',
       phish: false,
-      tell: 'Genuine, and deliberately dull. Most real mail is dull &mdash; it does not threaten you, does not rush you, and points at a page you could have reached yourself by typing the address.'
+      tell: 'Genuine, and deliberately dull. Most real mail is dull - it does not threaten you, does not rush you, and points at a page you could have reached yourself by typing the address.'
     },
     {
       kind: 'sms',
@@ -100,7 +100,7 @@
       body: 'Microsoft 365 Family renews automatically. Manage or cancel your subscription any time.',
       link: 'https://account.microsoft.com/services',
       phish: false,
-      tell: 'Genuine. Note that it gives you a way OUT &mdash; cancel any time. Attacks push you toward one action; real notices usually offer several, including doing nothing.'
+      tell: 'Genuine. Note that it gives you a way OUT - cancel any time. Attacks push you toward one action; real notices usually offer several, including doing nothing.'
     },
     {
       kind: 'email',
@@ -109,7 +109,7 @@
       body: 'Are you at your desk? I need you to arrange a transfer for a supplier before the end of day. Keep it between us for now.',
       link: null,
       phish: true,
-      tell: 'Business email compromise, and there is no link to inspect at all &mdash; which is why "hover the link" is not a complete defence. The domain is <code>gmai1.com</code>, with the digit one. Secrecy plus urgency plus money is the pattern; the technology barely matters.'
+      tell: 'Business email compromise, and there is no link to inspect at all - which is why "hover the link" is not a complete defence. The domain is <code>gmai1.com</code>, with the digit one. Secrecy plus urgency plus money is the pattern; the technology barely matters.'
     },
     {
       kind: 'email',
@@ -123,7 +123,7 @@
     {
       kind: 'email',
       from: 'it-helpdesk@company.com',
-      subject: 'Mailbox storage full — 98%',
+      subject: 'Mailbox storage full - 98%',
       body: 'Your mailbox is nearly full. Click below to increase your quota, or incoming mail will bounce.',
       link: 'https://company.com.mailquota-support.net/increase',
       phish: true,
@@ -136,7 +136,7 @@
       body: 'Hi Mum, this is my new number, my old phone broke. Can you message me on WhatsApp?',
       link: null,
       phish: true,
-      tell: 'The "hi mum" scam. No link, no technology, no urgency in the first message &mdash; that comes two messages later, after you have accepted who they are. The defence is to ring the old number.'
+      tell: 'The "hi mum" scam. No link, no technology, no urgency in the first message - that comes two messages later, after you have accepted who they are. The defence is to ring the old number.'
     },
     {
       kind: 'email',
@@ -150,11 +150,11 @@
     {
       kind: 'email',
       from: 'dhl-express@delivery-notice.co',
-      subject: 'Customs duty unpaid — shipment on hold',
+      subject: 'Customs duty unpaid - shipment on hold',
       body: 'Pay ₹342 customs charge to release your shipment. Failure to pay within 48 hours will return the item.',
       link: 'https://delivery-notice.co/dhl/pay',
       phish: true,
-      tell: 'The brand is in the sender NAME, not the domain &mdash; the actual domain is <code>delivery-notice.co</code>. Small fee, tight deadline, card form at the end. Couriers bill the sender, not you by email.'
+      tell: 'The brand is in the sender NAME, not the domain - the actual domain is <code>delivery-notice.co</code>. Small fee, tight deadline, card form at the end. Couriers bill the sender, not you by email.'
     },
     {
       kind: 'email',
@@ -181,7 +181,7 @@
       body: 'If you did not authorise this, call us immediately on +1 888 555 0142.',
       link: null,
       phish: true,
-      tell: 'A refund scam, and the payload is the PHONE NUMBER. The domain is genuine because the message was sent through a real service, and there is no malicious link to find &mdash; ringing that number puts you through to the attacker. Always use the number on your card.'
+      tell: 'A refund scam, and the payload is the PHONE NUMBER. The domain is genuine because the message was sent through a real service, and there is no malicious link to find - ringing that number puts you through to the attacker. Always use the number on your card.'
     },
     {
       kind: 'email',
@@ -190,7 +190,7 @@
       body: 'Sign-in attempt was blocked. Your password may be compromised. Change it now.',
       link: 'https://accounts.google.com/signin/recovery',
       phish: false,
-      tell: 'Genuine, and alarming on purpose. <code>accounts.google.com</code> is correct. The safest habit either way: do not click, open the site yourself, and check the security page &mdash; which reaches the same place.'
+      tell: 'Genuine, and alarming on purpose. <code>accounts.google.com</code> is correct. The safest habit either way: do not click, open the site yourself, and check the security page - which reaches the same place.'
     },
     {
       kind: 'sms',
@@ -199,7 +199,7 @@
       body: 'Rs 45,000 debited from your a/c XX4471. If not you, click to reverse:',
       link: 'https://icici-reversal.duckdns.org',
       phish: true,
-      tell: 'Panic plus a large number. <code>duckdns.org</code> is a free dynamic-DNS service &mdash; anybody can have a subdomain of it in seconds. No bank has ever hosted anything on one.'
+      tell: 'Panic plus a large number. <code>duckdns.org</code> is a free dynamic-DNS service - anybody can have a subdomain of it in seconds. No bank has ever hosted anything on one.'
     }
   ];
 
@@ -277,7 +277,7 @@
         v.hidden = false;
         v.className = 'phish-verdict ' + (ok ? 'is-right' : 'is-wrong');
         v.innerHTML =
-          '<p class="phish-call">' + (ok ? 'Correct' : 'Not quite') + ' &mdash; this one is <strong>' +
+          '<p class="phish-call">' + (ok ? 'Correct' : 'Not quite') + ' - this one is <strong>' +
           (it.phish ? 'phishing' : 'legitimate') + '</strong>.</p>' +
           '<p class="phish-why">' + it.tell + '</p>' +
           '<button class="btn btn-primary" type="button" id="phish-next">Next</button>';
@@ -293,7 +293,7 @@
           title: right + ' of ' + order.length,
           message: pct >= 90 ? 'You are reading the domain, not the tone. That is the whole skill.'
                  : pct >= 70 ? 'Solid. The ones people miss are usually the genuine messages that look alarming.'
-                 : 'Worth another go — and notice how many of the fakes had no link at all to inspect.'
+                 : 'Worth another go - and notice how many of the fakes had no link at all to inspect.'
         });
       }
 

@@ -782,14 +782,14 @@
             p.tag = 'BLOCKED';
             p.good = true;
             if (g.gate('hit', 0.12)) g.pluck(660, 0.16, 0.05);
-            pushLog(packetWords(p), shortWhere + ' — attack blocked ' + fmt(BLOCK_POINTS), 'good');
+            pushLog(packetWords(p), shortWhere + ' - attack blocked ' + fmt(BLOCK_POINTS), 'good');
           } else {
             lost++;
             score -= LOSS_POINTS;
             p.tag = 'LOST';
             p.good = false;
             if (g.gate('miss', 0.2)) g.noise(0.13, { type: 'lowpass', freq: 420, to: 110, q: 1.1, level: 0.07 });
-            pushLog(packetWords(p), shortWhere + ' — legitimate ' + fmt(-LOSS_POINTS), 'bad');
+            pushLog(packetWords(p), shortWhere + ' - legitimate ' + fmt(-LOSS_POINTS), 'bad');
             if (g.gate('say-lost', 4)) {
               g.announce('Legitimate traffic dropped: ' + packetWords(p) + ', by ' + longWhere + '.');
             }
@@ -801,7 +801,7 @@
             p.tag = 'BREACH';
             p.good = false;
             g.noise(0.22, { type: 'lowpass', freq: 260, to: 70, q: 1.4, level: 0.08 });
-            pushLog(packetWords(p), shortWhere + ' — ATTACK REACHED THE SERVER', 'bad');
+            pushLog(packetWords(p), shortWhere + ' - ATTACK REACHED THE SERVER', 'bad');
             if (g.gate('say-breach', 3)) {
               g.announce('An attack reached the server through ' + longWhere + '. Integrity ' +
                 Math.max(0, integrity) + ' of ' + START_INTEGRITY + '.');
@@ -811,7 +811,7 @@
             p.tag = 'OK';
             p.good = true;
             if (g.gate('ok', 0.5)) g.beep(880, 0.03, 'triangle', 0.014);
-            pushLog(packetWords(p), shortWhere + ' — legitimate, delivered', 'ok');
+            pushLog(packetWords(p), shortWhere + ' - legitimate, delivered', 'ok');
           }
         }
 
@@ -1021,7 +1021,7 @@
         if (p.tag) {
           label(ctx, p.tag, x + CHIP_W / 2, y + 17, 10, p.good ? COL_OK : COL_BAD, 'center', true);
         } else {
-          label(ctx, p.proto + (p.port > 0 ? ' :' + p.port : ' —'), x + 10, y + 11, 9, COL_TEXT, 'left', true);
+          label(ctx, p.proto + (p.port > 0 ? ' :' + p.port : ' -'), x + 10, y + 11, 9, COL_TEXT, 'left', true);
           label(ctx, p.state === 'EST' ? 'EST' : 'NEW', x + CHIP_W - 5, y + 11, 8,
             p.state === 'EST' ? COL_OK : COL_WARN, 'right');
           label(ctx, p.src, x + 10, y + 21, 8, COL_MID, 'left');
@@ -1092,7 +1092,7 @@
         var deads = deadCount();
         if (deads > 0) {
           label(ctx, deads + (deads === 1 ? ' rule is shadowed' : ' rules are shadowed') +
-            ' — nothing reaches it', 708, 254, 9, COL_WARN, 'right');
+            ' - nothing reaches it', 708, 254, 9, COL_WARN, 'right');
         }
       }
 

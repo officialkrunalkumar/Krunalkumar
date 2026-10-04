@@ -107,7 +107,7 @@
                         "name": "A package came back flagged as a lookalike. Is it malicious?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Unknown, and this page cannot find out. Plenty of legitimate packages sit one or two edits from a popular name — the tool proves it by running the same distance test across its own list of well-known packages and printing how many pairs it flags. Treat a flag as a prompt to open the registry page and look at the publisher, the repository and the publish dates."
+                                "text": "Unknown, and this page cannot find out. Plenty of legitimate packages sit one or two edits from a popular name - the tool proves it by running the same distance test across its own list of well-known packages and printing how many pairs it flags. Treat a flag as a prompt to open the registry page and look at the publisher, the repository and the publish dates."
                         }
                 },
                 {
@@ -212,7 +212,7 @@
           </ol>
         </nav>
         <h1>SBOM inspector</h1>
-        <p class="hero-text">A lockfile is the only honest inventory of what a project installs. Your manifest names a dozen packages; the lockfile names the thousand that arrive with them. Paste one in and see the shape of it &mdash; and get a CycloneDX SBOM out the other side. It reads the file and nothing else: no registry, no advisory database, no network at all.</p>
+        <p class="hero-text">A lockfile is the only honest inventory of what a project installs. Your manifest names a dozen packages; the lockfile names the thousand that arrive with them. Paste one in and see the shape of it - and get a CycloneDX SBOM out the other side. It reads the file and nothing else: no registry, no advisory database, no network at all.</p>
         <ul class="lab-facts">
           <li>Direct vs transitive, computed</li>
           <li>Install scripts, where the file records them</li>
@@ -241,15 +241,15 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
-                  <li>No registry lookup, ever &mdash; it reads the file only</li>
+                  <li>No uploads - there is no server to upload to</li>
+                  <li>No registry lookup, ever - it reads the file only</li>
                   <li>No vulnerability database, so no CVE list</li>
                   <li>Capped: 24 MB of file, and the first 20,000 names name-checked</li>
                   <li>The lookalike list is a few hundred fixed names, not the registry</li>
@@ -267,7 +267,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -328,19 +328,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Direct is a fact in v2 and v3, a guess in v1</h3>
-            <p>An npm v2 or v3 lockfile has a root entry recording the manifest&rsquo;s own dependency lists, so the split between what you chose and what came along is exact. A v1 lockfile has no root entry at all. The best that can be computed there is that a top-level package nothing else requires must have come from your manifest &mdash; a lower bound, and the tool prints it as one rather than as an answer.</p>
+            <p>An npm v2 or v3 lockfile has a root entry recording the manifest&rsquo;s own dependency lists, so the split between what you chose and what came along is exact. A v1 lockfile has no root entry at all. The best that can be computed there is that a top-level package nothing else requires must have come from your manifest - a lower bound, and the tool prints it as one rather than as an answer.</p>
           </article>
           <article class="info-card">
             <h3>Install scripts are where install-time code runs</h3>
-            <p>A package with a preinstall, install or postinstall script executes code on your machine and in your build the moment it is installed, before anything imports it. npm records that as <code>hasInstallScript</code> in v2 and v3 lockfiles. Having one is not suspicious &mdash; native modules compile there &mdash; but it is a short list, and it is the list worth reading by hand. A v1 lockfile does not carry the flag, so the tool reports the check as unavailable instead of clean.</p>
+            <p>A package with a preinstall, install or postinstall script executes code on your machine and in your build the moment it is installed, before anything imports it. npm records that as <code>hasInstallScript</code> in v2 and v3 lockfiles. Having one is not suspicious - native modules compile there - but it is a short list, and it is the list worth reading by hand. A v1 lockfile does not carry the flag, so the tool reports the check as unavailable instead of clean.</p>
           </article>
           <article class="info-card">
             <h3>A lookalike name is a question, not an answer</h3>
-            <p>The name check compares each package name against a built-in list of a few hundred well-known ones, using edit distance, homoglyph folding, separator swaps and the unscoped spellings of scoped packages. It also runs the distance half of that check across the built-in list itself, and tells you how many pairs of unquestionably legitimate packages it flags against each other &mdash; computed while you watch, and never zero. What it will not do is flag <code>@types/express</code> for wrapping <code>express</code>. It used to, and on an ordinary TypeScript project that buried every real hit under DefinitelyTyped.</p>
+            <p>The name check compares each package name against a built-in list of a few hundred well-known ones, using edit distance, homoglyph folding, separator swaps and the unscoped spellings of scoped packages. It also runs the distance half of that check across the built-in list itself, and tells you how many pairs of unquestionably legitimate packages it flags against each other - computed while you watch, and never zero. What it will not do is flag <code>@types/express</code> for wrapping <code>express</code>. It used to, and on an ordinary TypeScript project that buried every real hit under DefinitelyTyped.</p>
           </article>
           <article class="info-card">
             <h3>An SBOM without a network is still worth having</h3>
-            <p>The CycloneDX 1.5 export carries a component per package with a purl, the licence where the file recorded one, the integrity hash where the file carried one, and the dependency graph where the file made one derivable &mdash; npm&rsquo;s own resolution order for a lockfile, pip-compile&rsquo;s &ldquo;# via&rdquo; comments for a compiled requirements.txt. It contains no vulnerabilities, because a vulnerability list needs an advisory database and this page makes no requests. What it gives you is a clean, portable inventory you can hand to a scanner that does have a network &mdash; produced without your private dependency graph leaving the machine.</p>
+            <p>The CycloneDX 1.5 export carries a component per package with a purl, the licence where the file recorded one, the integrity hash where the file carried one, and the dependency graph where the file made one derivable - npm&rsquo;s own resolution order for a lockfile, pip-compile&rsquo;s &ldquo;# via&rdquo; comments for a compiled requirements.txt. It contains no vulnerabilities, because a vulnerability list needs an advisory database and this page makes no requests. What it gives you is a clean, portable inventory you can hand to a scanner that does have a network - produced without your private dependency graph leaving the machine.</p>
           </article>
         </div>
       </section>
@@ -367,7 +367,7 @@
           </details>
           <details class="lab-faq">
             <summary>A package came back flagged as a lookalike. Is it malicious?</summary>
-            <div>Unknown, and this page cannot find out. Plenty of legitimate packages sit one or two edits from a popular name &mdash; the tool proves it by running the same distance test across its own list of well-known packages and printing how many pairs it flags. Treat a flag as a prompt to open the registry page and look at the publisher, the repository and the publish dates.</div>
+            <div>Unknown, and this page cannot find out. Plenty of legitimate packages sit one or two edits from a popular name - the tool proves it by running the same distance test across its own list of well-known packages and printing how many pairs it flags. Treat a flag as a prompt to open the registry page and look at the publisher, the repository and the publish dates.</div>
           </details>
           <details class="lab-faq">
             <summary>Is the exported CycloneDX file actually valid?</summary>

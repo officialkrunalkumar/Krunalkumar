@@ -38,7 +38,7 @@
     { at: 95, line: 'The hash function is unusually enthusiastic about you two.' },
     { at: 80, line: 'A strong showing, from an algorithm that has never met either of you.' },
     { at: 60, line: 'Respectable. Statistically indistinguishable from any other pair of names.' },
-    { at: 40, line: 'Middling — which is exactly what you would expect from arithmetic.' },
+    { at: 40, line: 'Middling - which is exactly what you would expect from arithmetic.' },
     { at: 20, line: 'Low, and completely meaningless. Try swapping a nickname and watch it change.' },
     { at: 0,  line: 'The letters did not get on. The people are a separate question entirely.' }
   ];
@@ -109,7 +109,7 @@
         '  <p class="love-line" id="love-line"></p>' +
         '  <div class="love-working" id="love-working"></div>' +
         '  <p class="love-real">None of this is real. What actually predicts whether two people last is ' +
-        '     values, timing, and how each of you behaves when it is hard &mdash; ' +
+        '     values, timing, and how each of you behaves when it is hard - ' +
         '     <a href="' + BLOG + '">the long version is here &rarr;</a></p>' +
         '</div>';
 

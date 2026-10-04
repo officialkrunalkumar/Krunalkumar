@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="It looks expensive. It costs one lookup a pixel." />
     <meta name="twitter:description" content="A demoscene plasma built the old way: a sine table, a 256-colour palette LUT and cycling by index offset. Change the terms, the frequency and the resolution." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-plasma.jpg" />
-    <title>Plasma — The Demoscene Colour Field</title>
+    <title>Plasma - The Demoscene Colour Field</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -61,7 +61,7 @@
                         "name": "Is this a real plasma?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and nothing here simulates one. It is interference between periodic functions — sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics."
+                                "text": "No, and nothing here simulates one. It is interference between periodic functions - sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics."
                         }
                 },
                 {
@@ -182,7 +182,7 @@
           </ol>
         </nav>
         <h1>Plasma</h1>
-        <p class="hero-text">Sines added together and the sum read through a colour table &mdash; one across, one down, one along the diagonal, and two measured outward from a point you can drag. That is all of it. Nothing here is a gas or a fluid or a field being simulated; the name came from the look. Every value comes out of a 2048-entry table rather than <code>Math.sin</code>, and the colours move because an offset into the palette moves, which is exactly how it was done when the palette was hardware.</p>
+        <p class="hero-text">Sines added together and the sum read through a colour table - one across, one down, one along the diagonal, and two measured outward from a point you can drag. That is all of it. Nothing here is a gas or a fluid or a field being simulated; the name came from the look. Every value comes out of a 2048-entry table rather than <code>Math.sin</code>, and the colours move because an offset into the palette moves, which is exactly how it was done when the palette was hardware.</p>
         <ul class="game-facts">
           <li>A sine table, not Math.sin</li>
           <li>Two to five sine terms</li>
@@ -222,7 +222,7 @@
             </div>
             <div class="game-stat">
               <span class="game-stat-label">Frames</span>
-              <span class="game-stat-value" data-stat="fps">—</span>
+              <span class="game-stat-value" data-stat="fps">-</span>
             </div>
           </div>
           <div class="game-toolbar">
@@ -237,7 +237,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -277,7 +277,7 @@
           <li><kbd>Space</kbd> Put the origin back in the middle</li>
           <li><kbd>Esc</kbd> Pause</li>
         </ul>
-        <p class="game-touch">Drag anywhere on the field to move its origin &mdash; every term is measured from that point, so the whole picture follows your finger. A tap on its own does nothing, so a stray thumb cannot move anything. The toolbar holds the number of sine terms, their frequency, the palette, the cycling speed and the resolution, and the HUD prints the size actually being filled.</p>
+        <p class="game-touch">Drag anywhere on the field to move its origin - every term is measured from that point, so the whole picture follows your finger. A tap on its own does nothing, so a stray thumb cannot move anything. The toolbar holds the number of sine terms, their frequency, the palette, the cycling speed and the resolution, and the HUD prints the size actually being filled.</p>
         <div class="game-pad" data-pad="none"></div>
         <div class="game-data">
           <p class="game-data-line">
@@ -295,19 +295,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Interference, not physics</h3>
-            <p>A plasma is several periodic functions added together and the sum mapped through a colour table. There are five of them here: a sine across x, one down y, one along the diagonal, and two radial terms measured outward from the origin &mdash; the second from a centre orbiting it, which is what stops the rings looking like a target. Where crests agree you get a bright blob, where they disagree you get a dark one, and because each term drifts at its own rate the arrangement never quite repeats. Nothing about it models a gas or a fluid. The name is about the look, and the sliders are there so you can take it apart: drop to two terms and the crossed sines are plainly visible.</p>
+            <p>A plasma is several periodic functions added together and the sum mapped through a colour table. There are five of them here: a sine across x, one down y, one along the diagonal, and two radial terms measured outward from the origin - the second from a centre orbiting it, which is what stops the rings looking like a target. Where crests agree you get a bright blob, where they disagree you get a dark one, and because each term drifts at its own rate the arrangement never quite repeats. Nothing about it models a gas or a fluid. The name is about the look, and the sliders are there so you can take it apart: drop to two terms and the crossed sines are plainly visible.</p>
           </article>
           <article class="info-card">
             <h3>It looks expensive and costs one lookup</h3>
-            <p>This is why the effect was everywhere in the demoscene. At full size the field is 640 by 440, so four terms is 1,126,400 sine evaluations a frame, or just under 68 million a second at sixty frames. <code>Math.sin</code> is a real transcendental call, and asking for it that often is where a browser plasma&rsquo;s frame rate goes before anybody thinks to blame the canvas. A 2048-entry table turns each one into an integer add, a mask and one typed-array read &mdash; and the Frames cell above is there so you can check that on your own machine rather than take it from me. There is a second gift in the table that is easy to miss: because it is indexed by an integer angle, adding angles is adding integers, so the diagonal term needs no angle-addition identity &mdash; its x half is precomputed per column and its y half per row.</p>
+            <p>This is why the effect was everywhere in the demoscene. At full size the field is 640 by 440, so four terms is 1,126,400 sine evaluations a frame, or just under 68 million a second at sixty frames. <code>Math.sin</code> is a real transcendental call, and asking for it that often is where a browser plasma&rsquo;s frame rate goes before anybody thinks to blame the canvas. A 2048-entry table turns each one into an integer add, a mask and one typed-array read - and the Frames cell above is there so you can check that on your own machine rather than take it from me. There is a second gift in the table that is easy to miss: because it is indexed by an integer angle, adding angles is adding integers, so the diagonal term needs no angle-addition identity - its x half is precomputed per column and its y half per row.</p>
           </article>
           <article class="info-card">
             <h3>The palette-cycling trick</h3>
-            <p>On a VGA card the 256 colours on screen were indices into a hardware table, and you animated by rewriting that table between frames without touching a single pixel &mdash; 768 bytes of work for a whole screen of movement. That is where the waterfalls and the marching gradients of the era came from. There is no hardware palette any more, so here the offset is added when the index is computed instead: the same idea, done in software, one addition per pixel. It is also why every palette in this file is a closed loop whose last colour equals its first, because a palette with a seam shows the seam sweeping across the field once per cycle.</p>
+            <p>On a VGA card the 256 colours on screen were indices into a hardware table, and you animated by rewriting that table between frames without touching a single pixel - 768 bytes of work for a whole screen of movement. That is where the waterfalls and the marching gradients of the era came from. There is no hardware palette any more, so here the offset is added when the index is computed instead: the same idea, done in software, one addition per pixel. It is also why every palette in this file is a closed loop whose last colour equals its first, because a palette with a seam shows the seam sweeping across the field once per cycle.</p>
           </article>
           <article class="info-card">
             <h3>Rendering smaller, and saying so</h3>
-            <p>The resolution control fills a smaller buffer and lets the browser scale it up, which is how a phone keeps sixty frames &mdash; quarter size is one sixteenth of the pixels. The HUD prints the buffer actually being filled and the frame rate measured in this tab, so both halves of the trade are on screen. A toy that quietly dropped its own resolution to flatter its frame counter would be lying about what it just did, which is the commonest form of a benchmark that means nothing.</p>
+            <p>The resolution control fills a smaller buffer and lets the browser scale it up, which is how a phone keeps sixty frames - quarter size is one sixteenth of the pixels. The HUD prints the buffer actually being filled and the frame rate measured in this tab, so both halves of the trade are on screen. A toy that quietly dropped its own resolution to flatter its frame counter would be lying about what it just did, which is the commonest form of a benchmark that means nothing.</p>
           </article>
         </div>
       </section>
@@ -318,7 +318,7 @@
         </div>
           <details class="lab-faq">
             <summary>Is this a real plasma?</summary>
-            <div>No, and nothing here simulates one. It is interference between periodic functions — sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics.</div>
+            <div>No, and nothing here simulates one. It is interference between periodic functions - sines added up and read through a colour table. The name is inherited from the demoscene, where it described the look rather than the physics.</div>
           </details>
           <details class="lab-faq">
             <summary>Why a sine table when Math.sin exists?</summary>

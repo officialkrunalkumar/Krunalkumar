@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Media forensics - signals, not verdicts" />
     <meta name="twitter:description" content="Nobody has a deepfake detector, and a browser certainly does not. This runs the signals a forensic examiner would look at - provenance, ELA, quantisation tables, the noise floor, an FFT, copy-move - and says plainly what each one does and does not imply. Runs entirely in your browser; nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-media-forensics.jpg" />
-    <title>Media Forensics — Signals, Not Verdicts | Krunalkumar Shah</title>
+    <title>Media Forensics - Signals, Not Verdicts | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -230,7 +230,7 @@
           </ol>
         </nav>
         <h1>Media forensics: signals, not verdicts</h1>
-        <p class="hero-text">People ask me for a deepfake detector. Nobody has one &mdash; not this page, not a paid service, not any tool that runs in a browser. What a browser can honestly do is surface the signals a forensic examiner would look at, say what each one means and what innocently produces it, and leave the conclusion where it belongs. Drop a photo, or a short video, and see for yourself.</p>
+        <p class="hero-text">People ask me for a deepfake detector. Nobody has one - not this page, not a paid service, not any tool that runs in a browser. What a browser can honestly do is surface the signals a forensic examiner would look at, say what each one means and what innocently produces it, and leave the conclusion where it belongs. Drop a photo, or a short video, and see for yourself.</p>
         <ul class="lab-facts">
           <li>Provenance, C2PA and EXIF first</li>
           <li>ELA, noise floor, FFT, copy-move</li>
@@ -259,7 +259,7 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
@@ -268,8 +268,8 @@
                 <ul class="lab-gate-list">
                   <li>No verdict, no score, no confidence percentage</li>
                   <li>No face detection, and no face swapping</li>
-                  <li>No C2PA signature check &mdash; that needs a network fetch</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No C2PA signature check - that needs a network fetch</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No codec or container work on video</li>
                 </ul>
               </div>
@@ -285,7 +285,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -335,7 +335,7 @@
             <canvas class="lab-mfcanvas" id="tool-canvas" width="640" height="360"
                     tabindex="0" role="img"
                     aria-label="Analysis view. Click, or use the arrow keys, to move the region every analysis centres on."></canvas>
-            <p class="lab-mfcap" id="tool-caption">Drop an image to begin. Once one is loaded, click it &mdash; or focus it and use the arrow keys &mdash; to move the region the analyses centre on.</p>
+            <p class="lab-mfcap" id="tool-caption">Drop an image to begin. Once one is loaded, click it - or focus it and use the arrow keys - to move the region the analyses centre on.</p>
           </div>
         </div>
 
@@ -376,8 +376,8 @@
         </div>
         <div class="lab-feature">
           <div class="lab-feature-body">
-            <p>A browser cannot reliably tell a real photograph from a generated or manipulated one, and nor can anything else, so a page that printed <strong>GENUINE</strong> or <strong>DEEPFAKE</strong> would be lying in a confident font. Every technique here measures processing history, not truthfulness: cropping a holiday snap lights them up, and a competent fake saved once through a messaging app puts them all out. So this tool returns signals, explains what each does and does not imply, and says the two things people forget as often as it takes &mdash; the absence of a signal proves nothing, and the presence of one usually has a boring explanation. There is no score anywhere on this page, and that is a decision rather than an omission.</p>
-            <p>The other half of the request was a deepfake generator. I did not build a face swapper, because that tool's dominant real-world use is non-consensual imagery, with fraud a distant second, and putting one on the same page as the detector meant to fight it would be indefensible. What teaches the same lesson honestly is the opposite move: take a photograph whose history you already know &mdash; your own &mdash; add exactly one artefact with a slider you control, then run the detector and watch one signal move. Cause and effect on a known input is what makes a signal legible. A gallery of fakes somebody else made only teaches you that a tool agrees with its own captions.</p>
+            <p>A browser cannot reliably tell a real photograph from a generated or manipulated one, and nor can anything else, so a page that printed <strong>GENUINE</strong> or <strong>DEEPFAKE</strong> would be lying in a confident font. Every technique here measures processing history, not truthfulness: cropping a holiday snap lights them up, and a competent fake saved once through a messaging app puts them all out. So this tool returns signals, explains what each does and does not imply, and says the two things people forget as often as it takes - the absence of a signal proves nothing, and the presence of one usually has a boring explanation. There is no score anywhere on this page, and that is a decision rather than an omission.</p>
+            <p>The other half of the request was a deepfake generator. I did not build a face swapper, because that tool's dominant real-world use is non-consensual imagery, with fraud a distant second, and putting one on the same page as the detector meant to fight it would be indefensible. What teaches the same lesson honestly is the opposite move: take a photograph whose history you already know - your own - add exactly one artefact with a slider you control, then run the detector and watch one signal move. Cause and effect on a known input is what makes a signal legible. A gallery of fakes somebody else made only teaches you that a tool agrees with its own captions.</p>
           </div>
         </div>
       </section>
@@ -389,20 +389,20 @@
         </div>
         <div class="content-grid two-up">
           <article class="info-card">
-            <h3>Provenance &mdash; the only real evidence here</h3>
-            <p>A C2PA manifest, an XMP block, an IPTC record, an EXIF <code>Software</code> field. This is the one thing on the page that is evidence rather than inference, which is why it is reported first. It is also almost always missing: every large platform strips metadata on upload and so does every screenshot, so absence is the expected state and means nothing. Presence of a signed manifest is not validity either &mdash; checking a signature needs a certificate chain and a network request, and this page makes none.</p>
+            <h3>Provenance - the only real evidence here</h3>
+            <p>A C2PA manifest, an XMP block, an IPTC record, an EXIF <code>Software</code> field. This is the one thing on the page that is evidence rather than inference, which is why it is reported first. It is also almost always missing: every large platform strips metadata on upload and so does every screenshot, so absence is the expected state and means nothing. Presence of a signed manifest is not validity either - checking a signature needs a certificate chain and a network request, and this page makes none.</p>
           </article>
           <article class="info-card">
             <h3>Error level analysis, read correctly</h3>
-            <p>Re-encode at a known quality, subtract, amplify. Bright regions compress differently from their neighbours. That is a map of compression history, not of manipulation, and the popular reading &mdash; bright means pasted &mdash; is wrong often enough to be dangerous. Sharp edges, saturated colour and fine texture are bright in every untouched photograph. It is useless on a screenshot, on a PNG, and on anything re-saved once since the edit you are hunting. The amplification factor is printed with the map, because turning the gain up until something looks suspicious is how ELA is usually used to mislead.</p>
+            <p>Re-encode at a known quality, subtract, amplify. Bright regions compress differently from their neighbours. That is a map of compression history, not of manipulation, and the popular reading - bright means pasted - is wrong often enough to be dangerous. Sharp edges, saturated colour and fine texture are bright in every untouched photograph. It is useless on a screenshot, on a PNG, and on anything re-saved once since the edit you are hunting. The amplification factor is printed with the map, because turning the gain up until something looks suspicious is how ELA is usually used to mislead.</p>
           </article>
           <article class="info-card">
             <h3>Quantisation tables and double compression</h3>
-            <p>A JPEG carries the tables it was quantised with. Inverting the standard scaling recovers the quality setting exactly, and tells you whether a general-purpose encoder wrote the file or something shipping its own tables &mdash; a camera, Adobe, Apple. Then the ghost sweep re-encodes across a range of qualities: a second dip in the curve is consistent with two compression generations. Consistent with, not evidence of. Cropping, rotating, a chat app and a CMS thumbnailer all produce exactly the same double history.</p>
+            <p>A JPEG carries the tables it was quantised with. Inverting the standard scaling recovers the quality setting exactly, and tells you whether a general-purpose encoder wrote the file or something shipping its own tables - a camera, Adobe, Apple. Then the ghost sweep re-encodes across a range of qualities: a second dip in the curve is consistent with two compression generations. Consistent with, not evidence of. Cropping, rotating, a chat app and a CMS thumbnailer all produce exactly the same double history.</p>
           </article>
           <article class="info-card">
             <h3>The noise floor</h3>
-            <p>Sensors write a faint, roughly uniform grain across the whole frame. Real PRNU work correlates that against a fingerprint built from dozens of images off the same camera body, which cannot be done from one dropped file &mdash; so this measures internal consistency instead: how much fine detail each region carries for how much structure it contains, and which regions disagree with the rest. Normalising by local structure is what stops the map being a picture of foliage and sky. A smoother-than-expected patch is what a denoised or generated region looks like. It is also what a defocused background looks like.</p>
+            <p>Sensors write a faint, roughly uniform grain across the whole frame. Real PRNU work correlates that against a fingerprint built from dozens of images off the same camera body, which cannot be done from one dropped file - so this measures internal consistency instead: how much fine detail each region carries for how much structure it contains, and which regions disagree with the rest. Normalising by local structure is what stops the map being a picture of foliage and sky. A smoother-than-expected patch is what a denoised or generated region looks like. It is also what a defocused background looks like.</p>
           </article>
           <article class="info-card">
             <h3>The frequency plot</h3>
@@ -410,15 +410,15 @@
           </article>
           <article class="info-card">
             <h3>Copy-move</h3>
-            <p>Hash small blocks, group the identical ones, and keep only groups whose members share the same displacement &mdash; forty blocks all shifted by the same vector is a region that was cloned. Flat blocks are skipped, because a clear sky matches itself everywhere, and enormous hash buckets are dropped, because bricks and tiles are repeated texture rather than a paste. It finds duplicates at the same scale and rotation; anything rotated, resized or blurred after cloning slips straight past it.</p>
+            <p>Hash small blocks, group the identical ones, and keep only groups whose members share the same displacement - forty blocks all shifted by the same vector is a region that was cloned. Flat blocks are skipped, because a clear sky matches itself everywhere, and enormous hash buckets are dropped, because bricks and tiles are repeated texture rather than a paste. It finds duplicates at the same scale and rotation; anything rotated, resized or blurred after cloning slips straight past it.</p>
           </article>
           <article class="info-card">
             <h3>Faces: look here yourself</h3>
-            <p>There is deliberately no face detection. A green box with a number beside it implies the number came from analysing a face when it came from analysing whatever was inside a rectangle, and it quietly moves the judgement from you to the tool &mdash; on this question your eyes are still better. So you get a checklist and a 6&times; magnifier instead: catchlights that should agree between the eyes, ear and jaw discontinuities, teeth as individual objects, the hairline boundary, and whether a straight line in the background survives passing behind the head.</p>
+            <p>There is deliberately no face detection. A green box with a number beside it implies the number came from analysing a face when it came from analysing whatever was inside a rectangle, and it quietly moves the judgement from you to the tool - on this question your eyes are still better. So you get a checklist and a 6&times; magnifier instead: catchlights that should agree between the eyes, ear and jaw discontinuities, teeth as individual objects, the hairline boundary, and whether a straight line in the background survives passing behind the head.</p>
           </article>
           <article class="info-card">
             <h3>Video, kept deliberately shallow</h3>
-            <p>Nine frames sampled through a video element and a canvas, compared for fine-detail energy, with any one of them promotable to the working image so the still analyses can run on it. A composited face is blended frame by frame, so its noise floor can breathe in a way the rest of the picture does not, and at a blend boundary that reads as flicker. There is no codec work, no container parsing and no motion estimation, so nothing here sees the encoder, the GOP structure or the container metadata &mdash; a hard cut, a flash and autofocus hunting move the same number.</p>
+            <p>Nine frames sampled through a video element and a canvas, compared for fine-detail energy, with any one of them promotable to the working image so the still analyses can run on it. A composited face is blended frame by frame, so its noise floor can breathe in a way the rest of the picture does not, and at a blend boundary that reads as flicker. There is no codec work, no container parsing and no motion estimation, so nothing here sees the encoder, the GOP structure or the container metadata - a hard cut, a flash and autofocus hunting move the same number.</p>
           </article>
         </div>
       </section>
@@ -429,11 +429,11 @@
           <p>The point is cause and effect on a file whose history you already know.</p>
         </div>
         <ol class="lab-steps">
-          <li>Drop one of your own photographs and press <strong>Run the signal set</strong>. Read that output as the baseline &mdash; it is what an ordinary file looks like, including whatever ordinary handling it has already had.</li>
+          <li>Drop one of your own photographs and press <strong>Run the signal set</strong>. Read that output as the baseline - it is what an ordinary file looks like, including whatever ordinary handling it has already had.</li>
           <li>Click the part of the image you care about, so the analysis crop and the artefact land there rather than in the middle of the frame. Arrow keys do the same thing if you would rather not use a mouse.</li>
           <li>Pick <strong>one</strong> artefact, set a strength, and press Apply. One at a time is the whole method: stack three and you learn nothing about which one moved which number.</li>
-          <li>Run the signal set again and compare against the baseline. Each artefact's description names the section to watch, and says which numbers will <em>not</em> move &mdash; a whole-frame average barely notices a change confined to one ellipse, so for local artefacts the maps react and the summary numbers do not.</li>
-          <li>Try the warp at full strength and notice that no section catches it. Geometry is verified by eye, against straight lines in the background &mdash; which is the lesson that artefact exists to teach.</li>
+          <li>Run the signal set again and compare against the baseline. Each artefact's description names the section to watch, and says which numbers will <em>not</em> move - a whole-frame average barely notices a change confined to one ellipse, so for local artefacts the maps react and the summary numbers do not.</li>
+          <li>Try the warp at full strength and notice that no section catches it. Geometry is verified by eye, against straight lines in the background - which is the lesson that artefact exists to teach.</li>
           <li>Press <strong>Reset to original</strong> between experiments, and <strong>Export watermarked copy</strong> if you want the result as a file. Exports carry a burned-in watermark and EXIF marking them synthetic.</li>
         </ol>
       </section>
@@ -444,7 +444,7 @@
         </div>
           <details class="lab-faq">
             <summary>Can this tell me whether a photo is a deepfake?</summary>
-            <div>No, and neither can anything else that runs in a browser. It surfaces the signals a forensic examiner would look at and explains what each one does and does not imply. Every signal here has innocent causes, and a competent fake &mdash; or one extra re-save &mdash; erases all of them. If a tool hands you a percentage, that number was invented.</div>
+            <div>No, and neither can anything else that runs in a browser. It surfaces the signals a forensic examiner would look at and explains what each one does and does not imply. Every signal here has innocent causes, and a competent fake - or one extra re-save - erases all of them. If a tool hands you a percentage, that number was invented.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is there no score or confidence percentage?</summary>
@@ -460,7 +460,7 @@
           </details>
           <details class="lab-faq">
             <summary>Does it verify Content Credentials or C2PA?</summary>
-            <div>It reports whether a manifest is present, and it does not check the signature. Verifying one needs a certificate chain and a trust list, which means a network request, and this page makes none. Presence is not validity &mdash; take the file to a C2PA verifier if the claim matters.</div>
+            <div>It reports whether a manifest is present, and it does not check the signature. Verifying one needs a certificate chain and a trust list, which means a network request, and this page makes none. Presence is not validity - take the file to a C2PA verifier if the claim matters.</div>
           </details>
           <details class="lab-faq">
             <summary>What does it do with video?</summary>
@@ -496,12 +496,12 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/exif">
             <span class="lab-card-name">EXIF viewer</span>
-            <p class="lab-card-desc">Read the provenance fields in full, and strip them &mdash; the export from here writes some of its own.</p>
+            <p class="lab-card-desc">Read the provenance fields in full, and strip them - the export from here writes some of its own.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/file-inspector">
             <span class="lab-card-name">File type inspector</span>
-            <p class="lab-card-desc">Magic bytes, a hex dump and an entropy graph &mdash; for looking at the container itself.</p>
+            <p class="lab-card-desc">Magic bytes, a hex dump and an entropy graph - for looking at the container itself.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/steganography">

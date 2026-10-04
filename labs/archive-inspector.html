@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Inspect a ZIP without extracting it" />
     <meta name="twitter:description" content="Inspect a ZIP archive without extracting it: full file listing, zip-slip path traversal detection, zip-bomb ratios, encrypted entries, and disguised executables. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-archive-inspector.jpg" />
-    <title>ZIP Archive Inspector — Zip Slip & Bombs | Krunalkumar Shah</title>
+    <title>ZIP Archive Inspector - Zip Slip & Bombs | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>ZIP archive inspector</h1>
-        <p class="hero-text">Extracting an archive you do not trust is how zip-slip overwrites your files and a zip bomb fills your disk. This reads the ZIP structure directly &mdash; the listing, the compression ratios, the paths &mdash; without decompressing a single byte.</p>
+        <p class="hero-text">Extracting an archive you do not trust is how zip-slip overwrites your files and a zip bomb fills your disk. This reads the ZIP structure directly - the listing, the compression ratios, the paths - without decompressing a single byte.</p>
         <ul class="lab-facts">
           <li>Full listing with sizes and ratios</li>
           <li>Zip-slip / path traversal detection</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Large files are capped so the page stays responsive</li>
                   <li>No lookups against any external database</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -299,7 +299,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Zip slip</h3>
-            <p>A ZIP entry can name a path like <code>../../../etc/cron.d/evil</code>. A naive extractor joins that onto the target directory and happily writes outside it &mdash; overwriting system files. This flags any entry whose path escapes the folder, without extracting it.</p>
+            <p>A ZIP entry can name a path like <code>../../../etc/cron.d/evil</code>. A naive extractor joins that onto the target directory and happily writes outside it - overwriting system files. This flags any entry whose path escapes the folder, without extracting it.</p>
           </article>
           <article class="info-card">
             <h3>Zip bombs</h3>

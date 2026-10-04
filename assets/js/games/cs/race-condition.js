@@ -263,7 +263,7 @@
       lesson: 'counter = counter + 1 is three machine operations wearing one line of source: ' +
         'load, add, store. Nothing stops the other thread reading the same value you did, ' +
         'and then one of the two increments is simply gone. It is not lost slowly or ' +
-        'occasionally corrupted — it never happened.'
+        'occasionally corrupted - it never happened.'
     },
 
     {
@@ -289,7 +289,7 @@
       lesson: 'The gap between the check and the act is where the money goes. Both machines ' +
         'read 100, both agreed 75 was affordable, and both were right at the moment they ' +
         'looked. The balance ends at 25 rather than at -50, because each wrote back a figure ' +
-        'derived from its own stale read — so the account is not even wrong in a way the ' +
+        'derived from its own stale read - so the account is not even wrong in a way the ' +
         'ledger can see. This is the shape of most inventory oversell bugs.'
     },
 
@@ -339,7 +339,7 @@
           'and refused. Nothing was written. Let the check see your own file first.';
       },
       lesson: 'The helper never made a wrong decision. It asked the kernel who owned the name, ' +
-        'got a true answer, and then asked the kernel for the name a second time — and a name ' +
+        'got a true answer, and then asked the kernel for the name a second time - and a name ' +
         'is not a thing. Between the two questions the answer changed. The fix is not a better ' +
         'check; it is to check the object rather than the name: open once and fstat the ' +
         'descriptor you are holding, or use openat with O_NOFOLLOW.'
@@ -401,7 +401,7 @@
           '. The second thread found config already set and reused it, which is the ' +
           'behaviour you wanted. Both threads have to read config while it is still null.';
       },
-      lesson: 'Two objects, and whichever store lands second wins the field — so the thread ' +
+      lesson: 'Two objects, and whichever store lands second wins the field - so the thread ' +
         'that built #1 is now holding an object nobody else can see. If Config opened a ' +
         'connection pool you have two pools; if it registered a metrics collector you are ' +
         'double counting; if it holds a cache, half your reads miss forever. The damage is ' +
@@ -414,7 +414,7 @@
       mistake: 'The lock covers the write. It does not cover the read, and the check sits ' +
         'outside it too.',
       goal: 'Sell the last seat twice.',
-      brief: 'One seat left, two bookings, and a real mutex — but the seat count is read and ' +
+      brief: 'One seat left, two bookings, and a real mutex - but the seat count is read and ' +
         'checked before the lock is taken. The lock will work perfectly. Break it anyway.',
       locks: ['seats'],
       vars: function () { return { seats: 1, booked: 0 }; },
@@ -462,8 +462,8 @@
       lesson: 'Four conditions have to hold at once for this, and they all do: the locks are ' +
         'exclusive, each thread holds one while waiting for another, neither can be forced ' +
         'to release what it holds, and the waiting forms a cycle. Deny any single one and the deadlock becomes ' +
-        'impossible. The cheap denial is the last: give every lock a global order — by ' +
-        'account id, say — and take them in that order always, so a cycle cannot be drawn. ' +
+        'impossible. The cheap denial is the last: give every lock a global order - by ' +
+        'account id, say - and take them in that order always, so a cycle cannot be drawn. ' +
         'The junction in <a href="/games/traffic">Traffic</a> is the same cycle in tarmac.'
     },
 
@@ -538,7 +538,7 @@
       id: 'correct-lock',
       tag: 'The lock used correctly',
       mistake: 'None. This one is right.',
-      goal: 'Make the counter read 1 after two increments — if you can.',
+      goal: 'Make the counter read 1 after two increments - if you can.',
       brief: 'Level one again, with a mutex held across all three steps of the read-modify-' +
         'write. Try to break it. Run both of the orderings this program has and the game ' +
         'will offer you the claim that it cannot be done.',
@@ -562,7 +562,7 @@
         'are correct. That is what mutual exclusion buys: not a smaller chance of the bug, ' +
         'but an ordering that cannot be expressed. Every level before this one was a lock ' +
         'that was missing, too small, released too soon, taken in the wrong order, or read ' +
-        'around &mdash; never a lock that failed. <a href="/labs/concurrency">The ' +
+        'around - never a lock that failed. <a href="/labs/concurrency">The ' +
         'concurrency lab</a> next door is the same machinery with the puzzle taken off: ' +
         'step a shared counter yourself, then put a mutex, a semaphore or a message queue ' +
         'behind it and watch the outcome change. The <a href="/labs/os-algorithms">OS ' +
@@ -1213,11 +1213,11 @@
              drawing. Printing "90 per cent" without that sentence would leave
              every player wondering why they had never seen the bug. */
           counted = '<strong>' + counts.bug + ' of the ' + counts.total + '</strong> legal ' +
-            'orderings of these steps produce this bug &mdash; ' + pct + ' per cent of them. ' +
+            'orderings of these steps produce this bug - ' + pct + ' per cent of them. ' +
             'That is not a failure rate. A real scheduler nearly always runs a short function ' +
             'straight through, so the ' + (counts.total - counts.bug) + ' clean orderings are ' +
             'the ones your tests keep drawing. The bug is not improbable. It is unfairly ' +
-            'sampled &mdash; until the machine gets busy.';
+            'sampled - until the machine gets busy.';
         }
 
         S.verdict = {

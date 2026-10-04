@@ -623,8 +623,8 @@
   var FONT_ORDER = ['sans', 'serif', 'mono', 'round', 'condensed'];
 
   var SAMPLE = 'The quick brown fox jumps over the lazy dog. A word cloud shows which words appear ' +
-    'most often by making them bigger. Paste your own text — an essay, a speech, a set of reviews, ' +
-    'a book chapter — and the most frequent words rise to the top, sized by how often they occur. ' +
+    'most often by making them bigger. Paste your own text - an essay, a speech, a set of reviews, ' +
+    'a book chapter - and the most frequent words rise to the top, sized by how often they occur. ' +
     'Common filler words like the and of and to are removed automatically, so what remains is the ' +
     'vocabulary that actually characterises your text. Words words words, meaning meaning, shape ' +
     'shape shape, colour colour, cloud cloud cloud cloud.';
@@ -870,7 +870,7 @@
       if (self.opts.shape === 'image') self.generate();
     }));
     this.imageRow.appendChild(E('p', 'wc-hint',
-      'Works best on a picture with a clear outline — a logo, a silhouette, a stencil, ' +
+      'Works best on a picture with a clear outline - a logo, a silhouette, a stencil, ' +
       'or a subject on a plain background. Drag Edge to take in more or less of it. ' +
       'The picture is read in this tab and never uploaded.'));
     gShape.appendChild(this.imageRow);
@@ -969,7 +969,7 @@
     this.dlBtn = this.btn('Download PNG', function () { self.download(); });
     actions.appendChild(this.dlBtn);
     side.appendChild(actions);
-    side.appendChild(E('p', 'wc-hint', 'Everything happens in your browser — your text is never uploaded. ' +
+    side.appendChild(E('p', 'wc-hint', 'Everything happens in your browser - your text is never uploaded. ' +
       'The PNG downloads straight from the page.'));
 
     // --- canvas ---
@@ -2156,10 +2156,10 @@
     if (this.opts.shape === 'image' && this.imageRead) {
       var cov = this.imageRead.coverage;
       if (cov > 0.92) {
-        note += ' — that picture came out almost solid, so the cloud is a rectangle. ' +
+        note += ' - that picture came out almost solid, so the cloud is a rectangle. ' +
           'Drag Edge to the left, or use a picture with a clear outline against a plain background.';
       } else if (cov < 0.04) {
-        note += ' — almost none of that picture registered as a shape. Drag Edge to the right, ' +
+        note += ' - almost none of that picture registered as a shape. Drag Edge to the right, ' +
           'or tick "Swap which part is the shape".';
       }
     }

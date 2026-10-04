@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Two minutes of subnetting" />
     <meta name="twitter:description" content="Timed CIDR questions: usable hosts, network and broadcast addresses, masks, which prefix fits a host count. Generated fresh, so the bank never runs out." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-subnet-sprint.jpg" />
-    <title>Subnet Sprint — Timed CIDR Practice, Free In Your Browser</title>
+    <title>Subnet Sprint - Timed CIDR Practice, Free In Your Browser</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -69,7 +69,7 @@
                         "name": "Why is a /31 not two usable hosts?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "It is, by RFC 3021, for point-to-point links — but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule."
+                                "text": "It is, by RFC 3021, for point-to-point links - but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule."
                         }
                 },
                 {
@@ -174,7 +174,7 @@
           </ol>
         </nav>
         <h1>Subnet sprint</h1>
-        <p class="hero-text">Two minutes, as many CIDR questions as you can get through. Every question is generated from a random address and solved with the same bitwise arithmetic a router uses &mdash; so there is no question bank to memorise and no chance of a wrong answer sitting in a table nobody checked.</p>
+        <p class="hero-text">Two minutes, as many CIDR questions as you can get through. Every question is generated from a random address and solved with the same bitwise arithmetic a router uses - so there is no question bank to memorise and no chance of a wrong answer sitting in a table nobody checked.</p>
         <ul class="game-facts">
           <li>Six question types</li>
           <li>Generated and solved, never stored</li>
@@ -217,7 +217,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -273,7 +273,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Masks are negative numbers in JavaScript</h3>
-            <p>A /24 mask is <code>0xFFFFFF00</code>, and JavaScript's bitwise operators treat that as a signed 32-bit value &mdash; so it is negative, and printing it without an unsigned shift gives nonsense. Every calculation here ends in <code>&gt;&gt;&gt; 0</code>. It is the classic bug in hand-written subnet code and it only shows up at the extremes.</p>
+            <p>A /24 mask is <code>0xFFFFFF00</code>, and JavaScript's bitwise operators treat that as a signed 32-bit value - so it is negative, and printing it without an unsigned shift gives nonsense. Every calculation here ends in <code>&gt;&gt;&gt; 0</code>. It is the classic bug in hand-written subnet code and it only shows up at the extremes.</p>
           </article>
           <article class="info-card">
             <h3>Nothing is memorisable</h3>
@@ -292,7 +292,7 @@
           </details>
           <details class="lab-faq">
             <summary>Why is a /31 not two usable hosts?</summary>
-            <div>It is, by RFC 3021, for point-to-point links — but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule.</div>
+            <div>It is, by RFC 3021, for point-to-point links - but the question uses the classic formula everywhere else, so the range here stops at /29 to avoid teaching an edge case as a rule.</div>
           </details>
           <details class="lab-faq">
             <summary>Is there a calculator version?</summary>

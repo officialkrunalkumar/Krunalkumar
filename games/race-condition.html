@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break." />
+    <meta name="description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock - then meet the one lock you cannot break." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/games/race-condition" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Nine bugs to cause on purpose. One you cannot." />
-    <meta property="og:description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break." />
+    <meta property="og:description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock - then meet the one lock you cannot break." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/games/race-condition" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-race-condition.jpg" />
@@ -20,9 +20,9 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Nine bugs to cause on purpose. One you cannot." />
-    <meta name="twitter:description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break." />
+    <meta name="twitter:description" content="You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock - then meet the one lock you cannot break." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-race-condition.jpg" />
-    <title>Race Condition Puzzle — Break The Lock</title>
+    <title>Race Condition Puzzle - Break The Lock</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -32,7 +32,7 @@
         "gamePlatform": "Web browser",
         "applicationCategory": "Game",
         "operatingSystem": "Any modern web browser",
-        "description": "You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock — then meet the one lock you cannot break.",
+        "description": "You are the scheduler. Interleave the threads by hand to force a lost update, a double charge, a deadlock - then meet the one lock you cannot break.",
         "isAccessibleForFree": true,
         "offers": {
                 "@type": "Offer",
@@ -69,7 +69,7 @@
                         "name": "Is the model a real CPU?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either — it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live."
+                                "text": "No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either - it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live."
                         }
                 },
                 {
@@ -85,7 +85,7 @@
                         "name": "Can I get stuck?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A run can reach a point where the bug is no longer reachable — that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else."
+                                "text": "A run can reach a point where the bug is no longer reachable - that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else."
                         }
                 },
                 {
@@ -93,7 +93,7 @@
                         "name": "How is the score worked out?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device — there is no server here to keep it anywhere else."
+                                "text": "A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device - there is no server here to keep it anywhere else."
                         }
                 },
                 {
@@ -198,7 +198,7 @@
           </ol>
         </nav>
         <h1>Race condition</h1>
-        <p class="hero-text">Every level here asks you for a <em>wrong</em> answer. Make the counter read 1 after two increments. Take 150 out of an account holding 100. Charge one card three times for one order. The threads are drawn as columns of numbered steps and you click one to run a single step of it, so nothing is timed and nothing is random &mdash; because a race condition is not caused by speed, it is caused by an ordering being legal. Speed only decides how often you meet it. Four of the ten levels hand you a mutex and dare you to break it anyway, and the last one is a lock used correctly, which you cannot break at all.</p>
+        <p class="hero-text">Every level here asks you for a <em>wrong</em> answer. Make the counter read 1 after two increments. Take 150 out of an account holding 100. Charge one card three times for one order. The threads are drawn as columns of numbered steps and you click one to run a single step of it, so nothing is timed and nothing is random - because a race condition is not caused by speed, it is caused by an ordering being legal. Speed only decides how often you meet it. Four of the ten levels hand you a mutex and dare you to break it anyway, and the last one is a lock used correctly, which you cannot break at all.</p>
         <ul class="game-facts">
           <li>Ten levels, nine of them breakable</li>
           <li>Every ordering counted, not estimated</li>
@@ -248,7 +248,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -287,7 +287,7 @@
           <li><kbd>←</kbd> <kbd>→</kbd> Move between the threads</li>
           <li><kbd>Enter</kbd> Run one step of the highlighted thread</li>
           <li><kbd>Space</kbd> The same, and it moves the verdict on</li>
-          <li><kbd>Esc</kbd> Pause &mdash; there is no clock to stop</li>
+          <li><kbd>Esc</kbd> Pause - there is no clock to stop</li>
         </ul>
         <p class="game-touch">Tap a thread column to run its next step. A column marked blocked is waiting on a lock somebody else holds and will not move until they release it, so tapping it only tells you who is in the way. Step back undoes one step, Run it again resets the level from the top, and Hint points at a thread that still leads to the bug.</p>
         <div class="game-pad" data-pad="none"></div>
@@ -311,15 +311,15 @@
           </article>
           <article class="info-card">
             <h3>The orderings are counted for real, and the number is not a failure rate</h3>
-            <p>Solve a level and the game walks its entire state space and tells you how many of the legal orderings produce the bug: 18 of 20 on the counter, 2 of 44 on the double-checked lock, 0 of 2 on the last one. That is an exhaustive search run in your tab, not a figure somebody typed in &mdash; the Hint button uses the same walk, which is how it can say whether the bug is still reachable from where you are standing. But 90 per cent of orderings is not a 90 per cent failure rate, and the game says so every time it prints one: a real scheduler hardly ever preempts inside a five-line function, so the two clean orderings are exactly the ones your tests keep drawing, ten thousand times, green every time. The bug is not improbable. It is unfairly sampled, until the machine gets busy.</p>
+            <p>Solve a level and the game walks its entire state space and tells you how many of the legal orderings produce the bug: 18 of 20 on the counter, 2 of 44 on the double-checked lock, 0 of 2 on the last one. That is an exhaustive search run in your tab, not a figure somebody typed in - the Hint button uses the same walk, which is how it can say whether the bug is still reachable from where you are standing. But 90 per cent of orderings is not a 90 per cent failure rate, and the game says so every time it prints one: a real scheduler hardly ever preempts inside a five-line function, so the two clean orderings are exactly the ones your tests keep drawing, ten thousand times, green every time. The bug is not improbable. It is unfairly sampled, until the machine gets busy.</p>
           </article>
           <article class="info-card">
             <h3>Four locks that fail, each a mistake with a name</h3>
-            <p>The mutex levels are not a victory lap. In one the critical section covers the write but not the read, so the check that decided the write happens outside it and the lock makes no difference at all. In another two locks are taken in opposite orders, and the goal is a genuine deadlock rather than a lost update. In a third somebody shortened the critical section and left the write outside it. The fourth is double-checked locking with the publish reordered above the field write &mdash; the standard Java singleton idiom, printed in books, and broken on every JVM until the memory model was rewritten for Java 5. Each is presented as what it is: a real mistake, made in shipped code, by people who knew what a mutex was.</p>
+            <p>The mutex levels are not a victory lap. In one the critical section covers the write but not the read, so the check that decided the write happens outside it and the lock makes no difference at all. In another two locks are taken in opposite orders, and the goal is a genuine deadlock rather than a lost update. In a third somebody shortened the critical section and left the write outside it. The fourth is double-checked locking with the publish reordered above the field write - the standard Java singleton idiom, printed in books, and broken on every JVM until the memory model was rewritten for Java 5. Each is presented as what it is: a real mistake, made in shipped code, by people who knew what a mutex was.</p>
           </article>
           <article class="info-card">
             <h3>And one level you cannot win</h3>
-            <p>The last level is the first level with the lock used properly, and there is no interleaving that breaks it. Run both of the two orderings the program has &mdash; that is the whole state space, and it takes ten clicks &mdash; and the game offers you the claim that it cannot be done, then confirms it: 0 of 2. A level whose answer is "you cannot, and here is why" is worth as much as the nine before it, because without it the game would quietly teach that all locks are theatre. <a href="/labs/concurrency">The concurrency lab</a> next door runs the same machinery without a puzzle attached, and the <a href="/games/traffic">junction in Traffic</a> is the deadlock level drawn in tarmac.</p>
+            <p>The last level is the first level with the lock used properly, and there is no interleaving that breaks it. Run both of the two orderings the program has - that is the whole state space, and it takes ten clicks - and the game offers you the claim that it cannot be done, then confirms it: 0 of 2. A level whose answer is "you cannot, and here is why" is worth as much as the nine before it, because without it the game would quietly teach that all locks are theatre. <a href="/labs/concurrency">The concurrency lab</a> next door runs the same machinery without a puzzle attached, and the <a href="/games/traffic">junction in Traffic</a> is the deadlock level drawn in tarmac.</p>
           </article>
         </div>
       </section>
@@ -334,7 +334,7 @@
           </details>
           <details class="lab-faq">
             <summary>Is the model a real CPU?</summary>
-            <div>No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either — it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live.</div>
+            <div>No, and the page would rather say so than pretend. One step here is atomic; on a real processor an increment is several instructions and a store can be torn. Memory reordering is not simulated either - it appears exactly once, in the double-checked locking level, drawn openly as the order the compiler emitted, because inventing a plausible-looking memory model would be making something up. What is real is the interleaving, which is where these bugs actually live.</div>
           </details>
           <details class="lab-faq">
             <summary>Where do the ordering counts come from?</summary>
@@ -342,11 +342,11 @@
           </details>
           <details class="lab-faq">
             <summary>Can I get stuck?</summary>
-            <div>A run can reach a point where the bug is no longer reachable — that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else.</div>
+            <div>A run can reach a point where the bug is no longer reachable - that is not a bug in the game, it is the same thing as a scheduler having already made the decision for you. Step back undoes one step at a time, Run it again resets the level, and Hint will tell you either which thread to run next or that this particular run is already lost. Using a hint costs the fifty-point first-try bonus and nothing else.</div>
           </details>
           <details class="lab-faq">
             <summary>How is the score worked out?</summary>
-            <div>A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device — there is no server here to keep it anywhere else.</div>
+            <div>A hundred points a level, plus fifty if you produce the bug on your first complete run without a hint. The last level pays a hundred and fifty for correctly claiming it is impossible, which you can only do after running both of its orderings. Fifteen hundred is the maximum, and your best is kept in this browser on this device - there is no server here to keep it anywhere else.</div>
           </details>
           <details class="lab-faq">
             <summary>Does anything leave the browser?</summary>

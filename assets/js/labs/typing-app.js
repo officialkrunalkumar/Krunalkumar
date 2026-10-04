@@ -210,7 +210,7 @@
     // firing in a backgrounded tab, and the result must land regardless.
     el.result.hidden = false;
     window.setTimeout(function () { el.resultText.textContent = resultLine; }, 100);
-    el.status.textContent = 'Finished — press Restart for a new passage';
+    el.status.textContent = 'Finished - press Restart for a new passage';
     el.status.className = 'lab-status is-ok';
     // Blurring here dropped keyboard focus to <body>, so the next Tab
     // restarted from the top of the document. Restart is the obvious next

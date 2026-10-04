@@ -29,22 +29,22 @@
   };
 
   var LABELS = {
-    AV: { N: 'Network — reachable across the internet',
-          A: 'Adjacent — same physical or logical network',
-          L: 'Local — needs a shell or local access',
-          P: 'Physical — needs to touch the device' },
-    AC: { L: 'Low — works reliably, no special conditions',
-          H: 'High — needs conditions outside the attacker’s control' },
-    PR: { N: 'None — no account needed',
-          L: 'Low — ordinary user account',
-          H: 'High — administrative account' },
-    UI: { N: 'None — no victim action needed',
-          R: 'Required — a user must click or open something' },
-    S:  { U: 'Unchanged — impact stays in the vulnerable component',
-          C: 'Changed — impact reaches beyond it' },
-    C:  { H: 'High — everything is readable', L: 'Low — some data leaks', N: 'None' },
-    I:  { H: 'High — anything can be modified', L: 'Low — limited modification', N: 'None' },
-    A:  { H: 'High — complete denial of service', L: 'Low — reduced performance', N: 'None' }
+    AV: { N: 'Network - reachable across the internet',
+          A: 'Adjacent - same physical or logical network',
+          L: 'Local - needs a shell or local access',
+          P: 'Physical - needs to touch the device' },
+    AC: { L: 'Low - works reliably, no special conditions',
+          H: 'High - needs conditions outside the attacker’s control' },
+    PR: { N: 'None - no account needed',
+          L: 'Low - ordinary user account',
+          H: 'High - administrative account' },
+    UI: { N: 'None - no victim action needed',
+          R: 'Required - a user must click or open something' },
+    S:  { U: 'Unchanged - impact stays in the vulnerable component',
+          C: 'Changed - impact reaches beyond it' },
+    C:  { H: 'High - everything is readable', L: 'Low - some data leaks', N: 'None' },
+    I:  { H: 'High - anything can be modified', L: 'Low - limited modification', N: 'None' },
+    A:  { H: 'High - complete denial of service', L: 'Low - reduced performance', N: 'None' }
   };
 
   function roundUp(x) {
@@ -114,7 +114,7 @@
 
     out.rule();
     out.heading('How each metric contributed');
-    out.dim('exploitability — how hard is it to pull off');
+    out.dim('exploitability - how hard is it to pull off');
     out.row('  attack vector', LABELS.AV[v.AV] + '  (' + W.AV[v.AV] + ')');
     out.row('  attack complexity', LABELS.AC[v.AC] + '  (' + W.AC[v.AC] + ')');
     out.row('  privileges required', LABELS.PR[v.PR] + '  (' +
@@ -122,7 +122,7 @@
     out.row('  user interaction', LABELS.UI[v.UI] + '  (' + W.UI[v.UI] + ')');
     out.row('  subtotal', r.exploitability.toFixed(2), 't-info');
     out.line('');
-    out.dim('impact — how bad is it when it works');
+    out.dim('impact - how bad is it when it works');
     out.row('  scope', LABELS.S[v.S]);
     out.row('  confidentiality', LABELS.C[v.C] + '  (' + W.CIA[v.C] + ')');
     out.row('  integrity', LABELS.I[v.I] + '  (' + W.CIA[v.I] + ')');
@@ -133,7 +133,7 @@
       out.line('');
       out.warn('Scope is Changed, which applies a 1.08 multiplier and raises the');
       out.warn('privileges-required weights. It is the single most score-inflating');
-      out.warn('metric in CVSS and the most frequently set by mistake — it means');
+      out.warn('metric in CVSS and the most frequently set by mistake - it means');
       out.warn('the impact escapes into a component with a different authority,');
       out.warn('like a sandbox escape or a hypervisor break, not merely that');
       out.warn('something else is also affected.');
@@ -215,7 +215,7 @@
     if (head.length !== 2 || head[0].toUpperCase() !== 'CVSS') {
       return { ok: false, err: [
         'That does not look like a CVSS v3.1 vector string.',
-        'A v3.1 vector begins with the prefix CVSS:3.1/ — a string that starts',
+        'A v3.1 vector begins with the prefix CVSS:3.1/ - a string that starts',
         'straight in at AV: is CVSS v2, which uses different metrics and is not',
         'scored by this calculator.'
       ] };
@@ -256,7 +256,7 @@
         return { ok: false, err: [
           '"' + snippet(key) + '" is not a CVSS v3.1 metric.',
           'The base metrics are AV, AC, PR, UI, S, C, I and A. Au, for instance,',
-          'is CVSS v2 — the v3 equivalent is PR.'
+          'is CVSS v2 - the v3 equivalent is PR.'
         ] };
       }
       if (chosen[key]) {
@@ -277,7 +277,7 @@
     var missing = BASE_ORDER.filter(function (m) { return !chosen[m]; });
     if (missing.length) {
       return { ok: false, err: [
-        'Incomplete vector — no value for ' + missing.join(', ') + '.',
+        'Incomplete vector - no value for ' + missing.join(', ') + '.',
         'All eight base metrics are required. Loading a partial string would',
         'silently score it against whatever the dropdowns already showed.'
       ] };

@@ -342,7 +342,7 @@
     var code = LabApp.getCode();
     if (!code.replace(/\s/g, '')) {
       flash(el.btn, 'is-err');
-      say('Nothing to share yet — the editor is empty', 'is-err');
+      say('Nothing to share yet - the editor is empty', 'is-err');
       closePanel();
       return;
     }
@@ -368,8 +368,8 @@
       var url = location.origin + '/labs/' + meta.slug + '#' + enc.key + '=' + enc.text;
       return copy(url).then(function () {
         flash(el.btn, 'is-ok');
-        say(mins > 0 ? 'Link copied — it stops working in ' + spell(mins * 60000)
-                     : 'Link copied — it carries the code itself, nothing was uploaded',
+        say(mins > 0 ? 'Link copied - it stops working in ' + spell(mins * 60000)
+                     : 'Link copied - it carries the code itself, nothing was uploaded',
             'is-ok');
         closePanel();
       }, function () {
@@ -377,7 +377,7 @@
         // locked-down browser). The link still exists, so put it somewhere it
         // can be selected by hand rather than losing it.
         flash(el.btn, 'is-err');
-        say('Could not reach the clipboard — the link is in the output pane', 'is-err');
+        say('Could not reach the clipboard - the link is in the output pane', 'is-err');
         LabApp.note('\n' + url + '\n');
         closePanel();
       });
@@ -439,14 +439,14 @@
         history.replaceState(null, '', location.pathname + location.search);
       }
 
-      LabApp.status('Loaded from a shared link — press Run when you have read it', 'is-ok');
+      LabApp.status('Loaded from a shared link - press Run when you have read it', 'is-ok');
       LabApp.note('[this program came from the link you opened, not from this device. ' +
                   'It has not been run.' +
                   (typeof payload.e === 'number'
                      ? ' The link itself stops working in ' +
                        spell(payload.e * 1000 - Date.now()) + '.'
                      : '') +
-                  (hadOwn ? ' Your own saved program is untouched — reload this page ' +
+                  (hadOwn ? ' Your own saved program is untouched - reload this page ' +
                             'without the link to get it back.'
                           : ' Press the pin to keep it on this device.') + ']\n');
     }).catch(function (err) {

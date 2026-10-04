@@ -247,7 +247,7 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you type here is
-              uploaded or logged &mdash; which for security work is the whole point, not a
+              uploaded or logged - which for security work is the whole point, not a
               footnote. The one thing it does keep is your draft, saved in this browser
               so a reload does not lose it. It goes nowhere else, and &ldquo;Start empty&rdquo;
               erases it.
@@ -256,16 +256,16 @@
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>It does not understand your architecture; it applies one published table</li>
-                  <li>It produces no score of its own &mdash; the ratings are yours</li>
+                  <li>It produces no score of its own - the ratings are yours</li>
                   <li>A threat model is not a certification, an audit or a test</li>
                 </ul>
               </div>
               <div>
                 <p class="lab-gate-h privacy">Why that matters here</p>
                 <ul class="lab-gate-list">
-                  <li>A threat model names your weak points &mdash; it should not leave your machine</li>
+                  <li>A threat model names your weak points - it should not leave your machine</li>
                   <li>Your draft is kept in this browser only, under <code>lab.threat-model</code></li>
                   <li>Nothing you type ever appears in your Network tab</li>
                   <li>Works with no internet once the page is cached</li>
@@ -274,7 +274,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -330,7 +330,7 @@
           <div class="tm-panel" role="tabpanel" id="tm-panel-system"
                aria-labelledby="tm-tab-system" tabindex="0">
             <div class="tm-panel-in">
-              <p class="tm-lede">Describe what exists before you think about what could go wrong. Four kinds of thing, and the lines between them &mdash; that is the whole vocabulary.</p>
+              <p class="tm-lede">Describe what exists before you think about what could go wrong. Four kinds of thing, and the lines between them - that is the whole vocabulary.</p>
 
               <label class="tm-lbl tm-lbl-grow tm-lbl-block" for="tm-name">
                 <span>What system is this?</span>
@@ -339,7 +339,7 @@
               </label>
 
               <label class="tm-lbl tm-lbl-grow tm-lbl-block" for="tm-scope">
-                <span>Scope &mdash; what is in, and what is deliberately out</span>
+                <span>Scope - what is in, and what is deliberately out</span>
                 <textarea class="lab-toolfield tm-textarea" id="tm-scope" rows="4" spellcheck="true"
                           placeholder="Out of scope does not mean safe. It means somebody else owns it, and you should be able to say what you are relying on them for."></textarea>
               </label>
@@ -374,7 +374,7 @@
           <div class="tm-panel" role="tabpanel" id="tm-panel-threats"
                aria-labelledby="tm-tab-threats" tabindex="0" hidden>
             <div class="tm-panel-in">
-              <p class="tm-lede">Every proposal below comes from one published table &mdash; the classic STRIDE-per-element mapping &mdash; applied to the type of thing each element is. The tool has not understood your system. These are questions for you to answer, and an answer of &ldquo;no, not here, because&hellip;&rdquo; is worth as much as a yes.</p>
+              <p class="tm-lede">Every proposal below comes from one published table - the classic STRIDE-per-element mapping - applied to the type of thing each element is. The tool has not understood your system. These are questions for you to answer, and an answer of &ldquo;no, not here, because&hellip;&rdquo; is worth as much as a yes.</p>
               <div class="tm-tally" id="tm-tally"></div>
               <div id="tm-threats"></div>
             </div>
@@ -386,7 +386,7 @@
               <div class="tm-reportbar">
                 <button class="lab-btn lab-btn-run" type="button" data-act="print">Print this model</button>
                 <button class="lab-btn" type="button" data-act="export">Download JSON</button>
-                <p class="tm-hint tm-hint-inline">Ctrl+P from any tab prints this and nothing else &mdash; the header, the tool and the rest of the page are dropped by the print stylesheet.</p>
+                <p class="tm-hint tm-hint-inline">Ctrl+P from any tab prints this and nothing else - the header, the tool and the rest of the page are dropped by the print stylesheet.</p>
               </div>
               <article class="tm-report" id="tm-report"></article>
             </div>
@@ -409,11 +409,11 @@
           </article>
           <article class="info-card">
             <h3>Risk here is arithmetic, not insight</h3>
-            <p>Likelihood times impact, three levels each, six possible values. It sorts the list and nothing more. If you want a defensible severity number for one specific vulnerability, that is a different instrument &mdash; use the <a href="/labs/cvss">CVSS calculator</a>, and remember that even a 9.8 is a comparison, not a priority.</p>
+            <p>Likelihood times impact, three levels each, six possible values. It sorts the list and nothing more. If you want a defensible severity number for one specific vulnerability, that is a different instrument - use the <a href="/labs/cvss">CVSS calculator</a>, and remember that even a 9.8 is a comparison, not a priority.</p>
           </article>
           <article class="info-card">
             <h3>Model early, and model small</h3>
-            <p>A threat model is cheapest before the code exists and most expensive after the incident. A single feature, a single integration, one afternoon with the people who built it &mdash; that is the version that gets done. A model of the entire estate is the version that gets started, abandoned, and quoted for years as evidence that threat modelling does not work.</p>
+            <p>A threat model is cheapest before the code exists and most expensive after the incident. A single feature, a single integration, one afternoon with the people who built it - that is the version that gets done. A model of the entire estate is the version that gets started, abandoned, and quoted for years as evidence that threat modelling does not work.</p>
           </article>
         </div>
       </section>
@@ -426,7 +426,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A small SaaS with a payment provider</h3>
-            <p>The familiar shape: a web app, a billing worker, a customer database, and a vendor holding the card data so you do not have to. It is here because the interesting threats are not in the application &mdash; they are on the webhook you did not verify, the log that quietly recorded an email address, and the customer id in the URL that nobody tested swapping.</p>
+            <p>The familiar shape: a web app, a billing worker, a customer database, and a vendor holding the card data so you do not have to. It is here because the interesting threats are not in the application - they are on the webhook you did not verify, the log that quietly recorded an email address, and the customer id in the URL that nobody tested swapping.</p>
           </article>
           <article class="info-card">
             <h3>An automation workflow touching a CRM</h3>
@@ -439,7 +439,7 @@
         <div class="section-heading">
           <h2>Where this sits next to compliance</h2>
         </div>
-        <p>Auditors ask whether you do threat modelling. The honest answer is a model per significant change, kept in version control next to the thing it describes, with the rejections and the dates intact &mdash; which is what the JSON export here is for. What it is not is evidence that your system is secure, and a framework that treats it as such is measuring paperwork. I have written about that gap at length in <a href="/blog/security-compliance-explained">security compliance, explained</a>, and if you would rather someone sat in the room and ran the session with your engineers, that is part of what I <a href="/services">do for a living</a>.</p>
+        <p>Auditors ask whether you do threat modelling. The honest answer is a model per significant change, kept in version control next to the thing it describes, with the rejections and the dates intact - which is what the JSON export here is for. What it is not is evidence that your system is secure, and a framework that treats it as such is measuring paperwork. I have written about that gap at length in <a href="/blog/security-compliance-explained">security compliance, explained</a>, and if you would rather someone sat in the room and ran the session with your engineers, that is part of what I <a href="/services">do for a living</a>.</p>
       </section>
 
       <section class="section-card">

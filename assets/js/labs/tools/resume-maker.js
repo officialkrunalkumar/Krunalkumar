@@ -437,7 +437,7 @@
       /* No "on the left": below 1080px the panes stack and the form is
          above, not beside. */
       sheet.appendChild(el('div', 'rm-empty-hint',
-        'Start filling the form — your resume appears here as you go.'));
+        'Start filling the form - your resume appears here as you go.'));
     } else {
       BUILDERS[state.template]();
     }
@@ -477,7 +477,7 @@
       '.rm-sheet{width:' + p.w + 'px;min-height:' + p.h + 'px}' +
       '@media print{@page{size:' + p.page + ';margin:0}' +
       '.rm-sheet{min-height:' + p.printMin + '}}';
-    if (previewTitle) previewTitle.textContent = 'Live preview — ' + p.label;
+    if (previewTitle) previewTitle.textContent = 'Live preview - ' + p.label;
   }
 
   /* ------------------------------------------------------------------
@@ -721,7 +721,7 @@
        biodata maker's, which hits the identical wall. */
     function photoFailed() {
       photoInput.value = '';
-      saveStatus.textContent = 'That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open — re-save it as JPEG or PNG and try again.';
+      saveStatus.textContent = 'That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open - re-save it as JPEG or PNG and try again.';
     }
 
     reader.onerror = photoFailed;
@@ -953,13 +953,13 @@
       importInput.value = '';   // same file twice in a row still fires change
       var parsed = null;
       try { parsed = JSON.parse(String(reader.result)); } catch (e) {
-        saveStatus.textContent = 'That file is not valid JSON — expected a resume-data.json downloaded from this page.';
+        saveStatus.textContent = 'That file is not valid JSON - expected a resume-data.json downloaded from this page.';
         return;
       }
       if (!parsed || typeof parsed !== 'object' ||
           parsed.tool !== 'resume-maker' || parsed.version !== 1 ||
           !parsed.data || typeof parsed.data !== 'object') {
-        saveStatus.textContent = 'That does not look like a resume-maker data file — nothing was changed.';
+        saveStatus.textContent = 'That does not look like a resume-maker data file - nothing was changed.';
         return;
       }
       /* The same guard as Clear and Load example — asked only now, after the
@@ -968,7 +968,7 @@
          never going to happen. */
       if (!stateIsEmpty() &&
           !confirm('Load this file and replace everything in the form? This cannot be undone.')) {
-        saveStatus.textContent = 'Load cancelled — nothing was changed.';
+        saveStatus.textContent = 'Load cancelled - nothing was changed.';
         return;
       }
       /* Merged onto a blank so missing fields default instead of lingering

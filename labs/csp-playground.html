@@ -72,7 +72,7 @@
                         "name": "Does my policy or my markup get uploaded anywhere?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind — not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site."
+                                "text": "No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind - not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site."
                         }
                 },
                 {
@@ -80,7 +80,7 @@
                         "name": "Is the markup I paste actually parsed, or just pattern-matched?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested — so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs."
+                                "text": "Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested - so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs."
                         }
                 },
                 {
@@ -209,13 +209,13 @@
           </ol>
         </nav>
         <h1>Content-Security-Policy playground</h1>
-        <p class="hero-text">A CSP that is too strict announces itself &mdash; the site breaks in front of you. The dangerous one is the policy that reads like a fortress and stops nothing: a misspelled directive name, an <code>'unsafe-inline'</code> cancelled by a nonce, a <code>'self'</code> undone by one JSONP endpoint on your own host. Write a policy, paste a page, and see every resource decided one at a time.</p>
+        <p class="hero-text">A CSP that is too strict announces itself - the site breaks in front of you. The dangerous one is the policy that reads like a fortress and stops nothing: a misspelled directive name, an <code>'unsafe-inline'</code> cancelled by a nonce, a <code>'self'</code> undone by one JSONP endpoint on your own host. Write a policy, paste a page, and see every resource decided one at a time.</p>
         <ul class="lab-facts">
           <li>Directives, source lists and the default-src fallback chain</li>
           <li>Nonces, hashes, schemes, wildcards and 'strict-dynamic'</li>
           <li>Names the directive and the source that decided each verdict</li>
           <li>Flags typo&rsquo;d directive names, which browsers ignore in silence</li>
-          <li>Nothing is fetched &mdash; the markup is parsed inertly</li>
+          <li>Nothing is fetched - the markup is parsed inertly</li>
         </ul>
       </section>
 
@@ -238,25 +238,25 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>It reads the policy text and the markup, and nothing else</li>
                   <li>It never requests a URL you paste, or checks that one exists</li>
                   <li>It models the specification, not your exact browser build</li>
-                  <li>Markup only &mdash; it cannot see what a script does after it loads</li>
+                  <li>Markup only - it cannot see what a script does after it loads</li>
                 </ul>
               </div>
               <div>
                 <p class="lab-gate-h privacy">Why that matters here</p>
                 <ul class="lab-gate-list">
                   <li>A production policy from work stays on your machine</li>
-                  <li>Pasted markup is parsed inertly &mdash; nothing in it runs or loads</li>
+                  <li>Pasted markup is parsed inertly - nothing in it runs or loads</li>
                   <li>Nothing you paste ever appears in your Network tab</li>
                   <li>Works with no internet once the page is cached</li>
                   <li>Free, permanently</li>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -289,7 +289,7 @@
           <input class="lab-toolfield" type="text" id="csp-url" spellcheck="false"
                  autocapitalize="off" autocorrect="off" autocomplete="off"
                  value="https://krunalkumar.dpdns.org/labs/csp-playground"
-                 placeholder="Page URL &mdash; this is what 'self' means, and what relative URLs resolve against" />
+                 placeholder="Page URL - this is what 'self' means, and what relative URLs resolve against" />
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
@@ -316,7 +316,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A nonce silently cancels &lsquo;unsafe-inline&rsquo;</h3>
-            <p>The specification is explicit: when a source list carries a nonce or a hash, <code>'unsafe-inline'</code> in that same list is ignored outright. So <code>script-src 'self' 'unsafe-inline' 'nonce-abc123'</code> is not the permissive policy it reads as &mdash; every inline block without that exact nonce is refused. It cuts the other way too. Somebody who adds a nonce to a policy that already carried <code>'unsafe-inline'</code> has made it strict without deleting a thing, and will spend an afternoon wondering why the analytics snippet died. The one deliberate use of writing both is backwards compatibility: browsers too old to understand nonces fall back to <code>'unsafe-inline'</code>, and modern ones never see it.</p>
+            <p>The specification is explicit: when a source list carries a nonce or a hash, <code>'unsafe-inline'</code> in that same list is ignored outright. So <code>script-src 'self' 'unsafe-inline' 'nonce-abc123'</code> is not the permissive policy it reads as - every inline block without that exact nonce is refused. It cuts the other way too. Somebody who adds a nonce to a policy that already carried <code>'unsafe-inline'</code> has made it strict without deleting a thing, and will spend an afternoon wondering why the analytics snippet died. The one deliberate use of writing both is backwards compatibility: browsers too old to understand nonces fall back to <code>'unsafe-inline'</code>, and modern ones never see it.</p>
           </article>
           <article class="info-card">
             <h3>&lsquo;self&rsquo; is only as strong as the weakest file on your origin</h3>
@@ -324,7 +324,7 @@
           </article>
           <article class="info-card">
             <h3>One <code>&lt;base&gt;</code> tag moves every relative URL you have</h3>
-            <p><code>base-uri</code> is not covered by <code>default-src</code>, so a policy that never mentions it does not restrict it. An injected <code>&lt;base href="https://attacker.example/"&gt;</code> then re-points every relative URL on the page &mdash; and a nonced <code>&lt;script src="app.js"&gt;</code> obediently fetches the attacker's <code>app.js</code>, nonce attached, entirely within the policy. <code>base-uri 'self'</code> or <code>base-uri 'none'</code> closes it in one line. Paste the strict-dynamic example here and watch the base tag get refused; delete the directive and watch the same page load somebody else's script.</p>
+            <p><code>base-uri</code> is not covered by <code>default-src</code>, so a policy that never mentions it does not restrict it. An injected <code>&lt;base href="https://attacker.example/"&gt;</code> then re-points every relative URL on the page - and a nonced <code>&lt;script src="app.js"&gt;</code> obediently fetches the attacker's <code>app.js</code>, nonce attached, entirely within the policy. <code>base-uri 'self'</code> or <code>base-uri 'none'</code> closes it in one line. Paste the strict-dynamic example here and watch the base tag get refused; delete the directive and watch the same page load somebody else's script.</p>
           </article>
           <article class="info-card">
             <h3>default-src covers less than its name suggests</h3>
@@ -339,11 +339,11 @@
         </div>
           <details class="lab-faq">
             <summary>Does my policy or my markup get uploaded anywhere?</summary>
-            <div>No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind &mdash; not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site.</div>
+            <div>No. Both are read in this tab and nothing is sent. The tool makes no network request of any kind - not to check a URL, not to fetch a script, not to look anything up. That is also why the four built-in policies are copied into the module as text rather than read from the live site.</div>
           </details>
           <details class="lab-faq">
             <summary>Is the markup I paste actually parsed, or just pattern-matched?</summary>
-            <div>Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested &mdash; so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs.</div>
+            <div>Parsed, with the browser's own HTML parser through DOMParser. That document has no browsing context, which means scripts in it never run and images in it are never requested - so pasting a hostile page here is safe. Inline CSS is scanned separately for url() and @import, and inline scripts are scanned for literal URLs passed to the network APIs.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does it say a directive is unknown when I copied it from a blog post?</summary>
@@ -383,7 +383,7 @@
         <div class="lab-grid">
           <a class="lab-card" href="/labs/hacklab">
             <span class="lab-card-name">HackLab</span>
-            <p class="lab-card-desc">Live XSS, SQL injection and traversal targets &mdash; the attacks a CSP is written against.</p>
+            <p class="lab-card-desc">Live XSS, SQL injection and traversal targets - the attacks a CSP is written against.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/url-inspector">
@@ -393,7 +393,7 @@
           </a>
           <a class="lab-card" href="/labs/email-security">
             <span class="lab-card-name">Email security audit</span>
-            <p class="lab-card-desc">SPF, DKIM and DMARC &mdash; the other policy header people get subtly wrong.</p>
+            <p class="lab-card-desc">SPF, DKIM and DMARC - the other policy header people get subtly wrong.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/jwt">

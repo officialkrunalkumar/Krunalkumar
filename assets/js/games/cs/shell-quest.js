@@ -311,7 +311,7 @@
     {
       title: 'The dot files',
       brief: 'Something in your home directory is hidden. Find the keyring and answer with the flag inside it.',
-      hint: 'A name starting with a dot is left out of a plain ls. Try ls -a — and note there is a dot-directory as well as a dot-file.',
+      hint: 'A name starting with a dot is left out of a plain ls. Try ls -a - and note there is a dot-directory as well as a dot-file.',
       accepts: [KEYRING_FLAG, 'dot-and-dash']
     },
     {
@@ -885,7 +885,7 @@
       function showQuest() {
         var q = QUESTS[quest];
         if (!q) { out('All eight are done. Restart for another run.', 'is-ok'); return; }
-        out('Quest ' + (quest + 1) + ' of ' + QUESTS.length + ' — ' + q.title, 'is-quest');
+        out('Quest ' + (quest + 1) + ' of ' + QUESTS.length + ' - ' + q.title, 'is-quest');
         outBlock(q.brief, 'is-quest');
       }
 
@@ -909,7 +909,7 @@
           g.beep(200, 0.08, 'square');
           return;
         }
-        out('Correct — quest ' + (quest + 1) + ' solved.', 'is-ok');
+        out('Correct - quest ' + (quest + 1) + ' solved.', 'is-ok');
         g.beep(760, 0.06, 'sine');
         quest++;
         g.stat('quest', Math.min(quest + 1, QUESTS.length) + '/' + QUESTS.length);
@@ -1117,7 +1117,7 @@
           briefEl.textContent = 'All eight solved. Restart for another run.';
           return;
         }
-        briefEl.textContent = 'Quest ' + (quest + 1) + '/' + QUESTS.length + ' — ' +
+        briefEl.textContent = 'Quest ' + (quest + 1) + '/' + QUESTS.length + ' - ' +
           q.title + ': ' + q.brief;
       }
 
@@ -1412,7 +1412,7 @@
           screen.innerHTML = '';
           input.value = '';
 
-          out('Shell quest — a small filesystem and thirteen commands.', 'is-note');
+          out('Shell quest - a small filesystem and thirteen commands.', 'is-note');
           out('These are reimplementations, not a shell. Nothing here touches your', 'is-note');
           out('machine and nothing leaves the page. For a real kernel, /labs/linux.', 'is-note');
           out('Type help for the command list.', 'is-note');

@@ -12,12 +12,12 @@
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <meta property="og:title" content="How to Succeed in Software Development: The Four-Step Path" />
     <meta
       property="og:description"
-      content="Make it work, make it modular, make it readable, then make it optimized — and, crucially, in that order."
+      content="Make it work, make it modular, make it readable, then make it optimized - and, crucially, in that order."
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/blog/how-to-succeed-in-software-development" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="How to Succeed in Software Development: The Four-Step Path" />
     <meta
       name="twitter:description"
-      content="Make it work, make it modular, make it readable, then make it optimized — and, crucially, in that order."
+      content="Make it work, make it modular, make it readable, then make it optimized - and, crucially, in that order."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/blog/og/how-to-succeed-in-software-development.jpg" />
     <title>How to Succeed in Software Development | Krunalkumar Shah</title>
@@ -43,7 +43,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "How to Succeed in Software Development: The Four-Step Path",
-        "description": "A simple, durable way to build software and automations well: make it work, make it modular, make it readable, then make it optimized — and, crucially, in that order.",
+        "description": "A simple, durable way to build software and automations well: make it work, make it modular, make it readable, then make it optimized - and, crucially, in that order.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/how-to-succeed-in-software-development.jpg",
         "datePublished": "2026-06-05",
         "dateModified": "2026-08-06",
@@ -148,7 +148,7 @@
           <h1>How to succeed in software development: the four-step path</h1>
           <p class="hero-text">
             After years of building systems and reviewing thousands of engineers, I've come to trust one simple order
-            of operations. Great software isn't written in one heroic pass — it's grown through four stages: make it
+            of operations. Great software isn't written in one heroic pass - it's grown through four stages: make it
             work, make it modular, make it readable, then make it optimized. The magic is entirely in doing them in
             that order.
           </p>
@@ -165,10 +165,10 @@
               <p class="eyebrow">In this article</p>
               <ol>
                 <li><a href="#why-the-order-matters-more-than-the-steps">Why the order matters more than the steps</a></li>
-                <li><a href="#step-1-make-it-work">Step 1 — Make it work</a></li>
-                <li><a href="#step-2-make-it-modular">Step 2 — Make it modular</a></li>
-                <li><a href="#step-3-make-it-readable">Step 3 — Make it readable</a></li>
-                <li><a href="#step-4-make-it-optimized">Step 4 — Make it optimized</a></li>
+                <li><a href="#step-1-make-it-work">Step 1 - Make it work</a></li>
+                <li><a href="#step-2-make-it-modular">Step 2 - Make it modular</a></li>
+                <li><a href="#step-3-make-it-readable">Step 3 - Make it readable</a></li>
+                <li><a href="#step-4-make-it-optimized">Step 4 - Make it optimized</a></li>
                 <li><a href="#the-same-order-works-everywhere">The same order works everywhere</a></li>
               </ol>
             </nav>
@@ -190,23 +190,23 @@
                 <figcaption>Each step stands on the one before it. Skip a stair and the ones above it wobble. Tap the diagram to open it full-screen.</figcaption>
               </figure>
 
-              <h2 id="step-1-make-it-work">Step 1 — Make it work</h2>
+              <h2 id="step-1-make-it-work">Step 1 - Make it work</h2>
               <p>
                 The first and only job at the start is to get something running end to end, however ugly. One long
-                function, hard-coded values, no error handling worth mentioning — fine. The goal here is not quality; it
+                function, hard-coded values, no error handling worth mentioning - fine. The goal here is not quality; it
                 is <em>proof</em>. A working-but-messy version teaches you what the problem actually is, surfaces the
                 surprises hiding in the requirements, and gives you something real to improve. A beautiful design for the
                 wrong problem is worthless, and you can't know the right problem until something works.
               </p>
               <p>
-                The trap at this stage is perfectionism — polishing code you might delete once you understand the problem
+                The trap at this stage is perfectionism - polishing code you might delete once you understand the problem
                 better. Resist it. Get to working first, and give yourself explicit permission for it to be rough.
               </p>
 
-              <h2 id="step-2-make-it-modular">Step 2 — Make it modular</h2>
+              <h2 id="step-2-make-it-modular">Step 2 - Make it modular</h2>
               <p>
                 Now that it works, you understand the problem well enough to see its natural seams. Modularity is the
-                step where you break that one big blob into pieces that each do a single job — a function that only
+                step where you break that one big blob into pieces that each do a single job - a function that only
                 parses, a function that only validates, a function that only sends. Good modules have clear boundaries:
                 you can understand one without holding all the others in your head, and you can change one without
                 breaking its neighbors.
@@ -215,15 +215,15 @@
                 This matters far more in automation than people expect. A workflow built as one giant tangled step is
                 impossible to debug when it fails at 3 a.m.; the same workflow split into distinct, named stages tells
                 you exactly where it broke. Modularity is what turns "the whole thing is broken" into "step three is
-                broken" — and that difference is everything when something goes wrong in production.
+                broken" - and that difference is everything when something goes wrong in production.
               </p>
 
-              <h2 id="step-3-make-it-readable">Step 3 — Make it readable</h2>
+              <h2 id="step-3-make-it-readable">Step 3 - Make it readable</h2>
               <p>
                 Code is read far more often than it is written, usually by a future version of you who has forgotten
                 every clever thing present-you was thinking. Readability is a gift to that person. It means honest names
                 that say what a thing is, functions short enough to grasp at a glance, and comments that explain the
-                <em>why</em> a line of code can't express — never a restating of the obvious.
+                <em>why</em> a line of code can't express - never a restating of the obvious.
               </p>
               <blockquote>
                 <p>
@@ -232,22 +232,22 @@
                 </p>
               </blockquote>
               <p>
-                Readability comes after modularity for a reason — it's much easier to write clear code for a small, well
+                Readability comes after modularity for a reason - it's much easier to write clear code for a small, well
                 bounded piece than for a sprawling one. Once each module does one job, naming and clarifying it becomes
                 almost easy.
               </p>
 
-              <h2 id="step-4-make-it-optimized">Step 4 — Make it optimized</h2>
+              <h2 id="step-4-make-it-optimized">Step 4 - Make it optimized</h2>
               <p>
-                Only now, last, do you optimize — and only where it's actually needed. This is deliberately the final
+                Only now, last, do you optimize - and only where it's actually needed. This is deliberately the final
                 step because premature optimization is one of the most reliable ways to waste time and wreck the three
                 things you just built. Optimizing before you have working, modular, readable code means you're speeding
-                up something that might be wrong, entangling clean modules, and obscuring readable logic — all to fix a
+                up something that might be wrong, entangling clean modules, and obscuring readable logic - all to fix a
                 performance problem you haven't proven you have.
               </p>
               <p>
                 Do it properly: measure first, find the genuine bottleneck, and improve that one thing. Because your code
-                is already modular and readable, optimizing is low-risk — you can tune one isolated piece with
+                is already modular and readable, optimizing is low-risk - you can tune one isolated piece with
                 confidence, and the next reader can still follow what you did. The earlier steps are what make this one
                 safe.
               </p>
@@ -256,7 +256,7 @@
               <p>
                 This isn't only for code. It's how I approach an n8n automation, a research prototype, even a piece of
                 writing: get a rough version working, break it into clean parts, make each part clear, then refine the
-                parts that need it. The order encodes a mindset — earn the right to polish by first making something
+                parts that need it. The order encodes a mindset - earn the right to polish by first making something
                 real, then make it easy to change, then make it fast. Rush to the end and you build something fragile.
                 Walk the four steps and you build something that lasts, and that other people can build on.
               </p>
@@ -288,7 +288,7 @@
           <div class="post-cta">
             <h2>Want to build this instinct on real projects?</h2>
             <p>
-              These four steps are the exact habits I coach the people I mentor to develop — on genuine software and
+              These four steps are the exact habits I coach the people I mentor to develop - on genuine software and
               automation work, not toy exercises. If you want to learn to build things that last, here's how we can
               work together.
             </p>

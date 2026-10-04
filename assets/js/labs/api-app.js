@@ -183,7 +183,7 @@
         seen++;
       });
       if (!seen) {
-        write('(no readable headers — a cross-origin response only exposes a\n' +
+        write('(no readable headers - a cross-origin response only exposes a\n' +
               ' handful unless the server lists more in Access-Control-Expose-Headers)\n',
               't-dim');
       }
@@ -213,11 +213,11 @@
          it here sent people to check Access-Control headers on a server whose
          only fault was being slow. */
       if (timedOut) {
-        write('No response within ' + (TIMEOUT_MS / 1000) + ' s — request aborted.\n\n', 't-err');
+        write('No response within ' + (TIMEOUT_MS / 1000) + ' s - request aborted.\n\n', 't-err');
         write('The connection was made but the answer never finished arriving.\n' +
               'That is a host that is slow, hung, or streaming a body with no\n' +
               'end. It is not CORS: a CORS rejection fails immediately.\n', 't-dim');
-        setStatus('No response in ' + (TIMEOUT_MS / 1000) + ' s — aborted', 'is-err');
+        setStatus('No response in ' + (TIMEOUT_MS / 1000) + ' s - aborted', 'is-err');
         return;
       }
 
@@ -230,12 +230,12 @@
             'cross-origin response when the server sends an\n' +
             'Access-Control-Allow-Origin header permitting this page. Tools like\n' +
             'curl and Postman are not browsers and have no such restriction, so\n' +
-            'the same request can succeed there and fail here — that means the\n' +
+            'the same request can succeed there and fail here - that means the\n' +
             'API did not opt in, not that it is broken.\n\n' +
             'Other possibilities: the host does not exist, it is HTTP-only (this\n' +
             'page is HTTPS, and browsers block mixed content), or you are offline.\n',
             't-dim');
-      setStatus('Request failed — see the response pane', 'is-err');
+      setStatus('Request failed - see the response pane', 'is-err');
     } finally {
       clearTimeout(timer);
       el.send.disabled = false;
@@ -308,7 +308,7 @@
 
   initGate();
   syncBodyPane();
-  setStatus('Ready — Ctrl + Enter sends');
+  setStatus('Ready - Ctrl + Enter sends');
   // Last, so the opening "Ready — …" is painted before the element becomes a
   // live region and is therefore not announced on arrival.
   initStatusLive();

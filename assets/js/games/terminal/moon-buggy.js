@@ -291,7 +291,7 @@
           if (crashAt >= 0) {
             term.text(BUGGY_X, by, '  ***  ', 'red');
             term.text(BUGGY_X, by - 1, ' *   * ', 'yellow');
-            term.centre(GROUND + 4, lives > 0 ? 'CRASH — ' + lives + ' left' : 'CRASH', 'red');
+            term.centre(GROUND + 4, lives > 0 ? 'CRASH - ' + lives + ' left' : 'CRASH', 'red');
           } else {
             for (var r = 0; r < BUGGY.length; r++) {
               term.text(BUGGY_X, by - (BUGGY.length - 1 - r), BUGGY[r], r === 2 ? 'yellow' : 'green');

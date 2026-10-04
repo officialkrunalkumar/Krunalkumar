@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Explore Krunalkumar Shah’s projects in automation, AI workflows, cybersecurity, research, and practical integration solutions."
+      content="Read three evidence-led case studies in AI and workflow automation, then explore a curated gallery of Krunalkumar Shah’s projects."
     />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
@@ -15,20 +15,20 @@
     <meta property="og:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
     <meta
       property="og:description"
-      content="Browse Krunalkumar Shah’s portfolio of automation, research, AI, and integration projects."
+      content="Read three evidence-led case studies in AI and workflow automation, then explore a curated project gallery."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/projects" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-projects.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Krunalkumar Shah — Projects" />
+    <meta property="og:image:alt" content="Krunalkumar Shah - Projects" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Krunalkumar Shah Projects | Automation & Research Work" />
     <meta
       name="twitter:description"
-      content="Browse Krunalkumar Shah’s portfolio of automation, research, AI, and integration projects."
+      content="Read three evidence-led case studies in AI and workflow automation, then explore a curated project gallery."
     />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-projects.jpg" />
     <title>Krunalkumar Shah Projects | Automation & Research Work</title>
@@ -127,7 +127,7 @@
         <p class="eyebrow">Selected work</p>
         <h1>Projects that reflect automation, integration, and thoughtful problem solving.</h1>
         <p class="hero-text">
-          Explore my automation, AI workflow, research-backed, and integration projects — each one built to solve a practical problem.
+          Explore my automation, AI workflow, research-backed, and integration projects - each one built to solve a practical problem.
         </p>
       </section>
 
@@ -140,7 +140,7 @@
           <a class="featured-project-card" href="https://github.com/officialkrunalkumar/011-ChurnGPT-2.0" target="_blank" rel="noopener noreferrer">
             <div class="featured-project-content">
               <p class="project-meta">Featured project</p>
-              <h3 class="project-name">ChurnGPT 2.0 — AI Churn Analysis</h3>
+              <h3 class="project-name">ChurnGPT 2.0 - AI Churn Analysis</h3>
               <!--
                 Name, description and href are ALL rewritten at runtime by
                 projects.js, which rotates this card through the seven
@@ -160,32 +160,33 @@
       <section class="section-card">
         <div class="section-heading">
           <p class="eyebrow">Case studies</p>
-          <h2>Three builds, from problem to outcome</h2>
+          <h2>Three builds, with scope and evidence</h2>
+          <p class="hero-text">These examples describe what the public repositories demonstrate. They do not claim measured business savings or production results that have not been published.</p>
         </div>
         <div class="content-grid three-up">
           <article class="info-card">
+            <h3>ChurnGPT 2.0</h3>
+            <p class="project-meta">AI · HubSpot · Revenue operations</p>
+            <p><strong>The problem.</strong> Reviewing why a customer left meant piecing together CRM records, support tickets, and meeting notes, then checking whether the stated churn reason matched the evidence.</p>
+            <p><strong>The approach.</strong> I wrote the code for a multi-stage assistant that runs inside HubSpot on the OpenAI API. It brings the relevant records together, checks the churn reason, and shows the evidence behind its conclusion. The public repository is the successor I have since extended.</p>
+            <p><strong>Reported result.</strong> Zeni&rsquo;s RevOps lead, <a class="text-link" href="https://www.linkedin.com/posts/brandondithberry_gpt-hubspot-revops-activity-7244766642377760769-fSKq" target="_blank" rel="noopener noreferrer">Brandon Dith-Berry</a>, reported ticket review dropping from 15 minutes to 2 and a backlog of 200+ tickets processed in under 20 minutes. This is a reported operational result, not an independent benchmark.</p>
+            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/011-ChurnGPT-2.0" target="_blank" rel="noopener noreferrer">Review the code</a>
+          </article>
+          <article class="info-card">
             <h3>AI-Powered FNOL Claims Assistant</h3>
-            <p class="project-meta">AI · Insurance</p>
-            <p><strong>The problem.</strong> First Notice of Loss intake is slow and error-prone: claims arrive with missing details, and every gap means a human chasing information before processing can even begin.</p>
-            <p><strong>What I built.</strong> An autonomous claims workflow that extracts claim data from incoming reports, detects missing fields on arrival, and routes each claim to the right next step without manual triage.</p>
-            <p><strong>The outcome.</strong> Claims flow from intake to processing untouched, and incomplete submissions are caught at the door instead of stalling mid-process.</p>
-            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/FNOL-Claim-Processing-Agent" target="_blank" rel="noopener">View the code</a>
+            <p class="project-meta">Prototype · Insurance · Document processing</p>
+            <p><strong>The problem.</strong> A First Notice of Loss document can arrive with missing or inconsistent policy, incident, or claim details. Reviewers need those fields before a claim can be routed.</p>
+            <p><strong>The approach.</strong> I built two runnable Python examples: a deterministic, rule-based pipeline and an AI-assisted pipeline using a local LLM. Both extract structured fields, identify missing information, apply routing rules, and return the reasoning with the result. The AI example includes OCR fallback for scanned PDFs.</p>
+            <p><strong>What the repository demonstrates.</strong> A prototype using sample documents, with no published production deployment, measured accuracy, or processing-time results. The README documents the supported fields and routing rules.</p>
+            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/FNOL-Claim-Processing-Agent" target="_blank" rel="noopener noreferrer">Review the prototype and README</a>
           </article>
           <article class="info-card">
             <h3>Sheet-Driven Task Automation Hub</h3>
-            <p class="project-meta">Automation · Google Apps Script</p>
-            <p><strong>The problem.</strong> The team planned work in Google Sheets but executed it in ClickUp — every update meant copying tasks across by hand, with the two tools constantly drifting apart.</p>
-            <p><strong>What I built.</strong> A Google Apps Script integration that turns spreadsheet updates into ClickUp actions and tasks automatically, keeping the sheet as the single source of truth.</p>
-            <p><strong>The outcome.</strong> Tasks appear in ClickUp the moment the sheet changes — no copy-paste, no drift, no forgotten work items.</p>
-            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/Google-Sheet-ClickUp-Integration-Automation" target="_blank" rel="noopener">View the code</a>
-          </article>
-          <article class="info-card">
-            <h3>Social Publishing Automation Studio</h3>
-            <p class="project-meta">Automation · Flask + n8n</p>
-            <p><strong>The problem.</strong> Consistent Instagram publishing is a grind — preparing, scheduling, and posting content by hand eats creative time and falls apart the moment life gets busy.</p>
-            <p><strong>What I built.</strong> A Flask-based publishing setup paired with n8n workflows that automates the entire content distribution pipeline, from preparation to posting.</p>
-            <p><strong>The outcome.</strong> A hands-off publishing pipeline that keeps the account active on schedule, whether or not anyone is at the keyboard.</p>
-            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/Automated-Instagram-Poster" target="_blank" rel="noopener">View the code</a>
+            <p class="project-meta">Google Sheets · ClickUp · Google Apps Script</p>
+            <p><strong>The problem.</strong> A tender tracker used a Google Sheet for active work and ClickUp for task management. Re-entering tasks and manually maintaining an archive added avoidable coordination.</p>
+            <p><strong>The approach.</strong> I wrote Apps Script actions to create ClickUp tasks from qualifying rows, including bulk creation, save each task ID and link back to the sheet, and move overdue or completed rows to an archive sheet. The scripts check required columns and avoid creating duplicate tasks.</p>
+            <p><strong>What the repository demonstrates.</strong> The scripts, expected sheet layout, and setup instructions are public. No measured time-saving or error-rate results are published.</p>
+            <a class="btn btn-secondary" href="https://github.com/officialkrunalkumar/Google-Sheet-ClickUp-Integration-Automation" target="_blank" rel="noopener noreferrer">Review the code and setup</a>
           </article>
         </div>
       </section>
@@ -235,12 +236,12 @@
           <a class="project-item" href="https://github.com/officialkrunalkumar/011-ChurnGPT-2.0" target="_blank" rel="noopener noreferrer">
             <div>
               <p class="project-meta">AI / RevOps</p>
-              <h3 class="project-name">ChurnGPT 2.0 — AI Churn Analysis</h3>
+              <h3 class="project-name">ChurnGPT 2.0 - AI Churn Analysis</h3>
               <!-- Figures and their source stay in the SAME element. projects.js
                    copies .project-description into the rotating featured card but
                    not .project-outcome, so splitting them would let the featured
                    card cite "figures" it does not show. -->
-              <p class="project-outcome">Churn-ticket review went from 15 minutes to 2 — an 87% efficiency gain. Separately, a backlog of 200+ tickets was processed in under 20 minutes. Built in five days. Reported by Zeni&rsquo;s RevOps lead, Brandon Dith-Berry, on LinkedIn.</p>
+              <p class="project-outcome">Churn-ticket review went from 15 minutes to 2 - an 87% efficiency gain. Separately, a backlog of 200+ tickets was processed in under 20 minutes. Built in five days. Reported by Zeni&rsquo;s RevOps lead, Brandon Dith-Berry, on LinkedIn.</p>
               <p class="project-description">A multi-stage AI pipeline I wrote the code for at Zeni, running inside HubSpot on the OpenAI API: it digests company records, ticket and meeting notes, validates the churn reason a CSM gave, and shows which evidence it used. This repo is the successor I have since taken further.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
@@ -500,7 +501,7 @@
           <a class="project-item" href="https://github.com/officialkrunalkumar/010-Churn-Ticket-Analysis-using-OpenAi" target="_blank" rel="noopener noreferrer">
             <div>
               <p class="project-meta">AI / RevOps</p>
-              <h3 class="project-name">Churn Ticket Summarizer — the first ChurnGPT</h3>
+              <h3 class="project-name">Churn Ticket Summarizer - the first ChurnGPT</h3>
               <p class="project-description">The original build that ChurnGPT 2.0 grew out of: it gathers every note and meeting note attached to a ticket, combines them into one record, and sends that to the OpenAI API for a summary.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
@@ -525,7 +526,7 @@
             <div>
               <p class="project-meta">AI</p>
               <h3 class="project-name">GPT-4 Application Prototype</h3>
-              <p class="project-description">A compact application built directly against the OpenAI API on GPT-4 — the smallest useful shape of a working LLM integration.</p>
+              <p class="project-description">A compact application built directly against the OpenAI API on GPT-4 - the smallest useful shape of a working LLM integration.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -565,7 +566,7 @@
             <div>
               <p class="project-meta">Data Analysis</p>
               <h3 class="project-name">CRM Metadata Notebook</h3>
-              <p class="project-description">A Jupyter notebook that builds structured metadata about HubSpot CRM objects using pandas data frames — the analytical counterpart to the Apps Script metadata builder.</p>
+              <p class="project-description">A Jupyter notebook that builds structured metadata about HubSpot CRM objects using pandas data frames - the analytical counterpart to the Apps Script metadata builder.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -581,7 +582,7 @@
             <div>
               <p class="project-meta">Full Stack</p>
               <h3 class="project-name">Grievance Redressal Portal</h3>
-              <p class="project-description">A complaint-management portal built and rebuilt across several stacks — Django, Django REST Framework, and a React front end against that API — as an exercise in carrying one domain model through different architectures.</p>
+              <p class="project-description">A complaint-management portal built and rebuilt across several stacks - Django, Django REST Framework, and a React front end against that API - as an exercise in carrying one domain model through different architectures.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -605,7 +606,7 @@
             <div>
               <p class="project-meta">Quality Assurance</p>
               <h3 class="project-name">Software Testing Practice</h3>
-              <p class="project-description">Test plans, cases, and methodology worked through in practice — the QA discipline that sits underneath everything else in this gallery.</p>
+              <p class="project-description">Test plans, cases, and methodology worked through in practice - the QA discipline that sits underneath everything else in this gallery.</p>
             </div>
             <span class="project-link-pill">Open repo →</span>
           </a>
@@ -626,8 +627,8 @@
           </div>
         </div>
         <p class="gallery-footnote">
-          These are the builds worth writing up. The rest — 80+ public repositories, including the
-          smaller one-off workflows and experiments that did not need their own card — are all on
+          These are the builds worth writing up. The rest - 80+ public repositories, including the
+          smaller one-off workflows and experiments that did not need their own card - are all on
           <a class="text-link" href="https://github.com/officialkrunalkumar" target="_blank" rel="noopener">GitHub</a>,
           linked from the footer of every page on this site.
         </p>

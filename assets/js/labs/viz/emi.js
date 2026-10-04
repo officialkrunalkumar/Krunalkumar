@@ -1096,8 +1096,8 @@
     p.appendChild(E('h3', 'em-h', 'Every instalment, split'));
     p.appendChild(this.chart('split'));
     p.appendChild(legend([
-      [C.interest, 'Interest — the lender keeps this'],
-      [C.principal, 'Principal — this is the only part that reduces the debt'],
+      [C.interest, 'Interest - the lender keeps this'],
+      [C.principal, 'Principal - this is the only part that reduces the debt'],
       [C.good, 'The month principal finally overtakes interest']
     ]));
     this.loanNote = E('div', 'em-note');
@@ -1166,10 +1166,10 @@
     ]));
 
     var row = E('div', 'em-btnrow');
-    row.appendChild(this.button('CSV — cut the tenure', function () {
+    row.appendChild(this.button('CSV - cut the tenure', function () {
       self.exportCsv('prepayTenure', 'emi-schedule-cut-tenure.csv');
     }));
-    row.appendChild(this.button('CSV — cut the EMI', function () {
+    row.appendChild(this.button('CSV - cut the EMI', function () {
       self.exportCsv('prepayEmi', 'emi-schedule-cut-emi.csv');
     }));
     p.appendChild(row);
@@ -1209,10 +1209,10 @@
     ]));
 
     var row = E('div', 'em-btnrow');
-    row.appendChild(this.button('CSV — longer tenure', function () {
+    row.appendChild(this.button('CSV - longer tenure', function () {
       self.exportCsv('rateTenure', 'emi-schedule-longer-tenure.csv');
     }));
-    row.appendChild(this.button('CSV — higher EMI', function () {
+    row.appendChild(this.button('CSV - higher EMI', function () {
       self.exportCsv('rateEmi', 'emi-schedule-higher-emi.csv');
     }));
     p.appendChild(row);
@@ -1598,7 +1598,7 @@
     if (cross > 1) {
       this.loanNote.appendChild(E('p', null,
         'Principal only overtakes interest at instalment ' + cross + ', which is ' +
-        tenureWords(cross) + ' in — ' +
+        tenureWords(cross) + ' in - ' +
         pct(cross / base.months * 100, 0) + ' of the way through the loan. ' +
         'Everything to the left of that dashed line is a payment that was mostly rent on the money.'));
     } else {
@@ -1735,7 +1735,7 @@
       this.prepayNote.appendChild(E('p', null,
         'The same ' + money(extraPaid) + ' of extra money, two different answers. ' +
         (gap > 0
-          ? 'Cutting the tenure saves ' + money(gap) + ' more than cutting the EMI — ' +
+          ? 'Cutting the tenure saves ' + money(gap) + ' more than cutting the EMI - ' +
             (savedEmi > 0 ? (savedTenure / savedEmi).toFixed(1) + ' times as much.' :
              'the EMI route saves almost nothing here.')
           : 'On this loan the two are within ' + money(Math.abs(gap)) +
@@ -1848,7 +1848,7 @@
       this.rateNote.className = 'em-note is-good';
       this.rateNote.appendChild(E('p', null,
         'The rate falls here, and the lender’s default works the same way in ' +
-        'reverse — the instalment is left alone and the tenure shortens, which ' +
+        'reverse - the instalment is left alone and the tenure shortens, which ' +
         'is good for you and equally unannounced. The second card is what happens ' +
         'if you ask for the cut to come off the monthly payment instead: less relief ' +
         'overall, more cash in hand now.'));
@@ -1890,7 +1890,7 @@
         'Loan ' + cheapReal + ' is the cheaper money: ' +
         pct(Math.min(a.effective, b.effective), 2) + ' against ' +
         pct(Math.max(a.effective, b.effective), 2) + ' once the fee is priced as ' +
-        'what it is — an amount you borrowed and never received.'));
+        'what it is - an amount you borrowed and never received.'));
     }
     if (cheapReal !== lowerRate) {
       this.compareNote.appendChild(E('p', null,

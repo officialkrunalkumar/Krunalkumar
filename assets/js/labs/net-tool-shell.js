@@ -307,7 +307,7 @@
       }
       out.err('The request failed, and the browser will not say why.');
       out.line('');
-      out.dim('This is not evasion on my part — it is deliberate in the web');
+      out.dim('This is not evasion on my part - it is deliberate in the web');
       out.dim('platform. A cross-origin failure is reported to JavaScript as a');
       out.dim('single opaque error, so all of these look identical from here:');
       out.dim('  · ' + vendor + ' is down or unreachable');

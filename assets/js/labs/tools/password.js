@@ -51,7 +51,7 @@
     COMMON.forEach(function (w) {
       if (lower.indexOf(w) !== -1) issues.push('contains the common password "' + w + '"');
       else if (plain.indexOf(w) !== -1)
-        issues.push('is "' + w + '" with character substitutions — wordlists expand those automatically');
+        issues.push('is "' + w + '" with character substitutions - wordlists expand those automatically');
     });
     KEYBOARD.forEach(function (k) {
       if (lower.indexOf(k) !== -1) issues.push('contains the keyboard run "' + k + '"');
@@ -159,12 +159,12 @@
       out.row('drawn as', generated.how);
       out.row('entropy', bits.toFixed(1) + ' bits', 't-ok');
       if (generated.kind === 'passphrase') {
-        out.dim('Measured from the draw, not from the spelling — the words being');
+        out.dim('Measured from the draw, not from the spelling - the words being');
         out.dim('dictionary words costs nothing when each one was chosen at random.');
       } else {
         // "the words being dictionary words" is meaningless for a random
         // character string, and symbols is the default mode.
-        out.dim('Measured from the draw, not from the spelling — every position');
+        out.dim('Measured from the draw, not from the spelling - every position');
         out.dim('was chosen independently, so length times alphabet size is exact.');
       }
     } else {
@@ -192,13 +192,13 @@
         out.line('');
         out.err('This is a wordlist entry with a predictable modification, so');
         out.err('the raw entropy above is meaningless. An attacker does not');
-        out.err('guess blindly — they run a list of common passwords through a');
+        out.err('guess blindly - they run a list of common passwords through a');
         out.err('set of mangling rules, and this password falls out of that in');
         out.err('roughly ' + Math.round(Math.pow(2, ceiling)).toExponential(1) +
                 ' guesses rather than ' + Math.pow(2, bits).toExponential(1) + '.');
       }
       out.line('');
-      out.dim('Raw entropy assumes an attacker guesses blindly. They do not —');
+      out.dim('Raw entropy assumes an attacker guesses blindly. They do not -');
       out.dim('they run wordlists and rule sets first, and every pattern above');
       out.dim('is one those rules already cover.');
     } else if (generated) {
@@ -215,7 +215,7 @@
         // mode, so this is what most visitors see first.
         out.dim('Every character was drawn independently from the full alphabet,');
         out.dim('so there is no word, date or keyboard run for a rule set to');
-        out.dim('exploit — the figure above is the whole search space.');
+        out.dim('exploit - the figure above is the whole search space.');
       }
     } else {
       out.ok('No common patterns detected.');
@@ -225,7 +225,7 @@
 
     out.rule();
     out.dim('Length beats complexity. Six random words are stronger and far');
-    out.dim('easier to type than a short string of symbols — and a password');
+    out.dim('easier to type than a short string of symbols - and a password');
     out.dim('manager makes both arguments moot.');
   }
 
@@ -339,7 +339,7 @@
     lastGenerated = { value: value, bits: knownBits, how: provenance, kind: mode };
     analyse(value, lastGenerated);
     out.rule();
-    out.ok('Generated with crypto.getRandomValues — the browser’s cryptographic');
+    out.ok('Generated with crypto.getRandomValues - the browser’s cryptographic');
     out.ok('random source, not Math.random, which must never pick a password.');
   }
 
@@ -360,7 +360,7 @@
         analyse(e.target.value.length > 2 ? e.target.value : '');
       });
       out.dim('Type a password above. It is analysed as you type, in this tab,');
-      out.dim('and never transmitted — check the Network tab if you like.');
+      out.dim('and never transmitted - check the Network tab if you like.');
     }
   });
 })();

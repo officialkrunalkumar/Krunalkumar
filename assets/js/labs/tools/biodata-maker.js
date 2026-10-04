@@ -466,7 +466,7 @@
 
     if (!hasAnything) {
       content.appendChild(el('p', 'bm-empty-hint',
-        'Start filling the form — the sheet writes itself as you type.'));
+        'Start filling the form - the sheet writes itself as you type.'));
     }
 
     sheet.appendChild(content);
@@ -515,7 +515,7 @@
     function photoFailed() {
       var input = $('bm-f-photo');
       if (input) input.value = '';
-      setStatus('That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open — re-save it as JPEG or PNG and try again.');
+      setStatus('That file could not be read as an image. Photos from an iPhone are often HEIC, which no browser can open - re-save it as JPEG or PNG and try again.');
     }
 
     if (file.type.indexOf('image/') !== 0) {
@@ -620,9 +620,9 @@
     brothers: '1, married', sisters: '1 younger, studying',
     familyType: 'Nuclear', familyValues: 'Moderate',
     nativePlace: 'Jaipur, Rajasthan',
-    contactPerson: 'Father — Rajesh Sharma',
+    contactPerson: 'Father - Rajesh Sharma',
     phone: '+91 98xxx xxxxx', email: 'sharma.family@example.com',
-    address: '12, Shanti Niketan Colony,\nCivil Lines, Jaipur — 302006',
+    address: '12, Shanti Niketan Colony,\nCivil Lines, Jaipur - 302006',
     about: 'I am a software engineer who is happiest with a sketchbook on a Sunday morning. I value honesty, quiet humour and family time, and I am looking for a partner who wants an equal, easy-going home.',
     partner: 'A well-educated, kind-natured match aged 26–31, settled in India, vegetarian preferred. Someone who respects family and has interests of their own.'
   };
@@ -654,7 +654,7 @@
     state.photo = samplePortrait();
     writeForm();
     render();
-    setStatus('Example loaded — every detail is fictional');
+    setStatus('Example loaded - every detail is fictional');
   }
 
   function clearAll() {
@@ -694,27 +694,27 @@
     a.remove();
     /* Deferred so the click has consumed the URL before it dies. */
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    setStatus('Downloaded biodata-data.json — keep it as private as the sheet itself');
+    setStatus('Downloaded biodata-data.json - keep it as private as the sheet itself');
   }
 
   function importJson(file, onApplied) {
     if (!file) return;
     var reader = new FileReader();
     reader.onerror = function () {
-      setStatus('Could not read that file — nothing was changed');
+      setStatus('Could not read that file - nothing was changed');
     };
     reader.onload = function () {
       var parsed = null;
       try {
         parsed = JSON.parse(reader.result);
       } catch (err) {
-        setStatus('That is not a JSON file — nothing was changed');
+        setStatus('That is not a JSON file - nothing was changed');
         return;
       }
       if (!parsed || typeof parsed !== 'object' ||
           parsed.tool !== 'biodata-maker' || parsed.version !== 1 ||
           !parsed.data || typeof parsed.data !== 'object') {
-        setStatus('That file is not a biodata-maker export — nothing was changed');
+        setStatus('That file is not a biodata-maker export - nothing was changed');
         return;
       }
       /* The same guard as Clear and Load example — asked only now, after the
@@ -723,7 +723,7 @@
          never going to happen. */
       if (!formIsBlank() &&
           !window.confirm('Load this file and replace every field? This cannot be undone.')) {
-        setStatus('Load cancelled — nothing was changed');
+        setStatus('Load cancelled - nothing was changed');
         return;
       }
       /* Blank first, then apply: a field absent from the file must come

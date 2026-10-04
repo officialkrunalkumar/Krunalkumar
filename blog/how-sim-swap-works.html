@@ -11,8 +11,8 @@
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/blog/how-sim-swap-works" />
-    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah — Blog (RSS)" href="/feed.xml" />
-    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah — Blog (Atom)" href="/atom.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Krunalkumar Shah - Blog (RSS)" href="/feed.xml" />
+    <link rel="alternate" type="application/atom+xml" title="Krunalkumar Shah - Blog (Atom)" href="/atom.xml" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="How a SIM Swap Works, and Why an OTP Is Not Protection" />
     <meta
@@ -43,7 +43,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "How a SIM Swap Works, and Why an OTP Is Not Protection",
-        "description": "An India-aware account of SIM swap fraud: what the attack actually is, how a number is re-pointed through a replacement SIM or a port, why the deciding check is a human at a retail counter working from details an attacker can gather from your public footprint, what happens in the window, why SS7 and SMS were never designed to carry authentication, why sudden loss of signal is the tell, and the defences that hold — authenticator apps, passkeys, closing the SMS recovery route, and what to do in the first hour.",
+        "description": "An India-aware account of SIM swap fraud: what the attack actually is, how a number is re-pointed through a replacement SIM or a port, why the deciding check is a human at a retail counter working from details an attacker can gather from your public footprint, what happens in the window, why SS7 and SMS were never designed to carry authentication, why sudden loss of signal is the tell, and the defences that hold - authenticator apps, passkeys, closing the SMS recovery route, and what to do in the first hour.",
         "image": "https://krunalkumar.dpdns.org/assets/images/blog/og/how-sim-swap-works.jpg",
         "datePublished": "2026-08-31",
         "dateModified": "2026-08-31",
@@ -87,7 +87,7 @@
             "name": "Is a SIM swap the same thing as SIM cloning?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No, and the difference matters. Cloning means copying the secret key held inside the card onto a second card, so that two SIMs answer to the same identity. Against the SIM generations in use today that is genuinely hard, and it is not what is happening in these cases. A swap copies nothing. It is an ordinary administrative change at the operator — this number now belongs to that SIM profile — performed by staff who are supposed to be able to perform it, because people really do lose phones. Reporting uses the two words interchangeably. Only one of them is common, and it is the one with no cryptography in it."
+              "text": "No, and the difference matters. Cloning means copying the secret key held inside the card onto a second card, so that two SIMs answer to the same identity. Against the SIM generations in use today that is genuinely hard, and it is not what is happening in these cases. A swap copies nothing. It is an ordinary administrative change at the operator - this number now belongs to that SIM profile - performed by staff who are supposed to be able to perform it, because people really do lose phones. Reporting uses the two words interchangeably. Only one of them is common, and it is the one with no cryptography in it."
             }
           },
           {
@@ -135,7 +135,7 @@
             "name": "Will reporting to 1930 get my money back?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sometimes, partly, and it depends almost entirely on speed. What the report can do is put a hold on funds that have not yet moved out of the chain of accounts they were pushed through, which is why minutes matter and days usually do not. It is not a refund mechanism and nobody can promise you an outcome. Report anyway, and through both routes — the helpline and the portal — because the complaint is also what makes a bank dispute, a police investigation and any later restitution possible. Raise the dispute with your bank in writing as well, keep every acknowledgement number, and do not let anyone tell you a rule will rescue you automatically. I am not a lawyer, and none of this is advice on your particular case."
+              "text": "Sometimes, partly, and it depends almost entirely on speed. What the report can do is put a hold on funds that have not yet moved out of the chain of accounts they were pushed through, which is why minutes matter and days usually do not. It is not a refund mechanism and nobody can promise you an outcome. Report anyway, and through both routes - the helpline and the portal - because the complaint is also what makes a bank dispute, a police investigation and any later restitution possible. Raise the dispute with your bank in writing as well, keep every acknowledgement number, and do not let anyone tell you a rule will rescue you automatically. I am not a lawyer, and none of this is advice on your particular case."
             }
           }
         ]
@@ -250,7 +250,7 @@
                 swap, that key is not extracted, copied or broken. What changes is a record on the operator's side:
                 the association between your number and a SIM profile is repointed at a different card. A
                 replacement SIM issued at a retail point, or a port of the number to a different operator
-                altogether, both end in the same state — the network now delivers calls and messages for your number
+                altogether, both end in the same state - the network now delivers calls and messages for your number
                 somewhere else, and the card sitting in your phone belongs to a subscription that no longer exists.
               </p>
               <p>
@@ -317,8 +317,8 @@
                 porting code, generated by your current operator and delivered to your number by SMS, which the new
                 operator needs before the number can move. Notice the circularity: the control that protects the
                 number is a message sent <em>to</em> the number. Whoever can read messages at that number can
-                authorise its own departure. This is not a secret design flaw — it is the only channel the system
-                had — but it is why the two routes tend to be discussed as one attack.
+                authorise its own departure. This is not a secret design flaw - it is the only channel the system
+                had - but it is why the two routes tend to be discussed as one attack.
               </p>
               <p>
                 I am deliberately not going to describe what a convincing request looks like, which details are
@@ -332,7 +332,7 @@
                 There are procedural brakes, and they are worth knowing because they shape the timeline rather than
                 prevent the event. Indian rules require the SMS facility on a number to be barred for a period after
                 a SIM is replaced or a number is ported, and a replacement triggers a re-verification step. That
-                buys you detection time — the gap between the swap and the first code being useful — and it is
+                buys you detection time - the gap between the swap and the first code being useful - and it is
                 exactly the gap the next two sections are about. Treat the specifics as subject to change, ask your
                 own operator what applies to your account, and do not confuse a delay with a lock.
               </p>
@@ -354,7 +354,7 @@
                 not in any single item.
               </p>
               <p>
-                So the useful question is not "is my data out there" — it is — but "how much of a counter check
+                So the useful question is not "is my data out there" - it is - but "how much of a counter check
                 could a stranger complete about me from what is public today". That is a question you can answer in
                 an afternoon, and answering it is more useful than any product that offers to monitor things on your
                 behalf.
@@ -364,7 +364,7 @@
                 <p class="lab-cta-text">
                   <strong>See your own footprint the way somebody else would.</strong> Paste your own bio, a
                   handle, an out-of-office reply or a CV into the self-check lab on this site, or drop in a photo,
-                  and it shows what a stranger could work out from it — and, usefully for this article, which
+                  and it shows what a stranger could work out from it - and, usefully for this article, which
                   account-recovery question each detail helps answer. Nothing is uploaded and nobody is looked up;
                   the work happens in your browser.
                 </p>
@@ -390,7 +390,7 @@
                 remote attackers and no control at all against somebody holding the number. Reset flows, card
                 controls, transaction limits and beneficiary additions are frequently gated on the same code. Where
                 money leaves through UPI, the mechanics of the debit itself are unchanged from
-                <a href="/blog/upi-fraud-how-the-money-actually-leaves">the ordinary UPI fraud pattern</a> — what
+                <a href="/blog/upi-fraud-how-the-money-actually-leaves">the ordinary UPI fraud pattern</a> - what
                 the swap supplies is the authorisation step that would otherwise have needed you.
               </p>
               <p>
@@ -401,7 +401,7 @@
               <p>
                 One honest correction to the usual telling, because it changes what you should worry about. A SIM
                 swap on its own is rarely sufficient for the financial steps. Bank registration typically also wants
-                a card number, an expiry, an ATM PIN or an existing credential — so the swap is usually the
+                a card number, an expiry, an ATM PIN or an existing credential - so the swap is usually the
                 <em>last</em> step of a longer job, added once the rest has been gathered from a breach, a
                 <a href="/glossary#term-phishing">phishing</a> page, or an earlier conversation. That is why swaps
                 so often follow a message you clicked weeks ago, the sequence described in
@@ -463,7 +463,7 @@
               </p>
               <p>
                 The industry response was signalling firewalls, home routing and, on newer networks, a different
-                protocol stack — Diameter on LTE, and a service-based architecture on 5G — each with its own
+                protocol stack - Diameter on LTE, and a service-based architecture on 5G - each with its own
                 research literature. This has improved. But note what "improved" means here: your ability to receive
                 a code securely depends on the interconnect hygiene of operators you have never heard of, in
                 countries you have never visited, and you have no way to audit any of it and no way to choose.
@@ -488,13 +488,13 @@
               </p>
               <p>
                 <strong>Your phone drops to no service, for no reason, and stays there.</strong> Not slow data, not
-                one bar — no network at all, while everything else about the handset works normally. That is what a
+                one bar - no network at all, while everything else about the handset works normally. That is what a
                 detached subscription looks like from your side. There is no notification, no email and no call,
                 because every channel a company would use to warn you now routes to the person who took the number.
               </p>
               <p>
                 The reason it gets ignored is that it looks exactly like an ordinary outage, and ordinary outages
-                are common. So the useful rule is not "panic at no service" — it is <strong>treat unexplained loss
+                are common. So the useful rule is not "panic at no service" - it is <strong>treat unexplained loss
                 of service as an incident until it explains itself</strong>, and the check costs about ten minutes:
               </p>
               <ul>
@@ -550,7 +550,7 @@
                 <strong>2. Use a passkey wherever it is offered.</strong> A passkey is a key pair created on your
                 device; the private half never leaves it, and signing in means the device signs a challenge that
                 names the site it came from. There is no shared secret on the server to steal, no code to intercept,
-                and nothing that can be replayed on a lookalike page — which is why it defeats the phishing that
+                and nothing that can be replayed on a lookalike page - which is why it defeats the phishing that
                 still beats an authenticator app. Coverage in India is uneven and thin in banking, so treat this as
                 "wherever offered" rather than a plan. The full comparison is in
                 <a href="/blog/passwords-passkeys-and-what-actually-protects-you">passwords, passkeys, and what
@@ -561,7 +561,7 @@
                 on this list. If an account accepts a stronger factor but still lets somebody reset their way in
                 with a code to your number, you have added a lock beside an open door. Go into each account's
                 security settings and look specifically at recovery: remove the number as a reset method where an
-                alternative exists, and where it cannot be removed — which is most Indian banking — know that and
+                alternative exists, and where it cannot be removed - which is most Indian banking - know that and
                 weight your other defences accordingly.
               </p>
               <p>
@@ -575,7 +575,7 @@
                 <strong>5. Set a SIM PIN, and take any lock your operator offers.</strong> A SIM PIN protects the
                 card against being moved into another phone; it does nothing against a replacement card issued at a
                 counter, so it is worth the two minutes without being the answer. Self-service porting freezes of the
-                kind some overseas carriers provide are not generally available in India — ask, take whatever is on
+                kind some overseas carriers provide are not generally available in India - ask, take whatever is on
                 offer, and do not build your plan on it.
               </p>
               <p>
@@ -610,7 +610,7 @@
                 <p class="lab-cta-text">
                   <strong>Watch a code being generated without a network.</strong> The TOTP lab on this site takes a
                   shared secret and a clock and derives the six digits in front of you, step by step, so you can see
-                  that nothing is sent and nothing is received — the difference between a code that arrives and a
+                  that nothing is sent and nothing is received - the difference between a code that arrives and a
                   code that is computed. It runs entirely in the browser, and no secret you type is transmitted
                   anywhere.
                 </p>
@@ -626,7 +626,7 @@
                 <li>
                   <strong>Get the number suspended.</strong> Call your operator from another phone, or go to the
                   nearest company-owned store with identity documents, and ask them to block the number and reverse
-                  the replacement or the porting request. Say the words "SIM swap fraud" — it routes you to a process
+                  the replacement or the porting request. Say the words "SIM swap fraud" - it routes you to a process
                   that exists rather than to general support.
                 </li>
                 <li>
@@ -658,7 +658,7 @@
                   makes the rest credible.
                 </li>
                 <li>
-                  <strong>Go to the police as well.</strong> Your local cyber cell, or any station — under the Zero
+                  <strong>Go to the police as well.</strong> Your local cyber cell, or any station - under the Zero
                   FIR principle none can refuse you for being outside its jurisdiction. What happens after that is
                   described in <a href="/blog/how-cybercrime-cases-are-solved">how cybercrime cases are solved</a>.
                 </li>
@@ -730,8 +730,8 @@
                     No, and the difference matters. Cloning means copying the secret key held inside the card onto a
                     second card, so that two SIMs answer to the same identity. Against the SIM generations in use
                     today that is genuinely hard, and it is not what is happening in these cases. A swap copies
-                    nothing. It is an ordinary administrative change at the operator — this number now belongs to
-                    that SIM profile — performed by staff who are supposed to be able to perform it, because people
+                    nothing. It is an ordinary administrative change at the operator - this number now belongs to
+                    that SIM profile - performed by staff who are supposed to be able to perform it, because people
                     really do lose phones. Reporting uses the two words interchangeably. Only one of them is common,
                     and it is the one with no cryptography in it.
                   </p>
@@ -802,7 +802,7 @@
                     Sometimes, partly, and it depends almost entirely on speed. What the report can do is put a hold
                     on funds that have not yet moved out of the chain of accounts they were pushed through, which is
                     why minutes matter and days usually do not. It is not a refund mechanism and nobody can promise
-                    you an outcome. Report anyway, and through both routes — the helpline and the portal — because
+                    you an outcome. Report anyway, and through both routes - the helpline and the portal - because
                     the complaint is also what makes a bank dispute, a police investigation and any later
                     restitution possible. Raise the dispute with your bank in writing as well, keep every
                     acknowledgement number, and do not let anyone tell you a rule will rescue you automatically. I
@@ -813,7 +813,7 @@
 
               <p>
                 The uncomfortable summary is that your bank's one-time password protects you against everyone except
-                the person who has already made your number theirs — and that making your number theirs requires no
+                the person who has already made your number theirs - and that making your number theirs requires no
                 skill you would recognise as hacking. The good news is unusually concrete for this field: two
                 settings changes on your email account and your primary bank, made this evening, remove most of what
                 this article describes. Most security advice is a posture. This one is a checklist, and it finishes.
@@ -848,7 +848,7 @@
             <p>
               Most of the work here is an hour spent in the security settings of five accounts, in the right order,
               with somebody who knows which fallback matters. I do that for individuals and for teams, and I teach
-              it to the people I mentor — including the awkward part, which is deciding what you are choosing to
+              it to the people I mentor - including the awkward part, which is deciding what you are choosing to
               live with.
             </p>
             <div class="hero-actions">

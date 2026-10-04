@@ -244,15 +244,15 @@
         'buf until it meets a zero byte, and it has no idea where buf ends either. Fill the buffer ' +
         'with a send, read the canary out with a show, then write it back where it belongs.',
       hints: [
-        'The canary is only unknown until something prints it. show_note walks up from 0x010C and stops at the first zero — so a buffer with no zero in it does not stop it at 0x0113.',
+        'The canary is only unknown until something prints it. show_note walks up from 0x010C and stops at the first zero - so a buffer with no zero in it does not stop it at 0x0113.',
         'Send A*8 first. That fills buf without touching the canary, so nothing aborts. Then press Show the note and read the ninth byte it prints.',
-        'With the canary in hand: A*8 0x<canary> A 0x34 0x02 — eight of filler, the canary put back exactly, one byte over the saved frame pointer, then the address.'
+        'With the canary in hand: A*8 0x<canary> A 0x34 0x02 - eight of filler, the canary put back exactly, one byte over the saved frame pointer, then the address.'
       ],
       debrief: 'A canary is a tripwire, not a wall. It did not stop the write and it never could: by ' +
         'the time the check runs, the return address has already been overwritten. What it stops is ' +
         'the <em>return</em>, and only when the overflow is contiguous and the value is unknown. Take ' +
-        'either of those away — an over-read that prints it, a write that skips over it, a fork ' +
-        'server that keeps the same value across a thousand crashes — and the tripwire is a formality. ' +
+        'either of those away - an over-read that prints it, a write that skips over it, a fork ' +
+        'server that keeps the same value across a thousand crashes - and the tripwire is a formality. ' +
         'Real canaries usually carry a zero byte on purpose, precisely so that a string copy cannot ' +
         'write one back and a string print cannot read one out; this one does not, which is what ' +
         'made the level solvable. ' + CLOSER
@@ -268,16 +268,16 @@
       entries: { 0x08: 'main', 0x40: 'set_key', 0x50: 'open_door' },
       spans: [[0x00, 0x0E, 'main'], [0x10, 0x24, 'read_note'], [0x28, 0x32, 'show_note'],
         [0x40, 0x43, 'set_key'], [0x50, 0x5A, 'open_door']],
-      brief: 'The stack is now marked no-execute, so the old move — put your own instructions in the ' +
-        'buffer and return into it — faults before a single one of them runs. Point the return ' +
+      brief: 'The stack is now marked no-execute, so the old move - put your own instructions in the ' +
+        'buffer and return into it - faults before a single one of them runs. Point the return ' +
         'address at 0x010C and watch it happen; it is worth seeing once. Then use code that is ' +
         'already here. <code>open_door</code> wants 0x2A in r1 and there is nothing in this program ' +
         'that calls it, but <code>set_key</code> ends in a RET, and a RET takes its address off the ' +
-        'stack — the stack you are writing.',
+        'stack - the stack you are writing.',
       hints: [
         'Try returning into the buffer first, at 0x010C. Read what the fault says, then come back. Returning straight to open_door is the next thing to try, and it will tell you what is missing.',
-        'set_key at 0x0240 puts 0x2A into r1 and then returns. Returning is not going back anywhere in particular — it is reading two cells off the top of the stack and jumping there. After read_note returns, the top of the stack is 0x0118.',
-        'Two addresses, one after the other, is a chain: A*8 0x<canary> A 0x40 0x02 0x50 0x02 — the first pair sends you to set_key, and set_key’s own RET picks up the second pair.'
+        'set_key at 0x0240 puts 0x2A into r1 and then returns. Returning is not going back anywhere in particular - it is reading two cells off the top of the stack and jumping there. After read_note returns, the top of the stack is 0x0118.',
+        'Two addresses, one after the other, is a chain: A*8 0x<canary> A 0x40 0x02 0x50 0x02 - the first pair sends you to set_key, and set_key’s own RET picks up the second pair.'
       ],
       debrief: 'That is return-oriented programming in miniature, and the miniature is not a ' +
         'caricature. A real chain is the same idea with more links: short runs of existing ' +
@@ -288,7 +288,7 @@
         'specific move, and they are answers with their own bypasses. One thing this level makes ' +
         'easier than life: the stack page here is 0x0100, so the address of the buffer has no zero ' +
         'byte in it. Plenty of real stack addresses do, and a copy that stops at a zero cannot carry ' +
-        'one — which has decided more than one exploit on its own. ' + CLOSER
+        'one - which has decided more than one exploit on its own. ' + CLOSER
     },
     {
       name: 'Randomised addresses',
@@ -306,18 +306,18 @@
         'because you genuinely have no way to read them: <code>main</code> is the outermost frame in ' +
         'this build, its saved frame pointer is zero, and show_note stops dead at a zero byte. So the ' +
         'leak hands you the canary and nothing above it. The base is a whole multiple of 0x100, and the ' +
-        'stack has not moved — a real randomisation moves the stack, the heap and every library as ' +
+        'stack has not moved - a real randomisation moves the stack, the heap and every library as ' +
         'well, and only the code is randomised here so that one idea is being tested at a time.',
       hints: [
         'You still need the canary, and the leak still gives it to you. What the leak will not give you is anything above 0x0115, because 0x0115 holds a zero and show_note stops there.',
-        'The base is a multiple of 0x100, so every routine in this program shares the same high half — including the return address main pushed, which is still sitting in 0x0117 where you have not touched it.',
-        'Write the low half and stop: A*8 0x<canary> A 0x34 — eleven bytes. 0x0117 keeps the high half it already had, and that half is correct by definition. You never learn the base and you never need to.'
+        'The base is a multiple of 0x100, so every routine in this program shares the same high half - including the return address main pushed, which is still sitting in 0x0117 where you have not touched it.',
+        'Write the low half and stop: A*8 0x<canary> A 0x34 - eleven bytes. 0x0117 keeps the high half it already had, and that half is correct by definition. You never learn the base and you never need to.'
       ],
       debrief: 'A partial overwrite is a real technique and this is really how it works: randomise ' +
         'the base in units of a page and the bytes below that unit are not random at all, so the ' +
         'half of the pointer you leave alone stays true. The other route in the field is an ' +
         'information leak that spills any code pointer at all, from which the base is one subtraction ' +
-        'away — this program has one leak and a zero byte in the way of it, which is why the short ' +
+        'away - this program has one leak and a zero byte in the way of it, which is why the short ' +
         'payload is the only way in. And the reason brute force is not a third route: this process ' +
         're-randomises when it restarts. Services that fork without re-randomising have been guessed ' +
         'a byte at a time, which is a fact about the service and not about ASLR. ' + CLOSER
@@ -380,7 +380,7 @@
         return {
           ok: false,
           error: 'I cannot read "' + t + '". A token is a hex byte like 0x41, a number from 0 to 255, ' +
-            'some plain text, or text in quotes — and any of those with *n after it to repeat.'
+            'some plain text, or text in quotes - and any of those with *n after it to repeat.'
         };
       }
       for (var r = 0; r < times; r++) {
@@ -497,7 +497,7 @@
       ev.push({
         t: 'opcode', addr: target,
         text: 'entered the stack at ' + addr16(target) + '. The stack is executable on this level, so the ' +
-          'machine started decoding your bytes as instructions — and there is no opcode ' + addr8(op) +
+          'machine started decoding your bytes as instructions - and there is no opcode ' + addr8(op) +
           ' on this machine, so it faults here. In 1996 that byte would have been the start of a program.'
       });
       ev.push({ t: 'end', outcome: 'fault' });
@@ -619,7 +619,7 @@
       if (mem[CANARY] !== proc.canary) {
         ev.push({
           t: 'abort',
-          text: '*** stack smashing detected *** — ' + memAt(CANARY) + ' holds ' + addr8(mem[CANARY]) + ' and the process ' +
+          text: '*** stack smashing detected *** - ' + memAt(CANARY) + ' holds ' + addr8(mem[CANARY]) + ' and the process ' +
             'planted ' + addr8(proc.canary) + '. Aborting before the return.'
         });
         ev.push({ t: 'end', outcome: 'abort' });
@@ -807,12 +807,12 @@
           '</div>' +
           '<div class="ovf-main">' +
           '  <div class="ovf-pane">' +
-          '    <p class="ovf-pane-h">The stack <span id="ovf-grow">— high addresses at the top</span></p>' +
+          '    <p class="ovf-pane-h">The stack <span id="ovf-grow">- high addresses at the top</span></p>' +
           '    <div class="ovf-stack" id="ovf-stack"></div>' +
           '    <p class="ovf-legend" id="ovf-legend"></p>' +
           '  </div>' +
           '  <div class="ovf-pane">' +
-          '    <p class="ovf-pane-h">The program <span>— tap a labelled line to append its address</span></p>' +
+          '    <p class="ovf-pane-h">The program <span>- tap a labelled line to append its address</span></p>' +
           '    <div class="ovf-code" id="ovf-code"></div>' +
           '  </div>' +
           '</div>' +
@@ -998,7 +998,7 @@
         var lv = LEVELS[at];
         el.done.hidden = false;
         el.done.innerHTML =
-          '<h4>Level ' + (at + 1) + ' — ' + esc(lv.name) + ', ' + s.points + ' points</h4>' +
+          '<h4>Level ' + (at + 1) + ' - ' + esc(lv.name) + ', ' + s.points + ' points</h4>' +
           '<p>' + lv.debrief + '</p>' +
           (at + 1 < LEVELS.length
             ? '<p>Level ' + (at + 2) + ' is in the dropdown above the board.</p>'
@@ -1158,7 +1158,7 @@
             ' was already overwritten. The canary did not stop the write. It stopped the return.', 'dim');
           g.beep(180, 0.25, 'square');
           g.announce('Stack smashing detected. The process aborted.');
-          status('The canary caught it. The write still happened — look at the two return cells.', 'bad');
+          status('The canary caught it. The write still happened - look at the two return cells.', 'bad');
           return 1;
         }
 
@@ -1299,7 +1299,7 @@
         at = n;
         if (at < 0 || at >= LEVELS.length) at = 0;
         var lv = LEVELS[at];
-        el.title.textContent = 'Level ' + (at + 1) + ' — ' + lv.name;
+        el.title.textContent = 'Level ' + (at + 1) + ' - ' + lv.name;
         el.brief.innerHTML = lv.brief;
         paintChips();
         paintCode();

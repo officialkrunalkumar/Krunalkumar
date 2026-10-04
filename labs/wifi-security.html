@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Why a captured WPA2 handshake is a cracking target and a WPA3 one is not" />
     <meta name="twitter:description" content="WEP through WPA3 side by side, the WPA2 four-way handshake with the PTK derivation drawn out input by input, the SAE exchange beside it, how an evil twin and a captive portal collect credentials, and an honest answer on public wifi and VPNs. Explanation only. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-wifi-security.jpg" />
-    <title>Wi-Fi Security Explained — WEP to WPA3 | Krunalkumar Shah</title>
+    <title>Wi-Fi Security Explained - WEP to WPA3 | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>Wi-Fi security, from WEP to WPA3</h1>
-        <p class="hero-text">Almost everything written about wireless security is either a list of router settings that change nothing, or a warning about public wifi that stopped being true around the time HTTPS became universal. This lab does the other thing: it draws the mechanism. Walk the five generations, step the WPA2 four-way handshake with every input marked public or secret, put the WPA3 exchange next to it, and see exactly why one of them can be guessed at offline and the other cannot. Explanation only &mdash; there is no capture step and no attack here.</p>
+        <p class="hero-text">Almost everything written about wireless security is either a list of router settings that change nothing, or a warning about public wifi that stopped being true around the time HTTPS became universal. This lab does the other thing: it draws the mechanism. Walk the five generations, step the WPA2 four-way handshake with every input marked public or secret, put the WPA3 exchange next to it, and see exactly why one of them can be guessed at offline and the other cannot. Explanation only - there is no capture step and no attack here.</p>
         <ul class="lab-facts">
           <li>WEP to WPA3, what each fixed and still leaks</li>
           <li>The four-way handshake, frame by frame</li>
@@ -239,7 +239,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the diagrams, the stepping, all of it on
+              This runs entirely inside your browser - the diagrams, the stepping, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -248,7 +248,7 @@
                 <ul class="lab-gate-list">
                   <li>It cannot see your network or any network</li>
                   <li>No capture, no cracking, no attack tooling</li>
-                  <li>It performs no cryptography &mdash; the hex is illustrative and labelled</li>
+                  <li>It performs no cryptography - the hex is illustrative and labelled</li>
                   <li>Nothing is uploaded or stored</li>
                 </ul>
               </div>
@@ -263,7 +263,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -275,7 +275,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-wifi-mount">
-          <p class="lab-proc-fallback">Starting the wireless security explainer… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the wireless security explainer… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -286,11 +286,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Five of the six inputs travel in the clear</h3>
-            <p>The WPA2 session key comes out of a pseudo-random function fed six things: the PMK, a fixed string from the standard, both MAC addresses and both nonces. The string is published. The MAC addresses are in every frame header. Both nonces are sent unencrypted during the handshake. The only input a listener does not have is the PMK &mdash; and the PMK is nothing but your passphrase and your network name. That is why the passphrase carries the entire network, and why &ldquo;use a long random one&rdquo; is a specific technical requirement rather than general advice.</p>
+            <p>The WPA2 session key comes out of a pseudo-random function fed six things: the PMK, a fixed string from the standard, both MAC addresses and both nonces. The string is published. The MAC addresses are in every frame header. Both nonces are sent unencrypted during the handshake. The only input a listener does not have is the PMK - and the PMK is nothing but your passphrase and your network name. That is why the passphrase carries the entire network, and why &ldquo;use a long random one&rdquo; is a specific technical requirement rather than general advice.</p>
           </article>
           <article class="info-card">
             <h3>Offline versus live is the whole difference</h3>
-            <p>A captured WPA2 handshake contains a MIC that any candidate passphrase can be tested against. The testing happens on the attacker&rsquo;s own hardware, at their own pace, with nothing sent back to the network &mdash; so there is nothing to rate-limit, nothing to lock out and nothing to log. SAE removes that. The password only enters the exchange blinded by random values that are never transmitted, so every guess has to be made live against the access point, which can slow it down, refuse it and record it. Same password, wildly different economics.</p>
+            <p>A captured WPA2 handshake contains a MIC that any candidate passphrase can be tested against. The testing happens on the attacker&rsquo;s own hardware, at their own pace, with nothing sent back to the network - so there is nothing to rate-limit, nothing to lock out and nothing to log. SAE removes that. The password only enters the exchange blinded by random values that are never transmitted, so every guess has to be made live against the access point, which can slow it down, refuse it and record it. Same password, wildly different economics.</p>
           </article>
           <article class="info-card">
             <h3>Forward secrecy is the quiet upgrade</h3>
@@ -315,7 +315,7 @@
           </article>
           <article class="info-card">
             <h3>The cryptography is drawn, not computed</h3>
-            <p>This page performs no cryptography. The hex strings in the handshake family are a deterministic placeholder, present so that changing the network name visibly changes what depends on it &mdash; which is a real property, and the reason a precomputed table only ever helps against one SSID. Every panel that shows one says what it is. The structure, the key sizes and the role of each derived key are the genuine ones.</p>
+            <p>This page performs no cryptography. The hex strings in the handshake family are a deterministic placeholder, present so that changing the network name visibly changes what depends on it - which is a real property, and the reason a precomputed table only ever helps against one SSID. Every panel that shows one says what it is. The structure, the key sizes and the role of each derived key are the genuine ones.</p>
           </article>
           <article class="info-card">
             <h3>It cannot see your network</h3>
@@ -323,7 +323,7 @@
           </article>
           <article class="info-card">
             <h3>Signals, not proof</h3>
-            <p>The evil-twin family lists tells, and a tell is not evidence. Two access points with the same name is completely normal in any building large enough to need two. A portal appearing is normal. What is not normal is a certificate warning, a network that has lost its lock icon, or a sign-in page asking for a password that unlocks something other than the wifi &mdash; and those are the three worth acting on.</p>
+            <p>The evil-twin family lists tells, and a tell is not evidence. Two access points with the same name is completely normal in any building large enough to need two. A portal appearing is normal. What is not normal is a certificate warning, a network that has lost its lock icon, or a sign-in page asking for a password that unlocks something other than the wifi - and those are the three worth acting on.</p>
           </article>
         </div>
       </section>
@@ -362,7 +362,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a panel will not render, or you think something here is wrong, I would like to know &mdash; and if it is wrong, please say which part.</p>
+          <p>If a panel will not render, or you think something here is wrong, I would like to know - and if it is wrong, please say which part.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=wifi-security#lab-feedback">Report a problem or send feedback</a>
@@ -403,7 +403,7 @@
           </a>
           <a class="lab-card" href="/labs/password">
             <span class="lab-card-name">Password strength</span>
-            <p class="lab-card-desc">Real entropy and offline crack times &mdash; which is exactly what a captured handshake gives an attacker.</p>
+            <p class="lab-card-desc">Real entropy and offline crack times - which is exactly what a captured handshake gives an attacker.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
         </div>

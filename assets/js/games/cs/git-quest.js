@@ -470,11 +470,11 @@
         var m = MISSIONS[mission];
         if (!kickEl) return;
         if (m) {
-          kickEl.textContent = 'Mission ' + (mission + 1) + '/' + MISSIONS.length + ' — ' + m.title;
+          kickEl.textContent = 'Mission ' + (mission + 1) + '/' + MISSIONS.length + ' - ' + m.title;
           briefEl.textContent = m.brief;
         } else {
           kickEl.textContent = 'All ' + MISSIONS.length + ' missions done';
-          briefEl.textContent = 'Restart for a fresh run, or keep playing — the sandbox stays open and every command still works.';
+          briefEl.textContent = 'Restart for a fresh run, or keep playing - the sandbox stays open and every command still works.';
         }
       }
 
@@ -534,7 +534,7 @@
         if (!graphEl) return;
         if (!repo || !headId()) {
           graphEl.textContent = repo
-            ? '(no commits yet — the graph starts at the first one)'
+            ? '(no commits yet - the graph starts at the first one)'
             : '(git init creates the object store)';
           return;
         }
@@ -665,7 +665,7 @@
           conflict.resolved = true;
           good('Conflict marked resolved. Commit to finish the merge.');
         }
-        note('Staged ' + added + ' path(s). The index now holds the exact bytes you added — later edits stay unstaged.');
+        note('Staged ' + added + ' path(s). The index now holds the exact bytes you added - later edits stay unstaged.');
         flags.added = true;
       }
 
@@ -686,16 +686,16 @@
         }
         if (amend) {
           var tip = headId();
-          if (!tip) { err('error: nothing to amend — there is no commit yet.'); return; }
+          if (!tip) { err('error: nothing to amend - there is no commit yet.'); return; }
           var nid = makeCommit(repo.commits[tip].parents.slice(), index, msg);
           moveHead(nid, 'commit (amend): ' + msg);
           good('[' + (repo.head.detached ? 'detached' : repo.head.ref) + ' ' + nid + '] ' + msg);
-          note('Amend wrote a NEW commit with the same parent and moved the label — the old hash is now unlabelled. Never amend what others already have.');
+          note('Amend wrote a NEW commit with the same parent and moved the label - the old hash is now unlabelled. Never amend what others already have.');
           flags.amended = true;
           return;
         }
         if (!dirtyIndex() && !conflict) {
-          err('nothing to commit' + (dirtyWork() ? ' (changes exist but are not staged — git add first)' : ', working tree clean'));
+          err('nothing to commit' + (dirtyWork() ? ' (changes exist but are not staged - git add first)' : ', working tree clean'));
           return;
         }
         var parents = headId() ? [headId()] : [];
@@ -707,7 +707,7 @@
         conflict = null;
         moveHead(id, 'commit: ' + msg);
         good('[' + (repo.head.detached ? 'detached' : repo.head.ref) + ' ' + id + '] ' + msg);
-        if (parents.length === 2) note('A merge commit — two parents, one tree. The graph joins here.');
+        if (parents.length === 2) note('A merge commit - two parents, one tree. The graph joins here.');
         if (wasConflict) flags.mergedConflict = true;
         flags.committed = (flags.committed || 0) + 1;
       }
@@ -764,7 +764,7 @@
         for (k in from) {
           if (Object.prototype.hasOwnProperty.call(from, k) && !(k in to)) { diffLines(from[k], null, k); any = true; }
         }
-        if (!any) note(staged ? 'Index and HEAD agree — nothing staged.' : 'Working tree and index agree' + (dirtyIndex() ? ' — the change you are looking for is staged; try git diff --staged.' : '.'));
+        if (!any) note(staged ? 'Index and HEAD agree - nothing staged.' : 'Working tree and index agree' + (dirtyIndex() ? ' - the change you are looking for is staged; try git diff --staged.' : '.'));
         if (any && !staged) flags.diffed = true;
         if (any && staged) flags.diffedStaged = true;
       }
@@ -784,7 +784,7 @@
           if (!Object.prototype.hasOwnProperty.call(repo.branches, dead)) { err("error: branch '" + dead + "' not found."); return; }
           if (!repo.head.detached && repo.head.ref === dead) { err('error: cannot delete the branch you are on.'); return; }
           delete repo.branches[dead];
-          good('Deleted branch ' + dead + '. The commits are untouched — only the label is gone.');
+          good('Deleted branch ' + dead + '. The commits are untouched - only the label is gone.');
           return;
         }
         if (Object.prototype.hasOwnProperty.call(repo.branches, args[0])) { err("fatal: a branch named '" + args[0] + "' already exists"); return; }
@@ -876,7 +876,7 @@
           moveHead(target, 'merge ' + name + ': fast-forward');
           files = copyMap(repo.commits[target].tree);
           index = copyMap(repo.commits[target].tree);
-          good('Fast-forward. No new commit — your branch simply continued the same line, so the label slid.');
+          good('Fast-forward. No new commit - your branch simply continued the same line, so the label slid.');
           flags.fastForwarded = true;
           return;
         }
@@ -899,7 +899,7 @@
             files[k] = '<<<<<<< HEAD (ours)\n' + conflict.ours + '\n=======\n' + conflict.theirs + '\n>>>>>>> ' + name + ' (theirs)';
             err('CONFLICT (content): merge conflict in ' + k);
             note('Both branches changed the same lines and git refuses to guess. The file now holds both versions between markers.');
-            note('Pick a side: git checkout --ours ' + k + '   or   git checkout --theirs ' + k + ' — then git add ' + k + ' and git commit.');
+            note('Pick a side: git checkout --ours ' + k + '   or   git checkout --theirs ' + k + ' - then git add ' + k + ' and git commit.');
             flags.conflicted = true;
             return;
           }
@@ -910,7 +910,7 @@
         index = copyMap(merged);
         var id = makeCommit([ours, target], merged, 'Merge branch \'' + name + '\'');
         moveHead(id, 'merge ' + name);
-        good('Merge made. Commit ' + id + ' has two parents — the graph records where the lines joined.');
+        good('Merge made. Commit ' + id + ' has two parents - the graph records where the lines joined.');
         flags.mergeCommitted = true;
       }
 
@@ -966,7 +966,7 @@
           var top = stash.pop();
           files = top.files;
           index = top.index;
-          good('Stash popped — your parked changes are back in the working tree.');
+          good('Stash popped - your parked changes are back in the working tree.');
           flags.stashPopped = true;
           return;
         }
@@ -1024,7 +1024,7 @@
         moveHead(newTip, 'rebase onto ' + name);
         files = copyMap(repo.commits[newTip].tree);
         index = copyMap(repo.commits[newTip].tree);
-        good('Rebased ' + chain.length + ' commit(s) onto ' + name + '. Same changes, new hashes — the old line is unlabelled now, not gone.');
+        good('Rebased ' + chain.length + ' commit(s) onto ' + name + '. Same changes, new hashes - the old line is unlabelled now, not gone.');
         note('This is why you never rebase commits other people already have: their labels still point at the old line.');
         flags.rebased = true;
       }
@@ -1047,13 +1047,13 @@
         index = copyMap(tree);
         var nid = makeCommit([headId()], tree, c.msg);
         moveHead(nid, 'cherry-pick ' + id);
-        good('[' + repo.head.ref + ' ' + nid + '] ' + c.msg + ' — one commit’s change, copied here. The original stays where it was.');
+        good('[' + repo.head.ref + ' ' + nid + '] ' + c.msg + ' - one commit’s change, copied here. The original stays where it was.');
         flags.cherryPicked = true;
       }
 
       function gitReflog() {
         if (!needRepo()) return;
-        if (!reflog.length) { note('Nothing yet — the diary fills as HEAD moves.'); return; }
+        if (!reflog.length) { note('Nothing yet - the diary fills as HEAD moves.'); return; }
         for (var i = 0; i < reflog.length; i++) {
           out((reflog[i].id || '-------') + ' HEAD@{' + i + '}: ' + reflog[i].d);
         }
@@ -1071,7 +1071,7 @@
           if (!any) note('No tags yet. git tag <name> pins the current commit.');
           return;
         }
-        if (!headId()) { err('fatal: nothing to tag — no commits yet.'); return; }
+        if (!headId()) { err('fatal: nothing to tag - no commits yet.'); return; }
         if (Object.prototype.hasOwnProperty.call(repo.tags, args[0])) { err("fatal: tag '" + args[0] + "' already exists"); return; }
         repo.tags[args[0]] = headId();
         good('Tag ' + args[0] + ' pinned at ' + headId() + '. Like a branch, but it never moves.');
@@ -1096,7 +1096,7 @@
             else if (Object.prototype.hasOwnProperty.call(index, p)) delete index[p];
             else { err("error: pathspec '" + p + "' did not match any staged file"); return; }
           } else {
-            if (!Object.prototype.hasOwnProperty.call(index, p)) { err("error: '" + p + "' is untracked — restore copies from the index, and the index has never seen it."); return; }
+            if (!Object.prototype.hasOwnProperty.call(index, p)) { err("error: '" + p + "' is untracked - restore copies from the index, and the index has never seen it."); return; }
             files[p] = index[p];
           }
         }
@@ -1104,18 +1104,18 @@
           note('Unstaged ' + paths.length + ' path(s): the index entries were copied back from HEAD. Your files were not touched.');
           flags.restoredStaged = true;
         } else {
-          note('Restored ' + paths.length + ' path(s) from the index. The edit is gone — this is the one everyday command that discards work.');
+          note('Restored ' + paths.length + ' path(s) from the index. The edit is gone - this is the one everyday command that discards work.');
           flags.restoredWork = true;
         }
       }
 
       var GIT_ELSEWHERE = {
-        push: 'push: this repository has no remote — the game is about the local three places. The collaboration half (fetch, pull, push, --force-with-lease) is in the article: /blog/git-explained-from-the-object-up.',
+        push: 'push: this repository has no remote - the game is about the local three places. The collaboration half (fetch, pull, push, --force-with-lease) is in the article: /blog/git-explained-from-the-object-up.',
         pull: 'pull: no remote here. pull is just fetch + merge, and the merge half you are already learning.',
         fetch: 'fetch: no remote here. See the article for the remote model.',
         clone: 'clone: you are already inside the only repository this page has.',
         blame: 'blame: not implemented here. /labs/linux has a fuller machine.',
-        bisect: 'bisect: not in this game — but the idea (binary-search the history for the bad commit) needs no simulator.'
+        bisect: 'bisect: not in this game - but the idea (binary-search the history for the bad commit) needs no simulator.'
       };
 
       function gitDispatch(args) {
@@ -1173,12 +1173,12 @@
         out('  git switch [-c] NAME | checkout [-b|--ours|--theirs] | merge NAME [--abort]');
         out('  git rebase NAME | cherry-pick ID | tag [NAME] | reflog');
         out('  git reset [--soft|--mixed|--hard] REF | revert REF | stash [pop|list]');
-        out('Every command is a reimplementation over a toy object store — nothing touches your machine.', 'is-note');
+        out('Every command is a reimplementation over a toy object store - nothing touches your machine.', 'is-note');
       }
 
       function cmdHint() {
         var m = MISSIONS[mission];
-        if (!m) { sayNote('No mission left — free play. Restart for another scored run.'); return; }
+        if (!m) { sayNote('No mission left - free play. Restart for another scored run.'); return; }
         sayNote('Hint: ' + m.hint, 'is-hint');
         note('(hint shown beside the mission)');
       }
@@ -1269,7 +1269,7 @@
           title: 'Change, inspect, commit',
           brief: 'Do some coding (type: work), see exactly what changed with git diff, then stage and commit it.',
           hint: 'work · git diff · git add app.js (or .) · git commit -m "..."',
-          why: 'Bare diff compares working tree against index. After you add, bare diff goes quiet and git diff --staged shows the same change — nothing vanished, you just asked a different pair.',
+          why: 'Bare diff compares working tree against index. After you add, bare diff goes quiet and git diff --staged shows the same change - nothing vanished, you just asked a different pair.',
           scene: function () { quietInit(); quietCommit('first commit'); },
           done: function () { return flags.diffed && (flags.committed || 0) >= 1; }
         },
@@ -1292,9 +1292,9 @@
         {
           key: 'unstage',
           title: 'Unstage, un-edit',
-          brief: 'Change your mind twice. Type work, stage it (git add .) — then pull it back out of the index with git restore --staged app.js, then discard the edit entirely with git restore app.js.',
+          brief: 'Change your mind twice. Type work, stage it (git add .) - then pull it back out of the index with git restore --staged app.js, then discard the edit entirely with git restore app.js.',
           hint: 'work · git add . · git restore --staged app.js · git restore app.js · git status should end clean.',
-          why: 'restore --staged copies the index entry back from HEAD; plain restore copies the file back from the index. Two directions, one command — and history never moved.',
+          why: 'restore --staged copies the index entry back from HEAD; plain restore copies the file back from the index. Two directions, one command - and history never moved.',
           scene: function () { quietInit(); quietCommit('first commit'); },
           done: function () {
             return flags.restoredStaged && flags.restoredWork && !dirtyWork() && !dirtyIndex();
@@ -1303,7 +1303,7 @@
         {
           key: 'branch',
           title: 'A sticky note called feature',
-          brief: 'Create a branch and commit on it: git switch -c feature, then work, add, commit. Watch the graph — main does not move.',
+          brief: 'Create a branch and commit on it: git switch -c feature, then work, add, commit. Watch the graph - main does not move.',
           hint: 'git switch -c feature · work · git add . · git commit -m "..."',
           why: 'The branch cost one label. Your commit advanced feature; main stayed behind, which is the entire meaning of "branch".',
           scene: function () { quietInit(); quietCommit('first commit'); },
@@ -1315,9 +1315,9 @@
         {
           key: 'ff',
           title: 'The label slides',
-          brief: 'feature is ahead and main never moved. Go to main and merge: git switch main, git merge feature — then tidy up with git branch -d feature. Watch what does NOT get created.',
+          brief: 'feature is ahead and main never moved. Go to main and merge: git switch main, git merge feature - then tidy up with git branch -d feature. Watch what does NOT get created.',
           hint: 'git switch main · git merge feature · git branch -d feature',
-          why: 'A fast-forward: your branch simply continued the line, so git slid the main label forward — no merge commit, nothing to reconcile. And deleting the merged label deleted no commits; a branch is only a sticky note.',
+          why: 'A fast-forward: your branch simply continued the line, so git slid the main label forward - no merge commit, nothing to reconcile. And deleting the merged label deleted no commits; a branch is only a sticky note.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietSwitch('feature', true);
@@ -1334,7 +1334,7 @@
           title: 'Two lines, one join',
           brief: 'This time both branches moved. Commit work on feature (switch, work, add, commit), come back to main, and merge. A real merge commit this time.',
           hint: 'git switch feature · work · git add . · git commit -m "..." · git switch main · git merge feature',
-          why: 'Both sides had commits the other lacked, so the merge made a commit with two parents. The graph records where the lines joined — honestly.',
+          why: 'Both sides had commits the other lacked, so the merge made a commit with two parents. The graph records where the lines joined - honestly.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietSwitch('feature', true);
@@ -1375,9 +1375,9 @@
         {
           key: 'amend',
           title: 'Rewrite the envelope',
-          brief: 'The work in the last commit is fine; the message ("asdfjkl") is not. Rewrite it: git commit --amend -m "add validate()". Read the log before and after — watch the hash.',
+          brief: 'The work in the last commit is fine; the message ("asdfjkl") is not. Rewrite it: git commit --amend -m "add validate()". Read the log before and after - watch the hash.',
           hint: 'git log · git commit --amend -m "add validate()" · git log again — same tree, new hash.',
-          why: 'Amend did not edit the commit; nothing in the store is editable. It wrote a NEW commit with the same parent and moved the label — which is why the hash changed, and why you never amend commits other people already have.',
+          why: 'Amend did not edit the commit; nothing in the store is editable. It wrote a NEW commit with the same parent and moved the label - which is why the hash changed, and why you never amend commits other people already have.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietEdit('app.js', 'function app() {\n  return "hello";\n}\nfunction validate(x) {\n  return x != null;\n}');
@@ -1393,7 +1393,7 @@
           title: 'Take it back quietly',
           brief: 'The last commit ("break everything") is bad and NOBODY else has it. Erase it: git reset --hard HEAD~1. Check the log after.',
           hint: 'git log first if you like · git reset --hard HEAD~1 · git log again.',
-          why: '--hard moved the label, the index and your files back one commit. The bad commit still exists unlabelled for a while — reflog can see it — but the branch has disowned it.',
+          why: '--hard moved the label, the index and your files back one commit. The bad commit still exists unlabelled for a while - reflog can see it - but the branch has disowned it.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietEdit('app.js', 'function app() {\n  return "hello";\n}\n// half-finished experiment, do not ship\nthrow new Error("boom");');
@@ -1406,7 +1406,7 @@
         {
           key: 'revert',
           title: 'Undo, on the record',
-          brief: 'Same bad commit — but this time pretend it is already shared, so rewriting is off the table. Undo it forwards: git revert HEAD.',
+          brief: 'Same bad commit - but this time pretend it is already shared, so rewriting is off the table. Undo it forwards: git revert HEAD.',
           hint: 'git revert HEAD — then read the log.',
           why: 'Revert wrote a NEW commit applying the inverse. Both the mistake and the correction are on record, nobody’s copy of history was invalidated. On shared branches this is the only polite undo.',
           scene: function () {
@@ -1424,7 +1424,7 @@
           title: 'The shelf',
           brief: 'You are mid-edit (type work) and suddenly need to be on feature. Try git switch feature and watch git refuse. Park the work: git stash, switch there and back, then git stash pop.',
           hint: 'work · git switch feature (refused!) · git stash · git switch feature · git switch main · git stash pop',
-          why: 'The refusal protects your uncommitted edit — switching would overwrite it. The stash is a shelf: park, move freely, take it back down. Nothing was committed and nothing was lost.',
+          why: 'The refusal protects your uncommitted edit - switching would overwrite it. The stash is a shelf: park, move freely, take it back down. Nothing was committed and nothing was lost.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietSwitch('feature', true);
@@ -1438,9 +1438,9 @@
         {
           key: 'detached',
           title: 'Detached, not broken',
-          brief: 'Visit the past. Find the FIRST commit hash (git log), check it out (git checkout <hash>), look around (cat app.js). Then make the visit permanent — git switch -c archaeology — and come home: git switch main.',
+          brief: 'Visit the past. Find the FIRST commit hash (git log), check it out (git checkout <hash>), look around (cat app.js). Then make the visit permanent - git switch -c archaeology - and come home: git switch main.',
           hint: 'git log · copy the bottom hash · git checkout <hash> · cat app.js · git switch -c archaeology · git switch main',
-          why: '"Detached HEAD" only means HEAD points at a commit instead of a branch. Nothing is broken; commits made there just need a label before you leave — which switch -c gave you.',
+          why: '"Detached HEAD" only means HEAD points at a commit instead of a branch. Nothing is broken; commits made there just need a label before you leave - which switch -c gave you.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietEdit('app.js', 'function app() {\n  return "hello";\n}\nfunction two() {}');
@@ -1459,7 +1459,7 @@
           title: 'Replay, do not tangle',
           brief: 'main moved on while feature grew one commit. You are on feature. Put your work on top of the new main: git rebase main. Read the hashes before and after.',
           hint: 'git log --all first · git rebase main · git log --all again — same message, new hash.',
-          why: 'Rebase replayed your change onto the new base and wrote a NEW commit — the old one is unlabelled, not edited. Clean line, new hashes: which is exactly why you never rebase what others already have.',
+          why: 'Rebase replayed your change onto the new base and wrote a NEW commit - the old one is unlabelled, not edited. Clean line, new hashes: which is exactly why you never rebase what others already have.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietSwitch('feature', true);
@@ -1479,9 +1479,9 @@
         {
           key: 'cherry',
           title: 'Just that one',
-          brief: 'The hotfix branch holds one commit you need on main ("fix the crash") — but also work you do not want. Find its hash (git log --all) and copy just it: git cherry-pick <hash>.',
+          brief: 'The hotfix branch holds one commit you need on main ("fix the crash") - but also work you do not want. Find its hash (git log --all) and copy just it: git cherry-pick <hash>.',
           hint: 'git log --all · read the hash next to "fix the crash" · git cherry-pick <hash>',
-          why: 'Cherry-pick copied one commit’s change onto main as a new commit. The hotfix branch is untouched — you took the change, not the branch.',
+          why: 'Cherry-pick copied one commit’s change onto main as a new commit. The hotfix branch is untouched - you took the change, not the branch.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietSwitch('hotfix', true);
@@ -1499,9 +1499,9 @@
         {
           key: 'tag',
           title: 'Pin the release',
-          brief: 'Ship it: git tag v1.0. Then keep working (work, add, commit) and run git log — the branch moved on, the tag did not.',
+          brief: 'Ship it: git tag v1.0. Then keep working (work, add, commit) and run git log - the branch moved on, the tag did not.',
           hint: 'git tag v1.0 · work · git add . · git commit -m "..." · git log',
-          why: 'A tag is a label that never moves — a branch that retired on the spot. Releases get tags precisely because branches wander.',
+          why: 'A tag is a label that never moves - a branch that retired on the spot. Releases get tags precisely because branches wander.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietEdit('app.js', 'function app() {\n  return "hello";\n}\nfunction ship() {}');
@@ -1515,9 +1515,9 @@
         {
           key: 'rescue',
           title: 'The safety net',
-          brief: 'Three commits stand. Destroy two on purpose — git reset --hard HEAD~2 — then get them back: git reflog, find where you were, git reset --hard <hash>.',
+          brief: 'Three commits stand. Destroy two on purpose - git reset --hard HEAD~2 - then get them back: git reflog, find where you were, git reset --hard <hash>.',
           hint: 'git reset --hard HEAD~2 · git reflog · the top entries name the commit you left · git reset --hard <that hash>',
-          why: 'The reflog is HEAD’s private diary — every place it has been, even commits nothing points at. In a committed repository it is genuinely hard to lose work; only uncommitted work is ever truly at risk.',
+          why: 'The reflog is HEAD’s private diary - every place it has been, even commits nothing points at. In a committed repository it is genuinely hard to lose work; only uncommitted work is ever truly at risk.',
           scene: function () {
             quietInit(); quietCommit('first commit');
             quietEdit('app.js', 'function app() {\n  return "hello";\n}\nfunction two() {}');
@@ -1589,20 +1589,20 @@
         if (mission >= MISSIONS.length) {
           over = true;
           g.stat('mission', MISSIONS.length + '/' + MISSIONS.length);
-          sayNote('Done: ' + doneTitle + ' — ' + doneWhy, 'is-done');
+          sayNote('Done: ' + doneTitle + ' - ' + doneWhy, 'is-done');
           paintMission();
           g.over({
             won: true,
             score: commands,
             title: commands + ' commands',
             message: 'All ' + MISSIONS.length + ' missions, from init to the whole-toolbox capstone, in ' + commands +
-              ' commands. The terminal stays open below — the sandbox is yours. The theory is in the article: git, explained from the object up.'
+              ' commands. The terminal stays open below - the sandbox is yours. The theory is in the article: git, explained from the object up.'
           });
           return;
         }
         buildScene();
         showMission();
-        sayNote('Done: ' + doneTitle + ' — ' + doneWhy, 'is-done');
+        sayNote('Done: ' + doneTitle + ' - ' + doneWhy, 'is-done');
         missionChord();
       }
 
@@ -1668,7 +1668,7 @@
         if (Object.prototype.hasOwnProperty.call(TABLE, name)) {
           TABLE[name](args);
         } else if (Object.prototype.hasOwnProperty.call(NOT_HERE, name)) {
-          err(name + ': not here — this terminal only knows git and a few looking-around commands. Type help.');
+          err(name + ': not here - this terminal only knows git and a few looking-around commands. Type help.');
         } else {
           err(name + ': command not found. Type help for the list.');
         }
@@ -1953,7 +1953,7 @@
 
           buildScene();
           showMission();
-          sayNote('Nothing here is git and nothing touches your machine — every command is a ' +
+          sayNote('Nothing here is git and nothing touches your machine - every command is a ' +
             'reimplementation over an in-memory object store. Type help in the terminal for the ' +
             'command list; the theory in prose is the article "Git, explained from the object up".');
 

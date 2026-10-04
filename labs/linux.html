@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A real Linux terminal in your browser. Genuine kernel, BusyBox shell, pipes and processes — running on your own machine with nothing uploaded. Free, no sign-up." />
+    <meta name="description" content="A real Linux terminal in your browser. Genuine kernel, BusyBox shell, pipes and processes - running on your own machine with nothing uploaded. Free, no sign-up." />
     <meta name="author" content="Krunalkumar Shah" />
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
     <meta name="theme-color" content="#121b2c" />
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/linux" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
-    <meta property="og:title" content="Online Linux Terminal — A Real Kernel in Your Browser" />
+    <meta property="og:title" content="Online Linux Terminal - A Real Kernel in Your Browser" />
     <meta property="og:description" content="Boot a genuine Linux kernel in a browser tab. Real shell, real processes, no network, nothing uploaded. Safe enough to run a fork bomb." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/linux" />
@@ -19,10 +19,10 @@
     <meta property="og:image:alt" content="Online Linux Terminal" />
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Online Linux Terminal — A Real Kernel in Your Browser" />
+    <meta name="twitter:title" content="Online Linux Terminal - A Real Kernel in Your Browser" />
     <meta name="twitter:description" content="Boot a genuine Linux kernel in a browser tab. Nothing is uploaded, and it is safe enough to run a fork bomb." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-linux.jpg" />
-    <title>Online Linux Terminal — Real Kernel | Krunalkumar Shah</title>
+    <title>Online Linux Terminal - Real Kernel | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -246,7 +246,7 @@
         <div class="lab-noscript">
           <h2>This one needs JavaScript</h2>
           <p>This boots a real operating system inside your browser and needs JavaScript to run.</p>
-          <p>The machine is emulated on your own processor — there is no server running it for you.</p>
+          <p>The machine is emulated on your own processor - there is no server running it for you.</p>
           <p>Turn JavaScript on for this site and reload, and it will work.
             In the meantime the <a href="/blog">writing</a> and the rest of the
             <a href="/">site</a> read perfectly well without it.</p>
@@ -264,10 +264,10 @@
               <div>
                 <p class="lab-gate-h limits">What is not supported</p>
                 <ul class="lab-gate-list">
-                  <li>No Python, Perl, Ruby or gcc &mdash; BusyBox only</li>
+                  <li>No Python, Perl, Ruby or gcc - BusyBox only</li>
                   <li>No internet: apt, wget and ping will all fail</li>
                   <li>No installing packages of any kind</li>
-                  <li>Nothing is saved &mdash; every boot starts fresh</li>
+                  <li>Nothing is saved - every boot starts fresh</li>
                   <li>Far slower than a real machine; not for benchmarks</li>
                 </ul>
               </div>
@@ -283,7 +283,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; boot it</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - boot it</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -309,10 +309,10 @@
             <div class="lab-storage-panel" id="lab-storage-panel" hidden>
               <h3>Storage on this device</h3>
               <div class="lab-storage-row"><span>Saved code (all labs)</span><span id="lab-store-site">0 B</span></div>
-              <div class="lab-storage-row"><span>Downloaded runtimes</span><span id="lab-store-quota">&mdash;</span></div>
+              <div class="lab-storage-row"><span>Downloaded runtimes</span><span id="lab-store-quota">-</span></div>
               <div class="lab-storage-bar"><i id="lab-store-bar" style="width:0%"></i></div>
               <p class="lab-storage-note">
-                This machine saves nothing itself &mdash; every boot starts fresh. The first figure is your saved code in local storage, the second the downloaded runtimes in this site&rsquo;s cache. They
+                This machine saves nothing itself - every boot starts fresh. The first figure is your saved code in local storage, the second the downloaded runtimes in this site&rsquo;s cache. They
                 cover the whole Labs section, and the buttons remove exactly those two things and
                 nothing else. Removing the runtimes is safe: they download again on the next boot.
               </p>
@@ -421,7 +421,7 @@ ps</code></pre>
             <pre class="lab-example"><code class="language-bash">:(){ :|:&amp; };:</code></pre>
             <p>
               Paste that here and the shell answers
-              <code>syntax error: bad function name</code>. It is a bash-ism &mdash; bash allows
+              <code>syntax error: bad function name</code>. It is a bash-ism - bash allows
               <code>:</code> as an identifier, and this machine runs BusyBox&rsquo;s
               <code>ash</code>, which requires an ordinary name. Same bomb, same mechanism, one
               character of difference. It is a neat reminder that &ldquo;works in bash&rdquo; and
@@ -435,7 +435,7 @@ ps</code></pre>
               I wrote about the mechanics in
               <a href="/blog/what-is-a-fork-bomb">what is a fork bomb</a>, and published a paper on
               defending against them in
-              <a href="/research">Linux-based systems</a> &mdash; this is the safest place I know of
+              <a href="/research">Linux-based systems</a> - this is the safest place I know of
               to see the behaviour those describe.
             </p>
           </article>
@@ -478,11 +478,11 @@ ps</code></pre>
           </details>
           <details class="lab-faq">
             <summary>Can I run Python or compile C in here?</summary>
-            <div>No, and this is the most common misunderstanding. The image is BusyBox only — there is no Python, Perl, Ruby or gcc inside it. Adding them would mean a multi-hundred-megabyte disk image. The emulated machine also cannot reach the language runtimes used by /labs: those live in JavaScript, and this is a separate CPU with its own memory. For running code, use the language playgrounds in Labs instead.</div>
+            <div>No, and this is the most common misunderstanding. The image is BusyBox only - there is no Python, Perl, Ruby or gcc inside it. Adding them would mean a multi-hundred-megabyte disk image. The emulated machine also cannot reach the language runtimes used by /labs: those live in JavaScript, and this is a separate CPU with its own memory. For running code, use the language playgrounds in Labs instead.</div>
           </details>
           <details class="lab-faq">
             <summary>Is it safe to run a fork bomb?</summary>
-            <div>Yes — that is precisely the point. The emulated machine is given a fixed 64 MB of RAM that it physically cannot exceed. A fork bomb exhausts the emulated process table and the emulated kernel responds exactly as a real one would, which is genuinely interesting to watch. Your browser and your computer are unaffected. Press Reboot when you have seen enough.</div>
+            <div>Yes - that is precisely the point. The emulated machine is given a fixed 64 MB of RAM that it physically cannot exceed. A fork bomb exhausts the emulated process table and the emulated kernel responds exactly as a real one would, which is genuinely interesting to watch. Your browser and your computer are unaffected. Press Reboot when you have seen enough.</div>
           </details>
           <details class="lab-faq">
             <summary>Which commands are available? There is no man, apt or info.</summary>
@@ -514,7 +514,7 @@ ps</code></pre>
           <p>
             These playgrounds run a lot of machinery inside your browser, and browsers differ. If a
             program that should run does not, if the output looks wrong, or if anything is odd on
-            your phone &mdash; I would genuinely like to know. Feature requests are welcome too.
+            your phone - I would genuinely like to know. Feature requests are welcome too.
           </p>
         </div>
         <div class="lab-report-actions">
@@ -526,13 +526,13 @@ ps</code></pre>
       <section class="section-card">
         <div class="section-heading">
           <h2>Want to run actual code?</h2>
-          <p>The language playgrounds are the right place for that &mdash; same privacy, real interpreters.</p>
+          <p>The language playgrounds are the right place for that - same privacy, real interpreters.</p>
         </div>
         <div class="lab-grid">
           <a class="lab-card" href="/labs/python"><span class="lab-card-name">Python</span><p class="lab-card-desc">Genuine CPython with the standard library.</p></a>
           <a class="lab-card" href="/labs/javascript"><span class="lab-card-name">JavaScript</span><p class="lab-card-desc">Runs instantly with nothing to download.</p></a>
           <a class="lab-card" href="/labs/sql"><span class="lab-card-name">SQL</span><p class="lab-card-desc">A real SQLite engine with sample data.</p></a>
-          <a class="lab-card" href="/labs/dos"><span class="lab-card-name">DOS prompt</span><p class="lab-card-desc">Real FreeDOS &mdash; DIR, COPY, batch files and a few games.</p></a>
+          <a class="lab-card" href="/labs/dos"><span class="lab-card-name">DOS prompt</span><p class="lab-card-desc">Real FreeDOS - DIR, COPY, batch files and a few games.</p></a>
         </div>
       </section>
       <!-- glossary-backlinks:start — generated by scripts/glossary-backlinks.js, do not hand-edit -->

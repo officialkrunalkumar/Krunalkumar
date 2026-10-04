@@ -71,7 +71,7 @@
                         "name": "Is this a real exploit?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. It is a diagram of one. The stack is an array of bytes at pretend addresses, the overflow is a write past the end of that array, and &ldquo;jump to shellcode&rdquo; moves a number that represents the instruction pointer. Nothing is compiled and nothing is executed &mdash; it could not be, running as arithmetic in a sandboxed browser tab."
+                                "text": "No. It is a diagram of one. The stack is an array of bytes at pretend addresses, the overflow is a write past the end of that array, and &ldquo;jump to shellcode&rdquo; moves a number that represents the instruction pointer. Nothing is compiled and nothing is executed - it could not be, running as arithmetic in a sandboxed browser tab."
                         }
                 },
                 {
@@ -79,7 +79,7 @@
                         "name": "Why does the copy write upward into the return address?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "Because that is the real memory layout. The stack grows toward lower addresses, so a local buffer is at the lowest addresses of the frame and the saved return address is above it. A C string is laid out from low address to high, so copying into the buffer writes toward &mdash; and eventually over &mdash; the return address."
+                                "text": "Because that is the real memory layout. The stack grows toward lower addresses, so a local buffer is at the lowest addresses of the frame and the saved return address is above it. A C string is laid out from low address to high, so copying into the buffer writes toward - and eventually over - the return address."
                         }
                 },
                 {
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>Stack buffer overflow, byte by byte</h1>
-        <p class="hero-text">The oldest serious bug in computing is copying more bytes into an array than it can hold. It is almost always explained in prose. Here it is drawn: a real downward-growing stack, a fixed buffer at the bottom, and a string copied into it one byte at a time &mdash; climbing straight up over the saved frame pointer and into the return address the CPU will jump to. Then watch a canary catch it, and see exactly what each modern defence does and does not stop.</p>
+        <p class="hero-text">The oldest serious bug in computing is copying more bytes into an array than it can hold. It is almost always explained in prose. Here it is drawn: a real downward-growing stack, a fixed buffer at the bottom, and a string copied into it one byte at a time - climbing straight up over the saved frame pointer and into the return address the CPU will jump to. Then watch a canary catch it, and see exactly what each modern defence does and does not stop.</p>
         <ul class="lab-facts">
           <li>A real byte-addressed stack, growing down</li>
           <li>Watch the return address get overwritten</li>
@@ -228,7 +228,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the animation, the maths, all of it on
+              This runs entirely inside your browser - the animation, the maths, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -250,7 +250,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -262,7 +262,7 @@
           <button class="lab-btn lab-btn-icon" type="button" id="lab-fullscreen" title="Fullscreen (Esc to exit)" aria-label="Fullscreen (Esc to exit)">&#9974;</button>
         </div>
         <div class="lab-multi-mount" id="viz-memsafety-mount">
-          <p class="lab-proc-fallback">Starting the buffer overflow visualiser… if this message stays, it did not load &mdash; please tell me, and mention your browser.</p>
+          <p class="lab-proc-fallback">Starting the buffer overflow visualiser… if this message stays, it did not load - please tell me, and mention your browser.</p>
         </div>
       </div>
 
@@ -273,19 +273,19 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The geometry is the whole bug</h3>
-            <p>The stack grows downward, so a function&rsquo;s local buffer sits at the bottom of its frame &mdash; and the saved frame pointer and return address sit just above it. A string copied into the buffer is written upward, toward those saved registers, with nothing in between but the absence of a bounds check. Copy one byte too many and you are writing over the address the CPU will return to.</p>
+            <p>The stack grows downward, so a function&rsquo;s local buffer sits at the bottom of its frame - and the saved frame pointer and return address sit just above it. A string copied into the buffer is written upward, toward those saved registers, with nothing in between but the absence of a bounds check. Copy one byte too many and you are writing over the address the CPU will return to.</p>
           </article>
           <article class="info-card">
             <h3>Overwriting the return address is taking the wheel</h3>
-            <p>When a function finishes, RET pops the saved return address into the instruction pointer and the CPU jumps there. Overwrite those four bytes and you choose the destination. Point them back at the buffer &mdash; where the attacker&rsquo;s own bytes were just copied in as &ldquo;data&rdquo; &mdash; and the machine executes them as code. Nothing here really runs; it is a diagram of that hijack over an array in a sandboxed tab.</p>
+            <p>When a function finishes, RET pops the saved return address into the instruction pointer and the CPU jumps there. Overwrite those four bytes and you choose the destination. Point them back at the buffer - where the attacker&rsquo;s own bytes were just copied in as &ldquo;data&rdquo; - and the machine executes them as code. Nothing here really runs; it is a diagram of that hijack over an array in a sandboxed tab.</p>
           </article>
           <article class="info-card">
             <h3>A canary is a tripwire, not a wall</h3>
-            <p>A stack canary is a known value placed between the buffer and the saved registers, checked just before the function returns. A linear overflow has to run through it to reach the return address, so the check fails and the program aborts. It does not stop the overflow &mdash; it stops the return into corrupted memory, and only when the write is contiguous. An arbitrary write that skips the canary sails past it.</p>
+            <p>A stack canary is a known value placed between the buffer and the saved registers, checked just before the function returns. A linear overflow has to run through it to reach the return address, so the check fails and the program aborts. It does not stop the overflow - it stops the return into corrupted memory, and only when the write is contiguous. An arbitrary write that skips the canary sails past it.</p>
           </article>
           <article class="info-card">
             <h3>The defences are layered because each has a bypass</h3>
-            <p>NX marks the stack non-executable, defeating shellcode on the stack &mdash; and is answered by return-oriented programming, which reuses existing code. ASLR randomises addresses so they cannot be guessed &mdash; and is undone by a single leaked address. Canaries, NX and ASLR together raise the cost of exploitation a great deal, which is exactly why memory-safe languages that prevent the write in the first place are the real fix.</p>
+            <p>NX marks the stack non-executable, defeating shellcode on the stack - and is answered by return-oriented programming, which reuses existing code. ASLR randomises addresses so they cannot be guessed - and is undone by a single leaked address. Canaries, NX and ASLR together raise the cost of exploitation a great deal, which is exactly why memory-safe languages that prevent the write in the first place are the real fix.</p>
           </article>
         </div>
       </section>
@@ -296,11 +296,11 @@
         </div>
           <details class="lab-faq">
             <summary>Is this a real exploit?</summary>
-            <div>No. It is a diagram of one. The stack is an array of bytes at pretend addresses, the overflow is a write past the end of that array, and &ldquo;jump to shellcode&rdquo; moves a number that represents the instruction pointer. Nothing is compiled and nothing is executed &mdash; it could not be, running as arithmetic in a sandboxed browser tab.</div>
+            <div>No. It is a diagram of one. The stack is an array of bytes at pretend addresses, the overflow is a write past the end of that array, and &ldquo;jump to shellcode&rdquo; moves a number that represents the instruction pointer. Nothing is compiled and nothing is executed - it could not be, running as arithmetic in a sandboxed browser tab.</div>
           </details>
           <details class="lab-faq">
             <summary>Why does the copy write upward into the return address?</summary>
-            <div>Because that is the real memory layout. The stack grows toward lower addresses, so a local buffer is at the lowest addresses of the frame and the saved return address is above it. A C string is laid out from low address to high, so copying into the buffer writes toward &mdash; and eventually over &mdash; the return address.</div>
+            <div>Because that is the real memory layout. The stack grows toward lower addresses, so a local buffer is at the lowest addresses of the frame and the saved return address is above it. A C string is laid out from low address to high, so copying into the buffer writes toward - and eventually over - the return address.</div>
           </details>
           <details class="lab-faq">
             <summary>Do buffer overflows still matter in 2026?</summary>

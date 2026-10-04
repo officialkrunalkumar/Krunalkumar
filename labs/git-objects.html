@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://krunalkumar.dpdns.org/labs/git-objects" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://krunalkumar.dpdns.org/sitemap.xml" />
     <meta property="og:title" content="Run git commands and watch the real objects appear" />
-    <meta property="og:description" content="A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear — blobs, trees, commits and refs — with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded." />
+    <meta property="og:description" content="A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear - blobs, trees, commits and refs - with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://krunalkumar.dpdns.org/labs/git-objects" />
     <meta property="og:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-git-objects.jpg" />
@@ -20,7 +20,7 @@
     <meta property="og:site_name" content="Krunalkumar Shah" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Run git commands and watch the real objects appear" />
-    <meta name="twitter:description" content="A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear — blobs, trees, commits and refs — with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded." />
+    <meta name="twitter:description" content="A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear - blobs, trees, commits and refs - with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-git-objects.jpg" />
     <title>Git Object Explorer | Krunalkumar Shah</title>
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
 	"applicationCategory": "DeveloperApplication",
 	"applicationSubCategory": "Version control teaching tool",
 	"operatingSystem": "Any modern web browser",
-	"description": "A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear — blobs, trees, commits and refs — with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded.",
+	"description": "A real git object store running in your browser. Type add, commit, branch, checkout, merge, rebase, reset, revert, cherry-pick, tag and reflog against a toy working tree, and watch the actual objects appear - blobs, trees, commits and refs - with genuine SHA-1 hashes computed over correctly formed git object bytes. Every destructive command has an undo. Nothing is uploaded.",
 	"isAccessibleForFree": true,
 	"offers": {
 		"@type": "Offer",
@@ -74,7 +74,7 @@
 			"name": "Are the hashes real?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "Yes, and that is the whole point. Every name you see is SHA-1 computed in your browser over the exact bytes git would hash — \"blob <length>\\0<content>\" for a file, the same for trees, commits and annotated tags. The Object store tab checks four published git constants at start-up, including git’s empty blob e69de29 and its empty tree 4b825dc, and says so out loud if any of them fails. I also built the same three files in a real repository with the same fixed author and date, and real git produced the same commit: fb34cc16e9c9673f876a1c4df9e7794238afc473. You can repeat that."
+				"text": "Yes, and that is the whole point. Every name you see is SHA-1 computed in your browser over the exact bytes git would hash - \"blob <length>\\0<content>\" for a file, the same for trees, commits and annotated tags. The Object store tab checks four published git constants at start-up, including git’s empty blob e69de29 and its empty tree 4b825dc, and says so out loud if any of them fails. I also built the same three files in a real repository with the same fixed author and date, and real git produced the same commit: fb34cc16e9c9673f876a1c4df9e7794238afc473. You can repeat that."
 			}
 		},
 		{
@@ -90,7 +90,7 @@
 			"name": "Why does rebase change the hash when the files are identical?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "Because the files are not what gets hashed. A commit object contains its tree, its parent, an author line and a committer line, and the hash covers all of it. Rebase replays your change onto a different parent, so the parent line is different and the committer date is new — different bytes, therefore a different name, even when the tree hash is character-for-character the same. Run the \"Rebase changes identity\" walkthrough and look at the tree column: that is the demonstration."
+				"text": "Because the files are not what gets hashed. A commit object contains its tree, its parent, an author line and a committer line, and the hash covers all of it. Rebase replays your change onto a different parent, so the parent line is different and the committer date is new - different bytes, therefore a different name, even when the tree hash is character-for-character the same. Run the \"Rebase changes identity\" walkthrough and look at the tree column: that is the demonstration."
 			}
 		},
 		{
@@ -98,7 +98,7 @@
 			"name": "What does detached HEAD actually mean?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "HEAD is a file. Normally it contains the text \"ref: refs/heads/main\" — the name of a branch — which is why committing moves the branch and leaves HEAD alone. Detached means HEAD contains a commit hash directly instead. Nothing is broken and nothing is lost; you are standing on a commit that has no label. Check out a commit here and open the Refs & HEAD tab to see the file change."
+				"text": "HEAD is a file. Normally it contains the text \"ref: refs/heads/main\" - the name of a branch - which is why committing moves the branch and leaves HEAD alone. Detached means HEAD contains a commit hash directly instead. Nothing is broken and nothing is lost; you are standing on a commit that has no label. Check out a commit here and open the Refs & HEAD tab to see the file change."
 			}
 		},
 		{
@@ -114,7 +114,7 @@
 			"name": "Why did adding the same content twice not write a second blob?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "Because a blob has no filename in it. A blob is content and a length, nothing else, so two files with byte-identical contents produce byte-identical object bytes and therefore the same hash — the store already has that name taken. The two paths live in the tree object, both pointing at the one blob. The shell says \"reused 1 existing object\" when this happens, and the object counter in the toolbar does not move."
+				"text": "Because a blob has no filename in it. A blob is content and a length, nothing else, so two files with byte-identical contents produce byte-identical object bytes and therefore the same hash - the store already has that name taken. The two paths live in the tree object, both pointing at the one blob. The shell says \"reused 1 existing object\" when this happens, and the object counter in the toolbar does not move."
 			}
 		},
 		{
@@ -122,7 +122,7 @@
 			"name": "Why is the clock fixed?",
 			"acceptedAnswer": {
 				"@type": "Answer",
-				"text": "So the hashes are reproducible. The author is always \"Toy User <you@example.com>\" and the clock starts at 1700000000 and advances a minute per commit, which means the same sequence of commands always gives the same hashes and you can reproduce them with real git. Real git uses your name and your system clock — which is exactly why two commits of identical content made a second apart still get different names."
+				"text": "So the hashes are reproducible. The author is always \"Toy User <you@example.com>\" and the clock starts at 1700000000 and advances a minute per commit, which means the same sequence of commands always gives the same hashes and you can reproduce them with real git. Real git uses your name and your system clock - which is exactly why two commits of identical content made a second apart still get different names."
 			}
 		},
 		{
@@ -226,7 +226,7 @@
           </ol>
         </nav>
         <h1>Git object explorer</h1>
-        <p class="hero-text">Git stops being spells the moment you can see what it stores. So here is the store itself: a working object database in this tab, with a toy repository you can edit and a shell that takes real commands. Every <code>add</code> writes a blob, every <code>commit</code> writes a tree and a commit, and every hash on screen is genuine SHA-1 over correctly formed git object bytes &mdash; not a decoration. I wrote this as the tool that belongs beside <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>.</p>
+        <p class="hero-text">Git stops being spells the moment you can see what it stores. So here is the store itself: a working object database in this tab, with a toy repository you can edit and a shell that takes real commands. Every <code>add</code> writes a blob, every <code>commit</code> writes a tree and a commit, and every hash on screen is genuine SHA-1 over correctly formed git object bytes - not a decoration. I wrote this as the tool that belongs beside <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>.</p>
         <ul class="lab-facts">
           <li>Real SHA-1 over real object bytes</li>
           <li>Blobs, trees, commits, tags and refs</li>
@@ -255,7 +255,7 @@
           <div class="lab-gate-card">
             <h2>Before you start</h2>
             <p>
-              This runs entirely inside your browser &mdash; the hashing, the object store, all of it on
+              This runs entirely inside your browser - the hashing, the object store, all of it on
               your own machine. Nothing is uploaded and there is no server.
             </p>
             <div class="lab-gate-cols">
@@ -277,7 +277,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; start</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - start</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -298,7 +298,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The hashes are the lesson</h3>
-            <p>A teaching tool that prints a plausible-looking hash teaches that the hash is decoration. So this one forms the bytes git forms &mdash; <code>blob &lt;length&gt;\0&lt;content&gt;</code>, and the equivalent for trees and commits &mdash; and runs SHA-1 over them. It checks itself against git&rsquo;s published empty blob and empty tree at start-up and says so in the Object store tab. Commit the three starting files and you get <code>fb34cc1</code>, which is what real git gives for the same content, author and date.</p>
+            <p>A teaching tool that prints a plausible-looking hash teaches that the hash is decoration. So this one forms the bytes git forms - <code>blob &lt;length&gt;\0&lt;content&gt;</code>, and the equivalent for trees and commits - and runs SHA-1 over them. It checks itself against git&rsquo;s published empty blob and empty tree at start-up and says so in the Object store tab. Commit the three starting files and you get <code>fb34cc1</code>, which is what real git gives for the same content, author and date.</p>
           </article>
           <article class="info-card">
             <h3>Content addressing, made visible</h3>
@@ -310,11 +310,11 @@
           </article>
           <article class="info-card">
             <h3>Rebase versus merge, on the objects</h3>
-            <p>Merge writes one commit with two parents and leaves both lines named as they were. Rebase replays your commits onto a new parent, which changes their bytes and therefore their names &mdash; the old commits stay in the store, unlabelled, dimmed in the graph. The walkthrough prints the old-to-new pairs alongside the tree hashes, so you can see identity change while content does not.</p>
+            <p>Merge writes one commit with two parents and leaves both lines named as they were. Rebase replays your commits onto a new parent, which changes their bytes and therefore their names - the old commits stay in the store, unlabelled, dimmed in the graph. The walkthrough prints the old-to-new pairs alongside the tree hashes, so you can see identity change while content does not.</p>
           </article>
           <article class="info-card">
             <h3>Nothing here is lost</h3>
-            <p>The graph shows every commit object in the store, not just the ones a label points at, so a commit you reset away stays on screen marked unreferenced. The reflog lists every place HEAD has been, and <code>reset --hard HEAD@{1}</code> walks back. Every command that changed anything also gets an Undo button, which rewinds the labels and leaves the objects alone &mdash; exactly what git does.</p>
+            <p>The graph shows every commit object in the store, not just the ones a label points at, so a commit you reset away stays on screen marked unreferenced. The reflog lists every place HEAD has been, and <code>reset --hard HEAD@{1}</code> walks back. Every command that changed anything also gets an Undo button, which rewinds the labels and leaves the objects alone - exactly what git does.</p>
           </article>
           <article class="info-card">
             <h3>Where the model stops</h3>
@@ -329,7 +329,7 @@
         </div>
           <details class="lab-faq">
             <summary>Are the hashes real?</summary>
-            <div>Yes, and that is the whole point. Every name you see is SHA-1 computed in your browser over the exact bytes git would hash — "blob &lt;length&gt;\0&lt;content&gt;" for a file, the same for trees, commits and annotated tags. The Object store tab checks four published git constants at start-up, including git’s empty blob e69de29 and its empty tree 4b825dc, and says so out loud if any of them fails. I also built the same three files in a real repository with the same fixed author and date, and real git produced the same commit: fb34cc16e9c9673f876a1c4df9e7794238afc473. You can repeat that.</div>
+            <div>Yes, and that is the whole point. Every name you see is SHA-1 computed in your browser over the exact bytes git would hash - "blob &lt;length&gt;\0&lt;content&gt;" for a file, the same for trees, commits and annotated tags. The Object store tab checks four published git constants at start-up, including git’s empty blob e69de29 and its empty tree 4b825dc, and says so out loud if any of them fails. I also built the same three files in a real repository with the same fixed author and date, and real git produced the same commit: fb34cc16e9c9673f876a1c4df9e7794238afc473. You can repeat that.</div>
           </details>
           <details class="lab-faq">
             <summary>Is this git, or a model of git?</summary>
@@ -337,11 +337,11 @@
           </details>
           <details class="lab-faq">
             <summary>Why does rebase change the hash when the files are identical?</summary>
-            <div>Because the files are not what gets hashed. A commit object contains its tree, its parent, an author line and a committer line, and the hash covers all of it. Rebase replays your change onto a different parent, so the parent line is different and the committer date is new — different bytes, therefore a different name, even when the tree hash is character-for-character the same. Run the "Rebase changes identity" walkthrough and look at the tree column: that is the demonstration.</div>
+            <div>Because the files are not what gets hashed. A commit object contains its tree, its parent, an author line and a committer line, and the hash covers all of it. Rebase replays your change onto a different parent, so the parent line is different and the committer date is new - different bytes, therefore a different name, even when the tree hash is character-for-character the same. Run the "Rebase changes identity" walkthrough and look at the tree column: that is the demonstration.</div>
           </details>
           <details class="lab-faq">
             <summary>What does detached HEAD actually mean?</summary>
-            <div>HEAD is a file. Normally it contains the text "ref: refs/heads/main" — the name of a branch — which is why committing moves the branch and leaves HEAD alone. Detached means HEAD contains a commit hash directly instead. Nothing is broken and nothing is lost; you are standing on a commit that has no label. Check out a commit here and open the Refs &amp; HEAD tab to see the file change.</div>
+            <div>HEAD is a file. Normally it contains the text "ref: refs/heads/main" - the name of a branch - which is why committing moves the branch and leaves HEAD alone. Detached means HEAD contains a commit hash directly instead. Nothing is broken and nothing is lost; you are standing on a commit that has no label. Check out a commit here and open the Refs &amp; HEAD tab to see the file change.</div>
           </details>
           <details class="lab-faq">
             <summary>Can I lose work in here?</summary>
@@ -349,11 +349,11 @@
           </details>
           <details class="lab-faq">
             <summary>Why did adding the same content twice not write a second blob?</summary>
-            <div>Because a blob has no filename in it. A blob is content and a length, nothing else, so two files with byte-identical contents produce byte-identical object bytes and therefore the same hash — the store already has that name taken. The two paths live in the tree object, both pointing at the one blob. The shell says "reused 1 existing object" when this happens, and the object counter in the toolbar does not move.</div>
+            <div>Because a blob has no filename in it. A blob is content and a length, nothing else, so two files with byte-identical contents produce byte-identical object bytes and therefore the same hash - the store already has that name taken. The two paths live in the tree object, both pointing at the one blob. The shell says "reused 1 existing object" when this happens, and the object counter in the toolbar does not move.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is the clock fixed?</summary>
-            <div>So the hashes are reproducible. The author is always "Toy User &lt;you@example.com&gt;" and the clock starts at 1700000000 and advances a minute per commit, which means the same sequence of commands always gives the same hashes and you can reproduce them with real git. Real git uses your name and your system clock — which is exactly why two commits of identical content made a second apart still get different names.</div>
+            <div>So the hashes are reproducible. The author is always "Toy User &lt;you@example.com&gt;" and the clock starts at 1700000000 and advances a minute per commit, which means the same sequence of commands always gives the same hashes and you can reproduce them with real git. Real git uses your name and your system clock - which is exactly why two commits of identical content made a second apart still get different names.</div>
           </details>
           <details class="lab-faq">
             <summary>Does anything leave my browser?</summary>
@@ -365,7 +365,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a hash looks wrong, or a command does something git would not, I would genuinely like to know &mdash; that is the one kind of bug this lab cannot afford.</p>
+          <p>If a hash looks wrong, or a command does something git would not, I would genuinely like to know - that is the one kind of bug this lab cannot afford.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=git-objects#lab-feedback">Report a problem or send feedback</a>
@@ -391,7 +391,7 @@
           </a>
           <a class="lab-card" href="/labs/hash">
             <span class="lab-card-name">Hash calculator</span>
-            <p class="lab-card-desc">SHA-1 and its relatives on any text or file &mdash; hash the same bytes there and compare.</p>
+            <p class="lab-card-desc">SHA-1 and its relatives on any text or file - hash the same bytes there and compare.</p>
             <span class="lab-card-engine">Runs in your browser</span>
           </a>
           <a class="lab-card" href="/labs/file-inspector">

@@ -92,7 +92,7 @@
 
         var verdict = avg < 200 ? 'Faster than most people manage.'
                     : avg < 250 ? 'Around the middle of the range for an adult.'
-                    : avg < 320 ? 'A little slower than average — screen and input lag are part of this too.'
+                    : avg < 320 ? 'A little slower than average - screen and input lag are part of this too.'
                     : 'Well behind the pack. Worth trying again with a wired mouse.';
 
         g.over({
@@ -161,7 +161,7 @@
             ctx.fillText('Too early', W / 2, H / 2 - 12);
             ctx.font = '15px "Segoe UI", sans-serif';
             ctx.fillStyle = '#fecaca';
-            ctx.fillText('That attempt does not count — wait for the green', W / 2, H / 2 + 20);
+            ctx.fillText('That attempt does not count - wait for the green', W / 2, H / 2 + 20);
           }
 
           /* The runs so far, as dots along the bottom. */

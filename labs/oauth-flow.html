@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Walk the OAuth flow. Then attack it." />
     <meta name="twitter:description" content="Walk the OAuth 2.0 authorization code flow with real PKCE values, then run five attacks and see which check refuses each. Nothing is fetched." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-oauth-flow.jpg" />
-    <title>OAuth 2.0 Flow Simulator — Walk It, Then Attack It</title>
+    <title>OAuth 2.0 Flow Simulator - Walk It, Then Attack It</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>OAuth 2.0 flow simulator</h1>
-        <p class="hero-text">Walk the authorization code flow step by step with real values &mdash; a real 32-byte verifier, a real S256 challenge computed by your browser&rsquo;s own crypto. Then attack it. Steal the code with PKCE off and the attacker walks away with an access token; turn PKCE on and watch the token endpoint refuse. Every OAuth diagram shows the happy path, which is the one nobody gets wrong.</p>
+        <p class="hero-text">Walk the authorization code flow step by step with real values - a real 32-byte verifier, a real S256 challenge computed by your browser&rsquo;s own crypto. Then attack it. Steal the code with PKCE off and the attacker walks away with an access token; turn PKCE on and watch the token endpoint refuse. Every OAuth diagram shows the happy path, which is the one nobody gets wrong.</p>
         <ul class="lab-facts">
           <li>Real PKCE values, not placeholders</li>
           <li>Five attacks, each with what stops it</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No requests to any authorization server</li>
                   <li>No OAuth client registered anywhere</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -284,7 +284,7 @@
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
-            <p class="lab-pane-label">Authorization request URL &mdash; optional</p>
+            <p class="lab-pane-label">Authorization request URL - optional</p>
             <label class="sr-only" for="tool-text">Authorization request URL</label>
             <textarea class="lab-toolinput" id="tool-text" spellcheck="false" autocapitalize="off"
                       autocorrect="off" placeholder="Leave this empty to walk an example flow.
@@ -311,7 +311,7 @@ A pasted request line or a bare path works too."></textarea>
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The values are real</h3>
-            <p>The <code>code_verifier</code> is 32 bytes from <code>crypto.getRandomValues</code>. The challenge is <code>base64url(SHA&#8209;256(verifier))</code>, computed by <code>crypto.subtle</code> in your tab. Copy both out and check the digest yourself &mdash; it will match. Only the code and the tokens are invented, because inventing those is exactly what an authorization server does.</p>
+            <p>The <code>code_verifier</code> is 32 bytes from <code>crypto.getRandomValues</code>. The challenge is <code>base64url(SHA&#8209;256(verifier))</code>, computed by <code>crypto.subtle</code> in your tab. Copy both out and check the digest yourself - it will match. Only the code and the tokens are invented, because inventing those is exactly what an authorization server does.</p>
           </article>
           <article class="info-card">
             <h3>The attacks are the lesson</h3>
@@ -323,7 +323,7 @@ A pasted request line or a bare path works too."></textarea>
           </article>
           <article class="info-card">
             <h3>Audit mode reads a URL, not your server</h3>
-            <p>Paste the authorize request your application really builds and it flags implicit flow, absent or <code>plain</code> PKCE, missing <code>state</code>, cleartext or wildcard redirects, and secrets that should never travel through a browser. It cannot tell you whether your server enforces any of it &mdash; that lives in code this page cannot see, and the output says so rather than implying coverage it lacks.</p>
+            <p>Paste the authorize request your application really builds and it flags implicit flow, absent or <code>plain</code> PKCE, missing <code>state</code>, cleartext or wildcard redirects, and secrets that should never travel through a browser. It cannot tell you whether your server enforces any of it - that lives in code this page cannot see, and the output says so rather than implying coverage it lacks.</p>
           </article>
         </div>
       </section>
@@ -334,7 +334,7 @@ A pasted request line or a bare path works too."></textarea>
         </div>
           <details class="lab-faq">
             <summary>What is PKCE and why does OAuth need it?</summary>
-            <div>PKCE (RFC&nbsp;7636) makes the client prove it started the flow. It generates a random <code>code_verifier</code>, sends only <code>base64url(SHA-256(verifier))</code> as the <code>code_challenge</code>, then presents the verifier when exchanging the code. An attacker who steals the authorization code cannot exchange it, because the code alone no longer proves anything. Run the stolen-code attack with PKCE on and then off &mdash; the difference is one line of output.</div>
+            <div>PKCE (RFC&nbsp;7636) makes the client prove it started the flow. It generates a random <code>code_verifier</code>, sends only <code>base64url(SHA-256(verifier))</code> as the <code>code_challenge</code>, then presents the verifier when exchanging the code. An attacker who steals the authorization code cannot exchange it, because the code alone no longer proves anything. Run the stolen-code attack with PKCE on and then off - the difference is one line of output.</div>
           </details>
           <details class="lab-faq">
             <summary>Do I still need state if I use PKCE?</summary>
@@ -346,7 +346,7 @@ A pasted request line or a bare path works too."></textarea>
           </details>
           <details class="lab-faq">
             <summary>Why must redirect_uri be matched exactly?</summary>
-            <div>Because the authorization server sends the code wherever it points. Prefix matching lets an attacker append their own host; a subdomain wildcard turns one dangling DNS record into code theft; an unchecked query parameter on the callback becomes an open redirect. Exact full-string comparison against the registered value is the only safe rule &mdash; and PKCE does not rescue you here, because the code is delivered to a page running your own client code.</div>
+            <div>Because the authorization server sends the code wherever it points. Prefix matching lets an attacker append their own host; a subdomain wildcard turns one dangling DNS record into code theft; an unchecked query parameter on the callback becomes an open redirect. Exact full-string comparison against the registered value is the only safe rule - and PKCE does not rescue you here, because the code is delivered to a page running your own client code.</div>
           </details>
           <details class="lab-faq">
             <summary>Does this tool test my authorization server?</summary>

@@ -311,7 +311,7 @@
             }
             advance(off === 0
               ? 'All three, correctly. It changed nothing, but well done.'
-              : plural(off, 'square', 'squares') + ' wrong. Accepted anyway &mdash; that is the part worth noticing.');
+              : plural(off, 'square', 'squares') + ' wrong. Accepted anyway - that is the part worth noticing.');
             return;
           }
 
@@ -354,7 +354,7 @@
             ? 'You told a robot-detector you feel entirely mechanical and it waved you through.'
             : v >= 90
               ? 'Maximum humanity declared. Unverifiable, like all the rest of it.'
-              : 'Noted. The number was never read &mdash; only the dragging.');
+              : 'Noted. The number was never read - only the dragging.');
           return;
         }
 
@@ -392,7 +392,7 @@
           '<span class="robot-step robot-pass">Access granted</span></div>' +
           '<h3 class="robot-final-title">You are probably not a robot.</h3>' +
           '<p class="robot-final-lead">You were never going to fail. Every screen accepted every answer, ' +
-          'including the empty ones, because none of them could tell the difference &mdash; and neither can ' +
+          'including the empty ones, because none of them could tell the difference - and neither can ' +
           'the real ones any more.</p>' +
           '<ul class="robot-final-list">' +
           '<li><strong>The puzzles lost the arms race.</strong> Distorted text died when software got better ' +
@@ -404,7 +404,7 @@
           'weigh how the pointer moved, how the typing was timed, what the browser looks like, cookies you ' +
           'already had, and the reputation of your address.</li>' +
           '<li><strong>So the squares are mostly theatre.</strong> When one appears it usually means the ' +
-          'score was borderline &mdash; or that somebody wanted you to see a security check happening. The ' +
+          'score was borderline - or that somebody wanted you to see a security check happening. The ' +
           'tick box was never reading the tick.</li>' +
           '<li><strong>And it was free labour first.</strong> The original reCAPTCHA fed your answers into ' +
           'digitising scanned books and newspaper archives, then Street View house numbers, then image ' +
@@ -420,7 +420,7 @@
           '</div>' +
           '<p class="robot-final-note">' +
           (quiet
-            ? 'Your pointer barely moved, which usually means a touch screen &mdash; in which case the signal ' +
+            ? 'Your pointer barely moved, which usually means a touch screen - in which case the signal ' +
               'a real check would want is the timing and the shape of your taps instead.'
             : 'That first number is the only thing on this page that resembles what a real check reads.') +
           ' It was counted in a variable in your tab, shown once, and goes away when you reload. Nothing was ' +

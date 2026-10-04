@@ -455,20 +455,20 @@
         'VHNGM MAX ZTIL UXMPXXG KXIXTMXW MKBZKTFL, MTDX MAX VHFFHG YTVMHK, ' +
         'MAXG PHKD HGX VHENFG TM T MBFX.',
       story: 'A note pinned inside the door you came through. The punctuation is untouched and ' +
-        'the word lengths are untouched, so nothing has been moved &mdash; only the letters have ' +
+        'the word lengths are untouched, so nothing has been moved - only the letters have ' +
         'been replaced, and every one of them by the same amount. There are twenty-five amounts ' +
         'it could be. Slide through them and read.',
-      teach: 'A Caesar shift has a keyspace of 25. Not 25 million &mdash; 25. That is small enough that ' +
+      teach: 'A Caesar shift has a keyspace of 25. Not 25 million - 25. That is small enough that ' +
         'you do not attack it, you simply look at all of it, which is what the Shifts tool is doing ' +
         'below: every possible decryption, at once, and one of them is English.',
       hints: [
         'The first word of the ciphertext is three letters and the message is an instruction. ' +
           'In English, a three-letter word at the start of a sentence is THE far more often than it is anything else.',
         'M stands for T, A stands for H and X stands for E. Counting forward from T and wrapping past Z, ' +
-          'you reach M after nineteen steps &mdash; so the whole message was moved forward nineteen and you ' +
+          'you reach M after nineteen steps - so the whole message was moved forward nineteen and you ' +
           'take nineteen back off it.'
       ],
-      carries: 'The second lock takes a keyword of six letters, and it was never written down &mdash; ' +
+      carries: 'The second lock takes a keyword of six letters, and it was never written down - ' +
         'it has to come off the message itself.'
     },
     {
@@ -482,19 +482,19 @@
         'FEHBYGNPB SMUTBJCEO OS D CEKL SHYGG LBRVW GXNFEPA LVNP IPGYLDL YHVOP XJE GHIX ' +
         'KTFHWJ TENGD PKKR QZXJIAJ LX CLY. WSEV IF WSI VEYO. TJ VHR OPXVEE FZYPTF OZSM ' +
         'RVJSX CNQ WSI YOEGD PQOX ZCSPG, LRF ETE URWHKNT D EVCNFSZWKTVRY EPD ARE E UUOVEMVUGLZR.',
-      story: 'Three hundred and eighteen letters, and the histogram has gone flat &mdash; no letter is ' +
+      story: 'Three hundred and eighteen letters, and the histogram has gone flat - no letter is ' +
         'anywhere near the twelve per cent English gives E. That flatness is the whole tell: one alphabet ' +
         'cannot hide a frequency profile, so more than one alphabet is in use. Find how many, then break ' +
         'each of them separately as an ordinary shift.',
       teach: 'Two independent measurements find the key length, and the Kasiski &amp; IC tool runs both. ' +
         'Kasiski counts the gaps between repeated trigrams and tallies their factors. The index of ' +
         'coincidence slices the message into candidate columns and asks which slicing makes each column ' +
-        'look like English again. When they agree, you have the length &mdash; and the message collapses into ' +
+        'look like English again. When they agree, you have the length - and the message collapses into ' +
         'that many separate Caesar shifts.',
       hints: [
         'Kasiski tallies 2, 3 and 6 equally, because every gap divisible by six is divisible by two and ' +
           'three as well. Take the LARGEST factor that still explains the repeats, then check it against the ' +
-          'column IC table &mdash; only one candidate length pushes the average column IC back up near 0.066.',
+          'column IC table - only one candidate length pushes the average column IC back up near 0.066.',
         'The key is six letters and it is an object you would carry into a dark room. ' +
           'Run the per-column chi-squared at length 6 and it writes the word out for you, one column at a time.'
       ],
@@ -507,8 +507,8 @@
       points: 150,
       answer: 5,
       ct: 'THPSNEHHOEOESHTNALBTOAPNTETEDOVLSFSNOTEROSAUIINOSHWSVTRLERCIOTAFUTIISTTDTWTODALTETERBUHROENUIIRUWTIGT',
-      story: 'Run the frequency histogram on this one before you touch anything. It is English &mdash; E on ' +
-        'top, then T, then H and O and S about where they should be &mdash; and the text is unreadable anyway. ' +
+      story: 'Run the frequency histogram on this one before you touch anything. It is English - E on ' +
+        'top, then T, then H and O and S about where they should be - and the text is unreadable anyway. ' +
         'That combination means no letter was substituted for another. They were only moved.',
       teach: 'A transposition changes position, never identity, so it leaves the letter counts exactly as it ' +
         'found them. If the counts look right and the words look wrong, stop trying to substitute. Here the ' +
@@ -517,10 +517,10 @@
       hints: [
         'The note behind the second door named the number in words. If you did not read it: the count is ' +
           'small, and the fence redraws instantly, so walking the slider from 2 upwards costs you nothing but a few seconds.',
-        'Five rails. Watch the first row of the fence as you pass it &mdash; at the right count its letters ' +
+        'Five rails. Watch the first row of the fence as you pass it - at the right count its letters ' +
           'stop being scattered and start landing on the tops of real words.'
       ],
-      carries: 'The fourth note is a plain substitution, and it opens with the words THE VAULT DOOR &mdash; ' +
+      carries: 'The fourth note is a plain substitution, and it opens with the words THE VAULT DOOR - ' +
         'twelve letters of crib.'
     },
     {
@@ -537,17 +537,17 @@
         'GKQG YDJDQGH, ASN KQUD CSNPW MSGK GKD JBQZD QPW GKD TDA.',
       story: 'Every letter has been swapped for a different letter, consistently, all the way through. ' +
         'There are 403 septillion ways to shuffle an alphabet, so this one cannot be brute-forced by ' +
-        'looking &mdash; and it falls over in about ten minutes anyway, because the shuffle does not hide how ' +
+        'looking - and it falls over in about ten minutes anyway, because the shuffle does not hide how ' +
         'often each letter is used, how often two of them sit together, or which three-letter word ' +
         'turns up nine times.',
       teach: 'This is the room the tools were built for. The histogram gives you the candidates: the ' +
-        'commonest cipher letter is almost certainly E or T. The trigram list gives you the anchor &mdash; ' +
+        'commonest cipher letter is almost certainly E or T. The trigram list gives you the anchor - ' +
         'whatever GKD is, it is THE. And the crib from the last room pins ten letters before you start, ' +
         'which is more than a third of the alphabet. Fill those in and the rest of the message argues ' +
         'for itself.',
       hints: [
         'Press "Fill in the crib" to place THE VAULT DOOR over the opening. That gives you T, H, E, V, A, ' +
-          'U, L, D, O and R. Now look for a two-letter word ending in the letter you have as S &mdash; and for the ' +
+          'U, L, D, O and R. Now look for a two-letter word ending in the letter you have as S - and for the ' +
           'word that appears as Q on its own, which in English is A or I.',
         'The cipher alphabet, in plain order A to Z, is Q M Z W D C X K F V T B R P S J I Y H G N U L O A E. ' +
           'Reading it the other way: cipher G is T, K is H, D is E.'
@@ -570,12 +570,12 @@
         '52110507085c',
       story: 'Not letters this time. Bytes, each one exclusive-ORed against a short key that repeats ' +
         'from the start of the message to the end of it. Frequency analysis has nothing to work with, ' +
-        'because most of these bytes are not printable characters at all &mdash; open the hex view and see. ' +
+        'because most of these bytes are not printable characters at all - open the hex view and see. ' +
         'What XOR does have is a property nothing above it has: it is its own inverse.',
       teach: 'Because ciphertext XOR plaintext gives you key, a guess about the plaintext is directly a ' +
         'guess about the key. Slide a crib along the message and at every position read off the key bytes ' +
         'it would imply. At almost every position they are junk. At the right one they are printable, ' +
-        'and &mdash; the part that clinches it &mdash; they repeat, because the key repeats. That is the whole ' +
+        'and - the part that clinches it - they repeat, because the key repeats. That is the whole ' +
         'attack, and it needs no key length known in advance.',
       hints: [
         'The crib is already in the field, spelled exactly as the last note gave it. Case matters: XOR ' +
@@ -831,7 +831,7 @@
         for (var i = 0; i < ROOMS.length; i++) {
           if (i >= at || !ROOMS[i].carries) continue;
           lines.push('<li style="margin:0 0 0.4rem;font-size:0.8rem;line-height:1.6;color:' + INK3 + ';">' +
-            '<span style="color:' + INK4 + ';font-family:' + MONO + ';">room ' + (i + 1) + '</span> &mdash; ' +
+            '<span style="color:' + INK4 + ';font-family:' + MONO + ';">room ' + (i + 1) + '</span> - ' +
             ROOMS[i].carries + '</li>');
         }
         if (!lines.length) return '';
@@ -854,7 +854,7 @@
         if (r.kind === 'vigenere') {
           return '<div style="margin:0 0 0.6rem;">' + field('ce-key', wKey, 'Vigenere key', 'type the keyword') + '</div>' +
             note('The key repeats across the letters only. Spaces and punctuation pass through and do ' +
-              'not advance it &mdash; implementations disagree about that, and choosing wrong garbles ' +
+              'not advance it - implementations disagree about that, and choosing wrong garbles ' +
               'everything after the first space.');
         }
         if (r.kind === 'rail') {
@@ -871,7 +871,7 @@
         }
         return '<div style="margin:0 0 0.6rem;">' + field('ce-xor', wXorKey, 'XOR key, as text', 'type the key') + '</div>' +
           note('Typed as text and used as bytes. Five lowercase letters is about twelve million keys, ' +
-            'which is not a number that protects anything &mdash; it is here because it is small enough to see.');
+            'which is not a number that protects anything - it is here because it is small enough to see.');
       }
 
       /* The fence, redrawn on every change of the rail count. One line per
@@ -904,7 +904,7 @@
         }
         out += '</pre></div>';
         out += note('The ciphertext has been laid into ' + wRails + ' rails, row by row, exactly as it ' +
-          'arrived. Reading it back down the zigzag &mdash; rail 1, rail 2, rail 3, back up &mdash; gives the ' +
+          'arrived. Reading it back down the zigzag - rail 1, rail 2, rail 3, back up - gives the ' +
           'message below. Rails are numbered as well as coloured, so the picture does not depend on ' +
           'telling the colours apart.');
         return out;
@@ -1054,7 +1054,7 @@
         if (r.kind === 'xor') {
           return note('This room is bytes, not letters. A letter histogram over it would be a histogram ' +
             'of the handful of bytes that happen to land in the printable range, which is not a sample ' +
-            'of anything &mdash; the majority of the message is outside it. Frequency analysis is the wrong ' +
+            'of anything - the majority of the message is outside it. Frequency analysis is the wrong ' +
             'tool here and saying so is the point: the crib dragger and the hex view are the two that ' +
             'apply. On a much longer XOR message you would split the bytes into columns by key length ' +
             'and run frequency analysis inside each column, which is the same idea one level up.');
@@ -2032,7 +2032,7 @@
           message += ' That is the maximum. Every one of these would have fallen to a laptop in under a ' +
             'second, which is the only reason you were allowed to enjoy it.';
         } else if (clean >= 4) {
-          message += ' The substitution is the one worth going back for — it is the room where the tools ' +
+          message += ' The substitution is the one worth going back for - it is the room where the tools ' +
             'stop being a demonstration and start doing the work.';
         } else {
           message += ' Worth another run. The tools carry over between rooms on purpose: the histogram ' +

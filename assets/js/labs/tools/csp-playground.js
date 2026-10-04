@@ -69,7 +69,7 @@
         '',
         'The last four are the ones default-src does not cover, named on purpose:',
         'object-src \'none\', base-uri \'self\', form-action \'self\' and',
-        'frame-ancestors \'none\' — the last paired with X-Frame-Options: DENY.'
+        'frame-ancestors \'none\' - the last paired with X-Frame-Options: DENY.'
       ]
     },
     {
@@ -84,7 +84,7 @@
         '',
         'These two pages get embedded by other pages on this site. That is the',
         'whole reason for the exception, and it is scoped to two paths rather',
-        'than loosened site-wide — which is what a header rule per path is for.'
+        'than loosened site-wide - which is what a header rule per path is for.'
       ]
     },
     {
@@ -96,8 +96,8 @@
         'The site-wide policy with one directive widened:',
         'connect-src \'self\' data: https:  instead of a named list of origins.',
         '',
-        'A handful of labs deliberately talk to the network — DNS over HTTPS,',
-        'RDAP, certificate transparency logs — and the origin depends on which',
+        'A handful of labs deliberately talk to the network - DNS over HTTPS,',
+        'RDAP, certificate transparency logs - and the origin depends on which',
         'resolver you pick, so the list cannot be enumerated in advance.',
         '',
         'That is a real widening and worth naming as one. bare https: in',
@@ -109,7 +109,7 @@
     },
     {
       path: '/labs/hacklab-guestbook',
-      title: 'The XSS target — strictest, and the only one allowing inline script',
+      title: 'The XSS target - strictest, and the only one allowing inline script',
       extra: 'X-Frame-Options: SAMEORIGIN, X-Robots-Tag: noindex, Cache-Control: no-store',
       csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
       notes: [
@@ -188,7 +188,7 @@
 
   var DEPRECATED = {
     'block-all-mixed-content': 'deprecated; upgrade-insecure-requests replaces it',
-    'navigate-to': 'was proposed and never shipped — no browser enforces it',
+    'navigate-to': 'was proposed and never shipped - no browser enforces it',
     'plugin-types': 'removed from the spec and from Chrome',
     'prefetch-src': 'removed from the spec; prefetches fall back to default-src',
     'referrer': 'removed; the Referrer-Policy header replaces it',
@@ -950,7 +950,7 @@
         if (he === 'content-security-policy' || he === 'content-security-policy-report-only') {
           notes.push('The markup contains a <meta http-equiv="' + he + '">. A meta ' +
             'policy is a SECOND policy on top of the header, and a resource must ' +
-            'satisfy both. It also cannot use frame-ancestors, report-uri or sandbox — ' +
+            'satisfy both. It also cannot use frame-ancestors, report-uri or sandbox - ' +
             'those are silently ignored in meta. Paste it into the policy box to test it.');
         } else if (he === 'refresh') {
           notes.push('The markup contains a <meta http-equiv="refresh">. CSP has no ' +
@@ -1005,7 +1005,7 @@
 
     if (set.reportOnly) {
       add('err', 'This is a Content-Security-Policy-Report-Only header. It enforces ' +
-        'nothing at all — it reports, and every verdict below would be a report ' +
+        'nothing at all - it reports, and every verdict below would be a report ' +
         'rather than a block.');
     }
     if (set.split) {
@@ -1029,7 +1029,7 @@
         if (!KNOWN[name]) {
           var guess = nearestDirective(name);
           add('err', tag + 'unknown directive "' + name + '"' +
-            (guess ? ' — did you mean ' + guess + '?' : '') +
+            (guess ? ' - did you mean ' + guess + '?' : '') +
             ' A browser ignores a directive name it does not recognise, silently ' +
             'and with no console error in most cases. Whatever you thought this ' +
             'was protecting is unprotected' +
@@ -1103,7 +1103,7 @@
             add('warn', tag + name + ": 'unsafe-inline' is present AND " +
               (hasNonce ? 'a nonce' : 'a hash') + ' is present, so ' +
               "'unsafe-inline' is ignored entirely. Modern browsers obey the nonce. " +
-              'Old ones that do not understand nonces obey \'unsafe-inline\' — which ' +
+              'Old ones that do not understand nonces obey \'unsafe-inline\' - which ' +
               'is the one case where writing both is deliberate.');
           } else if (isScript) {
             add('err', tag + name + " allows 'unsafe-inline' with no nonce and no " +
@@ -1129,7 +1129,7 @@
           });
           add('dim', tag + name + " carries 'strict-dynamic'. Every host and scheme " +
             'source in it is ignored' +
-            (silenced.length ? ' — that is ' + silenced.join(', ') : '') +
+            (silenced.length ? ' - that is ' + silenced.join(', ') : '') +
             '. Only a nonce or a hash admits a script, and any script those admit ' +
             'can then insert further scripts of its own. The ignored sources are ' +
             'harmless: they are there for browsers too old to understand the keyword.');
@@ -1169,7 +1169,7 @@
          nothing on screen to review. */
       if (!dirs['default-src']) {
         add('warn', tag + 'no default-src. Every fetch directive you did not name is ' +
-          'unrestricted — img-src, connect-src, font-src, media-src and the rest.');
+          'unrestricted - img-src, connect-src, font-src, media-src and the rest.');
       }
       if (!dirs['base-uri']) {
         add('err', tag + 'no base-uri. An injected <base href="https://attacker/"> ' +
@@ -1274,7 +1274,7 @@
     out.heading('DIRECTIVES AS A BROWSER READS THEM');
     set.policies.forEach(function (pol, pi) {
       if (set.policies.length > 1) out.dim('-- policy ' + (pi + 1));
-      if (!pol.order.length) { out.warn('(empty policy — it restricts nothing)'); return; }
+      if (!pol.order.length) { out.warn('(empty policy - it restricts nothing)'); return; }
       pol.order.forEach(function (name) {
         var dir = pol.dirs[name];
         var cls = KNOWN[name] ? null : 't-err';
@@ -1378,7 +1378,7 @@
     out.heading('WHAT THIS DOES NOT DO');
     out.dim('It reads markup. A resource a script requests after the page loads is');
     out.dim('invisible here, except for literal URLs passed to fetch, XHR, WebSocket,');
-    out.dim('EventSource, sendBeacon, Worker and import() — a text scan, so a URL');
+    out.dim('EventSource, sendBeacon, Worker and import() - a text scan, so a URL');
     out.dim('assembled from variables is not found.');
     out.dim('');
     out.dim('It does not follow redirects. Real CSP drops path matching after a');
@@ -1444,7 +1444,7 @@
     if (htmlText.length > MAX_HTML) {
       out.clear().err('That markup is ' + LabTool.humanBytes(htmlText.length) +
         '. This tool stops at ' + LabTool.humanBytes(MAX_HTML) +
-        ' so the page stays responsive — the work happens in this tab.');
+        ' so the page stays responsive - the work happens in this tab.');
       return;
     }
 
@@ -1591,8 +1591,8 @@
         extra.push({ level: 'err', text:
           'This is on YOUR OWN origin and carries a callback parameter. ' +
           "'self' permits it without looking at the query string. If that endpoint " +
-          'reflects the callback name into a JavaScript response — which is what ' +
-          'JSONP is — then an attacker who can inject one script tag gets arbitrary ' +
+          'reflects the callback name into a JavaScript response - which is what ' +
+          'JSONP is - then an attacker who can inject one script tag gets arbitrary ' +
           "execution, and script-src 'self' allowed it. Every callback endpoint on " +
           "your origin is a hole in 'self'." });
       }
@@ -1764,7 +1764,7 @@
       SITE_POLICIES.forEach(function (p, i) {
         var opt = document.createElement('option');
         opt.value = String(i);
-        opt.textContent = p.path + '  —  ' + p.title;
+        opt.textContent = p.path + '  -  ' + p.title;
         sel.appendChild(opt);
       });
       sel.addEventListener('change', function () {

@@ -132,7 +132,7 @@
       if (!sig) return fail(i, '"' + m[1] + '" is not an instruction on this machine.');
       if (banned && banned.length) {
         for (p = 0; p < banned.length; p++) {
-          if (banned[p] === mnem) return fail(i, mnem + ' is not allowed on this level — that is the whole puzzle.');
+          if (banned[p] === mnem) return fail(i, mnem + ' is not allowed on this level - that is the whole puzzle.');
         }
       }
 
@@ -142,7 +142,7 @@
         var parts = rest.split(',');
         for (p = 0; p < parts.length; p++) {
           var text = trim(parts[p]);
-          if (!text) return fail(i, 'there is an empty operand — probably a stray comma.');
+          if (!text) return fail(i, 'there is an empty operand - probably a stray comma.');
           var op = operand(text);
           if (!op) return fail(i, operandFault(text));
           ops.push(op);
@@ -328,7 +328,7 @@
   var LEVELS = [
     {
       name: 'Copy a value',
-      brief: 'Read one number and print it back, unchanged. This one is done for you — read it, run it, ' +
+      brief: 'Read one number and print it back, unchanged. This one is done for you - read it, run it, ' +
         'and step through it once so you can see where the value goes.',
       io: 'In: one number. Out: the same number.',
       starter: '; IN takes the next input value and puts it somewhere.\n' +
@@ -406,7 +406,7 @@
     },
     {
       name: 'Multiply without MUL',
-      brief: 'Read two numbers, zero or positive, and print their product — but MUL is switched off on ' +
+      brief: 'Read two numbers, zero or positive, and print their product - but MUL is switched off on ' +
         'this level. Repeated addition is how a machine without a multiplier does it, and it is why ' +
         'multiplying used to be so much dearer than adding.',
       io: 'In: two numbers, each zero or more. Out: their product.',
@@ -552,8 +552,8 @@
           '    </div>' +
           '    <div class="asm-regs" id="asm-regs"></div>' +
           '    <p class="asm-next" id="asm-next"></p>' +
-          '    <p class="asm-queue"><b>Input left</b> <span id="asm-in">—</span></p>' +
-          '    <p class="asm-queue"><b>Printed</b> <span id="asm-out">—</span></p>' +
+          '    <p class="asm-queue"><b>Input left</b> <span id="asm-in">-</span></p>' +
+          '    <p class="asm-queue"><b>Printed</b> <span id="asm-out">-</span></p>' +
           '    <div class="asm-mem" id="asm-mem">' + cells + '</div>' +
           '  </div>' +
           '</div>' +
@@ -685,14 +685,14 @@
 
       function paintLevel() {
         var lv = LEVELS[at];
-        el.title.textContent = 'Level ' + (at + 1) + ' — ' + lv.name;
+        el.title.textContent = 'Level ' + (at + 1) + ' - ' + lv.name;
         el.brief.textContent = lv.brief;
         el.io.textContent = lv.io + ' Par is ' + pars[at] + '.';
         el.src.value = sources[at];
 
         var opts = '';
         for (var i = 0; i < lv.tests.length; i++) {
-          opts += '<option value="' + i + '">' + (i + 1) + ' — in ' + esc(list(lv.tests[i].i)) + '</option>';
+          opts += '<option value="' + i + '">' + (i + 1) + ' - in ' + esc(list(lv.tests[i].i)) + '</option>';
         }
         el.pick.innerHTML = opts;
         pick = 0;
@@ -765,7 +765,7 @@
         var want = LEVELS[at].tests[pick].o;
         var ok = sameList(machine.out, want);
         message((prefix || '') + 'Test ' + (pick + 1) + ' printed ' + list(machine.out) +
-          (ok ? ' — that is right.' : ', and should have printed ' + list(want) + '.'), ok ? 'good' : 'bad');
+          (ok ? ' - that is right.' : ', and should have printed ' + list(want) + '.'), ok ? 'good' : 'bad');
         g.beep(ok ? 700 : 240, 0.05, ok ? 'sine' : 'square');
       }
 

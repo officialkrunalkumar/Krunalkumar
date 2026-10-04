@@ -200,7 +200,7 @@
           </ol>
         </nav>
         <h1>Regex tester and ReDoS checker</h1>
-        <p class="hero-text">Ordinary testers show you matches. This also runs a ReDoS check, because a regular expression is one of the few places where harmless-looking code can be brought down by a 40-character input &mdash; and the usual way people find out is in production.</p>
+        <p class="hero-text">Ordinary testers show you matches. This also runs a ReDoS check, because a regular expression is one of the few places where harmless-looking code can be brought down by a 40-character input - and the usual way people find out is in production.</p>
         <ul class="lab-facts">
           <li>Live matching with capture groups</li>
           <li>Named groups and replacement</li>
@@ -229,14 +229,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>Uses the JavaScript regex engine, not PCRE or RE2</li>
                   <li>The ReDoS check is empirical, not a proof</li>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -280,7 +280,7 @@
         <div class="lab-fieldrow">
           <label class="sr-only" for="tool-text">Regular expression</label>
           <input class="lab-toolfield" type="text" id="tool-text" spellcheck="false"
-                 autocapitalize="off" autocorrect="off" placeholder="Regular expression — try (a+)+$ to see a ReDoS failure" />
+                 autocapitalize="off" autocorrect="off" placeholder="Regular expression - try (a+)+$ to see a ReDoS failure" />
         </div>
         <div class="lab-panes">
           <div class="lab-pane lab-pane-input">
@@ -297,7 +297,7 @@
         <div class="lab-fieldrow">
           <label class="sr-only" for="tool-replace">Replacement</label>
           <input class="lab-toolfield" type="text" id="tool-replace" spellcheck="false"
-                 autocapitalize="off" autocorrect="off" placeholder="Optional replacement string — $1 for group 1" />
+                 autocapitalize="off" autocorrect="off" placeholder="Optional replacement string - $1 for group 1" />
         </div>
       </div>
 
@@ -308,7 +308,7 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Catastrophic backtracking</h3>
-            <p>Patterns with a repeat inside a repeat &mdash; <code>(a+)+</code> &mdash; or with overlapping alternations force the engine to try every possible way of splitting the input before giving up. The cost doubles with each added character, so a 40-character string can take longer than the age of the universe.</p>
+            <p>Patterns with a repeat inside a repeat - <code>(a+)+</code> - or with overlapping alternations force the engine to try every possible way of splitting the input before giving up. The cost doubles with each added character, so a 40-character string can take longer than the age of the universe.</p>
           </article>
           <article class="info-card">
             <h3>Why that is a denial of service</h3>
@@ -316,7 +316,7 @@
           </article>
           <article class="info-card">
             <h3>How the check works here</h3>
-            <p>Rather than analysing the pattern theoretically, it runs it against deliberately pathological inputs of increasing length and times each one. If the runtime explodes, you see it explode &mdash; in your tab, where it costs nothing.</p>
+            <p>Rather than analysing the pattern theoretically, it runs it against deliberately pathological inputs of increasing length and times each one. If the runtime explodes, you see it explode - in your tab, where it costs nothing.</p>
           </article>
           <article class="info-card">
             <h3>The fixes</h3>

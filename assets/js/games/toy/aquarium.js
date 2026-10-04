@@ -773,8 +773,8 @@
         if (!bubbleBtn) return;
         bubbleBtn.setAttribute('aria-pressed', String(bubblesOn));
         bubbleBtn.title = bubblesOn
-          ? 'Air stones are running — click to switch them off'
-          : 'Air stones are off — click to switch them on';
+          ? 'Air stones are running - click to switch them off'
+          : 'Air stones are off - click to switch them on';
       }
 
       function clampCurrent(v) {

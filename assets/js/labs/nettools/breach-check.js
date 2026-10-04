@@ -87,7 +87,7 @@
              happened. */
           if (!r.res.ok) {
             out.line('');
-            out.err('HTTP ' + r.res.status + ' — ' + VENDOR + ' did not answer the query.');
+            out.err('HTTP ' + r.res.status + ' - ' + VENDOR + ' did not answer the query.');
             out.err('The check could NOT be completed. This is not "not found":');
             out.err('the password was never compared against the breach corpus,');
             out.err('so nothing can be concluded either way. Try again shortly.');
@@ -123,7 +123,7 @@
     out.rule();
 
     if (count > 0) {
-      out.err('FOUND — this password appears in known breaches ' +
+      out.err('FOUND - this password appears in known breaches ' +
               count.toLocaleString() + ' time' + (count === 1 ? '' : 's').toString());
       out.line('');
       if (count > 100000) {
@@ -143,9 +143,9 @@
       out.dim('  · a strong-looking password that appears here is still burned');
       out.line('');
       out.warn('Stop using it anywhere. If it is reused across sites, change it');
-      out.warn('on all of them — credential stuffing is exactly this attack.');
+      out.warn('on all of them - credential stuffing is exactly this attack.');
     } else {
-      out.ok('NOT FOUND — this password does not appear in the breach corpus.');
+      out.ok('NOT FOUND - this password does not appear in the breach corpus.');
       out.line('');
       out.dim('Which is good, and narrower than it sounds. It means this string');
       out.dim('is not in the published breach data HIBP has collected. It does');
@@ -153,7 +153,7 @@
       out.dim('nobody happens to have used is still short and guessable.');
       out.line('');
       out.dim('For whether it would survive an attack, use the offline strength');
-      out.dim('checker — that one makes no network requests at all:');
+      out.dim('checker - that one makes no network requests at all:');
       out.dim('  /labs/password');
     }
 
@@ -162,7 +162,7 @@
     out.dim('That a request came from your IP address for the prefix shown above.');
     out.dim('It does not know your password, which of the ' +
             lines.length.toLocaleString() + ' returned hashes you were');
-    out.dim('interested in, or whether you matched any of them at all — because');
+    out.dim('interested in, or whether you matched any of them at all - because');
     out.dim('the comparison happened here, after the response arrived.');
     if (padded) {
       out.line('');
@@ -194,8 +194,8 @@
       out.dim('Type a password and press Check.');
       out.dim('');
       out.dim('Only the first five characters of its SHA-1 hash are sent. The');
-      out.dim('server returns every breached hash sharing that prefix — roughly');
-      out.dim('two thousand — and the comparison happens here, in this tab.');
+      out.dim('server returns every breached hash sharing that prefix - roughly');
+      out.dim('two thousand - and the comparison happens here, in this tab.');
       out.dim('');
       out.dim('That is k-anonymity: a mathematical property, not a promise. The');
       out.dim('server cannot tell which of those two thousand you meant.');

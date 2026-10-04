@@ -223,7 +223,7 @@
         if (driftBtn) {
           driftBtn.setAttribute('aria-pressed', drift ? 'true' : 'false');
           driftBtn.title = drift
-            ? 'The turn is walking on its own — click to stop it'
+            ? 'The turn is walking on its own - click to stop it'
             : 'Let the turn walk on its own';
         }
         if (!quiet) g.announce(drift ? 'The turn is drifting.' : 'The turn is held.');

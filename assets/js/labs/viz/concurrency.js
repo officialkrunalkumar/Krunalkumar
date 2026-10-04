@@ -415,22 +415,22 @@
         var q = this.lockWait[key];
         if (q.indexOf(t) < 0) {
           q.push(t);
-          this.say(t, name + '  LOCK ' + key + '  blocked — ' + why +
+          this.say(t, name + '  LOCK ' + key + '  blocked - ' + why +
             '. Joined the wait queue at position ' + q.length + '.', 'cx-l-warn');
         } else {
-          this.say(t, name + '  LOCK ' + key + '  tried again, still blocked — ' +
+          this.say(t, name + '  LOCK ' + key + '  tried again, still blocked - ' +
             why + '.', 'cx-l-dim');
         }
       } else if (op === OP.ACQ) {
         if (this.semWait.indexOf(t) < 0) {
           this.semWait.push(t);
-          this.say(t, name + '  ACQUIRE  blocked — ' + why +
+          this.say(t, name + '  ACQUIRE  blocked - ' + why +
             '. Joined the wait queue at position ' + this.semWait.length + '.', 'cx-l-warn');
         } else {
           this.say(t, name + '  ACQUIRE  tried again, still blocked.', 'cx-l-dim');
         }
       } else {
-        this.say(t, name + '  ' + OP_SHORT[op] + '  blocked — ' + why + '.', 'cx-l-warn');
+        this.say(t, name + '  ' + OP_SHORT[op] + '  blocked - ' + why + '.', 'cx-l-warn');
       }
       return false;
     }
@@ -987,7 +987,7 @@
     mutex: {
       label: 'Mutex',
       lede: 'Same threads, same three instructions, with a lock around them. A thread whose ' +
-        'next instruction is LOCK while another holds the lock is blocked — press its ' +
+        'next instruction is LOCK while another holds the lock is blocked - press its ' +
         'step button anyway and it joins the wait queue. Interleave as viciously as you ' +
         'like: the counter is always right, because the only orders left are the ones ' +
         'where whole critical sections follow one another.',
@@ -995,7 +995,7 @@
     },
     sem: {
       label: 'Semaphore',
-      lede: 'A counting semaphore permits N holders at once, which is what it is for — ' +
+      lede: 'A counting semaphore permits N holders at once, which is what it is for - ' +
         'a pool of connections, a rate limit, a bounded buffer. Set the permits to 2 and ' +
         'two threads are inside the critical section together, so the same lost update ' +
         'comes straight back. Set it to 1 and it becomes a mutex. A semaphore is not a ' +
@@ -1197,7 +1197,7 @@
     if (m.deadlocked()) {
       return E('p', 'cx-banner',
         'Nothing can run. Every thread is either finished or waiting for something no ' +
-        'running thread will release. That is a deadlock — the deadlock tab takes ' +
+        'running thread will release. That is a deadlock - the deadlock tab takes ' +
         'this apart properly.');
     }
     if (m.allDone()) {
@@ -1219,7 +1219,7 @@
         tail = 'The sends interleaved freely. With one owner holding the counter there ' +
           'is nothing for an interleaving to corrupt.';
       } else if (m.switches >= 2) {
-        tail = 'The threads did still interleave — the transcript shows it — they ' +
+        tail = 'The threads did still interleave - the transcript shows it - they ' +
           'just never interleaved inside the critical section.';
       } else {
         tail = 'This particular run barely interleaved at all. Press Run to the end, ' +
@@ -1239,7 +1239,7 @@
 
   SchedulerPanel.prototype.limitText = function () {
     var common = 'This is a model, not a thread. JavaScript is single-threaded and nothing ' +
-      'on this page runs concurrently — there is one array of program counters and a ' +
+      'on this page runs concurrently - there is one array of program counters and a ' +
       'switch statement, and you are the scheduler. The model is also sequentially ' +
       'consistent: every step is atomic and every write is visible instantly. A real ' +
       'machine reorders stores and lets a value sit invisible in a store buffer, which ' +
@@ -1283,7 +1283,7 @@
 
     host.appendChild(E('p', 'cx-lede',
       'Two threads, two locks, one shared counter. T1 takes A then B. T2 takes ' +
-      (this.ordered ? 'A then B as well — the same order.' : 'B then A — the ' +
+      (this.ordered ? 'A then B as well - the same order.' : 'B then A - the ' +
       'opposite order.') + ' Step T1 once, step T2 once, then step them both again, and ' +
       'each is holding the lock the other needs next. Neither will ever release, because ' +
       'releasing is on the far side of an instruction that cannot execute. No error is ' +
@@ -1381,7 +1381,7 @@
     host.appendChild(note(
       'Same caveat as everywhere else here: these are not threads, and this deadlock is a ' +
       'state in a model you are stepping by hand. What the model does capture honestly is ' +
-      'the shape — the hold-and-wait, the cycle, and the fact that no exception is ' +
+      'the shape - the hold-and-wait, the cycle, and the fact that no exception is ' +
       'thrown when it happens.', 'cx-dimnote'));
   };
 
@@ -1472,13 +1472,13 @@
     box.appendChild(E('p', 'cx-stat-note',
       'Both rows enumerated here, in this tab, every time this panel draws. With the ' +
       'orders disagreeing, ' + num(bad.deadlocks) + ' of ' + num(bad.schedules) +
-      ' schedules end with both threads stuck — ' +
+      ' schedules end with both threads stuck - ' +
       pctText(bad.deadlocks, bad.schedules) + ' of them. With the orders agreed there ' +
       'are ' + num(good.schedules) + ' schedules and ' + num(good.deadlocks) +
       ' deadlock. The counts are small because a blocked thread cannot be chosen: ' +
       'once one thread is inside, the other has nowhere to go until it comes out, so ' +
       'most of the 3,432 ways of shuffling fourteen instructions are not legal runs at ' +
-      'all. Neither version ever gets the counter wrong — holding both locks is ' +
+      'all. Neither version ever gets the counter wrong - holding both locks is ' +
       'still mutual exclusion, and a deadlock is a liveness failure, not a ' +
       'correctness one.'));
     return box;
@@ -1532,7 +1532,7 @@
       '“It works on my machine” is a statement about one schedule out of many. ' +
       'This walks ' +
       'the whole tree: at every point it tries every thread that could run, and counts ' +
-      'where each complete run ends up. Nothing is sampled and nothing is estimated — ' +
+      'where each complete run ends up. Nothing is sampled and nothing is estimated - ' +
       'these are exhaustive counts of a small program, computed in this tab when you press ' +
       'the button.'));
 
@@ -1563,7 +1563,7 @@
       'The search runs on the main thread and the tab will stop responding for as long as ' +
       'it takes. A blocked thread is modelled as one that cannot be chosen, so what is ' +
       'counted is distinct orders of progress rather than wall-clock schedules, and the ' +
-      'locks here allow barging — any waiter may take a free lock — which gives ' +
+      'locks here allow barging - any waiter may take a free lock - which gives ' +
       'more schedules than the FIFO queue in the other tabs, not fewer. The search stops ' +
       'at ' + num(LEAF_CAP) + ' schedules; when it does, the row says so and prints the ' +
       'multinomial upper bound instead of a smaller number that would be a lie.',
@@ -1605,7 +1605,7 @@
     lines.push('Counted here, in this tab, in about ' + num(R.ms) + ' ms.');
     if (!race.capped) {
       lines.push('Unsynchronised, ' + num(race.wrong) + ' of ' + num(race.schedules) +
-        ' schedules end with the wrong number — ' + pctText(race.wrong, race.schedules) +
+        ' schedules end with the wrong number - ' + pctText(race.wrong, race.schedules) +
         ' of them. A test that runs the program once runs one of these.');
     }
     if (!mutex.capped && !race.capped) {
@@ -1795,7 +1795,7 @@
       clear(mount);
       mount.appendChild(E('p', 'lab-viz-error',
         'This lab could not start in your browser: ' + ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown. ' +
+        ' - the write-up below still explains what it would have shown. ' +
         'Please tell me, and mention which browser you are using.'));
     }
   }

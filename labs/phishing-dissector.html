@@ -210,7 +210,7 @@
           </ol>
         </nav>
         <h1>Phishing email dissector</h1>
-        <p class="hero-text">&ldquo;Is this a phishing email?&rdquo; is the wrong question to answer with a yes. The useful answer is which part of the message is lying and where it says so &mdash; so every finding here is quoted back with the offset it came from, and you can check the claim rather than take my word for it.</p>
+        <p class="hero-text">&ldquo;Is this a phishing email?&rdquo; is the wrong question to answer with a yes. The useful answer is which part of the message is lying and where it says so - so every finding here is quoted back with the offset it came from, and you can check the claim rather than take my word for it.</p>
         <ul class="lab-facts">
           <li>Display name against the real address</li>
           <li>Lookalike and punycode domains, decoded</li>
@@ -240,14 +240,14 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No link is fetched and no shortener is expanded</li>
                   <li>No DNS, WHOIS or reputation lookups of any kind</li>
@@ -266,7 +266,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -316,7 +316,7 @@
           </article>
           <article class="info-card">
             <h3>Domains are compared to what the message claims</h3>
-            <p>A lookalike domain is only a lookalike relative to something. Rather than measuring every host against a fixed brand list, this collects the names the message itself asks you to believe &mdash; the display name, the recipient&rsquo;s own domain, the receiving server, the visible text of each link &mdash; and measures against those, by edit distance and by folding confusable characters together. A brand list is still there underneath, but it is the fallback, not the method.</p>
+            <p>A lookalike domain is only a lookalike relative to something. Rather than measuring every host against a fixed brand list, this collects the names the message itself asks you to believe - the display name, the recipient&rsquo;s own domain, the receiving server, the visible text of each link - and measures against those, by edit distance and by folding confusable characters together. A brand list is still there underneath, but it is the fallback, not the method.</p>
           </article>
           <article class="info-card">
             <h3>Punycode goes both ways</h3>
@@ -324,15 +324,15 @@
           </article>
           <article class="info-card">
             <h3>Link text is a promise, the href is the destination</h3>
-            <p>When the visible text of a link names a host, that is what the reader will check, and it is the only thing most people check. So it is compared with where the link actually goes &mdash; after following any redirect written into the query string, because a tracker in the middle is not the same finding as a lie at the end.</p>
+            <p>When the visible text of a link names a host, that is what the reader will check, and it is the only thing most people check. So it is compared with where the link actually goes - after following any redirect written into the query string, because a tracker in the middle is not the same finding as a lie at the end.</p>
           </article>
           <article class="info-card">
             <h3>Attachment names are read as bytes</h3>
-            <p>A right-to-left override makes a name ending <code>.exe</code> draw itself ending <code>.jpg</code>, so the stored bytes are printed with the invisible characters spelled out. Double extensions, macro-bearing formats and archives nested inside archives are named too. What is inside an archive is beyond a filename &mdash; the <a href="/labs/archive-inspector">archive inspector</a> lists that without running anything.</p>
+            <p>A right-to-left override makes a name ending <code>.exe</code> draw itself ending <code>.jpg</code>, so the stored bytes are printed with the invisible characters spelled out. Double extensions, macro-bearing formats and archives nested inside archives are named too. What is inside an archive is beyond a filename - the <a href="/labs/archive-inspector">archive inspector</a> lists that without running anything.</p>
           </article>
           <article class="info-card">
             <h3>Wording is the weakest evidence here</h3>
-            <p>Urgency, authority, secrecy and payment-change language are matched and shown where they appear, and that is all they are: pressure, not proof. Urgent emails from real people exist, and a careful attacker writes calmly. The one wording signal I would still act on alone is secrecy &mdash; a genuine instruction survives being checked with a colleague.</p>
+            <p>Urgency, authority, secrecy and payment-change language are matched and shown where they appear, and that is all they are: pressure, not proof. Urgent emails from real people exist, and a careful attacker writes calmly. The one wording signal I would still act on alone is secrecy - a genuine instruction survives being checked with a colleague.</p>
           </article>
         </div>
       </section>
@@ -353,7 +353,7 @@
           </article>
           <article class="info-card">
             <h3>Payroll diversion</h3>
-            <p>No links and no attachments at all, and SPF, DKIM and DMARC all pass &mdash; on the attacker&rsquo;s own domain. What is left is a borrowed half of the company name, a reply address at a free mailbox, and a request to change bank details that asks you not to mention it. This is the one that costs the most money.</p>
+            <p>No links and no attachments at all, and SPF, DKIM and DMARC all pass - on the attacker&rsquo;s own domain. What is left is a borrowed half of the company name, a reply address at a free mailbox, and a request to change bank details that asks you not to mention it. This is the one that costs the most money.</p>
           </article>
           <article class="info-card">
             <h3>IT impersonation</h3>
@@ -385,7 +385,7 @@
           </article>
           <article class="info-card">
             <h3>Nothing is fetched or resolved</h3>
-            <p>No link is opened, no shortener is expanded, no domain is resolved and no address is checked against a list held anywhere else. Opening a phishing link tells the sender the address is live and that somebody read it. If you want the domain&rsquo;s own records, look them up deliberately in the <a href="/labs/dns">DNS lookup</a> and its published mail policy in the <a href="/labs/email-security">email security audit</a> &mdash; both of those do query a public resolver, which is exactly why it should be your decision rather than a side effect of pasting a message here.</p>
+            <p>No link is opened, no shortener is expanded, no domain is resolved and no address is checked against a list held anywhere else. Opening a phishing link tells the sender the address is live and that somebody read it. If you want the domain&rsquo;s own records, look them up deliberately in the <a href="/labs/dns">DNS lookup</a> and its published mail policy in the <a href="/labs/email-security">email security audit</a> - both of those do query a public resolver, which is exactly why it should be your decision rather than a side effect of pasting a message here.</p>
           </article>
           <article class="info-card">
             <h3>The delivery path lives elsewhere</h3>
@@ -428,7 +428,7 @@
         <div class="section-heading">
           <p class="eyebrow">Something not working?</p>
           <h2>Tell me and I will fix it</h2>
-          <p>If a result looks wrong, or a message you know is fake comes back clean, I would genuinely like to know &mdash; a missed case is worth more to me than a working one.</p>
+          <p>If a result looks wrong, or a message you know is fake comes back clean, I would genuinely like to know - a missed case is worth more to me than a working one.</p>
         </div>
         <div class="lab-report-actions">
           <a class="btn btn-primary" href="/labs?from=phishing-dissector#lab-feedback">Report a problem or send feedback</a>

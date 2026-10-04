@@ -414,7 +414,7 @@
      to start and stop the pattern. */
   grid.tabIndex = 0;
   grid.setAttribute('role', 'group');
-  grid.setAttribute('aria-label', 'Drum sequencer grid — press Space to start and stop the pattern');
+  grid.setAttribute('aria-label', 'Drum sequencer grid - press Space to start and stop the pattern');
 
   /* #synth deliberately gets no tabindex at all — not even -1. sortviz.js sets
      tabindex="-1" on its root because its keydown listener is bound to that

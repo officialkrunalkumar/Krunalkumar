@@ -282,7 +282,7 @@
             c.due ? 'Session done' : 'Nothing due'));
           head.appendChild(el('p', 'quiz-result-body',
             c.due
-              ? 'You reviewed ' + done + '. There are ' + c.due + ' still due — start another round when you want them.'
+              ? 'You reviewed ' + done + '. There are ' + c.due + ' still due - start another round when you want them.'
               : 'Every card in this deck is scheduled for a later day. Change deck above, or come back tomorrow.'));
           head.appendChild(boxBars(c.boxes));
           var again = el('button', 'game-btn', c.due ? 'Another round' : 'Review anyway');
@@ -467,7 +467,7 @@
           var pct = Math.round((exam.score / exam.qs.length) * 100);
           var res = el('div', 'quiz-result');
           res.appendChild(el('div', 'quiz-result-title',
-            exam.score + ' of ' + exam.qs.length + ' — ' + pct + '%'));
+            exam.score + ' of ' + exam.qs.length + ' - ' + pct + '%'));
           res.appendChild(el('p', 'quiz-result-body',
             'Finished in ' + (secs < 60 ? secs + ' seconds' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's') +
             '. Nothing about this was recorded and your revision schedule is untouched.'));
@@ -593,7 +593,7 @@
            "exam" while the page runs study mode is a bug the visitor has to
            discover. */
         if (modeSel) modeSel.disabled = faq;
-        if (wantExam && faq) g.announce('Exam mode needs the glossary deck — the FAQ answers are too long to use as options.');
+        if (wantExam && faq) g.announce('Exam mode needs the glossary deck - the FAQ answers are too long to use as options.');
         reload();
       }
       if (modeSel) modeSel.addEventListener('change', syncMode);

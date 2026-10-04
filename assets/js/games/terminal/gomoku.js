@@ -366,7 +366,7 @@
         }
 
         if (moves >= N * N) {
-          message = 'Board full — a draw.';
+          message = 'Board full - a draw.';
           g.render();
           g.over({ title: 'Full board', message: 'All 225 points played and nobody made five.' });
           return true;

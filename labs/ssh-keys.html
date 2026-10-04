@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Read an SSH key properly. Both fingerprints." />
     <meta name="twitter:description" content="Paste an SSH public key for both fingerprints, the real key size, and the type inside the blob checked against the label. Nothing is uploaded." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-ssh-keys.jpg" />
-    <title>SSH Key Inspector — Fingerprints, Size And Safety</title>
+    <title>SSH Key Inspector - Fingerprints, Size And Safety</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -201,7 +201,7 @@
           </ol>
         </nav>
         <h1>SSH key inspector</h1>
-        <p class="hero-text">Paste a public key &mdash; a .pub file, one line of authorized_keys, a known_hosts entry, or the whole file at once. You get both fingerprints, the true key size, and the type recorded <em>inside</em> the encoded blob rather than the label written on the front of the line. Those two disagreeing means the key was edited by hand or damaged in transit, and almost no tool checks.</p>
+        <p class="hero-text">Paste a public key - a .pub file, one line of authorized_keys, a known_hosts entry, or the whole file at once. You get both fingerprints, the true key size, and the type recorded <em>inside</em> the encoded blob rather than the label written on the front of the line. Those two disagreeing means the key was edited by hand or damaged in transit, and almost no tool checks.</p>
         <ul class="lab-facts">
           <li>SHA256 and MD5 fingerprints</li>
           <li>Real modulus size, not the byte count</li>
@@ -230,16 +230,16 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No connection to any host, ever</li>
                 </ul>
               </div>
@@ -255,7 +255,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -295,7 +295,7 @@ Never paste a PRIVATE key. This one stops if you do."></textarea>
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>The label is not the key</h3>
-            <p>A public key line reads <code>&lt;type&gt; &lt;base64&gt; &lt;comment&gt;</code>, and the base64 repeats the type inside itself as its first length-prefixed field. Nearly every tool prints the label from the front of the line. This decodes the blob and compares the two &mdash; because when they disagree the key has been hand-edited or mangled in transit, and you want to know that before it reaches <code>authorized_keys</code>.</p>
+            <p>A public key line reads <code>&lt;type&gt; &lt;base64&gt; &lt;comment&gt;</code>, and the base64 repeats the type inside itself as its first length-prefixed field. Nearly every tool prints the label from the front of the line. This decodes the blob and compares the two - because when they disagree the key has been hand-edited or mangled in transit, and you want to know that before it reaches <code>authorized_keys</code>.</p>
           </article>
           <article class="info-card">
             <h3>Both fingerprints, because your notes are old</h3>
@@ -307,7 +307,7 @@ Never paste a PRIVATE key. This one stops if you do."></textarea>
           </article>
           <article class="info-card">
             <h3>It refuses private keys on purpose</h3>
-            <p>A private key and its public half sit in the same directory with names one character apart, so pasting the wrong one into a website happens constantly. Most tools would just say &ldquo;invalid key&rdquo;. This one stops, names exactly what it saw, and tells you to rotate &mdash; because if the bytes reached this page they may have reached somewhere worse.</p>
+            <p>A private key and its public half sit in the same directory with names one character apart, so pasting the wrong one into a website happens constantly. Most tools would just say &ldquo;invalid key&rdquo;. This one stops, names exactly what it saw, and tells you to rotate - because if the bytes reached this page they may have reached somewhere worse.</p>
           </article>
         </div>
       </section>
@@ -326,7 +326,7 @@ Never paste a PRIVATE key. This one stops if you do."></textarea>
           </details>
           <details class="lab-faq">
             <summary>My RSA key stopped working after a server upgrade. Is it too small?</summary>
-            <div>Probably not. OpenSSH 8.8 disabled the <code>ssh-rsa</code> <em>signature</em> algorithm, which uses SHA-1 &mdash; a different thing from the RSA key itself. The same key works under <code>rsa-sha2-256</code> and <code>rsa-sha2-512</code>. The fix is server configuration rather than a new key, though moving to Ed25519 is worth doing anyway.</div>
+            <div>Probably not. OpenSSH 8.8 disabled the <code>ssh-rsa</code> <em>signature</em> algorithm, which uses SHA-1 - a different thing from the RSA key itself. The same key works under <code>rsa-sha2-256</code> and <code>rsa-sha2-512</code>. The fix is server configuration rather than a new key, though moving to Ed25519 is worth doing anyway.</div>
           </details>
           <details class="lab-faq">
             <summary>Should I use Ed25519 or RSA?</summary>

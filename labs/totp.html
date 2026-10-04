@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Watch a two-factor code being built, one step at a time" />
     <meta name="twitter:description" content="Enter or generate a Base32 secret and watch RFC 6238 run live: the counter taken from the clock, the HMAC, the dynamic truncation, the modulo. A clock-skew slider shows exactly why a server accepts the previous window, and the otpauth QR is drawn in the page. Runs entirely in your browser." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-lab-totp.jpg" />
-    <title>TOTP Generator &amp; Verifier — RFC 6238 | Krunalkumar Shah</title>
+    <title>TOTP Generator &amp; Verifier - RFC 6238 | Krunalkumar Shah</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -229,17 +229,17 @@
             <h2>Before you start</h2>
             <p>
               This tool runs entirely inside your browser. Nothing you paste or
-              drop here is uploaded, logged or stored &mdash; which for security work
+              drop here is uploaded, logged or stored - which for security work
               is the whole point, not a footnote.
             </p>
             <div class="lab-gate-cols">
               <div>
                 <p class="lab-gate-h limits">What it does not do</p>
                 <ul class="lab-gate-list">
-                  <li>No uploads &mdash; there is no server to upload to</li>
+                  <li>No uploads - there is no server to upload to</li>
                   <li>No account, no history, nothing saved</li>
                   <li>No secret is stored, logged or transmitted</li>
-                  <li>Not a replacement for an authenticator app &mdash; this is for understanding the mechanism</li>
+                  <li>Not a replacement for an authenticator app - this is for understanding the mechanism</li>
                 </ul>
               </div>
               <div>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="lab-gate-actions">
-              <button class="btn btn-primary" type="button" id="lab-agree">I understand &mdash; open the tool</button>
+              <button class="btn btn-primary" type="button" id="lab-agree">I understand - open the tool</button>
               <button class="lab-btn" type="button" id="lab-leave">Take me home</button>
             </div>
           </div>
@@ -373,7 +373,7 @@
             <p>That string is the whole enrolment. When a site shows you a QR to
               set up two-factor authentication, this is what is inside it: a
               label, the Base32 secret, and the three parameters that have to
-              match &mdash; <code>algorithm</code>, <code>digits</code> and
+              match - <code>algorithm</code>, <code>digits</code> and
               <code>period</code>. Change any of them above and watch the URI
               and the square change with it.</p>
             <p>The square is drawn here, in the page, by a QR encoder written
@@ -384,7 +384,7 @@
             <p>The secret the page starts with is the one every piece of TOTP
               documentation uses, so you can compare the codes against any other
               implementation. It is also 80 bits and completely public, which is
-              why the field flags it &mdash; press <em>Generate a secret</em> for a
+              why the field flags it - press <em>Generate a secret</em> for a
               real 160-bit one.</p>
           </div>
         </div>
@@ -405,7 +405,7 @@
           </article>
           <article class="info-card">
             <h3>The window is a clock allowance, not a security margin</h3>
-            <p>Servers accept the step before and after because phones drift and people type slowly. That is a usability decision with a cost: a code accepted with a &plusmn;1 window is live for up to ninety seconds, not thirty. Widening it further to reduce support tickets is the wrong lever &mdash; fix the clock instead.</p>
+            <p>Servers accept the step before and after because phones drift and people type slowly. That is a usability decision with a cost: a code accepted with a &plusmn;1 window is live for up to ninety seconds, not thirty. Widening it further to reduce support tickets is the wrong lever - fix the clock instead.</p>
           </article>
           <article class="info-card">
             <h3>Replay is the server&rsquo;s job, not the algorithm&rsquo;s</h3>
@@ -426,21 +426,21 @@
           </article>
           <article class="info-card">
             <h3>Where TOTP still loses: the real-time relay</h3>
-            <p>A phishing proxy sits on a lookalike domain and forwards everything to the real site as you type. You enter the password, it relays it; the real site asks for a code, it asks you; you read the code off your phone, it relays that too &mdash; well inside the thirty seconds &mdash; and keeps the session cookie that comes back. The expiry never helps, because the attacker is not waiting. This is not exotic; the tooling for it is off the shelf.</p>
+            <p>A phishing proxy sits on a lookalike domain and forwards everything to the real site as you type. You enter the password, it relays it; the real site asks for a code, it asks you; you read the code off your phone, it relays that too - well inside the thirty seconds - and keeps the session cookie that comes back. The expiry never helps, because the attacker is not waiting. This is not exotic; the tooling for it is off the shelf.</p>
           </article>
           <article class="info-card">
             <h3>Passkeys are the actual fix</h3>
-            <p>A passkey is a key pair bound to the origin it was created for. Signing in means signing a challenge from the site, and the browser will not sign one for a lookalike domain &mdash; not because it detects the phish, but because the wrong domain is simply not the same key. There is nothing to type, so nothing can be read aloud, screenshotted or relayed. That is a structural fix rather than a shorter window.</p>
+            <p>A passkey is a key pair bound to the origin it was created for. Signing in means signing a challenge from the site, and the browser will not sign one for a lookalike domain - not because it detects the phish, but because the wrong domain is simply not the same key. There is nothing to type, so nothing can be read aloud, screenshotted or relayed. That is a structural fix rather than a shorter window.</p>
           </article>
           <article class="info-card">
             <h3>What to do in the meantime</h3>
-            <p>Turn on passkeys where they are offered. Use TOTP everywhere else, in preference to SMS. And treat the recovery codes as exactly what they are &mdash; a copy of the secret in plain sight &mdash; because the usual way an account with good two-factor falls over is a recovery flow, not a broken algorithm.</p>
+            <p>Turn on passkeys where they are offered. Use TOTP everywhere else, in preference to SMS. And treat the recovery codes as exactly what they are - a copy of the secret in plain sight - because the usual way an account with good two-factor falls over is a recovery flow, not a broken algorithm.</p>
           </article>
         </div>
         <div class="lab-cta">
-          <p class="lab-cta-text">The longer version of this argument &mdash; why <strong>passkeys</strong> are a
+          <p class="lab-cta-text">The longer version of this argument - why <strong>passkeys</strong> are a
             different kind of thing rather than a better password, what a real-time proxy actually
-            does to a login, and what to do about passwords in the meantime &mdash; is written up
+            does to a login, and what to do about passwords in the meantime - is written up
             separately.</p>
           <a class="btn btn-primary" href="/blog/passwords-passkeys-and-what-actually-protects-you">Read the article</a>
         </div>
@@ -453,11 +453,11 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>Against the published vectors</h3>
-            <p>The ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC 6238 Appendix B &mdash; six timestamps each for SHA-1, SHA-256 and SHA-512 &mdash; run in your browser when the page loads, and the toolbar shows the count. The hash implementations were also compared against a known-good library over several thousand random inputs while I was building this.</p>
+            <p>The ten HOTP vectors in RFC 4226 Appendix D and all eighteen TOTP vectors in RFC 6238 Appendix B - six timestamps each for SHA-1, SHA-256 and SHA-512 - run in your browser when the page loads, and the toolbar shows the count. The hash implementations were also compared against a known-good library over several thousand random inputs while I was building this.</p>
           </article>
           <article class="info-card">
             <h3>The QR encoder</h3>
-            <p>Written for this page: byte mode, error correction level M, versions 1 to 10. I checked it by decoding its own output back with a separately written reader &mdash; format bits, mask, de-interleaving, Reed-Solomon syndromes, the lot &mdash; and by comparing the format and version information against the published tables. If a URI is too long for version 10 the tool says so rather than drawing a square that will not scan.</p>
+            <p>Written for this page: byte mode, error correction level M, versions 1 to 10. I checked it by decoding its own output back with a separately written reader - format bits, mask, de-interleaving, Reed-Solomon syndromes, the lot - and by comparing the format and version information against the published tables. If a URI is too long for version 10 the tool says so rather than drawing a square that will not scan.</p>
           </article>
           <article class="info-card">
             <h3>The clock is your clock</h3>

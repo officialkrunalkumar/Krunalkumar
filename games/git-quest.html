@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="Nineteen missions, one toy repository" />
     <meta name="twitter:description" content="Nineteen missions solved by typing real git commands: init, commit, branch, merge, rebase, reset, revert and a reflog rescue, against a toy repository." />
     <meta name="twitter:image" content="https://krunalkumar.dpdns.org/assets/images/og-game-git-quest.jpg" />
-    <title>Git Quest — Learn Git By Fixing Repositories</title>
+    <title>Git Quest - Learn Git By Fixing Repositories</title>
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -61,7 +61,7 @@
                         "name": "Is this real git?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for."
+                                "text": "No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model - snapshots, parents, labels, the index, the reflog - matches the real thing, which is what the game is for."
                         }
                 },
                 {
@@ -69,7 +69,7 @@
                         "name": "Do I need to know git already?",
                         "acceptedAnswer": {
                                 "@type": "Answer",
-                                "text": "No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog — the game and the article were written together."
+                                "text": "No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog - the game and the article were written together."
                         }
                 },
                 {
@@ -203,7 +203,7 @@
           <li>Eighteen git commands</li>
           <li>Nineteen missions</li>
           <li>The graph drawn as you type</li>
-          <li>Break it freely — retry rebuilds</li>
+          <li>Break it freely - retry rebuilds</li>
         </ul>
       </section>
 
@@ -243,7 +243,7 @@
             <span class="spacer"></span>
             <button class="game-btn" type="button" id="game-pause">Pause</button>
             <button class="game-btn" type="button" id="game-restart">Restart</button>
-            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off &mdash; click to turn it on" aria-label="Toggle sound">
+            <button class="game-btn game-btn-icon game-sound" type="button" id="game-sound" aria-pressed="false" title="Sound is off - click to turn it on" aria-label="Toggle sound">
             <svg class="game-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 17.5a2.5 2.5 0 1 1-2-2.45V6.2l10-2v7.3a2.5 2.5 0 1 1-2-2.45V6.65L9 8.05v9.45z" fill="currentColor"/>
             </svg>
@@ -302,15 +302,15 @@
         <div class="content-grid two-up">
           <article class="info-card">
             <h3>A reimplementation, not git</h3>
-            <p>Every command here is JavaScript over an in-memory object store: commits are snapshots with parents, branches are labels holding one id, HEAD is a pointer, and the hashes are pretend. Nothing executes on your machine and nothing is stored beyond your best score. The real thing is one <code>git init</code> away in any terminal, and it works exactly like the toy &mdash; that is the point of the toy.</p>
+            <p>Every command here is JavaScript over an in-memory object store: commits are snapshots with parents, branches are labels holding one id, HEAD is a pointer, and the hashes are pretend. Nothing executes on your machine and nothing is stored beyond your best score. The real thing is one <code>git init</code> away in any terminal, and it works exactly like the toy - that is the point of the toy.</p>
           </article>
           <article class="info-card">
             <h3>A scene per mission, so exploring cannot break anything</h3>
-            <p>Each mission rebuilds the repository into a curated starting state. Wander off the brief as far as you like &mdash; make branches, reset things, detach HEAD &mdash; and <code>retry</code> puts the scene back without touching your progress. The goals check repository state, not the order you typed things in, so any route that gets there counts.</p>
+            <p>Each mission rebuilds the repository into a curated starting state. Wander off the brief as far as you like - make branches, reset things, detach HEAD - and <code>retry</code> puts the scene back without touching your progress. The goals check repository state, not the order you typed things in, so any route that gets there counts.</p>
           </article>
           <article class="info-card">
             <h3>The graph is the lesson</h3>
-            <p>The panel beside the terminal redraws the commit graph and the three places &mdash; working tree, index, HEAD &mdash; after every command. Watching <code>reset --soft</code> move one of the three while <code>--hard</code> moves all of them teaches more than any table. The prose half of this game is the article <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>, written alongside it.</p>
+            <p>The panel beside the terminal redraws the commit graph and the three places - working tree, index, HEAD - after every command. Watching <code>reset --soft</code> move one of the three while <code>--hard</code> moves all of them teaches more than any table. The prose half of this game is the article <a href="/blog/git-explained-from-the-object-up">Git, explained from the object up</a>, written alongside it.</p>
           </article>
           <article class="info-card">
             <h3>What is deliberately missing</h3>
@@ -325,11 +325,11 @@
         </div>
           <details class="lab-faq">
             <summary>Is this real git?</summary>
-            <div>No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model — snapshots, parents, labels, the index, the reflog — matches the real thing, which is what the game is for.</div>
+            <div>No. Eighteen commands are reimplemented in JavaScript over an in-memory object store, and the hashes are pretend. The model - snapshots, parents, labels, the index, the reflog - matches the real thing, which is what the game is for.</div>
           </details>
           <details class="lab-faq">
             <summary>Do I need to know git already?</summary>
-            <div>No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog — the game and the article were written together.</div>
+            <div>No. The first mission is git init and each one introduces the next idea. If you want the theory in prose first, read Git, explained from the object up on the blog - the game and the article were written together.</div>
           </details>
           <details class="lab-faq">
             <summary>Why is there no push or pull?</summary>

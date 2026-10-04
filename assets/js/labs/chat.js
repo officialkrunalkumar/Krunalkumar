@@ -139,7 +139,7 @@
         ' · relay ' + (candCount.relay || 0);
     }
     if (candCount[typ] === 1) {
-      trace('first ' + typ + ' candidate — ' + ({
+      trace('first ' + typ + ' candidate - ' + ({
         host: 'an address on your own network',
         srflx: 'your public address, learned from STUN',
         relay: 'a TURN relay offered to forward traffic'
@@ -434,7 +434,7 @@
             }
           });
           if (pair !== 'unknown') {
-            trace('carrying traffic over the "' + pair + '" path — ' +
+            trace('carrying traffic over the "' + pair + '" path - ' +
                   (pair === 'host' ? 'straight across the local network'
                                    : 'directly between the two public addresses'), 'good');
           }
@@ -475,7 +475,7 @@
     dc.bufferedAmountLowThreshold = LOW_WATER;
 
     dc.onopen = function () {
-      trace('data channel open — everything from here is peer to peer', 'good');
+      trace('data channel open - everything from here is peer to peer', 'good');
       setStatus('Connected', 'good');
       // That a connection succeeded, nothing about it. No names, no message
       // content, no addresses — none of that leaves the pair of browsers.
@@ -665,7 +665,7 @@
     role = 'host';
     el.pick.hidden = true;
     el.host.hidden = false;
-    trace('you are the side that opens the channel — the closest this gets to `nc -l -p 1234`');
+    trace('you are the side that opens the channel - the closest this gets to `nc -l -p 1234`');
     trace('everyone else will connect to you, and you will pass their messages on');
     newInvite();
     renderRoster();
@@ -683,7 +683,7 @@
       trace('got their reply, ' + code.length + ' characters');
       return peer.pc.setRemoteDescription({ type: 'answer', sdp: obj.sdp });
     }).then(function () {
-      trace('remote description set — ICE will now try every pair of addresses');
+      trace('remote description set - ICE will now try every pair of addresses');
     }).catch(fail);
   });
 
@@ -700,7 +700,7 @@
     el.guest.hidden = false;
     setStatus('Paste the code you were sent', 'busy');
     guestPeer = build();
-    trace('you are the side that joins — the closest this gets to `nc <host> 1234`');
+    trace('you are the side that joins - the closest this gets to `nc <host> 1234`');
     guestPeer.pc.ondatachannel = function (e) {
       trace('the host offered a data channel');
       wireChannel(guestPeer, e.channel);
@@ -724,7 +724,7 @@
       return pack(peer.pc.localDescription.sdp, true);
     }).then(function (out) {
       el.answerOut.value = out;
-      trace('reply ready: ' + out.length + ' characters — send it back', 'good');
+      trace('reply ready: ' + out.length + ' characters - send it back', 'good');
       setStatus('Send your reply back', 'busy');
     }).catch(fail);
   });
@@ -801,7 +801,7 @@
       }
       say('system', 'This page is not permitted to use the ' + withheld.join(' or ') +
                     '. That is a Permissions-Policy header on the site, not a choice you ' +
-                    'made — the browser refuses before asking, and granting permission ' +
+                    'made - the browser refuses before asking, and granting permission ' +
                     'cannot override it.');
       return;
     }
@@ -814,7 +814,7 @@
       if (el.avWrap) el.avWrap.hidden = false;
       var pc = peers[0].pc;
       stream.getTracks().forEach(function (t) { pc.addTrack(t, stream); });
-      trace('added ' + stream.getTracks().length + ' local track(s) — renegotiating', 'good');
+      trace('added ' + stream.getTracks().length + ' local track(s) - renegotiating', 'good');
       // A voice call never opened the camera, so "Stop camera" was the only
       // way to release the microphone and did not say so. The one control has
       // to name whatever it is actually holding.
@@ -831,7 +831,7 @@
     }).catch(function (err) {
       var name = err && err.name;
       var why =
-        name === 'NotAllowedError'  ? 'permission was refused — either you or your browser ' +
+        name === 'NotAllowedError'  ? 'permission was refused - either you or your browser ' +
                                       'blocked it, or a Permissions-Policy header withheld it' :
         name === 'NotFoundError'    ? 'no such device is attached' :
         name === 'NotReadableError' ? 'the device is attached but another application is holding it' :
@@ -929,7 +929,7 @@
     var secs = (performance.now() - started) / 1000;
     var rate = secs > 0.4 ? done / secs : 0;
     var eta = rate > 0 && total > done ? Math.round((total - done) / rate) : null;
-    el.xferText.textContent = label + ' — ' + fmtBytes(done) + ' of ' + fmtBytes(total) +
+    el.xferText.textContent = label + ' - ' + fmtBytes(done) + ' of ' + fmtBytes(total) +
       ' (' + pct.toFixed(0) + '%)' +
       (rate ? ' · ' + fmtBytes(rate) + '/s' : '') +
       (eta !== null ? ' · ' + eta + 's left' : '');
@@ -972,7 +972,7 @@
     if (!offer || msg.id !== offer.id) return;
     if (ok) offer.accepted.push(peer);
     else say('system', (peer.name || 'They') + ' declined ' + offer.file.name +
-             (why ? ' — ' + why : '') + '.');
+             (why ? ' - ' + why : '') + '.');
     offer.pending -= 1;
     if (offer.pending > 0) return;
 
@@ -1122,7 +1122,7 @@
           }
           peer.rx = null;
           send(peer, { k: 'file-decline', id: id, why: 'no save location chosen' });
-          settle('Did not save ' + name + ' — no location was chosen, and it is too ' +
+          settle('Did not save ' + name + ' - no location was chosen, and it is too ' +
                  'large to hold in memory.');
         });
     });
@@ -1199,7 +1199,7 @@
   function fileAbort(peer, why) {
     if (peer.rx && peer.rx.writer) { try { peer.rx.writer.abort(); } catch (e) {} }
     peer.rx = null;
-    say('system', 'Transfer cancelled — ' + (why || 'the other side stopped'));
+    say('system', 'Transfer cancelled - ' + (why || 'the other side stopped'));
     if (el.xferWrap) el.xferWrap.hidden = true;
   }
 

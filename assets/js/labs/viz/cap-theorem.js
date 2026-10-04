@@ -542,7 +542,7 @@
         ' at ' + IDS[this.lastAck.writer] + '). Every node it asked was stale.';
     if (disagreed) {
       msg += ' The replicas in the read set disagreed. A real Dynamo-style store would ' +
-             'write the merge back to the stale ones now — read repair. This sandbox does ' +
+             'write the merge back to the stale ones now - read repair. This sandbox does ' +
              'not, so the divergence stays on screen for you to look at.';
     }
     this.say(msg, fresh ? 'ok' : 'warn');
@@ -656,7 +656,7 @@
     var msg;
     if (how === 'union') {
       msg = 'Merged both values into ' + winner.value + '. That is only legal because ' +
-            'a union is commutative, associative and idempotent — the definition of a ' +
+            'a union is commutative, associative and idempotent - the definition of a ' +
             'grow-only set, and the reason a CRDT can merge without asking anyone. Turn ' +
             'the value into a bank balance and this option disappears.';
     } else {
@@ -675,7 +675,7 @@
                (out.skewDecided
                  ? 'The clock skew you set is quietly choosing the winner, and no node ' +
                    'can detect that.'
-                 : 'This rule used the true order, and the skew decided nothing — but no ' +
+                 : 'This rule used the true order, and the skew decided nothing - but no ' +
                    'real cluster has a true order to use. The sandbox only has one because ' +
                    'it is a single tab with a single counter. A store with nothing but the ' +
                    'wall clocks would have kept ' + byClock.value + ' instead.');
@@ -908,9 +908,9 @@
     }
     var link = LINKS[index];
     this.cap.setAttribute('fill', C.cyan);
-    this.cap.textContent = IDS[link.a] + ' to ' + IDS[link.b] + ' — ' +
+    this.cap.textContent = IDS[link.a] + ' to ' + IDS[link.b] + ' - ' +
       (SITE[link.a] === SITE[link.b]
-        ? 'same site, ' + cl.near + ' ms' : 'cross site, ' + cl.far + ' ms') + ' — ' +
+        ? 'same site, ' + cl.near + ' ms' : 'cross site, ' + cl.far + ' ms') + ' - ' +
       (cl.cut[index] ? 'cut, click to restore' : 'click to cut');
   };
 
@@ -1091,7 +1091,7 @@
     g1.appendChild(grid);
     g1.appendChild(E('p', 'cap-hint',
       'The word on each button says whether that link is up or cut; the colour ' +
-      'only repeats it. Cutting a link never removes a node — the nodes are all ' +
+      'only repeats it. Cutting a link never removes a node - the nodes are all ' +
       'still running, still holding data, still answering. That is exactly what ' +
       'makes a partition harder than a crash.'));
     side.appendChild(g1);
@@ -1100,7 +1100,7 @@
     var row = E('div', 'cap-btnrow');
     row.appendChild(button('Repair every link', function () {
       cl.healAll();
-      cl.say('Every link is back up. Nothing has merged yet — replicas do not ' +
+      cl.say('Every link is back up. Nothing has merged yet - replicas do not ' +
              'know they disagree until they exchange state. Run anti-entropy on ' +
              'the writes tab to find out what happened while they were apart.', 'info');
       redraw();
@@ -1273,8 +1273,8 @@
     this.modeButtons = [];
     ['cp', 'ap'].forEach(function (mode) {
       var b = E('button', 'cap-btn',
-                mode === 'cp' ? 'CP — refuse without a quorum'
-                              : 'AP — accept and diverge');
+                mode === 'cp' ? 'CP - refuse without a quorum'
+                              : 'AP - accept and diverge');
       b.type = 'button';
       b.capMode = mode;
       self.modeButtons.push(b);
@@ -1285,7 +1285,7 @@
             'error rather than an answer. It stays up and healthy the whole time; it ' +
             'just refuses this key. CP does not mean the process is dead.'
           : 'AP selected. Every replica now answers from whatever it holds. It does ' +
-            'not mean the data is wrong — with no partition and no concurrent write ' +
+            'not mean the data is wrong - with no partition and no concurrent write ' +
             'it is identical to CP. It means that when the sides do diverge, nothing ' +
             'stops them.', 'info');
         redraw();
@@ -1540,7 +1540,7 @@
       if (split) {
         main.appendChild(E('p', 'cap-sub',
           'The resolution buttons are disabled because the cluster is still split. ' +
-          'Nothing can be reconciled across a partition — that is what a partition is. ' +
+          'Nothing can be reconciled across a partition - that is what a partition is. ' +
           'Repair the links first.'));
       } else {
         main.appendChild(E('p', 'cap-sub',
@@ -1619,13 +1619,13 @@
     var redraw = function () { self.app.redraw(); };
     var num = function (v) { return String(v); };
 
-    var rSlider = slider('R — replicas a read waits for', 1, cl.n, 1, cl.r, num,
+    var rSlider = slider('R - replicas a read waits for', 1, cl.n, 1, cl.r, num,
       function (v) { cl.r = v; redraw(); });
-    var wSlider = slider('W — replicas a write waits for', 1, cl.n, 1, cl.w, num,
+    var wSlider = slider('W - replicas a write waits for', 1, cl.n, 1, cl.w, num,
       function (v) { cl.w = v; redraw(); });
 
     var g = group('N, R and W');
-    g.appendChild(slider('N — replicas holding the key', 3, 5, 1, cl.n, num,
+    g.appendChild(slider('N - replicas holding the key', 3, 5, 1, cl.n, num,
       function (v) {
         cl.n = v;
         if (cl.r > v) { cl.r = v; rSlider.setValue(v); }
@@ -1885,12 +1885,12 @@
          current bar was "the wider one" — which it is not: the width is the
          latency, so W = 3, 4 and 5 all draw at 100% here and the reader was
          being pointed at a difference that does not exist. */
-      var name = 'W = ' + k + (k === cl.w ? ' — the one you have set' : '');
+      var name = 'W = ' + k + (k === cl.w ? ' - the one you have set' : '');
       if (v === null) {
         var dead = E('div', 'cap-bar-row');
         dead.appendChild(E('span', 'cap-bar-name', name));
         dead.appendChild(E('span', 'cap-bar-dead',
-          'not reachable from ' + IDS[coord] + ' — the write would never complete'));
+          'not reachable from ' + IDS[coord] + ' - the write would never complete'));
         wbars.appendChild(dead);
       } else {
         wbars.appendChild(barRow(name, v, maxL, 'ms', k === cl.w ? 'slow' : 'fast'));
@@ -1909,7 +1909,7 @@
           if (cl.rtt(coord, reach[i]) === cl.far) return i + 1;
         }
         return '(none, from here)';
-      })() + ' at ' + IDS[coord] + '. Nothing about that is a partition — it is ' +
+      })() + ' at ' + IDS[coord] + '. Nothing about that is a partition - it is ' +
       'geography, and it is only a step upward for as long as you leave the ' +
       'cross-site figure above the same-site one.'));
 
@@ -2044,7 +2044,7 @@
     main.appendChild(E('p', 'cap-h', 'Where this sandbox is easier than the real thing'));
     main.appendChild(note(
       'A link here is up or cut. Real partitions are asymmetric, intermittent, and ' +
-      'frequently a slow link rather than a dead one — which is the case that ' +
+      'frequently a slow link rather than a dead one - which is the case that ' +
       'defeats a failure detector, because the timeout that is too short kills a ' +
       'healthy node and the timeout that is too long is an outage. Nothing here is ' +
       'ambiguous. There is also no node crash separate from a partition, no leader ' +
@@ -2234,7 +2234,7 @@
       clear(mount);
       mount.appendChild(E('p', 'lab-viz-error',
         'This lab could not start in your browser: ' + ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown. ' +
+        ' - the write-up below still explains what it would have shown. ' +
         'Please tell me, and mention which browser you are using.'));
     }
   }

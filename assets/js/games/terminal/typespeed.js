@@ -43,7 +43,7 @@
     rows: ROWS,
     rawInput: true,
     startTitle: 'Typespeed',
-    startText: 'Words fly in from the left. Type one and press nothing — it dies as soon as it is complete.',
+    startText: 'Words fly in from the left. Type one and press nothing - it dies as soon as it is complete.',
 
     setup: function (g, t) {
       var flying = [];        // { word, x, lane, speed }

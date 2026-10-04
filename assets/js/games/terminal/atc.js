@@ -335,7 +335,7 @@
         }
         var p = planes[(at + 1) % planes.length];
         selId = p.id;
-        say(p.id + ' selected — ' + destLabel(p) + '.', 'white');
+        say(p.id + ' selected - ' + destLabel(p) + '.', 'white');
         g.beep(660, 0.03, 'sine', 0.035);
       }
 
@@ -349,7 +349,7 @@
           if (d < bestD) { bestD = d; best = planes[i]; }
         }
         selId = best.id;
-        say(best.id + ' selected — ' + destLabel(best) + '.', 'white');
+        say(best.id + ' selected - ' + destLabel(best) + '.', 'white');
         g.beep(660, 0.03, 'sine', 0.035);
       }
 
@@ -490,7 +490,7 @@
 
           if (name === 'left' || name === 'right') {
             if (p.ground) {
-              say(p.id + ' is on the runway — clear it to climb first.', 'yellow');
+              say(p.id + ' is on the runway - clear it to climb first.', 'yellow');
               g.beep(160, 0.05, 'square', 0.03);
               return;
             }

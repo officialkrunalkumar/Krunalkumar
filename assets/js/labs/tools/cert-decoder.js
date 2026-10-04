@@ -354,7 +354,7 @@
         var bc = parseDer(e.node.bytes, 0, e.node.bytes.length)[0];
         var isCa = bc && bc.children && bc.children[0] && bc.children[0].tag === 0x01
                    && bc.children[0].bytes[0] !== 0;
-        out.line('    CA: ' + (isCa ? 'TRUE — this can sign other certificates' : 'FALSE'),
+        out.line('    CA: ' + (isCa ? 'TRUE - this can sign other certificates' : 'FALSE'),
                  isCa ? 't-warn' : 't-dim');
       }
       if (e.oid === '2.5.29.15') {
@@ -404,7 +404,7 @@
         out.dim('compare when pinning, or when checking that the certificate your');
         out.dim('browser was served is the one you expected.');
         out.line('');
-        out.dim('Nothing here checked the chain or revocation — both need network');
+        out.dim('Nothing here checked the chain or revocation - both need network');
         out.dim('lookups, which this page does not do. This reads what is inside');
         out.dim('the certificate, not whether anyone still trusts it.');
       }
@@ -431,7 +431,7 @@
     showSignatureAlgorithm(root.children[1]);
     out.line('');
     out.dim('This is a request, not a certificate. It has no issuer, no serial');
-    out.dim('and no validity period — a CA fills those in when it signs.');
+    out.dim('and no validity period - a CA fills those in when it signs.');
 
     out.rule();
     out.heading('Subject');
@@ -446,16 +446,16 @@
     var input = document.getElementById('tool-text').value;
     out.clear();
     if (!input.trim()) {
-      out.warn('Paste a PEM certificate — the block that starts');
-      out.warn('-----BEGIN CERTIFICATE----- — or a signing request, which');
+      out.warn('Paste a PEM certificate - the block that starts');
+      out.warn('-----BEGIN CERTIFICATE----- - or a signing request, which');
       out.warn('starts -----BEGIN CERTIFICATE REQUEST-----.');
       return;
     }
 
     if (PRIVATE_KEY_INPUT.test(input)) {
       out.err('That is a PRIVATE KEY, not a certificate.');
-      out.err('It has not been parsed and nothing has been sent anywhere — this');
-      out.err('page has no network code at all — but treat it as compromised the');
+      out.err('It has not been parsed and nothing has been sent anywhere - this');
+      out.err('page has no network code at all - but treat it as compromised the');
       out.err('moment it is in a clipboard, and rotate it if it was ever pasted');
       out.err('into a site that does have a server.');
       return;
@@ -482,7 +482,7 @@
 
     var tbs = root.children[0];
     if (!looksLikeCertificate(tbs)) {
-      out.err('That decodes as ASN.1, but it is not an X.509 certificate — there');
+      out.err('That decodes as ASN.1, but it is not an X.509 certificate - there');
       out.err('is no serial number, algorithm and validity period where a');
       out.err('certificate keeps them.');
       if (label) out.err('The PEM header says ' + label + '.');
@@ -517,7 +517,7 @@
     var issuerParts = name(kids[offset + 2] || {});
     if (issuerParts.join('|') === subjectParts.join('|')) {
       out.line('');
-      out.warn('Issuer and subject are identical — this is self-signed. Fine for');
+      out.warn('Issuer and subject are identical - this is self-signed. Fine for');
       out.warn('internal use if the CA is trusted deliberately; a browser will');
       out.warn('reject it on the public internet.');
     }
@@ -544,7 +544,7 @@
         }
         if (to.getTime() < now) {
           out.line('');
-          out.err('EXPIRED — ' + Math.round((now - to) / 86400000) + ' days ago.');
+          out.err('EXPIRED - ' + Math.round((now - to) / 86400000) + ' days ago.');
         } else if (from.getTime() > now) {
           out.line('');
           out.err('NOT YET VALID.');
@@ -552,7 +552,7 @@
           var left = Math.round((to - now) / 86400000);
           out.line('');
           if (left < 30) out.warn('Expires in ' + left + ' days.');
-          else out.ok('Valid — ' + left + ' days remaining.');
+          else out.ok('Valid - ' + left + ' days remaining.');
         }
       }
     }
@@ -566,7 +566,7 @@
     id: 'certdecodertool',
     run: run,
     onReady: function () {
-      out.dim('Paste a PEM certificate — the -----BEGIN CERTIFICATE----- block.');
+      out.dim('Paste a PEM certificate - the -----BEGIN CERTIFICATE----- block.');
       out.dim('');
       out.dim('To get one from a live site:');
       out.dim('  openssl s_client -connect example.com:443 </dev/null \\');
@@ -574,7 +574,7 @@
       out.dim('or export it from the padlock icon in your browser.');
       out.dim('');
       out.dim('A signing request (-----BEGIN CERTIFICATE REQUEST-----) is read');
-      out.dim('too, and labelled as one — it has no issuer or expiry to show.');
+      out.dim('too, and labelled as one - it has no issuer or expiry to show.');
     }
   });
 })();

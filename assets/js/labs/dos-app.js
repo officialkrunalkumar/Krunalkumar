@@ -400,7 +400,7 @@
       motion();
       if (info && info.lengthComputable && info.total) {
         var pct = Math.min(100, Math.round((info.loaded / info.total) * 100));
-        setStatus('Downloading the FreeDOS disk — ' + pct + '%', 'is-busy');
+        setStatus('Downloading the FreeDOS disk - ' + pct + '%', 'is-busy');
       }
     });
 
@@ -433,7 +433,7 @@
       // bootFailed() from a dead download or the stall watchdog — both end
       // before a single character is ever put, so neither reaches this line.
       if (window.KSLab) window.KSLab.used('boot');
-      setStatus('Ready — click the screen, then type', 'is-ok');
+      setStatus('Ready - click the screen, then type', 'is-ok');
     });
 
     // Graphics mode — the games on this disk, and VIM — has no text buffer at
@@ -456,10 +456,10 @@
       if (graphical) {
         canvas.style.display = 'block';
         el.screen.appendChild(canvas);        // move it into view
-        setStatus('Graphics mode — click the screen, then use the keyboard', 'is-ok');
+        setStatus('Graphics mode - click the screen, then use the keyboard', 'is-ok');
       } else {
         el.shadow.appendChild(canvas);        // park it again
-        setStatus('Ready — click the screen, then type', 'is-ok');
+        setStatus('Ready - click the screen, then type', 'is-ok');
         queueRepaint();
       }
     });
@@ -660,5 +660,5 @@
   initFocus();
   initControls();
   initFullscreen();
-  setStatus('Ready — press Boot');
+  setStatus('Ready - press Boot');
 })();

@@ -68,9 +68,9 @@
       'type Result<T, E = Error> =\n  | { ok: true; value: T }\n  | { ok: false; error: E };\n\nexport function unwrap<T>(r: Result<T>): T {\n  if (!r.ok) throw r.error;\n  return r.value;\n}'
     ],
     punct: [
-      'He said, "It is not that simple" — and then, after a pause, added: "though it never is." The report (dated 14/03, revised twice) listed three findings; two were trivial, one was not. "Who signed off on this?" she asked. Nobody answered. The file was named final_v3_ACTUAL.docx, which told her everything she needed to know about the process that produced it.',
-      'Consider: if x != y, and y >= z, then what? The answer — assuming a, b, and c are non-null — is "it depends". Don\'t guess; test it. The config (see §4.2) allows `strict: true`, `strict: false`, or nothing at all, and the third case behaves like neither of the first two. Isn\'t that delightful? No. It isn\'t.',
-      'Dear Sir/Madam, Further to your email of 3rd June — reference #A-4471/22 — please find attached the revised schedule. Items 1), 2) and 4) are unchanged; item 3) has moved to Q4. Should you require clarification, don\'t hesitate to write. Yours sincerely, K. Shah (Consultant; MSME-registered).'
+      'He said, "It is not that simple" - and then, after a pause, added: "though it never is." The report (dated 14/03, revised twice) listed three findings; two were trivial, one was not. "Who signed off on this?" she asked. Nobody answered. The file was named final_v3_ACTUAL.docx, which told her everything she needed to know about the process that produced it.',
+      'Consider: if x != y, and y >= z, then what? The answer - assuming a, b, and c are non-null - is "it depends". Don\'t guess; test it. The config (see §4.2) allows `strict: true`, `strict: false`, or nothing at all, and the third case behaves like neither of the first two. Isn\'t that delightful? No. It isn\'t.',
+      'Dear Sir/Madam, Further to your email of 3rd June - reference #A-4471/22 - please find attached the revised schedule. Items 1), 2) and 4) are unchanged; item 3) has moved to Q4. Should you require clarification, don\'t hesitate to write. Yours sincerely, K. Shah (Consultant; MSME-registered).'
     ],
     numbers: [
       'The subnet 192.168.1.0/24 holds 254 usable addresses, from 192.168.1.1 to 192.168.1.254, with 192.168.1.255 reserved for broadcast. A /16 gives 65,534 hosts; a /30 gives 2. Port 443 carries HTTPS, 22 carries SSH, 3306 is MySQL and 5432 is PostgreSQL. Hash lengths: MD5 is 128 bits (32 hex chars), SHA-1 is 160, SHA-256 is 256 and SHA-512 is 512.',
@@ -86,7 +86,7 @@
     rawInput: true,
     bestKey: 'typing-trainer',
     startTitle: 'Typing trainer',
-    startText: 'Pick a length and a text, then just start typing — the clock starts on your first keystroke.',
+    startText: 'Pick a length and a text, then just start typing - the clock starts on your first keystroke.',
 
     setup: function (g) {
       var boardEl = g.board;

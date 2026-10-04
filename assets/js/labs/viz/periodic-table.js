@@ -199,14 +199,14 @@
       abundance: 'About 0.15% of the crust by mass, but roughly nine out of every ten atoms in the universe.',
       ox: '+1, -1',
       use: 'Almost all of it goes into making ammonia for fertiliser and into refining crude oil; the rest is fuel-cell and rocket fuel.',
-      look: { kind: 'gas', colour: '#cfe0f5', glow: '#ff5f8f', desc: 'Colourless, odourless gas. In a discharge tube it burns pink-magenta — the Balmer lines you see in every school spectroscope.' } },
+      look: { kind: 'gas', colour: '#cfe0f5', glow: '#ff5f8f', desc: 'Colourless, odourless gas. In a discharge tube it burns pink-magenta - the Balmer lines you see in every school spectroscope.' } },
 
     { z: 2, sym: 'He', name: 'Helium', weight: '4.0026', cat: 'noble', group: 18, period: 1, block: 's',
       cfg: '1s2', en: null, radius: null, ie: 2372.3, melt: null, boil: 4.222,
       density: '0.1786 g/L at 0 °C', year: '1868', by: 'Pierre Janssen and Norman Lockyer',
       abundance: '5.2 parts per million of the air; commercially it is separated out of natural gas.',
       ox: '0',
-      use: 'Cooling superconducting magnets in MRI scanners, pressurising rocket fuel tanks, and lifting balloons — in that order of importance.',
+      use: 'Cooling superconducting magnets in MRI scanners, pressurising rocket fuel tanks, and lifting balloons - in that order of importance.',
       look: { kind: 'gas', colour: '#e8f0fb', glow: '#ffb27a', desc: 'Colourless gas. Its discharge is a warm peach-orange. It is the only element that does not freeze at atmospheric pressure, no matter how cold.' } },
 
     { z: 3, sym: 'Li', name: 'Lithium', weight: '6.94', cat: 'alkali', group: 1, period: 2, block: 's',
@@ -223,7 +223,7 @@
       abundance: 'About 2.8 parts per million of the crust, mostly as beryl.',
       ox: '+2',
       use: 'X-ray windows, because it is nearly transparent to X-rays, and copper-beryllium alloys for non-sparking tools. Its dust is seriously toxic.',
-      look: { kind: 'dullmetal', colour: '#b8bab4', desc: 'Hard, brittle, steel-grey metal with a matte finish rather than a mirror — it holds a dull sheen rather than a polish.' } },
+      look: { kind: 'dullmetal', colour: '#b8bab4', desc: 'Hard, brittle, steel-grey metal with a matte finish rather than a mirror - it holds a dull sheen rather than a polish.' } },
 
     { z: 5, sym: 'B', name: 'Boron', weight: '10.81', cat: 'metalloid', group: 13, period: 2, block: 'p',
       cfg: '1s2 2s2 2p1', en: 2.04, radius: 85, ie: 800.6, melt: 2349, boil: 4200,
@@ -238,7 +238,7 @@
       density: '2.267 g/cm³ (graphite), 3.515 (diamond)', year: 'Antiquity', by: 'Known since prehistory',
       abundance: 'About 200 parts per million of the crust, and the backbone of every living thing.',
       ox: '+4, +2, -4',
-      use: 'Steelmaking, every plastic and fuel there is, electrodes, and — as diamond — cutting tools. Life is built out of it.',
+      use: 'Steelmaking, every plastic and fuel there is, electrodes, and - as diamond - cutting tools. Life is built out of it.',
       look: { kind: 'graphite', colour: '#33363d', desc: 'Graphite is black with a slick metallic lustre and leaves grey marks on your fingers. Diamond, the same atoms in a different arrangement, is colourless and blazingly bright.' } },
 
     { z: 7, sym: 'N', name: 'Nitrogen', weight: '14.007', cat: 'nonmetal', group: 15, period: 2, block: 'p',
@@ -246,7 +246,7 @@
       density: '1.2506 g/L at 0 °C', year: '1772', by: 'Daniel Rutherford',
       abundance: '78% of the air by volume; rare in the crust.',
       ox: '+5, +3, -3',
-      use: 'Ammonia for fertiliser — roughly half the nitrogen in your body arrived through that one industrial process. Liquid nitrogen is the cheap laboratory coldness.',
+      use: 'Ammonia for fertiliser - roughly half the nitrogen in your body arrived through that one industrial process. Liquid nitrogen is the cheap laboratory coldness.',
       look: { kind: 'gas', colour: '#dbe6f6', glow: '#c78cff', desc: 'Colourless, odourless gas; a clear, water-like liquid when boiled down to 77 K. Its discharge is a pink-violet.' } },
 
     { z: 8, sym: 'O', name: 'Oxygen', weight: '15.999', cat: 'nonmetal', group: 16, period: 2, block: 'p',
@@ -263,7 +263,7 @@
       abundance: 'About 585 parts per million of the crust, as fluorite and fluorapatite.',
       ox: '-1',
       use: 'Making Teflon and refrigerants, enriching uranium as UF6, and fluoridating toothpaste and water.',
-      look: { kind: 'gas', colour: '#e6ea92', glow: '#f2f57a', desc: 'A very pale yellow gas — faint enough that it was long described as colourless. The most reactive element there is; it will burn glass and water.' } },
+      look: { kind: 'gas', colour: '#e6ea92', glow: '#f2f57a', desc: 'A very pale yellow gas - faint enough that it was long described as colourless. The most reactive element there is; it will burn glass and water.' } },
 
     { z: 10, sym: 'Ne', name: 'Neon', weight: '20.180', cat: 'noble', group: 18, period: 2, block: 'p',
       cfg: '1s2 2s2 2p6', en: null, radius: null, ie: 2080.7, melt: 24.56, boil: 27.104,
@@ -278,7 +278,7 @@
       density: '0.968 g/cm³', year: '1807', by: 'Humphry Davy',
       abundance: 'About 2.3% of the crust, and the sodium in seawater is why it is salty.',
       ox: '+1',
-      use: 'Mostly as its compounds — table salt, caustic soda, glass. The metal itself is a coolant in some reactors and the light in old orange street lamps.',
+      use: 'Mostly as its compounds - table salt, caustic soda, glass. The metal itself is a coolant in some reactors and the light in old orange street lamps.',
       look: { kind: 'metal', colour: '#e4e8ec', glow: '#ffb028', desc: 'Bright silver on a fresh cut and dull white within a second or two. Soft as cheese. Its flame and its street lamps are an intense sodium yellow.' } },
 
     { z: 12, sym: 'Mg', name: 'Magnesium', weight: '24.305', cat: 'alkaline', group: 2, period: 3, block: 's',
@@ -294,7 +294,7 @@
       density: '2.70 g/cm³', year: '1825', by: 'Hans Christian Ørsted',
       abundance: 'The most abundant metal in the crust, about 8% by mass, mined as bauxite.',
       ox: '+3',
-      use: 'Everything light and structural — aircraft, cans, window frames, power lines. Recycling it costs about 5% of the energy of making it new.',
+      use: 'Everything light and structural - aircraft, cans, window frames, power lines. Recycling it costs about 5% of the energy of making it new.',
       look: { kind: 'metal', colour: '#d5d9dd', desc: 'Silvery-white with a faint blue cast. It does tarnish, instantly, but the oxide is transparent and tight, so it keeps its shine instead of losing it.' } },
 
     { z: 14, sym: 'Si', name: 'Silicon', weight: '28.085', cat: 'metalloid', group: 14, period: 3, block: 'p',
@@ -303,7 +303,7 @@
       abundance: 'The second most abundant element in the crust at about 28%, nearly all of it as silicate rock and sand.',
       ox: '+4, -4',
       use: 'Glass, concrete and ceramics by weight; chips and solar cells by value. The purified crystal is the substrate of the entire computer industry.',
-      look: { kind: 'crystal', colour: '#4b525d', desc: 'Dark bluish-grey with a hard, glassy metallic lustre — a polished wafer is close to a mirror, but a broken lump shows sharp crystalline facets.' } },
+      look: { kind: 'crystal', colour: '#4b525d', desc: 'Dark bluish-grey with a hard, glassy metallic lustre - a polished wafer is close to a mirror, but a broken lump shows sharp crystalline facets.' } },
 
     { z: 15, sym: 'P', name: 'Phosphorus', weight: '30.974', cat: 'nonmetal', group: 15, period: 3, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p3', en: 2.19, radius: 100, ie: 1011.8, melt: 317.3, boil: 553.7,
@@ -319,7 +319,7 @@
       abundance: 'About 350 parts per million of the crust; most production is a by-product of cleaning sulfur out of oil and gas.',
       ox: '+6, +4, -2',
       use: 'Sulfuric acid, which is made in greater quantity than any other industrial chemical, plus vulcanised rubber and gunpowder.',
-      look: { kind: 'crystal', colour: '#e8d33f', desc: 'A bright, slightly greenish lemon yellow — one of the few elements with a colour you would call cheerful. Brittle, dull-to-waxy crystals that crumble in the hand.' } },
+      look: { kind: 'crystal', colour: '#e8d33f', desc: 'A bright, slightly greenish lemon yellow - one of the few elements with a colour you would call cheerful. Brittle, dull-to-waxy crystals that crumble in the hand.' } },
 
     { z: 17, sym: 'Cl', name: 'Chlorine', weight: '35.45', cat: 'halogen', group: 17, period: 3, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p5', en: 3.16, radius: 100, ie: 1251.2, melt: 171.6, boil: 239.11,
@@ -327,12 +327,12 @@
       abundance: 'About 145 parts per million of the crust, and the chloride in every ocean.',
       ox: '+7, +5, +1, -1',
       use: 'Disinfecting drinking water and pools, bleaching, and making PVC. It has saved an enormous number of lives and was also the first chemical weapon.',
-      look: { kind: 'gas', colour: '#cfe04a', glow: '#a8f06a', desc: 'A visible pale yellow-green gas — dense enough to pool and see. The colour is where the name comes from; chloros is Greek for pale green.' } },
+      look: { kind: 'gas', colour: '#cfe04a', glow: '#a8f06a', desc: 'A visible pale yellow-green gas - dense enough to pool and see. The colour is where the name comes from; chloros is Greek for pale green.' } },
 
     { z: 18, sym: 'Ar', name: 'Argon', weight: '39.95', cat: 'noble', group: 18, period: 3, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6', en: null, radius: null, ie: 1520.6, melt: 83.81, boil: 87.302,
       density: '1.784 g/L at 0 °C', year: '1894', by: 'Lord Rayleigh and William Ramsay',
-      abundance: '0.93% of the air — the third most common gas in it, ahead of carbon dioxide.',
+      abundance: '0.93% of the air - the third most common gas in it, ahead of carbon dioxide.',
       ox: '0',
       use: 'A cheap inert blanket: welding shields, the fill in double glazing, and the atmosphere inside old incandescent bulbs.',
       look: { kind: 'gas', colour: '#e4ecf7', glow: '#a172ff', desc: 'Colourless and completely unreactive. Its discharge is a soft lilac-violet, and it is the pale mauve behind a lot of "neon" signage.' } },
@@ -343,7 +343,7 @@
       abundance: 'About 2.1% of the crust, in feldspars and evaporite salts.',
       ox: '+1',
       use: 'Potash fertiliser takes almost all of it. Potassium is also the ion your nerve cells pump to fire.',
-      look: { kind: 'metal', colour: '#dde1e5', glow: '#c07fe8', desc: 'Silvery-white for about a second, then a blue-grey then yellowish crust. Soft enough to squash. It floats on water — and sets the hydrogen it makes alight, with a lilac flame.' } },
+      look: { kind: 'metal', colour: '#dde1e5', glow: '#c07fe8', desc: 'Silvery-white for about a second, then a blue-grey then yellowish crust. Soft enough to squash. It floats on water - and sets the hydrogen it makes alight, with a lilac flame.' } },
 
     { z: 20, sym: 'Ca', name: 'Calcium', weight: '40.078', cat: 'alkaline', group: 2, period: 4, block: 's',
       cfg: '1s2 2s2 2p6 3s2 3p6 4s2', en: 1.00, radius: 180, ie: 589.8, melt: 1115, boil: 1757,
@@ -356,25 +356,25 @@
     { z: 21, sym: 'Sc', name: 'Scandium', weight: '44.956', cat: 'transition', group: 3, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d1 4s2', en: 1.36, radius: 160, ie: 633.1, melt: 1814, boil: 3109,
       density: '2.985 g/cm³', year: '1879', by: 'Lars Fredrik Nilson',
-      abundance: 'About 22 parts per million of the crust, but nowhere concentrated — which is why it stays expensive.',
+      abundance: 'About 22 parts per million of the crust, but nowhere concentrated - which is why it stays expensive.',
       ox: '+3',
       use: 'Aluminium-scandium alloy for bicycle frames and aerospace parts, and scandium iodide in stadium floodlights.',
-      look: { kind: 'metal', colour: '#dcdad4', desc: 'Silvery-white with a slight yellow-pink cast once the air has had a go at it. Light for a metal — barely denser than aluminium.' } },
+      look: { kind: 'metal', colour: '#dcdad4', desc: 'Silvery-white with a slight yellow-pink cast once the air has had a go at it. Light for a metal - barely denser than aluminium.' } },
 
     { z: 22, sym: 'Ti', name: 'Titanium', weight: '47.867', cat: 'transition', group: 4, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d2 4s2', en: 1.54, radius: 140, ie: 658.8, melt: 1941, boil: 3560,
       density: '4.506 g/cm³', year: '1791', by: 'William Gregor',
-      abundance: 'About 0.57% of the crust — the ninth most abundant element, mostly as ilmenite and rutile.',
+      abundance: 'About 0.57% of the crust - the ninth most abundant element, mostly as ilmenite and rutile.',
       ox: '+4, +3',
       use: 'Titanium dioxide is the white in almost all white paint, paper and sunscreen. The metal itself goes into aircraft, hip joints and dental implants.',
-      look: { kind: 'metal', colour: '#b9bcbf', desc: 'A cool silvery grey, slightly darker and less bright than steel, with a soft satin sheen. Anodising it drives the oxide film to interference colours — blue, purple, gold.' } },
+      look: { kind: 'metal', colour: '#b9bcbf', desc: 'A cool silvery grey, slightly darker and less bright than steel, with a soft satin sheen. Anodising it drives the oxide film to interference colours - blue, purple, gold.' } },
 
     { z: 23, sym: 'V', name: 'Vanadium', weight: '50.942', cat: 'transition', group: 5, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d3 4s2', en: 1.63, radius: 135, ie: 650.9, melt: 2183, boil: 3680,
       density: '6.11 g/cm³', year: '1801', by: 'Andrés Manuel del Río (rediscovered by Sefström, 1830)',
       abundance: 'About 120 parts per million of the crust; much is recovered from oil residues and steel slag.',
       ox: '+5, +4, +3, +2',
-      use: 'Almost all of it strengthens steel — a fraction of a percent makes spanners and springs much tougher. Also the electrolyte in flow batteries.',
+      use: 'Almost all of it strengthens steel - a fraction of a percent makes spanners and springs much tougher. Also the electrolyte in flow batteries.',
       look: { kind: 'metal', colour: '#b8bfc4', desc: 'Bluish-silver and hard, holding a bright polish. Its salts are famous for colour: the same element runs through purple, green, blue and yellow solutions as it changes oxidation state.' } },
 
     { z: 24, sym: 'Cr', name: 'Chromium', weight: '51.996', cat: 'transition', group: 6, period: 4, block: 'd',
@@ -382,7 +382,7 @@
       density: '7.15 g/cm³', year: '1794', by: 'Louis-Nicolas Vauquelin',
       abundance: 'About 102 parts per million of the crust, as chromite.',
       ox: '+6, +3, +2',
-      use: 'Stainless steel — the chromium is what stops it rusting — and chrome plating. Chromium is also the red in a ruby and the green in an emerald.',
+      use: 'Stainless steel - the chromium is what stops it rusting - and chrome plating. Chromium is also the red in a ruby and the green in an emerald.',
       look: { kind: 'metal', colour: '#cbced2', desc: 'The hardest, brightest mirror of the common metals, with a faint blue cast. Chrome plating looks the way it does because chromium itself really is that reflective.' } },
 
     { z: 25, sym: 'Mn', name: 'Manganese', weight: '54.938', cat: 'transition', group: 7, period: 4, block: 'd',
@@ -390,13 +390,13 @@
       density: '7.21 g/cm³', year: '1774', by: 'Johan Gottlieb Gahn',
       abundance: 'About 950 parts per million of the crust, plus vast nodule fields on the deep ocean floor.',
       ox: '+7, +4, +2',
-      use: 'Steel cannot practically be made without it — it mops up sulfur and oxygen. Also alkaline batteries and the deep purple of permanganate.',
+      use: 'Steel cannot practically be made without it - it mops up sulfur and oxygen. Also alkaline batteries and the deep purple of permanganate.',
       look: { kind: 'dullmetal', colour: '#b5b4af', desc: 'Hard, brittle silvery-grey with a slightly pinkish cast, and a matte rather than mirrored surface. It tarnishes to a dull brown-grey.' } },
 
     { z: 26, sym: 'Fe', name: 'Iron', weight: '55.845', cat: 'transition', group: 8, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d6 4s2', en: 1.83, radius: 140, ie: 762.5, melt: 1811, boil: 3134,
       density: '7.874 g/cm³', year: 'Antiquity', by: 'Known since prehistory',
-      abundance: 'About 5.6% of the crust and most of the Earth’s core — by mass it is the most abundant element on the planet.',
+      abundance: 'About 5.6% of the crust and most of the Earth’s core - by mass it is the most abundant element on the planet.',
       ox: '+3, +2',
       use: 'Steel: about 95% of all metal produced. Also the atom at the centre of haemoglobin, which is why blood is red.',
       look: { kind: 'metal', colour: '#b3b5b7', desc: 'Lustrous silvery-grey when freshly cut or polished, going quickly to the familiar orange-brown rust. Strongly magnetic.' } },
@@ -407,7 +407,7 @@
       abundance: 'About 25 parts per million of the crust; mostly a by-product of copper and nickel mining.',
       ox: '+3, +2',
       use: 'Lithium-ion battery cathodes, superalloys for jet turbine blades, and the cobalt blue that has coloured glass and porcelain for a thousand years.',
-      look: { kind: 'metal', colour: '#a9b0bb', desc: 'Hard, lustrous and noticeably bluish-grey — more blue in it than iron or nickel. Magnetic, and it keeps its magnetism up to a very high temperature.' } },
+      look: { kind: 'metal', colour: '#a9b0bb', desc: 'Hard, lustrous and noticeably bluish-grey - more blue in it than iron or nickel. Magnetic, and it keeps its magnetism up to a very high temperature.' } },
 
     { z: 28, sym: 'Ni', name: 'Nickel', weight: '58.693', cat: 'transition', group: 10, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d8 4s2', en: 1.91, radius: 135, ie: 737.1, melt: 1728, boil: 3003,
@@ -415,7 +415,7 @@
       abundance: 'About 84 parts per million of the crust, and a large fraction of the Earth’s core.',
       ox: '+2',
       use: 'Stainless steel and battery alloys, plating, and coins. It is also the commonest cause of contact allergy in jewellery.',
-      look: { kind: 'metal', colour: '#cdc8b8', desc: 'Silvery with a faint warm, golden cast — slightly creamier than chrome. Takes a high polish and resists tarnishing well.' } },
+      look: { kind: 'metal', colour: '#cdc8b8', desc: 'Silvery with a faint warm, golden cast - slightly creamier than chrome. Takes a high polish and resists tarnishing well.' } },
 
     { z: 29, sym: 'Cu', name: 'Copper', weight: '63.546', cat: 'transition', group: 11, period: 4, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s1', en: 1.90, radius: 135, ie: 745.5, melt: 1357.77, boil: 2835,
@@ -430,7 +430,7 @@
       density: '7.14 g/cm³', year: '1746', by: 'Andreas Sigismund Marggraf (smelted in India far earlier)',
       abundance: 'About 70 parts per million of the crust, as sphalerite.',
       ox: '+2',
-      use: 'Galvanising steel — the zinc corrodes instead of the iron underneath. Also brass, and a trace element you cannot live without.',
+      use: 'Galvanising steel - the zinc corrodes instead of the iron underneath. Also brass, and a trace element you cannot live without.',
       look: { kind: 'dullmetal', colour: '#bcc6c9', desc: 'Bluish-silvery-white, bright on a fresh break and quickly matte grey in air. Galvanised sheet shows its characteristic crystalline "spangle" pattern.' } },
 
     { z: 31, sym: 'Ga', name: 'Gallium', weight: '69.723', cat: 'post', group: 13, period: 4, block: 'p',
@@ -438,8 +438,8 @@
       density: '5.91 g/cm³', year: '1875', by: 'Paul-Émile Lecoq de Boisbaudran',
       abundance: 'About 19 parts per million of the crust, recovered as a by-product of aluminium and zinc refining.',
       ox: '+3',
-      use: 'Gallium nitride and gallium arsenide semiconductors — blue and white LEDs, laser diodes, fast radio-frequency chips.',
-      look: { kind: 'metal', colour: '#c8ccd4', desc: 'Silvery with a faint blue tint, and famous for melting at 29.8 °C — a spoon of it collapses into a mirror-bright puddle in your palm.' } },
+      use: 'Gallium nitride and gallium arsenide semiconductors - blue and white LEDs, laser diodes, fast radio-frequency chips.',
+      look: { kind: 'metal', colour: '#c8ccd4', desc: 'Silvery with a faint blue tint, and famous for melting at 29.8 °C - a spoon of it collapses into a mirror-bright puddle in your palm.' } },
 
     { z: 32, sym: 'Ge', name: 'Germanium', weight: '72.630', cat: 'metalloid', group: 14, period: 4, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p2', en: 2.01, radius: 125, ie: 762.0, melt: 1211.4, boil: 3106,
@@ -447,15 +447,15 @@
       abundance: 'About 1.5 parts per million of the crust; recovered from zinc ores and coal fly ash.',
       ox: '+4, +2',
       use: 'Infrared lenses for thermal cameras, fibre-optic glass, and the polymerisation catalyst for PET bottles. The first transistors were germanium.',
-      look: { kind: 'crystal', colour: '#a8aca6', desc: 'Greyish-white, hard, brittle, with a bright metallic lustre on a fresh fracture — it looks like a metal and shatters like glass.' } },
+      look: { kind: 'crystal', colour: '#a8aca6', desc: 'Greyish-white, hard, brittle, with a bright metallic lustre on a fresh fracture - it looks like a metal and shatters like glass.' } },
 
     { z: 33, sym: 'As', name: 'Arsenic', weight: '74.922', cat: 'metalloid', group: 15, period: 4, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p3', en: 2.18, radius: 115, ie: 947.0, melt: null, boil: 887, subl: true,
       density: '5.727 g/cm³', year: 'c. 1250', by: 'Albertus Magnus (compounds known much earlier)',
       abundance: 'About 1.8 parts per million of the crust; a serious contaminant of groundwater in parts of South Asia.',
       ox: '+5, +3, -3',
-      use: 'Gallium arsenide semiconductors, lead alloys for car batteries, and — historically — wood preservative and pigment. Notoriously poisonous.',
-      look: { kind: 'crystal', colour: '#7c7b77', desc: 'The grey allotrope is brittle, steely and metallic-looking, tarnishing to a dull black. It does not melt at ordinary pressure — it sublimes straight to a garlic-smelling vapour.' } },
+      use: 'Gallium arsenide semiconductors, lead alloys for car batteries, and - historically - wood preservative and pigment. Notoriously poisonous.',
+      look: { kind: 'crystal', colour: '#7c7b77', desc: 'The grey allotrope is brittle, steely and metallic-looking, tarnishing to a dull black. It does not melt at ordinary pressure - it sublimes straight to a garlic-smelling vapour.' } },
 
     { z: 34, sym: 'Se', name: 'Selenium', weight: '78.971', cat: 'nonmetal', group: 16, period: 4, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p4', en: 2.55, radius: 115, ie: 941.0, melt: 494, boil: 958,
@@ -503,7 +503,7 @@
       abundance: 'About 33 parts per million of the crust, always alongside the rare earths.',
       ox: '+3',
       use: 'YAG laser crystals, the red phosphor in older colour televisions, and the yttria that stabilises the zirconia in dental crowns and thermal barrier coatings.',
-      look: { kind: 'metal', colour: '#ccced0', desc: 'Silvery, moderately soft, and stable in air as a lump — but the shavings will catch fire. Sits with the rare earths chemically despite not being one.' } },
+      look: { kind: 'metal', colour: '#ccced0', desc: 'Silvery, moderately soft, and stable in air as a lump - but the shavings will catch fire. Sits with the rare earths chemically despite not being one.' } },
 
     { z: 40, sym: 'Zr', name: 'Zirconium', weight: '91.224', cat: 'transition', group: 4, period: 5, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d2 5s2', en: 1.33, radius: 155, ie: 640.1, melt: 2128, boil: 4650,
@@ -532,7 +532,7 @@
     { z: 43, sym: 'Tc', name: 'Technetium', weight: '[97]', cat: 'transition', group: 7, period: 5, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d5 5s2', en: 1.90, radius: 135, ie: 702.0, melt: 2430, boil: 4538,
       density: '11 g/cm³', year: '1937', by: 'Carlo Perrier and Emilio Segrè',
-      abundance: 'Essentially none — the first element made artificially. Traces occur in uranium ore from spontaneous fission.',
+      abundance: 'Essentially none - the first element made artificially. Traces occur in uranium ore from spontaneous fission.',
       ox: '+7, +4',
       use: 'Technetium-99m is the workhorse of nuclear medicine: tens of millions of diagnostic scans a year use it.',
       look: { kind: 'metal', colour: '#b0b2b5', desc: 'A shiny grey metal, close to platinum in appearance. Almost nobody has seen a lump of it; it is radioactive and made a milligram at a time.' } },
@@ -542,16 +542,16 @@
       density: '12.45 g/cm³', year: '1844', by: 'Karl Ernst Claus',
       abundance: 'About 0.001 parts per million of the crust; a by-product of platinum and nickel mining.',
       ox: '+4, +3',
-      use: 'Wear-resistant electrical contacts, hard-disk coatings, and catalysts — including the ones that won a Nobel prize for olefin metathesis.',
+      use: 'Wear-resistant electrical contacts, hard-disk coatings, and catalysts - including the ones that won a Nobel prize for olefin metathesis.',
       look: { kind: 'metal', colour: '#c3c5c7', desc: 'Hard, brittle, silvery-white with a bright lustre. It does not tarnish at room temperature and is very difficult to attack with acid.' } },
 
     { z: 45, sym: 'Rh', name: 'Rhodium', weight: '102.91', cat: 'transition', group: 9, period: 5, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d8 5s1', en: 2.28, radius: 135, ie: 719.7, melt: 2237, boil: 3968,
       density: '12.41 g/cm³', year: '1804', by: 'William Hyde Wollaston',
-      abundance: 'About 0.0002 parts per million of the crust — one of the rarest non-radioactive elements.',
+      abundance: 'About 0.0002 parts per million of the crust - one of the rarest non-radioactive elements.',
       ox: '+3',
       use: 'Catalytic converters, where it handles the nitrogen oxides, and the bright plating on white gold jewellery.',
-      look: { kind: 'metal', colour: '#d2d5d7', desc: 'A hard, brilliantly reflective silvery-white — whiter and brighter than platinum, which is exactly why jewellery is plated with it.' } },
+      look: { kind: 'metal', colour: '#d2d5d7', desc: 'A hard, brilliantly reflective silvery-white - whiter and brighter than platinum, which is exactly why jewellery is plated with it.' } },
 
     { z: 46, sym: 'Pd', name: 'Palladium', weight: '106.42', cat: 'transition', group: 10, period: 5, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10', en: 2.20, radius: 140, ie: 804.4, melt: 1828.05, boil: 3236,
@@ -566,15 +566,15 @@
       density: '10.49 g/cm³', year: 'Antiquity', by: 'Known since about 3000 BC',
       abundance: 'About 0.075 parts per million of the crust; often a by-product of lead and copper mining.',
       ox: '+1',
-      use: 'Solar cell contacts and electronics take more of it than jewellery now. It is the best electrical conductor of any element, and the best thermal conductor of any metal — diamond carries heat several times better still.',
-      look: { kind: 'metal', colour: '#e8eaec', desc: 'The most reflective metal there is — a brilliant, neutral white mirror. It tarnishes to a brown-black sulfide film, which is why silverware needs polishing.' } },
+      use: 'Solar cell contacts and electronics take more of it than jewellery now. It is the best electrical conductor of any element, and the best thermal conductor of any metal - diamond carries heat several times better still.',
+      look: { kind: 'metal', colour: '#e8eaec', desc: 'The most reflective metal there is - a brilliant, neutral white mirror. It tarnishes to a brown-black sulfide film, which is why silverware needs polishing.' } },
 
     { z: 48, sym: 'Cd', name: 'Cadmium', weight: '112.41', cat: 'transition', group: 12, period: 5, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2', en: 1.69, radius: 155, ie: 867.8, melt: 594.22, boil: 1040,
       density: '8.65 g/cm³', year: '1817', by: 'Karl Hermann and Friedrich Stromeyer',
       abundance: 'About 0.15 parts per million of the crust; recovered from zinc refining.',
       ox: '+2',
-      use: 'Mostly nickel-cadmium batteries and pigments, both now heavily restricted — cadmium is cumulatively toxic to the kidneys and bones.',
+      use: 'Mostly nickel-cadmium batteries and pigments, both now heavily restricted - cadmium is cumulatively toxic to the kidneys and bones.',
       look: { kind: 'metal', colour: '#cbd0d4', desc: 'Soft, bluish-white and shiny, very like zinc but softer. A bar of it makes a faint crackling "cry" when bent, as tin does.' } },
 
     { z: 49, sym: 'In', name: 'Indium', weight: '114.82', cat: 'post', group: 13, period: 5, block: 'p',
@@ -591,7 +591,7 @@
       abundance: 'About 2.3 parts per million of the crust, as cassiterite.',
       ox: '+4, +2',
       use: 'Solder, tinplate for food cans, and bronze. Alloying it with copper is what started the Bronze Age.',
-      look: { kind: 'metal', colour: '#cfd2d5', desc: 'Silvery-white and soft with a slight blue cast. Below about 13 °C it slowly crumbles into a grey powder — "tin pest", which has ruined organ pipes and buttons.' } },
+      look: { kind: 'metal', colour: '#cfd2d5', desc: 'Silvery-white and soft with a slight blue cast. Below about 13 °C it slowly crumbles into a grey powder - "tin pest", which has ruined organ pipes and buttons.' } },
 
     { z: 51, sym: 'Sb', name: 'Antimony', weight: '121.76', cat: 'metalloid', group: 15, period: 5, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p3', en: 2.05, radius: 145, ie: 834.0, melt: 903.78, boil: 1908,
@@ -604,7 +604,7 @@
     { z: 52, sym: 'Te', name: 'Tellurium', weight: '127.60', cat: 'metalloid', group: 16, period: 5, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p4', en: 2.10, radius: 140, ie: 869.3, melt: 722.66, boil: 1261,
       density: '6.24 g/cm³', year: '1782', by: 'Franz-Joseph Müller von Reichenstein',
-      abundance: 'About 0.001 parts per million of the crust — rarer in rock than platinum — recovered from copper refining slimes.',
+      abundance: 'About 0.001 parts per million of the crust - rarer in rock than platinum - recovered from copper refining slimes.',
       ox: '+6, +4, -2',
       use: 'Cadmium telluride thin-film solar panels, rewritable optical discs, and an additive that makes steel easier to machine.',
       look: { kind: 'crystal', colour: '#aaacaf', desc: 'Silvery-white, brittle, with a bright metallic lustre on a fresh break. Handle it and your breath smells of garlic for days.' } },
@@ -614,16 +614,16 @@
       density: '4.933 g/cm³', year: '1811', by: 'Bernard Courtois',
       abundance: 'About 0.45 parts per million of the crust; extracted from brines and Chilean caliche.',
       ox: '+7, +5, +1, -1',
-      use: 'Disinfectant, contrast agent for X-ray imaging, and iodised salt — which quietly eliminated a major cause of preventable brain damage.',
+      use: 'Disinfectant, contrast agent for X-ray imaging, and iodised salt - which quietly eliminated a major cause of preventable brain damage.',
       look: { kind: 'crystal', colour: '#3e3350', glow: '#a86ce0', desc: 'Lustrous blue-black crystals that look almost metallic, and give off a dense violet vapour if you so much as warm them. The vapour is where the name comes from.' } },
 
     { z: 54, sym: 'Xe', name: 'Xenon', weight: '131.29', cat: 'noble', group: 18, period: 5, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6', en: 2.60, radius: null, ie: 1170.4, melt: 161.40, boil: 165.051,
       density: '5.894 g/L at 0 °C', year: '1898', by: 'William Ramsay and Morris Travers',
-      abundance: '0.087 parts per million of the air — the rarest stable gas in it.',
+      abundance: '0.087 parts per million of the air - the rarest stable gas in it.',
       ox: '0, +2, +4, +6',
       use: 'Camera flash tubes, car headlamps and cinema projector lamps; also a general anaesthetic, and the propellant in ion thrusters.',
-      look: { kind: 'gas', colour: '#e7eefa', glow: '#8fb4ff', desc: 'Colourless, but its arc is a brilliant blue-white close to daylight — which is why it lights film sets. It was the first noble gas anyone got to form a compound.' } },
+      look: { kind: 'gas', colour: '#e7eefa', glow: '#8fb4ff', desc: 'Colourless, but its arc is a brilliant blue-white close to daylight - which is why it lights film sets. It was the first noble gas anyone got to form a compound.' } },
 
     { z: 55, sym: 'Cs', name: 'Caesium', weight: '132.91', cat: 'alkali', group: 1, period: 6, block: 's',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 6s1', en: 0.79, radius: 260, ie: 375.7, melt: 301.7, boil: 944,
@@ -644,7 +644,7 @@
     { z: 57, sym: 'La', name: 'Lanthanum', weight: '138.91', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 5d1 6s2', en: 1.10, radius: 195, ie: 538.1, melt: 1193, boil: 3737,
       density: '6.162 g/cm³', year: '1839', by: 'Carl Gustaf Mosander',
-      abundance: 'About 39 parts per million of the crust — more common than lead, despite the name "rare earth".',
+      abundance: 'About 39 parts per million of the crust - more common than lead, despite the name "rare earth".',
       ox: '+3',
       use: 'Nickel-metal-hydride battery electrodes, camera lens glass with unusually high refractive index, and cracking catalysts in oil refineries.',
       look: { kind: 'metal', colour: '#d5d7d9', desc: 'Silvery-white and soft enough to cut with a knife, tarnishing to a dull oxide within minutes of exposure.' } },
@@ -652,10 +652,10 @@
     { z: 58, sym: 'Ce', name: 'Cerium', weight: '140.12', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f1 5d1 6s2', en: 1.12, radius: 185, ie: 534.4, melt: 1068, boil: 3716,
       density: '6.770 g/cm³', year: '1803', by: 'Berzelius, Hisinger and Klaproth',
-      abundance: 'About 67 parts per million of the crust — the most abundant of all the rare earths.',
+      abundance: 'About 67 parts per million of the crust - the most abundant of all the rare earths.',
       ox: '+4, +3',
       use: 'Polishing powder for optical glass, self-cleaning oven coatings, and the ferrocerium in every lighter flint.',
-      look: { kind: 'metal', colour: '#d3d5d7', desc: 'Silvery-white and soft. Scratch or file it and it throws sparks — the shavings are pyrophoric, which is the whole trick behind lighter flints.' } },
+      look: { kind: 'metal', colour: '#d3d5d7', desc: 'Silvery-white and soft. Scratch or file it and it throws sparks - the shavings are pyrophoric, which is the whole trick behind lighter flints.' } },
 
     { z: 59, sym: 'Pr', name: 'Praseodymium', weight: '140.91', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f3 6s2', en: 1.13, radius: 185, ie: 527.0, melt: 1208, boil: 3403,
@@ -663,23 +663,23 @@
       abundance: 'About 9.2 parts per million of the crust.',
       ox: '+3',
       use: 'Strengthening magnesium alloys for aircraft engines, and the deep yellow-green glass in welders’ goggles that blocks sodium glare.',
-      look: { kind: 'metal', colour: '#cfd2cd', desc: 'Silvery with a faint green cast, and its oxide layer is a distinct yellow-green — the name means "green twin".' } },
+      look: { kind: 'metal', colour: '#cfd2cd', desc: 'Silvery with a faint green cast, and its oxide layer is a distinct yellow-green - the name means "green twin".' } },
 
     { z: 60, sym: 'Nd', name: 'Neodymium', weight: '144.24', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f4 6s2', en: 1.14, radius: 185, ie: 533.1, melt: 1297, boil: 3347,
       density: '7.01 g/cm³', year: '1885', by: 'Carl Auer von Welsbach',
       abundance: 'About 41.5 parts per million of the crust.',
       ox: '+3',
-      use: 'Neodymium-iron-boron magnets — the strongest permanent magnets made, and the reason headphones, hard drives and wind turbines are the size they are.',
+      use: 'Neodymium-iron-boron magnets - the strongest permanent magnets made, and the reason headphones, hard drives and wind turbines are the size they are.',
       look: { kind: 'metal', colour: '#d0d2d4', desc: 'Bright silvery-white, oxidising quickly to a yellowish then purple-grey crust. Glass doped with it looks lavender in daylight and blue under fluorescent light.' } },
 
     { z: 61, sym: 'Pm', name: 'Promethium', weight: '[145]', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f5 6s2', en: 1.13, radius: 185, ie: 540.0, melt: 1315, boil: 3273,
       density: '7.26 g/cm³', year: '1945', by: 'Marinsky, Glendenin and Coryell',
-      abundance: 'Vanishingly rare — perhaps half a kilogram in the entire crust at any moment, from uranium fission. Effectively all of it is made in reactors.',
+      abundance: 'Vanishingly rare - perhaps half a kilogram in the entire crust at any moment, from uranium fission. Effectively all of it is made in reactors.',
       ox: '+3',
       use: 'Beta sources for thickness gauges and, formerly, self-luminous instrument dials. It is the only lanthanide with no stable isotope.',
-      look: { kind: 'metal', colour: '#cfd1d3', glow: '#7fe0b0', desc: 'A silvery metal whose salts glow a pale blue-green in the dark from their own radioactivity — not phosphorescence, just decay energy.' } },
+      look: { kind: 'metal', colour: '#cfd1d3', glow: '#7fe0b0', desc: 'A silvery metal whose salts glow a pale blue-green in the dark from their own radioactivity - not phosphorescence, just decay energy.' } },
 
     { z: 62, sym: 'Sm', name: 'Samarium', weight: '150.36', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f6 6s2', en: 1.17, radius: 185, ie: 544.5, melt: 1345, boil: 2173,
@@ -687,7 +687,7 @@
       abundance: 'About 7.05 parts per million of the crust.',
       ox: '+3, +2',
       use: 'Samarium-cobalt magnets, which hold their strength at temperatures that would ruin a neodymium magnet, and neutron-absorbing reactor control rods.',
-      look: { kind: 'metal', colour: '#cdd0d2', desc: 'Silvery-white and moderately hard, developing a yellow oxide film in air. Named after samarskite, itself named after a Russian mining official — the first element named after a person.' } },
+      look: { kind: 'metal', colour: '#cdd0d2', desc: 'Silvery-white and moderately hard, developing a yellow oxide film in air. Named after samarskite, itself named after a Russian mining official - the first element named after a person.' } },
 
     { z: 63, sym: 'Eu', name: 'Europium', weight: '151.96', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f7 6s2', en: 1.20, radius: 185, ie: 547.1, melt: 1099, boil: 1802,
@@ -695,14 +695,14 @@
       abundance: 'About 2 parts per million of the crust.',
       ox: '+3, +2',
       use: 'The red and blue phosphors in fluorescent lamps and older televisions, and the anti-counterfeiting marks that fluoresce on euro banknotes.',
-      look: { kind: 'metal', colour: '#d7d9db', glow: '#ff5a5a', desc: 'The softest and least dense lanthanide, silvery-white and about as reactive as calcium — it oxidises through in air within days. Its compounds fluoresce a vivid red.' } },
+      look: { kind: 'metal', colour: '#d7d9db', glow: '#ff5a5a', desc: 'The softest and least dense lanthanide, silvery-white and about as reactive as calcium - it oxidises through in air within days. Its compounds fluoresce a vivid red.' } },
 
     { z: 64, sym: 'Gd', name: 'Gadolinium', weight: '157.25', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f7 5d1 6s2', en: 1.20, radius: 180, ie: 593.4, melt: 1585, boil: 3273,
       density: '7.90 g/cm³', year: '1880', by: 'Jean Charles Galissard de Marignac',
       abundance: 'About 6.2 parts per million of the crust.',
       ox: '+3',
-      use: 'MRI contrast agents, and neutron shielding — gadolinium absorbs thermal neutrons better than any other stable element.',
+      use: 'MRI contrast agents, and neutron shielding - gadolinium absorbs thermal neutrons better than any other stable element.',
       look: { kind: 'metal', colour: '#cdcfd1', desc: 'Silvery-white with a metallic lustre. It is magnetic below about 20 °C, so a lump of it is attracted to a magnet on a cold day and not on a warm one.' } },
 
     { z: 65, sym: 'Tb', name: 'Terbium', weight: '158.93', cat: 'lanthanide', group: null, period: 6, block: 'f',
@@ -718,7 +718,7 @@
       density: '8.540 g/cm³', year: '1886', by: 'Paul-Émile Lecoq de Boisbaudran',
       abundance: 'About 5.2 parts per million of the crust.',
       ox: '+3',
-      use: 'Added to neodymium magnets so they keep working hot — which is what electric car motors and wind turbines need.',
+      use: 'Added to neodymium magnets so they keep working hot - which is what electric car motors and wind turbines need.',
       look: { kind: 'metal', colour: '#d0d2d4', desc: 'Bright silvery-white and soft enough to cut with a knife without sparking. The name means "hard to get at", which was true of separating it.' } },
 
     { z: 67, sym: 'Ho', name: 'Holmium', weight: '164.93', cat: 'lanthanide', group: null, period: 6, block: 'f',
@@ -740,7 +740,7 @@
     { z: 69, sym: 'Tm', name: 'Thulium', weight: '168.93', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f13 6s2', en: 1.25, radius: 175, ie: 596.7, melt: 1818, boil: 2223,
       density: '9.32 g/cm³', year: '1879', by: 'Per Teodor Cleve',
-      abundance: 'About 0.52 parts per million of the crust — the least abundant lanthanide that is not radioactive.',
+      abundance: 'About 0.52 parts per million of the crust - the least abundant lanthanide that is not radioactive.',
       ox: '+3',
       use: 'Portable X-ray sources for field radiography, and surgical lasers. Thulium doping gives some euro banknotes a blue fluorescence.',
       look: { kind: 'metal', colour: '#cdcfd1', desc: 'Silvery-grey, soft, and bright enough to hold a shine. Named after Thule, the old name for the far north.' } },
@@ -751,7 +751,7 @@
       abundance: 'About 3.2 parts per million of the crust.',
       ox: '+3, +2',
       use: 'Ytterbium optical lattice clocks, the most accurate timekeepers built, and fibre lasers for industrial cutting.',
-      look: { kind: 'metal', colour: '#d5d7d9', desc: 'Bright, soft and silvery with a slight shine — more malleable than its neighbours. Its electrical resistance rises sharply under pressure, which makes it a useful strain gauge.' } },
+      look: { kind: 'metal', colour: '#d5d7d9', desc: 'Bright, soft and silvery with a slight shine - more malleable than its neighbours. Its electrical resistance rises sharply under pressure, which makes it a useful strain gauge.' } },
 
     { z: 71, sym: 'Lu', name: 'Lutetium', weight: '174.97', cat: 'lanthanide', group: null, period: 6, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d1 6s2', en: 1.27, radius: 175, ie: 523.5, melt: 1925, boil: 3675,
@@ -766,7 +766,7 @@
       density: '13.31 g/cm³', year: '1922', by: 'Dirk Coster and George de Hevesy',
       abundance: 'About 3 parts per million of the crust, always mixed in with zirconium and painful to separate from it.',
       ox: '+4',
-      use: 'Nuclear reactor control rods — it soaks up neutrons where zirconium ignores them — and hafnium oxide as the gate insulator in modern processors.',
+      use: 'Nuclear reactor control rods - it soaks up neutrons where zirconium ignores them - and hafnium oxide as the gate insulator in modern processors.',
       look: { kind: 'metal', colour: '#c0c3c6', desc: 'Lustrous silvery-grey, ductile, chemically almost indistinguishable from zirconium. It carries the highest melting point of any carbide known.' } },
 
     { z: 73, sym: 'Ta', name: 'Tantalum', weight: '180.95', cat: 'transition', group: 5, period: 6, block: 'd',
@@ -774,8 +774,8 @@
       density: '16.69 g/cm³', year: '1802', by: 'Anders Gustaf Ekeberg',
       abundance: 'About 2 parts per million of the crust; the coltan it comes from has funded conflict in central Africa.',
       ox: '+5',
-      use: 'The tiny high-capacity capacitors in every phone, plus surgical implants — body tissue tolerates it unusually well.',
-      look: { kind: 'metal', colour: '#a8afb8', desc: 'Grey with a distinct blue cast and a hard, bright lustre. Extremely resistant to acid — below 150 °C almost nothing touches it.' } },
+      use: 'The tiny high-capacity capacitors in every phone, plus surgical implants - body tissue tolerates it unusually well.',
+      look: { kind: 'metal', colour: '#a8afb8', desc: 'Grey with a distinct blue cast and a hard, bright lustre. Extremely resistant to acid - below 150 °C almost nothing touches it.' } },
 
     { z: 74, sym: 'W', name: 'Tungsten', weight: '183.84', cat: 'transition', group: 6, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d4 6s2', en: 2.36, radius: 135, ie: 770.0, melt: 3695, boil: 6203,
@@ -788,10 +788,10 @@
     { z: 75, sym: 'Re', name: 'Rhenium', weight: '186.21', cat: 'transition', group: 7, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d5 6s2', en: 1.90, radius: 135, ie: 760.0, melt: 3459, boil: 5903,
       density: '21.02 g/cm³', year: '1925', by: 'Walter Noddack, Ida Tacke and Otto Berg',
-      abundance: 'About 0.0007 parts per million of the crust — among the rarest elements in it, and the last stable one to be discovered.',
+      abundance: 'About 0.0007 parts per million of the crust - among the rarest elements in it, and the last stable one to be discovered.',
       ox: '+7, +4',
       use: 'Single-crystal superalloy turbine blades in jet engines, and catalysts that make high-octane petrol.',
-      look: { kind: 'metal', colour: '#c2c4c6', desc: 'Silvery-white with a bright lustre, and dense — only platinum, iridium and osmium beat it. Only tungsten melts hotter.' } },
+      look: { kind: 'metal', colour: '#c2c4c6', desc: 'Silvery-white with a bright lustre, and dense - only platinum, iridium and osmium beat it. Only tungsten melts hotter.' } },
 
     { z: 76, sym: 'Os', name: 'Osmium', weight: '190.23', cat: 'transition', group: 8, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d6 6s2', en: 2.20, radius: 130, ie: 840.0, melt: 3306, boil: 5285,
@@ -799,14 +799,14 @@
       abundance: 'About 0.0001 parts per million of the crust; recovered from platinum ore.',
       ox: '+4, +3',
       use: 'Very hard alloy tips for fountain pen nibs and instrument pivots, and osmium tetroxide as a stain in electron microscopy.',
-      look: { kind: 'metal', colour: '#9fb0c4', desc: 'Lustrous with an unmistakable bluish-white cast — the bluest of the metals. It is the densest element known: a litre of it weighs 22.6 kg.' } },
+      look: { kind: 'metal', colour: '#9fb0c4', desc: 'Lustrous with an unmistakable bluish-white cast - the bluest of the metals. It is the densest element known: a litre of it weighs 22.6 kg.' } },
 
     { z: 77, sym: 'Ir', name: 'Iridium', weight: '192.22', cat: 'transition', group: 9, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d7 6s2', en: 2.20, radius: 135, ie: 880.0, melt: 2719, boil: 4403,
       density: '22.56 g/cm³', year: '1803', by: 'Smithson Tennant',
-      abundance: 'About 0.001 parts per million of the crust — but a worldwide iridium layer in 66-million-year-old rock is the fingerprint of the asteroid that ended the dinosaurs.',
+      abundance: 'About 0.001 parts per million of the crust - but a worldwide iridium layer in 66-million-year-old rock is the fingerprint of the asteroid that ended the dinosaurs.',
       ox: '+4, +3',
-      use: 'Spark plug and crucible tips, and the most corrosion-resistant metal known — it survives molten salts that dissolve everything else.',
+      use: 'Spark plug and crucible tips, and the most corrosion-resistant metal known - it survives molten salts that dissolve everything else.',
       look: { kind: 'metal', colour: '#d1cfc4', desc: 'Silvery-white with a very faint yellow cast, hard and brittle. Its salts run through such a range of colours that it is named for Iris, the rainbow.' } },
 
     { z: 78, sym: 'Pt', name: 'Platinum', weight: '195.08', cat: 'transition', group: 10, period: 6, block: 'd',
@@ -815,7 +815,7 @@
       abundance: 'About 0.005 parts per million of the crust; mostly mined in South Africa.',
       ox: '+4, +2',
       use: 'Catalytic converters and chemical catalysis take most of it; jewellery, lab crucibles, and cisplatin chemotherapy take the rest.',
-      look: { kind: 'metal', colour: '#d7d9db', desc: 'Greyish-white, dense, ductile, and it does not tarnish at all — a platinum surface looks the same in fifty years. Slightly greyer and less bright than rhodium.' } },
+      look: { kind: 'metal', colour: '#d7d9db', desc: 'Greyish-white, dense, ductile, and it does not tarnish at all - a platinum surface looks the same in fifty years. Slightly greyer and less bright than rhodium.' } },
 
     { z: 79, sym: 'Au', name: 'Gold', weight: '196.97', cat: 'transition', group: 11, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s1', en: 2.54, radius: 135, ie: 890.1, melt: 1337.33, boil: 3243,
@@ -823,7 +823,7 @@
       abundance: 'About 0.004 parts per million of the crust; found as native metal, which is why it was the first metal humans used.',
       ox: '+3, +1',
       use: 'Reserves and jewellery by weight; by function, the corrosion-proof bonding wires and connector plating inside electronics.',
-      look: { kind: 'metal', colour: '#f0c14b', desc: 'The only element that is genuinely yellow as a metal — a warm, deep yellow with an orange cast, and it never tarnishes. Beaten thin enough, it transmits green light.' } },
+      look: { kind: 'metal', colour: '#f0c14b', desc: 'The only element that is genuinely yellow as a metal - a warm, deep yellow with an orange cast, and it never tarnishes. Beaten thin enough, it transmits green light.' } },
 
     { z: 80, sym: 'Hg', name: 'Mercury', weight: '200.59', cat: 'transition', group: 12, period: 6, block: 'd',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2', en: 2.00, radius: 150, ie: 1007.1, melt: 234.321, boil: 629.88,
@@ -838,7 +838,7 @@
       density: '11.85 g/cm³', year: '1861', by: 'William Crookes',
       abundance: 'About 0.85 parts per million of the crust; recovered from smelting flue dust.',
       ox: '+3, +1',
-      use: 'Infrared optics and a few specialist electronics. It was once a rat poison and a murder weapon — tasteless, colourless and lethal in small doses.',
+      use: 'Infrared optics and a few specialist electronics. It was once a rat poison and a murder weapon - tasteless, colourless and lethal in small doses.',
       look: { kind: 'dullmetal', colour: '#cbcfd3', desc: 'Silvery-white and very soft on a fresh cut, dulling to a bluish-grey within minutes. Named for the bright green line in its spectrum.' } },
 
     { z: 82, sym: 'Pb', name: 'Lead', weight: '207.2', cat: 'post', group: 14, period: 6, block: 'p',
@@ -846,7 +846,7 @@
       density: '11.34 g/cm³', year: 'Antiquity', by: 'Known since about 6500 BC',
       abundance: 'About 14 parts per million of the crust, as galena.',
       ox: '+4, +2',
-      use: 'Lead-acid car batteries take the overwhelming majority. Also radiation shielding. Its use in petrol, paint and pipes has been progressively banned — it is a cumulative neurotoxin.',
+      use: 'Lead-acid car batteries take the overwhelming majority. Also radiation shielding. Its use in petrol, paint and pipes has been progressively banned - it is a cumulative neurotoxin.',
       look: { kind: 'dullmetal', colour: '#a4a9ae', desc: 'A fresh cut is bright bluish-white for a few seconds, then it oxidises to the familiar dull, soft grey. Heavy, and soft enough to mark paper.' } },
 
     { z: 83, sym: 'Bi', name: 'Bismuth', weight: '208.98', cat: 'post', group: 15, period: 6, block: 'p',
@@ -855,23 +855,23 @@
       abundance: 'About 0.009 parts per million of the crust; mostly a by-product of lead refining.',
       ox: '+3, +5',
       use: 'The bismuth in stomach medicines, low-melting fusible alloys for fire sprinklers, and a non-toxic replacement for lead in shot and solder.',
-      look: { kind: 'metal', colour: '#cfc1bd', desc: 'Silvery with a pink cast, but its oxide film breaks white light into brilliant iridescent rainbows — and it grows into stepped, hopper-shaped crystals that look manufactured.' } },
+      look: { kind: 'metal', colour: '#cfc1bd', desc: 'Silvery with a pink cast, but its oxide film breaks white light into brilliant iridescent rainbows - and it grows into stepped, hopper-shaped crystals that look manufactured.' } },
 
     { z: 84, sym: 'Po', name: 'Polonium', weight: '[209]', cat: 'post', group: 16, period: 6, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p4', en: 2.00, radius: 190, ie: 812.1, melt: 527, boil: 1235,
       density: '9.196 g/cm³', year: '1898', by: 'Marie and Pierre Curie',
-      abundance: 'Barely present — a trace decay product in uranium ore. Essentially all of it is made in reactors.',
+      abundance: 'Barely present - a trace decay product in uranium ore. Essentially all of it is made in reactors.',
       ox: '+4, +2',
       use: 'Static eliminators and, historically, thermoelectric heat sources for spacecraft. One of the most acutely radiotoxic substances known.',
-      look: { kind: 'metal', colour: '#b8babc', glow: '#7fd0ff', desc: 'A soft, silvery-grey metal. A visible sample glows blue in the dark — the air around it is being ionised by its own alpha emission — and it is warm to the touch from decay heat.' } },
+      look: { kind: 'metal', colour: '#b8babc', glow: '#7fd0ff', desc: 'A soft, silvery-grey metal. A visible sample glows blue in the dark - the air around it is being ionised by its own alpha emission - and it is warm to the touch from decay heat.' } },
 
     { z: 85, sym: 'At', name: 'Astatine', weight: '[210]', cat: 'halogen', group: 17, period: 6, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p5', en: 2.20, radius: null, ie: 899.0, melt: 575, boil: 610,
       density: 'about 7 g/cm³ (estimated)', year: '1940', by: 'Corson, MacKenzie and Segrè',
-      abundance: 'The rarest naturally occurring element — less than a gram exists in the whole crust at any moment.',
+      abundance: 'The rarest naturally occurring element - less than a gram exists in the whole crust at any moment.',
       ox: '-1, +1',
       use: 'Astatine-211 is being trialled for targeted alpha-particle cancer therapy. There is no other use; there is not enough of it.',
-      look: { kind: 'unknown', colour: '#4e5460', desc: 'Nobody has ever seen a bulk sample, and nobody will — any visible quantity would vaporise itself with its own decay heat. It is expected to be dark and metallic-looking; that is a prediction, not an observation.' } },
+      look: { kind: 'unknown', colour: '#4e5460', desc: 'Nobody has ever seen a bulk sample, and nobody will - any visible quantity would vaporise itself with its own decay heat. It is expected to be dark and metallic-looking; that is a prediction, not an observation.' } },
 
     { z: 86, sym: 'Rn', name: 'Radon', weight: '[222]', cat: 'noble', group: 18, period: 6, block: 'p',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6', en: null, radius: null, ie: 1037.0, melt: 202, boil: 211.5,
@@ -879,7 +879,7 @@
       abundance: 'Seeps continuously out of uranium-bearing rock; it is the second leading cause of lung cancer after smoking.',
       ox: '0, +2',
       use: 'Almost none. It was once used in radiotherapy. Today the practical interest is in testing for it and ventilating it out of basements.',
-      look: { kind: 'gas', colour: '#e5ecf7', glow: '#ffd05a', desc: 'A colourless, odourless, very dense gas. Cooled to a solid it glows yellow and then orange-red as the temperature drops — light produced by its own radioactivity.' } },
+      look: { kind: 'gas', colour: '#e5ecf7', glow: '#ffd05a', desc: 'A colourless, odourless, very dense gas. Cooled to a solid it glows yellow and then orange-red as the temperature drops - light produced by its own radioactivity.' } },
 
     { z: 87, sym: 'Fr', name: 'Francium', weight: '[223]', cat: 'alkali', group: 1, period: 7, block: 's',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 7s1', en: 0.79, radius: null, ie: 380.0, melt: 300, boil: 950,
@@ -892,7 +892,7 @@
     { z: 88, sym: 'Ra', name: 'Radium', weight: '[226]', cat: 'alkaline', group: 2, period: 7, block: 's',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 7s2', en: 0.90, radius: 215, ie: 509.3, melt: 973, boil: 2010,
       density: '5.5 g/cm³', year: '1898', by: 'Marie and Pierre Curie',
-      abundance: 'A trace decay product in uranium ore — roughly one part radium to three million parts uranium.',
+      abundance: 'A trace decay product in uranium ore - roughly one part radium to three million parts uranium.',
       ox: '+2',
       use: 'Historically radioluminescent paint and radiotherapy, both abandoned. The Radium Girls, who pointed their brushes with their lips, are why industrial health law looks the way it does.',
       look: { kind: 'metal', colour: '#e7e9e6', glow: '#a8ffcf', desc: 'A brilliant silvery-white metal that blackens within hours in air. Its compounds give off a pale blue-green glow, which is what made it briefly fashionable and then notorious.' } },
@@ -908,7 +908,7 @@
     { z: 90, sym: 'Th', name: 'Thorium', weight: '232.04', cat: 'actinide', group: null, period: 7, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 6d2 7s2', en: 1.30, radius: 180, ie: 587.0, melt: 2023, boil: 5061,
       density: '11.7 g/cm³', year: '1829', by: 'Jöns Jacob Berzelius',
-      abundance: 'About 9.6 parts per million of the crust — three to four times more common than uranium.',
+      abundance: 'About 9.6 parts per million of the crust - three to four times more common than uranium.',
       ox: '+4',
       use: 'Proposed as a reactor fuel, since it is abundant and its cycle makes less long-lived waste. Historically the glowing mantle in gas lamps.',
       look: { kind: 'metal', colour: '#cfd2d5', desc: 'Silvery-white when cut, tarnishing through grey to black over weeks. Soft and very ductile, and its powder is pyrophoric.' } },
@@ -918,16 +918,16 @@
       density: '15.37 g/cm³', year: '1913', by: 'Kasimir Fajans and Oswald Göhring',
       abundance: 'About one part per trillion of the crust; a decay product of uranium-235.',
       ox: '+5, +4',
-      use: 'Dating marine sediments and coral, which is genuinely useful for reconstructing past climate. Nothing else — it is scarce, expensive and highly toxic.',
+      use: 'Dating marine sediments and coral, which is genuinely useful for reconstructing past climate. Nothing else - it is scarce, expensive and highly toxic.',
       look: { kind: 'metal', colour: '#cdd0d3', desc: 'A bright silvery metal with a strong metallic lustre that it holds for a while in air. Superconducting below 1.4 K.' } },
 
     { z: 92, sym: 'U', name: 'Uranium', weight: '238.03', cat: 'actinide', group: null, period: 7, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 5f3 6d1 7s2', en: 1.38, radius: 175, ie: 597.6, melt: 1405.3, boil: 4404,
       density: '19.1 g/cm³', year: '1789', by: 'Martin Heinrich Klaproth',
-      abundance: 'About 2.7 parts per million of the crust — more common than silver, and dissolved in seawater at three parts per billion.',
+      abundance: 'About 2.7 parts per million of the crust - more common than silver, and dissolved in seawater at three parts per billion.',
       ox: '+6, +5, +4, +3',
       use: 'Nuclear fuel and weapons; depleted uranium as dense ballast and armour. Uranium glass, coloured yellow-green with it, fluoresces bright green under UV.',
-      look: { kind: 'metal', colour: '#bbbec1', desc: 'Silvery-grey with a weak lustre on a fresh cut, tarnishing to a dark oxide within days. It is very dense — about 70% heavier than lead for the same volume.' } },
+      look: { kind: 'metal', colour: '#bbbec1', desc: 'Silvery-grey with a weak lustre on a fresh cut, tarnishing to a dark oxide within days. It is very dense - about 70% heavier than lead for the same volume.' } },
 
     { z: 93, sym: 'Np', name: 'Neptunium', weight: '[237]', cat: 'actinide', group: null, period: 7, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 5f4 6d1 7s2', en: 1.36, radius: 175, ie: 604.5, melt: 912, boil: 4447,
@@ -935,7 +935,7 @@
       abundance: 'Trace amounts form naturally in uranium ore; the rest is a by-product of reactor fuel.',
       ox: '+6, +5, +4, +3',
       use: 'A precursor for making plutonium-238 for spacecraft power supplies, and neutron detection instruments.',
-      look: { kind: 'metal', colour: '#c5c8cb', desc: 'A silvery metal, ductile and dense, tarnishing slowly in air. The first transuranic element ever made — named for the planet beyond Uranus.' } },
+      look: { kind: 'metal', colour: '#c5c8cb', desc: 'A silvery metal, ductile and dense, tarnishing slowly in air. The first transuranic element ever made - named for the planet beyond Uranus.' } },
 
     { z: 94, sym: 'Pu', name: 'Plutonium', weight: '[244]', cat: 'actinide', group: null, period: 7, block: 'f',
       cfg: '1s2 2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6 5f6 7s2', en: 1.28, radius: 175, ie: 584.7, melt: 912.5, boil: 3505,
@@ -958,7 +958,7 @@
       density: '13.51 g/cm³', year: '1944', by: 'Seaborg, James and Ghiorso',
       abundance: 'Entirely artificial.',
       ox: '+3',
-      use: 'Alpha-particle X-ray spectrometers — the instrument that analysed Martian rock on several rovers ran on a curium source.',
+      use: 'Alpha-particle X-ray spectrometers - the instrument that analysed Martian rock on several rovers ran on a curium source.',
       look: { kind: 'metal', colour: '#cfd1d3', glow: '#d07fff', desc: 'A hard, silvery metal that glows purple-red in the dark from its own intense alpha activity, and is hot enough to feel.' } },
 
     { z: 97, sym: 'Bk', name: 'Berkelium', weight: '[247]', cat: 'actinide', group: null, period: 7, block: 'f',
@@ -966,7 +966,7 @@
       density: '14.78 g/cm³', year: '1949', by: 'Thompson, Ghiorso and Seaborg',
       abundance: 'Entirely artificial; produced in milligram quantities at best.',
       ox: '+3, +4',
-      use: 'Target material for making heavier elements — 22 milligrams of berkelium is what tennessine was made from.',
+      use: 'Target material for making heavier elements - 22 milligrams of berkelium is what tennessine was made from.',
       look: { kind: 'metal', colour: '#cfd1d3', desc: 'A soft, silvery-white metal. Only a few grams have ever existed, and what is known about how it looks comes from those.' } },
 
     { z: 98, sym: 'Cf', name: 'Californium', weight: '[251]', cat: 'actinide', group: null, period: 7, block: 'f',
@@ -974,7 +974,7 @@
       density: '15.1 g/cm³', year: '1950', by: 'The Berkeley group',
       abundance: 'Entirely artificial.',
       ox: '+3',
-      use: 'A portable neutron source — used to start reactors, find gold and silver ore, and detect metal fatigue in aircraft. A milligram of it is worth thousands of pounds.',
+      use: 'A portable neutron source - used to start reactors, find gold and silver ore, and detect metal fatigue in aircraft. A milligram of it is worth thousands of pounds.',
       look: { kind: 'metal', colour: '#cfd1d3', desc: 'A silvery-white metal, soft and easily cut. It emits so many neutrons that a sample must be handled entirely by remote manipulator.' } },
 
     { z: 99, sym: 'Es', name: 'Einsteinium', weight: '[252]', cat: 'actinide', group: null, period: 7, block: 'f',
@@ -998,7 +998,7 @@
       density: 'unknown', year: '1955', by: 'Ghiorso, Harvey, Choppin, Thompson and Seaborg',
       abundance: 'Entirely artificial.',
       ox: '+3, +2',
-      use: 'None. It was the first element made and identified one atom at a time — seventeen atoms in the original experiment.',
+      use: 'None. It was the first element made and identified one atom at a time - seventeen atoms in the original experiment.',
       look: { kind: 'unknown', colour: '#4e5460', desc: 'Never observed in bulk. Presumed to be a silvery metal like its neighbours; that is inference from the periodic trend, not an observation.' } },
 
     { z: 102, sym: 'No', name: 'Nobelium', weight: '[259]', cat: 'actinide', group: null, period: 7, block: 'f', predicted: true,
@@ -1054,7 +1054,7 @@
       density: 'unknown', year: '1984', by: 'GSI Darmstadt',
       abundance: 'Entirely artificial.',
       ox: '+8 (predicted)',
-      use: 'None. Its tetroxide was made and shown to behave like osmium tetroxide — chemistry done on single atoms.',
+      use: 'None. Its tetroxide was made and shown to behave like osmium tetroxide - chemistry done on single atoms.',
       look: { kind: 'unknown', colour: '#4e5460', desc: 'Never observed in bulk. Predicted to be extremely dense, perhaps denser than osmium, but nobody has weighed any.' } },
 
     { z: 109, sym: 'Mt', name: 'Meitnerium', weight: '[278]', cat: 'unknown', group: 9, period: 7, block: 'd', predicted: true,
@@ -1062,7 +1062,7 @@
       density: 'unknown', year: '1982', by: 'GSI Darmstadt',
       abundance: 'Entirely artificial.',
       ox: '+3 (predicted)',
-      use: 'None. Its configuration above is itself a prediction — it has never been measured.',
+      use: 'None. Its configuration above is itself a prediction - it has never been measured.',
       look: { kind: 'unknown', colour: '#4e5460', desc: 'Never observed in bulk, and not enough is known to place it confidently in a category, let alone describe it.' } },
 
     { z: 110, sym: 'Ds', name: 'Darmstadtium', weight: '[281]', cat: 'unknown', group: 10, period: 7, block: 'd', predicted: true,
@@ -1078,7 +1078,7 @@
       density: 'unknown', year: '1994', by: 'GSI Darmstadt',
       abundance: 'Entirely artificial.',
       ox: '+3 (predicted)',
-      use: 'None. It sits below gold, and relativistic calculations suggest it might even be yellow — which nobody will ever check.',
+      use: 'None. It sits below gold, and relativistic calculations suggest it might even be yellow - which nobody will ever check.',
       look: { kind: 'unknown', colour: '#4e5460', desc: 'Never observed in bulk. Some calculations put a colour on it; none of them counts as having seen it.' } },
 
     { z: 112, sym: 'Cn', name: 'Copernicium', weight: '[285]', cat: 'unknown', group: 12, period: 7, block: 'd', predicted: true,
@@ -1086,7 +1086,7 @@
       density: 'unknown', year: '1996', by: 'GSI Darmstadt',
       abundance: 'Entirely artificial.',
       ox: '+2 (predicted)',
-      use: 'None. Relativistic effects are predicted to make it a volatile liquid, or even a gas, at room temperature — a mercury that went further.',
+      use: 'None. Relativistic effects are predicted to make it a volatile liquid, or even a gas, at room temperature - a mercury that went further.',
       look: { kind: 'unknown', colour: '#4e5460', desc: 'Never observed in bulk. Predicted to be liquid or gaseous at room temperature, which would be remarkable if anyone could ever make enough to check.' } },
 
     { z: 113, sym: 'Nh', name: 'Nihonium', weight: '[286]', cat: 'unknown', group: 13, period: 7, block: 'p', predicted: true,
@@ -1912,15 +1912,15 @@
       this.noteEl.textContent = 'Phase at ' + this.temp + ' K (' + celsius(this.temp) + ' °C) and one ' +
         'atmosphere, worked out from the melting and boiling points. Three elements are special cases: ' +
         'carbon and arsenic sublime rather than melt at this pressure, and helium never freezes at it at all. ' +
-        'Anything marked unknown has no measured melting or boiling point — that is most of the table above ' +
+        'Anything marked unknown has no measured melting or boiling point - that is most of the table above ' +
         'atomic number 100.';
     } else {
       for (i = 0; i < KIND_ORDER.length; i++) {
         key = KIND_ORDER[i];
         list.push([KINDS[key], null, key]);
       }
-      this.noteEl.textContent = 'Every tile is drawn from an explicit descriptor — one base colour, a phase ' +
-        'and a surface kind — with CSS gradients and SVG. None of it is a photograph, and it is not meant to ' +
+      this.noteEl.textContent = 'Every tile is drawn from an explicit descriptor - one base colour, a phase ' +
+        'and a surface kind - with CSS gradients and SVG. None of it is a photograph, and it is not meant to ' +
         'pass for one; it is meant to be recognisable.';
     }
 
@@ -1987,7 +1987,7 @@
     var lb = document.createElement('b');
     lb.textContent = 'Appearance';
     look.appendChild(lb);
-    look.appendChild(document.createTextNode(' — ' + el.look.desc));
+    look.appendChild(document.createTextNode(' - ' + el.look.desc));
     c1.appendChild(look);
     c1.appendChild(E('p', 'pt-look', 'Drawn as: ' + KINDS[el.look.kind].toLowerCase() +
       ' · ' + STATES[st].label.toLowerCase() + ' at ' + this.temp + ' K'));
@@ -2051,7 +2051,7 @@
 
     if (el.predicted) {
       c3.appendChild(E('span', 'pt-flag',
-        'Predicted, not measured — no weighable sample of this element has ever existed'));
+        'Predicted, not measured - no weighable sample of this element has ever existed'));
     }
 
     p.appendChild(c1);

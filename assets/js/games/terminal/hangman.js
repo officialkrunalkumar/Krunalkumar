@@ -234,7 +234,7 @@
             g.over({
               score: g.score,
               title: 'Hanged',
-              message: 'The word was ' + word + ' — ' + entry.d
+              message: 'The word was ' + word + ' - ' + entry.d
             });
             /* over() cancels the frame loop, so without this the last thing
                painted is the board as it stood BEFORE the fatal guess: five

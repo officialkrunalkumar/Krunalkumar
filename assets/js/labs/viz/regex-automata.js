@@ -335,7 +335,7 @@
         var two = src.substr(i, 2), three = src.substr(i, 3);
         if (two === '?=' || two === '?!') {
           refuse('Lookahead is refused: ' + (two === '?=' ? '(?=' : '(?!') + ' cannot be compiled to a finite automaton by this pipeline.',
-                 'A lookahead asks a second question about the same position without consuming anything, and the answer can depend on unboundedly much of what follows. Thompson’s construction has one rule per operator and no rule for "run another machine here and throw away its progress". Some lookarounds over a fixed alphabet can be encoded by an intersection or a complement of automata, so lookaround is not always outside the regular languages the way a backreference is — but building that is a different program from this one, and pretending otherwise would be dishonest. Refused, with the reason stated.');
+                 'A lookahead asks a second question about the same position without consuming anything, and the answer can depend on unboundedly much of what follows. Thompson’s construction has one rule per operator and no rule for "run another machine here and throw away its progress". Some lookarounds over a fixed alphabet can be encoded by an intersection or a complement of automata, so lookaround is not always outside the regular languages the way a backreference is - but building that is a different program from this one, and pretending otherwise would be dishonest. Refused, with the reason stated.');
         }
         if (three === '?<=' || three === '?<!') {
           refuse('Lookbehind is refused: ' + three.replace('?', '(?') + ' cannot be compiled by this pipeline.',
@@ -393,7 +393,7 @@
       if (Object.prototype.hasOwnProperty.call(SIMPLE, ch)) return { code: SIMPLE[ch], src: '\\' + ch };
       if (ch >= '1' && ch <= '9' && !inSet) {
         refuse('Backreference \\' + ch + ' is refused, and this one is not a limitation of this page.',
-               'A backreference asks the machine to remember what an earlier group matched and compare it again later. That memory is unbounded — the group could have matched a thousand characters. A finite automaton has, by definition, a finite number of states and no other memory, so there is no automaton of any size that recognises "some string, then that same string again". The pumping lemma proves it. This is not a feature nobody got round to writing: the machine on this page provably cannot express it, which is precisely why engines that guarantee linear time (RE2, Go regexp, rust regex) do not offer backreferences either.');
+               'A backreference asks the machine to remember what an earlier group matched and compare it again later. That memory is unbounded - the group could have matched a thousand characters. A finite automaton has, by definition, a finite number of states and no other memory, so there is no automaton of any size that recognises "some string, then that same string again". The pumping lemma proves it. This is not a feature nobody got round to writing: the machine on this page provably cannot express it, which is precisely why engines that guarantee linear time (RE2, Go regexp, rust regex) do not offer backreferences either.');
       }
       if (ch === 'k') {
         refuse('Named backreference \\k is refused for the same reason as \\1.',
@@ -401,12 +401,12 @@
       }
       if (ch === 'b' || ch === 'B') {
         if (inSet) return { code: 8, src: '\\b' };
-        refuse('Word boundary \\' + ch + ' is refused here — and the reason is a weaker one than the backreference reason.',
-               'A word boundary is a zero-width test on the two characters either side of the current position. Unlike a backreference, that IS expressible by a finite automaton: you can push "the previous character was a word character" into the state and split every state in two. So \\b stays inside the regular languages. What it does not have is a Thompson rule — there is no fragment to build — so this pipeline refuses it. That distinction matters: \\1 is impossible, \\b is merely unimplemented here, and a page that reported both with the same message would be teaching something false.');
+        refuse('Word boundary \\' + ch + ' is refused here - and the reason is a weaker one than the backreference reason.',
+               'A word boundary is a zero-width test on the two characters either side of the current position. Unlike a backreference, that IS expressible by a finite automaton: you can push "the previous character was a word character" into the state and split every state in two. So \\b stays inside the regular languages. What it does not have is a Thompson rule - there is no fragment to build - so this pipeline refuses it. That distinction matters: \\1 is impossible, \\b is merely unimplemented here, and a page that reported both with the same message would be teaching something false.');
       }
       if (ch === 'p' || ch === 'P') {
         refuse('Unicode property escapes (\\p) are refused.',
-               'They are perfectly regular — a property is just a large character set. The problem is size: the property tables are hundreds of kilobytes, and the alphabet on this page is 128 ASCII codes plus one catch-all symbol for everything else. There is nowhere to put them.');
+               'They are perfectly regular - a property is just a large character set. The problem is size: the property tables are hundreds of kilobytes, and the alphabet on this page is 128 ASCII codes plus one catch-all symbol for everything else. There is nowhere to put them.');
       }
       var cls = classEscape(ch);
       if (cls) return { set: cls, src: '\\' + ch };
@@ -1375,12 +1375,12 @@
     switch (nd.t) {
       case 'empty': return { op: 'empty', note: 'matches the empty string' };
       case 'set': return { op: 'match', lit: describeSet(nd.set), note: nd.src ? 'written ' + nd.src : '' };
-      case 'anchor': return { op: 'anchor ' + nd.kind, note: nd.redundant ? 'compiles to ε — matching is full-string, so this is already implied' : 'compiles to an edge no symbol can take — it can never be satisfied here' };
+      case 'anchor': return { op: 'anchor ' + nd.kind, note: nd.redundant ? 'compiles to ε - matching is full-string, so this is already implied' : 'compiles to an edge no symbol can take - it can never be satisfied here' };
       case 'cat': return { op: 'concat', note: nd.counted ? 'expanded from a counted repetition' : '' };
       case 'alt': return { op: 'alternate', note: '' };
-      case 'star': return { op: 'star *', note: nd.lazy ? 'lazy — the automaton ignores this, the backtracker does not' : '' };
-      case 'plus': return { op: 'plus +', note: nd.lazy ? 'lazy — same language, different search order' : '' };
-      case 'opt': return { op: 'optional ?', note: nd.lazy ? 'lazy — same language, different search order' : '' };
+      case 'star': return { op: 'star *', note: nd.lazy ? 'lazy - the automaton ignores this, the backtracker does not' : '' };
+      case 'plus': return { op: 'plus +', note: nd.lazy ? 'lazy - same language, different search order' : '' };
+      case 'opt': return { op: 'optional ?', note: nd.lazy ? 'lazy - same language, different search order' : '' };
       case 'group': return { op: nd.capturing ? 'group ' + nd.gi : 'group (?:', note: nd.capturing ? 'the capture is discarded: a DFA state cannot remember where a group started' : 'non-capturing' };
     }
     return { op: nd.t, note: '' };
@@ -1650,8 +1650,8 @@
 
     c.appendChild(note(
       'The two refusals are not the same kind of refusal, and the page will not pretend they are. A backreference describes a ' +
-      'language that is provably not regular, so no finite automaton of any size can recognise it — that is a fact about mathematics. ' +
-      'A word boundary is regular and merely has no Thompson rule here — that is a fact about this program. Lookaround sits ' +
+      'language that is provably not regular, so no finite automaton of any size can recognise it - that is a fact about mathematics. ' +
+      'A word boundary is regular and merely has no Thompson rule here - that is a fact about this program. Lookaround sits ' +
       'between the two. Every refusal message says which case it is.'
     ));
   };
@@ -1685,7 +1685,7 @@
       'Thompson’s construction, one rule per operator. Each fragment has exactly one way in and one way out, which is what lets ' +
       'the rules be glued together without ever inspecting the fragment being glued. The dashed arrows are ε (epsilon) edges: ' +
       'they cost no input and they exist purely so the gluing works. That is why this machine has more states than one you would ' +
-      'draw by hand — nobody draws it this way, and that is the point. It is mechanical.'
+      'draw by hand - nobody draws it this way, and that is the point. It is mechanical.'
     ));
     c.appendChild(cards([
       { h: 'NFA states', v: num(nfa.states.length) },
@@ -1723,7 +1723,7 @@
     var crows = [];
     for (var k = 0; k < m.alpha.classes.length; k++) {
       var cl = m.alpha.classes[k];
-      crows.push(['c' + k, cl.label, num(cl.syms.length), cl.dead ? 'in no set in this pattern — always leads to the trap' : '']);
+      crows.push(['c' + k, cl.label, num(cl.syms.length), cl.dead ? 'in no set in this pattern - always leads to the trap' : '']);
     }
     c.appendChild(table(['Class', 'Characters', 'Count', 'Note'], crows));
   };
@@ -1759,7 +1759,7 @@
     if (!m.ok) return;
     var d = m.dfa;
     c.appendChild(note(
-      'Subset construction. Every DFA state here IS a set of NFA states — the set the NFA could be in after reading the same input — ' +
+      'Subset construction. Every DFA state here IS a set of NFA states - the set the NFA could be in after reading the same input - ' +
       'and the table prints that set next to every state so it is not something you have to take on trust. That single sentence is the ' +
       'whole of the construction: run the NFA in parallel down every branch at once, and call the collection of branches a state.'
     ));
@@ -1800,7 +1800,7 @@
     c.appendChild(E('p', 'ra-sub',
       'The trap state is the empty subset, and it is drawn rather than hidden. A DFA with missing transitions is a partial function, ' +
       'and minimisation in the next tab needs a total one, so the empty set earns a state like any other set does. ' +
-      (trapCount ? 'This machine has one.' : 'This machine does not need one — every subset reachable here is non-empty.')));
+      (trapCount ? 'This machine has one.' : 'This machine does not need one - every subset reachable here is non-empty.')));
   };
 
   /* --- tab 4: minimisation ------------------------------------------------ */
@@ -1813,8 +1813,8 @@
     }
     var mn = m.min;
     c.appendChild(note(
-      'Moore’s algorithm, not Hopcroft’s, and the choice is deliberate. Hopcroft is faster — n log n against Moore’s n squared times the ' +
-      'alphabet — and for a production tool it is the right one. Moore refines in visible rounds: give every state a signature made of ' +
+      'Moore’s algorithm, not Hopcroft’s, and the choice is deliberate. Hopcroft is faster - n log n against Moore’s n squared times the ' +
+      'alphabet - and for a production tool it is the right one. Moore refines in visible rounds: give every state a signature made of ' +
       'the blocks its transitions land in, keep states with matching signatures together, repeat until nothing moves. The round in which ' +
       'two states come apart names the character that separated them, and that is what this tab is for. Hopcroft’s worklist order is ' +
       'efficient and impossible to narrate.'
@@ -1830,7 +1830,7 @@
     for (var r = 0; r < mn.rounds.length; r++) {
       var rd = mn.rounds[r];
       var box = E('div', 'ra-note' + (rd.stable ? ' ra-good' : ''));
-      box.appendChild(E('p', 'ra-title', 'Round ' + rd.round + ' — ' + rd.count + ' ' + (rd.count === 1 ? 'block' : 'blocks')));
+      box.appendChild(E('p', 'ra-title', 'Round ' + rd.round + ' - ' + rd.count + ' ' + (rd.count === 1 ? 'block' : 'blocks')));
       box.appendChild(document.createTextNode(rd.why));
       var list = E('ul', 'ra-tree');
       for (var b = 0; b < rd.members.length; b++) {
@@ -1889,7 +1889,7 @@
     ));
     c.appendChild(E('p', 'ra-sub',
       'Minimisation normally has two halves: throw away states nothing can reach, then merge states nothing can tell apart. ' +
-      'The first half came free — subset construction only ever creates a state by reaching it — so only the second half runs here. ' +
+      'The first half came free - subset construction only ever creates a state by reaching it - so only the second half runs here. ' +
       'The result is unique: for a given language there is exactly one minimal DFA, up to renaming the states.'));
   };
 
@@ -1966,7 +1966,7 @@
       (cur.cls >= 0 ? 'Just read ' + (this.test.charAt(this.stepPos - 1) === ' ' ? 'a space' : '"' + this.test.charAt(this.stepPos - 1) + '"') +
         ', which falls in the column labelled ' + m.dfa.classes[cur.cls].label + '. ' : 'Nothing read yet. ') +
       'NFA live set ' + setText + '. DFA state D' + cur.dfa + ', whose subset is ' + subText + '. ' +
-      (same ? 'Identical, as they must be.' : 'These differ, which would be a bug in this lab — please report it.') +
+      (same ? 'Identical, as they must be.' : 'These differ, which would be a bug in this lab - please report it.') +
       (minState != null ? ' Minimal state M' + minState + '.' : '') +
       ' ' + (this.stepPos === tr.length - 1
         ? (dst.accepting ? 'The whole string was consumed and the machine is in an accepting state: it matches.'
@@ -1987,7 +1987,7 @@
     }
     c.appendChild(E('p', 'ra-sub',
       'Checked across all ' + tr.length + ' positions of this run: the NFA live set and the DFA state’s subset were ' +
-      (allSame ? 'identical every time.' : 'NOT identical somewhere, which is a bug — please tell me the pattern and string.')));
+      (allSame ? 'identical every time.' : 'NOT identical somewhere, which is a bug - please tell me the pattern and string.')));
 
     c.appendChild(heading('NFA, with the live set highlighted'));
     c.appendChild(graphBox(
@@ -2129,8 +2129,8 @@
 
     if (anyCapped) {
       c.appendChild(note(
-        'The rows marked capped hit the ' + num(this.blowCap) + '-step ceiling and were stopped there. The real count is larger — ' +
-        'often very much larger — and this page will not print a number it did not count. That ceiling is also the only reason this ' +
+        'The rows marked capped hit the ' + num(this.blowCap) + '-step ceiling and were stopped there. The real count is larger - ' +
+        'often very much larger - and this page will not print a number it did not count. That ceiling is also the only reason this ' +
         'tab does not freeze your browser, which is exactly what the same pattern does to a server that has no ceiling.', 'warn'));
     }
     if (anyDeep) {
@@ -2148,7 +2148,7 @@
       'This is why RE2, Go’s regexp package and rust’s regex crate are linear in the input and why JavaScript, Python, Java, PCRE ' +
       'and almost every other engine are not. It is a deliberate trade, and the other half of the trade is the refusal on tab 1: the ' +
       'linear engines have no backreferences and no arbitrary lookaround, because a machine that promises one step per character cannot ' +
-      'also promise to remember what group 2 matched. The same fact arrives twice — once as a parser error, once as a flat line — and ' +
+      'also promise to remember what group 2 matched. The same fact arrives twice - once as a parser error, once as a flat line - and ' +
       'it is the same fact both times.', 'good'));
   };
 
@@ -2254,7 +2254,7 @@
       clear(mount);
       mount.appendChild(E('p', 'lab-viz-error',
         'This lab could not start in your browser: ' + ((err && err.message) || String(err)) +
-        ' — the write-up below still explains what it would have shown. ' +
+        ' - the write-up below still explains what it would have shown. ' +
         'Please tell me, and mention which browser you are using.'));
     }
   }

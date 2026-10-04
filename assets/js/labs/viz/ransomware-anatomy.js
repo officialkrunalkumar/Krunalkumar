@@ -61,7 +61,7 @@
     { key: 'mfa', label: 'Multi-factor authentication on every remote entry point', short: 'MFA' },
     { key: 'patch', label: 'Internet-facing kit patched on a clock', short: 'Patching' },
     { key: 'edr', label: 'EDR deployed and actually watched', short: 'EDR' },
-    { key: 'least', label: 'Least privilege — no standing admin everywhere', short: 'Least privilege' },
+    { key: 'least', label: 'Least privilege - no standing admin everywhere', short: 'Least privilege' },
     { key: 'segment', label: 'Network segmentation between zones', short: 'Segmentation' },
     { key: 'backup', label: 'Offline or immutable backups, restore-tested', short: 'Offline backups' }
   ];
@@ -154,7 +154,7 @@
     {
       key: 'escalate', name: 'Privilege escalation', dwell: 'minutes to days',
       what: 'The account they landed on is somebody in accounts, not an administrator. They need ' +
-        'more, and there are many routes to it — a machine missing an update, a service running as ' +
+        'more, and there are many routes to it - a machine missing an update, a service running as ' +
         'something too powerful, a password sitting in a script somebody wrote in 2019.',
       seen: 'Credential access on an endpoint, or an account suddenly doing administrative things ' +
         'it has never done. Both are detectable and both are noisy.',
@@ -162,7 +162,7 @@
         { c: 'least', kind: 'blunt',
           text: 'The easy path is closed: the user is not a local administrator, so the obvious ' +
             'route needs replacing with a harder one. That costs the operator days. Days are the ' +
-            'commodity you are buying — every one of them is a chance for something else to fire.' },
+            'commodity you are buying - every one of them is a chance for something else to fire.' },
         { c: 'patch', kind: 'blunt',
           text: 'A patched endpoint removes a whole family of local escalation routes. It does not ' +
             'remove the ones that are misconfiguration rather than vulnerability.' },
@@ -173,8 +173,8 @@
     {
       key: 'discover', name: 'Discovery', dwell: 'hours to days',
       what: 'They map you. Directory structure, who is an administrator, which servers matter, ' +
-        'where the file shares are, what the hypervisors are called, and — first and with real ' +
-        'attention — where the backups live and what account controls them.',
+        'where the file shares are, what the hypervisors are called, and - first and with real ' +
+        'attention - where the backups live and what account controls them.',
       seen: 'Enumeration at a volume no human generates. This stage is loud in every log you have. ' +
         'It is also the stage where organisations most often see something, log a ticket, and ' +
         'close it as noise.',
@@ -191,7 +191,7 @@
       key: 'lateral', name: 'Lateral movement', dwell: 'days to weeks',
       what: 'They move from the machine they have to the machines they want, using the credentials ' +
         'they collected and the ordinary remote administration your own team uses. The target is ' +
-        'the identity plane — domain controllers and the management tooling — because owning that ' +
+        'the identity plane - domain controllers and the management tooling - because owning that ' +
         'means owning everything at once rather than one box at a time.',
       seen: 'An account signing in to machines it has no business touching, at hours nobody works. ' +
         'This is where dwell time is spent, and dwell time is where you get to intervene.',
@@ -199,7 +199,7 @@
         { c: 'least', kind: 'halt',
           text: 'The credential they hold is not a key to every machine on the network, which is ' +
             'the single assumption the entire lateral phase rests on. It does not make the ' +
-            'intrusion disappear — they still hold the first machine — but the estate-wide ' +
+            'intrusion disappear - they still hold the first machine - but the estate-wide ' +
             'encryption they came for needs estate-wide access, and they do not have it.' },
         { c: 'segment', kind: 'blunt',
           text: 'Segmentation does not stop them moving. It caps how far the movement gets, which ' +
@@ -235,7 +235,7 @@
     {
       key: 'exfil', name: 'Exfiltration, for the second lever',
       dwell: 'hours to days',
-      what: 'Data is copied out before anything is locked — the finance folder, HR, contracts, ' +
+      what: 'Data is copied out before anything is locked - the finance folder, HR, contracts, ' +
         'whatever looks embarrassing or regulated. This is the double extortion model: encryption ' +
         'is the lever that stops you working, and the copy is the lever that keeps working after ' +
         'you have restored.',
@@ -244,7 +244,7 @@
       effects: [
         { c: 'segment', kind: 'blunt',
           text: 'Egress control and segmentation together reduce what can leave and from where. ' +
-            'Reduce, not prevent — this is a bandwidth argument, not a wall.' },
+            'Reduce, not prevent - this is a bandwidth argument, not a wall.' },
         { c: 'edr', kind: 'detect',
           text: 'Volume anomalies are detectable. Whether anyone has a baseline to compare against ' +
             'is the real question.' }
@@ -270,7 +270,7 @@
       what: 'A note on every machine, a payment address, a countdown, and a link to a page listing ' +
         'the data they took with a publication date on it. The demand is usually sized to what your ' +
         'accounts say you can afford, because they read those while they were mapping you.',
-      seen: 'This is the moment almost every organisation discovers it has been breached — weeks ' +
+      seen: 'This is the moment almost every organisation discovers it has been breached - weeks ' +
         'after the first door opened and hours after the only thing that would have made the ' +
         'decision easy was deleted.',
       effects: [
@@ -350,7 +350,7 @@
       body: 'The estate is encrypted, the recovery was deleted three stages before the note ' +
         'appeared, and a copy of your data is sitting on somebody else’s server with a publication ' +
         'date attached. This is the position where paying stops being a moral question and starts ' +
-        'being an operational one — and it is worth being clear that paying buys a decryption tool ' +
+        'being an operational one - and it is worth being clear that paying buys a decryption tool ' +
         'from the people who did this, not a restore, and does nothing about the copy.'
     };
   }
@@ -530,7 +530,7 @@
         { label: 'Detect, disconnect, contain', days: 1,
           note: 'Identical to every other path. Nobody escapes this day.' },
         { label: 'Forensics: find the door and shut it', days: 2,
-          note: 'Also identical. Paying does not skip this — a decrypted estate with the same open ' +
+          note: 'Also identical. Paying does not skip this - a decrypted estate with the same open ' +
             'door is a re-encrypted estate.' },
         { label: 'Negotiate, verify a sample, arrange payment', days: 4,
           note: 'Days of back-and-forth, a test decryption of two files to prove they can, and a ' +
@@ -548,7 +548,7 @@
             'returns are normal, not exceptional.' },
         { label: 'Verify, reconnect, watch closely', days: 2,
           note: 'Same as the restore path, with less confidence in what you are reconnecting.' },
-        { label: 'The tail — and the copy is still theirs', days: 0,
+        { label: 'The tail - and the copy is still theirs', days: 0,
           note: 'The payment sometimes buys a promise to delete the stolen data. It buys a promise.' }
       ]
     });
@@ -775,7 +775,7 @@
       }));
     });
     g.appendChild(E('p', 'oa-hint',
-      'Switch one on and step the chain. It halts at the stage that control genuinely bites — ' +
+      'Switch one on and step the chain. It halts at the stage that control genuinely bites - ' +
       'and some of them do not halt anything, which is the part worth sitting with.'));
     host.appendChild(g);
 
@@ -882,7 +882,7 @@
     var s = res.stages[idx];
     if (s.halted) {
       return 'Stage ' + (idx + 1) + ' is as far as it gets with these controls switched on. ' +
-        'Everything below is greyed out because it never happened — not because it was survived.';
+        'Everything below is greyed out because it never happened - not because it was survived.';
     }
     return 'Stage ' + (idx + 1) + ' of ' + STAGES.length + ': ' + s.name.toLowerCase() +
       ', typically ' + s.dwell + '. Nothing switched on in the panel ends the chain here.';
@@ -894,13 +894,13 @@
   ChainFamily.prototype.compare = function () {
     var rows = [
       { key: 'mfa', cells: ['MFA', 'Initial access, on any login',
-        'A stolen or reused password on a remote entry point — the single most common first door',
+        'A stolen or reused password on a remote entry point - the single most common first door',
         'A malicious attachment, and any flaw that runs before authentication happens at all'] },
       { key: 'patch', cells: ['Patching', 'Initial access, and escalation',
         'Exploitation of internet-facing kit, and a family of local privilege escalation routes',
         'Anything that is a misconfiguration rather than a vulnerability'] },
       { key: 'edr', cells: ['EDR', 'Execution first, then four more stages',
-        'The loader, on execution — and it gets a second and third chance at discovery, evasion ' +
+        'The loader, on execution - and it gets a second and third chance at discovery, evasion ' +
         'and mass encryption',
         'Anything at all, if nobody is rostered to read what it says'] },
       { key: 'least', cells: ['Least privilege', 'Escalation and lateral movement',
@@ -916,7 +916,7 @@
     ];
     var self = this;
     rows.forEach(function (r) {
-      r.cells[0] = r.cells[0] + (self.on[r.key] ? ' — on' : ' — off');
+      r.cells[0] = r.cells[0] + (self.on[r.key] ? ' - on' : ' - off');
     });
     return {
       title: 'Every control on the list, and what it honestly does',
@@ -943,8 +943,8 @@
   }
   FileFamily.prototype.algoOptions = function () {
     return [
-      { key: 'hybrid', label: 'How it is actually done — a key per file, wrapped' },
-      { key: 'naive', label: 'The naive way — one key for everything' }
+      { key: 'hybrid', label: 'How it is actually done - a key per file, wrapped' },
+      { key: 'naive', label: 'The naive way - one key for everything' }
     ];
   };
   FileFamily.prototype.buildPanel = function (host, onChange) {
@@ -1013,7 +1013,7 @@
       ? fakeHex(7, 32)
       : fakeHex(lockIdx >= 0 ? lockIdx + 11 : 11, 32);
     var wrapped = m.mode === 'naive'
-      ? 'not wrapped — the same key is inside the binary'
+      ? 'not wrapped - the same key is inside the binary'
       : fakeHex(lockIdx >= 0 ? lockIdx + 101 : 101, 48);
 
     for (i = 0; i < KEY_LEVELS.length; i++) {
@@ -1055,7 +1055,7 @@
         box.appendChild(E('p', null,
           'Every file on that tree holds its own key, and every one of those keys is inside a lock ' +
           'that only a private key on somebody else’s machine opens. The keys are right there on ' +
-          'your disk. That is the honest answer to "can we not just get it off the disk" — you ' +
+          'your disk. That is the honest answer to "can we not just get it off the disk" - you ' +
           'already have it, and it is useless.'));
       }
       box.appendChild(E('p', null, m.immutable
@@ -1073,7 +1073,7 @@
     var m = this.model, f = m.frames[Math.min(idx, m.frames.length - 1)];
     if (f.phase === 'intro') {
       return 'A fake tree in this page’s memory. Nothing on your machine is read, nothing is ' +
-        'written and nothing is encrypted — step forward to watch it get enumerated.';
+        'written and nothing is encrypted - step forward to watch it get enumerated.';
     }
     var n = f.node >= 0 ? m.nodes[f.node] : null;
     if (f.phase === 'walk') {
@@ -1110,11 +1110,11 @@
       title: 'What it would take to get one of those files back',
       head: ['What you would need', 'Where it is', 'Can you get it'],
       rows: [
-        { key: 'a', cells: ['The per-file symmetric key', 'Generated in memory on your own server and discarded seconds later', 'No — it existed for milliseconds and was never written down in the clear'] },
-        { key: 'b', cells: ['The wrapped copy of that key', 'On your disk, right next to the file', 'Yes, trivially, and it does not help — it is locked'] },
+        { key: 'a', cells: ['The per-file symmetric key', 'Generated in memory on your own server and discarded seconds later', 'No - it existed for milliseconds and was never written down in the clear'] },
+        { key: 'b', cells: ['The wrapped copy of that key', 'On your disk, right next to the file', 'Yes, trivially, and it does not help - it is locked'] },
         { key: 'c', cells: ['The operator’s public key', 'Inside the binary that ran on your servers', 'Yes, and it locks rather than opens'] },
         { key: 'd', cells: ['The operator’s private key', 'On their machine, and it never came near your network', 'Only by them handing it over, which is what the ransom is'] },
-        { key: 'e', cells: ['A copy of the file from before', 'Your backup — if it was somewhere they could not delete', 'This is the only row on the table you control'] }
+        { key: 'e', cells: ['A copy of the file from before', 'Your backup - if it was somewhere they could not delete', 'This is the only row on the table you control'] }
       ]
     };
   };
@@ -1163,7 +1163,7 @@
     })));
     g.appendChild(E('p', 'oa-hint',
       'Currency-free: put it in whatever you budget in. The defaults are illustrative and are not ' +
-      'a benchmark — published figures for all five of these disagree with each other by an order ' +
+      'a benchmark - published figures for all five of these disagree with each other by an order ' +
       'of magnitude depending on who was surveyed. The arithmetic is the point, not my numbers.'));
     host.appendChild(g);
 
@@ -1214,7 +1214,7 @@
         if (!b.days) continue;
         var seg = E('span', 'rw-seg rw-seg-' + lane.tone + (i > idx ? ' future' : ''));
         seg.style.width = Math.max(1, (b.days / maxDays) * 100) + '%';
-        seg.title = b.label + ' — ' + b.days + ' day(s)';
+        seg.title = b.label + ' - ' + b.days + ' day(s)';
         track.appendChild(seg);
       }
       box.appendChild(track);
