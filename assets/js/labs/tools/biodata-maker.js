@@ -184,7 +184,7 @@
   /* ------------------------------------------------------------------
      State
      ------------------------------------------------------------------ */
-  var state = { tpl: 'kumkum', photo: null, labelLang: 'en' };
+  var state = { tpl: 'kumkum', photo: null, labelLang: 'en', customFields: [] };
 
   /* Picks the active translation for one label object; English is the
      fallback so a half-formed state can never print an undefined. */
@@ -197,6 +197,48 @@
       var input = $('bm-f-' + key);
       state[key] = input ? input.value : '';
     });
+    var customFields = $('bm-custom-fields');
+    state.customFields = customFields
+      ? Array.prototype.map.call(customFields.querySelectorAll('.bm-custom-row'), function (row) {
+        return {
+          label: row.querySelector('[data-custom-field="label"]').value,
+          value: row.querySelector('[data-custom-field="value"]').value
+        };
+      })
+      : [];
+  }
+
+  function writeCustomFields() {
+    var container = $('bm-custom-fields');
+    if (!container) return;
+    container.textContent = '';
+    state.customFields.forEach(function (field, index) {
+      var row = el('div', 'bm-custom-row');
+      var labelField = el('label', 'field');
+      labelField.appendChild(el('span', '', 'Field name'));
+      var labelInput = el('input');
+      labelInput.type = 'text';
+      labelInput.setAttribute('data-custom-field', 'label');
+      labelInput.value = field.label;
+      labelField.appendChild(labelInput);
+      row.appendChild(labelField);
+
+      var valueField = el('label', 'field');
+      valueField.appendChild(el('span', '', 'Value'));
+      var valueInput = el('input');
+      valueInput.type = 'text';
+      valueInput.setAttribute('data-custom-field', 'value');
+      valueInput.value = field.value;
+      valueField.appendChild(valueInput);
+      row.appendChild(valueField);
+
+      var removeButton = el('button', 'lab-btn bm-custom-remove', 'Remove');
+      removeButton.type = 'button';
+      removeButton.setAttribute('data-custom-remove', String(index));
+      removeButton.setAttribute('aria-label', 'Remove custom field ' + (index + 1));
+      row.appendChild(removeButton);
+      container.appendChild(row);
+    });
   }
 
   function writeForm() {
@@ -204,6 +246,7 @@
       var input = $('bm-f-' + key);
       if (input) input.value = state[key] || '';
     });
+    writeCustomFields();
     syncCustomInvocation();
     syncPhotoUi();
   }
@@ -234,6 +277,14 @@
     KEYS.forEach(function (key) {
       if (typeof saved[key] === 'string') state[key] = saved[key];
     });
+    state.customFields = Array.isArray(saved.customFields)
+      ? saved.customFields.filter(function (field) {
+        return field && typeof field === 'object' &&
+          typeof field.label === 'string' && typeof field.value === 'string';
+      }).map(function (field) {
+        return { label: field.label, value: field.value };
+      })
+      : [];
     if (typeof saved.photo === 'string' &&
         saved.photo.slice(0, 11) === 'data:image/') {
       state.photo = saved.photo;
@@ -248,6 +299,7 @@
      a file that lacks a field cannot leave a stale value behind. */
   function blankState() {
     KEYS.forEach(function (key) { state[key] = ''; });
+    state.customFields = [];
     state.photo = null;
     state.tpl = 'kumkum';
     state.labelLang = 'en';
@@ -371,6 +423,28 @@
       });
       content.appendChild(block);
     });
+
+    var customRows = state.customFields
+      .map(function (field) {
+        return [{ en: field.label, hi: field.label, gu: field.label }, field.value.trim()];
+      })
+      .filter(function (pair) { return pair[0].en.trim() && pair[1]; });
+    if (customRows.length) {
+      hasAnything = true;
+      var customBlock = el('section', 'bm-section');
+      customBlock.appendChild(labelEl('h3', 'bm-section-title', {
+        en: 'Additional details',
+        hi: 'अतिरिक्त विवरण',
+        gu: 'વધારાની વિગતો'
+      }));
+      customRows.forEach(function (pair) {
+        var row = el('div', 'bm-row');
+        row.appendChild(labelEl('div', 'bm-row-label', pair[0]));
+        row.appendChild(el('div', 'bm-row-value', pair[1]));
+        customBlock.appendChild(row);
+      });
+      content.appendChild(customBlock);
+    }
 
     var about = (state.about || '').trim();
     if (about) {
@@ -560,6 +634,9 @@
   function formIsBlank() {
     readForm();
     if (state.photo) return false;
+    if (state.customFields.some(function (field) {
+      return field.label.trim() !== '' || field.value.trim() !== '';
+    })) return false;
     return !KEYS.some(function (key) {
       return (state[key] || '').trim() !== '';
     });
@@ -573,6 +650,7 @@
     if (!formIsBlank() &&
         !window.confirm('Replace every field with the example? This cannot be undone.')) return;
     KEYS.forEach(function (key) { state[key] = SAMPLE[key] || ''; });
+    state.customFields = [];
     state.photo = samplePortrait();
     writeForm();
     render();
@@ -585,6 +663,7 @@
        can be half an hour of careful typing. */
     if (!window.confirm('Clear every field and start again? This cannot be undone.')) return;
     KEYS.forEach(function (key) { state[key] = ''; });
+    state.customFields = [];
     state.photo = null;
     writeForm();
     var fileInput = $('bm-f-photo');
@@ -716,6 +795,26 @@
        sheet IS the feedback. */
     form.addEventListener('input', renderSoon);
     form.addEventListener('change', renderSoon);
+
+    var customFields = $('bm-custom-fields');
+    var addCustomField = $('bm-add-custom-field');
+    if (customFields && addCustomField) {
+      addCustomField.addEventListener('click', function () {
+        readForm();
+        state.customFields.push({ label: '', value: '' });
+        writeCustomFields();
+        var addedLabel = customFields.lastElementChild.querySelector('[data-custom-field="label"]');
+        if (addedLabel) addedLabel.focus();
+      });
+      customFields.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-custom-remove]');
+        if (!button) return;
+        readForm();
+        state.customFields.splice(Number(button.getAttribute('data-custom-remove')), 1);
+        writeCustomFields();
+        render();
+      });
+    }
 
     var fileInput = $('bm-f-photo');
     if (fileInput) {

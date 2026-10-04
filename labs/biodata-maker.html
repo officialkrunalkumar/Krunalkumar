@@ -243,6 +243,7 @@
           <li>Nothing is uploaded &mdash; no server exists</li>
           <li>No sign-up, no watermark</li>
           <li>5 templates, traditional to minimal</li>
+          <li>Add your own custom fields</li>
           <li>Prints to A4 &mdash; save as PDF</li>
           <li>Nothing is stored &mdash; download to keep a copy</li>
         </ul>
@@ -517,6 +518,13 @@
                   <textarea id="bm-f-partner" rows="3" placeholder="What you are looking for"></textarea>
                 </label>
               </div>
+
+              <div class="bm-custom-heading">
+                <h3>Custom fields</h3>
+                <button class="lab-btn" type="button" id="bm-add-custom-field">Add field</button>
+              </div>
+              <p class="form-hint">Add any extra label and value you want to include on the sheet.</p>
+              <div id="bm-custom-fields"></div>
             </form>
           </div>
 
@@ -578,6 +586,10 @@
           <details class="lab-faq">
             <summary>Can I use my own photo?</summary>
             <div>Yes. The photo is read from your device, resized in the browser to a sensible size, and placed on the sheet. It is never uploaded - it goes from your file picker to the page and nowhere else, and every template is designed to look right with or without one.</div>
+          </details>
+          <details class="lab-faq">
+            <summary>Can I add fields that are not listed?</summary>
+            <div>Yes. Use Add field in the form to enter your own label and value. Custom fields appear under Additional details on the sheet and are included when you download or load your data file.</div>
           </details>
           <details class="lab-faq">
             <summary>Can the biodata be in Hindi or Gujarati?</summary>

@@ -180,6 +180,30 @@
 /* A field that should span both columns of the grid (textareas, mostly). */
 .bm-form .bm-wide { grid-column: 1 / -1; }
 
+.bm-custom-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+}
+
+.bm-custom-heading h3 { margin: 0 0 0.7rem; }
+
+#bm-custom-fields {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.bm-custom-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.7rem;
+}
+
+.bm-custom-remove { margin-bottom: 2px; }
+
 /* Photo control: the input hides behind a styled button-ish label row, and a
    thumbnail appears once a photo is chosen. */
 .bm-photo-row {
@@ -601,6 +625,35 @@
     box-decoration-break: clone;
   }
 
+  /* The sheet background only covers the part of the final fragment occupied
+     by content. Paint the active template on the page canvas too, so a short
+     second page keeps the same paper colour instead of ending in white. */
+  html:has(.bm-sheet[data-tpl='kumkum']) {
+    background: #fdf6ec !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html:has(.bm-sheet[data-tpl='ivory']) {
+    background: #fbf7ee !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html:has(.bm-sheet[data-tpl='lotus']) {
+    background: #fdf3f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html:has(.bm-sheet[data-tpl='royal']) {
+    background: linear-gradient(160deg, #182147 0%, #10173a 100%) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html:has(.bm-sheet[data-tpl='sada']) {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   .bm-empty-hint { display: none !important; }
 
   /* main.css prints a site byline via body::before on every page. Correct
@@ -700,4 +753,5 @@
 @media (max-width: 640px) {
   .bm-form .form-grid { grid-template-columns: minmax(0, 1fr); }
   .bm-form .bm-wide { grid-column: auto; }
+  .bm-custom-row { grid-template-columns: minmax(0, 1fr); }
 }
