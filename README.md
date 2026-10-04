@@ -17,7 +17,7 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | --------------------- | -------------------------------------------------------------------------- |
 | `index.html`          | Home — hero (with availability pill), expertise cards, selected work, blog teasers, certifications. Internal navigation uses a brief native page fade where supported; it is disabled for reduced-motion users. 🥚 Six quick taps on the hero portrait start animated side keylines, a blinking `ks_` cursor, a soft glow around the monogram and portrait frame, and a “DO KISSS...” message cycling its final word through Smart, Sweet, Stupid, Sharp, Sincere, Surprising, and Sunny with directional motion. Each further set speeds up the effect; one more set at top speed restores the resting look. Reduced-motion users do not get the gesture handler. |
 | `about.html`          | Profile — education (with ranks), career timeline, skills, community work, memberships |
-| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with FAQ (FAQPage JSON-LD) |
+| `services.html`       | Service lines — automation/AI, development, security, personal cyber help, coaching, corporate training, research — with in-page jump links and FAQ (FAQPage JSON-LD) |
 | `projects.html`       | Case studies, featured spotlight + paginated gallery of 50 repositories     |
 | `research.html`       | Published paper on fork bomb defense, with summary cards and flowchart      |
 | `blog/`               | Blog — `/blog` index (first six visible + Show more) and one file per post, each with a static table of contents, article dates, and BlogPosting JSON-LD. Cards carry `data-category` (one of `security` / `automation-ai` / `career-mentorship` / `business` / `life`) powering the filter chips on the index; filtered views deep-link as `/blog#security` etc. New post = card in `blog/index.html` with a `data-category` and entries in `sitemap.xml` + `feed.xml` + `atom.xml` — nothing in `sw.js`, because the worker caches posts on use rather than from a hand-kept list, so there is no precache entry to forget. Categories stay few and fixed; one can graduate to its own landing page once it holds ~8–10 posts |
@@ -37,6 +37,9 @@ sitemap dates — the pages in this repository are the pages that get served. Se
 | `fun/terminal.html`   | 🥚 Hidden easter egg — fake Linux terminal with a fork-bomb demo of the research paper. Not in the nav or sitemap, `noindex`; `/admin`, `/secret`, and `/hack` redirect here (see `vercel.json`), and the browser console on regular pages drops a hint |
 | `fun/teapot.html`     | 🫖 Hidden easter egg #3 — HTTP 418 as an animated cartoon tea party (`/teapot`). Unlisted everywhere except the terminal's `teapot` command and a hint in `magic`; `noindex`, not in the sitemap; animations stop under reduced motion |
 | `google46d0a7ad3f01b5a6.html` | ⚠️ **Do not delete or rename.** Google Search Console ownership proof — Google re-checks it periodically, and removing it eventually breaks Search Console access (search data, indexing, sitemaps). Invisible to visitors; unrelated to analytics/GTM |
+
+Long pages show a reading-progress line at the top and a matching progress ring around
+the back-to-top control; shorter pages omit the line.
 
 The `fun/` pages above (`buddha`, `birthday`, `festival`, `terminal`, `teapot` — plus `party` and
 `einstein`, documented in their own sections below) live in the `fun/` directory on disk, not the

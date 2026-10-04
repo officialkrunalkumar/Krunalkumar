@@ -1473,6 +1473,47 @@ main [id] {
   margin-bottom: 1.2rem;
 }
 
+.service-jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.service-jump-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.22);
+  border-radius: 999px;
+  background: rgb(var(--accent-rgb) / 0.07);
+  color: var(--ink-2);
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.service-jump-nav a:hover,
+.service-jump-nav a:focus-visible {
+  border-color: rgb(var(--accent-rgb) / 0.55);
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--ink);
+}
+
+@media (max-width: 600px) {
+  .service-jump-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-jump-nav a {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
 .section-intro {
   max-width: 68ch;
   margin: 0.65rem 0 0;
@@ -2980,6 +3021,9 @@ footer {
   font-size: 1rem;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(2, 6, 23, 0.24);
+  display: grid;
+  place-items: center;
+  isolation: isolate;
   opacity: 0;
   pointer-events: none;
   /* visibility (delayed until the fade-out ends) also drops the invisible
@@ -2987,6 +3031,57 @@ footer {
   visibility: hidden;
   transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+}
+
+.back-to-top > span {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.back-to-top-progress {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.back-to-top-progress circle {
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.back-to-top-progress-track {
+  stroke: rgb(255 255 255 / 0.28);
+}
+
+.back-to-top-progress-value {
+  stroke: var(--accent-1);
+  stroke-dasharray: 100.53;
+  stroke-linecap: round;
+}
+
+.reading-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1001;
+  height: 3px;
+  pointer-events: none;
+  background: rgb(var(--line-rgb) / 0.12);
+}
+
+.reading-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-1));
+  box-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.45);
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
 .back-to-top.visible {
@@ -4767,6 +4862,7 @@ footer a:hover {
   .site-header,
   footer,
   .skip-link,
+  .reading-progress,
   .mayuri-wrap,
   .back-to-top,
   .bg-pause-toggle,

@@ -921,11 +921,63 @@
   const backToTopButton = document.createElement('button');
   backToTopButton.className = 'back-to-top';
   backToTopButton.setAttribute('aria-label', 'Back to top');
-  backToTopButton.innerHTML = '↑';
+  backToTopButton.innerHTML =
+    '<svg class="back-to-top-progress" viewBox="0 0 36 36" aria-hidden="true" focusable="false">' +
+      '<circle class="back-to-top-progress-track" cx="18" cy="18" r="16"></circle>' +
+      '<circle class="back-to-top-progress-value" cx="18" cy="18" r="16"></circle>' +
+    '</svg><span aria-hidden="true">↑</span>';
+  const backToTopProgress = backToTopButton.querySelector('.back-to-top-progress-value');
   backToTopButton.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   });
   document.body.appendChild(backToTopButton);
+
+  let readingProgress = null;
+  let readingProgressFill = null;
+  let progressFrame = 0;
+
+  function syncReadingProgress() {
+    const scrollableHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    ) - window.innerHeight;
+    const progress = scrollableHeight > 0
+      ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight))
+      : 0;
+
+    if (scrollableHeight > 1200 && !readingProgress) {
+      readingProgress = document.createElement('div');
+      readingProgress.className = 'reading-progress';
+      readingProgress.setAttribute('aria-hidden', 'true');
+      readingProgress.innerHTML = '<span class="reading-progress-fill"></span>';
+      readingProgressFill = readingProgress.firstElementChild;
+      document.body.appendChild(readingProgress);
+    } else if (scrollableHeight <= 1200 && readingProgress) {
+      readingProgress.remove();
+      readingProgress = null;
+      readingProgressFill = null;
+    }
+
+    if (readingProgressFill) {
+      readingProgressFill.style.transform = 'scaleX(' + progress + ')';
+    }
+    if (backToTopProgress) {
+      backToTopProgress.style.strokeDashoffset = String(100.53 * (1 - progress));
+    }
+    backToTopButton.classList.toggle('visible', window.scrollY > 420);
+  }
+
+  function queueProgressSync() {
+    if (progressFrame) return;
+    progressFrame = window.requestAnimationFrame(() => {
+      progressFrame = 0;
+      syncReadingProgress();
+    });
+  }
+
+  syncReadingProgress();
+  window.addEventListener('scroll', queueProgressSync, { passive: true });
+  window.addEventListener('resize', queueProgressSync, { passive: true });
 
   // Mayuri — the assistant bubble in the bottom-right corner.
   //
@@ -1971,14 +2023,6 @@
       }
     }
   }
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 420) {
-      backToTopButton.classList.add('visible');
-    } else {
-      backToTopButton.classList.remove('visible');
-    }
-  });
 
   // Conversion tracking: report high-intent clicks to Google Analytics.
   // Event delegation covers links anywhere on the page, including the
